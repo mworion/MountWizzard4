@@ -440,9 +440,8 @@ def test_saveName_3(function):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('test', False)):
-        with qtbot.assertNotEmitted(function.app.message):
-            suc = function.saveName()
-            assert not suc
+        suc = function.saveName()
+        assert not suc
 
 
 def test_saveName_4(function):
@@ -486,9 +485,8 @@ def test_deleteName_2(function):
         with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                                'question',
                                return_value=PyQt5.QtWidgets.QMessageBox.No):
-            with qtbot.assertNotEmitted(function.app.message):
-                suc = function.deleteName()
-                assert not suc
+            suc = function.deleteName()
+            assert not suc
 
 
 def test_deleteName_3(function):
@@ -570,7 +568,7 @@ def test_refreshModel(function):
         assert suc
 
 
-def test_clearModel_1(function, qtbot):
+def test_clearModel_1(function):
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.No):
@@ -578,30 +576,26 @@ def test_clearModel_1(function, qtbot):
         assert not suc
 
 
-def test_clearModel_2(function, qtbot):
+def test_clearModel_2(function):
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
         with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.clearModel()
-                assert not suc
-                assert ['Actual model cannot be cleared', 2] == blocker.args
+            suc = function.clearModel()
+            assert not suc
 
 
-def test_clearModel_3(function, qtbot):
+def test_clearModel_3(functionot):
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
         with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.clearModel()
-                assert suc
-                assert ['Actual model cleared', 0] == blocker.args
+            suc = function.clearModel()
+            assert suc
 
 
 def test_deleteWorstPoint_1(function):

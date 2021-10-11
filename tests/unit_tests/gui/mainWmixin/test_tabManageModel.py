@@ -375,26 +375,22 @@ def test_refreshName_1(function):
         assert suc
 
 
-def test_refreshName_2(function, qtbot):
+def test_refreshName_2(function):
     suc = function.refreshName()
     assert suc
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.refreshName()
-        assert suc
-        assert ['Model names refreshed', 0] == blocker.args
+    suc = function.refreshName()
+    assert suc
 
 
-def test_loadName_1(function, qtbot):
+def test_loadName_1(function):
     with mock.patch.object(function.ui.nameList,
                            'currentItem',
                            return_value=None):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.loadName()
-            assert not suc
-            assert ['No model name selected', 2] == blocker.args
+        suc = function.loadName()
+        assert not suc
 
 
-def test_loadName_2(function, qtbot):
+def test_loadName_2(function):
     class Test:
         @staticmethod
         def text():
@@ -405,13 +401,11 @@ def test_loadName_2(function, qtbot):
         with mock.patch.object(function.app.mount.model,
                                'loadName',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.loadName()
-                assert suc
-                assert ['Model [test] loaded', 0] == blocker.args
+            suc = function.loadName()
+            assert suc
 
 
-def test_loadName_3(function, qtbot):
+def test_loadName_3(function):
     class Test:
         @staticmethod
         def text():
@@ -422,33 +416,27 @@ def test_loadName_3(function, qtbot):
         with mock.patch.object(function.app.mount.model,
                                'loadName',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.loadName()
-                assert not suc
-                assert ['Model [test] cannot be loaded', 2] == blocker.args
+            suc = function.loadName()
+            assert not suc
 
 
-def test_saveName_1(function, qtbot):
+def test_saveName_1(function):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('', True)):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.saveName()
-            assert not suc
-            assert ['No model name given', 2] == blocker.args
+        suc = function.saveName()
+        assert not suc
 
 
-def test_saveName_2(function, qtbot):
+def test_saveName_2(function):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=(None, True)):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.saveName()
-            assert not suc
-            assert ['No model name given', 2] == blocker.args
+        suc = function.saveName()
+        assert not suc
 
 
-def test_saveName_3(function, qtbot):
+def test_saveName_3(function):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('test', False)):
@@ -457,43 +445,37 @@ def test_saveName_3(function, qtbot):
             assert not suc
 
 
-def test_saveName_4(function, qtbot):
+def test_saveName_4(function):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('test', True)):
         with mock.patch.object(function.app.mount.model,
                                'storeName',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.saveName()
-                assert not suc
-                assert ['Model [test] cannot be saved', 2] == blocker.args
+            suc = function.saveName()
+            assert not suc
 
 
-def test_saveName_5(function, qtbot):
+def test_saveName_5(function):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('test', True)):
         with mock.patch.object(function.app.mount.model,
                                'storeName',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.saveName()
-                assert suc
-                assert ['Model [test] saved', 0] == blocker.args
+            suc = function.saveName()
+            assert suc
 
 
-def test_deleteName_1(function, qtbot):
+def test_deleteName_1(function):
     with mock.patch.object(function.ui.nameList,
                            'currentItem',
                            return_value=None):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.deleteName()
-            assert not suc
-            assert ['No model name selected', 2] == blocker.args
+        suc = function.deleteName()
+        assert not suc
 
 
-def test_deleteName_2(function, qtbot):
+def test_deleteName_2(function):
     class Test:
         @staticmethod
         def text():
@@ -509,7 +491,7 @@ def test_deleteName_2(function, qtbot):
                 assert not suc
 
 
-def test_deleteName_3(function, qtbot):
+def test_deleteName_3(function):
     class Test:
         @staticmethod
         def text():
@@ -523,13 +505,11 @@ def test_deleteName_3(function, qtbot):
             with mock.patch.object(function.app.mount.model,
                                    'deleteName',
                                    return_value=True):
-                with qtbot.waitSignal(function.app.message) as blocker:
-                    suc = function.deleteName()
-                    assert suc
-                    assert ['Model [test] deleted', 0] == blocker.args
+                suc = function.deleteName()
+                assert suc
 
 
-def test_deleteName_4(function, qtbot):
+def test_deleteName_4(function):
     class Test:
         @staticmethod
         def text():
@@ -543,10 +523,8 @@ def test_deleteName_4(function, qtbot):
             with mock.patch.object(function.app.mount.model,
                                    'deleteName',
                                    return_value=False):
-                with qtbot.waitSignal(function.app.message) as blocker:
-                    suc = function.deleteName()
-                    assert not suc
-                    assert ['Model [test] cannot be deleted', 2] == blocker.args
+                suc = function.deleteName()
+                assert not suc
 
 
 def writeRFD(a, b):

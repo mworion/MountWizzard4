@@ -19,7 +19,6 @@
 
 # external packages
 import wakeonlan
-from PyQt5.QtTest import QTest
 
 # local import
 
@@ -75,7 +74,6 @@ class SettMount(object):
         """
         :return:
         """
-        ui = self.ui.mountOn
         bAddress = self.ui.mountWolAddress.text().strip()
         bPort = self.ui.mountWolPort.text().strip()
         bPort = (int(bPort) if bPort else 0)
@@ -91,7 +89,6 @@ class SettMount(object):
         """
         :return:
         """
-        ui = self.ui.mountOff
         suc = self.app.mount.shutdown()
         if suc:
             self.app.message.emit('Shutting mount down', 0)

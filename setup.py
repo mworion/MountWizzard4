@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - fix: bug in calling StopExposure on ascom
+- fix: segfault in qtlib on ubuntu
  """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.0.5',
+    version='2.0.6',
     packages=[
         'mw4',
         'mw4.base',

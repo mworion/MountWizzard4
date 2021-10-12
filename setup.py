@@ -30,6 +30,7 @@ releaseNotes = """
 - improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
+- fix: segfault in qt5lib on ubuntu
  """
 
 with open('notes.txt', 'w') as f:

@@ -601,6 +601,14 @@ class MainWindow(
         else:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
+
+        if self.deviceStat.get('dome'):
+            self.ui.checkSortDome.setEnabled(True)
+        else:
+            self.ui.checkSortDome.setEnabled(False)
+            if self.ui.checkSortDome.isChecked():
+                self.ui.checkSortNothing.setChecked(True)
+
         return True
 
     def smartTabGui(self):

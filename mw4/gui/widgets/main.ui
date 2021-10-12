@@ -7291,9 +7291,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortHL">
       <property name="geometry">
        <rect>
-        <x>245</x>
+        <x>270</x>
         <y>20</y>
-        <width>111</width>
+        <width>80</width>
         <height>20</height>
        </rect>
       </property>
@@ -7315,9 +7315,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortEW">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>100</x>
         <y>20</y>
-        <width>106</width>
+        <width>96</width>
         <height>20</height>
        </rect>
       </property>
@@ -7341,7 +7341,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>15</x>
         <y>20</y>
-        <width>106</width>
+        <width>80</width>
         <height>20</height>
        </rect>
       </property>
@@ -7409,6 +7409,33 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>Auto delete points within meridian limits</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="checkSortDome">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>20</y>
+        <width>66</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Sorts the model points EAST / WEST side of pier.</string>
+      </property>
+      <property name="text">
+       <string>Dome</string>
       </property>
      </widget>
     </widget>

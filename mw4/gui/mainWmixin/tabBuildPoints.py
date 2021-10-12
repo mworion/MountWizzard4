@@ -104,6 +104,7 @@ class BuildPoints:
         self.ui.checkAvoidFlip.setChecked(config.get('checkAvoidFlip', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
+        self.ui.checkSortDome.setChecked(config.get('checkSortDome', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
         self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
 
@@ -137,6 +138,7 @@ class BuildPoints:
         config['checkAvoidFlip'] = self.ui.checkAvoidFlip.isChecked()
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
+        config['checkSortDome'] = self.ui.checkSortDome.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
         config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
 

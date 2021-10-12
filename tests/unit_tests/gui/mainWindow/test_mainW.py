@@ -394,6 +394,26 @@ def test_smartFunctionGui_7():
     assert not app.ui.setRefractionManual.isEnabled()
 
 
+def test_smartFunctionGui_8():
+    app.deviceStat['dome'] = False
+    app.ui.checkSortDome.setChecked(True)
+    suc = app.smartFunctionGui()
+    assert suc
+
+
+def test_smartFunctionGui_9():
+    app.deviceStat['dome'] = False
+    app.ui.checkSortDome.setChecked(False)
+    suc = app.smartFunctionGui()
+    assert suc
+
+
+def test_smartFunctionGui_10():
+    app.deviceStat['dome'] = True
+    suc = app.smartFunctionGui()
+    assert suc
+
+
 def test_smartTabGui_1():
     suc = app.smartTabGui()
     assert suc

@@ -109,7 +109,6 @@ class MountWizzard4(QObject):
         self.mainW = None
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
-        self.threadPool.setExpiryTimeout(3)
         self.message.connect(self.writeMessageQueue)
         self.config = {}
         self.loadConfig()

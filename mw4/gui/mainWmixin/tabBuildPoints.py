@@ -557,24 +557,20 @@ class BuildPoints:
         eastwest = self.ui.checkSortEW.isChecked()
         highlow = self.ui.checkSortHL.isChecked()
         avoidFlip = self.ui.checkAvoidFlip.isChecked()
-        sortDome = self.ui.checkSortDome.isChecked()
+        dome = self.ui.checkSortDome.isChecked()
+        noSort = self.ui.checkSortNothing.isChecked()
         pierside = self.app.mount.obsSite.pierside
 
-        if pierside is None:
-            avoidFlip = False
-        if not eastwest and not highlow and not avoidFlip and not sortDome:
+        if noSort and not avoidFlip:
             return False
+        if not avoidFlip:
+            pierside = None
 
-        if avoidFlip:
-            self.app.data.sort(eastwest=eastwest,
-                               highlow=highlow,
-                               sortDome=sortDome,
-                               pierside=pierside)
-        else:
-            self.app.data.sort(eastwest=eastwest,
-                               highlow=highlow,
-                               sortDome=sortDome,
-                               )
+        self.app.data.sort(eastwest=eastwest,
+                           highlow=highlow,
+                           dome=dome,
+                           pierside=pierside)
+
         return True
 
     def buildPointsChanged(self):

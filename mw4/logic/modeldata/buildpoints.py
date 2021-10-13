@@ -403,17 +403,14 @@ class DataPoint(object):
 
         return True
 
-    def sort(self, eastwest=False, highlow=False, sortDome=False, pierside=None):
+    def sort(self, eastwest=False, highlow=False, dome=False, pierside=None):
         """
         :param eastwest: flag if to be sorted east - west
         :param highlow:  flag if sorted high low altitude
-        :param sortDome:  flag if sorted for azimuth in dome values
+        :param dome:  flag if sorted for azimuth in dome values
         :param pierside:  start pierside sorting with this position
         :return: true for test purpose
         """
-        if not eastwest and not highlow and pierside is None:
-            return False
-
         east = [x for x in self._buildP if x[1] <= 180]
         west = [x for x in self._buildP if x[1] > 180]
 
@@ -423,13 +420,13 @@ class DataPoint(object):
         elif highlow:
             east = sorted(east, key=lambda x: -x[0])
             west = sorted(west, key=lambda x: -x[0])
-        elif sortDome:
+        elif dome:
             pass
 
-        if pierside == 'E':
-            self._buildP = west + east
-        else:
+        if pierside == 'W' or pierside is None:
             self._buildP = east + west
+        else:
+            self._buildP = west + east
 
         return True
 

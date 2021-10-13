@@ -1090,43 +1090,45 @@ def test_genAlign5():
 
 def test_sort_1():
     values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
-    suc = app.sort()
-    assert not suc
-    assert app.buildP == values
+    suc = app.sort(eastwest=True)
+    assert suc
+    assert app.buildP == result
 
 
 def test_sort_2():
     values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
-    suc = app.sort(eastwest=True, highlow=True)
-    assert not suc
-    assert app.buildP == values
+    suc = app.sort(highlow=True)
+    assert suc
+    assert app.buildP == result
 
 
 def test_sort_3():
-    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
-    suc = app.sort(eastwest=True, highlow=False)
+    suc = app.sort(eastwest=True)
     assert suc
     assert app.buildP == result
 
 
 def test_sort_4():
-    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True)
+    suc = app.sort(highlow=True)
     assert suc
     assert app.buildP == result
 
 
 def test_sort_5():
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
-    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
+    result = [(50, 290, True), (40, 190, True), (30, 90, True), (20, 20, True), (10, 10, True)]
     app._buildP = values
-    suc = app.sort(eastwest=True, highlow=False)
+    suc = app.sort(highlow=True, pierside='E')
     assert suc
     assert app.buildP == result
 
@@ -1135,25 +1137,7 @@ def test_sort_6():
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
     app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True)
-    assert suc
-    assert app.buildP == result
-
-
-def test_sort_7():
-    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
-    result = [(50, 290, True), (40, 190, True), (30, 90, True), (20, 20, True), (10, 10, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True, pierside='E')
-    assert suc
-    assert app.buildP == result
-
-
-def test_sort_8():
-    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
-    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True, pierside='W')
+    suc = app.sort(highlow=True, pierside='W')
     assert suc
     assert app.buildP == result
 

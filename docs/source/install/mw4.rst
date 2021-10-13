@@ -273,6 +273,19 @@ QT_SCALE_FACTOR and QT_FONT_DPI accordingly. They are already part of the
 MW4_Run.sh scripts.
 
 
+Installation on Apple Silicon
+-----------------------------
+For software that is not yet updated, Apple has built in translation software
+called Rosetta 2. Rosetta 2 will interpret  traditional Intel-based code and make
+it look like ARM-based code. And it does this pretty well. Generally speaking as a
+user it is very difficult to distinguish between apps that have ‘native M1
+support’ to traditional Intel-based apps.
+
+But for any apps that are run from the command-line in Terminal, this standard
+Rosetta 2 translation does not happen. Within Astrophotography it is not uncommon
+to have apps that run from the command-line. Please hav a look to:
+https://www.astroworldcreations.com/blog/apple-silicon-and-legacy-command-line-software
+
 Update manually
 ---------------
 If you plan to upgrade MW4 to the newest release, MW4 has it's own internal

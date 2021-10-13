@@ -411,8 +411,6 @@ class DataPoint(object):
         :param pierside:  start pierside sorting with this position
         :return: true for test purpose
         """
-        if eastwest and highlow:
-            return False
         if not eastwest and not highlow and pierside is None:
             return False
 

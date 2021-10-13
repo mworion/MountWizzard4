@@ -734,22 +734,13 @@ def test_loadCSV_1():
 
 def test_loadCSV_2():
     with open('tests/workDir/config/test.csv', 'w') as outfile:
-        outfile.writelines('[test, ]],[]}')
+        outfile.writelines('[test, ]],[]}\n')
 
     val = app.loadCSV('test', '.csv')
     assert val is None
 
 
 def test_loadCSV_3():
-    with open('tests/workDir/config/test.csv', 'wb') as outfile:
-        outfile.write(binascii.unhexlify('9f'))
-
-    val = app.loadCSV('test', '.csv')
-    assert val is None
-
-
-def test_loadCSV_4():
-    values = [(1, 1), (2, 2)]
     with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('1, 1\n')
         outfile.writelines('2, 2\n')
@@ -758,20 +749,8 @@ def test_loadCSV_4():
     assert val == [(1, 1), (2, 2)]
 
 
-def test_loadCSV_5():
-    values = [(1, 1), (2, 2)]
+def test_loadCSV_4():
     with open('tests/workDir/config/test.csv', 'w') as outfile:
-        outfile.writelines('1; 1\n')
-        outfile.writelines('2; 2\n')
-
-    val = app.loadCSV('test', '.csv')
-    assert val == [(1, 1), (2, 2)]
-
-
-def test_loadCSV_6():
-    values = [(1, 1), (2, 2)]
-    with open('tests/workDir/config/test.csv', 'w') as outfile:
-        outfile.writelines('"az"; "altitude"\n')
         outfile.writelines('1; 1\n')
         outfile.writelines('2; 2\n')
 
@@ -825,10 +804,9 @@ def test_loadBuildP_5():
     # load file with path
     app.buildPFile = ''
     fileName = 'tests/workDir/config/test.csv'
-    values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
-        outfile.write('1:1\n')
-        outfile.write('2:2\n')
+        outfile.write('1, 1\n')
+        outfile.write('2, 2\n')
     suc = app.loadBuildP('test', '.csv')
     assert suc
     assert app.buildP == [(1, 1, True), (2, 2, True)]
@@ -903,18 +881,6 @@ def test_loadHorizonP_6():
 
 
 def test_loadHorizonP_7():
-    # load file with path
-    fileName = 'tests/workDir/config/test_horizon_2.txt'
-    values = [(1.0, 1.0), (2.0, 2.0)]
-    with open(fileName, 'w') as outfile:
-        outfile.write('1:1\n2:2\n')
-
-    suc = app.loadHorizonP('test_horizon_2', '.txt')
-    assert suc
-    assert app.horizonP == values
-
-
-def test_loadHorizonP_8():
     # load file with path
     fileName = 'tests/workDir/config/test_horizon_2.csv'
     values = [(1.0, 1.0), (2.0, 2.0)]

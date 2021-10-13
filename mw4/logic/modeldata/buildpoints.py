@@ -457,11 +457,10 @@ class DataPoint(object):
 
         return value
 
-    def loadCSV(self, fileName, ext, delimiter=None):
+    def loadCSV(self, fileName, ext):
         """
         :param fileName: name of file to be handled
         :param ext: extension of file to be handled
-        :param delimiter: delimiter of file to be handled
         :return: value: loaded data
         """
         fileName = self.configDir + '/' + fileName + ext
@@ -471,24 +470,24 @@ class DataPoint(object):
         with open(fileName, 'r') as handle:
             testLine = handle.readline()
 
-        if delimiter is None:
-            if ';' in testLine:
-                delimiter = ';'
-            else:
-                delimiter = ','
+        if ';' in testLine:
+            delimiter = ';'
+        else:
+            delimiter = ','
 
         try:
+            value = []
             with open(fileName, 'r', encoding='utf-8-sig') as csvFile:
                 reader = csv.reader(csvFile, delimiter=delimiter)
                 for row in reader:
-                    convertedX = [float(val) for val in row]
-                    print(row)
+                    value.append(tuple(float(val) for val in row))
+
         except Exception as e:
             self.log.info('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
-            value = None
+            return None
+
         else:
-            value = [tuple(x) for x in value]
-        return value
+            return value
 
     @staticmethod
     def checkFormat(value):
@@ -579,8 +578,6 @@ class DataPoint(object):
             value = self.loadCSV(fileName, ext)
         elif ext == '.hpts':
             value = self.loadJSON(fileName, ext)
-        elif ext == '.txt':
-            value = self.loadCSV(fileName, ext, delimiter=':')
 
         suc = self.checkFormat(value)
         if not suc:

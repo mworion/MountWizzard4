@@ -457,7 +457,7 @@ class BuildPoints:
         :return: success
         """
         folder = self.app.mwGlob['configDir']
-        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv);; MW3 Files (*.txt)'
+        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv)'
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open build point file',
                                                     folder,

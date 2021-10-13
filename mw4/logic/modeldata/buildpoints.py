@@ -457,7 +457,7 @@ class DataPoint(object):
 
         return value
 
-    def loadCSV(self, fileName, ext, delimiter=','):
+    def loadCSV(self, fileName, ext, delimiter=None):
         """
         :param fileName: name of file to be handled
         :param ext: extension of file to be handled
@@ -468,17 +468,21 @@ class DataPoint(object):
         if not os.path.isfile(fileName):
             return None
 
+        with open(fileName, 'r') as handle:
+            testLine = handle.readline()
+
+        if delimiter is None:
+            if ';' in testLine:
+                delimiter = ';'
+            else:
+                delimiter = ','
+
         try:
-            value = []
-            with open(fileName, 'r') as handle:
-                reader = csv.reader(handle, delimiter=delimiter)
-                for x in reader:
-                    x = x[:2]
-                    convertedX = [float(val) for val in x]
-                    if delimiter == ',':
-                        value.append(convertedX)
-                    else:
-                        value.append(reversed(convertedX))
+            with open(fileName, 'r', encoding='utf-8-sig') as csvFile:
+                reader = csv.reader(csvFile, delimiter=delimiter)
+                for row in reader:
+                    convertedX = [float(val) for val in row]
+                    print(row)
         except Exception as e:
             self.log.info('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
             value = None
@@ -517,8 +521,6 @@ class DataPoint(object):
             value = self.loadCSV(fileName, ext)
         elif ext == '.bpts':
             value = self.loadJSON(fileName, ext)
-        elif ext == '.txt':
-            value = self.loadCSV(fileName, ext, delimiter=':')
 
         if value is None:
             return False

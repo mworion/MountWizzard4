@@ -758,6 +758,27 @@ def test_loadCSV_4():
     assert val == [(1, 1), (2, 2)]
 
 
+def test_loadCSV_5():
+    values = [(1, 1), (2, 2)]
+    with open('tests/workDir/config/test.csv', 'w') as outfile:
+        outfile.writelines('1; 1\n')
+        outfile.writelines('2; 2\n')
+
+    val = app.loadCSV('test', '.csv')
+    assert val == [(1, 1), (2, 2)]
+
+
+def test_loadCSV_6():
+    values = [(1, 1), (2, 2)]
+    with open('tests/workDir/config/test.csv', 'w') as outfile:
+        outfile.writelines('"az"; "altitude"\n')
+        outfile.writelines('1; 1\n')
+        outfile.writelines('2; 2\n')
+
+    val = app.loadCSV('test', '.csv')
+    assert val == [(1, 1), (2, 2)]
+
+
 def test_loadBuildP_1():
     # wrong fileName given
     suc = app.loadBuildP()
@@ -806,34 +827,11 @@ def test_loadBuildP_5():
     fileName = 'tests/workDir/config/test.csv'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
-        outfile.write('1,1\n2,2\n')
+        outfile.write('1:1\n')
+        outfile.write('2:2\n')
     suc = app.loadBuildP('test', '.csv')
     assert suc
     assert app.buildP == [(1, 1, True), (2, 2, True)]
-
-
-def test_loadBuildP_6():
-    # load file with path
-    app.buildPFile = ''
-    fileName = 'tests/workDir/config/test.txt'
-    values = [(1, 1, True), (2, 2, True)]
-    with open(fileName, 'w') as outfile:
-        outfile.write('1:1\n2:2\n')
-    suc = app.loadBuildP('test', '.txt')
-    assert suc
-    assert app.buildP == values
-
-
-def test_loadBuildP_7():
-    # load file with path
-    app.buildPFile = ''
-    fileName = 'tests/workDir/config/test.txt'
-    values = [(1, 1, True), (2, 2, True)]
-    with open(fileName, 'w') as outfile:
-        outfile.write('1:1\n2:2\n')
-    suc = app.loadBuildP('test', '.txt', keep=True)
-    assert suc
-    assert app.buildP == values
 
 
 def test_saveBuildP_11():

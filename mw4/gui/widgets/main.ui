@@ -7270,7 +7270,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBoxCoordinateSystems_3">
+    <widget class="QGroupBox" name="autoSortGroup">
      <property name="geometry">
       <rect>
        <x>410</x>

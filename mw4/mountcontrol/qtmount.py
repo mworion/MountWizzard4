@@ -693,13 +693,3 @@ class Mount(mountcontrol.mount.Mount):
         worker.signals.error.connect(self.errorProgTrajectory)
         self.threadPool.start(worker)
         return True
-
-    def calcMountAltAzToDomeAltAz(self, alt, az):
-        """
-        :param alt:
-        :param az:
-        :return:
-        """
-        self.obsSite.setTargetAltAz(alt_degrees=alt, az_degrees=az)
-        alt, az, _, _, _ = self.calcTransformationMatricesTarget()
-        return alt, az

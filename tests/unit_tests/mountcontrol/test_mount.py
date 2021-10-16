@@ -15,6 +15,7 @@
 #
 ###########################################################
 # standard libraries
+from unittest import mock
 import pytest
 import os
 
@@ -131,3 +132,14 @@ def test_calcTransformationMatricesActual():
     assert val[2] is None
     assert val[3] is None
     assert val[4] is None
+
+
+def test_calcMountAltAzToDomeAltAz():
+    with mock.patch.object(m.obsSite,
+                           'setTargetAltAz'):
+        with mock.patch.object(m,
+                               'calcTransformationMatricesTarget',
+                               return_value=(10, 5, 0, 0, 0)):
+            valAlt, valAz = m.calcMountAltAzToDomeAltAz(10, 5)
+            assert valAlt == 10
+            assert valAz == 5

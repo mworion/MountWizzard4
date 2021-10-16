@@ -206,3 +206,13 @@ class Mount(object):
                                                         dec=dec,
                                                         lat=lat,
                                                         pierside=pierside)
+
+    def calcMountAltAzToDomeAltAz(self, alt, az):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        self.obsSite.setTargetAltAz(alt_degrees=alt, az_degrees=az)
+        alt, az, _, _, _ = self.calcTransformationMatricesTarget()
+        return alt, az

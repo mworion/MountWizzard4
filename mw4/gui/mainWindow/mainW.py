@@ -602,12 +602,10 @@ class MainWindow(
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
 
-        if self.deviceStat.get('dome'):
-            self.ui.checkSortDome.setEnabled(True)
+        if self.deviceStat.get('dome') and self.deviceStat.get('mount'):
+            self.ui.useDomeAz.setEnabled(True)
         else:
-            self.ui.checkSortDome.setEnabled(False)
-            if self.ui.checkSortDome.isChecked():
-                self.ui.checkSortNothing.setChecked(True)
+            self.ui.useDomeAz.setEnabled(False)
 
         return True
 

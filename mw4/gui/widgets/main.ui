@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -6940,7 +6940,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>90</y>
+       <y>80</y>
        <width>366</width>
        <height>76</height>
       </rect>
@@ -7274,9 +7274,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>185</y>
+       <y>175</y>
        <width>361</width>
-       <height>91</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -7291,9 +7291,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortHL">
       <property name="geometry">
        <rect>
-        <x>270</x>
+        <x>235</x>
         <y>20</y>
-        <width>80</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -7309,13 +7309,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Sorts the model points low to high altitude.</string>
       </property>
       <property name="text">
-       <string>High / Low</string>
+       <string>High/Low ALT</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="checkSortEW">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>120</x>
         <y>20</y>
         <width>96</width>
         <height>20</height>
@@ -7333,7 +7333,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Sorts the model points EAST / WEST side of pier.</string>
       </property>
       <property name="text">
-       <string>East / West</string>
+       <string>East/West AZ</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="checkSortNothing">
@@ -7357,7 +7357,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>No sorting of the model points </string>
       </property>
       <property name="text">
-       <string>Default</string>
+       <string>No sort</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -7367,7 +7367,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>45</y>
+        <y>55</y>
         <width>336</width>
         <height>20</height>
        </rect>
@@ -7384,14 +7384,14 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to start build model point from the pierside where the mount is actually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Avoid meridian flip when starting</string>
+       <string>Avoid meridian flip at start</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkAutoDeleteMeridian">
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>65</y>
+        <y>75</y>
         <width>256</width>
         <height>20</height>
        </rect>
@@ -7411,15 +7411,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Auto delete points within meridian limits</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="checkSortDome">
+     <widget class="QCheckBox" name="useDomeAz">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>20</y>
-        <width>66</width>
+        <x>235</x>
+        <y>55</y>
+        <width>106</width>
         <height>20</height>
        </rect>
       </property>
@@ -7432,10 +7432,32 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>Sorts the model points EAST / WEST side of pier.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses caclulated and geometry corrected dome azimuth values for azimuth sorting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Dome</string>
+       <string>Use dome AZ</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_89">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>45</y>
+        <width>331</width>
+        <height>6</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </widget>
@@ -18271,7 +18293,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

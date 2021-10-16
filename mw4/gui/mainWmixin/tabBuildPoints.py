@@ -19,6 +19,7 @@
 # external packages
 
 # local import
+from base.tpool import Worker
 
 
 class BuildPoints:
@@ -104,7 +105,7 @@ class BuildPoints:
         self.ui.checkAvoidFlip.setChecked(config.get('checkAvoidFlip', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
-        self.ui.checkSortDome.setChecked(config.get('checkSortDome', False))
+        self.ui.useDomeAz.setChecked(config.get('useDomeAz', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
         self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
 
@@ -138,7 +139,7 @@ class BuildPoints:
         config['checkAvoidFlip'] = self.ui.checkAvoidFlip.isChecked()
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
-        config['checkSortDome'] = self.ui.checkSortDome.isChecked()
+        config['useDomeAz'] = self.ui.useDomeAz.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
         config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
 
@@ -546,6 +547,62 @@ class BuildPoints:
             self.app.data.deleteCloseHorizonLine(value)
         return True
 
+    def doSortDomeAzData(self, points, eastwest=None, highlow=None, pierside=None):
+        """
+        :param points:
+        :param eastwest:
+        :param highlow:
+        :param pierside:
+        :return:
+        """
+        self.app.data.sort(points=points,
+                           eastwest=eastwest,
+                           highlow=highlow,
+                           pierside=pierside)
+        return True
+
+    def sortDomeAzWorker(self, points, eastwest=None, highlow=None, pierside=None):
+        """
+        :param points:
+        :param eastwest:
+        :param highlow:
+        :param pierside:
+        :return:
+        """
+        pointsNew = []
+        for point in points:
+            alt, az, _ = point
+            _, az = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
+            pointsNew.append((alt, az.degrees, True))
+        return pointsNew, eastwest, highlow, pierside
+
+    def sortDomeAz(self, points, eastwest=None, highlow=None, pierside=None):
+        """
+        :param points:
+        :param eastwest:
+        :param highlow:
+        :param pierside:
+        :return:
+        """
+        worker = Worker(self.sortDomeAzWorker, points, eastwest, highlow, pierside)
+        worker.signals.result.connect(self.doSortDomeAzData)
+        self.threadPool.start(worker)
+        return True
+
+    def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
+        """
+        :param points:
+        :param eastwest:
+        :param highlow:
+        :param pierside:
+        :return:
+        """
+        self.app.data.sort(points=points,
+                           eastwest=eastwest,
+                           highlow=highlow,
+                           pierside=pierside)
+        return True
+
     def autoSortPoints(self):
         """
         autoSortPoints sort the given build point first to east and west and
@@ -557,7 +614,7 @@ class BuildPoints:
         eastwest = self.ui.checkSortEW.isChecked()
         highlow = self.ui.checkSortHL.isChecked()
         avoidFlip = self.ui.checkAvoidFlip.isChecked()
-        dome = self.ui.checkSortDome.isChecked()
+        useDomeAz = self.ui.useDomeAz.isChecked() and self.ui.useDomeAz.isEnabled()
         noSort = self.ui.checkSortNothing.isChecked()
         pierside = self.app.mount.obsSite.pierside
 
@@ -566,10 +623,13 @@ class BuildPoints:
         if not avoidFlip:
             pierside = None
 
-        self.app.data.sort(eastwest=eastwest,
-                           highlow=highlow,
-                           dome=dome,
-                           pierside=pierside)
+        points = self.app.data.buildP
+        if useDomeAz:
+            self.sortDomeAz(points=points, eastwest=eastwest, highlow=highlow,
+                            pierside=pierside)
+        else:
+            self.sortMountAz(points=points, eastwest=eastwest, highlow=highlow,
+                             pierside=pierside)
 
         return True
 

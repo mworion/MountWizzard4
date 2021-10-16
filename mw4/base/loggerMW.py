@@ -134,7 +134,7 @@ def setupLogging():
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)
     # transfer all sys outputs to logging
-    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR')
+    # sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR')
     # sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT')
     return True
 

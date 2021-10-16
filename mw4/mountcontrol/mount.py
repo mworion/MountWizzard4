@@ -166,7 +166,7 @@ class Mount(object):
     def resetData(self):
         """
         resetData deletes all data already stored in classes just by redefining
-        the classes. it send as well a signal, when the data is cleared.
+        the classes. it sends as well a signal, when the data is cleared.
 
         :return: nothing
         """

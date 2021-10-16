@@ -323,6 +323,15 @@ class Styles:
         background-color: rgb(32, 144, 192);
         image: url(:/icon/checkmark.ico);
     }
+    QGroupBox[running='true'] {
+        color: #C0C0C0;
+        border-color: #C0C000;
+        background-color: #202020;
+    }
+    QGroupBox:title[running='true'] {
+        color: #C0C0C0;
+    }
+
 
     /* Checkboxes */
     QCheckBox {

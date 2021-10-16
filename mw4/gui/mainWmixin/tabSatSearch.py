@@ -432,6 +432,8 @@ class SatSearch(object):
             satTab.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
         self.positionCursorInSatTable(satTab, satName)
+        self.changeStyleDynamic(self.ui.satFilterGroup, 'running', False)
+
         return True
 
     def workerSatCalcTable(self):
@@ -491,6 +493,7 @@ class SatSearch(object):
         self.ui.satIsSunlit.setEnabled(False)
         worker = Worker(self.workerSatCalcTable)
         worker.signals.finished.connect(self.filterSatelliteNamesList)
+        self.changeStyleDynamic(self.ui.satFilterGroup, 'running', True)
         self.threadPool.start(worker)
         return True
 

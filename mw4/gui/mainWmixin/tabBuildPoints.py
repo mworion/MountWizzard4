@@ -571,22 +571,23 @@ class BuildPoints:
         """
         pointsNew = list()
         numbAll = len(points)
+        ui = self.ui.autoSortGroup
+        self.changeStyleDynamic(ui, 'running', True)
         for i, point in enumerate(points):
             t = f'Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%'
-            self.ui.autoSortGroup.setTitle(t)
+            ui.setTitle(t)
 
             alt, az, _ = point
             _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
             pointsNew.append((alt, az, True, domeAz.degrees))
         points = pointsNew
-        self.ui.autoSortGroup.setTitle('Auto sort points')
+        ui.setTitle('Auto sort points')
+        self.changeStyleDynamic(ui, 'running', False)
         return points, pierside
 
     def sortDomeAz(self, points, pierside=None):
         """
         :param points:
-        :param eastwest:
-        :param highlow:
         :param pierside:
         :return:
         """

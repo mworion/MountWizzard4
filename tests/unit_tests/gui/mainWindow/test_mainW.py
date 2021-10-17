@@ -613,10 +613,8 @@ def test_deleteWindowResource_3():
         def objectName():
             return 'ImageDialog'
 
-    with mock.patch.object(gc,
-                           'collect'):
-        suc = app.deleteWindowResource(widget=Test())
-        assert suc
+    suc = app.deleteWindowResource(widget=Test())
+    assert suc
 
 
 def test_buildWindow_1():

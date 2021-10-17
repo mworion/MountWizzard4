@@ -5822,7 +5822,7 @@ to mount</string>
     <attribute name="title">
      <string>Almanac</string>
     </attribute>
-    <widget class="QGroupBox" name="refractionGroup_4">
+    <widget class="QGroupBox" name="almanacGroup">
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -28311,7 +28311,7 @@ Updater</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount finished slewing&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the prediction time of the twilight almanac. Shorter time improves redering speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">

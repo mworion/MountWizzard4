@@ -28,6 +28,7 @@ releaseNotes = """
 - add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
 - add: sorting for minimal dome slew in build point selection
+- add: setting prediction time of almanac (shorter reduces cpu load)
 - improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface

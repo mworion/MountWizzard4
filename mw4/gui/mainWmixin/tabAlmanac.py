@@ -210,7 +210,9 @@ class Almanac:
             return False
 
         index = self.ui.almanacPrediction.currentIndex()
+        text = self.ui.almanacPrediction.currentText()
         timeWindow = timeWindowParam[index]
+        self.ui.almanacGroup.setTitle(f'Twilight passes for: {text}')
 
         ts = self.app.mount.obsSite.ts
         worker = Worker(self.searchTwilightWorker, ts, location, timeWindow)

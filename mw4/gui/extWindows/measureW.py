@@ -17,7 +17,6 @@
 ###########################################################
 # standard libraries
 from datetime import datetime as dt
-import gc
 
 # external packages
 import PyQt5
@@ -148,7 +147,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.ui.measureSet1.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet2.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet3.currentIndexChanged.disconnect(self.setCycleRefresh)
-        plt.close(self.measureMat.figure)
         super().closeEvent(closeEvent)
 
     def setupButtons(self):
@@ -209,7 +207,6 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
         for axe in figure.axes:
             axe.cla()
-            gc.collect()
 
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)

@@ -18,7 +18,6 @@ from base import packageConfig
 
 # standard libraries
 from datetime import datetime
-import gc
 import time
 
 # external packages
@@ -798,7 +797,6 @@ class MainWindow(
                 continue
             self.uiWindows[window]['classObj'] = None
 
-        gc.collect()
         return True
 
     def buildWindow(self, window):

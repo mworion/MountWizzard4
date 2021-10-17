@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -18293,7 +18293,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -27394,9 +27394,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
-         <height>46</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -27409,7 +27409,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>20</y>
+          <y>15</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -27436,7 +27436,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -27463,7 +27463,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>270</x>
-          <y>20</y>
+          <y>15</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -27490,7 +27490,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -27504,9 +27504,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>285</y>
+         <y>305</y>
          <width>366</width>
-         <height>96</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -27521,7 +27521,7 @@ When clicking the button, you could change the value.</string>
           <x>5</x>
           <y>20</y>
           <width>356</width>
-          <height>71</height>
+          <height>51</height>
          </rect>
         </property>
         <property name="html">
@@ -27539,7 +27539,7 @@ p, li { white-space: pre-wrap; }
          <x>400</x>
          <y>15</y>
          <width>366</width>
-         <height>176</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -28060,7 +28060,7 @@ Updater</string>
          <x>5</x>
          <y>220</y>
          <width>366</width>
-         <height>106</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="title">
@@ -28158,7 +28158,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>80</y>
+          <y>75</y>
           <width>176</width>
           <height>21</height>
          </rect>
@@ -28244,9 +28244,9 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>210</y>
+         <y>200</y>
          <width>366</width>
-         <height>46</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -28259,7 +28259,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>21</height>
          </rect>
@@ -28283,6 +28283,81 @@ Updater</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="LoglevelGroup_4">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>250</y>
+         <width>366</width>
+         <height>46</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Almanac</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QComboBox" name="almanacPrediction">
+        <property name="geometry">
+         <rect>
+          <x>175</x>
+          <y>20</y>
+          <width>181</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount finished slewing&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>1 month</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>2 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>3 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>6 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1 year</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_224">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>136</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Length of prediction</string>
         </property>
        </widget>
       </widget>

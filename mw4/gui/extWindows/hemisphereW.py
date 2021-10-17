@@ -235,11 +235,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
         self.app.dome.signals.serverDisconnected.disconnect(self.updateDome)
-
-        plt.close(self.hemisphereMat.figure)
-        plt.close(self.polarMat.figure)
-        plt.close(self.hemisphereMatMove.figure)
-        plt.close(self.polarMatMove.figure)
         QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
 
         super().closeEvent(closeEvent)

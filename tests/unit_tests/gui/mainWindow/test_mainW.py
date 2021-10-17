@@ -20,7 +20,6 @@ from unittest.mock import patch
 import pytest
 import glob
 import os
-import gc
 import shutil
 import logging
 

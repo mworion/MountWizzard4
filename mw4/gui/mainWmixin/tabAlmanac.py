@@ -69,8 +69,6 @@ class Almanac:
         self.civil = None
         self.nautical = None
         self.astronomical = None
-        self.dark = None
-        self.thread = None
 
         self.colors = {
             0: {'text': self.COLOR_BLUE4,
@@ -97,11 +95,14 @@ class Almanac:
         self.ui.almanacNautical.setStyleSheet(self.BACK_BLUE2)
         self.ui.almanacAstronomical.setStyleSheet(self.BACK_BLUE3)
         self.ui.almanacDark.setStyleSheet(self.BACK_BLUE4)
+        self.ui.almanacPrediction.currentIndexChanged.connect(self.searchTwilightPlot)
 
     def initConfig(self):
         """
         :return: True for test purpose
         """
+        config = self.app.config['mainW']
+        self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
         self.updateMoonPhase()
         self.lunarNodes()
         return True
@@ -110,8 +111,8 @@ class Almanac:
         """
         :return: True for test purpose
         """
-        if self.thread:
-            self.thread.join()
+        config = self.app.config['mainW']
+        config['almanacPrediction'] = self.ui.almanacPrediction.currentIndex()
         return True
 
     def plotTwilightData(self, result):
@@ -203,12 +204,16 @@ class Almanac:
         """
         :return: true for test purpose
         """
+        timeWindowParam = [17, 32, 47, 92, 182]
         location = self.app.mount.obsSite.location
         if location is None:
             return False
 
+        index = self.ui.almanacPrediction.currentIndex()
+        timeWindow = timeWindowParam[index]
+
         ts = self.app.mount.obsSite.ts
-        worker = Worker(self.searchTwilightWorker, ts, location, 182)
+        worker = Worker(self.searchTwilightWorker, ts, location, timeWindow)
         worker.signals.result.connect(self.plotTwilightData)
         self.threadPool.start(worker)
         return True

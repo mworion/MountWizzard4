@@ -239,7 +239,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.solveImage.disconnect(self.solveImage)
         self.app.showImage.disconnect(self.showImage)
-        plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
 
     def setupDropDownGui(self):

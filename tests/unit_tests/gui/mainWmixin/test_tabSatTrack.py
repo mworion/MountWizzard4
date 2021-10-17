@@ -1098,7 +1098,7 @@ def test_startTrack_7(function):
                                return_value=False):
             with mock.patch.object(function.app.mount.satellite,
                                    'clearTrackingOffsets',
-                                   return_value=False):
+                                   return_value=True):
                 suc = function.startTrack()
                 assert suc
 

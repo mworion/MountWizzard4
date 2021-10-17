@@ -329,8 +329,14 @@ def test_satCalcDynamicTable_5(function):
     with mock.patch.object(QRect,
                            'intersects',
                            return_value=False):
-        suc = function.satCalcDynamicTable()
-        assert suc
+        with mock.patch.object(function,
+                               'calcAppMag',
+                               return_value=10):
+            with mock.patch.object(function,
+                                   'findSunlit',
+                                   return_value=True):
+                suc = function.satCalcDynamicTable()
+                assert suc
 
 
 def test_satCalcDynamicTable_6(function):
@@ -342,11 +348,17 @@ def test_satCalcDynamicTable_6(function):
     entry = QTableWidgetItem('test')
     function.ui.listSatelliteNames.setItem(0, 0, entry)
     function.ui.listSatelliteNames.setRowHidden(0, True)
-    with mock.patch.object(QRect,
-                           'intersects',
+    with mock.patch.object(function,
+                           'findSunlit',
                            return_value=True):
-        suc = function.satCalcDynamicTable()
-        assert suc
+        with mock.patch.object(function,
+                               'calcAppMag',
+                               return_value=10):
+            with mock.patch.object(QRect,
+                                   'intersects',
+                                   return_value=True):
+                suc = function.satCalcDynamicTable()
+                assert suc
 
 
 def test_satCalcDynamicTable_7(function):
@@ -369,11 +381,47 @@ def test_satCalcDynamicTable_7(function):
                            'updateTableEntries'):
         with mock.patch.object(function,
                                'findRangeRate'):
-            with mock.patch.object(QRect,
-                                   'intersects',
+            with mock.patch.object(function,
+                                   'findSunlit',
+                                   return_value=False):
+                with mock.patch.object(QRect,
+                                       'intersects',
+                                       return_value=True):
+                    suc = function.satCalcDynamicTable()
+                    assert suc
+
+
+def test_satCalcDynamicTable_8(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
+    function.satTableDynamicValid = True
+    function.ui.satTabWidget.setCurrentIndex(0)
+    function.ui.mainTabWidget.setCurrentIndex(6)
+    function.ui.listSatelliteNames.setRowCount(0)
+    function.ui.listSatelliteNames.setColumnCount(2)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('NOAA 8')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
+    function.ui.listSatelliteNames.setRowHidden(0, False)
+    function.satellites = {'NOAA 8': sat}
+    with mock.patch.object(function,
+                           'updateTableEntries'):
+        with mock.patch.object(function,
+                               'findRangeRate'):
+            with mock.patch.object(function,
+                                   'findSunlit',
                                    return_value=True):
-                suc = function.satCalcDynamicTable()
-                assert suc
+                with mock.patch.object(function,
+                                       'calcAppMag',
+                                       return_value=10):
+                    with mock.patch.object(QRect,
+                                           'intersects',
+                                           return_value=True):
+                        suc = function.satCalcDynamicTable()
+                        assert suc
 
 
 def test_positionCursorInSatTable_1(function):

@@ -542,8 +542,6 @@ class SatSearch(object):
         self.prepareSatTable()
 
         for name in self.satellites:
-            if not self.satSourceValid:
-                break
             number = self.satellites[name].model.satnum
             satTab.insertRow(satTab.rowCount())
             row = satTab.rowCount() - 1
@@ -554,14 +552,12 @@ class SatSearch(object):
             entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             satTab.setItem(row, 1, entry)
 
-        else:
-            self.filterSatelliteNamesList()
-            self.ui.satFilterGroup.setEnabled(True)
-            self.ui.satProgDatabaseGroup.setEnabled(True)
-            self.satTableBaseValid = True
-            self.satCalcTable()
-            return True
-        return False
+        self.filterSatelliteNamesList()
+        self.ui.satFilterGroup.setEnabled(True)
+        self.ui.satProgDatabaseGroup.setEnabled(True)
+        self.satTableBaseValid = True
+        self.satCalcTable()
+        return True
 
     def workerLoadDataFromSourceURLs(self, source='', isOnline=False):
         """

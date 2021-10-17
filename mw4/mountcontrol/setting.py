@@ -257,9 +257,9 @@ class Setting(object):
         if value == 'N':
             self._wakeOnLan = 'None'
         elif value == '0':
-            self._wakeOnLan = 'Off'
+            self._wakeOnLan = 'OFF'
         elif value == '1':
-            self._wakeOnLan = 'On'
+            self._wakeOnLan = 'ON'
         else:
             self._wakeOnLan = None
 

@@ -214,14 +214,14 @@ class TestConfigData(unittest.TestCase):
     def test_Setting_wakeOnLan_2(self):
         sett = Setting()
         sett.wakeOnLan = '0'
-        self.assertEqual('Off', sett.wakeOnLan)
-        self.assertEqual('Off', sett._wakeOnLan)
+        self.assertEqual('OFF', sett.wakeOnLan)
+        self.assertEqual('OFF', sett._wakeOnLan)
 
     def test_Setting_wakeOnLan_3(self):
         sett = Setting()
         sett.wakeOnLan = '1'
-        self.assertEqual('On', sett.wakeOnLan)
-        self.assertEqual('On', sett._wakeOnLan)
+        self.assertEqual('ON', sett.wakeOnLan)
+        self.assertEqual('ON', sett._wakeOnLan)
 
     def test_Setting_wakeOnLan_4(self):
         sett = Setting()

@@ -95,12 +95,8 @@ class ToolsMatplotlib:
             colorGrid = self.M_TRANS
 
         figure = widget.figure
-        if figure.axes:
-            axe = figure.axes[0]
-            axe.cla()
-        else:
-            figure.clf()
-            axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
+        figure.clf()
+        axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
 
         axe.grid(True, color=colorGrid)
 
@@ -150,12 +146,8 @@ class ToolsMatplotlib:
             color = self.M_TRANS
 
         figure = widget.figure
-        if figure.axes:
-            axe = figure.axes[0]
-            axe.cla()
-        else:
-            figure.clf()
-            axe = figure.add_subplot(1, 1, 1, facecolor='None')
+        figure.clf()
+        axe = figure.add_subplot(1, 1, 1, facecolor='None')
 
         axe.spines['bottom'].set_color(color)
         axe.spines['top'].set_color(color)

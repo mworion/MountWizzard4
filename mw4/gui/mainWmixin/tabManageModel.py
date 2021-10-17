@@ -375,7 +375,8 @@ class ManageModel(object):
         """
         :return: True for test purpose
         """
-        self.changeStyleDynamic(self.ui.refreshName, 'running', 'false')
+        self.changeStyleDynamic(self.ui.refreshName, 'running', False)
+        self.changeStyleDynamic(self.ui.modelNameGroup, 'running', False)
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
@@ -397,7 +398,8 @@ class ManageModel(object):
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
-        self.changeStyleDynamic(self.ui.refreshName, 'running', 'true')
+        self.changeStyleDynamic(self.ui.refreshName, 'running', True)
+        self.changeStyleDynamic(self.ui.modelNameGroup, 'running', True)
         self.app.mount.getNames()
         return True
 
@@ -515,7 +517,8 @@ class ManageModel(object):
         """
         :return: True for test purpose
         """
-        self.changeStyleDynamic(self.ui.refreshModel, 'running', 'false')
+        self.changeStyleDynamic(self.ui.refreshModel, 'running', False)
+        self.changeStyleDynamic(self.ui.modelGroup, 'running', False)
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.cancelOptimize.setEnabled(True)
@@ -548,7 +551,8 @@ class ManageModel(object):
 
         :return: True for test purpose
         """
-        self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
+        self.changeStyleDynamic(self.ui.refreshModel, 'running', True)
+        self.changeStyleDynamic(self.ui.modelGroup, 'running', True)
         self.app.mount.signals.alignDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)

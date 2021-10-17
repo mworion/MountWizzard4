@@ -95,7 +95,6 @@ class Almanac:
         self.ui.almanacNautical.setStyleSheet(self.BACK_BLUE2)
         self.ui.almanacAstronomical.setStyleSheet(self.BACK_BLUE3)
         self.ui.almanacDark.setStyleSheet(self.BACK_BLUE4)
-        self.ui.almanacPrediction.currentIndexChanged.connect(self.searchTwilightPlot)
 
     def initConfig(self):
         """
@@ -103,6 +102,7 @@ class Almanac:
         """
         config = self.app.config['mainW']
         self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
+        self.ui.almanacPrediction.currentIndexChanged.connect(self.searchTwilightPlot)
         self.updateMoonPhase()
         self.lunarNodes()
         return True

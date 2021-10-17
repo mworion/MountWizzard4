@@ -5849,7 +5849,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,1" columnstretch="0,0,0,0">
       <property name="leftMargin">
        <number>4</number>
       </property>
@@ -5865,35 +5865,21 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="almanacAstronomical">
-        <property name="text">
-         <string>Astronomical</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="QPushButton" name="almanacNautical">
         <property name="text">
          <string>Nautical</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QPushButton" name="almanacCivil">
         <property name="text">
          <string>Civil</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="almanacDark">
-        <property name="text">
-         <string>Dark</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="4">
+      <item row="2" column="0" colspan="4">
        <widget class="QWidget" name="twilight" native="true">
         <property name="enabled">
          <bool>true</bool>
@@ -5905,6 +5891,33 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="almanacDark">
+        <property name="text">
+         <string>Dark</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="almanacAstronomical">
+        <property name="text">
+         <string>Astronomical</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>5</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -9670,7 +9683,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <attribute name="title">
      <string>Manage Model</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox_55">
+    <widget class="QGroupBox" name="modelGroup">
      <property name="geometry">
       <rect>
        <x>500</x>
@@ -9921,7 +9934,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_56">
+    <widget class="QGroupBox" name="modelNameGroup">
      <property name="geometry">
       <rect>
        <x>500</x>

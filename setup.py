@@ -32,6 +32,7 @@ releaseNotes = """
 - improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
+- improve: gui for running functions
 - fix: segfault in qt5lib on ubuntu
  """
 
@@ -40,7 +41,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b7',
+    version='2.1.0b8',
     packages=[
         'mw4',
         'mw4.base',

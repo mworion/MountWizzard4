@@ -1136,6 +1136,14 @@ def test_sort_6():
     assert app.buildP == result
 
 
+def test_sort_7():
+    values = [(30, 90, True, 3), (20, 20, True, 2), (50, 290, True, 1)]
+    result = [(30, 90, True, 3), (20, 20, True, 2), (50, 290, True, 1)]
+    suc = app.sort(values, sortDomeAz=True)
+    assert suc
+    assert app.buildP == result
+
+
 def test_generateCelestialEquator_1():
     value = app.generateCelestialEquator()
     assert len(value) == 3480

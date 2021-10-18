@@ -24,8 +24,8 @@ jobs:
           sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
           sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
           sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
-          sudo apt-get install -y libx11-xcb1
-          # sudo apt-get install -y qt5-default --fix-missing
+          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
+          sudo apt-get install -y libxcb-keysyms1
         
       - name: Install Scripts
         run: |
@@ -44,6 +44,6 @@ jobs:
       - name: Run MountWizzard4
         run: |
           touch test.txt
-          QT_DEBUG_PLUGINS=1
+          export QT_DEBUG_PLUGINS=1
           xvfb-run ./MW4_Run.sh
           cat run.log

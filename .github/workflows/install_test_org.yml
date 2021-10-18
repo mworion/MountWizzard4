@@ -13,13 +13,14 @@ on:
       - '.github/workflows/install_test_org.yml'
 
 jobs:
-  install_mac:
+  install_windows:
     runs-on: windows-latest
     steps:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.9'
       - name: Install Scripts
+        shell: cmd
         run: |
           GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
           SCRIPT="/support/2.0/Windows"
@@ -29,13 +30,15 @@ jobs:
           # chmod 777 MW4_Run.bat
           
       - name: MountWizzard4 Install
+        shell: cmd
         run: |
-          ./MW4_Install.bat
+          MW4_Install.bat
           cat install.log
           
       - name: Run MountWizzard4
+        shell: cmd
         run: |
           touch test.txt
-          ./MW4_Run.bat
+          MW4_Run.bat
           ls -la
           cat run.log

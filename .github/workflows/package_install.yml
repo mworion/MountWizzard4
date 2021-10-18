@@ -171,20 +171,20 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Windows/MW4_InstallTest.sh
+          url: ${{ env.gh }}Ubuntu/MW4_InstallTest.sh
           target: dist/
 
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Windows/MW4_Run.sh
+          url: ${{ env.gh }}Ubuntu/MW4_Run.sh
           target: dist/
           
       - name: MountWizzard4 Install
         run: |
           cd dist
           chmod 777 MW4_InstallTest.sh
-          ./MW4_Install.sh
+          ./MW4_InstallTest.sh
           cat install.log
           
       - name: Run MountWizzard4
@@ -226,13 +226,13 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Windows/MW4_InstallTest.command
+          url: ${{ env.gh }}MacOSx/MW4_InstallTest.command
           target: dist/
 
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Windows/MW4_Run.command
+          url: ${{ env.gh }}MacOSx/MW4_Run.command
           target: dist/
           
       - name: MountWizzard4 Install

@@ -6,6 +6,10 @@
 name: package_install
 env:
   gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/'
+  wid: 'mw4/gui/widgets/'
+  uic: 'python -m PyQt5.uic.pyuic'
+  ucc: 'python -m PyQt5.pyrcc_main'
+  res: 'mw4/resource/'
 
 on:
   push:
@@ -50,18 +54,18 @@ jobs:
     - name: build_widgets_resource
       run: |
         python -m pip install PyQt5
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/devicePopup.ui -o mw4/gui/widgets/devicePopup_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/downloadPopup.ui -o mw4/gui/widgets/downloadPopup_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/hemisphere.ui -o mw4/gui/widgets/hemisphere_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/image.ui -o mw4/gui/widgets/image_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/keypad.ui -o mw4/gui/widgets/keypad_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/main.ui -o mw4/gui/widgets/main_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/measure.ui -o mw4/gui/widgets/measure_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/message.ui -o mw4/gui/widgets/message_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/satellite.ui -o mw4/gui/widgets/satellite_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/analyse.ui -o mw4/gui/widgets/analyse_ui.py
-        python -m PyQt5.uic.pyuic mw4/gui/widgets/simulator.ui -o mw4/gui/widgets/simulator_ui.py
-        python -m PyQt5.pyrcc_main mw4/resource/resources.qrc -o mw4/resource/resources.py
+        ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
+        ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
+        ${{env.uic}} ${{env.wid}}hemisphere.ui -o ${{env.wid}}hemisphere_ui.py
+        ${{env.uic}} ${{env.wid}}image.ui -o ${{env.wid}}image_ui.py
+        ${{env.uic}} ${{env.wid}}keypad.ui -o ${{env.wid}}keypad_ui.py
+        ${{env.uic}} ${{env.wid}}main.ui -o ${{env.wid}}main_ui.py
+        ${{env.uic}} ${{env.wid}}measure.ui -o ${{env.wid}}measure_ui.py
+        ${{env.uic}} ${{env.wid}}message.ui -o ${{env.wid}}message_ui.py
+        ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.wid}}satellite_ui.py
+        ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
+        ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
+        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
 
     - name: build_package
       run: |

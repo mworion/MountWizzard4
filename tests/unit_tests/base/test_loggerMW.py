@@ -15,6 +15,8 @@
 #
 ###########################################################
 # standard libraries
+import sys
+
 import pytest
 import logging
 from unittest import mock
@@ -34,7 +36,7 @@ def module_setup_teardown():
 
 
 def test_loggerWriter():
-    a = LoggerWriter(logging.getLogger().debug, mode='Test')
+    a = LoggerWriter(logging.getLogger().debug, 'Test', sys.stdout)
     a.write('asdfahdf\najdfhasf')
     a.flush()
 

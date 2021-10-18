@@ -5,7 +5,7 @@
 #
 name: package_install
 env:
-  github: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/'
+  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/'
 
 on:
   push:
@@ -108,14 +108,14 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{env.github}}Windows/MW4_InstallTest.bat
-          target: dist
+          url: ${{ env.gh }}Windows/MW4_InstallTest.bat
+          target: dist/
 
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{env.github}}Windows/MW4_Run.bat
-          target: dist
+          url: ${{ env.gh }}Windows/MW4_Run.bat
+          target: dist/
           
       - name: MountWizzard4 Install
         shell: cmd
@@ -171,14 +171,14 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{env.github}}Windows/MW4_InstallTest.sh
-          target: dist
+          url: ${{ env.gh }}Windows/MW4_InstallTest.sh
+          target: dist/
 
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{env.github}}Windows/MW4_Run.sh
-          target: dist
+          url: ${{ env.gh }}Windows/MW4_Run.sh
+          target: dist/
           
       - name: MountWizzard4 Install
         run: |
@@ -226,14 +226,14 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{env.github}}Windows/MW4_InstallTest.command
-          target: dist
+          url: ${{ env.gh }}Windows/MW4_InstallTest.command
+          target: dist/
 
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{env.github}}Windows/MW4_Run.command
-          target: dist
+          url: ${{ env.gh }}Windows/MW4_Run.command
+          target: dist/
           
       - name: MountWizzard4 Install
         run: |

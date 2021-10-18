@@ -24,16 +24,14 @@ jobs:
           sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
           sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
           sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
-          sudo apt-get install -y qt5-default
+          # sudo apt-get install -y qt5-default
         
       - name: Install Scripts
         run: |
           GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
           SCRIPT="/support/2.0/Ubuntu"
           wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
-          wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
           chmod 777 MW4_Install.sh
-          chmod 777 MW4_Run.sh
           
       - name: MountWizzard4 Install
         run: |
@@ -42,4 +40,5 @@ jobs:
       - name: Run MountWizzard4
         run: |
           touch test.txt
-          xvfb-run ./MW4_Run.sh
+          source ./venv/bin/activate venv
+          xvfb-run python ./venv/lib/python3.9/site-packages/mw4/loader.py

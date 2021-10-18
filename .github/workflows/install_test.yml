@@ -16,13 +16,10 @@ jobs:
   install_test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
       - name: Install Head
         uses: jurplel/install-qt-action@v2
         with:
-          version: '5.15.4'
+          version: '5.15.2'
           host: 'linux'
           target: 'desktop'
       - name: Install Scripts

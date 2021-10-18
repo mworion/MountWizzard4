@@ -22,10 +22,10 @@ jobs:
       - name: Install Scripts
         shell: cmd
         run: |
-          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-          SCRIPT="/support/2.0/Windows"
-          wget "${GITHUB}${SCRIPT}/MW4_Install.bat"
-          wget "${GITHUB}${SCRIPT}/MW4_Run.bat"
+          SET GITHUB=https:\\raw.githubusercontent.com\mworion\MountWizzard4\master
+          SET SCRIPT=\support\2.0\Windows
+          wget %GITHUB%%SCRIPT%\MW4_Install.bat
+          wget %GITHUB%%SCRIPT%\MW4_Run.bat
           # chmod 777 MW4_Install.bat
           # chmod 777 MW4_Run.bat
           

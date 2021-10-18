@@ -22,7 +22,6 @@ from datetime import datetime as dt
 import PyQt5
 import numpy as np
 from matplotlib import ticker
-import matplotlib.pyplot as plt
 
 # local import
 from gui.utilities import toolsQtWidget

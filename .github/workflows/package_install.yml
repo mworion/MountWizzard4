@@ -107,13 +107,13 @@ jobs:
         uses: suisei-cn/actions-download-file@v1
         with:
           url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_InstallTest.bat
-          target: .
+          target: dist
 
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
           url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Run.bat
-          target: .
+          target: dist
           
       - name: MountWizzard4 Install
         shell: cmd
@@ -165,25 +165,31 @@ jobs:
           sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
           sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
           sudo apt-get install -y libxcb-keysyms1
-        
-      - name: Install Scripts
-        run: |
-          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-          SCRIPT="/support/2.0/Ubuntu"
-          wget "${GITHUB}${SCRIPT}/MW4_InstallTest.sh"
-          wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
-          chmod 777 MW4_InstallTest.sh
-          chmod 777 MW4_Run.sh
+
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_InstallTest.sh
+          target: dist
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Run.sh
+          target: dist
           
       - name: MountWizzard4 Install
         run: |
           cd dist
-          ./MW4_InstallTest.sh
+          chmod 777 MW4_InstallTest.sh
+          mv dist/mountwizzard4.tar.gz .
+          ./MW4_Install.sh
           cat install.log
           
       - name: Run MountWizzard4
         run: |
           cd dist
+          chmod 777 MW4_Run.sh
           touch test.txt
           xvfb-run ./MW4_Run.sh
           ls -la
@@ -216,24 +222,29 @@ jobs:
           name: dist
           path: dist
 
-      - name: Install Scripts
-        run: |
-          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-          SCRIPT="/support/2.0/MacOSx"
-          wget "${GITHUB}${SCRIPT}/MW4_InstallTest.command"
-          wget "${GITHUB}${SCRIPT}/MW4_Run.command"
-          chmod 777 MW4_InstallTest.command
-          chmod 777 MW4_Run.command
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_InstallTest.command
+          target: dist
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Run.command
+          target: dist
           
       - name: MountWizzard4 Install
         run: |
           cd dist
+          chmod 777 MW4_InstallTest.command
           ./MW4_InstallTest.command
           cat install.log
           
       - name: Run MountWizzard4
         run: |
           cd dist
+          chmod 777 MW4_Run.command
           touch test.txt
           ./MW4_Run.command
           ls -la

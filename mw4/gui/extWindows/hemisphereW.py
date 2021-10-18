@@ -24,7 +24,6 @@ from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QGuiApplication, QCursor
 import numpy as np
 import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
 import matplotlib.cm
 from PIL import Image
 

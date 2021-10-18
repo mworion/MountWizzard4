@@ -77,6 +77,18 @@ jobs:
         name: dist
         path: dist
 
+    - name: upload_package
+      uses: actions/upload-artifact@v2
+      with:
+        name: widgets
+        path: mw4/gui/widgets/*.py
+
+    - name: upload_package
+      uses: actions/upload-artifact@v2
+      with:
+        name: resource
+        path: mw4/resource/*.py
+        
   run_tests_ubuntu_1:
   
     # The package has 3000+ unit tests, which will be tested on macOS as

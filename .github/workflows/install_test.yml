@@ -48,31 +48,3 @@ jobs:
           xvfb-run ./MW4_Run.sh
           ls -la
           cat run.log
-          
-  install_mac:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-      - name: Install Scripts
-        run: |
-          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-          SCRIPT="/support/2.0/Ubuntu"
-          wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
-          wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
-          chmod 777 MW4_Install.sh
-          chmod 777 MW4_Run.sh
-          
-      - name: MountWizzard4 Install
-        run: |
-          ./MW4_Install.sh
-          cat install.log
-          
-      - name: Run MountWizzard4
-        run: |
-          touch test.txt
-          # export QT_DEBUG_PLUGINS=1
-          xvfb-run ./MW4_Run.sh
-          ls -la
-          cat run.log

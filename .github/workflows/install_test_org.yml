@@ -36,12 +36,12 @@ jobs:
         shell: cmd
         run: |
           MW4_Install.bat
-          cat install.log
+          type install.log
           
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.txt
           MW4_Run.bat
-          ls -la
-          cat run.log
+          dir
+          type run.log

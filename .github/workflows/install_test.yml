@@ -44,6 +44,6 @@ jobs:
       - name: Run MountWizzard4
         run: |
           touch test.txt
-          export QT_DEBUG_PLUGINS=1
+          # export QT_DEBUG_PLUGINS=1
           xvfb-run ./MW4_Run.sh
           cat run.log

@@ -1,0 +1,109 @@
+#
+# GitHub actions for checking the installation of mountwizzard4 packages
+#
+# v0.1, Michael Wuertenberger
+#
+name: install_script_test
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - '.github/workflows/install_script_test.yml'
+      - 'support/**'
+
+jobs:
+  install_ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install Head
+        run: |
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
+          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
+          sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
+          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
+          sudo apt-get install -y libxcb-keysyms1
+        
+      - name: Install Scripts
+        run: |
+          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+          SCRIPT="/support/2.0/Ubuntu"
+          wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
+          wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
+          chmod 777 MW4_Install.sh
+          chmod 777 MW4_Run.sh
+          
+      - name: MountWizzard4 Install
+        run: |
+          ./MW4_Install.sh
+          cat install.log
+          
+      - name: Run MountWizzard4
+        run: |
+          touch test.txt
+          xvfb-run ./MW4_Run.sh
+          ls -la
+          cat run.log
+          
+  install_mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install Scripts
+        run: |
+          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+          SCRIPT="/support/2.0/MacOSx"
+          wget "${GITHUB}${SCRIPT}/MW4_Install.command"
+          wget "${GITHUB}${SCRIPT}/MW4_Run.command"
+          chmod 777 MW4_Install.command
+          chmod 777 MW4_Run.command
+          
+      - name: MountWizzard4 Install
+        run: |
+          ./MW4_Install.command
+          cat install.log
+          
+      - name: Run MountWizzard4
+        run: |
+          touch test.txt
+          ./MW4_Run.command
+          ls -la
+          cat run.log
+          
+  install_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Install.bat
+          target: .
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Run.bat
+          target: .
+          
+      - name: MountWizzard4 Install
+        shell: cmd
+        run: |
+          MW4_Install.bat
+          more install.log
+          
+      - name: Run MountWizzard4
+        shell: cmd
+        run: |
+          touch test.txt
+          MW4_Run.bat
+          dir
+          more run.log

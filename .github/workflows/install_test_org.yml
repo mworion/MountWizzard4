@@ -37,6 +37,6 @@ jobs:
         run: |
           touch test.txt
           # export QT_DEBUG_PLUGINS=1
-          xvfb-run ./MW4_Run.command
+          ./MW4_Run.command
           ls -la
           cat run.log

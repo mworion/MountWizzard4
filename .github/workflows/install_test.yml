@@ -21,8 +21,7 @@ jobs:
       - name: Install Head
         run: |
           sudo apt-get install -y xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4
-          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
-          sudo apt-get install -y libxcb-render-util0 wget
+          libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 wget
         
       - name: Install Script
         run: |
@@ -31,7 +30,7 @@ jobs:
           wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
           chmod 777 MW4_Install.sh
           
-      - name: Make test Run
+      - name: Run MountWizzard4
         run: |
           touch test.txt
           ./MW4_Install.sh

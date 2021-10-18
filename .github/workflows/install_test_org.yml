@@ -22,7 +22,7 @@ jobs:
       - name: Install Scripts
         run: |
           GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-          SCRIPT="/support/2.0/Ubuntu"
+          SCRIPT="/support/2.0/MacOSx"
           wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
           wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
           chmod 777 MW4_Install.sh

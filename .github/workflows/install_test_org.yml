@@ -19,13 +19,18 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      - name: Install Scripts
-        shell: pwsh
-        run: |
-          SET GITHUB=https:\\raw.githubusercontent.com\mworion\MountWizzard4\master
-          SET SCRIPT=%GITHUB%\support\2.0\Windows
-          wget %SCRIPT%\MW4_Install.bat
-          wget %SCRIPT%\MW4_Run.bat
+
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Install.bat
+          target: .
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Run.bat
+          target: .
           
       - name: MountWizzard4 Install
         shell: cmd

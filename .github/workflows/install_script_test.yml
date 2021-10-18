@@ -97,13 +97,13 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          MW4_Install.bat
+          call MW4_Install.bat
           more install.log
           
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.txt
-          MW4_Run.bat
+          call MW4_Run.bat
           dir
           more run.log

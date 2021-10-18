@@ -20,9 +20,9 @@ jobs:
           python-version: '3.9'
       - name: Install Head
         run: |
-          apt-get install -y xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4
-          apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
-          apt-get install -y libxcb-render-util0 wget
+          sudo apt-get install -y xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4
+          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
+          sudo apt-get install -y libxcb-render-util0 wget
         
       - name: Install Script
         run: |

@@ -46,4 +46,5 @@ jobs:
           touch test.txt
           # export QT_DEBUG_PLUGINS=1
           xvfb-run ./MW4_Run.sh
+          ls -la
           cat run.log

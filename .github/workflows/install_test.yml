@@ -23,14 +23,16 @@ jobs:
         run: |
           sudo apt-get install -y xvfb libxkbcommon-x11-0
         
-      - name: Install Script
+      - name: Install Scripts
         run: |
           GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
           SCRIPT="/support/2.0/Ubuntu"
           wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
+          wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
           chmod 777 MW4_Install.sh
+          chmod 777 MW4_Run.sh
           
-      - name: Run MountWizzard4 Install
+      - name: MountWizzard4 Install
         run: |
           ./MW4_Install.sh
           

@@ -177,7 +177,7 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           mv dist/mountwizzard4.tar.gz .
-          ./MW4_Install.sh
+          ./MW4_InstallTest.sh
           cat install.log
           
       - name: Run MountWizzard4

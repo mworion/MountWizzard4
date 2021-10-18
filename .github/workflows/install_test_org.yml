@@ -20,12 +20,12 @@ jobs:
         with:
           python-version: '3.9'
       - name: Install Scripts
-        shell: cmd
+        shell: pwsh
         run: |
           SET GITHUB=https:\\raw.githubusercontent.com\mworion\MountWizzard4\master
-          SET SCRIPT=\support\2.0\Windows
-          \msys64\usr\bin\wget.exe %GITHUB%%SCRIPT%\MW4_Install.bat
-          \msys64\usr\bin\wget.exe %GITHUB%%SCRIPT%\MW4_Run.bat
+          SET SCRIPT=%GITHUB%\support\2.0\Windows
+          wget %SCRIPT%\MW4_Install.bat
+          wget %SCRIPT%\MW4_Run.bat
           
       - name: MountWizzard4 Install
         shell: cmd

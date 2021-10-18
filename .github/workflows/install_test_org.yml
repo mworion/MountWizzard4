@@ -25,6 +25,8 @@ jobs:
           SCRIPT="/support/2.0/MacOSx"
           wget "${GITHUB}${SCRIPT}/MW4_Install.command"
           wget "${GITHUB}${SCRIPT}/MW4_Run.command"
+          chmod 777 MW4_Install.command
+          chmod 777 MW4_Run.command
           
       - name: MountWizzard4 Install
         run: |

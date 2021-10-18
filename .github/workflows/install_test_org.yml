@@ -23,20 +23,18 @@ jobs:
         run: |
           GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
           SCRIPT="/support/2.0/MacOSx"
-          wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
-          wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
-          chmod 777 MW4_Install.sh
-          chmod 777 MW4_Run.sh
+          wget "${GITHUB}${SCRIPT}/MW4_Install.command"
+          wget "${GITHUB}${SCRIPT}/MW4_Run.command"
           
       - name: MountWizzard4 Install
         run: |
-          ./MW4_Install.sh
+          ./MW4_Install.command
           cat install.log
           
       - name: Run MountWizzard4
         run: |
           touch test.txt
           # export QT_DEBUG_PLUGINS=1
-          xvfb-run ./MW4_Run.sh
+          xvfb-run ./MW4_Run.command
           ls -la
           cat run.log

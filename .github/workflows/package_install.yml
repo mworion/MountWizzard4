@@ -118,13 +118,14 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          copy dist/mountwizzard4.tar.gz mountwizzard4.tar.gz
+          cd dist
           call MW4_InstallTest.bat
           more install.log
           
       - name: Run MountWizzard4
         shell: cmd
         run: |
+          cd dist
           touch test.txt
           call MW4_Run.bat
           dir
@@ -176,12 +177,13 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          mv dist/mountwizzard4.tar.gz .
+          cd dist
           ./MW4_InstallTest.sh
           cat install.log
           
       - name: Run MountWizzard4
         run: |
+          cd dist
           touch test.txt
           xvfb-run ./MW4_Run.sh
           ls -la
@@ -225,12 +227,13 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          mv dist/mountwizzard4.tar.gz .
+          cd dist
           ./MW4_InstallTest.command
           cat install.log
           
       - name: Run MountWizzard4
         run: |
+          cd dist
           touch test.txt
           ./MW4_Run.command
           ls -la

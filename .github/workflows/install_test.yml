@@ -41,4 +41,4 @@ jobs:
       - name: Run MountWizzard4
         run: |
           touch test.txt
-          ./MW4_Run.sh
+          xvfb-run ./MW4_Run.sh

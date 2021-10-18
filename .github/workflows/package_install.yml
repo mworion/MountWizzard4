@@ -114,26 +114,33 @@ jobs:
         with:
           name: dist
           path: dist
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: widgets
-          path: mw4/gui/widgets
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: resource
-          path: mw4/resource
-  
-      - name: install_package
-        run: |
-          python -m pip install cython
-          python -m pip install dist/mountwizzard4.tar.gz
 
-      - name: check_dependencies_explicit
-        run: |
-          python -m pip check mountwizzard4
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_InstallTest.bat
+          target: .
 
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/Windows/MW4_Run.bat
+          target: .
+          
+      - name: MountWizzard4 Install
+        shell: cmd
+        run: |
+          copy dist/mountwizzard4.tar.gz mountwizzard4.tar.gz
+          MW4_InstallTest.bat
+          more install.log
+          
+      - name: Run MountWizzard4
+        shell: cmd
+        run: |
+          touch test.txt
+          MW4_Run.bat
+          dir
+          more run.log
 
   install_package_ubuntu:
 
@@ -168,14 +175,35 @@ jobs:
           name: resource
           path: mw4/resource
   
-      - name: install_package
+      - name: Install Head
         run: |
-          python -m pip install cython
-          python -m pip install dist/mountwizzard4.tar.gz
-  
-      - name: check_dependencies_explicit
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
+          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
+          sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
+          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
+          sudo apt-get install -y libxcb-keysyms1
+        
+      - name: Install Scripts
         run: |
-          python -m pip check mountwizzard4
+          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+          SCRIPT="/support/2.0/Ubuntu"
+          wget "${GITHUB}${SCRIPT}/MW4_InstallTest.sh"
+          wget "${GITHUB}${SCRIPT}/MW4_Run.sh"
+          chmod 777 MW4_InstallTest.sh
+          chmod 777 MW4_Run.sh
+          
+      - name: MountWizzard4 Install
+        run: |
+          mv dist/mountwizzard4.tar.gz .
+          ./MW4_Install.sh
+          cat install.log
+          
+      - name: Run MountWizzard4
+        run: |
+          touch test.txt
+          xvfb-run ./MW4_Run.sh
+          ls -la
+          cat run.log
 
 
   install_package_macOS:
@@ -199,27 +227,26 @@ jobs:
         with:
           name: dist
           path: dist
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: widgets
-          path: mw4/gui/widgets
-  
-      - uses: actions/download-artifact@v2
-        with:
-          name: resource
-          path: mw4/resource
-  
-      - name: install_package
+
+      - name: Install Scripts
         run: |
-          python -m pip install cython
-          python -m pip install dist/mountwizzard4.tar.gz
-  
-      - name: check_dependencies_explicit
+          GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+          SCRIPT="/support/2.0/MacOSx"
+          wget "${GITHUB}${SCRIPT}/MW4_InstallTest.command"
+          wget "${GITHUB}${SCRIPT}/MW4_Run.command"
+          chmod 777 MW4_InstallTest.command
+          chmod 777 MW4_Run.command
+          
+      - name: MountWizzard4 Install
         run: |
-          python -m pip check mountwizzard4
-  
-      - name: make_test_run
+          mv dist/mountwizzard4.tar.gz .
+          ./MW4_InstallTest.command
+          cat install.log
+          
+      - name: Run MountWizzard4
         run: |
           touch test.txt
-          # python mw4/loader.py
+          ./MW4_Run.command
+          ls -la
+          cat run.log
+

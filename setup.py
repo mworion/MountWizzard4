@@ -33,6 +33,7 @@ releaseNotes = """
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
 - improve: gui for running functions
+- improve: test coverage
 - fix: segfault in qt5lib on ubuntu
  """
 

@@ -807,7 +807,7 @@ def test_loadBuildP_5():
     with open(fileName, 'w') as outfile:
         outfile.write('1, 1\n')
         outfile.write('2, 2\n')
-    suc = app.loadBuildP('test', '.csv')
+    suc = app.loadBuildP('test', '.csv', keep=True)
     assert suc
     assert app.buildP == [(1, 1, True), (2, 2, True)]
 

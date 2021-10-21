@@ -37,29 +37,29 @@ Versions, downloads and docs:
 -----------------------------
 |PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth| |DOCS|
 
-Staus of the unit tests:
-------------------------
-|PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
-
-Test run of install / run scripts:
-----------------------------------
-|PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
-
 Code quality:
 -------------
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
 
+Unit tests:
+^^^^^^^^^^^
+|PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
+
+Test install / run scripts:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+|PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
+
 Test coverage:
---------------
+^^^^^^^^^^^^^^
 |CODECOV_CHART|
 
 Commit status:
---------------
+^^^^^^^^^^^^^^
 |COMMITS_WEEK| |COMMITS_MASTER|
 
 
-Documentation
--------------
+Documentation:
+--------------
 There is an online documentation available for MW4 which could be searched for
 entries:
 
@@ -91,7 +91,7 @@ https://github.com/mworion/MountWizzard4/discussions
 
 
 Finally:
---------
+^^^^^^^^
 MountWizzard4 is 'always' in development. The use this software is at your own
 risk! No responsibility for damages to your mount or other equipment or your
 environment, please take care yourself!

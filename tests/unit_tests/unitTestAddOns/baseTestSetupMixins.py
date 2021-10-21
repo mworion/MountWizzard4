@@ -26,6 +26,14 @@ import numpy as np
 # local import
 
 
+class Skymeter:
+    class SkymeterSignals(QObject):
+        version = pyqtSignal()
+
+    signals = SkymeterSignals()
+    data = {}
+
+
 class Power:
     class PowerSignals(QObject):
         version = pyqtSignal()
@@ -529,6 +537,7 @@ class App(QObject):
     relay = Relay()
     data = Data()
     camera = Camera()
+    skymeter = Skymeter()
     automation = Automation()
     astrometry = Astrometry()
     onlineWeather = OnlineWeather()

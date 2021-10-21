@@ -53,7 +53,6 @@ def module_setup_teardown():
 
     global app
     app = CameraAlpaca(app=Test(), signals=Signals(), data={})
-
     yield
 
 
@@ -116,97 +115,18 @@ def test_sendDownloadMode_3():
 
 
 def test_workerExpose_1():
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
     with mock.patch.object(app,
-                           'setAlpacaProperty'):
+                           'sendDownloadMode'):
         with mock.patch.object(app,
-                               'getAlpacaProperty',
-                               return_value=True):
-            with mock.patch.object(fits.PrimaryHDU,
-                                   'writeto'):
-                suc = app.workerExpose()
-                assert suc
-
-
-def test_workerExpose_2():
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    with mock.patch.object(app,
-                           'setAlpacaProperty'):
-        with mock.patch.object(app,
-                               'getAlpacaProperty',
-                               return_value=True):
-            with mock.patch.object(fits.PrimaryHDU,
-                                   'writeto'):
-                suc = app.workerExpose(focalLength=0)
-                assert suc
-
-
-def test_workerExpose_3():
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.abortExpose = True
-    with mock.patch.object(app,
-                           'setAlpacaProperty'):
-        with mock.patch.object(app,
-                               'getAlpacaProperty',
-                               return_value=True):
-            with mock.patch.object(fits.PrimaryHDU,
-                                   'writeto'):
-                suc = app.workerExpose(expTime=0.3)
-                assert suc
-
-
-def test_workerExpose_4():
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.abortExpose = True
-    with mock.patch.object(app,
-                           'setAlpacaProperty'):
-        with mock.patch.object(app,
-                               'getAlpacaProperty',
-                               return_value=False):
-            with mock.patch.object(fits.PrimaryHDU,
-                                   'writeto'):
-                suc = app.workerExpose(expTime=0.3)
-                assert suc
-
-
-def test_workerExpose_5():
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.abortExpose = True
-    with mock.patch.object(app,
-                           'setAlpacaProperty'):
-        with mock.patch.object(app,
-                               'getAlpacaProperty',
-                               return_value=False):
-            with mock.patch.object(fits.PrimaryHDU,
-                                   'writeto'):
-                suc = app.workerExpose(expTime=0.0)
-                assert suc
-
-
-def test_workerExpose_6():
-    def getAlpacaProperty(a):
-        if a == 'imageready':
-            return True
-        else:
-            return None
-
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.abortExpose = False
-    tmp = app.getAlpacaProperty
-    app.getAlpacaProperty = getAlpacaProperty
-    with mock.patch.object(app,
-                           'setAlpacaProperty'):
-        with mock.patch.object(fits.PrimaryHDU,
-                               'writeto'):
-            suc = app.workerExpose(expTime=0.0)
-            assert suc
-    app.getAlpacaProperty = tmp
+                               'setAlpacaProperty'):
+            with mock.patch.object(app,
+                                   'waitExposed'):
+                with mock.patch.object(app,
+                                       'retrieveFits'):
+                    with mock.patch.object(app,
+                                           'saveFits'):
+                        suc = app.workerExpose()
+                        assert suc
 
 
 def test_expose_1():

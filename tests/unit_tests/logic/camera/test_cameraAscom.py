@@ -137,108 +137,18 @@ def test_sendDownloadMode_3():
 
 
 def test_workerExpose_1():
-    def mockGetAscomProperty(a):
-        return False
-
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.app.deviceStat['mount'] = True
-    app.abortExpose = True
-    tmp = app.getAscomProperty
-    app.getAscomProperty = mockGetAscomProperty
-    with mock.patch.object(fits.PrimaryHDU,
-                           'writeto'):
-        with mock.patch.object(app.client,
-                               'StartExposure'):
-            suc = app.workerExpose()
-            assert suc
-    app.getAscomProperty = tmp
-
-
-def test_workerExpose_2():
-    def mockGetAscomProperty(a):
-        return False
-
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.app.deviceStat['mount'] = True
-    app.abortExpose = True
-    tmp = app.getAscomProperty
-    app.getAscomProperty = mockGetAscomProperty
-    with mock.patch.object(fits.PrimaryHDU,
-                           'writeto'):
-        with mock.patch.object(app.client,
-                               'StartExposure'):
-            suc = app.workerExpose(expTime=0)
-            assert suc
-    app.getAscomProperty = tmp
-
-
-def test_workerExpose_3():
-    def mockGetAscomProperty(a):
-        return True
-
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.app.deviceStat['mount'] = True
-    tmp = app.getAscomProperty
-    app.getAscomProperty = mockGetAscomProperty
-    with mock.patch.object(fits.PrimaryHDU,
-                           'writeto'):
-        with mock.patch.object(app.client,
-                               'StartExposure'):
-            suc = app.workerExpose(expTime=0)
-            assert suc
-    app.getAscomProperty = tmp
-
-
-def test_workerExpose_4():
-    def mockGetAscomProperty(a):
-        return True
-
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.app.deviceStat['mount'] = True
-    tmp = app.getAscomProperty
-    app.getAscomProperty = mockGetAscomProperty
-    with mock.patch.object(fits.PrimaryHDU,
-                           'writeto'):
-        with mock.patch.object(app.client,
-                               'StartExposure'):
-            suc = app.workerExpose(expTime=0, focalLength=0)
-            assert suc
-    app.getAscomProperty = tmp
-
-
-def test_workerExpose_5():
-    def mockGetAscomProperty(a):
-        return True
-
-    app.data['CAN_FAST'] = False
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1000
-    app.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1000
-    app.imagePath = ''
-    app.app.deviceStat['mount'] = True
-    tmp = app.getAscomProperty
-    app.getAscomProperty = mockGetAscomProperty
-    with mock.patch.object(fits.PrimaryHDU,
-                           'writeto'):
-        with mock.patch.object(app.client,
-                               'StartExposure'):
-            with mock.patch.object(app.client,
-                                   'ImageArray',
-                                   return_value=None):
-                suc = app.workerExpose(expTime=0, focalLength=0)
-                assert suc
-    app.getAscomProperty = tmp
+    with mock.patch.object(app,
+                           'sendDownloadMode'):
+        with mock.patch.object(app,
+                               'setAscomProperty'):
+            with mock.patch.object(app,
+                                   'waitExposed'):
+                with mock.patch.object(app,
+                                       'retrieveFits'):
+                    with mock.patch.object(app,
+                                           'saveFits'):
+                        suc = app.workerExpose()
+                        assert suc
 
 
 def test_expose_1():

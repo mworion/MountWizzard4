@@ -20,9 +20,11 @@ import logging
 import platform
 
 # external packages
+from PyQt5.QtTest import QTest
 
 # local imports
 from base.driverDataClass import Signals
+from base.transform import JNowToJ2000
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
 if platform.system() == 'Windows':

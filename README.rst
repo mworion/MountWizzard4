@@ -39,7 +39,7 @@ Version, build and code coverage status
 
 |DOCS|
 
-|PYTEST macOS| |PYTEST Windows|
+|PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
 
 |PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
 
@@ -105,6 +105,9 @@ CS Michel
 
 .. |PYTEST Windows| image::
     https://github.com/mworion/MountWizzard4/workflows/win_unit/badge.svg
+
+.. |PYTEST Ubuntu| image::
+    https://github.com/mworion/MountWizzard4/workflows/ubuntu_unit/badge.svg
 
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg

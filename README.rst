@@ -33,8 +33,8 @@ It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
 of the functions don't work with older firmware versions. It should not be a
 problem using older versions. A HW pre2012 might also have some issues.
 
-Version and downloads:
-----------------------
+Versions, downloads and docs:
+-----------------------------
 |PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth| |DOCS|
 
 Staus of the unit tests:

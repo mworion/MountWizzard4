@@ -35,15 +35,19 @@ problem using older versions. A HW pre2012 might also have some issues.
 
 Version, build and code coverage status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
+|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth| |DOCS|
 
-|DOCS|
+Staus of the unit tests:
 
 |PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
+
+Test runf of install / run scripts:
 
 |PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
+
+Commit status:
 
 |COMMITS_WEEK| |COMMITS_MASTER|
 

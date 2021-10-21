@@ -514,13 +514,10 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         if not widget:
             return None
 
-        class MouseDoubleClickEventFilter(QObject):
+        class MouseClickEventFilter(QObject):
             clicked = pyqtSignal(object)
 
             def eventFilter(self, obj, event):
-                if obj != widget:
-                    return False
-
                 if event.type() not in [QEvent.MouseButtonRelease,
                                         QEvent.FocusIn]:
                     return False
@@ -532,9 +529,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
                 return False
 
-        doubleClickEventFilter = MouseDoubleClickEventFilter(widget)
-        widget.installEventFilter(doubleClickEventFilter)
-        return doubleClickEventFilter.clicked
+        clickEventFilter = MouseClickEventFilter(widget)
+        widget.installEventFilter(clickEventFilter)
+        return clickEventFilter.clicked
 
     @staticmethod
     def guiSetText(ui, formatElement, value=None):

@@ -24,8 +24,9 @@ import math
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
-from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem
-from PyQt5.QtCore import pyqtSignal, QObject, QEvent
+from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
+from PyQt5.QtCore import pyqtSignal, QObject, QEvent, Qt, QPoint
+from PyQt5.QtTest import QTest
 from skyfield.api import Angle
 import numpy as np
 
@@ -533,17 +534,24 @@ def test_openDir_5(function):
 
 
 def test_clickable_1(function):
-    suc = function.clickable()
-    assert not suc
+    function.clickable()
 
 
 def test_clickable_2(function):
-    event = QEvent(QEvent.MouseButtonRelease)
-    widget = QPushButton()
-    suc = function.clickable(widget=widget)
-    assert suc
-    suc = widget.eventFilter(widget, event)
-    assert not suc
+    widget = QLineEdit()
+    function.clickable(widget=widget)
+
+
+def test_clickable_3(function):
+    widget = QLineEdit()
+    function.clickable(widget=widget)
+    QTest.mouseRelease(widget, Qt.LeftButton)
+
+
+def test_clickable_4(function):
+    widget = QLineEdit()
+    function.clickable(widget=widget)
+    QTest.mouseRelease(widget, Qt.LeftButton, pos=QPoint(0, 0))
 
 
 def test_guiSetText_1(function):

@@ -41,13 +41,17 @@ Staus of the unit tests:
 
 |PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
 
-Test runf of install / run scripts:
+Test run of install / run scripts:
 
 |PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
+
+Code quality:
+^^^^^^^^^^^^^
 
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
 
 Commit status:
+--------------
 
 |COMMITS_WEEK| |COMMITS_MASTER|
 

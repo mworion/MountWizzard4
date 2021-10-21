@@ -631,12 +631,15 @@ class BuildPoints:
         noSort = self.ui.checkSortNothing.isChecked()
         pierside = self.app.mount.obsSite.pierside
 
-        if noSort and not avoidFlip:
-            return False
         if not avoidFlip:
             pierside = None
 
         points = self.app.data.buildP
+        if noSort and not avoidFlip:
+            self.app.redrawHemisphere.emit()
+            self.app.drawBuildPoints.emit()
+            return False
+
         if useDomeAz and enableDomeAz and eastwest:
             self.sortDomeAz(points=points, pierside=pierside)
         else:

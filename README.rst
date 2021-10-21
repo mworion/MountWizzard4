@@ -79,7 +79,7 @@ And there are some videos available for explanation in Youtube channel:
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
 
 Feedback discussions and issue reports:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 Please report your issues: https://github.com/mworion/MountWizzard4/issues.
 Please have a good description (maybe a screenshot if it‘s related to GUI) and
 add the log file(s) to the issue. Any feedback welcome!

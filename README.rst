@@ -33,29 +33,29 @@ It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
 of the functions don't work with older firmware versions. It should not be a
 problem using older versions. A HW pre2012 might also have some issues.
 
-Version, build and code coverage status
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Version and downloads:
+----------------------
 |PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth| |DOCS|
 
 Staus of the unit tests:
-
+------------------------
 |PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
 
 Test run of install / run scripts:
-
+----------------------------------
 |PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
 
 Code quality:
-^^^^^^^^^^^^^
-
+-------------
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
+
+Test coverage:
+--------------
+|CODECOV_CHART|
 
 Commit status:
 --------------
-
 |COMMITS_WEEK| |COMMITS_MASTER|
-
-|CODECOV_CHART|
 
 
 Documentation

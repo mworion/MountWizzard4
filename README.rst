@@ -33,25 +33,33 @@ It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
 of the functions don't work with older firmware versions. It should not be a
 problem using older versions. A HW pre2012 might also have some issues.
 
-Version, build and code coverage status
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
+Versions, downloads and docs:
+-----------------------------
+|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth| |DOCS|
 
-|DOCS|
-
-|PYTEST macOS| |PYTEST Windows|
-
-|PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
-
+Code quality:
+-------------
 |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
 
-|COMMITS_WEEK| |COMMITS_MASTER|
+Unit tests:
+^^^^^^^^^^^
+|PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
 
+Test install / run scripts:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+|PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
+
+Test coverage:
+^^^^^^^^^^^^^^
 |CODECOV_CHART|
 
+Commit status:
+^^^^^^^^^^^^^^
+|COMMITS_WEEK| |COMMITS_MASTER|
 
-Documentation
-^^^^^^^^^^^^^
+
+Documentation:
+--------------
 There is an online documentation available for MW4 which could be searched for
 entries:
 
@@ -68,12 +76,10 @@ Changelog:
 https://mountwizzard4.readthedocs.io/en/latest/changelog.html
 
 And there are some videos available for explanation in Youtube channel:
-
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/
 
-
-Feedback discussions and issue reports
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feedback discussions and issue reports:
+---------------------------------------
 Please report your issues: https://github.com/mworion/MountWizzard4/issues.
 Please have a good description (maybe a screenshot if it‘s related to GUI) and
 add the log file(s) to the issue. Any feedback welcome!
@@ -82,8 +88,8 @@ Please feel free to start any discussion:
 https://github.com/mworion/MountWizzard4/discussions
 
 
-Finally
-^^^^^^^
+Finally:
+--------
 MountWizzard4 is 'always' in development. The use this software is at your own
 risk! No responsibility for damages to your mount or other equipment or your
 environment, please take care yourself!
@@ -105,6 +111,9 @@ CS Michel
 
 .. |PYTEST Windows| image::
     https://github.com/mworion/MountWizzard4/workflows/win_unit/badge.svg
+
+.. |PYTEST Ubuntu| image::
+    https://github.com/mworion/MountWizzard4/workflows/ubuntu_unit/badge.svg
 
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg

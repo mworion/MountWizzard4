@@ -139,13 +139,13 @@ def test_setAscomProperty_4():
 
 
 def test_callAscomMethod_1():
-    app.propertyExceptions = ['connect']
+    app.propertyExceptions = ['Connect']
     suc = app.callAscomMethod('Connect', True)
     assert not suc
 
 
 def test_callAscomMethod_2():
-    app.propertyExceptions = ['test']
+    app.propertyExceptions = ['Test']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
@@ -159,7 +159,7 @@ def test_callAscomMethod_3():
         Connect = False
 
     app.client = Client()
-    app.propertyExceptions = ['test']
+    app.propertyExceptions = ['Test']
     with mock.patch.object(app.client,
                            'Connect'):
         suc = app.callAscomMethod('Connect', True)
@@ -172,7 +172,7 @@ def test_callAscomMethod_4():
         Connect = False
 
     app.client = Client()
-    app.propertyExceptions = ['test']
+    app.propertyExceptions = ['Test']
     with mock.patch.object(app.client,
                            'Connect'):
         suc = app.callAscomMethod('Connect', (True, 1))

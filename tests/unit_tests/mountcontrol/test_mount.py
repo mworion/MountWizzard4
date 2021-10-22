@@ -134,12 +134,22 @@ def test_calcTransformationMatricesActual():
     assert val[4] is None
 
 
-def test_calcMountAltAzToDomeAltAz():
+def test_calcMountAltAzToDomeAltAz_1():
     with mock.patch.object(m.obsSite,
-                           'setTargetAltAz'):
+                           'setTargetAltAz',
+                          return_value=True):
         with mock.patch.object(m,
                                'calcTransformationMatricesTarget',
                                return_value=(10, 5, 0, 0, 0)):
             valAlt, valAz = m.calcMountAltAzToDomeAltAz(10, 5)
             assert valAlt == 10
             assert valAz == 5
+
+
+def test_calcMountAltAzToDomeAltAz_2():
+    with mock.patch.object(m.obsSite,
+                           'setTargetAltAz',
+                          return_value=False):
+        valAlt, valAz = m.calcMountAltAzToDomeAltAz(10, 5)
+        assert valAlt is None
+        assert valAz is None

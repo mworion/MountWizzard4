@@ -553,6 +553,14 @@ def test_sortDomeAzWorker_1(function):
         assert suc
 
 
+def test_sortDomeAzWorker_2(function):
+    with mock.patch.object(function.app.mount,
+                           'calcMountAltAzToDomeAltAz',
+                           return_value=(None, None)):
+        suc = function.sortDomeAzWorker([(10, 10, True)])
+        assert suc
+
+
 def test_sortDomeAz_1(function):
     with mock.patch.object(function.threadPool,
                            'start'):

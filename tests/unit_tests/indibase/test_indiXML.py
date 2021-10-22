@@ -345,3 +345,18 @@ def test_textValue(function):
 
 def test_makeINDIFn_1(function):
     makeINDIFn('test')
+
+
+def test_makeINDIFn_2(function):
+    makeObj = makeINDIFn('defTextVector')
+    makeObj('device', 'test')
+
+
+def test_makeINDIFn_3(function):
+    makeObj = makeINDIFn('defTextVector')
+    makeObj('device', {'device': 'test', 'name': 'test'})
+
+
+def test_makeINDIFn_4(function):
+    makeObj = makeINDIFn('defTextVector')
+    makeObj('test', {'device': 'test', 'test': 'test'})

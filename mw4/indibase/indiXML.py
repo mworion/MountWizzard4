@@ -439,7 +439,7 @@ indi_spec = {
                        ["label", None, False, labelValue, "GUI label, use name by default"],
                        ["group", None, False, groupTag, "Property group membership, blank by default"],
                        ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
+                       ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
                        ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
                        ["timestamp", None, False, timeValue, "Moment when these data were valid"],
                        ["message", None, False, textValue, "Commentary"]]
@@ -462,7 +462,7 @@ indi_spec = {
                        ["label", None, False, labelValue, "GUI label, use name by default"],
                        ["group", None, False, groupTag, "Property group membership, blank by default"],
                        ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
+                       ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
                        ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
                        ["timestamp", None, False, timeValue, "Moment when these data were valid"],
                        ["message", None, False, textValue, "Commentary"]]

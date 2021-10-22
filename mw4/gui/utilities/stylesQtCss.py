@@ -566,7 +566,7 @@ class Styles:
         margin: 0px;
         border: 0px;
     }
-    QTableView {
+    QTableWidget {
         border-color: #404040;
         border-width: 0px;
         border-style: plain;
@@ -575,7 +575,7 @@ class Styles:
         margin: 0px;
         border: 0px;
     }
-    QTableView QHeaderView:section{
+    QTableWidget QHeaderView:section{
         border-width: 1px;
         border-style: plain;
         border-radius: 2px;
@@ -734,48 +734,42 @@ class Styles:
         min-height: 32px;
         border-radius: 2px;
     }
-    /*
     QScrollBar::sub-line
     {   margin: 2px 0px 2px 0px;
-        border-image: url(:icon/arrow-up.ico);
-        height: 16px;
-        width: 16px;
+        height: 0px;
+        width: 0px;
         subcontrol-position: top;
         subcontrol-origin: margin;
     }
     QScrollBar::add-line
     {   margin: 2px 0px 2px 0px;
-        border-image: url(:icon/arrow-down.ico);
-        height: 16px;
-        width: 16px;
+        height: 0px;
+        width: 0px;
         subcontrol-position: bottom;
         subcontrol-origin: margin;
     }
     QScrollBar::sub-line:on
-    {   border-image: url(:icon/arrow-up.ico);
-        height: 16px;
+    {   height: 16px;
         width: 16px;
         subcontrol-position: top;
         subcontrol-origin: margin;
     }
     QScrollBar::add-line:on
-    {   border-image: url(:icon/arrow-down.ico);
-        height: 16px;
-        width: 16px;
+    {   height: 0px;
+        width: 0px;
         subcontrol-position: bottom;
         subcontrol-origin: margin;
     }
     QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
     {   background: none;
-        border-width: 1px;
+        border-width: 0px;
         border-color: #404040;
-        border-style: outset;
-        border-radius: 2px;
+        border-style: plain;
+        border-radius: 0px;
     }
     QScrollBar::add-page, QScrollBar::sub-page
     {   background: none;
     }
-    */
     /* progress bar */
     QProgressBar {
         color: white;

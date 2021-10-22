@@ -60,7 +60,8 @@ def app(qapp):
             with mock.patch.object(PyQt5.QtCore.QBasicTimer,
                                    'start'):
                 with mock.patch.object(os.path,
-                                       'isfile'):
+                                       'isfile',
+                                       return_value=True):
                     app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                     app.log = logging.getLogger()
                     with mock.patch.object(app.mainW,

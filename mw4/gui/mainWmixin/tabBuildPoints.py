@@ -576,7 +576,8 @@ class BuildPoints:
         for i, point in enumerate(points):
             t = f'Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%'
             ui.setTitle(t)
-            alt, az, _ = point
+            alt = point[0]
+            az = point[1]
             _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
             if domeAz is None:
                 continue

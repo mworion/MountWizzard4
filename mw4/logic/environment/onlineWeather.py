@@ -209,7 +209,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         :return: success
         """
-        if not self.online:
+        if not self.online and self.running:
             self.signals.dataReceived.emit(None)
             self.stopCommunication()
             return False

@@ -578,7 +578,7 @@ class BuildPoints:
             ui.setTitle(t)
             alt, az, _ = point
             _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
-            if domeAZ is None:
+            if domeAz is None:
                 continue
             pointsNew.append((alt, az, True, domeAz.degrees))
         points = pointsNew

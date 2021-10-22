@@ -213,6 +213,8 @@ class Mount(object):
         :param az:
         :return:
         """
-        self.obsSite.setTargetAltAz(alt_degrees=alt, az_degrees=az)
+        suc = self.obsSite.setTargetAltAz(alt_degrees=alt, az_degrees=az)
+        if not suc:
+           return None, None
         alt, az, _, _, _ = self.calcTransformationMatricesTarget()
         return alt, az

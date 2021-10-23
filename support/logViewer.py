@@ -21,81 +21,127 @@ import os
 
 # external packages
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
-from PyQt5.QtWidgets import QTextBrowser, QGridLayout, QPushButton, QFileDialog
-from PyQt5.QtCore import QDir
+from PyQt5.QtWidgets import QGridLayout, QPushButton, QFileDialog
+from PyQt5.QtWidgets import QListWidget, QListWidgetItem
+from PyQt5.QtCore import QDir, QSize, Qt
+from PyQt5.QtGui import QFont
 
 
-class QCustomTextBrowser(QTextBrowser):
+class QCustomListWidget(QListWidget):
     def __init__(self):
-        QTextBrowser.__init__(self)
-        self.setLineWrapMode(0)
-        self.setFontPointSize(12)
-        self.setFontFamily('Courier')
+        QListWidget.__init__(self)
+        self.setSizeAdjustPolicy(QListWidget.AdjustToContents)
+
+
+class QCustomListWidgetItem(QListWidgetItem):
+    def __init__(self):
+        QListWidgetItem.__init__(self)
+        font = QFont()
+        font.setFamily('Courier')
+        font.setPointSize(12)
+        self.setFont(font)
 
 
 class Categories(QTabWidget):
     def __init__(self):
         QTabWidget.__init__(self)
         layout = QVBoxLayout()
+        self.qLists = {
+            'Full Log': None,
+            'Header': None,
+            'Critical': None,
+            'Errors': None,
+            'Warnings': None,
+            'Info': None,
+            'Debug': None,
+            'UI Trace': None,
+            'Mount Trace': None,
+            'INDI Trace': None,
+            'ASCOM Trace': None,
+            'ALPACA Trace': None,
+            'Other traces': None,
+        }
 
-        self.tbHeader = QCustomTextBrowser()
-        self.tbCritical = QCustomTextBrowser()
-        self.tbError = QCustomTextBrowser()
-        self.tbWarn = QCustomTextBrowser()
-        self.tbInfo = QCustomTextBrowser()
-        self.tbDebug = QCustomTextBrowser()
-        self.tbUI = QCustomTextBrowser()
-        self.tbMount = QCustomTextBrowser()
-        self.tbINDI = QCustomTextBrowser()
-        self.tbASCOM = QCustomTextBrowser()
-        self.tbALPACA = QCustomTextBrowser()
-        self.tbRest = QCustomTextBrowser()
-
-        self.addTab(self.tbHeader, 'Header')
-        self.addTab(self.tbCritical, 'Critical')
-        self.addTab(self.tbError, 'Errors')
-        self.addTab(self.tbWarn, 'Warnings')
-        self.addTab(self.tbInfo, 'Info')
-        self.addTab(self.tbDebug, 'Debug')
-        self.addTab(self.tbUI, 'UI Trace')
-        self.addTab(self.tbMount, 'Mount Trace')
-        self.addTab(self.tbINDI, 'INDI Trace')
-        self.addTab(self.tbASCOM, 'ASCOM Trace')
-        self.addTab(self.tbALPACA, 'ALPACA Trace')
-        self.addTab(self.tbRest, 'Other traces')
+        for listN in self.qLists:
+            self.qLists[listN] = QCustomListWidget()
+            if listN == 'Full Log':
+                self.qLists[listN].doubleClicked.connect(self.swapDetail)
+            else:
+                self.qLists[listN].doubleClicked.connect(self.swapFull)
+            self.addTab(self.qLists[listN], listN)
         layout.addWidget(self)
 
-    def addEntry(self, line):
+    def swapFull(self, item):
+        res = self.qLists['Full Log'].findItems(item.data(), Qt.MatchExactly)
+        if len(res) == 0:
+            return
+        mode = QCustomListWidget.PositionAtCenter | QCustomListWidget.EnsureVisible
+        self.qLists['Full Log'].setCurrentItem(res[0])
+        self.qLists['Full Log'].scrollToItem(res[0], mode)
+        self.setCurrentIndex(0)
+
+    def swapDetail(self, item):
+        key = self.getListKey(item.data())
+        if key is None:
+            return
+
+        qList = self.qLists[key]
+        res = qList.findItems(item.data(), Qt.MatchExactly)
+        if len(res) == 0:
+            return
+
+        mode = QCustomListWidget.PositionAtCenter | QCustomListWidget.EnsureVisible
+        qList.setCurrentItem(res[0])
+        qList.scrollToItem(res[0], mode)
+        self.setCurrentIndex(list(self.qLists.keys()).index(key))
+
+    @staticmethod
+    def getListKey(line):
         if '[H]' in line:
-            self.tbHeader.insertPlainText(line)
+            listKey = 'Header'
         elif '[C]' in line:
-            self.tbCritical.insertPlainText(line)
+            listKey = 'Critical'
         elif '[E]' in line:
-            self.tbError.insertPlainText(line)
+            listKey = 'Errors'
         elif '[W]' in line:
-            self.tbWarn.insertPlainText(line)
+            listKey = 'Warnings'
         elif '[I]' in line:
-            self.tbInfo.insertPlainText(line)
+            listKey = 'Info'
         elif '[D]' in line:
-            self.tbDebug.insertPlainText(line)
+            listKey = 'Debug'
         elif '[U]' in line:
             if 'qt_scrollarea_viewport' in line:
-                return
+                return None
             if 'QComboBoxPrivateContainerClassWindow' in line:
-                return
+                return None
             if 'Click Object  : []' in line:
-                return
-            self.tbUI.insertPlainText(line)
+                return None
+            listKey = 'UI Trace'
         elif '[T][  connection.py]' in line:
-            self.tbMount.insertPlainText(line)
+            listKey = 'Mount Trace'
         elif '[T]' in line and 'indi' in line:
-            self.tbINDI.insertPlainText(line)
+            listKey = 'INDI Trace'
         elif '[T]' in line and 'ascom' in line:
-            self.tbASCOM.insertPlainText(line)
+            listKey = 'ASCOM Trace'
         elif '[T]' in line and 'alpaca' in line:
-            self.tbALPACA.insertPlainText(line)
+            listKey = 'ALPACA Trace'
         elif '[T]' in line:
-            self.tbRest.insertPlainText(line)
+            listKey = 'Other traces'
+        else:
+            listKey = None
+        return listKey
+
+    def addEntry(self, line):
+        itemF = QCustomListWidgetItem()
+        itemF.setText(line.strip('\n'))
+        self.qLists['Full Log'].insertItem(self.qLists['Full Log'].count(), itemF)
+
+        item = QCustomListWidgetItem()
+        item.setText(line.strip('\n'))
+        key = self.getListKey(line)
+        if key is not None:
+            qList = self.qLists[key]
+            qList.insertItem(qList.count(), item)
 
 
 class LifeCycle(QTabWidget):

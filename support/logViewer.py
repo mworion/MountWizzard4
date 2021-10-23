@@ -206,11 +206,11 @@ class Window(QWidget):
             return
         numLines = sum(1 for line in open(fileName, 'rb'))
         self.loadButt.setStyleSheet("background-color: rgb(255,255,0);")
+        title = 'Load logging file'
         with open(fileName, 'rb') as f:
             for i, line in enumerate(f.readlines()):
                 # QApplication.processEvents()
                 line = line.decode('utf-8', errors='ignore')
-                title = 'Load logging file'
                 t = title + f'   -   progress: {i +1 } lines loaded from {numLines}'
                 t += f'   -   {int((i + 1) / numLines * 100)} %'
                 self.loadButt.setText(t)

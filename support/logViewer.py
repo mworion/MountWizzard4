@@ -208,7 +208,7 @@ class Window(QWidget):
         self.loadButt.setStyleSheet("background-color: rgb(255,255,0);")
         with open(fileName, 'rb') as f:
             for i, line in enumerate(f.readlines()):
-                QApplication.processEvents()
+                # QApplication.processEvents()
                 line = line.decode('utf-8', errors='ignore')
                 title = 'Load logging file'
                 t = title + f'   -   progress: {i +1 } lines loaded from {numLines}'

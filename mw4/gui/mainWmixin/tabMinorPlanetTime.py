@@ -353,7 +353,7 @@ class MinorPlanetTime:
         self.app.message.emit('Exporting MPC data', 0)
         return True
 
-    def progMinorPlanetSingle(self):
+    def progMinorPlanetsSingle(self):
         """
         :return: success
         """

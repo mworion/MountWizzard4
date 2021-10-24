@@ -117,7 +117,6 @@ class AutomateWindows(QObject):
         """
         if platform.machine().endswith('64'):
             regPath = 'SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
-
         else:
             regPath = 'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
 
@@ -234,13 +233,12 @@ class AutomateWindows(QObject):
             self.installPath = val[1]
             self.name = val[2]
             self.updaterEXE = val[3]
-
         except Exception as e:
             self.available = False
             self.installPath = ''
             self.name = ''
             self.updaterEXE = ''
-            self.log.debug(f'{e}')
+            self.log.debug(f'App settings error: [{e}]')
 
     def checkFloatingPointErrorWindow(self):
         """
@@ -253,14 +251,11 @@ class AutomateWindows(QObject):
                                                                         class_name='#32770')[0])
             winOK = self.updater.window(handle=dialog)
             winOK['OK'].click()
-
         except application.TimeoutError:
             return True
-
         except Exception as e:
-            self.log.error(f'Error: {e}')
+            self.log.error(f'Error: [{e}]')
             return False
-
         else:
             return True
 
@@ -271,7 +266,6 @@ class AutomateWindows(QObject):
         if platform.architecture()[0] == '32bit':
             self.updater = Application(backend='win32')
             self.log.info('Using 32Bit backend win32')
-
         else:
             self.updater = Application(backend='uia')
             self.log.info('Using 64Bit backend uia')
@@ -279,16 +273,14 @@ class AutomateWindows(QObject):
 
         try:
             self.updater.start(self.installPath + self.updaterEXE)
-
         except AppStartError:
             self.log.error('Failed to start updater, please check!')
-            self.log.info(f'{self.installPath}{self.updaterEXE}')
+            self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
             return False
-
         except Exception as e:
-            self.log.error(f'Failed to start updater, error {e}')
+            self.log.error(f'Failed to start updater, error [{e}]')
+            self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
             return False
-
         else:
             suc = self.checkFloatingPointErrorWindow()
             return suc
@@ -313,11 +305,9 @@ class AutomateWindows(QObject):
         """
         try:
             self.clearUploadMenuCommands()
-
         except Exception as e:
-            self.log.error('Error: {0}'.format(e))
+            self.log.error(f'Clear upload error: [{e}]')
             return False
-
         return True
 
     def prepareUpdater(self):
@@ -373,9 +363,8 @@ class AutomateWindows(QObject):
         try:
             self.doUploadAndCloseInstallerCommands()
             self.pressOK()
-
         except Exception as e:
-            self.log.error('Error: {0}'.format(e))
+            self.log.error(f'Upload and close error: {e}')
             return False
 
         return True
@@ -391,7 +380,6 @@ class AutomateWindows(QObject):
             controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
             win['Edit...4'].click()
             popup = self.updater['Comet orbits']
-
         else:
             controls.ButtonWrapper(win['Orbital parameters of asteroids']).check_by_click()
             win['Edit...3'].click()
@@ -407,7 +395,6 @@ class AutomateWindows(QObject):
 
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
-
         else:
             filedialog['OpenButton4'].click()
 
@@ -422,15 +409,12 @@ class AutomateWindows(QObject):
         try:
             self.prepareUpdater()
             self.uploadMPCDataCommands(comets=comets)
-
         except Exception as e:
-            self.log.error(f'Error: {e}')
+            self.log.error(f'Upload MPC data error: [{e}]')
             return False
-
         else:
             suc = self.doUploadAndCloseInstaller()
             return suc
-
         finally:
             os.chdir(self.actualWorkDir)
 
@@ -465,7 +449,6 @@ class AutomateWindows(QObject):
 
         if platform.architecture()[0] == '32bit':
             filedialog['Button16'].click()
-
         else:
             filedialog['OpenButton4'].click()
 
@@ -480,16 +463,13 @@ class AutomateWindows(QObject):
         self.prepareUpdater()
         try:
             self.uploadEarthRotationDataCommands()
-
         except Exception as e:
-            self.log.error(f'Error: {e}')
+            self.log.error(f'Upload earth rotation error: [{e}]')
             os.chdir(self.actualWorkDir)
             return False
-
         else:
             suc = self.doUploadAndCloseInstaller()
             return suc
-
         finally:
             os.chdir(self.actualWorkDir)
 
@@ -526,15 +506,12 @@ class AutomateWindows(QObject):
         self.prepareUpdater()
         try:
             self.uploadTLEDataCommands()
-
         except Exception as e:
-            self.log.error(f'Error: {e}')
+            self.log.error(f'Upload TLE error: [{e}]')
             os.chdir(self.actualWorkDir)
             return False
-
         else:
             suc = self.doUploadAndCloseInstaller()
             return suc
-
         finally:
             os.chdir(self.actualWorkDir)

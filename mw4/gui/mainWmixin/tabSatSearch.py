@@ -612,7 +612,7 @@ class SatSearch(object):
         """
         source = self.ui.satelliteSource.currentText()
         text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
+        suc = self.messageDialog(self, 'Program with 10micron Updater', text)
         if not suc:
             return False
 
@@ -641,7 +641,7 @@ class SatSearch(object):
             self.app.message.emit(t, 2)
             return False
         if not self.app.automation.installPath:
-            t = 'No QCI updater available - upload not possible'
+            t = 'No 10micron updater available - upload not possible'
             self.app.message.emit(t, 2)
             return False
 
@@ -659,7 +659,7 @@ class SatSearch(object):
         """
         source = self.ui.satelliteSource.currentText()
         text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
+        suc = self.messageDialog(self, 'Program with 10micron Updater', text)
         if not suc:
             return False
 
@@ -676,7 +676,7 @@ class SatSearch(object):
             self.app.message.emit(t, 2)
             return False
         if not self.app.automation.installPath:
-            t = 'No QCI updater available - upload not possible'
+            t = 'No 10micron updater available - upload not possible'
             self.app.message.emit(t, 2)
             return False
 

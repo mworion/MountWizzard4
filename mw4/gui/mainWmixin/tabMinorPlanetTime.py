@@ -310,7 +310,7 @@ class MinorPlanetTime:
             return False
         if not self.app.automation.installPath:
             self.app.message.emit(
-                'No QCI updater available - upload not possible', 2)
+                'No 10micron updater available - upload not possible', 2)
             return False
 
         self.app.message.emit('Uploading to mount', 0)
@@ -369,7 +369,8 @@ class MinorPlanetTime:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
         if not self.app.automation.installPath:
-            self.app.message.emit('No QCI updater available - upload not possible', 2)
+            self.app.message.emit('No 10micron updater available - upload not '
+                                  'possible', 2)
             return False
 
         self.app.message.emit('Uploading MPC data to mount', 0)
@@ -417,7 +418,7 @@ class MinorPlanetTime:
             self.app.message.emit('Not running windows - upload not possible', 2)
             return False
         if not self.app.automation.installPath:
-            self.app.message.emit('No QCI updater available - upload not possible', 2)
+            self.app.message.emit('No 10micron updater available - upload not possible', 2)
             return False
 
         self.app.message.emit('Uploading MPC data to mount', 0)

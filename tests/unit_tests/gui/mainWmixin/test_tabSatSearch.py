@@ -823,8 +823,8 @@ def test_satelliteGUI_3(function):
                            'checkUpdaterOK',
                            return_value=True):
         with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
+                               'messageDialog',
+                               return_value=True):
             suc = function.satelliteGUI()
             assert suc
 

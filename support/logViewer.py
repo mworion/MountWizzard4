@@ -23,7 +23,7 @@ import os
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QLabel
 from PyQt5.QtWidgets import QGridLayout, QPushButton, QFileDialog
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
-from PyQt5.QtCore import QDir, QSize, Qt
+from PyQt5.QtCore import QDir, Qt
 from PyQt5.QtGui import QFont
 
 

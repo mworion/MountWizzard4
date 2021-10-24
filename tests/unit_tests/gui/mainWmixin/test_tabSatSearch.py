@@ -795,20 +795,21 @@ def test_satelliteFilter_1(function):
     assert 'test' in val
 
 
-def test_checkUpdaterOK_1(function):
-    function.app.automation = None
-    suc = function.checkUpdaterOK()
-    assert not suc
+def test_satelliteGUI_1(function):
+    with mock.patch.object(function,
+                           'checkUpdaterOK',
+                           return_value=False):
+        suc = function.satelliteGUI()
+        assert not suc
 
 
 def test_satelliteGUI_2(function):
-
     with mock.patch.object(function,
-                           'messageDialog',
+                           'checkUpdaterOK',
                            return_value=True):
         with mock.patch.object(function,
-                               'checkUpdaterOK',
-                               return_value=False):
+                           'messageDialog',
+                           return_value=False):
             suc = function.satelliteGUI()
             assert not suc
 
@@ -819,11 +820,11 @@ def test_satelliteGUI_3(function):
     function.ui.minorPlanetSource.setCurrentIndex(0)
 
     with mock.patch.object(function,
-                           'messageDialog',
+                           'checkUpdaterOK',
                            return_value=True):
         with mock.patch.object(function,
-                               'checkUpdaterOK',
-                               return_value=True):
+                           'messageDialog',
+                           return_value=True):
             suc = function.satelliteGUI()
             assert suc
 

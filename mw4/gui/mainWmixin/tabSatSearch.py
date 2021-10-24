@@ -670,7 +670,7 @@ class SatSearch(object):
         """
         suc = self.satelliteGUI()
         if not suc:
-            self.app.message.emit('TLE files locally available', 0)
+            return False
 
         filtered = self.satelliteFilter(self.satellites)
         self.progSatellites(filtered)

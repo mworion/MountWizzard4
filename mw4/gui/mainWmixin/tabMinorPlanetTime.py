@@ -256,7 +256,7 @@ class MinorPlanetTime:
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.app.message.emit(f'Download IERS data:  [{source}]', 1)
         DownloadPopup(self, url=url, dest=dest, unzip=False,
-                      callBack=self.progEarthRotationDataToMount)
+                      callBack=self.progEarthRotationData)
         return True
 
     def loadTimeDataFromSourceURLs(self):

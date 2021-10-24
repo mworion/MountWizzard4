@@ -271,7 +271,7 @@ def test_progEarthRotationGUI_3(function):
                                'checkUpdaterOK',
                                return_value=True):
             suc = function.progEarthRotationGUI()
-            assert not suc
+            assert suc
 
 
 def test_progEarthRotationData_1(function):
@@ -290,7 +290,7 @@ def test_progEarthRotationData_2(function):
                                'writeEarthRotationData',
                                return_value=False):
                 suc = function.progEarthRotationData()
-                assert suc
+                assert not suc
 
 
 def test_progEarthRotationData_3(function):
@@ -467,8 +467,13 @@ def test_progMinorPlanetsSingle_1(function):
 
 def test_progMinorPlanetsSingle_2(function):
     function.ui.listMinorPlanetNames.clear()
-    function.ui.listMinorPlanetNames.addItem('test')
-    function.ui.listMinorPlanetNames.setCurrentIndex(0)
+    function.ui.listMinorPlanetNames.addItem('0:test')
+    function.minorPlanets = ['test']
+
+    model = function.ui.listMinorPlanetNames.model()
+    ind = model.index(0)
+    function.ui.listMinorPlanetNames.setCurrentIndex(ind)
+
     with mock.patch.object(function,
                            'mpcGUI',
                            return_value=True):

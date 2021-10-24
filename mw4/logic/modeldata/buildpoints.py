@@ -244,7 +244,8 @@ class DataPoint(object):
         if number > len(self._buildP) - 1:
             return False
 
-        alt, az, _ = self._buildP[number]
+        alt = self._buildP[number][0]
+        az = self._buildP[number][1]
         self._buildP[number] = (alt, az, status)
         return True
 

@@ -215,7 +215,8 @@ class Window(QWidget):
                 t += f'   -   {int((i + 1) / numLines * 100)} %'
                 self.loadButt.setText(t)
                 self.lifecycleTab.addEntry(line)
-                self.lifecycleTab.actual.addEntry(line)
+                if self.lifecycleTab.actual:
+                    self.lifecycleTab.actual.addEntry(line)
         self.loadButt.setStyleSheet("background-color: rgb(0,255,0);")
         self.loadButt.setText(title)
 

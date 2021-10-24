@@ -683,3 +683,21 @@ def test_returnDriver_2(function):
     searchDict = {}
     driver = function.returnDriver(sender, searchDict, addKey='test')
     assert driver == ''
+
+
+def test_checkUpdaterOK_1(function):
+    function.app.automation = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_2(function):
+    function.app.automation.installPath = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_3(function):
+    function.app.automation.installPath = 'test'
+    suc = function.checkUpdaterOK()
+    assert suc

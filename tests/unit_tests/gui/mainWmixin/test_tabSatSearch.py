@@ -801,26 +801,6 @@ def test_checkUpdaterOK_1(function):
     assert not suc
 
 
-def test_checkUpdaterOK_2(function):
-    function.app.automation.installPath = None
-    suc = function.checkUpdaterOK()
-    assert not suc
-
-
-def test_checkUpdaterOK_3(function):
-    function.app.automation.installPath = 'test'
-    suc = function.checkUpdaterOK()
-    assert suc
-
-
-def test_satelliteGUI_1(function):
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-        suc = function.satelliteGUI()
-        assert not suc
-
-
 def test_satelliteGUI_2(function):
 
     with mock.patch.object(function,

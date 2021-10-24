@@ -244,93 +244,81 @@ def test_loadMPCDataFromSourceURLs_3(function):
             assert suc
 
 
-def test_progEarthRotationDataToMount_1(function):
+def test_progEarthRotationGUI_1(function):
     with mock.patch.object(function,
-                           'messageDialog',
+                           'checkUpdaterOK',
                            return_value=False):
-        suc = function.progEarthRotationDataToMount()
+        suc = function.progEarthRotationGUI()
         assert not suc
 
 
-def test_progEarthRotationDataToMount_3(function):
-    function.app.automation = None
+def test_progEarthRotationGUI_2(function):
+    with mock.patch.object(function,
+                           'checkUpdaterOK',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=False):
+            suc = function.progEarthRotationGUI()
+            assert not suc
+
+
+def test_progEarthRotationGUI_3(function):
     with mock.patch.object(function,
                            'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'checkUpdaterOK',
+                               return_value=True):
+            suc = function.progEarthRotationGUI()
+            assert not suc
+
+
+def test_progEarthRotationData_1(function):
+    with mock.patch.object(function,
+                           'progEarthRotationGUI',
+                           return_value=False):
+        suc = function.progEarthRotationData()
+        assert not suc
+
+
+def test_progEarthRotationData_2(function):
+    with mock.patch.object(function,
+                           'progEarthRotationGUI',
                            return_value=True):
         with mock.patch.object(function.databaseProcessing,
                                'writeEarthRotationData',
                                return_value=False):
-            suc = function.progEarthRotationDataToMount()
-            assert not suc
+                suc = function.progEarthRotationData()
+                assert suc
 
 
-def test_progEarthRotationDataToMount_4(function):
-    function.app.automation = None
+def test_progEarthRotationData_3(function):
     with mock.patch.object(function,
-                           'messageDialog',
+                           'progEarthRotationGUI',
                            return_value=True):
         with mock.patch.object(function.databaseProcessing,
                                'writeEarthRotationData',
                                return_value=True):
-            suc = function.progEarthRotationDataToMount()
-            assert not suc
+            with mock.patch.object(function.app.automation,
+                                   'uploadEarthRotationData',
+                                   return_value=False):
+                suc = function.progEarthRotationData()
+                assert not suc
 
 
-def test_progEarthRotationDataToMount_5(function):
-    class Test:
-        installPath = 'None'
-
-        @staticmethod
-        def uploadEarthRotationData():
-            return False
-
-    function.app.automation = Test()
+def test_progEarthRotationData_4(function):
     with mock.patch.object(function,
-                           'messageDialog',
+                           'progEarthRotationGUI',
                            return_value=True):
         with mock.patch.object(function.databaseProcessing,
                                'writeEarthRotationData',
                                return_value=True):
-            suc = function.progEarthRotationDataToMount()
-            assert not suc
-
-
-def test_progEarthRotationDataToMount_6(function):
-    class Test:
-        installPath = None
-
-        @staticmethod
-        def uploadEarthRotationData():
-            return True
-
-    function.app.automation = Test()
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeEarthRotationData',
-                               return_value=True):
-            suc = function.progEarthRotationDataToMount()
-            assert not suc
-
-
-def test_progEarthRotationDataToMount_7(function):
-    class Test:
-        installPath = 'test'
-
-        @staticmethod
-        def uploadEarthRotationData():
-            return True
-
-    function.app.automation = Test()
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeEarthRotationData',
-                               return_value=True):
-            suc = function.progEarthRotationDataToMount()
-            assert suc
+            with mock.patch.object(function.app.automation,
+                                   'uploadEarthRotationData',
+                                   return_value=True):
+                suc = function.progEarthRotationData()
+                assert suc
 
 
 def test_startProgEarthRotationDataToMount_1(function):
@@ -417,24 +405,6 @@ def test_mpcFilter_1(function):
 
     val = function.mpcFilter(raw)
     assert val == [{'Principal_desig': 'test'}]
-
-
-def test_checkUpdaterOK_1(function):
-    function.app.automation = None
-    suc = function.checkUpdaterOK()
-    assert not suc
-
-
-def test_checkUpdaterOK_2(function):
-    function.app.automation.installPath = None
-    suc = function.checkUpdaterOK()
-    assert not suc
-
-
-def test_checkUpdaterOK_3(function):
-    function.app.automation.installPath = 'test'
-    suc = function.checkUpdaterOK()
-    assert suc
 
 
 def test_mpcGUI_1(function):

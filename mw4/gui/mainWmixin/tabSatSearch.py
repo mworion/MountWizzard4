@@ -619,7 +619,7 @@ class SatSearch(object):
         self.app.message.emit('Uploading TLE data to mount', 0)
         suc = self.app.automation.uploadTLEData()
         if not suc:
-            self.app.message.emit('Uploading error', 2)
+            self.app.message.emit('Uploading error, files available', 2)
         else:
             self.app.message.emit('Programming success', 1)
         return suc
@@ -639,19 +639,6 @@ class SatSearch(object):
                 continue
             filtered[name] = satellitesRaw[name]
         return filtered
-
-    def checkUpdaterOK(self):
-        """
-        :return:
-        """
-        if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
-            return False
-        if not self.app.automation.installPath:
-            self.app.message.emit('No 10micron updater available - upload not '
-                                  'possible', 2)
-            return False
-        return True
 
     def satelliteGUI(self):
         """
@@ -684,11 +671,10 @@ class SatSearch(object):
         suc = self.satelliteGUI()
         if not suc:
             self.app.message.emit('TLE files locally available', 0)
-        else:
-            filtered = self.satelliteFilter(self.satellites)
-            self.progSatellites(filtered)
 
-        return suc
+        filtered = self.satelliteFilter(self.satellites)
+        self.progSatellites(filtered)
+        return True
 
     def progSatellitesFull(self):
         """
@@ -696,8 +682,7 @@ class SatSearch(object):
         """
         suc = self.satelliteGUI()
         if not suc:
-            self.app.message.emit('TLE files locally available', 0)
-        else:
-            self.progSatellites(self.satellites)
+            return False
 
-        return suc
+        self.progSatellites(self.satellites)
+        return True

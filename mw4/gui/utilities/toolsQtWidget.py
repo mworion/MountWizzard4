@@ -621,3 +621,16 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         searchD = dict([(value, key) for key, value in searchD.items()])
         driver = searchD.get(sender, '')
         return driver
+
+    def checkUpdaterOK(self):
+        """
+        :return:
+        """
+        if not self.app.automation:
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+        if not self.app.automation.installPath:
+            self.app.message.emit('No 10micron updater available - upload not '
+                                  'possible', 2)
+            return False
+        return True

@@ -204,38 +204,44 @@ class MinorPlanetTime:
             DownloadPopup(self, url=url, dest=dest, callBack=self.processSourceData)
         return True
 
-    def progEarthRotationDataToMount(self):
+    def progEarthRotationGUI(self):
         """
-        :return: success
+        :return:
         """
+        suc = self.checkUpdaterOK()
+        if not suc:
+            return False
+
         question = '<b>Earth Rotation Data programming</b>'
         question += '<br><br>The 10micron updater will be used.'
         question += '<br>Would you like to start?<br>'
         question += f'<br><i><font color={self.M_YELLOW}>'
         question += 'Please wait until updater is closed!</font></i>'
-        suc = self.messageDialog(self, 'Program with QCI Updater', question)
+        suc = self.messageDialog(self, 'Program with 10micron Updater', question)
         if not suc:
             return False
 
         self.app.message.emit('Program to mount:    [earth rotation data]', 1)
         self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
+        return True
+
+    def progEarthRotationData(self):
+        """
+        :return: success
+        """
+        suc = self.progEarthRotationGUI()
+        if not suc:
+            return False
 
         suc = self.databaseProcessing.writeEarthRotationData(self.installPath)
         if not suc:
             self.app.message.emit('Data could not be copied - stopping', 2)
             return False
-        if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
-            return False
-        if not self.app.automation.installPath:
-            self.app.message.emit('No QCI updater available - upload not possible', 2)
-            return False
 
         self.app.message.emit('Uploading IERS data to mount', 0)
         suc = self.app.automation.uploadEarthRotationData()
-
         if not suc:
-            self.app.message.emit('Uploading error', 2)
+            self.app.message.emit('Uploading error but files available', 2)
             return False
 
         self.app.message.emit('Programming success', 1)
@@ -292,7 +298,7 @@ class MinorPlanetTime:
         self.app.message.emit('Uploading MPC data to mount', 0)
         suc = self.app.automation.uploadMPCData(comets=isComet)
         if not suc:
-            self.app.message.emit('Uploading error', 2)
+            self.app.message.emit('Uploading error, files available', 2)
         else:
             self.app.message.emit('Programming success', 1)
         return suc
@@ -312,19 +318,6 @@ class MinorPlanetTime:
 
             filtered.append(mp)
         return filtered
-
-    def checkUpdaterOK(self):
-        """
-        :return:
-        """
-        if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
-            return False
-        if not self.app.automation.installPath:
-            self.app.message.emit('No 10micron updater available - upload not '
-                                  'possible', 2)
-            return False
-        return True
 
     def mpcGUI(self):
         """
@@ -359,13 +352,13 @@ class MinorPlanetTime:
         """
         suc = self.mpcGUI()
         if not suc:
-            self.app.message.emit('MPC files locally available', 0)
-        else:
-            source = self.ui.listMinorPlanetNames.currentItem().text()
-            number = int(source.split(':')[0])
-            mpcFiltered = [self.minorPlanets[number]]
-            self.progMinorPlanets(mpcFiltered)
-        return suc
+            return False
+
+        source = self.ui.listMinorPlanetNames.currentItem().text()
+        number = int(source.split(':')[0])
+        mpcFiltered = [self.minorPlanets[number]]
+        self.progMinorPlanets(mpcFiltered)
+        return True
 
     def progMinorPlanetsFiltered(self):
         """
@@ -373,11 +366,11 @@ class MinorPlanetTime:
         """
         suc = self.mpcGUI()
         if not suc:
-            self.app.message.emit('MPC files locally available', 0)
-        else:
-            mpcFiltered = self.mpcFilter(self.minorPlanets)
-            self.progMinorPlanets(mpcFiltered)
-        return suc
+            return False
+
+        mpcFiltered = self.mpcFilter(self.minorPlanets)
+        self.progMinorPlanets(mpcFiltered)
+        return True
 
     def progMinorPlanetsFull(self):
         """
@@ -385,7 +378,7 @@ class MinorPlanetTime:
         """
         suc = self.mpcGUI()
         if not suc:
-            self.app.message.emit('MPC files locally available', 0)
-        else:
-            self.progMinorPlanets(self.minorPlanets)
-        return suc
+            return False
+
+        self.progMinorPlanets(self.minorPlanets)
+        return True

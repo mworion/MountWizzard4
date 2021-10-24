@@ -661,9 +661,14 @@ class SatSearch(object):
         if not suc:
             return False
 
-        source = self.ui.satelliteSource.currentText()
-        text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with 10micron Updater', text)
+        question = '<b>Filtered MPC Data programming</b>'
+        question += '<br><br>The 10micron updater will be used.'
+        question += '<br>Selected source: '
+        question += f'<font color={self.M_BLUE}>{source}</font>'
+        question += '<br>Would you like to start?<br>'
+        question += f'<br><i><font color={self.M_YELLOW}>'
+        question += 'Please wait until updater is closed!</font></i>'
+        suc = self.messageDialog(self, 'Program with 10micron Updater', question)
         if not suc:
             return False
 
@@ -677,7 +682,7 @@ class SatSearch(object):
         """
         suc = self.satelliteGUI()
         if not suc:
-            self.app.message.emit('Exporting TLE canceled', 2)
+            self.app.message.emit('TLE files locally available', 0)
         else:
             filtered = self.satelliteFilter(self.satellites)
             self.progSatellites(filtered)
@@ -690,7 +695,7 @@ class SatSearch(object):
         """
         suc = self.satelliteGUI()
         if not suc:
-            self.app.message.emit('Exporting TLE canceled', 2)
+            self.app.message.emit('TLE files locally available', 0)
         else:
             self.progSatellites(self.satellites)
 

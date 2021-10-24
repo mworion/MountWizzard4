@@ -53,7 +53,7 @@ class MinorPlanetTime:
             'FTP IERS': 'ftp://cddis.nasa.gov/products/iers',
         }
 
-        self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetToMount)
+        self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetsSingle)
         self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
         self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
         self.ui.progEarthRotationData.clicked.connect(self.startProgEarthRotationDataToMount)
@@ -274,53 +274,6 @@ class MinorPlanetTime:
         DownloadPopup(self, url=url, dest=dest, unzip=False)
         return True
 
-    def progMinorPlanetToMount(self):
-        """
-        :return: success
-        """
-        source = self.ui.listMinorPlanetNames.currentItem().text()
-        number = int(source.split(':')[0])
-        mpc = [self.minorPlanets[number]]
-        isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
-        isAsteroid = not isComet
-
-        question = '<b>Single MPC Data programming</b>'
-        question += '<br><br>The 10micron updater will be used.'
-        question += '<br>Selected source: '
-        question += f'<font color={self.M_BLUE}>{source}.</font>'
-        question += '<br>Would you like to start?<br>'
-        question += f'<br><i><font color={self.M_YELLOW}>'
-        question += 'Please wait until updater is closed!</font></i>'
-        suc = self.messageDialog(self, 'Program with QCI Updater', question)
-        if not suc:
-            return False
-
-        self.app.message.emit(f'Program to mount:    [{source}]', 1)
-        self.app.message.emit('Exporting MPC data', 0)
-
-        if isComet:
-            suc = self.databaseProcessing.writeCometMPC(mpc, self.installPath)
-        if isAsteroid:
-            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.installPath)
-        if not suc:
-            self.app.message.emit('Data could not be exported - stopping', 2)
-            return False
-        if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
-            return False
-        if not self.app.automation.installPath:
-            self.app.message.emit(
-                'No 10micron updater available - upload not possible', 2)
-            return False
-
-        self.app.message.emit('Uploading to mount', 0)
-        suc = self.app.automation.uploadMPCData(comets=isComet)
-        if not suc:
-            self.app.message.emit('Uploading error', 2)
-        else:
-            self.app.message.emit('Programming success', 1)
-        return suc
-
     def progMinorPlanets(self, mpc):
         """
         :param mpc:
@@ -400,13 +353,27 @@ class MinorPlanetTime:
         self.app.message.emit('Exporting MPC data', 0)
         return True
 
+    def progMinorPlanetSingle(self):
+        """
+        :return: success
+        """
+        suc = self.mpcGUI()
+        if not suc:
+            self.app.message.emit('MPC files locally available', 0)
+        else:
+            source = self.ui.listMinorPlanetNames.currentItem().text()
+            number = int(source.split(':')[0])
+            mpcFiltered = [self.minorPlanets[number]]
+            self.progMinorPlanets(mpcFiltered)
+        return suc
+
     def progMinorPlanetsFiltered(self):
         """
         :return: success
         """
         suc = self.mpcGUI()
         if not suc:
-            self.app.message.emit('Exporting MPC canceled', 2)
+            self.app.message.emit('MPC files locally available', 0)
         else:
             mpcFiltered = self.mpcFilter(self.minorPlanets)
             self.progMinorPlanets(mpcFiltered)
@@ -418,7 +385,7 @@ class MinorPlanetTime:
         """
         suc = self.mpcGUI()
         if not suc:
-            self.app.message.emit('Exporting MPC canceled', 2)
+            self.app.message.emit('MPC files locally available', 0)
         else:
             self.progMinorPlanets(self.minorPlanets)
         return suc

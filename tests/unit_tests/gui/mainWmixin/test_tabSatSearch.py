@@ -822,6 +822,7 @@ def test_satelliteGUI_1(function):
 
 
 def test_satelliteGUI_2(function):
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
@@ -833,6 +834,10 @@ def test_satelliteGUI_2(function):
 
 
 def test_satelliteGUI_3(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):

@@ -487,6 +487,24 @@ def test_mpcGUI_4(function):
             assert suc
 
 
+def test_progMinorPlanetsSingle_1(function):
+    with mock.patch.object(function,
+                           'mpcGUI',
+                           return_value=False):
+        suc = function.progMinorPlanetsSingle()
+        assert not suc
+
+
+def test_progMinorPlanetsSingle_2(function):
+    with mock.patch.object(function,
+                           'mpcGUI',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'progMinorPlanets'):
+            suc = function.progMinorPlanetsSingle()
+            assert suc
+
+
 def test_progMinorPlanetsFiltered_1(function):
     with mock.patch.object(function,
                            'mpcGUI',

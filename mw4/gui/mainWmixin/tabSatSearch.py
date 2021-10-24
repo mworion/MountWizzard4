@@ -661,6 +661,7 @@ class SatSearch(object):
         if not suc:
             return False
 
+        source = self.ui.satelliteSource.currentText()
         question = '<b>Filtered MPC Data programming</b>'
         question += '<br><br>The 10micron updater will be used.'
         question += '<br>Selected source: '

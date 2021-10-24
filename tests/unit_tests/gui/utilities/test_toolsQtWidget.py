@@ -34,6 +34,7 @@ import numpy as np
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.toolsQtWidget import FileSortProxyModel
 from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -45,6 +46,7 @@ def module(qapp):
 def function(module):
 
     window = MWidget()
+    window.app = App()
     yield window
 
 

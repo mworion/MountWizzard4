@@ -321,56 +321,19 @@ class MinorPlanetTime:
             self.app.message.emit('Programming success', 1)
         return suc
 
-    def progMinorPlanetsFiltered(self):
+    def progMinorPlanets(self, mpc):
         """
-        :return: success
+        :param mpc:
+        :return:
         """
-        source = self.ui.minorPlanetSource.currentText()
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
-        isAsteroid = not isComet
-
-        if source.startswith('Please'):
-            return False
-
-        question = '<b>Filtered MPC Data programming</b>'
-        question += '<br><br>The 10micron updater will be used.'
-        question += '<br>Selected source: '
-        question += f'<font color={self.M_BLUE}>{source}</font>'
-        question += '<br>Would you like to start?<br>'
-        question += f'<br><i><font color={self.M_YELLOW}>'
-        question += 'Please wait until updater is closed!</font></i>'
-        suc = self.messageDialog(self, 'Program with QCI Updater', question)
-        if not suc:
-            return False
-
-        self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting MPC data', 0)
-
-        filterStr = self.ui.filterMinorPlanet.text().lower()
-        filtered = list()
-        for index, mp in enumerate(self.minorPlanets):
-            text = self.generateName(index, mp)
-
-            if filterStr.lower() not in text.lower():
-                continue
-
-            filtered.append(mp)
-
         if isComet:
-            suc = self.databaseProcessing.writeCometMPC(filtered,
-                                                        self.installPath)
-        if isAsteroid:
-            suc = self.databaseProcessing.writeAsteroidMPC(filtered,
-                                                           self.installPath)
+            suc = self.databaseProcessing.writeCometMPC(mpc, self.installPath)
+        else:
+            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.installPath)
+
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
-            return False
-        if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
-            return False
-        if not self.app.automation.installPath:
-            self.app.message.emit('No 10micron updater available - upload not '
-                                  'possible', 2)
             return False
 
         self.app.message.emit('Uploading MPC data to mount', 0)
@@ -381,51 +344,81 @@ class MinorPlanetTime:
             self.app.message.emit('Programming success', 1)
         return suc
 
-    def progMinorPlanetsFull(self):
+    def mpcFilter(self, mpcRaw):
         """
-        :return: success
+        :param mpcRaw:
+        :return:
+        """
+        filterStr = self.ui.filterMinorPlanet.text().lower()
+        filtered = list()
+        for index, mp in enumerate(mpcRaw):
+            text = self.generateName(index, mp)
+
+            if filterStr.lower() not in text.lower():
+                continue
+
+            filtered.append(mp)
+        return filtered
+
+    def checkUpdaterOK(self):
+        """
+        :return:
+        """
+        if not self.app.automation:
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+        if not self.app.automation.installPath:
+            self.app.message.emit('No 10micron updater available - upload not '
+                                  'possible', 2)
+            return False
+        return True
+
+    def mpcGUI(self):
+        """
+        :return:
         """
         source = self.ui.minorPlanetSource.currentText()
-        isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
-        isAsteroid = not isComet
         if source.startswith('Please'):
             return False
 
-        question = '<b>Full MPC Data programming</b>'
+        suc = self.checkUpdaterOK()
+        if not suc:
+            return False
+
+        question = '<b>Filtered MPC Data programming</b>'
         question += '<br><br>The 10micron updater will be used.'
         question += '<br>Selected source: '
         question += f'<font color={self.M_BLUE}>{source}</font>'
         question += '<br>Would you like to start?<br>'
         question += f'<br><i><font color={self.M_YELLOW}>'
         question += 'Please wait until updater is closed!</font></i>'
-        suc = self.messageDialog(self, 'Program with QCI Updater', question)
+        suc = self.messageDialog(self, 'Program with 10micron Updater', question)
         if not suc:
             return False
 
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting MPC data', 0)
+        return True
 
-        if isComet:
-            suc = self.databaseProcessing.writeCometMPC(self.minorPlanets,
-                                                        self.installPath)
-        if isAsteroid:
-            suc = self.databaseProcessing.writeAsteroidMPC(self.minorPlanets,
-                                                           self.installPath)
+    def progMinorPlanetsFiltered(self):
+        """
+        :return: success
+        """
+        suc = self.mpcGUI()
         if not suc:
-            self.app.message.emit('Data could not be exported - stopping', 2)
-            return False
-        if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
-            return False
-        if not self.app.automation.installPath:
-            self.app.message.emit('No 10micron updater available - upload not possible', 2)
-            return False
-
-        self.app.message.emit('Uploading MPC data to mount', 0)
-        suc = self.app.automation.uploadMPCData(comets=isComet)
-
-        if not suc:
-            self.app.message.emit('Uploading error', 2)
+            self.app.message.emit('Exporting MPC canceled', 2)
         else:
-            self.app.message.emit('Programming success', 1)
+            mpcFiltered = self.mpcFilter(self.minorPlanets)
+            self.progMinorPlanets(mpcFiltered)
+        return suc
+
+    def progMinorPlanetsFull(self):
+        """
+        :return: success
+        """
+        suc = self.mpcGUI()
+        if not suc:
+            self.app.message.emit('Exporting MPC canceled', 2)
+        else:
+            self.progMinorPlanets(self.minorPlanets)
         return suc

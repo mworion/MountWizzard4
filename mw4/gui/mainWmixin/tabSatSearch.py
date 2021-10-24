@@ -606,43 +606,14 @@ class SatSearch(object):
         self.threadPool.start(worker)
         return True
 
-    def progSatellitesFiltered(self):
+    def progSatellites(self, satellites):
         """
-        :return: success
+        :param satellites:
+        :return:
         """
-        source = self.ui.satelliteSource.currentText()
-        text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with 10micron Updater', text)
-        if not suc:
-            return False
-
-        self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting TLE data', 0)
-
-        filterStr = self.ui.filterSatellite.text().lower()
-        filtered = dict()
-        for name, _ in self.satellites.items():
-            if not isinstance(name, str):
-                continue
-
-            text = f'{name}'
-            if filterStr.lower() not in text.lower():
-                continue
-
-            filtered[name] = self.satellites[name]
-
-        suc = self.databaseProcessing.writeSatelliteTLE(filtered,
-                                                        self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.installPath)
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
-            return False
-        if not self.app.automation:
-            t = 'Not running windows - upload not possible'
-            self.app.message.emit(t, 2)
-            return False
-        if not self.app.automation.installPath:
-            t = 'No 10micron updater available - upload not possible'
-            self.app.message.emit(t, 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)
@@ -653,38 +624,74 @@ class SatSearch(object):
             self.app.message.emit('Programming success', 1)
         return suc
 
-    def progSatellitesFull(self):
+    def satelliteFilter(self, satellitesRaw):
         """
-        :return: success
+        :param satellitesRaw:
+        :return:
         """
+        filterStr = self.ui.filterSatellite.text().lower()
+        filtered = dict()
+        for name, _ in satellitesRaw.items():
+            if not isinstance(name, str):
+                continue
+            text = f'{name}'
+            if filterStr.lower() not in text.lower():
+                continue
+            filtered[name] = satellitesRaw[name]
+        return filtered
+
+    def checkUpdaterOK(self):
+        """
+        :return:
+        """
+        if not self.app.automation:
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+        if not self.app.automation.installPath:
+            self.app.message.emit('No 10micron updater available - upload not '
+                                  'possible', 2)
+            return False
+        return True
+
+    def satelliteGUI(self):
+        """
+        :return:
+        """
+        suc = self.checkUpdaterOK()
+        if not suc:
+            return False
+
         source = self.ui.satelliteSource.currentText()
-        text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
+        text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
         suc = self.messageDialog(self, 'Program with 10micron Updater', text)
         if not suc:
             return False
 
         self.app.message.emit(f'Program database:    [{source}]', 1)
         self.app.message.emit('Exporting TLE data', 0)
+        return True
 
-        suc = self.databaseProcessing.writeSatelliteTLE(self.satellites,
-                                                        self.installPath)
+    def progSatellitesFiltered(self):
+        """
+        :return: success
+        """
+        suc = self.satelliteGUI()
         if not suc:
-            self.app.message.emit('Data could not be exported - stopping', 2)
-            return False
-        if not self.app.automation:
-            t = 'Not running windows - upload not possible'
-            self.app.message.emit(t, 2)
-            return False
-        if not self.app.automation.installPath:
-            t = 'No 10micron updater available - upload not possible'
-            self.app.message.emit(t, 2)
-            return False
-
-        self.app.message.emit('Uploading TLE data to mount', 0)
-        suc = self.app.automation.uploadTLEData()
-        if not suc:
-            self.app.message.emit('Uploading error', 2)
+            self.app.message.emit('Exporting TLE canceled', 2)
         else:
-            self.app.message.emit('Programming success', 1)
+            filtered = self.satelliteFilter(self.satellites)
+            self.progSatellites(filtered)
+
+        return suc
+
+    def progSatellitesFull(self):
+        """
+        :return: success
+        """
+        suc = self.satelliteGUI()
+        if not suc:
+            self.app.message.emit('Exporting TLE canceled', 2)
+        else:
+            self.progSatellites(self.satellites)
 
         return suc

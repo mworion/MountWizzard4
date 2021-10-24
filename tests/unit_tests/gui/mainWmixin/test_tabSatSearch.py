@@ -745,289 +745,137 @@ def test_loadDataFromSourceURLs_3(function):
     assert suc
 
 
-def test_progSatellitesFiltered_1(function):
-    class Satnum:
+def test_progSatellites_1(function):
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeSatelliteTLE',
+                           return_value=False):
+        suc = function.progSatellites(raw)
+        assert not suc
+
+
+def test_progSatellites_2(function):
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeSatelliteTLE',
+                           return_value=True):
+        with mock.patch.object(function.app.automation,
+                               'uploadTLEData',
+                               return_value=False):
+            suc = function.progSatellites(raw)
+            assert not suc
+
+
+def test_progSatellites_3(function):
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeSatelliteTLE',
+                           return_value=True):
+        with mock.patch.object(function.app.automation,
+                               'uploadTLEData',
+                               return_value=True):
+            suc = function.progSatellites(raw)
+            assert suc
+
+
+def test_satelliteFilter_1(function):
+    class SatNum:
         satnum = 1
 
     class Model:
-        model = Satnum()
+        model = SatNum()
 
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
+    raw = {'test': Model(), '0815': Model(), 0: Model()}
     function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
 
+    val = function.satelliteFilter(raw)
+    assert 'test' in val
+
+
+def test_checkUpdaterOK_1(function):
+    function.app.automation = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_2(function):
+    function.app.automation.installPath = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_3(function):
+    function.app.automation.installPath = 'test'
+    suc = function.checkUpdaterOK()
+    assert suc
+
+
+def test_satelliteGUI_1(function):
     with mock.patch.object(function,
                            'messageDialog',
+                           return_value=False):
+        suc = function.satelliteGUI()
+        assert not suc
+
+
+def test_satelliteGUI_2(function):
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'checkUpdaterOK',
+                               return_value=False):
+            suc = function.satelliteGUI()
+            assert not suc
+
+
+def test_satelliteGUI_3(function):
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'checkUpdaterOK',
+                               return_value=True):
+            suc = function.satelliteGUI()
+            assert suc
+
+
+def test_progSatellitesFiltered_1(function):
+    with mock.patch.object(function,
+                           'satelliteGUI',
                            return_value=False):
         suc = function.progSatellitesFiltered()
         assert not suc
 
 
 def test_progSatellitesFiltered_2(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
     with mock.patch.object(function,
-                           'messageDialog',
+                           'satelliteGUI',
                            return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=False):
-            suc = function.progSatellitesFiltered()
-            assert not suc
-
-
-def test_progSatellitesFiltered_3(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.app.automation = None
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            suc = function.progSatellitesFiltered()
-            assert not suc
-
-
-def test_progSatellitesFiltered_3b(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.app.automation.installPath = ''
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            suc = function.progSatellitesFiltered()
-            assert not suc
-
-
-def test_progSatellitesFiltered_4(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.app.automation.installPath = 'test'
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadTLEData',
-                                   return_value=False):
-                suc = function.progSatellitesFiltered()
-                assert not suc
-
-
-def test_progSatellitesFiltered_5(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadTLEData',
-                                   return_value=True):
+        with mock.patch.object(function,
+                               'progSatellites'):
+            with mock.patch.object(function,
+                                   'satelliteFilter'):
                 suc = function.progSatellitesFiltered()
                 assert suc
 
 
 def test_progSatellitesFull_1(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.app.automation = None
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
     with mock.patch.object(function,
-                           'messageDialog',
+                           'satelliteGUI',
                            return_value=False):
         suc = function.progSatellitesFull()
         assert not suc
 
 
 def test_progSatellitesFull_2(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
     with mock.patch.object(function,
-                           'messageDialog',
+                           'satelliteGUI',
                            return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=False):
+        with mock.patch.object(function,
+                               'progSatellites'):
             suc = function.progSatellitesFull()
-            assert not suc
-
-
-def test_progSatellitesFull_3(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.app.automation = None
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            suc = function.progSatellitesFull()
-            assert not suc
-
-
-def test_progSatellitesFull_3b(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.app.automation.installPath = ''
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            suc = function.progSatellitesFull()
-            assert not suc
-
-
-def test_progSatellitesFull_4(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.app.automation.installPath = 'test'
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadTLEData',
-                                   return_value=False):
-                suc = function.progSatellitesFull()
-                assert not suc
-
-
-def test_progSatellitesFull_5(function):
-    class Satnum:
-        satnum = 1
-
-    class Model:
-        model = Satnum()
-
-    function.ui.satelliteSource.clear()
-    function.ui.satelliteSource.addItem('Comet')
-    function.ui.satelliteSource.setCurrentIndex(0)
-    function.ui.filterSatellite.setText('test')
-    function.satellites = {'test': Model(), '0815': Model(), 0: Model()}
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeSatelliteTLE',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadTLEData',
-                                   return_value=True):
-                suc = function.progSatellitesFull()
-                assert suc
+            assert suc

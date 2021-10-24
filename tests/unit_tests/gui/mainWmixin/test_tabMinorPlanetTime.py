@@ -529,287 +529,173 @@ def test_progMinorPlanetToMount_8(function):
             assert suc
 
 
-def test_progMinorPlanetsFiltered_1(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Please')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    suc = function.progMinorPlanetsFiltered()
-    assert not suc
-
-
-def test_progMinorPlanetsFiltered_2(function):
+def test_progMinorPlanets_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeCometMPC',
+                           return_value=False):
+        suc = function.progMinorPlanets(raw)
+        assert not suc
+
+
+def test_progMinorPlanets_2(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Asteroid')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeAsteroidMPC',
+                           return_value=False):
+        suc = function.progMinorPlanets(raw)
+        assert not suc
+
+
+def test_progMinorPlanets_3(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeCometMPC',
+                           return_value=True):
+        with mock.patch.object(function.app.automation,
+                               'uploadMPCData',
+                               return_value=False):
+            suc = function.progMinorPlanets(raw)
+            assert not suc
+
+
+def test_progMinorPlanets_4(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeCometMPC',
+                           return_value=True):
+        with mock.patch.object(function.app.automation,
+                               'uploadMPCData',
+                               return_value=True):
+            suc = function.progMinorPlanets(raw)
+            assert suc
+
+
+def test_mpcFilter_1(function):
+    raw = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
     function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
+
+    val = function.mpcFilter(raw)
+    assert val == [{'Principal_desig': 'test'}]
+
+
+def test_checkUpdaterOK_1(function):
+    function.app.automation = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_2(function):
+    function.app.automation.installPath = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_3(function):
+    function.app.automation.installPath = 'test'
+    suc = function.checkUpdaterOK()
+    assert suc
+
+
+def test_mpcGUI_1(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Please')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    suc = function.mpcGUI()
+    assert not suc
+
+
+def test_mpcGUI_2(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
 
     with mock.patch.object(function,
                            'messageDialog',
+                           return_value=False):
+        suc = function.mpcGUI()
+        assert not suc
+
+
+def test_mpcGUI_3(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'checkUpdaterOK',
+                               return_value=False):
+            suc = function.mpcGUI()
+            assert not suc
+
+
+def test_mpcGUI_4(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'checkUpdaterOK',
+                               return_value=True):
+            suc = function.mpcGUI()
+            assert suc
+
+
+def test_progMinorPlanetsFiltered_1(function):
+    with mock.patch.object(function,
+                           'mpcGUI',
                            return_value=False):
         suc = function.progMinorPlanetsFiltered()
         assert not suc
 
 
-def test_progMinorPlanetsFiltered_3(function):
-    function.app.automation = None
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-
+def test_progMinorPlanetsFiltered_2(function):
     with mock.patch.object(function,
-                           'messageDialog',
+                           'mpcGUI',
                            return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=False):
-            suc = function.progMinorPlanetsFiltered()
-            assert not suc
-
-
-def test_progMinorPlanetsFiltered_4(function):
-    function.app.automation = None
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            suc = function.progMinorPlanetsFiltered()
-            assert not suc
-
-
-def test_progMinorPlanetsFiltered_4a(function):
-    function.app.automation = None
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Asteroid')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'00000: test'}, {'00000: 0815'}]
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeAsteroidMPC',
-                               return_value=True):
-            suc = function.progMinorPlanetsFiltered()
-            assert not suc
-
-
-def test_progMinorPlanetsFiltered_5(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            suc = function.progMinorPlanetsFiltered()
-            assert not suc
-
-
-def test_progMinorPlanetsFiltered_6(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadMPCData',
-                                   return_value=False):
-                suc = function.progMinorPlanetsFiltered()
-                assert not suc
-
-
-def test_progMinorPlanetsFiltered_7(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadMPCData',
-                                   return_value=True):
+        with mock.patch.object(function,
+                               'progMinorPlanets'):
+            with mock.patch.object(function,
+                                   'mpcFilter'):
                 suc = function.progMinorPlanetsFiltered()
                 assert suc
 
 
-def test_progMinorPlanetsFiltered_8(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-    function.app.automation.installPath = None
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadMPCData',
-                                   return_value=True):
-                suc = function.progMinorPlanetsFiltered()
-                assert not suc
-
-
 def test_progMinorPlanetsFull_1(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Please')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    suc = function.progMinorPlanetsFull()
-    assert not suc
-
-
-def test_progMinorPlanetsFull_2(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-
     with mock.patch.object(function,
-                           'messageDialog',
+                           'mpcGUI',
                            return_value=False):
         suc = function.progMinorPlanetsFull()
         assert not suc
 
 
-def test_progMinorPlanetsFull_3(function):
-    function.app.automation = None
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-
+def test_progMinorPlanetsFull_2(function):
     with mock.patch.object(function,
-                           'messageDialog',
+                           'mpcGUI',
                            return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=False):
+        with mock.patch.object(function,
+                               'progMinorPlanets'):
             suc = function.progMinorPlanetsFull()
-            assert not suc
-
-
-def test_progMinorPlanetsFull_4(function):
-    function.app.automation = None
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            suc = function.progMinorPlanetsFull()
-            assert not suc
-
-
-def test_progMinorPlanetsFull_4a(function):
-    function.app.automation = None
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Asteroid')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeAsteroidMPC',
-                               return_value=True):
-            suc = function.progMinorPlanetsFull()
-            assert not suc
-
-
-def test_progMinorPlanetsFull_5(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-    function.app.automation.installPath = 'None'
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadMPCData',
-                                   return_value=False):
-                suc = function.progMinorPlanetsFull()
-                assert not suc
-
-
-def test_progMinorPlanetsFull_6(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-    function.app.automation.installPath = 'None'
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadMPCData',
-                                   return_value=True):
-                suc = function.progMinorPlanetsFull()
-                assert suc
-
-
-def test_progMinorPlanetsFull_7(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    function.ui.filterMinorPlanet.setText('test')
-    function.minorPlanets = [{'Principal_desig': 'test'}, {'Principal_desig': '0815'}]
-    function.app.automation.installPath = None
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeCometMPC',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadMPCData',
-                                   return_value=True):
-                suc = function.progMinorPlanetsFull()
-                assert not suc
+            assert suc

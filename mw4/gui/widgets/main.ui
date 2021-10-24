@@ -124,7 +124,7 @@
     <attribute name="title">
      <string>Mount</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox_47">
+    <widget class="QGroupBox" name="GroupTracking">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -284,7 +284,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_48">
+    <widget class="QGroupBox" name="GroupParkingStop">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -992,7 +992,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_50">
+    <widget class="QGroupBox" name="GroupSettingStatus">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -18340,7 +18340,7 @@ Next point in time when satellite settles.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_40">
+      <widget class="QGroupBox" name="GroupAccessories">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -18622,7 +18622,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_41">
+      <widget class="QGroupBox" name="GroupCoreDevices">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -18992,7 +18992,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="Environmentgroup">
+      <widget class="QGroupBox" name="GroupEnvironmentConditions">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -19299,7 +19299,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="Ascomconnectgroup">
+      <widget class="QGroupBox" name="GroupAscomConnect">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -19416,7 +19416,7 @@ Next point in time when satellite settles.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_25">
+      <widget class="QGroupBox" name="GroupImagingSettings">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -20342,7 +20342,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_26">
+      <widget class="QGroupBox" name="GroupImagingCalculations">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21081,7 +21081,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_32">
+      <widget class="QGroupBox" name="GroupImagingQuality">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21337,7 +21337,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_33">
+      <widget class="QGroupBox" name="GroupTelescopeReadout">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21558,7 +21558,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_43">
+      <widget class="QGroupBox" name="GroupFlipFlat">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21765,7 +21765,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_34">
+      <widget class="QGroupBox" name="GroupFilterWheel">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -21933,7 +21933,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_35">
+      <widget class="QGroupBox" name="GroupFocuser">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -22159,7 +22159,7 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_62">
+      <widget class="QGroupBox" name="GroupMountConnectivity">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -22563,7 +22563,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_63">
+      <widget class="QGroupBox" name="GroupRigComputer">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -22641,7 +22641,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_31">
+      <widget class="QGroupBox" name="GroupMountSettleTime">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -23126,7 +23126,7 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_44">
+      <widget class="QGroupBox" name="GroupDomeGeometry">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -23663,7 +23663,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_66">
+      <widget class="QGroupBox" name="GroupDomeSettleTime">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -24109,7 +24109,7 @@ When clicking the button, you could change the value.</string>
         </widget>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_53">
+      <widget class="QGroupBox" name="GroupDomeShutter">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -24509,7 +24509,7 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_45">
+      <widget class="QGroupBox" name="GroupParkPositionsSettings">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -26716,7 +26716,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_96">
+      <widget class="QGroupBox" name="GroupRelaySettings">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -27534,7 +27534,7 @@ When clicking the button, you could change the value.</string>
           <x>5</x>
           <y>20</y>
           <width>356</width>
-          <height>51</height>
+          <height>56</height>
          </rect>
         </property>
         <property name="html">
@@ -28067,7 +28067,7 @@ Updater</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="LoglevelGroup_2">
+      <widget class="QGroupBox" name="GroupClockSync">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -28253,7 +28253,7 @@ Updater</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="LoglevelGroup_3">
+      <widget class="QGroupBox" name="GroupGuiAddOns">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -28299,7 +28299,7 @@ Updater</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="LoglevelGroup_4">
+      <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
          <x>400</x>

@@ -496,6 +496,9 @@ def test_progMinorPlanetsSingle_1(function):
 
 
 def test_progMinorPlanetsSingle_2(function):
+    function.ui.listMinorPlanetNames.clear()
+    function.ui.listMinorPlanetNames.addItem('test')
+    function.ui.listMinorPlanetNames.setCurrentIndex(0)
     with mock.patch.object(function,
                            'mpcGUI',
                            return_value=True):

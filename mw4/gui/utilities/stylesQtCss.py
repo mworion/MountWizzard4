@@ -34,13 +34,14 @@ class Styles:
     M_BLUE4 = '#061828'
 
     M_WHITE_H = '#F0F0F0'
-    M_WHITE = '#A0A0A0'
-    M_WHITE1 = '#808080'
+    M_WHITE = '#C0C0C0'
+    M_WHITE1 = '#A0A0A0'
+    M_WHITE2 = '#808080'
 
     M_GREY = '#404040'
     M_GREY1 = '#303030'
     M_GREY2 = '#282828'
-    M_GREY3 = '#202020'
+    M_BACK_H = '#202020'
     M_BACK = '#181818'
     M_BLACK = '#000000'
 
@@ -67,7 +68,7 @@ class Styles:
     COLOR_RED = QColor(f'{M_RED}')
     COLOR_PINK = QColor(f'{M_PINK_H}')
 
-    BACK_NORM = f'background-color: {M_GREY3};'
+    BACK_NORM = f'background-color: {M_BACK};'
     BACK_GREEN = f'background-color: {M_GREEN};'
     BACK_BLUE1 = f'background-color: {M_BLUE1};'
     BACK_BLUE2 = f'background-color: {M_BLUE2};'
@@ -76,7 +77,7 @@ class Styles:
 
     MAC_STYLE = """
     QWidget {
-        background-color: #181818;
+        background-color: $M_BACK$;
         font-family: Arial;
         font-weight: normal;
         font-size: 13pt;
@@ -113,7 +114,7 @@ class Styles:
 
     NON_MAC_STYLE = """
     QWidget {
-        background-color: #181818;
+        background-color: $M_BACK$;
         font-family: Arial;
         font-weight: normal;
         font-size: 10pt;
@@ -150,193 +151,189 @@ class Styles:
 
     BASIC_STYLE = """
     QWidget {
-        color: rgb(32, 144, 192);
+        color: $M_BLUE$;
     }
     QTextEdit {
-        color: #C0C0C0;
-        background-color: #202020;
+        color: $M_WHITE$;
+        background-color: $M_BLACK$;
         border-radius: 0px;
     }
     QToolTip {
         border-width: 2px;
         border-style: outset;
-        border-color: #404040;
-        background-color: #202020;
-        color: rgb(32, 144, 192);
+        border-color: $M_GREY$;
+        background-color: $M_BACK$;
+        color: $M_BLUE$;
         padding: 5px;
         max-width: 500px;
     }
     QLabel {
         background-color: transparent;
-        color: #C0C0C0;
+        color: $M_WHITE$;
     }
     QLabel:disabled {
         background-color: transparent;
-        color: #404040;
+        color: $M_GREY$;
     }
     QLabel[color='blue'] {
         border-width: 3px;
-        border-color: rgb(16, 72, 96);
+        border-color: $M_BLUE1$;
         border-style: outset;
         border-radius: 2px;
-        background-color: rgb(9, 36, 48);
+        background-color: $M_BLUE4$;
     }
     QLabel[iconpicture='true'] {
         border-width: 1px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: plain;
         border-radius: 0px;
     }
     /* QLine Edit*/
     QLineEdit {
-        background-color: #000000;
-        color: rgb(32, 144, 192);
+        background-color: $M_BACK$;
+        color: $M_BLUE$;
         text-align: right;
         border-width: 1px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: flat;
         border-radius: 2px;
     }
     QLineEdit[input='true']{
-        background-color: #000000;
-        border-width: 1px;
-        border-color: rgb(16, 72, 96);
+        background-color: $M_BLACK$;
+        border-color: $M_BLUE1$;
         border-style: outset;
-    }
-    QLineEdit:read-only{
-        background-color: #202020;
     }
     QLineEdit[color='green'] {
         border-width: 2px;
         border-style: outset;
-        border-color: green;
+        border-color: $M_GREEN$;
     }
     QLineEdit[color='yellow'] {
         border-width: 2px;
         border-style: outset;
-        border-color: yellow;
+        border-color: $M_YELLOW$;
     }
     QLineEdit[color='red'] {
         border-width: 2px;
         border-style: outset;
-        border-color: red;
+        border-color: $M_RED$;
     }
     QLineEdit[char='green'] {
-        color: #00C000;
+        color: $M_GREEN$;
     }
     QLineEdit[char='yellow'] {
-        color: '#C0C000';
+        color: $M_YELLOW$;
     }
     QLineEdit[char='red'] {
-        color: #C00000;
+        color: $M_RED$;
     }
     QLineEdit[color='red'] {
         border-width: 2px;
         border-style: outset;
-        border-color: #802020;
+        border-color: $M_RED$;
     }
     QLineEdit[color='yellow'] {
         border-width: 2px;
         border-style: outset;
-        border-color: #808000;
+        border-color: $M_YELLOW$;
     }
     QLineEdit[color='green'] {
         border-width: 2px;
         border-style: outset;
-        border-color: #006000;
+        border-color: $M_GREEN$;
     }
     QLineEdit[status='on'] {
-        color: black;
+        color: $M_BLACK$;
         border-width: 2px;
-        background-color: rgb(32, 144, 192);
+        background-color: $M_BLUE$;
     }
     QLabel[color='green'] {
-        color: green;
+        color: $M_GREEN$;
     }
     QLabel[color='yellow'] {
-        color: yellow;
+        color: $M_YELLOW$;
     }
     QLabel[color='red'] {
-        color: red;
+        color: $M_RED$;
     }
 
     /* Group Box */
     QGroupBox {
-        background-color: #181818;
+        background-color: $M_BACK$;
         border-width: 1px;
         border-style: outset;
         border-radius: 3px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         margin-top: 6px;
     }
     QGroupBox::title {
         left: 5px;
         subcontrol-origin: margin;
         subcontrol-position: top left;
-        color: #C0C0C0;
-        background-color: #181818;
+        color: $M_WHITE$;
+        background-color: $M_BACK$;
     }
     QGroupBox::title[large='true'] {
         left: 5px;
         subcontrol-origin: margin;
         subcontrol-position: top left;
-        color: rgb(32, 144, 196);
-        background-color: #181818;
+        color: $M_BLUE$;
+        background-color: $M_BACK$;
     }
     QGroupBox::title[refraction='true']{
-        color: rgb(32, 144, 192);
+        color: $M_BLUE$;
     }
     QGroupBox[refraction='true'] {
         border-width: 2px;
-        border-color: rgb(32, 144, 192);
+        border-color: $M_BLUE$;
     }
     QGroupBox:disabled{
         border-width: 2px;
-        border-color: '#802020';
+        border-color: $M_RED$;
     }
     QGroupBox::title:disabled{
-        color: #104860;
+        color: $M_BLUE1$;
     }
     QGroupBox::indicator {
         border-width: 1px;
-        border-color: #404040;
-        background-color: #101010;
+        border-color: $M_GREY$;
+        background-color: $M_BACK$;
         border-style: outset;
         border-radius: 2px;
         width: 13px;
         height: 13px;
     }
     QGroupBox::indicator:checked {
-        background-color: rgb(32, 144, 192);
+        background-color: $M_BLUE$;
         image: url(:/icon/checkmark.ico);
     }
     QGroupBox[running='true'] {
-        color: #C0C0C0;
-        border-color: #C0C000;
-        background-color: #202020;
+        color: $M_WHITE$;
+        border-color: $M_YELLOW$;
+        background-color: $M_BACK_H$;
     }
     QGroupBox:title[running='true'] {
-        color: #C0C0C0;
+        color: $M_WHITE$;
     }
 
 
     /* Checkboxes */
     QCheckBox {
-        color: #C0C0C0;
+        color: $M_WHITE$;
         spacing: 8px;
         background-color: transparent;
     }
     QCheckBox::indicator {
         border-width: 1px;
-        border-color: #404040;
-        background-color: #101010;
+        border-color: $M_GREY$;
+        background-color: $M_BACK$;
         border-style: outset;
         border-radius: 2px;
         width: 13px;
         height: 13px;
     }
     QCheckBox::indicator:checked {
-        background-color: rgb(32, 144, 192);
+        background-color: $M_BLUE$;
         image: url(:/icon/checkmark.ico);
     }
     QCheckBox::indicator:disabled {
@@ -344,43 +341,43 @@ class Styles:
         image: None;
     }
     QCheckBox:disabled {
-        color: #404040;
+        color: $M_GREY$;
     }
     QRadioButton {
-        color: #C0C0C0;
+        color: $M_WHITE$;
         background-color: transparent;
     }
     QRadioButton:disabled {
-        color: #404040;
+        color: $M_GREY$;
         background-color: transparent;
     }
     QRadioButton::indicator {
         border-width: 1px;
-        border-color: #404040;
-        background-color: #101010;
+        border-color: $M_GREY$;
+        background-color: $M_BACK$;
         border-style: outset;
         border-radius: 2px;
         width: 13px;
         height: 13px;
     }
     QRadioButton::indicator:checked {
-        background-color: rgb(32, 144, 192);
+        background-color: $M_BLUE$;
         image: url(:/icon/checkmark.ico);
     }
     /* Spin Boxes */
     QDoubleSpinBox {
-        background-color: #101010;
-        color: rgb(32, 144, 192);
+        background-color: $M_BACK$;
+        color: $M_BLUE$;
         text-align: right;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
         padding-right: 2px;
     }
     QDoubleSpinBox:disabled {
-        background-color: #202020;
-        color: #404040;
+        background-color: $M_BACK_H$;
+        color: $M_GREY$;
     }
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;
@@ -388,9 +385,9 @@ class Styles:
         width: 12px;
         border-width: 1px;
         border-radius: 2px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
-        background-color: #181818;
+        background-color: $M_BACK$;
     }
     QDoubleSpinBox::up-arrow {
         image: url(:/icon/arrow-up.ico);
@@ -404,8 +401,8 @@ class Styles:
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
-        border-color: #404040;
-        background-color: #181818;
+        border-color: $M_GREY$;
+        background-color: $M_BACK$;
     }
     QDoubleSpinBox::down-arrow {
         image: url(:/icon/arrow-down.ico);
@@ -414,10 +411,10 @@ class Styles:
     }
     /* Spin Boxes */
     QSpinBox {
-        background-color: #101010;
-        color: rgb(32, 144, 192);
+        background-color: $M_BACK$;
+        color: $M_BLUE$;
         text-align: right;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
@@ -430,9 +427,9 @@ class Styles:
         width: 16px;
         border-width: 1px;
         border-radius: 2px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
-        background-color: #181818;
+        background-color: $M_BACK$;
     }
     QSpinBox::up-arrow {
         image: url(:/icon/arrow-up.ico);
@@ -446,8 +443,8 @@ class Styles:
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
-        border-color: #404040;
-        background-color: #181818;
+        border-color: $M_GREY$;
+        background-color: $M_BACK$;
     }
     QSpinBox::down-arrow {
         image: url(:/icon/arrow-down.ico);
@@ -464,56 +461,56 @@ class Styles:
         outline: none;
     }
     QPushButton:pressed {
-        background-color: rgb(32, 144, 192);
-        color: #000000;
+        background-color: $M_BLUE$;
+        color: $M_BLACK$;
     }
     QPushButton[running='false'] {
-        background-color: #202020;
-        color: #C0C0C0;
+        background-color: $M_BACK_H$;
+        color: $M_WHITE$;
     }
     QPushButton[running='true'] {
-        background-color: rgb(32, 144, 192);
-        color: #000000;
+        background-color: $M_BLUE$;
+        color: $M_BLACK$;
     }
     QPushButton[pause='false'] {
-        background-color: #202020;
-        color: #C0C0C0;
+        background-color: $M_BACK_H$;
+        color: $M_WHITE$;
     }
     QPushButton[pause='true'] {
         background-color: #00C000;
-        color: #000000;
+        color: $M_BLACK$;
     }
     QPushButton[cancel='true'] {
         background-color: rgb(192,0, 0);
-        color: #C0C0C0;
+        color: $M_WHITE$;
     }
     QPushButton[cancel='false'] {
-        background-color: #202020;
-        color: #C0C0C0;
+        background-color: $M_BACK_H$;
+        color: $M_WHITE$;
     }
     QPushButton:disabled {
-        background-color: #101010;
-        color: #404040;
-        border-color: #202020;
+        background-color: $M_BACK$;
+        color: $M_GREY$;
+        border-color: $M_BACK_H$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
     }
     QPushButton[color='gray'] {
         background-color: gray;
-        color: #000000;
+        color: $M_BLACK$;
     }
     QPushButton[color='red'] {
         background-color: red;
-        color: #000000;
+        color: $M_BLACK$;
     }
     QPushButton[color='yellow'] {
         background-color: yellow;
-        color: #000000;
+        color: $M_BLACK$;
     }
     QPushButton[color='green'] {
         background-color: green;
-        color: #000000;
+        color: $M_BLACK$;
     }
     QPushButton[stop='true'] {
         background-color: transparent;
@@ -521,18 +518,18 @@ class Styles:
         border-color: transparent;
     }
     QPushButton {
-        background-color: #202020;
-        color: #C0C0C0;
-        border-color: #404040;
+        background-color: $M_BACK_H$;
+        color: $M_WHITE$;
+        border-color: $M_GREY$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
         min - width: 10em;
     }
     QMessageBox QPushButton {
-        background-color: #202020;
-        color: #C0C0C0;
-        border-color: #404040;
+        background-color: $M_BACK_H$;
+        color: $M_WHITE$;
+        border-color: $M_GREY$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
@@ -541,20 +538,20 @@ class Styles:
     }
     QMessageBox QPushButton:default {
         border-width: 2px;
-        border-color: rgb(32, 144, 192);
+        border-color: $M_BLUE$;
     }
     QListView {
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-width: 0px;
         border-style: plain;
         border-radius: 0px;
-        color: #C0C0C0;
+        color: $M_WHITE$;
         padding: 0px;
         margin: 0px;
         border: 0px;
     }
     QTableWidget {
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-width: 0px;
         border-style: plain;
         border-radius: 0px;
@@ -566,9 +563,9 @@ class Styles:
         border-width: 1px;
         border-style: plain;
         border-radius: 2px;
-        border-color: #181818;
+        border-color: $M_BACK$;
         background-color: #303030;
-        color: #C0C0C0;
+        color: $M_WHITE$;
     }
     QTableWidget QHeaderView::down-arrow{
         subcontrol-position: upper;
@@ -577,29 +574,29 @@ class Styles:
         height: 6px;
     }
     QTableView::item:selected {
-        background-color: rgb(32, 144, 192);
-        color: #101010;
+        background-color: $M_BLUE$;
+        color: $M_BACK$;
     }
     /* Combo Boxes */
     QComboBox {
         combobox-popup: 0;
-        color: #C0C0C0;
-        border-color: #404040;
+        color: $M_WHITE$;
+        border-color: $M_GREY$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
         padding-left: 5px;
-        background-color: #202020;
+        background-color: $M_BACK_H$;
     }
     QComboBox::drop-down {
         subcontrol-origin: border;
         subcontrol-position: right;
         width: 20px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
-        background-color: #202020;
+        background-color: $M_BACK_H$;
     }
     QComboBox::down-arrow {
         image: url(:/icon/arrow-down.ico);
@@ -609,10 +606,10 @@ class Styles:
     QComboBox QListView {
         border-width: 2px;
         border-style: outset;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-radius: 2px;
-        color: #C0C0C0;
-        background-color: #101010;
+        color: $M_WHITE$;
+        background-color: $M_BACK$;
         min-height: 60px;
     }
     QComboBox QListView::item {
@@ -621,23 +618,23 @@ class Styles:
     QComboBox QListView::item:selected {
         border-width: 1px;
         border-style: outset;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-radius: 2px;
-        color: #101010;
-        background-color: rgb(32, 144, 192);
+        color: $M_BACK$;
+        background-color: $M_BLUE$;
     }
 
     /* lines */
     QFrame[frameShape="4"] {
-        color: rgb(16, 72, 96);
+        color: $M_BLUE1$;
     }
     QFrame[frameShape="5"] {
-        color: rgb(16, 72, 96);
+        color: $M_BLUE1$;
     }
     /* tab widget */
     QTabWidget:pane {
         border-width: 2px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-radius: 2px;
         border-style: outset;
     }
@@ -646,10 +643,10 @@ class Styles:
         alignment: center;
     }
     QTabBar::tab {
-        background-color: #202020;
-        color: #C0C0C0;
+        background-color: $M_BACK_H$;
+        color: $M_WHITE$;
         border-width: 2px;
-        border-color: rgb(16, 72, 96);
+        border-color: $M_BLUE1$;
         border-radius: 3px;
         border-style: outset;
         padding: 4px;
@@ -657,8 +654,8 @@ class Styles:
         padding-right: 4px;
     }
     QTabBar::tab:selected {
-        color: #000000;
-        background: rgb(32, 144, 192);
+        color: $M_BLACK$;
+        background: $M_BLUE$;
     }
     QTabBar::tab:!selected {
         margin-top: 2px;
@@ -667,8 +664,8 @@ class Styles:
         margin: 1;
     }
     QTabBar::tab:disabled {
-        color: #404040;
-        border-color: #202020;
+        color: $M_GREY$;
+        border-color: $M_BACK_H$;
         width: 0;
         height: 0;
         padding: 0;
@@ -676,17 +673,17 @@ class Styles:
     }
     /* slider */
     QSlider
-    {   background-color: #202020;
+    {   background-color: $M_BACK_H$;
         width: 16px;
         height: 16px;
         margin: 0px 3px 0px 3px;
         border-width: 1px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
     QSlider::handle
-    {   background-color:  rgb(32, 144, 192);
+    {   background-color:  $M_BLUE$;
         border-radius: 2px;
         border-style: outset;
         border-width: 1px;
@@ -695,29 +692,29 @@ class Styles:
        background-color:  #104860;
     }
     QSlider::add-page
-    {   background-color: #202020;
-        border-color: #404040;
+    {   background-color: $M_BACK_H$;
+        border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
     QSlider::sub-page
-    {   background-color: #202020;
-        border-color: #404040;
+    {   background-color: $M_BACK_H$;
+        border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
     /* scroll bar */
     QScrollBar
-    {   background-color: #202020;
+    {   background-color: $M_BACK_H$;
         width: 20px;
         margin: 0px 3px 0px 3px;
         border-width: 1px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
     QScrollBar::handle
-    {   background-color:  rgb(32, 144, 192);
+    {   background-color:  $M_BLUE$;
         min-height: 32px;
         border-radius: 2px;
     }
@@ -750,7 +747,7 @@ class Styles:
     QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
     {   background: none;
         border-width: 0px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: plain;
         border-radius: 0px;
     }
@@ -760,53 +757,53 @@ class Styles:
     /* progress bar */
     QProgressBar {
         color: white;
-        background-color: #101010;
+        background-color: $M_BACK$;
         border-radius: 3px;
         border-width: 1px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
     }
     QProgressBar:disabled {
-        color: #404040;
-        background-color: #101010;
+        color: $M_GREY$;
+        background-color: $M_BACK$;
         border-radius: 3px;
         border-width: 1px;
-        border-color: #202020;
+        border-color: $M_BACK_H$;
         border-style: outset;
     }
     QProgressBar::chunk {
-        background-color: rgb(32, 144, 192);
+        background-color: $M_BLUE$;
         width: 1px;
         margin: 0px;
         border-width: 0px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-radius: 0px;
         border-style: outset;
     }
     QTextBrowser {
-        color: rgb(32, 144, 192);
-        background-color: #101010;
+        color: $M_BLUE$;
+        background-color: $M_BACK$;
         border-radius: 3px;
         border-width: 2px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
         margin: -5px;
     }
     QFileDialog QListView:enabled {
-        background-color: #101010;
-        color: rgb(32, 144, 192);
+        background-color: $M_BACK$;
+        color: $M_BLUE$;
         text-align: right;
         border-width: 1px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
     QFileDialog QListView:disabled {
-        background-color: #101010;
-        color: #404040;
+        background-color: $M_BACK$;
+        color: $M_GREY$;
         text-align: right;
         border-width: 1px;
-        border-color: #404040;
+        border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
@@ -815,9 +812,9 @@ class Styles:
         min-height: 20px;
     }
     QInputDialog QPushButton {
-        background-color: #202020;
-        color: #C0C0C0;
-        border-color: #404040;
+        background-color: $M_BACK_H$;
+        color: $M_WHITE$;
+        border-color: $M_GREY$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
@@ -826,6 +823,6 @@ class Styles:
     }
     QInputDialog QPushButton:default {
         border-width: 2px;
-        border-color: rgb(32, 144, 192);
+        border-color: $M_BLUE$;
     }
     """

@@ -198,6 +198,22 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         gui.style().polish(gui)
         return True
 
+    def renderStyle(self, raw):
+        """
+        :param raw:
+        :return:
+        """
+        style = ''
+        for line in raw.split('\n'):
+            start = line.find('$')
+            end = line.find('$', start + 1)
+            token = line[start + 1:end]
+            if hasattr(Styles, token):
+                repl = getattr(Styles, token)
+                line = line.replace(f'${token}$', repl)
+            style += (line + '\n')
+        return style
+
     def getStyle(self):
         """
         getStyle return the actual stylesheet for the used platform.
@@ -208,9 +224,10 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:    actual stylesheet string
         """
         if platform.system() == 'Darwin':
-            return self.MAC_STYLE + self.BASIC_STYLE
+            styleRaw = self.MAC_STYLE + self.BASIC_STYLE
         else:
-            return self.NON_MAC_STYLE + self.BASIC_STYLE
+            styleRaw = self.NON_MAC_STYLE + self.BASIC_STYLE
+        return self.renderStyle(styleRaw)
 
     def initUI(self):
         """

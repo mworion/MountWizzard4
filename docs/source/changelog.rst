@@ -37,7 +37,7 @@ domes use different control soft and hard ware, for simplicity.
 
 Released beta version of MW4
 ----------------------------
-2.1.0b5 (not released yet)
+2.1.0b12 (not released yet)
 
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
@@ -47,14 +47,24 @@ Released beta version of MW4
 - add: extended satellite tracking and tuning capabilities
 - add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
+- add: sorting for minimal dome slew in build point selection
+- add: setting prediction time of almanac (shorter reduces cpu load)
+- improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
+- improve: gui for running functions
+- improve: test coverage
+- fix: segfault in qt5lib on ubuntu
 
 Released version of MW4
 -----------------------
 Version 2.0
 ^^^^^^^^^^^
+2.0.6
+
+-
+
 2.0.5
 
 - fix: bug when running "stop exposure" in ASCOM

@@ -194,7 +194,7 @@ class Styles:
     }
     /* QLine Edit*/
     QLineEdit {
-        background-color: $M_BACK$;
+        background-color: $M_BLACK$;
         color: $M_BLUE$;
         text-align: right;
         border-width: 1px;

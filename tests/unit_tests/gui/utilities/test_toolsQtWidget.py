@@ -211,7 +211,7 @@ def test_getStyle_1(function):
                            'system',
                            return_value='Darwin'):
         ret = function.getStyle()
-        assert ret.startswith(' Q')
+        assert ret.startswith('\n')
 
 
 def test_getStyle_2(function):
@@ -219,7 +219,7 @@ def test_getStyle_2(function):
                            'system',
                            return_value='Windows'):
         ret = function.getStyle()
-        assert ret.startswith(' Q')
+        assert ret.startswith('\n')
 
 
 def test_initUI_1(function):

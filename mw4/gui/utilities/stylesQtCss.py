@@ -41,12 +41,12 @@ class Styles:
     M_WHITE1 = '#A0A0A0'
     M_WHITE2 = '#808080'
 
-    M_GREY = '#404040'      # borders
+    M_GREY = '#404040'      # borders / fills
     M_GREY1 = '#303030'
     M_GREY2 = '#282828'
+    M_GREY3 = '#202020'
 
-    M_BACK_H = '#202020'    # background
-    M_BACK = '#181818'
+    M_BACK = '#181818'      # background
     M_BLACK = '#000000'
 
     M_RED = '#B03030'
@@ -314,7 +314,7 @@ class Styles:
     QGroupBox[running='true'] {
         color: $M_WHITE$;
         border-color: $M_YELLOW$;
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
     }
     QGroupBox:title[running='true'] {
         color: $M_WHITE$;
@@ -380,7 +380,7 @@ class Styles:
         padding-right: 2px;
     }
     QDoubleSpinBox:disabled {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_GREY$;
     }
     QDoubleSpinBox::up-button {
@@ -469,7 +469,7 @@ class Styles:
         color: $M_BLACK$;
     }
     QPushButton[running='false'] {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_WHITE$;
     }
     QPushButton[running='true'] {
@@ -477,7 +477,7 @@ class Styles:
         color: $M_BLACK$;
     }
     QPushButton[pause='false'] {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_WHITE$;
     }
     QPushButton[pause='true'] {
@@ -489,13 +489,13 @@ class Styles:
         color: $M_WHITE$;
     }
     QPushButton[cancel='false'] {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_WHITE$;
     }
     QPushButton:disabled {
         background-color: $M_BACK$;
         color: $M_GREY$;
-        border-color: $M_BACK_H$;
+        border-color: $M_GREY3$;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
@@ -522,7 +522,7 @@ class Styles:
         border-color: $M_TRANS$;
     }
     QPushButton {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_WHITE$;
         border-color: $M_GREY$;
         border-width: 1px;
@@ -531,7 +531,7 @@ class Styles:
         min - width: 10em;
     }
     QMessageBox QPushButton {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_WHITE$;
         border-color: $M_GREY$;
         border-width: 1px;
@@ -590,7 +590,7 @@ class Styles:
         border-style: outset;
         border-radius: 2px;
         padding-left: 5px;
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
     }
     QComboBox::drop-down {
         subcontrol-origin: border;
@@ -600,7 +600,7 @@ class Styles:
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
     }
     QComboBox::down-arrow {
         image: url(:/icon/arrow-down.ico);
@@ -647,7 +647,7 @@ class Styles:
         alignment: center;
     }
     QTabBar::tab {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_WHITE$;
         border-width: 2px;
         border-color: $M_BLUE1$;
@@ -669,7 +669,7 @@ class Styles:
     }
     QTabBar::tab:disabled {
         color: $M_GREY$;
-        border-color: $M_BACK_H$;
+        border-color: $M_GREY3$;
         width: 0;
         height: 0;
         padding: 0;
@@ -677,7 +677,7 @@ class Styles:
     }
     /* slider */
     QSlider
-    {   background-color: $M_BACK_H$;
+    {   background-color: $M_GREY3$;
         width: 16px;
         height: 16px;
         margin: 0px 3px 0px 3px;
@@ -696,20 +696,20 @@ class Styles:
        background-color:  $M_BLUE1$;
     }
     QSlider::add-page
-    {   background-color: $M_BACK_H$;
+    {   background-color: $M_GREY3$;
         border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
     QSlider::sub-page
-    {   background-color: $M_BACK_H$;
+    {   background-color: $M_GREY3$;
         border-color: $M_GREY$;
         border-style: outset;
         border-radius: 2px;
     }
     /* scroll bar */
     QScrollBar
-    {   background-color: $M_BACK_H$;
+    {   background-color: $M_GREY3$;
         width: 20px;
         margin: 0px 3px 0px 3px;
         border-width: 1px;
@@ -772,7 +772,7 @@ class Styles:
         background-color: $M_BACK$;
         border-radius: 3px;
         border-width: 1px;
-        border-color: $M_BACK_H$;
+        border-color: $M_GREY3$;
         border-style: outset;
     }
     QProgressBar::chunk {
@@ -816,7 +816,7 @@ class Styles:
         min-height: 20px;
     }
     QInputDialog QPushButton {
-        background-color: $M_BACK_H$;
+        background-color: $M_GREY3$;
         color: $M_WHITE$;
         border-color: $M_GREY$;
         border-width: 1px;

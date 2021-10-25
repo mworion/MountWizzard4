@@ -501,7 +501,7 @@ class Styles:
         color: $M_BLACK$;
     }
     QPushButton[color='red'] {
-        background-color: red;
+        background-color: $M_RED$;
         color: $M_BLACK$;
     }
     QPushButton[color='yellow'] {
@@ -509,13 +509,13 @@ class Styles:
         color: $M_BLACK$;
     }
     QPushButton[color='green'] {
-        background-color: green;
+        background-color: $M_GREEN$;
         color: $M_BLACK$;
     }
     QPushButton[stop='true'] {
-        background-color: transparent;
-        color: transparent;
-        border-color: transparent;
+        background-color: $M_TRANS$;
+        color: $M_TRANS$;
+        border-color: $M_TRANS$;
     }
     QPushButton {
         background-color: $M_BACK_H$;
@@ -564,7 +564,7 @@ class Styles:
         border-style: plain;
         border-radius: 2px;
         border-color: $M_BACK$;
-        background-color: #303030;
+        background-color: $M_GREY1$;
         color: $M_WHITE$;
     }
     QTableWidget QHeaderView::down-arrow{
@@ -689,7 +689,7 @@ class Styles:
         border-width: 1px;
     }
     QSlider::handle:disabled {
-       background-color:  #104860;
+       background-color:  $M_BLUE1$;
     }
     QSlider::add-page
     {   background-color: $M_BACK_H$;

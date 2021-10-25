@@ -7717,7 +7717,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_162">
       <property name="geometry">
        <rect>
-        <x>335</x>
+        <x>330</x>
         <y>100</y>
         <width>16</width>
         <height>20</height>
@@ -7746,7 +7746,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>10</x>
         <y>100</y>
-        <width>256</width>
+        <width>271</width>
         <height>20</height>
        </rect>
       </property>
@@ -7762,7 +7762,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>If checked, all model points are deleted, which are below the horizon mask.</string>
       </property>
       <property name="text">
-       <string>Add safety distance to horizon line</string>
+       <string>Add safety distance to horizon line with</string>
       </property>
      </widget>
     </widget>

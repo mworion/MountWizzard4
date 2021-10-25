@@ -24,24 +24,28 @@ from PyQt5.QtGui import QColor
 
 
 class Styles:
-    M_TRANS = '#00000000'
+    # defining the color schemes for MW4
+    # colors _1, _2 are dimmer than others
+
+    M_TRANS = '#00000000'   # transparent items
 
     M_BLUE_H = '#30C0FF'
-    M_BLUE = '#2090C0'
+    M_BLUE = '#2090C0'      # main color
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'
     M_BLUE3 = '#082430'
     M_BLUE4 = '#061828'
 
     M_WHITE_H = '#F0F0F0'
-    M_WHITE = '#C0C0C0'
+    M_WHITE = '#C0C0C0'     # text
     M_WHITE1 = '#A0A0A0'
     M_WHITE2 = '#808080'
 
-    M_GREY = '#404040'
+    M_GREY = '#404040'      # borders
     M_GREY1 = '#303030'
     M_GREY2 = '#282828'
-    M_BACK_H = '#202020'
+
+    M_BACK_H = '#202020'    # background
     M_BACK = '#181818'
     M_BLACK = '#000000'
 
@@ -54,7 +58,7 @@ class Styles:
     M_GREEN = '#008000'
     M_GREEN1 = '#006000'
 
-    M_PINK_H = '#FF00FF'
+    M_PINK_H = '#FF00FF'    # pointer
     M_PINK = '#B000B0'
     M_PINK1 = '#800080'
 
@@ -168,11 +172,11 @@ class Styles:
         max-width: 500px;
     }
     QLabel {
-        background-color: transparent;
+        background-color: $M_TRANS$;
         color: $M_WHITE$;
     }
     QLabel:disabled {
-        background-color: transparent;
+        background-color: $M_TRANS$;;
         color: $M_GREY$;
     }
     QLabel[color='blue'] {
@@ -321,7 +325,7 @@ class Styles:
     QCheckBox {
         color: $M_WHITE$;
         spacing: 8px;
-        background-color: transparent;
+        background-color: $M_TRANS$;;
     }
     QCheckBox::indicator {
         border-width: 1px;
@@ -337,7 +341,7 @@ class Styles:
         image: url(:/icon/checkmark.ico);
     }
     QCheckBox::indicator:disabled {
-        background-color: transparent;
+        background-color: $M_TRANS$;;
         image: None;
     }
     QCheckBox:disabled {
@@ -345,11 +349,11 @@ class Styles:
     }
     QRadioButton {
         color: $M_WHITE$;
-        background-color: transparent;
+        background-color: $M_TRANS$;;
     }
     QRadioButton:disabled {
         color: $M_GREY$;
-        background-color: transparent;
+        background-color: $M_TRANS$;;
     }
     QRadioButton::indicator {
         border-width: 1px;
@@ -477,11 +481,11 @@ class Styles:
         color: $M_WHITE$;
     }
     QPushButton[pause='true'] {
-        background-color: #00C000;
+        background-color: $M_GREEN$;
         color: $M_BLACK$;
     }
     QPushButton[cancel='true'] {
-        background-color: rgb(192,0, 0);
+        background-color: $M_RED$;
         color: $M_WHITE$;
     }
     QPushButton[cancel='false'] {
@@ -505,7 +509,7 @@ class Styles:
         color: $M_BLACK$;
     }
     QPushButton[color='yellow'] {
-        background-color: yellow;
+        background-color: $M_YELLOW$;
         color: $M_BLACK$;
     }
     QPushButton[color='green'] {

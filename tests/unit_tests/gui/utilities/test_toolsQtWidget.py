@@ -194,12 +194,24 @@ def test_wIcon_4(function):
     assert suc
 
 
+def test_renderStyle_1(function):
+    input = '12345$M_BLUE$12345'
+    val = function.renderStyle(input).strip(' ')
+    assert val == '12345#2090C012345\n'
+
+
+def test_renderStyle_2(function):
+    input = '12345$M_TEST$12345'
+    val = function.renderStyle(input).strip(' ')
+    assert val == '12345$M_TEST$12345\n'
+
+
 def test_getStyle_1(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
         ret = function.getStyle()
-        assert ret == function.MAC_STYLE + function.BASIC_STYLE
+        assert ret.startswith(' Q')
 
 
 def test_getStyle_2(function):
@@ -207,7 +219,7 @@ def test_getStyle_2(function):
                            'system',
                            return_value='Windows'):
         ret = function.getStyle()
-        assert ret == function.NON_MAC_STYLE + function.BASIC_STYLE
+        assert ret.startswith(' Q')
 
 
 def test_initUI_1(function):

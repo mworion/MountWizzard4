@@ -44,20 +44,18 @@ class Styles:
     M_BACK = '#181818'
     M_BLACK = '#000000'
 
-    M_GREEN_H = '#00A000'
-    M_GREEN = '#008000'
-    M_GREEN1 = '#006000'
-
     M_RED = '#B03030'
     M_RED1 = '#802020'
+
+    M_YELLOW = '#C0C000'
+    M_YELLOW1 = '#808000'
+
+    M_GREEN = '#008000'
+    M_GREEN1 = '#006000'
 
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'
     M_PINK1 = '#800080'
-
-    M_YELLOW_H = '#FFFF00'
-    M_YELLOW = '#C0C000'
-    M_YELLOW1 = '#808000'
 
     COLOR_BLUE = QColor(f'{M_BLUE}')
     COLOR_BLUE1 = QColor(f'{M_BLUE1}')
@@ -70,7 +68,7 @@ class Styles:
     COLOR_PINK = QColor(f'{M_PINK_H}')
 
     BACK_NORM = f'background-color: {M_GREY3};'
-    BACK_GREEN = f'background-color: {M_GREEN_H};'
+    BACK_GREEN = f'background-color: {M_GREEN};'
     BACK_BLUE1 = f'background-color: {M_BLUE1};'
     BACK_BLUE2 = f'background-color: {M_BLUE2};'
     BACK_BLUE3 = f'background-color: {M_BLUE3};'

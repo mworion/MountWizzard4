@@ -160,7 +160,7 @@ class DevicePopup(toolsQtWidget.MWidget):
             else:
                 self.ui.tab.setTabEnabled(index, False)
 
-            self.ui.tab.setStyleSheet(self.getStyle())
+            # self.ui.tab.setStyleSheet(self.getStyle())
         return True
 
     def populateTabs(self):

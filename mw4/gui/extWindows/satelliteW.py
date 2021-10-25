@@ -429,7 +429,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = self.app.mount.obsSite.location.latitude.radians
         lon = self.app.mount.obsSite.location.longitude.radians
         x, y, z = functions.from_spherical(self.EARTH_RADIUS, lat, lon)
-        axe.plot(x, y, z, marker='.', markersize=12, color=self.M_YELLOW_H)
+        axe.plot(x, y, z, marker='.', markersize=12, color=self.M_YELLOW)
 
         if observe is None:
             axe.figure.canvas.draw()
@@ -503,7 +503,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         lat = obsSite.location.latitude.degrees
         lon = obsSite.location.longitude.degrees
-        axe.plot(lon, lat, marker='.', markersize=5, color=self.M_YELLOW_H)
+        axe.plot(lon, lat, marker='.', markersize=5, color=self.M_YELLOW)
 
         ts = obsSite.ts
         subpoint = wgs84.subpoint(self.satellite.at(ts.now()))

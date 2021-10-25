@@ -72,7 +72,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.MODE = dict(
             normal=dict(horMarker='None',
                         horColor=self.M_BLUE,
-                        buildPColor=self.M_GREEN_H,
+                        buildPColor=self.M_GREEN,
                         starSize=6,
                         starColor=self.M_YELLOW1,
                         starAnnColor=self.M_WHITE1),
@@ -95,7 +95,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                       horColor=self.M_BLUE1,
                       buildPColor=self.M_GREEN1,
                       starSize=12,
-                      starColor=self.M_YELLOW_H,
+                      starColor=self.M_YELLOW,
                       starAnnColor=self.M_WHITE_H)
         )
 

@@ -297,7 +297,7 @@ def test_getMarkerStatusParams_1(function):
     val = function.getMarkerStatusParams(True, 0)
     marker, markersize, color, text = val
     assert markersize == 9
-    assert color == function.M_GREEN_H
+    assert color == function.M_GREEN
     assert text == ' 1'
 
 

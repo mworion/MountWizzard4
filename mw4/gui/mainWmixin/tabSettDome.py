@@ -61,43 +61,33 @@ class SettDome(object):
 
     def tab1(self):
         self.ui.tabDomeExplain.setCurrentIndex(0)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab2(self):
         self.ui.tabDomeExplain.setCurrentIndex(1)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab3(self):
         self.ui.tabDomeExplain.setCurrentIndex(2)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab4(self):
         self.ui.tabDomeExplain.setCurrentIndex(3)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab5(self):
         self.ui.tabDomeExplain.setCurrentIndex(4)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab6(self):
         self.ui.tabDomeExplain.setCurrentIndex(5)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab7(self):
         self.ui.tabDomeExplain.setCurrentIndex(6)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab8(self):
         self.ui.tabDomeExplain.setCurrentIndex(7)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab9(self):
         self.ui.tabDomeExplain.setCurrentIndex(8)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def tab10(self):
         self.ui.tabDomeExplain.setCurrentIndex(9)
-        self.ui.tabDomeExplain.setStyleSheet(self.getStyle())
 
     def initConfig(self):
         """

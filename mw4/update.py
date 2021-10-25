@@ -158,7 +158,17 @@ class UpdateGUI:
                        ]
         isMac = platform.system() == 'Darwin'
         addStyle = Styles.MAC_STYLE if isMac else Styles.NON_MAC_STYLE
-        self.style = addStyle + Styles.BASIC_STYLE
+        raw = addStyle + Styles.BASIC_STYLE
+        style = ''
+        for line in raw.split('\n'):
+            start = line.find('$')
+            end = line.find('$', start + 1)
+            token = line[start + 1:end]
+            if hasattr(Styles, token):
+                repl = getattr(Styles, token)
+                line = line.replace(f'${token}$', repl)
+            style += (line + '\n')
+        self.style = raw
 
         self.window = QWidget()
         self.window.setWindowTitle('MountWizzard4 Updater')

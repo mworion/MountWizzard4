@@ -786,7 +786,7 @@ class Styles:
     }
     QTextBrowser {
         color: $M_BLUE$;
-        background-color: $M_BACK$;
+        background-color: $M_BLACK$;
         border-radius: 3px;
         border-width: 2px;
         border-color: $M_GREY$;

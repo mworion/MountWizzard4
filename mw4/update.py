@@ -168,7 +168,7 @@ class UpdateGUI:
                 repl = getattr(Styles, token)
                 line = line.replace(f'${token}$', repl)
             style += (line + '\n')
-        self.style = raw
+        self.style = style
 
         self.window = QWidget()
         self.window.setWindowTitle('MountWizzard4 Updater')

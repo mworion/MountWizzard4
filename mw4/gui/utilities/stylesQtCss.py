@@ -481,7 +481,7 @@ class Styles:
         color: $M_WHITE$;
     }
     QPushButton[pause='true'] {
-        background-color: $M_GREEN$;
+        background-color: $M_YELLOW$;
         color: $M_BLACK$;
     }
     QPushButton[cancel='true'] {

@@ -68,7 +68,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
-        self.colors = [self.M_RED_L, self.M_YELLOW_L, self.M_GREEN_L]
+        self.colors = [self.M_RED1, self.M_YELLOW1, self.M_GREEN1]
 
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
@@ -553,7 +553,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
-            axe.plot(lon[slc], lat[slc], lw=1, color=self.M_WHITE_L, zorder=-10)
+            axe.plot(lon[slc], lat[slc], lw=1, color=self.M_WHITE1, zorder=-10)
         axe.figure.canvas.draw()
         return True
 
@@ -571,7 +571,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
         azF = np.concatenate([[0], [0], az, [360], [360]])
 
-        axes.fill(azF, altF, color=self.M_GREY_LL, alpha=0.5, zorder=-10)
+        axes.fill(azF, altF, color=self.M_GREY2, alpha=0.5, zorder=-10)
         axes.plot(az, alt, color=self.M_BLUE, marker='', alpha=0.7, lw=2)
         return True
 

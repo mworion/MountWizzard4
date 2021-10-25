@@ -24,68 +24,57 @@ from PyQt5.QtGui import QColor
 
 
 class Styles:
+    M_TRANS = '#00000000'
 
-    COLOR_ASTRO = QColor(32, 144, 192)
-    COLOR_BLUE = QColor(0, 0, 255)
-    COLOR_BLUE1 = QColor(96, 176, 224)
-    COLOR_BLUE2 = QColor(80, 140, 176)
-    COLOR_BLUE3 = QColor(48, 104, 128)
-    COLOR_BLUE4 = QColor(44, 80, 112)
-    COLOR_YELLOW = QColor(255, 255, 0)
-    COLOR_GREEN = QColor(0, 255, 0)
-    COLOR_WHITE = QColor(255, 255, 255)
-    COLOR_WHITE1 = QColor(224, 224, 224)
-    COLOR_RED = QColor(255, 0, 0)
-    COLOR_ORANGE = QColor(192, 96, 96)
-    COLOR_BLACK = QColor(0, 0, 0)
-    COLOR_3D = QColor(60, 60, 60)
-    COLOR_BACKGROUND = QColor(32, 32, 32)
-    COLOR_FRAME = QColor(192, 192, 192)
-    COLOR_PINK = QColor(192, 16, 192)
-
-    TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
-
-    BACK_BG = 'background-color: transparent;'
-    BACK_RED = 'background-color: red;'
-    BACK_GREEN = 'background-color: green;'
-    BACK_NORM = 'background-color: #202020;'
-    BACK_BACK = 'background-color: #181818'
-    BACK_BLUE1 = 'background-color: #104860'
-    BACK_BLUE2 = 'background-color: #0C3648'
-    BACK_BLUE3 = 'background-color: #082430'
-    BACK_BLUE4 = 'background-color: #061828'
-
-    M_TRANS = '#20202000'
-    M_BACK = '#181818'
     M_BLUE_H = '#30C0FF'
     M_BLUE = '#2090C0'
     M_BLUE1 = '#104860'
     M_BLUE2 = '#0C3648'
     M_BLUE3 = '#082430'
     M_BLUE4 = '#061828'
-    M_BLACK = '#000000'
+
     M_WHITE_H = '#F0F0F0'
     M_WHITE = '#A0A0A0'
-    M_WHITE_L = '#808080'
-    M_GREY_H = '#606060'
+    M_WHITE1 = '#808080'
+
     M_GREY = '#404040'
-    M_GREY_MID = '#303030'
-    M_GREY_LL = '#282828'
-    M_GREY_LIGHT = '#202020'
-    M_GREY_DARK = '#101010'
+    M_GREY1 = '#303030'
+    M_GREY2 = '#282828'
+    M_GREY3 = '#202020'
+    M_BACK = '#181818'
+    M_BLACK = '#000000'
+
     M_GREEN_H = '#00A000'
     M_GREEN = '#008000'
-    M_GREEN_L = '#006000'
-    M_GREEN_LL = '#003000'
-    M_GREEN_LL_A = '#00100040'
+    M_GREEN1 = '#006000'
+
     M_RED = '#B03030'
-    M_RED_L = '#802020'
+    M_RED1 = '#802020'
+
     M_PINK_H = '#FF00FF'
     M_PINK = '#B000B0'
-    M_PINK_L = '#800080'
+    M_PINK1 = '#800080'
+
     M_YELLOW_H = '#FFFF00'
     M_YELLOW = '#C0C000'
-    M_YELLOW_L = '#808000'
+    M_YELLOW1 = '#808000'
+
+    COLOR_BLUE = QColor(f'{M_BLUE}')
+    COLOR_BLUE1 = QColor(f'{M_BLUE1}')
+    COLOR_BLUE2 = QColor(f'{M_BLUE2}')
+    COLOR_BLUE3 = QColor(f'{M_BLUE3}')
+    COLOR_BLUE4 = QColor(f'{M_BLUE4}')
+    COLOR_YELLOW = QColor(f'{M_YELLOW}')
+    COLOR_WHITE = QColor(f'{M_WHITE}')
+    COLOR_RED = QColor(f'{M_RED}')
+    COLOR_PINK = QColor(f'{M_PINK_H}')
+
+    BACK_NORM = f'background-color: {M_GREY3};'
+    BACK_GREEN = f'background-color: {M_GREEN_H};'
+    BACK_BLUE1 = f'background-color: {M_BLUE1};'
+    BACK_BLUE2 = f'background-color: {M_BLUE2};'
+    BACK_BLUE3 = f'background-color: {M_BLUE3};'
+    BACK_BLUE4 = f'background-color: {M_BLUE4};'
 
     MAC_STYLE = """
     QWidget {
@@ -243,17 +232,17 @@ class Styles:
     QLineEdit[char='red'] {
         color: #C00000;
     }
-    QLineEdit[color='M_RED_L'] {
+    QLineEdit[color='red'] {
         border-width: 2px;
         border-style: outset;
         border-color: #802020;
     }
-    QLineEdit[color='M_YELLOW_L'] {
+    QLineEdit[color='yellow'] {
         border-width: 2px;
         border-style: outset;
         border-color: #808000;
     }
-    QLineEdit[color='M_GREEN_L'] {
+    QLineEdit[color='green'] {
         border-width: 2px;
         border-style: outset;
         border-color: #006000;

@@ -71,19 +71,19 @@ class Almanac:
         self.astronomical = None
 
         self.colors = {
-            0: {'text': self.COLOR_BLUE4,
+            0: {'text': self.COLOR_BLUE3,
                 'plot': self.M_BLUE4,
                 },
-            1: {'text': self.COLOR_BLUE3,
+            1: {'text': self.COLOR_BLUE2,
                 'plot': self.M_BLUE3,
                 },
-            2: {'text': self.COLOR_BLUE2,
+            2: {'text': self.COLOR_BLUE1,
                 'plot': self.M_BLUE2,
                 },
-            3: {'text': self.COLOR_BLUE1,
+            3: {'text': self.COLOR_BLUE,
                 'plot': self.M_BLUE1,
                 },
-            4: {'text': self.COLOR_WHITE1,
+            4: {'text': self.COLOR_WHITE,
                 'plot': self.M_BACK,
                 },
         }

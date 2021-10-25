@@ -82,9 +82,9 @@ class Materials(Styles):
         self.stainless.setShininess(255)
 
         self.dome1 = QPhongMaterial()
-        self.dome1.setAmbient(self.COLOR_ASTRO)
-        self.dome1.setDiffuse(self.COLOR_ASTRO)
-        self.dome1.setSpecular(self.COLOR_ASTRO)
+        self.dome1.setAmbient(self.COLOR_BLUE)
+        self.dome1.setDiffuse(self.COLOR_BLUE)
+        self.dome1.setSpecular(self.COLOR_BLUE)
         self.dome1.setShininess(64)
 
         self.dome2 = QPhongMaterial()

@@ -74,26 +74,26 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                         horColor=self.M_BLUE,
                         buildPColor=self.M_GREEN_H,
                         starSize=6,
-                        starColor=self.M_YELLOW_L,
-                        starAnnColor=self.M_WHITE_L),
+                        starColor=self.M_YELLOW1,
+                        starAnnColor=self.M_WHITE1),
 
             build=dict(horMarker='None',
                        horColor=self.M_BLUE,
                        buildPColor=self.M_PINK_H,
                        starSize=6,
-                       starColor=self.M_YELLOW_L,
-                       starAnnColor=self.M_WHITE_L),
+                       starColor=self.M_YELLOW1,
+                       starAnnColor=self.M_WHITE1),
 
             horizon=dict(horMarker='o',
                          horColor=self.M_PINK_H,
-                         buildPColor=self.M_GREEN_L,
+                         buildPColor=self.M_GREEN1,
                          starSize=6,
-                         starColor=self.M_YELLOW_L,
-                         starAnnColor=self.M_WHITE_L),
+                         starColor=self.M_YELLOW1,
+                         starAnnColor=self.M_WHITE1),
 
             star=dict(horMarker='None',
                       horColor=self.M_BLUE1,
-                      buildPColor=self.M_GREEN_L,
+                      buildPColor=self.M_GREEN1,
                       starSize=12,
                       starColor=self.M_YELLOW_H,
                       starAnnColor=self.M_WHITE_H)
@@ -504,7 +504,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
                 fontSize = 12
-                fontColor = self.M_WHITE_L
+                fontColor = self.M_WHITE1
             annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(2, 2),
@@ -579,7 +579,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             azF = np.concatenate([[0], [0], az, [360], [360]])
             axes.fill(azF,
                       altF,
-                      color=self.M_GREY_LL,
+                      color=self.M_GREY1,
                       alpha=0.5,
                       zorder=0)
 
@@ -696,7 +696,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                             markersize=1,
                                             fillstyle='none',
                                             zorder=20,
-                                            color=self.M_WHITE_L)
+                                            color=self.M_WHITE1)
         else:
             self.celestialPath, = axes.plot(az,
                                             alt,
@@ -704,7 +704,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                             markersize=1,
                                             fillstyle='none',
                                             zorder=20,
-                                            color=self.M_WHITE_L)
+                                            color=self.M_WHITE1)
         return True
 
     def staticMeridianLimits(self, axes=None):
@@ -729,7 +729,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                 2 * track,
                                                 90,
                                                 zorder=10,
-                                                color=self.M_YELLOW_L,
+                                                color=self.M_YELLOW1,
                                                 alpha=0.5)
         axes.add_patch(self.meridianTrack)
         return True
@@ -879,7 +879,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   30,
                                                   88,
                                                   zorder=0,
-                                                  color=self.M_GREY_MID,
+                                                  color=self.M_GREY2,
                                                   lw=3,
                                                   clip_on=True,
                                                   fill=True,
@@ -918,7 +918,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
                 fontSize = 12
-                fontColor = self.M_WHITE_L
+                fontColor = self.M_WHITE1
             annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(2, 2),

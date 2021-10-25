@@ -151,7 +151,7 @@ class UpdateGUI:
         self.app = QApplication(sys.argv)
         self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
 
-        self.mColor = [Styles.COLOR_ASTRO,
+        self.mColor = [Styles.COLOR_BLUE,
                        Styles.COLOR_WHITE,
                        Styles.COLOR_YELLOW,
                        Styles.COLOR_RED,

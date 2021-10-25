@@ -120,7 +120,6 @@ class ImageWindow(toolsQtWidget.MWidget):
                           }
 
         self.imageMat = self.embedMatplot(self.ui.image, constrainedLayout=False)
-        self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.fig = self.imageMat.figure
         self.axe = None
         self.axeCB = None
@@ -340,7 +339,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.fig.clf()
         self.axe = self.fig.add_subplot(1, 1, 1,
                                         projection=wcs.WCS(self.header, relax=True),
-                                        facecolor=self.M_GREY_LIGHT)
+                                        facecolor=self.M_GREY3)
 
         self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
         self.axeCB = None
@@ -379,7 +378,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.fig.clf()
         self.axe = self.fig.add_subplot(1, 1, 1,
-                                        facecolor=self.M_GREY_LIGHT)
+                                        facecolor=self.M_GREY3)
 
         self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
         self.axeCB = self.fig.add_axes([0.88, 0.1, 0.02, 0.8])

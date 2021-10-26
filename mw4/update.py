@@ -151,30 +151,18 @@ class UpdateGUI:
         self.app = QApplication(sys.argv)
         self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
 
-        self.mColor = [Styles.COLOR_BLUE,
-                       Styles.COLOR_WHITE,
-                       Styles.COLOR_YELLOW,
-                       Styles.COLOR_RED,
+        self.style = Styles()
+        self.mColor = [self.style.COLOR_BLUE,
+                       self.style.COLOR_WHITE,
+                       self.style.COLOR_YELLOW,
+                       self.style.COLOR_RED,
                        ]
-        isMac = platform.system() == 'Darwin'
-        addStyle = Styles.MAC_STYLE if isMac else Styles.NON_MAC_STYLE
-        raw = addStyle + Styles.BASIC_STYLE
-        style = ''
-        for line in raw.split('\n'):
-            start = line.find('$')
-            end = line.find('$', start + 1)
-            token = line[start + 1:end]
-            if hasattr(Styles, token):
-                repl = getattr(Styles, token)
-                line = line.replace(f'${token}$', repl)
-            style += (line + '\n')
-        self.style = style
 
         self.window = QWidget()
         self.window.setWindowTitle('MountWizzard4 Updater')
         self.window.resize(500, 300)
         self.window.move(x, y)
-        self.window.setStyleSheet(self.style)
+        self.window.setStyleSheet(self.style.mw4Style)
 
         self.cancelButt = QPushButton('Cancel Update')
         self.cancelButt.setFixedHeight(25)

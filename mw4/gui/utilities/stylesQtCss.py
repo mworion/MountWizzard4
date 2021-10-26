@@ -27,10 +27,6 @@ from PyQt5.QtGui import QColor
 class Styles:
 
     def __init__(self):
-
-        # defining the color schemes for MW4
-        # colors _1, _2 are dimmer than others
-
         self.M_TRANS = '#00000000'   # transparent items
 
         self.M_BLUE_H = '#30C0FF'
@@ -838,18 +834,18 @@ class Styles:
     @property
     def mw4Style(self):
         if platform.system() == 'Darwin':
-            style = self.MAC_STYLE + self.BASIC_STYLE
+            styleRaw = self.MAC_STYLE + self.BASIC_STYLE
         else:
-            style = self.NON_MAC_STYLE + self.BASIC_STYLE
-        return self.renderStyle(style)
+            styleRaw = self.NON_MAC_STYLE + self.BASIC_STYLE
+        return self.renderStyle(styleRaw)
 
-    def renderStyle(self, raw):
+    def renderStyle(self, styleRaw):
         """
-        :param raw:
+        :param styleRaw:
         :return:
         """
         style = ''
-        for line in raw.split('\n'):
+        for line in styleRaw.split('\n'):
             start = line.find('$')
             end = line.find('$', start + 1)
             token = line[start + 1:end]

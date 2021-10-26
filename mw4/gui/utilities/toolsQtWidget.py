@@ -198,37 +198,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         gui.style().polish(gui)
         return True
 
-    def renderStyle(self, raw):
-        """
-        :param raw:
-        :return:
-        """
-        style = ''
-        for line in raw.split('\n'):
-            start = line.find('$')
-            end = line.find('$', start + 1)
-            token = line[start + 1:end]
-            if hasattr(Styles, token):
-                repl = getattr(Styles, token)
-                line = line.replace(f'${token}$', repl)
-            style += (line + '\n')
-        return style
-
-    def getStyle(self):
-        """
-        getStyle return the actual stylesheet for the used platform.
-        As the font sizes vary between Darwin and Windows / Ubuntu there were
-        two sets of stylesheets used. a basic stylesheet adds undifferentiated
-        properties.
-
-        :return:    actual stylesheet string
-        """
-        if platform.system() == 'Darwin':
-            styleRaw = self.MAC_STYLE + self.BASIC_STYLE
-        else:
-            styleRaw = self.NON_MAC_STYLE + self.BASIC_STYLE
-        return self.renderStyle(styleRaw)
-
     def initUI(self):
         """
         init_UI makes the basic initialisation of the GUI. is sets the window
@@ -239,8 +208,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:    true for test purpose
         """
         self.setWindowFlags(self.windowFlags())
-        style = self.getStyle()
-        self.setStyleSheet(style)
+        self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(QIcon(':/mw4.ico'))
         return True
@@ -329,7 +297,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.DontUseNativeDialog)
         dlg.setWindowIcon(QIcon(':/mw4.ico'))
-        dlg.setStyleSheet(self.getStyle())
+        dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.List)
         dlg.setModal(True)
         if reverseOrder:
@@ -370,7 +338,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         """
         msg = QMessageBox()
         msg.setWindowModality(Qt.ApplicationModal)
-        msg.setStyleSheet(self.getStyle())
+        msg.setStyleSheet(self.mw4Style)
         msg.setTextFormat(Qt.AutoText)
         msg.setWindowTitle(title)
         pixmap = QPixmap(':/icon/question.svg').scaled(64, 64)

@@ -206,22 +206,6 @@ def test_renderStyle_2(function):
     assert val == '12345$M_TEST$12345\n'
 
 
-def test_getStyle_1(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        ret = function.getStyle()
-        assert ret.startswith('\n')
-
-
-def test_getStyle_2(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        ret = function.getStyle()
-        assert ret.startswith('\n')
-
-
 def test_initUI_1(function):
     suc = function.initUI()
     assert suc

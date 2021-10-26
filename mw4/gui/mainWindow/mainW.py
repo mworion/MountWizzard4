@@ -256,7 +256,8 @@ class MainWindow(
         tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Relay')
         tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
         self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
-        self.ui.toolsTabWidget.setStyleSheet(self.getStyle())
+        ui = self.ui.toolsTabWidget
+        ui.setStyleSheet(ui.styleSheet())
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
@@ -638,8 +639,10 @@ class MainWindow(
         # redraw tabs only when a change occurred. this is necessary, because
         # enable and disable does not remove tabs
         if tabChanged:
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
+            ui = self.ui.mainTabWidget
+            ui.setStyleSheet(ui.styleSheet())
+            ui = self.ui.settingsTabWidget
+            ui.setStyleSheet(ui.styleSheet())
         return True
 
     def smartEnvironGui(self):

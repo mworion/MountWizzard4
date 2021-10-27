@@ -19,7 +19,7 @@
 import time
 
 # external packages
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QTextCursor, QColor
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
@@ -45,10 +45,10 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)
 
-        self.messColor = [self.COLOR_BLUE,
-                          self.COLOR_WHITE,
-                          self.COLOR_YELLOW,
-                          self.COLOR_RED,
+        self.messColor = [QColor(self.M_BLUE),
+                          QColor(self.M_WHITE),
+                          QColor(self.M_YELLOW),
+                          QColor(self.M_RED),
                           ]
         self.messFont = [PyQt5.QtGui.QFont.Normal,
                          PyQt5.QtGui.QFont.Bold,

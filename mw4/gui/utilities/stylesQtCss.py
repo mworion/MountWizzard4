@@ -27,8 +27,35 @@ from PyQt5.QtGui import QColor
 class Styles:
 
     def __init__(self):
-        self.M_TRANS = '#00000000'   # transparent items
 
+        self.settingInd = 0
+        colorSets = {
+            'M_BLUE_H': ['#30C0FF', ],
+            'M_BLUE': ['#2090C0', ],
+            'M_BLUE1': ['#104860', ],
+            'M_BLUE2': ['#0C3648', ],
+            'M_BLUE3': ['#082430', ],
+            'M_BLUE4': ['#061828', ],
+            'M_WHITE_H': ['#F0F0F0', ],
+            'M_WHITE': ['#C0C0C0', ],
+            'M_WHITE1': ['#A0A0A0', ],
+            'M_WHITE2': ['#808080', ],
+            'M_GREY': ['#404040', ],
+            'M_GREY1': ['#303030', ],
+            'M_GREY2': ['#282828', ],
+            'M_GREY3': ['#202020', ],
+            'M_RED': ['#B03030', ],
+            'M_RED1': ['#802020', ],
+            'M_YELLOW': ['#C0C000', ],
+            'M_YELLOW1': ['#808000', ],
+            'M_GREEN': ['#008000', ],
+            'M_GREEN1': ['#006000', ],
+            'M_PINK_H': ['#FF00FF', ],
+            'M_PINK': ['#B000B0', ],
+            'M_PINK1': ['#800080', ],
+        }
+
+        self.M_TRANS = '#00000000'   # transparent items
         self.M_BLUE_H = '#30C0FF'
         self.M_BLUE = '#2090C0'      # main color
         self.M_BLUE1 = '#104860'
@@ -61,16 +88,6 @@ class Styles:
         self.M_PINK_H = '#FF00FF'    # pointer
         self.M_PINK = '#B000B0'
         self.M_PINK1 = '#800080'
-
-        self.COLOR_BLUE = QColor(f'{self.M_BLUE}')
-        self.COLOR_BLUE1 = QColor(f'{self.M_BLUE1}')
-        self.COLOR_BLUE2 = QColor(f'{self.M_BLUE2}')
-        self.COLOR_BLUE3 = QColor(f'{self.M_BLUE3}')
-        self.COLOR_BLUE4 = QColor(f'{self.M_BLUE4}')
-        self.COLOR_YELLOW = QColor(f'{self.M_YELLOW}')
-        self.COLOR_WHITE = QColor(f'{self.M_WHITE}')
-        self.COLOR_RED = QColor(f'{self.M_RED}')
-        self.COLOR_PINK = QColor(f'{self.M_PINK_H}')
 
         self.BACK_NORM = f'background-color: {self.M_BACK};'
         self.BACK_GREEN = f'background-color: {self.M_GREEN};'
@@ -468,17 +485,9 @@ class Styles:
             background-color: $M_BLUE$;
             color: $M_BLACK$;
         }
-        QPushButton[running='false'] {
-            background-color: $M_GREY3$;
-            color: $M_WHITE$;
-        }
         QPushButton[running='true'] {
             background-color: $M_BLUE$;
             color: $M_BLACK$;
-        }
-        QPushButton[pause='false'] {
-            background-color: $M_GREY3$;
-            color: $M_WHITE$;
         }
         QPushButton[pause='true'] {
             background-color: $M_YELLOW$;
@@ -486,10 +495,6 @@ class Styles:
         }
         QPushButton[cancel='true'] {
             background-color: $M_RED$;
-            color: $M_WHITE$;
-        }
-        QPushButton[cancel='false'] {
-            background-color: $M_GREY3$;
             color: $M_WHITE$;
         }
         QPushButton:disabled {

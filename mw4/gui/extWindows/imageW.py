@@ -120,6 +120,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                           }
 
         self.imageMat = self.embedMatplot(self.ui.image, constrainedLayout=False)
+        # self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.fig = self.imageMat.figure
         self.axe = None
         self.axeCB = None

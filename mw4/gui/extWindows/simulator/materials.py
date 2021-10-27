@@ -82,9 +82,9 @@ class Materials(Styles):
         self.stainless.setShininess(255)
 
         self.dome1 = QPhongMaterial()
-        self.dome1.setAmbient(self.COLOR_BLUE)
-        self.dome1.setDiffuse(self.COLOR_BLUE)
-        self.dome1.setSpecular(self.COLOR_BLUE)
+        self.dome1.setAmbient(QColor(self.M_BLUE))
+        self.dome1.setDiffuse(QColor(self.M_BLUE))
+        self.dome1.setSpecular(QColor(self.M_BLUE))
         self.dome1.setShininess(64)
 
         self.dome2 = QPhongMaterial()
@@ -151,9 +151,9 @@ class Materials(Styles):
         self.numbersActive.setShininess(255)
 
         self.pointer = QPhongMaterial()
-        self.pointer.setAmbient(self.COLOR_PINK)
-        self.pointer.setDiffuse(self.COLOR_PINK)
-        self.pointer.setSpecular(self.COLOR_PINK)
+        self.pointer.setAmbient(QColor(self.M_PINK))
+        self.pointer.setDiffuse(QColor(self.M_PINK))
+        self.pointer.setSpecular(QColor(self.M_PINK))
         self.pointer.setShininess(255)
 
         self.laser = QPhongMaterial()

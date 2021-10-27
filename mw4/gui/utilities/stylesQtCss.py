@@ -913,6 +913,16 @@ class Styles:
             styleRaw = self.NON_MAC_STYLE + self.BASIC_STYLE
         return self.renderStyle(styleRaw)
 
+    @staticmethod
+    def calcHexColor(val, f):
+        val = val.lstrip('#')
+        if len(val) != 6:
+            return val
+        r = int(int(val[0:2], 16) * f)
+        g = int(int(val[2:4], 16) * f)
+        b = int(int(val[4:6], 16) * f)
+        return f'#{r:02x}{g:02x}{b:02x}'
+
     def renderStyle(self, styleRaw):
         """
         :param styleRaw:

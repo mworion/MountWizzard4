@@ -40,18 +40,6 @@ def function(module):
     yield window
 
 
-def test_renderStyle_1(function):
-    inStyle = '12345$M_BLUE$12345'
-    val = function.renderStyle(inStyle).strip(' ')
-    assert val == '12345#2090C012345\n'
-
-
-def test_renderStyle_2(function):
-    inStyle = '12345$M_TEST$12345'
-    val = function.renderStyle(inStyle).strip(' ')
-    assert val == '12345$M_TEST$12345\n'
-
-
 def test_getStyle_1(function):
     with mock.patch.object(platform,
                            'system',
@@ -66,3 +54,52 @@ def test_getStyle_2(function):
                            return_value='Windows'):
         ret = function.mw4Style
         assert ret.startswith('\n')
+
+
+def test_property(function):
+    a = function.M_TRANS
+    a = function.M_BLUE_H
+    a = function.M_BLUE
+    a = function.M_BLUE1
+    a = function.M_WHITE_H
+    a = function.M_WHITE
+    a = function.M_WHITE1
+    a = function.M_GREY
+    a = function.M_GREY1
+    a = function.M_BACK
+    a = function.M_BLACK
+    a = function.M_RED
+    a = function.M_RED1
+    a = function.M_YELLOW
+    a = function.M_YELLOW1
+    a = function.M_GREEN
+    a = function.M_GREEN1
+    a = function.M_PINK
+    a = function.M_PINK1
+
+
+def test_calcHexColor_1(function):
+    val = function.calcHexColor('#808080', 1)
+    assert val == '#808080'
+
+
+def test_calcHexColor_2(function):
+    val = function.calcHexColor('#80808000', 1)
+    assert val == '#80808000'
+
+
+def test_calcHexColor_3(function):
+    val = function.calcHexColor('#808080', 0.5)
+    assert val == '#404040'
+
+
+def test_renderStyle_1(function):
+    inStyle = '12345$M_BLUE$12345'
+    val = function.renderStyle(inStyle).strip(' ')
+    assert val == '12345#2090C012345\n'
+
+
+def test_renderStyle_2(function):
+    inStyle = '12345$M_TEST$12345'
+    val = function.renderStyle(inStyle).strip(' ')
+    assert val == '12345$M_TEST$12345\n'

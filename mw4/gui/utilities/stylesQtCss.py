@@ -847,10 +847,6 @@ class Styles:
         return self.cs['M_YELLOW'][self.colorSet]
 
     @property
-    def M_RED1(self):
-        return self.cs['M_RED1'][self.colorSet]
-
-    @property
     def M_YELLOW1(self):
         return self.cs['M_YELLOW1'][self.colorSet]
 
@@ -861,10 +857,6 @@ class Styles:
     @property
     def M_GREEN1(self):
         return self.cs['M_GREEN1'][self.colorSet]
-
-    @property
-    def M_PINK(self):
-        return self.cs['M_PINK'][self.colorSet]
 
     @property
     def M_PINK(self):
@@ -886,7 +878,7 @@ class Styles:
     def calcHexColor(val, f):
         val = val.lstrip('#')
         if len(val) != 6:
-            return val
+            return f'#{val}'
         r = int(int(val[0:2], 16) * f)
         g = int(int(val[2:4], 16) * f)
         b = int(int(val[4:6], 16) * f)

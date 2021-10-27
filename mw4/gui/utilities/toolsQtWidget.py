@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import platform
 import os
 import logging
 

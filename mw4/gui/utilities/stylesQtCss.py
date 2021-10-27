@@ -89,13 +89,6 @@ class Styles:
         self.M_PINK = '#B000B0'
         self.M_PINK1 = '#800080'
 
-        self.BACK_NORM = f'background-color: {self.M_BACK};'
-        self.BACK_GREEN = f'background-color: {self.M_GREEN};'
-        self.BACK_BLUE1 = f'background-color: {self.M_BLUE1};'
-        self.BACK_BLUE2 = f'background-color: {self.M_BLUE2};'
-        self.BACK_BLUE3 = f'background-color: {self.M_BLUE3};'
-        self.BACK_BLUE4 = f'background-color: {self.M_BLUE4};'
-
         self.MAC_STYLE = """
         QWidget {
             background-color: $M_BACK$;

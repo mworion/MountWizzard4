@@ -401,7 +401,7 @@ class SettDevice:
             driverClass.run[framework].deviceName = ''
             self.app.message.emit(f'Disabled device:     [{driver}]', 0)
 
-        self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
+        self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_BACK};')
         self.deviceStat[driver] = None
 
         return True
@@ -461,7 +461,7 @@ class SettDevice:
         driverClass.framework = framework
         isInternal = framework == 'internal'
         if isInternal:
-            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_GREEN};')
 
         self.configDriver(driver=driver)
         if autoStart:
@@ -587,7 +587,7 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
+            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_BACK};')
             self.app.message.emit(f'Disconnected server: [{driver}] ', 0)
         return True
 
@@ -603,7 +603,7 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_GREEN};')
             self.deviceStat[driver] = True
             self.app.message.emit(f'Device connected:    [{driver}]', 0)
         return True
@@ -617,7 +617,7 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
+            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_BACK};')
             self.deviceStat[driver] = False
             self.app.message.emit(f'Disconnected device: [{driver}]', 0)
         return True

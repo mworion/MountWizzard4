@@ -70,26 +70,19 @@ class Almanac:
         self.nautical = None
         self.astronomical = None
 
-        self.colors = {
-            0: {'plot': self.M_BLUE4,
-                },
-            1: {'plot': self.M_BLUE3,
-                },
-            2: {'plot': self.M_BLUE2,
-                },
-            3: {'plot': self.M_BLUE1,
-                },
-            4: {'plot': self.M_BACK,
-                },
-        }
+        col1 = self.calcHexColor(self.M_BLUE, 0.75)
+        col2 = self.calcHexColor(self.M_BLUE, 0.5)
+        col3 = self.calcHexColor(self.M_BLUE, 0.3)
+        col4 = self.calcHexColor(self.M_BLUE, 0.15)
 
+        self.colors = [col4, col3, col2, col1, self.M_BACK]
         self.app.start1s.connect(self.searchTwilightList)
         self.app.start5s.connect(self.searchTwilightPlot)
         self.app.update30m.connect(self.updateMoonPhase)
-        self.ui.almanacCivil.setStyleSheet(f'background-color: {self.M_BLUE1};')
-        self.ui.almanacNautical.setStyleSheet(f'background-color: {self.M_BLUE2};')
-        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {self.M_BLUE3};')
-        self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_BLUE4};')
+        self.ui.almanacCivil.setStyleSheet(f'background-color: {col1};')
+        self.ui.almanacNautical.setStyleSheet(f'background-color: {col2};')
+        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {col3};')
+        self.ui.almanacDark.setStyleSheet(f'background-color: {col4};')
 
     def initConfig(self):
         """
@@ -144,7 +137,7 @@ class Almanac:
             y = (hour + 12 + minute / 60) % 24
             day = round(ti.tt + 0.5, 0)
             axe.bar(day, height=24 - y, bottom=y, width=1,
-                    color=self.colors[event]['plot'])
+                    color=self.colors[event])
         else:
             x = [midLim - 1, midLim - 1, midLim + 1, midLim + 1]
             y = [0, 24, 24, 0]

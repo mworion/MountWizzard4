@@ -318,7 +318,7 @@ class ManageModel(object):
         axe.plot([0, len(index) - 1],
                  [value, value],
                  lw=3,
-                 color=self.M_PINK_H)
+                 color=self.M_PINK)
 
         axe.figure.canvas.draw()
 
@@ -365,7 +365,7 @@ class ManageModel(object):
         axe.plot(angles,
                  values,
                  lw=3,
-                 color=self.M_PINK_H)
+                 color=self.M_PINK)
 
         axe.figure.canvas.draw()
 

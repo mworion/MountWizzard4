@@ -571,7 +571,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
         azF = np.concatenate([[0], [0], az, [360], [360]])
 
-        axes.fill(azF, altF, color=self.M_GREY2, alpha=0.5, zorder=-10)
+        axes.fill(azF, altF, color=self.M_GREY1, alpha=0.5, zorder=-10)
         axes.plot(az, alt, color=self.M_BLUE, marker='', alpha=0.7, lw=2)
         return True
 
@@ -657,7 +657,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         self.pointerAltAz, = axe.plot(np.radians(180), 45,
                                       zorder=-5,
-                                      color=self.M_PINK_H,
+                                      color=self.M_PINK,
                                       marker=self.markerAltAz(),
                                       markersize=20,
                                       linestyle='none',

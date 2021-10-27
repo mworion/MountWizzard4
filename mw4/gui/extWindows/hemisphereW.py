@@ -79,13 +79,13 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
             build=dict(horMarker='None',
                        horColor=self.M_BLUE,
-                       buildPColor=self.M_PINK_H,
+                       buildPColor=self.M_PINK,
                        starSize=6,
                        starColor=self.M_YELLOW1,
                        starAnnColor=self.M_WHITE1),
 
             horizon=dict(horMarker='o',
-                         horColor=self.M_PINK_H,
+                         horColor=self.M_PINK,
                          buildPColor=self.M_GREEN1,
                          starSize=6,
                          starColor=self.M_YELLOW1,
@@ -856,7 +856,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         if polar:
             self.pointerPolarAltAz, = axes.plot(np.radians(180), 45,
                                                 zorder=10,
-                                                color=self.M_PINK_H,
+                                                color=self.M_PINK,
                                                 marker=self.markerAltAz(),
                                                 markersize=25,
                                                 linestyle='none',
@@ -867,7 +867,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         else:
             self.pointerAltAz, = axes.plot(180, 45,
                                            zorder=10,
-                                           color=self.M_PINK_H,
+                                           color=self.M_PINK,
                                            marker=self.markerAltAz(),
                                            markersize=25,
                                            linestyle='none',
@@ -879,7 +879,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   30,
                                                   88,
                                                   zorder=0,
-                                                  color=self.M_GREY2,
+                                                  color=self.M_GREY1,
                                                   lw=3,
                                                   clip_on=True,
                                                   fill=True,

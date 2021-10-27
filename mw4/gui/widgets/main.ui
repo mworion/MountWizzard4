@@ -14957,9 +14957,9 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>22</y>
+          <y>20</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -14989,7 +14989,7 @@ Next point in time when satellite settles.</string>
           <x>10</x>
           <y>140</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15017,9 +15017,9 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>22</y>
+          <y>20</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15049,7 +15049,7 @@ Next point in time when satellite settles.</string>
           <x>10</x>
           <y>110</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15079,7 +15079,7 @@ Next point in time when satellite settles.</string>
           <x>190</x>
           <y>140</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15109,7 +15109,7 @@ Next point in time when satellite settles.</string>
           <x>190</x>
           <y>50</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15139,7 +15139,7 @@ Next point in time when satellite settles.</string>
           <x>10</x>
           <y>80</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15169,7 +15169,7 @@ Next point in time when satellite settles.</string>
           <x>190</x>
           <y>80</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15199,7 +15199,7 @@ Next point in time when satellite settles.</string>
           <x>190</x>
           <y>110</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -15229,7 +15229,7 @@ Next point in time when satellite settles.</string>
           <x>10</x>
           <y>50</y>
           <width>166</width>
-          <height>25</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="minimumSize">

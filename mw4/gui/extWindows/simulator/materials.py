@@ -151,9 +151,9 @@ class Materials(Styles):
         self.numbersActive.setShininess(255)
 
         self.pointer = QPhongMaterial()
-        self.pointer.setAmbient(QColor(self.M_PINK))
-        self.pointer.setDiffuse(QColor(self.M_PINK))
-        self.pointer.setSpecular(QColor(self.M_PINK))
+        self.pointer.setAmbient(QColor(self.M_PINK1))
+        self.pointer.setDiffuse(QColor(self.M_PINK1))
+        self.pointer.setSpecular(QColor(self.M_PINK1))
         self.pointer.setShininess(255)
 
         self.laser = QPhongMaterial()

@@ -448,14 +448,14 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            data['powTemp'][start:-1:cycle],
                            marker=None,
                            markersize=3,
-                           color=self.M_PINK,
+                           color=self.M_PINK1,
                            )
             r8, = axe.plot(data['time'][start:-1:cycle],
                            data['powDew'][start:-1:cycle],
                            marker=None,
                            markersize=3,
                            linestyle=':',
-                           color=self.M_PINK,
+                           color=self.M_PINK1,
                            )
             plotList.append(r7)
             plotList.append(r8)
@@ -625,7 +625,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            data['powHum'][start:-1:cycle],
                            marker=None,
                            markersize=3,
-                           color=self.M_PINK,
+                           color=self.M_PINK1,
                            )
             plotList.append(r4)
             labelList.append('Power Hum')
@@ -792,7 +792,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            data['powCurr1'][start:-1:cycle],
                            marker=None,
                            markersize=3,
-                           color=self.M_PINK,
+                           color=self.M_PINK1,
                            )
             r3, = axe.plot(data['time'][start:-1:cycle],
                            data['powCurr2'][start:-1:cycle],

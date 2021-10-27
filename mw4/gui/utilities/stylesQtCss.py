@@ -19,7 +19,6 @@
 import platform
 
 # external packages
-from PyQt5.QtGui import QColor
 
 # local imports
 
@@ -28,8 +27,9 @@ class Styles:
 
     def __init__(self):
 
-        self.settingInd = 0
-        colorSets = {
+        self.colorSet = 0
+        self.cs = {
+            'M_TRANS': ['#00000000', ],
             'M_BLUE_H': ['#30C0FF', ],
             'M_BLUE': ['#2090C0', ],
             'M_BLUE1': ['#104860', ],
@@ -44,6 +44,8 @@ class Styles:
             'M_GREY1': ['#303030', ],
             'M_GREY2': ['#282828', ],
             'M_GREY3': ['#202020', ],
+            'M_BACK': ['#181818', ],
+            'M_BLACK': ['#000000', ],
             'M_RED': ['#B03030', ],
             'M_RED1': ['#802020', ],
             'M_YELLOW': ['#C0C000', ],
@@ -846,9 +848,9 @@ class Styles:
         for line in styleRaw.split('\n'):
             start = line.find('$')
             end = line.find('$', start + 1)
-            token = line[start + 1:end]
-            if hasattr(self, token):
-                repl = getattr(self, token)
-                line = line.replace(f'${token}$', repl)
+            key = line[start + 1:end]
+            if key in self.cs:
+                repl = self.cs[key][self.colorSet]
+                line = line.replace(f'${key}$', repl)
             style += (line + '\n')
         return style

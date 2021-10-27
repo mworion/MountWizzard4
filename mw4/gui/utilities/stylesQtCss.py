@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import platform
 
 # external packages
 from PyQt5.QtGui import QColor

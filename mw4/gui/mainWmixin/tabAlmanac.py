@@ -23,6 +23,7 @@ from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QApplication
 from skyfield import almanac
+from skyfield.trigonometry import position_angle_of
 import numpy as np
 
 # local import
@@ -68,23 +69,21 @@ class Almanac:
         self.civil = None
         self.nautical = None
         self.astronomical = None
-        self.dark = None
-        self.thread = None
 
         self.colors = {
-            0: {'text': self.COLOR_BLUE4,
+            0: {'text': self.COLOR_BLUE3,
                 'plot': self.M_BLUE4,
                 },
-            1: {'text': self.COLOR_BLUE3,
+            1: {'text': self.COLOR_BLUE2,
                 'plot': self.M_BLUE3,
                 },
-            2: {'text': self.COLOR_BLUE2,
+            2: {'text': self.COLOR_BLUE1,
                 'plot': self.M_BLUE2,
                 },
-            3: {'text': self.COLOR_BLUE1,
+            3: {'text': self.COLOR_BLUE,
                 'plot': self.M_BLUE1,
                 },
-            4: {'text': self.COLOR_WHITE1,
+            4: {'text': self.COLOR_WHITE,
                 'plot': self.M_BACK,
                 },
         }
@@ -101,6 +100,9 @@ class Almanac:
         """
         :return: True for test purpose
         """
+        config = self.app.config['mainW']
+        self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
+        self.ui.almanacPrediction.currentIndexChanged.connect(self.searchTwilightPlot)
         self.updateMoonPhase()
         self.lunarNodes()
         return True
@@ -109,8 +111,8 @@ class Almanac:
         """
         :return: True for test purpose
         """
-        if self.thread:
-            self.thread.join()
+        config = self.app.config['mainW']
+        config['almanacPrediction'] = self.ui.almanacPrediction.currentIndex()
         return True
 
     def plotTwilightData(self, result):
@@ -185,7 +187,6 @@ class Almanac:
         t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
 
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
-        f.step_days = 0.04
         timeEvents, events = almanac.find_discrete(t0, t1, f)
         return timeEvents, events
 
@@ -203,12 +204,18 @@ class Almanac:
         """
         :return: true for test purpose
         """
+        timeWindowParam = [17, 32, 47, 92, 182]
         location = self.app.mount.obsSite.location
         if location is None:
             return False
 
+        index = self.ui.almanacPrediction.currentIndex()
+        text = self.ui.almanacPrediction.currentText()
+        timeWindow = timeWindowParam[index]
+        self.ui.almanacGroup.setTitle(f'Twilight passes for: {text}')
+
         ts = self.app.mount.obsSite.ts
-        worker = Worker(self.searchTwilightWorker, ts, location, 182)
+        worker = Worker(self.searchTwilightWorker, ts, location, timeWindow)
         worker.signals.result.connect(self.plotTwilightData)
         self.threadPool.start(worker)
         return True
@@ -237,6 +244,7 @@ class Almanac:
         moon = self.app.ephemeris['moon']
         earth = self.app.ephemeris['earth']
         now = self.app.mount.obsSite.ts.now()
+        loc = self.app.mount.obsSite.location + earth
 
         e = earth.at(self.app.mount.obsSite.timeJD)
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
@@ -247,7 +255,12 @@ class Almanac:
         mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         mpPercent = mpDegree / 360
 
-        return mpIllumination, mpDegree, mpPercent
+        locObserver = loc.at(self.app.mount.obsSite.timeJD)
+        moonApparent = locObserver.observe(moon).apparent()
+        sunApparent = locObserver.observe(sun).apparent()
+        moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
+
+        return mpIllumination, mpDegree, mpPercent, moonAngle
 
     @staticmethod
     def generateMoonMask(width, height, mpDegree):
@@ -310,7 +323,7 @@ class Almanac:
 
         :return: true for test purpose
         """
-        mpIllumination, mpDegree, mpPercent = self.calcMoonPhase()
+        mpIllumination, mpDegree, mpPercent, mAngle = self.calcMoonPhase()
 
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.2f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')

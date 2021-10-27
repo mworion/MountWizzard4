@@ -76,13 +76,13 @@ def test_stopTimer():
 
 
 def test_getAscomProperty_1():
-    app.propertyExceptions = ['Connect']
+    app.propertyExceptions = ['connect']
     val = app.getAscomProperty('Connect')
     assert val is None
 
 
 def test_getAscomProperty_2():
-    app.propertyExceptions = ['Test']
+    app.propertyExceptions = ['test']
     with mock.patch.object(builtins,
                            'eval',
                            side_effect=Exception):
@@ -102,13 +102,13 @@ def test_getAscomProperty_3():
 
 
 def test_setAscomProperty_1():
-    app.propertyExceptions = ['Connect']
+    app.propertyExceptions = ['connect']
     suc = app.setAscomProperty('Connect', True)
     assert not suc
 
 
 def test_setAscomProperty_2():
-    app.propertyExceptions = ['Test']
+    app.propertyExceptions = ['test']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
@@ -118,7 +118,7 @@ def test_setAscomProperty_2():
 
 
 def test_setAscomProperty_3():
-    app.propertyExceptions = ['Test']
+    app.propertyExceptions = ['test']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
@@ -132,7 +132,7 @@ def test_setAscomProperty_4():
         Connect = False
 
     app.client = Client()
-    app.propertyExceptions = ['Test']
+    app.propertyExceptions = ['test']
     suc = app.setAscomProperty('Connect', True)
     assert suc
     assert app.client

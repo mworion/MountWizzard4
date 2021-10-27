@@ -244,7 +244,8 @@ class DataPoint(object):
         if number > len(self._buildP) - 1:
             return False
 
-        alt, az, _ = self._buildP[number]
+        alt = self._buildP[number][0]
+        az = self._buildP[number][1]
         self._buildP[number] = (alt, az, status)
         return True
 
@@ -403,31 +404,33 @@ class DataPoint(object):
 
         return True
 
-    def sort(self, eastwest=False, highlow=False, pierside=None):
+    def sort(self, points=None, eastwest=False, highlow=False,
+             sortDomeAz=None, pierside=None):
         """
+        :param points:
         :param eastwest: flag if to be sorted east - west
         :param highlow:  flag if sorted high low altitude
+        :param sortDomeAz:  flag if sorted high low altitude
         :param pierside:  start pierside sorting with this position
         :return: true for test purpose
         """
-        if eastwest and highlow:
-            return False
-        if not eastwest and not highlow and pierside is None:
-            return False
-
-        east = [x for x in self._buildP if x[1] <= 180]
-        west = [x for x in self._buildP if x[1] > 180]
+        east = [x for x in points if x[1] <= 180]
+        west = [x for x in points if x[1] > 180]
 
         if eastwest:
             east = sorted(east, key=lambda x: -x[1])
             west = sorted(west, key=lambda x: -x[1])
-        if highlow:
+        elif highlow:
             east = sorted(east, key=lambda x: -x[0])
             west = sorted(west, key=lambda x: -x[0])
-        if pierside == 'E':
-            self._buildP = west + east
+        elif sortDomeAz:
+            east = sorted(east, key=lambda x: -x[3])
+            west = sorted(west, key=lambda x: -x[3])
+
+        if pierside == 'W' or pierside is None:
+            self.buildP = east + west
         else:
-            self._buildP = east + west
+            self.buildP = west + east
 
         return True
 
@@ -455,34 +458,37 @@ class DataPoint(object):
 
         return value
 
-    def loadCSV(self, fileName, ext, delimiter=','):
+    def loadCSV(self, fileName, ext):
         """
         :param fileName: name of file to be handled
         :param ext: extension of file to be handled
-        :param delimiter: delimiter of file to be handled
         :return: value: loaded data
         """
         fileName = self.configDir + '/' + fileName + ext
         if not os.path.isfile(fileName):
             return None
 
+        with open(fileName, 'r') as handle:
+            testLine = handle.readline()
+
+        if ';' in testLine:
+            delimiter = ';'
+        else:
+            delimiter = ','
+
         try:
             value = []
-            with open(fileName, 'r') as handle:
-                reader = csv.reader(handle, delimiter=delimiter)
-                for x in reader:
-                    x = x[:2]
-                    convertedX = [float(val) for val in x]
-                    if delimiter == ',':
-                        value.append(convertedX)
-                    else:
-                        value.append(reversed(convertedX))
+            with open(fileName, 'r', encoding='utf-8-sig') as csvFile:
+                reader = csv.reader(csvFile, delimiter=delimiter)
+                for row in reader:
+                    value.append(tuple(float(val) for val in row))
+
         except Exception as e:
             self.log.info('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
-            value = None
+            return None
+
         else:
-            value = [tuple(x) for x in value]
-        return value
+            return value
 
     @staticmethod
     def checkFormat(value):
@@ -515,8 +521,6 @@ class DataPoint(object):
             value = self.loadCSV(fileName, ext)
         elif ext == '.bpts':
             value = self.loadJSON(fileName, ext)
-        elif ext == '.txt':
-            value = self.loadCSV(fileName, ext, delimiter=':')
 
         if value is None:
             return False
@@ -575,8 +579,6 @@ class DataPoint(object):
             value = self.loadCSV(fileName, ext)
         elif ext == '.hpts':
             value = self.loadJSON(fileName, ext)
-        elif ext == '.txt':
-            value = self.loadCSV(fileName, ext, delimiter=':')
 
         suc = self.checkFormat(value)
         if not suc:

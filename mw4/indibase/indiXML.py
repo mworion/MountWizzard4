@@ -66,14 +66,6 @@ Notes:
 
 """
 
-
-class IndiXMLException(TypeError):
-    log = logging.getLogger(__name__)
-
-    def __init__(self, msg):
-        self.log.critical('IndiXMLException: {0}'.format(msg))
-
-
 class INDIBase(object):
     """
     INDI command base classes.
@@ -447,7 +439,7 @@ indi_spec = {
                        ["label", None, False, labelValue, "GUI label, use name by default"],
                        ["group", None, False, groupTag, "Property group membership, blank by default"],
                        ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
+                       ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
                        ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
                        ["timestamp", None, False, timeValue, "Moment when these data were valid"],
                        ["message", None, False, textValue, "Commentary"]]
@@ -470,7 +462,7 @@ indi_spec = {
                        ["label", None, False, labelValue, "GUI label, use name by default"],
                        ["group", None, False, groupTag, "Property group membership, blank by default"],
                        ["state", None, True, propertyState, "Current state of Property"],
-                       ["perm", None, True, propertyPerm, "Ostensible Client controlability"],
+                       ["perm", None, True, propertyPerm, "Ostensible Client controllability"],
                        ["timeout", None, False, numberValue, "Worse-case time to affect, 0 default, N/A for ro"],
                        ["timestamp", None, False, timeValue, "Moment when these data were valid"],
                        ["message", None, False, textValue, "Commentary"]]
@@ -736,7 +728,8 @@ def makeINDIFn(indi_type):
 
     # Check that the requested type exists.
     if indi_type not in indi_spec:
-        raise IndiXMLException(indi_type + " is not a valid INDI XML command type.")
+        log.critical(indi_type + " is not a valid INDI XML command type.")
+        return
 
     type_spec = indi_spec[indi_type]
 
@@ -756,7 +749,8 @@ def makeINDIFn(indi_type):
 
             # Check if required.
             if attr[2] and attr_name not in fn_attr:
-                raise IndiXMLException(attr_name + " is a required attribute.")
+                log.critical(attr_name + " is a required attribute.")
+                return
 
             # Check if valid.
             if attr_name in fn_attr:
@@ -767,7 +761,8 @@ def makeINDIFn(indi_type):
         # Check that there are no extra attributes.
         for attr in fn_attr:
             if attr not in all_attr:
-                raise IndiXMLException(attr + " is not an attribute of " + indi_type + ".")
+                log.critical(attr + " is not an attribute of " + indi_type + ".")
+                return
 
         # Make an INDI object of this class.
         return type_spec["class"](type_spec["xml"], fn_arg, final_attr, None)

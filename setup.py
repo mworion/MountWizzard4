@@ -27,9 +27,15 @@ releaseNotes = """
 - add: extended satellite tracking and tuning capabilities
 - add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
+- add: sorting for minimal dome slew in build point selection
+- add: setting prediction time of almanac (shorter reduces cpu load)
+- improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
+- improve: gui for running functions
+- improve: test coverage
+- fix: segfault in qt5lib on ubuntu
  """
 
 with open('notes.txt', 'w') as f:
@@ -37,7 +43,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b4',
+    version='2.1.0b12',
     packages=[
         'mw4',
         'mw4.base',

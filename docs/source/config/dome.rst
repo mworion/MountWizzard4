@@ -59,7 +59,7 @@ If you have a dome driver setup, MW4 could open and close the shutter.
 Last, but not least the dome shutter width for calculating the open FOV of the
 telescope.
 
-.. image:: image/shutter.png
+.. image:: image/dome_clear_opening.png
     :align: center
 
 Area 3: dome geometry help

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -124,7 +124,7 @@
     <attribute name="title">
      <string>Mount</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox_47">
+    <widget class="QGroupBox" name="GroupTracking">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -284,7 +284,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_48">
+    <widget class="QGroupBox" name="GroupParkingStop">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -992,7 +992,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_50">
+    <widget class="QGroupBox" name="GroupSettingStatus">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -5822,7 +5822,7 @@ to mount</string>
     <attribute name="title">
      <string>Almanac</string>
     </attribute>
-    <widget class="QGroupBox" name="refractionGroup_4">
+    <widget class="QGroupBox" name="almanacGroup">
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -5849,7 +5849,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,1" columnstretch="0,0,0,0">
       <property name="leftMargin">
        <number>4</number>
       </property>
@@ -5865,35 +5865,21 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="almanacAstronomical">
-        <property name="text">
-         <string>Astronomical</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="QPushButton" name="almanacNautical">
         <property name="text">
          <string>Nautical</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QPushButton" name="almanacCivil">
         <property name="text">
          <string>Civil</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="almanacDark">
-        <property name="text">
-         <string>Dark</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="4">
+      <item row="2" column="0" colspan="4">
        <widget class="QWidget" name="twilight" native="true">
         <property name="enabled">
          <bool>true</bool>
@@ -5905,6 +5891,33 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="almanacDark">
+        <property name="text">
+         <string>Dark</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="almanacAstronomical">
+        <property name="text">
+         <string>Astronomical</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>5</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -6940,7 +6953,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>90</y>
+       <y>80</y>
        <width>366</width>
        <height>76</height>
       </rect>
@@ -7270,13 +7283,13 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBoxCoordinateSystems_3">
+    <widget class="QGroupBox" name="autoSortGroup">
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>185</y>
+       <y>175</y>
        <width>361</width>
-       <height>91</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -7291,7 +7304,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortHL">
       <property name="geometry">
        <rect>
-        <x>245</x>
+        <x>235</x>
         <y>20</y>
         <width>111</width>
         <height>20</height>
@@ -7309,15 +7322,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Sorts the model points low to high altitude.</string>
       </property>
       <property name="text">
-       <string>High / Low</string>
+       <string>High/Low ALT</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="checkSortEW">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>120</x>
         <y>20</y>
-        <width>106</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -7333,7 +7346,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Sorts the model points EAST / WEST side of pier.</string>
       </property>
       <property name="text">
-       <string>East / West</string>
+       <string>East/West AZ</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="checkSortNothing">
@@ -7341,7 +7354,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>15</x>
         <y>20</y>
-        <width>106</width>
+        <width>101</width>
         <height>20</height>
        </rect>
       </property>
@@ -7357,7 +7370,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>No sorting of the model points </string>
       </property>
       <property name="text">
-       <string>Default</string>
+       <string>No sort</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -7367,7 +7380,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>45</y>
+        <y>55</y>
         <width>336</width>
         <height>20</height>
        </rect>
@@ -7384,14 +7397,14 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to start build model point from the pierside where the mount is actually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
-       <string>Avoid meridian flip when starting</string>
+       <string>Avoid meridian flip at start</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkAutoDeleteMeridian">
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>65</y>
+        <y>75</y>
         <width>256</width>
         <height>20</height>
        </rect>
@@ -7409,6 +7422,55 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>Auto delete points within meridian limits</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="useDomeAz">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>235</x>
+        <y>55</y>
+        <width>106</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses caclulated and geometry corrected dome azimuth values for azimuth sorting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Use dome AZ</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_89">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>45</y>
+        <width>331</width>
+        <height>6</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </widget>
@@ -7655,7 +7717,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_162">
       <property name="geometry">
        <rect>
-        <x>335</x>
+        <x>330</x>
         <y>100</y>
         <width>16</width>
         <height>20</height>
@@ -7684,7 +7746,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>10</x>
         <y>100</y>
-        <width>256</width>
+        <width>271</width>
         <height>20</height>
        </rect>
       </property>
@@ -7700,7 +7762,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>If checked, all model points are deleted, which are below the horizon mask.</string>
       </property>
       <property name="text">
-       <string>Add safety distance to horizon line</string>
+       <string>Add safety distance to horizon line with</string>
       </property>
      </widget>
     </widget>
@@ -9621,7 +9683,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <attribute name="title">
      <string>Manage Model</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox_55">
+    <widget class="QGroupBox" name="modelGroup">
      <property name="geometry">
       <rect>
        <x>500</x>
@@ -9872,7 +9934,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_56">
+    <widget class="QGroupBox" name="modelNameGroup">
      <property name="geometry">
       <rect>
        <x>500</x>
@@ -10728,7 +10790,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QCheckBox" name="satCyclicUpdates">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -10742,7 +10804,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will calculate the satellite track on it's own with more features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Do cyclic update in list</string>
+         <string>Do updates every 10min</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="switchToTrackingTab">
@@ -10957,7 +11019,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_RED_L</string>
+         <string>red</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_334">
@@ -11023,7 +11085,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_RED_L</string>
+         <string>red</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_335">
@@ -11152,7 +11214,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_RED_L</string>
+         <string>red</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satFlip_1">
@@ -11197,7 +11259,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_RED_L</string>
+         <string>red</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satRise_2">
@@ -11242,7 +11304,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_YELLOW_L</string>
+         <string>yellow</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satCulminate_2">
@@ -11287,7 +11349,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_YELLOW_L</string>
+         <string>yellow</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satFlip_2">
@@ -11332,7 +11394,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_YELLOW_L</string>
+         <string>yellow</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satSettle_2">
@@ -11377,7 +11439,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_YELLOW_L</string>
+         <string>yellow</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satDate_1">
@@ -11422,7 +11484,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_RED_L</string>
+         <string>red</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satSettle_3">
@@ -11467,7 +11529,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_GREEN_L</string>
+         <string>green</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satRise_3">
@@ -11512,7 +11574,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_GREEN_L</string>
+         <string>green</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satFlip_3">
@@ -11557,7 +11619,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_GREEN_L</string>
+         <string>green</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satCulminate_3">
@@ -11602,7 +11664,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_GREEN_L</string>
+         <string>green</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satDate_2">
@@ -11647,7 +11709,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_YELLOW_L</string>
+         <string>yellow</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="satDate_3">
@@ -11692,7 +11754,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="color" stdset="0">
-         <string>M_GREEN_L</string>
+         <string>green</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_340">
@@ -18278,7 +18340,7 @@ Next point in time when satellite settles.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_40">
+      <widget class="QGroupBox" name="GroupAccessories">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -18560,7 +18622,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_41">
+      <widget class="QGroupBox" name="GroupCoreDevices">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -18930,7 +18992,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="Environmentgroup">
+      <widget class="QGroupBox" name="GroupEnvironmentConditions">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -19237,7 +19299,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="Ascomconnectgroup">
+      <widget class="QGroupBox" name="GroupAscomConnect">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -19354,7 +19416,7 @@ Next point in time when satellite settles.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_25">
+      <widget class="QGroupBox" name="GroupImagingSettings">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -20280,7 +20342,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_26">
+      <widget class="QGroupBox" name="GroupImagingCalculations">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21019,7 +21081,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_32">
+      <widget class="QGroupBox" name="GroupImagingQuality">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21275,7 +21337,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_33">
+      <widget class="QGroupBox" name="GroupTelescopeReadout">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21496,7 +21558,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_43">
+      <widget class="QGroupBox" name="GroupFlipFlat">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -21703,7 +21765,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_34">
+      <widget class="QGroupBox" name="GroupFilterWheel">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -21871,7 +21933,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_35">
+      <widget class="QGroupBox" name="GroupFocuser">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -22097,7 +22159,7 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_62">
+      <widget class="QGroupBox" name="GroupMountConnectivity">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -22501,7 +22563,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_63">
+      <widget class="QGroupBox" name="GroupRigComputer">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -22579,7 +22641,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_31">
+      <widget class="QGroupBox" name="GroupMountSettleTime">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -23064,7 +23126,7 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_44">
+      <widget class="QGroupBox" name="GroupDomeGeometry">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -23601,7 +23663,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_66">
+      <widget class="QGroupBox" name="GroupDomeSettleTime">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -24047,7 +24109,7 @@ When clicking the button, you could change the value.</string>
         </widget>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_53">
+      <widget class="QGroupBox" name="GroupDomeShutter">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -24447,7 +24509,7 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_45">
+      <widget class="QGroupBox" name="GroupParkPositionsSettings">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -26654,7 +26716,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_96">
+      <widget class="QGroupBox" name="GroupRelaySettings">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -27345,9 +27407,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
-         <height>46</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -27360,7 +27422,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>20</y>
+          <y>15</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -27387,7 +27449,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -27414,7 +27476,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>270</x>
-          <y>20</y>
+          <y>15</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -27441,7 +27503,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -27455,9 +27517,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>285</y>
+         <y>305</y>
          <width>366</width>
-         <height>96</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -27472,7 +27534,7 @@ When clicking the button, you could change the value.</string>
           <x>5</x>
           <y>20</y>
           <width>356</width>
-          <height>71</height>
+          <height>56</height>
          </rect>
         </property>
         <property name="html">
@@ -27490,7 +27552,7 @@ p, li { white-space: pre-wrap; }
          <x>400</x>
          <y>15</y>
          <width>366</width>
-         <height>176</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -28005,13 +28067,13 @@ Updater</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="LoglevelGroup_2">
+      <widget class="QGroupBox" name="GroupClockSync">
        <property name="geometry">
         <rect>
          <x>5</x>
          <y>220</y>
          <width>366</width>
-         <height>106</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="title">
@@ -28109,7 +28171,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>80</y>
+          <y>75</y>
           <width>176</width>
           <height>21</height>
          </rect>
@@ -28191,13 +28253,13 @@ Updater</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="LoglevelGroup_3">
+      <widget class="QGroupBox" name="GroupGuiAddOns">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>210</y>
+         <y>200</y>
          <width>366</width>
-         <height>46</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -28210,7 +28272,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>21</height>
          </rect>
@@ -28234,6 +28296,81 @@ Updater</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="GroupAlamanc">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>250</y>
+         <width>366</width>
+         <height>46</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Almanac</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QComboBox" name="almanacPrediction">
+        <property name="geometry">
+         <rect>
+          <x>175</x>
+          <y>20</y>
+          <width>181</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the prediction time of the twilight almanac. Shorter time improves redering speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>1 month</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>2 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>3 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>6 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1 year</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_224">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>136</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Length of prediction</string>
         </property>
        </widget>
       </widget>

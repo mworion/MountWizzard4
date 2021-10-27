@@ -2,7 +2,7 @@
 cd $(dirname "$0")
 
 #
-# Installer for Ubuntu 18.04 for aarch64
+# Installer for Ubuntu Mate 18.04 for aarch64
 # (c) 2021 mworion
 #
 
@@ -82,11 +82,6 @@ python3 -m venv venv >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------
-echo installing application - takes some time
-echo --------------------------------------------------------
-
-echo
-echo --------------------------------------------------------
 echo start virtualenv and update tools
 echo --------------------------------------------------------
 
@@ -95,20 +90,35 @@ pip install pip --upgrade >> install.log 2>&1
 pip install setuptools --upgrade >> install.log 2>&1
 pip install wheel --upgrade >> install.log 2>&1
 
-GITHUB="https://github.com/mworion/MountWizzard4/tree/master/support"
-UBUNTU="/2.0/wheels/ubuntu18.04"
-
 echo
 echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-pip install numpy==1.21.2 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
-pip install pyerfa==2.0.0 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
-pip install sgp4==2.20 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
-pip install sep==1.2.0 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
-pip install PyQt5-sip==12.8.1 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
-pip install PyQt5==5.15.4 --find-links "${GITHUB}${UBUNTU}" >> install.log 2>&1
+GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+WHEELS="/support/2.0/wheels/ubuntu20.04"
+PRE="${GITHUB}${WHEELS}"
+POST="_aarch64.whl"
+
+PY37="-cp37-cp37m-"
+PY38="-cp38-cp38-"
+PY39="-cp39-cp39-"
+
+if [ "${P_VER:0:9}" == "python3.9" ]; then
+  PY="${PY39}"
+elif [ "${P_VER:0:9}" == "python3.8" ]; then
+  PY="${PY38}"
+elif [ "${P_VER:0:9}" == "python3.7" ]; then
+  PY="${PY37}"
+fi
+
+pip install "${PRE}"/numpy-1.21.2"${PY}"manylinux_2_17_aarch64.manylinux2014"${POST}" >> install.log 2>&1
+pip install "${PRE}"/pyerfa-2.0.0"${PY}"linux"${POST}" >> install.log 2>&1
+pip install "${PRE}"/astropy-4.3.1"${PY}"linux"${POST}" >> install.log 2>&1
+pip install "${PRE}"/sep-1.2.0"${PY}"linux"${POST}" >> install.log 2>&1
+pip install "${PRE}"/sgp4-2.20"${PY}"manylinux2014"${POST}" >> install.log 2>&1
+pip install "${PRE}"/PyQt5_sip-12.8.1"${PY}"linux"${POST}" >> install.log 2>&1
+pip install "${PRE}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${POST}" >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------

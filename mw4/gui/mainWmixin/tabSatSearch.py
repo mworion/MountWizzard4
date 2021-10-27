@@ -117,6 +117,7 @@ class SatSearch(object):
         self.sigSetSatTableEntry.connect(self.setSatTableEntry)
 
         self.app.update1s.connect(self.satCalcDynamicTable)
+        self.app.update10m.connect(self.updateSatTable)
 
     def initConfig(self):
         """
@@ -249,12 +250,11 @@ class SatSearch(object):
         :param tEv:
         :return:
         """
-        sun = ephemeris['sun']
         earth = ephemeris['earth']
 
         vecObserverSat = (sat - loc).at(tEv)
-        vecObserverSun = (sun - (earth + loc)).at(tEv)
-        phase = vecObserverSat.separation_from(vecObserverSun)
+        vecSunSat = (earth + sat).at(tEv)
+        phase = vecObserverSat.separation_from(vecSunSat)
         return phase
 
     def calcAppMag(self, sat, loc, ephemeris, satRange, tEv):
@@ -432,6 +432,8 @@ class SatSearch(object):
             satTab.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
         self.positionCursorInSatTable(satTab, satName)
+        self.changeStyleDynamic(self.ui.satFilterGroup, 'running', False)
+
         return True
 
     def workerSatCalcTable(self):
@@ -491,7 +493,17 @@ class SatSearch(object):
         self.ui.satIsSunlit.setEnabled(False)
         worker = Worker(self.workerSatCalcTable)
         worker.signals.finished.connect(self.filterSatelliteNamesList)
+        self.changeStyleDynamic(self.ui.satFilterGroup, 'running', True)
         self.threadPool.start(worker)
+        return True
+
+    def updateSatTable(self):
+        """
+        :return:
+        """
+        if not self.ui.satCyclicUpdates.isChecked():
+            return False
+        self.satCalcTable()
         return True
 
     def prepareSatTable(self):
@@ -530,8 +542,6 @@ class SatSearch(object):
         self.prepareSatTable()
 
         for name in self.satellites:
-            if not self.satSourceValid:
-                break
             number = self.satellites[name].model.satnum
             satTab.insertRow(satTab.rowCount())
             row = satTab.rowCount() - 1
@@ -542,14 +552,12 @@ class SatSearch(object):
             entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             satTab.setItem(row, 1, entry)
 
-        else:
-            self.filterSatelliteNamesList()
-            self.ui.satFilterGroup.setEnabled(True)
-            self.ui.satProgDatabaseGroup.setEnabled(True)
-            self.satTableBaseValid = True
-            self.satCalcTable()
-            return True
-        return False
+        self.filterSatelliteNamesList()
+        self.ui.satFilterGroup.setEnabled(True)
+        self.ui.satProgDatabaseGroup.setEnabled(True)
+        self.satTableBaseValid = True
+        self.satCalcTable()
+        return True
 
     def workerLoadDataFromSourceURLs(self, source='', isOnline=False):
         """
@@ -567,7 +575,7 @@ class SatSearch(object):
             return False
 
         daysOld = loader.days_old(filePath)
-        self.ui.satSourceGroup.setTitle(f'Satellite data - age:{daysOld:2.0f}d')
+        self.ui.satSourceGroup.setTitle(f'Satellite data - age: {daysOld:2.1f}d')
         self.satSourceValid = True
         return True
 
@@ -598,85 +606,83 @@ class SatSearch(object):
         self.threadPool.start(worker)
         return True
 
-    def progSatellitesFiltered(self):
+    def progSatellites(self, satellites):
         """
-        :return: success
+        :param satellites:
+        :return:
         """
-        source = self.ui.satelliteSource.currentText()
-        text = f'Should filtered database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
-        if not suc:
-            return False
-
-        self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting TLE data', 0)
-
-        filterStr = self.ui.filterSatellite.text().lower()
-        filtered = dict()
-        for name, _ in self.satellites.items():
-            if not isinstance(name, str):
-                continue
-
-            text = f'{name}'
-            if filterStr.lower() not in text.lower():
-                continue
-
-            filtered[name] = self.satellites[name]
-
-        suc = self.databaseProcessing.writeSatelliteTLE(filtered,
-                                                        self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.installPath)
         if not suc:
             self.app.message.emit('Data could not be exported - stopping', 2)
-            return False
-        if not self.app.automation:
-            t = 'Not running windows - upload not possible'
-            self.app.message.emit(t, 2)
-            return False
-        if not self.app.automation.installPath:
-            t = 'No QCI updater available - upload not possible'
-            self.app.message.emit(t, 2)
             return False
 
         self.app.message.emit('Uploading TLE data to mount', 0)
         suc = self.app.automation.uploadTLEData()
         if not suc:
-            self.app.message.emit('Uploading error', 2)
+            self.app.message.emit('Uploading error, files available', 2)
         else:
             self.app.message.emit('Programming success', 1)
         return suc
+
+    def satelliteFilter(self, satellitesRaw):
+        """
+        :param satellitesRaw:
+        :return:
+        """
+        filterStr = self.ui.filterSatellite.text().lower()
+        filtered = dict()
+        for name, _ in satellitesRaw.items():
+            if not isinstance(name, str):
+                continue
+            text = f'{name}'
+            if filterStr.lower() not in text.lower():
+                continue
+            filtered[name] = satellitesRaw[name]
+        return filtered
+
+    def satelliteGUI(self):
+        """
+        :return:
+        """
+        suc = self.checkUpdaterOK()
+        if not suc:
+            return False
+
+        source = self.ui.satelliteSource.currentText()
+        question = '<b>Filtered MPC Data programming</b>'
+        question += '<br><br>The 10micron updater will be used.'
+        question += '<br>Selected source: '
+        question += f'<font color={self.M_BLUE}>{source}</font>'
+        question += '<br>Would you like to start?<br>'
+        question += f'<br><i><font color={self.M_YELLOW}>'
+        question += 'Please wait until updater is closed!</font></i>'
+        suc = self.messageDialog(self, 'Program with 10micron Updater', question)
+        if not suc:
+            return False
+
+        self.app.message.emit(f'Program database:    [{source}]', 1)
+        self.app.message.emit('Exporting TLE data', 0)
+        return True
+
+    def progSatellitesFiltered(self):
+        """
+        :return: success
+        """
+        suc = self.satelliteGUI()
+        if not suc:
+            return False
+
+        filtered = self.satelliteFilter(self.satellites)
+        self.progSatellites(filtered)
+        return True
 
     def progSatellitesFull(self):
         """
         :return: success
         """
-        source = self.ui.satelliteSource.currentText()
-        text = f'Should full database\n\n[{source}]\n\nbe programmed to mount ?'
-        suc = self.messageDialog(self, 'Program with QCI Updater', text)
+        suc = self.satelliteGUI()
         if not suc:
             return False
 
-        self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting TLE data', 0)
-
-        suc = self.databaseProcessing.writeSatelliteTLE(self.satellites,
-                                                        self.installPath)
-        if not suc:
-            self.app.message.emit('Data could not be exported - stopping', 2)
-            return False
-        if not self.app.automation:
-            t = 'Not running windows - upload not possible'
-            self.app.message.emit(t, 2)
-            return False
-        if not self.app.automation.installPath:
-            t = 'No QCI updater available - upload not possible'
-            self.app.message.emit(t, 2)
-            return False
-
-        self.app.message.emit('Uploading TLE data to mount', 0)
-        suc = self.app.automation.uploadTLEData()
-        if not suc:
-            self.app.message.emit('Uploading error', 2)
-        else:
-            self.app.message.emit('Programming success', 1)
-
-        return suc
+        self.progSatellites(self.satellites)
+        return True

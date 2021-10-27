@@ -18,17 +18,13 @@
 # standard libraries
 
 # external packages
-from astropy.io import fits
-from PyQt5.QtTest import QTest
-import numpy as np
 
 # local imports
-from mountcontrol.convert import formatDstrToText
 from base.ascomClass import AscomClass
-from base.transform import JNowToJ2000
+from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraAscom(AscomClass):
+class CameraAscom(AscomClass, CameraSupport):
     """
     """
 
@@ -129,86 +125,10 @@ class CameraAscom(AscomClass):
         self.setAscomProperty('NumX', int(width / binning))
         self.setAscomProperty('NumY', int(height / binning))
 
-        isMount = self.app.deviceStat['mount']
-        if isMount:
-            ra = self.app.mount.obsSite.raJNow
-            dec = self.app.mount.obsSite.decJNow
-            obsTime = self.app.mount.obsSite.timeJD
-            if ra is not None and dec is not None and obsTime is not None:
-                ra, dec = JNowToJ2000(ra, dec, obsTime)
-
         self.client.StartExposure(expTime, True)
-        timeLeft = expTime
-        while not self.getAscomProperty('ImageReady'):
-            text = f'expose {timeLeft:3.0f} s'
-            QTest.qWait(100)
-            if timeLeft >= 0.1:
-                timeLeft -= 0.1
-            else:
-                timeLeft = 0
-            self.signals.message.emit(text)
-            if self.abortExpose:
-                break
-
-        if not self.abortExpose:
-            self.signals.integrated.emit()
-            self.signals.message.emit('download')
-            tmp = self.getAscomProperty('ImageArray')
-            if tmp is None:
-                self.abortExpose = True
-            else:
-                data = np.array(tmp, dtype=np.uint16).transpose()
-
-        if not self.abortExpose:
-            self.signals.downloaded.emit()
-            self.signals.message.emit('saving')
-            hdu = fits.PrimaryHDU(data=data)
-            header = hdu.header
-            header.append(('OBJECT', 'SKY_OBJECT', 'default name from MW4'))
-            header.append(('FRAME', 'Light', 'Modeling works with light frames'))
-            header.append(('EQUINOX', 2000, 'All data is stored in J2000'))
-            header.append(('PIXSIZE1', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning))
-            header.append(('PIXSIZE2', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning))
-            header.append(('XPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning))
-            header.append(('YPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning))
-
-            if focalLength:
-                factor = binning / focalLength * 206.265
-                header.append(('FOCALLEN', focalLength,
-                               'Data taken from driver or manual input'))
-            else:
-                factor = 1
-
-            header.append(('SCALE', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor))
-            header.append(('XBINNING', binning, 'MW4 is using the same binning for x and y'))
-            header.append(('YBINNING', binning, 'MW4 is using the same binning for x and y'))
-            header.append(('EXPTIME', expTime))
-            header.append(('OBSERVER', 'MW4'))
-            timeJD = self.app.mount.obsSite.timeJD
-            header.append(('DATE-OBS', timeJD.tt_strftime('%Y-%m-%dT%H:%M:%S'),
-                           'Time is UTC of mount'))
-            header.append(('CCD-TEMP', self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
-            header.append(('SQM', self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
-
-            if isMount:
-                header.append(('RA', ra._degrees))
-                header.append(('DEC', dec.degrees))
-                header.append(('TELESCOP',
-                               self.app.mount.firmware.product,
-                               'Mount version from firmware'))
-                lat = self.app.mount.obsSite.location.latitude
-                header.append(('SITELAT', formatDstrToText(lat)))
-                lon = self.app.mount.obsSite.location.longitude
-                header.append(('SITELON', formatDstrToText(lon)))
-                elev = self.app.mount.obsSite.location.elevation.m
-                header.append(('SITEELEV', elev))
-
-            hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
-            self.log.info(f'Saved Image: [{imagePath}], FITS: [{header}]')
-
-        if self.abortExpose:
-            imagePath = ''
-
+        self.waitExposed(self.getAscomProperty, 'ImageReady', expTime)
+        data = self.retrieveFits(self.getAscomProperty, 'ImageArray')
+        imagePath = self.saveFits(imagePath, data, expTime, binning, focalLength)
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
         self.signals.message.emit('')

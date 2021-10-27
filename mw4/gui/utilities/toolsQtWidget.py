@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import platform
 import os
 import logging
 
@@ -198,20 +197,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         gui.style().polish(gui)
         return True
 
-    def getStyle(self):
-        """
-        getStyle return the actual stylesheet for the used platform.
-        As the font sizes vary between Darwin and Windows / Ubuntu there were
-        two sets of stylesheets used. a basic stylesheet adds undifferentiated
-        properties.
-
-        :return:    actual stylesheet string
-        """
-        if platform.system() == 'Darwin':
-            return self.MAC_STYLE + self.BASIC_STYLE
-        else:
-            return self.NON_MAC_STYLE + self.BASIC_STYLE
-
     def initUI(self):
         """
         init_UI makes the basic initialisation of the GUI. is sets the window
@@ -222,8 +207,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:    true for test purpose
         """
         self.setWindowFlags(self.windowFlags())
-        style = self.getStyle()
-        self.setStyleSheet(style)
+        self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(QIcon(':/mw4.ico'))
         return True
@@ -312,7 +296,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.DontUseNativeDialog)
         dlg.setWindowIcon(QIcon(':/mw4.ico'))
-        dlg.setStyleSheet(self.getStyle())
+        dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.List)
         dlg.setModal(True)
         if reverseOrder:
@@ -353,7 +337,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         """
         msg = QMessageBox()
         msg.setWindowModality(Qt.ApplicationModal)
-        msg.setStyleSheet(self.getStyle())
+        msg.setStyleSheet(self.mw4Style)
         msg.setTextFormat(Qt.AutoText)
         msg.setWindowTitle(title)
         pixmap = QPixmap(':/icon/question.svg').scaled(64, 64)
@@ -514,13 +498,10 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         if not widget:
             return None
 
-        class MouseDoubleClickEventFilter(QObject):
+        class MouseClickEventFilter(QObject):
             clicked = pyqtSignal(object)
 
             def eventFilter(self, obj, event):
-                if obj != widget:
-                    return False
-
                 if event.type() not in [QEvent.MouseButtonRelease,
                                         QEvent.FocusIn]:
                     return False
@@ -532,9 +513,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
                 return False
 
-        doubleClickEventFilter = MouseDoubleClickEventFilter(widget)
-        widget.installEventFilter(doubleClickEventFilter)
-        return doubleClickEventFilter.clicked
+        clickEventFilter = MouseClickEventFilter(widget)
+        widget.installEventFilter(clickEventFilter)
+        return clickEventFilter.clicked
 
     @staticmethod
     def guiSetText(ui, formatElement, value=None):
@@ -624,3 +605,16 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         searchD = dict([(value, key) for key, value in searchD.items()])
         driver = searchD.get(sender, '')
         return driver
+
+    def checkUpdaterOK(self):
+        """
+        :return:
+        """
+        if not self.app.automation:
+            self.app.message.emit('Not running windows - upload not possible', 2)
+            return False
+        if not self.app.automation.installPath:
+            self.app.message.emit('No 10micron updater available - upload not '
+                                  'possible', 2)
+            return False
+        return True

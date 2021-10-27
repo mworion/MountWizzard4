@@ -1,0 +1,259 @@
+#
+# GitHub actions for checking the installation of mountwizzard4 packages
+#
+# v1.0, Michael Wuertenberger
+#
+name: package_install
+env:
+  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/'
+  wid: 'mw4/gui/widgets/'
+  uic: 'python -m PyQt5.uic.pyuic'
+  ucc: 'python -m PyQt5.pyrcc_main'
+  res: 'mw4/resource/'
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - 'setup.py'
+      - '.github/workflows/package_install.yml'
+
+jobs:
+
+  # This action is split into two jobs:
+  # 1 Building the distribution
+  # 2 Installing the distribution in a multiple os and python versions
+  # Job 2 need 1 to be finished without error.
+
+  build_widgets_resource:
+
+    # First the distribution is done on an ubuntu. This is not related to any
+    # operating system, so we could do it on the default os og GitHub.
+    # Python 3.9 is chosen as it is the actual version you could work with.
+
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-python-environment
+      with:
+        path: ~/.env
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+          
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: build_widgets_resource
+      run: |
+        python -m pip install PyQt5
+        ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
+        ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
+        ${{env.uic}} ${{env.wid}}hemisphere.ui -o ${{env.wid}}hemisphere_ui.py
+        ${{env.uic}} ${{env.wid}}image.ui -o ${{env.wid}}image_ui.py
+        ${{env.uic}} ${{env.wid}}keypad.ui -o ${{env.wid}}keypad_ui.py
+        ${{env.uic}} ${{env.wid}}main.ui -o ${{env.wid}}main_ui.py
+        ${{env.uic}} ${{env.wid}}measure.ui -o ${{env.wid}}measure_ui.py
+        ${{env.uic}} ${{env.wid}}message.ui -o ${{env.wid}}message_ui.py
+        ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.wid}}satellite_ui.py
+        ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
+        ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
+        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
+
+    - name: build_package
+      run: |
+        python -m pip install setuptools wheel
+        python setup.py sdist
+        mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
+
+    - name: upload_package
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist
+        
+  install_package_windows:
+    
+    # downloads the packages from job 1, installs all necessary items for being
+    # able to run the installation with the test scripts and finally run mw4 for
+    # some seconds
+  
+    needs: [build_widgets_resource]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 3
+      matrix:
+        os: [windows-latest]
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: setup_python_windows ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+  
+      - name: show_python_version
+        run: python -c 'import platform; print(platform.architecture()[0])'
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ env.gh }}Windows/MW4_InstallTest.bat
+          target: dist/
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ env.gh }}Windows/MW4_Run.bat
+          target: dist/
+          
+      - name: MountWizzard4 Install
+        shell: cmd
+        run: |
+          cd dist
+          call MW4_InstallTest.bat
+          more install.log
+          
+      - name: Run MountWizzard4
+        shell: cmd
+        run: |
+          cd dist
+          touch test.txt
+          call MW4_Run.bat
+          dir
+          more run.log
+
+  install_package_ubuntu:
+    
+    # downloads the packages from job 1, installs all necessary items for being
+    # able to run the installation with the test scripts and finally run mw4 for
+    # some seconds
+  
+    needs: [build_widgets_resource]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 3
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: setup_python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+      - name: Install Head
+        run: |
+          sudo apt-get update
+          sudo apt-get -y upgrade
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
+          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
+          sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
+          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
+          sudo apt-get install -y libxcb-keysyms1
+
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ env.gh }}Ubuntu/MW4_InstallTest.sh
+          target: dist/
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ env.gh }}Ubuntu/MW4_Run.sh
+          target: dist/
+          
+      - name: MountWizzard4 Install
+        run: |
+          cd dist
+          chmod 777 MW4_InstallTest.sh
+          ./MW4_InstallTest.sh
+          cat install.log
+          
+      - name: Run MountWizzard4
+        run: |
+          cd dist
+          chmod 777 MW4_Run.sh
+          touch test.txt
+          xvfb-run ./MW4_Run.sh
+          ls -la
+          cat run.log
+
+
+  install_package_macOS:
+    
+    # downloads the packages from job 1, installs all necessary items for being
+    # able to run the installation with the test scripts and finally run mw4 for
+    # some seconds
+  
+    needs: [build_widgets_resource]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 3
+      matrix:
+        os: [macos-latest]
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup_python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ env.gh }}MacOSx/MW4_InstallTest.command
+          target: dist/
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ env.gh }}MacOSx/MW4_Run.command
+          target: dist/
+          
+      - name: MountWizzard4 Install
+        run: |
+          cd dist
+          chmod 777 MW4_InstallTest.command
+          ./MW4_InstallTest.command
+          cat install.log
+          
+      - name: Run MountWizzard4
+        run: |
+          cd dist
+          chmod 777 MW4_Run.command
+          touch test.txt
+          ./MW4_Run.command
+          ls -la
+          cat run.log
+

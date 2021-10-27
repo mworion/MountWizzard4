@@ -17,8 +17,10 @@
 # standard libraries
 
 # external packages
+from PyQt5.QtCore import QMutex
 
 # local import
+from base.tpool import Worker
 
 
 class BuildPoints:
@@ -26,6 +28,7 @@ class BuildPoints:
     """
 
     def __init__(self):
+        self.sortRunning = QMutex()
         self.lastGenerator = 'none'
         self.sortedGenerators = {
             'grid': self.genBuildGrid,
@@ -104,6 +107,7 @@ class BuildPoints:
         self.ui.checkAvoidFlip.setChecked(config.get('checkAvoidFlip', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
+        self.ui.useDomeAz.setChecked(config.get('useDomeAz', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
         self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
 
@@ -137,6 +141,7 @@ class BuildPoints:
         config['checkAvoidFlip'] = self.ui.checkAvoidFlip.isChecked()
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
+        config['useDomeAz'] = self.ui.useDomeAz.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
         config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
 
@@ -455,7 +460,7 @@ class BuildPoints:
         :return: success
         """
         folder = self.app.mwGlob['configDir']
-        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv);; MW3 Files (*.txt)'
+        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv)'
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open build point file',
                                                     folder,
@@ -544,6 +549,74 @@ class BuildPoints:
             self.app.data.deleteCloseHorizonLine(value)
         return True
 
+    def doSortDomeAzData(self, result):
+        """
+        :param result:
+        :return:
+        """
+        points, pierside = result
+        self.app.data.sort(points=points,
+                           sortDomeAz=True,
+                           pierside=pierside)
+        self.sortRunning.unlock()
+        self.app.redrawHemisphere.emit()
+        self.app.drawBuildPoints.emit()
+        return True
+
+    def sortDomeAzWorker(self, points, pierside=None):
+        """
+        :param points:
+        :param pierside:
+        :return:
+        """
+        pointsNew = list()
+        numbAll = len(points)
+        ui = self.ui.autoSortGroup
+        self.changeStyleDynamic(ui, 'running', True)
+        for i, point in enumerate(points):
+            t = f'Auto sort points: progress {(i + 1) / numbAll * 100:3.0f}%'
+            ui.setTitle(t)
+            alt = point[0]
+            az = point[1]
+            _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
+            if domeAz is None:
+                continue
+            pointsNew.append((alt, az, True, domeAz.degrees))
+        points = pointsNew
+        ui.setTitle('Auto sort points')
+        self.changeStyleDynamic(ui, 'running', False)
+        return points, pierside
+
+    def sortDomeAz(self, points, pierside=None):
+        """
+        :param points:
+        :param pierside:
+        :return:
+        """
+        if not self.sortRunning.tryLock():
+            return False
+        worker = Worker(self.sortDomeAzWorker, points, pierside)
+        worker.signals.result.connect(self.doSortDomeAzData)
+        self.threadPool.start(worker)
+        return True
+
+    def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
+        """
+        :param points:
+        :param eastwest:
+        :param highlow:
+        :param pierside:
+        :return:
+        """
+        points = [(x[0], x[1], x[2], 0) for x in points]
+        self.app.data.sort(points=points,
+                           eastwest=eastwest,
+                           highlow=highlow,
+                           pierside=pierside)
+        self.app.redrawHemisphere.emit()
+        self.app.drawBuildPoints.emit()
+        return True
+
     def autoSortPoints(self):
         """
         autoSortPoints sort the given build point first to east and west and
@@ -555,20 +628,26 @@ class BuildPoints:
         eastwest = self.ui.checkSortEW.isChecked()
         highlow = self.ui.checkSortHL.isChecked()
         avoidFlip = self.ui.checkAvoidFlip.isChecked()
+        useDomeAz = self.ui.useDomeAz.isChecked()
+        enableDomeAz = self.ui.useDomeAz.isEnabled()
+        noSort = self.ui.checkSortNothing.isChecked()
         pierside = self.app.mount.obsSite.pierside
 
-        if pierside is None:
-            avoidFlip = False
-        if not eastwest and not highlow and not avoidFlip:
+        if not avoidFlip:
+            pierside = None
+
+        points = self.app.data.buildP
+        if noSort and not avoidFlip:
+            self.app.redrawHemisphere.emit()
+            self.app.drawBuildPoints.emit()
             return False
 
-        if avoidFlip:
-            self.app.data.sort(eastwest=eastwest,
-                               highlow=highlow,
-                               pierside=pierside)
+        if useDomeAz and enableDomeAz and eastwest:
+            self.sortDomeAz(points=points, pierside=pierside)
         else:
-            self.app.data.sort(eastwest=eastwest,
-                               highlow=highlow)
+            self.sortMountAz(points=points, eastwest=eastwest, highlow=highlow,
+                             pierside=pierside)
+
         return True
 
     def buildPointsChanged(self):
@@ -593,6 +672,4 @@ class BuildPoints:
         """
         self.autoDeletePoints()
         self.autoSortPoints()
-        self.app.redrawHemisphere.emit()
-        self.app.drawBuildPoints.emit()
         return True

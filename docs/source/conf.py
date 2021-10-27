@@ -39,8 +39,8 @@ copyright = '2021, mworion'
 author = 'mworion'
 
 # The full version, including alpha/beta/rc tags
-version = '2.1.0b4'
-release = '2.1.0b4'
+version = '2.1.0b12'
+release = '2.1.0b12'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
@@ -83,7 +83,11 @@ html_theme_options = {
     'fixed_sidebar': True,
     'page_width': '1400px',
     'sidebar_width': '300px',
+    'base_bg': '#2090C080',
+    'base_text': '#FFFFFFFF',
+    'body_bg': '#FFFFFFFF',
 }
 
 latex_logo = '_static/mw4.png'
 latex_show_urls = 'inline'
+

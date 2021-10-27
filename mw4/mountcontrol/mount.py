@@ -166,7 +166,7 @@ class Mount(object):
     def resetData(self):
         """
         resetData deletes all data already stored in classes just by redefining
-        the classes. it send as well a signal, when the data is cleared.
+        the classes. it sends as well a signal, when the data is cleared.
 
         :return: nothing
         """
@@ -206,3 +206,15 @@ class Mount(object):
                                                         dec=dec,
                                                         lat=lat,
                                                         pierside=pierside)
+
+    def calcMountAltAzToDomeAltAz(self, alt, az):
+        """
+        :param alt:
+        :param az:
+        :return:
+        """
+        suc = self.obsSite.setTargetAltAz(alt_degrees=alt, az_degrees=az)
+        if not suc:
+           return None, None
+        alt, az, _, _, _ = self.calcTransformationMatricesTarget()
+        return alt, az

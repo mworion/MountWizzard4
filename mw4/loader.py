@@ -35,6 +35,8 @@ setupLogging()
 # and https://github.com/pywinauto/pywinauto/issues/472
 # order is important to set sys.coinit_flags = 2 before import pywinauto
 #
+import warnings
+warnings.simplefilter('ignore', UserWarning)
 sys.coinit_flags = 2
 
 # external packages

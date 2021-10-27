@@ -365,176 +365,6 @@ def test_updateSettingGUI_5(function):
         assert suc
 
 
-def test_setLunarTracking_1(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setLunarTracking',
-                           return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.setLunarTracking()
-            assert suc
-        assert ['Tracking set to Lunar', 0] == blocker.args
-
-
-def test_setLunarTracking_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setLunarTracking',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.setLunarTracking()
-            assert not suc
-        assert ['Cannot set tracking to Lunar', 2] == blocker.args
-
-
-def test_setLunarTracking_3(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(function.app.mount.setting,
-                           'setLunarTracking',
-                           return_value=True):
-        suc = function.setLunarTracking()
-        assert not suc
-
-
-def test_setSiderealTracking_1(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setSiderealTracking',
-                           return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.setSiderealTracking()
-            assert suc
-        assert ['Tracking set to Sidereal', 0] == blocker.args
-
-
-def test_setSiderealTracking_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setSiderealTracking',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.setSiderealTracking()
-            assert not suc
-        assert ['Cannot set tracking to Sidereal', 2] == blocker.args
-
-
-def test_setSiderealTracking_3(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(function.app.mount.setting,
-                           'setSiderealTracking',
-                           return_value=True):
-        suc = function.setSiderealTracking()
-        assert not suc
-
-
-def test_setSolarTracking_1(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setSolarTracking',
-                           return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.setSolarTracking()
-            assert suc
-        assert ['Tracking set to Solar', 0] == blocker.args
-
-
-def test_setSolarTracking_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.setting,
-                           'setSolarTracking',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.setSolarTracking()
-            assert not suc
-        assert ['Cannot set tracking to Solar', 2] == blocker.args
-
-
-def test_setSolarTracking_3(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(function.app.mount.setting,
-                           'setSolarTracking',
-                           return_value=True):
-        suc = function.setSolarTracking()
-        assert not suc
-
-
-def test_flipMount_1(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'flip',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.flipMount()
-            assert not suc
-        assert ['Cannot flip mount', 2] == blocker.args
-
-
-def test_flipMount_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'flip',
-                           return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.flipMount()
-            assert suc
-        assert ['Mount flipped', 0] == blocker.args
-
-
-def test_flipMount_3(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(function.app.mount.obsSite,
-                           'flip',
-                           return_value=True):
-        suc = function.flipMount()
-        assert not suc
-
-
-def test_stop_1(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'stop',
-                           return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.stop()
-            assert suc
-        assert ['Mount stopped', 0] == blocker.args
-
-
-def test_stop_2(function, qtbot):
-    with mock.patch.object(function.app.mount.obsSite,
-                           'stop',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.stop()
-            assert not suc
-        assert ['Cannot stop mount', 2] == blocker.args
-
-
-def test_test_stop_3(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(function.app.mount.obsSite,
-                           'stop',
-                           return_value=True):
-        suc = function.stop()
-        assert not suc
-
-
-def test_virtualStop_1(function):
-    function.ui.activateVirtualStop.setChecked(True)
-    with mock.patch.object(function,
-                           'stop',
-                           return_value=False):
-        function.virtualStop()
-
-
-def test_virtualStop_2(function):
-    function.ui.activateVirtualStop.setChecked(False)
-    with mock.patch.object(function,
-                           'stop',
-                           return_value=False):
-        function.virtualStop()
-
-
 def test_updateSetting_slewRate_1(function):
     value = 5
     function.app.mount.setting.slewRate = value
@@ -656,8 +486,8 @@ def test_updateSetting_timeToMeridian(function):
 
 def test_updateLocGUI_1(function):
     function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                latitude_degrees=49,
-                                                elevation_m=500)
+                                                       latitude_degrees=49,
+                                                       elevation_m=500)
     function.updateLocGUI(function.app.mount.obsSite)
     assert '011E 00 00' == function.ui.siteLongitude.text()
     assert '49N 00 00' == function.ui.siteLatitude.text()
@@ -676,810 +506,912 @@ def test_updateLocGUI_3(function):
     assert not suc
 
 
-def test_changeTracking_ok1(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.status = 0
-    with mock.patch.object(function.app.mount.obsSite,
-                           'stopTracking',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changeTracking()
-            assert suc
-        assert ['Cannot stop tracking', 2] == blocker.args
-
-
-def test_changeTracking_ok2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.status = 0
-    with mock.patch.object(function.app.mount.obsSite,
-                           'stopTracking',
-                           return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changeTracking()
-            assert suc
-        assert ['Stopped tracking', 0] == blocker.args
-
-
-def test_changeTracking_ok3(function, qtbot):
-    function.app.mount.obsSite.status = 1
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'startTracking',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changeTracking()
-            assert suc
-        assert ['Cannot start tracking', 2] == blocker.args
-
-
-def test_changeTracking_ok4(function, qtbot):
-    function.app.mount.obsSite.status = 1
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'startTracking',
-                           return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changeTracking()
-            assert suc
-        assert ['Started tracking', 0] == blocker.args
-
-
-def test_changeTracking_notok(function, qtbot):
+def test_checkMount_1(function):
     function.app.deviceStat['mount'] = False
-    with mock.patch.object(function.app.mount.obsSite,
-                           'startTracking',
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
                            return_value=True):
+        suc = function.checkMount()
+        assert not suc
+
+
+def test_checkMount_2(function):
+    function.app.deviceStat['mount'] = True
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = function.checkMount()
+        assert suc
+
+
+def test_changeTracking_ok1(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
         suc = function.changeTracking()
         assert not suc
 
 
+def test_changeTracking_ok2(function, qtbot):
+    function.app.mount.obsSite.status = 0
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'stopTracking',
+                               return_value=False):
+            suc = function.changeTracking()
+            assert suc
+
+
+def test_changeTracking_ok3(function, qtbot):
+    function.app.mount.obsSite.status = 0
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'stopTracking',
+                               return_value=True):
+            suc = function.changeTracking()
+            assert suc
+
+
+def test_changeTracking_ok4(function):
+    function.app.mount.obsSite.status = 1
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'startTracking',
+                               return_value=True):
+            suc = function.changeTracking()
+            assert suc
+
+
+def test_changeTracking_ok5(function):
+    function.app.mount.obsSite.status = 1
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'startTracking',
+                               return_value=False):
+            suc = function.changeTracking()
+            assert suc
+
+
 def test_changePark_ok1(function, qtbot):
     function.app.mount.obsSite.status = 5
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'unpark',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changePark()
-            assert suc
-        assert ['Cannot unpark mount', 2] == blocker.args
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'unpark',
+                               return_value=False):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.changePark()
+                assert suc
+            assert ['Cannot unpark mount', 2] == blocker.args
 
 
 def test_changePark_ok2(function, qtbot):
     function.app.mount.obsSite.status = 5
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'unpark',
+    with mock.patch.object(function,
+                           'checkMount',
                            return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changePark()
-            assert suc
-        assert ['Mount unparked', 0] == blocker.args
+        with mock.patch.object(function.app.mount.obsSite,
+                               'unpark',
+                               return_value=True):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.changePark()
+                assert suc
+            assert ['Mount unparked', 0] == blocker.args
 
 
 def test_changePark_ok3(function, qtbot):
     function.app.mount.obsSite.status = 1
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'park',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changePark()
-            assert suc
-        assert ['Cannot park mount', 2] == blocker.args
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'park',
+                               return_value=False):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.changePark()
+                assert suc
+            assert ['Cannot park mount', 2] == blocker.args
 
 
 def test_changePark_ok4(function, qtbot):
     function.app.mount.obsSite.status = 1
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function.app.mount.obsSite,
-                           'park',
+    with mock.patch.object(function,
+                           'checkMount',
                            return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.changePark()
-            assert suc
-        assert ['Mount parked', 0] == blocker.args
+        with mock.patch.object(function.app.mount.obsSite,
+                               'park',
+                               return_value=True):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.changePark()
+                assert suc
+            assert ['Mount parked', 0] == blocker.args
 
 
 def test_changePark_notok(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(function.app.mount.obsSite,
-                           'park',
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'park',
+                               return_value=True):
+            suc = function.changePark()
+            assert not suc
+
+
+def test_setLunarTracking_1(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
                            return_value=True):
-        suc = function.changePark()
+        with mock.patch.object(function.app.mount.setting,
+                               'setLunarTracking',
+                               return_value=True):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.setLunarTracking()
+                assert suc
+            assert ['Tracking set to Lunar', 0] == blocker.args
+
+
+def test_setLunarTracking_2(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.setting,
+                               'setLunarTracking',
+                               return_value=False):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.setLunarTracking()
+                assert not suc
+            assert ['Cannot set tracking to Lunar', 2] == blocker.args
+
+
+def test_setLunarTracking_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        with mock.patch.object(function.app.mount.setting,
+                               'setLunarTracking',
+                               return_value=True):
+            suc = function.setLunarTracking()
+            assert not suc
+
+
+def test_setSiderealTracking_1(function):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        suc = function.setSiderealTracking()
         assert not suc
+
+
+def test_setSiderealTracking_2(function):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.setting,
+                               'setSiderealTracking',
+                               return_value=False):
+            suc = function.setSiderealTracking()
+            assert not suc
+
+
+def test_setSiderealTracking_3(function):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.setting,
+                               'setSiderealTracking',
+                               return_value=True):
+            suc = function.setSiderealTracking()
+            assert suc
+
+
+def test_setSolarTracking_1(function):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        suc = function.setSolarTracking()
+        assert not suc
+
+
+def test_setSolarTracking_2(function):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.setting,
+                               'setSolarTracking',
+                               return_value=False):
+            suc = function.setSolarTracking()
+            assert not suc
+
+
+def test_setSolarTracking_3(function):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.setting,
+                               'setSolarTracking',
+                               return_value=True):
+            suc = function.setSolarTracking()
+            assert suc
+
+
+def test_flipMount_1(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'flip',
+                               return_value=False):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.flipMount()
+                assert not suc
+            assert ['Cannot flip mount', 2] == blocker.args
+
+
+def test_flipMount_2(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'flip',
+                               return_value=True):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.flipMount()
+                assert suc
+            assert ['Mount flipped', 0] == blocker.args
+
+
+def test_flipMount_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'flip',
+                               return_value=True):
+            suc = function.flipMount()
+            assert not suc
+
+
+def test_stop_1(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'stop',
+                               return_value=True):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.stop()
+                assert suc
+            assert ['Mount stopped', 0] == blocker.args
+
+
+def test_stop_2(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'stop',
+                               return_value=False):
+            with qtbot.waitSignal(function.app.message) as blocker:
+                suc = function.stop()
+                assert not suc
+            assert ['Cannot stop mount', 2] == blocker.args
+
+
+def test_test_stop_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'stop',
+                               return_value=True):
+            suc = function.stop()
+            assert not suc
+
+
+def test_virtualStop_1(function):
+    function.ui.activateVirtualStop.setChecked(True)
+    with mock.patch.object(function,
+                           'stop',
+                           return_value=False):
+        function.virtualStop()
+
+
+def test_virtualStop_2(function):
+    function.ui.activateVirtualStop.setChecked(False)
+    with mock.patch.object(function,
+                           'stop',
+                           return_value=False):
+        function.virtualStop()
 
 
 def test_setMeridianLimitTrack_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.setting.meridianLimitTrack = None
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
-        suc = function.setMeridianLimitTrack()
-        assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        function.app.mount.setting.meridianLimitTrack = None
+        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                               'critical',
+                               return_value=True):
+            suc = function.setMeridianLimitTrack()
+            assert not suc
 
 
 def test_setMeridianLimitTrack_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.meridianLimitTrack = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, False)):
-        suc = function.setMeridianLimitTrack()
-        assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.meridianLimitTrack = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = function.setMeridianLimitTrack()
+            assert not suc
 
 
 def test_setMeridianLimitTrack_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.meridianLimitTrack = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setMeridianLimitTrack',
-                               return_value=False):
-            suc = function.setMeridianLimitTrack()
-            assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.meridianLimitTrack = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setMeridianLimitTrack',
+                                   return_value=False):
+                suc = function.setMeridianLimitTrack()
+                assert not suc
 
 
 def test_setMeridianLimitTrack_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.meridianLimitTrack = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setMeridianLimitTrack',
-                               return_value=True):
-            suc = function.setMeridianLimitTrack()
-            assert suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.meridianLimitTrack = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setMeridianLimitTrack',
+                                   return_value=True):
+                suc = function.setMeridianLimitTrack()
+                assert suc
 
 
 def test_setMeridianLimitSlew_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.setting.meridianLimitSlew = None
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
-        suc = function.setMeridianLimitSlew()
-        assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        function.app.mount.setting.meridianLimitSlew = None
+        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                               'critical',
+                               return_value=True):
+            suc = function.setMeridianLimitSlew()
+            assert not suc
 
 
 def test_setMeridianLimitSlew_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.meridianLimitSlew = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, False)):
-        suc = function.setMeridianLimitSlew()
-        assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.meridianLimitSlew = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = function.setMeridianLimitSlew()
+            assert not suc
 
 
 def test_setMeridianLimitSlew_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.meridianLimitSlew = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setMeridianLimitSlew',
-                               return_value=False):
-            suc = function.setMeridianLimitSlew()
-            assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.meridianLimitSlew = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setMeridianLimitSlew',
+                                   return_value=False):
+                suc = function.setMeridianLimitSlew()
+                assert not suc
 
 
 def test_setMeridianLimitSlew_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.meridianLimitSlew = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setMeridianLimitSlew',
-                               return_value=True):
-            suc = function.setMeridianLimitSlew()
-            assert suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.meridianLimitSlew = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setMeridianLimitSlew',
+                                   return_value=True):
+                suc = function.setMeridianLimitSlew()
+                assert suc
 
 
 def test_setHorizonLimitHigh_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.setting.horizonLimitHigh = None
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
-        suc = function.setHorizonLimitHigh()
-        assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        function.app.mount.setting.horizonLimitHigh = None
+        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                               'critical',
+                               return_value=True):
+            suc = function.setHorizonLimitHigh()
+            assert not suc
 
 
 def test_setHorizonLimitHigh_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.horizonLimitHigh = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, False)):
-        suc = function.setHorizonLimitHigh()
-        assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.horizonLimitHigh = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = function.setHorizonLimitHigh()
+            assert not suc
 
 
 def test_setHorizonLimitHigh_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.horizonLimitHigh = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setHorizonLimitHigh',
-                               return_value=False):
-            suc = function.setHorizonLimitHigh()
-            assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.horizonLimitHigh = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setHorizonLimitHigh',
+                                   return_value=False):
+                suc = function.setHorizonLimitHigh()
+                assert not suc
 
 
 def test_setHorizonLimitHigh_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.horizonLimitHigh = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setHorizonLimitHigh',
-                               return_value=True):
-            suc = function.setHorizonLimitHigh()
-            assert suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.horizonLimitHigh = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setHorizonLimitHigh',
+                                   return_value=True):
+                suc = function.setHorizonLimitHigh()
+                assert suc
 
 
 def test_setHorizonLimitLow_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.setting.horizonLimitLow = None
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
-        suc = function.setHorizonLimitLow()
-        assert not suc
-
-
-def test_setHorizonLimitLow_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.horizonLimitLow = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, False)):
-        suc = function.setHorizonLimitLow()
-        assert not suc
-
-
-def test_setHorizonLimitLow_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.horizonLimitLow = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setHorizonLimitLow',
-                               return_value=False):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        function.app.mount.setting.horizonLimitLow = None
+        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                               'critical',
+                               return_value=True):
             suc = function.setHorizonLimitLow()
             assert not suc
 
 
-def test_setHorizonLimitLow_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.horizonLimitLow = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setHorizonLimitLow',
-                               return_value=True):
+def test_setHorizonLimitLow_2(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.horizonLimitLow = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
             suc = function.setHorizonLimitLow()
-            assert suc
+            assert not suc
+
+
+def test_setHorizonLimitLow_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.horizonLimitLow = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setHorizonLimitLow',
+                                   return_value=False):
+                suc = function.setHorizonLimitLow()
+                assert not suc
+
+
+def test_setHorizonLimitLow_4(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.horizonLimitLow = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setHorizonLimitLow',
+                                   return_value=True):
+                suc = function.setHorizonLimitLow()
+                assert suc
 
 
 def test_setSlewRate_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
         suc = function.setSlewRate()
         assert not suc
 
 
 def test_setSlewRate_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.slewRate = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, False)):
-        suc = function.setSlewRate()
-        assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = function.setSlewRate()
+            assert not suc
 
 
 def test_setSlewRate_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.slewRate = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setSlewRate',
-                               return_value=False):
-            suc = function.setSlewRate()
-            assert not suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setSlewRate',
+                                   return_value=False):
+                suc = function.setSlewRate()
+                assert not suc
 
 
 def test_setSlewRate_4(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setSlewRate',
+                                   return_value=True):
+                suc = function.setSlewRate()
+                assert suc
+
+
+def test_setLocationValues_1(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
     function.app.deviceStat['mount'] = True
-    function.app.mount.setting.slewRate = 10
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setSlewRate',
-                               return_value=True):
-            suc = function.setSlewRate()
+    with mock.patch.object(function.app.mount,
+                           'getLocation'):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setLocation'):
+            suc = function.setLocationValues()
             assert suc
 
 
-def test_setLongitude_1(function, qtbot):
+def test_setLocationValues_2(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
+    function.app.deviceStat['mount'] = False
+    with mock.patch.object(function,
+                           'updateLocGUI'):
+        suc = function.setLocationValues()
+        assert suc
+
+
+def test_setLongitude_1(function):
     function.app.mount.obsSite.location = None
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    suc = function.setLongitude()
+    assert not suc
+
+
+def test_setLongitude_2(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('011E 40 40', False)):
         suc = function.setLongitude()
         assert not suc
 
 
-def test_setLongitude_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = None
+def test_setLongitude_3(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=('+160*30:45.5', True)):
-        suc = function.setLongitude()
-        assert not suc
-
-
-def test_setLongitude_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('+160*30:45.5', False)):
-        suc = function.setLongitude()
-        assert not suc
-
-
-def test_setLongitude_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('+160*30:45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLongitude',
-                               return_value=False):
-            suc = function.setLongitude()
-            assert not suc
-
-
-def test_setLongitude_5(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('11E 30 45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLongitude',
-                               return_value=True):
+                           return_value=('011E 40 40', True)):
+        with mock.patch.object(function,
+                               'setLocationValues'):
             suc = function.setLongitude()
             assert suc
 
 
-def test_setLongitude_6(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=(None, True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLongitude',
-                               return_value=True):
-            suc = function.setLongitude()
-            assert not suc
-
-
-def test_setLongitude_7(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('11E 30 45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLongitude',
-                               return_value=False):
-            suc = function.setLongitude()
-            assert not suc
-
-
-def test_setLongitude_8(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('11E 30 45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLongitude',
-                               return_value=True):
-            suc = function.setLongitude()
-            assert not suc
-
-
-def test_setLatitude_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
+def test_setLatitude_1(function):
     function.app.mount.obsSite.location = None
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    suc = function.setLatitude()
+    assert not suc
+
+
+def test_setLatitude_2(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('48N 00 00', False)):
         suc = function.setLatitude()
         assert not suc
 
 
-def test_setLatitude_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = None
+def test_setLatitude_3(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getText',
-                           return_value=('+45*30:45.5', True)):
-        suc = function.setLatitude()
-        assert not suc
-
-
-def test_setLatitude_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('+45*30:45.5', False)):
-        suc = function.setLatitude()
-        assert not suc
-
-
-def test_setLatitude_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('+45*30:45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLatitude',
-                               return_value=False):
-            suc = function.setLatitude()
-            assert not suc
-
-
-def test_setLatitude_5(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('45N 30 45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLatitude',
-                               return_value=True):
+                           return_value=('48N 00 00', True)):
+        with mock.patch.object(function,
+                               'setLocationValues'):
             suc = function.setLatitude()
             assert suc
 
 
-def test_setLatitude_6(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=(None, True)):
-        suc = function.setLatitude()
-        assert not suc
-
-
-def test_setLatitude_7(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('45N 30 45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLatitude',
-                               return_value=True):
-            suc = function.setLatitude()
-            assert not suc
-
-
-def test_setLatitude_8(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getText',
-                           return_value=('45N 30 45.5', True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setLatitude',
-                               return_value=False):
-            suc = function.setLatitude()
-            assert not suc
-
-
-def test_setElevation_1(function, qtbot):
+def test_setElevation_1(function):
     function.app.mount.obsSite.location = None
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    suc = function.setElevation()
+    assert not suc
+
+
+def test_setElevation_2(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getDouble',
+                           return_value=(10.0, False)):
         suc = function.setElevation()
         assert not suc
 
 
-def test_setElevation_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = None
+def test_setElevation_3(function):
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=1,
+                                                       latitude_degrees=2,
+                                                       elevation_m=3)
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getDouble',
-                           return_value=(10, False)):
-        suc = function.setElevation()
-        assert not suc
-
-
-def test_setElevation_3(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getDouble',
-                           return_value=(10, True)):
-        suc = function.setElevation()
-        assert not suc
-
-
-def test_setElevation_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getDouble',
-                           return_value=(10, False)):
-        suc = function.setElevation()
-        assert not suc
-
-
-def test_setElevation_5(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getDouble',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setElevation',
-                               return_value=False):
-            suc = function.setElevation()
-            assert not suc
-
-
-def test_setElevation_6(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=11,
-                                                       latitude_degrees=49,
-                                                       elevation_m=500)
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getDouble',
-                           return_value=(10, True)):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setElevation',
-                               return_value=True):
+                           return_value=(10.0, True)):
+        with mock.patch.object(function,
+                               'setLocationValues'):
             suc = function.setElevation()
             assert suc
 
 
 def test_setUnattendedFlip_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
         suc = function.setUnattendedFlip()
         assert not suc
 
 
 def test_setUnattendedFlip_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusUnattendedFlip = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', False)):
-        suc = function.setUnattendedFlip()
-        assert not suc
-
-
-def test_setUnattendedFlip_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusUnattendedFlip = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setUnattendedFlip',
-                               return_value=False):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusUnattendedFlip = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', False)):
             suc = function.setUnattendedFlip()
             assert not suc
 
 
+def test_setUnattendedFlip_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusUnattendedFlip = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setUnattendedFlip',
+                                   return_value=False):
+                suc = function.setUnattendedFlip()
+                assert not suc
+
+
 def test_setUnattendedFlip_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusUnattendedFlip = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setUnattendedFlip',
-                               return_value=True):
-            suc = function.setUnattendedFlip()
-            assert suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusUnattendedFlip = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setUnattendedFlip',
+                                   return_value=True):
+                suc = function.setUnattendedFlip()
+                assert suc
 
 
 def test_setDualAxisTracking_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
         suc = function.setDualAxisTracking()
         assert not suc
 
 
 def test_setDualAxisTracking_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', False)):
-        suc = function.setDualAxisTracking()
-        assert not suc
-
-
-def test_setDualAxisTracking_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setDualAxisTracking',
-                               return_value=False):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusDualAxisTracking = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', False)):
             suc = function.setDualAxisTracking()
             assert not suc
 
 
+def test_setDualAxisTracking_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusDualAxisTracking = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setDualAxisTracking',
+                                   return_value=False):
+                suc = function.setDualAxisTracking()
+                assert not suc
+
+
 def test_setDualAxisTracking_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusDualAxisTracking = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setDualAxisTracking',
-                               return_value=True):
-            suc = function.setDualAxisTracking()
-            assert suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusDualAxisTracking = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setDualAxisTracking',
+                                   return_value=True):
+                suc = function.setDualAxisTracking()
+                assert suc
 
 
 def test_setRefraction_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
         suc = function.setRefraction()
         assert not suc
 
 
 def test_setRefraction_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusRefraction = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', False)):
-        suc = function.setRefraction()
-        assert not suc
-
-
-def test_setRefraction_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusRefraction = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setRefraction',
-                               return_value=False):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusRefraction = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', False)):
             suc = function.setRefraction()
             assert not suc
 
 
+def test_setRefraction_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusRefraction = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setRefraction',
+                                   return_value=False):
+                suc = function.setRefraction()
+                assert not suc
+
+
 def test_setRefraction_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusRefraction = True
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setRefraction',
-                               return_value=True):
-            suc = function.setRefraction()
-            assert suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusRefraction = True
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setRefraction',
+                                   return_value=True):
+                suc = function.setRefraction()
+                assert suc
 
 
 def test_setWOL_1(function, qtbot):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
-                           return_value=True):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
         suc = function.setWOL()
         assert not suc
 
 
 def test_setWOL_2(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusWOL = '0'
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', False)):
-        suc = function.setWOL()
-        assert not suc
-
-
-def test_setWOL_3(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusWOL = '0'
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setWOL',
-                               return_value=False):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusWOL = '0'
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', False)):
             suc = function.setWOL()
             assert not suc
 
 
+def test_setWOL_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusWOL = '0'
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setWOL',
+                                   return_value=False):
+                suc = function.setWOL()
+                assert not suc
+
+
 def test_setWOL_4(function, qtbot):
-    function.app.deviceStat['mount'] = True
-    function.app.mount.setting.statusWOL = '0'
-    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getItem',
-                           return_value=('ON', True)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setWOL',
-                               return_value=True):
-            suc = function.setWOL()
-            assert suc
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.statusWOL = '0'
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getItem',
+                               return_value=('ON', True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setWOL',
+                                   return_value=True):
+                suc = function.setWOL()
+                assert suc
 
 
 def test_updatePointGui_ra_j2000(function):

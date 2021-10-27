@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import gc
 
 # external packages
 from PyQt5.QtCore import QObject

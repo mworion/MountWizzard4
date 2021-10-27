@@ -469,7 +469,7 @@ class SatTrack(object):
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f'{days:2.2f}')
-        self.app.message.emit(f'Actually using satellite data for: [{satName}]', 0)
+        self.app.message.emit(f'Actual satellite:    [{satName}]', 0)
 
         if days > 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')

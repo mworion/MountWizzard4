@@ -21,9 +21,9 @@ from pathlib import Path
 
 # external packages
 from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QThreadPool
 from mountcontrol.qtmount import Mount
-from skyfield.api import wgs84
+from skyfield.api import wgs84, Angle
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -51,6 +51,7 @@ def function(module):
         buildPointsChanged = pyqtSignal()
         message = pyqtSignal(str, int)
         sendBuildPoints = pyqtSignal(object)
+        threadPool = QThreadPool()
         mwGlob = {'configDir': 'tests/workDir/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
@@ -64,6 +65,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = Test()
+            self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
             BuildPoints.__init__(self)
@@ -535,26 +537,86 @@ def test_autoDeletePoints(function):
     assert suc
 
 
+def test_doSortDomeAzData_1(function):
+    function.sortRunning.lock()
+    with mock.patch.object(function.app.data,
+                           'sort'):
+        suc = function.doSortDomeAzData((0, 1))
+        assert suc
+
+
+def test_sortDomeAzWorker_1(function):
+    with mock.patch.object(function.app.mount,
+                           'calcMountAltAzToDomeAltAz',
+                           return_value=(0, Angle(degrees=10))):
+        suc = function.sortDomeAzWorker([(10, 10, True)])
+        assert suc
+
+
+def test_sortDomeAzWorker_2(function):
+    with mock.patch.object(function.app.mount,
+                           'calcMountAltAzToDomeAltAz',
+                           return_value=(None, None)):
+        suc = function.sortDomeAzWorker([(10, 10, True)])
+        assert suc
+
+
+def test_sortDomeAz_1(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.sortDomeAz([])
+        assert suc
+        function.sortRunning.unlock()
+
+
+def test_sortDomeAz_2(function):
+    function.sortRunning.lock()
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.sortDomeAz([])
+        assert not suc
+        function.sortRunning.unlock()
+
+
+def test_sortMountAz(function):
+    with mock.patch.object(function.app.data,
+                           'sort'):
+        suc = function.sortMountAz([])
+        assert suc
+
+
 def test_autoSortPoints_1(function):
+    function.ui.checkSortEW.setChecked(False)
+    function.ui.checkSortHL.setChecked(False)
+    function.ui.checkAvoidFlip.setChecked(False)
+    function.ui.useDomeAz.setChecked(False)
+    function.ui.useDomeAz.setEnabled(False)
     suc = function.autoSortPoints()
     assert not suc
 
 
 def test_autoSortPoints_2(function):
     function.ui.checkSortEW.setChecked(True)
-    function.ui.checkSortHL.setChecked(True)
-    function.ui.checkAvoidFlip.setChecked(True)
-    suc = function.autoSortPoints()
-    assert suc
+    function.ui.checkSortHL.setChecked(False)
+    function.ui.checkAvoidFlip.setChecked(False)
+    function.ui.useDomeAz.setChecked(True)
+    function.ui.useDomeAz.setEnabled(True)
+    with mock.patch.object(function,
+                           'sortDomeAz'):
+        suc = function.autoSortPoints()
+        assert suc
 
 
 def test_autoSortPoints_3(function):
-    function.ui.checkSortEW.setChecked(True)
-    function.ui.checkSortHL.setChecked(True)
+    function.ui.checkSortEW.setChecked(False)
+    function.ui.checkSortHL.setChecked(False)
     function.ui.checkAvoidFlip.setChecked(True)
-    function.app.mount.obsSite.pierside = 'E'
-    suc = function.autoSortPoints()
-    assert suc
+    function.ui.useDomeAz.setChecked(False)
+    function.ui.useDomeAz.setEnabled(False)
+    with mock.patch.object(function,
+                           'sortMountAz'):
+        suc = function.autoSortPoints()
+        assert suc
 
 
 def test_buildPointsChanged(function):

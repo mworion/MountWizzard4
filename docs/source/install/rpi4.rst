@@ -41,12 +41,13 @@ able to compile necessary packages:
 
 .. code-block:: python
 
-    sudo apt-get install python3-virtualenv
+    sudo apt-get install python3.8-venv
     sudo apt-get install python3-pip
+    sudo apt-get install qt5-default
 
 .. note::
-    You need to have both packages installed as otherwise the install script does
-    not run.
+    You need to have both packages installed as otherwise the install script or
+    later does MW4 not run.
 
 
 Using the precompiled wheels

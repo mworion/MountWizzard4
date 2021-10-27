@@ -498,7 +498,7 @@ class SettMisc(object):
             self.app.message.emit('Cannot adjust mount clock', 2)
             return False
 
-        self.app.message.emit(f'Mount clock corrected [{-delta}] ms', 0)
+        self.app.message.emit(f'Mount clock corr.:   [{-delta} ms]', 0)
         return True
 
     def setVirtualStop(self):

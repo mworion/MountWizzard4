@@ -24,7 +24,6 @@ from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QGuiApplication, QCursor
 import numpy as np
 import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
 import matplotlib.cm
 from PIL import Image
 
@@ -32,6 +31,7 @@ from PIL import Image
 from gui.utilities import toolsQtWidget
 from gui.widgets import hemisphere_ui
 from gui.extWindows.hemisphereWext import HemisphereWindowExt
+from base.transform import diffModulusAbs
 
 
 class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
@@ -72,30 +72,30 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.MODE = dict(
             normal=dict(horMarker='None',
                         horColor=self.M_BLUE,
-                        buildPColor=self.M_GREEN_H,
+                        buildPColor=self.M_GREEN,
                         starSize=6,
-                        starColor=self.M_YELLOW_L,
-                        starAnnColor=self.M_WHITE_L),
+                        starColor=self.M_YELLOW1,
+                        starAnnColor=self.M_WHITE1),
 
             build=dict(horMarker='None',
                        horColor=self.M_BLUE,
                        buildPColor=self.M_PINK_H,
                        starSize=6,
-                       starColor=self.M_YELLOW_L,
-                       starAnnColor=self.M_WHITE_L),
+                       starColor=self.M_YELLOW1,
+                       starAnnColor=self.M_WHITE1),
 
             horizon=dict(horMarker='o',
                          horColor=self.M_PINK_H,
-                         buildPColor=self.M_GREEN_L,
+                         buildPColor=self.M_GREEN1,
                          starSize=6,
-                         starColor=self.M_YELLOW_L,
-                         starAnnColor=self.M_WHITE_L),
+                         starColor=self.M_YELLOW1,
+                         starAnnColor=self.M_WHITE1),
 
             star=dict(horMarker='None',
                       horColor=self.M_BLUE1,
-                      buildPColor=self.M_GREEN_L,
+                      buildPColor=self.M_GREEN1,
                       starSize=12,
-                      starColor=self.M_YELLOW_H,
+                      starColor=self.M_YELLOW,
                       starAnnColor=self.M_WHITE_H)
         )
 
@@ -234,11 +234,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
         self.app.dome.signals.serverDisconnected.disconnect(self.updateDome)
-
-        plt.close(self.hemisphereMat.figure)
-        plt.close(self.polarMat.figure)
-        plt.close(self.hemisphereMatMove.figure)
-        plt.close(self.polarMatMove.figure)
         QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
 
         super().closeEvent(closeEvent)
@@ -298,15 +293,18 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.show()
         return True
 
-    @staticmethod
-    def calculateRelevance(alt=None, az=None):
+    def calculateRelevance(self, alt=None, az=None):
         """
         :param alt:
         :param az:
         :return:
         """
-        altFak = 1 - np.minimum(np.abs(alt - 40), 30) / 30
-        azFak = 1 - np.minimum(np.abs(az - 180), 180) / 180
+        isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
+        altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
+        if isNorth:
+            azFak = 1 - np.minimum(diffModulusAbs(0, az - 180, 360), 75) / 75
+        else:
+            azFak = 1 - np.minimum(diffModulusAbs(0, az, 360), 75) / 75
         sumFak = np.sqrt(altFak * azFak)
         return sumFak
 
@@ -506,7 +504,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
                 fontSize = 12
-                fontColor = self.M_WHITE_L
+                fontColor = self.M_WHITE1
             annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(2, 2),
@@ -581,7 +579,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             azF = np.concatenate([[0], [0], az, [360], [360]])
             axes.fill(azF,
                       altF,
-                      color=self.M_GREY_LL,
+                      color=self.M_GREY1,
                       alpha=0.5,
                       zorder=0)
 
@@ -698,7 +696,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                             markersize=1,
                                             fillstyle='none',
                                             zorder=20,
-                                            color=self.M_WHITE_L)
+                                            color=self.M_WHITE1)
         else:
             self.celestialPath, = axes.plot(az,
                                             alt,
@@ -706,7 +704,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                             markersize=1,
                                             fillstyle='none',
                                             zorder=20,
-                                            color=self.M_WHITE_L)
+                                            color=self.M_WHITE1)
         return True
 
     def staticMeridianLimits(self, axes=None):
@@ -731,7 +729,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                 2 * track,
                                                 90,
                                                 zorder=10,
-                                                color=self.M_YELLOW_L,
+                                                color=self.M_YELLOW1,
                                                 alpha=0.5)
         axes.add_patch(self.meridianTrack)
         return True
@@ -881,7 +879,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   30,
                                                   88,
                                                   zorder=0,
-                                                  color=self.M_GREY_MID,
+                                                  color=self.M_GREY2,
                                                   lw=3,
                                                   clip_on=True,
                                                   fill=True,
@@ -920,7 +918,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
                 fontSize = 12
-                fontColor = self.M_WHITE_L
+                fontColor = self.M_WHITE1
             annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(2, 2),
@@ -942,7 +940,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         layers of transparent widgets for static content, moving content and star
         maps. this is mainly done to get a reasonable performance when redrawing
         the canvas. in addition it initializes the objects for points markers,
-        patches, lines etc. for making the window nice and user friendly. the
+        patches, lines etc. for making the window nice and user-friendly. the
         user interaction on the hemisphere windows is done by the event handler
         of matplotlib itself implementing an on Mouse handler, which takes care
         of functions.

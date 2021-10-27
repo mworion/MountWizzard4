@@ -88,13 +88,15 @@ def test_checkAndSetAutomation_1(app):
         assert val is None
 
 
+@pytest.mark.skipif(platform.system() != 'Windows',
+                    reason="requires windows")
 def test_checkAndSetAutomation_2(app):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
         with mock.patch.object(platform,
                                'python_version',
-                               return_value='3.8.1'):
+                               return_value='3.9.1'):
             val = app.checkAndSetAutomation()
             assert val is None
 

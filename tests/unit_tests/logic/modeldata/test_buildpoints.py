@@ -734,25 +734,25 @@ def test_loadCSV_1():
 
 def test_loadCSV_2():
     with open('tests/workDir/config/test.csv', 'w') as outfile:
-        outfile.writelines('[test, ]],[]}')
+        outfile.writelines('[test, ]],[]}\n')
 
     val = app.loadCSV('test', '.csv')
     assert val is None
 
 
 def test_loadCSV_3():
-    with open('tests/workDir/config/test.csv', 'wb') as outfile:
-        outfile.write(binascii.unhexlify('9f'))
-
-    val = app.loadCSV('test', '.csv')
-    assert val is None
-
-
-def test_loadCSV_4():
-    values = [(1, 1), (2, 2)]
     with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('1, 1\n')
         outfile.writelines('2, 2\n')
+
+    val = app.loadCSV('test', '.csv')
+    assert val == [(1, 1), (2, 2)]
+
+
+def test_loadCSV_4():
+    with open('tests/workDir/config/test.csv', 'w') as outfile:
+        outfile.writelines('1; 1\n')
+        outfile.writelines('2; 2\n')
 
     val = app.loadCSV('test', '.csv')
     assert val == [(1, 1), (2, 2)]
@@ -804,36 +804,12 @@ def test_loadBuildP_5():
     # load file with path
     app.buildPFile = ''
     fileName = 'tests/workDir/config/test.csv'
-    values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
-        outfile.write('1,1\n2,2\n')
-    suc = app.loadBuildP('test', '.csv')
+        outfile.write('1, 1\n')
+        outfile.write('2, 2\n')
+    suc = app.loadBuildP('test', '.csv', keep=True)
     assert suc
     assert app.buildP == [(1, 1, True), (2, 2, True)]
-
-
-def test_loadBuildP_6():
-    # load file with path
-    app.buildPFile = ''
-    fileName = 'tests/workDir/config/test.txt'
-    values = [(1, 1, True), (2, 2, True)]
-    with open(fileName, 'w') as outfile:
-        outfile.write('1:1\n2:2\n')
-    suc = app.loadBuildP('test', '.txt')
-    assert suc
-    assert app.buildP == values
-
-
-def test_loadBuildP_7():
-    # load file with path
-    app.buildPFile = ''
-    fileName = 'tests/workDir/config/test.txt'
-    values = [(1, 1, True), (2, 2, True)]
-    with open(fileName, 'w') as outfile:
-        outfile.write('1:1\n2:2\n')
-    suc = app.loadBuildP('test', '.txt', keep=True)
-    assert suc
-    assert app.buildP == values
 
 
 def test_saveBuildP_11():
@@ -905,18 +881,6 @@ def test_loadHorizonP_6():
 
 
 def test_loadHorizonP_7():
-    # load file with path
-    fileName = 'tests/workDir/config/test_horizon_2.txt'
-    values = [(1.0, 1.0), (2.0, 2.0)]
-    with open(fileName, 'w') as outfile:
-        outfile.write('1:1\n2:2\n')
-
-    suc = app.loadHorizonP('test_horizon_2', '.txt')
-    assert suc
-    assert app.horizonP == values
-
-
-def test_loadHorizonP_8():
     # load file with path
     fileName = 'tests/workDir/config/test_horizon_2.csv'
     values = [(1.0, 1.0), (2.0, 2.0)]
@@ -1126,43 +1090,40 @@ def test_genAlign5():
 
 def test_sort_1():
     values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
-    app._buildP = values
-    suc = app.sort()
-    assert not suc
-    assert app.buildP == values
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
+    suc = app.sort(values, eastwest=True)
+    assert suc
+    assert app.buildP == result
 
 
 def test_sort_2():
     values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=True, highlow=True)
-    assert not suc
-    assert app.buildP == values
+    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
+    suc = app.sort(values, highlow=True)
+    assert suc
+    assert app.buildP == result
 
 
 def test_sort_3():
-    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=True, highlow=False)
+    suc = app.sort(values, eastwest=True)
     assert suc
     assert app.buildP == result
 
 
 def test_sort_4():
-    values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
+    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True)
+    suc = app.sort(values, highlow=True)
     assert suc
     assert app.buildP == result
 
 
 def test_sort_5():
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
-    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=True, highlow=False)
+    result = [(50, 290, True), (40, 190, True), (30, 90, True), (20, 20, True), (10, 10, True)]
+    suc = app.sort(values, highlow=True, pierside='E')
     assert suc
     assert app.buildP == result
 
@@ -1170,26 +1131,15 @@ def test_sort_5():
 def test_sort_6():
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True)
+    suc = app.sort(values, highlow=True, pierside='W')
     assert suc
     assert app.buildP == result
 
 
 def test_sort_7():
-    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
-    result = [(50, 290, True), (40, 190, True), (30, 90, True), (20, 20, True), (10, 10, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True, pierside='E')
-    assert suc
-    assert app.buildP == result
-
-
-def test_sort_8():
-    values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
-    result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    app._buildP = values
-    suc = app.sort(eastwest=False, highlow=True, pierside='W')
+    values = [(30, 90, True, 3), (20, 20, True, 2), (50, 290, True, 1)]
+    result = [(30, 90, True, 3), (20, 20, True, 2), (50, 290, True, 1)]
+    suc = app.sort(values, sortDomeAz=True)
     assert suc
     assert app.buildP == result
 

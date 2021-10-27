@@ -65,6 +65,9 @@ def runMW(c, param):
 def printMW(param):
     print(param)
 
+@task
+def log(c):
+    runMW(c, 'python3 support/logViewer.py')
 
 @task
 def clean_mw(c):

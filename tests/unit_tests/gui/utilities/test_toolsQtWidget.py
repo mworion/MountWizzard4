@@ -24,8 +24,9 @@ import math
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
-from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem
-from PyQt5.QtCore import pyqtSignal, QObject, QEvent
+from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
+from PyQt5.QtCore import pyqtSignal, QObject, QEvent, Qt, QPoint
+from PyQt5.QtTest import QTest
 from skyfield.api import Angle
 import numpy as np
 
@@ -33,6 +34,7 @@ import numpy as np
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.toolsQtWidget import FileSortProxyModel
 from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -44,6 +46,7 @@ def module(qapp):
 def function(module):
 
     window = MWidget()
+    window.app = App()
     yield window
 
 
@@ -191,20 +194,16 @@ def test_wIcon_4(function):
     assert suc
 
 
-def test_getStyle_1(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        ret = function.getStyle()
-        assert ret == function.MAC_STYLE + function.BASIC_STYLE
+def test_renderStyle_1(function):
+    input = '12345$M_BLUE$12345'
+    val = function.renderStyle(input).strip(' ')
+    assert val == '12345#2090C012345\n'
 
 
-def test_getStyle_2(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        ret = function.getStyle()
-        assert ret == function.NON_MAC_STYLE + function.BASIC_STYLE
+def test_renderStyle_2(function):
+    input = '12345$M_TEST$12345'
+    val = function.renderStyle(input).strip(' ')
+    assert val == '12345$M_TEST$12345\n'
 
 
 def test_initUI_1(function):
@@ -533,17 +532,24 @@ def test_openDir_5(function):
 
 
 def test_clickable_1(function):
-    suc = function.clickable()
-    assert not suc
+    function.clickable()
 
 
 def test_clickable_2(function):
-    event = QEvent(QEvent.MouseButtonRelease)
-    widget = QPushButton()
-    suc = function.clickable(widget=widget)
-    assert suc
-    suc = widget.eventFilter(widget, event)
-    assert not suc
+    widget = QLineEdit()
+    function.clickable(widget=widget)
+
+
+def test_clickable_3(function):
+    widget = QLineEdit()
+    function.clickable(widget=widget)
+    QTest.mouseRelease(widget, Qt.LeftButton)
+
+
+def test_clickable_4(function):
+    widget = QLineEdit()
+    function.clickable(widget=widget)
+    QTest.mouseRelease(widget, Qt.LeftButton, pos=QPoint(0, 0))
 
 
 def test_guiSetText_1(function):
@@ -675,3 +681,21 @@ def test_returnDriver_2(function):
     searchDict = {}
     driver = function.returnDriver(sender, searchDict, addKey='test')
     assert driver == ''
+
+
+def test_checkUpdaterOK_1(function):
+    function.app.automation = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_2(function):
+    function.app.automation.installPath = None
+    suc = function.checkUpdaterOK()
+    assert not suc
+
+
+def test_checkUpdaterOK_3(function):
+    function.app.automation.installPath = 'test'
+    suc = function.checkUpdaterOK()
+    assert suc

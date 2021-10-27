@@ -317,9 +317,8 @@ class Model:
         """
         noImagesLeft = self.imageQueue.empty()
         slewsLeft = not self.slewQueue.empty()
-        stillToWork = slewsLeft
 
-        if noImagesLeft and stillToWork:
+        if noImagesLeft and slewsLeft:
             t = f'Slews left: [{self.slewQueue.qsize()}] '
             self.log.error(f'Empty image queue: {t}')
             return False

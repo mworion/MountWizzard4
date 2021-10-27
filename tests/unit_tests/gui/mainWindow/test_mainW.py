@@ -20,7 +20,6 @@ from unittest.mock import patch
 import pytest
 import glob
 import os
-import gc
 import shutil
 import logging
 
@@ -77,6 +76,7 @@ def function_setup_teardown(qtbot):
                       pathToData='tests/workDir/data')
         update10s = pyqtSignal()
         update30s = pyqtSignal()
+        update10m = pyqtSignal()
         update1s = pyqtSignal()
         update1h = pyqtSignal()
         start1s = pyqtSignal()
@@ -122,6 +122,7 @@ def function_setup_teardown(qtbot):
         showImage = pyqtSignal(str)
         update3s = pyqtSignal()
         update30m = pyqtSignal()
+        update10m = pyqtSignal()
         update30s = pyqtSignal()
         start1s = pyqtSignal()
         start3s = pyqtSignal()
@@ -392,6 +393,18 @@ def test_smartFunctionGui_7():
     assert not app.ui.setRefractionManual.isEnabled()
 
 
+def test_smartFunctionGui_8():
+    app.deviceStat['dome'] = False
+    suc = app.smartFunctionGui()
+    assert suc
+
+
+def test_smartFunctionGui_9():
+    app.deviceStat['dome'] = True
+    suc = app.smartFunctionGui()
+    assert suc
+
+
 def test_smartTabGui_1():
     suc = app.smartTabGui()
     assert suc
@@ -600,10 +613,8 @@ def test_deleteWindowResource_3():
         def objectName():
             return 'ImageDialog'
 
-    with mock.patch.object(gc,
-                           'collect'):
-        suc = app.deleteWindowResource(widget=Test())
-        assert suc
+    suc = app.deleteWindowResource(widget=Test())
+    assert suc
 
 
 def test_buildWindow_1():

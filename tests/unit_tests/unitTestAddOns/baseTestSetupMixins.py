@@ -26,6 +26,14 @@ import numpy as np
 # local import
 
 
+class Skymeter:
+    class SkymeterSignals(QObject):
+        version = pyqtSignal()
+
+    signals = SkymeterSignals()
+    data = {}
+
+
 class Power:
     class PowerSignals(QObject):
         version = pyqtSignal()
@@ -335,6 +343,10 @@ class Mount(QObject):
                            dec_degrees=0):
             return True
 
+        @staticmethod
+        def setLocation(loc):
+            return True
+
     signals = MountSignals()
     obsSite = MountObsSite()
     geometry = MountGeometry()
@@ -506,6 +518,7 @@ class App(QObject):
     update1s = pyqtSignal()
     update3s = pyqtSignal()
     update30s = pyqtSignal()
+    update10m = pyqtSignal()
     update30m = pyqtSignal()
     update1h = pyqtSignal()
     start1s = pyqtSignal()
@@ -524,6 +537,7 @@ class App(QObject):
     relay = Relay()
     data = Data()
     camera = Camera()
+    skymeter = Skymeter()
     automation = Automation()
     astrometry = Astrometry()
     onlineWeather = OnlineWeather()

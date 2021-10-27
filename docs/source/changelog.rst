@@ -5,40 +5,15 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Ideas for the future
 --------------------
-
 - implementing Baader dome control e.g. 10micron dome interface
 - split profiles in base and add-on
 - receive video indi for sat tracking and horizon setup
 - joystick support
 - data exchange to EKOS SQLite for Location and horizon
-- dome optimized model point slew path:
-"""
-To minimize the dome slewing I have tried to follow the slot with the telescope.
-Set the dome in a certain azimuth. Then take 5 shots with the telescope at
-increasing altitude. Say 5 shots. Flip the telescope over and take another 5 shots
-coming back down again.
-Slew the dome 15° and repeat the process for a full circle. Then the dome makes
-only 1 turn at 15° steps. The result was an awful distribution of survey points.
-Some dense areas and some big voids. So that did not work.
-East/West sorting is perfect for a fork mounted telescope. But the GEM offset
-forces the dome to make extreme slew corrections at higher alt's Sometimes way
-more than 90°. For the next point, which then sits at a low alt, the dome has to
-slew back again. Especially these high alt points make the dome slew like crazy.
-With my point model the dome makes only small slews for most points and the high
-alt ones aren't that many are taken as the last ones. Well, that's my theory. . .
-If you plot the dome positions along the survey points sequence, you should see
-these excessive slews at high alt telescope positions. Add to that the Scopedome
-"unwind" feature, that causes the dome to slew at times "the long way around"
-instead of the shortest slew distance. This is caused by the limitation of the
-dome position encoder, which has a limited "max" value. When this will be exceeded
-with a slew, the dome rotates the other way around to reduce the encoder position
-value. It is not as straight forward as it should be. I also guess that different
-domes use different control soft and hard ware, for simplicity.
-"""
 
 Released beta version of MW4
 ----------------------------
-2.1.0b5 (not released yet)
+2.1.0b12 (not released yet)
 
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
@@ -48,14 +23,24 @@ Released beta version of MW4
 - add: extended satellite tracking and tuning capabilities
 - add: enabling loading a custom satellite TLE data file
 - add: command window for manual mount commands
+- add: sorting for minimal dome slew in build point selection
+- add: setting prediction time of almanac (shorter reduces cpu load)
+- improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
+- improve: gui for running functions
+- improve: test coverage
+- fix: segfault in qt5lib on ubuntu
 
 Released version of MW4
 -----------------------
 Version 2.0
 ^^^^^^^^^^^
+2.0.6
+
+- fix
+
 2.0.5
 
 - fix: bug when running "stop exposure" in ASCOM

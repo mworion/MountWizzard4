@@ -89,10 +89,10 @@ class AscomClass(DriverData):
         :return: value
         """
         value = None
+        valueProp = valueProp.lower()
         if valueProp in self.propertyExceptions:
             return value
 
-        valueProp = valueProp.lower()
         try:
             cmd = 'self.client.' + valueProp
             value = eval(cmd)
@@ -111,10 +111,10 @@ class AscomClass(DriverData):
         :param valueProp:
         :param value:
         """
+        valueProp = valueProp.lower()
         if valueProp in self.propertyExceptions:
             return False
 
-        valueProp = valueProp.lower()
         try:
             cmd = 'self.client.' + valueProp + ' = value'
             exec(cmd)

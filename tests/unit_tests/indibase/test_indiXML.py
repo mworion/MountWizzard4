@@ -17,6 +17,7 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import builtins
 
 # external packages
 import xml.etree.ElementTree as ETree
@@ -29,10 +30,6 @@ from indibase import indiXML
 @pytest.fixture(autouse=True, scope='function')
 def function():
     yield function
-
-
-def test_IndiXMLException(function):
-    IndiXMLException('test')
 
 
 def test_INDIBase_1(function):
@@ -344,3 +341,22 @@ def test_timeValue(function):
 def test_textValue(function):
     val = textValue(10)
     assert val == 10
+
+
+def test_makeINDIFn_1(function):
+    makeINDIFn('test')
+
+
+def test_makeINDIFn_2(function):
+    makeObj = makeINDIFn('defTextVector')
+    makeObj('device', 'test')
+
+
+def test_makeINDIFn_3(function):
+    makeObj = makeINDIFn('defTextVector')
+    makeObj('device', {'device': 'test', 'name': 'test'})
+
+
+def test_makeINDIFn_4(function):
+    makeObj = makeINDIFn('defTextVector')
+    makeObj('test', {'device': 'test', 'test': 'test'})

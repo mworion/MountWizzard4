@@ -40,6 +40,17 @@ model for imaging.
 
 .. warning::    Any changes in your mechanical setup invalidates the model!
 
+Explanation model build process:
+--------------------------------
+The model correct for error. Some could be removed exactly, some not. The way is
+a mathematically optimization method. In max the mount could calculate 22 terms
+(which means two models of a set of 11 terms, one for WEST and one for EAST side).
+If you need 22 parameters for the model (for whatever reason the mount thinks),
+you have to have at minimum 22 alignment stars or more. Otherwise this will not
+result in 22 parameters. Again like in polar alignment: think of what is the goal
+of this task. For sure you would like to remove as much of the alignment error to
+be able to get unguided images.
+
 Modeling automatics
 -------------------
 The automation process is explained by the next drawing. It is quite simple, but

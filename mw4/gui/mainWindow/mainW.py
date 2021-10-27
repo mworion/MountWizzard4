@@ -18,7 +18,6 @@ from base import packageConfig
 
 # standard libraries
 from datetime import datetime
-import gc
 import time
 
 # external packages
@@ -257,7 +256,8 @@ class MainWindow(
         tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Relay')
         tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
         self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
-        self.ui.toolsTabWidget.setStyleSheet(self.getStyle())
+        ui = self.ui.toolsTabWidget
+        ui.setStyleSheet(ui.styleSheet())
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
@@ -601,6 +601,12 @@ class MainWindow(
         else:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
+
+        if self.deviceStat.get('dome') and self.deviceStat.get('mount'):
+            self.ui.useDomeAz.setEnabled(True)
+        else:
+            self.ui.useDomeAz.setEnabled(False)
+
         return True
 
     def smartTabGui(self):
@@ -633,8 +639,10 @@ class MainWindow(
         # redraw tabs only when a change occurred. this is necessary, because
         # enable and disable does not remove tabs
         if tabChanged:
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
+            ui = self.ui.mainTabWidget
+            ui.setStyleSheet(ui.styleSheet())
+            ui = self.ui.settingsTabWidget
+            ui.setStyleSheet(ui.styleSheet())
         return True
 
     def smartEnvironGui(self):
@@ -792,7 +800,6 @@ class MainWindow(
                 continue
             self.uiWindows[window]['classObj'] = None
 
-        gc.collect()
         return True
 
     def buildWindow(self, window):

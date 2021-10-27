@@ -933,7 +933,7 @@ class ObsSite(object):
             return False
         return True
 
-    def setLocation(self, obs):
+    def setLocation(self, loc):
         """
         set SiteCoordinates sets the value in the mount to the given parameters.
         the longitude will be set for east negative, because that's the definition
@@ -976,24 +976,24 @@ class ObsSite(object):
             0   invalid
             1   valid
 
-        :param      obs:        skyfield.api.Topos of site
+        :param      loc:        skyfield.api.Topos of site
         :return:    success
         """
-        if not isinstance(obs, GeographicPosition):
+        if not isinstance(loc, GeographicPosition):
             return False
 
         conn = Connection(self.host)
 
-        sgn, h, m, s, frac = sexagesimalizeToInt(obs.longitude.degrees, 1)
+        sgn, h, m, s, frac = sexagesimalizeToInt(loc.longitude.degrees, 1)
         sign = '+' if sgn < 0 else '-'
         setLon = f':Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        sgn, h, m, s, frac = sexagesimalizeToInt(obs.latitude.degrees, 1)
+        sgn, h, m, s, frac = sexagesimalizeToInt(loc.latitude.degrees, 1)
         sign = '+' if sgn >= 0 else '-'
         setLat = f':St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
 
-        sign = '+' if obs.elevation.m > 0 else '-'
-        setElev = f':Sev{sign}{obs.elevation.m:06.1f}#'
+        sign = '+' if loc.elevation.m > 0 else '-'
+        setElev = f':Sev{sign}{loc.elevation.m:06.1f}#'
 
         commandString = setLon + setLat + setElev
         suc, response, numberOfChunks = conn.communicate(commandString)

@@ -27,27 +27,25 @@ class Styles:
 
     def __init__(self):
 
-        self.colorSet = 0
+        self.colorSet = 1
         self.cs = {
-            'M_TRANS': ['#00000000', ],
-            'M_BLUE_H': ['#30C0FF', ],
-            'M_BLUE': ['#2090C0', ],
-            'M_BLUE1': ['#104860', ],
-            'M_WHITE_H': ['#F0F0F0', ],
-            'M_WHITE': ['#C0C0C0', ],
-            'M_WHITE1': ['#A0A0A0', ],
-            'M_GREY': ['#404040', ],
-            'M_GREY1': ['#202020', ],
-            'M_BACK': ['#181818', ],
-            'M_BLACK': ['#000000', ],
-            'M_RED': ['#C03030', ],
-            'M_RED1': ['#802020', ],
-            'M_YELLOW': ['#C0C000', ],
-            'M_YELLOW1': ['#808000', ],
-            'M_GREEN': ['#008000', ],
-            'M_GREEN1': ['#006000', ],
-            'M_PINK': ['#FF00FF', ],
-            'M_PINK1': ['#B000B0', ],
+            'M_TRANS': ['#00000000', '#00000000', ],
+            'M_BLUE': ['#2090C0', '#A03030', ],
+            'M_BLUE1': ['#104860', '#501818', ],
+            'M_WHITE': ['#C0C0C0', '#E00000', ],
+            'M_WHITE1': ['#A0A0A0', '#A00000', ],
+            'M_GREY': ['#404040', '#503030', ],
+            'M_GREY1': ['#202020', '#281818', ],
+            'M_BACK': ['#181818', '#181818', ],
+            'M_BLACK': ['#000000', '#000000', ],
+            'M_RED': ['#C03030', '#C03030', ],
+            'M_RED1': ['#802020', '#802020', ],
+            'M_YELLOW': ['#C0C000', '#C0C000', ],
+            'M_YELLOW1': ['#808000', '#808000', ],
+            'M_GREEN': ['#008000', '#008000', ],
+            'M_GREEN1': ['#006000', '#006000', ],
+            'M_PINK': ['#FF00FF', '#FF00FF', ],
+            'M_PINK1': ['#B000B0', '#B000B0', ],
         }
 
         self.MAC_STYLE = """
@@ -365,7 +363,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::up-arrow {
-            image: url(:/icon/arrow-up.ico);
+            image: ;
             width: 12px;
             height: 16px;
         }
@@ -380,7 +378,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::down-arrow {
-            image: url(:/icon/arrow-down.ico);
+            image: ;
             width: 12px;
             height: 16px;
         }
@@ -407,7 +405,6 @@ class Styles:
             background-color: $M_BACK$;
         }
         QSpinBox::up-arrow {
-            image: url(:/icon/arrow-up.ico);
             width: 16px;
             height: 16px;
         }
@@ -422,7 +419,6 @@ class Styles:
             background-color: $M_BACK$;
         }
         QSpinBox::down-arrow {
-            image: url(:/icon/arrow-down.ico);
             width: 16px;
             height: 16px;
         }
@@ -795,20 +791,12 @@ class Styles:
         return self.cs['M_TRANS'][self.colorSet]
 
     @property
-    def M_BLUE_H(self):
-        return self.cs['M_BLUE_H'][self.colorSet]
-
-    @property
     def M_BLUE(self):
         return self.cs['M_BLUE'][self.colorSet]
 
     @property
     def M_BLUE1(self):
         return self.cs['M_BLUE1'][self.colorSet]
-
-    @property
-    def M_WHITE_H(self):
-        return self.cs['M_WHITE_H'][self.colorSet]
 
     @property
     def M_WHITE(self):
@@ -897,5 +885,8 @@ class Styles:
             if key in self.cs:
                 repl = self.cs[key][self.colorSet]
                 line = line.replace(f'${key}$', repl)
-            style += (line + '\n')
+                if repl:
+                    style += (line + '\n')
+            else:
+                style += (line + '\n')
         return style

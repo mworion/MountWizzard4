@@ -58,10 +58,9 @@ def test_getStyle_2(function):
 
 def test_property(function):
     a = function.M_TRANS
-    a = function.M_BLUE_H
     a = function.M_BLUE
     a = function.M_BLUE1
-    a = function.M_WHITE_H
+    a = function.M_WHITE
     a = function.M_WHITE
     a = function.M_WHITE1
     a = function.M_GREY

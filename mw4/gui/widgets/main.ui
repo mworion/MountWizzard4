@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -6601,6 +6601,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::PlusMinus</enum>
+      </property>
       <property name="decimals">
        <number>0</number>
       </property>
@@ -6709,6 +6712,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::PlusMinus</enum>
+      </property>
       <property name="decimals">
        <number>0</number>
       </property>
@@ -6774,6 +6780,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::PlusMinus</enum>
       </property>
       <property name="decimals">
        <number>0</number>
@@ -6850,6 +6859,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::PlusMinus</enum>
       </property>
       <property name="decimals">
        <number>0</number>

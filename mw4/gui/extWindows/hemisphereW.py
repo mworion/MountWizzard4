@@ -96,7 +96,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                       buildPColor=self.M_GREEN1,
                       starSize=12,
                       starColor=self.M_YELLOW,
-                      starAnnColor=self.M_WHITE_H)
+                      starAnnColor=self.M_WHITE)
         )
 
         self.pointerAltAz = None

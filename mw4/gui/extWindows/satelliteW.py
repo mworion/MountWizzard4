@@ -345,7 +345,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                            markersize=35,
                                            linewidth=2,
                                            fillstyle='none',
-                                           color=self.M_WHITE_H)
+                                           color=self.M_WHITE)
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
@@ -446,7 +446,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                                            markersize=35,
                                            linewidth=2,
                                            fillstyle='none',
-                                           color=self.M_WHITE_H)
+                                           color=self.M_WHITE)
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
@@ -512,7 +512,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosEarth, = axe.plot(lon, lat,
                                          marker=self.markerSatellite(),
                                          markersize=35, lw=2, fillstyle='none',
-                                         ls='none', color=self.M_WHITE_H,
+                                         ls='none', color=self.M_WHITE,
                                          clip_on=False,
                                          zorder=10)
 
@@ -652,7 +652,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosHorizon, = axe.plot(az.degrees, alt.degrees,
                                            marker=self.markerSatellite(),
                                            markersize=35, lw=2, fillstyle='none',
-                                           ls='none', color=self.M_WHITE_H,
+                                           ls='none', color=self.M_WHITE,
                                            zorder=10)
 
         self.pointerAltAz, = axe.plot(np.radians(180), 45,

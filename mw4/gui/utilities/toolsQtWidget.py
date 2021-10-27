@@ -22,10 +22,9 @@ import logging
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
 from PyQt5.QtWidgets import QTableWidgetItem
-from PyQt5.QtGui import QPalette, QIcon, QPixmap
+from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QSize, QEvent
-
 import numpy as np
 
 # local imports
@@ -176,7 +175,15 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return 0
 
     @staticmethod
-    def wIcon(gui=None, name=''):
+    def svg2icon(svg, color='black'):
+        img = QPixmap(svg)
+        qp = QPainter(img)
+        qp.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        qp.fillRect(img.rect(), QColor(color))
+        qp.end()
+        return QIcon(img)
+
+    def wIcon(self, gui=None, name=''):
         """
         widget icon adds an icon to a gui element like an button.
 
@@ -189,7 +196,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         if not name:
             return False
 
-        icon = QIcon(f':/icon/{name}.svg')
+        icon = self.svg2icon(f':/icon/{name}.svg', self.M_BLUE)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
         gui.setProperty('alignLeft', True)

@@ -71,20 +71,15 @@ class Almanac:
         self.astronomical = None
 
         self.colors = {
-            0: {'text': QColor(self.M_BLUE3),
-                'plot': self.M_BLUE4,
+            0: {'plot': self.M_BLUE4,
                 },
-            1: {'text': QColor(self.M_BLUE2),
-                'plot': self.M_BLUE3,
+            1: {'plot': self.M_BLUE3,
                 },
-            2: {'text': QColor(self.M_BLUE1),
-                'plot': self.M_BLUE2,
+            2: {'plot': self.M_BLUE2,
                 },
-            3: {'text': QColor(self.M_BLUE),
-                'plot': self.M_BLUE1,
+            3: {'plot': self.M_BLUE1,
                 },
-            4: {'text': QColor(self.M_WHITE),
-                'plot': self.M_BACK,
+            4: {'plot': self.M_BACK,
                 },
         }
 
@@ -168,7 +163,6 @@ class Almanac:
         self.ui.twilightEvents.clear()
 
         for timeEvent, event in zip(timeEvents, events):
-            self.ui.twilightEvents.setTextColor(self.colors[event]['text'])
             text += f'{timeEvent.astimezone(tzlocal()).strftime("%H:%M:%S")} '
             text += f'{almanac.TWILIGHTS[event]}'
             self.ui.twilightEvents.insertPlainText(text)

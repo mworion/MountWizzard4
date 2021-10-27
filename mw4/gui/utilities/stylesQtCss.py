@@ -32,7 +32,7 @@ class Styles:
             'M_TRANS': ['#00000000', ],
             'M_BLUE_H': ['#30C0FF', ],
             'M_BLUE': ['#2090C0', ],
-            'M_BLUE1': ['#104860', ],
+            'M_BLUE1': ['#186C90', ],
             'M_BLUE2': ['#0C3648', ],
             'M_BLUE3': ['#082430', ],
             'M_BLUE4': ['#061828', ],
@@ -56,40 +56,6 @@ class Styles:
             'M_PINK': ['#B000B0', ],
             'M_PINK1': ['#800080', ],
         }
-
-        self.M_TRANS = '#00000000'   # transparent items
-        self.M_BLUE_H = '#30C0FF'
-        self.M_BLUE = '#2090C0'      # main color
-        self.M_BLUE1 = '#104860'
-        self.M_BLUE2 = '#0C3648'
-        self.M_BLUE3 = '#082430'
-        self.M_BLUE4 = '#061828'
-
-        self.M_WHITE_H = '#F0F0F0'
-        self.M_WHITE = '#C0C0C0'     # text
-        self.M_WHITE1 = '#A0A0A0'
-        self.M_WHITE2 = '#808080'
-
-        self.M_GREY = '#404040'      # borders / fills
-        self.M_GREY1 = '#303030'
-        self.M_GREY2 = '#282828'
-        self.M_GREY3 = '#202020'
-
-        self.M_BACK = '#181818'      # background
-        self.M_BLACK = '#000000'
-
-        self.M_RED = '#B03030'
-        self.M_RED1 = '#802020'
-
-        self.M_YELLOW = '#C0C000'
-        self.M_YELLOW1 = '#808000'
-
-        self.M_GREEN = '#008000'
-        self.M_GREEN1 = '#006000'
-
-        self.M_PINK_H = '#FF00FF'    # pointer
-        self.M_PINK = '#B000B0'
-        self.M_PINK1 = '#800080'
 
         self.MAC_STYLE = """
         QWidget {
@@ -830,6 +796,114 @@ class Styles:
             border-color: $M_BLUE$;
         }
         """
+
+    @property
+    def M_TRANS(self):
+        return self.cs['M_TRANS'][self.colorSet]
+
+    @property
+    def M_BLUE_H(self):
+        return self.cs['M_BLUE_H'][self.colorSet]
+
+    @property
+    def M_BLUE(self):
+        return self.cs['M_BLUE'][self.colorSet]
+
+    @property
+    def M_BLUE1(self):
+        return self.cs['M_BLUE1'][self.colorSet]
+
+    @property
+    def M_BLUE2(self):
+        return self.cs['M_BLUE2'][self.colorSet]
+
+    @property
+    def M_BLUE3(self):
+        return self.cs['M_BLUE3'][self.colorSet]
+
+    @property
+    def M_BLUE4(self):
+        return self.cs['M_BLUE4'][self.colorSet]
+
+    @property
+    def M_WHITE_H(self):
+        return self.cs['M_WHITE_H'][self.colorSet]
+
+    @property
+    def M_WHITE(self):
+        return self.cs['M_WHITE'][self.colorSet]
+
+    @property
+    def M_WHITE1(self):
+        return self.cs['M_WHITE1'][self.colorSet]
+
+    @property
+    def M_WHITE2(self):
+        return self.cs['M_WHITE2'][self.colorSet]
+
+    @property
+    def M_GREY(self):
+        return self.cs['M_GREY'][self.colorSet]
+
+    @property
+    def M_GREY1(self):
+        return self.cs['M_GREY1'][self.colorSet]
+
+    @property
+    def M_GREY2(self):
+        return self.cs['M_GREY2'][self.colorSet]
+
+    @property
+    def M_GREY3(self):
+        return self.cs['M_GREY3'][self.colorSet]
+
+    @property
+    def M_BACK(self):
+        return self.cs['M_BACK'][self.colorSet]
+
+    @property
+    def M_BLACK(self):
+        return self.cs['M_BLACK'][self.colorSet]
+
+    @property
+    def M_RED(self):
+        return self.cs['M_RED'][self.colorSet]
+
+    @property
+    def M_RED1(self):
+        return self.cs['M_RED1'][self.colorSet]
+
+    @property
+    def M_YELLOW(self):
+        return self.cs['M_YELLOW'][self.colorSet]
+
+    @property
+    def M_RED1(self):
+        return self.cs['M_RED1'][self.colorSet]
+
+    @property
+    def M_YELLOW1(self):
+        return self.cs['M_YELLOW1'][self.colorSet]
+
+    @property
+    def M_GREEN(self):
+        return self.cs['M_GREEN'][self.colorSet]
+
+    @property
+    def M_GREEN1(self):
+        return self.cs['M_GREEN1'][self.colorSet]
+
+    @property
+    def M_PINK_H(self):
+        return self.cs['M_PINK_H'][self.colorSet]
+
+    @property
+    def M_PINK(self):
+        return self.cs['M_PINK'][self.colorSet]
+
+    @property
+    def M_PINK1(self):
+        return self.cs['M_PINK1'][self.colorSet]
 
     @property
     def mw4Style(self):

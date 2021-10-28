@@ -134,17 +134,17 @@ class UpdateGUI:
 
     def __init__(self, runnable=None, version=None, x=0, y=0):
         self.version = version
-
         from PyQt5.QtTest import QTest
+        from PyQt5.QtWidgets import QApplication
         from PyQt5.QtCore import Qt
-        from PyQt5.QtGui import QIcon, QPixmap
+        from PyQt5.QtGui import QIcon, QPixmap, QColor, QTextCursor
         from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout
         from PyQt5.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
         import resource.resources as res
         res.qInitResources()
         from gui.utilities.stylesQtCss import Styles
 
-        self.test = QTest
+        self.test = QTest()
         self.update = Update(runnable=runnable, writer=self.writeText)
 
         QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
@@ -152,10 +152,10 @@ class UpdateGUI:
         self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
 
         self.style = Styles()
-        self.mColor = [self.style.COLOR_BLUE,
-                       self.style.COLOR_WHITE,
-                       self.style.COLOR_YELLOW,
-                       self.style.COLOR_RED,
+        self.mColor = [QColor(self.style.M_BLUE),
+                       QColor(self.style.M_WHITE),
+                       QColor(self.style.M_YELLOW),
+                       QColor(self.style.M_RED),
                        ]
 
         self.window = QWidget()
@@ -206,9 +206,6 @@ class UpdateGUI:
         :param color:
         :return:
         """
-        from PyQt5.QtGui import QTextCursor
-        from PyQt5.QtWidgets import QApplication
-
         self.textBrow.setTextColor(self.mColor[color])
         self.textBrow.insertPlainText(text + '\n')
         self.textBrow.moveCursor(QTextCursor.End)

@@ -144,7 +144,6 @@ class UpdateGUI:
         res.qInitResources()
         from gui.utilities.stylesQtCss import Styles
 
-        self.test = QTest()
         self.update = Update(runnable=runnable, writer=self.writeText)
 
         QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
@@ -223,7 +222,7 @@ class UpdateGUI:
         self.writeText(text, 2)
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        self.test.qWait(3000)
+        QTest.qWait(3000)
         self.update.restart(text)
         return True
 
@@ -234,7 +233,7 @@ class UpdateGUI:
         self.cancelButt.setEnabled(False)
         self.updateButt.setEnabled(False)
         self.writeText(f'Installing now version {self.version}', 1)
-        self.test.qWait(1000)
+        QTest.qWait(1000)
         suc = self.update.runInstall(self.version)
         if suc:
             text = f'Successfully installed {self.version}'
@@ -245,7 +244,7 @@ class UpdateGUI:
 
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        self.test.qWait(3000)
+        QTest.qWait(3000)
         self.update.restart(text)
         return True
 

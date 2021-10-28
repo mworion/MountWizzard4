@@ -26,6 +26,7 @@ import math
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
 from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
 from PyQt5.QtCore import pyqtSignal, QObject, QEvent, Qt, QPoint
+from PyQt5.QtGui import QIcon
 from PyQt5.QtTest import QTest
 from skyfield.api import Angle
 import numpy as np
@@ -170,6 +171,11 @@ def test_findIndexValue_5(function):
     assert val == 0
 
 
+def test_svg2icon_1(function):
+    val = function.svg2icon('testData/choose.svg')
+    assert isinstance(val, QIcon)
+
+
 def test_wIcon_1(function):
     suc = function.wIcon()
     assert not suc
@@ -196,12 +202,14 @@ def test_wIcon_4(function):
 
 def test_renderStyle_1(function):
     input = '12345$M_BLUE$12345'
+    function.colorSet = 0
     val = function.renderStyle(input).strip(' ')
     assert val == '12345#2090C012345\n'
 
 
 def test_renderStyle_2(function):
     input = '12345$M_TEST$12345'
+    function.colorSet = 0
     val = function.renderStyle(input).strip(' ')
     assert val == '12345$M_TEST$12345\n'
 

@@ -134,23 +134,23 @@ class UpdateGUI:
 
     def __init__(self, runnable=None, version=None, x=0, y=0):
         self.version = version
+
         from PyQt5.QtTest import QTest
-        from PyQt5.QtWidgets import QApplication
         from PyQt5.QtCore import Qt
-        from PyQt5.QtGui import QIcon, QPixmap, QColor, QTextCursor
+        from PyQt5.QtGui import QIcon, QPixmap, QColor, QPainter
         from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout
         from PyQt5.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
         import resource.resources as res
         res.qInitResources()
         from gui.utilities.stylesQtCss import Styles
 
+        self.test = QTest
         self.update = Update(runnable=runnable, writer=self.writeText)
 
         QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
         self.app = QApplication(sys.argv)
-        self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
-
         self.style = Styles()
+        self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
         self.mColor = [QColor(self.style.M_BLUE),
                        QColor(self.style.M_WHITE),
                        QColor(self.style.M_YELLOW),
@@ -184,7 +184,13 @@ class UpdateGUI:
         header.setStyleSheet('font-size: 18pt;')
         layoutHeader.addWidget(header)
         question = QLabel()
-        pixmap = QPixmap(':/icon/question.svg').scaled(32, 32)
+
+        img = QPixmap(':/icon/question.svg')
+        qp = QPainter(img)
+        qp.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        qp.fillRect(img.rect(), QColor(self.style.M_BLUE))
+        qp.end()
+        pixmap = QPixmap(img).scaled(32, 32)
         question.setPixmap(pixmap)
         question.setAlignment(Qt.AlignRight)
         layoutHeader.addWidget(question)
@@ -205,6 +211,9 @@ class UpdateGUI:
         :param color:
         :return:
         """
+        from PyQt5.QtGui import QTextCursor
+        from PyQt5.QtWidgets import QApplication
+
         self.textBrow.setTextColor(self.mColor[color])
         self.textBrow.insertPlainText(text + '\n')
         self.textBrow.moveCursor(QTextCursor.End)
@@ -222,7 +231,7 @@ class UpdateGUI:
         self.writeText(text, 2)
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        QTest.qWait(3000)
+        self.test.qWait(3000)
         self.update.restart(text)
         return True
 
@@ -233,7 +242,7 @@ class UpdateGUI:
         self.cancelButt.setEnabled(False)
         self.updateButt.setEnabled(False)
         self.writeText(f'Installing now version {self.version}', 1)
-        QTest.qWait(1000)
+        self.test.qWait(1000)
         suc = self.update.runInstall(self.version)
         if suc:
             text = f'Successfully installed {self.version}'
@@ -244,7 +253,7 @@ class UpdateGUI:
 
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        QTest.qWait(3000)
+        self.test.qWait(3000)
         self.update.restart(text)
         return True
 

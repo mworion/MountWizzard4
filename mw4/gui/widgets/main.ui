@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -6602,7 +6602,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::PlusMinus</enum>
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
       <property name="decimals">
        <number>0</number>
@@ -6713,7 +6713,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::PlusMinus</enum>
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
       <property name="decimals">
        <number>0</number>
@@ -6782,7 +6782,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::PlusMinus</enum>
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
       <property name="decimals">
        <number>0</number>
@@ -6861,7 +6861,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::PlusMinus</enum>
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
       <property name="decimals">
        <number>0</number>

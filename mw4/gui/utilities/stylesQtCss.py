@@ -30,22 +30,22 @@ class Styles:
         self.colorSet = 1
         self.cs = {
             'M_TRANS': ['#00000000', '#00000000', ],
-            'M_BLUE': ['#2090C0', '#A03030', ],
+            'M_BLUE': ['#2090C0', '#C05050', ],
             'M_BLUE1': ['#104860', '#501818', ],
             'M_WHITE': ['#C0C0C0', '#E00000', ],
             'M_WHITE1': ['#A0A0A0', '#A00000', ],
-            'M_GREY': ['#404040', '#503030', ],
-            'M_GREY1': ['#202020', '#281818', ],
+            'M_GREY': ['#404040', '#402020', ],
+            'M_GREY1': ['#202020', '#201010', ],
             'M_BACK': ['#181818', '#181818', ],
             'M_BLACK': ['#000000', '#000000', ],
             'M_RED': ['#C03030', '#C03030', ],
             'M_RED1': ['#802020', '#802020', ],
-            'M_YELLOW': ['#C0C000', '#C0C000', ],
-            'M_YELLOW1': ['#808000', '#808000', ],
-            'M_GREEN': ['#008000', '#008000', ],
-            'M_GREEN1': ['#006000', '#006000', ],
-            'M_PINK': ['#FF00FF', '#FF00FF', ],
-            'M_PINK1': ['#B000B0', '#B000B0', ],
+            'M_YELLOW': ['#C0C000', '#808000', ],
+            'M_YELLOW1': ['#808000', '#606000', ],
+            'M_GREEN': ['#008000', '#006000', ],
+            'M_GREEN1': ['#006000', '#004000', ],
+            'M_PINK': ['#FF00FF', '#C000C0', ],
+            'M_PINK1': ['#B000B0', '#900090', ],
         }
 
         self.MAC_STYLE = """
@@ -288,8 +288,6 @@ class Styles:
         QGroupBox:title[running='true'] {
             color: $M_WHITE$;
         }
-    
-    
         /* Checkboxes */
         QCheckBox {
             color: $M_WHITE$;
@@ -341,11 +339,11 @@ class Styles:
         QDoubleSpinBox {
             background-color: $M_BACK$;
             color: $M_BLUE$;
-            text-align: right;
             border-color: $M_GREY$;
             border-width: 1px;
             border-style: outset;
             border-radius: 2px;
+            text-align: right;
             padding-right: 2px;
         }
         QDoubleSpinBox:disabled {
@@ -363,7 +361,6 @@ class Styles:
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::up-arrow {
-            image: ;
             width: 12px;
             height: 16px;
         }
@@ -378,7 +375,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::down-arrow {
-            image: ;
+            image: url(:/icon/choose.svg);
             width: 12px;
             height: 16px;
         }

@@ -94,11 +94,13 @@ def test_calcHexColor_3(function):
 
 def test_renderStyle_1(function):
     inStyle = '12345$M_BLUE$12345'
+    function.colorSet = 0
     val = function.renderStyle(inStyle).strip(' ')
     assert val == '12345#2090C012345\n'
 
 
 def test_renderStyle_2(function):
     inStyle = '12345$M_TEST$12345'
+    function.colorSet = 0
     val = function.renderStyle(inStyle).strip(' ')
     assert val == '12345$M_TEST$12345\n'

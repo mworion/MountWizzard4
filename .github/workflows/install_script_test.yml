@@ -78,7 +78,7 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Ubuntu/MW4_InstallTest.sh
+          url: ${{ env.gh }}Ubuntu/MW4_Install.sh
           target: .
 
       - name: Install Script Run
@@ -92,7 +92,7 @@ jobs:
           chmod 777 MW4_Install.sh
           ./MW4_Install.sh
           cat install.log
-          
+  
       - name: Run MountWizzard4
         run: |
           touch test.txt
@@ -128,7 +128,7 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           chmod 777 MW4_Install.command
-          ./MW4_InstallTest.command
+          ./MW4_Install.command
           cat install.log
           
       - name: Run MountWizzard4

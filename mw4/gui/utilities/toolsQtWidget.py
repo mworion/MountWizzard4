@@ -213,7 +213,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
         :return:    true for test purpose
         """
-        self.setWindowFlags(self.windowFlags())
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(QIcon(':/mw4.ico'))

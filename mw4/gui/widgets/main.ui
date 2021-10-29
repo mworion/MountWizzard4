@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -18409,7 +18409,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -27620,9 +27620,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>305</y>
+         <y>315</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -27635,9 +27635,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>20</y>
+          <y>15</y>
           <width>356</width>
-          <height>56</height>
+          <height>51</height>
          </rect>
         </property>
         <property name="html">
@@ -28360,9 +28360,9 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>200</y>
+         <y>195</y>
          <width>366</width>
-         <height>41</height>
+         <height>56</height>
         </rect>
        </property>
        <property name="title">
@@ -28401,12 +28401,106 @@ Updater</string>
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QRadioButton" name="colorSet0">
+        <property name="geometry">
+         <rect>
+          <x>95</x>
+          <y>35</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Minimum logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Standard</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="colorSet1">
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>35</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Debug logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Night</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="colorSet2">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>35</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Debug logging and communication will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Day</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_85">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>35</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Color Set</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>250</y>
+         <y>260</y>
          <width>366</width>
          <height>46</height>
         </rect>

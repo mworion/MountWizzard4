@@ -31,6 +31,7 @@ if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
     from gui.extWindows.keypadW import KeypadWindow
 
+from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
 from gui.extWindows.hemisphereW import HemisphereWindow
@@ -190,6 +191,9 @@ class MainWindow(
             self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
 
         self.initConfig()
+        self.ui.colorSet0.clicked.connect(self.refreshColorSet)
+        self.ui.colorSet1.clicked.connect(self.refreshColorSet)
+        self.ui.colorSet2.clicked.connect(self.refreshColorSet)
         self.showExtendedWindows()
 
         self.app.update1s.connect(self.updateTime)
@@ -249,6 +253,9 @@ class MainWindow(
             tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
             self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
 
+        self.ui.colorSet0.setChecked(config.get('colorSet0', True))
+        self.ui.colorSet1.setChecked(config.get('colorSet1', False))
+        self.ui.colorSet2.setChecked(config.get('colorSet2', False))
         tabWidget = self.ui.mainTabWidget.findChild(QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
@@ -260,6 +267,8 @@ class MainWindow(
         ui.setStyleSheet(ui.styleSheet())
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
+        self.setColorSet()
+        self.setStyleSheet(self.mw4Style)
         self.setupIcons()
         self.show()
         return True
@@ -292,6 +301,9 @@ class MainWindow(
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['toolsTabWidget'] = self.ui.toolsTabWidget.currentIndex()
         config['satTabWidget'] = self.ui.satTabWidget.currentIndex()
+        config['colorSet0'] = self.ui.colorSet0.isChecked()
+        config['colorSet1'] = self.ui.colorSet1.isChecked()
+        config['colorSet2'] = self.ui.colorSet2.isChecked()
         self.mwSuper('storeConfig')
         self.storeConfigExtendedWindows()
         return True
@@ -800,6 +812,31 @@ class MainWindow(
                 continue
             self.uiWindows[window]['classObj'] = None
 
+        return True
+
+    def setColorSet(self):
+        """
+        :return:
+        """
+        if self.ui.colorSet0.isChecked():
+            col = 0
+        elif self.ui.colorSet1.isChecked():
+            col = 1
+        else:
+            col = 2
+        Styles.colorSet = col
+        return True
+
+    def refreshColorSet(self):
+        """
+        :return:
+        """
+        self.setColorSet()
+        self.setStyleSheet(self.mw4Style)
+        self.setupIcons()
+        self.storeConfigExtendedWindows()
+        self.closeExtendedWindows()
+        self.showExtendedWindows()
         return True
 
     def buildWindow(self, window):

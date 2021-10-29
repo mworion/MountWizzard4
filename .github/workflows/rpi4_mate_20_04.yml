@@ -23,7 +23,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: [ubuntu20.04, ubuntu18.04]
+            distro: ubuntu20.04
 
     steps:
       - uses: uraimo/run-on-arch-action@v2.1.1

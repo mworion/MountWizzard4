@@ -19,6 +19,7 @@
 import platform
 
 # external packages
+import numpy as np
 
 # local imports
 
@@ -31,21 +32,27 @@ class Styles:
         self.cs = {
             'M_TRANS': ['#00000000', '#00000000', '#00000000', ],
             'M_BLUE': ['#2090C0', '#C05050', '#000000', ],
-            'M_BLUE1': ['#104860', '#501818', '#404040', ],
+            'M_BLUE1': ['#186C90', '#501818', '#C0C0C0', ],
+            'M_BLUE2': ['#104860', '#501818', '#A0A0A0', ],
+            'M_BLUE3': ['#092B39', '#501818', '#808080', ],
+            'M_BLUE4': ['#04151C', '#501818', '#404040', ],
             'M_WHITE': ['#C0C0C0', '#E00000', '#000000', ],
             'M_WHITE1': ['#A0A0A0', '#A00000', '#404040', ],
-            'M_GREY': ['#404040', '#402020', '#C0C0C0', ],
-            'M_GREY1': ['#202020', '#201010', '#E0E0E0', ],
+            'M_GREY': ['#404040', '#402020', '#A0A0A0', ],
+            'M_GREY1': ['#202020', '#201010', '#C0C0C0', ],
             'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
             'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
-            'M_RED': ['#C03030', '#C03030', '', '#C03030', ],
-            'M_RED1': ['#802020', '#802020', '#802020', ],
-            'M_YELLOW': ['#C0C000', '#808000', '#C0C000', ],
-            'M_YELLOW1': ['#808000', '#606000', '#808000', ],
-            'M_GREEN': ['#008000', '#006000', '#008000', ],
-            'M_GREEN1': ['#006000', '#004000', '#006000', ],
+            'M_RED': ['#C03030', '#C03030', '', '#E00000', ],
+            'M_RED1': ['#802020', '#802020', '#900000', ],
+            'M_YELLOW': ['#C0C000', '#808000', '#E0E000', ],
+            'M_YELLOW1': ['#808000', '#606000', '#909000', ],
+            'M_GREEN': ['#008000', '#006000', '#00E000', ],
+            'M_GREEN1': ['#006000', '#004000', '#009000', ],
             'M_PINK': ['#FF00FF', '#C000C0', '#FF00FF', ],
             'M_PINK1': ['#B000B0', '#900090', '#B000B0', ],
+            'checkmark': ['checkmark0', 'checkmark1', 'checkmark2', ],
+            'arrow-up': ['arrow-up0', 'arrow-up1', 'arrow-up2', ],
+            'arrow-down': ['arrow-down0', 'arrow-down1', 'arrow-down2', ],
         }
 
         self.MAC_STYLE = """
@@ -278,7 +285,7 @@ class Styles:
         }
         QGroupBox::indicator:checked {
             background-color: $M_BLUE$;
-            image: url(:/icon/checkmark.ico);
+            image: url(:/icon/$checkmark$.svg);
         }
         QGroupBox[running='true'] {
             color: $M_WHITE$;
@@ -305,7 +312,7 @@ class Styles:
         }
         QCheckBox::indicator:checked {
             background-color: $M_BLUE$;
-            image: url(:/icon/checkmark.ico);
+            image: url(:/icon/$checkmark$.svg);
         }
         QCheckBox::indicator:disabled {
             background-color: $M_TRANS$;;
@@ -333,7 +340,7 @@ class Styles:
         }
         QRadioButton::indicator:checked {
             background-color: $M_BLUE$;
-            image: url(:/icon/checkmark.ico);
+            image: url(:/icon/$checkmark$.svg);
         }
         /* Spin Boxes */
         QDoubleSpinBox {
@@ -361,6 +368,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::up-arrow {
+            image: url(:/icon/$arrow-up$.svg);
             width: 12px;
             height: 16px;
         }
@@ -375,7 +383,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QDoubleSpinBox::down-arrow {
-            image: url(:/icon/choose.svg);
+            image: url(:/icon/$arrow-down$.svg);
             width: 12px;
             height: 16px;
         }
@@ -402,6 +410,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QSpinBox::up-arrow {
+            image: url(:/icon/$arrow-up$.svg);
             width: 16px;
             height: 16px;
         }
@@ -416,6 +425,7 @@ class Styles:
             background-color: $M_BACK$;
         }
         QSpinBox::down-arrow {
+            image: url(:/icon/$arrow-down$.svg);
             width: 16px;
             height: 16px;
         }
@@ -796,6 +806,18 @@ class Styles:
         return self.cs['M_BLUE1'][self.colorSet]
 
     @property
+    def M_BLUE2(self):
+        return self.cs['M_BLUE2'][self.colorSet]
+
+    @property
+    def M_BLUE3(self):
+        return self.cs['M_BLUE3'][self.colorSet]
+
+    @property
+    def M_BLUE4(self):
+        return self.cs['M_BLUE4'][self.colorSet]
+
+    @property
     def M_WHITE(self):
         return self.cs['M_WHITE'][self.colorSet]
 
@@ -861,6 +883,10 @@ class Styles:
 
     @staticmethod
     def hex2rgb(val):
+        """
+        :param val:
+        :return:
+        """
         val = val.lstrip('#')
         if len(val) != 6:
             return f'#{val}'
@@ -870,8 +896,13 @@ class Styles:
         return [r, g, b]
 
     def calcHexColor(self, val, f):
+        """
+        :param val:
+        :param f:
+        :return:
+        """
         rgb = self.hex2rgb(val)
-        rgb = [int( x * f) for x in rgb]
+        rgb = [int(x * f) for x in rgb]
         return f'#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}'
 
     def renderStyle(self, styleRaw):

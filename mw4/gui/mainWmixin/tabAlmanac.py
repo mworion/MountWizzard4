@@ -69,20 +69,15 @@ class Almanac:
         self.civil = None
         self.nautical = None
         self.astronomical = None
-
-        col1 = self.calcHexColor(self.M_BLUE, 0.75)
-        col2 = self.calcHexColor(self.M_BLUE, 0.5)
-        col3 = self.calcHexColor(self.M_BLUE, 0.3)
-        col4 = self.calcHexColor(self.M_BLUE, 0.15)
-
-        self.colors = [col4, col3, col2, col1, self.M_BACK]
+        self.colors = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
+                       self.M_BACK]
         self.app.start1s.connect(self.searchTwilightList)
         self.app.start5s.connect(self.searchTwilightPlot)
         self.app.update30m.connect(self.updateMoonPhase)
-        self.ui.almanacCivil.setStyleSheet(f'background-color: {col1};')
-        self.ui.almanacNautical.setStyleSheet(f'background-color: {col2};')
-        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {col3};')
-        self.ui.almanacDark.setStyleSheet(f'background-color: {col4};')
+        self.ui.almanacCivil.setStyleSheet(f'background-color: {self.M_BLUE1};')
+        self.ui.almanacNautical.setStyleSheet(f'background-color: {self.M_BLUE2};')
+        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {self.M_BLUE3};')
+        self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_BLUE4};')
 
     def initConfig(self):
         """

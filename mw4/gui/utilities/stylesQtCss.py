@@ -27,7 +27,7 @@ class Styles:
 
     def __init__(self):
 
-        self.colorSet = 1
+        self.colorSet = 0
         self.cs = {
             'M_TRANS': ['#00000000', '#00000000', ],
             'M_BLUE': ['#2090C0', '#C05050', ],

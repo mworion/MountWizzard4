@@ -398,7 +398,10 @@ class Environ(object):
         :param image:
         :return: success
         """
-        dim = 0.85
+        back = self.hex2rgb(self.M_BACK)
+        m = np.mean(back)
+        dim = max((m / 256), 0.66)
+
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
         imageBase = image.copy(94, 84, 585, 141)
 

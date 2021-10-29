@@ -388,8 +388,7 @@ class Environ(object):
         self.log.trace(f'URL: [{url}] status: [{data.status_code}]')
         return data
 
-    @staticmethod
-    def processClearOutsideImage(image=None):
+    def processClearOutsideImage(self, image=None):
         """
         processClearOutsideImage takes the image, split it and puts the image
         to the Gui. for the transformation qimage2ndarray is used because of
@@ -401,26 +400,20 @@ class Environ(object):
         """
         dim = 0.85
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
-        imageBase = image.copy(0, 84, 624, 141)
+        imageBase = image.copy(94, 84, 585, 141)
 
         # transformation are done in numpy, because it's much faster
         width = imageBase.width()
         height = imageBase.height()
         imgArr = qimage2ndarray.rgb_view(imageBase)
         imgArr = imgArr.reshape(width * height, 3)
-        img_Max = np.maximum(255 - imgArr, [32, 32, 32])
-        temp = imgArr[:, 0] == imgArr[:, 1]
-        check = np.array([temp, temp, temp]).transpose()
-
-        # do the transform light to dark theme
-        imgArr = np.where(check, img_Max, imgArr)
 
         # transforming back
         imgArr = imgArr.reshape(height, width, 3)
 
         # Compressing the image as the widget content is a png
         # removing some rows
-        m = np.isin(imgArr, [[32, 32, 32], [255, 0, 0]])
+        m = np.isin(imgArr, [[255, 0, 0]])
         toDelete = []
         maxRow = 1
         line = maxRow
@@ -436,7 +429,6 @@ class Environ(object):
         # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)
         pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)
-
         return pixmapBase
 
     def updateClearOutsideImage(self, data=None):

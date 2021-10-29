@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -5788,9 +5788,9 @@ to mount</string>
      <widget class="QLabel" name="picClearOutside">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>15</y>
-        <width>626</width>
+        <x>105</x>
+        <y>12</y>
+        <width>491</width>
         <height>111</height>
        </rect>
       </property>
@@ -5814,6 +5814,97 @@ to mount</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Summary:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>35</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Total Cloud:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_21">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Low Cloud:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_66">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>95</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Visibility:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_80">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>High Cloud:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_83">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>65</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Medium Cloud:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_84">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dew Risk:</string>
       </property>
      </widget>
     </widget>

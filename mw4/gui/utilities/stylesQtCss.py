@@ -27,25 +27,25 @@ class Styles:
 
     def __init__(self):
 
-        self.colorSet = 0
+        self.colorSet = 2
         self.cs = {
-            'M_TRANS': ['#00000000', '#00000000', ],
-            'M_BLUE': ['#2090C0', '#C05050', ],
-            'M_BLUE1': ['#104860', '#501818', ],
-            'M_WHITE': ['#C0C0C0', '#E00000', ],
-            'M_WHITE1': ['#A0A0A0', '#A00000', ],
-            'M_GREY': ['#404040', '#402020', ],
-            'M_GREY1': ['#202020', '#201010', ],
-            'M_BACK': ['#181818', '#181818', ],
-            'M_BLACK': ['#000000', '#000000', ],
-            'M_RED': ['#C03030', '#C03030', ],
-            'M_RED1': ['#802020', '#802020', ],
-            'M_YELLOW': ['#C0C000', '#808000', ],
-            'M_YELLOW1': ['#808000', '#606000', ],
-            'M_GREEN': ['#008000', '#006000', ],
-            'M_GREEN1': ['#006000', '#004000', ],
-            'M_PINK': ['#FF00FF', '#C000C0', ],
-            'M_PINK1': ['#B000B0', '#900090', ],
+            'M_TRANS': ['#00000000', '#00000000', '#00000000', ],
+            'M_BLUE': ['#2090C0', '#C05050', '#000000', ],
+            'M_BLUE1': ['#104860', '#501818', '#404040', ],
+            'M_WHITE': ['#C0C0C0', '#E00000', '#000000', ],
+            'M_WHITE1': ['#A0A0A0', '#A00000', '#404040', ],
+            'M_GREY': ['#404040', '#402020', '#C0C0C0', ],
+            'M_GREY1': ['#202020', '#201010', '#E0E0E0', ],
+            'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
+            'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
+            'M_RED': ['#C03030', '#C03030', '', '#C03030', ],
+            'M_RED1': ['#802020', '#802020', '#802020', ],
+            'M_YELLOW': ['#C0C000', '#808000', '#C0C000', ],
+            'M_YELLOW1': ['#808000', '#606000', '#808000', ],
+            'M_GREEN': ['#008000', '#006000', '#008000', ],
+            'M_GREEN1': ['#006000', '#004000', '#006000', ],
+            'M_PINK': ['#FF00FF', '#C000C0', '#FF00FF', ],
+            'M_PINK1': ['#B000B0', '#900090', '#B000B0', ],
         }
 
         self.MAC_STYLE = """
@@ -860,14 +860,19 @@ class Styles:
         return self.renderStyle(styleRaw)
 
     @staticmethod
-    def calcHexColor(val, f):
+    def hex2rgb(val):
         val = val.lstrip('#')
         if len(val) != 6:
             return f'#{val}'
-        r = int(int(val[0:2], 16) * f)
-        g = int(int(val[2:4], 16) * f)
-        b = int(int(val[4:6], 16) * f)
-        return f'#{r:02x}{g:02x}{b:02x}'
+        r = int(val[0:2], 16)
+        g = int(val[2:4], 16)
+        b = int(val[4:6], 16)
+        return [r, g, b]
+
+    def calcHexColor(self, val, f):
+        rgb = self.hex2rgb(val)
+        rgb = [int( x * f) for x in rgb]
+        return f'#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}'
 
     def renderStyle(self, styleRaw):
         """

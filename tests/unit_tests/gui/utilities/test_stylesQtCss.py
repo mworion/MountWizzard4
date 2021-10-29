@@ -60,6 +60,9 @@ def test_property(function):
     a = function.M_TRANS
     a = function.M_BLUE
     a = function.M_BLUE1
+    a = function.M_BLUE2
+    a = function.M_BLUE3
+    a = function.M_BLUE4
     a = function.M_WHITE
     a = function.M_WHITE
     a = function.M_WHITE1
@@ -84,7 +87,7 @@ def test_calcHexColor_1(function):
 
 def test_calcHexColor_2(function):
     val = function.calcHexColor('#80808000', 1)
-    assert val == '#80808000'
+    assert val == '#808080'
 
 
 def test_calcHexColor_3(function):

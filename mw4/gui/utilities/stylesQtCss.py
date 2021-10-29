@@ -28,14 +28,14 @@ class Styles:
 
     def __init__(self):
 
-        self.colorSet = 2
+        self.colorSet = 1
         self.cs = {
             'M_TRANS': ['#00000000', '#00000000', '#00000000', ],
             'M_BLUE': ['#2090C0', '#C05050', '#000000', ],
-            'M_BLUE1': ['#186C90', '#501818', '#C0C0C0', ],
-            'M_BLUE2': ['#104860', '#501818', '#A0A0A0', ],
-            'M_BLUE3': ['#092B39', '#501818', '#808080', ],
-            'M_BLUE4': ['#04151C', '#501818', '#404040', ],
+            'M_BLUE1': ['#186C90', '#903838', '#C0C0C0', ],
+            'M_BLUE2': ['#104860', '#602828', '#A0A0A0', ],
+            'M_BLUE3': ['#092B39', '#481C1C', '#808080', ],
+            'M_BLUE4': ['#04151C', '#241010', '#404040', ],
             'M_WHITE': ['#C0C0C0', '#E00000', '#000000', ],
             'M_WHITE1': ['#A0A0A0', '#A00000', '#404040', ],
             'M_GREY': ['#404040', '#402020', '#A0A0A0', ],
@@ -132,6 +132,9 @@ class Styles:
         self.BASIC_STYLE = """
         QWidget {
             color: $M_BLUE$;
+        }
+        QLineEdit::item:active {
+            border-color: $M_BLUE$;
         }
         QTextEdit {
             color: $M_WHITE$;
@@ -434,9 +437,6 @@ class Styles:
             text-align: left;
             padding-left: 3px;
             padding-right: 3px;
-        }
-        QPushButton:focus {
-            outline: none;
         }
         QPushButton:pressed {
             background-color: $M_BLUE$;
@@ -888,8 +888,6 @@ class Styles:
         :return:
         """
         val = val.lstrip('#')
-        if len(val) != 6:
-            return f'#{val}'
         r = int(val[0:2], 16)
         g = int(val[2:4], 16)
         b = int(val[4:6], 16)

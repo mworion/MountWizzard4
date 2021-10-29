@@ -103,7 +103,7 @@ def module_setup_teardown(qtbot):
     app.pos = MWidget().pos
     app.height = MWidget().height
     app.width = MWidget().width
-    app.M_BLACK = MWidget().M_BLACK
+    app.M_BACK = MWidget().M_BACK
     app.M_GREEN = MWidget().M_GREEN
     app.returnDriver = MWidget().returnDriver
     app.deviceStat = dict()

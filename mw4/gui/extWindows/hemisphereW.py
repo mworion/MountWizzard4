@@ -25,6 +25,7 @@ from PyQt5.QtGui import QGuiApplication, QCursor
 import numpy as np
 import matplotlib.patches as mpatches
 import matplotlib.cm
+from matplotlib.colors import LinearSegmentedColormap
 from PIL import Image
 
 # local import
@@ -318,14 +319,14 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         sumFak = np.sqrt(altFak * azFak)
         return sumFak
 
-    @staticmethod
-    def selectFontParam(relevance):
+    def selectFontParam(self, relevance):
         """
         :param relevance:
         :return: calculated color
         """
-        colorMap = matplotlib.cm.get_cmap('RdYlGn')
-        color = colorMap(relevance)
+        colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
+        cMap = LinearSegmentedColormap.from_list("MyMap", colors)
+        color = cMap(relevance)
         size = 10 + int(relevance * 5)
         return color, size
 

@@ -28360,9 +28360,9 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>195</y>
+         <y>190</y>
          <width>366</width>
-         <height>56</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -28401,106 +28401,53 @@ Updater</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="colorSet0">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>35</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Minimum logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Standard</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="colorSet1">
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>35</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Night</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="colorSet2">
-        <property name="geometry">
-         <rect>
-          <x>270</x>
-          <y>35</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Debug logging and communication will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Day</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_85">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>35</y>
-          <width>76</width>
+          <y>40</y>
+          <width>121</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
-         <string>Color Set</string>
+         <string>Window Color Set</string>
         </property>
+       </widget>
+       <widget class="QComboBox" name="colorSet">
+        <property name="geometry">
+         <rect>
+          <x>175</x>
+          <y>40</y>
+          <width>181</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the prediction time of the twilight almanac. Shorter time improves redering speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Original Colors</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Red Night Theme</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ligth Day Theme</string>
+         </property>
+        </item>
        </widget>
       </widget>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>260</y>
+         <y>265</y>
          <width>366</width>
          <height>46</height>
         </rect>

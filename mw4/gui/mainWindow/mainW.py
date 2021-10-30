@@ -193,9 +193,7 @@ class MainWindow(
             self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
 
         self.initConfig()
-        self.ui.colorSet0.clicked.connect(self.refreshColorSet)
-        self.ui.colorSet1.clicked.connect(self.refreshColorSet)
-        self.ui.colorSet2.clicked.connect(self.refreshColorSet)
+        self.ui.colorSet.currentIndexChanged.connect(self.refreshColorSet)
         self.showExtendedWindows()
 
         self.app.update1s.connect(self.updateTime)
@@ -233,12 +231,7 @@ class MainWindow(
         self.ui.profile.setText(config.get('profileName'))
         colSet = config.get('colorSet', 0)
         Styles.colorSet = colSet
-        if colSet == 0:
-            self.ui.colorSet0.setChecked(True)
-        elif colSet == 1:
-            self.ui.colorSet1.setChecked(True)
-        else:
-            self.ui.colorSet2.setChecked(True)
+        self.ui.colorSet.setCurrentIndex(colSet)
         self.setStyleSheet(self.mw4Style)
         if 'mainW' not in config:
             config['mainW'] = {}
@@ -296,8 +289,7 @@ class MainWindow(
         :return: True for test purpose
         """
         config = self.app.config
-        colSet = self.setColorSet()
-        config['colorSet'] = colSet
+        config['colorSet'] = self.ui.colorSet.currentIndex()
         config['profileName'] = self.ui.profile.text()
         if 'mainW' not in config:
             config['mainW'] = {}
@@ -822,14 +814,8 @@ class MainWindow(
         """
         :return:
         """
-        if self.ui.colorSet0.isChecked():
-            colSet = 0
-        elif self.ui.colorSet1.isChecked():
-            colSet = 1
-        else:
-            colSet = 2
-        Styles.colorSet = colSet
-        return colSet
+        Styles.colorSet = self.ui.colorSet.currentIndex()
+        return True
 
     def refreshColorSet(self):
         """

@@ -371,8 +371,8 @@ class Styles:
         }
         QDoubleSpinBox::up-arrow {
             image: url(:/icon/$arrow-up$.svg);
-            width: 12px;
-            height: 16px;
+            width: 10px;
+            height: 10px;
         }
         QDoubleSpinBox::down-button {
             subcontrol-origin: border;
@@ -386,8 +386,8 @@ class Styles:
         }
         QDoubleSpinBox::down-arrow {
             image: url(:/icon/$arrow-down$.svg);
-            width: 12px;
-            height: 16px;
+            width: 10px;
+            height: 10px;
         }
         /* Spin Boxes */
         QSpinBox {
@@ -413,8 +413,8 @@ class Styles:
         }
         QSpinBox::up-arrow {
             image: url(:/icon/$arrow-up$.svg);
-            width: 16px;
-            height: 16px;
+            width: 10px;
+            height: 10px;
         }
         QSpinBox::down-button {
             subcontrol-origin: border;
@@ -428,8 +428,8 @@ class Styles:
         }
         QSpinBox::down-arrow {
             image: url(:/icon/$arrow-down$.svg);
-            width: 16px;
-            height: 16px;
+            width: 10px;
+            height: 10px;
         }
         /* Push Buttons */
         QPushButton[alignLeft='true'] {
@@ -564,9 +564,9 @@ class Styles:
             background-color: $M_GREY1$;
         }
         QComboBox::down-arrow {
-            image: url(:/icon/arrow-down.ico);
-            width: 20px;
-            height: 31px;
+            image: url(:/icon/$arrow-down$.svg);
+            width: 16px;
+            height: 16px;
         }
         QComboBox QListView {
             border-width: 2px;

@@ -32,7 +32,8 @@ import PyQt5
 # local import
 from mainApp import MountWizzard4
 from base.loggerMW import setupLogging
-
+import resource.resources as res
+res.qInitResources()
 setupLogging()
 
 

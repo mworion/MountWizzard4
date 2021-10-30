@@ -838,9 +838,9 @@ class MainWindow(
         self.setColorSet()
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
-        self.storeConfigExtendedWindows()
-        self.closeExtendedWindows()
-        self.showExtendedWindows()
+        #self.storeConfigExtendedWindows()
+        #self.closeExtendedWindows()
+        #self.showExtendedWindows()
         self.app.colorChange.emit()
         return True
 

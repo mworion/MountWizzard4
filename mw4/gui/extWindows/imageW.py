@@ -208,6 +208,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.solveImage.connect(self.solveImage)
         self.app.showImage.connect(self.showImage)
+        self.app.colorChange.connect(self.colorChange)
         self.show()
         self.showCurrent()
         return True
@@ -239,7 +240,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.solveImage.disconnect(self.solveImage)
         self.app.showImage.disconnect(self.showImage)
+        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setStyleSheet(self.mw4Style)
+        self.showCurrent()
+        return True
 
     def setupDropDownGui(self):
         """

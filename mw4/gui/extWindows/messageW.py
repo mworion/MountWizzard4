@@ -44,17 +44,9 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)
-
-        self.messColor = [QColor(self.M_BLUE),
-                          QColor(self.M_WHITE),
-                          QColor(self.M_YELLOW),
-                          QColor(self.M_RED),
-                          ]
-        self.messFont = [PyQt5.QtGui.QFont.Normal,
-                         PyQt5.QtGui.QFont.Bold,
-                         PyQt5.QtGui.QFont.Normal,
-                         PyQt5.QtGui.QFont.Normal,
-                         ]
+        self.messFont = None
+        self.messColor = None
+        self.setupMessage()
 
     def initConfig(self):
         """
@@ -96,6 +88,7 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.storeConfig()
         self.ui.clear.clicked.disconnect(self.clearWindow)
         self.app.update1s.disconnect(self.writeMessage)
+        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -104,7 +97,33 @@ class MessageWindow(toolsQtWidget.MWidget):
         """
         self.ui.clear.clicked.connect(self.clearWindow)
         self.app.update1s.connect(self.writeMessage)
+        self.app.colorChange.connect(self.colorChange)
         self.show()
+        return True
+
+    def setupMessage(self):
+        """
+        :return:
+        """
+        self.messColor = [QColor(self.M_BLUE),
+                          QColor(self.M_WHITE),
+                          QColor(self.M_YELLOW),
+                          QColor(self.M_RED),
+                          ]
+        self.messFont = [PyQt5.QtGui.QFont.Normal,
+                         PyQt5.QtGui.QFont.Bold,
+                         PyQt5.QtGui.QFont.Normal,
+                         PyQt5.QtGui.QFont.Normal,
+                         ]
+        return True
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setStyleSheet(self.mw4Style)
+        self.setupMessage()
+        self.clearWindow()
         return True
 
     def clearWindow(self):

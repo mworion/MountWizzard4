@@ -78,7 +78,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                           }
 
         self.measureMat = self.embedMatplot(self.ui.measure, constrainedLayout=False)
-        # self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
+        self.measureMat.parentWidget().setStyleSheet(self.mw4Style)
 
     def initConfig(self):
         """
@@ -132,6 +132,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.ui.measureSet1.currentIndexChanged.connect(self.setCycleRefresh)
         self.ui.measureSet2.currentIndexChanged.connect(self.setCycleRefresh)
         self.ui.measureSet3.currentIndexChanged.connect(self.setCycleRefresh)
+        self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.cycleRefresh)
         return True
 
@@ -146,7 +147,17 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.ui.measureSet1.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet2.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet3.currentIndexChanged.disconnect(self.setCycleRefresh)
+        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setStyleSheet(self.mw4Style)
+        self.measureMat.parentWidget().setStyleSheet(self.mw4Style)
+        self.drawMeasure()
+        return True
 
     def setupButtons(self):
         """
@@ -184,6 +195,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
+        self.setStyleSheet(self.mw4Style)
         cycle = self.timeScale.get(self.ui.timeSet.currentText(), 1)
         if not self.refreshCounter % cycle:
             self.drawMeasure(cycle=cycle)
@@ -204,17 +216,15 @@ class MeasureWindow(toolsQtWidget.MWidget):
         if numberPlots < 0:
             return None
 
-        for axe in figure.axes:
-            axe.cla()
-
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
 
         for i in range(numberPlots):
-            self.measureMat.figure.add_subplot(numberPlots, 1, i + 1, facecolor=None)
+            self.measureMat.figure.add_subplot(numberPlots, 1, i + 1,
+                                               facecolor=self.M_BACK)
 
         for axe in figure.axes:
-            axe.set_facecolor((0, 0, 0, 0))
+            axe.set_facecolor(self.M_BACK)
             axe.tick_params(colors=self.M_BLUE,
                             labelsize=12)
             axe.spines['bottom'].set_color(self.M_BLUE)

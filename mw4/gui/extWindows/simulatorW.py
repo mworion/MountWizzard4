@@ -176,6 +176,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
         self.camera.positionChanged.disconnect(self.limitPositionZ)
+        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -207,7 +208,17 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
         self.camera.positionChanged.connect(self.limitPositionZ)
+        self.app.colorChange.connect(self.colorChange)
         self.show()
+        return True
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setStyleSheet(self.mw4Style)
+        self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
+        self.createScene(self.rootEntity)
         return True
 
     def limitPositionZ(self):

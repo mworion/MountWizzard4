@@ -69,13 +69,11 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
         self.colors = [self.M_RED1, self.M_YELLOW1, self.M_GREEN1]
-
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
         stream.close()
         self.world = pickle.load(BytesIO(pickleData))
-
         self.signals.show.connect(self.drawSatellite)
         self.signals.update.connect(self.updatePositions)
 
@@ -124,6 +122,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.closing = True
         self.storeConfig()
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
+        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -131,8 +130,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit()
         self.show()
+        return True
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setStyleSheet(self.mw4Style)
+        self.colors = [self.M_RED1, self.M_YELLOW1, self.M_GREEN1]
+        self.drawSatellite()
         return True
 
     @staticmethod

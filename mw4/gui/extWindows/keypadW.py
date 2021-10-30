@@ -100,6 +100,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         """
         self.storeConfig()
         self.browser.loadFinished.disconnect(self.loadFinished)
+        self.app.colorChange.disconnect(self.colorChange)
         sip.delete(self.browser)
         self.browser = None
         super().closeEvent(closeEvent)
@@ -114,7 +115,16 @@ class KeypadWindow(toolsQtWidget.MWidget):
             if not suc:
                 self.app.message.emit('Could not enable webinterface', 2)
         self.browser.loadFinished.connect(self.loadFinished)
+        self.app.colorChange.connect(self.colorChange)
         self.show()
+        self.showUrl()
+        return True
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setStyleSheet(self.mw4Style)
         self.showUrl()
         return True
 

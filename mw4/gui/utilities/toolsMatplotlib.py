@@ -43,8 +43,7 @@ class ToolsMatplotlib:
 
     log = logging.getLogger(__name__)
 
-    @staticmethod
-    def embedMatplot(widget=None, constrainedLayout=True):
+    def embedMatplot(self, widget=None, constrainedLayout=True):
         """
         embedMatplot provides the wrapper to use matplotlib drawings inside a
         pyqt5 application gui. you call it with the parent widget, which is
@@ -62,7 +61,7 @@ class ToolsMatplotlib:
         layout = QVBoxLayout(widget)
         layout.setContentsMargins(0, 0, 0, 0)
         staticCanvas = FigureCanvas(Figure(dpi=75,
-                                           facecolor='None',
+                                           facecolor=self.M_TRANS,
                                            frameon=False,
                                            tight_layout=constrainedLayout,
                                            )
@@ -96,7 +95,7 @@ class ToolsMatplotlib:
 
         figure = widget.figure
         figure.clf()
-        axe = figure.add_subplot(1, 1, 1, polar=True, facecolor='None')
+        axe = figure.add_subplot(1, 1, 1, polar=True, facecolor=self.M_TRANS)
 
         axe.grid(True, color=colorGrid)
 
@@ -147,7 +146,7 @@ class ToolsMatplotlib:
 
         figure = widget.figure
         figure.clf()
-        axe = figure.add_subplot(1, 1, 1, facecolor='None')
+        axe = figure.add_subplot(1, 1, 1, facecolor=self.M_TRANS)
 
         axe.spines['bottom'].set_color(color)
         axe.spines['top'].set_color(color)
@@ -210,8 +209,7 @@ class ToolsMatplotlib:
         """
         getIndexPoint returns the index of the point which is nearest to the
         coordinate of the mouse click when the click is in distance epsilon of
-        the points. otherwise
-        no index will be returned.
+        the points. otherwise no index will be returned.
 
         :param event: data of the mouse clicked event
         :param plane: coordinates as tuples (alt, az)

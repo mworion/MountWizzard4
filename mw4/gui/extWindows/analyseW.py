@@ -36,14 +36,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
     the analyse window class handles
 
     """
-
-    __all__ = ['AnalyseWindow',
-               ]
+    __all__ = ['AnalyseWindow']
 
     def __init__(self, app):
         super().__init__()
         self.app = app
-
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
         self.closing = False
@@ -65,7 +62,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.angularPosDEC = None
 
         self.wIcon(self.ui.load, 'load')
-
         self.raRawErrors = self.embedMatplot(self.ui.raRawErrors)
         self.decRawErrors = self.embedMatplot(self.ui.decRawErrors)
         self.raErrors = self.embedMatplot(self.ui.raErrors)
@@ -81,6 +77,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         self.ui.load.clicked.connect(self.loadModel)
         self.ui.winsorizedLimit.clicked.connect(self.drawAll)
+        self.app.colorChange.connect(self.colorChange)
 
         self.charts = [self.draw_raRawErrors,
                        self.draw_decRawErrors,
@@ -158,6 +155,15 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         self.show()
         self.app.showAnalyse.connect(self.showAnalyse)
+        return True
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.wIcon(self.ui.load, 'load')
+        self.setStyleSheet(self.mw4Style)
+        self.drawAll()
         return True
 
     def writeGui(self, data, loadFilePath):

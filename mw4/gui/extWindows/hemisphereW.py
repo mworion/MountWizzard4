@@ -234,6 +234,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
         self.app.dome.signals.serverDisconnected.disconnect(self.updateDome)
+        self.app.colorChange.disconnect(self.colorChange)
         QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
 
         super().closeEvent(closeEvent)
@@ -283,6 +284,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkUseTerrain.clicked.connect(self.drawHemisphere)
         self.ui.azimuthShift.valueChanged.connect(self.drawHemisphere)
         self.ui.terrainAlpha.valueChanged.connect(self.drawHemisphere)
+        self.app.colorChange.connect(self.colorChange)
 
         self.ui.showPolar.clicked.connect(self.togglePolar)
         self.ui.addPositionToHorizon.clicked.connect(self.addHorizonPointManual)
@@ -291,6 +293,14 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         hem.mpl_connect('motion_notify_event', self.showMouseCoordinates)
         self.togglePolar()
         self.show()
+        return True
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setStyleSheet(self.mw4Style)
+        self.drawHemisphere()
         return True
 
     def calculateRelevance(self, alt=None, az=None):

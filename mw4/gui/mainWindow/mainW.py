@@ -21,9 +21,8 @@ from datetime import datetime
 import time
 
 # external packages
-from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtTest import QTest
 
 # local import

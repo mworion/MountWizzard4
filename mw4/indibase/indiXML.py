@@ -66,6 +66,7 @@ Notes:
 
 """
 
+
 class INDIBase(object):
     """
     INDI command base classes.

@@ -19,7 +19,6 @@
 import platform
 
 # external packages
-import numpy as np
 
 # local imports
 
@@ -238,7 +237,6 @@ class Styles:
         QLabel[color='red'] {
             color: $M_RED$;
         }
-    
         /* Group Box */
         QGroupBox {
             background-color: $M_BACK$;
@@ -588,7 +586,6 @@ class Styles:
             color: $M_BACK$;
             background-color: $M_BLUE$;
         }
-    
         /* lines */
         QFrame[frameShape="4"] {
             color: $M_BLUE1$;

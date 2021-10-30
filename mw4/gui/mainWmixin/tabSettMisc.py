@@ -289,7 +289,8 @@ class SettMisc(object):
             updateType = 'CLI'
 
         os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
-                 str(self.pos().x()), str(self.pos().y()), updateType)
+                 str(self.pos().x()), str(self.pos().y()), updateType,
+                 str(self.colorSet))
         return True
 
     def installVersion(self):

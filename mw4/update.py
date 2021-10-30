@@ -132,7 +132,7 @@ class Update:
 class UpdateGUI:
     log = logging.getLogger(__name__)
 
-    def __init__(self, runnable=None, version=None, x=0, y=0):
+    def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):
         self.version = version
 
         from PyQt5.QtTest import QTest
@@ -150,6 +150,7 @@ class UpdateGUI:
         QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
         self.app = QApplication(sys.argv)
         self.style = Styles()
+        self.style.colorSet = colorSet
         self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
         self.mColor = [QColor(self.style.M_BLUE),
                        QColor(self.style.M_WHITE),
@@ -297,6 +298,7 @@ def main():
     x = int(sys.argv[2]) + 150
     y = int(sys.argv[3]) + 150
     simpleGui = sys.argv[4] == 'CLI'
+    colorSet = int(sys.argv[5])
 
     log.header('-' * 100)
     log.header('Running updater')
@@ -310,7 +312,8 @@ def main():
     if simpleGui:
         UpdateCLI(runnable=runnable, version=version)
     else:
-        u = UpdateGUI(runnable=runnable, version=version, x=x, y=y)
+        u = UpdateGUI(runnable=runnable, version=version, x=x, y=y,
+                      colorSet=colorSet)
         u.run()
 
 

@@ -26,7 +26,7 @@ import math
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
 from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
 from PyQt5.QtCore import pyqtSignal, QObject, QEvent, Qt, QPoint
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtTest import QTest
 from skyfield.api import Angle
 import numpy as np
@@ -171,8 +171,23 @@ def test_findIndexValue_5(function):
     assert val == 0
 
 
+def test_img2pixmap_1(function):
+    img = function.img2pixmap(os.getcwd() + '/tests/testData/altitude.png')
+    assert isinstance(img, QPixmap)
+
+
+def test_img2pixmap_2(function):
+    img = function.img2pixmap(os.getcwd() + '/tests/testData/altitude.png', '#202020', '#303030')
+    assert isinstance(img, QPixmap)
+
+
+def test_svg2pixmap(function):
+    img = function.svg2pixmap(os.getcwd() + '/tests/testData/choose.svg')
+    assert isinstance(img, QPixmap)
+
+
 def test_svg2icon_1(function):
-    val = function.svg2icon('testData/choose.svg')
+    val = function.svg2icon(os.getcwd() + '/tests/testData/choose.svg')
     assert isinstance(val, QIcon)
 
 

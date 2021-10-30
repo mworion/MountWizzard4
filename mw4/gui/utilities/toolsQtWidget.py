@@ -176,7 +176,14 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return 0
 
     def img2pixmap(self, img, detect=None, color=None):
+        """
+        :param img:
+        :param detect:
+        :param color:
+        :return:
+        """
         image = QImage(img)
+        image.convertToFormat(QImage.Format_RGB32)
         imgArr = rgb_view(image)
         if detect is not None and color is not None:
             detect = self.hex2rgb(detect)
@@ -188,6 +195,11 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
     @staticmethod
     def svg2pixmap(svg, color='black'):
+        """
+        :param svg:
+        :param color:
+        :return:
+        """
         img = QPixmap(svg)
         qp = QPainter(img)
         qp.setCompositionMode(QPainter.CompositionMode_SourceIn)
@@ -196,6 +208,11 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return img
 
     def svg2icon(self, svg, color='black'):
+        """
+        :param svg:
+        :param color:
+        :return:
+        """
         img = self.svg2pixmap(svg, color)
         return QIcon(img)
 

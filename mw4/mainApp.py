@@ -81,6 +81,7 @@ class MountWizzard4(QObject):
     showImage = pyqtSignal(str)
     showAnalyse = pyqtSignal(str)
     remoteCommand = pyqtSignal(str)
+    colorChange = pyqtSignal()
 
     update0_1s = pyqtSignal()
     update1s = pyqtSignal()

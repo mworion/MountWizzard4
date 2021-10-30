@@ -23,7 +23,7 @@ import time
 # external packages
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QApplication
 from PyQt5.QtTest import QTest
 
 # local import
@@ -95,14 +95,16 @@ class MainWindow(
     __all__ = ['MainWindow']
 
     def __init__(self, app):
+        # has to be put before super to adjust the color before the stylesheet
+        # on the parent classes is drawn first
+        colSet = app.config.get('colorSet', 0)
+        Styles.colorSet = colSet
         super().__init__()
-
         self.app = app
         self.threadPool = app.threadPool
         self.deviceStat = app.deviceStat
         self.uiWindows = app.uiWindows
         self.setAttribute(Qt.WA_DeleteOnClose)
-
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.closing = False
@@ -229,6 +231,15 @@ class MainWindow(
         """
         config = self.app.config
         self.ui.profile.setText(config.get('profileName'))
+        colSet = config.get('colorSet', 0)
+        Styles.colorSet = colSet
+        if colSet == 0:
+            self.ui.colorSet0.setChecked(True)
+        elif colSet == 1:
+            self.ui.colorSet1.setChecked(True)
+        else:
+            self.ui.colorSet2.setChecked(True)
+        self.setStyleSheet(self.mw4Style)
         if 'mainW' not in config:
             config['mainW'] = {}
         config = config['mainW']
@@ -253,9 +264,6 @@ class MainWindow(
             tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
             self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
 
-        self.ui.colorSet0.setChecked(config.get('colorSet0', True))
-        self.ui.colorSet1.setChecked(config.get('colorSet1', False))
-        self.ui.colorSet2.setChecked(config.get('colorSet2', False))
         tabWidget = self.ui.mainTabWidget.findChild(QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
@@ -267,8 +275,6 @@ class MainWindow(
         ui.setStyleSheet(ui.styleSheet())
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
-        self.setColorSet()
-        self.setStyleSheet(self.mw4Style)
         self.setupIcons()
         self.show()
         return True
@@ -290,10 +296,11 @@ class MainWindow(
         :return: True for test purpose
         """
         config = self.app.config
+        colSet = self.setColorSet()
+        config['colorSet'] = colSet
         config['profileName'] = self.ui.profile.text()
         if 'mainW' not in config:
             config['mainW'] = {}
-
         config = config['mainW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
@@ -301,9 +308,6 @@ class MainWindow(
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['toolsTabWidget'] = self.ui.toolsTabWidget.currentIndex()
         config['satTabWidget'] = self.ui.satTabWidget.currentIndex()
-        config['colorSet0'] = self.ui.colorSet0.isChecked()
-        config['colorSet1'] = self.ui.colorSet1.isChecked()
-        config['colorSet2'] = self.ui.colorSet2.isChecked()
         self.mwSuper('storeConfig')
         self.storeConfigExtendedWindows()
         return True
@@ -819,13 +823,13 @@ class MainWindow(
         :return:
         """
         if self.ui.colorSet0.isChecked():
-            col = 0
+            colSet = 0
         elif self.ui.colorSet1.isChecked():
-            col = 1
+            colSet = 1
         else:
-            col = 2
-        Styles.colorSet = col
-        return True
+            colSet = 2
+        Styles.colorSet = colSet
+        return colSet
 
     def refreshColorSet(self):
         """
@@ -837,6 +841,7 @@ class MainWindow(
         self.storeConfigExtendedWindows()
         self.closeExtendedWindows()
         self.showExtendedWindows()
+        self.app.colorChange.emit()
         return True
 
     def buildWindow(self, window):

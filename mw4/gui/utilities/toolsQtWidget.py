@@ -22,10 +22,11 @@ import logging
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
 from PyQt5.QtWidgets import QTableWidgetItem
-from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter
+from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QSize, QEvent
 import numpy as np
+from qimage2ndarray import rgb_view, array2qimage
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -173,6 +174,17 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
                     return index
 
         return 0
+
+    def img2pixmap(self, img, detect=None, color=None):
+        image = QImage(img)
+        imgArr = rgb_view(image)
+        if detect is not None and color is not None:
+            detect = self.hex2rgb(detect)
+            target = self.hex2rgb(color)
+            imgArr[np.where((imgArr == detect).all(axis=2))] = target
+        image = array2qimage(imgArr)
+        pixmap = QPixmap().fromImage(image)
+        return pixmap
 
     @staticmethod
     def svg2icon(svg, color='black'):

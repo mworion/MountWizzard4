@@ -63,6 +63,7 @@ class ManageModel(object):
         self.ui.targetRMS.valueChanged.connect(self.showModelPosition)
         self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
         self.ui.targetRMS.valueChanged.connect(self.showErrorDistribution)
+        self.app.colorChange.connect(self.colorChangeManageModel)
 
     def initConfig(self):
         """
@@ -93,6 +94,15 @@ class ManageModel(object):
         config['optimizeOverall'] = self.ui.optimizeOverall.isChecked()
         config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
         config['autoUpdateActualAnalyse'] = self.ui.autoUpdateActualAnalyse.isChecked()
+        return True
+
+    def colorChangeManageModel(self):
+        """
+        :return:
+        """
+        self.showModelPosition()
+        self.showErrorAscending()
+        self.showErrorDistribution()
         return True
 
     def setNameList(self, model):
@@ -193,7 +203,6 @@ class ManageModel(object):
             pointsOut = []
 
         name = os.path.splitext(os.path.basename(self.fittedModelPath))[0]
-
         return name, pointsIn, pointsOut
 
     def showModelPosition(self):
@@ -284,13 +293,11 @@ class ManageModel(object):
         model = self.app.mount.model
         if model is None:
             hasNoStars = True
-
         else:
             hasNoStars = model.starList is None or not model.starList
 
         axe, _ = self.generateFlat(widget=self.errorAscendingPlot,
                                    title='Model Point Errors in ascending order')
-
         if hasNoStars:
             axe.figure.canvas.draw()
             return False
@@ -303,7 +310,6 @@ class ManageModel(object):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-
         errors = [star.errorRMS for star in model.starList]
         errors.sort()
         index = range(0, len(errors))
@@ -319,9 +325,7 @@ class ManageModel(object):
                  [value, value],
                  lw=3,
                  color=self.M_PINK)
-
         axe.figure.canvas.draw()
-
         return True
 
     def showErrorDistribution(self):
@@ -339,20 +343,17 @@ class ManageModel(object):
         model = self.app.mount.model
         if model is None:
             hasNoStars = True
-
         else:
             hasNoStars = model.starList is None or not model.starList
 
         axe, _ = self.generatePolar(widget=self.errorDistributionPlot,
                                     title='Error Distribution')
-
         if hasNoStars:
             axe.figure.canvas.draw()
             return False
 
         angles = [star.errorAngle.degrees / 180.0 * np.pi for star in model.starList]
         errors = [star.errorRMS for star in model.starList]
-
         axe.plot(angles,
                  errors,
                  marker='.',
@@ -366,9 +367,7 @@ class ManageModel(object):
                  values,
                  lw=3,
                  color=self.M_PINK)
-
         axe.figure.canvas.draw()
-
         return True
 
     def clearRefreshName(self):

@@ -33,7 +33,6 @@ from base.tpool import Worker
 class Almanac:
     """
     """
-
     phasesText = {
         'New moon': {
             'range': (0, 1),
@@ -65,19 +64,15 @@ class Almanac:
     }
 
     def __init__(self):
-
         self.civil = None
         self.nautical = None
         self.astronomical = None
-        self.colors = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
-                       self.M_BACK]
+        self.colors = None
+        self.setColors()
         self.app.start1s.connect(self.searchTwilightList)
         self.app.start5s.connect(self.searchTwilightPlot)
         self.app.update30m.connect(self.updateMoonPhase)
-        self.ui.almanacCivil.setStyleSheet(f'background-color: {self.M_BLUE1};')
-        self.ui.almanacNautical.setStyleSheet(f'background-color: {self.M_BLUE2};')
-        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {self.M_BLUE3};')
-        self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_BLUE4};')
+        self.app.colorChange.connect(self.colorChangeAlmanac)
 
     def initConfig(self):
         """
@@ -96,6 +91,25 @@ class Almanac:
         """
         config = self.app.config['mainW']
         config['almanacPrediction'] = self.ui.almanacPrediction.currentIndex()
+        return True
+
+    def setColors(self):
+        """
+        :return:
+        """
+        self.ui.almanacCivil.setStyleSheet(f'background-color: {self.M_BLUE1};')
+        self.ui.almanacNautical.setStyleSheet(f'background-color: {self.M_BLUE2};')
+        self.ui.almanacAstronomical.setStyleSheet(f'background-color: {self.M_BLUE3};')
+        self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_BLUE4};')
+        self.colors = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
+                       self.M_BACK]
+
+    def colorChangeAlmanac(self):
+        """
+        :return:
+        """
+        self.setColors()
+        self.searchTwilightPlot()
         return True
 
     def plotTwilightData(self, result):

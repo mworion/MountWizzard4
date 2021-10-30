@@ -37,8 +37,8 @@ def module_setup_teardown():
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
         mwGlob = {'modelDir': 'tests/workDir/model',
                   'imageDir': 'tests/workDir/image'}
         uiWindows = {'showImageW': {'classObj': None}}
@@ -110,7 +110,7 @@ def test_updatePositions_3(qtbot):
     app.app.mount.obsSite.timeSidereal = '10:10:10'
 
     with mock.patch.object(app.app.mount,
-                           'calcTransformationMatrices',
+                           'calcTransformationMatricesActual',
                            return_value=(0, 0,
                                          np.array([1, 1, 1]),
                                          np.array([1, 1, 1]),

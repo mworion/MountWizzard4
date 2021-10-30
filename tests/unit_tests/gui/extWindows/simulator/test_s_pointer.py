@@ -97,7 +97,7 @@ def test_updatePositions_3(qtbot):
     app.app.mount.obsSite.timeSidereal = '10:10:10'
 
     with mock.patch.object(app.app.mount,
-                           'calcTransformationMatrices',
+                           'calcTransformationMatricesActual',
                            return_value=(0, 0, [1, 1, 1], None, None)):
         suc = app.updatePositions()
         assert suc

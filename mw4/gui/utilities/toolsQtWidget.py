@@ -187,12 +187,16 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         return pixmap
 
     @staticmethod
-    def svg2icon(svg, color='black'):
+    def svg2pixmap(svg, color='black'):
         img = QPixmap(svg)
         qp = QPainter(img)
         qp.setCompositionMode(QPainter.CompositionMode_SourceIn)
         qp.fillRect(img.rect(), QColor(color))
         qp.end()
+        return img
+
+    def svg2icon(self, svg, color='black'):
+        img = self.svg2pixmap(svg, color)
         return QIcon(img)
 
     def wIcon(self, gui=None, name=''):

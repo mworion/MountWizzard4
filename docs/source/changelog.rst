@@ -9,7 +9,8 @@ Ideas for the future
 - split profiles in base and add-on
 - receive video indi for sat tracking and horizon setup
 - joystick support
-- data exchange to EKOS SQLite for Location and horizon
+- data exchange to EKOS SQLite for Location and horizon through SQLite interface
+- adding SGP interface
 
 Released beta version of MW4
 ----------------------------

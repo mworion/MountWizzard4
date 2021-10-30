@@ -59,6 +59,7 @@ def function(module):
         mount.obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0,
                                               elevation_m=0)
         update1s = pyqtSignal()
+        colorChange = pyqtSignal()
         showAnalyse = pyqtSignal(object)
         message = pyqtSignal(str, int)
         mwGlob = {'imageDir': 'tests/workDir/image',

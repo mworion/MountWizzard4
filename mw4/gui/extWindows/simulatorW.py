@@ -395,8 +395,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def createScene(self, rEntity):
         """
-        createScene initially builds all 3d models and collects them to a scene. please look
-        closely which references are used-
+        createScene initially builds all 3d models and collects them to a scene.
+        please look closely which references are used-
 
         :param rEntity:
         :return:
@@ -441,8 +441,9 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def updateSettings(self):
         """
-        updateSettings resize parts depending on the setting made in the dome tab. likewise
-        some transformations have to be reverted as they are propagated through entity linking.
+        updateSettings resize parts depending on the setting made in the dome tab.
+        likewise some transformations have to be reverted as they are propagated
+        through entity linking.
 
         :return:
         """

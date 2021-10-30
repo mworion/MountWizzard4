@@ -92,16 +92,7 @@ class SimulatorLaser:
         if not self.app.mount.obsSite.haJNow:
             return False
 
-        lat = self.app.mount.obsSite.location.latitude
-        ha = self.app.mount.obsSite.haJNow
-        dec = self.app.mount.obsSite.decJNow
-        pierside = self.app.mount.obsSite.pierside
-
-        geometry = self.app.mount.geometry
-        _, _, _, PB, PD = geometry.calcTransformationMatrices(ha=ha,
-                                                              dec=dec,
-                                                              lat=lat,
-                                                              pierside=pierside)
+        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
         PB *= 1000
         PB[2] += 1000
         radius, alt, az = functions.to_spherical(-PD)

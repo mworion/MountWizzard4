@@ -109,7 +109,7 @@ def test_updatePositions_3(qtbot):
     app.app.mount.obsSite.raJNow = 10
     app.app.mount.obsSite.timeSidereal = '10:10:10'
 
-    with mock.patch.object(app.app.mount.geometry,
+    with mock.patch.object(app.app.mount,
                            'calcTransformationMatrices',
                            return_value=(0, 0,
                                          np.array([1, 1, 1]),

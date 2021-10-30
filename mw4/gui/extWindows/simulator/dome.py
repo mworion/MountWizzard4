@@ -32,7 +32,6 @@ class SimulatorDome:
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.model = {}
         self.modelRoot = None
@@ -143,8 +142,9 @@ class SimulatorDome:
 
     def updateSettings(self):
         """
-        updateSettings resize parts depending on the setting made in the dome tab. likewise
-        some transformations have to be reverted as they are propagated through entity linking.
+        updateSettings resize parts depending on the setting made in the dome tab.
+        likewise some transformations have to be reverted as they are propagated
+        through entity linking.
 
         :return:
         """

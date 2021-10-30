@@ -230,16 +230,7 @@ class SimulatorBuildPoints:
         if not self.app.mount.obsSite.haJNow:
             return False
 
-        lat = self.app.mount.obsSite.location.latitude
-        ha = self.app.mount.obsSite.haJNow
-        dec = self.app.mount.obsSite.decJNow
-        pierside = self.app.mount.obsSite.pierside
-
-        geometry = self.app.mount.geometry
-        _, _, _, PB, PD = geometry.calcTransformationMatrices(ha=ha,
-                                                              dec=dec,
-                                                              lat=lat,
-                                                              pierside=pierside)
+        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
         PB[2] += 1
         self.transformPointRoot.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
         return True

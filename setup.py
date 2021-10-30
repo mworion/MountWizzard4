@@ -29,6 +29,7 @@ releaseNotes = """
 - add: command window for manual mount commands
 - add: sorting for minimal dome slew in build point selection
 - add: setting prediction time of almanac (shorter reduces cpu load)
+- add: providing 3 different color schemes
 - improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots
@@ -43,7 +44,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b12',
+    version='2.1.0b13',
     packages=[
         'mw4',
         'mw4.base',

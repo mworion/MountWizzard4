@@ -13,7 +13,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.1.0b12 (not released yet)
+2.1.0b13
 
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement
@@ -25,6 +25,7 @@ Released beta version of MW4
 - add: command window for manual mount commands
 - add: sorting for minimal dome slew in build point selection
 - add: setting prediction time of almanac (shorter reduces cpu load)
+- add: providing 3 different color schemes
 - improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots

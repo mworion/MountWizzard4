@@ -228,5 +228,5 @@ def test_updateOpenWeatherMapData_4():
     with mock.patch.object(app,
                            'stopCommunication'):
         suc = app.updateOpenWeatherMapData()
-        assert suc
+        assert not suc
 

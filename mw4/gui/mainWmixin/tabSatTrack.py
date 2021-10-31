@@ -491,7 +491,7 @@ class SatTrack(object):
             return False
 
         satellite = self.app.mount.satellite
-        self.app.message.emit(f'Programming [{satName}] to mount', 0)
+        self.app.message.emit(f'Program to mount:    [{satName}]', 0)
         line1, line2 = export_tle(self.satellites[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,

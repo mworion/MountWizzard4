@@ -27620,9 +27620,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>315</y>
+         <y>310</y>
          <width>366</width>
-         <height>66</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -28447,7 +28447,7 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>265</y>
+         <y>260</y>
          <width>366</width>
          <height>46</height>
         </rect>

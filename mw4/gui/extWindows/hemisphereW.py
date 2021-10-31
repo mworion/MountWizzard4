@@ -595,7 +595,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             azF = np.concatenate([[0], [0], az, [360], [360]])
             axes.fill(azF,
                       altF,
-                      color=self.M_GREY1,
+                      color=self.M_GREY,
                       alpha=0.5,
                       zorder=0)
 
@@ -895,7 +895,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
                                                   30,
                                                   88,
                                                   zorder=0,
-                                                  color=self.M_GREY1,
+                                                  color=self.M_GREY,
                                                   lw=3,
                                                   clip_on=True,
                                                   fill=True,

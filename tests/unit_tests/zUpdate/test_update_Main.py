@@ -28,7 +28,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@mock.patch('sys.argv', ['python', '1', '10', '10', 'CLI'])
+@mock.patch('sys.argv', ['python', '1', '10', '10', 'CLI', '0'])
 def test_main_1():
     class Test:
         def __init__(self, runnable=None, version=None):
@@ -38,7 +38,7 @@ def test_main_1():
     update.main()
 
 
-@mock.patch('sys.argv', ['python', '1', '10', '10', 'GUI'])
+@mock.patch('sys.argv', ['python', '1', '10', '10', 'GUI', '0'])
 def test_main_2():
     class Test:
         def __init__(self, runnable=None, version=None, x=0, y=0):

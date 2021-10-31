@@ -7,6 +7,7 @@ you have some knowledge around Raspberry Pi's and other SOC, you might be able t
 install MW4 on a RPi3+, RPi4. Basically is it an automation and support tool, most
 of the core functions are provided by the mount computer.
 
+
 .. toctree::
     :maxdepth: 2
 

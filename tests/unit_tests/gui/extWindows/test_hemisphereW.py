@@ -157,14 +157,18 @@ def test_calculateRelevance_5(function):
 def test_selectFontParam_1(function):
     function.colorSet = 0
     col, size = function.selectFontParam(0)
-    assert col == (0.7529411764705882, 0.18823529411764706, 0.18823529411764706, 1.0)
+    assert round(col[0], 3) == 0.753
+    assert round(col[1], 3) == 0.188
+    assert round(col[2], 3) == 0.188
     assert size == 10
 
 
 def test_selectFontParam_2(function):
     function.colorSet = 0
     col, size = function.selectFontParam(1)
-    assert col == (0.7529411764705882, 0.1926643598615917, 0.18675893886966552, 1.0)
+    assert round(col[0], 3) == 0.753
+    assert round(col[1], 3) == 0.193
+    assert round(col[2], 3) == 0.187
     assert size == 15
 
 

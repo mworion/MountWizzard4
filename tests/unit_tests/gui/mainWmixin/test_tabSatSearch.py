@@ -380,7 +380,8 @@ def test_satCalcDynamicTable_7(function):
     with mock.patch.object(function,
                            'updateTableEntries'):
         with mock.patch.object(function,
-                               'findRangeRate'):
+                               'findRangeRate',
+                               return_value=[1, 2, 3]):
             with mock.patch.object(function,
                                    'findSunlit',
                                    return_value=False):
@@ -410,7 +411,8 @@ def test_satCalcDynamicTable_8(function):
     with mock.patch.object(function,
                            'updateTableEntries'):
         with mock.patch.object(function,
-                               'findRangeRate'):
+                               'findRangeRate',
+                               return_value=[1, 2, 3]):
             with mock.patch.object(function,
                                    'findSunlit',
                                    return_value=True):

@@ -15,6 +15,7 @@
 # Licence APL2.0
 #
 ###########################################################
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -84,7 +85,6 @@ html_theme_options = {
     'page_width': '1400px',
     'sidebar_width': '300px',
     'base_bg': '#2090C080',
-    'base_text': '#FFFFFFFF',
     'body_bg': '#FFFFFFFF',
 }
 

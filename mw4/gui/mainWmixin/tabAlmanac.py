@@ -103,6 +103,7 @@ class Almanac:
         self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_BLUE4};')
         self.colors = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
                        self.M_BACK]
+        return True
 
     def colorChangeAlmanac(self):
         """

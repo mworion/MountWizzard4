@@ -619,6 +619,18 @@ def test_deleteWindowResource_3():
     assert suc
 
 
+def test_setColorSet(function):
+    suc = function.setColorSet()
+    assert suc
+
+
+def test_refreshColorSet(function):
+    with mock.patch.object(function,
+                           'setupIcons'):
+        suc = function.refreshColorSet()
+        assert suc
+
+
 def test_buildWindow_1():
     class Test(QObject):
         destroyed = pyqtSignal()

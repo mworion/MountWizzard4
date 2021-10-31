@@ -81,6 +81,18 @@ def test_storeConfig_2(function):
         assert suc
 
 
+def test_setColors(function):
+    suc = function.setColors()
+    assert suc
+
+
+def test_colorChangeAlmanac(function):
+    with mock.patch.object(function,
+                           'searchTwilightPlot'):
+        suc = function.colorChangeAlmanac()
+        assert suc
+
+
 def test_plotTwilightData_1(function):
     function.closing = False
     ts = function.app.mount.obsSite.ts

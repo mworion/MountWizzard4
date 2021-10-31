@@ -77,7 +77,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                           '128s Ticks  -  9 hours window': 128,
                           }
 
-        self.measureMat = self.embedMatplot(self.ui.measure, constrainedLayout=False)
+        self.measureMat = self.embedMatplot(self.ui.measure, constrainedLayout=True)
         self.measureMat.parentWidget().setStyleSheet(self.mw4Style)
 
     def initConfig(self):

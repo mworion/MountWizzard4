@@ -69,37 +69,8 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.setupUi(self)
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.operationMode = 'normal'
-
-        self.MODE = dict(
-            normal=dict(horMarker='None',
-                        horColor=self.M_BLUE,
-                        buildPColor=self.M_GREEN,
-                        starSize=6,
-                        starColor=self.M_YELLOW1,
-                        starAnnColor=self.M_WHITE1),
-
-            build=dict(horMarker='None',
-                       horColor=self.M_BLUE,
-                       buildPColor=self.M_PINK,
-                       starSize=6,
-                       starColor=self.M_YELLOW1,
-                       starAnnColor=self.M_WHITE1),
-
-            horizon=dict(horMarker='o',
-                         horColor=self.M_PINK,
-                         buildPColor=self.M_GREEN1,
-                         starSize=6,
-                         starColor=self.M_YELLOW1,
-                         starAnnColor=self.M_WHITE1),
-
-            star=dict(horMarker='None',
-                      horColor=self.M_BLUE1,
-                      buildPColor=self.M_GREEN1,
-                      starSize=12,
-                      starColor=self.M_YELLOW,
-                      starAnnColor=self.M_WHITE)
-        )
-
+        self.MODE = None
+        self.setModeColors()
         self.pointerAltAz = None
         self.pointerDome = None
         self.pointsBuild = None
@@ -173,7 +144,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.imageTerrain = Image.new('L', (2880, 360))
         self.imageTerrain.paste(img)
         self.imageTerrain.paste(img, (1440, 0))
-
         return True
 
     def storeConfig(self):
@@ -296,11 +266,47 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.show()
         return True
 
+    def setModeColors(self):
+        """
+        :return:
+        """
+        self.MODE = dict(
+            normal=dict(horMarker='None',
+                        horColor=self.M_BLUE,
+                        buildPColor=self.M_GREEN,
+                        starSize=6,
+                        starColor=self.M_YELLOW1,
+                        starAnnColor=self.M_WHITE1),
+
+            build=dict(horMarker='None',
+                       horColor=self.M_BLUE,
+                       buildPColor=self.M_PINK,
+                       starSize=6,
+                       starColor=self.M_YELLOW1,
+                       starAnnColor=self.M_WHITE1),
+
+            horizon=dict(horMarker='o',
+                         horColor=self.M_PINK,
+                         buildPColor=self.M_GREEN1,
+                         starSize=6,
+                         starColor=self.M_YELLOW1,
+                         starAnnColor=self.M_WHITE1),
+
+            star=dict(horMarker='None',
+                      horColor=self.M_BLUE1,
+                      buildPColor=self.M_GREEN1,
+                      starSize=12,
+                      starColor=self.M_YELLOW,
+                      starAnnColor=self.M_WHITE)
+        )
+        return True
+
     def colorChange(self):
         """
         :return:
         """
         self.setStyleSheet(self.mw4Style)
+        self.setModeColors()
         self.drawHemisphere()
         return True
 

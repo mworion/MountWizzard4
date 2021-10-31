@@ -221,3 +221,12 @@ def test_updateOpenWeatherMapData_3():
     suc = app.updateOpenWeatherMapData()
     assert suc
 
+
+def test_updateOpenWeatherMapData_4():
+    app.online = False
+    app.running = True
+    with mock.patch.object(app,
+                           'stopCommunication'):
+        suc = app.updateOpenWeatherMapData()
+        assert suc
+

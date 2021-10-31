@@ -101,6 +101,17 @@ def test_storeConfig_1(function):
     assert 33 == conf['targetRMS']
 
 
+def test_colorChangeManageModel(function):
+    with mock.patch.object(function,
+                           'showModelPosition'):
+        with mock.patch.object(function,
+                               'showErrorAscending'):
+            with mock.patch.object(function,
+                                   'showErrorDistribution'):
+                suc = function.colorChangeManageModel()
+                assert suc
+
+
 def test_setNameList(function):
     value = ['Test1', 'test2', 'test3', 'test4']
     function.app.mount.model.nameList = value

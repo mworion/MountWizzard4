@@ -14,7 +14,7 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.1.0b13
+2.1.0b14
 
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: angular error ra / dec axis in measurement

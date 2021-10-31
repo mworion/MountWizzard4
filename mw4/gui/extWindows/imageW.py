@@ -410,7 +410,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.axe.axhline(midY, color=self.M_RED)
 
         if self.ui.checkShowGrid.isChecked():
-            self.axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+            self.axe.grid(True, color=self.M_GREY, ls='solid', alpha=1)
 
         self.axe.tick_params(axis='x', which='major',
                              colors=self.M_BLUE, labelsize=12)

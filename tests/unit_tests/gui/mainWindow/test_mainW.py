@@ -619,15 +619,15 @@ def test_deleteWindowResource_3():
     assert suc
 
 
-def test_setColorSet(function):
-    suc = function.setColorSet()
+def test_setColorSet():
+    suc = app.setColorSet()
     assert suc
 
 
-def test_refreshColorSet(function):
-    with mock.patch.object(function,
+def test_refreshColorSet():
+    with mock.patch.object(app,
                            'setupIcons'):
-        suc = function.refreshColorSet()
+        suc = app.refreshColorSet()
         assert suc
 
 

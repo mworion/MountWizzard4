@@ -41,7 +41,7 @@ def test_main_1():
 @mock.patch('sys.argv', ['python', '1', '10', '10', 'GUI', '0'])
 def test_main_2():
     class Test:
-        def __init__(self, runnable=None, version=None, x=0, y=0):
+        def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):
             pass
 
         @staticmethod

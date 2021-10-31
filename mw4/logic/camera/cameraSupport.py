@@ -67,6 +67,7 @@ class CameraSupport:
         timeJD = obs.timeJD
         header.append(('DATE-OBS', timeJD.tt_strftime('%Y-%m-%dT%H:%M:%S'),
                        'Time is UTC of mount'))
+        header.append(('MJD-OBS', timeJD.tt - 2400000.5, 'Time is UTC of mount'))
         header.append(('CCD-TEMP',
                        self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
         header.append(('SQM',

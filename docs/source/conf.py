@@ -84,8 +84,6 @@ html_theme_options = {
     'fixed_sidebar': True,
     'page_width': '1400px',
     'sidebar_width': '300px',
-    'base_bg': '#2090C080',
-    'body_bg': '#FFFFFFFF',
 }
 
 latex_logo = '_static/mw4.png'

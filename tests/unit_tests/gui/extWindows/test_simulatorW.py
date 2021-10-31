@@ -113,6 +113,22 @@ def test_closeEvent_1(function):
                 function.closeEvent(QCloseEvent)
 
 
+def test_showWindow(function):
+    with mock.patch.object(function,
+                           'createScene'):
+        with mock.patch.object(function,
+                               'show'):
+            suc = function.showWindow()
+            assert suc
+
+
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'createScene'):
+        suc = function.colorChange()
+        assert suc
+
+
 def test_limitPositionZ_1(function):
     from PyQt5.QtGui import QVector3D
 

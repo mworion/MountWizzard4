@@ -106,6 +106,20 @@ def test_resizeEvent(function):
         function.resizeEvent(QResizeEvent)
 
 
+def test_showWindow(function):
+    with mock.patch.object(function,
+                           'show'):
+        suc = function.showWindow()
+        assert suc
+
+
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'drawAll'):
+        suc = function.colorChange()
+        assert suc
+
+
 def test_writeGui_1(function):
     suc = function.writeGui([{'a': 1}], 'test')
     assert suc

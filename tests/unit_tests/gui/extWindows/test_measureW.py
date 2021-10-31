@@ -140,6 +140,13 @@ def test_closeEvent_1(function):
             function.closeEvent(QCloseEvent)
 
 
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'drawMeasure'):
+        suc = function.colorChange()
+        assert suc
+
+
 def test_setupAxes_0(function):
     suc = function.setupAxes(numberPlots=0)
     assert not suc

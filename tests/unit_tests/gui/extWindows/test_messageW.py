@@ -95,6 +95,15 @@ def test_closeEvent_1(function):
             function.closeEvent(QCloseEvent)
 
 
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'setupMessage'):
+        with mock.patch.object(function,
+                               'clearWindow'):
+            suc = function.colorChange()
+            assert suc
+
+
 def test_clearWindow_1(function):
     suc = function.clearWindow()
     assert suc

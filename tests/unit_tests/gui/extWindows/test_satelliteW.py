@@ -112,6 +112,13 @@ def test_showWindow(function):
         assert suc
 
 
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'drawSatellite'):
+        suc = function.colorChange()
+        assert suc
+
+
 def test_markerSatellite(function):
     val = function.markerSatellite()
     assert val is not None

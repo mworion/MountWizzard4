@@ -119,6 +119,13 @@ def test_showWindow_1(function):
             assert suc
 
 
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'drawHemisphere'):
+        suc = function.colorChange()
+        assert suc
+
+
 def test_calculateRelevance_1(function):
     function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0,
                                                        latitude_degrees=45)

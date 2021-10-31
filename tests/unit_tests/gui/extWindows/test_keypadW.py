@@ -114,6 +114,13 @@ def test_showWindow_1(function):
                 function.browser.loadFinished.disconnect(function.loadFinished)
 
 
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'showUrl'):
+        suc = function.colorChange()
+        assert suc
+
+
 def test_loadFinished_1(function):
     function.loadFinished()
 

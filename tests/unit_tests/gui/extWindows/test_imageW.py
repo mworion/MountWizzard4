@@ -103,6 +103,13 @@ def test_closeEvent_1(function):
             function.closeEvent(QCloseEvent)
 
 
+def test_colorChange(function):
+    with mock.patch.object(function,
+                           'showCurrent'):
+        suc = function.colorChange()
+        assert suc
+
+
 def test_setupDropDownGui(function):
     function.setupDropDownGui()
     assert function.ui.color.count() == 4

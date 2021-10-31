@@ -7,6 +7,7 @@ configuration you should do the following steps:
 .. toctree::
     :maxdepth: 1
 
+    colors
     mount
     camera
     dome

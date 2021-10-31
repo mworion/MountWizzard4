@@ -39,6 +39,24 @@ tracking** and **Stop satellite tracking** button are enabled. Once started,
 the mount will slew to the begin of the tracking path and wait for the satellite
 to rise. Selecting partial tracks and respecting constraints is not possible.
 
+From version 2.1 on, MW4 will split the gui in two tabs and extend the features.
+The sat search tab will help you now in a sortable and filterable list of
+satellites with real-time calculations of some properties like velocity, distance
+and a glimpse of the apparent magnitude.
+
+.. image:: image/sat_search.png
+    :align: center
+    :scale: 71%
+
+On the tracking tab, MW4 offers now (need Firmware 3.x) some adjustments for
+centering the satellites in you imaging FOV.
+
+.. image:: image/sat_track.png
+    :align: center
+    :scale: 71%
+
+.. note:: All explanations done for the 2.0 version are still valid!
+
 Since FW 3.x the command protocol offers the programming of a custom satellite
 track. This offers the capability of takings care of avoiding flips, respect
 horizon and other constraints. The operation is different to the classic approach:

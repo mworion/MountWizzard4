@@ -27,8 +27,6 @@ import sys
 import traceback
 from base.loggerMW import setupLogging
 setupLogging()
-import numpy
-numpy.seterr(all='warn')
 #
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see

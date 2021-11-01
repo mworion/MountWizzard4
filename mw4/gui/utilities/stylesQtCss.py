@@ -645,13 +645,10 @@ class Styles:
             border-radius: 2px;
         }
         QSlider::handle
-        {   background-color:  $M_BLUE$;
+        {   background-color: $M_BLUE$;
             border-radius: 2px;
             border-style: outset;
             border-width: 1px;
-        }
-        QSlider::handle:disabled {
-           background-color:  $M_BLUE1$;
         }
         QSlider::add-page
         {   background-color: $M_GREY1$;
@@ -676,7 +673,7 @@ class Styles:
             border-radius: 2px;
         }
         QScrollBar::handle
-        {   background-color:  $M_BLUE$;
+        {   background-color: $M_BLUE$;
             min-height: 32px;
             border-radius: 2px;
         }

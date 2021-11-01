@@ -27,6 +27,8 @@ import sys
 import traceback
 from base.loggerMW import setupLogging
 setupLogging()
+import numpy
+numpy.seterr(all='warn')
 #
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see
@@ -49,7 +51,6 @@ from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButt
 from importlib_metadata import version
 
 # local import
-
 from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res

@@ -46,6 +46,11 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.host = None
         self.browser = QWebEngineView()
         self.ui.keypad.addWidget(self.browser)
+        self.urls = [
+            'qrc:/webif/virtkeypad.html',
+            'qrc:/webif/virtkeypad.html',
+            'qrc:/webif/virtkeypad.html',
+        ]
 
         # avoid flickering in white
         self.browser.setVisible(False)
@@ -142,6 +147,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         if not self.app.mount.host[0]:
             return False
 
-        file = f'qrc:/webif/virtkeypad.html?host={self.app.mount.host[0]}'
+        url = self.urls[self.colorSet]
+        file = f'{url}?host={self.app.mount.host[0]}'
         self.browser.load(PyQt5.QtCore.QUrl(file))
         return True

@@ -4,6 +4,7 @@ var temp = parameters[0].split("=");
 var host = unescape(temp[1]);
 
 function pack_7bit_into8bit(e, t) {
+    // console.log('input: ' + e)
     for (var o, a = [], n = 0, i = e.length, r = 0; r < i; ++r) {
         if (o = o << 7 | 127 & e[r], (n += 7) >= 8) {
             var u = o >> n - 8 & 255;
@@ -14,6 +15,7 @@ function pack_7bit_into8bit(e, t) {
         u = o << 8 - n & 255;
         a.push(u)
     }
+    // console.log('output: ' + a)
     return a
 }
 function unpack_8bit_into_7bit(e, t, o) {
@@ -75,6 +77,7 @@ function virtual_keypad() {
         u = !1;
     function l(o) {
         var i = pack_7bit_into8bit(o, !1);
+        //console.log(i)
         if (i.length > 0)
             switch (i[0]) {
             case 1:
@@ -146,8 +149,23 @@ function virtual_keypad() {
             o ^= e[a];
         return o < 10 && (o += 10), o
     }
+    function f1(e) {
+        for (var t = e.length, o = 0, a = 0; a < t; ++a) {
+            o ^= e[a];
+            console.log(o);
+        }
+        return o < 10 && (o += 10), o
+    }
     function d(e) {
-        return msg = [2, 6, e], msg.push(f(msg)), msg.push(3), msg
+        console.log(e)
+        msg = [2, 6, e];
+        //console.log(msg)
+        temp = f1(msg)
+        //console.log(temp)
+        msg.push(temp);
+        msg.push(3);
+        console.log(msg)
+        return msg
     }
     function _(e) {
         return msg = [2, 5, e], msg.push(f(msg)), msg.push(3), msg
@@ -161,6 +179,7 @@ function virtual_keypad() {
     }
     c.binaryType = "arraybuffer", c.on("message", function(e) {
         !function(e) {
+            // console.log(e)
             for (var t = e.length, o = 0; o < t; o++)
                 if (2 === e[o])
                     r = [], u = !0;
@@ -179,9 +198,9 @@ function virtual_keypad() {
             n(1 + (15 & i), 1 + (i >> 4), t.codePointAt(i))
         }
         a(), setTimeout(function() {
-            c.open("ws://" + host + ":8000/", "binary")
+            c.open("ws://" + "192.168.2.15" + ":8000/", "binary")
         }, 3e3)
-    }), c.open("ws://" + host + ":8000/", "binary"), $(window).resize(function() {
+    }), c.open("ws://" + "192.168.2.15" + ":8000/", "binary"), $(window).resize(function() {
         g()
     }), g()
 }

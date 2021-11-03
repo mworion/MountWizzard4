@@ -18,21 +18,15 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
+import PyQt5.QtCore
+import PyQt5.QtWidgets
+import PyQt5.uic
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5 import sip
 
 # local import
 from gui.utilities import toolsQtWidget
 from gui.widgets import keypad_ui
-from base.tpool import Worker
-from logic.virtkeypad.virtkeypad import KeyPad
-
-
-class KeypadSignals(QObject):
-    __all__ = ['KeypadSignals']
-
-    textRow = pyqtSignal(object, object)
-    imgChunk = pyqtSignal(object, object, object)
-    keyPressed = pyqtSignal(object)
 
 
 class KeypadWindow(toolsQtWidget.MWidget):
@@ -47,12 +41,20 @@ class KeypadWindow(toolsQtWidget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self)
-        self.signals = KeypadSignals()
-        self.keypad = KeyPad(self.signals)
-        self.buttons = None
+        self.host = None
+        self.browser = QWebEngineView()
+        self.ui.keypad.addWidget(self.browser)
+        self.urls = [
+            'qrc:/webif/virtkeypad.html',
+            'qrc:/webif/virtkeypad.html',
+            'qrc:/webif/virtkeypad.html',
+        ]
+
+        # avoid flickering in white
+        self.browser.setVisible(False)
+        self.browser.page().setBackgroundColor(PyQt5.QtCore.Qt.transparent)
 
     def initConfig(self):
         """
@@ -101,11 +103,11 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.keypad.closeWebsocket()
         self.storeConfig()
+        self.browser.loadFinished.disconnect(self.loadFinished)
         self.app.colorChange.disconnect(self.colorChange)
-        self.signals.textRow.disconnect(self.writeTextRow)
-        self.setupButtons(connect=False)
+        sip.delete(self.browser)
+        self.browser = None
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -117,12 +119,10 @@ class KeypadWindow(toolsQtWidget.MWidget):
             suc = self.app.mount.setting.setWebInterface(True)
             if not suc:
                 self.app.message.emit('Could not enable webinterface', 2)
+        self.browser.loadFinished.connect(self.loadFinished)
         self.app.colorChange.connect(self.colorChange)
-        self.signals.textRow.connect(self.writeTextRow)
-        self.setupButtons(connect=True)
         self.show()
-        worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
-        self.threadPool.start(worker)
+        self.showUrl()
         return True
 
     def colorChange(self):
@@ -130,68 +130,24 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setStyleSheet(self.mw4Style)
+        self.showUrl()
         return True
 
-    def setupButtons(self, connect=True):
-        self.buttons = {
-            self.ui.b0: 'key_0',
-            self.ui.b1: 'key_1',
-            self.ui.b2: 'key_2',
-            self.ui.b3: 'key_3',
-            self.ui.b4: 'key_4',
-            self.ui.b5: 'key_5',
-            self.ui.b6: 'key_6',
-            self.ui.b7: 'key_7',
-            self.ui.b8: 'key_8',
-            self.ui.b9: 'key_9',
-            self.ui.besc: 'key_esc',
-            self.ui.bmenu: 'key_menu',
-            self.ui.bstop: 'key_stop',
-            self.ui.bplus: 'key_plus',
-            self.ui.bminus: 'key_minus',
-            self.ui.bup: 'key_up',
-            self.ui.bdown: 'key_down',
-            self.ui.bleft: 'key_left',
-            self.ui.bright: 'key_right',
-            self.ui.benter: 'key_enter',
-        }
-        for button in self.buttons:
-            if connect:
-                button.clicked.connect(self.buttonPress)
-            else:
-                button.clicked.disconnect(self.buttonPress)
-        return True
-
-    def buttonPress(self):
+    def loadFinished(self):
         """
         :return:
         """
-        button = self.sender()
-        if button not in self.buttons:
-            return False
-
-        keyData = self.keypad.buttonCodes[self.buttons[button]]
-        self.signals.keyPressed.emit(keyData)
+        self.browser.setVisible(True)
         return True
 
-    def writeTextRow(self, row, text):
+    def showUrl(self):
         """
-        :param row:
-        :param text:
-        :return:
+        :return: success
         """
-        row = int(row)
-        if not -1 < row < 5:
+        if not self.app.mount.host[0]:
             return False
-        rows = [self.ui.row0,
-                self.ui.row1,
-                self.ui.row2,
-                self.ui.row3,
-                self.ui.row4,
-                ]
-        if text[0] == '>':
-            rows[row].setStyleSheet(f'background-color: {self.M_GREY};')
-        else:
-            rows[row].setStyleSheet(f'background-color: {self.M_BACK};')
-        rows[row].setText(text)
 
+        url = self.urls[self.colorSet]
+        file = f'{url}?host={self.app.mount.host[0]}'
+        self.browser.load(PyQt5.QtCore.QUrl(file))
+        return True

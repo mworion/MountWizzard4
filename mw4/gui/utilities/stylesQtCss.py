@@ -37,7 +37,7 @@ class Styles:
             'M_WHITE': ['#C0C0C0', '#E00000', '#101010', ],
             'M_WHITE1': ['#A0A0A0', '#A00000', '#404040', ],
             'M_GREY': ['#404040', '#402020', '#A0A0A0', ],
-            'M_GREY1': ['#202020', '#201010', '#C0C0C0', ],
+            'M_GREY1': ['#282828', '#201010', '#C0C0C0', ],
             'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
             'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
             'M_RED': ['#C03030', '#C03030', '#900000', ],
@@ -60,12 +60,12 @@ class Styles:
             font-weight: normal;
             font-size: 13pt;
         }
-        QWidget [large='true'] {
+        QWidget[large] {
             font-family: Arial;
             font-weight: normal;
             font-size: 30pt;
         }
-        QGroupBox[large='true'] {
+        QGroupBox[large] {
             font-family: Arial;
             font-weight: bold;
             font-size: 13pt;
@@ -88,6 +88,11 @@ class Styles:
         QToolTip {
             font-size: 13pt;
         }
+        QLabel[keypad]{
+            font-family: Courier New;
+            font-weight: bold;
+            font-size: 22pt;
+        }
         """
 
         self.NON_MAC_STYLE = """
@@ -97,12 +102,12 @@ class Styles:
             font-weight: normal;
             font-size: 10pt;
         }
-        QWidget [large='true'] {
+        QWidget[large] {
             font-family: Arial;
             font-weight: bold;
             font-size: 20pt;
         }
-        QGroupBox[large='true'] {
+        QGroupBox[large] {
             font-family: Arial;
             font-weight: normal;
             font-size: 10pt;
@@ -125,11 +130,20 @@ class Styles:
         QToolTip {
             font-size: 10pt;
         }
+        QLabel[keypad]{
+            font-family: Courier New;
+            font-weight: bold;
+            font-size: 16pt;
+        }
         """
 
         self.BASIC_STYLE = """
         QWidget {
             color: $M_BLUE$;
+        }
+        QLabel[keypad]{
+            color: $M_BLUE$;
+            background-color: $M_BACK$;
         }
         QLineEdit::item:active {
             border-color: $M_BLUE$;
@@ -430,6 +444,19 @@ class Styles:
             height: 10px;
         }
         /* Push Buttons */
+        QPushButton {
+            background-color: $M_GREY1$;
+            color: $M_WHITE$;
+            border-color: $M_GREY$;
+            border-width: 1px;
+            border-style: outset;
+            border-radius: 2px;
+            min - width: 10em;
+        }
+        QPushButton[keypad] {
+            background-color: $M_GREY1$;
+            border-color: $M_BLUE$;
+        }
         QPushButton[alignLeft='true'] {
             text-align: left;
             padding-left: 3px;
@@ -479,15 +506,6 @@ class Styles:
             background-color: $M_TRANS$;
             color: $M_TRANS$;
             border-color: $M_TRANS$;
-        }
-        QPushButton {
-            background-color: $M_GREY1$;
-            color: $M_WHITE$;
-            border-color: $M_GREY$;
-            border-width: 1px;
-            border-style: outset;
-            border-radius: 2px;
-            min - width: 10em;
         }
         QMessageBox QPushButton {
             background-color: $M_GREY1$;

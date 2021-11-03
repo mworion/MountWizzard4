@@ -70,6 +70,7 @@ setup(
         'mw4.logic.powerswitch',
         'mw4.logic.remote',
         'mw4.logic.telescope',
+        'mw4.logic.virtkeypad',
         'mw4.mountcontrol',
         'mw4.resource',
     ],
@@ -92,14 +93,13 @@ setup(
         'colour_demosaicing==0.1.6',
         'wakeonlan==2.0.1',
         'pybase64==1.2.0',
+        'websocket-client==1.2.1',
     ]
     + (['pywin32==301'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',
-                                                        'aarch64'] else [])
-    + (['PyQtWebEngine==5.15.4'] if platform.machine() not in ['armv7l',
-                                                               'aarch64'] else []),
+                                                        'aarch64'] else []),
     keywords=['5.15.4'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

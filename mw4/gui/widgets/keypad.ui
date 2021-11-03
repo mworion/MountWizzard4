@@ -171,28 +171,6 @@ DOWN</string>
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="row4">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>115</y>
-     <width>216</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="keypad" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QPushButton" name="b4">
    <property name="geometry">
     <rect>
@@ -310,28 +288,6 @@ STAR</string>
    <property name="text">
     <string>0
 LIGHT</string>
-   </property>
-   <property name="keypad" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="row2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>65</y>
-     <width>216</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="text">
-    <string/>
    </property>
    <property name="keypad" stdset="0">
     <bool>true</bool>
@@ -499,28 +455,6 @@ DISP</string>
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="row3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>90</y>
-     <width>216</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="keypad" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QPushButton" name="bright">
    <property name="geometry">
     <rect>
@@ -556,28 +490,6 @@ DISP</string>
    </property>
    <property name="text">
     <string>W</string>
-   </property>
-   <property name="keypad" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="row0">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>15</y>
-     <width>216</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="text">
-    <string/>
    </property>
    <property name="keypad" stdset="0">
     <bool>true</bool>
@@ -849,28 +761,6 @@ IC</string>
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="row1">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>216</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="keypad" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QPushButton" name="bplus">
    <property name="geometry">
     <rect>
@@ -988,6 +878,86 @@ UP</string>
    <property name="text">
     <string>5
 PLANET</string>
+   </property>
+   <property name="keypad" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="row0">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>15</y>
+     <width>216</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="keypad" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="row1">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>216</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="keypad" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="row2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>65</y>
+     <width>216</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="keypad" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="row3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>90</y>
+     <width>216</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="keypad" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="row4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>115</y>
+     <width>216</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
    <property name="keypad" stdset="0">
     <bool>true</bool>

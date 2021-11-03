@@ -89,7 +89,9 @@ class KeyPad:
         value = self.expand7to8(value, False)
         if len(value) <= 0:
             return
+
         if value[0] == 1:
+            # writing text in rows
             row = np.zeros(16, dtype=np.uint8)
             for i in range(value[3]):
                 if value[4 + i] != 0:
@@ -99,6 +101,7 @@ class KeyPad:
             self.signals.textRow.emit(value[2] - 1, text)
 
         elif value[0] == 2:
+            # drawing pixel
             imaArr = np.zeros([8, 8, 3], dtype=np.uint8)
             for i in range(8):
                 for j in range(8):
@@ -107,11 +110,13 @@ class KeyPad:
                         imaArr[i, j] = [255, 255, 255]
                     else:
                         imaArr[i, j] = [0, 0, 0]
-            self.signals.imgChunk.emit(imaArr, 8 * (value[i] - 1),
-                                       8 * (value[j] - 1))
+            print('paint 2: ', value[1] - 1, value[2] - 1)
+            self.signals.imgChunk.emit(imaArr, 8 * (value[1] - 1),
+                                       8 * (value[2] - 1))
 
         elif value[0] == 3:
-            imaArr = np.zeros([12, 8, 3], dtype=np.uint8)
+            # drawing pixel
+            imaArr = np.zeros([8, 12, 3], dtype=np.uint8)
             for i in range(12):
                 for j in range(8):
                     flag = (value[3 + i] & 1 << j) != 0
@@ -119,8 +124,22 @@ class KeyPad:
                         imaArr[i, j] = [255, 255, 255]
                     else:
                         imaArr[i, j] = [0, 0, 0]
-            self.signals.imgChunk.emit(imaArr, 12 * (value[i] - 1),
-                                       8 * (value[j] - 1))
+            print('paint 3: ', value[1] - 1, value[2] - 1)
+            self.signals.imgChunk.emit(imaArr, 8 * (value[1] - 1),
+                                       12 * (value[2] - 1))
+        elif value[0] == 5:
+            # setting cursor position
+            # self.signals.cursorPos.emit(value[1] - 1, value[2] - 1)
+            print('cursor: ', value[1] - 1, value[2] - 1)
+
+        elif value[0] == 6:
+            print('select 6')
+
+        elif value[0] == 11:
+            print('select 11')
+
+        elif value[0] == 12:
+            print('select 12')
 
     def checkDispatch(self, value):
         if value[0] == 0:
@@ -180,14 +199,11 @@ class KeyPad:
                     if started:
                         result.append(data[i])
 
-    def on_open(self, ws, message):
-        self.log.info(message)
-
     def on_error(self, ws, message):
         self.log.error(message)
 
-    def on_close(self, ws, message):
-        self.log.info(message)
+    def on_close(self, ws, close_status_code, close_msg):
+        self.log.info(f'Status: [{close_status_code}], message: [{close_msg}]')
 
     def workerWebsocket(self, host=None):
         if host is None:
@@ -197,7 +213,6 @@ class KeyPad:
         ipaddress = host[0]
         self.ws = WebSocketApp(f'ws://{ipaddress}:8000/',
                                on_data=self.on_data,
-                               on_open=self.on_open,
                                on_error=self.on_error,
                                on_close=self.on_close,
                                subprotocols=["binary"])

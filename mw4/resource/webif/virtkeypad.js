@@ -149,23 +149,8 @@ function virtual_keypad() {
             o ^= e[a];
         return o < 10 && (o += 10), o
     }
-    function f1(e) {
-        for (var t = e.length, o = 0, a = 0; a < t; ++a) {
-            o ^= e[a];
-            console.log(o);
-        }
-        return o < 10 && (o += 10), o
-    }
     function d(e) {
-        console.log(e)
-        msg = [2, 6, e];
-        //console.log(msg)
-        temp = f1(msg)
-        //console.log(temp)
-        msg.push(temp);
-        msg.push(3);
-        console.log(msg)
-        return msg
+        return msg = [2, 6, e], msg.push(f(msg)), msg.push(3), msg
     }
     function _(e) {
         return msg = [2, 5, e], msg.push(f(msg)), msg.push(3), msg

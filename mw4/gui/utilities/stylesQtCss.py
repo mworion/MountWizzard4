@@ -88,7 +88,7 @@ class Styles:
         QToolTip {
             font-size: 13pt;
         }
-        QLabel[keypad]{
+        QLineEdit[keypad]{
             font-family: Courier New;
             font-weight: bold;
             font-size: 22pt;
@@ -130,7 +130,7 @@ class Styles:
         QToolTip {
             font-size: 10pt;
         }
-        QLabel[keypad]{
+        QLineEdit[keypad]{
             font-family: Courier New;
             font-weight: bold;
             font-size: 16pt;
@@ -192,6 +192,12 @@ class Styles:
             border-color: $M_GREY$;
             border-style: flat;
             border-radius: 2px;
+        }
+        QLineEdit[keypad] {
+            background-color: $M_BACK$;
+            color: $M_BLUE$;
+            border-width: 0px;
+            border-color: $M_BACK$;
         }
         QLineEdit[input='true']{
             background-color: $M_BLACK$;

@@ -33,6 +33,7 @@ class KeypadSignals(QObject):
     textRow = pyqtSignal(object, object)
     imgChunk = pyqtSignal(object, object, object)
     keyPressed = pyqtSignal(object)
+    cursorPos = pyqtSignal(object, object)
 
 
 class KeypadWindow(toolsQtWidget.MWidget):
@@ -53,6 +54,13 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
         self.buttons = None
+        self.rows = [
+            self.ui.row0,
+            self.ui.row1,
+            self.ui.row2,
+            self.ui.row3,
+            self.ui.row4,
+        ]
 
     def initConfig(self):
         """
@@ -105,6 +113,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.storeConfig()
         self.app.colorChange.disconnect(self.colorChange)
         self.signals.textRow.disconnect(self.writeTextRow)
+        self.signals.cursorPos.disconnect(self.setCursorPos)
         self.setupButtons(connect=False)
         super().closeEvent(closeEvent)
 
@@ -119,6 +128,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
                 self.app.message.emit('Could not enable webinterface', 2)
         self.app.colorChange.connect(self.colorChange)
         self.signals.textRow.connect(self.writeTextRow)
+        self.signals.cursorPos.connect(self.setCursorPos)
         self.setupButtons(connect=True)
         self.show()
         worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
@@ -180,18 +190,22 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :param text:
         :return:
         """
-        row = int(row)
         if not -1 < row < 5:
             return False
-        rows = [self.ui.row0,
-                self.ui.row1,
-                self.ui.row2,
-                self.ui.row3,
-                self.ui.row4,
-                ]
-        if text[0] == '>':
-            rows[row].setStyleSheet(f'background-color: {self.M_GREY};')
-        else:
-            rows[row].setStyleSheet(f'background-color: {self.M_BACK};')
-        rows[row].setText(text)
 
+        if text[0] == '>':
+            self.rows[row].setStyleSheet(f'background-color: {self.M_GREY};')
+        else:
+            self.rows[row].setStyleSheet(f'background-color: {self.M_BACK};')
+        self.rows[row].setText(text)
+        return True
+
+    def setCursorPos(self, col, row):
+        """
+        :param col:
+        :param row:
+        :return:
+        """
+        print(row, col)
+        self.rows[row].setCursorPosition(col)
+        return True

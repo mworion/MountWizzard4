@@ -18,12 +18,13 @@
 # standard libraries
 
 # external packages
+from PyQt5.QtGui import QImage, QPixmap
 import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 import requests
 import numpy as np
-import qimage2ndarray
+from qimage2ndarray import rgb_view, array2qimage
 
 # local import
 from base.tpool import Worker
@@ -402,13 +403,13 @@ class Environ(object):
         m = np.mean(back)
         dim = max((m / 256), 0.66)
 
-        image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
+        image.convertToFormat(QImage.Format_RGB32)
         imageBase = image.copy(94, 84, 585, 141)
 
         # transformation are done in numpy, because it's much faster
         width = imageBase.width()
         height = imageBase.height()
-        imgArr = qimage2ndarray.rgb_view(imageBase)
+        imgArr = rgb_view(imageBase)
         imgArr = imgArr.reshape(width * height, 3)
 
         # transforming back
@@ -430,8 +431,8 @@ class Environ(object):
         imgArr = np.delete(imgArr, toDelete, axis=0)
 
         # re transfer to QImage from numpy array
-        imageBase = qimage2ndarray.array2qimage(dim * imgArr)
-        pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)
+        imageBase = array2qimage(dim * imgArr)
+        pixmapBase = QPixmap().fromImage(imageBase)
         return pixmapBase
 
     def updateClearOutsideImage(self, data=None):

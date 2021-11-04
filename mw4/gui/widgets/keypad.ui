@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>235</width>
-    <height>500</height>
+    <width>270</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>235</width>
-    <height>500</height>
+    <width>270</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>240</width>
-    <height>500</height>
+    <width>270</width>
+    <height>600</height>
    </size>
   </property>
   <property name="sizeIncrement">
@@ -52,10 +52,10 @@
   <widget class="QPushButton" name="b2">
    <property name="geometry">
     <rect>
-     <x>65</x>
-     <y>385</y>
-     <width>50</width>
-     <height>50</height>
+     <x>75</x>
+     <y>470</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -66,14 +66,14 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -93,10 +93,10 @@ INFO</string>
   <widget class="QPushButton" name="bdown">
    <property name="geometry">
     <rect>
-     <x>95</x>
-     <y>220</y>
-     <width>50</width>
-     <height>50</height>
+     <x>110</x>
+     <y>280</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -107,14 +107,14 @@ INFO</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -133,10 +133,10 @@ INFO</string>
   <widget class="QPushButton" name="bminus">
    <property name="geometry">
     <rect>
-     <x>175</x>
-     <y>330</y>
-     <width>50</width>
-     <height>50</height>
+     <x>205</x>
+     <y>406</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -147,14 +147,14 @@ INFO</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -175,9 +175,9 @@ DOWN</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>330</y>
-     <width>50</width>
-     <height>50</height>
+     <y>406</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -188,14 +188,14 @@ DOWN</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -215,10 +215,10 @@ STAR</string>
   <widget class="QPushButton" name="besc">
    <property name="geometry">
     <rect>
-     <x>65</x>
-     <y>440</y>
-     <width>50</width>
-     <height>50</height>
+     <x>75</x>
+     <y>535</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -229,14 +229,14 @@ STAR</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -256,9 +256,9 @@ STAR</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>440</y>
-     <width>50</width>
-     <height>50</height>
+     <y>535</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -269,14 +269,14 @@ STAR</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -296,10 +296,10 @@ LIGHT</string>
   <widget class="QPushButton" name="bmenu">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>440</y>
-     <width>50</width>
-     <height>50</height>
+     <x>140</x>
+     <y>535</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -310,14 +310,14 @@ LIGHT</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -337,9 +337,9 @@ LIGHT</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>275</y>
-     <width>50</width>
-     <height>50</height>
+     <y>345</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -350,14 +350,14 @@ LIGHT</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -377,10 +377,10 @@ M</string>
   <widget class="QPushButton" name="benter">
    <property name="geometry">
     <rect>
-     <x>175</x>
-     <y>385</y>
-     <width>50</width>
-     <height>50</height>
+     <x>205</x>
+     <y>470</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -391,14 +391,14 @@ M</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -417,10 +417,10 @@ M</string>
   <widget class="QPushButton" name="b3">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>385</y>
-     <width>50</width>
-     <height>50</height>
+     <x>140</x>
+     <y>470</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -431,14 +431,14 @@ M</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -458,10 +458,10 @@ DISP</string>
   <widget class="QPushButton" name="bright">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>196</y>
-     <width>50</width>
-     <height>50</height>
+     <x>175</x>
+     <y>246</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -472,14 +472,14 @@ DISP</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -499,9 +499,9 @@ DISP</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>385</y>
-     <width>50</width>
-     <height>50</height>
+     <y>470</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -512,14 +512,14 @@ DISP</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -539,10 +539,10 @@ COORD</string>
   <widget class="QPushButton" name="bup">
    <property name="geometry">
     <rect>
-     <x>95</x>
-     <y>165</y>
-     <width>50</width>
-     <height>50</height>
+     <x>110</x>
+     <y>215</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -553,14 +553,14 @@ COORD</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -579,10 +579,10 @@ COORD</string>
   <widget class="QPushButton" name="b8">
    <property name="geometry">
     <rect>
-     <x>65</x>
-     <y>275</y>
-     <width>50</width>
-     <height>50</height>
+     <x>75</x>
+     <y>345</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -593,14 +593,14 @@ COORD</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -623,10 +623,10 @@ NGC</string>
   <widget class="QPushButton" name="bstop">
    <property name="geometry">
     <rect>
-     <x>175</x>
-     <y>440</y>
-     <width>50</width>
-     <height>50</height>
+     <x>205</x>
+     <y>535</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -637,14 +637,14 @@ NGC</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -663,10 +663,10 @@ NGC</string>
   <widget class="QPushButton" name="b6">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>330</y>
-     <width>50</width>
-     <height>50</height>
+     <x>140</x>
+     <y>406</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -677,14 +677,14 @@ NGC</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -704,10 +704,10 @@ MORE</string>
   <widget class="QPushButton" name="b9">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>275</y>
-     <width>50</width>
-     <height>50</height>
+     <x>140</x>
+     <y>345</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -718,14 +718,14 @@ MORE</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -745,10 +745,10 @@ IC</string>
   <widget class="QLabel" name="graphics">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>140</y>
-     <width>216</width>
-     <height>20</height>
+     <x>5</x>
+     <y>75</y>
+     <width>256</width>
+     <height>128</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -764,10 +764,10 @@ IC</string>
   <widget class="QPushButton" name="bplus">
    <property name="geometry">
     <rect>
-     <x>175</x>
-     <y>275</y>
-     <width>50</width>
-     <height>50</height>
+     <x>205</x>
+     <y>345</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -778,14 +778,14 @@ IC</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -805,10 +805,10 @@ UP</string>
   <widget class="QPushButton" name="bleft">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>196</y>
-     <width>50</width>
-     <height>50</height>
+     <x>45</x>
+     <y>246</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -819,14 +819,14 @@ UP</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -845,10 +845,10 @@ UP</string>
   <widget class="QPushButton" name="b5">
    <property name="geometry">
     <rect>
-     <x>65</x>
-     <y>330</y>
-     <width>50</width>
-     <height>50</height>
+     <x>75</x>
+     <y>406</y>
+     <width>55</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -859,14 +859,14 @@ UP</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>55</width>
+     <height>55</height>
     </size>
    </property>
    <property name="font">
@@ -886,10 +886,10 @@ PLANET</string>
   <widget class="QLineEdit" name="row0">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>5</x>
      <y>15</y>
-     <width>216</width>
-     <height>20</height>
+     <width>256</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="readOnly">
@@ -902,10 +902,10 @@ PLANET</string>
   <widget class="QLineEdit" name="row1">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>216</width>
-     <height>20</height>
+     <x>5</x>
+     <y>45</y>
+     <width>256</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="readOnly">
@@ -918,10 +918,10 @@ PLANET</string>
   <widget class="QLineEdit" name="row2">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>65</y>
-     <width>216</width>
-     <height>20</height>
+     <x>5</x>
+     <y>75</y>
+     <width>256</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="readOnly">
@@ -934,10 +934,10 @@ PLANET</string>
   <widget class="QLineEdit" name="row3">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>90</y>
-     <width>216</width>
-     <height>20</height>
+     <x>5</x>
+     <y>105</y>
+     <width>256</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="readOnly">
@@ -950,10 +950,10 @@ PLANET</string>
   <widget class="QLineEdit" name="row4">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>115</y>
-     <width>216</width>
-     <height>20</height>
+     <x>5</x>
+     <y>135</y>
+     <width>256</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="readOnly">
@@ -963,6 +963,32 @@ PLANET</string>
     <bool>true</bool>
    </property>
   </widget>
+  <zorder>graphics</zorder>
+  <zorder>b2</zorder>
+  <zorder>bdown</zorder>
+  <zorder>bminus</zorder>
+  <zorder>b4</zorder>
+  <zorder>besc</zorder>
+  <zorder>b0</zorder>
+  <zorder>bmenu</zorder>
+  <zorder>b7</zorder>
+  <zorder>benter</zorder>
+  <zorder>b3</zorder>
+  <zorder>bright</zorder>
+  <zorder>b1</zorder>
+  <zorder>bup</zorder>
+  <zorder>b8</zorder>
+  <zorder>bstop</zorder>
+  <zorder>b6</zorder>
+  <zorder>b9</zorder>
+  <zorder>bplus</zorder>
+  <zorder>bleft</zorder>
+  <zorder>b5</zorder>
+  <zorder>row0</zorder>
+  <zorder>row1</zorder>
+  <zorder>row2</zorder>
+  <zorder>row3</zorder>
+  <zorder>row4</zorder>
  </widget>
  <resources/>
  <connections/>

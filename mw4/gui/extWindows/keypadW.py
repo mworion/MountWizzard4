@@ -19,6 +19,9 @@
 
 # external packages
 from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtGui import QPixmap
+from qimage2ndarray import array2qimage
+import numpy as np
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -54,6 +57,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
         self.buttons = None
+        self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.rows = [
             self.ui.row0,
             self.ui.row1,
@@ -114,7 +118,9 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.app.colorChange.disconnect(self.colorChange)
         self.signals.textRow.disconnect(self.writeTextRow)
         self.signals.cursorPos.disconnect(self.setCursorPos)
+        self.signals.imgChunk.disconnect(self.buildGraphics)
         self.app.update1s.disconnect(self.startKeypad)
+        self.app.update1s.disconnect(self.drawGraphics)
         self.setupButtons(connect=False)
         super().closeEvent(closeEvent)
 
@@ -130,7 +136,9 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.app.colorChange.connect(self.colorChange)
         self.signals.textRow.connect(self.writeTextRow)
         self.signals.cursorPos.connect(self.setCursorPos)
+        self.signals.imgChunk.connect(self.buildGraphics)
         self.app.update1s.connect(self.startKeypad)
+        self.app.update1s.connect(self.drawGraphics)
         self.setupButtons(connect=True)
         self.show()
         self.startKeypad()
@@ -141,6 +149,8 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setStyleSheet(self.mw4Style)
+        self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
+        self.drawGraphics()
         return True
 
     def setupButtons(self, connect=True):
@@ -229,4 +239,28 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.rows[row].setCursorPosition(col)
+        return True
+
+    def drawGraphics(self):
+        """
+        :return:
+        """
+        color = self.hex2rgb(self.M_BLUE)
+        back = self.hex2rgb(self.M_BACK)
+        pColor = [255, 255, 255]
+        bColor = [0, 0, 0]
+
+        img = np.copy(self.graphics)
+        img[np.where((self.graphics == pColor).all(axis=2))] = color
+        img[np.where((self.graphics == bColor).all(axis=2))] = back
+        image = array2qimage(img)
+        self.ui.graphics.setPixmap(pixmap)
+        return True
+
+    def buildGraphics(self, imgArr, yPos, xPos):
+        """
+        :return:
+        """
+        dy, dx, _ = imgArr.shape
+        self.graphics[yPos: yPos + dy, xPos: xPos + dx] = imgArr
         return True

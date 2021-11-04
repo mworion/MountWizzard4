@@ -91,7 +91,7 @@ class Styles:
         QLineEdit[keypad]{
             font-family: Courier New;
             font-weight: bold;
-            font-size: 22pt;
+            font-size: 26pt;
         }
         """
 
@@ -133,7 +133,7 @@ class Styles:
         QLineEdit[keypad]{
             font-family: Courier New;
             font-weight: bold;
-            font-size: 16pt;
+            font-size: 18pt;
         }
         """
 

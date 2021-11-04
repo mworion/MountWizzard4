@@ -21,6 +21,7 @@ from unittest import mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
+from websocket import WebSocketApp
 
 # local import
 from logic.keypad.keypad import KeyPad
@@ -72,3 +73,91 @@ def test_checkDispatch_1(function):
                            'dispatch'):
         suc = function.checkDispatch(valIn)
         assert suc
+
+
+def test_calcChecksum_1(function):
+    msg = [2, 0, 128, 192, 160, 145, 130, 201, 130, 160, 144, 140,
+           166, 134, 193, 196,
+           226, 237, 152, 141, 165, 227, 203, 204, 192]
+    val = function.calcChecksum(msg)
+    assert val == 184
+
+
+def test_mousePressed_1(function):
+    class WS:
+        def send(self, a, b):
+            return
+    function.ws = WS()
+    suc = function.mousePressed(88)
+    assert suc
+
+
+def test_mouseReleased_1(function):
+    class WS:
+        def send(self, a, b):
+            return
+    function.ws = WS()
+    suc = function.mouseReleased(88)
+    assert suc
+
+
+def test_keyPressed_1(function):
+    with mock.patch.object(function,
+                           'mousePressed'):
+        with mock.patch.object(function,
+                               'mouseReleased'):
+            suc = function.keyPressed(88)
+            assert suc
+
+
+def test_on_data_1(function):
+    data = [2, 0, 128, 192, 160, 145, 130, 201, 130, 160, 144, 140,
+            166, 134, 193, 196,
+            226, 237, 152, 141, 165, 227, 203, 204, 192, 184, 3]
+    with mock.patch.object(function,
+                           'checkDispatch'):
+        suc = function.on_data(0, data, 0, 0)
+        assert suc
+
+
+def test_on_close(function):
+    suc = function.on_close(0, 0, 0)
+    assert suc
+
+
+def test_workerWebsocket_1(function):
+    suc = function.workerWebsocket(host=None)
+    assert not suc
+
+
+def test_workerWebsocket_2(function):
+    suc = function.workerWebsocket(host='1234')
+    assert not suc
+
+
+def test_workerWebsocket_3(function):
+    class WS:
+        def send(self, a, b):
+            return
+
+    function.ws = WS()
+    suc = function.workerWebsocket(host=('127.0.0.1', 8000))
+    assert not suc
+
+
+def test_workerWebsocket_4(function):
+    with mock.patch.object(WebSocketApp,
+                           'run_forever'):
+        suc = function.workerWebsocket(host=('127.0.0.1', 8000))
+        assert suc
+
+
+def test_closeWebsocket(function):
+    class WS:
+        def close(self):
+            return
+
+    function.ws = WS()
+
+    suc = function.closeWebsocket()
+    assert suc

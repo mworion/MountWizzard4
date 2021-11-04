@@ -166,7 +166,7 @@ class KeyPad:
         return True
 
     @staticmethod
-    def calcChecksum1(value):
+    def calcChecksum(value):
         """
         :param value:
         :return:
@@ -178,29 +178,13 @@ class KeyPad:
             checksum = checksum + 10
         return checksum
 
-    @staticmethod
-    def xor(a, b):
-        return (a and not b) or (not a and b)
-
-    def calcChecksum(self, value):
-        """
-        :param value:
-        :return:
-        """
-        checksum = 0
-        for i in range(len(value)):
-            checksum = self.xor(checksum, value[i])
-        if checksum < 10:
-            checksum = checksum + 10
-        return checksum
-
     def mousePressed(self, key):
         """
         :param key:
         :return:
         """
         message = [2, 6, key]
-        message = message + [self.calcChecksum1(message)]
+        message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.ws.send(message, ABNF.OPCODE_BINARY)
         return True
@@ -211,7 +195,7 @@ class KeyPad:
         :return:
         """
         message = [2, 5, key]
-        message = message + [self.calcChecksum1(message)]
+        message = message + [self.calcChecksum(message)]
         message = message + [3]
         self.ws.send(message, ABNF.OPCODE_BINARY)
         return True
@@ -243,7 +227,7 @@ class KeyPad:
                 if data[i] == 3:
                     started = False
                     if len(result) > 1:
-                        if self.calcChecksum([2] + result) == result[-1]:
+                        if self.calcChecksum([2] + result[:-1]) == result[-1]:
                             self.checkDispatch(result)
                 else:
                     if started:

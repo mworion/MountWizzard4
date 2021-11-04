@@ -27,7 +27,7 @@ import numpy as np
 from gui.utilities import toolsQtWidget
 from gui.widgets import keypad_ui
 from base.tpool import Worker
-from logic.virtkeypad.virtkeypad import KeyPad
+from logic.keypad.keypad import KeyPad
 
 
 class KeypadSignals(QObject):
@@ -149,8 +149,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setStyleSheet(self.mw4Style)
-        self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
-        self.drawGraphics()
+        self.clearGraphics()
         return True
 
     def setupButtons(self, connect=True):
@@ -222,6 +221,17 @@ class KeypadWindow(toolsQtWidget.MWidget):
         else:
             self.rows[row].setStyleSheet(f'background-color: {self.M_BACK};')
         self.rows[row].setText(text)
+
+        if row == 4 and not text.startswith('\x00'):
+            self.clearGraphics()
+        return True
+
+    def clearGraphics(self):
+        """
+        :return:
+        """
+        self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
+        self.drawGraphics()
         return True
 
     def clearDisplay(self):
@@ -230,7 +240,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         """
         for row in range(5):
             self.writeTextRow(row, '')
-        self.colorChange()
+        self.clearGraphics()
         return True
 
     def setCursorPos(self, col, row):

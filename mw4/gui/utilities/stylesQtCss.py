@@ -166,6 +166,10 @@ class Styles:
             background-color: $M_TRANS$;
             color: $M_WHITE$;
         }
+        QLabel[keypad] {
+            background-color: $M_BLACK$;
+            border-radius: 8px;
+        }
         QLabel:disabled {
             background-color: $M_TRANS$;;
             color: $M_GREY$;
@@ -462,6 +466,9 @@ class Styles:
         QPushButton[keypad] {
             background-color: $M_GREY1$;
             border-color: $M_BLUE$;
+            border-radius: 8px;
+            border-width: 2px;
+            border-style: solid;
         }
         QPushButton[alignLeft='true'] {
             text-align: left;

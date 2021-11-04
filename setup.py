@@ -70,7 +70,7 @@ setup(
         'mw4.logic.powerswitch',
         'mw4.logic.remote',
         'mw4.logic.telescope',
-        'mw4.logic.virtkeypad',
+        'mw4.logic.keypad',
         'mw4.mountcontrol',
         'mw4.resource',
     ],

@@ -161,6 +161,12 @@ def test_calcChecksum_1(function):
     assert val == 184
 
 
+def test_calcChecksum_2(function):
+    msg = [2]
+    val = function.calcChecksum(msg)
+    assert val == 12
+
+
 def test_mousePressed_1(function):
     class WS:
         def send(self, a, b):

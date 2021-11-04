@@ -67,11 +67,89 @@ def test_convertChar_2(function):
     assert val == 176
 
 
+def test_dispatch_1(function):
+    valIn = []
+    suc = function.dispatch(valIn)
+    assert not suc
+
+
+def test_dispatch_2(function):
+    msg = [1, 1, 1, 1, 88]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
+def test_dispatch_3(function):
+    msg = [2, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
+def test_dispatch_4(function):
+    msg = [3, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
+def test_dispatch_5(function):
+    msg = [4, 1]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
+def test_dispatch_6(function):
+    msg = [5, 1, 1]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
+def test_dispatch_7(function):
+    msg = [6, 1]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
+def test_dispatch_8(function):
+    msg = [11, 1]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
+def test_dispatch_9(function):
+    msg = [12, 1]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert suc
+
+
 def test_checkDispatch_1(function):
-    valIn = [0, 100, 110, 120]
+    msg = [0, 100, 110, 120]
     with mock.patch.object(function,
                            'dispatch'):
-        suc = function.checkDispatch(valIn)
+        suc = function.checkDispatch(msg)
         assert suc
 
 

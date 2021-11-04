@@ -133,9 +133,9 @@ class KeyPad:
                 for j in range(8):
                     flag = (value[3 + i] & 1 << j) != 0
                     if flag:
-                        imaArr[i, j] = [255, 255, 255]
+                        imaArr[j, i] = [255, 255, 255]
                     else:
-                        imaArr[i, j] = [0, 0, 0]
+                        imaArr[j, i] = [0, 0, 0]
             self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1),
                                        12 * (value[1] - 1))
         elif value[0] == 5:

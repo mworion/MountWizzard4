@@ -254,6 +254,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         img[np.where((self.graphics == pColor).all(axis=2))] = color
         img[np.where((self.graphics == bColor).all(axis=2))] = back
         image = array2qimage(img)
+        pixmap = QPixmap().fromImage(image).scaled(256, 128)
         self.ui.graphics.setPixmap(pixmap)
         return True
 

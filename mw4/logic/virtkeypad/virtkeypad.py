@@ -124,7 +124,7 @@ class KeyPad:
                         imaArr[i, j] = [255, 255, 255]
                     else:
                         imaArr[i, j] = [0, 0, 0]
-            #print('paint 2: ', value[1] - 1, value[2] - 1)
+            # print('paint 2: ', value[1] - 1, value[2] - 1)
             self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1),
                                        8 * (value[1] - 1))
 
@@ -138,22 +138,25 @@ class KeyPad:
                         imaArr[i, j] = [255, 255, 255]
                     else:
                         imaArr[i, j] = [0, 0, 0]
-            #print('paint 3: ', value[1] - 1, value[2] - 1)
+            # print('paint 3: ', value[1] - 1, value[2] - 1)
             self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1),
                                        12 * (value[1] - 1))
         elif value[0] == 5:
             # setting cursor position
-            # self.signals.cursorPos.emit(value[2] - 1, value[1] - 1)
-            print('cursor: ', value[2] - 1, value[1] - 1)
+            self.signals.cursorPos.emit(value[2] - 1, value[1] - 1)
+            # print('cursor: ', value[2] - 1, value[1] - 1)
 
         elif value[0] == 6:
-            print('select 6')
+            pass
+            # print('select 6')
 
         elif value[0] == 11:
-            print('select 11')
+            pass
+            # print('select 11')
 
         elif value[0] == 12:
-            print('select 12')
+            pass
+            # print('select 12')
 
         return True
 

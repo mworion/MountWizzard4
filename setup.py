@@ -30,6 +30,7 @@ releaseNotes = """
 - add: sorting for minimal dome slew in build point selection
 - add: setting prediction time of almanac (shorter reduces cpu load)
 - add: providing 3 different color schemes
+- add: virtual keypad available for RPi 3/4 users now
 - improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots

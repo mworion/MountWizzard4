@@ -22,6 +22,8 @@ import pytest
 # external packages
 from PyQt5 import sip
 from PyQt5.QtGui import QCloseEvent
+from PyQt5.QtWidgets import QPushButton
+import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
@@ -36,9 +38,10 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
-
     window = KeypadWindow(app=App())
-    yield window
+    with mock.patch.object(window,
+                           'show'):
+        yield window
 
 
 def test_initConfig_1(function):
@@ -88,12 +91,12 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(sip,
-                           'delete'):
-        with mock.patch.object(function,
-                               'show'):
+    with mock.patch.object(function,
+                           'storeConfig'):
+        with mock.patch.object(function.keypad,
+                               'closeWebsocket'):
             with mock.patch.object(function,
-                                   'showUrl'):
+                                   'setupButtons'):
                 with mock.patch.object(MWidget,
                                        'closeEvent'):
                     function.showWindow()
@@ -105,31 +108,130 @@ def test_showWindow_1(function):
     with mock.patch.object(function,
                            'show'):
         with mock.patch.object(function,
-                               'showUrl'):
-            with mock.patch.object(function.app.mount.setting,
-                                   'setWebInterface',
-                                   return_value=False):
-                suc = function.showWindow()
-                assert suc
-                function.browser.loadFinished.disconnect(function.loadFinished)
+                               'show'):
+            with mock.patch.object(function,
+                                   'setupButtons'):
+                with mock.patch.object(function.app.mount.setting,
+                                       'setWebInterface',
+                                       return_value=False):
+                    suc = function.showWindow()
+                    assert suc
 
 
 def test_colorChange(function):
     with mock.patch.object(function,
-                           'showUrl'):
+                           'clearGraphics'):
         suc = function.colorChange()
         assert suc
 
 
-def test_loadFinished_1(function):
-    function.loadFinished()
+def test_setupButtons_1(function):
+    suc = function.setupButtons(True)
+    assert suc
+    suc = function.setupButtons(False)
+    assert suc
 
 
-def test_showUrl_1(function):
-    function.app.mount.host = ('', 3492)
-    function.showUrl()
+def test_startKeypad_1(function):
+    function.keypad.ws = 1
+    suc = function.startKeypad()
+    assert not suc
 
 
-def test_showUrl_2(function):
-    function.app.mount.host = ('localhost', 3492)
-    function.showUrl()
+def test_startKeypad_2(function):
+    function.keypad.ws = None
+    with mock.patch.object(function,
+                           'clearDisplay'):
+        with mock.patch.object(function,
+                               'writeTextRow'):
+            with mock.patch.object(function.threadPool,
+                                   'start'):
+                suc = function.startKeypad()
+                assert suc
+
+
+def test_hostChanged_1(function):
+    with mock.patch.object(function.keypad,
+                           'closeWebsocket'):
+        with mock.patch.object(function,
+                               'startKeypad'):
+            suc = function.hostChanged()
+            assert suc
+
+
+def test_buttonPress_1(function):
+    def sender():
+        return QPushButton()
+
+    function.setupButtons()
+    function.sender = sender
+    suc = function.buttonPress()
+    assert not suc
+
+
+def test_buttonPress_2(function):
+    def sender():
+        return function.ui.b0
+
+    function.setupButtons()
+    function.sender = sender
+    with mock.patch.object(function.keypad,
+                           'mousePressed'):
+        with mock.patch.object(function.keypad,
+                               'mouseReleased'):
+            suc = function.buttonPress()
+            assert suc
+
+
+def test_writeTextRow_1(function):
+    suc = function.writeTextRow(-1, '')
+    assert not suc
+
+
+def test_writeTextRow_2(function):
+    suc = function.writeTextRow(1, '>')
+    assert suc
+
+
+def test_writeTextRow_3(function):
+    suc = function.writeTextRow(1, 'fsjgfdjhsfg')
+    assert suc
+
+
+def test_writeTextRow_4(function):
+    with mock.patch.object(function,
+                           'clearGraphics'):
+        suc = function.writeTextRow(4, 'fsjgfdjhsfg')
+        assert suc
+
+
+def test_clearGraphics(function):
+    with mock.patch.object(function,
+                           'drawGraphics'):
+        suc = function.clearGraphics()
+        assert suc
+
+
+def test_clearDisplay(function):
+    with mock.patch.object(function,
+                           'clearGraphics'):
+        suc = function.clearDisplay()
+        assert suc
+
+
+def test_setCursorPos(function):
+    suc = function.setCursorPos(1, 1)
+    assert suc
+
+
+def test_drawGraphics(function):
+    suc = function.drawGraphics()
+    assert suc
+
+
+def test_buildGraphics(function):
+    arr = np.zeros([64, 128, 3], dtype=np.uint8)
+    suc = function.buildGraphics(arr, 0, 0)
+    assert suc
+
+

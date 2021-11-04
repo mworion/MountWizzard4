@@ -189,7 +189,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :return:
         """
         if self.keypad.ws is not None:
-            return True
+            return False
 
         self.clearDisplay()
         self.writeTextRow(2, 'Connecting ...')

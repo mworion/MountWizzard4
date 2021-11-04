@@ -152,13 +152,12 @@ class MainWindow(
                 'name': 'SimulatorDialog',
                 'class': SimulatorWindow,
             }
-        if packageConfig.isAvailable:
-            self.uiWindows['showKeypadW'] = {
-                'button': self.ui.openKeypadW,
-                'classObj': None,
-                'name': 'KeypadDialog',
-                'class': KeypadWindow,
-            }
+        self.uiWindows['showKeypadW'] = {
+            'button': self.ui.openKeypadW,
+            'classObj': None,
+            'name': 'KeypadDialog',
+            'class': KeypadWindow,
+        }
         self.deviceStatGui = {
             'dome': self.ui.domeConnected,
             'camera': self.ui.cameraConnected,

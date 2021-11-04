@@ -83,6 +83,7 @@ def function_setup_teardown(qtbot):
         start3s = pyqtSignal()
         start5s = pyqtSignal()
         colorChange = pyqtSignal()
+        hostChanged = pyqtSignal()
         mwGlob = {'imageDir': 'tests/workDir/image',
                   'dataDir': 'tests/workDir/data',
                   'modelDir': 'tests/workDir/model',
@@ -132,6 +133,7 @@ def function_setup_teardown(qtbot):
         remoteCommand = pyqtSignal(str)
         threadPool = QThreadPool()
         colorChange = pyqtSignal()
+        hostChanged = pyqtSignal()
         message = pyqtSignal(str, int)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')

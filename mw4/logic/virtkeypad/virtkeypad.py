@@ -111,7 +111,6 @@ class KeyPad:
                 if value[4 + i] != 0:
                     row[value[1] + i - 1] = self.convertChar(value[4 + i])
             text = ''.join([chr(x) for x in row])
-            # print(row, '\n', text)
             self.signals.textRow.emit(value[2] - 1, text)
 
         elif value[0] == 2:
@@ -124,7 +123,6 @@ class KeyPad:
                         imaArr[i, j] = [255, 255, 255]
                     else:
                         imaArr[i, j] = [0, 0, 0]
-            # print('paint 2: ', value[1] - 1, value[2] - 1)
             self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1),
                                        8 * (value[1] - 1))
 
@@ -138,13 +136,11 @@ class KeyPad:
                         imaArr[i, j] = [255, 255, 255]
                     else:
                         imaArr[i, j] = [0, 0, 0]
-            # print('paint 3: ', value[1] - 1, value[2] - 1)
             self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1),
                                        12 * (value[1] - 1))
         elif value[0] == 5:
             # setting cursor position
             self.signals.cursorPos.emit(value[2] - 1, value[1] - 1)
-            # print('cursor: ', value[2] - 1, value[1] - 1)
 
         elif value[0] == 6:
             pass

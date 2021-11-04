@@ -230,6 +230,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         """
         for row in range(5):
             self.writeTextRow(row, '')
+        self.colorChange()
         return True
 
     def setCursorPos(self, col, row):

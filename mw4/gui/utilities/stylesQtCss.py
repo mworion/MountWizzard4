@@ -469,6 +469,8 @@ class Styles:
             border-radius: 8px;
             border-width: 2px;
             border-style: solid;
+            font-weight: bold;
+            font-size: 12px;
         }
         QPushButton[alignLeft='true'] {
             text-align: left;

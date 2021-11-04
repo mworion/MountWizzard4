@@ -6,14 +6,5 @@
     <file>dome</file>
     <file>pics</file>
     <file>model3D</file>
-    <file>webif/pic</file>
-    <file>webif/virtkeypad.html</file>
-    <file>webif/virtkeypad.css</file>
-    <file>webif/virtkeypad.js</file>
-    <file>webif/10micron.css</file>
-    <file>webif/jquery-3.3.1.min.js</file>
-    <file>webif/util.js</file>
-    <file>webif/w3.css</file>
-    <file>webif/websock.js</file>
 </qresource>
 </RCC>

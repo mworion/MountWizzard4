@@ -133,7 +133,7 @@ class Styles:
         QLineEdit[keypad]{
             font-family: Courier New;
             font-weight: bold;
-            font-size: 18pt;
+            font-size: 20pt;
         }
         """
 

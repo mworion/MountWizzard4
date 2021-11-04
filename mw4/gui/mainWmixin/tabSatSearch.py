@@ -436,6 +436,18 @@ class SatSearch(object):
 
         return True
 
+    def checkSatOk(self, sat, tEnd):
+        """
+        :param sat:
+        :param tEnd:
+        :return:
+        """
+        msg = sat.at(tEnd).message
+        if msg:
+            self.log.warn(f'{sat.name} caused SGP4: [{msg}]')
+            return False
+        return True
+
     def workerSatCalcTable(self):
         """
         :return:
@@ -456,6 +468,8 @@ class SatSearch(object):
                 break
             name = satTab.model().index(row, 1).data()
             sat = self.satellites[name]
+            if not self.checkSatOk(sat, timeNext):
+                continue
             satParam = self.findRangeRate(sat, loc, timeNow)
             if not np.isnan(satParam[0]):
                 isSunlit = self.findSunlit(sat, eph, timeNow)

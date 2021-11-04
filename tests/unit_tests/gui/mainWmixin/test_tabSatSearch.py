@@ -476,6 +476,29 @@ def test_filterSatelliteNamesList_2(function):
     assert suc
 
 
+def test_checkSatOk_1(function):
+    tle = ["STARLINK-1914",
+           "1 47180U 20088BL  21303.19708368  .16584525  12000-4  30219-2 0  9999",
+           "2 47180  53.0402 223.8709 0008872 210.0671 150.2394 16.31518727 52528"]
+    ts = function.app.mount.obsSite.ts
+    tEnd = ts.tt_jd(2459523.2430)
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    suc = function.checkSatOk(sat, tEnd)
+    assert not suc
+
+
+def test_checkSatOk_2(function):
+
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
+           "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670"]
+    ts = function.app.mount.obsSite.ts
+    tEnd = ts.tt_jd(2459523.2430)
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    suc = function.checkSatOk(sat, tEnd)
+    assert suc
+
+
 def test_workerSatCalcTable_1(function):
     function.ui.listSatelliteNames.setRowCount(0)
     suc = function.workerSatCalcTable()
@@ -514,7 +537,31 @@ def test_workerSatCalcTable_2(function):
                     assert not suc
 
 
-def test_workerSatCalcTable_3(function):
+def test_workerSatCalcTable_3a(function):
+    tle = ["STARLINK-1914",
+           "1 47180U 20088BL  21303.19708368  .16584525  12000-4  30219-2 0  9999",
+           "2 47180  53.0402 223.8709 0008872 210.0671 150.2394 16.31518727 52528"]
+
+    function.satellites = {'sat1': EarthSatellite(tle[1], tle[2],  name=tle[0])}
+
+    function.ui.listSatelliteNames.setRowCount(0)
+    function.ui.listSatelliteNames.setColumnCount(9)
+    function.ui.listSatelliteNames.insertRow(0)
+    entry = QTableWidgetItem('sat1')
+    function.ui.listSatelliteNames.setItem(0, 1, entry)
+
+    function.satTableBaseValid = True
+    function.satTableDynamicValid = False
+    function.ui.satUpTimeWindow.setValue(2)
+    with mock.patch.object(function,
+                           'checkSatOk',
+                           return_value=False):
+        suc = function.workerSatCalcTable()
+        assert suc
+        assert function.satTableDynamicValid
+
+
+def test_workerSatCalcTable_3b(function):
     class Test1:
         satnum = 12345
 
@@ -533,20 +580,23 @@ def test_workerSatCalcTable_3(function):
     function.satTableDynamicValid = False
     function.ui.satUpTimeWindow.setValue(2)
     with mock.patch.object(function,
-                           'findRangeRate'):
+                           'checkSatOk',
+                           return_value=True):
         with mock.patch.object(function,
-                               'findSunlit',
-                               return_value=False):
+                               'findRangeRate'):
             with mock.patch.object(function,
-                                   'findSatUp'):
+                                   'findSunlit',
+                                   return_value=False):
                 with mock.patch.object(function,
-                                       'updateTableEntries'):
+                                       'findSatUp'):
                     with mock.patch.object(function,
-                                           'calcAppMag',
-                                           return_value=0):
-                        suc = function.workerSatCalcTable()
-                        assert suc
-                        assert function.satTableDynamicValid
+                                           'updateTableEntries'):
+                        with mock.patch.object(function,
+                                               'calcAppMag',
+                                               return_value=0):
+                            suc = function.workerSatCalcTable()
+                            assert suc
+                            assert function.satTableDynamicValid
 
 
 def test_workerSatCalcTable_4(function):
@@ -568,20 +618,23 @@ def test_workerSatCalcTable_4(function):
     function.satTableDynamicValid = False
     function.ui.satUpTimeWindow.setValue(2)
     with mock.patch.object(function,
-                           'findRangeRate'):
+                           'checkSatOk',
+                           return_value=True):
         with mock.patch.object(function,
-                               'findSunlit',
-                               return_value=True):
+                               'findRangeRate'):
             with mock.patch.object(function,
-                                   'findSatUp'):
+                                   'findSunlit',
+                                   return_value=True):
                 with mock.patch.object(function,
-                                       'updateTableEntries'):
+                                       'findSatUp'):
                     with mock.patch.object(function,
-                                           'calcAppMag',
-                                           return_value=0):
-                        suc = function.workerSatCalcTable()
-                        assert suc
-                        assert function.satTableDynamicValid
+                                           'updateTableEntries'):
+                        with mock.patch.object(function,
+                                               'calcAppMag',
+                                               return_value=0):
+                            suc = function.workerSatCalcTable()
+                            assert suc
+                            assert function.satTableDynamicValid
 
 
 def test_workerSatCalcTable_5(function):
@@ -603,21 +656,24 @@ def test_workerSatCalcTable_5(function):
     function.satTableDynamicValid = False
     function.ui.satUpTimeWindow.setValue(2)
     with mock.patch.object(function,
-                           'findRangeRate',
-                           return_value=[np.nan]):
+                           'checkSatOk',
+                           return_value=True):
         with mock.patch.object(function,
-                               'findSunlit',
-                               return_value=True):
+                               'findRangeRate',
+                               return_value=[np.nan]):
             with mock.patch.object(function,
-                                   'findSatUp'):
+                                   'findSunlit',
+                                   return_value=True):
                 with mock.patch.object(function,
-                                       'updateTableEntries'):
+                                       'findSatUp'):
                     with mock.patch.object(function,
-                                           'calcAppMag',
-                                           return_value=0):
-                        suc = function.workerSatCalcTable()
-                        assert suc
-                        assert function.satTableDynamicValid
+                                           'updateTableEntries'):
+                        with mock.patch.object(function,
+                                               'calcAppMag',
+                                               return_value=0):
+                            suc = function.workerSatCalcTable()
+                            assert suc
+                            assert function.satTableDynamicValid
 
 
 def test_satCalcTable_1(function):

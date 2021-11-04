@@ -41,7 +41,7 @@ if [[ $T == *"3.9"* ]]; then
 
 elif [[ $T == *"3.8"* ]]; then
   P_VER="python3.8"
-	
+
 elif [[ $T == *"3.7"* ]]; then
   P_VER="python3.7"
 fi

@@ -31,6 +31,7 @@ releaseNotes = """
 - add: setting prediction time of almanac (shorter reduces cpu load)
 - add: providing 3 different color schemes
 - add: virtual keypad available for RPi 3/4 users now
+- improve: check if satellite data is valid (avoid error messages)
 - improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots
@@ -45,7 +46,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b14',
+    version='2.1.0b15',
     packages=[
         'mw4',
         'mw4.base',

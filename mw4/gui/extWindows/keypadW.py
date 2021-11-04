@@ -114,6 +114,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.app.colorChange.disconnect(self.colorChange)
         self.signals.textRow.disconnect(self.writeTextRow)
         self.signals.cursorPos.disconnect(self.setCursorPos)
+        self.app.update1s.disconnect(self.startKeypad)
         self.setupButtons(connect=False)
         super().closeEvent(closeEvent)
 
@@ -129,10 +130,10 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.app.colorChange.connect(self.colorChange)
         self.signals.textRow.connect(self.writeTextRow)
         self.signals.cursorPos.connect(self.setCursorPos)
+        self.app.update1s.connect(self.startKeypad)
         self.setupButtons(connect=True)
         self.show()
-        worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
-        self.threadPool.start(worker)
+        self.startKeypad()
         return True
 
     def colorChange(self):
@@ -172,6 +173,19 @@ class KeypadWindow(toolsQtWidget.MWidget):
                 button.clicked.disconnect(self.buttonPress)
         return True
 
+    def startKeypad(self):
+        """
+        :return:
+        """
+        if self.keypad.ws is not None:
+            return True
+
+        self.clearDisplay()
+        self.writeTextRow(2, 'Connecting ...')
+        worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
+        self.threadPool.start(worker)
+        return True
+
     def buttonPress(self):
         """
         :return:
@@ -193,11 +207,19 @@ class KeypadWindow(toolsQtWidget.MWidget):
         if not -1 < row < 5:
             return False
 
-        if text[0] == '>':
+        if text.startswith('>'):
             self.rows[row].setStyleSheet(f'background-color: {self.M_GREY};')
         else:
             self.rows[row].setStyleSheet(f'background-color: {self.M_BACK};')
         self.rows[row].setText(text)
+        return True
+
+    def clearDisplay(self):
+        """
+        :return:
+        """
+        for row in range(5):
+            self.writeTextRow(row, '')
         return True
 
     def setCursorPos(self, col, row):
@@ -206,6 +228,5 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :param row:
         :return:
         """
-        print(row, col)
         self.rows[row].setCursorPosition(col)
         return True

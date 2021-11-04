@@ -18,6 +18,7 @@
 import logging
 
 # external packages
+import websocket
 from websocket import ABNF, WebSocketApp
 import numpy as np
 
@@ -63,6 +64,11 @@ class KeyPad:
 
     @staticmethod
     def expand7to8(value, fill=False):
+        """
+        :param value:
+        :param fill:
+        :return:
+        """
         result = []
         n = 0
         o = 0
@@ -79,6 +85,10 @@ class KeyPad:
         return result
 
     def convertChar(self, inChar):
+        """
+        :param inChar:
+        :return:
+        """
         if inChar in self.charTrans:
             outChar = self.charTrans[inChar]
         else:
@@ -86,9 +96,13 @@ class KeyPad:
         return outChar
 
     def dispatch(self, value):
+        """
+        :param value:
+        :return:
+        """
         value = self.expand7to8(value, False)
         if len(value) <= 0:
-            return
+            return False
 
         if value[0] == 1:
             # writing text in rows
@@ -141,12 +155,23 @@ class KeyPad:
         elif value[0] == 12:
             print('select 12')
 
+        return True
+
     def checkDispatch(self, value):
+        """
+        :param value:
+        :return:
+        """
         if value[0] == 0:
             self.dispatch(value[1:])
+        return True
 
     @staticmethod
     def calcChecksum1(value):
+        """
+        :param value:
+        :return:
+        """
         checksum = 0
         for i in range(len(value)):
             checksum = checksum ^ value[i]
@@ -159,6 +184,10 @@ class KeyPad:
         return (a and not b) or (not a and b)
 
     def calcChecksum(self, value):
+        """
+        :param value:
+        :return:
+        """
         checksum = 0
         for i in range(len(value)):
             checksum = self.xor(checksum, value[i])
@@ -167,22 +196,44 @@ class KeyPad:
         return checksum
 
     def mousePressed(self, key):
+        """
+        :param key:
+        :return:
+        """
         message = [2, 6, key]
         message = message + [self.calcChecksum1(message)]
         message = message + [3]
         self.ws.send(message, ABNF.OPCODE_BINARY)
+        return True
 
     def mouseReleased(self, key):
+        """
+        :param key:
+        :return:
+        """
         message = [2, 5, key]
         message = message + [self.calcChecksum1(message)]
         message = message + [3]
         self.ws.send(message, ABNF.OPCODE_BINARY)
+        return True
 
     def keyPressed(self, key):
+        """
+        :param key:
+        :return:
+        """
         self.mousePressed(key)
         self.mouseReleased(key)
+        return True
 
     def on_data(self, ws, data, typeOpcode, cont):
+        """
+        :param ws:
+        :param data:
+        :param typeOpcode:
+        :param cont:
+        :return:
+        """
         result = []
         started = False
         for i in range(len(data)):
@@ -198,26 +249,43 @@ class KeyPad:
                 else:
                     if started:
                         result.append(data[i])
-
-    def on_error(self, ws, message):
-        self.log.error(message)
+        return True
 
     def on_close(self, ws, close_status_code, close_msg):
-        self.log.info(f'Status: [{close_status_code}], message: [{close_msg}]')
+        """
+        :param ws:
+        :param close_status_code:
+        :param close_msg:
+        :return:
+        """
+        self.ws = None
+        return True
 
     def workerWebsocket(self, host=None):
+        """
+        :param host:
+        :return:
+        """
         if host is None:
             return False
         if not isinstance(host, tuple):
             return False
+        if self.ws is not None:
+            return False
+
         ipaddress = host[0]
+        websocket.setdefaulttimeout(3)
         self.ws = WebSocketApp(f'ws://{ipaddress}:8000/',
                                on_data=self.on_data,
-                               on_error=self.on_error,
                                on_close=self.on_close,
                                subprotocols=["binary"])
         self.ws.run_forever()
+        return True
 
     def closeWebsocket(self):
+        """
+        :return:
+        """
         if self.ws is not None:
             self.ws.close()
+        return True

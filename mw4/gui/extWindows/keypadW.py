@@ -113,9 +113,10 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.keypad.closeWebsocket()
         self.storeConfig()
+        self.keypad.closeWebsocket()
         self.app.colorChange.disconnect(self.colorChange)
+        self.app.hostChanged.disconnect(self.hostChanged)
         self.signals.textRow.disconnect(self.writeTextRow)
         self.signals.cursorPos.disconnect(self.setCursorPos)
         self.signals.imgChunk.disconnect(self.buildGraphics)
@@ -134,6 +135,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
             if not suc:
                 self.app.message.emit('Could not enable webinterface', 2)
         self.app.colorChange.connect(self.colorChange)
+        self.app.hostChanged.connect(self.hostChanged)
         self.signals.textRow.connect(self.writeTextRow)
         self.signals.cursorPos.connect(self.setCursorPos)
         self.signals.imgChunk.connect(self.buildGraphics)
@@ -193,6 +195,14 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.writeTextRow(2, 'Connecting ...')
         worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
         self.threadPool.start(worker)
+        return True
+
+    def hostChanged(self):
+        """
+        :return:
+        """
+        self.keypad.closeWebsocket()
+        self.startKeypad()
         return True
 
     def buttonPress(self):

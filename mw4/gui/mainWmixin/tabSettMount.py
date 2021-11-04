@@ -153,6 +153,7 @@ class SettMount(object):
             port = 3490
 
         self.app.mount.host = (self.ui.mountHost.text(), port)
+        self.app.hostChanged.emit()
         return True
 
     def mountMAC(self):

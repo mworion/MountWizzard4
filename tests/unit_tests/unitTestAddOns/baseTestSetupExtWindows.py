@@ -248,6 +248,7 @@ class App(QObject):
     drawHorizonPoints = pyqtSignal()
     sendSatelliteData = pyqtSignal()
     colorChange = pyqtSignal()
+    hostChanged = pyqtSignal()
     showAnalyse = pyqtSignal(object)
     showImage = pyqtSignal(object)
     messageQueue = Queue()

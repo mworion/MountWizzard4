@@ -318,6 +318,7 @@ class App(QObject):
     update30s = pyqtSignal()
     update30m = pyqtSignal()
     colorChange = pyqtSignal()
+    hostChanged = pyqtSignal()
     remoteCommand = pyqtSignal(object)
     message = pyqtSignal(str, int)
     messageQueue = Queue()

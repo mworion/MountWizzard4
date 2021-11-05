@@ -20,6 +20,7 @@ from unittest import mock
 # external packages
 import pytest
 import PyQt5
+from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtTest import QTest
 from indibase.indiBase import Device
 from base.indiClass import IndiClass
@@ -31,24 +32,16 @@ from base.driverDataClass import Signals
 host_ip = 'astro-mount.fritz.box'
 
 
-class Signal(PyQt5.QtCore.QObject):
-    message = PyQt5.QtCore.pyqtSignal(str, int)
-
-
-class TestSignals(IndiClass):
-    signals = Signals()
-
-    def __init__(self, app=None, data=None, threadPool=None):
-        super().__init__(app=app, data=data, threadPool=threadPool)
-
-
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    class Test(QObject):
+        message = pyqtSignal(str, int)
+
     global app
-    m = Signal()
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TestSignals(m)
+        app = IndiClass()
+        app.app = Test()
         yield
 
 

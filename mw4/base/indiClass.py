@@ -22,7 +22,7 @@ from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QTimer
 
 # local imports
-from indibase import qtIndiBase
+from indibase.qtIndiBase import Client
 
 
 class IndiClass:
@@ -101,7 +101,7 @@ class IndiClass:
     def __init__(self, app=None, data=None, threadPool=None):
         self.app = app
         self.data = data
-        self.client = qtIndiBase.Client(host=None, threadPool=threadPool)
+        self.client = Client(host=None, threadPool=threadPool)
 
         if self.app is not None:
             # this is for direct use of indiClass in devicePopupW for

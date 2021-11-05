@@ -37,23 +37,16 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class TestSignals(AlpacaClass):
-        signals = Signals()
-
-        def __init__(self, app=None, data=None, threadPool=None):
-            super().__init__(app=app, data=data, threadPool=threadPool)
-
     class Test(QObject):
         message = pyqtSignal(str, int)
 
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TestSignals(app=Test(), data={}, threadPool=QThreadPool())
-
-    yield
-
-    app.threadPool.waitForDone(1000)
+        app = AlpacaClass(app=Test(), data={}, threadPool=QThreadPool())
+        app.signals = Signals()
+        yield
+        app.threadPool.waitForDone(1000)
 
 
 def test_properties_1():

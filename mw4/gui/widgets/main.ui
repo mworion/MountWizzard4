@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -18409,7 +18409,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -28176,7 +28176,7 @@ Updater</string>
          <x>5</x>
          <y>220</y>
          <width>366</width>
-         <height>101</height>
+         <height>61</height>
         </rect>
        </property>
        <property name="title">
@@ -28185,55 +28185,6 @@ Updater</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="pushTime">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>151</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;With button press, MW4 tries to set the actual time from the mount to the computer. The precision is about 1s.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Push mount time to PC</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="autoPushTime">
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>20</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will push the mount time to the compuzer every minute.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Auto update every hour</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="syncTimePC2Mount">
         <property name="enabled">
          <bool>true</bool>
@@ -28241,8 +28192,8 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>55</y>
-          <width>166</width>
+          <y>15</y>
+          <width>171</width>
           <height>21</height>
          </rect>
         </property>
@@ -28274,7 +28225,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>75</y>
+          <y>35</y>
           <width>176</width>
           <height>21</height>
          </rect>
@@ -28307,7 +28258,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>55</y>
+          <y>15</y>
           <width>166</width>
           <height>21</height>
          </rect>
@@ -28331,28 +28282,6 @@ Updater</string>
         </property>
         <property name="checked">
          <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="Line" name="line_85">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>346</width>
-          <height>1</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </widget>
@@ -29947,8 +29876,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>versionRelease</tabstop>
   <tabstop>versionReleaseNotes</tabstop>
   <tabstop>versionBeta</tabstop>
-  <tabstop>pushTime</tabstop>
-  <tabstop>autoPushTime</tabstop>
   <tabstop>clockSync</tabstop>
   <tabstop>syncTimePC2Mount</tabstop>
   <tabstop>syncNotTracking</tabstop>

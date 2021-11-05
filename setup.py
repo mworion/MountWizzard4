@@ -38,6 +38,7 @@ releaseNotes = """
 - improve: rewrite alpaca / ascom interface
 - improve: gui for running functions
 - improve: test coverage
+- remove: push time from mount to computer: in reliable and unstable
 - fix: segfault in qt5lib on ubuntu
  """
 

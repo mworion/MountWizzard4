@@ -57,7 +57,6 @@ class SettMisc(object):
         self.ui.versionReleaseNotes.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
-        self.ui.pushTime.clicked.connect(self.pushTime)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update1h.connect(self.pushTimeHourly)
         self.app.update30s.connect(self.syncClock)
@@ -82,7 +81,6 @@ class SettMisc(object):
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
-        self.ui.autoPushTime.setChecked(config.get('autoPushTime', False))
         self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
         self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
         self.ui.clockSync.setChecked(config.get('clockSync', False))
@@ -111,7 +109,6 @@ class SettMisc(object):
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
-        config['autoPushTime'] = self.ui.autoPushTime.isChecked()
         config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
         config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
         config['clockSync'] = self.ui.clockSync.isChecked()
@@ -389,67 +386,6 @@ class SettMisc(object):
             PyQt5.QtMultimedia.QSound.play(self.audioSignalsSet[sound])
             return True
 
-        else:
-            return False
-
-    def pushTime(self):
-        """
-        :return:
-        """
-        timeJD = self.app.mount.obsSite.timeJD
-        if timeJD is None:
-            return False
-
-        if platform.system() == 'Windows':
-            timeText = timeJD.astimezone(tzlocal()).strftime('%H:%M:%S')
-            runnable = ['time', f'{timeText}']
-
-        elif platform.system() == 'Darwin':
-            timeText = timeJD.astimezone(tzlocal()).strftime('%m%d%H%M%y')
-            runnable = ['date', f'{timeText}']
-
-        elif platform.system() == 'Linux':
-            timeText = timeJD.astimezone(tzlocal()).strftime('%d-%b-%Y %H:%M:%S')
-            runnable = ['date', '-s', f'"{timeText}"']
-
-        else:
-            runnable = ''
-
-        t = timeJD.astimezone(tzlocal()).strftime('%H:%M:%S')
-        self.app.message.emit(f'Set computer time to {t}', 0)
-        self.log.debug(f'Command: {runnable}')
-
-        try:
-            self.process = subprocess.Popen(args=runnable,
-                                            stdout=subprocess.PIPE,
-                                            stderr=subprocess.STDOUT,
-                                            shell=True,
-                                            text=True
-                                            )
-            output = self.process.communicate(timeout=10)[0].replace('\n', '-')
-
-        except subprocess.TimeoutExpired as e:
-            self.log.error(e)
-            return False
-
-        except Exception as e:
-            self.log.error(f'Time set error: {e}')
-            return False
-
-        else:
-            retCode = str(self.process.returncode)
-            self.log.debug(f'[{retCode}] [{output}]')
-
-        return self.process.returncode == 0
-
-    def pushTimeHourly(self):
-        """
-        :return:
-        """
-        isAuto = self.ui.autoPushTime.isChecked()
-        if isAuto:
-            self.pushTime()
-            return True
         else:
             return False
 

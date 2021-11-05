@@ -1,3 +1,22 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+#
+# written in python3, (c) 2019-2021 by mworion
+#
+# Licence APL2.0
+#
+# Configuration file for readthedocs
+#
+###########################################################
 version: 2
 
 build:
@@ -6,7 +25,7 @@ build:
     python: "3.9"
 
 sphinx:
-  configuration: docs/conf.py
+  configuration: docs/source/conf.py
 
 python:
    install:

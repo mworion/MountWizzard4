@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - add: hemisphere window: help for choosing the right star for polar alignment
+- add: hemisphere terrain adjust for altitude of image beside azimuth
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
 - add: extended satellite search and filter capabilities (spreadsheet style)

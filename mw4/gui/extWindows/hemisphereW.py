@@ -141,9 +141,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         img = img.resize((1440, 360))
         img = img.transpose(Image.FLIP_TOP_BOTTOM)
 
-        self.imageTerrain = Image.new('L', (2880, 360))
-        self.imageTerrain.paste(img)
-        self.imageTerrain.paste(img, (1440, 0))
+        self.imageTerrain = Image.new('L', (2880, 480), 128)
+        self.imageTerrain.paste(img, (0, 60))
+        self.imageTerrain.paste(img, (1440, 60))
         return True
 
     def storeConfig(self):
@@ -167,7 +167,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         config['useTerrain'] = self.ui.checkUseTerrain.isChecked()
         config['terrainAlpha'] = self.ui.terrainAlpha.value()
         config['azimuthShift'] = self.ui.azimuthShift.value()
-        config['altitudeShift'] = self.ui.azimuthShift.value()
+        config['altitudeShift'] = self.ui.altitudeShift.value()
         return True
 
     def closeEvent(self, closeEvent):
@@ -198,6 +198,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
         self.ui.checkUseTerrain.clicked.disconnect(self.drawHemisphere)
         self.ui.azimuthShift.valueChanged.disconnect(self.drawHemisphere)
+        self.ui.altitudeShift.valueChanged.disconnect(self.drawHemisphere)
         self.ui.terrainAlpha.valueChanged.disconnect(self.drawHemisphere)
 
         self.ui.showPolar.clicked.disconnect(self.togglePolar)
@@ -255,6 +256,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkUseTerrain.clicked.connect(self.drawHemisphere)
         self.ui.azimuthShift.valueChanged.connect(self.drawHemisphere)
+        self.ui.altitudeShift.valueChanged.connect(self.drawHemisphere)
         self.ui.terrainAlpha.valueChanged.connect(self.drawHemisphere)
         self.app.colorChange.connect(self.colorChange)
 
@@ -796,9 +798,11 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         if not self.imageTerrain:
             return False
 
-        shift = self.ui.azimuthShift.value()
+        shiftAz = self.ui.azimuthShift.value()
+        shiftAlt = self.ui.altitudeShift.value()
         alpha = self.ui.terrainAlpha.value()
-        imgF = self.imageTerrain.crop((4 * shift, 0, 1440 + 4 * shift, 360))
+        imgF = self.imageTerrain.crop((4 * shiftAz, 60 + shiftAlt * 2,
+                                       1440 + 4 * shiftAz, 420 + shiftAlt * 2))
         (w, h) = imgF.size
         img = list(imgF.getdata())
         img = np.array(img).reshape((h, w))

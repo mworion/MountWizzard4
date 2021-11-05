@@ -17,6 +17,7 @@ Released beta version of MW4
 2.1.0b14
 
 - add: hemisphere window: help for choosing the right star for polar alignment
+- add: hemisphere terrain adjust for altitude of image beside azimuth
 - add: angular error ra / dec axis in measurement
 - add: device connection similar for ASCOM and ALPACA devices
 - add: extended satellite search and filter capabilities (spreadsheet style)
@@ -27,12 +28,15 @@ Released beta version of MW4
 - add: sorting for minimal dome slew in build point selection
 - add: setting prediction time of almanac (shorter reduces cpu load)
 - add: providing 3 different color schemes
+- add: virtual keypad available for RPi 3/4 users now
+- improve: check if satellite data is valid (avoid error messages)
 - improve: better hints when using 10micron updater
 - improve: simplified signals generation
 - improve: analyse window plots
 - improve: rewrite alpaca / ascom interface
 - improve: gui for running functions
 - improve: test coverage
+- remove: push time from mount to computer: in reliable and unstable
 - fix: segfault in qt5lib on ubuntu
 
 Released version of MW4

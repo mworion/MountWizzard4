@@ -419,8 +419,8 @@ def test_imagePlot_6(function):
         dtype=[('x', '<f8'), ('y', '<f8'),
                ('a', '<f8'), ('b', '<f8'),
                ('theta', '<f8'), ('flux', '<f8')])
-    function.bk_back = np.random.rand(100, 100)
-    function.flux = np.random.rand(10)
+    function.bk_back = np.random.rand(100, 100) + 1
+    function.flux = np.random.rand(10) + 1
     function.ui.view.setCurrentIndex(6)
     suc = function.imagePlot()
     assert suc

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -18409,7 +18409,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -27620,9 +27620,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>310</y>
+         <y>300</y>
          <width>366</width>
-         <height>71</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="title">
@@ -27637,7 +27637,7 @@ When clicking the button, you could change the value.</string>
           <x>5</x>
           <y>15</y>
           <width>356</width>
-          <height>51</height>
+          <height>61</height>
          </rect>
         </property>
         <property name="html">
@@ -28174,13 +28174,13 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>220</y>
+         <y>215</y>
          <width>366</width>
-         <height>61</height>
+         <height>56</height>
         </rect>
        </property>
        <property name="title">
-        <string>Clock sync computer and mount</string>
+        <string>Clock sync from computer to mount</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -28212,7 +28212,7 @@ Updater</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Sync mount to PC clock</string>
+         <string>Sync clocks continously</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -28278,7 +28278,7 @@ Updater</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Connect clock sync</string>
+         <string>Enable clock comparison</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -28289,7 +28289,7 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>190</y>
+         <y>210</y>
          <width>366</width>
          <height>66</height>
         </rect>
@@ -28375,10 +28375,10 @@ Updater</string>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>260</y>
+         <x>5</x>
+         <y>285</y>
          <width>366</width>
-         <height>46</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -28391,7 +28391,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>175</x>
-          <y>20</y>
+          <y>15</y>
           <width>181</width>
           <height>21</height>
          </rect>
@@ -28429,7 +28429,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>136</width>
           <height>21</height>
          </rect>

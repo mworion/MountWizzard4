@@ -58,9 +58,7 @@ class SettMisc(object):
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
-        self.app.update1h.connect(self.pushTimeHourly)
         self.app.update30s.connect(self.syncClock)
-        self.ui.autoPushTime.stateChanged.connect(self.pushTimeHourly)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
 
         if pConf.isAvailable:

@@ -471,7 +471,7 @@ class SatSearch(object):
             if not self.checkSatOk(sat, timeNext):
                 continue
             satParam = self.findRangeRate(sat, loc, timeNow)
-            if not np.isnan(satParam).all():
+            if not np.isnan(satParam).any():
                 isSunlit = self.findSunlit(sat, eph, timeNow)
                 isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
                 satRange = satParam[0]

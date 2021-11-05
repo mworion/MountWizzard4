@@ -444,7 +444,7 @@ class SatSearch(object):
         """
         msg = sat.at(tEnd).message
         if msg:
-            self.log.warn(f'{sat.name} caused SGP4: [{msg}]')
+            self.log.warning(f'{sat.name} caused SGP4: [{msg}]')
             return False
         return True
 
@@ -471,7 +471,7 @@ class SatSearch(object):
             if not self.checkSatOk(sat, timeNext):
                 continue
             satParam = self.findRangeRate(sat, loc, timeNow)
-            if not np.isnan(satParam[0]):
+            if not np.isnan(satParam).all():
                 isSunlit = self.findSunlit(sat, eph, timeNow)
                 isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
                 satRange = satParam[0]

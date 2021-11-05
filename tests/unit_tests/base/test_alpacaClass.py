@@ -35,15 +35,14 @@ from base.driverDataClass import Signals
 setupLogging()
 
 
-class TestSignals(AlpacaClass):
-    signals = Signals()
-
-    def __init__(self, app=None, data=None, threadPool=None):
-        super().__init__(app=app, data=data, threadPool=threadPool)
-
-
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    class TestSignals(AlpacaClass):
+        signals = Signals()
+
+        def __init__(self, app=None, data=None, threadPool=None):
+            super().__init__(app=app, data=data, threadPool=threadPool)
+
     class Test(QObject):
         message = pyqtSignal(str, int)
 

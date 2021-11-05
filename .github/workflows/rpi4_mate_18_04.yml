@@ -73,5 +73,6 @@ jobs:
             GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
             SCRIPT="/support/2.0/Ubuntu"
             wget "${GITHUB}${SCRIPT}/MW4_Install_aarch64_18_04.sh"
+            python3 --version
             chmod 777 MW4_Install_aarch64_18_04.sh
             ./MW4_Install_aarch64_18_04.sh

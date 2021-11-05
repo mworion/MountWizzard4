@@ -9536,9 +9536,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QRadioButton" name="normalTiming">
        <property name="geometry">
         <rect>
-         <x>115</x>
+         <x>125</x>
          <y>20</y>
-         <width>101</width>
+         <width>91</width>
          <height>21</height>
         </rect>
        </property>
@@ -9652,7 +9652,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>15</x>
         <y>35</y>
-        <width>146</width>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>
@@ -9718,7 +9718,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>205</x>
         <y>35</y>
-        <width>146</width>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>

@@ -14,8 +14,12 @@ Ideas for the future
 
 Released beta version of MW4
 ----------------------------
-2.1.0b14
+- none
 
+Released version of MW4
+-----------------------
+Version 2.1
+^^^^^^^^^^^
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: hemisphere terrain adjust for altitude of image beside azimuth
 - add: angular error ra / dec axis in measurement
@@ -39,8 +43,6 @@ Released beta version of MW4
 - remove: push time from mount to computer: in reliable and unstable
 - fix: segfault in qt5lib on ubuntu
 
-Released version of MW4
------------------------
 Version 2.0
 ^^^^^^^^^^^
 2.0.6

@@ -19,7 +19,6 @@ import logging
 
 # external packages
 import websocket
-from websocket import ABNF, WebSocketApp
 import numpy as np
 
 # local imports
@@ -186,7 +185,7 @@ class KeyPad:
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, ABNF.OPCODE_BINARY)
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
         return True
 
     def mouseReleased(self, key):
@@ -197,7 +196,7 @@ class KeyPad:
         message = [2, 5, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, ABNF.OPCODE_BINARY)
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
         return True
 
     def keyPressed(self, key):
@@ -258,10 +257,10 @@ class KeyPad:
 
         ipaddress = host[0]
         websocket.setdefaulttimeout(3)
-        self.ws = WebSocketApp(f'ws://{ipaddress}:8000/',
-                               on_data=self.on_data,
-                               on_close=self.on_close,
-                               subprotocols=["binary"])
+        self.ws = websocket.WebSocketApp(f'ws://{ipaddress}:8000/',
+                                         on_data=self.on_data,
+                                         on_close=self.on_close,
+                                         subprotocols=["binary"])
         self.ws.run_forever()
         return True
 

@@ -128,6 +128,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkUseTerrain.setChecked(config.get('useTerrain', False))
         self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
         self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
+        self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
 
         terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
         if not os.path.isfile(terrainFile):
@@ -166,6 +167,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         config['useTerrain'] = self.ui.checkUseTerrain.isChecked()
         config['terrainAlpha'] = self.ui.terrainAlpha.value()
         config['azimuthShift'] = self.ui.azimuthShift.value()
+        config['altitudeShift'] = self.ui.azimuthShift.value()
         return True
 
     def closeEvent(self, closeEvent):
@@ -566,11 +568,11 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
             azF = np.radians(range(0, 361, 5))
             altF = np.interp(azF, az, alt)
 
+            axes.set_facecolor(f'{self.M_GREY}80')
             axes.fill(azF,
                       90 - altF,
-                      color=self.M_TRANS,
-                      alpha=0.5,
-                      zorder=0)
+                      color=self.M_BACK,
+                      zorder=-10)
 
             axes.plot(az,
                       90 - alt,

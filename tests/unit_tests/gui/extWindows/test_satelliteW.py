@@ -206,9 +206,11 @@ def test_updatePositions_7(function):
 
 
 def test_updatePositions_8(function):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
+           "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670"]
+    ts = function.app.mount.obsSite.ts
+    now = ts.tt_jd(2459523.2430)
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
     fig = plt.figure()
@@ -220,7 +222,6 @@ def test_updatePositions_8(function):
     function.plotSatPosSphere2, = ax.plot([1], [1], [1])
 
     function.ui.tabWidget.setCurrentIndex(0)
-    now = function.app.mount.obsSite.ts.now()
     location = function.app.mount.obsSite.location
 
     with mock.patch.object(function.plotSatPosSphere1,
@@ -236,9 +237,12 @@ def test_updatePositions_8(function):
 
 
 def test_updatePositions_9(function):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
+           "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670"]
+    ts = function.app.mount.obsSite.ts
+    now = ts.tt_jd(2459523.2430)
+
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
     fig = plt.figure()
@@ -250,8 +254,6 @@ def test_updatePositions_9(function):
     function.plotSatPosSphere2, = ax.plot([1], [1], [1])
 
     function.ui.tabWidget.setCurrentIndex(1)
-
-    now = function.app.mount.obsSite.ts.now()
     location = function.app.mount.obsSite.location
 
     with mock.patch.object(function.plotSatPosSphere1,

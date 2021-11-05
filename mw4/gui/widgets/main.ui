@@ -27628,7 +27628,7 @@ When clicking the button, you could change the value.</string>
        <property name="title">
         <string>MountWizzard4 (C) 2019-2021 MWORION</string>
        </property>
-       <widget class="QTextEdit" name="textEdit">
+       <widget class="QTextBrowser" name="textBrowser">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -30014,7 +30014,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>soundModelingFinished</tabstop>
   <tabstop>soundImageSaved</tabstop>
   <tabstop>soundImageSolved</tabstop>
-  <tabstop>textEdit</tabstop>
+  <tabstop>textBrowser</tabstop>
   <tabstop>genBuildMax</tabstop>
   <tabstop>genBuildAlign6</tabstop>
   <tabstop>timeShiftDSO</tabstop>

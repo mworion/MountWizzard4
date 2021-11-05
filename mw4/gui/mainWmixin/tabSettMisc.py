@@ -17,10 +17,8 @@
 import base.packageConfig as pConf
 # standard libraries
 import os
-import subprocess
 import sys
 import platform
-from dateutil.tz import tzlocal
 
 # external packages
 from pkg_resources import working_set

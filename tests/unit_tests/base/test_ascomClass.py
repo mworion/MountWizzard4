@@ -40,13 +40,6 @@ from base.driverDataClass import Signals
 setupLogging()
 
 
-class TestSignals(AscomClass):
-    signals = Signals()
-
-    def __init__(self, app=None, data=None, threadPool=None):
-        super().__init__(app=app, data=data, threadPool=threadPool)
-
-
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     class Test(QObject):
@@ -55,10 +48,10 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TestSignals(app=Test(), data={}, threadPool=QThreadPool())
-
-    yield
-    app.threadPool.waitForDone(1000)
+        app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
+        app.signals = Signals()
+        yield
+        app.threadPool.waitForDone(1000)
 
 
 def test_startTimer():

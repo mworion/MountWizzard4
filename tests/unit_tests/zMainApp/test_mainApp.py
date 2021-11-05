@@ -32,6 +32,7 @@ import PyQt5
 # local import
 from mainApp import MountWizzard4
 from base.loggerMW import setupLogging
+from logic.automation.automateWindows import AutomateWindows
 import resource.resources as res
 res.qInitResources()
 setupLogging()
@@ -99,7 +100,7 @@ def test_checkAndSetAutomation_2(app):
                                'python_version',
                                return_value='3.9.1'):
             val = app.checkAndSetAutomation()
-            assert val is None
+            assert isinstance(val, AutomateWindows)
 
 
 def test_initConfig_1(app):

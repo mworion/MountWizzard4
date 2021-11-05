@@ -145,7 +145,8 @@ def test_getWCSHeader_1(app):
 
 def test_getWCSHeader_2(app):
     shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
-    val = app.getWCSHeader(wcsTextFile='tests/workDir/temp/temp.wcs')
+    with open('tests/workDir/temp/temp.wcs') as wcsTextFile:
+        val = app.getWCSHeader(wcsTextFile=wcsTextFile)
     assert val
 
 

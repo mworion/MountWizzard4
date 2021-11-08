@@ -29,43 +29,31 @@ from base.driverDataClass import DriverData
 from base.tpool import Worker
 
 
-class AlpacaClass(DriverData):
+class SGProClass(DriverData):
     """
     """
-
     log = logging.getLogger(__name__)
 
     CYCLE_POLL_STATUS = 1000
     CYCLE_POLL_DATA = 1000
-    ALPACA_TIMEOUT = 3
+    SGPRO_TIMEOUT = 3
 
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
-
         self.app = app
         self.threadPool = threadPool
-
         self.data = data
-        self.propertyExceptions = []
 
         self._host = ('localhost', 11111)
-        self._port = 11111
         self._hostaddress = 'localhost'
-        self.protocol = 'http'
-        self.apiVersion = 1
         self._deviceName = ''
         self.deviceType = ''
-        self.number = 0
 
         self.defaultConfig = {
-            'alpaca': {
+            'sgpro': {
                 'deviceName': '',
                 'deviceList': [],
                 'hostaddress': 'localhost',
-                'port': 11111,
-                'apiVersion': 1,
-                'user': '',
-                'password': '',
             }
         }
 
@@ -98,31 +86,12 @@ class AlpacaClass(DriverData):
         self._host = (self._hostaddress, self._port)
 
     @property
-    def port(self):
-        return self._port
-
-    @port.setter
-    def port(self, value):
-        self._port = int(value)
-        self._host = (self._hostaddress, self._port)
-
-    @property
-    def baseUrl(self):
-        return self.generateBaseUrl()
-
-    @property
     def deviceName(self):
         return self._deviceName
 
     @deviceName.setter
     def deviceName(self, value):
         self._deviceName = value
-        valueSplit = value.split(':')
-        if len(valueSplit) != 3:
-            return
-        self.deviceType = valueSplit[1].strip()
-        self.number = valueSplit[2].strip()
-        self.number = int(self.number)
 
     def generateBaseUrl(self):
         """
@@ -138,86 +107,7 @@ class AlpacaClass(DriverData):
         )
         return val
 
-    def discoverAPIVersion(self):
-        """
-        :return:
-        """
-        url = '{0}://{1}:{2}/management/apiversions'.format(
-            self.protocol,
-            self.host[0],
-            self.host[1],
-        )
-        try:
-            response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
-        except requests.exceptions.Timeout:
-            t = f'[{self.deviceName}] has timeout'
-            self.log.debug(t)
-            return None
-        except requests.exceptions.ConnectionError:
-            t = f'[{self.deviceName}] has connection error'
-            self.log.warning(t)
-            return None
-        except Exception as e:
-            t = f'[{self.deviceName}] has exception: [{e}]'
-            self.log.error(t)
-            return None
-
-        if response.status_code == 400 or response.status_code == 500:
-            t = f'[{self.deviceName}] stat 400/500, [{response.text}]'
-            self.log.warning(t)
-            return None
-
-        response = response.json()
-        if response['ErrorNumber'] != 0:
-            t = f'[{self.deviceName}] response: [{response}]'
-            self.log.warning(t)
-            return None
-
-        t = f'[{self.deviceName}] response: [{response}]'
-        self.log.trace(t)
-        return response['Value']
-
-    def discoverAlpacaDevices(self):
-        """
-        :return:
-        """
-        url = '{0}://{1}:{2}/management/v{3}/configureddevices'.format(
-            self.protocol,
-            self.host[0],
-            self.host[1],
-            self.apiVersion,
-        )
-        try:
-            response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
-        except requests.exceptions.Timeout:
-            t = f'[{self.deviceName}] has timeout'
-            self.log.debug(t)
-            return None
-        except requests.exceptions.ConnectionError:
-            t = f'[{self.deviceName}] has connection error'
-            self.log.warning(t)
-            return None
-        except Exception as e:
-            t = f'[{self.deviceName}] has exception: [{e}]'
-            self.log.error(t)
-            return None
-
-        if response.status_code == 400 or response.status_code == 500:
-            t = f'[{self.deviceName}] stat 400/500, [{response.text}]'
-            self.log.warning(t)
-            return None
-
-        response = response.json()
-        if response['ErrorNumber'] != 0:
-            t = f'[{self.deviceName}] response: [{response}]'
-            self.log.warning(t)
-            return None
-
-        t = f'[{self.deviceName}] response: [{response}]'
-        self.log.trace(t)
-        return response['Value']
-
-    def getAlpacaProperty(self, valueProp, **data):
+    def getSGProProperty(self, valueProp, **data):
         """
         :param valueProp:
         :param data:
@@ -236,7 +126,7 @@ class AlpacaClass(DriverData):
 
         try:
             response = requests.get(f'{self.baseUrl}/{valueProp}',
-                                    params=data, timeout=self.ALPACA_TIMEOUT)
+                                    params=data, timeout=self.SGPRO_TIMEOUT)
         except requests.exceptions.Timeout:
             t = f'[{self.deviceName}] [{uid:10d}] has timeout'
             self.log.debug(t)
@@ -268,7 +158,7 @@ class AlpacaClass(DriverData):
 
         return response['Value']
 
-    def setAlpacaProperty(self, valueProp, **data):
+    def setSGProProperty(self, valueProp, **data):
         """
         :param valueProp:
         :param data:
@@ -285,7 +175,7 @@ class AlpacaClass(DriverData):
 
         try:
             response = requests.put(f'{self.baseUrl}/{valueProp}',
-                                    data=data, timeout=self.ALPACA_TIMEOUT)
+                                    data=data, timeout=self.SGPRO_TIMEOUT)
         except requests.exceptions.Timeout:
             t = f'[{self.deviceName}] [{uid:10d}] has timeout'
             self.log.debug(t)
@@ -315,14 +205,14 @@ class AlpacaClass(DriverData):
         self.log.trace(t)
         return response
 
-    def getAndStoreAlpacaProperty(self, valueProp, element, elementInv=None):
+    def getAndStoreSGProProperty(self, valueProp, element, elementInv=None):
         """
         :param valueProp:
         :param element:
         :param elementInv:
         :return: reset entry
         """
-        value = self.getAlpacaProperty(valueProp)
+        value = self.getSGProProperty(valueProp)
         self.storePropertyToData(value, element, elementInv)
         return True
 
@@ -332,8 +222,8 @@ class AlpacaClass(DriverData):
         """
         self.propertyExceptions = []
         for retry in range(0, 10):
-            self.setAlpacaProperty('connected', Connected=True)
-            suc = self.getAlpacaProperty('connected')
+            self.setSGProProperty('connected', Connected=True)
+            suc = self.getSGProProperty('connected')
 
             if suc:
                 t = f'[{self.deviceName}] connected, [{retry}] retries'
@@ -345,7 +235,7 @@ class AlpacaClass(DriverData):
                 QTest.qWait(250)
 
         if not suc:
-            self.app.message.emit(f'ALPACA connect error:[{self.deviceName}]', 2)
+            self.app.message.emit(f'SGPRO connect error:[{self.deviceName}]', 2)
             self.deviceConnected = False
             self.serverConnected = False
             return False
@@ -357,7 +247,7 @@ class AlpacaClass(DriverData):
         if not self.deviceConnected:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
+            self.app.message.emit(f'SGPRO device found: [{self.deviceName}]', 0)
 
         return True
 
@@ -381,25 +271,25 @@ class AlpacaClass(DriverData):
         """
         :return:
         """
-        self.data['DRIVER_INFO.DRIVER_NAME'] = self.getAlpacaProperty('name')
-        self.data['DRIVER_INFO.DRIVER_VERSION'] = self.getAlpacaProperty('driverversion')
-        self.data['DRIVER_INFO.DRIVER_EXEC'] = self.getAlpacaProperty('driverinfo')
+        self.data['DRIVER_INFO.DRIVER_NAME'] = self.getSGProProperty('name')
+        self.data['DRIVER_INFO.DRIVER_VERSION'] = self.getSGProProperty('driverversion')
+        self.data['DRIVER_INFO.DRIVER_EXEC'] = self.getSGProProperty('driverinfo')
         return True
 
     def workerPollStatus(self):
         """
         :return: success
         """
-        suc = self.getAlpacaProperty('connected')
+        suc = self.getSGProProperty('connected')
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
+            self.app.message.emit(f'SGPRO device remove:[{self.deviceName}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'ALPACA device found: [{self.deviceName}]', 0)
+            self.app.message.emit(f'SGPRO device found: [{self.deviceName}]', 0)
 
         return suc
 
@@ -456,34 +346,11 @@ class AlpacaClass(DriverData):
         :return: true for test purpose
         """
         self.stopTimer()
-        self.setAlpacaProperty('connected', Connected=False)
+        self.setSGProProperty('connected', Connected=False)
         self.deviceConnected = False
         self.serverConnected = False
         self.propertyExceptions = []
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.app.message.emit(f'ALPACA device remove:[{self.deviceName}]', 0)
+        self.app.message.emit(f'SGPRO device remove:[{self.deviceName}]', 0)
         return True
-
-    def discoverDevices(self, deviceType=''):
-        """
-        discoverDevices implements a discover for devices of a certain device
-        type. it is called from a button press and checks which button it was.
-        after that for the right device it collects all necessary data for host
-        value, instantiates an INDI client and watches for all devices connected
-        to this server. Than it connects a subroutine for collecting the right
-        device names and waits a certain amount of time. the data collection
-        takes place as long as the model dialog is open. when the user closes
-        this dialog, the collected data is written to the drop down list.
-
-        :param deviceType: device type of discovered indi devices
-        :return: success
-        """
-        devices = self.discoverAlpacaDevices()
-        if not devices:
-            return []
-
-        temp = [x for x in devices if x['DeviceType'].lower() == deviceType]
-        discoverList = [f'{x["DeviceName"]}:{deviceType}:{x["DeviceNumber"]}' for x in temp]
-
-        return discoverList

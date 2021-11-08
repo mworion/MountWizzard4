@@ -20,16 +20,16 @@
 # external packages
 
 # local imports
-from base.alpacaClass import AlpacaClass
+from base.sgproClass import SGProClass
 from base.tpool import Worker
 from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraAlpaca(AlpacaClass, CameraSupport):
+class CameraSGPro(SGProClass, CameraSupport):
     """
     """
 
-    __all__ = ['CameraAlpaca']
+    __all__ = ['CameraSGPro']
 
     def __init__(self, app=None, signals=None, data=None, parent=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -38,25 +38,13 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         self.abortExpose = False
         self.parent = parent
 
-    def workerGetInitialConfig(self):
+    def getInitialConfig(self):
         """
         :return: true for test purpose
         """
-        super().workerGetInitialConfig()
-        self.getAndStoreAlpacaProperty('cameraxsize', 'CCD_INFO.CCD_MAX_X')
-        self.getAndStoreAlpacaProperty('cameraysize', 'CCD_INFO.CCD_MAX_Y')
-        self.getAndStoreAlpacaProperty('canfastreadout', 'CAN_FAST')
-        self.getAndStoreAlpacaProperty('canabortexposure', 'CAN_ABORT')
-        self.getAndStoreAlpacaProperty('cansetccdtemperature', 'CAN_SET_CCD_TEMPERATURE')
-        self.getAndStoreAlpacaProperty('cangetcoolerpower', 'CAN_GET_COOLER_POWER')
-        self.getAndStoreAlpacaProperty('pixelsizex', 'CCD_INFO.CCD_PIXEL_SIZE_X')
-        self.getAndStoreAlpacaProperty('pixelsizey', 'CCD_INFO.CCD_PIXEL_SIZE_Y')
-        self.getAndStoreAlpacaProperty('maxbinx', 'CCD_BINNING.HOR_BIN_MAX')
-        self.getAndStoreAlpacaProperty('maxbiny', 'CCD_BINNING.VERT_BIN_MAX')
-        self.getAndStoreAlpacaProperty('gainmax', 'CCD_INFO.GAIN_MAX')
-        self.getAndStoreAlpacaProperty('gainmin', 'CCD_INFO.GAIN_MIN')
-        self.getAndStoreAlpacaProperty('startx', 'CCD_FRAME.X')
-        self.getAndStoreAlpacaProperty('starty', 'CCD_FRAME.Y')
+        if not self.deviceConnected:
+            return False
+        super().getInitialConfig()
         self.log.debug(f'Initial data: {self.data}')
         return True
 
@@ -64,19 +52,9 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAlpacaProperty('binx', 'CCD_BINNING.HOR_BIN')
-        self.getAndStoreAlpacaProperty('biny', 'CCD_BINNING.VERT_BIN')
-        self.getAndStoreAlpacaProperty('camerastate', 'CAMERA.STATE')
-        self.getAndStoreAlpacaProperty('gain', 'CCD_GAIN.GAIN')
-        self.getAndStoreAlpacaProperty('offset', 'CCD_OFFSET.OFFSET')
-        self.getAndStoreAlpacaProperty('fastreadout',
-                                       'READOUT_QUALITY.QUALITY_LOW',
-                                       'READOUT_QUALITY.QUALITY_HIGH')
-        self.getAndStoreAlpacaProperty('ccdtemperature',
-                                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.getAndStoreAlpacaProperty('cooleron', 'CCD_COOLER.COOLER_ON')
-        self.getAndStoreAlpacaProperty('coolerpower',
-                                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
+        if not self.deviceConnected:
+            return False
+
         return True
 
     def sendDownloadMode(self, fastReadout=False):
@@ -87,10 +65,10 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         if not canFast:
             return False
         if fastReadout:
-            self.setAlpacaProperty('fastreadout', FastReadout=True)
+            self.client.fastreadout(FastReadout=True)
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.debug(f'Camera has readout quality entry: {quality}')
+        self.log.debug(f'camera has readout quality entry: {quality}')
         return True
 
     def workerExpose(self,
@@ -114,23 +92,24 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         :param width:
         :param height:
         :param focalLength:
-        :return: success
+        :return:
         """
         self.sendDownloadMode(fastReadout=fastReadout)
-        self.setAlpacaProperty('binx', BinX=int(binning))
-        self.setAlpacaProperty('biny', BinY=int(binning))
-        self.setAlpacaProperty('startx', StartX=int(posX / binning))
-        self.setAlpacaProperty('starty', StartY=int(posY / binning))
-        self.setAlpacaProperty('numx', NumX=int(width / binning))
-        self.setAlpacaProperty('numy', NumX=int(width / binning))
+        self.setSGProProperty('binx', BinX=int(binning))
+        self.setSGProProperty('biny', BinY=int(binning))
+        self.setSGProProperty('startx', StartX=int(posX / binning))
+        self.setSGProProperty('starty', StartY=int(posY / binning))
+        self.setSGProProperty('numx', NumX=int(width / binning))
+        self.setSGProProperty('numy', NumX=int(width / binning))
 
-        self.setAlpacaProperty('startexposure', Duration=expTime, Light=True)
-        self.waitExposed(self.getAlpacaProperty, 'imageready', expTime)
-        data = self.retrieveFits(self.getAlpacaProperty, 'imagearray')
+        self.setSGProProperty('startexposure', Duration=expTime, Light=True)
+        self.waitExposed(self.getSGProProperty, 'imageready', expTime)
+        data = self.retrieveFits(self.getSGProProperty, 'imagearray')
         imagePath = self.saveFits(imagePath, data, expTime, binning, focalLength)
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
         self.signals.message.emit('')
+
         return True
 
     def expose(self,
@@ -145,9 +124,11 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
                focalLength=1,
                ):
         """
-
         :return: success
         """
+        if not self.deviceConnected:
+            return False
+
         self.abortExpose = False
         worker = Worker(self.workerExpose,
                         imagePath=imagePath,
@@ -171,10 +152,11 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
 
         self.abortExpose = True
         canAbort = self.data.get('CAN_ABORT', False)
+
         if not canAbort:
             return False
 
-        self.getAlpacaProperty('stopexposure')
+        self.client.stopexposure()
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):
@@ -185,7 +167,7 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
-        self.setAlpacaProperty('cooleron', CoolerOn=coolerOn)
+        self.client.cooleron(CoolerOn=coolerOn)
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -196,31 +178,5 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
-        canSetCCDTemp = self.data.get('CAN_SET_CCD_TEMPERATURE', False)
-        if not canSetCCDTemp:
-            return False
-
-        self.setAlpacaProperty('setccdtemperature', SetCCDTemperature=temperature)
-        return True
-
-    def sendOffset(self, offset=0):
-        """
-        :param offset:
-        :return: success
-        """
-        if not self.deviceConnected:
-            return False
-
-        self.setAlpacaProperty('offset', Offset=offset)
-        return True
-
-    def sendGain(self, gain=0):
-        """
-        :param gain:
-        :return: success
-        """
-        if not self.deviceConnected:
-            return False
-
-        self.setAlpacaProperty('gain', Gain=gain)
+        self.client.setccdtemperature(SetCCDTemperature=temperature)
         return True

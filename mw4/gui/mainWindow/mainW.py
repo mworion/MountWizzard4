@@ -28,8 +28,8 @@ from PyQt5.QtTest import QTest
 # local import
 if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
-    from gui.extWindows.keypadW import KeypadWindow
 
+from gui.extWindows.keypadW import KeypadWindow
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow

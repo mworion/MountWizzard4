@@ -144,6 +144,7 @@ class AutomateWindows(QObject):
         key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
         subkey = winreg.OpenKey(key, nameKey)
         values = self.convertRegistryEntryToDict(subkey)
+        self.log.debug(f'Registry key:[{nameKey}], values:[{values}]')
         winreg.CloseKey(subkey)
         winreg.CloseKey(key)
 
@@ -158,6 +159,7 @@ class AutomateWindows(QObject):
         """
         for i in range(0, winreg.QueryInfoKey(key)[0]):
             nameKey = winreg.EnumKey(key, i)
+            self.log.debug(f'Registry app:[{key}], values:[{nameKey}]')
             if appName in nameKey:
                 break
         else:
@@ -213,6 +215,7 @@ class AutomateWindows(QObject):
         """
         for appName in appNames:
             avail, path, name = self.extractPropertiesFromRegistry(appName)
+            self.log.debug(f'Registry avail:[{avail}], path:[{path}], name:[{name}]')
             if avail:
                 exe = appNames[appName]
                 break
@@ -273,8 +276,8 @@ class AutomateWindows(QObject):
 
         try:
             self.updater.start(self.installPath + self.updaterEXE)
-        except AppStartError:
-            self.log.error('Failed to start updater, please check!')
+        except AppStartError as e:
+            self.log.error(f'Failed to start updater, please check! [{e}]')
             self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
             return False
         except Exception as e:
@@ -315,7 +318,7 @@ class AutomateWindows(QObject):
         :return:
         """
         if not self.installPath:
-            self.log.error(f'No updater found: {self.installPath}')
+            self.log.error(f'No updater available: {self.installPath}')
             return False
 
         self.updater = None

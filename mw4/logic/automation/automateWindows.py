@@ -150,8 +150,7 @@ class AutomateWindows(QObject):
 
         return values
 
-    @staticmethod
-    def searchNameInRegistry(appName, key):
+    def searchNameInRegistry(self, appName, key):
         """
         :param appName:
         :param key:

@@ -210,7 +210,6 @@ class Connection(object):
             client.close()
 
         except Exception as e:
-            self.log.warning(f'Hard close, error: [{e}]')
             return False
 
         return True

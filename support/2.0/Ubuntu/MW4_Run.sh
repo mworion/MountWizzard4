@@ -72,6 +72,6 @@ else
   exit
 fi
 
-startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py 2>run.log"
+startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py"
 $($startCommand)
 deactivate >> run.log 2>&1

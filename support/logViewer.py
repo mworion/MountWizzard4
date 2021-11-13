@@ -154,7 +154,7 @@ class LifeCycle(QTabWidget):
         layout.addWidget(self)
 
     def addEntry(self, line):
-        if '[H]' in line and self.first:
+        if '[H]' in line and 'loader' in line and self.first:
             self.first = False
             self.numberLifecycles += 1
             val = line.split('][')[0].lstrip('[').split('.')[0]

@@ -36,6 +36,8 @@ class KeypadSignals(QObject):
     textRow = pyqtSignal(object, object)
     imgChunk = pyqtSignal(object, object, object)
     keyPressed = pyqtSignal(object)
+    mousePressed = pyqtSignal(object)
+    mouseReleased = pyqtSignal(object)
     cursorPos = pyqtSignal(object, object)
 
 
@@ -179,9 +181,11 @@ class KeypadWindow(toolsQtWidget.MWidget):
         }
         for button in self.buttons:
             if connect:
-                button.clicked.connect(self.buttonPress)
+                button.pressed.connect(self.buttonPressed)
+                button.released.connect(self.buttonReleased)
             else:
-                button.clicked.disconnect(self.buttonPress)
+                button.pressed.disconnect(self.buttonPressed)
+                button.released.disconnect(self.buttonReleased)
         return True
 
     def websocketClear(self):
@@ -213,7 +217,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.startKeypad()
         return True
 
-    def buttonPress(self):
+    def buttonPressed(self):
         """
         :return:
         """
@@ -222,7 +226,19 @@ class KeypadWindow(toolsQtWidget.MWidget):
             return False
 
         keyData = self.keypad.buttonCodes[self.buttons[button]]
-        self.signals.keyPressed.emit(keyData)
+        self.signals.mousePressed.emit(keyData)
+        return True
+
+    def buttonReleased(self):
+        """
+        :return:
+        """
+        button = self.sender()
+        if button not in self.buttons:
+            return False
+
+        keyData = self.keypad.buttonCodes[self.buttons[button]]
+        self.signals.mouseReleased.emit(keyData)
         return True
 
     def writeTextRow(self, row, text):

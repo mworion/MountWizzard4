@@ -37,6 +37,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: '2.1.0'
 
     - name: Cache node modules
       uses: actions/cache@v2
@@ -103,8 +105,9 @@ jobs:
     runs-on: [macos-latest]
     
     steps:
-
       - uses: actions/checkout@v2
+        with:
+          ref: '2.1.0'
   
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -160,8 +163,9 @@ jobs:
     runs-on: [macos-latest]
     
     steps:
-  
       - uses: actions/checkout@v2
+        with:
+          ref: '2.1.0'
   
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2

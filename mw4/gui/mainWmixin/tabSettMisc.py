@@ -172,8 +172,8 @@ class SettMisc(object):
         verBeta = [x for x in vPackage if 'b' in x]
         verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
 
-        self.log.debug(f'Package Beta   : {verBeta[:10]}')
-        self.log.debug(f'Package Release: {verRelease[:10]}')
+        self.log.debug(f'Package Beta:   {verBeta[:10]}')
+        self.log.debug(f'Package Release:{verRelease[:10]}')
 
         if self.ui.versionBeta.isChecked():
             finalPackage = verBeta[0]

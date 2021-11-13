@@ -281,6 +281,7 @@ def checkIsAdmin():
     :return:
     """
     if platform.system() == 'Windows':
+        import ctypes
         try:
             state = ctypes.windll.shell32.IsUserAnAdmin() == 1
         except Exception as e:
@@ -371,7 +372,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
             QFile.copy(f':/data/{file}', filePath)
             log.debug(f'Writing file:  [{file}]')
         else:
-            log.info(f'Using existing file: [{file}]')
+            log.info(f'Using existing: [{file}]')
 
         os.chmod(filePath, 0o666)
     return True

@@ -166,28 +166,54 @@ def test_hostChanged_1(function):
             assert suc
 
 
-def test_buttonPress_1(function):
+def test_buttonPressed_1(function):
     def sender():
         return QPushButton()
 
     function.setupButtons()
     function.sender = sender
-    suc = function.buttonPress()
+    suc = function.buttonPressed()
     assert not suc
 
 
-def test_buttonPress_2(function):
+def test_buttonPressed_2(function):
     def sender():
         return function.ui.b0
 
+    class WS:
+        def send(self, a, b):
+            return
+
     function.setupButtons()
     function.sender = sender
-    with mock.patch.object(function.keypad,
-                           'mousePressed'):
-        with mock.patch.object(function.keypad,
-                               'mouseReleased'):
-            suc = function.buttonPress()
-            assert suc
+    function.keypad.ws = WS()
+    suc = function.buttonPressed()
+    assert suc
+
+
+def test_buttonReleased_1(function):
+    def sender():
+        return QPushButton()
+
+    function.setupButtons()
+    function.sender = sender
+    suc = function.buttonReleased()
+    assert not suc
+
+
+def test_buttonReleased_2(function):
+    def sender():
+        return function.ui.b0
+
+    class WS:
+        def send(self, a, b):
+            return
+
+    function.setupButtons()
+    function.sender = sender
+    function.keypad.ws = WS()
+    suc = function.buttonReleased()
+    assert suc
 
 
 def test_writeTextRow_1(function):

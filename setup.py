@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - fix: for arm64 only: corrected import for virtual keypad
+- fix: arrow keys on keypad did accept long mouse press
  """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.1b1',
+    version='2.1.1',
     packages=[
         'mw4',
         'mw4.base',

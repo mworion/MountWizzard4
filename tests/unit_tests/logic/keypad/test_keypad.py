@@ -33,6 +33,8 @@ def function():
         textRow = pyqtSignal(object, object)
         imgChunk = pyqtSignal(object, object, object)
         keyPressed = pyqtSignal(object)
+        mousePressed = pyqtSignal(object)
+        mouseReleased = pyqtSignal(object)
         cursorPos = pyqtSignal(object, object)
 
     window = KeyPad(signals=Signals())

@@ -20,6 +20,13 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+2.1.1
+
+- fix: for arm64 only: corrected import for virtual keypad
+- fix: arrow keys on keypad did accept long mouse press
+
+2.1.0
+
 - add: hemisphere window: help for choosing the right star for polar alignment
 - add: hemisphere terrain adjust for altitude of image beside azimuth
 - add: angular error ra / dec axis in measurement

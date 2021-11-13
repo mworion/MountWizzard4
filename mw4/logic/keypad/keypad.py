@@ -60,6 +60,8 @@ class KeyPad:
         self.signals = signals
         self.ws = None
         self.signals.keyPressed.connect(self.keyPressed)
+        self.signals.mousePressed.connect(self.mousePressed)
+        self.signals.mouseReleased.connect(self.mouseReleased)
 
     @staticmethod
     def expand7to8(value, fill=False):

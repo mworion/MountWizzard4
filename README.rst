@@ -145,13 +145,13 @@ CS Michel
     https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
 .. |PACKAGE_INSTALL| image::
-    https://github.com/mworion/MountWizzard4/workflows/package_install/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/package_install/badge.svg?branch=2.1.0
 
 .. |RPI4_Mate_18_04| image::
-    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_18_04/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_18_04/badge.svg?branch=2.1.0
 
 .. |RPI4_Mate_20_04| image::
-    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_20_04/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_20_04/badge.svg?branch=2.1.0
 
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg

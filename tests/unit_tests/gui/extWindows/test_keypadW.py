@@ -132,14 +132,20 @@ def test_setupButtons_1(function):
     assert suc
 
 
+def test_websocketClear(function):
+    function.websocketMutex.lock()
+    suc = function.websocketClear()
+    assert suc
+
+
 def test_startKeypad_1(function):
-    function.keypad.ws = 1
+    function.websocketMutex.lock()
     suc = function.startKeypad()
     assert not suc
+    function.websocketMutex.unlock()
 
 
 def test_startKeypad_2(function):
-    function.keypad.ws = None
     with mock.patch.object(function,
                            'clearDisplay'):
         with mock.patch.object(function,
@@ -148,6 +154,7 @@ def test_startKeypad_2(function):
                                    'start'):
                 suc = function.startKeypad()
                 assert suc
+                function.websocketMutex.unlock()
 
 
 def test_hostChanged_1(function):

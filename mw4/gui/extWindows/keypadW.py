@@ -18,7 +18,7 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, QMutex
 from PyQt5.QtGui import QPixmap
 from qimage2ndarray import array2qimage
 import numpy as np
@@ -45,8 +45,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
     """
 
-    __all__ = ['KeypadWindow',
-               ]
+    __all__ = ['KeypadWindow']
 
     def __init__(self, app):
         super().__init__()
@@ -57,6 +56,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
         self.buttons = None
+        self.websocketMutex = QMutex()
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.rows = [
             self.ui.row0,
@@ -184,16 +184,24 @@ class KeypadWindow(toolsQtWidget.MWidget):
                 button.clicked.disconnect(self.buttonPress)
         return True
 
+    def websocketClear(self):
+        """
+        :return:
+        """
+        self.websocketMutex.unlock()
+        return True
+
     def startKeypad(self):
         """
         :return:
         """
-        if self.keypad.ws is not None:
+        if not self.websocketMutex.tryLock():
             return False
 
         self.clearDisplay()
         self.writeTextRow(2, 'Connecting ...')
         worker = Worker(self.keypad.workerWebsocket, self.app.mount.host)
+        worker.signals.finished.connect(self.websocketClear)
         self.threadPool.start(worker)
         return True
 

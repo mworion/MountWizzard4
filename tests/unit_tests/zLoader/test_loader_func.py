@@ -31,7 +31,7 @@ import pytest
 
 # local import
 from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
-from loader import getWindowPos
+from loader import getWindowPos, checkIsAdmin
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -81,6 +81,77 @@ def test_setupWorkDirs_2(qtbot):
                                    return_value=False):
                 val = setupWorkDirs(mwGlob={})
                 assert val['modeldata'] == '4.0'
+
+
+def test_checkIsAdmin_1(qtbot):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(os,
+                               'getuid',
+                               return_value=0,
+                               side_effect=Exception):
+            val = checkIsAdmin()
+            assert val == 'unknown'
+
+
+def test_checkIsAdmin_2(qtbot):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(os,
+                               'getuid',
+                               return_value=0):
+            val = checkIsAdmin()
+            assert val == 'yes'
+
+
+def test_checkIsAdmin_3(qtbot):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        with mock.patch.object(os,
+                               'getuid',
+                               return_value=1):
+            val = checkIsAdmin()
+            assert val == 'no'
+
+
+@pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
+def test_checkIsAdmin_4(qtbot):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(ctypes.windll.shell32,
+                               'IsUserAnAdmin',
+                               return_value=0,
+                               side_effect=Exception):
+            val = checkIsAdmin()
+            assert val == 'unknown'
+
+
+@pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
+def test_checkIsAdmin_5(qtbot):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(ctypes.windll.shell32,
+                               'IsUserAnAdmin',
+                               return_value=1):
+            val = checkIsAdmin()
+            assert val == 'yes'
+
+
+@pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
+def test_checkIsAdmin_6(qtbot):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(ctypes.windll.shell32,
+                               'IsUserAnAdmin',
+                               return_value=0):
+            val = checkIsAdmin()
+            assert val == 'no'
 
 
 def test_writeSystemInfo_1(qtbot):

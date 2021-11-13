@@ -276,11 +276,13 @@ class AutomateWindows(QObject):
         try:
             self.updater.start(self.installPath + self.updaterEXE)
         except AppStartError as e:
-            self.log.error(f'Failed to start updater, please check! [{e}]')
+            e = e.replace('\n', '')
+            self.log.error(f'Start error: [{e}]')
             self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
             return False
         except Exception as e:
-            self.log.error(f'Failed to start updater, error [{e}]')
+            e = e.replace('\n', '')
+            self.log.error(f'General error: [{e}]')
             self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
             return False
         else:

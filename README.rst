@@ -116,11 +116,11 @@ CS Michel
     https://github.com/mworion/MountWizzard4/workflows/ubuntu_unit/badge.svg
 
 .. |CODECOV| image::
-    https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
+    https://codecov.io/gh/mworion/MountWizzard4/branch/2.1.0/graph/badge.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
 
 .. |CODECOV_CHART| image::
-    https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg
+    https://codecov.io/gh/mworion/MountWizzard4/branch/2.1.0/graphs/icicle.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
     :width: 80%
     :align: top
@@ -138,8 +138,8 @@ CS Michel
     :target: https://github.com/mworion/MountWizzard4/issues
 
 .. |COMMITS_MASTER| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v2.0.0/master
-    :target: https://github.com/mworion/MountWizzard4/commits/master
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/2.1.0/master
+    :target: https://github.com/mworion/MountWizzard4/commits/2.1.0
 
 .. |COMMITS_WEEK| image::
     https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4

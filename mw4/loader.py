@@ -276,6 +276,30 @@ def setupWorkDirs(mwGlob):
     return mwGlob
 
 
+def checkIsAdmin():
+    """
+    :return:
+    """
+    if platform.system() == 'Windows':
+        try:
+            state = ctypes.windll.shell32.IsUserAnAdmin() == 1
+        except Exception as e:
+            log.error(f'Check admin error: [{e}]')
+            state = None
+    else:
+        try:
+            state = os.getuid() == 0
+        except Exception as e:
+            log.error(f'Check admin error: [{e}]')
+            state = None
+    if state is None:
+        return 'unknown'
+    elif state:
+        return 'yes'
+    else:
+        return 'no'
+
+
 def writeSystemInfo(mwGlob=None):
     """
     writeSystemInfo print overview data to the log file at the beginning of
@@ -295,6 +319,7 @@ def writeSystemInfo(mwGlob=None):
     log.header(f'python runtime   : {platform.architecture()[0]}')
     log.header(f'PyQt5 / Qt       : {PYQT_VERSION_STR} / {QT_VERSION_STR}')
     log.header(f'node / hostname  : {platform.node()} / {socket.gethostname()}')
+    log.header(f'run as admin     : {checkIsAdmin()}')
     log.header('-' * 100)
 
     return True

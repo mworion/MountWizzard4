@@ -107,13 +107,13 @@ CS Michel
     :alt: Documentation Status
 
 .. |PYTEST macOS| image::
-    https://github.com/mworion/MountWizzard4/workflows/macOS_unit/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/macOS_unit/badge.svg?branch=2.1.0
 
 .. |PYTEST Windows| image::
-    https://github.com/mworion/MountWizzard4/workflows/win_unit/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/win_unit/badge.svg?branch=2.1.0
 
 .. |PYTEST Ubuntu| image::
-    https://github.com/mworion/MountWizzard4/workflows/ubuntu_unit/badge.svg
+    https://github.com/mworion/MountWizzard4/workflows/ubuntu_unit/badge.svg?branch=2.1.0
 
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/2.1.0/graph/badge.svg

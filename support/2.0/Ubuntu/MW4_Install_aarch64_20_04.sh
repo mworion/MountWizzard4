@@ -117,7 +117,7 @@ pip install "${PRE}"/numpy-1.21.2"${PY}"manylinux_2_17_aarch64.manylinux2014"${P
 pip install "${PRE}"/pyerfa-2.0.0"${PY}"linux"${POST}" >> install.log 2>&1
 pip install "${PRE}"/astropy-4.3.1"${PY}"linux"${POST}" >> install.log 2>&1
 pip install "${PRE}"/sep-1.2.0"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/sgp4-2.20"${PY}"manylinux2014"${POST}" >> install.log 2>&1
+pip install "${PRE}"/sgp4-2.20"${PY}"linux"${POST}" >> install.log 2>&1
 pip install "${PRE}"/PyQt5_sip-12.8.1"${PY}"linux"${POST}" >> install.log 2>&1
 pip install "${PRE}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${POST}" >> install.log 2>&1
 

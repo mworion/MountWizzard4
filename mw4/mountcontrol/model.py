@@ -43,8 +43,7 @@ class Model(object):
 
     """
 
-    __all__ = ['Model',
-               ]
+    __all__ = ['Model']
 
     log = logging.getLogger(__name__)
 

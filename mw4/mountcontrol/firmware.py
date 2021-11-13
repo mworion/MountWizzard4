@@ -33,15 +33,11 @@ class Firmware(object):
         >>> fw = Firmware(host='')
     """
 
-    __all__ = ['Firmware',
-               ]
+    __all__ = ['Firmware']
 
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 host=None,
-                 ):
-
+    def __init__(self, host=None):
         self.host = host
         self._product = None
         self._vString = None

@@ -259,8 +259,8 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearCyclePointing(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should not run
-        twice for the same data at the same time.
+        the cyclic or long lasting tasks for getting date from the mount should
+        not run twice for the same data at the same time.
 
         :return: true for test purpose
         """
@@ -399,6 +399,9 @@ class Mount(mountcontrol.mount.Mount):
         """
         :return: true for test purpose
         """
+        t = f'Host:[{self.host}], product:[{self.firmware.product}], '
+        t += f'fw:[{self.firmware.vString}]'
+        self.log.info(t)
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
         return True

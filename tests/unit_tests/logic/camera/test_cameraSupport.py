@@ -49,7 +49,7 @@ def test_writeHeaderInfo_1(function):
     obs = function.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
-    header = function.writeHeaderInfo(True, header, obs, 1, 1, 0)
+    header = function.writeHeaderInfo(header, obs, 1, 1, 0)
     assert header['OBJECT'] == 'SKY_OBJECT'
 
 
@@ -58,7 +58,17 @@ def test_writeHeaderInfo_2(function):
     obs = function.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
-    header = function.writeHeaderInfo(True, header, obs, 1, 1, 100)
+    header = function.writeHeaderInfo(header, obs, 1, 1, 100)
+    assert header['OBJECT'] == 'SKY_OBJECT'
+
+
+def test_writeHeaderInfo_3(function):
+    header = fits.PrimaryHDU(data=np.array([])).header
+    obs = function.app.mount.obsSite
+    obs.location = None
+    obs.raJNow = Angle(hours=0)
+    obs.decJNow = Angle(degrees=0)
+    header = function.writeHeaderInfo(header, obs, 1, 1, 100)
     assert header['OBJECT'] == 'SKY_OBJECT'
 
 

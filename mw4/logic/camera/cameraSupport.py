@@ -34,9 +34,8 @@ class CameraSupport:
     __all__ = ['CameraSupport']
     log = logging.getLogger(__name__)
 
-    def writeHeaderInfo(self, isMount, header, obs, expTime, binning, focalLength):
+    def writeHeaderInfo(self, header, obs, expTime, binning, focalLength):
         """
-        :param isMount:
         :param header:
         :param obs:
         :param expTime:
@@ -73,14 +72,15 @@ class CameraSupport:
         header.append(('SQM',
                        self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
 
+        ra = obs.raJNow
+        dec = obs.decJNow
+        obsTime = obs.timeJD
+        isMount = ra is not None and dec is not None and obsTime is not None
+        isMount = isMount and obs.location is not None
         if isMount:
-            ra = obs.raJNow
-            dec = obs.decJNow
-            obsTime = obs.timeJD
-            if ra is not None and dec is not None and obsTime is not None:
-                ra, dec = JNowToJ2000(ra, dec, obsTime)
-                header.append(('RA', ra._degrees, 'Float value in degree'))
-                header.append(('DEC', dec.degrees, 'Float value in degree'))
+            ra, dec = JNowToJ2000(ra, dec, obsTime)
+            header.append(('RA', ra._degrees, 'Float value in degree'))
+            header.append(('DEC', dec.degrees, 'Float value in degree'))
             header.append(('TELESCOP', self.app.mount.firmware.product,
                            'Mount version from firmware'))
             lat = obs.location.latitude
@@ -107,9 +107,8 @@ class CameraSupport:
         self.signals.downloaded.emit()
         self.signals.message.emit('saving')
         hdu = fits.PrimaryHDU(data=data)
-        isMount = self.app.deviceStat.get('mount', False)
         obs = self.app.mount.obsSite
-        hdu.header = self.writeHeaderInfo(isMount, hdu.header, obs, expTime,
+        hdu.header = self.writeHeaderInfo(hdu.header, obs, expTime,
                                           binning, focalLength)
         hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
         self.log.info(f'Saved Image: [{imagePath}]')

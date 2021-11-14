@@ -20,7 +20,7 @@ import platform
 
 releaseNotes = """
 - fix: non connected mount influences camera on ASCOM / ALPACA
-- fix: logging
+- fix: logging string formatting
  """
 
 with open('notes.txt', 'w') as f:

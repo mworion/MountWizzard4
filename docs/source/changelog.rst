@@ -20,6 +20,11 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+2.1.2
+
+- fix: non connected mount influences camera on ASCOM / ALPACA
+- fix: logging string formatting
+
 2.1.1
 
 - fix: for arm64 only: corrected import for virtual keypad

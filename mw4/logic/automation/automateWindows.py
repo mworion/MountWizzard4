@@ -219,7 +219,7 @@ class AutomateWindows(QObject):
                 exe = appNames[appName]
                 break
         else:
-            self.log.warning('QCI updater not found')
+            self.log.warning('10micron updater not found')
             return False, '', '', ''
 
         return avail, path, name, exe
@@ -276,12 +276,12 @@ class AutomateWindows(QObject):
         try:
             self.updater.start(self.installPath + self.updaterEXE)
         except AppStartError as e:
-            e = e.replace('\n', '')
+            e = f'{e}'.replace('\n', '')
             self.log.error(f'Start error: [{e}]')
             self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
             return False
         except Exception as e:
-            e = e.replace('\n', '')
+            e = f'{e}'.replace('\n', '')
             self.log.error(f'General error: [{e}]')
             self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
             return False

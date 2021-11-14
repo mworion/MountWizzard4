@@ -79,8 +79,8 @@ class CameraSupport:
             obsTime = obs.timeJD
             if ra is not None and dec is not None and obsTime is not None:
                 ra, dec = JNowToJ2000(ra, dec, obsTime)
-            header.append(('RA', ra._degrees, 'Float value in degree'))
-            header.append(('DEC', dec.degrees, 'Float value in degree'))
+                header.append(('RA', ra._degrees, 'Float value in degree'))
+                header.append(('DEC', dec.degrees, 'Float value in degree'))
             header.append(('TELESCOP', self.app.mount.firmware.product,
                            'Mount version from firmware'))
             lat = obs.location.latitude

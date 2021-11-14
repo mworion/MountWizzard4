@@ -219,7 +219,7 @@ class AutomateWindows(QObject):
                 exe = appNames[appName]
                 break
         else:
-            self.log.warning('QCI updater not found')
+            self.log.warning('10micron updater not found')
             return False, '', '', ''
 
         return avail, path, name, exe

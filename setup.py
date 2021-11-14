@@ -19,9 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: for arm64 only: corrected import for virtual keypad
-- fix: arrow keys on keypad did accept long mouse press
-- fix: non connected mount influences 
+- fix: non connected mount influences camera on ASCOM / ALPACA
+- fix: logging
  """
 
 with open('notes.txt', 'w') as f:

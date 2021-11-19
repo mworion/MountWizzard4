@@ -17,6 +17,7 @@ of the core functions are provided by the mount computer.
     modeling/index
     imaging/index
     satellite/index
+    help/index
     architecture/index
     changelog
     changelogScripts

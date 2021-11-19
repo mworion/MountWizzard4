@@ -75,6 +75,10 @@ If your WOL does not work, please check MAC address, WOL being enabled. If you
 switched your mount manual off and cut the power supply, sometimes WOL does not
 work the first time. You need a redundant path if you are in a remote site!
 
+Basically multiple instances of MW4 could be up and running, but MW4 take up to 6
+parallel connections to the mount. The documentation allows in total 10 connection
+each of the two ports (3490, 3492). This might overload the 10 micron system.
+
 Device connectivity
 -------------------
 
@@ -84,6 +88,8 @@ ASCOM uses different types of drivers for the devices. Some of them need an
 environment in 32bit or 64bit like you application. So if you are using an 64bit
 application for imaging your drivers will be 64bit compatible. In this case the
 python installation also needs to be 64bit. Otherwise the connection will fail.
+
+Modern CMOS cameras with large sensors normally work on 64bit mode.
 
 Many device driver only support one connection at the same time. So if you imaging
 application already *took* a device, MW4 might be not able to connect anymore.

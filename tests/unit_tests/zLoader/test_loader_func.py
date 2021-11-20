@@ -202,8 +202,10 @@ def test_extractFile_2():
                                return_value=MTime()):
             with mock.patch.object(os,
                                    'remove'):
-                suc = extractFile(filePath, 'de421_23.bsp', 2000000000.0)
-                assert suc
+                with mock.patch.object(os,
+                                       'remove'):
+                    suc = extractFile(filePath, 'de421_23.bsp', 2000000000.0)
+                    assert suc
 
 
 def test_extractFile_3():

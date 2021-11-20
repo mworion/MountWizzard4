@@ -222,7 +222,8 @@ class MyApp(QApplication):
             return returnValue
         if not event.button():
             return returnValue
-
+        if event.type() == QEvent.MouseButtonRelease:
+            return returnValue
         returnValue = self.handleButtons(obj, returnValue)
         return returnValue
 

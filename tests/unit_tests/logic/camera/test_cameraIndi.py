@@ -224,43 +224,41 @@ def test_updateNumber_3():
 
 def test_updateHeaderInfo_1():
     header = {}
-    app.ra = Angle(hours=12)
-    app.dec = Angle(degrees=180)
+    app.app.mount.obsSite.raJNow = None
+    app.app.mount.obsSite.decJNow = None
+    app.app.mount.obsSite.timeJD = None
     h = app.updateHeaderInfo(header)
-    assert 'RA' in h
-    assert 'DEC' in h
+    assert 'RA' not in h
+    assert 'DEC' not in h
 
 
 def test_updateHeaderInfo_2():
     header = {'RA': 90,
               'DEC': 90}
-    app.ra = Angle(hours=12)
-    app.dec = Angle(degrees=180)
+    app.app.mount.obsSite.raJNow = None
+    app.app.mount.obsSite.decJNow = None
+    app.app.mount.obsSite.timeJD = None
     h = app.updateHeaderInfo(header)
     assert 'RA' in h
     assert 'DEC' in h
-    assert h['RA'] == 90
-    assert h['DEC'] == 90
 
 
 def test_updateHeaderInfo_3():
-    header = {'RA': 90}
-    app.ra = Angle(hours=12)
-    app.dec = Angle(degrees=180)
+    header = {}
+    tsTest = load.timescale().tt_jd(2451544.5)
+    app.app.mount.obsSite.raJNow = Angle(hours=12)
+    app.app.mount.obsSite.decJNow = Angle(degrees=180)
+    app.app.mount.obsSite.timeJD = tsTest
     h = app.updateHeaderInfo(header)
     assert 'RA' in h
     assert 'DEC' in h
-    assert h['RA'] == 180
-    assert h['DEC'] == 180
+    assert h['RA'] != 0
+    assert h['DEC'] != 0
 
 
-def test_updateHeaderInfo_4():
-    header = {}
-    app.ra = None
-    app.dec = None
-    h = app.updateHeaderInfo(header)
-    assert 'RA' not in h
-    assert 'DEC' not in h
+def test_workerSaveBlobSignalsFinished():
+    suc = app.workerSaveBlobSignalsFinished()
+    assert suc
 
 
 def test_workerSaveBLOB_1():
@@ -460,20 +458,6 @@ def test_expose_3():
 
 def test_expose_4():
     app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value={}):
-        with mock.patch.object(app.client,
-                               'sendNewNumber',
-                               return_value=True):
-            suc = app.expose()
-            assert suc
-
-
-def test_expose_5():
-    app.deviceName = 'test'
-    app.app.deviceStat['mount'] = False
     app.device = Device()
     with mock.patch.object(app.device,
                            'getNumber',

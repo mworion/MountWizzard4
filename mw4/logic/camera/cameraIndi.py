@@ -40,8 +40,6 @@ class CameraIndi(IndiClass):
         self.threadPool = app.threadPool
         self.data = data
         self.imagePath = ''
-        self.ra = None
-        self.dec = None
         self.isDownloading = False
 
     def setUpdateConfig(self, deviceName):
@@ -148,13 +146,16 @@ class CameraIndi(IndiClass):
         """
         if 'RA' in header and 'DEC' in header:
             return header
-
-        if self.ra is None or self.dec is None:
+        ra = self.app.mount.obsSite.raJNow
+        dec = self.app.mount.obsSite.decJNow
+        timeJD = self.app.mount.obsSite.timeJD
+        if ra is None or dec is None or timeJD is None:
             return header
 
+        ra, dec = JNowToJ2000(ra, dec, timeJD)
         self.log.info('Missing Ra/Dec in header adding from mount')
-        header['RA'] = self.ra._degrees
-        header['DEC'] = self.dec.degrees
+        header['RA'] = ra._degrees
+        header['DEC'] = dec.degrees
         return header
 
     def workerSaveBlobSignalsFinished(self):
@@ -271,19 +272,6 @@ class CameraIndi(IndiClass):
             return False
 
         self.imagePath = imagePath
-        isMount = self.app.deviceStat['mount']
-        if isMount:
-            ra = self.app.mount.obsSite.raJNow
-            dec = self.app.mount.obsSite.decJNow
-            timeJD = self.app.mount.obsSite.timeJD
-            if ra is not None and dec is not None and timeJD is not None:
-                ra, dec = JNowToJ2000(ra, dec, timeJD)
-            self.ra = ra
-            self.dec = dec
-        else:
-            self.ra = None
-            self.dec = None
-
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
             self.log.debug('Download quality could not be set')

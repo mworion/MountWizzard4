@@ -67,6 +67,13 @@ def test_handleButtons_3():
     assert val == 10
 
 
+def test_handleButtons_3b():
+    ui = QtWidgets.QPushButton()
+    ui.setObjectName('test')
+    val = app.handleButtons(obj=ui, returnValue=10)
+    assert val == 10
+
+
 def test_handleButtons_4():
     ui = QtWidgets.QRadioButton()
     val = app.handleButtons(obj=ui, returnValue=10)

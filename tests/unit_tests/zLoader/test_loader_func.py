@@ -203,7 +203,7 @@ def test_extractFile_2():
             with mock.patch.object(os,
                                    'remove'):
                 with mock.patch.object(os,
-                                       'remove'):
+                                       'chmod'):
                     suc = extractFile(filePath, 'de421_23.bsp', 2000000000.0)
                     assert suc
 

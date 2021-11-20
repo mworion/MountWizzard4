@@ -164,20 +164,18 @@ class MyApp(QApplication):
         :param returnValue:
         :return:
         """
-        if obj.objectName() == 'MainWindowWindow':
+        if 'Window' in obj.objectName():
             return returnValue
-
-        if obj == self.last:
-            return returnValue
-        else:
-            self.last = obj
 
         if isinstance(obj, QTabBar):
             self.log.ui(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
         elif isinstance(obj, QComboBox):
             self.log.ui(f'Click DropDown: [{obj.objectName()}]')
         elif isinstance(obj, QPushButton):
-            self.log.ui(f'Click Button  : [{obj.objectName()}]')
+            text = obj.objectName()
+            if not text:
+                text = f'Popup - {obj.text()}'
+            self.log.ui(f'Click Button  : [{text}]')
         elif isinstance(obj, QRadioButton):
             self.log.ui(f'Click Radio   : [{obj.objectName()}]'
                         f', value: [{not obj.isChecked()}]')

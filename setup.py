@@ -19,8 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: non connected mount influences camera on ASCOM / ALPACA
-- fix: logging string formatting
+- improved logging for UI events
  """
 
 with open('notes.txt', 'w') as f:

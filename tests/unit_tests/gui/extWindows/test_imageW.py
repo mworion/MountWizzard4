@@ -752,10 +752,22 @@ def test_exposeRaw_1(function, qtbot):
     function.app.camera.subFrame = 100
     with mock.patch.object(function.app.camera,
                            'expose',
-                           ):
+                           return_value=True):
         with qtbot.waitSignal(function.app.message):
             suc = function.exposeRaw()
             assert suc
+
+
+def test_exposeRaw_2(function, qtbot):
+    function.app.camera.expTime = 3
+    function.app.camera.binning = 3
+    function.app.camera.subFrame = 100
+    with mock.patch.object(function.app.camera,
+                           'expose',
+                           return_value=False):
+        with qtbot.waitSignal(function.app.message):
+            suc = function.exposeRaw()
+            assert not suc
 
 
 def test_exposeImageDone_1(function, qtbot):

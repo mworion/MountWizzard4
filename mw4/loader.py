@@ -164,20 +164,18 @@ class MyApp(QApplication):
         :param returnValue:
         :return:
         """
-        if obj.objectName() == 'MainWindowWindow':
+        if 'Window' in obj.objectName():
             return returnValue
-
-        if obj == self.last:
-            return returnValue
-        else:
-            self.last = obj
 
         if isinstance(obj, QTabBar):
             self.log.ui(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
         elif isinstance(obj, QComboBox):
             self.log.ui(f'Click DropDown: [{obj.objectName()}]')
         elif isinstance(obj, QPushButton):
-            self.log.ui(f'Click Button  : [{obj.objectName()}]')
+            text = obj.objectName()
+            if not text:
+                text = f'Popup - {obj.text()}'
+            self.log.ui(f'Click Button  : [{text}]')
         elif isinstance(obj, QRadioButton):
             self.log.ui(f'Click Radio   : [{obj.objectName()}]'
                         f', value: [{not obj.isChecked()}]')
@@ -222,7 +220,8 @@ class MyApp(QApplication):
             return returnValue
         if not event.button():
             return returnValue
-
+        if event.type() == QEvent.MouseButtonRelease:
+            return returnValue
         returnValue = self.handleButtons(obj, returnValue)
         return returnValue
 
@@ -326,6 +325,30 @@ def writeSystemInfo(mwGlob=None):
     return True
 
 
+def extractFile(filePath=None, file=None, fileTimeStamp=None):
+    """
+    :param filePath:
+    :param file:
+    :param fileTimeStamp:
+    :return:
+    """
+    fileExist = os.path.isfile(filePath)
+    if fileExist:
+        mtime = os.stat(filePath).st_mtime
+        overwrite = mtime < fileTimeStamp
+    else:
+        log.info(f'Using existing: [{file}]')
+        return False
+
+    if overwrite:
+        os.remove(filePath)
+
+    QFile.copy(f':/data/{file}', filePath)
+    os.chmod(filePath, 0o666)
+    log.debug(f'Writing file:  [{file}]')
+    return True
+
+
 def extractDataFiles(mwGlob=None, splashW=None):
     """
     we have the necessary files for leap second, ephemeris and satellite already
@@ -357,24 +380,9 @@ def extractDataFiles(mwGlob=None, splashW=None):
     for file in files:
         if splashW is not None:
             splashW.showMessage('Loading {0}'.format(file))
-
         filePath = mwGlob['dataDir'] + '/' + file
-        fileExist = os.path.isfile(filePath)
-        if fileExist:
-            mtime = os.stat(filePath).st_mtime
-            doWrite = mtime < files[file]
-        else:
-            doWrite = True
-
-        if doWrite:
-            if fileExist:
-                os.remove(filePath)
-            QFile.copy(f':/data/{file}', filePath)
-            log.debug(f'Writing file:  [{file}]')
-        else:
-            log.info(f'Using existing: [{file}]')
-
-        os.chmod(filePath, 0o666)
+        fileTimeStamp = files[file]
+        extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
     return True
 
 

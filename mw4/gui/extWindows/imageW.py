@@ -836,20 +836,23 @@ class ImageWindow(toolsQtWidget.MWidget):
         focalLength = self.app.telescope.focalLength
 
         self.imageFileNameOld = self.imageFileName
-        self.app.camera.expose(imagePath=imagePath,
-                               expTime=self.expTime,
-                               binning=self.binning,
-                               subFrame=subFrame,
-                               fastReadout=fastReadout,
-                               focalLength=focalLength
-                               )
+        suc = self.app.camera.expose(imagePath=imagePath,
+                                     expTime=self.expTime,
+                                     binning=self.binning,
+                                     subFrame=subFrame,
+                                     fastReadout=fastReadout,
+                                     focalLength=focalLength
+                                     )
+        if not suc:
+            text = f'Cannot expose:       [{os.path.basename(imagePath)}]'
+            self.app.message.emit(text, 2)
+            return False
 
         text = f'Exposing:            [{os.path.basename(imagePath)}]'
         self.app.message.emit(text, 0)
         text = f'Duration:{self.expTime:3.0f}s  '
         text += f'Bin:{self.binning:1.0f}  Sub:{subFrame:3.0f}%'
         self.app.message.emit(f'                     {text}', 0)
-
         return True
 
     def exposeImageDone(self, imagePath=''):

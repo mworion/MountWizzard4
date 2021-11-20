@@ -30,8 +30,9 @@ import json
 import pytest
 
 # local import
+import loader
 from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
-from loader import getWindowPos, checkIsAdmin
+from loader import getWindowPos, checkIsAdmin, extractFile
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -173,19 +174,64 @@ def test_writeSystemInfo_2(qtbot):
         assert suc
 
 
-def test_extractDataFiles_1(qtbot):
+def test_extractFile_1():
+    class MTime:
+        st_mtime = 1000000000.0
+
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        with mock.patch.object(os,
+                               'stat',
+                               return_value=MTime()):
+            filePath = 'tests/workDir/data/de421_23.bsp'
+            suc = extractFile(filePath, 'de421_23.bsp', 0)
+            assert not suc
+
+
+def test_extractFile_2():
+    class MTime:
+        st_mtime = 1000000000.0
+
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(os,
+                               'stat',
+                               return_value=MTime()):
+            filePath = 'tests/workDir/data/de421_23.bsp'
+            suc = extractFile(filePath, 'de421_23.bsp', 2000000000.0)
+            assert suc
+
+
+def test_extractFile_3():
+    class MTime:
+        st_mtime = 1000000000.0
+
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(os,
+                               'stat',
+                               return_value=MTime()):
+            filePath = 'tests/workDir/data/de421_23.bsp'
+            suc = extractFile(filePath, 'de421_23.bsp', 0)
+            assert suc
+
+
+def test_extractDataFiles_1():
     suc = extractDataFiles()
     assert not suc
 
 
-def test_extractDataFiles_2(qtbot):
+def test_extractDataFiles_2():
     mwGlob = dict()
     mwGlob['dataDir'] = 'tests/workDir/data'
     suc = extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
-def test_extractDataFiles_3(qtbot):
+def test_extractDataFiles_3():
     class Splash:
         @staticmethod
         def showMessage(a):
@@ -193,52 +239,10 @@ def test_extractDataFiles_3(qtbot):
 
     mwGlob = dict()
     mwGlob['dataDir'] = 'tests/workDir/data'
-    suc = extractDataFiles(mwGlob=mwGlob, splashW=Splash())
-    assert suc
-
-
-def test_extractDataFiles_4(qtbot):
-    mwGlob = dict()
-    mwGlob['dataDir'] = 'tests/workDir/data'
-    suc = extractDataFiles(mwGlob=mwGlob)
-    assert suc
-
-
-def test_extractDataFiles_5(qtbot):
-    if platform.system() == 'Windows':
-        return
-
-    mwGlob = {'dataDir': 'tests/workDir/data'}
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=False):
-        suc = extractDataFiles(mwGlob=mwGlob)
+    with mock.patch.object(loader,
+                           'extractFile'):
+        suc = extractDataFiles(mwGlob=mwGlob, splashW=Splash())
         assert suc
-    assert os.path.isfile('tests/workDir/data/de421_23.bsp')
-    assert os.path.isfile('tests/workDir/data/visual.txt')
-    assert os.path.isfile('tests/workDir/data/finals2000A.all')
-    assert os.path.isfile('tests/workDir/data/finals.data')
-    assert os.path.isfile('tests/workDir/data/CDFLeapSeconds.txt')
-
-
-def test_extractDataFiles_6(qtbot):
-    if platform.system() == 'Windows':
-        return
-
-    class MTime:
-        st_mtime = 1000000000.0
-
-    shutil.copy('tests/testData/finals2000A.all',
-                'tests/workDir/data/finals2000A.all')
-    mwGlob = {'dataDir': 'tests/workDir/data'}
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=True):
-        with mock.patch.object(os,
-                               'stat',
-                               return_value=MTime()):
-            suc = extractDataFiles(mwGlob=mwGlob)
-            assert suc
 
 
 def test_getWindowPos_1():

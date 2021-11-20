@@ -179,13 +179,6 @@ def test_setExposureState_6():
 
 def test_sendDownloadMode_1():
     app.deviceName = 'test'
-    app.device = None
-    suc = app.sendDownloadMode()
-    assert not suc
-
-
-def test_sendDownloadMode_2():
-    app.deviceName = 'test'
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',

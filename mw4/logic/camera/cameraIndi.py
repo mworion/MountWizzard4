@@ -226,9 +226,6 @@ class CameraIndi(IndiClass):
         """
         :return: success
         """
-        if not self.device:
-            return False
-
         quality = self.device.getSwitch('READOUT_QUALITY')
         self.log.debug(f'Camera has readout quality entry: {quality}')
 
@@ -269,6 +266,7 @@ class CameraIndi(IndiClass):
         :return: success
         """
         if not self.device:
+            self.log.error('Expose, but no device present')
             return False
 
         self.imagePath = imagePath

@@ -85,6 +85,9 @@ echo --------------------------------------------------------
 echo start virtualenv and update tools
 echo --------------------------------------------------------
 
+echo checking system packages, should be no mw4 in >> install.log  2>&1
+python -p pip list >> install.log 2>&1
+
 source venv/bin/activate >> install.log 2>&1
 pip install pip --upgrade >> install.log 2>&1
 pip install setuptools --upgrade >> install.log 2>&1
@@ -126,6 +129,9 @@ echo installing mountwizzard4
 echo --------------------------------------------------------
 
 pip install mountwizzard4 >> install.log 2>&1
+
+echo checking venv packages, mw4 should be present >> install.log  2>&1
+python -p pip list >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------

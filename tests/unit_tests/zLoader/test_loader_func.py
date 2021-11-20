@@ -178,13 +178,13 @@ def test_extractFile_1():
     class MTime:
         st_mtime = 1000000000.0
 
+    filePath = 'tests/workDir/data/de421_23.bsp'
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
         with mock.patch.object(os,
                                'stat',
                                return_value=MTime()):
-            filePath = 'tests/workDir/data/de421_23.bsp'
             suc = extractFile(filePath, 'de421_23.bsp', 0)
             assert not suc
 
@@ -193,30 +193,34 @@ def test_extractFile_2():
     class MTime:
         st_mtime = 1000000000.0
 
+    filePath = 'tests/workDir/data/de421_23.bsp'
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
         with mock.patch.object(os,
                                'stat',
                                return_value=MTime()):
-            filePath = 'tests/workDir/data/de421_23.bsp'
-            suc = extractFile(filePath, 'de421_23.bsp', 2000000000.0)
-            assert suc
+            with mock.patch.object(os,
+                                   'remove'):
+                suc = extractFile(filePath, 'de421_23.bsp', 2000000000.0)
+                assert suc
 
 
 def test_extractFile_3():
     class MTime:
         st_mtime = 1000000000.0
 
+    filePath = 'tests/workDir/data/de421_23.bsp'
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
         with mock.patch.object(os,
                                'stat',
                                return_value=MTime()):
-            filePath = 'tests/workDir/data/de421_23.bsp'
-            suc = extractFile(filePath, 'de421_23.bsp', 0)
-            assert suc
+            with mock.patch.object(os,
+                                   'chmod'):
+                suc = extractFile(filePath, 'de421_23.bsp', 0)
+                assert suc
 
 
 def test_extractDataFiles_1():

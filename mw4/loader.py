@@ -325,6 +325,30 @@ def writeSystemInfo(mwGlob=None):
     return True
 
 
+def extractFile(filePath=None, file=None, fileTimeStamp=None):
+    """
+    :param filePath:
+    :param file:
+    :param fileTimeStamp:
+    :return:
+    """
+    fileExist = os.path.isfile(filePath)
+    if fileExist:
+        mtime = os.stat(filePath).st_mtime
+        overwrite = mtime < fileTimeStamp
+    else:
+        log.info(f'Using existing: [{file}]')
+        return False
+
+    if overwrite:
+        os.remove(filePath)
+
+    QFile.copy(f':/data/{file}', filePath)
+    os.chmod(filePath, 0o666)
+    log.debug(f'Writing file:  [{file}]')
+    return True
+
+
 def extractDataFiles(mwGlob=None, splashW=None):
     """
     we have the necessary files for leap second, ephemeris and satellite already
@@ -356,24 +380,9 @@ def extractDataFiles(mwGlob=None, splashW=None):
     for file in files:
         if splashW is not None:
             splashW.showMessage('Loading {0}'.format(file))
-
         filePath = mwGlob['dataDir'] + '/' + file
-        fileExist = os.path.isfile(filePath)
-        if fileExist:
-            mtime = os.stat(filePath).st_mtime
-            doWrite = mtime < files[file]
-        else:
-            doWrite = True
-
-        if doWrite:
-            if fileExist:
-                os.remove(filePath)
-            QFile.copy(f':/data/{file}', filePath)
-            log.debug(f'Writing file:  [{file}]')
-        else:
-            log.info(f'Using existing: [{file}]')
-
-        os.chmod(filePath, 0o666)
+        fileTimeStamp = files[file]
+        extractFile(filePath=filePath, file=file, fileTimeStamp=fileTimeStamp)
     return True
 
 

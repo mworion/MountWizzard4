@@ -234,7 +234,7 @@ jobs:
     # the ubuntu version does not have a headless Qt5
   
     needs: [build_widgets_resource]
-    runs-on: [ubuntu-latest]
+    runs-on: [macos-latest]
     
     steps:
       - uses: actions/checkout@v2
@@ -285,7 +285,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/zLoader --cov=mw4/
+          pytest tests/unit_tests/zLoader --cov=mw4/
           
       - name: rename_coveragefile
         run: |

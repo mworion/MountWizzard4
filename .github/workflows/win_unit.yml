@@ -300,7 +300,7 @@ jobs:
 
     # Combining all results and uploading the coverage data.
     
-    needs: [ run_tests_windows_1, run_tests_windows_2 ]
+    needs: [ run_tests_windows_1, run_tests_windows_2, run_tests_ubuntu_rest]
     runs-on: [ windows-latest ]
     
     steps:

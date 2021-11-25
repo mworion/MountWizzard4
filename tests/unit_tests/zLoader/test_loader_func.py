@@ -84,6 +84,7 @@ def test_setupWorkDirs_2(qtbot):
                 assert val['modeldata'] == '4.0'
 
 
+@pytest.mark.skipif(platform.system() == 'Windows', reason="Darwin needed")
 def test_checkIsAdmin_1(qtbot):
     with mock.patch.object(platform,
                            'system',
@@ -96,6 +97,7 @@ def test_checkIsAdmin_1(qtbot):
             assert val == 'unknown'
 
 
+@pytest.mark.skipif(platform.system() == 'Windows', reason="Darwin needed")
 def test_checkIsAdmin_2(qtbot):
     with mock.patch.object(platform,
                            'system',
@@ -107,6 +109,7 @@ def test_checkIsAdmin_2(qtbot):
             assert val == 'yes'
 
 
+@pytest.mark.skipif(platform.system() == 'Windows', reason="Darwin needed")
 def test_checkIsAdmin_3(qtbot):
     with mock.patch.object(platform,
                            'system',
@@ -114,6 +117,45 @@ def test_checkIsAdmin_3(qtbot):
         with mock.patch.object(os,
                                'getuid',
                                return_value=1):
+            val = checkIsAdmin()
+            assert val == 'no'
+
+
+@pytest.mark.skipif(platform.system() == 'Windows', reason="Windows needed")
+def test_checkIsAdmin_4(qtbot):
+    import ctypes
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(ctypes.windll.shell32,
+                               'IsUserAnAdmin',
+                               side_effect=Exception):
+            val = checkIsAdmin()
+            assert val == 'unknown'
+
+
+@pytest.mark.skipif(platform.system() == 'Windows', reason="Windows needed")
+def test_checkIsAdmin_5(qtbot):
+    import ctypes
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(ctypes.windll.shell32,
+                               'IsUserAnAdmin',
+                               return_value=1):
+            val = checkIsAdmin()
+            assert val == 'yes'
+
+
+@pytest.mark.skipif(platform.system() == 'Windows', reason="Windows needed")
+def test_checkIsAdmin_6(qtbot):
+    import ctypes
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(ctypes.windll.shell32,
+                               'IsUserAnAdmin',
+                               return_value=0):
             val = checkIsAdmin()
             assert val == 'no'
 

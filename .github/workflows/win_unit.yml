@@ -228,6 +228,74 @@ jobs:
           name: coverage
           path: ./coverage2.dat
 
+  run_tests_ubuntu_rest:
+  
+    # The package has 3000+ unit tests, which will be tested on macOS as
+    # the ubuntu version does not have a headless Qt5
+  
+    needs: [build_widgets_resource]
+    runs-on: [ubuntu-latest]
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
+          
+      - name: install_package
+        run: |
+          python -m pip install cython wheel
+          python -m pip install dist/mountwizzard4.tar.gz
+
+      - name: Install Head
+        run: |
+          sudo apt-get update
+          sudo apt-get -y upgrade
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
+          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
+          sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
+          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
+          sudo apt-get install -y libxcb-keysyms1
+
+      - name: install_pytest
+        run: |
+          python -m pip install pytest
+          python -m pip install pytest-qt
+          python -m pip install pytest-cov
+          python -m pip install pytest-pythonpath
+  
+      - name: running_unit_tests
+        run: |
+          xvfb-run pytest tests/unit_tests/zLoader --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage coverage3.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage3.dat
+
   coverage:
 
     # Combining all results and uploading the coverage data.
@@ -259,7 +327,7 @@ jobs:
     - name: combining_data
       run: |
         python -m pip install coverage
-        python -m coverage combine coverage1.dat coverage2.dat
+        python -m coverage combine coverage1.dat coverage2.dat coverage3.dat
         python -m coverage xml
 
     - name: upload

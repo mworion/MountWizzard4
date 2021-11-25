@@ -290,7 +290,7 @@ jobs:
       - name: rename_coveragefile
         run: |
           mv .coverage coverage3.dat
-          cat coverage.dat
+          cat coverage3.dat
         
       - name: upload_coverage
         uses: actions/upload-artifact@v2

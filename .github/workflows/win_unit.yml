@@ -328,7 +328,7 @@ jobs:
         
     - name: combining_data
       run: |
-        ls -la
+        dir
         python -m pip install coverage
         python -m coverage combine coverage1.dat coverage2.dat coverage3.dat
         python -m coverage xml
@@ -340,3 +340,5 @@ jobs:
         file: coverage.xml
         flags: unittests
         name: codecov-umbrella
+        env_vars: OS,PYTHON
+        override_branch: ${{env.branch}}

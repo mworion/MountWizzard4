@@ -337,15 +337,16 @@ def extractFile(filePath=None, file=None, fileTimeStamp=None):
         mtime = os.stat(filePath).st_mtime
         overwrite = mtime < fileTimeStamp
     else:
-        log.info(f'Using existing: [{file}]')
-        return False
+        overwrite = False
 
     if overwrite:
+        log.info(f'Writing new file: [{file}]')
         os.remove(filePath)
+    else:
+        log.info(f'Using existing: [{file}]')
 
     QFile.copy(f':/data/{file}', filePath)
     os.chmod(filePath, 0o666)
-    log.debug(f'Writing file:  [{file}]')
     return True
 
 

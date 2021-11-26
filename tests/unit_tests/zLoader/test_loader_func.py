@@ -228,7 +228,7 @@ def test_extractFile_1():
                                'stat',
                                return_value=MTime()):
             suc = extractFile(filePath, 'de421_23.bsp', 0)
-            assert not suc
+            assert suc
 
 
 def test_extractFile_2():

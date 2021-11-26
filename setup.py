@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - add: config adjustments for astroberry and stellar mate devices (no debayer now)
+- improved: logging for UI events
  """
 
 with open('notes.txt', 'w') as f:

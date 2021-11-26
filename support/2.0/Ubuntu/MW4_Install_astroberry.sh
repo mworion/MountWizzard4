@@ -16,10 +16,10 @@ echo "         ██║ ╚═╝ ██║╚███╔███╔╝     �
 echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
 echo --------------------------------------------------------
-echo install script version 2.1 aarch64
+echo install script version 2.1 astroberry
 echo --------------------------------------------------------
 
-echo install script version 2.1 aarch64 > install.log 2>&1
+echo install script version 2.1 astroberry > install.log 2>&1
 
 echo
 echo --------------------------------------------------------
@@ -60,78 +60,29 @@ python3 -m pip install pip --upgrade >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------
-echo installing $P_VER in virtual environ
-echo --------------------------------------------------------
-
-echo Installing $P_VER in virtual environ >> install.log 2>&1
-
-{
-python3 -m venv venv >> install.log 2>&1
-} || {
-  echo
-  echo --------------------------------------------------------
-  echo no valid virtual environment installed
-  echo please check the install.log for errors
-  echo install virtualenv with
-  echo sudo apt-get install python3-virtualenv
-  echo --------------------------------------------------------
-  
-  echo no valid virtual environment installed >> install.log 2>&1
-  exit
-}
-
-echo
-echo --------------------------------------------------------
-echo start virtualenv and update tools
+echo update tools
 echo --------------------------------------------------------
 
 echo checking system packages, should be no mw4 in >> install.log  2>&1
 python3 -m pip list >> install.log 2>&1
 
-source venv/bin/activate >> install.log 2>&1
-pip install pip --upgrade >> install.log 2>&1
-pip install setuptools --upgrade >> install.log 2>&1
-pip install wheel --upgrade >> install.log 2>&1
+python3 -m pip install pip --upgrade >> install.log 2>&1
+python3 -m pip install setuptools --upgrade >> install.log 2>&1
+python3 -m pip install wheel --upgrade >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------
-echo installing precompiled packages
+echo installing pyqt5 packages
 echo --------------------------------------------------------
 
-GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-WHEELS="/support/2.0/wheels/ubuntu20.04"
-PRE="${GITHUB}${WHEELS}"
-POST="_aarch64.whl"
-
-PY37="-cp37-cp37m-"
-PY38="-cp38-cp38-"
-PY39="-cp39-cp39-"
-
-if [ "${P_VER:0:9}" == "python3.9" ]; then
-  PY="${PY39}"
-elif [ "${P_VER:0:9}" == "python3.8" ]; then
-  PY="${PY38}"
-elif [ "${P_VER:0:9}" == "python3.7" ]; then
-  PY="${PY37}"
-fi
-
-pip install "${PRE}"/numpy-1.21.2"${PY}"manylinux_2_17_aarch64.manylinux2014"${POST}" >> install.log 2>&1
-pip install "${PRE}"/pyerfa-2.0.0"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/astropy-4.3.1"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/sep-1.2.0"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/sgp4-2.20"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/PyQt5_sip-12.8.1"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014"${POST}" >> install.log 2>&1
+sudo apt-get install python3-pyqt5 >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------
 echo installing mountwizzard4
 echo --------------------------------------------------------
 
-pip install mountwizzard4 >> install.log 2>&1
-
-echo checking venv packages, mw4 should be present >> install.log  2>&1
-pip list >> install.log 2>&1
+python3 -m pip install mountwizzard4 >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------

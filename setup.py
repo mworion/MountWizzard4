@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: config adjustments for astroberry and stellarmate devices
+- add: config adjustments for astroberry and stellar mate devices (no debayer now)
  """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.0b101',
+    version='2.1.3b1',
     packages=[
         'mw4',
         'mw4.base',

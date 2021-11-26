@@ -16,10 +16,10 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo run script version 2.0
+echo run script version 2.2
 echo ---------------------------------------------
 
-echo run script version 2.0 > run.log 2>&1
+echo run script version 2.2 > run.log 2>&1
 
 if [ ! -f ./venv/bin/activate ]; then
   echo
@@ -74,6 +74,6 @@ else
   exit
 fi
 
-COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py 2>run.log"
-eval ${COMMAND}
+COMMAND="python ./venv/lib/$P_VER/site-packages/mw4/loader.py"
+eval ${COMMAND} >> run.log 2>&1
 deactivate >> run.log 2>&1

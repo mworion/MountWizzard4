@@ -19,6 +19,7 @@ Installing Process
     mw4
     update
     platesolvers
+    astroberry
     rpi3
     rpi4
     setup

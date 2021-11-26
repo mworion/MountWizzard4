@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+from base.packageConfig import isAvailable
 import os
 
 # external packages
@@ -31,7 +32,8 @@ from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
-from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
+if isAvailable:
+    from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 import sep
 
 # local import
@@ -798,7 +800,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.image = self.image.astype('float32')
 
-        if 'BAYERPAT' in self.header:
+        if 'BAYERPAT' in self.header and isAvailable:
             self.image = demosaicing_CFA_Bayer_bilinear(self.image)
             self.image = np.dot(self.image, [0.2989, 0.5870, 0.1140])
 

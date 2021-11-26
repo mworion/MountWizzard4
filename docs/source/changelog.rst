@@ -20,6 +20,12 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+
+2.1.3
+
+- add: config adjustments for astroberry and stellar mate devices (no debayer now)
+- improved: logging for UI events
+
 2.1.2
 
 - fix: non connected mount influences camera on ASCOM / ALPACA

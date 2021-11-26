@@ -2,7 +2,7 @@
 cd $(dirname "$0")
 
 #
-# updater for Ubuntu / Ubuntu Mate
+# updater for debian astroberry 2.0.4
 # (c) 2021 mworion
 #
 
@@ -18,32 +18,29 @@ echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
 echo --------------------------------------------------------
 echo
-echo "██╗   ██╗██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗"
-echo "██║   ██║██╔══██╗██║   ██║████╗  ██║╚══██╔══╝██║   ██║"
-echo "██║   ██║██████╔╝██║   ██║██╔██╗ ██║   ██║   ██║   ██║"
-echo "██║   ██║██╔══██╗██║   ██║██║╚██╗██║   ██║   ██║   ██║"
-echo "╚██████╔╝██████╔╝╚██████╔╝██║ ╚████║   ██║   ╚██████╔╝"
-echo " ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝    ╚═════╝ "
+echo "    █████╗ ███████╗████████╗██████╗  ██████╗ "
+echo "   ██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗"
+echo "   ███████║███████╗   ██║   ██████╔╝██║   ██║"
+echo "   ██╔══██║╚════██║   ██║   ██╔══██╗██║   ██║"
+echo "   ██║  ██║███████║   ██║   ██║  ██║╚██████╔╝"
+echo "   ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ "
+echo "                                             "
+echo "   ██████╗ ███████╗██████╗ ██████╗ ██╗   ██╗ "
+echo "   ██╔══██╗██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝ "
+echo "   ██████╔╝█████╗  ██████╔╝██████╔╝ ╚████╔╝  "
+echo "   ██╔══██╗██╔══╝  ██╔══██╗██╔══██╗  ╚██╔╝   "
+echo "   ██████╔╝███████╗██║  ██║██║  ██║   ██║    "
+echo "   ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    "
 echo
-echo update script version 2.2
+echo update script version 2.2 astroberry
 echo --------------------------------------------------------
 
-echo update script version 2.2 > update.log 2>&1
-
-if [ ! -f ./venv/bin/activate ]; then
-  echo
-  echo --------------------------------------------------------
-  echo no valid virtual environment installed
-  echo please run MW4_Install.command first
-  echo --------------------------------------------------------
-  exit
-fi
+echo update script version 2.2 astroberry > update.log 2>&1
 
 echo
 echo --------------------------------------------------------
 echo checking installed python version
 echo --------------------------------------------------------
-
 
 echo Checking environment and start script >> update.log 2>&1
 
@@ -80,9 +77,7 @@ echo --------------------------------------------------------
 echo updating MW4 to newest official release
 echo --------------------------------------------------------
 
-source ./venv/bin/activate venv >> update.log 2>&1
-pip install mountwizzard4 --upgrade --no-cache-dir >> update.log 2>&1
-deactivate >> update.log 2>&1
+python3 -m pip install mountwizzard4 --upgrade --no-cache-dir >> update.log 2>&1
 
 echo
 echo --------------------------------------------------------

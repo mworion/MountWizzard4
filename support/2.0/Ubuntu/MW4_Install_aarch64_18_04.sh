@@ -2,10 +2,11 @@
 cd $(dirname "$0")
 
 #
-# Installer for Ubuntu Mate 18.04 for aarch64
+# installer for Ubuntu Mate 18.04 for aarch64
 # (c) 2021 mworion
 #
 
+echo
 echo --------------------------------------------------------
 echo
 echo "         ███╗   ███╗██╗    ██╗██╗  ██╗"
@@ -16,10 +17,18 @@ echo "         ██║ ╚═╝ ██║╚███╔███╔╝     �
 echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
 echo --------------------------------------------------------
-echo install script version 2.1 aarch64
+echo
+echo "      ███╗   ███╗ █████╗ ████████╗███████╗"
+echo "      ████╗ ████║██╔══██╗╚══██╔══╝██╔════╝"
+echo "      ██╔████╔██║███████║   ██║   █████╗  "
+echo "      ██║╚██╔╝██║██╔══██║   ██║   ██╔══╝  "
+echo "      ██║ ╚═╝ ██║██║  ██║   ██║   ███████╗"
+echo "      ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝"
+echo
+echo install script version 2.2 Ubuntu Mate 18.04
 echo --------------------------------------------------------
 
-echo install script version 2.1 aarch64 > install.log 2>&1
+echo install script version 2.2 Ubuntu Mate 18.04 > install.log 2>&1
 
 echo
 echo --------------------------------------------------------
@@ -86,7 +95,7 @@ echo start virtualenv and update tools
 echo --------------------------------------------------------
 
 echo checking system packages, should be no mw4 in >> install.log  2>&1
-python -p pip list >> install.log 2>&1
+python3 -m pip list >> install.log 2>&1
 
 source venv/bin/activate >> install.log 2>&1
 pip install pip --upgrade >> install.log 2>&1
@@ -131,7 +140,7 @@ echo --------------------------------------------------------
 pip install mountwizzard4 >> install.log 2>&1
 
 echo checking venv packages, mw4 should be present >> install.log  2>&1
-python -p pip list >> install.log 2>&1
+pip list >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------

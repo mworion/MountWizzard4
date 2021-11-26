@@ -10,6 +10,14 @@ Unreleased versions of scripts
 
 Released versions of scripts
 ----------------------------
+2.2
+
+- adding support for astroberry and stellar mate (based on astroberry?)
+
+2.1
+
+- fixes
+
 2.0
 
 - update to requirements v2.0beta release of MW4

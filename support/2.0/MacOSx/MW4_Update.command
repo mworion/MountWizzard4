@@ -17,10 +17,10 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo update script version 2.0
+echo update script version 2.2
 echo ---------------------------------------------
 
-echo update script version 2.0 > update.log 2>&1
+echo update script version 2.2 > update.log 2>&1
 
 if [ ! -f ./venv/bin/activate ]; then
   echo

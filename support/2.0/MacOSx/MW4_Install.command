@@ -17,10 +17,10 @@ echo " ██║ ╚═╝ ██║ ╚███╔███╔╝      ██�
 echo " ╚═╝     ╚═╝  ╚══╝╚══╝       ╚═╝"
 echo
 echo ---------------------------------------------
-echo install script version 2.1
+echo install script version 2.2
 echo ---------------------------------------------
 
-echo install script version 2.1 > install.log 2>&1
+echo install script version 2.2 > install.log 2>&1
 
 echo
 echo ---------------------------------------------

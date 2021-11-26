@@ -2,7 +2,7 @@
 cd $(dirname "$0")
 
 #
-# run script for Ubuntu
+# run script for debian astroberry 2.0.4
 # (c) 2021 mworion
 #
 
@@ -18,36 +18,32 @@ echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
 echo
 echo --------------------------------------------------------
 echo
-echo "██╗   ██╗██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗"
-echo "██║   ██║██╔══██╗██║   ██║████╗  ██║╚══██╔══╝██║   ██║"
-echo "██║   ██║██████╔╝██║   ██║██╔██╗ ██║   ██║   ██║   ██║"
-echo "██║   ██║██╔══██╗██║   ██║██║╚██╗██║   ██║   ██║   ██║"
-echo "╚██████╔╝██████╔╝╚██████╔╝██║ ╚████║   ██║   ╚██████╔╝"
-echo " ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝    ╚═════╝ "
+echo "    █████╗ ███████╗████████╗██████╗  ██████╗ "
+echo "   ██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗"
+echo "   ███████║███████╗   ██║   ██████╔╝██║   ██║"
+echo "   ██╔══██║╚════██║   ██║   ██╔══██╗██║   ██║"
+echo "   ██║  ██║███████║   ██║   ██║  ██║╚██████╔╝"
+echo "   ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ "
+echo "                                             "
+echo "   ██████╗ ███████╗██████╗ ██████╗ ██╗   ██╗ "
+echo "   ██╔══██╗██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝ "
+echo "   ██████╔╝█████╗  ██████╔╝██████╔╝ ╚████╔╝  "
+echo "   ██╔══██╗██╔══╝  ██╔══██╗██╔══██╗  ╚██╔╝   "
+echo "   ██████╔╝███████╗██║  ██║██║  ██║   ██║    "
+echo "   ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    "
 echo
-echo run script version 2.2
+echo run script version 2.2 astroberry
 echo --------------------------------------------------------
 
-echo run script version 2.2 >> run.log 2>&1
-echo
-
-if [ ! -f ./venv/bin/activate ]; then
-  echo
-  echo --------------------------------------------------------
-  echo no valid virtual environment installed
-  echo --------------------------------------------------------
-  exit
-fi
+echo run script version 2.2 astroberry >> run.log 2>&1
 
 export QT_SCALE_FACTOR=1 >> run.log 2>&1
 export QT_FONT_DPI=96 >> run.log 2>&1
-source ./venv/bin/activate venv >> run.log 2>&1
 
 echo
 echo --------------------------------------------------------
 echo checking installed python version
 echo --------------------------------------------------------
-
 
 echo Checking environment and start script >> run.log 2>&1
 
@@ -80,6 +76,5 @@ else
   exit
 fi
 
-startCommand="python ./venv/lib/$P_VER/site-packages/mw4/loader.py"
+startCommand="python3 $HOME/.local/lib/$P_VER/site-packages/mw4/loader.py"
 $($startCommand) >> run.log 2>&1
-deactivate >> run.log 2>&1

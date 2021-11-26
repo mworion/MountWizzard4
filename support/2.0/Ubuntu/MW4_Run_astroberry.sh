@@ -21,7 +21,6 @@ echo run script version 2.1 astroberry
 echo --------------------------------------------------------
 
 echo run script version 2.1 astroberry >> run.log 2>&1
-echo
 
 export QT_SCALE_FACTOR=1 >> run.log 2>&1
 export QT_FONT_DPI=96 >> run.log 2>&1
@@ -30,7 +29,6 @@ echo
 echo --------------------------------------------------------
 echo checking installed python version
 echo --------------------------------------------------------
-
 
 echo Checking environment and start script >> run.log 2>&1
 
@@ -63,5 +61,5 @@ else
   exit
 fi
 
-startCommand="python3 ~/.local/lib/$P_VER/site-packages/mw4/loader.py"
+startCommand="python3 $HOME/.local/lib/$P_VER/site-packages/mw4/loader.py"
 $($startCommand)

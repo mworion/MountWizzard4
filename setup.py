@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- improved logging for UI events
+- add: config adjustments for astroberry and stellarmate devices
  """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.3b0',
+    version='2.1.0b101',
     packages=[
         'mw4',
         'mw4.base',
@@ -72,8 +72,6 @@ setup(
         'sgp4==2.20',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==4.6.4',
-        'deepdiff==5.5.0',
-        'colour_demosaicing==0.1.6',
         'wakeonlan==2.0.1',
         'pybase64==1.2.0',
         'websocket-client==1.2.1',
@@ -81,6 +79,7 @@ setup(
     + (['pywin32==301'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
+    + (['colour_demosaicing==0.1.6'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
     keywords=['5.15.4'],

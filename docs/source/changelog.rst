@@ -20,6 +20,7 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+
 2.1.3
 
 - add: config adjustments for astroberry and stellar mate devices (no debayer now)

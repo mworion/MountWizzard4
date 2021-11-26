@@ -1,6 +1,8 @@
 Installing MW4 on RaspberryPi 4
 ===============================
 
+.. hint:: The simplest raspi installation for rpi3 works with astroberry
+
 We are installing MW4 on an ubuntu 20.04.1LTS 64Bit system. In relation to the
 RPi3 it seems to be much simpler to do. Nevertheless some of the big packages will
 be compiled on your system during installation, which means this will take some

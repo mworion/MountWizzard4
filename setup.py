@@ -73,6 +73,7 @@ setup(
         'sgp4==2.20',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==4.6.4',
+        'deepdiff==5.5.0',
         'wakeonlan==2.0.1',
         'pybase64==1.2.0',
         'websocket-client==1.2.1',

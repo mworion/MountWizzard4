@@ -41,7 +41,7 @@ echo --------------------------------------------------------
 echo installing pyqt5 packages on system
 echo --------------------------------------------------------
 
-sudo apt-get install python3-pyqt5 >> install.log 2>&1
+sudo apt-get install -y python3-pyqt5 >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------

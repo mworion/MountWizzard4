@@ -10,7 +10,7 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - '.github/workflows/rpi4_mate_20_04.yml'
-      - 'support/2.0/Ubuntu/MW4_Install_aarch64_20_04.sh'
+      - 'support/2.0/Mate/MW4_Install_20_04.sh'
 
 jobs:
   install_job:
@@ -71,7 +71,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-            SCRIPT="/support/2.0/Ubuntu"
-            wget "${GITHUB}${SCRIPT}/MW4_Install_aarch64_20_04.sh"
-            chmod 777 MW4_Install_aarch64_20_04.sh
-            ./MW4_Install_aarch64_20_04.sh
+            SCRIPT="/support/2.0/Mate"
+            wget "${GITHUB}${SCRIPT}/MW4_Install_20_04.sh"
+            chmod 777 MW4_Install_20_04.sh
+            ./MW4_Install_20_04.sh

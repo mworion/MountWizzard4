@@ -163,9 +163,11 @@ class Camera:
         if not imagePath:
             return False
         if not self.canSubFrame(subFrame=subFrame):
+            self.log.warning('Camera does not support subframe')
             return False
         if not self.canBinning(binning=binning):
-            return False
+            self.log.info('Camera does not support binning, set to 1')
+            binning = 1
 
         result = self.calcSubFrame(subFrame=subFrame)
         if not result:

@@ -20,6 +20,11 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+2.1.4
+
+- improved: better robustness for DSLR
+- improved: logging for ASCOM threading
+- improved: image handling
 
 2.1.3
 

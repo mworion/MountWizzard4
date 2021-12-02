@@ -300,7 +300,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-        if not self.isVenv():
+        if not (self.isVenv() and 'armv7l' not in platform.machine()):
             self.app.message.emit('MW4 not running in an virtual environment', 2)
             return False
 

@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: enabled internal updater for astroberry and stellarmate
 - improved: better robustness for DSLR
 - improved: logging for ASCOM threading
 - improved: image handling
@@ -29,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.4b1',
+    version='2.1.4b3',
     packages=[
         'mw4',
         'mw4.base',

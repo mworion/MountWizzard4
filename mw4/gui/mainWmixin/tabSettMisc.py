@@ -245,6 +245,9 @@ class SettMisc(object):
         """
         :return:
         """
+        if platform.system() != 'Windows':
+            return True
+
         url = f'https://pypi.python.org/pypi/mountwizzard4/{versionPackage}/json'
         try:
             response = requests.get(url).json()

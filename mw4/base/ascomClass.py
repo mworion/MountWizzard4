@@ -261,6 +261,8 @@ class AscomClass(DriverData):
             return False
 
         worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
+        t = f'ASCOM threaded: [{fn}], args:[{args}], kwargs:[{kwargs}]'
+        self.log.trace(t)
         if cb_res:
             worker.signals.result.connect(cb_res)
         if cb_fin:

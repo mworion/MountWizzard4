@@ -59,8 +59,8 @@ jobs:
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
           install: |
-            # apt-get update -y
-            # apt-get upgrade -y
+            apt-get update -y
+            apt-get upgrade -y
             
             
           # Produce a binary artifact and place it in the mounted volume

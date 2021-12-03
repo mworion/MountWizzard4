@@ -38,7 +38,7 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            --mount src="${PWD}/support/2.0/wheels/${{ matrix.distro}}",target=/wheels,type=bind k3_s3
+            --mount src="${PWD}/support/2.0/wheels/${{ matrix.distro}}",target=/wheels,type=bind
             --platform linux/arm64/v8
             
           # Pass some environment variables to the container

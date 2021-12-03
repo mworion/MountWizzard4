@@ -22,9 +22,11 @@ Version 2.1
 ^^^^^^^^^^^
 2.1.4
 
-- improved: better robustness for DSLR
+- add: enabled internal updater for astroberry and stellarmate
+- add: temperature measurement for camera
 - improved: logging for ASCOM threading
 - improved: image handling
+- fix: DSLR camera devices
 
 2.1.3
 

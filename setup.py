@@ -21,9 +21,9 @@ import platform
 releaseNotes = """
 - add: enabled internal updater for astroberry and stellarmate
 - add: temperature measurement for camera
-- improved: better robustness for DSLR
 - improved: logging for ASCOM threading
 - improved: image handling
+- fix: DSLR camera devices
  """
 
 with open('notes.txt', 'w') as f:

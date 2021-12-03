@@ -20,10 +20,17 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+2.1.4
+
+- add: enabled internal updater for astroberry and stellarmate
+- add: temperature measurement for camera
+- improved: logging for ASCOM threading
+- improved: image handling
+- fix: DSLR camera devices
 
 2.1.3
 
-- add: config adjustments for astroberry and stellar mate devices (no debayer now)
+- add: config adjustments for astroberry and stellarmate devices (no debayer)
 - improved: logging for UI events
 
 2.1.2

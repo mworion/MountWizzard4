@@ -457,14 +457,14 @@ def test_imagePlot_7(function):
 
 def test_writeHeaderDataToGUI_1(function):
     function.header = fits.PrimaryHDU().header
-    suc = function.writeHeaderDataToGUI()
+    suc = function.writeHeaderDataToGUI(function.header)
     assert suc
 
 
 def test_writeHeaderDataToGUI_2(function):
     function.header = fits.PrimaryHDU().header
     function.header['naxis'] = 2
-    suc = function.writeHeaderDataToGUI()
+    suc = function.writeHeaderDataToGUI(function.header)
     assert suc
 
 
@@ -473,7 +473,7 @@ def test_writeHeaderDataToGUI_3(function):
     function.header['naxis'] = 2
     function.header['OBJCTRA'] = '+08 00 00'
     function.header['OBJCTDEC'] = '90 00 00'
-    suc = function.writeHeaderDataToGUI()
+    suc = function.writeHeaderDataToGUI(function.header)
     assert suc
 
 
@@ -482,7 +482,7 @@ def test_writeHeaderDataToGUI_4(function):
     function.header['naxis'] = 2
     function.header['RA'] = 12.0
     function.header['DEC'] = 80.0
-    suc = function.writeHeaderDataToGUI()
+    suc = function.writeHeaderDataToGUI(function.header)
     assert suc
 
 
@@ -490,7 +490,7 @@ def test_workerPreparePlot_1(function):
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
-    suc = function.workerPreparePlot()
+    suc = function.workerPreparePlot(function.header)
     assert suc
 
 
@@ -504,7 +504,7 @@ def test_workerPreparePlot_2(function):
                            'setupNormal'):
         with mock.patch.object(function,
                                'imagePlot'):
-            suc = function.workerPreparePlot()
+            suc = function.workerPreparePlot(function.header)
             assert suc
 
 
@@ -526,7 +526,7 @@ def test_workerPreparePlot_3(function):
                                'setupDistorted'):
             with mock.patch.object(function,
                                    'imagePlot'):
-                suc = function.workerPreparePlot()
+                suc = function.workerPreparePlot(function.header)
                 assert suc
 
 

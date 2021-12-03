@@ -245,6 +245,9 @@ class SettMisc(object):
         """
         :return:
         """
+        if platform.system() != 'Windows':
+            return True
+
         url = f'https://pypi.python.org/pypi/mountwizzard4/{versionPackage}/json'
         try:
             response = requests.get(url).json()
@@ -300,7 +303,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-        if not self.isVenv():
+        if not (self.isVenv() or platform.machine() == 'armv7l'):
             self.app.message.emit('MW4 not running in an virtual environment', 2)
             return False
 

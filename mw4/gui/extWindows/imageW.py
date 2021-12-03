@@ -283,11 +283,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return: true for test purpose
         """
-        if self.deviceStat['expose']:
+        if self.deviceStat.get('expose', False):
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
-        elif self.deviceStat['exposeN']:
+        elif self.deviceStat.get('exposeN', False):
             self.ui.expose.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
@@ -298,27 +298,27 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.load.setEnabled(True)
             self.ui.abortImage.setEnabled(False)
 
-        if self.deviceStat['solve']:
+        if self.deviceStat.get('solve', False):
             self.ui.abortSolve.setEnabled(True)
         else:
             self.ui.abortSolve.setEnabled(False)
 
-        if not self.app.deviceStat['camera']:
+        if not self.app.deviceStat.get('camera', False):
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
 
-        if not self.app.deviceStat['astrometry']:
+        if not self.app.deviceStat.get('astrometry', False):
             self.ui.solve.setEnabled(False)
 
-        if self.deviceStat['expose']:
+        if self.deviceStat.get('expose', False):
             self.changeStyleDynamic(self.ui.expose, 'running', 'true')
-        elif self.deviceStat['exposeN']:
+        elif self.deviceStat.get('exposeN', False):
             self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
         else:
             self.changeStyleDynamic(self.ui.expose, 'running', 'false')
             self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
 
-        if self.deviceStat['solve']:
+        if self.deviceStat.get('solve', False):
             self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
@@ -591,53 +591,55 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.axe.figure.canvas.draw()
         return True
 
-    def writeHeaderDataToGUI(self):
+    def writeHeaderDataToGUI(self, header):
         """
+        :param header:
         :return: True for test purpose
         """
-        name = self.header.get('OBJECT', '').upper()
+        name = header.get('OBJECT', '').upper()
         self.ui.object.setText(f'{name}')
 
-        ra, dec = getCoordinates(header=self.header)
+        ra, dec = getCoordinates(header=header)
 
         self.ui.ra.setText(f'{formatHstrToText(ra)}')
         self.ui.dec.setText(f'{formatDstrToText(dec)}')
 
-        scale = getScale(header=self.header)
-        rotation = self.header.get('ANGLE', 0)
+        scale = getScale(header=header)
+        rotation = header.get('ANGLE', 0)
         self.ui.scale.setText(f'{scale:5.3f}')
         self.ui.rotation.setText(f'{rotation:6.3f}')
 
-        value = self.header.get('CCD-TEMP', 0)
+        value = header.get('CCD-TEMP', 0)
         self.guiSetText(self.ui.ccdTemp, '4.1f', value)
 
-        value = getExposure(header=self.header)
+        value = getExposure(header=header)
         self.guiSetText(self.ui.expTime, '5.1f', value)
 
-        value = self.header.get('FILTER', 0)
+        value = header.get('FILTER', 0)
         value = f'{value}'
         self.guiSetText(self.ui.filter, 's', value)
 
-        value = self.header.get('XBINNING', 0)
+        value = header.get('XBINNING', 0)
         self.guiSetText(self.ui.binX, '1.0f', value)
-        value = self.header.get('YBINNING', 0)
+        value = header.get('YBINNING', 0)
         self.guiSetText(self.ui.binY, '1.0f', value)
 
-        value = getSQM(header=self.header)
+        value = getSQM(header=header)
         self.guiSetText(self.ui.sqm, '5.2f', value)
 
-        flipped = bool(self.header.get('FLIPPED', False))
+        flipped = bool(header.get('FLIPPED', False))
         self.ui.isFlipped.setEnabled(flipped)
 
         return True
 
-    def workerPreparePlot(self):
+    def workerPreparePlot(self, header):
         """
+        :param header:
         :return:
         """
         self.updateWindowsStats()
-        if 'CTYPE1' in self.header:
-            wcsObject = wcs.WCS(self.header, relax=True)
+        if 'CTYPE1' in header:
+            wcsObject = wcs.WCS(header, relax=True)
             hasCelestial = wcsObject.has_celestial
             hasDistortion = wcsObject.has_distortion
 
@@ -657,7 +659,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         else:
             self.setupNormal()
 
-        self.writeHeaderDataToGUI()
+        self.writeHeaderDataToGUI(header)
         self.stretchImage()
         self.colorImage()
         self.imagePlot()
@@ -667,7 +669,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        worker = Worker(self.workerPreparePlot)
+        worker = Worker(self.workerPreparePlot, self.header)
         self.threadPool.start(worker)
         return True
 
@@ -777,7 +779,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         - getting header data and cleaning it up
         - zoom and stack
 
-        :param imagePath:
+        :param: imagePath:
         :return:
         """
         if not imagePath:

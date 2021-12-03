@@ -43,6 +43,7 @@ def module_setup_teardown():
         filter = Test1()
         focuser = Test1()
         power = Test1()
+        camera = Test1()
         mwGlob = {'dataDir': 'tests/workDir/data'}
         deviceStat = {
             'dome': None,

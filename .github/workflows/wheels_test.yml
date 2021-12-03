@@ -35,14 +35,10 @@ jobs:
 
           # Not required, but speeds up builds
           githubToken: ${{ github.token }}
-          
-          # Create a wheel directory
-          setup: |
-            mkdir -p "${PWD}/wheels"
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            --volume "${PWD}/support/wheels/2.0/${{ matrix.distro}}:/wheels"
+            --volume "support/wheels/2.0/${{ matrix.distro}}:/wheels"
             --platform linux/arm64/v8
             
           # Pass some environment variables to the container
@@ -55,28 +51,28 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            if [ ! -f "wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
             then
-              ls "${PWD}/wheels/*.*"
+              ls "/wheels/*.*"
               echo "astropy exists"
             fi
-            if [ ! -f "wheels/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]
+            if [ ! -f "/wheels/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]
             then
               echo "pyerfa exists"
             fi
-            if [ ! -f "wheels/sep-1.2.0-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/wheels/sep-1.2.0-cp39-cp39-linux_aarch64.whl" ]
             then
               echo "sep exists"
             fi
-            if [ ! -f "wheels/sgp4-2.20-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/wheels/sgp4-2.20-cp39-cp39-linux_aarch64.whl" ]
             then
               echo "sgp4 exists"
             fi
-            if [ ! -f "wheels/PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/wheels/PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl" ]
             then
               echo "pyqt5-sip exists"
             fi
-            if [ ! -f "wheels/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
+            if [ ! -f "/wheels/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
             then
               echo "pyqt5 exists"
             fi

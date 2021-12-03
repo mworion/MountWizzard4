@@ -131,6 +131,7 @@ class MeasureData:
         self.data['powHum'] = np.empty(shape=[0, 1])
         self.data['powTemp'] = np.empty(shape=[0, 1])
         self.data['powDew'] = np.empty(shape=[0, 1])
+        self.data['cameraTemp'] = np.empty(shape=[0, 1])
         return True
 
     def calculateReference(self):
@@ -324,6 +325,10 @@ class MeasureData:
         dat['powTemp'] = np.append(dat['powTemp'], powTemp)
         dat['powDew'] = np.append(dat['powDew'], powDew)
         dat['powHum'] = np.append(dat['powHum'], powHum)
+
+        ccd = self.app.camera
+        temp = ccd.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+        dat['cameraTemp'] = np.append(dat['cameraTemp'], temp)
 
         self.mutexMeasure.unlock()
 

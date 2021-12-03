@@ -75,6 +75,7 @@ def function(module):
         'powHum': np.full([5, 1], 1.0),
         'powTemp': np.full([5, 1], 1.0),
         'powDew': np.full([5, 1], 1.0),
+        'cameraTemp': np.full([5, 1], 1.0),
     }
     window.app.measure.data['time'] = np.append(window.app.measure.data['time'], value)
     window.app.measure.data['time'] = np.append(window.app.measure.data['time'], value)

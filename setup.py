@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - add: enabled internal updater for astroberry and stellarmate
+- add: temperature measurement for camera
 - improved: better robustness for DSLR
 - improved: logging for ASCOM threading
 - improved: image handling
@@ -30,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.4b4',
+    version='2.1.4b5',
     packages=[
         'mw4',
         'mw4.base',

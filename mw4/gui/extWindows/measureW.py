@@ -482,6 +482,16 @@ class MeasureWindow(toolsQtWidget.MWidget):
             plotList.append(r9)
             labelList.append('Skymeter Temp')
 
+        if 'camera' in self.app.measure.devices:
+            r9, = axe.plot(data['time'][start:-1:cycle],
+                           data['cameraTemp'][start:-1:cycle],
+                           marker=None,
+                           markersize=3,
+                           color=self.M_BLUE,
+                           )
+            plotList.append(r9)
+            labelList.append('Camera Temp')
+
         if not labelList:
             return False
 

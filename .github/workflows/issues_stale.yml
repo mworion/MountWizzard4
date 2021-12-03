@@ -1,0 +1,25 @@
+#
+# GitHub actions for running the unit test of the mountwizzard4 package
+#
+# v0.1, Michael Wuertenberger
+#
+name: 'Close stale issues and PRs'
+
+on:
+  schedule:
+    - cron: '30 1 * * *'
+
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - '.github/workflows/issues_stale.yml'
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v4
+        with:
+          stale-issue-message: 'This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days.'
+          days-before-stale: 30
+          days-before-close: 5

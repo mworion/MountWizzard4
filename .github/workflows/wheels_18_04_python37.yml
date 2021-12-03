@@ -77,10 +77,10 @@ jobs:
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel
-            #pip wheel astropy==4.3.1 -w "support/wheels/${{ matrix.distro}}"
-            pip wheel pyerfa==2.0.0 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
-            #pip wheel sgp4==2.20 -w "support/wheels/${{ matrix.distro}}"
+            # pip wheel astropy==4.3.1 -w "support/wheels/${{ matrix.distro}}"
+            # pip wheel pyerfa==2.0.0 -w "support/wheels/${{ matrix.distro}}"
+            pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
+            # pip wheel sgp4==2.20 -w "support/wheels/${{ matrix.distro}}"
             # pip wheel pyqt5_sip==12.9.0 -w "support/wheels/${{ matrix.distro}}"
             # pip wheel pyqt5==5.15.4 -w "support/wheels/${{ matrix.distro}}"
 

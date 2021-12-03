@@ -36,7 +36,7 @@ jobs:
           # Not required, but speeds up builds
           githubToken: ${{ github.token }}
           
-          # Create an wheel directory
+          # Create a wheel directory
           setup: |
             mkdir -p "${PWD}/wheels"
 
@@ -57,7 +57,7 @@ jobs:
           run: |
             if [ ! -f "wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
             then
-              ls wheels/*.*
+              ls "${PWD}/wheels/*.*"
               echo "astropy exists"
             fi
             if [ ! -f "wheels/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]

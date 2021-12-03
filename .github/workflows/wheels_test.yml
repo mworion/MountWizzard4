@@ -35,6 +35,10 @@ jobs:
 
           # Not required, but speeds up builds
           githubToken: ${{ github.token }}
+          
+          # Create an wheel directory
+          setup: |
+            mkdir -p "${PWD}/wheels"
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |

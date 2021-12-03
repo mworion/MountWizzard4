@@ -1,0 +1,81 @@
+#
+# GitHub actions for running the unit test of the mountwizzard4 package
+#
+# v0.1,  Michael Wuertenberger
+#
+name: wheels-test
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - '.github/workflows/wheels_test.yml'
+
+jobs:
+  build_job:
+    # The host should always be linux
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    # Run steps on a matrix of 3 arch/distro combinations
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+            distro: ubuntu20.04
+
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - uses: uraimo/run-on-arch-action@v2.1.1
+        name: build_artifact
+        id: build
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
+
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/artifacts"
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/artifacts:/artifacts"
+            --platform linux/arm64/v8
+            
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+
+          # The shell to run commands with in the container
+          shell: /bin/bash
+          
+            
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            if [ ! -f "support/wheels/${{ matrix.distro}}/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
+            then
+              pip wheel astropy==4.3.1 -w "support/wheels/${{ matrix.distro}}"
+            fi
+            if [ ! -f "support/wheels/${{ matrix.distro}}/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]
+            then
+              pip wheel pyerfa==2.0.0 -w "support/wheels/${{ matrix.distro}}"
+            fi
+            if [ ! -f "support/wheels/${{ matrix.distro}}/sep-1.2.0-cp39-cp39-linux_aarch64.whl" ]
+            then
+              pip wheel sep==1.2.0 -w "support/wheels/${{ matrix.distro}}"
+            fi
+            if [ ! -f "support/wheels/${{ matrix.distro}}/sgp4-2.20-cp39-cp39-linux_aarch64.whl" ]
+            then
+              pip wheel sgp4==2.20 -w "support/wheels/${{ matrix.distro}}"
+            fi
+            if [ ! -f "support/wheels/${{ matrix.distro}}/PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl" ]
+            then
+              pip wheel pyqt5_sip==12.8.1 -w "support/wheels/${{ matrix.distro}}"
+            fi
+            if [ ! -f "support/wheels/${{ matrix.distro}}/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
+            then
+              pip wheel pyqt5==5.15.4 -w "support/wheels/${{ matrix.distro}}"
+            fi

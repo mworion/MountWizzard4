@@ -86,7 +86,6 @@ jobs:
       - name: Check for modified files
         id: git-check
         run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
-        if: always
 
       - name: Update changes in GitHub repository
         if: steps.git-check.outputs.modified == 'true'

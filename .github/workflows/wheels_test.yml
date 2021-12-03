@@ -57,8 +57,7 @@ jobs:
           run: |
             if [ ! -f "support/wheels/2.0/${{ matrix.distro}}/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
             then
-              ls "support/wheels/2.0/${{ matrix.distro}}/*.*"
-              echo "support/wheels/2.0/${{ matrix.distro}}/astropy-4.3.1-cp39-cp39-linux_aarch64.whl"
+              ls *.*
               echo "astropy exists"
             fi
             if [ ! -f "support/wheels/2.0/${{ matrix.distro}}/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]

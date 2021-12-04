@@ -100,15 +100,9 @@ jobs:
             then
               pip wheel pyqt5==5.15.4 -w "/root/wheels"
             fi
-            
-      - name: Check for modified files
-        id: git-check
-        run: |
-          rm build-log.txt
-          echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
 
       - name: Update changes in GitHub repository
-        if: steps.git-check.outputs.modified == 'true'
+        continue-on-error: true
         run:  |
           git config --global user.name 'mworion'
           git config --global user.email 'michael@wuertenberger.org'

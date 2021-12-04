@@ -1,7 +1,7 @@
 #
 # GitHub actions for checking the installation of mountwizzard4 packages
 #
-# v1.0, Michael Wuertenberger
+# v 1.0, Michael Wuertenberger
 #
 name: test_packages
 env:
@@ -19,18 +19,7 @@ on:
       - '.github/workflows/test_packages.yml'
 
 jobs:
-
-  # This action is split into two jobs:
-  # 1 Building the distribution
-  # 2 Installing the distribution in a multiple os and python versions
-  # Job 2 need 1 to be finished without error.
-
   build_widgets_resource:
-
-    # First the distribution is done on an ubuntu. This is not related to any
-    # operating system, so we could do it on the default os og GitHub.
-    # Python 3.9 is chosen as it is the actual version you could work with.
-
     runs-on: 'ubuntu-latest'
     steps:
     - uses: actions/checkout@v2
@@ -80,11 +69,6 @@ jobs:
         path: dist
         
   install_package_windows:
-    
-    # downloads the packages from job 1, installs all necessary items for being
-    # able to run the installation with the test scripts and finally run mw4 for
-    # some seconds
-  
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -138,11 +122,6 @@ jobs:
           more run.log
 
   install_package_ubuntu:
-    
-    # downloads the packages from job 1, installs all necessary items for being
-    # able to run the installation with the test scripts and finally run mw4 for
-    # some seconds
-  
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -204,11 +183,6 @@ jobs:
 
 
   install_package_macOS:
-    
-    # downloads the packages from job 1, installs all necessary items for being
-    # able to run the installation with the test scripts and finally run mw4 for
-    # some seconds
-  
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:

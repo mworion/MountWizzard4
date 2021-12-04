@@ -1,7 +1,7 @@
 #
 # GitHub actions for running the unit test of the mountwizzard4 package
 #
-# v0.1,  Michael Wuertenberger
+# v 1.0,  Michael Wuertenberger
 #
 name: wheels-test
 
@@ -38,17 +38,12 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            -v src="${PWD}/support/2.0/wheels/${{ matrix.distro}}":/wheels
+            -v src="/${PWD}/support/2.0/wheels/${{ matrix.distro}}":/wheels
             --platform linux/arm64/v8
-            
-          # Pass some environment variables to the container
-          env: | # YAML, but pipe character is necessary
-            artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
 
           # The shell to run commands with in the container
           shell: /bin/bash
           
-            
           # Produce a binary artifact and place it in the mounted volume
           run: |
             if [ ! -f "/wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]

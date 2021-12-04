@@ -3,7 +3,7 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: ubuntu_unit
+name: unit_ubuntu
 env:
   wid: 'mw4/gui/widgets/'
   uic: 'python -m PyQt5.uic.pyuic'
@@ -18,7 +18,7 @@ on:
       - 'mw4/**'
       - 'tests/unit_tests/**'
       - 'setup.py'
-      - '.github/workflows/ubuntu_unit.yml'
+      - '.github/workflows/unit_ubuntu.yml'
 
 jobs:
 

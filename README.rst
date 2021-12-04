@@ -47,7 +47,7 @@ Unit tests:
 
 Test install / run scripts:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|PACKAGE_INSTALL| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
+|TEST_PACKAGES| |TEST_SCRIPTS| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
 
 Test coverage:
 ^^^^^^^^^^^^^^
@@ -107,13 +107,13 @@ CS Michel
     :alt: Documentation Status
 
 .. |PYTEST macOS| image::
-    https://github.com/mworion/MountWizzard4/workflows/macOS_unit/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/unit_macOS/badge.svg?branch=master
 
 .. |PYTEST Windows| image::
-    https://github.com/mworion/MountWizzard4/workflows/win_unit/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/unit_win/badge.svg?branch=master
 
 .. |PYTEST Ubuntu| image::
-    https://github.com/mworion/MountWizzard4/workflows/ubuntu_unit/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/unit_ubuntu/badge.svg?branch=master
 
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
@@ -144,8 +144,11 @@ CS Michel
 .. |COMMITS_WEEK| image::
     https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
-.. |PACKAGE_INSTALL| image::
-    https://github.com/mworion/MountWizzard4/workflows/package_install/badge.svg?branch=master
+.. |TEST_PACKAGES| image::
+    https://github.com/mworion/MountWizzard4/workflows/test_packages/badge.svg?branch=master
+
+.. |TEST_SCRIPTS| image::
+    https://github.com/mworion/MountWizzard4/workflows/test_scripts/badge.svg?branch=master
 
 .. |RPI4_Mate_18_04| image::
     https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_18_04/badge.svg?branch=master

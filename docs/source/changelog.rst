@@ -20,6 +20,10 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+2.1.5
+
+- fix: checking windows python version for automation
+
 2.1.4
 
 - add: enabled internal updater for astroberry and stellarmate

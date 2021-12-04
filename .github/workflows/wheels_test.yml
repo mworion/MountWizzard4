@@ -38,7 +38,8 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            -v src="${PWD}/support/wheels":/wheels
+            # -v src="${PWD}/support/wheels":/wheels
+            --mount type=bind,source="${PWD}/support/wheels",target=/wheels
             --platform linux/arm64/v8
 
           # The shell to run commands with in the container

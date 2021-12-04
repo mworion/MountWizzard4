@@ -58,7 +58,11 @@ https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
 
 UbuntuMate ARM64:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Mate_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/Mate_Scripts.zip
+
+UbuntuMate Astroberry / Stellarmate:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/Astroberry_Scripts.zip
 
 Whereas <x.x> is the major version MW4 you would like to install.
 

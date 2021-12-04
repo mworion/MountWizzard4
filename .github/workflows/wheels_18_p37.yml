@@ -102,11 +102,11 @@ jobs:
             fi
 
       - name: Update changes in GitHub repository
+        continue-on-error: true
         run:  |
           git config --global user.name 'mworion'
           git config --global user.email 'michael@wuertenberger.org'
           git add -A "${PWD}/support/wheels/${{matrix.distro}}/*.whl"
           git pull
-          git diff-index --quiet HEAD || git commit -m '[automated commit]'
+          git commit -m '[automated commit]'
           git push --force
-          echo "finished"

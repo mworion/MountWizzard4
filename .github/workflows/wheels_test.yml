@@ -47,32 +47,44 @@ jobs:
           run: |
             ls -la /root/wheels/*.*
             
-            if [ ! -f "/root/wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
+            if [ -f "/root/wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
             then
-              echo "astropy==4.3.1"
+              echo "astropy==4.3.1 existing"
+            else
+              echo "astropy==4.3.1 build"
             fi
             
-            if [ ! -f "/root/wheels/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]
+            if [ -f "/root/wheels/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]
             then
-              echo "pyerfa==2.0.0"
+              echo "pyerfa==2.0.0 existing"
+            else
+              echo "pyerfa==2.0.0 build"
             fi
             
-            if [ ! -f "/root/wheels/sep-1.2.0-cp39-cp39-linux_aarch64.whl" ]
+            if [ -f "/root/wheels/sep-1.2.0-cp39-cp39-linux_aarch64.whl" ]
             then
-              echo "sep==1.2.0"
+              echo "sep==1.2.0 existing"
+            else
+              echo "sep==1.2.0 build"
             fi
             
-            if [ ! -f "/root/wheels/sgp4-2.20-cp39-cp39-linux_aarch64.whl" ]
+            if [ -f "/root/wheels/sgp4-2.20-cp39-cp39-linux_aarch64.whl" ]
             then
-              echo "sgp4==2.20"
+              echo "sgp4==2.20 existing"
+            else
+              echo "sgp4==2.20 build"
             fi
             
-            if [ ! -f "/root/wheels/PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl" ]
+            if [ -f "/root/wheels/PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl" ]
             then
-              echo "pyqt5_sip==12.8.1"
+              echo "pyqt5_sip==12.8.1 existing"
+            else
+              echo "pyqt5_sip==12.8.1 build"
             fi
             
-            if [ ! -f "/root/wheels/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
+            if [ -f "/root/wheels/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
             then
-              echo "pyqt5==5.15.4"
+              echo "pyqt5==5.15.4 existing"
+            else
+              echo "pyqt5==5.15.4 build"
             fi

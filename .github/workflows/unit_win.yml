@@ -3,7 +3,7 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: win_unit
+name: unit_win
 env:
   wid: 'mw4/gui/widgets/'
   uic: 'python -m PyQt5.uic.pyuic'
@@ -19,7 +19,7 @@ on:
       - 'tests/unit_tests/**'
       - 'setup.py'
       - 'tox.ini'
-      - '.github/workflows/win_unit.yml'
+      - '.github/workflows/unit_win.yml'
 
 jobs:
 

@@ -650,10 +650,12 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:
         """
         if not self.app.automation:
-            self.app.message.emit('Not running windows - upload not possible', 2)
+            self.app.message.emit('No automation enabled - upload not possible', 2)
             return False
+
         if not self.app.automation.installPath:
-            self.app.message.emit('No 10micron updater available - upload not '
-                                  'possible', 2)
+            t = 'No 10micron updater available - upload not possible'
+            self.app.message.emit(t, 2)
             return False
+
         return True

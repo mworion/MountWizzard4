@@ -3,7 +3,7 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: install_script_test
+name: test_scripts
 env:
   gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/'
 
@@ -11,7 +11,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/install_script_test.yml'
+      - '.github/workflows/test_scripts.yml'
       - 'support/**'
 
 jobs:

@@ -3,13 +3,13 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: wheels-18-04-python38
+name: wheels_18_p38
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/wheels_18_04_python38.yml'
+      - '.github/workflows/wheels_18_p38.yml'
 
 jobs:
   build_job:

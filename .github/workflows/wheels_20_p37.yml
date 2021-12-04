@@ -1,15 +1,15 @@
 #
 # GitHub actions for running the unit test of the mountwizzard4 package
 #
-# v0.1,  Michael Wuertenberger
+# v0.1, Michael Wuertenberger
 #
-name: wheels-20-04-python39
+name: wheels_20_p37
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/wheels_20_04_python39.yml'
+      - '.github/workflows/wheels_20_p37.yml'
 
 jobs:
   build_job:
@@ -26,8 +26,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2.1.1
-        name: build_artifact
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Build artifact
         id: build
         with:
           arch: ${{ matrix.arch }}
@@ -52,35 +52,39 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
+            apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
+            apt-get install -y software-properties-common
+            add-apt-repository ppa:deadsnakes/ppa
+            apt-get update -y
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            apt-get -y install python3.9 python3-pip python3.9-venv python3.9-dev
+            apt-get -y install python3.7 python3-pip python3.7-venv python3.7-dev
             apt-get -y install qt5-default pyqt5-dev pyqt5-dev-tools
-            python3.9 -m venv venv
+            python3.7 -m venv venv
             source venv/bin/activate
             
             python --version
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel
-            if [ ! -f "/root/wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheels/astropy-4.3.1-cp37-cp37m-linux_aarch64.whl" ]
             then
               pip wheel astropy==4.3.1 -w "/root/wheels"
             fi
-            if [ ! -f "/root/wheels/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheels/pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl" ]
             then
               pip wheel pyerfa==2.0.0 -w "/root/wheels"
             fi
-            if [ ! -f "/root/wheels/sep-1.2.0-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheels/sep-1.2.0-cp37-cp37m-linux_aarch64.whl" ]
             then
               pip wheel sep==1.2.0 -w "/root/wheels"
             fi
-            if [ ! -f "/root/wheels/sgp4-2.20-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheels/sgp4-2.20-cp37-cp37m-linux_aarch64.whl" ]
             then
               pip wheel sgp4==2.20 -w "/root/wheels"
             fi
-            if [ ! -f "/root/wheels/PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheels/PyQt5_sip-12.8.1-cp37-cp37m-linux_aarch64.whl" ]
             then
               pip wheel pyqt5_sip==12.8.1 -w "/root/wheels"
             fi

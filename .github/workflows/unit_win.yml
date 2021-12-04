@@ -3,14 +3,14 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: macOS_unit
+name: unit_win
 env:
   wid: 'mw4/gui/widgets/'
   uic: 'python -m PyQt5.uic.pyuic'
   ucc: 'python -m PyQt5.pyrcc_main'
   res: 'mw4/resource/'
   branch: '2.1.0'
-  
+
 on:
   push:
     # Run this action on the trigger event when specific files are touched
@@ -18,7 +18,8 @@ on:
       - 'mw4/**'
       - 'tests/unit_tests/**'
       - 'setup.py'
-      - '.github/workflows/macOS_unit.yml'
+      - 'tox.ini'
+      - '.github/workflows/unit_win.yml'
 
 jobs:
 
@@ -26,7 +27,8 @@ jobs:
   # 1 Building the distribution
   # 2 Running the unit tests on macOS part 1
   # 3 Running the unit tests on macOS part 2
-  # Job 2 + 3 need 1 to be finished without error.
+  # 4 Combining the coverage and uploading it
+  # Job 2 + 3 need 1, Job 4 needs 2 + 3 to be finished without error.
 
   build_widgets_resource:
 
@@ -40,7 +42,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{env.branch}}
-
+    
     - name: Cache node modules
       uses: actions/cache@v2
       env:
@@ -97,13 +99,13 @@ jobs:
         name: resource
         path: mw4/resource/*.py
 
-  run_tests_macos_1:
+  run_tests_windows_1:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
     # the ubuntu version does not have a headless Qt5
   
     needs: [build_widgets_resource]
-    runs-on: [macos-latest]
+    runs-on: [windows-latest]
     
     steps:
       - uses: actions/checkout@v2
@@ -114,6 +116,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
+          architecture: 'x86'
   
       - uses: actions/download-artifact@v2
         with:
@@ -134,34 +137,41 @@ jobs:
         run: |
           python -m pip install cython wheel
           python -m pip install dist/mountwizzard4.tar.gz
+          python -m pip install comtypes==1.1.7
 
       - name: install_pytest
         run: |
           python -m pip install pytest
           python -m pip install pytest-qt
+          python -m pip install pytest-cov
           python -m pip install pytest-pythonpath
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zLoader
-          pytest tests/unit_tests/zUpdate
-          pytest tests/unit_tests/zMainApp
-          pytest tests/unit_tests/gui/utilities
-          pytest tests/unit_tests/gui/extWindows
-          pytest tests/unit_tests/base
-          pytest tests/unit_tests/logic
-          pytest tests/unit_tests/mountcontrol
-          pytest tests/unit_tests/indibase
-          pytest tests/unit_tests/gui/mainWindow
+          pytest tests/unit_tests/zLoader --cov=mw4/
+          pytest tests/unit_tests/zUpdate --cov-append --cov=mw4/
+          pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
+          pytest tests/unit_tests/base --cov-append --cov=mw4/
+          pytest tests/unit_tests/logic --cov-append --cov=mw4/
+          pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/
+          pytest tests/unit_tests/indibase --cov-append --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage coverage1.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage1.dat
 
-
-  run_tests_macos_2:
+  run_tests_windows_2:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
     # the ubuntu version does not have a headless Qt5
   
     needs: [build_widgets_resource]
-    runs-on: [macos-latest]
+    runs-on: [windows-latest]
     
     steps:
       - uses: actions/checkout@v2
@@ -172,7 +182,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-  
+          architecture: 'x86'
+          
       - uses: actions/download-artifact@v2
         with:
           name: dist
@@ -192,13 +203,72 @@ jobs:
         run: |
           python -m pip install cython wheel
           python -m pip install dist/mountwizzard4.tar.gz
-  
+          python -m pip install comtypes==1.1.7
+
       - name: install_pytest
         run: |
           python -m pip install pytest
           python -m pip install pytest-qt
+          python -m pip install pytest-cov
           python -m pip install pytest-pythonpath
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWmixin
+          pytest tests/unit_tests/gui/mainWindow --cov=mw4/
+          pytest tests/unit_tests/gui/mainWmixin --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/
+          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage coverage2.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage2.dat
+
+  coverage:
+
+    # Combining all results and uploading the coverage data.
+    
+    needs: [ run_tests_windows_1, run_tests_windows_2]
+    runs-on: [ windows-latest ]
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{env.branch}}
+        
+    - uses: actions/download-artifact@v2
+      with:
+        name: widgets
+        path: mw4/gui/widgets
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: resource
+        path: mw4/resource
+    
+    - name: collecting_data
+      uses: actions/download-artifact@v2
+      with:
+        name: coverage
+        path: .
+        
+    - name: combining_data
+      run: |
+        dir
+        python -m pip install coverage
+        python -m coverage combine coverage1.dat coverage2.dat
+        python -m coverage xml
+
+    - name: upload
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        env_vars: OS,PYTHON
+        override_branch: ${{env.branch}}

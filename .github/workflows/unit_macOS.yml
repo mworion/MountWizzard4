@@ -3,14 +3,14 @@
 #
 # v0.1, Michael Wuertenberger
 #
-name: ubuntu_unit
+name: unit_macOS
 env:
   wid: 'mw4/gui/widgets/'
   uic: 'python -m PyQt5.uic.pyuic'
   ucc: 'python -m PyQt5.pyrcc_main'
   res: 'mw4/resource/'
-  branch: '2.1.0'
-
+  branch: 'master'
+  
 on:
   push:
     # Run this action on the trigger event when specific files are touched
@@ -18,7 +18,7 @@ on:
       - 'mw4/**'
       - 'tests/unit_tests/**'
       - 'setup.py'
-      - '.github/workflows/ubuntu_unit.yml'
+      - '.github/workflows/unit_macOS.yml'
 
 jobs:
 
@@ -96,14 +96,14 @@ jobs:
       with:
         name: resource
         path: mw4/resource/*.py
-        
-  run_tests_ubuntu_1:
+
+  run_tests_macos_1:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
     # the ubuntu version does not have a headless Qt5
   
     needs: [build_widgets_resource]
-    runs-on: [ubuntu-latest]
+    runs-on: [macos-latest]
     
     steps:
       - uses: actions/checkout@v2
@@ -135,16 +135,6 @@ jobs:
           python -m pip install cython wheel
           python -m pip install dist/mountwizzard4.tar.gz
 
-      - name: Install Head
-        run: |
-          sudo apt-get update
-          sudo apt-get -y upgrade
-          sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
-          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
-          sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
-          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
-          sudo apt-get install -y libxcb-keysyms1
-
       - name: install_pytest
         run: |
           python -m pip install pytest
@@ -153,25 +143,25 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/zLoader
-          xvfb-run pytest tests/unit_tests/zUpdate
-          xvfb-run pytest tests/unit_tests/zMainApp
-          xvfb-run pytest tests/unit_tests/gui/utilities
-          xvfb-run pytest tests/unit_tests/gui/extWindows
-          xvfb-run pytest tests/unit_tests/base
-          xvfb-run pytest tests/unit_tests/logic
-          xvfb-run pytest tests/unit_tests/mountcontrol
-          xvfb-run pytest tests/unit_tests/indibase
-          xvfb-run pytest tests/unit_tests/gui/mainWindow
+          pytest tests/unit_tests/zLoader
+          pytest tests/unit_tests/zUpdate
+          pytest tests/unit_tests/zMainApp
+          pytest tests/unit_tests/gui/utilities
+          pytest tests/unit_tests/gui/extWindows
+          pytest tests/unit_tests/base
+          pytest tests/unit_tests/logic
+          pytest tests/unit_tests/mountcontrol
+          pytest tests/unit_tests/indibase
+          pytest tests/unit_tests/gui/mainWindow
 
 
-  run_tests_ubuntu_2:
+  run_tests_macos_2:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
     # the ubuntu version does not have a headless Qt5
   
     needs: [build_widgets_resource]
-    runs-on: [ubuntu-latest]
+    runs-on: [macos-latest]
     
     steps:
       - uses: actions/checkout@v2
@@ -182,16 +172,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-
-      - name: Install Head
-        run: |
-          sudo apt-get update
-          sudo apt-get -y upgrade
-          sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
-          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
-          sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
-          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
-          sudo apt-get install -y libxcb-keysyms1
   
       - uses: actions/download-artifact@v2
         with:
@@ -221,4 +201,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/gui/mainWmixin
+          pytest tests/unit_tests/gui/mainWmixin

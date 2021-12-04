@@ -3,7 +3,7 @@
 #
 # v1.0, Michael Wuertenberger
 #
-name: package_install
+name: test_packages
 env:
   gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/'
   wid: 'mw4/gui/widgets/'
@@ -16,7 +16,7 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - 'setup.py'
-      - '.github/workflows/package_install.yml'
+      - '.github/workflows/test_packages.yml'
 
 jobs:
 

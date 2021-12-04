@@ -16,15 +16,39 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
+import platform
 
 # external packages
 
 # local import
-from base import packageConfig
+from base.packageConfig import excludedPlatforms, checkMinimalPythonVersion
 
 
 def test_config():
-    assert 'armv7l' in packageConfig.excludedPlatforms
-    assert 'aarch64' in packageConfig.excludedPlatforms
+    assert 'armv7l' in excludedPlatforms
+    assert 'aarch64' in excludedPlatforms
 
 
+def test_checkMinimalPythonVersion_1():
+    with mock.patch.object(platform,
+                           'python_version',
+                           return_value='3.8.2'):
+        suc = checkMinimalPythonVersion('3.8.1')
+        assert not suc
+
+
+def test_checkMinimalPythonVersion_2():
+    with mock.patch.object(platform,
+                           'python_version',
+                           return_value='3.8.2'):
+        suc = checkMinimalPythonVersion('3.8.2')
+        assert suc
+
+
+def test_checkMinimalPythonVersion_3():
+    with mock.patch.object(platform,
+                           'python_version',
+                           return_value='3.8.2'):
+        suc = checkMinimalPythonVersion('3.8.10')
+        assert suc

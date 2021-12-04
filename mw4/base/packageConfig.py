@@ -15,6 +15,7 @@
 #
 ###########################################################
 import platform
+from distutils.version import StrictVersion
 
 excludedPlatforms = ['armv7l', 'aarch64']
 isAvailable = platform.machine() not in excludedPlatforms
@@ -23,3 +24,8 @@ isColor = True
 isWindows = platform.system() == 'Windows'
 isLinux = platform.system() == 'Linux'
 isMac = platform.system() == 'Darwin'
+
+
+def checkMinimalPythonVersion(ver):
+    result = StrictVersion(ver) >= StrictVersion(platform.python_version())
+    return result

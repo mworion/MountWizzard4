@@ -38,17 +38,12 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            # -v src="${PWD}/support/wheels":/root/wheels
-            --mount type=bind,source="${PWD}/support/wheels",target=/root/wheels
-            --platform linux/arm64/v8
+            -v "${PWD}/support/wheels":/root/wheels
+            # --mount type=bind,source="${PWD}/support/wheels",target=/root/wheels
 
           # The shell to run commands with in the container
           shell: /bin/bash
           
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            if [ ! -f "/root/wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
-            then
-              ls "/root/wheels/*.*"
-              echo "astropy exists"
-            fi
+            ls -la *.*

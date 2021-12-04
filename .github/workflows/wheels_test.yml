@@ -47,3 +47,4 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             ls -la *.*
+            ls -la /root/wheels/*.*

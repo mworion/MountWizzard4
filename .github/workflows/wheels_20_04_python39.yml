@@ -42,8 +42,7 @@ jobs:
           
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            --volume "${PWD}/support/wheels/2.0/${{ matrix.distro}}:/wheels"
-            --platform linux/arm64/v8
+            --volume "${PWD}/support/wheels/2.0/${{ matrix.distro}}":/wheels
             
           # Pass some environment variables to the container
           env: | # YAML, but pipe character is necessary

@@ -100,6 +100,7 @@ jobs:
       - name: Update changes in GitHub repository
         continue-on-error: true
         run:  |
+          rm build-log.txt
           git config --global user.name 'mworion'
           git config --global user.email 'michael@wuertenberger.org'
           git add -A "${PWD}/support/wheels/${{matrix.distro}}/*.whl"

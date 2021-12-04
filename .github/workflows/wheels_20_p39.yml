@@ -108,7 +108,7 @@ jobs:
         run:  |
           git config --global user.name 'mworion'
           git config --global user.email 'michael@wuertenberger.org'
-          git add -A "${PWD}/support/2.0/wheels/${{matrix.distro}}/*.whl"
+          git add -A "${PWD}/support/wheels/${{matrix.distro}}/*.whl"
           git pull
           git diff-index --quiet HEAD || git commit -m '[automated commit]'
           git push --force

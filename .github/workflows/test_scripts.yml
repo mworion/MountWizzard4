@@ -1,7 +1,7 @@
 #
-# GitHub actions for checking the installation of mountwizzard4 packages
+# GitHub actions for checking the installation of MW4 through scripts
 #
-# v0.1, Michael Wuertenberger
+# v 1.0, Michael Wuertenberger
 #
 name: test_scripts
 env:
@@ -13,16 +13,13 @@ on:
     paths:
       - '.github/workflows/test_scripts.yml'
       - 'support/**'
+      - 'setup.py'
 
 jobs:
   
   install_windows:
-    
-    # downloads the packages from job 1, installs all necessary items for being
-    # able to run the installation with the test scripts and finally run mw4 for
-    # some seconds
-  
     runs-on: windows-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -55,12 +52,8 @@ jobs:
           more run.log
   
   install_ubuntu:
-    
-    # downloads the packages from job 1, installs all necessary items for being
-    # able to run the installation with the test scripts and finally run mw4 for
-    # some seconds
-  
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -102,12 +95,8 @@ jobs:
           cat run.log
           
   install_macOS:
-    
-    # downloads the packages from job 1, installs all necessary items for being
-    # able to run the installation with the test scripts and finally run mw4 for
-    # some seconds
-  
     runs-on: macos-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -138,4 +127,3 @@ jobs:
           ./MW4_Run.command
           ls -la
           cat run.log
- 

@@ -3,13 +3,13 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: rpi4_mate_20_04
+name: rpi4_mate20
 
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/rpi4_mate_20_04.yml'
+      - '.github/workflows/rpi4_mate20.yml'
       - 'support/2.0/Mate/MW4_Install_20_04.sh'
 
 jobs:

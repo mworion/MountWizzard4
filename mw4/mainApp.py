@@ -23,9 +23,9 @@ import sys
 from queue import Queue
 import platform
 
-from base.packageConfig import checkMinimalPythonVersion
 # external packages
-if platform.system() == 'Windows' and checkMinimalPythonVersion('3.8.2'):
+from base.packageConfig import checkAutomation
+if checkAutomation():
     from logic.automation.automateWindows import AutomateWindows
 
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
@@ -196,7 +196,7 @@ class MountWizzard4(QObject):
 
         :return:
         """
-        if platform.system() != 'Windows' or checkMinimalPythonVersion('3.8.2'):
+        if not checkAutomation():
             return None
 
         automation = AutomateWindows(self)

@@ -26,6 +26,8 @@ isLinux = platform.system() == 'Linux'
 isMac = platform.system() == 'Darwin'
 
 
-def checkMinimalPythonVersion(ver):
-    result = StrictVersion(ver) >= StrictVersion(platform.python_version())
+def checkAutomation():
+    verResult = StrictVersion('3.8.2') <= StrictVersion(platform.python_version())
+    winResult = platform.system() == 'Windows'
+    result = verResult and winResult
     return result

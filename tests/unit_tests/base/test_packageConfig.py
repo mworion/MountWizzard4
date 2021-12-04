@@ -22,7 +22,7 @@ import platform
 # external packages
 
 # local import
-from base.packageConfig import excludedPlatforms, checkMinimalPythonVersion
+from base.packageConfig import excludedPlatforms, checkAutomation
 
 
 def test_config():
@@ -30,25 +30,45 @@ def test_config():
     assert 'aarch64' in excludedPlatforms
 
 
-def test_checkMinimalPythonVersion_1():
+def test_checkAutomation_1():
+    with mock.patch.object(platform,
+                           'python_version',
+                           return_value='3.8.1'):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
+            suc = checkAutomation()
+            assert not suc
+
+
+def test_checkAutomation_2():
     with mock.patch.object(platform,
                            'python_version',
                            return_value='3.8.2'):
-        suc = checkMinimalPythonVersion('3.8.1')
-        assert not suc
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
+            suc = checkAutomation()
+            assert suc
 
 
-def test_checkMinimalPythonVersion_2():
+def test_checkAutomation_3():
     with mock.patch.object(platform,
                            'python_version',
-                           return_value='3.8.2'):
-        suc = checkMinimalPythonVersion('3.8.2')
-        assert suc
+                           return_value='3.8.10'):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
+            suc = checkAutomation()
+            assert suc
 
 
-def test_checkMinimalPythonVersion_3():
+def test_checkAutomation_4():
     with mock.patch.object(platform,
                            'python_version',
-                           return_value='3.8.2'):
-        suc = checkMinimalPythonVersion('3.8.10')
-        assert suc
+                           return_value='3.8.10'):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Darwin'):
+            suc = checkAutomation()
+            assert not suc

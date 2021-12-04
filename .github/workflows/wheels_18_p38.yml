@@ -104,8 +104,8 @@ jobs:
       - name: Check for modified files
         id: git-check
         run: |
-        rm build-log.txt
-        echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
+          rm build-log.txt
+          echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
 
       - name: Update changes in GitHub repository
         if: steps.git-check.outputs.modified == 'true'

@@ -25,10 +25,10 @@ echo "      ██║╚██╔╝██║██╔══██║   ██�
 echo "      ██║ ╚═╝ ██║██║  ██║   ██║   ███████╗"
 echo "      ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝"
 echo
-echo install script version 2.2 Ubuntu Mate 18.04
+echo install script version 2.3 Ubuntu Mate 18.04
 echo --------------------------------------------------------
 
-echo install script version 2.2 Ubuntu Mate 18.04 > install.log 2>&1
+echo install script version 2.3 Ubuntu Mate 18.04 > install.log 2>&1
 
 echo
 echo --------------------------------------------------------
@@ -108,7 +108,7 @@ echo installing precompiled packages
 echo --------------------------------------------------------
 
 GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
-WHEELS="/support/2.0/wheels/ubuntu20.04"
+WHEELS="/support/wheels/ubuntu20.04"
 PRE="${GITHUB}${WHEELS}"
 POST="_aarch64.whl"
 

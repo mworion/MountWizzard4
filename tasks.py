@@ -47,22 +47,22 @@ client = {
         'work': 'test',
         'scp': 'mw@astro-win11.fritz.box:/Users/mw/test',
     },
-    'macMoj': {
+    'macMojave': {
         'user': 'mw@astro-mac-mojave.fritz.box',
         'work': 'test',
         'scp': 'mw@astro-mac-mojave.fritz.box:/Users/mw/test',
     },
-    'macCat': {
+    'macCatalina': {
         'user': 'mw@astro-mac-catalina.fritz.box',
         'work': 'test',
         'scp': 'mw@astro-mac-catalina.fritz.box:/Users/mw/test',
     },
-    'macBig': {
+    'macBigsur': {
         'user': 'mw@astro-mac-bigsur.fritz.box',
         'work': 'test',
         'scp': 'mw@astro-mac-bigsur.fritz.box:/Users/mw/test',
     },
-    'macMon': {
+    'macMonterey': {
         'user': 'mw@astro-mac-monterey.fritz.box',
         'work': 'test',
         'scp': 'mw@astro-mac-monterey.fritz.box:/Users/mw/test',
@@ -233,7 +233,6 @@ def upload_mw(c):
 
 
 def test_windows(c, user, work, scp):
-    printMW('test windows install')
     printMW('...delete test dir')
     runMW(c, f'ssh {user} "if exist {work} rd /s /q {work}"')
     time.sleep(1)
@@ -259,7 +258,6 @@ def test_windows(c, user, work, scp):
 
 
 def test_ubuntu_main(c, user, work, scp):
-    printMW('test ubuntu install')
     printMW('...delete test dir')
     runMW(c, f'ssh {user} "rm -rf {work}"')
     time.sleep(1)
@@ -287,7 +285,6 @@ def test_ubuntu_main(c, user, work, scp):
 
 
 def test_mac(c, user, work, scp):
-    printMW('test catalina install')
     printMW('...delete test dir')
     runMW(c, f'ssh {user} "rm -rf {work}"')
     time.sleep(1)
@@ -353,40 +350,40 @@ def test_comp(c):
 
 
 @task(pre=[])
-def test_macMoj(c):
+def test_macMojave(c):
     printMW('test Mojave install')
-    user = client['macMoj']['user']
-    work = client['macMoj']['work']
-    scp = client['macMoj']['scp']
-    test_ubuntu(c, user, work, scp)
+    user = client['macMojave']['user']
+    work = client['macMojave']['work']
+    scp = client['macMojave']['scp']
+    test_mac(c, user, work, scp)
     printMW('test Mojave install finished\n')
 
 
 @task(pre=[])
-def test_macCat(c):
+def test_macCatalina(c):
     printMW('test Catalina install')
-    user = client['macCat']['user']
-    work = client['macCat']['work']
-    scp = client['macCat']['scp']
-    test_ubuntu(c, user, work, scp)
+    user = client['macCatalina']['user']
+    work = client['macCatalina']['work']
+    scp = client['macCatalina']['scp']
+    test_mac(c, user, work, scp)
     printMW('test Catalina install finished\n')
 
 
 @task(pre=[])
-def test_macBig(c):
+def test_macBigsur(c):
     printMW('test BigSur install')
-    user = client['macBig']['user']
-    work = client['macBig']['work']
-    scp = client['macBig']['scp']
-    test_ubuntu(c, user, work, scp)
+    user = client['macBigsur']['user']
+    work = client['macBigsur']['work']
+    scp = client['macBigsur']['scp']
+    test_mac(c, user, work, scp)
     printMW('test BigSur install finished\n')
 
 
 @task(pre=[])
-def test_macMon(c):
+def test_macMonterey(c):
     printMW('test Monterey install')
-    user = client['macMon']['user']
-    work = client['macMon']['work']
-    scp = client['macMon']['scp']
-    test_ubuntu(c, user, work, scp)
+    user = client['macMonterey']['user']
+    work = client['macMonterey']['work']
+    scp = client['macMonterey']['scp']
+    test_mac(c, user, work, scp)
     printMW('test Monterey install finished\n')

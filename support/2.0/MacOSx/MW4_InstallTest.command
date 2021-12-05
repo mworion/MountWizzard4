@@ -29,21 +29,13 @@ echo ---------------------------------------------
 
 echo install script version 2.2 > install.log 2>&1
 
-
 echo
 echo ---------------------------------------------
 echo checking installed python version
 echo ---------------------------------------------
 
-# starting a new install log
+# get version of python3 installation
 python3 --version >> install.log 2>&1
-
-# changing to the actual directory as working directory
-
-# get version of python3 installation
-T=$(python3 --version)
-
-# get version of python3 installation
 T=$(python3 --version)
 
 # check which valid version is installed

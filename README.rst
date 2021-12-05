@@ -47,7 +47,7 @@ Unit tests:
 
 Test install / run scripts:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|TEST_PACKAGES| |TEST_SCRIPTS| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
+|TEST_PACKAGES| |TEST_SCRIPTS| |RPI4_Mate18| |RPI4_Mate20|
 
 Test coverage:
 ^^^^^^^^^^^^^^

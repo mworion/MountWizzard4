@@ -21,7 +21,6 @@ import os
 import json
 import sys
 from queue import Queue
-import platform
 
 # external packages
 from base.packageConfig import checkAutomation

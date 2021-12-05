@@ -323,6 +323,16 @@ def test_win10(c):
 
 
 @task(pre=[])
+def test_win11(c):
+    printMW('test windows11 install')
+    user = client['win11']['user']
+    work = client['win11']['work']
+    scp = client['win11']['scp']
+    test_windows(c, user, work, scp)
+    printMW('test windows11 install finished\n')
+
+
+@task(pre=[])
 def test_ubuntu(c):
     printMW('test ubuntu install')
     user = client['ubuntu']['user']

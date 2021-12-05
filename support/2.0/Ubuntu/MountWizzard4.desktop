@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=4.0
+Type=Application
+Terminal=False
+Exec=/home/mw/test/MW4_Run.sh
+Name=MountWizzard4
+Comment=MountWizzard4
+Icon=/home/mw/test/mw4.png
+Name[de_DE]=MountWizzard4.desktop

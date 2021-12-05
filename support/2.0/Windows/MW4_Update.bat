@@ -34,7 +34,7 @@ echo ---------------------------------------------
 echo updating MW4 to newest official release
 echo ---------------------------------------------
 
-call venv\Scripts\activate venv >> update.log 2>&1
+call venv\Scripts\activate >> update.log 2>&1
 
 if not errorlevel 1 goto :proceedRunMW4
 echo.

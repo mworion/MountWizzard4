@@ -119,7 +119,7 @@ echo ---------------------------------------------
 echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 
-call venv\Scripts\activate venv >> install.log 2>&1
+call venv\Scripts\activate >> install.log 2>&1
 python -m pip install pip --upgrade >> install.log 2>&1
 python -m pip install setuptools --upgrade >> install.log 2>&1
 python -m pip install wheel --upgrade >> install.log 2>&1

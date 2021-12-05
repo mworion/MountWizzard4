@@ -7,7 +7,7 @@ workflow for astronomy work and imaging runs on
 - Windows: Windows7 (untested), Windows10, Windows11
 - OSx: Mojave, Catalina, Bigsur, Monterey
 - Linux: Ubuntu 18.04, Ubuntu 20.04, Mate 18.04, Mate 20.04, Debian 10
-(Astroberry, Stellarmate)
+    (Astroberry, Stellarmate)
 
 As a python application, it should run in all
 environments supporting python 3.7-3.9 and PyQt5 as a GUI framework.

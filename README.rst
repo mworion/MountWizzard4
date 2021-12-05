@@ -45,9 +45,13 @@ Unit tests:
 ^^^^^^^^^^^
 |PYTEST macOS| |PYTEST Windows| |PYTEST Ubuntu|
 
-Test install / run scripts:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|TEST_PACKAGES| |TEST_SCRIPTS| |RPI4_Mate18| |RPI4_Mate20|
+Test install:
+^^^^^^^^^^^^^
+|TEST_PACKAGES| |RPI4_Mate18| |RPI4_Mate20|
+
+Test run:
+^^^^^^^^^
+|TEST_SCRIPTS|
 
 Test coverage:
 ^^^^^^^^^^^^^^

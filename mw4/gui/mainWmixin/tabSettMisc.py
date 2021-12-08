@@ -307,7 +307,7 @@ class SettMisc(object):
             self.app.message.emit('MW4 not running in an virtual environment', 2)
             return False
 
-        packages = sorted(["%s==%s" % (i.key, i.version) for i in working_set])
+        packages = sorted([f'{i.key}=={i.version}' for i in working_set])
         self.log.debug(f'Before update:  {packages}')
 
         versionPackage = self.ui.versionAvailable.text()

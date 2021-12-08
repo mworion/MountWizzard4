@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: checking windows python version for automation
+- fix: windows automation respect german language settings for windows
  """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.5',
+    version='2.1.6b0',
     packages=[
         'mw4',
         'mw4.base',

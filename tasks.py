@@ -26,48 +26,62 @@ rn = ''
 # defining all necessary virtual client login for building over all platforms
 #
 
-# defining environment for ubuntu
-clientUbuntu = 'astro-ubuntu.fritz.box'
-userUbuntu = 'mw@' + clientUbuntu
-workUbuntu = '/home/mw/test'
-workUbuntuSCP = userUbuntu + ':/home/mw/test'
-
-# defining environment for ubuntu
-client = 'astro-comp.fritz.box'
-user = 'mw@' + client
-work = '/home/mw/test'
-workSCP = user + ':/home/mw/test'
-
-# same for windows1 with cmd.exe as shell
-clientWindows = 'astro-windows.fritz.box'
-uWin = 'mw@' + clientWindows
-wWin = 'test'
-wWinSCP = uWin + ':/Users/mw/test'
-
-# same for macOS
-clientMac = 'astro-mac-bigsur.fritz.box'
-# clientMac = 'astro-mac-catalina.fritz.box'
-# clientMac = 'astro-mac-mojave.fritz.box'
-userMac = 'mw@' + clientMac
-workMac = 'test'
-workMacSCP = userMac + ':/Users/mw/test'
-
-
-def runMWd(c, param):
-    c.run(param)
+client = {
+    'ubuntu': {
+        'user': 'mw@astro-ubuntu.fritz.box',
+        'work': '/home/mw/test',
+        'scp': 'mw@astro-ubuntu.fritz.box:/home/mw/test',
+    },
+    'ubuntuRig': {
+        'user': 'mw@astro-comp.fritz.box',
+        'work': '/home/mw/test',
+        'scp': 'mw@astro-ubuntu.fritz.box:/home/mw/test',
+    },
+    'win10': {
+        'user': 'mw@astro-win10.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-win10.fritz.box:/Users/mw/test',
+    },
+    'win11': {
+        'user': 'mw@astro-win11.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-win11.fritz.box:/Users/mw/test',
+    },
+    'macMojave': {
+        'user': 'mw@astro-mac-mojave.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-mac-mojave.fritz.box:/Users/mw/test',
+    },
+    'macCatalina': {
+        'user': 'mw@astro-mac-catalina.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-mac-catalina.fritz.box:/Users/mw/test',
+    },
+    'macBigsur': {
+        'user': 'mw@astro-mac-bigsur.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-mac-bigsur.fritz.box:/Users/mw/test',
+    },
+    'macMonterey': {
+        'user': 'mw@astro-mac-monterey.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-mac-monterey.fritz.box:/Users/mw/test',
+    },
+}
 
 
 def runMW(c, param):
-    # c.run(param, echo=False, hide='out')
     c.run(param)
 
 
 def printMW(param):
     print(param)
 
+
 @task
 def log(c):
-    runMW(c, 'python3 support/logViewer.py')
+    runMW(c, 'python3 logViewer.py')
+
 
 @task
 def clean_mw(c):
@@ -75,6 +89,7 @@ def clean_mw(c):
     runMW(c, 'rm -rf .pytest_cache')
     runMW(c, 'rm -rf mw4.egg-info')
     runMW(c, 'find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
+    printMW('clean mountwizzard finished\n')
 
 
 @task
@@ -85,6 +100,7 @@ def image_res(c):
         print(file)
         im = Image.open(file)
         im.save(file, dpi=(150, 150))
+    printMW('changing image resolution for docs to 150 dpi finished\n')
 
 
 @task
@@ -104,7 +120,7 @@ def version_doc(c):
         text = conf.readlines()
     textNew = list()
 
-    print(f'>{number}<')
+    print(f'version is >{number}<')
 
     # replacing the version number
     for line in text:
@@ -117,15 +133,18 @@ def version_doc(c):
     # writing configuration file
     with open('./docs/source/conf.py', 'w+') as conf:
         conf.writelines(textNew)
+    printMW('changing the version number to setup.py finished\n')
 
 
 @task
 def update_builtins(c):
-    printMW('building resources')
+    printMW('updating builtins')
     runMW(c, 'cp ./data/de421_23.bsp ./mw4/resource/data/de421_23.bsp')
     runMW(c, 'cp ./data/visual.txt ./mw4/resource/data/visual.txt')
     runMW(c, 'cp ./data/finals2000A.all ./mw4/resource/data/finals2000A.all')
     runMW(c, 'cp ./data/finals.data ./mw4/resource/data/finals.data')
+    runMW(c, 'cp ./data/CDFLeapSeconds.txt ./mw4/resource/data/CDFLeapSeconds.txt')
+    printMW('updating builtins finished\n')
 
 
 @task
@@ -138,18 +157,21 @@ def build_resource(c):
                 t = os.stat(file).st_mtime
                 f.write(f'{os.path.basename(file)} {t}\n')
     runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
+    printMW('building resources finished\n')
 
 
 @task
 def build_widgets(c):
     printMW('building widgets')
     widgetDir = './mw4/gui/widgets/'
-    widgets = ['hemisphere', 'image', 'main', 'measure', 'message',
-               'satellite', 'keypad', 'devicePopup', 'analyse',
-               'simulator', 'downloadPopup']
+    widgets = [
+        'analyse', 'devicePopup', 'downloadPopup', 'hemisphere', 'image',
+        'keypad', 'main', 'measure', 'message', 'satellite', 'simulator'
+    ]
     for widget in widgets:
         name = widgetDir + widget
         runMW(c, f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')
+    printMW('building widgets finished\n')
 
 
 @task()
@@ -160,26 +182,28 @@ def test_mw(c):
     runMW(c, 'pytest  tests/unit_tests/zMainApp')
     runMW(c, 'pytest  tests/unit_tests/zUpdate')
     runMW(c, 'pytest tests/unit_tests/base')
+    runMW(c, 'pytest tests/unit_tests/gui/extWindows')
+    runMW(c, 'pytest tests/unit_tests/gui/mainWindow')
+    runMW(c, 'pytest tests/unit_tests/gui/mainWmixin')
+    runMW(c, 'pytest tests/unit_tests/gui/utilities')
+    runMW(c, 'pytest tests/unit_tests/indibase')
     runMW(c, 'pytest tests/unit_tests/logic/astrometry')
+    runMW(c, 'pytest tests/unit_tests/logic/automation')
+    runMW(c, 'pytest tests/unit_tests/logic/camera')
     runMW(c, 'pytest tests/unit_tests/logic/cover')
     runMW(c, 'pytest tests/unit_tests/logic/databaseProcessing')
     runMW(c, 'pytest tests/unit_tests/logic/dome')
     runMW(c, 'pytest tests/unit_tests/logic/environment')
-    runMW(c, 'pytest tests/unit_tests/logic/camera')
     runMW(c, 'pytest tests/unit_tests/logic/filter')
     runMW(c, 'pytest tests/unit_tests/logic/focuser')
+    runMW(c, 'pytest tests/unit_tests/logic/keypad')
     runMW(c, 'pytest tests/unit_tests/logic/measure')
     runMW(c, 'pytest tests/unit_tests/logic/modeldata')
     runMW(c, 'pytest tests/unit_tests/logic/powerswitch')
     runMW(c, 'pytest tests/unit_tests/logic/remote')
     runMW(c, 'pytest tests/unit_tests/logic/telescope')
-    runMW(c, 'pytest tests/unit_tests/gui/extWindows')
-    runMW(c, 'pytest tests/unit_tests/gui/mainWindow')
-    runMW(c, 'pytest tests/unit_tests/gui/mainWmixin')
-    runMW(c, 'pytest tests/unit_tests/gui/utilities')
     runMW(c, 'pytest tests/unit_tests/mountcontrol')
-    runMW(c, 'pytest tests/unit_tests/indibase')
-    runMW(c, 'pytest tests/unit_tests/logic/automation')
+    printMW('testing mountwizzard finished\n')
 
 
 @task(pre=[build_resource, build_widgets, version_doc])
@@ -195,79 +219,45 @@ def build_mw(c):
     rn = ''
     for line in tmp:
         rn += line
-
-    print(rn)
+    printMW('building dist mountwizzard4 finished\n')
 
 
 @task(pre=[build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
     with c.cd('./dist'):
-        print(rn)
         print(f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
         runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
     runMW(c, 'rm notes.txt')
+    printMW('uploading dist mountwizzard4 finished\n')
 
 
-@task(pre=[])
-def test_win(c):
-    printMW('test windows install')
+def test_windows(c, user, work, scp):
     printMW('...delete test dir')
-    runMW(c, f'ssh {uWin} "if exist {wWin} rd /s /q {wWin}"')
+    runMW(c, f'ssh {user} "if exist {work} rd /s /q {work}"')
     time.sleep(1)
     printMW('...make test dir')
-    runMW(c, f'ssh {uWin} "if not exist {wWin} mkdir {wWin}"')
+    runMW(c, f'ssh {user} "if not exist {work} mkdir {work}"')
     time.sleep(1)
 
     with c.cd('dist'):
         printMW('...copy *.tar.gz to test dir')
-        runMWd(c, f'scp -r mountwizzard4.tar.gz {wWinSCP}')
+        runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
     with c.cd('support/2.0/Windows'):
         printMW('...copy install script to test dir')
-        runMWd(c, f'scp -r MW4_InstallTest.bat {wWinSCP}')
-        runMWd(c, f'scp -r MW4_Install.bat {wWinSCP}')
+        runMW(c, f'scp -r MW4_InstallTest.bat {scp}')
+        runMW(c, f'scp -r MW4_Install.bat {scp}')
         printMW('...run install script in test dir')
-        runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_InstallTest.bat"')
+        runMW(c, f'ssh {user} "cd {work} && MW4_InstallTest.bat"')
         printMW('...copy run script to test dir')
-        runMWd(c, f'ssh {uWin} "cd {wWin} && echo > test.txt"')
-        runMWd(c, f'scp -r MW4_Run.bat {wWinSCP}')
+        runMW(c, f'ssh {user} "cd {work} && echo > test.txt"')
+        runMW(c, f'scp -r MW4_Run.bat {scp}')
         printMW('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {uWin} "cd {wWin} && MW4_Run.bat"')
+        runMW(c, f'ssh {user} "cd {work} && MW4_Run.bat"')
 
 
-@task(pre=[])
-def test_ubuntu(c):
-    printMW('test ubuntu install')
-    printMW('...delete test dir')
-    runMW(c, f'ssh {userUbuntu} "rm -rf {workUbuntu}"')
-    time.sleep(1)
-    printMW('...make test dir')
-    runMW(c, f'ssh {userUbuntu} "mkdir {workUbuntu}"')
-    time.sleep(1)
-
-    with c.cd('dist'):
-        printMW('...copy *.tar.gz to test dir')
-        runMWd(c, f'scp -r mountwizzard4.tar.gz {workUbuntuSCP}')
-
-    with c.cd('support/2.0/Ubuntu'):
-        printMW('...copy install script to test dir')
-        runMWd(c, f'scp -r MW4_InstallTest.sh {workUbuntuSCP}')
-        runMWd(c, f'scp -r MW4_Install.sh {workUbuntuSCP}')
-        printMW('...run install script in test dir')
-        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && ./MW4_InstallTest.sh"')
-        printMW('...copy run script and environ to test dir')
-        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && touch test.txt"')
-        runMWd(c, f'scp -r MW4_Run.sh {workUbuntuSCP}')
-        runMWd(c, f'scp -r MountWizzard4.desktop {workUbuntuSCP}')
-        runMWd(c, f'scp -r mw4.png {workUbuntuSCP}')
-        printMW('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {userUbuntu} "cd {workUbuntu} && xvfb-run ./MW4_Run.sh"')
-
-
-@task(pre=[])
-def test_comp(c):
-    printMW('test ubuntu rig install')
+def test_ubuntu_main(c, user, work, scp):
     printMW('...delete test dir')
     runMW(c, f'ssh {user} "rm -rf {work}"')
     time.sleep(1)
@@ -277,45 +267,123 @@ def test_comp(c):
 
     with c.cd('dist'):
         printMW('...copy *.tar.gz to test dir')
-        runMWd(c, f'scp -r mountwizzard4.tar.gz {workSCP}')
+        runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
     with c.cd('support/2.0/Ubuntu'):
         printMW('...copy install script to test dir')
-        runMWd(c, f'scp -r MW4_InstallTest.sh {workSCP}')
-        runMWd(c, f'scp -r MW4_Install.sh {workSCP}')
+        runMW(c, f'scp -r MW4_InstallTest.sh {scp}')
+        runMW(c, f'scp -r MW4_Install.sh {scp}')
         printMW('...run install script in test dir')
-        runMWd(c, f'ssh {user} "cd {work} && ./MW4_InstallTest.sh"')
+        runMW(c, f'ssh {user} "cd {work} && ./MW4_InstallTest.sh"')
         printMW('...copy run script and environ to test dir')
-        runMWd(c, f'ssh {user} "cd {work} && touch test.txt"')
-        runMWd(c, f'scp -r MW4_Run.sh {workSCP}')
-        runMWd(c, f'scp -r MountWizzard4.desktop {workSCP}')
-        runMWd(c, f'scp -r mw4.png {workSCP}')
+        runMW(c, f'ssh {user} "cd {work} && touch test.txt"')
+        runMW(c, f'scp -r MW4_Run.sh {scp}')
+        runMW(c, f'scp -r MountWizzard4.desktop {scp}')
+        runMW(c, f'scp -r mw4.png {scp}')
         printMW('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {user} "cd {work} && xvfb-run ./MW4_Run.sh"')
+        runMW(c, f'ssh {user} "cd {work} && xvfb-run ./MW4_Run.sh"')
 
 
-@task(pre=[])
-def test_mac(c):
-    printMW('test catalina install')
+def test_mac(c, user, work, scp):
     printMW('...delete test dir')
-    runMW(c, f'ssh {userMac} "rm -rf {workMac}"')
+    runMW(c, f'ssh {user} "rm -rf {work}"')
     time.sleep(1)
     printMW('...make test dir')
-    runMW(c, f'ssh {userMac} "mkdir {workMac}"')
+    runMW(c, f'ssh {user} "mkdir {work}"')
     time.sleep(1)
 
     with c.cd('dist'):
         printMW('...copy *.tar.gz to test dir')
-        runMWd(c, f'scp -r mountwizzard4.tar.gz {workMacSCP}')
+        runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
     with c.cd('support/2.0/MacOSx'):
         printMW('...copy install script to test dir')
-        runMWd(c, f'scp -r MW4_InstallTest.command {workMacSCP}')
-        runMWd(c, f'scp -r MW4_Install.command {workMacSCP}')
+        runMW(c, f'scp -r MW4_InstallTest.command {scp}')
+        runMW(c, f'scp -r MW4_Install.command {scp}')
         printMW('...run install script in test dir')
-        runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_InstallTest.command"')
+        runMW(c, f'ssh {user} "cd {work} && ./MW4_InstallTest.command"')
         printMW('...copy run script and environ to test dir')
-        runMWd(c, f'ssh {userMac} "cd {workMac} && touch test.txt"')
-        runMWd(c, f'scp -r MW4_Run.command {workMacSCP}')
+        runMW(c, f'ssh {user} "cd {work} && touch test.txt"')
+        runMW(c, f'scp -r MW4_Run.command {scp}')
         printMW('...run MountWizzard4 for 3 seconds')
-        runMWd(c, f'ssh {userMac} "cd {workMac} && ./MW4_Run.command"')
+        runMW(c, f'ssh {user} "cd {work} && ./MW4_Run.command"')
+
+
+@task(pre=[])
+def test_win10(c):
+    printMW('test windows10 install')
+    user = client['win10']['user']
+    work = client['win10']['work']
+    scp = client['win10']['scp']
+    test_windows(c, user, work, scp)
+    printMW('test windows10 install finished\n')
+
+
+@task(pre=[])
+def test_win11(c):
+    printMW('test windows11 install')
+    user = client['win11']['user']
+    work = client['win11']['work']
+    scp = client['win11']['scp']
+    test_windows(c, user, work, scp)
+    printMW('test windows11 install finished\n')
+
+
+@task(pre=[])
+def test_ubuntu(c):
+    printMW('test ubuntu install')
+    user = client['ubuntu']['user']
+    work = client['ubuntu']['work']
+    scp = client['ubuntu']['scp']
+    test_ubuntu_main(c, user, work, scp)
+    printMW('test ubuntu install finished\n')
+
+
+@task(pre=[])
+def test_comp(c):
+    printMW('test ubuntu rig install')
+    user = client['ubuntuRig']['user']
+    work = client['ubuntuRig']['work']
+    scp = client['ubuntuRig']['scp']
+    test_ubuntu(c, user, work, scp)
+    printMW('test ubuntu rig install finished\n')
+
+
+@task(pre=[])
+def test_macMojave(c):
+    printMW('test Mojave install')
+    user = client['macMojave']['user']
+    work = client['macMojave']['work']
+    scp = client['macMojave']['scp']
+    test_mac(c, user, work, scp)
+    printMW('test Mojave install finished\n')
+
+
+@task(pre=[])
+def test_macCatalina(c):
+    printMW('test Catalina install')
+    user = client['macCatalina']['user']
+    work = client['macCatalina']['work']
+    scp = client['macCatalina']['scp']
+    test_mac(c, user, work, scp)
+    printMW('test Catalina install finished\n')
+
+
+@task(pre=[])
+def test_macBigsur(c):
+    printMW('test BigSur install')
+    user = client['macBigsur']['user']
+    work = client['macBigsur']['work']
+    scp = client['macBigsur']['scp']
+    test_mac(c, user, work, scp)
+    printMW('test BigSur install finished\n')
+
+
+@task(pre=[])
+def test_macMonterey(c):
+    printMW('test Monterey install')
+    user = client['macMonterey']['user']
+    work = client['macMonterey']['work']
+    scp = client['macMonterey']['scp']
+    test_mac(c, user, work, scp)
+    printMW('test Monterey install finished\n')

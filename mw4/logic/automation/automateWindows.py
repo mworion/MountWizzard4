@@ -101,10 +101,13 @@ class AutomateWindows(QObject):
         self.name = ''
         self.available = False
         self.updaterEXE = ''
+        self.installs = {'10micron control': 'tenmicron_v2.exe',
+                         '10micron control': 'GmQCIv2.exe',
+                         '10micron QCI control': 'tenmicron_v2.exe',
+                         '10micron QCI control': 'GmQCIv2.exe'
+                         }
 
-        self.getAppSettings({'10micron control': 'tenmicron_v2.exe',
-                             '10micron QCI control': 'GmQCIv2.exe'
-                             })
+        self.getAppSettings(self.installs)
         t = f'Name: [{self.name}], path: [{self.installPath+self.updaterEXE}]'
         self.log.debug(t)
         self.updater = None
@@ -158,7 +161,6 @@ class AutomateWindows(QObject):
         """
         for i in range(0, winreg.QueryInfoKey(key)[0]):
             nameKey = winreg.EnumKey(key, i)
-            self.log.debug(f'Registry app:[{key}], values:[{nameKey}]')
             if appName in nameKey:
                 break
         else:
@@ -193,15 +195,21 @@ class AutomateWindows(QObject):
             self.log.debug(t)
             return False, '', ''
 
-        if appName in values.get('DisplayName', ''):
+        if appName not in values.get('DisplayName', ''):
+            t = f'AppName: [{appName}], values: [{values}]'
+            self.log.debug(t)
+            return False, '', ''
+
+        fullPath = values['InstallLocation'] + self.installs[appName]
+        if not os.path.isfile(fullPath):
+            t = f'AppName: [{appName}], values: [{values}]'
+            self.log.debug(t)
+            return False, '', ''
+
+        else:
             available = True
             name = values['DisplayName']
             installPath = values['InstallLocation']
-
-        else:
-            available = False
-            installPath = ''
-            name = ''
             t = f'AppName: [{appName}], values: [{values}]'
             self.log.debug(t)
 
@@ -380,6 +388,7 @@ class AutomateWindows(QObject):
         """
         win = self.updater['10 micron control box update']
         self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
+
         if comets:
             controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
             win['Edit...4'].click()
@@ -390,18 +399,15 @@ class AutomateWindows(QObject):
             popup = self.updater['Asteroid orbits']
 
         self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
-        popup['MPC file'].click()
 
+        popup['MPC file'].click()
         filedialog = self.updater['Open']
         self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
+
         text = self.installPath + 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
+        filedialog.child_window(title='Open', auto_id='1',
+                                control_type='Button').click()
         popup['Close'].click()
         return True
 
@@ -428,22 +434,20 @@ class AutomateWindows(QObject):
         """
         win = self.updater['10 micron control box update']
         self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
+
         controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
         self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
-        popup['Import files...'].click()
 
+        popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
         self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
+
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
+        filedialog.child_window(title='Open', auto_id='1',
+                                control_type='Button').click()
         if self.updaterEXE == 'tenmicron_v2.exe':
             filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
         else:
@@ -451,12 +455,8 @@ class AutomateWindows(QObject):
 
         text = self.installPath + self.UTC_2_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
+        filedialog.child_window(title='Open', auto_id='1',
+                                control_type='Button').click()
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -489,18 +489,15 @@ class AutomateWindows(QObject):
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
         self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
-        popup['Load from file'].click()
 
+        popup['Load from file'].click()
         filedialog = self.updater['Open']
         self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
+
         text = self.installPath + 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
+        filedialog.child_window(title='Open', auto_id='1',
+                                control_type='Button').click()
         popup['Close'].click()
         return True
 

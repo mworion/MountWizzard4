@@ -396,7 +396,12 @@ class AutomateWindows(QObject):
         self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
         text = self.installPath + 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog['Button16'].click()
+
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
+
         popup['Close'].click()
         return True
 
@@ -434,7 +439,11 @@ class AutomateWindows(QObject):
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
 
-        filedialog['Button16'].click()
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
+
         if self.updaterEXE == 'tenmicron_v2.exe':
             filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
         else:
@@ -442,7 +451,12 @@ class AutomateWindows(QObject):
 
         text = self.installPath + self.UTC_2_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog['Button16'].click()
+
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
+
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -481,7 +495,12 @@ class AutomateWindows(QObject):
         self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
         text = self.installPath + 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog['Button16'].click()
+
+        if platform.architecture()[0] == '32bit':
+            filedialog['Button16'].click()
+        else:
+            filedialog['OpenButton4'].click()
+
         popup['Close'].click()
         return True
 

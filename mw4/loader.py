@@ -365,6 +365,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'de421_23.bsp': 0,
         'visual.txt': 0,
         'CDFLeapSeconds.txt': 0,
+        'tai-utc.dat': 0,
         'finals2000A.all': 0,
         'finals.data': 0,
     }

@@ -38,7 +38,8 @@ class AutomateWindows(QObject):
     log = logging.getLogger(__name__)
 
     UTC_1_FILE = 'finals.data'
-    UTC_2_FILE = 'CDFLeapSeconds.txt'
+    UTC_2a_FILE = 'CDFLeapSeconds.txt'
+    UTC_2b_FILE = 'tai-utc.dat'
 
     COMET_FIELDS = [
         'Orbit_type',
@@ -449,11 +450,12 @@ class AutomateWindows(QObject):
         filedialog.child_window(title='Open', auto_id='1',
                                 control_type='Button').click()
         if self.updaterEXE == 'tenmicron_v2.exe':
+            text = self.installPath + self.UTC_2a_FILE
             filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
         else:
+            text = self.installPath + self.UTC_2b_FILE
             filedialog = self.updater['Open tai-utc.dat']
 
-        text = self.installPath + self.UTC_2_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         filedialog.child_window(title='Open', auto_id='1',
                                 control_type='Button').click()

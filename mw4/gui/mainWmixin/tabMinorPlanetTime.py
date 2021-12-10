@@ -208,9 +208,9 @@ class MinorPlanetTime:
         """
         :return:
         """
-        suc = self.checkUpdaterOK()
-        if not suc:
-            return False
+        updaterEXE = self.checkUpdaterOK()
+        if not updaterEXE:
+            return ''
 
         question = '<b>Earth Rotation Data programming</b>'
         question += '<br><br>The 10micron updater will be used.'
@@ -219,21 +219,22 @@ class MinorPlanetTime:
         question += 'Please wait until updater is closed!</font></i>'
         suc = self.messageDialog(self, 'Program with 10micron Updater', question)
         if not suc:
-            return False
+            return ''
 
         self.app.message.emit('Program to mount:    [earth rotation data]', 1)
         self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
-        return True
+        return updaterEXE
 
     def progEarthRotationData(self):
         """
         :return: success
         """
-        suc = self.progEarthRotationGUI()
-        if not suc:
+        updaterEXE = self.progEarthRotationGUI()
+        if not updaterEXE:
             return False
 
-        suc = self.databaseProcessing.writeEarthRotationData(self.installPath)
+        suc = self.databaseProcessing.writeEarthRotationData(self.installPath,
+                                                             updaterEXE)
         if not suc:
             self.app.message.emit('Data could not be copied - stopping', 2)
             return False

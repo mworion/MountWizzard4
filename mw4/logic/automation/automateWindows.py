@@ -379,7 +379,7 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win}]')
+        self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
         if comets:
             controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
             win['Edit...4'].click()
@@ -389,11 +389,11 @@ class AutomateWindows(QObject):
             win['Edit...3'].click()
             popup = self.updater['Asteroid orbits']
 
-        self.log.debug(f'Updater popup: [{popup}]')
+        self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
         popup['MPC file'].click()
 
         filedialog = self.updater['Open']
-        self.log.debug(f'Updater filedialog: [{filedialog}]')
+        self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
         text = self.installPath + 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         filedialog['Button16'].click()
@@ -422,19 +422,19 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win}]')
+        self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
         controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
-        self.log.debug(f'Updater popup: [{popup}]')
+        self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
         popup['Import files...'].click()
+
         filedialog = self.updater['Open finals data']
-        self.log.debug(f'Updater filedialog: [{filedialog}]')
+        self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
 
         filedialog['Button16'].click()
-
         if self.updaterEXE == 'tenmicron_v2.exe':
             filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
         else:
@@ -469,16 +469,16 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win}]')
+        self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
 
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
-        self.log.debug(f'Updater popup: [{popup}]')
+        self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
         popup['Load from file'].click()
 
         filedialog = self.updater['Open']
-        self.log.debug(f'Updater filedialog: [{filedialog}]')
+        self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
         text = self.installPath + 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         filedialog['Button16'].click()

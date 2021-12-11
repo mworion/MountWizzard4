@@ -362,13 +362,30 @@ class AutomateWindows(QObject):
 
         return True
 
+    @staticmethod
+    def getIdentifiers(element):
+        """
+        :param element:
+        :return:
+        """
+        return element._ctrl_identifiers()
+
+    @staticmethod
+    def dialogClick(element):
+        """
+        :param element:
+        :return:
+        """
+        return element.child_window(title='Open', auto_id='1',
+                                    control_type='Button').click()
+
     def uploadMPCDataCommands(self, comets=False):
         """
         :param comets:
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
+        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
 
         if comets:
             controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
@@ -379,16 +396,15 @@ class AutomateWindows(QObject):
             win['Edit...3'].click()
             popup = self.updater['Asteroid orbits']
 
-        self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
+        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['MPC file'].click()
         filedialog = self.updater['Open']
-        self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
+        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog.child_window(title='Open', auto_id='1',
-                                control_type='Button').click()
+        self.dialogClick(filedialog)
         popup['Close'].click()
         return True
 
@@ -414,21 +430,21 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
+        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
 
         controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
-        self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
+        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
-        self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
+        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog.child_window(title='Open', auto_id='1',
-                                control_type='Button').click()
+        self.dialogClick(filedialog)
+
         if self.updaterApp == 'tenmicron_v2.exe':
             text = self.installPath + self.UTC_2a_FILE
             filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
@@ -437,8 +453,7 @@ class AutomateWindows(QObject):
             filedialog = self.updater['Open tai-utc.dat']
 
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog.child_window(title='Open', auto_id='1',
-                                control_type='Button').click()
+        self.dialogClick(filedialog)
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -465,21 +480,20 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win._ctrl_identifiers()}]')
+        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
 
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
-        self.log.debug(f'Updater popup: [{popup._ctrl_identifiers()}]')
+        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Load from file'].click()
         filedialog = self.updater['Open']
-        self.log.debug(f'Updater filedialog: [{filedialog._ctrl_identifiers()}]')
+        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        filedialog.child_window(title='Open', auto_id='1',
-                                control_type='Button').click()
+        self.dialogClick(filedialog)
         popup['Close'].click()
         return True
 

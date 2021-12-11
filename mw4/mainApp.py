@@ -21,7 +21,6 @@ import os
 import json
 import sys
 from queue import Queue
-import platform
 
 # external packages
 from base.packageConfig import checkAutomation
@@ -134,10 +133,10 @@ class MountWizzard4(QObject):
             'measure': None,
         }
         profile = self.config.get('profileName', '-')
-        self.messageQueue.put(('MountWizzard4 started', 1))
-        t = f'Workdir              [{self.mwGlob["workDir"]}]'
+        self.messageQueue.put(('MountWizzard4:       [...started...]', 1))
+        t = f'Workdir:             [{self.mwGlob["workDir"]}]'
         self.messageQueue.put((t, 1))
-        self.messageQueue.put((f'Loaded profile       [{profile}]', 1))
+        self.messageQueue.put((f'Loaded profile:      [{profile}]', 1))
 
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
@@ -200,7 +199,15 @@ class MountWizzard4(QObject):
             return None
 
         automation = AutomateWindows(self)
-        return automation
+        if automation.updaterApp != '':
+            path = automation.installPath
+            app = automation.updaterApp
+            t = f'10micron updater:    [{path}{app}]'
+            self.message.emit(t, 1)
+            return automation
+        else:
+            self.message.emit('No 10micron updater available !', 2)
+            return None
 
     def initConfig(self):
         """

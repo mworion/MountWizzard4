@@ -23,15 +23,18 @@ import unittest.mock as mock
 import logging
 import platform
 import shutil
-import time
 
 # external packages
 import pytest
 import PyQt5
+from PyQt5.QtTest import QTest
 
 # local import
+if platform.system() == 'Windows':
+    from logic.automation.automateWindows import AutomateWindows
 from mainApp import MountWizzard4
 from base.loggerMW import setupLogging
+import base.packageConfig
 import resource.resources as res
 res.qInitResources()
 setupLogging()
@@ -52,7 +55,7 @@ def app(qapp):
     for f in files:
         os.remove(f)
 
-    shutil.copy(r'tests/testData/de421_23.bsp', r'tests/workDir/data/de421_23.bsp')
+    shutil.copy('tests/testData/de421_23.bsp', 'tests/workDir/data/de421_23.bsp')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -62,6 +65,7 @@ def app(qapp):
                                    'start'):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
+                app.checkAutomation = base.packageConfig.checkAutomation
                 with mock.patch.object(app.mainW,
                                        'setupSatelliteNameList'):
                     yield app
@@ -84,7 +88,7 @@ def module_setup_teardown_func(app):
 def test_checkAndSetAutomation_1(app):
     with mock.patch.object(platform,
                            'system',
-                           return_value='test'):
+                           return_value='Darwin'):
         val = app.checkAndSetAutomation()
         assert val is None
 
@@ -92,12 +96,25 @@ def test_checkAndSetAutomation_1(app):
 @pytest.mark.skipif(platform.system() != 'Windows',
                     reason="requires windows")
 def test_checkAndSetAutomation_2(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
+    with mock.patch.object(AutomateWindows,
+                           'findAppSetup',
+                           return_value=(False, '', '', '')):
         with mock.patch.object(platform,
-                               'python_version',
-                               return_value='3.9.1'):
+                               'system',
+                               return_value='Windows'):
+            val = app.checkAndSetAutomation()
+            assert val is None
+
+
+@pytest.mark.skipif(platform.system() != 'Windows',
+                    reason="requires windows")
+def test_checkAndSetAutomation_3(app):
+    with mock.patch.object(AutomateWindows,
+                           'findAppSetup',
+                           return_value=(True, '', '', 'Test')):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value='Windows'):
             val = app.checkAndSetAutomation()
             assert val is not None
 
@@ -341,8 +358,22 @@ def test_saveConfig_4(app):
 
 def test_loadMountData_1(app):
     app.mountUp = False
-    suc = app.loadMountData(True)
-    assert suc
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(app.mount,
+                               'cycleSetting'):
+            with mock.patch.object(app.mount,
+                                   'getFW'):
+                with mock.patch.object(app.mount,
+                                       'getLocation'):
+                    with mock.patch.object(app.mainW,
+                                           'refreshName'):
+                        with mock.patch.object(app.mainW,
+                                               'refreshModel'):
+                            with mock.patch.object(app.mount,
+                                                   'getTLE'):
+                                suc = app.loadMountData(True)
+                                assert suc
 
 
 def test_loadMountData_2(app):
@@ -356,8 +387,10 @@ def test_loadMountData_3(app):
     with mock.patch.object(app.mainW,
                            'calcTwilightData',
                            return_value=([], [])):
-        suc = app.loadMountData(False)
-        assert not suc
+        with mock.patch.object(app.mount,
+                               'resetData'):
+            suc = app.loadMountData(False)
+            assert not suc
 
 
 def test_loadMountData_4(app):

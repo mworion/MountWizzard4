@@ -720,5 +720,6 @@ def test_checkUpdaterOK_2(function):
 
 def test_checkUpdaterOK_3(function):
     function.app.automation.installPath = 'test'
+    function.app.automation.updaterApp = 'test'
     suc = function.checkUpdaterOK()
     assert suc

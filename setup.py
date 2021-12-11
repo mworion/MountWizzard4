@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - add: explicit logging of automation windows strings for debug
+- add: showing now detected updater path and app
 - revert: fixes for german as they do not work 
  """
 
@@ -28,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.6b',
+    version='2.1.6b1',
     packages=[
         'mw4',
         'mw4.base',

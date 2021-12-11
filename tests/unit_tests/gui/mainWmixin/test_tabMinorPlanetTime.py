@@ -419,15 +419,11 @@ def test_mpcGUI_2(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
-
     with mock.patch.object(function,
-                           'messageDialog',
+                           'checkUpdaterOK',
                            return_value=False):
-        with mock.patch.object(function,
-                               'checkUpdaterOK',
-                               return_value=False):
-            suc = function.mpcGUI()
-            assert not suc
+        suc = function.mpcGUI()
+        assert not suc
 
 
 def test_mpcGUI_3(function):
@@ -436,10 +432,10 @@ def test_mpcGUI_3(function):
     function.ui.minorPlanetSource.setCurrentIndex(0)
 
     with mock.patch.object(function,
-                           'messageDialog',
+                           'checkUpdaterOK',
                            return_value=True):
         with mock.patch.object(function,
-                               'checkUpdaterOK',
+                               'messageDialog',
                                return_value=False):
             suc = function.mpcGUI()
             assert not suc
@@ -451,25 +447,10 @@ def test_mpcGUI_4(function):
     function.ui.minorPlanetSource.setCurrentIndex(0)
 
     with mock.patch.object(function,
-                           'messageDialog',
+                           'checkUpdaterOK',
                            return_value=True):
         with mock.patch.object(function,
-                               'checkUpdaterOK',
-                               return_value=True):
-            suc = function.mpcGUI()
-            assert suc
-
-
-def test_mpcGUI_5(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-        with mock.patch.object(function,
-                               'checkUpdaterOK',
+                               'messageDialog',
                                return_value=True):
             suc = function.mpcGUI()
             assert suc

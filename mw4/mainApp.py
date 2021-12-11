@@ -21,7 +21,6 @@ import os
 import json
 import sys
 from queue import Queue
-import platform
 
 # external packages
 from base.packageConfig import checkAutomation
@@ -200,14 +199,15 @@ class MountWizzard4(QObject):
             return None
 
         automation = AutomateWindows(self)
-        if automation.updaterApp:
+        if automation.updaterApp != '':
             path = automation.installPath
             app = automation.updaterApp
             t = f'10micron updater:    [{path}{app}]'
             self.message.emit(t, 1)
+            return automation
         else:
             self.message.emit('No 10micron updater available !', 2)
-        return automation
+            return None
 
     def initConfig(self):
         """

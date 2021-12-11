@@ -209,7 +209,7 @@ class Connection(object):
             client.shutdown(socket.SHUT_RDWR)
             client.close()
 
-        except Exception as e:
+        except Exception:
             return False
 
         return True

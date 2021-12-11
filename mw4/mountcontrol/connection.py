@@ -195,9 +195,10 @@ class Connection(object):
                     chunksToReceive += 1
         return chunksToReceive, getData, minBytes
 
-    def closeClientHard(self, client):
+    @staticmethod
+    def closeClientHard(client):
         """
-        closeClientHard tries to shutdown a socket in case of error hard
+        closeClientHard tries to shut down a socket in case of error hard
 
         :param client:
         :return: success
@@ -208,7 +209,6 @@ class Connection(object):
         try:
             client.shutdown(socket.SHUT_RDWR)
             client.close()
-
         except Exception:
             return False
 

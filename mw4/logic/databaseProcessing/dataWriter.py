@@ -47,13 +47,16 @@ class DataWriter:
         """
         sourceDir = self.app.mwGlob['dataDir'] + '/'
         destDir = installPath + '/'
+        if destDir == sourceDir:
+            return False
+
         if not os.path.isfile(sourceDir + 'CDFLeapSeconds.txt'):
             return False
 
         if not os.path.isfile(sourceDir + 'finals.data'):
             return False
 
-        if destDir == sourceDir:
+        if not os.path.isfile(sourceDir + 'tai-utc.dat'):
             return False
 
         if updaterApp == 'tenmicron_v2.exe':

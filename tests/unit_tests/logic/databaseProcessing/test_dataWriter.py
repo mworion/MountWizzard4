@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 import os
 import json
 import shutil
@@ -51,7 +52,7 @@ def function(module):
                   'dataDir': 'tests/workDir/data',
                   }
 
-    for file in ['CDFLeapSeconds.txt', 'finals.data']:
+    for file in ['CDFLeapSeconds.txt', 'finals.data', 'tai-utc.dat']:
         path = 'tests/workDir/data/' + file
         if os.path.isfile(path):
             os.remove(path)
@@ -61,18 +62,40 @@ def function(module):
 
 
 def test_writeEarthRotationData_1(function):
-    suc = function.writeEarthRotationData()
+    suc = function.writeEarthRotationData(installPath='tests/workDir/data')
     assert not suc
 
 
 def test_writeEarthRotationData_2(function):
-    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
-    suc = function.writeEarthRotationData()
+    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
     assert not suc
 
 
 def test_writeEarthRotationData_3(function):
     shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
+    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
+    assert not suc
+
+
+def test_writeEarthRotationData_4(function):
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
+    shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
+    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
+    assert not suc
+
+
+def test_writeEarthRotationData_5(function):
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
+    shutil.copy('tests/testData/tai-utc.dat', 'tests/workDir/data/tai-utc.dat')
+    shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
+    suc = function.writeEarthRotationData(installPath='tests/workDir/temp',
+                                          updaterApp='tenmicron_v2.exe')
+    assert suc
+
+
+def test_writeEarthRotationData_6(function):
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
+    shutil.copy('tests/testData/tai-utc.dat', 'tests/workDir/data/tai-utc.dat')
     shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
     suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
     assert suc
@@ -312,8 +335,11 @@ def test_writeAsteroidMPC_8(function):
     with open('tests/testData/nea_extended_test.json') as f:
         data = json.load(f)
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
-    assert suc
+    with mock.patch.object(function,
+                           'generateEpochPacked',
+                           return_value=' 1985'):
+        suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
+        assert suc
 
     with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
         testLines = f.readlines()

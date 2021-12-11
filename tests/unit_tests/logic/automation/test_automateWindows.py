@@ -211,7 +211,7 @@ def test_getAppSettings_1(function):
         assert function.available
         assert function.installPath == 'test'
         assert function.name == 'test'
-        assert function.updaterEXE == 'test.exe'
+        assert function.updaterApp == 'test.exe'
 
 
 def test_getAppSettings_2(function):
@@ -224,7 +224,7 @@ def test_getAppSettings_2(function):
         assert not function.available
         assert function.installPath == ''
         assert function.name == ''
-        assert function.updaterEXE == ''
+        assert function.updaterApp == ''
 
 
 def test_checkFloatingPointErrorWindow_1(function):
@@ -689,7 +689,7 @@ def test_uploadEarthRotationDataCommands_1(function):
         def set_text(a):
             pass
 
-    function.updaterEXE = 'tenmicron.exe'
+    function.updaterApp = 'tenmicron.exe'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }
@@ -733,7 +733,7 @@ def test_uploadEarthRotationDataCommands_2(function):
         def set_text(a):
             pass
 
-    function.updaterEXE = 'tenmicron_v2.'
+    function.updaterApp = 'tenmicron_v2.'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }
@@ -777,7 +777,7 @@ def test_uploadEarthRotationDataCommands_3(function):
         def set_text(a):
             pass
 
-    function.updaterEXE = 'tenmicron_v2.exe'
+    function.updaterApp = 'tenmicron_v2.exe'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }

@@ -658,4 +658,4 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             self.app.message.emit(t, 2)
             return ''
 
-        return self.app.automation.updaterEXE
+        return self.app.automation.updaterApp

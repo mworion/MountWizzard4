@@ -101,16 +101,9 @@ class AutomateWindows(QObject):
         self.installPath = ''
         self.name = ''
         self.available = False
-        self.updaterEXE = ''
-        self.installs = {'10micron control': 'tenmicron_v2.exe',
-                         '10micron control': 'GmQCIv2.exe',
-                         '10micron QCI control': 'tenmicron_v2.exe',
-                         '10micron QCI control': 'GmQCIv2.exe'
-                         }
-
-        self.getAppSettings(self.installs)
-        t = f'Name: [{self.name}], path: [{self.installPath+self.updaterEXE}]'
-        self.log.debug(t)
+        self.updaterApp = ''
+        self.updaterAppList = ['tenmicron_v2.exe', 'GmQCIv2.exe']
+        self.getAppSettings('10micron')
         self.updater = None
         self.actualWorkDir = os.getcwd()
 
@@ -148,26 +141,24 @@ class AutomateWindows(QObject):
         key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
         subkey = winreg.OpenKey(key, nameKey)
         values = self.convertRegistryEntryToDict(subkey)
-        self.log.debug(f'Registry key:[{nameKey}], values:[{values}]')
         winreg.CloseKey(subkey)
         winreg.CloseKey(key)
 
         return values
 
-    def searchNameInRegistry(self, appName, key):
+    @staticmethod
+    def searchNameInRegistry(appName, key):
         """
         :param appName:
         :param key:
         :return:
         """
+        nameKeys = []
         for i in range(0, winreg.QueryInfoKey(key)[0]):
             nameKey = winreg.EnumKey(key, i)
             if appName in nameKey:
-                break
-        else:
-            nameKey = ''
-
-        return nameKey
+                nameKeys.append(nameKey)
+        return nameKeys
 
     def getNameKeyFromRegistry(self, appName):
         """
@@ -176,80 +167,69 @@ class AutomateWindows(QObject):
         """
         regPath = self.getRegistryPath()
         key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
-        nameKey = self.searchNameInRegistry(appName, key)
+        nameKeys = self.searchNameInRegistry(appName, key)
         winreg.CloseKey(key)
+        return nameKeys
 
-        return nameKey
-
-    def extractPropertiesFromRegistry(self, appName):
+    def checkRegistryNameKeys(self, winKey):
         """
-        :param appName:
+        :param winKey:
         :return:
         """
-        nameKey = self.getNameKeyFromRegistry(appName)
-        if not appName:
-            return False, '', ''
-
-        values = self.getValuesForNameKeyFromRegistry(nameKey)
-        if 'InstallLocation' not in values:
-            t = f'AppName: [{appName}], values: [{values}]'
-            self.log.debug(t)
-            return False, '', ''
-
-        if appName not in values.get('DisplayName', ''):
-            t = f'AppName: [{appName}], values: [{values}]'
-            self.log.debug(t)
-            return False, '', ''
-
-        fullPath = values['InstallLocation'] + self.installs[appName]
-        if not os.path.isfile(fullPath):
-            t = f'AppName: [{appName}], values: [{values}]'
-            self.log.debug(t)
-            return False, '', ''
-
-        else:
-            available = True
-            name = values['DisplayName']
-            installPath = values['InstallLocation']
-            t = f'AppName: [{appName}], values: [{values}]'
-            self.log.debug(t)
-
-        return available, installPath, name
-
-    def cycleThroughAppNames(self, appNames):
-        """
-        :param appNames:
-        :return:
-        """
-        for appName in appNames:
-            avail, path, name = self.extractPropertiesFromRegistry(appName)
-            self.log.debug(f'Registry avail:[{avail}], path:[{path}], name:[{name}]')
-            if avail:
-                exe = appNames[appName]
+        nameKeys = self.getNameKeyFromRegistry(winKey)
+        for nameKey in nameKeys:
+            values = self.getValuesForNameKeyFromRegistry(nameKey)
+            path = values.get('InstallLocation', '')
+            if 'Updater' in path:
                 break
+            t = f'Key tested: [{winKey}], values: [{values}]'
+            self.log.debug(t)
         else:
-            self.log.warning('10micron updater not found')
+            self.log.warning('No install location found')
+            return '', {}
+        return nameKey, values
+
+    def findAppSetup(self, winKey):
+        """
+        :param winKey:
+        :return:
+        """
+        nameKey, values = self.checkRegistryNameKeys(winKey)
+        if not nameKey:
             return False, '', '', ''
 
-        return avail, path, name, exe
+        for updaterApp in self.updaterAppList:
+            fullPath = f'{values["InstallLocation"]}/{updaterApp}'
+            if os.path.isfile(fullPath):
+                break
+        else:
+            t = f'No 10micron updater found in [{values["InstallLocation"]}]'
+            self.log.warning(t)
+            return False, '', '', ''
 
-    def getAppSettings(self, appNames):
+        name = values['DisplayName']
+        installPath = values['InstallLocation']
+        app = updaterApp
+        return True, name, installPath, app
+
+    def getAppSettings(self, winKey):
         """
-        :param appNames:
+        :param winKey:
         :return:
         """
         try:
-            val = self.cycleThroughAppNames(appNames)
+            val = self.findAppSetup(winKey)
             self.available = val[0]
-            self.installPath = val[1]
-            self.name = val[2]
-            self.updaterEXE = val[3]
+            self.name = val[1]
+            self.installPath = val[2]
+            self.updaterApp = val[3]
         except Exception as e:
             self.available = False
             self.installPath = ''
             self.name = ''
-            self.updaterEXE = ''
+            self.updaterApp = ''
             self.log.debug(f'App settings error: [{e}]')
+        return True
 
     def checkFloatingPointErrorWindow(self):
         """
@@ -283,16 +263,16 @@ class AutomateWindows(QObject):
             Timings.slow()
 
         try:
-            self.updater.start(self.installPath + self.updaterEXE)
+            self.updater.start(self.installPath + self.updaterApp)
         except AppStartError as e:
             e = f'{e}'.replace('\n', '')
             self.log.error(f'Start error: [{e}]')
-            self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
+            self.log.error(f'Path: [{self.installPath}{self.updaterApp}]')
             return False
         except Exception as e:
             e = f'{e}'.replace('\n', '')
             self.log.error(f'General error: [{e}]')
-            self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
+            self.log.error(f'Path: [{self.installPath}{self.updaterApp}]')
             return False
         else:
             suc = self.checkFloatingPointErrorWindow()
@@ -449,7 +429,7 @@ class AutomateWindows(QObject):
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         filedialog.child_window(title='Open', auto_id='1',
                                 control_type='Button').click()
-        if self.updaterEXE == 'tenmicron_v2.exe':
+        if self.updaterApp == 'tenmicron_v2.exe':
             text = self.installPath + self.UTC_2a_FILE
             filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
         else:

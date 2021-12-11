@@ -208,8 +208,8 @@ class MinorPlanetTime:
         """
         :return:
         """
-        updaterEXE = self.checkUpdaterOK()
-        if not updaterEXE:
+        updaterApp = self.checkUpdaterOK()
+        if not updaterApp:
             return ''
 
         question = '<b>Earth Rotation Data programming</b>'
@@ -223,18 +223,18 @@ class MinorPlanetTime:
 
         self.app.message.emit('Program to mount:    [earth rotation data]', 1)
         self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
-        return updaterEXE
+        return updaterApp
 
     def progEarthRotationData(self):
         """
         :return: success
         """
-        updaterEXE = self.progEarthRotationGUI()
-        if not updaterEXE:
+        updaterApp = self.progEarthRotationGUI()
+        if not updaterApp:
             return False
 
         suc = self.databaseProcessing.writeEarthRotationData(self.installPath,
-                                                             updaterEXE)
+                                                             updaterApp)
         if not suc:
             self.app.message.emit('Data could not be copied - stopping', 2)
             return False

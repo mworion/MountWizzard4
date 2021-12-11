@@ -39,10 +39,10 @@ class DataWriter:
         super().__init__()
         self.app = app
 
-    def writeEarthRotationData(self, installPath='', updaterEXE=''):
+    def writeEarthRotationData(self, installPath='', updaterApp=''):
         """
         :param installPath:
-        :param updaterEXE:
+        :param updaterApp:
         :return:
         """
         sourceDir = self.app.mwGlob['dataDir'] + '/'
@@ -56,7 +56,7 @@ class DataWriter:
         if destDir == sourceDir:
             return False
 
-        if updaterEXE == 'tenmicron_v2.exe':
+        if updaterApp == 'tenmicron_v2.exe':
             shutil.copy(sourceDir + 'CDFLeapSeconds.txt', destDir + 'CDFLeapSeconds.txt')
         else:
             shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')

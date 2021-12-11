@@ -10684,7 +10684,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QPushButton" name="progSatellitesFiltered">
         <property name="geometry">
          <rect>
-          <x>5</x>
+          <x>100</x>
           <y>20</y>
           <width>86</width>
           <height>26</height>
@@ -10700,7 +10700,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QPushButton" name="progSatellitesFull">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>5</x>
           <y>20</y>
           <width>86</width>
           <height>26</height>

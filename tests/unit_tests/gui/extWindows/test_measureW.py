@@ -45,6 +45,7 @@ def function(module):
     window.app.measure.devices['directWeather'] = ''
     window.app.measure.devices['power'] = ''
     window.app.measure.devices['skymeter'] = ''
+    window.app.measure.devices['camera'] = ''
     window.app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
         'sensorWeatherTemp': np.full([5, 1], 1.0),

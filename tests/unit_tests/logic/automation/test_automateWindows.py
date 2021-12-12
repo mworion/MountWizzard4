@@ -90,6 +90,20 @@ def test_convertRegistryEntryToDict(function):
             assert val
 
 
+def test_getValuesForNameKeyFromRegistry_1(function):
+    with mock.patch.object(function,
+                           'getRegistryPath'):
+        with mock.patch.object(winreg,
+                               'OpenKey'):
+            with mock.patch.object(function,
+                                   'convertRegistryEntryToDict',
+                                   return_value='test'):
+                with mock.patch.object(winreg,
+                                       'CloseKey'):
+                    val = function.getValuesForNameKeyFromRegistry('test')
+                    assert val == 'test'
+
+
 def test_searchNameInRegistry_1(function):
     with mock.patch.object(winreg,
                            'QueryInfoKey',

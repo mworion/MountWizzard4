@@ -124,7 +124,7 @@ def test_calcTwilightData_1(function):
     location = wgs84.latlon(latitude_degrees=0,
                             longitude_degrees=0,
                             elevation_m=0)
-    val = function.calcTwilightData(ts, location, timeWindow=0)
+    val = function.calcTwilightData(ts, location, tWinL=0, tWinH=0)
     assert val
 
 

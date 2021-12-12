@@ -492,6 +492,8 @@ class SatSearch(object):
             self.satTableDynamicValid = True
             self.ui.satIsUp.setEnabled(True)
             self.ui.satIsSunlit.setEnabled(True)
+            t = 'Filter - processed: 100%'
+            self.ui.satFilterGroup.setTitle(t)
             return True
         return False
 

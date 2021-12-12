@@ -283,6 +283,7 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
+        win.wrapper_object().iface_transform.Move(3, 5)
         win['next'].click()
         win['next'].click()
         controls.ButtonWrapper(win['Control box firmware']).uncheck_by_click()
@@ -396,10 +397,12 @@ class AutomateWindows(QObject):
             win['Edit...3'].click()
             popup = self.updater['Asteroid orbits']
 
+        popup.wrapper_object().iface_transform.Move(0, 360)
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['MPC file'].click()
         filedialog = self.updater['Open']
+        filedialog.wrapper_object().iface_transform.Move(0, 670)
         self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + 'minorPlanets.mpc'
@@ -435,11 +438,13 @@ class AutomateWindows(QObject):
         controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
+        popup.wrapper_object().iface_transform.Move(0, 360)
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
-        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
+        filedialog.wrapper_object().iface_transform.Move(0, 710)
+        self.log.debug(f'Finals filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
@@ -452,6 +457,8 @@ class AutomateWindows(QObject):
             text = self.installPath + self.UTC_2b_FILE
             filedialog = self.updater['Open tai-utc.dat']
 
+        filedialog.wrapper_object().iface_transform.Move(0, 710)
+        self.log.debug(f'Leap filedialog: [{self.getIdentifiers(filedialog)}]')
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         self.dialogClick(filedialog)
         fileOK = self.updater['UTC data']
@@ -485,10 +492,12 @@ class AutomateWindows(QObject):
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
+        popup.wrapper_object().iface_transform.Move(0, 360)
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Load from file'].click()
         filedialog = self.updater['Open']
+        filedialog.wrapper_object().iface_transform.Move(0, 650)
         self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + 'satellites.tle'

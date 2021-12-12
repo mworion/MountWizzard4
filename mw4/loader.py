@@ -425,7 +425,6 @@ def main():
     :return: nothing
     """
     locale.setlocale(locale.LC_ALL, '')
-    QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = MyApp(sys.argv)
     # app = QApplication(sys.argv)
 

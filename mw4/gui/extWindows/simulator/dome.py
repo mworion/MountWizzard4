@@ -36,10 +36,11 @@ class SimulatorDome:
         self.model = {}
         self.modelRoot = None
 
-    def create(self, rEntity, show):
+    def create(self, rEntity, show, trans):
         """
         :param rEntity:
         :param show:
+        :param trans:
         :return:
         """
         if self.model:
@@ -61,83 +62,42 @@ class SimulatorDome:
                 'parent': 'ref',
                 'source': 'dome-wall.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome3,
+                'mat': Materials().dome3t if trans else Materials().dome3,
             },
             'domeSphere': {
                 'parent': 'ref',
                 'source': 'dome-sphere.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome1,
+                'mat': Materials().dome1t if trans else Materials().dome1,
             },
             'domeSlit1': {
                 'parent': 'domeSphere',
                 'source': 'dome-slit1.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': Materials().dome2t if trans else Materials().dome2,
             },
             'domeSlit2': {
                 'parent': 'domeSphere',
                 'source': 'dome-slit2.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': Materials().dome2t if trans else Materials().dome2,
             },
             'domeDoor1': {
                 'parent': 'domeSphere',
                 'source': 'dome-door1.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': Materials().dome2t if trans else Materials().dome2,
             },
             'domeDoor2': {
                 'parent': 'domeSphere',
                 'source': 'dome-door2.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': Materials().dome2t if trans else Materials().dome2,
             },
         }
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)
         self.updatePositions()
-        return True
-
-    def setTransparency(self, transparent):
-        """
-        :return: True for test purpose
-        """
-        if not self.model:
-            return False
-
-        entities = {
-            'domeWall': {
-                'trans': Materials().dome3t,
-                'solid': Materials().dome3
-            },
-            'domeSphere': {
-                'trans': Materials().dome1t,
-                'solid': Materials().dome1
-            },
-            'domeSlit1': {
-                'trans': Materials().dome2t,
-                'solid': Materials().dome2
-            },
-            'domeSlit2': {
-                'trans': Materials().dome2t,
-                'solid': Materials().dome2
-            },
-            'domeDoor1': {
-                'trans': Materials().dome2t,
-                'solid': Materials().dome2
-            },
-            'domeDoor2': {
-                'trans': Materials().dome2t,
-                'solid': Materials().dome2
-            },
-        }
-        for entity in entities:
-            if transparent:
-                self.model[entity]['e'].addComponent(entities[entity]['trans'])
-
-            else:
-                self.model[entity]['e'].addComponent(entities[entity]['solid'])
         return True
 
     def updateSettings(self):

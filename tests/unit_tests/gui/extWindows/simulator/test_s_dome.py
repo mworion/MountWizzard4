@@ -65,7 +65,7 @@ def test_create_1(qtbot):
     app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
     app.modelRoot = QEntity()
-    suc = app.create(QEntity(), False)
+    suc = app.create(QEntity(), False, False)
     assert not suc
 
 
@@ -74,7 +74,7 @@ def test_create_2(qtbot):
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
     app.modelRoot = QEntity()
     app.model = {'test': {'e': QEntity()}}
-    suc = app.create(QEntity(), False)
+    suc = app.create(QEntity(), False, False)
     assert not suc
 
 
@@ -83,65 +83,17 @@ def test_create_3(qtbot):
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
     app.modelRoot = QEntity()
     app.model = {'test': {'e': QEntity()}}
-    suc = app.create(app.modelRoot, True)
+    suc = app.create(app.modelRoot, True, False)
     assert suc
 
 
-def test_setTransparency_1(qtbot):
-    app.model = {
-        'domeWall': {
-            'e': QEntity()
-        },
-        'domeSphere': {
-            'e': QEntity()
-        },
-        'domeSlit1': {
-            'e': QEntity()
-        },
-        'domeSlit2': {
-            'e': QEntity()
-        },
-        'domeDoor1': {
-            'e': QEntity()
-        },
-        'domeDoor2': {
-            'e': QEntity()
-        },
-    }
-
-    suc = app.setTransparency(True)
+def test_create_4(qtbot):
+    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+                         'DOME_SHUTTER.SHUTTER_OPEN': True}
+    app.modelRoot = QEntity()
+    app.model = {'test': {'e': QEntity()}}
+    suc = app.create(app.modelRoot, True, True)
     assert suc
-
-
-def test_setTransparency_2(qtbot):
-    app.model = {
-        'domeWall': {
-            'e': QEntity()
-        },
-        'domeSphere': {
-            'e': QEntity()
-        },
-        'domeSlit1': {
-            'e': QEntity()
-        },
-        'domeSlit2': {
-            'e': QEntity()
-        },
-        'domeDoor1': {
-            'e': QEntity()
-        },
-        'domeDoor2': {
-            'e': QEntity()
-        },
-    }
-
-    suc = app.setTransparency(False)
-    assert suc
-
-
-def test_setTransparency_3(qtbot):
-    suc = app.setTransparency(False)
-    assert not suc
 
 
 def test_updateSettings_1(qtbot):

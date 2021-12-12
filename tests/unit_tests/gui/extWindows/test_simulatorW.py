@@ -215,11 +215,6 @@ def test_laserCreate_1(function):
     assert suc
 
 
-def test_setDomeTransparency_1(function):
-    suc = function.setDomeTransparency()
-    assert suc
-
-
 def test_topView_1(function):
     suc = function.topView()
     assert suc
@@ -254,7 +249,7 @@ def test_createWorld_1(function):
 
 def test_createScene_1(function):
     function.createMutex.lock()
-    suc = function.createScene(QEntity())
+    suc = function.createScene()
     assert not suc
     function.createMutex.unlock()
 
@@ -267,7 +262,7 @@ def test_createScene_2(function):
     function.ui.checkShowPointer.setChecked(True)
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
-    suc = function.createScene(QEntity())
+    suc = function.createScene()
     assert suc
 
 
@@ -279,7 +274,7 @@ def test_createScene_3(function):
     function.ui.checkShowPointer.setChecked(True)
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
-    suc = function.createScene(QEntity())
+    suc = function.createScene()
     assert suc
 
 

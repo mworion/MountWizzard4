@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -10897,7 +10897,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Remove Starlink/Oneweb</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="satTwilight">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -10908,17 +10908,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <item>
          <property name="text">
-          <string>No restriction</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Civil twilight</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Nautical twilight</string>
+          <string>Night</string>
          </property>
         </item>
         <item>
@@ -10928,7 +10918,17 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </item>
         <item>
          <property name="text">
-          <string>Night</string>
+          <string>Nautical twilight</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Civil twilight</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>24h visibility</string>
          </property>
         </item>
        </widget>

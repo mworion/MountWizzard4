@@ -475,8 +475,10 @@ def test_doUploadAndCloseInstallerCommands(function):
     function.updater = {'10 micron control box update': win}
     with mock.patch.object(automateWindows.timings,
                            'wait_until_passes'):
-        suc = function.doUploadAndCloseInstallerCommands()
-        assert suc
+        with mock.patch.object(function,
+                               'moveWindow'):
+            suc = function.doUploadAndCloseInstallerCommands()
+            assert suc
 
 
 def test_pressOK(function):
@@ -501,8 +503,10 @@ def test_pressOK(function):
     function.updater = Test()
     with mock.patch.object(automateWindows.application,
                            'wait_until_passes'):
-        suc = function.pressOK()
-        assert suc
+        with mock.patch.object(function,
+                               'moveWindow'):
+            suc = function.pressOK()
+            assert suc
 
 
 def test_doUploadAndCloseInstaller_1(function):
@@ -523,6 +527,25 @@ def test_doUploadAndCloseInstaller_2(function):
             suc = function.doUploadAndCloseInstaller()
             assert not suc
 
+            
+def test_moveWindow_1(function):
+    class Move:
+        @staticmethod
+        def Move():
+            pass
+
+    class Iface:
+        @staticmethod
+        def iface_transform():
+            return Move()
+        
+    class Element:
+        @staticmethod
+        def wrapper_object()
+            return Iface()
+        
+    suc = function.moveWindow(Element(), 0, 0)
+    assert suc
 
 def test_getIdentifiers(function):
     class Test:
@@ -588,9 +611,11 @@ def test_uploadMPCDataCommands_1(function):
             with mock.patch.object(function,
                                    'getIdentifiers'):
                 with mock.patch.object(function,
-                                       'dialogClick'):
-                    suc = function.uploadMPCDataCommands()
-                    assert suc
+                                       'moveWindow'):
+                    with mock.patch.object(function,
+                                           'dialogClick'):
+                        suc = function.uploadMPCDataCommands()
+                        assert suc
 
 
 def test_uploadMPCDataCommands_2(function):
@@ -632,12 +657,14 @@ def test_uploadMPCDataCommands_2(function):
             with mock.patch.object(function,
                                    'getIdentifiers'):
                 with mock.patch.object(function,
-                                       'dialogClick'):
-                    with mock.patch.object(platform,
-                                           'architecture',
-                                           return_value=['64bit']):
-                        suc = function.uploadMPCDataCommands(comets=True)
-                        assert suc
+                                       'moveWindow'):
+                    with mock.patch.object(function,
+                                           'dialogClick'):
+                        with mock.patch.object(platform,
+                                               'architecture',
+                                               return_value=['64bit']):
+                            suc = function.uploadMPCDataCommands(comets=True)
+                            assert suc
 
 
 def test_uploadMPCDataCommands_3(function):
@@ -682,9 +709,11 @@ def test_uploadMPCDataCommands_3(function):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        suc = function.uploadMPCDataCommands(comets=True)
-                        assert suc
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadMPCDataCommands(comets=True)
+                            assert suc
 
 
 def test_uploadMPCData_1(function):
@@ -767,9 +796,11 @@ def test_uploadEarthRotationDataCommands_1(function):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        suc = function.uploadEarthRotationDataCommands()
-                        assert suc
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadEarthRotationDataCommands()
+                            assert suc
 
 
 def test_uploadEarthRotationDataCommands_2(function):
@@ -815,9 +846,11 @@ def test_uploadEarthRotationDataCommands_2(function):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        suc = function.uploadEarthRotationDataCommands()
-                        assert suc
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadEarthRotationDataCommands()
+                            assert suc
 
 
 def test_uploadEarthRotationDataCommands_3(function):
@@ -863,9 +896,11 @@ def test_uploadEarthRotationDataCommands_3(function):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        suc = function.uploadEarthRotationDataCommands()
-                        assert suc
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadEarthRotationDataCommands()
+                            assert suc
 
 
 def test_uploadEarthRotationData_1(function):
@@ -945,9 +980,11 @@ def test_uploadTLEDataCommands_1(function):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        suc = function.uploadTLEDataCommands()
-                        assert suc
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadTLEDataCommands()
+                            assert suc
 
 
 def test_uploadTLEDataCommands_2(function):
@@ -990,9 +1027,11 @@ def test_uploadTLEDataCommands_2(function):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        suc = function.uploadTLEDataCommands()
-                        assert suc
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadTLEDataCommands()
+                            assert suc
 
 
 def test_uploadTLEData_1(function):

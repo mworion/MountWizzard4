@@ -541,7 +541,7 @@ def test_moveWindow_1(function):
         
     class Element:
         @staticmethod
-        def wrapper_object()
+        def wrapper_object():
             return Iface()
         
     suc = function.moveWindow(Element(), 0, 0)

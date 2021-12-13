@@ -19,9 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: explicit logging of automation windows strings for debug
-- add: showing now detected updater path and app
-- revert: fixes for german as they do not work 
+- add: grouping updater windows upper left corner
+- fix: KmTronic Relay messages
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.6',
+    version='2.1.7b0',
     packages=[
         'mw4',
         'mw4.base',

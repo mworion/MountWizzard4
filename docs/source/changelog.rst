@@ -20,6 +20,11 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+2.1.7
+
+- add: grouping updater windows upper left corner
+- fix: KmTronic Relay messages
+
 2.1.6
 - add: explicit logging of automation windows strings for debug
 - add: showing now detected updater path and app

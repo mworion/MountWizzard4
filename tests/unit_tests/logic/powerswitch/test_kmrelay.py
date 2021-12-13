@@ -123,15 +123,57 @@ def test_getRelay_5():
         assert suc is None
 
 
+def test_checkConnected_1():
+    class Test:
+        reason = 'NotOk'
+
+    app.deviceConnected = True
+    suc = app.checkConnected(None)
+    assert not suc
+    assert not app.deviceConnected
+
+
+def test_checkConnected_2():
+    class Test:
+        reason = 'OK'
+
+    app.deviceConnected = False
+    suc = app.checkConnected(Test())
+    assert suc
+    assert app.deviceConnected
+
+
+def test_checkConnected_3():
+    class Test:
+        reason = 'NotOk'
+
+    app.deviceConnected = False
+    suc = app.checkConnected(None)
+    assert not suc
+    assert not app.deviceConnected
+
+
+def test_checkConnected_4():
+    class Test:
+        reason = 'OK'
+
+    app.deviceConnected = True
+    suc = app.checkConnected(Test())
+    assert suc
+    assert app.deviceConnected
+
+
 def test_cyclePolling_1():
     app.user = 'test'
     app.password = 'test'
     app.hostaddress = 'localhost'
     with mock.patch.object(app,
-                           'getRelay',
-                           return_value=None):
-        suc = app.cyclePolling()
-        assert not suc
+                           'getRelay'):
+        with mock.patch.object(app,
+                               'checkConnected',
+                               return_value=False):
+            suc = app.cyclePolling()
+            assert not suc
 
 
 def test_cyclePolling_2():
@@ -145,8 +187,11 @@ def test_cyclePolling_2():
     with mock.patch.object(app,
                            'getRelay',
                            return_value=Test()):
-        suc = app.cyclePolling()
-        assert not suc
+        with mock.patch.object(app,
+                               'checkConnected',
+                               return_value=True):
+            suc = app.cyclePolling()
+            assert suc
 
 
 def test_cyclePolling_3():
@@ -160,8 +205,11 @@ def test_cyclePolling_3():
     with mock.patch.object(app,
                            'getRelay',
                            return_value=Test()):
-        suc = app.cyclePolling()
-        assert suc
+        with mock.patch.object(app,
+                               'checkConnected',
+                               return_value=True):
+            suc = app.cyclePolling()
+            assert suc
 
 
 def test_status1(qtbot):
@@ -330,8 +378,10 @@ def test_pulse_1(qtbot):
     with mock.patch.object(app,
                            'getRelay',
                            return_value=ret):
-        suc = app.pulse(7)
-        assert not suc
+        with mock.patch.object(time,
+                               'sleep'):
+            suc = app.pulse(7)
+            assert not suc
 
 
 def test_pulse_2(qtbot):
@@ -344,8 +394,10 @@ def test_pulse_2(qtbot):
     with mock.patch.object(app,
                            'getRelay',
                            return_value=ret):
-        suc = app.pulse(7)
-        assert not suc
+        with mock.patch.object(time,
+                               'sleep'):
+            suc = app.pulse(7)
+            assert not suc
 
 
 def test_pulse_3(qtbot):
@@ -358,8 +410,10 @@ def test_pulse_3(qtbot):
     with mock.patch.object(app,
                            'getRelay',
                            return_value=ret):
-        suc = app.pulse(7)
-        assert suc
+        with mock.patch.object(time,
+                               'sleep'):
+            suc = app.pulse(7)
+            assert suc
 
 
 def test_switch_1(qtbot):

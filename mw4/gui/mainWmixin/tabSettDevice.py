@@ -401,7 +401,8 @@ class SettDevice:
             driverClass.run[framework].deviceName = ''
             self.app.message.emit(f'Disabled device:     [{driver}]', 0)
 
-        self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_BACK};')
+        self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
+                                                         f'{self.M_GREY1};')
         self.deviceStat[driver] = None
 
         return True
@@ -587,7 +588,8 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_BACK};')
+            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
+                                                             f'{self.M_GREY1};')
             self.app.message.emit(f'Disconnected server: [{driver}] ', 0)
         return True
 
@@ -617,7 +619,8 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_BACK};')
+            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
+                                                             f'{self.M_GREY1};')
             self.deviceStat[driver] = False
             self.app.message.emit(f'Disconnected device: [{driver}]', 0)
         return True

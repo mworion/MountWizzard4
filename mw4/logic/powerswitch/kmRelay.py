@@ -72,6 +72,7 @@ class KMRelay:
         self.user = ''
         self.password = ''
         self.status = [0] * 8
+        self.deviceConnected = False
         self.timerTask = QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.cyclePolling)
@@ -84,8 +85,8 @@ class KMRelay:
         if not self.hostaddress:
             return False
 
+        self.deviceConnected = False
         self.timerTask.start(self.CYCLE_POLLING)
-        # self.signals.deviceConnected.emit('KMTronic')
         return True
 
     def stopCommunication(self):
@@ -93,7 +94,7 @@ class KMRelay:
         :return: True for test purpose
         """
         self.timerTask.stop()
-        self.signals.deviceDisconnected.emit('KMTronic')
+        self.deviceConnected = False
         return True
 
     def debugOutput(self, result=None):
@@ -126,15 +127,15 @@ class KMRelay:
 
         auth = requests.auth.HTTPBasicAuth(self.user, self.password)
         url = f'http://{self.hostaddress}:80{url}'
-        result = None
 
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except requests.exceptions.Timeout:
-            pass
+            result = None
         except requests.exceptions.ConnectionError:
-            pass
+            result = None
         except Exception as e:
+            result = None
             self.log.critical(f'Error in request: {e}')
 
         if debug:
@@ -143,15 +144,33 @@ class KMRelay:
         self.mutexPoll.unlock()
         return result
 
+    def checkConnected(self, value):
+        """
+        :return: success
+        """
+        statusNotConnected = value is None or value.reason != 'OK'
+        statusConnected = not statusNotConnected
+        if self.deviceConnected:
+            if statusNotConnected:
+                self.signals.deviceDisconnected.emit('KMTronic')
+                self.deviceConnected = False
+                return False
+            else:
+                return True
+        else:
+            if statusConnected:
+                self.signals.deviceConnected.emit('KMTronic')
+                self.deviceConnected = True
+                return True
+            else:
+                return False
+
     def cyclePolling(self):
         """
         :return: success
         """
         value = self.getRelay('/status.xml', debug=False)
-
-        if value is None:
-            return False
-        if value.reason != 'OK':
+        if not self.checkConnected(value):
             return False
 
         lines = value.text.splitlines()
@@ -163,7 +182,6 @@ class KMRelay:
             self.status[value[0] - 1] = value[1]
 
         self.signals.statusReady.emit()
-        self.signals.deviceConnected.emit('KMTronic')
         return True
 
     def getByte(self, relayNumber=0, state=False):

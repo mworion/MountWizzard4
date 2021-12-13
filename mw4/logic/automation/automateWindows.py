@@ -361,14 +361,14 @@ class AutomateWindows(QObject):
         return True
 
     @staticmethod
-    def moveWindow(win, x, y):
+    def moveWindow(element, x, y):
         """
-        :param win:
+        :param element:
         :param x:
         :param y:
         :return:
         """
-        win.wrapper_object().iface_transform.Move(x, y)
+        element.wrapper_object().iface_transform.Move(x, y)
         return True
 
     @staticmethod

@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: 12 build point option for model generation
 - add: grouping updater windows upper left corner
 - fix: KmTronic Relay messages
  """

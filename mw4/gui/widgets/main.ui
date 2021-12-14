@@ -7925,7 +7925,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>101</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7939,9 +7939,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="genBuildAlign6">
       <property name="geometry">
        <rect>
-        <x>135</x>
+        <x>95</x>
         <y>20</y>
-        <width>101</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7955,9 +7955,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="genBuildAlign9">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>185</x>
         <y>20</y>
-        <width>101</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7966,6 +7966,22 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>9 points</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="genBuildAlign12">
+      <property name="geometry">
+       <rect>
+        <x>275</x>
+        <y>20</y>
+        <width>86</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Generates nine stars.</string>
+      </property>
+      <property name="text">
+       <string>12 points</string>
       </property>
      </widget>
     </widget>

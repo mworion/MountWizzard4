@@ -279,6 +279,7 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
+        self.moveWindow(win, 10, 10)
         win['next'].click()
         win['next'].click()
         controls.ButtonWrapper(win['Control box firmware']).uncheck_by_click()
@@ -342,7 +343,7 @@ class AutomateWindows(QObject):
                                                lambda: find_windows(title='Update completed',
                                                                     class_name='#32770')[0])
         winOK = self.updater.window(handle=dialog)
-        self.moveWindow(winOK, 5, 5)
+        self.moveWindow(winOK, 10, 10)
         winOK['OK'].click()
 
         return True
@@ -468,6 +469,7 @@ class AutomateWindows(QObject):
 
         self.moveWindow(filedialog, 50, 50)
         self.log.debug(f'Leap filedialog: [{self.getIdentifiers(filedialog)}]')
+
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         self.dialogClick(filedialog)
         fileOK = self.updater['UTC data']

@@ -21,6 +21,7 @@ import pytest
 import os
 import shutil
 import time
+import builtins
 
 # external packages
 from PyQt5.QtCore import QThreadPool, pyqtSignal, QObject
@@ -77,8 +78,10 @@ def test_getFileFromUrl_1(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Response()):
-        suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
-        assert suc
+        with mock.patch.object(builtins,
+                               'open'):
+            suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
+            assert suc
 
 
 def test_getFileFromUrl_2(function):
@@ -91,8 +94,10 @@ def test_getFileFromUrl_2(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Response()):
-        suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
-        assert suc
+        with mock.patch.object(builtins,
+                               'open'):
+            suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
+            assert suc
 
 
 def test_unzipFile(function):

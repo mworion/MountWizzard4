@@ -120,8 +120,6 @@ def test_workerPollData_3():
 
 
 def test_slewToAltAz_1():
-    app.data['CanSetAzimuth'] = True
-    app.data['CanSetAltitude'] = True
     app.deviceConnected = False
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -130,8 +128,6 @@ def test_slewToAltAz_1():
 
 
 def test_slewToAltAz_2():
-    app.data['CanSetAzimuth'] = True
-    app.data['CanSetAltitude'] = True
     app.deviceConnected = True
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -140,7 +136,6 @@ def test_slewToAltAz_2():
 
 
 def test_openShutter_1():
-    app.data['CanSetShutter'] = True
     app.deviceConnected = False
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -149,7 +144,6 @@ def test_openShutter_1():
 
 
 def test_openShutter_2():
-    app.data['CanSetShutter'] = True
     app.deviceConnected = True
     with mock.patch.object(app,
                            'callMethodThreaded'):
@@ -158,7 +152,6 @@ def test_openShutter_2():
 
 
 def test_closeShutter_1():
-    app.data['CanSetShutter'] = True
     app.deviceConnected = False
     with mock.patch.object(app,
                            'callMethodThreaded'):

@@ -94,10 +94,8 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        if self.data.get('CanSetAzimuth'):
-            self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
-        if self.data.get('CanSetAltitude'):
-            self.callMethodThreaded(self.client.SlewToAltitude, altitude)
+        self.callMethodThreaded(self.client.SlewToAzimuth, azimuth)
+        self.callMethodThreaded(self.client.SlewToAltitude, altitude)
         return True
 
     def openShutter(self):
@@ -107,8 +105,7 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        if self.data.get('CanSetShutter'):
-            self.callMethodThreaded(self.client.OpenShutter)
+        self.callMethodThreaded(self.client.OpenShutter)
         return True
 
     def closeShutter(self):
@@ -118,8 +115,7 @@ class DomeAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        if self.data.get('CanSetShutter'):
-            self.callMethodThreaded(self.client.CloseShutter)
+        self.callMethodThreaded(self.client.CloseShutter)
         return True
 
     def abortSlew(self):

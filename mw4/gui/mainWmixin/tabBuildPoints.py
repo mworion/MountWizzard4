@@ -35,6 +35,7 @@ class BuildPoints:
             'align3': self.genBuildAlign3,
             'align6': self.genBuildAlign6,
             'align9': self.genBuildAlign9,
+            'align12': self.genBuildAlign12,
             'max': self.genBuildMax,
             'med': self.genBuildMed,
             'norm': self.genBuildNorm,
@@ -47,6 +48,7 @@ class BuildPoints:
         self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign3)
         self.ui.genBuildAlign6.clicked.connect(self.genBuildAlign6)
         self.ui.genBuildAlign9.clicked.connect(self.genBuildAlign9)
+        self.ui.genBuildAlign12.clicked.connect(self.genBuildAlign12)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
@@ -245,6 +247,26 @@ class BuildPoints:
                                      keep=keep)
         if not suc:
             self.app.message.emit('Could not generate 9 align stars', 2)
+            return False
+
+        self.processPoints()
+        return True
+
+    def genBuildAlign12(self):
+        """
+        genBuildAlign12 generates a grid of 12 point for model build based on gui
+        data.
+
+        :return: success
+        """
+        self.lastGenerator = 'align12'
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        suc = self.app.data.genAlign(altBase=55,
+                                     azBase=10,
+                                     numberBase=12,
+                                     keep=keep)
+        if not suc:
+            self.app.message.emit('Could not generate 12 align stars', 2)
             return False
 
         self.processPoints()

@@ -415,6 +415,15 @@ def getWindowPos():
             return x, y
 
 
+def minimizeStartTerminal():
+    """
+    :return:
+    """
+    if platform.system() == 'Windows':
+        import ctypes
+        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
+
+
 def main():
     """
     main prepares the loading of mountwizzard application. it prepares a
@@ -428,6 +437,8 @@ def main():
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = MyApp(sys.argv)
     # app = QApplication(sys.argv)
+
+    minimizeStartTerminal()
 
     x, y = getWindowPos()
     splashW = SplashScreen(application=app, x=x, y=y)

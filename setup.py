@@ -19,9 +19,10 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: explicit logging of automation windows strings for debug
-- add: showing now detected updater path and app
-- revert: fixes for german as they do not work 
+- add: 12 build point option for model generation
+- add: grouping updater windows upper left corner
+- add: minimize cmd window once MW4 is started
+- fix: KmTronic Relay messages
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.6b1',
+    version='2.1.7b1',
     packages=[
         'mw4',
         'mw4.base',

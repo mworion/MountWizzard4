@@ -232,7 +232,6 @@ def test_findFittingModel_4(function):
                                return_value=([1, 2, 3], [4])):
             name, pointsIn, pointsOut = function.findFittingModel()
 
-            assert name == 'test'
             assert pointsIn == [1, 2, 3]
             assert pointsOut == [4]
     function.app.mwGlob['modelDir'] = 'tests/workDir/model'

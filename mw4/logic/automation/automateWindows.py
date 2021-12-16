@@ -254,12 +254,8 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        if platform.architecture()[0] == '32bit':
-            self.updater = Application(backend='win32')
-            self.log.info('Using 32Bit backend win32')
-        else:
-            self.updater = Application(backend='uia')
-            self.log.info('Using 64Bit backend uia')
+        self.updater = Application(backend='uia')
+        if platform.architecture()[0] == '64bit':
             Timings.slow()
 
         try:
@@ -283,6 +279,7 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
+        self.moveWindow(win, 10, 10)
         win['next'].click()
         win['next'].click()
         controls.ButtonWrapper(win['Control box firmware']).uncheck_by_click()
@@ -331,6 +328,7 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
+        self.moveWindow(win, 10, 10)
         win['next'].click()
         win['next'].click()
         win['Update Now'].click()
@@ -345,6 +343,7 @@ class AutomateWindows(QObject):
                                                lambda: find_windows(title='Update completed',
                                                                     class_name='#32770')[0])
         winOK = self.updater.window(handle=dialog)
+        self.moveWindow(winOK, 10, 10)
         winOK['OK'].click()
 
         return True
@@ -363,6 +362,17 @@ class AutomateWindows(QObject):
         return True
 
     @staticmethod
+    def moveWindow(element, x, y):
+        """
+        :param element:
+        :param x:
+        :param y:
+        :return:
+        """
+        element.wrapper_object().iface_transform.Move(x, y)
+        return True
+
+    @staticmethod
     def getIdentifiers(element):
         """
         :param element:
@@ -376,8 +386,9 @@ class AutomateWindows(QObject):
         :param element:
         :return:
         """
-        return element.child_window(title='Open', auto_id='1',
-                                    control_type='Button').click()
+        element.child_window(title='Open', auto_id='1',
+                             control_type='Button').click()
+        return True
 
     def uploadMPCDataCommands(self, comets=False):
         """
@@ -396,10 +407,12 @@ class AutomateWindows(QObject):
             win['Edit...3'].click()
             popup = self.updater['Asteroid orbits']
 
+        self.moveWindow(popup, 30, 30)
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['MPC file'].click()
         filedialog = self.updater['Open']
+        self.moveWindow(filedialog, 50, 50)
         self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + 'minorPlanets.mpc'
@@ -435,11 +448,13 @@ class AutomateWindows(QObject):
         controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
+        self.moveWindow(popup, 30, 30)
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
-        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
+        self.moveWindow(filedialog, 50, 50)
+        self.log.debug(f'Finals filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
@@ -451,6 +466,9 @@ class AutomateWindows(QObject):
         else:
             text = self.installPath + self.UTC_2b_FILE
             filedialog = self.updater['Open tai-utc.dat']
+
+        self.moveWindow(filedialog, 50, 50)
+        self.log.debug(f'Leap filedialog: [{self.getIdentifiers(filedialog)}]')
 
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
         self.dialogClick(filedialog)
@@ -485,10 +503,12 @@ class AutomateWindows(QObject):
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
+        self.moveWindow(popup, 30, 30)
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Load from file'].click()
         filedialog = self.updater['Open']
+        self.moveWindow(filedialog, 50, 50)
         self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
 
         text = self.installPath + 'satellites.tle'

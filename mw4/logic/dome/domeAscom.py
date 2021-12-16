@@ -37,6 +37,17 @@ class DomeAscom(AscomClass):
         self.signals = signals
         self.data = data
 
+    def workerGetInitialConfig(self):
+        """
+        :return: true for test purpose
+        """
+        super().workerGetInitialConfig()
+        self.getAndStoreAscomProperty('CanSetAltitude', 'CanSetAltitude')
+        self.getAndStoreAscomProperty('CanSetAzimuth', 'CanSetAzimuth')
+        self.getAndStoreAscomProperty('CanSetShutter', 'CanSetShutter')
+        self.log.debug(f'Initial data: {self.data}')
+        return True
+
     def processPolledData(self):
         """
         :return: true for test purpose
@@ -54,9 +65,6 @@ class DomeAscom(AscomClass):
         self.storePropertyToData(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.getAndStoreAscomProperty('Slewing', 'Slewing')
-        self.getAndStoreAscomProperty('CanSetAltitude', 'CanSetAltitude')
-        self.getAndStoreAscomProperty('CanSetAzimuth', 'CanSetAzimuth')
-        self.getAndStoreAscomProperty('CanSetShutter', 'CanSetShutter')
 
         state = self.getAscomProperty('ShutterStatus')
         if state == 0:

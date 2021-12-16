@@ -70,6 +70,14 @@ def module_setup_teardown():
         yield
 
 
+def test_workerGetInitialConfig_1():
+    with mock.patch.object(AscomClass,
+                           'workerGetInitialConfig',
+                           return_value=True):
+        suc = app.workerGetInitialConfig()
+        assert suc
+
+
 def test_processPolledData_1():
     suc = app.processPolledData()
     assert suc

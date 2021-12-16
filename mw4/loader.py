@@ -414,6 +414,7 @@ def getWindowPos():
             y = data['mainW'].get('winPosY', 0)
             return x, y
 
+
 def minimizeStartTerminal():
     """
     :return:
@@ -421,7 +422,6 @@ def minimizeStartTerminal():
     if platform.system() == 'Windows':
         import ctypes
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
-    else:
 
 
 def main():

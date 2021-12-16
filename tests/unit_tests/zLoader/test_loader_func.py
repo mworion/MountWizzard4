@@ -32,7 +32,7 @@ import pytest
 # local import
 import loader
 from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
-from loader import getWindowPos, checkIsAdmin, extractFile
+from loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTerminal
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -340,3 +340,8 @@ def test_getWindowPos_4():
         x, y = getWindowPos()
         assert x == 200
         assert y == 100
+
+
+@pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
+def test_minimizeStartTerminal():
+    minimizeStartTerminal()

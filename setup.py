@@ -21,6 +21,7 @@ import platform
 releaseNotes = """
 - add: 12 build point option for model generation
 - add: grouping updater windows upper left corner
+- add: minimize cmd window once MW4 is started
 - fix: KmTronic Relay messages
  """
 

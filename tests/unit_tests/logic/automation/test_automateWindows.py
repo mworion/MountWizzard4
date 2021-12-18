@@ -557,10 +557,10 @@ def test_getIdentifiers(function):
     function.getIdentifiers(Test())
 
 
-def test_dialogClick(function):
+def test_dialogInput(function):
     class Type_Keys:
         @staticmethod
-        def type_keys(a):
+        def type_keys(a, with_spaces=False):
             pass
 
     class Element:
@@ -568,7 +568,7 @@ def test_dialogClick(function):
         def wrapper_object():
             return Type_Keys()
 
-    function.dialogClick(Element())
+    function.dialogInput(Element(), 'text')
 
 
 def test_findFileDialogWindow_1(function):
@@ -648,7 +648,7 @@ def test_uploadMPCDataCommands_1(function):
                 with mock.patch.object(function,
                                        'moveWindow'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
+                                           'dialogInput'):
                         with mock.patch.object(function,
                                                'findFileDialogWindow',
                                                return_value='Open'):
@@ -701,7 +701,7 @@ def test_uploadMPCDataCommands_2(function):
                 with mock.patch.object(function,
                                        'moveWindow'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
+                                           'dialogInput'):
                         with mock.patch.object(function,
                                                'findFileDialogWindow',
                                                return_value='Open'):
@@ -757,7 +757,7 @@ def test_uploadMPCDataCommands_3(function):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadMPCDataCommands(comets=True)
                             assert suc
 
@@ -848,7 +848,7 @@ def test_uploadEarthRotationDataCommands_1(function):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadEarthRotationDataCommands()
                             assert suc
 
@@ -902,7 +902,7 @@ def test_uploadEarthRotationDataCommands_2(function):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadEarthRotationDataCommands()
                             assert suc
 
@@ -956,7 +956,7 @@ def test_uploadEarthRotationDataCommands_3(function):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadEarthRotationDataCommands()
                             assert suc
 
@@ -1044,7 +1044,7 @@ def test_uploadTLEDataCommands_1(function):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadTLEDataCommands()
                             assert suc
 
@@ -1095,7 +1095,7 @@ def test_uploadTLEDataCommands_2(function):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadTLEDataCommands()
                             assert suc
 

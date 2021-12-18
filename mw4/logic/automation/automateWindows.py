@@ -381,12 +381,15 @@ class AutomateWindows(QObject):
         return element._ctrl_identifiers()
 
     @staticmethod
-    def dialogClick(element):
+    def dialogInput(element, text):
         """
         :param element:
+        :param text:
         :return:
         """
-        element.wrapper_object().type_keys('~')
+        text = text.replace('(', '{(}')
+        text = text.replace(')', '{)}')
+        element.wrapper_object().type_keys(text, with_spaces=True)
         return True
 
     def findFileDialogWindow(self, text):
@@ -432,8 +435,8 @@ class AutomateWindows(QObject):
         self.log.debug(f'Updater filedialog: [{self.getIdentifiers(fDialog)}]')
 
         text = self.installPath + 'minorPlanets.mpc'
-        controls.EditWrapper(fDialog['File &name:Edit']).set_edit_text(text)
-        self.dialogClick(fDialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
         popup['Close'].click()
         return True
 
@@ -476,9 +479,9 @@ class AutomateWindows(QObject):
         self.log.debug(f'Finals filedialog: [{self.getIdentifiers(fDialog)}]')
 
         text = self.installPath + self.UTC_1_FILE
-        controls.EditWrapper(fDialog['File &name:Edit']).set_edit_text(text)
-        
-        self.dialogClick(fDialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
+
         popup['Import files...'].wait('ready')
 
         if self.updaterApp == 'tenmicron_v2.exe':
@@ -491,8 +494,9 @@ class AutomateWindows(QObject):
         self.moveWindow(fDialog, 50, 50)
         self.log.debug(f'Leap filedialog: [{self.getIdentifiers(fDialog)}]')
 
-        controls.EditWrapper(fDialog['File &name:Edit']).set_edit_text(text)
-        self.dialogClick(fDialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
+
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -536,8 +540,9 @@ class AutomateWindows(QObject):
         self.log.debug(f'Updater filedialog: [{self.getIdentifiers(fDialog)}]')
 
         text = self.installPath + 'satellites.tle'
-        controls.EditWrapper(fDialog['File &name:Edit']).set_edit_text(text)
-        self.dialogClick(fDialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
+
         popup['Close'].click()
         return True
 

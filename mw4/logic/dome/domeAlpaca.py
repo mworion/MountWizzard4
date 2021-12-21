@@ -35,6 +35,17 @@ class DomeAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
+    def workerGetInitialConfig(self):
+        """
+        :return: true for test purpose
+        """
+        super().workerGetInitialConfig()
+        self.getAndStoreAlpacaProperty('cansetaltitude', 'CanSetAltitude')
+        self.getAndStoreAlpacaProperty('cansetazimuth', 'CanSetAzimuth')
+        self.getAndStoreAlpacaProperty('cansetshutter', 'CanSetShutter')
+        self.log.debug(f'Initial data: {self.data}')
+        return True
+
     def processPolledData(self):
         """
         :return: true for test purpose
@@ -55,9 +66,6 @@ class DomeAlpaca(AlpacaClass):
         self.storePropertyToData(azimuth, 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.signals.azimuth.emit(azimuth)
         self.getAndStoreAlpacaProperty('slewing', 'Slewing')
-        self.getAndStoreAlpacaProperty('cansetaltitude', 'CanSetAltitude')
-        self.getAndStoreAlpacaProperty('cansetazimuth', 'CanSetAzimuth')
-        self.getAndStoreAlpacaProperty('cansetshutter', 'CanSetShutter')
 
         state = self.getAlpacaProperty('shutterstatus')
         if state == 0:

@@ -19,7 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-
+- add: filter satellites visibility for twilight data
+- improved: 3D simulator drawing
  """
 
 with open('notes.txt', 'w') as f:

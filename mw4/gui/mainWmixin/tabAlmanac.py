@@ -67,6 +67,8 @@ class Almanac:
         self.civil = None
         self.nautical = None
         self.astronomical = None
+        self.twilightTime = None
+        self.twilightEvents = None
         self.colors = None
         self.setColors()
         self.app.start1s.connect(self.searchTwilightList)
@@ -172,20 +174,21 @@ class Almanac:
             text = '\n'
         return True
 
-    def calcTwilightData(self, ts, location, timeWindow=0):
+    def calcTwilightData(self, ts, location, tWinL=0, tWinH=0):
         """
         :param ts:
         :param location:
-        :param timeWindow:
+        :param tWinL:
+        :param tWinH:
         :return:
         """
         timeJD = self.app.mount.obsSite.timeJD
-        t0 = ts.tt_jd(int(timeJD.tt) - timeWindow)
-        t1 = ts.tt_jd(int(timeJD.tt) + timeWindow + 1)
+        t0 = ts.tt_jd(int(timeJD.tt) - tWinL)
+        t1 = ts.tt_jd(int(timeJD.tt) + tWinH + 1)
 
         f = almanac.dark_twilight_day(self.app.ephemeris, location)
-        timeEvents, events = almanac.find_discrete(t0, t1, f)
-        return timeEvents, events
+        twilightTime, twilightEvents = almanac.find_discrete(t0, t1, f)
+        return twilightTime, twilightEvents
 
     def searchTwilightWorker(self, ts, location, timeWindow):
         """
@@ -194,7 +197,9 @@ class Almanac:
         :param timeWindow:
         :return: true for test purpose
         """
-        t, e = self.calcTwilightData(ts, location, timeWindow)
+        t, e = self.calcTwilightData(ts, location,
+                                     tWinL=timeWindow,
+                                     tWinH=timeWindow)
         return ts, t, e
 
     def searchTwilightPlot(self):
@@ -226,8 +231,9 @@ class Almanac:
             return False
 
         ts = self.app.mount.obsSite.ts
-        t, e = self.calcTwilightData(ts, location)
-        self.displayTwilightData(t, e)
+        result = self.calcTwilightData(ts, location, tWinL=0, tWinH=1)
+        self.twilightTime, self.twilightEvents = result
+        self.displayTwilightData(self.twilightTime[:8], self.twilightEvents[:8])
         return True
 
     def calcMoonPhase(self):

@@ -153,12 +153,12 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.storeConfig()
 
         self.app.update1s.disconnect(self.dome.updatePositions)
-        self.ui.checkDomeTransparent.clicked.disconnect(self.setDomeTransparency)
+        self.ui.checkDomeTransparent.clicked.disconnect(self.createScene)
         self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.disconnect(self.buildPointsCreate)
         self.app.updatePointMarker.disconnect(self.buildPointsCreate)
-        self.ui.checkShowHorizon.clicked.disconnect(self.horizonCreate)
+        self.ui.checkShowHorizon.clicked.disconnect(self.createScene)
         self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
         self.ui.checkShowLaser.clicked.disconnect(self.laserCreate)
         self.ui.topView.clicked.disconnect(self.topView)
@@ -183,13 +183,13 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        self.createScene(self.rootEntity)
-        self.ui.checkDomeTransparent.clicked.connect(self.setDomeTransparency)
+        self.createScene()
+        self.ui.checkDomeTransparent.clicked.connect(self.createScene)
         self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.connect(self.buildPointsCreate)
         self.app.updatePointMarker.connect(self.buildPointsCreate)
-        self.ui.checkShowHorizon.clicked.connect(self.horizonCreate)
+        self.ui.checkShowHorizon.clicked.connect(self.createScene)
         self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
         self.ui.checkShowLaser.clicked.connect(self.laserCreate)
         self.ui.topView.clicked.connect(self.topView)
@@ -218,7 +218,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.setStyleSheet(self.mw4Style)
         self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
-        self.createScene(self.rootEntity)
+        self.createScene()
         return True
 
     def limitPositionZ(self):
@@ -266,13 +266,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         self.laser.create(self.world['ref']['e'],
                           self.ui.checkShowLaser.isChecked())
-        return True
-
-    def setDomeTransparency(self):
-        """
-        :return: True for test purpose
-        """
-        self.dome.setTransparency(self.ui.checkDomeTransparent.isChecked())
         return True
 
     def topView(self):
@@ -393,12 +386,11 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         for name in self.world:
             tools.linkModel(self.world, name, rEntity)
 
-    def createScene(self, rEntity):
+    def createScene(self):
         """
         createScene initially builds all 3d models and collects them to a scene.
         please look closely which references are used-
 
-        :param rEntity:
         :return:
         """
         if not self.createMutex.tryLock():
@@ -422,9 +414,9 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             self.ui.checkShowPointer.setEnabled(False)
             self.ui.checkShowPointer.setChecked(False)
 
-        self.createWorld(rEntity)
+        self.createWorld(self.rootEntity)
         self.telescope.create(self.world['ref']['e'], True)
-        self.dome.create(self.world['ref']['e'], dome)
+        self.dome.create(self.world['ref']['e'], dome, isDomeTransparent)
         self.pointer.create(self.world['ref']['e'], pointer)
         self.laser.create(self.world['ref']['e'], laser)
         self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
@@ -433,7 +425,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.updateSettings()
         self.dome.updateSettings()
         self.dome.updatePositions()
-        self.dome.setTransparency(isDomeTransparent)
         self.telescope.updateSettings()
         self.telescope.updatePositions()
         self.createMutex.unlock()

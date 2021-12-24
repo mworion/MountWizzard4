@@ -20,6 +20,17 @@ Released version of MW4
 -----------------------
 Version 2.1
 ^^^^^^^^^^^
+2.1.7
+
+- add: 12 build point option for model generation
+- add: grouping updater windows upper left corner
+- fix: KmTronic Relay messages
+
+2.1.6
+- add: explicit logging of automation windows strings for debug
+- add: showing now detected updater path and app
+- revert: fixes for german as they do not work
+
 2.1.5
 
 - fix: checking windows python version for automation

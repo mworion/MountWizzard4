@@ -32,7 +32,7 @@ import pytest
 # local import
 import loader
 from loader import except_hook, setupWorkDirs, writeSystemInfo, extractDataFiles
-from loader import getWindowPos, checkIsAdmin, extractFile
+from loader import getWindowPos, checkIsAdmin, extractFile, minimizeStartTerminal
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -84,7 +84,6 @@ def test_setupWorkDirs_2(qtbot):
                 assert val['modeldata'] == '4.0'
 
 
-@pytest.mark.skipif(platform.system() == 'Windows', reason="Darwin needed")
 def test_checkIsAdmin_1(qtbot):
     with mock.patch.object(platform,
                            'system',
@@ -97,7 +96,6 @@ def test_checkIsAdmin_1(qtbot):
             assert val == 'unknown'
 
 
-@pytest.mark.skipif(platform.system() == 'Windows', reason="Darwin needed")
 def test_checkIsAdmin_2(qtbot):
     with mock.patch.object(platform,
                            'system',
@@ -109,7 +107,6 @@ def test_checkIsAdmin_2(qtbot):
             assert val == 'yes'
 
 
-@pytest.mark.skipif(platform.system() == 'Windows', reason="Darwin needed")
 def test_checkIsAdmin_3(qtbot):
     with mock.patch.object(platform,
                            'system',
@@ -121,7 +118,7 @@ def test_checkIsAdmin_3(qtbot):
             assert val == 'no'
 
 
-@pytest.mark.skipif(platform.system() == 'Windows', reason="Windows needed")
+@pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
 def test_checkIsAdmin_4(qtbot):
     import ctypes
     with mock.patch.object(platform,
@@ -134,7 +131,7 @@ def test_checkIsAdmin_4(qtbot):
             assert val == 'unknown'
 
 
-@pytest.mark.skipif(platform.system() == 'Windows', reason="Windows needed")
+@pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
 def test_checkIsAdmin_5(qtbot):
     import ctypes
     with mock.patch.object(platform,
@@ -147,7 +144,7 @@ def test_checkIsAdmin_5(qtbot):
             assert val == 'yes'
 
 
-@pytest.mark.skipif(platform.system() == 'Windows', reason="Windows needed")
+@pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
 def test_checkIsAdmin_6(qtbot):
     import ctypes
     with mock.patch.object(platform,
@@ -343,3 +340,8 @@ def test_getWindowPos_4():
         x, y = getWindowPos()
         assert x == 200
         assert y == 100
+
+
+@pytest.mark.skipif(platform.system() != 'Windows', reason="Windows needed")
+def test_minimizeStartTerminal():
+    minimizeStartTerminal()

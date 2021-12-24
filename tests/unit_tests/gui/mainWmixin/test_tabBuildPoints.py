@@ -163,6 +163,22 @@ def test_genBuildAlign9_2(function):
         assert suc
 
 
+def test_genBuildAlign12_1(function):
+    with mock.patch.object(function.app.data,
+                           'genAlign',
+                           return_value=False):
+        suc = function.genBuildAlign12()
+        assert not suc
+
+
+def test_genBuildAlign12_2(function):
+    with mock.patch.object(function.app.data,
+                           'genAlign',
+                           return_value=True):
+        suc = function.genBuildAlign12()
+        assert suc
+
+
 def test_genBuildMax_1(function):
     function.ui.checkAutoDeleteHorizon.setChecked(False)
     suc = function.genBuildMax()

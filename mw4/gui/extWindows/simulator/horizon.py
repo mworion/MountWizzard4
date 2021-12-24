@@ -110,7 +110,7 @@ class SimulatorHorizon:
         trans3.setTranslation(QVector3D(0, 0, height / 2))
         e3.addComponent(mesh)
         e3. addComponent(trans3)
-        e3.addComponent(Materials().walls)
+        e3.addComponent(Materials().horizon)
         return e3
 
     def create(self, rEntity, show):

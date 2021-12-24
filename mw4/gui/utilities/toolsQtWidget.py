@@ -651,11 +651,11 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         """
         if not self.app.automation:
             self.app.message.emit('No automation enabled - upload not possible', 2)
-            return False
+            return ''
 
         if not self.app.automation.installPath:
             t = 'No 10micron updater available - upload not possible'
             self.app.message.emit(t, 2)
-            return False
+            return ''
 
-        return True
+        return self.app.automation.updaterApp

@@ -38,7 +38,8 @@ class AutomateWindows(QObject):
     log = logging.getLogger(__name__)
 
     UTC_1_FILE = 'finals.data'
-    UTC_2_FILE = 'CDFLeapSeconds.txt'
+    UTC_2a_FILE = 'CDFLeapSeconds.txt'
+    UTC_2b_FILE = 'tai-utc.dat'
 
     COMET_FIELDS = [
         'Orbit_type',
@@ -100,13 +101,9 @@ class AutomateWindows(QObject):
         self.installPath = ''
         self.name = ''
         self.available = False
-        self.updaterEXE = ''
-
-        self.getAppSettings({'10micron control': 'tenmicron_v2.exe',
-                             '10micron QCI control': 'GmQCIv2.exe'
-                             })
-        t = f'Name: [{self.name}], path: [{self.installPath+self.updaterEXE}]'
-        self.log.debug(t)
+        self.updaterApp = ''
+        self.updaterAppList = ['tenmicron_v2.exe', 'GmQCIv2.exe']
+        self.getAppSettings('10micron')
         self.updater = None
         self.actualWorkDir = os.getcwd()
 
@@ -144,27 +141,24 @@ class AutomateWindows(QObject):
         key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
         subkey = winreg.OpenKey(key, nameKey)
         values = self.convertRegistryEntryToDict(subkey)
-        self.log.debug(f'Registry key:[{nameKey}], values:[{values}]')
         winreg.CloseKey(subkey)
         winreg.CloseKey(key)
 
         return values
 
-    def searchNameInRegistry(self, appName, key):
+    @staticmethod
+    def searchNameInRegistry(appName, key):
         """
         :param appName:
         :param key:
         :return:
         """
+        nameKeys = []
         for i in range(0, winreg.QueryInfoKey(key)[0]):
             nameKey = winreg.EnumKey(key, i)
-            self.log.debug(f'Registry app:[{key}], values:[{nameKey}]')
             if appName in nameKey:
-                break
-        else:
-            nameKey = ''
-
-        return nameKey
+                nameKeys.append(nameKey)
+        return nameKeys
 
     def getNameKeyFromRegistry(self, appName):
         """
@@ -173,74 +167,69 @@ class AutomateWindows(QObject):
         """
         regPath = self.getRegistryPath()
         key = winreg.OpenKey(HKEY_LOCAL_MACHINE, regPath)
-        nameKey = self.searchNameInRegistry(appName, key)
+        nameKeys = self.searchNameInRegistry(appName, key)
         winreg.CloseKey(key)
+        return nameKeys
 
-        return nameKey
-
-    def extractPropertiesFromRegistry(self, appName):
+    def checkRegistryNameKeys(self, winKey):
         """
-        :param appName:
+        :param winKey:
         :return:
         """
-        nameKey = self.getNameKeyFromRegistry(appName)
-        if not appName:
-            return False, '', ''
-
-        values = self.getValuesForNameKeyFromRegistry(nameKey)
-        if 'InstallLocation' not in values:
-            t = f'AppName: [{appName}], values: [{values}]'
-            self.log.debug(t)
-            return False, '', ''
-
-        if appName in values.get('DisplayName', ''):
-            available = True
-            name = values['DisplayName']
-            installPath = values['InstallLocation']
-
-        else:
-            available = False
-            installPath = ''
-            name = ''
-            t = f'AppName: [{appName}], values: [{values}]'
-            self.log.debug(t)
-
-        return available, installPath, name
-
-    def cycleThroughAppNames(self, appNames):
-        """
-        :param appNames:
-        :return:
-        """
-        for appName in appNames:
-            avail, path, name = self.extractPropertiesFromRegistry(appName)
-            self.log.debug(f'Registry avail:[{avail}], path:[{path}], name:[{name}]')
-            if avail:
-                exe = appNames[appName]
+        nameKeys = self.getNameKeyFromRegistry(winKey)
+        for nameKey in nameKeys:
+            values = self.getValuesForNameKeyFromRegistry(nameKey)
+            path = values.get('InstallLocation', '')
+            if 'Updater' in path:
                 break
+            t = f'Key tested: [{winKey}], values: [{values}]'
+            self.log.debug(t)
         else:
-            self.log.warning('10micron updater not found')
+            self.log.warning('No install location found')
+            return '', {}
+        return nameKey, values
+
+    def findAppSetup(self, winKey):
+        """
+        :param winKey:
+        :return:
+        """
+        nameKey, values = self.checkRegistryNameKeys(winKey)
+        if not nameKey:
             return False, '', '', ''
 
-        return avail, path, name, exe
+        for updaterApp in self.updaterAppList:
+            fullPath = f'{values["InstallLocation"]}/{updaterApp}'
+            if os.path.isfile(fullPath):
+                break
+        else:
+            t = f'No 10micron updater found in [{values["InstallLocation"]}]'
+            self.log.warning(t)
+            return False, '', '', ''
 
-    def getAppSettings(self, appNames):
+        name = values['DisplayName']
+        installPath = values['InstallLocation']
+        app = updaterApp
+        return True, name, installPath, app
+
+    def getAppSettings(self, winKey):
         """
-        :param appNames:
+        :param winKey:
         :return:
         """
         try:
-            val = self.cycleThroughAppNames(appNames)
+            val = self.findAppSetup(winKey)
             self.available = val[0]
-            self.installPath = val[1]
-            self.name = val[2]
-            self.updaterEXE = val[3]
+            self.name = val[1]
+            self.installPath = val[2]
+            self.updaterApp = val[3]
         except Exception as e:
             self.available = False
             self.installPath = ''
             self.name = ''
-            self.updaterEXE = ''
+            self.updaterApp = ''
             self.log.debug(f'App settings error: [{e}]')
+        return True
 
     def checkFloatingPointErrorWindow(self):
         """
@@ -265,25 +254,21 @@ class AutomateWindows(QObject):
         """
         :return:
         """
-        if platform.architecture()[0] == '32bit':
-            self.updater = Application(backend='win32')
-            self.log.info('Using 32Bit backend win32')
-        else:
-            self.updater = Application(backend='uia')
-            self.log.info('Using 64Bit backend uia')
+        self.updater = Application(backend='uia')
+        if platform.architecture()[0] == '64bit':
             Timings.slow()
 
         try:
-            self.updater.start(self.installPath + self.updaterEXE)
+            self.updater.start(self.installPath + self.updaterApp)
         except AppStartError as e:
             e = f'{e}'.replace('\n', '')
             self.log.error(f'Start error: [{e}]')
-            self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
+            self.log.error(f'Path: [{self.installPath}{self.updaterApp}]')
             return False
         except Exception as e:
             e = f'{e}'.replace('\n', '')
             self.log.error(f'General error: [{e}]')
-            self.log.error(f'Path: [{self.installPath}{self.updaterEXE}]')
+            self.log.error(f'Path: [{self.installPath}{self.updaterApp}]')
             return False
         else:
             suc = self.checkFloatingPointErrorWindow()
@@ -294,6 +279,7 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
+        self.moveWindow(win, 10, 10)
         win['next'].click()
         win['next'].click()
         controls.ButtonWrapper(win['Control box firmware']).uncheck_by_click()
@@ -342,6 +328,7 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
+        self.moveWindow(win, 10, 10)
         win['next'].click()
         win['next'].click()
         win['Update Now'].click()
@@ -356,6 +343,7 @@ class AutomateWindows(QObject):
                                                lambda: find_windows(title='Update completed',
                                                                     class_name='#32770')[0])
         winOK = self.updater.window(handle=dialog)
+        self.moveWindow(winOK, 10, 10)
         winOK['OK'].click()
 
         return True
@@ -373,13 +361,43 @@ class AutomateWindows(QObject):
 
         return True
 
+    @staticmethod
+    def moveWindow(element, x, y):
+        """
+        :param element:
+        :param x:
+        :param y:
+        :return:
+        """
+        element.wrapper_object().iface_transform.Move(x, y)
+        return True
+
+    @staticmethod
+    def getIdentifiers(element):
+        """
+        :param element:
+        :return:
+        """
+        return element._ctrl_identifiers()
+
+    @staticmethod
+    def dialogClick(element):
+        """
+        :param element:
+        :return:
+        """
+        element.child_window(title='Open', auto_id='1',
+                             control_type='Button').click()
+        return True
+
     def uploadMPCDataCommands(self, comets=False):
         """
         :param comets:
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win}]')
+        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
+
         if comets:
             controls.ButtonWrapper(win['Orbital parameters of comets']).check_by_click()
             win['Edit...4'].click()
@@ -389,19 +407,17 @@ class AutomateWindows(QObject):
             win['Edit...3'].click()
             popup = self.updater['Asteroid orbits']
 
-        self.log.debug(f'Updater popup: [{popup}]')
-        popup['MPC file'].click()
+        self.moveWindow(popup, 30, 30)
+        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
+        popup['MPC file'].click()
         filedialog = self.updater['Open']
-        self.log.debug(f'Updater filedialog: [{filedialog}]')
+        self.moveWindow(filedialog, 50, 50)
+        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
+
         text = self.installPath + 'minorPlanets.mpc'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
+        self.dialogClick(filedialog)
         popup['Close'].click()
         return True
 
@@ -427,35 +443,35 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win}]')
+        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
+
         controls.ButtonWrapper(win['UTC / Earth rotation data']).check_by_click()
         win['Edit...1'].click()
         popup = self.updater['UTC / Earth rotation data']
-        self.log.debug(f'Updater popup: [{popup}]')
+        self.moveWindow(popup, 30, 30)
+        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
+
         popup['Import files...'].click()
         filedialog = self.updater['Open finals data']
-        self.log.debug(f'Updater filedialog: [{filedialog}]')
+        self.moveWindow(filedialog, 50, 50)
+        self.log.debug(f'Finals filedialog: [{self.getIdentifiers(filedialog)}]')
+
         text = self.installPath + self.UTC_1_FILE
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
+        self.dialogClick(filedialog)
 
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
-        if self.updaterEXE == 'tenmicron_v2.exe':
+        if self.updaterApp == 'tenmicron_v2.exe':
+            text = self.installPath + self.UTC_2a_FILE
             filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
         else:
+            text = self.installPath + self.UTC_2b_FILE
             filedialog = self.updater['Open tai-utc.dat']
 
-        text = self.installPath + self.UTC_2_FILE
+        self.moveWindow(filedialog, 50, 50)
+        self.log.debug(f'Leap filedialog: [{self.getIdentifiers(filedialog)}]')
+
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
+        self.dialogClick(filedialog)
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -482,24 +498,22 @@ class AutomateWindows(QObject):
         :return:
         """
         win = self.updater['10 micron control box update']
-        self.log.debug(f'Updater win: [{win}]')
+        self.log.debug(f'Updater win: [{self.getIdentifiers(win)}]')
 
         controls.ButtonWrapper(win['Orbital parameters of satellites']).check_by_click()
         win['Edit...2'].click()
         popup = self.updater['Satellites orbits']
-        self.log.debug(f'Updater popup: [{popup}]')
-        popup['Load from file'].click()
+        self.moveWindow(popup, 30, 30)
+        self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
+        popup['Load from file'].click()
         filedialog = self.updater['Open']
-        self.log.debug(f'Updater filedialog: [{filedialog}]')
+        self.moveWindow(filedialog, 50, 50)
+        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
+
         text = self.installPath + 'satellites.tle'
         controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-
-        if platform.architecture()[0] == '32bit':
-            filedialog['Button16'].click()
-        else:
-            filedialog['OpenButton4'].click()
-
+        self.dialogClick(filedialog)
         popup['Close'].click()
         return True
 

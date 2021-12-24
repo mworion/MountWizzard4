@@ -23,6 +23,7 @@ from PyQt5.QtCore import Qt, QRect, QPoint, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QAbstractItemView
 from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView
 import numpy as np
+from skyfield import almanac
 
 # local import
 from base.tpool import Worker
@@ -114,6 +115,7 @@ class SatSearch(object):
         self.ui.satIsSunlit.clicked.connect(self.filterSatelliteNamesList)
         self.ui.satIsUp.clicked.connect(self.filterSatelliteNamesList)
         self.ui.satRemoveSO.clicked.connect(self.filterSatelliteNamesList)
+        self.ui.satTwilight.activated.connect(self.filterSatelliteNamesList)
         self.sigSetSatTableEntry.connect(self.setSatTableEntry)
 
         self.app.update1s.connect(self.satCalcDynamicTable)
@@ -129,6 +131,7 @@ class SatSearch(object):
         for name in self.satelliteSourceURLs.keys():
             self.ui.satelliteSource.addItem(name)
         self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
+        self.ui.satTwilight.setCurrentIndex(config.get('satTwilight', 4))
         self.loadDataFromSourceURLs()
         self.ui.filterSatellite.setText(config.get('filterSatellite'))
         self.ui.switchToTrackingTab.setChecked(config.get('switchToTrackingTab',
@@ -154,6 +157,7 @@ class SatSearch(object):
         """
         config = self.app.config['mainW']
         config['satelliteSource'] = self.ui.satelliteSource.currentIndex()
+        config['satTwilight'] = self.ui.satTwilight.currentIndex()
         config['filterSatellite'] = self.ui.filterSatellite.text()
         config['switchToTrackingTab'] = self.ui.switchToTrackingTab.isChecked()
         config['satCyclicUpdates'] = self.ui.satCyclicUpdates.isChecked()
@@ -220,6 +224,23 @@ class SatSearch(object):
             return True, t[np.equal(events, 1)]
         else:
             return False, []
+
+    @staticmethod
+    def checkTwilight(ephemeris, loc, data):
+        """
+        :param ephemeris:
+        :param loc:
+        :param data:
+        :return:
+        """
+        isUp = data[0]
+        if not isUp:
+            return 4
+
+        satTime = data[1][0]
+        f = almanac.dark_twilight_day(ephemeris, loc)
+        twilight = int(f(satTime))
+        return twilight
 
     @staticmethod
     def findRangeRate(sat, loc, tEv):
@@ -297,13 +318,14 @@ class SatSearch(object):
         return True
 
     def updateTableEntries(self, row, satParam, isUp=None, isSunlit=None,
-                           appMag=None):
+                           appMag=None, twilight=None):
         """
         :param row:
         :param satParam:
         :param isUp:
         :param isSunlit:
         :param appMag:
+        :param twilight:
         :return:
         """
         entry = QTableWidgetItem(f'{satParam[0]:5.0f}')
@@ -341,6 +363,12 @@ class SatSearch(object):
             entry = QCustomTableWidgetItem(value)
             entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             self.sigSetSatTableEntry.emit(row, 7, entry)
+
+        if twilight is not None:
+            entry = QTableWidgetItem(f'{twilight:1.0f}')
+            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            self.sigSetSatTableEntry.emit(row, 8, entry)
+
         return True
 
     def satCalcDynamicTable(self):
@@ -415,6 +443,8 @@ class SatSearch(object):
         checkIsSunlit = satIsSunlit.isChecked() and satIsSunlit.isEnabled()
         checkRemoveSO = self.ui.satRemoveSO.isChecked()
 
+        selectTwilight = self.ui.satTwilight.currentIndex()
+
         for row in range(satTab.model().rowCount()):
             name = satTab.model().index(row, 1).data().lower()
             number = satTab.model().index(row, 0).data().lower()
@@ -428,6 +458,10 @@ class SatSearch(object):
                 show = show and 'oneweb' not in name
                 show = show and 'globalstar' not in name
                 show = show and 'navstar' not in name
+            if selectTwilight < 4:
+                value = satTab.model().index(row, 8).data()
+                actTwilight = int(value) if value is not None else 5
+                show = show and actTwilight <= selectTwilight
 
             satTab.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
@@ -474,12 +508,14 @@ class SatSearch(object):
             if not np.isnan(satParam).any():
                 isSunlit = self.findSunlit(sat, eph, timeNow)
                 isUp = self.findSatUp(sat, loc, timeNow, timeNext, altMin)
+                fitTwilight = self.checkTwilight(eph, loc, isUp)
                 satRange = satParam[0]
                 if isSunlit:
                     appMag = self.calcAppMag(sat, loc, eph, satRange, timeNow)
                 else:
                     appMag = 99
             else:
+                fitTwilight = 4
                 isSunlit = False
                 isUp = False, []
                 appMag = 99
@@ -487,11 +523,15 @@ class SatSearch(object):
             finished = (row + 1) / numSats * 100
             t = f'Filter - processed: {finished:3.0f}%'
             self.ui.satFilterGroup.setTitle(t)
-            self.updateTableEntries(row, satParam, isUp, isSunlit, appMag)
+            self.updateTableEntries(row, satParam, isUp, isSunlit, appMag,
+                                    fitTwilight)
         else:
             self.satTableDynamicValid = True
             self.ui.satIsUp.setEnabled(True)
             self.ui.satIsSunlit.setEnabled(True)
+            self.ui.satTwilight.setEnabled(True)
+            t = 'Filter - processed: 100%'
+            self.ui.satFilterGroup.setTitle(t)
             return True
         return False
 
@@ -505,6 +545,7 @@ class SatSearch(object):
         self.satTableDynamicValid = False
         self.ui.satIsUp.setEnabled(False)
         self.ui.satIsSunlit.setEnabled(False)
+        self.ui.satTwilight.setEnabled(False)
         worker = Worker(self.workerSatCalcTable)
         worker.signals.finished.connect(self.filterSatelliteNamesList)
         self.changeStyleDynamic(self.ui.satFilterGroup, 'running', True)
@@ -526,7 +567,7 @@ class SatSearch(object):
         """
         satTab = self.ui.listSatelliteNames
         satTab.setRowCount(0)
-        satTab.setColumnCount(8)
+        satTab.setColumnCount(9)
         hl = ['Num', 'Satellite Name', 'Dist\n[km]', 'Rad v\n[km/s]',
               'Lat v\n[deg/s]', 'Lon v\n[deg/s]',
               'Time\n[H:M]', 'Sat\n[mag]']
@@ -539,6 +580,7 @@ class SatSearch(object):
         satTab.setColumnWidth(5, 45)
         satTab.setColumnWidth(6, 50)
         satTab.setColumnWidth(7, 45)
+        satTab.setColumnWidth(8, 0)
         satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)

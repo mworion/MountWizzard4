@@ -90,6 +90,20 @@ def test_convertRegistryEntryToDict(function):
             assert val
 
 
+def test_getValuesForNameKeyFromRegistry_1(function):
+    with mock.patch.object(function,
+                           'getRegistryPath'):
+        with mock.patch.object(winreg,
+                               'OpenKey'):
+            with mock.patch.object(function,
+                                   'convertRegistryEntryToDict',
+                                   return_value='test'):
+                with mock.patch.object(winreg,
+                                       'CloseKey'):
+                    val = function.getValuesForNameKeyFromRegistry('test')
+                    assert val == 'test'
+
+
 def test_searchNameInRegistry_1(function):
     with mock.patch.object(winreg,
                            'QueryInfoKey',
@@ -129,94 +143,108 @@ def test_getNameKeyFromRegistry_1(function):
                     assert val == 'test'
 
 
-def test_extractPropertiesFromRegistry_1(function):
+def test_checkRegistryNameKeys_1(function):
     with mock.patch.object(function,
                            'getNameKeyFromRegistry',
                            return_value=''):
-        avail, path, name = function.extractPropertiesFromRegistry('')
-        assert not avail
-        assert path == ''
-        assert name == ''
+        nameKey, values = function.checkRegistryNameKeys('')
+        assert nameKey == ''
+        assert values == {}
 
 
-def test_extractPropertiesFromRegistry_2(function):
+def test_checkRegistryNameKeys_2(function):
     with mock.patch.object(function,
                            'getNameKeyFromRegistry',
-                           return_value='test'):
+                           return_value=['test']):
         with mock.patch.object(function,
                                'getValuesForNameKeyFromRegistry',
                                return_value={}):
-            avail, path, name = function.extractPropertiesFromRegistry('test')
-            assert not avail
-            assert path == ''
-            assert name == ''
+            nameKey, values = function.checkRegistryNameKeys('')
+            assert nameKey == ''
+            assert values == {}
 
 
-def test_extractPropertiesFromRegistry_3(function):
+def test_checkRegistryNameKeys_3(function):
     with mock.patch.object(function,
                            'getNameKeyFromRegistry',
-                           return_value='test'):
+                           return_value=['test']):
         with mock.patch.object(function,
                                'getValuesForNameKeyFromRegistry',
                                return_value={'DisplayName': 'test',
                                              'InstallLocation': 'test'}):
-            avail, path, name = function.extractPropertiesFromRegistry('test')
-            assert avail
-            assert path == 'test'
-            assert name == 'test'
+            nameKey, values = function.checkRegistryNameKeys('')
+            assert nameKey == ''
+            assert values == {}
 
 
-def test_extractPropertiesFromRegistry_4(function):
+def test_checkRegistryNameKeys_4(function):
     with mock.patch.object(function,
                            'getNameKeyFromRegistry',
-                           return_value='test'):
+                           return_value=['test']):
         with mock.patch.object(function,
                                'getValuesForNameKeyFromRegistry',
                                return_value={'DisplayName': 'none',
-                                             'InstallLocation': 'test'}):
-            avail, path, name = function.extractPropertiesFromRegistry('test')
-            assert not avail
-            assert path == ''
-            assert name == ''
+                                             'InstallLocation': 'Updater'}):
+            nameKey, values = function.checkRegistryNameKeys('')
+            assert nameKey == 'test'
+            assert values == {'DisplayName': 'none', 'InstallLocation': 'Updater'}
 
 
-def test_cycleThroughAppNames_1(function):
+def test_findAppSetup_1(function):
     with mock.patch.object(function,
-                           'extractPropertiesFromRegistry',
-                           return_value=(False, 'test', 'test')):
-        avail, path, name, exe = function.cycleThroughAppNames('test')
+                           'checkRegistryNameKeys',
+                           return_value=('', {})):
+        avail, name, path, exe = function.findAppSetup('appNames')
         assert not avail
         assert path == ''
         assert name == ''
         assert exe == ''
 
 
-def test_cycleThroughAppNames_2(function):
+def test_findAppSetup_2(function):
     with mock.patch.object(function,
-                           'extractPropertiesFromRegistry',
-                           return_value=(True, 'test', 'test')):
-        appNames = {'10micron control': 'tenmicron_v2.exe'}
-        avail, path, name, exe = function.cycleThroughAppNames(appNames)
-        assert avail
-        assert path == 'test'
-        assert name == 'test'
-        assert exe == 'tenmicron_v2.exe'
+                           'checkRegistryNameKeys',
+                           return_value=('test', {'DisplayName': 'Name',
+                                                  'InstallLocation': 'Path'})):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=False):
+            avail, name, path, exe = function.findAppSetup('appNames')
+            assert not avail
+            assert path == ''
+            assert name == ''
+            assert exe == ''
+
+
+def test_findAppSetup_3(function):
+    with mock.patch.object(function,
+                           'checkRegistryNameKeys',
+                           return_value=('test', {'DisplayName': 'Name',
+                                                  'InstallLocation': 'Path'})):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            avail, name, path, exe = function.findAppSetup('appNames')
+            assert avail
+            assert path == 'Path'
+            assert name == 'Name'
+            assert exe == 'tenmicron_v2.exe'
 
 
 def test_getAppSettings_1(function):
     with mock.patch.object(function,
-                           'cycleThroughAppNames',
+                           'findAppSetup',
                            return_value=(True, 'test', 'test', 'test.exe')):
         function.getAppSettings('test')
         assert function.available
         assert function.installPath == 'test'
         assert function.name == 'test'
-        assert function.updaterEXE == 'test.exe'
+        assert function.updaterApp == 'test.exe'
 
 
 def test_getAppSettings_2(function):
     with mock.patch.object(function,
-                           'cycleThroughAppNames',
+                           'findAppSetup',
                            return_value=(False, 'test', 'test', 'test.exe'),
                            side_effect=Exception()):
         appNames = {'10micron control': 'tenmicron_v2.exe'}
@@ -224,7 +252,7 @@ def test_getAppSettings_2(function):
         assert not function.available
         assert function.installPath == ''
         assert function.name == ''
-        assert function.updaterEXE == ''
+        assert function.updaterApp == ''
 
 
 def test_checkFloatingPointErrorWindow_1(function):
@@ -447,8 +475,10 @@ def test_doUploadAndCloseInstallerCommands(function):
     function.updater = {'10 micron control box update': win}
     with mock.patch.object(automateWindows.timings,
                            'wait_until_passes'):
-        suc = function.doUploadAndCloseInstallerCommands()
-        assert suc
+        with mock.patch.object(function,
+                               'moveWindow'):
+            suc = function.doUploadAndCloseInstallerCommands()
+            assert suc
 
 
 def test_pressOK(function):
@@ -473,8 +503,10 @@ def test_pressOK(function):
     function.updater = Test()
     with mock.patch.object(automateWindows.application,
                            'wait_until_passes'):
-        suc = function.pressOK()
-        assert suc
+        with mock.patch.object(function,
+                               'moveWindow'):
+            suc = function.pressOK()
+            assert suc
 
 
 def test_doUploadAndCloseInstaller_1(function):
@@ -494,6 +526,50 @@ def test_doUploadAndCloseInstaller_2(function):
                                side_effect=Exception()):
             suc = function.doUploadAndCloseInstaller()
             assert not suc
+
+            
+def test_moveWindow_1(function):
+    class Move:
+        @staticmethod
+        def Move():
+            pass
+
+    class Iface:
+        @staticmethod
+        def iface_transform():
+            return Move()
+        
+    class Element:
+        @staticmethod
+        def wrapper_object():
+            return Iface()
+        
+    suc = function.moveWindow(Element(), 0, 0)
+    assert suc
+
+def test_getIdentifiers(function):
+    class Test:
+        @staticmethod
+        def _ctrl_identifiers():
+            pass
+
+    function.getIdentifiers(Test())
+
+
+def test_dialogClick(function):
+    class Click:
+        @staticmethod
+        def click():
+            pass
+
+    class Test:
+        @staticmethod
+        def child_window(title=None,
+                         auto_id=None,
+                         control_type=None):
+            return Click()
+
+    function.dialogClick(Test())
 
 
 def test_uploadMPCDataCommands_1(function):
@@ -532,8 +608,14 @@ def test_uploadMPCDataCommands_1(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            suc = function.uploadMPCDataCommands()
-            assert suc
+            with mock.patch.object(function,
+                                   'getIdentifiers'):
+                with mock.patch.object(function,
+                                       'moveWindow'):
+                    with mock.patch.object(function,
+                                           'dialogClick'):
+                        suc = function.uploadMPCDataCommands()
+                        assert suc
 
 
 def test_uploadMPCDataCommands_2(function):
@@ -572,11 +654,17 @@ def test_uploadMPCDataCommands_2(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            with mock.patch.object(platform,
-                                   'architecture',
-                                   return_value=['64bit']):
-                suc = function.uploadMPCDataCommands(comets=True)
-                assert suc
+            with mock.patch.object(function,
+                                   'getIdentifiers'):
+                with mock.patch.object(function,
+                                       'moveWindow'):
+                    with mock.patch.object(function,
+                                           'dialogClick'):
+                        with mock.patch.object(platform,
+                                               'architecture',
+                                               return_value=['64bit']):
+                            suc = function.uploadMPCDataCommands(comets=True)
+                            assert suc
 
 
 def test_uploadMPCDataCommands_3(function):
@@ -618,8 +706,14 @@ def test_uploadMPCDataCommands_3(function):
             with mock.patch.object(platform,
                                    'architecture',
                                    return_value=['32bit']):
-                suc = function.uploadMPCDataCommands(comets=True)
-                assert suc
+                with mock.patch.object(function,
+                                       'getIdentifiers'):
+                    with mock.patch.object(function,
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadMPCDataCommands(comets=True)
+                            assert suc
 
 
 def test_uploadMPCData_1(function):
@@ -659,22 +753,6 @@ def test_uploadMPCData_3(function):
                 assert suc
 
 
-def test_uploadMPCData_4(function):
-    function.actualWorkDir = os.getcwd()
-    with mock.patch.object(function,
-                           'prepareUpdater'):
-        with mock.patch.object(function,
-                               'uploadMPCDataCommands'):
-            with mock.patch.object(function,
-                                   'doUploadAndCloseInstaller',
-                                   return_value=True):
-                with mock.patch.object(platform,
-                                       'architecture',
-                                       return_value=['64bit']):
-                    suc = function.uploadMPCData()
-                    assert suc
-
-
 def test_uploadEarthRotationDataCommands_1(function):
     class Test:
         @staticmethod
@@ -689,7 +767,7 @@ def test_uploadEarthRotationDataCommands_1(function):
         def set_text(a):
             pass
 
-    function.updaterEXE = 'tenmicron.exe'
+    function.updaterApp = 'tenmicron.exe'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }
@@ -715,8 +793,14 @@ def test_uploadEarthRotationDataCommands_1(function):
             with mock.patch.object(platform,
                                    'architecture',
                                    return_value=['32bit']):
-                suc = function.uploadEarthRotationDataCommands()
-                assert suc
+                with mock.patch.object(function,
+                                       'getIdentifiers'):
+                    with mock.patch.object(function,
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadEarthRotationDataCommands()
+                            assert suc
 
 
 def test_uploadEarthRotationDataCommands_2(function):
@@ -733,7 +817,7 @@ def test_uploadEarthRotationDataCommands_2(function):
         def set_text(a):
             pass
 
-    function.updaterEXE = 'tenmicron_v2.'
+    function.updaterApp = 'tenmicron_v2.'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }
@@ -759,8 +843,14 @@ def test_uploadEarthRotationDataCommands_2(function):
             with mock.patch.object(platform,
                                    'architecture',
                                    return_value=['64bit']):
-                suc = function.uploadEarthRotationDataCommands()
-                assert suc
+                with mock.patch.object(function,
+                                       'getIdentifiers'):
+                    with mock.patch.object(function,
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadEarthRotationDataCommands()
+                            assert suc
 
 
 def test_uploadEarthRotationDataCommands_3(function):
@@ -777,7 +867,7 @@ def test_uploadEarthRotationDataCommands_3(function):
         def set_text(a):
             pass
 
-    function.updaterEXE = 'tenmicron_v2.exe'
+    function.updaterApp = 'tenmicron_v2.exe'
     win = {'UTC / Earth rotation data': Test(),
            'Edit...1': Test(),
            }
@@ -803,8 +893,14 @@ def test_uploadEarthRotationDataCommands_3(function):
             with mock.patch.object(platform,
                                    'architecture',
                                    return_value=['64bit']):
-                suc = function.uploadEarthRotationDataCommands()
-                assert suc
+                with mock.patch.object(function,
+                                       'getIdentifiers'):
+                    with mock.patch.object(function,
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadEarthRotationDataCommands()
+                            assert suc
 
 
 def test_uploadEarthRotationData_1(function):
@@ -844,22 +940,6 @@ def test_uploadEarthRotationData_3(function):
                 assert suc
 
 
-def test_uploadEarthRotationData_4(function):
-    function.actualWorkDir = os.getcwd()
-    with mock.patch.object(function,
-                           'prepareUpdater'):
-        with mock.patch.object(function,
-                               'uploadEarthRotationDataCommands'):
-            with mock.patch.object(function,
-                                   'doUploadAndCloseInstaller',
-                                   return_value=True):
-                with mock.patch.object(platform,
-                                       'architecture',
-                                       return_value=['64bit']):
-                    suc = function.uploadEarthRotationData()
-                    assert suc
-
-
 def test_uploadTLEDataCommands_1(function):
     class Test:
         @staticmethod
@@ -897,8 +977,14 @@ def test_uploadTLEDataCommands_1(function):
             with mock.patch.object(platform,
                                    'architecture',
                                    return_value=['64bit']):
-                suc = function.uploadTLEDataCommands()
-                assert suc
+                with mock.patch.object(function,
+                                       'getIdentifiers'):
+                    with mock.patch.object(function,
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadTLEDataCommands()
+                            assert suc
 
 
 def test_uploadTLEDataCommands_2(function):
@@ -938,8 +1024,14 @@ def test_uploadTLEDataCommands_2(function):
             with mock.patch.object(platform,
                                    'architecture',
                                    return_value=['32bit']):
-                suc = function.uploadTLEDataCommands()
-                assert suc
+                with mock.patch.object(function,
+                                       'getIdentifiers'):
+                    with mock.patch.object(function,
+                                           'moveWindow'):
+                        with mock.patch.object(function,
+                                               'dialogClick'):
+                            suc = function.uploadTLEDataCommands()
+                            assert suc
 
 
 def test_uploadTLEData_1(function):

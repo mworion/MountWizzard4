@@ -199,6 +199,22 @@ def test_findSatUp_2(function):
     assert val[1] == [5]
 
 
+def test_checkTwilight_1(function):
+    ephemeris = function.app.ephemeris
+    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
+    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
+    val = function.checkTwilight(ephemeris, loc, [False, tEv])
+    assert val == 4
+
+
+def test_checkTwilight_2(function):
+    ephemeris = function.app.ephemeris
+    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
+    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
+    val = function.checkTwilight(ephemeris, loc, [True, [tEv]])
+    assert val == 0
+
+
 def test_findRangeRate(function):
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
@@ -284,7 +300,7 @@ def test_updateTableEntries_5(function):
     param = [1, 2, 3, 4]
     ts = function.app.mount.obsSite.ts.now()
     isUp = (False, [ts])
-    suc = function.updateTableEntries(0, param, isUp, False, 5)
+    suc = function.updateTableEntries(0, param, isUp, False, 5, 4)
     assert suc
 
 
@@ -468,7 +484,7 @@ def test_filterSatelliteNamesList_2(function):
     function.ui.listSatelliteNames.setItem(0, 0, entry)
     entry = QTableWidgetItem('NOAA 8')
     function.ui.listSatelliteNames.setItem(0, 1, entry)
-    entry = QTableWidgetItem('*')
+    entry = QTableWidgetItem('1')
     function.ui.listSatelliteNames.setItem(0, 8, entry)
     entry = QTableWidgetItem('1234')
     function.ui.listSatelliteNames.setItem(0, 7, entry)
@@ -582,20 +598,25 @@ def test_workerSatCalcTable_3b(function):
                            'checkSatOk',
                            return_value=True):
         with mock.patch.object(function,
-                               'findRangeRate'):
+                               'findRangeRate',
+                               return_value=(0, 0, 0, 0)):
             with mock.patch.object(function,
                                    'findSunlit',
                                    return_value=False):
                 with mock.patch.object(function,
                                        'findSatUp'):
                     with mock.patch.object(function,
-                                           'updateTableEntries'):
+                                           'findSatUp'):
                         with mock.patch.object(function,
-                                               'calcAppMag',
-                                               return_value=0):
-                            suc = function.workerSatCalcTable()
-                            assert suc
-                            assert function.satTableDynamicValid
+                                               'checkTwilight'):
+                            with mock.patch.object(function,
+                                                   'calcAppMag',
+                                                   return_value=0):
+                                with mock.patch.object(function,
+                                                       'updateTableEntries'):
+                                    suc = function.workerSatCalcTable()
+                                    assert suc
+                                    assert function.satTableDynamicValid
 
 
 def test_workerSatCalcTable_4(function):
@@ -627,13 +648,15 @@ def test_workerSatCalcTable_4(function):
                 with mock.patch.object(function,
                                        'findSatUp'):
                     with mock.patch.object(function,
-                                           'updateTableEntries'):
+                                           'checkTwilight'):
                         with mock.patch.object(function,
-                                               'calcAppMag',
-                                               return_value=0):
-                            suc = function.workerSatCalcTable()
-                            assert suc
-                            assert function.satTableDynamicValid
+                                           'updateTableEntries'):
+                            with mock.patch.object(function,
+                                                   'calcAppMag',
+                                                   return_value=0):
+                                suc = function.workerSatCalcTable()
+                                assert suc
+                                assert function.satTableDynamicValid
 
 
 def test_workerSatCalcTable_5(function):

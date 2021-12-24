@@ -37,10 +37,25 @@ client = {
         'work': '/home/mw/test',
         'scp': 'mw@astro-ubuntu.fritz.box:/home/mw/test',
     },
-    'win10': {
-        'user': 'mw@astro-win10.fritz.box',
+    'win10-32-old': {
+        'user': 'mw@astro-win10-32-old.fritz.box',
         'work': 'test',
-        'scp': 'mw@astro-win10.fritz.box:/Users/mw/test',
+        'scp': 'mw@astro-win10-32-old.fritz.box:/Users/mw/test',
+    },
+    'win10-64-old': {
+        'user': 'mw@astro-win10-64-old.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-win10-64-old.fritz.box:/Users/mw/test',
+    },
+    'win10-32': {
+        'user': 'mw@astro-win10-32.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-win10-32.fritz.box:/Users/mw/test',
+    },
+    'win10-64': {
+        'user': 'mw@astro-win10-64.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-win10-64.fritz.box:/Users/mw/test',
     },
     'win11': {
         'user': 'mw@astro-win11.fritz.box',
@@ -310,11 +325,41 @@ def test_mac(c, user, work, scp):
 
 
 @task(pre=[])
-def test_win10(c):
-    printMW('test windows10 install')
-    user = client['win10']['user']
-    work = client['win10']['work']
-    scp = client['win10']['scp']
+def test_win1032old(c):
+    printMW('test windows10 32 old install')
+    user = client['win10-32-old']['user']
+    work = client['win10-32-old']['work']
+    scp = client['win10-32-old']['scp']
+    test_windows(c, user, work, scp)
+    printMW('test windows10 install finished\n')
+
+
+@task(pre=[])
+def test_win1064old(c):
+    printMW('test windows10 64 old install')
+    user = client['win10-64-old']['user']
+    work = client['win10-64-old']['work']
+    scp = client['win10-64-old']['scp']
+    test_windows(c, user, work, scp)
+    printMW('test windows10 install finished\n')
+
+
+@task(pre=[])
+def test_win1032(c):
+    printMW('test windows10 32 install')
+    user = client['win10-32']['user']
+    work = client['win10-32']['work']
+    scp = client['win10-32']['scp']
+    test_windows(c, user, work, scp)
+    printMW('test windows10 install finished\n')
+
+
+@task(pre=[])
+def test_win1064(c):
+    printMW('test windows10 64 install')
+    user = client['win10-64']['user']
+    work = client['win10-64']['work']
+    scp = client['win10-64']['scp']
     test_windows(c, user, work, scp)
     printMW('test windows10 install finished\n')
 

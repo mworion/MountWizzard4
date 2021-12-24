@@ -365,6 +365,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'de421_23.bsp': 0,
         'visual.txt': 0,
         'CDFLeapSeconds.txt': 0,
+        'tai-utc.dat': 0,
         'finals2000A.all': 0,
         'finals.data': 0,
     }
@@ -414,6 +415,15 @@ def getWindowPos():
             return x, y
 
 
+def minimizeStartTerminal():
+    """
+    :return:
+    """
+    if platform.system() == 'Windows':
+        import ctypes
+        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
+
+
 def main():
     """
     main prepares the loading of mountwizzard application. it prepares a
@@ -424,9 +434,10 @@ def main():
     :return: nothing
     """
     locale.setlocale(locale.LC_ALL, '')
-    QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = MyApp(sys.argv)
     # app = QApplication(sys.argv)
+
+    minimizeStartTerminal()
 
     x, y = getWindowPos()
     splashW = SplashScreen(application=app, x=x, y=y)

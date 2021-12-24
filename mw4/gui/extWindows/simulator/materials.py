@@ -57,9 +57,10 @@ class Materials(Styles):
         self.aluminiumR.setDiffuse(QColor(192, 64, 64))
 
         self.environ1 = QDiffuseSpecularMaterial()
-        self.environ1.setAmbient(QColor(0, 0, 64))
-        self.environ1.setDiffuse(QColor(self.M_GREEN1))
-        self.environ1.setShininess(50)
+        self.environ1.setAmbient(QColor(self.M_BLUE4))
+        self.environ1.setDiffuse(QColor(self.M_BLUE4))
+        self.environ1.setShininess(1)
+        self.environ1.setSpecular(1)
 
         self.aluminium = QDiffuseSpecularMaterial()
         self.aluminium.setAmbient(QColor(164, 164, 164))
@@ -161,8 +162,14 @@ class Materials(Styles):
         self.laser.setSpecular(QColor(self.M_YELLOW))
         self.laser.setShininess(255)
 
-        self.walls = QPhongMaterial()
+        self.walls = QPhongAlphaMaterial()
         self.walls.setAmbient(QColor(self.M_GREY1))
         self.walls.setDiffuse(QColor(self.M_GREY1))
         self.walls.setSpecular(QColor(self.M_GREY1))
-        self.walls.setShininess(255)
+        self.walls.setAlpha(0.5)
+        self.walls.setShininess(64)
+
+        self.horizon = QPhongAlphaMaterial()
+        self.horizon.setAmbient(QColor(self.M_BLUE4))
+        self.horizon.setDiffuse(QColor(self.M_BLUE4))
+        self.horizon.setAlpha(0.5)

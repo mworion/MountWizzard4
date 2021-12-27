@@ -150,30 +150,30 @@ class AlpacaClass(DriverData):
         try:
             response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
-            t = f'[{self.deviceName}] has timeout'
+            t = 'Discover API version has timeout'
             self.log.debug(t)
             return None
         except requests.exceptions.ConnectionError:
-            t = f'[{self.deviceName}] has connection error'
+            t = 'Discover API version has connection error'
             self.log.warning(t)
             return None
         except Exception as e:
-            t = f'[{self.deviceName}] has exception: [{e}]'
+            t = f'Discover API version has exception: [{e}]'
             self.log.error(t)
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            t = f'[{self.deviceName}] stat 400/500, [{response.text}]'
+            t = f'Discover API version stat 400/500, [{response.text}]'
             self.log.warning(t)
             return None
 
         response = response.json()
         if response['ErrorNumber'] != 0:
-            t = f'[{self.deviceName}] response: [{response}]'
+            t = f'Discover API version response: [{response}]'
             self.log.warning(t)
             return None
 
-        t = f'[{self.deviceName}] response: [{response}]'
+        t = f'Discover API version response: [{response}]'
         self.log.trace(t)
         return response['Value']
 
@@ -190,30 +190,30 @@ class AlpacaClass(DriverData):
         try:
             response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
-            t = f'[{self.deviceName}] has timeout'
+            t = 'Search devices has timeout'
             self.log.debug(t)
             return None
         except requests.exceptions.ConnectionError:
-            t = f'[{self.deviceName}] has connection error'
+            t = 'Search devices has connection error'
             self.log.warning(t)
             return None
         except Exception as e:
-            t = f'[{self.deviceName}] has exception: [{e}]'
+            t = f'Search devices has exception: [{e}]'
             self.log.error(t)
             return None
 
         if response.status_code == 400 or response.status_code == 500:
-            t = f'[{self.deviceName}] stat 400/500, [{response.text}]'
+            t = f'Search devices stat 400/500, [{response.text}]'
             self.log.warning(t)
             return None
 
         response = response.json()
         if response['ErrorNumber'] != 0:
-            t = f'[{self.deviceName}] response: [{response}]'
+            t = f'Search devices response: [{response}]'
             self.log.warning(t)
             return None
 
-        t = f'[{self.deviceName}] response: [{response}]'
+        t = f'Search devices response: [{response}]'
         self.log.trace(t)
         return response['Value']
 
@@ -467,17 +467,6 @@ class AlpacaClass(DriverData):
 
     def discoverDevices(self, deviceType=''):
         """
-        discoverDevices implements a discover for devices of a certain device
-        type. it is called from a button press and checks which button it was.
-        after that for the right device it collects all necessary data for host
-        value, instantiates an INDI client and watches for all devices connected
-        to this server. Than it connects a subroutine for collecting the right
-        device names and waits a certain amount of time. the data collection
-        takes place as long as the model dialog is open. when the user closes
-        this dialog, the collected data is written to the drop down list.
-
-        :param deviceType: device type of discovered indi devices
-        :return: success
         """
         devices = self.discoverAlpacaDevices()
         if not devices:

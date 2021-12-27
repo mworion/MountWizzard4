@@ -381,14 +381,30 @@ class AutomateWindows(QObject):
         return element._ctrl_identifiers()
 
     @staticmethod
-    def dialogClick(element):
+    def dialogInput(element, text):
         """
         :param element:
+        :param text:
         :return:
         """
-        element.child_window(title='Open', auto_id='1',
-                             control_type='Button').click()
+        text = text.replace('(', '{(}')
+        text = text.replace(')', '{)}')
+        element.wrapper_object().type_keys(text, with_spaces=True)
         return True
+
+    def findFileDialogWindow(self, text):
+        """
+        :param text: search text for title
+        :return: windows dialog
+        """
+        windows = self.updater.windows()
+        for window in windows:
+            title = window.window_text()
+            if text in title:
+                break
+        else:
+            title = windows[0].window_text()
+        return title
 
     def uploadMPCDataCommands(self, comets=False):
         """
@@ -411,13 +427,16 @@ class AutomateWindows(QObject):
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['MPC file'].click()
-        filedialog = self.updater['Open']
-        self.moveWindow(filedialog, 50, 50)
-        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
+        popup['MPC file'].wait('ready')
+
+        fTitle = self.findFileDialogWindow('en')
+        fDialog = self.updater[fTitle]
+        self.moveWindow(fDialog, 50, 50)
+        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(fDialog)}]')
 
         text = self.installPath + 'minorPlanets.mpc'
-        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        self.dialogClick(filedialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
         popup['Close'].click()
         return True
 
@@ -452,26 +471,32 @@ class AutomateWindows(QObject):
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Import files...'].click()
-        filedialog = self.updater['Open finals data']
-        self.moveWindow(filedialog, 50, 50)
-        self.log.debug(f'Finals filedialog: [{self.getIdentifiers(filedialog)}]')
+        popup['Import files...'].wait('ready')
+
+        fTitle = self.findFileDialogWindow('finals')
+        fDialog = self.updater[fTitle]
+        self.moveWindow(fDialog, 50, 50)
+        self.log.debug(f'Finals filedialog: [{self.getIdentifiers(fDialog)}]')
 
         text = self.installPath + self.UTC_1_FILE
-        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        self.dialogClick(filedialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
+
+        popup['Import files...'].wait('ready')
 
         if self.updaterApp == 'tenmicron_v2.exe':
             text = self.installPath + self.UTC_2a_FILE
-            filedialog = self.updater['Open CDFLeapSeconds.txt or tai-utc.dat']
         else:
             text = self.installPath + self.UTC_2b_FILE
-            filedialog = self.updater['Open tai-utc.dat']
 
-        self.moveWindow(filedialog, 50, 50)
-        self.log.debug(f'Leap filedialog: [{self.getIdentifiers(filedialog)}]')
+        fTitle = self.findFileDialogWindow('tai-utc')
+        fDialog = self.updater[fTitle]
+        self.moveWindow(fDialog, 50, 50)
+        self.log.debug(f'Leap filedialog: [{self.getIdentifiers(fDialog)}]')
 
-        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        self.dialogClick(filedialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
+
         fileOK = self.updater['UTC data']
         fileOK['OK'].click()
         return True
@@ -507,13 +532,17 @@ class AutomateWindows(QObject):
         self.log.debug(f'Updater popup: [{self.getIdentifiers(popup)}]')
 
         popup['Load from file'].click()
-        filedialog = self.updater['Open']
-        self.moveWindow(filedialog, 50, 50)
-        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(filedialog)}]')
+        popup['Load from file'].wait('ready')
+
+        fTitle = self.findFileDialogWindow('en')
+        fDialog = self.updater[fTitle]
+        self.moveWindow(fDialog, 50, 50)
+        self.log.debug(f'Updater filedialog: [{self.getIdentifiers(fDialog)}]')
 
         text = self.installPath + 'satellites.tle'
-        controls.EditWrapper(filedialog['File &name:Edit']).set_edit_text(text)
-        self.dialogClick(filedialog)
+        self.dialogInput(fDialog, text)
+        self.dialogInput(fDialog, '~')
+
         popup['Close'].click()
         return True
 

@@ -104,10 +104,12 @@ def module_setup_teardown():
 
 def test_workerGetInitialConfig_1():
     with mock.patch.object(AscomClass,
-                           'workerGetInitialConfig',
+                           'getAndStoreAscomProperty',
                            return_value=True):
-        suc = app.workerGetInitialConfig()
-        assert suc
+        with mock.patch.object(app,
+                               'getAndStoreAscomProperty'):
+            suc = app.workerGetInitialConfig()
+            assert suc
 
 
 def test_workerPollData_1():

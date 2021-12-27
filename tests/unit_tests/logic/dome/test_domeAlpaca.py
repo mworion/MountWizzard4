@@ -41,6 +41,14 @@ def module_setup_teardown():
         yield
 
 
+def test_workerPollData_1():
+    app.data['CAN_FAST'] = True
+    with mock.patch.object(app,
+                           'getAndStoreAlpacaProperty'):
+        suc = app.workerPollData()
+        assert suc
+
+
 def test_processPolledData_1():
     suc = app.processPolledData()
     assert suc

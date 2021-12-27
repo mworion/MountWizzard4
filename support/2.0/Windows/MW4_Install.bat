@@ -121,7 +121,7 @@ echo ---------------------------------------------
 
 call venv\Scripts\activate >> install.log 2>&1
 python -m pip install pip --upgrade >> install.log 2>&1
-python -m pip install setuptools --upgrade >> install.log 2>&1
+python -m pip install setuptools==59.8.0 >> install.log 2>&1
 python -m pip install wheel --upgrade >> install.log 2>&1
 python -m pip install mountwizzard4 --upgrade --no-cache-dir >> install.log 2>&1
 

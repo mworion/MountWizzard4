@@ -28,6 +28,7 @@ from logic.camera.cameraSupport import CameraSupport
 class CameraSGPro(SGProClass, CameraSupport):
     """
     """
+    DEVICE_TYPE = 'Camera'
 
     __all__ = ['CameraSGPro']
 
@@ -38,14 +39,13 @@ class CameraSGPro(SGProClass, CameraSupport):
         self.abortExpose = False
         self.parent = parent
 
-    def getInitialConfig(self):
+    def workerPollStatus(self):
         """
         :return: true for test purpose
         """
         if not self.deviceConnected:
             return False
-        super().getInitialConfig()
-        self.log.debug(f'Initial data: {self.data}')
+
         return True
 
     def workerPollData(self):
@@ -55,20 +55,6 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
-        return True
-
-    def sendDownloadMode(self, fastReadout=False):
-        """
-        :return: success
-        """
-        canFast = self.data.get('CAN_FAST', False)
-        if not canFast:
-            return False
-        if fastReadout:
-            self.client.fastreadout(FastReadout=True)
-
-        quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.debug(f'camera has readout quality entry: {quality}')
         return True
 
     def workerExpose(self,
@@ -151,12 +137,6 @@ class CameraSGPro(SGProClass, CameraSupport):
             return False
 
         self.abortExpose = True
-        canAbort = self.data.get('CAN_ABORT', False)
-
-        if not canAbort:
-            return False
-
-        self.client.stopexposure()
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):
@@ -167,7 +147,6 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
-        self.client.cooleron(CoolerOn=coolerOn)
         return True
 
     def sendCoolerTemp(self, temperature=0):
@@ -178,5 +157,4 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
-        self.client.setccdtemperature(SetCCDTemperature=temperature)
         return True

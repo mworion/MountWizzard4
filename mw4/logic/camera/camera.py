@@ -25,6 +25,7 @@ import platform
 from base.driverDataClass import Signals
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
+from logic.camera.cameraSGPro import CameraSGPro
 if platform.system() == 'Windows':
     from logic.camera.cameraAscom import CameraAscom
 
@@ -47,6 +48,7 @@ class Camera:
         self.run = {
             'indi': CameraIndi(self.app, self.signals, self.data),
             'alpaca': CameraAlpaca(self.app, self.signals, self.data),
+            'sgpro': CameraSGPro(self.app, self.signals, self.data),
         }
 
         if platform.system() == 'Windows':

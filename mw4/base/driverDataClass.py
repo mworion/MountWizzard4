@@ -39,6 +39,11 @@ class Signals(QObject):
     version = pyqtSignal(int)
 
 
+class RemoteDeviceShutdown(QObject):
+    __all__ = ['RemoteDeviceShutdown']
+    signalRemoteShutdown = pyqtSignal()
+
+
 class DriverData:
     log = logging.getLogger(__name__)
 

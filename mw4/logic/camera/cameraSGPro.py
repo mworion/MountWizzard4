@@ -39,15 +39,6 @@ class CameraSGPro(SGProClass, CameraSupport):
         self.abortExpose = False
         self.parent = parent
 
-    def workerPollStatus(self):
-        """
-        :return: true for test purpose
-        """
-        if not self.deviceConnected:
-            return False
-
-        return True
-
     def workerPollData(self):
         """
         :return: true for test purpose

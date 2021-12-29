@@ -20,16 +20,16 @@ import logging
 import json
 
 # external packages
-from PyQt5.QtCore import QTimer
-from PyQt5.QtTest import QTest
+from PyQt5.QtCore import QTimer, QObject, pyqtSignal
 import requests
 
 # local imports
 from base.driverDataClass import DriverData
+from base.driverDataClass import RemoteDeviceShutdown
 from base.tpool import Worker
 
 
-class SGProClass(DriverData):
+class SGProClass(DriverData, QObject):
     """
     """
     log = logging.getLogger(__name__)
@@ -54,6 +54,7 @@ class SGProClass(DriverData):
                 'deviceList': [],
             }
         }
+        self.signalRS = RemoteDeviceShutdown()
 
         self.deviceConnected = False
         self.serverConnected = False
@@ -65,6 +66,7 @@ class SGProClass(DriverData):
         self.cycleData = QTimer()
         self.cycleData.setSingleShot(False)
         self.cycleData.timeout.connect(self.pollData)
+        self.signalRS.signalRemoteShutdown.connect(self.stopCommunication)
 
     @property
     def deviceName(self):
@@ -103,6 +105,7 @@ class SGProClass(DriverData):
         response = self.requestProperty('SgConnectDevice', params=params)
         if response is None:
             return False
+
         return response['Success']
 
     def sgDisconnectDevice(self):
@@ -110,6 +113,7 @@ class SGProClass(DriverData):
         response = self.requestProperty('SgDisconnectDevice', params=params)
         if response is None:
             return False
+
         return response['Success']
 
     def sgEnumerateDevice(self):
@@ -117,6 +121,7 @@ class SGProClass(DriverData):
         response = self.requestProperty('SgEnumerateDevices', params=params)
         if response is None:
             return False
+
         return response['Devices']
 
     def getAndStoreSGProProperty(self, valueProp, element, elementInv=None):
@@ -172,12 +177,6 @@ class SGProClass(DriverData):
         self.cycleDevice.stop()
         return True
 
-    def workerPollStatus(self):
-        """
-        :return: success
-        """
-        return True
-
     def processPolledData(self):
         pass
 
@@ -195,6 +194,23 @@ class SGProClass(DriverData):
         self.threadPool.start(worker)
         return True
 
+    def workerPollStatus(self):
+        """
+        :return: success
+        """
+        params = {'Device': self.DEVICE_TYPE}
+        response = self.requestProperty('SgGetDeviceStatus', params=params)
+        if response is None:
+            return False
+
+        self.storePropertyToData(response['State'], 'Device.Status')
+        self.storePropertyToData(response['Message'], 'Device.Message')
+
+        if response['State'] == 'DISCONNECTED':
+            self.signalRS.signalRemoteShutdown.emit()
+
+        return True
+
     def pollStatus(self):
         """
         :return: success
@@ -209,7 +225,7 @@ class SGProClass(DriverData):
         :return: True for test purpose
         """
         worker = Worker(self.workerConnectDevice)
-        # worker.signals.finished.connect(self.startTimer)
+        worker.signals.finished.connect(self.startTimer)
         self.threadPool.start(worker)
         return True
 
@@ -217,7 +233,7 @@ class SGProClass(DriverData):
         """
         :return: true for test purpose
         """
-        # self.stopTimer()
+        self.stopTimer()
         self.sgDisconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False

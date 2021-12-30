@@ -142,13 +142,54 @@ class CameraSupport:
         """
         timeLeft = expTime
         while not function(param):
+            if self.abortExpose:
+                break
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)
+            self.signals.message.emit(text)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
             else:
                 timeLeft = 0
-            self.signals.message.emit(text)
+        return True
+
+    def waitCombined(self, function, param, expTime):
+        """
+        :param function:
+        :param param:
+        :param expTime:
+        :return:
+        """
+        QTest.qWait(1000)
+        timeLeft = expTime
+        while 'integrating' in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
+            text = f'expose {timeLeft:3.0f} s'
+            QTest.qWait(100)
+            self.signals.message.emit(text)
+            if timeLeft >= 0.1:
+                timeLeft -= 0.1
+            else:
+                timeLeft = 0
+
+        self.signals.integrated.emit()
+        self.signals.message.emit('download')
+        while 'downloading' in self.data.get('Device.Message'):
+            if self.abortExpose:
+                break
+            QTest.qWait(100)
+
+        self.signals.downloaded.emit()
+        self.signals.message.emit('saving')
+        while 'image is ready' in self.data.get('Device.Message'):
+            if self.abortExpose:
+                break
+            QTest.qWait(100)
+
+        while not function(param):
+            if self.abortExpose:
+                break
+            QTest.qWait(100)
+
         return True

@@ -73,6 +73,16 @@ class CameraSGPro(SGProClass, CameraSupport):
 
         return response['Success'], response
 
+    def sgAbortImage(self):
+        """
+        :return:
+        """
+        response = self.requestProperty('SgAbortImage')
+        if response is None:
+            return False, []
+
+        return response['Success'], response
+
     def sgGetImagePath(self, receipt):
         """
         :param: receipt:
@@ -103,17 +113,22 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not suc:
             return False
 
-        self.storePropertyToData(response['Message'], 'CCD_INFO.Message')
+        self.storePropertyToData(response['Message'],
+                                 'CCD_INFO.Message')
         self.storePropertyToData(response.get('IsoValues', []),
                                  'CCD_INFO.IsoValues')
         self.storePropertyToData(response.get('GainValues', []),
                                  'CCD_INFO.GainValues')
-        self.storePropertyToData(response['NumPixelsX'], 'CCD_INFO.CCD_MAX_X')
-        self.storePropertyToData(response['NumPixelsY'], 'CCD_INFO.CCD_MAX_Y')
+        self.storePropertyToData(response['NumPixelsX'],
+                                 'CCD_INFO.CCD_MAX_X')
+        self.storePropertyToData(response['NumPixelsY'],
+                                 'CCD_INFO.CCD_MAX_Y')
         canSubframe = response.get('CanSubframe', False)
         if canSubframe:
-            self.storePropertyToData(response['NumPixelsX'], 'CCD_FRAME.X')
-            self.storePropertyToData(response['NumPixelsY'], 'CCD_FRAME.Y')
+            self.storePropertyToData(response['NumPixelsX'],
+                                     'CCD_FRAME.X')
+            self.storePropertyToData(response['NumPixelsY'],
+                                     'CCD_FRAME.Y')
         self.storePropertyToData(True, 'CAN_SET_CCD_TEMPERATURE')
         self.storePropertyToData(1, 'CCD_BINNING.HOR_BIN')
         self.log.debug(f'Initial data: {self.data}')
@@ -182,9 +197,12 @@ class CameraSGPro(SGProClass, CameraSupport):
         receipt = response.get('Receipt', '')
         if not receipt:
             return False
-        self.waitExposed(self.sgGetImagePath, receipt, expTime)
-        pre, ext = os.path.splitext(imagePath)
-        os.rename(pre + '.fit', imagePath)
+        self.waitCombined(self.sgGetImagePath, receipt, expTime)
+        if not self.abortExpose:
+            pre, ext = os.path.splitext(imagePath)
+            os.rename(pre + '.fit', imagePath)
+        else:
+            imagePath = ''
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
         self.signals.message.emit('')
@@ -229,6 +247,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
+        self.sgAbortImage()
         self.abortExpose = True
         return True
 

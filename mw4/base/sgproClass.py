@@ -34,7 +34,7 @@ class SGProClass(DriverData, QObject):
     """
     log = logging.getLogger(__name__)
 
-    CYCLE_POLL_STATUS = 1000
+    CYCLE_POLL_STATUS = 500
     CYCLE_POLL_DATA = 1000
     SGPRO_TIMEOUT = 3
     HOST_ADDR = '127.0.0.1'
@@ -145,7 +145,15 @@ class SGProClass(DriverData, QObject):
         """
         :return: success of reconnecting to server
         """
-        suc = self.sgConnectDevice()
+        for retry in range(0, 3):
+            suc = self.sgConnectDevice()
+            if suc:
+                t = f'[{self.deviceName}] connected, [{retry}] retries'
+                self.log.debug(t)
+                break
+            else:
+                t = f' [{self.deviceName}] Connection retry: [{retry}]'
+                self.log.info(t)
 
         if suc:
             t = f'[{self.deviceName}] connected'

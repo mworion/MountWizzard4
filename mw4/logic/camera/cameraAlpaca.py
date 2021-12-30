@@ -122,7 +122,7 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         self.setAlpacaProperty('startx', StartX=int(posX / binning))
         self.setAlpacaProperty('starty', StartY=int(posY / binning))
         self.setAlpacaProperty('numx', NumX=int(width / binning))
-        self.setAlpacaProperty('numy', NumX=int(width / binning))
+        self.setAlpacaProperty('numy', NumY=int(height / binning))
 
         self.setAlpacaProperty('startexposure', Duration=expTime, Light=True)
         self.waitExposed(self.getAlpacaProperty, 'imageready', expTime)

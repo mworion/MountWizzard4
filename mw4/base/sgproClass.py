@@ -20,7 +20,7 @@ import logging
 import json
 
 # external packages
-from PyQt5.QtCore import QTimer, QObject, pyqtSignal
+from PyQt5.QtCore import QTimer, QObject
 import requests
 
 # local imports
@@ -36,7 +36,7 @@ class SGProClass(DriverData, QObject):
 
     CYCLE_POLL_STATUS = 1000
     CYCLE_POLL_DATA = 1000
-    SGPRO_TIMEOUT = 10
+    SGPRO_TIMEOUT = 3
     HOST_ADDR = '127.0.0.1'
     PORT = 59590
     PROTOCOL = 'http'
@@ -83,23 +83,34 @@ class SGProClass(DriverData, QObject):
         :return:
         """
         try:
+            t = f'Request SGpro: [{self.BASE_URL}/{valueProp}]'
+            t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
+            self.log.trace(t)
             response = requests.post(f'{self.BASE_URL}/{valueProp}',
                                      data=bytes(json.dumps(params).encode('utf-8')),
                                      timeout=self.SGPRO_TIMEOUT)
         except requests.exceptions.Timeout:
+            self.log.debug('Request SGPro connection error')
             return None
         except requests.exceptions.ConnectionError:
+            self.log.error('Request SGPro connection error')
             return None
         except Exception as e:
+            self.log.error(f'Request SGPro error: [{e}]')
             return None
 
         if response.status_code != 200:
+            t = f'Request SGPro response invalid: [{response.status_code}]'
+            self.log.warning(t)
             return None
-
+        self.log.trace(f'Request SGpro response: [{response}]')
         response = response.json()
         return response
 
     def sgConnectDevice(self):
+        """
+        :return:
+        """
         params = {'Device': self.DEVICE_TYPE,
                   'DeviceName': self.deviceName}
         response = self.requestProperty('SgConnectDevice', params=params)
@@ -109,6 +120,9 @@ class SGProClass(DriverData, QObject):
         return response['Success']
 
     def sgDisconnectDevice(self):
+        """
+        :return:
+        """
         params = {'Device': self.DEVICE_TYPE}
         response = self.requestProperty('SgDisconnectDevice', params=params)
         if response is None:
@@ -117,22 +131,15 @@ class SGProClass(DriverData, QObject):
         return response['Success']
 
     def sgEnumerateDevice(self):
+        """
+        :return:
+        """
         params = {'Device': self.DEVICE_TYPE}
         response = self.requestProperty('SgEnumerateDevices', params=params)
         if response is None:
             return False
 
         return response['Devices']
-
-    def getAndStoreSGProProperty(self, valueProp, element, elementInv=None):
-        """
-        :param valueProp:
-        :param element:
-        :param elementInv:
-        :return: reset entry
-        """
-        self.storePropertyToData(value, element, elementInv)
-        return True
 
     def workerConnectDevice(self):
         """
@@ -194,6 +201,19 @@ class SGProClass(DriverData, QObject):
         self.threadPool.start(worker)
         return True
 
+    def workerGetInitialConfig(self):
+        pass
+
+    def getInitialConfig(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+        worker = Worker(self.workerGetInitialConfig)
+        self.threadPool.start(worker)
+        return True
+
     def workerPollStatus(self):
         """
         :return: success
@@ -221,11 +241,12 @@ class SGProClass(DriverData, QObject):
 
     def startCommunication(self, loadConfig=False):
         """
-        :param loadConfig:
+        :param: loadConfig:
         :return: True for test purpose
         """
         worker = Worker(self.workerConnectDevice)
-        worker.signals.finished.connect(self.startTimer)
+        worker.signals.result.connect(self.getInitialConfig)
+        worker.signals.result.connect(self.startTimer)
         self.threadPool.start(worker)
         return True
 

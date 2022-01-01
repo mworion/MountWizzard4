@@ -55,7 +55,7 @@ class Dome:
             self.run['ascom'] = DomeAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
+            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
         self.useGeometry = False
         self.useDynamicFollowing = False

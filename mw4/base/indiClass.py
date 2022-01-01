@@ -128,14 +128,12 @@ class IndiClass:
         self.showMessages = False
 
         self.defaultConfig = {
-            'indi': {
-                'deviceName': '',
-                'deviceList': [],
-                'hostaddress': 'localhost',
-                'port': 7624,
-                'loadConfig': False,
-                'messages': False,
-            }
+            'deviceName': '',
+            'deviceList': [],
+            'hostaddress': 'localhost',
+            'port': 7624,
+            'loadConfig': False,
+            'messages': False,
         }
 
         self.timerRetry = QTimer()

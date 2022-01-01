@@ -48,14 +48,14 @@ class Camera:
         self.run = {
             'indi': CameraIndi(self.app, self.signals, self.data),
             'alpaca': CameraAlpaca(self.app, self.signals, self.data),
-            'sgpro': CameraSGPro(self.app, self.signals, self.data),
         }
 
         if platform.system() == 'Windows':
+            self.run['sgpro'] = CameraSGPro(self.app, self.signals, self.data)
             self.run['ascom'] = CameraAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
+            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
     def startCommunication(self, loadConfig=False):
         """

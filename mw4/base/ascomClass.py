@@ -54,9 +54,7 @@ class AscomClass(DriverData):
         self.serverConnected = False
 
         self.defaultConfig = {
-            'ascom': {
-                'deviceName': '',
-            }
+            'deviceName': '',
         }
 
         self.cyclePollStatus = QTimer()

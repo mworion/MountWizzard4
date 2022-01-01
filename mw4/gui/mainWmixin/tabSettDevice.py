@@ -487,8 +487,7 @@ class SettDevice:
             if invalid:
                 continue
 
-            isAscom = self.driversData[driver]['framework'] in ['ascom', 'alpaca',
-                                                                'sgpro']
+            isAscom = self.driversData[driver]['framework'] in ['ascom', 'alpaca']
             if isAscom and not isAscomAutoConnect:
                 autoStart = False
             else:
@@ -505,8 +504,7 @@ class SettDevice:
             if driver not in self.driversData:
                 continue
 
-            isAscom = self.driversData[driver]['framework'] in ['ascom', 'alpaca',
-                                                                'sgpro']
+            isAscom = self.driversData[driver]['framework'] in ['ascom', 'alpaca']
             if isAscom:
                 self.stopDriver(driver=driver)
         return True
@@ -519,8 +517,7 @@ class SettDevice:
             if driver not in self.driversData:
                 continue
 
-            isAscom = self.driversData[driver]['framework'] in ['ascom', 'alpaca',
-                                                                'sgpro']
+            isAscom = self.driversData[driver]['framework'] in ['ascom', 'alpaca']
             if isAscom:
                 self.startDriver(driver=driver, autoStart=True)
         return True

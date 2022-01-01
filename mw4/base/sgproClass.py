@@ -49,10 +49,8 @@ class SGProClass(DriverData, QObject):
         self.data = data
         self._deviceName = ''
         self.defaultConfig = {
-            'sgpro': {
-                'deviceName': '',
-                'deviceList': [],
-            }
+            'deviceList': ['Remote defined'],
+            'deviceName': 'Remote defined',
         }
         self.signalRS = RemoteDeviceShutdown()
 
@@ -145,6 +143,9 @@ class SGProClass(DriverData, QObject):
         """
         :return: success of reconnecting to server
         """
+        if self.deviceName == 'Remote defined':
+            return True
+
         for retry in range(0, 3):
             suc = self.sgConnectDevice()
             if suc:
@@ -164,15 +165,6 @@ class SGProClass(DriverData, QObject):
             self.deviceConnected = False
             self.serverConnected = False
             return False
-
-        if not self.serverConnected:
-            self.serverConnected = True
-            self.signals.serverConnected.emit()
-
-        if not self.deviceConnected:
-            self.deviceConnected = True
-            self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'SGPro device found:  [{self.deviceName}]', 0)
 
         return True
 
@@ -235,7 +227,16 @@ class SGProClass(DriverData, QObject):
         self.storePropertyToData(response['Message'], 'Device.Message')
 
         if response['State'] == 'DISCONNECTED':
-            self.signalRS.signalRemoteShutdown.emit()
+            if self.deviceConnected:
+                self.deviceConnected = False
+                self.signals.deviceDisconnected.emit(f'{self.deviceName}')
+                self.app.message.emit(f'SGPro device remove: [{self.deviceName}]', 0)
+
+        else:
+            if not self.deviceConnected:
+                self.deviceConnected = True
+                self.signals.deviceConnected.emit(f'{self.deviceName}')
+                self.app.message.emit(f'SGPro device found:  [{self.deviceName}]', 0)
 
         return True
 
@@ -252,6 +253,10 @@ class SGProClass(DriverData, QObject):
         :param: loadConfig:
         :return: True for test purpose
         """
+        if not self.serverConnected:
+            self.serverConnected = True
+            self.signals.serverConnected.emit()
+
         worker = Worker(self.workerConnectDevice)
         worker.signals.result.connect(self.getInitialConfig)
         worker.signals.result.connect(self.startTimer)
@@ -263,7 +268,8 @@ class SGProClass(DriverData, QObject):
         :return: true for test purpose
         """
         self.stopTimer()
-        self.sgDisconnectDevice()
+        if self.deviceName != 'Remote defined':
+            self.sgDisconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')

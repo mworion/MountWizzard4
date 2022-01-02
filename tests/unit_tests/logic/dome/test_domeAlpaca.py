@@ -26,6 +26,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from logic.dome.domeAlpaca import DomeAlpaca
 from base.driverDataClass import Signals
+from base.alpacaClass import AlpacaClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -39,6 +40,16 @@ def module_setup_teardown():
                            'start'):
         app = DomeAlpaca(app=Test(), signals=Signals(), data={})
         yield
+
+
+def test_workerGetInitialConfig_1():
+    with mock.patch.object(AlpacaClass,
+                           'getAndStoreAlpacaProperty',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'getAndStoreAlpacaProperty'):
+            suc = app.workerGetInitialConfig()
+            assert suc
 
 
 def test_workerPollData_1():

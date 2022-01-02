@@ -387,12 +387,11 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         self.changeStyleDynamic(self.ui.sgproDiscover, 'running', True)
         deviceNames = sgpro.discoverDevices()
-        deviceNames.insert(0, 'Remote defined')
-        self.changeStyleDynamic(self.ui.sgproDiscover, 'running', False)
-
         if not deviceNames:
             self.message.emit('SGPro no devices found', 2)
-            return False
+
+        deviceNames.insert(0, 'Remote defined')
+        self.changeStyleDynamic(self.ui.sgproDiscover, 'running', False)
 
         for deviceName in deviceNames:
             self.message.emit(f'SGPro discovered:    [{deviceName}]', 0)

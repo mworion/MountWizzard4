@@ -88,6 +88,24 @@ def test_sgSetCameraTemp_2():
         assert suc
 
 
+def test_sgCaptureImage_1():
+    with mock.patch.object(app,
+                           'requestProperty',
+                           return_value=None):
+        suc, val = app.sgCaptureImage(0)
+        assert not suc
+        assert val == {}
+
+
+def test_sgCaptureImage_2():
+    with mock.patch.object(app,
+                           'requestProperty',
+                           return_value={'Success': True}):
+        suc, val = app.sgCaptureImage(0)
+        assert suc
+        assert val == {'Success': True}
+
+
 def test_sgAbortImage_1():
     with mock.patch.object(app,
                            'requestProperty',
@@ -140,24 +158,28 @@ def test_sgGetCameraProps_2():
 
 def test_workerGetInitialConfig_1():
     with mock.patch.object(app,
-                           'sgGetCameraProps',
-                           return_value=(False, {})):
-        suc = app.workerGetInitialConfig()
-        assert not suc
+                           'storePropertyToData'):
+        with mock.patch.object(app,
+                               'sgGetCameraProps',
+                               return_value=(False, {})):
+            suc = app.workerGetInitialConfig()
+            assert not suc
 
 
 def test_workerGetInitialConfig_2():
     val = {
         'Message': 'test',
-        'CanSubFrame': True,
+        'CanSubframe': True,
         'NumPixelsX': 1000,
         'NumPixelsY': 500,
     }
     with mock.patch.object(app,
-                           'sgGetCameraProps',
-                           return_value=(True, val)):
-        suc = app.workerGetInitialConfig()
-        assert suc
+                           'storePropertyToData'):
+        with mock.patch.object(app,
+                               'sgGetCameraProps',
+                               return_value=(True, val)):
+            suc = app.workerGetInitialConfig()
+            assert suc
 
 
 def test_workerPollData_1():

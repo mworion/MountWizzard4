@@ -27,6 +27,7 @@ from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 # local import
 from logic.dome.domeAscom import DomeAscom
 from base.driverDataClass import Signals
+from base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)

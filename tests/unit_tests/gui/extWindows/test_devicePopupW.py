@@ -34,6 +34,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
+from base.sgproClass import SGProClass
 from base.loggerMW import addLoggingLevel
 
 
@@ -281,6 +282,31 @@ def test_discoverAlpacaDevices_2(function):
                            'discoverDevices',
                            return_value=('Test1', 'Test2')):
         suc = function.discoverAlpacaDevices()
+        assert suc
+
+
+def test_updateSGProDeviceNameList_1(function):
+    with mock.patch.object(function.ui.sgproDeviceList,
+                           'clear'):
+        with mock.patch.object(function.ui.sgproDeviceList,
+                               'setView'):
+            suc = function.updateSGProDeviceNameList(['test1', 'test2'])
+            assert suc
+
+
+def test_discoverSGProDevices_1(function):
+    with mock.patch.object(SGProClass,
+                           'discoverDevices',
+                           return_value=[]):
+        suc = function.discoverSGProDevices()
+        assert suc
+
+
+def test_discoverSGProDevices_2(function):
+    with mock.patch.object(SGProClass,
+                           'discoverDevices',
+                           return_value=['Test1', 'Test2']):
+        suc = function.discoverSGProDevices()
         assert suc
 
 

@@ -58,15 +58,13 @@ class AlpacaClass(DriverData):
         self.number = 0
 
         self.defaultConfig = {
-            'alpaca': {
-                'deviceName': '',
-                'deviceList': [],
-                'hostaddress': 'localhost',
-                'port': 11111,
-                'apiVersion': 1,
-                'user': '',
-                'password': '',
-            }
+            'deviceName': '',
+            'deviceList': [],
+            'hostaddress': 'localhost',
+            'port': 11111,
+            'apiVersion': 1,
+            'user': '',
+            'password': '',
         }
 
         self.deviceConnected = False

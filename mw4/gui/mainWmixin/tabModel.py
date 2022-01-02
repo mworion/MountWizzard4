@@ -390,7 +390,7 @@ class Model:
         self.imageQueue.put(mPoint)
         self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
-        text = 'Slewing  mount:      point in sequence: '
+        text = 'Slewing mount:       point in sequence: '
         text += f'{mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
         text += f'azimuth: {mPoint["azimuth"]:3.0f}'

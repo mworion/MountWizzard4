@@ -52,7 +52,7 @@ class SensorWeather:
             self.run['ascom'] = SensorWeatherAscom(self.app, self.signals, self.data)
 
         for fw in self.run:
-            self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
+            self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
     def startCommunication(self, loadConfig=False):
         """

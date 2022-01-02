@@ -28,6 +28,7 @@ if platform.system() == 'Windows':
 # local import
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
+from base.sgproClass import SGProClass
 from gui.utilities import toolsQtWidget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
 
@@ -43,6 +44,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         'indi': 'INDI / INDIGO',
         'ascom': 'ASCOM',
         'alpaca': 'ALPACA',
+        'sgpro': 'SGPRO',
         'astrometry': 'ASTROMETRY',
         'astap': 'ASTAP',
         'onlineWeather': 'Online Weather',
@@ -84,12 +86,14 @@ class DevicePopup(toolsQtWidget.MWidget):
             'alpaca': {
                 'hostaddress': self.ui.alpacaHostAddress,
                 'port': self.ui.alpacaPort,
-                'deviceList': self.ui.alpacaDeviceList,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
             },
             'ascom': {
                 'deviceName': self.ui.ascomDevice,
+            },
+            'sgpro': {
+                'deviceList': self.ui.sgproDeviceList,
             },
             'astrometry': {
                 'deviceList': self.ui.astrometryDeviceList,
@@ -120,6 +124,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.ok.clicked.connect(self.storeConfig)
         self.ui.indiDiscover.clicked.connect(self.discoverIndiDevices)
         self.ui.alpacaDiscover.clicked.connect(self.discoverAlpacaDevices)
+        self.ui.sgproDiscover.clicked.connect(self.discoverSGProDevices)
         self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
@@ -354,6 +359,45 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.message.emit(f'Alpaca discovered:   [{deviceName}]', 0)
 
         self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
+        return True
+
+    def updateSGProDeviceNameList(self, deviceNames=[]):
+        """
+        updateSGProDeviceNameList updates the indi device name selectors
+        combobox with the discovered entries. therefore it deletes the old list
+        and rebuild it new.
+
+        :return: True for test purpose
+        """
+        self.ui.sgproDeviceList.clear()
+        self.ui.sgproDeviceList.setView(QListView())
+        for deviceName in deviceNames:
+            self.ui.sgproDeviceList.addItem(deviceName)
+        return True
+
+    def discoverSGProDevices(self):
+        """
+        discoverSGProDevices looks all possible alpaca devices up from the
+        actual server and the selected device type.
+
+        :return: success
+        """
+        sgpro = SGProClass()
+        sgpro.DEVICE_TYPE = 'Camera'
+
+        self.changeStyleDynamic(self.ui.sgproDiscover, 'running', True)
+        deviceNames = sgpro.discoverDevices()
+        deviceNames.insert(0, 'Remote defined')
+        self.changeStyleDynamic(self.ui.sgproDiscover, 'running', False)
+
+        if not deviceNames:
+            self.message.emit('SGPro no devices found', 2)
+            return False
+
+        for deviceName in deviceNames:
+            self.message.emit(f'SGPro discovered:    [{deviceName}]', 0)
+
+        self.updateSGProDeviceNameList(deviceNames=deviceNames)
         return True
 
     def checkAstrometryAvailability(self, framework):

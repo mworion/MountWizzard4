@@ -165,14 +165,11 @@ class SGProClass(DriverData, QObject):
         if suc:
             t = f'[{self.deviceName}] connected'
             self.log.debug(t)
-
-        if not suc:
+        else:
             self.app.message.emit(f'SGPro connect error: [{self.deviceName}]', 2)
             self.deviceConnected = False
             self.serverConnected = False
-            return False
-
-        return True
+        return suc
 
     def startTimer(self):
         """

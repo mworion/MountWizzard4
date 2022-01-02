@@ -44,7 +44,8 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         :return:
         """
-        response = self.requestProperty('SgGetCameraTemp')
+        prop = f'cameratemp'
+        response = self.requestProperty(prop)
         if response is None:
             return False, 0
 
@@ -55,8 +56,8 @@ class CameraSGPro(SGProClass, CameraSupport):
         :param: temperature:
         :return:
         """
-        params = {'Temperature': temperature}
-        response = self.requestProperty('SgSetCameraTemp', params=params)
+        prop = f'setcameratemp/{temperature}'
+        response = self.requestProperty(prop)
         if response is None:
             return False
 
@@ -67,7 +68,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         :param: params:
         :return:
         """
-        response = self.requestProperty('SgCaptureImage', params=params)
+        response = self.requestProperty('image', params=params)
         if response is None:
             return False, 'Error'
 
@@ -77,7 +78,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         :return:
         """
-        response = self.requestProperty('SgAbortImage')
+        response = self.requestProperty('abortimage')
         if response is None:
             return False, []
 
@@ -88,8 +89,8 @@ class CameraSGPro(SGProClass, CameraSupport):
         :param: receipt:
         :return:
         """
-        params = {'Receipt': receipt}
-        response = self.requestProperty('SgGetImagePath', params=params)
+        prop = f'imagepath/{receipt}'
+        response = self.requestProperty(prop)
         if response is None:
             return False
 
@@ -99,7 +100,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         :return:
         """
-        response = self.requestProperty('SgGetCameraProps')
+        response = self.requestProperty('cameraprops')
         if response is None:
             return False, []
 

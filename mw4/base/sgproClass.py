@@ -40,7 +40,7 @@ class SGProClass(DriverData, QObject):
     HOST_ADDR = '127.0.0.1'
     PORT = 59590
     PROTOCOL = 'http'
-    BASE_URL = f'{PROTOCOL}://{HOST_ADDR}:{PORT}/json/reply'
+    BASE_URL = f'{PROTOCOL}://{HOST_ADDR}:{PORT}'
 
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
@@ -81,12 +81,17 @@ class SGProClass(DriverData, QObject):
         :return:
         """
         try:
-            t = f'Request SGpro: [{self.BASE_URL}/{valueProp}]'
-            t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
-            self.log.trace(t)
-            response = requests.post(f'{self.BASE_URL}/{valueProp}',
-                                     data=bytes(json.dumps(params).encode('utf-8')),
-                                     timeout=self.SGPRO_TIMEOUT)
+            t = f'SGPro: [{self.BASE_URL}/{valueProp}?format=json]'
+            if params is not None:
+                t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
+                self.log.trace('POST ' + t)
+                response = requests.post(f'{self.BASE_URL}/{valueProp}?format=json',
+                                         data=bytes(json.dumps(params).encode('utf-8')),
+                                         timeout=self.SGPRO_TIMEOUT)
+            else:
+                self.log.trace('GET  ' + t)
+                response = requests.get(f'{self.BASE_URL}/{valueProp}?format=json',
+                                        timeout=self.SGPRO_TIMEOUT)
         except requests.exceptions.Timeout:
             self.log.debug('Request SGPro connection error')
             return None
@@ -101,7 +106,8 @@ class SGProClass(DriverData, QObject):
             t = f'Request SGPro response invalid: [{response.status_code}]'
             self.log.warning(t)
             return None
-        self.log.trace(f'Request SGpro response: [{response}]')
+
+        self.log.trace(f'Request SGpro response: [{response.json()}]')
         response = response.json()
         return response
 
@@ -109,9 +115,9 @@ class SGProClass(DriverData, QObject):
         """
         :return:
         """
-        params = {'Device': self.DEVICE_TYPE,
-                  'DeviceName': self.deviceName}
-        response = self.requestProperty('SgConnectDevice', params=params)
+        devName = self.deviceName.replace(' ', '%20')
+        prop = f'connectdevice/{self.DEVICE_TYPE}/{devName}'
+        response = self.requestProperty(prop)
         if response is None:
             return False
 
@@ -121,8 +127,8 @@ class SGProClass(DriverData, QObject):
         """
         :return:
         """
-        params = {'Device': self.DEVICE_TYPE}
-        response = self.requestProperty('SgDisconnectDevice', params=params)
+        prop = f'disconnectdevice/{self.DEVICE_TYPE}'
+        response = self.requestProperty(prop)
         if response is None:
             return False
 
@@ -132,8 +138,8 @@ class SGProClass(DriverData, QObject):
         """
         :return:
         """
-        params = {'Device': self.DEVICE_TYPE}
-        response = self.requestProperty('SgEnumerateDevices', params=params)
+        prop = f'enumdevices/{self.DEVICE_TYPE}'
+        response = self.requestProperty(prop)
         if response is None:
             return []
 
@@ -218,8 +224,9 @@ class SGProClass(DriverData, QObject):
         """
         :return: success
         """
-        params = {'Device': self.DEVICE_TYPE}
-        response = self.requestProperty('SgGetDeviceStatus', params=params)
+        prop = f'devicestatus/{self.DEVICE_TYPE}'
+        response = self.requestProperty(prop)
+
         if response is None:
             return False
 

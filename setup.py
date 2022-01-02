@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: support SGPro camera as frontend
 - add: filter satellites visibility for twilight data
 - improved: 3D simulator drawing
  """
@@ -87,7 +88,7 @@ setup(
     keywords=['5.15.4'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
-    author='mworion',
+    author='Michael Wuertenberger',
     author_email='michael@wuertenberger.org',
     description='Tool for managing 10micron mounts',
     long_description=Path("README.rst").read_text(encoding="utf-8"),

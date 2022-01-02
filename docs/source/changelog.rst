@@ -12,9 +12,13 @@ Ideas for the future
 - data exchange to EKOS SQLite for Location and horizon through SQLite interface
 - adding SGP interface
 
-Released beta version of MW4
+Beta version of MW4
 ----------------------------
-- none
+2.2.0
+
+- add: support SGPro camera as frontend
+- add: filter satellites visibility for twilight data
+- improved: 3D simulator drawing
 
 Released version of MW4
 -----------------------
@@ -26,7 +30,7 @@ Version 2.1
 - add: grouping updater windows upper left corner
 - add: support for languages other than english in automation
 - add: minimize cmd window once MW4 is started
-- fix: KmTronic Relay messages
+- fix: KMTronic Relay messages
 
 2.1.6
 - add: explicit logging of automation windows strings for debug

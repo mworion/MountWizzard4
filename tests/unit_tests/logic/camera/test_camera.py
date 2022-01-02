@@ -182,7 +182,7 @@ def test_expose_2(function):
 
 def test_expose_3(function):
     function.framework = 'indi'
-    suc = function.expose(imagePath='tests/workDir/image')
+    suc = function.expose(imagePath='tests/workDir/image', subFrame=90)
     assert not suc
 
 
@@ -191,7 +191,7 @@ def test_expose_4(function):
     with mock.patch.object(function,
                            'canSubFrame',
                            return_value=True):
-        suc = function.expose(imagePath='tests/workDir/image')
+        suc = function.expose(imagePath='tests/workDir/image', binning=2)
         assert not suc
 
 

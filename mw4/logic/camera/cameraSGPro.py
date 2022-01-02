@@ -47,7 +47,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         prop = f'cameratemp'
         response = self.requestProperty(prop)
         if response is None:
-            return False, 0
+            return False, {}
 
         return response['Success'], response
 
@@ -70,7 +70,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         response = self.requestProperty('image', params=params)
         if response is None:
-            return False, 'Error'
+            return False, {}
 
         return response['Success'], response
 
@@ -80,9 +80,9 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         response = self.requestProperty('abortimage')
         if response is None:
-            return False, []
+            return False
 
-        return response['Success'], response
+        return response['Success']
 
     def sgGetImagePath(self, receipt):
         """
@@ -102,7 +102,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         response = self.requestProperty('cameraprops')
         if response is None:
-            return False, []
+            return False, {}
 
         return response['Success'], response
 
@@ -207,7 +207,6 @@ class CameraSGPro(SGProClass, CameraSupport):
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
         self.signals.message.emit('')
-
         return True
 
     def expose(self,

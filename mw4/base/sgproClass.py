@@ -36,7 +36,7 @@ class SGProClass(DriverData, QObject):
 
     CYCLE_POLL_STATUS = 500
     CYCLE_POLL_DATA = 1000
-    SGPRO_TIMEOUT = 3
+    SGPRO_TIMEOUT = 0.5
     HOST_ADDR = '127.0.0.1'
     PORT = 59590
     PROTOCOL = 'http'

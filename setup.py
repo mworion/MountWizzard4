@@ -21,6 +21,7 @@ import platform
 releaseNotes = """
 - add: 12 build point option for model generation
 - add: grouping updater windows upper left corner
+- add: support for languages other than english in automation
 - add: minimize cmd window once MW4 is started
 - fix: KmTronic Relay messages
  """
@@ -30,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.1.7b1',
+    version='2.1.7',
     packages=[
         'mw4',
         'mw4.base',
@@ -89,7 +90,7 @@ setup(
     keywords=['5.15.4'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
-    author='mworion',
+    author='Michael Wuertenberger',
     author_email='michael@wuertenberger.org',
     description='Tool for managing 10micron mounts',
     long_description=Path("README.rst").read_text(encoding="utf-8"),

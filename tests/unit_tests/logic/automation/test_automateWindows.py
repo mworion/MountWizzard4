@@ -384,8 +384,10 @@ def test_clearUploadMenuCommands(function):
     function.updater = {'10 micron control box update': win}
     with mock.patch.object(automateWindows.controls,
                            'ButtonWrapper'):
-        suc = function.clearUploadMenuCommands()
-        assert suc
+        with mock.patch.object(function,
+                               'moveWindow'):
+            suc = function.clearUploadMenuCommands()
+            assert suc
 
 
 def test_clearUploadMenu_1(function):
@@ -531,14 +533,12 @@ def test_doUploadAndCloseInstaller_2(function):
 def test_moveWindow_1(function):
     class Move:
         @staticmethod
-        def Move():
+        def Move(a, b):
             pass
 
     class Iface:
-        @staticmethod
-        def iface_transform():
-            return Move()
-        
+        iface_transform = Move()
+
     class Element:
         @staticmethod
         def wrapper_object():
@@ -546,6 +546,7 @@ def test_moveWindow_1(function):
         
     suc = function.moveWindow(Element(), 0, 0)
     assert suc
+
 
 def test_getIdentifiers(function):
     class Test:
@@ -556,26 +557,60 @@ def test_getIdentifiers(function):
     function.getIdentifiers(Test())
 
 
-def test_dialogClick(function):
-    class Click:
+def test_dialogInput(function):
+    class Type_Keys:
         @staticmethod
-        def click():
+        def type_keys(a, with_spaces=False):
             pass
 
-    class Test:
+    class Element:
         @staticmethod
-        def child_window(title=None,
-                         auto_id=None,
-                         control_type=None):
-            return Click()
+        def wrapper_object():
+            return Type_Keys()
 
-    function.dialogClick(Test())
+    function.dialogInput(Element(), 'text')
+
+
+def test_findFileDialogWindow_1(function):
+    class Win:
+        @staticmethod
+        def window_text():
+            return 'test'
+
+    class Updater:
+        @staticmethod
+        def windows():
+            return [Win()]
+
+    function.updater = Updater()
+    val = function.findFileDialogWindow('test')
+    assert val
+
+
+def test_findFileDialogWindow_2(function):
+    class Win:
+        @staticmethod
+        def window_text():
+            return 'other'
+
+    class Updater:
+        @staticmethod
+        def windows():
+            return [Win()]
+
+    function.updater = Updater()
+    val = function.findFileDialogWindow('test')
+    assert val
 
 
 def test_uploadMPCDataCommands_1(function):
     class Test:
         @staticmethod
         def click():
+            pass
+
+        @staticmethod
+        def wait(a):
             pass
 
         @staticmethod
@@ -613,8 +648,11 @@ def test_uploadMPCDataCommands_1(function):
                 with mock.patch.object(function,
                                        'moveWindow'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        suc = function.uploadMPCDataCommands()
+                                           'dialogInput'):
+                        with mock.patch.object(function,
+                                               'findFileDialogWindow',
+                                               return_value='Open'):
+                            suc = function.uploadMPCDataCommands()
                         assert suc
 
 
@@ -625,6 +663,10 @@ def test_uploadMPCDataCommands_2(function):
             pass
 
         @staticmethod
+        def wait(a):
+            pass
+
+        @staticmethod
         def check_by_click():
             pass
 
@@ -659,10 +701,10 @@ def test_uploadMPCDataCommands_2(function):
                 with mock.patch.object(function,
                                        'moveWindow'):
                     with mock.patch.object(function,
-                                           'dialogClick'):
-                        with mock.patch.object(platform,
-                                               'architecture',
-                                               return_value=['64bit']):
+                                           'dialogInput'):
+                        with mock.patch.object(function,
+                                               'findFileDialogWindow',
+                                               return_value='Open'):
                             suc = function.uploadMPCDataCommands(comets=True)
                             assert suc
 
@@ -674,6 +716,10 @@ def test_uploadMPCDataCommands_3(function):
             pass
 
         @staticmethod
+        def wait(a):
+            pass
+
+        @staticmethod
         def check_by_click():
             pass
 
@@ -703,15 +749,15 @@ def test_uploadMPCDataCommands_3(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            with mock.patch.object(platform,
-                                   'architecture',
-                                   return_value=['32bit']):
+            with mock.patch.object(function,
+                                   'findFileDialogWindow',
+                                   return_value='Open'):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadMPCDataCommands(comets=True)
                             assert suc
 
@@ -760,6 +806,10 @@ def test_uploadEarthRotationDataCommands_1(function):
             pass
 
         @staticmethod
+        def wait(a):
+            pass
+
+        @staticmethod
         def check_by_click():
             pass
 
@@ -790,15 +840,15 @@ def test_uploadEarthRotationDataCommands_1(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            with mock.patch.object(platform,
-                                   'architecture',
-                                   return_value=['32bit']):
+            with mock.patch.object(function,
+                                   'findFileDialogWindow',
+                                   return_value='Open finals data'):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadEarthRotationDataCommands()
                             assert suc
 
@@ -807,6 +857,10 @@ def test_uploadEarthRotationDataCommands_2(function):
     class Test:
         @staticmethod
         def click():
+            pass
+
+        @staticmethod
+        def wait(a):
             pass
 
         @staticmethod
@@ -840,15 +894,15 @@ def test_uploadEarthRotationDataCommands_2(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            with mock.patch.object(platform,
-                                   'architecture',
-                                   return_value=['64bit']):
+            with mock.patch.object(function,
+                                   'findFileDialogWindow',
+                                   return_value='Open finals data'):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadEarthRotationDataCommands()
                             assert suc
 
@@ -857,6 +911,10 @@ def test_uploadEarthRotationDataCommands_3(function):
     class Test:
         @staticmethod
         def click():
+            pass
+
+        @staticmethod
+        def wait(a):
             pass
 
         @staticmethod
@@ -890,15 +948,15 @@ def test_uploadEarthRotationDataCommands_3(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            with mock.patch.object(platform,
-                                   'architecture',
-                                   return_value=['64bit']):
+            with mock.patch.object(function,
+                                   'findFileDialogWindow',
+                                   return_value='Open finals data'):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadEarthRotationDataCommands()
                             assert suc
 
@@ -947,6 +1005,10 @@ def test_uploadTLEDataCommands_1(function):
             pass
 
         @staticmethod
+        def wait(a):
+            pass
+
+        @staticmethod
         def check_by_click():
             pass
 
@@ -974,15 +1036,15 @@ def test_uploadTLEDataCommands_1(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            with mock.patch.object(platform,
-                                   'architecture',
-                                   return_value=['64bit']):
+            with mock.patch.object(function,
+                                   'findFileDialogWindow',
+                                   return_value='Open'):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadTLEDataCommands()
                             assert suc
 
@@ -994,6 +1056,10 @@ def test_uploadTLEDataCommands_2(function):
             pass
 
         @staticmethod
+        def wait(a):
+            pass
+
+        @staticmethod
         def check_by_click():
             pass
 
@@ -1021,15 +1087,15 @@ def test_uploadTLEDataCommands_2(function):
                            'ButtonWrapper'):
         with mock.patch.object(automateWindows.controls,
                                'EditWrapper'):
-            with mock.patch.object(platform,
-                                   'architecture',
-                                   return_value=['32bit']):
+            with mock.patch.object(function,
+                                   'findFileDialogWindow',
+                                   return_value='Open'):
                 with mock.patch.object(function,
                                        'getIdentifiers'):
                     with mock.patch.object(function,
                                            'moveWindow'):
                         with mock.patch.object(function,
-                                               'dialogClick'):
+                                               'dialogInput'):
                             suc = function.uploadTLEDataCommands()
                             assert suc
 

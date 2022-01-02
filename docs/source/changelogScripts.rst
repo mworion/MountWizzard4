@@ -13,6 +13,7 @@ Released versions of scripts
 2.2
 
 - adding support for astroberry and stellar mate (based on astroberry?)
+- adding workaround on windows for removed python2 support in setuptools
 
 2.1
 

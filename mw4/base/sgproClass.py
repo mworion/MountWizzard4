@@ -135,7 +135,7 @@ class SGProClass(DriverData, QObject):
         params = {'Device': self.DEVICE_TYPE}
         response = self.requestProperty('SgEnumerateDevices', params=params)
         if response is None:
-            return False
+            return []
 
         return response['Devices']
 

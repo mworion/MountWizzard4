@@ -153,15 +153,11 @@ class CameraSupport:
                 timeLeft = 0
         return True
 
-    def waitCombined(self, function, param, expTime):
+    def waitIntegrate(self, timeLeft):
         """
-        :param function:
-        :param param:
-        :param expTime:
+        :param timeLeft:
         :return:
         """
-        QTest.qWait(1000)
-        timeLeft = expTime
         while 'integrating' in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
@@ -174,6 +170,12 @@ class CameraSupport:
                 timeLeft = 0
 
         self.signals.integrated.emit()
+        return True
+
+    def waitDownload(self):
+        """
+        :return:
+        """
         self.signals.message.emit('download')
         while 'downloading' in self.data.get('Device.Message'):
             if self.abortExpose:
@@ -181,15 +183,42 @@ class CameraSupport:
             QTest.qWait(100)
 
         self.signals.downloaded.emit()
+        return True
+
+    def waitSave(self):
+        """
+        :return:
+        """
         self.signals.message.emit('saving')
         while 'image is ready' in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
             QTest.qWait(100)
+        return True
 
+    def waitFinish(self, function, param):
+        """
+        :param function:
+        :param param:
+        :return:
+        """
         while not function(param):
             if self.abortExpose:
                 break
             QTest.qWait(100)
+        return True
 
+    def waitCombined(self, function, param, expTime):
+        """
+        :param function:
+        :param param:
+        :param expTime:
+        :return:
+        """
+        QTest.qWait(1000)
+        timeLeft = expTime
+        self.waitIntegrate(timeLeft)
+        self.waitDownload()
+        self.waitSave()
+        self.waitFinish(function, param)
         return True

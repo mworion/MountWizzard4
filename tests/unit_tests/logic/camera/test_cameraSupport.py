@@ -117,31 +117,155 @@ def test_retrieveFits_3(function):
 
 def test_waitExposed_1(function):
     def func(p):
-        return True
+        return False
 
-    with mock.patch.object(QTest,
-                           'qWait'):
-        suc = function.waitExposed(func, 'test', 1)
-        assert suc
+    function.abortExpose = True
+    suc = function.waitExposed(func, 'test', 1)
+    assert suc
 
 
 def test_waitExposed_2(function):
+    function.start = True
+
     def func(p):
-        return False
+        function.start = not function.start
+        return function.start
 
-    function.abortExpose = True
-    with mock.patch.object(QTest,
-                           'qWait'):
-        suc = function.waitExposed(func, 'test', 1)
-        assert suc
-
-
-def test_waitExposed_3(function):
-    def func(p):
-        return False
-
-    function.abortExpose = True
+    function.abortExpose = False
     with mock.patch.object(QTest,
                            'qWait'):
         suc = function.waitExposed(func, 'test', 0)
         assert suc
+
+
+def test_waitExposed_3(function):
+    function.start = True
+
+    def func(p):
+        function.start = not function.start
+        return function.start
+
+    function.abortExpose = False
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = function.waitExposed(func, 'test', 1)
+        assert suc
+
+
+def test_waitIntegrate_1(function):
+    function.data = {'Device.Message': 'integrating'}
+    function.abortExpose = True
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = function.waitIntegrate(1)
+        assert suc
+
+
+def test_waitIntegrate_2(function):
+    function.data = {'Device.Message': 'integrating'}
+
+    def func(p):
+        function.data = {'Device.Message': 'test'}
+
+    function.abortExpose = False
+    QTest.qWait = func
+    suc = function.waitIntegrate(1)
+    assert suc
+
+
+def test_waitIntegrate_3(function):
+    function.data = {'Device.Message': 'integrating'}
+
+    def func(p):
+        function.data = {'Device.Message': 'test'}
+
+    function.abortExpose = False
+    QTest.qWait = func
+    suc = function.waitIntegrate(0)
+    assert suc
+
+
+def test_waitDownload_1(function):
+    function.data = {'Device.Message': 'downloading'}
+    function.abortExpose = True
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = function.waitDownload()
+        assert suc
+
+
+def test_waitDownload_2(function):
+    function.data = {'Device.Message': 'downloading'}
+
+    def func(p):
+        function.data = {'Device.Message': 'test'}
+
+    function.abortExpose = False
+    QTest.qWait = func
+    suc = function.waitDownload()
+    assert suc
+
+
+def test_waitSave_1(function):
+    function.data = {'Device.Message': 'image is ready'}
+    function.abortExpose = True
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = function.waitSave()
+        assert suc
+
+
+def test_waitSave_2(function):
+    function.data = {'Device.Message': 'image is ready'}
+
+    def func(p):
+        function.data = {'Device.Message': 'test'}
+
+    function.abortExpose = False
+    QTest.qWait = func
+    suc = function.waitSave()
+    assert suc
+
+
+def test_waitFinish_1(function):
+    function.start = True
+
+    def func(p):
+        function.start = not function.start
+        return function.start
+
+    function.abortExpose = True
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = function.waitFinish(func, 0)
+        assert suc
+
+
+def test_waitFinish_2(function):
+    function.start = True
+
+    def func(p):
+        function.start = not function.start
+        return function.start
+
+    function.abortExpose = False
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = function.waitFinish(func, 0)
+        assert suc
+
+
+def test_waitCombined_1(function):
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(function,
+                               'waitIntegrate'):
+            with mock.patch.object(function,
+                                   'waitDownload'):
+                with mock.patch.object(function,
+                                       'waitSave'):
+                    with mock.patch.object(function,
+                                           'waitFinish'):
+                        suc = function.waitCombined(0, 0, 0)
+                        assert suc
+

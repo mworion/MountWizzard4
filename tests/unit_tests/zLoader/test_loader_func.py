@@ -23,8 +23,8 @@ import glob
 import unittest.mock as mock
 import socket
 import platform
-import shutil
 import json
+import ctypes
 
 # external packages
 import pytest
@@ -84,7 +84,29 @@ def test_setupWorkDirs_2(qtbot):
                 assert val['modeldata'] == '4.0'
 
 
+def test_setupWorkDirs_3(qtbot):
+    with mock.patch.object(os,
+                           'getcwd',
+                           return_value='.'):
+        with mock.patch.object(os,
+                               'makedirs',
+                               return_value=True):
+            with mock.patch.object(os.path,
+                                   'isdir',
+                                   return_value=False):
+                with mock.patch.object(os,
+                                       'access',
+                                       return_value=False):
+                    val = setupWorkDirs(mwGlob={})
+                    assert val['modeldata'] == '4.0'
+
+
 def test_checkIsAdmin_1(qtbot):
+    @staticmethod
+    def getiud():
+        return 0
+
+    os.getuid = getiud
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
@@ -97,6 +119,11 @@ def test_checkIsAdmin_1(qtbot):
 
 
 def test_checkIsAdmin_2(qtbot):
+    @staticmethod
+    def getiud():
+        return 0
+
+    os.getuid = getiud
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
@@ -108,6 +135,11 @@ def test_checkIsAdmin_2(qtbot):
 
 
 def test_checkIsAdmin_3(qtbot):
+    @staticmethod
+    def getiud():
+        return 0
+
+    os.getuid = getiud
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
@@ -158,7 +190,7 @@ def test_checkIsAdmin_6(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_checkIsAdmin_4(qtbot):
+def test_checkIsAdmin_7(qtbot):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
@@ -171,7 +203,7 @@ def test_checkIsAdmin_4(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_checkIsAdmin_5(qtbot):
+def test_checkIsAdmin_8(qtbot):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
@@ -183,7 +215,7 @@ def test_checkIsAdmin_5(qtbot):
 
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_checkIsAdmin_6(qtbot):
+def test_checkIsAdmin_9(qtbot):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):

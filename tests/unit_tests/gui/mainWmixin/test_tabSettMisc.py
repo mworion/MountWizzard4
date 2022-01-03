@@ -518,3 +518,20 @@ def test_syncClock_6(function):
 def test_setVirtualStop(function):
     suc = function.setVirtualStop()
     assert suc
+
+
+def test_setAutomationSpeed_1(function):
+    with mock.patch.object(function,
+                           'checkAutomation',
+                           return_value=False):
+        suc = function.setAutomationSpeed()
+        assert not suc
+
+
+@pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
+def test_setAutomationSpeed_2(function):
+    with mock.patch.object(function,
+                           'checkAutomation',
+                           return_value=True):
+        suc = function.setAutomationSpeed()
+        assert suc

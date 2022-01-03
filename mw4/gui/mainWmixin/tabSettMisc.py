@@ -33,6 +33,7 @@ from astropy.utils import data
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
+from base.packageConfig import checkAutomation
 
 
 class SettMisc(object):
@@ -48,6 +49,8 @@ class SettMisc(object):
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
+        self.ui.automateSlow.clicked.connect(self.setAutomationSpeed)
+        self.ui.automateFast.clicked.connect(self.setAutomationSpeed)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
@@ -448,4 +451,14 @@ class SettMisc(object):
         """
         isVirtual = self.ui.activateVirtualStop.isChecked()
         self.ui.statusTime.setEnabled(not isVirtual)
+        return True
+
+    def setAutomationSpeed(self):
+        """
+        :return:
+        """
+        if not checkAutomation():
+            return False
+
+        self.app.automation.timingsFast = self.ui.automateFast.isChecked()
         return True

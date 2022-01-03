@@ -69,9 +69,11 @@ def module_setup_teardown():
 @pytest.fixture(autouse=True, scope='function')
 def function_setup_teardown(qtbot):
     global app
+
     class Automation:
         automateFast = False
         automateSlow = False
+        installPath = ''
 
     class Test1(QObject):
         threadPool = QThreadPool()

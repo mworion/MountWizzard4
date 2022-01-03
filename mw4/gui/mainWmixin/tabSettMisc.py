@@ -96,6 +96,7 @@ class SettMisc(object):
 
         if platform.system() == 'Windows':
             self.ui.automateGroup.setEnabled(True)
+        self.setAutomationSpeed()
         self.toggleClockSync()
         self.setWeatherOnline()
         self.setupIERS()
@@ -460,5 +461,5 @@ class SettMisc(object):
         if not checkAutomation():
             return False
 
-        self.app.automation.timingsFast = self.ui.automateFast.isChecked()
+        self.app.automation.timingFast = self.ui.automateFast.isChecked()
         return True

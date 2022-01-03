@@ -18,7 +18,9 @@ Beta version of MW4
 
 - add: support SGPro camera as frontend
 - add: filter satellites visibility for twilight data
+- add: setting performance for windows automation (slow / fast)
 - improved: 3D simulator drawing
+
 
 Released version of MW4
 -----------------------

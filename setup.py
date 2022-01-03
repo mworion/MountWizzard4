@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: debayer in all platforms (armv7, StellarMate, Astroberry)
 - add: support SGPro camera as frontend
 - add: filter satellites visibility for twilight data
 - add: setting performance for windows automation (slow / fast)
@@ -83,7 +84,6 @@ setup(
     + (['pywin32==301'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
-    + (['colour_demosaicing==0.1.6'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
     keywords=['5.15.4'],

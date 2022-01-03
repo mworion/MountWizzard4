@@ -640,6 +640,36 @@ def test_zoomImage_2(function):
     assert function.image.shape == (50, 50)
 
 
+def test_debayerImage_1(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'GBRG')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_2(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'RGGB')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_3(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'GRBG')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_4(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'BGGR')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_5(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'test')
+    assert img.shape == (100, 100)
+
+
 def test_showImage_1(function):
     suc = function.showImage()
     assert not suc

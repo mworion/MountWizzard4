@@ -16,6 +16,7 @@ Beta version of MW4
 ----------------------------
 2.2.0
 
+- add: debayer in all platforms (armv7, StellarMate, Astroberry)
 - add: support SGPro camera as frontend
 - add: filter satellites visibility for twilight data
 - add: setting performance for windows automation (slow / fast)

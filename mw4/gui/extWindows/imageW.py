@@ -32,9 +32,8 @@ from astropy.visualization import AsinhStretch
 from astropy.visualization import imshow_norm
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
-if isAvailable:
-    from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 import sep
+from PIL import Image
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
@@ -764,12 +763,52 @@ class ImageWindow(toolsQtWidget.MWidget):
                               copy=True).data
         return True
 
+    def debayerImage(self, image, pattern):
+        """
+        :param: image:
+        :param: pattern:
+        :return:
+        """
+        w = image.shape[0]
+        h = image.shape[1]
+        if pattern == 'GBRG':
+            R = image[1::2, 0::2]
+            B = image[0::2, 1::2]
+            G0 = image[0::2, 0::2]
+            G1 = image[1::2, 1::2]
+
+        elif pattern == 'RGGB':
+            R = image[0::2, 0::2]
+            B = image[1::2, 1::2]
+            G0 = image[0::2, 1::2]
+            G1 = image[1::2, 0::2]
+
+        elif pattern == 'GRBG':
+            R = image[0::2, 1::2]
+            B = image[1::2, 0::2]
+            G0 = image[0::2, 0::2]
+            G1 = image[1::2, 1::2]
+
+        elif pattern == 'BGGR':
+            R = image[1::2, 1::2]
+            B = image[0::2, 0::2]
+            G0 = image[0::2, 1::2]
+            G1 = image[1::2, 0::2]
+
+        else:
+            self.log.info('Unknown debayer pattern, keep it')
+            return image
+
+        image = 0.2989 * R + 0.5870 * (G0 + G1) / 2 + 0.1140 * B
+        image = np.array(Image.fromarray(image).resize((h, w)))
+        return image
+
     def showImage(self, imagePath=''):
         """
         tho idea of processing the image data until it is shown on screen is
         to split the pipeline in several atomic steps, which follow each other.
-        each step is calling the next one and depending which user interaction is
-        done and how the use case for changing the view is the entrance of the
+        each step is calling the next one and depending on which user interaction
+        is done and how the use case for changing the view is the entrance of the
         pipeline is chosen adequately.
 
         so we have step 1 loading data and processing if to final monochrome and
@@ -802,9 +841,9 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.image = self.image.astype('float32')
 
-        if 'BAYERPAT' in self.header and isAvailable:
-            self.image = demosaicing_CFA_Bayer_bilinear(self.image)
-            self.image = np.dot(self.image, [0.2989, 0.5870, 0.1140])
+        bayerPattern = self.header.get('BAYERPAT', '')
+        if bayerPattern:
+            self.image = self.debayerImage(self.image, bayerPattern)
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)

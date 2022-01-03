@@ -40,8 +40,8 @@ copyright = '2021, mworion'
 author = 'mworion'
 
 # The full version, including alpha/beta/rc tags
-version = '2.1.7b2'
-release = '2.1.7b2'
+version = '2.1.7'
+release = '2.1.7'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

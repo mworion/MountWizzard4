@@ -106,7 +106,8 @@ class AutomateWindows(QObject):
         self.getAppSettings('10micron')
         self.updater = None
         self.actualWorkDir = os.getcwd()
-        self.timingFast = False
+        self.automateSlow = False
+        self.automateFast = False
 
     @staticmethod
     def getRegistryPath():
@@ -256,9 +257,9 @@ class AutomateWindows(QObject):
         :return:
         """
         self.updater = Application(backend='uia')
-        if self.timingFast:
+        if self.automateFast:
             Timings.fast()
-        else:
+        elif self.automateSlow:
             Timings.slow()
 
         try:

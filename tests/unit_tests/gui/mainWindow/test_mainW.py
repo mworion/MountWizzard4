@@ -69,6 +69,9 @@ def module_setup_teardown():
 @pytest.fixture(autouse=True, scope='function')
 def function_setup_teardown(qtbot):
     global app
+    class Automation:
+        automateFast = False
+        automateSlow = False
 
     class Test1(QObject):
         threadPool = QThreadPool()
@@ -157,7 +160,7 @@ def function_setup_teardown(qtbot):
         ephemeris = eph
         measure = MeasureData(app=Test1())
         power = PegasusUPB(app=Test1())
-        automation = None
+        automation = Automation()
         astrometry = Astrometry(app=Test1())
         timer0_1s = QTimer()
 

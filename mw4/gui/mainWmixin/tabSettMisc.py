@@ -51,6 +51,7 @@ class SettMisc(object):
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
         self.ui.automateSlow.clicked.connect(self.setAutomationSpeed)
         self.ui.automateFast.clicked.connect(self.setAutomationSpeed)
+        self.ui.automateNormal.clicked.connect(self.setAutomationSpeed)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
@@ -81,6 +82,7 @@ class SettMisc(object):
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.automateFast.setChecked(config.get('automateFast', False))
+        self.ui.automateNormal.setChecked(config.get('automateSlow', True))
         self.ui.automateSlow.setChecked(config.get('automateSlow', True))
         self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
         self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
@@ -113,6 +115,7 @@ class SettMisc(object):
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['automateFast'] = self.ui.automateFast.isChecked()
+        config['automateNormal'] = self.ui.automateNormal.isChecked()
         config['automateSlow'] = self.ui.automateSlow.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
@@ -461,5 +464,6 @@ class SettMisc(object):
         if not checkAutomation():
             return False
 
-        self.app.automation.timingFast = self.ui.automateFast.isChecked()
+        self.app.automation.automateFast = self.ui.automateFast.isChecked()
+        self.app.automation.automateSlow = self.ui.automateSlow.isChecked()
         return True

@@ -27623,7 +27623,7 @@ When clicking the button, you could change the value.</string>
          <string>Standard</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="loglevelTrace">
@@ -27650,7 +27650,7 @@ When clicking the button, you could change the value.</string>
          <string>Trace</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_63">
@@ -28477,6 +28477,9 @@ Updater</string>
          <height>41</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="title">
         <string>Windows automation</string>
        </property>
@@ -28493,13 +28496,13 @@ Updater</string>
          </rect>
         </property>
         <property name="text">
-         <string>Timings</string>
+         <string>Timings:</string>
         </property>
        </widget>
        <widget class="QRadioButton" name="automateSlow">
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>275</x>
           <y>15</y>
           <width>66</width>
           <height>21</height>
@@ -28520,13 +28523,13 @@ Updater</string>
          <string>Slow</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="automateFast">
         <property name="geometry">
          <rect>
-          <x>95</x>
+          <x>100</x>
           <y>15</y>
           <width>86</width>
           <height>21</height>
@@ -28545,6 +28548,33 @@ Updater</string>
         </property>
         <property name="text">
          <string>Fast</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="automateNormal">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>15</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Debug logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Normal</string>
         </property>
         <property name="checked">
          <bool>false</bool>

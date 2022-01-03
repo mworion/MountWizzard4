@@ -317,7 +317,8 @@ def test_startUpdater_1(function):
         def start(a):
             pass
 
-    function.timingFast = False
+    function.automateFast = False
+    function.automateSlow = False
     with mock.patch.object(automateWindows,
                            'Application',
                            return_value=Test()):
@@ -334,7 +335,8 @@ def test_startUpdater_2(function):
         def start(a):
             pass
 
-    function.timingFast = True
+    function.automateFast = True
+    function.automateSlow = True
     with mock.patch.object(automateWindows,
                            'Application',
                            return_value=Test()):

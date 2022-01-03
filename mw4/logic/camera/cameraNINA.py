@@ -21,17 +21,17 @@ import os
 # external packages
 
 # local imports
-from base.sgproClass import SGProClass
+from base.ninaClass import NINAClass
 from base.tpool import Worker
 from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraSGPro(SGProClass, CameraSupport):
+class CameraNINA(NINAClass, CameraSupport):
     """
     """
     DEVICE_TYPE = 'Camera'
 
-    __all__ = ['CameraSGPro']
+    __all__ = ['CameraNINA']
 
     def __init__(self, app=None, signals=None, data=None, parent=None):
         super().__init__(app=app, data=data, threadPool=app.threadPool)
@@ -40,7 +40,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         self.abortExpose = False
         self.parent = parent
 
-    def sgGetCameraTemp(self):
+    def getCameraTemp(self):
         """
         :return:
         """
@@ -51,7 +51,7 @@ class CameraSGPro(SGProClass, CameraSupport):
 
         return response['Success'], response
 
-    def sgSetCameraTemp(self, temperature):
+    def setCameraTemp(self, temperature):
         """
         :param: temperature:
         :return:
@@ -63,7 +63,7 @@ class CameraSGPro(SGProClass, CameraSupport):
 
         return response['Success']
 
-    def sgCaptureImage(self, params):
+    def captureImage(self, params):
         """
         :param: params:
         :return:
@@ -74,7 +74,7 @@ class CameraSGPro(SGProClass, CameraSupport):
 
         return response['Success'], response
 
-    def sgAbortImage(self):
+    def abortImage(self):
         """
         :return:
         """
@@ -84,7 +84,7 @@ class CameraSGPro(SGProClass, CameraSupport):
 
         return response['Success']
 
-    def sgGetImagePath(self, receipt):
+    def getImagePath(self, receipt):
         """
         :param: receipt:
         :return:
@@ -96,7 +96,7 @@ class CameraSGPro(SGProClass, CameraSupport):
 
         return response['Success']
 
-    def sgGetCameraProps(self):
+    def getCameraProps(self):
         """
         :return:
         """
@@ -110,7 +110,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         :return:
         """
-        suc, response = self.sgGetCameraProps()
+        suc, response = self.getCameraProps()
         if not suc:
             return False
 
@@ -124,7 +124,7 @@ class CameraSGPro(SGProClass, CameraSupport):
                                  'CCD_INFO.CCD_MAX_X')
         self.storePropertyToData(response['NumPixelsY'],
                                  'CCD_INFO.CCD_MAX_Y')
-        canSubframe = response.get('CanSubframe', False)
+        canSubframe = response.get('SupportsSubframe', False)
         if canSubframe:
             self.storePropertyToData(response['NumPixelsX'],
                                      'CCD_FRAME.X')
@@ -139,7 +139,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         :return: true for test purpose
         """
-        suc, response = self.sgGetCameraTemp()
+        suc, response = self.getCameraTemp()
         if not suc:
             return False
 
@@ -192,17 +192,14 @@ class CameraSGPro(SGProClass, CameraSupport):
                   'Path': imagePath,
                   }
 
-        suc, response = self.sgCaptureImage(params=params)
+        suc, response = self.captureImage(params=params)
         if not suc:
             return False
         receipt = response.get('Receipt', '')
         if not receipt:
             return False
-        self.waitCombinedSGPro(self.sgGetImagePath, receipt, expTime)
-        if not self.abortExpose:
-            pre, ext = os.path.splitext(imagePath)
-            os.rename(pre + '.fit', imagePath)
-        else:
+        self.waitCombinedNINA(expTime)
+        if self.abortExpose:
             imagePath = ''
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
@@ -247,7 +244,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
-        self.sgAbortImage()
+        self.abortImage()
         self.abortExpose = True
         return True
 
@@ -268,7 +265,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not self.deviceConnected:
             return False
 
-        self.sgSetCameraTemp(temperature=temperature)
+        self.setCameraTemp(temperature=temperature)
         return True
 
     def sendOffset(self, offset=0):

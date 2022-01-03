@@ -29,6 +29,7 @@ if platform.system() == 'Windows':
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
 from base.sgproClass import SGProClass
+from base.ninaClass import NINAClass
 from gui.utilities import toolsQtWidget
 from gui.widgets.devicePopup_ui import Ui_DevicePopup
 
@@ -45,6 +46,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         'ascom': 'ASCOM',
         'alpaca': 'ALPACA',
         'sgpro': 'SGPRO',
+        'nina': 'N.I.N.A.',
         'astrometry': 'ASTROMETRY',
         'astap': 'ASTAP',
         'onlineWeather': 'Online Weather',
@@ -95,6 +97,9 @@ class DevicePopup(toolsQtWidget.MWidget):
             'sgpro': {
                 'deviceList': self.ui.sgproDeviceList,
             },
+            'nina': {
+                'deviceList': self.ui.ninaDeviceList,
+            },
             'astrometry': {
                 'deviceList': self.ui.astrometryDeviceList,
                 'searchRadius': self.ui.astrometrySearchRadius,
@@ -125,6 +130,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.indiDiscover.clicked.connect(self.discoverIndiDevices)
         self.ui.alpacaDiscover.clicked.connect(self.discoverAlpacaDevices)
         self.ui.sgproDiscover.clicked.connect(self.discoverSGProDevices)
+        self.ui.ninaDiscover.clicked.connect(self.discoverNINADevices)
         self.ui.selectAstrometryIndexPath.clicked.connect(self.selectAstrometryIndexPath)
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
@@ -397,6 +403,44 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.message.emit(f'SGPro discovered:    [{deviceName}]', 0)
 
         self.updateSGProDeviceNameList(deviceNames=deviceNames)
+        return True
+
+    def updateNINADeviceNameList(self, deviceNames=[]):
+        """
+        updateSGProDeviceNameList updates the indi device name selectors
+        combobox with the discovered entries. therefore it deletes the old list
+        and rebuild it new.
+
+        :return: True for test purpose
+        """
+        self.ui.sgproDeviceList.clear()
+        self.ui.sgproDeviceList.setView(QListView())
+        for deviceName in deviceNames:
+            self.ui.sgproDeviceList.addItem(deviceName)
+        return True
+
+    def discoverNINADevices(self):
+        """
+        discoverSGProDevices looks all possible alpaca devices up from the
+        actual server and the selected device type.
+
+        :return: success
+        """
+        nina = SGProClass()
+        nina.DEVICE_TYPE = 'Camera'
+
+        self.changeStyleDynamic(self.ui.ninaDiscover, 'running', True)
+        deviceNames = nina.discoverDevices()
+        if not deviceNames:
+            self.message.emit('N.I.N.A. no devices found', 2)
+
+        deviceNames.insert(0, 'Remote defined')
+        self.changeStyleDynamic(self.ui.ninaDiscover, 'running', False)
+
+        for deviceName in deviceNames:
+            self.message.emit(f'N.I.N.A. discovered:[{deviceName}]', 0)
+
+        self.updateNINADeviceNameList(deviceNames=deviceNames)
         return True
 
     def checkAstrometryAvailability(self, framework):

@@ -29,14 +29,14 @@ from base.driverDataClass import RemoteDeviceShutdown
 from base.tpool import Worker
 
 
-class SGProClass(DriverData, QObject):
+class NINAClass(DriverData, QObject):
     """
     """
     log = logging.getLogger(__name__)
 
     CYCLE_POLL_STATUS = 500
     CYCLE_POLL_DATA = 1000
-    SGPRO_TIMEOUT = 1
+    NINA_TIMEOUT = 1
     HOST_ADDR = '127.0.0.1'
     PORT = 59590
     PROTOCOL = 'http'
@@ -81,37 +81,37 @@ class SGProClass(DriverData, QObject):
         :return:
         """
         try:
-            t = f'SGPro: [{self.BASE_URL}/{valueProp}?format=json]'
+            t = f'N.I.N.A: [{self.BASE_URL}/{valueProp}?format=json]'
             if params is not None:
                 t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
                 self.log.trace('POST ' + t)
                 response = requests.post(f'{self.BASE_URL}/{valueProp}?format=json',
                                          json=params,
-                                         timeout=self.SGPRO_TIMEOUT)
+                                         timeout=self.NINA_TIMEOUT)
             else:
                 self.log.trace('GET ' + t)
                 response = requests.get(f'{self.BASE_URL}/{valueProp}?format=json',
-                                        timeout=self.SGPRO_TIMEOUT)
+                                        timeout=self.NINA_TIMEOUT)
         except requests.exceptions.Timeout:
-            self.log.debug('Request SGPro connection error')
+            self.log.debug('Request N.I.N.A. connection error')
             return None
         except requests.exceptions.ConnectionError:
-            self.log.error('Request SGPro connection error')
+            self.log.error('Request N.I.N.A. connection error')
             return None
         except Exception as e:
-            self.log.error(f'Request SGPro error: [{e}]')
+            self.log.error(f'Request N.I.N.A. error: [{e}]')
             return None
 
         if response.status_code != 200:
-            t = f'Request SGPro response invalid: [{response.status_code}]'
+            t = f'Request N.I.N.A. response invalid: [{response.status_code}]'
             self.log.warning(t)
             return None
 
-        self.log.trace(f'Request SGpro response: [{response.json()}]')
+        self.log.trace(f'Request N.I.N.A. response: [{response.json()}]')
         response = response.json()
         return response
 
-    def sgConnectDevice(self):
+    def connectDevice(self):
         """
         :return:
         """
@@ -123,7 +123,7 @@ class SGProClass(DriverData, QObject):
 
         return response['Success']
 
-    def sgDisconnectDevice(self):
+    def disconnectDevice(self):
         """
         :return:
         """
@@ -134,7 +134,7 @@ class SGProClass(DriverData, QObject):
 
         return response['Success']
 
-    def sgEnumerateDevice(self):
+    def enumerateDevice(self):
         """
         :return:
         """
@@ -153,7 +153,7 @@ class SGProClass(DriverData, QObject):
             return True
 
         for retry in range(0, 3):
-            suc = self.sgConnectDevice()
+            suc = self.connectDevice()
             if suc:
                 t = f'[{self.deviceName}] connected, [{retry}] retries'
                 self.log.debug(t)
@@ -166,7 +166,7 @@ class SGProClass(DriverData, QObject):
             t = f'[{self.deviceName}] connected'
             self.log.debug(t)
         else:
-            self.app.message.emit(f'SGPro connect error: [{self.deviceName}]', 2)
+            self.app.message.emit(f'N.I.N.A. connect err:[{self.deviceName}]', 2)
             self.deviceConnected = False
             self.serverConnected = False
         return suc
@@ -225,21 +225,26 @@ class SGProClass(DriverData, QObject):
         if response is None:
             return False
 
-        self.storePropertyToData(response['State'], 'Device.Status')
-        self.storePropertyToData(response['Message'], 'Device.Message')
+        state = response['State']
+        self.storePropertyToData(state, 'Device.Status')
+        if state == 3:
+            self.storePropertyToData('integrating downloading image is ready',
+                                     'Device.Message')
+        elif state == 0:
+            self.storePropertyToData('IDLE', 'Device.Message')
 
-        if response['State'] == 'DISCONNECTED':
+        if state == 5:
             if self.deviceConnected:
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-                self.app.message.emit(f'SGPro device remove: [{self.deviceName}]', 0)
+                self.app.message.emit(f'N.I.N.A. dev remove: [{self.deviceName}]', 0)
 
         else:
             if not self.deviceConnected:
                 self.deviceConnected = True
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f'{self.deviceName}')
-                self.app.message.emit(f'SGPro device found:  [{self.deviceName}]', 0)
+                self.app.message.emit(f'N.I.N.A. dev found:  [{self.deviceName}]', 0)
 
         return True
 
@@ -271,17 +276,17 @@ class SGProClass(DriverData, QObject):
         """
         self.stopTimer()
         if self.deviceName != 'Remote defined':
-            self.sgDisconnectDevice()
+            self.disconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.app.message.emit(f'SGPro device remove: [{self.deviceName}]', 0)
+        self.app.message.emit(f'N.I.N.A. dev remove: [{self.deviceName}]', 0)
         return True
 
     def discoverDevices(self):
         """
         :return: device list
         """
-        discoverList = self.sgEnumerateDevice()
+        discoverList = self.enumerateDevice()
         return discoverList

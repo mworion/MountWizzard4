@@ -72,7 +72,7 @@ setup(
         'sep==1.2.0',
         'requests==2.26.0',
         'requests_toolbelt==0.9.1',
-        'skyfield==1.40',
+        'skyfield==1.41',
         'sgp4==2.20',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==4.6.4',

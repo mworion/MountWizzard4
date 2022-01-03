@@ -25,9 +25,10 @@ import platform
 from base.driverDataClass import Signals
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
-from logic.camera.cameraSGPro import CameraSGPro
 if platform.system() == 'Windows':
     from logic.camera.cameraAscom import CameraAscom
+    from logic.camera.cameraSGPro import CameraSGPro
+    from logic.camera.cameraNINA import CameraNINA
 
 
 class Camera:
@@ -51,6 +52,7 @@ class Camera:
         }
 
         if platform.system() == 'Windows':
+            self.run['nina'] = CameraNINA(self.app, self.signals, self.data)
             self.run['sgpro'] = CameraSGPro(self.app, self.signals, self.data)
             self.run['ascom'] = CameraAscom(self.app, self.signals, self.data)
 

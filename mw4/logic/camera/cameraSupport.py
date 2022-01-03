@@ -208,7 +208,7 @@ class CameraSupport:
             QTest.qWait(100)
         return True
 
-    def waitCombined(self, function, param, expTime):
+    def waitCombinedSGPro(self, function, param, expTime):
         """
         :param function:
         :param param:
@@ -221,4 +221,16 @@ class CameraSupport:
         self.waitDownload()
         self.waitSave()
         self.waitFinish(function, param)
+        return True
+
+    def waitCombinedNINA(self, expTime):
+        """
+        :param expTime:
+        :return:
+        """
+        QTest.qWait(500)
+        timeLeft = expTime
+        self.waitIntegrate(timeLeft)
+        self.waitDownload()
+        self.waitSave()
         return True

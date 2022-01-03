@@ -317,17 +317,15 @@ def test_startUpdater_1(function):
         def start(a):
             pass
 
-    with mock.patch.object(platform,
-                           'architecture',
-                           return_value=['32bit']):
-        with mock.patch.object(automateWindows,
-                               'Application',
-                               return_value=Test()):
-            with mock.patch.object(Test,
-                                   'start',
-                                   side_effect=automateWindows.AppStartError()):
-                suc = function.startUpdater()
-                assert not suc
+    function.timingFast = False
+    with mock.patch.object(automateWindows,
+                           'Application',
+                           return_value=Test()):
+        with mock.patch.object(Test,
+                               'start',
+                               side_effect=automateWindows.AppStartError()):
+            suc = function.startUpdater()
+            assert not suc
 
 
 def test_startUpdater_2(function):
@@ -336,17 +334,15 @@ def test_startUpdater_2(function):
         def start(a):
             pass
 
-    with mock.patch.object(platform,
-                           'architecture',
-                           return_value=['64bit']):
-        with mock.patch.object(automateWindows,
-                               'Application',
-                               return_value=Test()):
-            with mock.patch.object(Test,
-                                   'start',
-                                   side_effect=Exception()):
-                suc = function.startUpdater()
-                assert not suc
+    function.timingFast = True
+    with mock.patch.object(automateWindows,
+                           'Application',
+                           return_value=Test()):
+        with mock.patch.object(Test,
+                               'start',
+                               side_effect=Exception()):
+            suc = function.startUpdater()
+            assert not suc
 
 
 def test_startUpdater_3(function):

@@ -77,6 +77,8 @@ class SettMisc(object):
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
+        self.ui.automateFast.setChecked(config.get('automateFast', False))
+        self.ui.automateSlow.setChecked(config.get('automateSlow', True))
         self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
         self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
         self.ui.clockSync.setChecked(config.get('clockSync', False))
@@ -89,6 +91,8 @@ class SettMisc(object):
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
 
+        if platform.system() == 'Windows':
+            self.ui.automateGroup.setEnabled(True)
         self.toggleClockSync()
         self.setWeatherOnline()
         self.setupIERS()
@@ -104,6 +108,8 @@ class SettMisc(object):
         config['loglevelTrace'] = self.ui.loglevelTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
+        config['automateFast'] = self.ui.automateFast.isChecked()
+        config['automateSlow'] = self.ui.automateSlow.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
         config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
@@ -116,7 +122,6 @@ class SettMisc(object):
         config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
         config['soundImageSaved'] = self.ui.soundImageSaved.currentIndex()
         config['soundImageSolved'] = self.ui.soundImageSolved.currentIndex()
-
         return True
 
     def setWeatherOnline(self):

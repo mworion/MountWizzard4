@@ -66,8 +66,11 @@ def test_initConfig_1(function):
 
 
 def test_initConfig_2(function):
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        suc = function.initConfig()
+        assert suc
 
 
 def test_storeConfig_1(function):

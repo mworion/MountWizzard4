@@ -322,7 +322,17 @@ def test_progEarthRotationData_4(function):
 
 
 def test_startProgEarthRotationDataToMount_1(function):
+    function.ui.isOnline.setChecked(True)
     with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+        suc = function.startProgEarthRotationDataToMount()
+        assert suc
+
+
+def test_startProgEarthRotationDataToMount_2(function):
+    function.ui.isOnline.setChecked(False)
+    with mock.patch.object(function,
+                           'progEarthRotationData',
+                           return_value=True):
         suc = function.startProgEarthRotationDataToMount()
         assert suc
 

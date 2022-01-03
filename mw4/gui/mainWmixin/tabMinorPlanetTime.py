@@ -252,12 +252,16 @@ class MinorPlanetTime:
         """
         :return:
         """
-        source = 'finals.data'
-        url = 'https://datacenter.iers.org/data/8/' + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
-        self.app.message.emit(f'Download IERS data:  [{source}]', 1)
-        DownloadPopup(self, url=url, dest=dest, unzip=False,
-                      callBack=self.progEarthRotationData)
+        isOnline = self.ui.isOnline.isChecked()
+        if isOnline:
+            source = 'finals.data'
+            url = 'https://datacenter.iers.org/data/8/' + source
+            dest = self.app.mwGlob['dataDir'] + '/' + source
+            self.app.message.emit(f'Download IERS data:  [{source}]', 1)
+            DownloadPopup(self, url=url, dest=dest, unzip=False,
+                          callBack=self.progEarthRotationData)
+        else:
+            self.progEarthRotationData()
         return True
 
     def loadTimeDataFromSourceURLs(self):

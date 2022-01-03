@@ -454,9 +454,8 @@ def formatHstrToText(angle):
     :param angle:
     :return:
     """
-    sgn, h, m, s, frac = sexagesimalizeToInt(angle.hours, 0)
-    text = f'{h:02d} {m:02d} {s:02d}'
-    return text
+    formatStr = '{1:02} {2:02} {3:02}'
+    return angle.hstr(format=formatStr)
 
 
 def formatDstrToText(angle):
@@ -464,10 +463,8 @@ def formatDstrToText(angle):
     :param angle:
     :return:
     """
-    sgn, d, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
-    sign = '+' if sgn >= 0 else '-'
-    text = f'{sign}{d:02d} {m:02d} {s:02d}'
-    return text
+    formatStr = '{0:+>1}{1:02} {2:02} {3:02}'
+    return angle.dstr(format=formatStr)
 
 
 def formatLatToText(angle):

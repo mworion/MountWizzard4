@@ -215,7 +215,7 @@ class CameraSupport:
         :param expTime:
         :return:
         """
-        QTest.qWait(1000)
+        QTest.qWait(1500)
         timeLeft = expTime
         self.waitIntegrate(timeLeft)
         self.waitDownload()
@@ -228,7 +228,7 @@ class CameraSupport:
         :param expTime:
         :return:
         """
-        QTest.qWait(1000)
+        QTest.qWait(1500)
         timeLeft = expTime
         self.waitIntegrate(timeLeft)
         self.waitDownload()

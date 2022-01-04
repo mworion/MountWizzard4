@@ -25,7 +25,6 @@ import platform
 import socket
 import sys
 import traceback
-import warnings
 from base.loggerMW import setupLogging
 setupLogging()
 #
@@ -36,6 +35,7 @@ setupLogging()
 # and https://github.com/pywinauto/pywinauto/issues/472
 # order is important to set sys.coinit_flags = 2 before import pywinauto
 #
+import warnings
 warnings.simplefilter('ignore', UserWarning)
 sys.coinit_flags = 2
 
@@ -53,6 +53,7 @@ from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
 
+setupLogging()
 res.qInitResources()
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False

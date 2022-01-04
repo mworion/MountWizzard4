@@ -426,7 +426,7 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: success
         """
-        nina = SGProClass()
+        nina = NINAClass()
         nina.DEVICE_TYPE = 'Camera'
 
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', True)

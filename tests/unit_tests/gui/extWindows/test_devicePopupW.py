@@ -35,6 +35,7 @@ from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass
 from base.alpacaClass import AlpacaClass
 from base.sgproClass import SGProClass
+from base.ninaClass import NINAClass
 from base.loggerMW import addLoggingLevel
 
 
@@ -307,6 +308,31 @@ def test_discoverSGProDevices_2(function):
                            'discoverDevices',
                            return_value=['Test1', 'Test2']):
         suc = function.discoverSGProDevices()
+        assert suc
+
+
+def test_updateNINADeviceNameList_1(function):
+    with mock.patch.object(function.ui.ninaDeviceList,
+                           'clear'):
+        with mock.patch.object(function.ui.ninaDeviceList,
+                               'setView'):
+            suc = function.updateNINADeviceNameList(['test1', 'test2'])
+            assert suc
+
+
+def test_discoverNINADevices_1(function):
+    with mock.patch.object(NINAClass,
+                           'discoverDevices',
+                           return_value=[]):
+        suc = function.discoverNINADevices()
+        assert suc
+
+
+def test_discoverNINADevices_2(function):
+    with mock.patch.object(NINAClass,
+                           'discoverDevices',
+                           return_value=['Test1', 'Test2']):
+        suc = function.discoverNINADevices()
         assert suc
 
 

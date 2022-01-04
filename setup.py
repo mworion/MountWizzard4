@@ -21,6 +21,7 @@ import platform
 releaseNotes = """
 - add: debayer in all platforms (armv7, StellarMate, Astroberry)
 - add: support SGPro camera as frontend
+- add: support N.I.N.A. camera as frontend
 - add: filter satellites visibility for twilight data
 - add: setting performance for windows automation (slow / normal / fast)
 - improved: 3D simulator drawing

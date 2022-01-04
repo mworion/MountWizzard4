@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import pytest
 import os
 import glob
 import json
@@ -25,7 +26,6 @@ import platform
 import shutil
 
 # external packages
-import pytest
 import PyQt5
 from PyQt5.QtTest import QTest
 
@@ -38,7 +38,6 @@ import base.packageConfig
 import resource.resources as res
 res.qInitResources()
 setupLogging()
-
 
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
@@ -69,7 +68,6 @@ def app(qapp):
                 with mock.patch.object(app.mainW,
                                        'setupSatelliteNameList'):
                     yield app
-                    app.threadPool.waitForDone(5000)
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -83,6 +81,7 @@ def module_setup_teardown_func(app):
         os.remove('tests/workDir/config/profile')
 
     yield
+
 
 
 def test_checkAndSetAutomation_1(app):

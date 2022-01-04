@@ -141,7 +141,7 @@ jobs:
 
       - name: install_pytest
         run: |
-          python -m pip install pytest
+          python -m pip install pytest==4.6.11
           python -m pip install pytest-qt
           python -m pip install pytest-cov
           python -m pip install pytest-pythonpath
@@ -207,7 +207,7 @@ jobs:
 
       - name: install_pytest
         run: |
-          python -m pip install pytest
+          python -m pip install pytest==4.6.11
           python -m pip install pytest-qt
           python -m pip install pytest-cov
           python -m pip install pytest-pythonpath

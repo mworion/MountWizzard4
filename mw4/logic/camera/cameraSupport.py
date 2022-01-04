@@ -154,10 +154,14 @@ class CameraSupport:
         return True
 
     def waitStart(self):
+        """
+        :return:
+        """
         while 'integrating' not in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
             QTest.qWait(100)
+        return True
 
     def waitIntegrate(self, timeLeft):
         """

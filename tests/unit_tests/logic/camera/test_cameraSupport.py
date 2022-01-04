@@ -152,6 +152,27 @@ def test_waitExposed_3(function):
         assert suc
 
 
+def test_waitStart_1(function):
+    function.data = {'Device.Message': 'integrating'}
+    function.abortExpose = True
+    with mock.patch.object(QTest,
+                           'qWait'):
+        suc = function.waitStart()
+        assert suc
+
+
+def test_waitStart_2(function):
+    function.data = {'Device.Message': 'integrating'}
+
+    def func(p):
+        function.data = {'Device.Message': 'test'}
+
+    function.abortExpose = False
+    QTest.qWait = func
+    suc = function.waitStart()
+    assert suc
+
+
 def test_waitIntegrate_1(function):
     function.data = {'Device.Message': 'integrating'}
     function.abortExpose = True
@@ -259,15 +280,17 @@ def test_waitCombinedSPro_1(function):
     with mock.patch.object(QTest,
                            'qWait'):
         with mock.patch.object(function,
-                               'waitIntegrate'):
+                               'waitStart'):
             with mock.patch.object(function,
-                                   'waitDownload'):
+                               'waitIntegrate'):
                 with mock.patch.object(function,
-                                       'waitSave'):
+                                       'waitDownload'):
                     with mock.patch.object(function,
-                                           'waitFinish'):
-                        suc = function.waitCombinedSGPro(0, 0, 0)
-                        assert suc
+                                           'waitSave'):
+                        with mock.patch.object(function,
+                                               'waitFinish'):
+                            suc = function.waitCombinedSGPro(0, 0, 0)
+                            assert suc
 
 
 def test_waitCombinedNINA_1(function):
@@ -276,9 +299,11 @@ def test_waitCombinedNINA_1(function):
         with mock.patch.object(function,
                                'waitIntegrate'):
             with mock.patch.object(function,
-                                   'waitDownload'):
-                with mock.patch.object(function,
-                                       'waitSave'):
-                    suc = function.waitCombinedNINA(0)
-                    assert suc
+                                   'waitStart'):
+                    with mock.patch.object(function,
+                                       'waitDownload'):
+                        with mock.patch.object(function,
+                                               'waitSave'):
+                            suc = function.waitCombinedNINA(0)
+                            assert suc
 

@@ -27,6 +27,7 @@ import sys
 import traceback
 import warnings
 from base.loggerMW import setupLogging
+setupLogging()
 #
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see
@@ -52,7 +53,6 @@ from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
 
-setupLogging()
 res.qInitResources()
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False

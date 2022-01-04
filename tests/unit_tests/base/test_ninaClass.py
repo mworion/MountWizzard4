@@ -27,7 +27,7 @@ from PyQt5.QtCore import QObject
 import requests
 
 # local import
-from base.sgproClass import SGProClass
+from base.ninaClass import NINAClass
 from base.loggerMW import setupLogging
 from base.driverDataClass import Signals
 
@@ -42,7 +42,7 @@ def module_setup_teardown():
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = SGProClass(app=Test(), data={}, threadPool=QThreadPool())
+        app = NINAClass(app=Test(), data={}, threadPool=QThreadPool())
         app.signals = Signals()
         yield
         app.threadPool.waitForDone(1000)
@@ -50,7 +50,6 @@ def module_setup_teardown():
 
 def test_properties_1():
     app.deviceName = 'test'
-    app.deviceName = 'test:2'
 
 
 def test_requestProperty_1():
@@ -158,63 +157,63 @@ def test_requestProperty_6():
         assert val is None
 
 
-def test_sgConnectDevice_1():
+def test_connectDevice_1():
     app.deviceName = 'test test'
     app.DEVICE_TYPE = 'Camera'
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgConnectDevice()
+        suc = app.connectDevice()
         assert not suc
 
 
-def test_sgConnectDevice_2():
+def test_connectDevice_2():
     app.deviceName = 'test test'
     app.DEVICE_TYPE = 'Camera'
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.sgConnectDevice()
+        suc = app.connectDevice()
         assert suc
 
 
-def test_sgDisconnectDevice_1():
+def test_disconnectDevice_1():
     app.deviceName = 'test test'
     app.DEVICE_TYPE = 'Camera'
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgDisconnectDevice()
+        suc = app.disconnectDevice()
         assert not suc
 
 
-def test_sgDisconnectDevice_2():
+def test_disconnectDevice_2():
     app.deviceName = 'test test'
     app.DEVICE_TYPE = 'Camera'
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.sgDisconnectDevice()
+        suc = app.disconnectDevice()
         assert suc
 
 
-def test_sgEnumerateDevice_1():
+def test_enumerateDevice_1():
     app.deviceName = 'test test'
     app.DEVICE_TYPE = 'Camera'
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgEnumerateDevice()
+        suc = app.enumerateDevice()
         assert not suc
 
 
-def test_sgEnumerateDevice_2():
+def test_enumerateDevice_2():
     app.deviceName = 'test test'
     app.DEVICE_TYPE = 'Camera'
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Devices': True}):
-        suc = app.sgEnumerateDevice()
+        suc = app.enumerateDevice()
         assert suc
 
 
@@ -228,7 +227,7 @@ def test_workerConnectDevice_2():
     app.serverConnected = False
     app.deviceConnected = False
     with mock.patch.object(app,
-                           'sgConnectDevice',
+                           'connectDevice',
                            return_value=True):
         suc = app.workerConnectDevice()
         assert suc
@@ -240,7 +239,7 @@ def test_workerConnectDevice_3():
     app.serverConnected = True
     app.deviceConnected = True
     with mock.patch.object(app,
-                           'sgConnectDevice',
+                           'connectDevice',
                            return_value=False):
         suc = app.workerConnectDevice()
         assert not suc
@@ -312,7 +311,7 @@ def test_workerPollStatus_2():
     app.deviceConnected = True
     with mock.patch.object(app,
                            'requestProperty',
-                           return_value={'State': 'DISCONNECTED',
+                           return_value={'State': 5,
                                          'Message': 'test'}):
         with mock.patch.object(app,
                                'storePropertyToData'):
@@ -328,7 +327,7 @@ def test_workerPollStatus_3():
     app.deviceConnected = False
     with mock.patch.object(app,
                            'requestProperty',
-                           return_value={'State': 'DISCONNECTED',
+                           return_value={'State': 5,
                                          'Message': 'test'}):
         with mock.patch.object(app,
                                'storePropertyToData'):
@@ -344,7 +343,7 @@ def test_workerPollStatus_4():
     app.deviceConnected = True
     with mock.patch.object(app,
                            'requestProperty',
-                           return_value={'State': 'test',
+                           return_value={'State': 0,
                                          'Message': 'test'}):
         with mock.patch.object(app,
                                'storePropertyToData'):
@@ -360,7 +359,7 @@ def test_workerPollStatus_5():
     app.deviceConnected = False
     with mock.patch.object(app,
                            'requestProperty',
-                           return_value={'State': 'test',
+                           return_value={'State': 0,
                                          'Message': 'test'}):
         with mock.patch.object(app,
                                'storePropertyToData'):
@@ -394,7 +393,7 @@ def test_stopCommunication_1():
     with mock.patch.object(app,
                            'stopTimer'):
         with mock.patch.object(app,
-                               'sgDisconnectDevice'):
+                               'disconnectDevice'):
             suc = app.stopCommunication()
             assert suc
             assert not app.serverConnected
@@ -403,7 +402,7 @@ def test_stopCommunication_1():
 
 def test_discoverDevices_1():
     with mock.patch.object(app,
-                           'sgEnumerateDevice',
+                           'enumerateDevice',
                            return_value=[]):
         val = app.discoverDevices()
         assert val == []
@@ -411,7 +410,7 @@ def test_discoverDevices_1():
 
 def test_discoverDevices_2():
     with mock.patch.object(app,
-                           'sgEnumerateDevice',
+                           'enumerateDevice',
                            return_value=['test']):
         val = app.discoverDevices()
         assert val == ['test']

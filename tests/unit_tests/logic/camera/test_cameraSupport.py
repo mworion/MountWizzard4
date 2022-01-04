@@ -255,7 +255,7 @@ def test_waitFinish_2(function):
         assert suc
 
 
-def test_waitCombined_1(function):
+def test_waitCombinedSPro_1(function):
     with mock.patch.object(QTest,
                            'qWait'):
         with mock.patch.object(function,
@@ -266,6 +266,19 @@ def test_waitCombined_1(function):
                                        'waitSave'):
                     with mock.patch.object(function,
                                            'waitFinish'):
-                        suc = function.waitCombined(0, 0, 0)
+                        suc = function.waitCombinedSGPro(0, 0, 0)
                         assert suc
+
+
+def test_waitCombinedNINA_1(function):
+    with mock.patch.object(QTest,
+                           'qWait'):
+        with mock.patch.object(function,
+                               'waitIntegrate'):
+            with mock.patch.object(function,
+                                   'waitDownload'):
+                with mock.patch.object(function,
+                                       'waitSave'):
+                    suc = function.waitCombinedNINA(0)
+                    assert suc
 

@@ -26,7 +26,7 @@ from skyfield.api import Angle, wgs84
 
 # local import
 from mountcontrol.mount import Mount
-from logic.camera.cameraSGPro import CameraSGPro
+from logic.camera.cameraNINA import CameraNINA
 from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
 setupLogging()
@@ -50,108 +50,108 @@ def module_setup_teardown():
         deviceStat = {'mount': True}
 
     global app
-    app = CameraSGPro(app=Test(), signals=Signals(), data={})
+    app = CameraNINA(app=Test(), signals=Signals(), data={})
     yield
 
 
-def test_sgGetCameraTemp_1():
+def test_getCameraTemp_1():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc, val = app.sgGetCameraTemp()
+        suc, val = app.getCameraTemp()
         assert not suc
         assert val == {}
 
 
-def test_sgGetCameraTemp_2():
+def test_getCameraTemp_2():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc, val = app.sgGetCameraTemp()
+        suc, val = app.getCameraTemp()
         assert suc
         assert val == {'Success': True}
 
 
-def test_sgSetCameraTemp_1():
+def test_setCameraTemp_1():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgSetCameraTemp(temperature=10)
+        suc = app.setCameraTemp(temperature=10)
         assert not suc
 
 
-def test_sgSetCameraTemp_2():
+def test_setCameraTemp_2():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.sgSetCameraTemp(temperature=10)
+        suc = app.setCameraTemp(temperature=10)
         assert suc
 
 
-def test_sgCaptureImage_1():
+def test_captureImage_1():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc, val = app.sgCaptureImage(0)
+        suc, val = app.captureImage(0)
         assert not suc
         assert val == {}
 
 
-def test_sgCaptureImage_2():
+def test_captureImage_2():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc, val = app.sgCaptureImage(0)
+        suc, val = app.captureImage(0)
         assert suc
         assert val == {'Success': True}
 
 
-def test_sgAbortImage_1():
+def test_abortImage_1():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgAbortImage()
+        suc = app.abortImage()
         assert not suc
 
 
-def test_sgAbortImage_2():
+def test_abortImage_2():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.sgAbortImage()
+        suc = app.abortImage()
         assert suc
 
 
-def test_sgGetImagePath_1():
+def test_getImagePath_1():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgGetImagePath(receipt='1')
+        suc = app.getImagePath(receipt='1')
         assert not suc
 
 
-def test_sgGetImagePath_2():
+def test_getImagePath_2():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.sgGetImagePath(receipt='1')
+        suc = app.getImagePath(receipt='1')
         assert suc
 
 
-def test_sgGetCameraProps_1():
+def test_getCameraProps_1():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value=None):
-        suc, val = app.sgGetCameraProps()
+        suc, val = app.getCameraProps()
         assert not suc
         assert val == {}
 
 
-def test_sgGetCameraProps_2():
+def test_getCameraProps_2():
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc, val = app.sgGetCameraProps()
+        suc, val = app.getCameraProps()
         assert suc
         assert val == {'Success': True}
 
@@ -160,7 +160,7 @@ def test_workerGetInitialConfig_1():
     with mock.patch.object(app,
                            'storePropertyToData'):
         with mock.patch.object(app,
-                               'sgGetCameraProps',
+                               'getCameraProps',
                                return_value=(False, {})):
             suc = app.workerGetInitialConfig()
             assert not suc
@@ -176,7 +176,7 @@ def test_workerGetInitialConfig_2():
     with mock.patch.object(app,
                            'storePropertyToData'):
         with mock.patch.object(app,
-                               'sgGetCameraProps',
+                               'getCameraProps',
                                return_value=(True, val)):
             suc = app.workerGetInitialConfig()
             assert suc
@@ -185,7 +185,7 @@ def test_workerGetInitialConfig_2():
 def test_workerPollData_1():
     app.data['CAN_FAST'] = True
     with mock.patch.object(app,
-                           'sgGetCameraTemp',
+                           'getCameraTemp',
                            return_value=(False, None)):
         suc = app.workerPollData()
         assert not suc
@@ -194,7 +194,7 @@ def test_workerPollData_1():
 def test_workerPollData_2():
     app.data['CAN_FAST'] = True
     with mock.patch.object(app,
-                           'sgGetCameraTemp',
+                           'getCameraTemp',
                            return_value=(True, {'Temperature': 10})):
         suc = app.workerPollData()
         assert suc
@@ -210,7 +210,7 @@ def test_sendDownloadMode_1():
 
 def test_workerExpose_1():
     with mock.patch.object(app,
-                           'sgCaptureImage',
+                           'captureImage',
                            return_value=(False, None)):
         suc = app.workerExpose()
         assert not suc
@@ -218,7 +218,7 @@ def test_workerExpose_1():
 
 def test_workerExpose_2():
     with mock.patch.object(app,
-                           'sgCaptureImage',
+                           'captureImage',
                            return_value=(True, {})):
         suc = app.workerExpose()
         assert not suc
@@ -226,10 +226,10 @@ def test_workerExpose_2():
 
 def test_workerExpose_3():
     with mock.patch.object(app,
-                           'sgCaptureImage',
+                           'captureImage',
                            return_value=(True, {'Receipt': '123'})):
         with mock.patch.object(app,
-                               'waitCombinedSGPro'):
+                               'waitCombinedNINA'):
             app.abortExpose = False
             with mock.patch.object(os.path,
                                    'splitext',
@@ -242,10 +242,10 @@ def test_workerExpose_3():
 
 def test_workerExpose_4():
     with mock.patch.object(app,
-                           'sgCaptureImage',
+                           'captureImage',
                            return_value=(True, {'Receipt': '123'})):
         with mock.patch.object(app,
-                               'waitCombinedSGPro'):
+                               'waitCombinedNINA'):
             app.abortExpose = True
             suc = app.workerExpose()
             assert suc
@@ -268,7 +268,7 @@ def test_expose_2():
 def test_abort_1():
     app.deviceConnected = False
     with mock.patch.object(app,
-                           'sgAbortImage'):
+                           'abortImage'):
         suc = app.abort()
         assert not suc
 
@@ -277,7 +277,7 @@ def test_abort_2():
     app.deviceConnected = True
     app.abortExpose = False
     with mock.patch.object(app,
-                           'sgAbortImage'):
+                           'abortImage'):
         suc = app.abort()
         assert suc
         assert app.abortExpose
@@ -298,7 +298,7 @@ def test_sendCoolerSwitch_2():
 def test_sendCoolerTemp_1():
     app.deviceConnected = False
     with mock.patch.object(app,
-                           'sgSetCameraTemp'):
+                           'setCameraTemp'):
         suc = app.sendCoolerTemp()
         assert not suc
 
@@ -306,7 +306,7 @@ def test_sendCoolerTemp_1():
 def test_sendCoolerTemp_2():
     app.deviceConnected = True
     with mock.patch.object(app,
-                           'sgSetCameraTemp'):
+                           'setCameraTemp'):
         suc = app.sendCoolerTemp(temperature=-10)
         assert suc
 

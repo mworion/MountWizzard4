@@ -26,7 +26,6 @@ import socket
 import sys
 import traceback
 import warnings
-from base.loggerMW import setupLogging
 #
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see
@@ -51,7 +50,7 @@ from importlib_metadata import version
 from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
-
+from base.loggerMW import setupLogging
 setupLogging()
 res.qInitResources()
 matplotlib.use('Qt5Agg')

@@ -839,7 +839,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.header is None:
             return False
 
-        self.image = self.image.astype('float32')
+        self.image = np.flipud(self.image.astype('float32'))
 
         bayerPattern = self.header.get('BAYERPAT', '')
         if bayerPattern:

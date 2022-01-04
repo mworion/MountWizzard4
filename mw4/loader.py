@@ -25,8 +25,8 @@ import platform
 import socket
 import sys
 import traceback
+import warnings
 from base.loggerMW import setupLogging
-setupLogging()
 #
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see
@@ -35,7 +35,6 @@ setupLogging()
 # and https://github.com/pywinauto/pywinauto/issues/472
 # order is important to set sys.coinit_flags = 2 before import pywinauto
 #
-import warnings
 warnings.simplefilter('ignore', UserWarning)
 sys.coinit_flags = 2
 

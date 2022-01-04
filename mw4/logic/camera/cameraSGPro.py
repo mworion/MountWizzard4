@@ -181,7 +181,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         speed = 'High' if fastReadout else 'Normal'
         params = {'BinningMode': binning,
-                  'ExposureLength': expTime,
+                  'ExposureLength': min(expTime, 1),
                   'UseSubframe': True,
                   'X': int(posX / binning),
                   'Y': int(posY / binning),

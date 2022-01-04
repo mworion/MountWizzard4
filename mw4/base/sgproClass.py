@@ -93,7 +93,7 @@ class SGProClass(DriverData, QObject):
                 response = requests.get(f'{self.BASE_URL}/{valueProp}?format=json',
                                         timeout=self.SGPRO_TIMEOUT)
         except requests.exceptions.Timeout:
-            self.log.debug('Request SGPro connection error')
+            self.log.debug('Request SGPro timeout error')
             return None
         except requests.exceptions.ConnectionError:
             self.log.error('Request SGPro connection error')
@@ -152,7 +152,7 @@ class SGProClass(DriverData, QObject):
         if self.deviceName == 'Remote defined':
             return True
 
-        for retry in range(0, 5):
+        for retry in range(0, 10):
             suc = self.sgConnectDevice()
             if suc:
                 t = f'[{self.deviceName}] connected, [{retry}] retries'

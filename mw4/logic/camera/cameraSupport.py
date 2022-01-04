@@ -153,6 +153,12 @@ class CameraSupport:
                 timeLeft = 0
         return True
 
+    def waitStart(self):
+        while 'integrating' not in self.data.get('Device.Message'):
+            if self.abortExpose:
+                break
+            QTest.qWait(100)
+
     def waitIntegrate(self, timeLeft):
         """
         :param timeLeft:
@@ -215,8 +221,8 @@ class CameraSupport:
         :param expTime:
         :return:
         """
-        QTest.qWait(1500)
         timeLeft = expTime
+        self.waitStart()
         self.waitIntegrate(timeLeft)
         self.waitDownload()
         self.waitSave()
@@ -228,8 +234,8 @@ class CameraSupport:
         :param expTime:
         :return:
         """
-        QTest.qWait(1500)
         timeLeft = expTime
+        self.waitStart()
         self.waitIntegrate(timeLeft)
         self.waitDownload()
         self.waitSave()

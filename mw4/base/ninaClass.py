@@ -93,7 +93,7 @@ class NINAClass(DriverData, QObject):
                 response = requests.get(f'{self.BASE_URL}/{valueProp}?format=json',
                                         timeout=self.NINA_TIMEOUT)
         except requests.exceptions.Timeout:
-            self.log.debug('Request N.I.N.A. connection error')
+            self.log.debug('Request N.I.N.A. timeout error')
             return None
         except requests.exceptions.ConnectionError:
             self.log.error('Request N.I.N.A. connection error')

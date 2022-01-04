@@ -131,7 +131,7 @@ def setupLogging():
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('matplotlib').setLevel(logging.WARNING)
-    # logging.getLogger('astropy').setLevel(logging.WARNING)
+    logging.getLogger('astropy').setLevel(logging.ERROR)
     addLoggingLevel('HEADER', 55)
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)

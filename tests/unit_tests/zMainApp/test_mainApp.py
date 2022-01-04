@@ -68,6 +68,7 @@ def app(qapp):
                 with mock.patch.object(app.mainW,
                                        'setupSatelliteNameList'):
                     yield app
+                    app.threadPool.waitForDone(5000)
 
 
 @pytest.fixture(autouse=True, scope='function')

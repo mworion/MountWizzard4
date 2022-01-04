@@ -47,11 +47,11 @@ from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButt
 from importlib_metadata import version
 
 # local import
+from base.loggerMW import setupLogging
+setupLogging()
 from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
-from base.loggerMW import setupLogging
-setupLogging()
 res.qInitResources()
 matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False

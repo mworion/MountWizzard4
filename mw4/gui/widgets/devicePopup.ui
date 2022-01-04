@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="ALPACA">
     <attribute name="title">
@@ -416,7 +416,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Search does list name of INDI devices of this certain type</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available ALPACA devices&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Search</string>
@@ -559,7 +559,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Search does list name of INDI devices of this certain type</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available devices in SGPro application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Search</string>
@@ -625,7 +625,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Search does list name of INDI devices of this certain type</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available devices in N.I.N.A. application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Search</string>
@@ -741,7 +741,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Search does list name of INDI devices of this certain type</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available INDI devices&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Search</string>

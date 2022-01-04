@@ -413,10 +413,10 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-        self.ui.sgproDeviceList.clear()
-        self.ui.sgproDeviceList.setView(QListView())
+        self.ui.ninaDeviceList.clear()
+        self.ui.ninaDeviceList.setView(QListView())
         for deviceName in deviceNames:
-            self.ui.sgproDeviceList.addItem(deviceName)
+            self.ui.ninaDeviceList.addItem(deviceName)
         return True
 
     def discoverNINADevices(self):

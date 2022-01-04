@@ -35,7 +35,7 @@ class NINAClass(DriverData, QObject):
     log = logging.getLogger(__name__)
 
     CYCLE_POLL_STATUS = 500
-    CYCLE_POLL_DATA = 1000
+    CYCLE_POLL_DATA = 500
     NINA_TIMEOUT = 1
     HOST_ADDR = '127.0.0.1'
     PORT = 59590

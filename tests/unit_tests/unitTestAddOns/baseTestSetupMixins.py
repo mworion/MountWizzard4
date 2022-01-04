@@ -22,6 +22,7 @@ from queue import Queue
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
 from skyfield.api import wgs84, load, Loader, Angle
 import numpy as np
+import astropy
 
 # local import
 

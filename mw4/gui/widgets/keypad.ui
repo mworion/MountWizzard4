@@ -979,6 +979,25 @@ PLANET</string>
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="Line" name="cursor">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>15</width>
+     <height>3</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>3</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
   <zorder>label</zorder>
   <zorder>graphics</zorder>
   <zorder>b2</zorder>
@@ -1006,6 +1025,7 @@ PLANET</string>
   <zorder>row2</zorder>
   <zorder>row3</zorder>
   <zorder>row4</zorder>
+  <zorder>cursor</zorder>
  </widget>
  <resources/>
  <connections/>

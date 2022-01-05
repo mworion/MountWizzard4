@@ -96,8 +96,8 @@ class SettMisc(object):
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
 
-        if platform.system() == 'Windows':
-            self.ui.automateGroup.setEnabled(True)
+        isWindows = platform.system() == 'Windows'
+        self.ui.automateGroup.setVisible(isWindows)
         self.setAutomationSpeed()
         self.toggleClockSync()
         self.setWeatherOnline()

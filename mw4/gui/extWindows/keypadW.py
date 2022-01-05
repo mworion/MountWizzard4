@@ -18,6 +18,7 @@
 # standard libraries
 
 # external packages
+from PyQt5.QtTest import QTest
 from PyQt5.QtCore import pyqtSignal, QObject, QMutex
 from PyQt5.QtGui import QPixmap
 from qimage2ndarray import array2qimage
@@ -258,6 +259,8 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
         if row == 4 and not text.startswith('\x00'):
             self.clearGraphics()
+
+        self.clearCursorPos()
         return True
 
     def clearGraphics(self):
@@ -277,13 +280,27 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.clearGraphics()
         return True
 
-    def setCursorPos(self, col, row):
+    def clearCursorPos(self):
         """
-        :param col:
-        :param row:
         :return:
         """
-        self.rows[row].setCursorPosition(col)
+        self.ui.cursor.setVisible(False)
+        return True
+
+    def setCursorPos(self, row, col):
+        """
+        :param row:
+        :param col:
+        :return:
+        """
+        x = self.rows[row].x()
+        y = self.rows[row].y()
+        height = self.rows[row].height()
+
+        self.ui.cursor.setStyleSheet(f'background-color: {self.M_BACK};')
+        self.ui.cursor.setStyleSheet(f'color: {self.M_BLUE};')
+        self.ui.cursor.setVisible(True)
+        self.ui.cursor.move(x + 16 * col, y + height)
         return True
 
     def drawGraphics(self):

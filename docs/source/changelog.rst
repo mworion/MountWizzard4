@@ -15,13 +15,15 @@ Beta version of MW4
 ----------------------------
 2.2.0
 
-- add: debayer in all platforms (armv7, StellarMate, Astroberry) u
-- add: support SGPro camera as frontend
-- add: support N.I.N.A. camera as frontend
+- add: debayer in all platforms (armv7, StellarMate, Astroberry)
+- add: support SGPro camera as frontend device
+- add: support N.I.N.A. camera as frontend device
+- add: two modes for SGPro and N.I.N.A.: App / MW4 controlled
 - add: filter satellites visibility for twilight data
 - add: setting performance for windows automation (slow / normal / fast)
+- improved: auto abort imaging when camera device is disconnected
+- improved: added missing cursor in keypad window
 - improved: 3D simulator drawing
-
 
 Released version of MW4
 -----------------------

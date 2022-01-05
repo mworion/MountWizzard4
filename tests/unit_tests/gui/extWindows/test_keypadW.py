@@ -252,6 +252,11 @@ def test_clearDisplay(function):
         assert suc
 
 
+def test_clearCursorPos(function):
+    suc = function.clearCursorPos()
+    assert suc
+
+
 def test_setCursorPos(function):
     suc = function.setCursorPos(1, 1)
     assert suc

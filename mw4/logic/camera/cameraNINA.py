@@ -180,7 +180,7 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         speed = 'High' if fastReadout else 'Normal'
         params = {'BinningMode': binning,
-                  'ExposureLength': min(expTime, 1),
+                  'ExposureLength': max(expTime, 1),
                   'UseSubframe': True,
                   'X': int(posX / binning),
                   'Y': int(posY / binning),

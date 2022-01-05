@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-from base.packageConfig import isAvailable
 import os
 
 # external packages

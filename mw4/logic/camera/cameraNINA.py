@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import os
 
 # external packages
 

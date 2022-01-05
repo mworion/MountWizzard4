@@ -387,6 +387,8 @@ class Mount(QObject):
 class Automation:
     installPath = None
     updaterApp = None
+    automateFast = False
+    automateSlow = False
 
     @staticmethod
     def uploadTLEData():

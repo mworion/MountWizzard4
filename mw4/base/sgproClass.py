@@ -49,8 +49,8 @@ class SGProClass(DriverData, QObject):
         self.data = data
         self._deviceName = ''
         self.defaultConfig = {
-            'deviceList': ['Remote defined'],
-            'deviceName': 'Remote defined',
+            'deviceList': ['SGPro controlled'],
+            'deviceName': 'SGPro controlled',
         }
         self.signalRS = RemoteDeviceShutdown()
 
@@ -149,7 +149,7 @@ class SGProClass(DriverData, QObject):
         """
         :return: success of reconnecting to server
         """
-        if self.deviceName == 'Remote defined':
+        if self.deviceName == 'SGPro controlled':
             return True
 
         for retry in range(0, 10):
@@ -270,7 +270,7 @@ class SGProClass(DriverData, QObject):
         :return: true for test purpose
         """
         self.stopTimer()
-        if self.deviceName != 'Remote defined':
+        if self.deviceName != 'SGPro controlled':
             self.sgDisconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False

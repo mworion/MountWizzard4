@@ -219,7 +219,7 @@ def test_sgEnumerateDevice_2():
 
 
 def test_workerConnectDevice_1():
-    app.deviceName = 'Remote defined'
+    app.deviceName = 'SGPro controlled'
     suc = app.workerConnectDevice()
     assert suc
 

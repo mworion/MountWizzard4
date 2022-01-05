@@ -10,13 +10,12 @@ Ideas for the future
 - receive video indi for sat tracking and horizon setup
 - joystick support
 - data exchange to EKOS SQLite for Location and horizon through SQLite interface
-- adding SGP interface
 
 Beta version of MW4
 ----------------------------
 2.2.0
 
-- add: debayer in all platforms (armv7, StellarMate, Astroberry)
+- add: debayer in all platforms (armv7, StellarMate, Astroberry) u
 - add: support SGPro camera as frontend
 - add: support N.I.N.A. camera as frontend
 - add: filter satellites visibility for twilight data

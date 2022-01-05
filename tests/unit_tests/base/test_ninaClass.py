@@ -218,7 +218,7 @@ def test_enumerateDevice_2():
 
 
 def test_workerConnectDevice_1():
-    app.deviceName = 'Remote defined'
+    app.deviceName = 'N.I.N.A. controlled'
     suc = app.workerConnectDevice()
     assert suc
 

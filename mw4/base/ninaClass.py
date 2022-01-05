@@ -49,8 +49,8 @@ class NINAClass(DriverData, QObject):
         self.data = data
         self._deviceName = ''
         self.defaultConfig = {
-            'deviceList': ['Remote defined'],
-            'deviceName': 'Remote defined',
+            'deviceList': ['N.I.N.A. controlled'],
+            'deviceName': 'N.I.N.A. controlled',
         }
         self.signalRS = RemoteDeviceShutdown()
 
@@ -149,7 +149,7 @@ class NINAClass(DriverData, QObject):
         """
         :return: success of reconnecting to server
         """
-        if self.deviceName == 'Remote defined':
+        if self.deviceName == 'N.I.N.A. controlled':
             return True
 
         for retry in range(0, 3):
@@ -275,7 +275,7 @@ class NINAClass(DriverData, QObject):
         :return: true for test purpose
         """
         self.stopTimer()
-        if self.deviceName != 'Remote defined':
+        if self.deviceName != 'N.I.N.A. controlled':
             self.disconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False

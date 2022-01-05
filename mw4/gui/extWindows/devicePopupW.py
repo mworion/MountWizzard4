@@ -396,7 +396,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not deviceNames:
             self.message.emit('SGPro no devices found', 2)
 
-        deviceNames.insert(0, 'Remote defined')
+        deviceNames.insert(0, 'SGPro controlled')
         self.changeStyleDynamic(self.ui.sgproDiscover, 'running', False)
 
         for deviceName in deviceNames:
@@ -434,7 +434,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not deviceNames:
             self.message.emit('N.I.N.A. no devices found', 2)
 
-        deviceNames.insert(0, 'Remote defined')
+        deviceNames.insert(0, 'N.I.N.A. controlled')
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', False)
 
         for deviceName in deviceNames:

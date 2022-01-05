@@ -34,7 +34,6 @@ if platform.system() == 'Windows':
     from logic.automation.automateWindows import AutomateWindows
 from mainApp import MountWizzard4
 from base.loggerMW import setupLogging
-import base.packageConfig
 import resource.resources as res
 res.qInitResources()
 setupLogging()
@@ -42,10 +41,6 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
-    class Automation:
-        automateFast = False
-        automateSlow = False
-
     global mwGlob
     mwGlob = {'configDir': 'tests/workDir/config',
               'dataDir': 'tests/workDir/data',
@@ -69,8 +64,6 @@ def app(qapp):
                                    'start'):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
-                app.checkAutomation = base.packageConfig.checkAutomation
-                app.automation = Automation()
                 with mock.patch.object(app.mainW,
                                        'setupSatelliteNameList'):
                     yield app

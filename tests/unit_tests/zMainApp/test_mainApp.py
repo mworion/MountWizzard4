@@ -84,7 +84,6 @@ def module_setup_teardown_func(app):
     yield
 
 
-
 def test_checkAndSetAutomation_1(app):
     with mock.patch.object(platform,
                            'system',

@@ -34,7 +34,7 @@ from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
-from base import packageConfig
+import base.packageConfig
 setupLogging()
 
 
@@ -521,8 +521,9 @@ def test_setVirtualStop(function):
     assert suc
 
 
+@pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_1(function):
-    with mock.patch.object(packageConfig,
+    with mock.patch.object(base.packageConfig,
                            'checkAutomation',
                            return_value=False):
         suc = function.setAutomationSpeed()
@@ -531,7 +532,7 @@ def test_setAutomationSpeed_1(function):
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_2(function):
-    with mock.patch.object(packageConfig,
+    with mock.patch.object(base.packageConfig,
                            'checkAutomation',
                            return_value=True):
         suc = function.setAutomationSpeed()

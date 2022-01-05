@@ -309,6 +309,13 @@ class Mount(QObject):
     host = None
 
 
+class Automation:
+    installPath = None
+    updaterApp = None
+    automateFast = False
+    automateSlow = False
+
+
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
@@ -331,6 +338,7 @@ class App(QObject):
     directWeather = DirectWeather()
     powerWeather = PowerWeather()
     skymeter = Skymeter()
+    automation = Automation()
     relay = Relay()
     power = Power()
     cover = Cover()

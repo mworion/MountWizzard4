@@ -59,6 +59,8 @@ class Camera:
         for fw in self.run:
             self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
+        self.signals.deviceDisconnected.connect(self.abort)
+
     def startCommunication(self, loadConfig=False):
         """
         :param loadConfig:

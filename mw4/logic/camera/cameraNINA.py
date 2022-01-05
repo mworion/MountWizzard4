@@ -240,11 +240,11 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         :return: success
         """
+        self.abortExpose = True
         if not self.deviceConnected:
             return False
 
         self.abortImage()
-        self.abortExpose = True
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):

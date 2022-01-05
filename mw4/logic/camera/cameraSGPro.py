@@ -244,11 +244,11 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         :return: success
         """
+        self.abortExpose = True
         if not self.deviceConnected:
             return False
 
         self.sgAbortImage()
-        self.abortExpose = True
         return True
 
     def sendCoolerSwitch(self, coolerOn=False):

@@ -166,10 +166,10 @@ class CameraAscom(AscomClass, CameraSupport):
         """
         :return: success
         """
+        self.abortExpose = True
         if not self.deviceConnected:
             return False
 
-        self.abortExpose = True
         canAbort = self.data.get('CAN_ABORT', False)
         if not canAbort:
             return False

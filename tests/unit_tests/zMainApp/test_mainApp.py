@@ -39,8 +39,13 @@ import resource.resources as res
 res.qInitResources()
 setupLogging()
 
+
 @pytest.fixture(autouse=True, scope='module')
 def app(qapp):
+    class Automation:
+        automateFast = False
+        automateSlow = False
+
     global mwGlob
     mwGlob = {'configDir': 'tests/workDir/config',
               'dataDir': 'tests/workDir/data',
@@ -65,6 +70,7 @@ def app(qapp):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
                 app.checkAutomation = base.packageConfig.checkAutomation
+                app.automation = Automation()
                 with mock.patch.object(app.mainW,
                                        'setupSatelliteNameList'):
                     yield app

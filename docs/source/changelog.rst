@@ -24,6 +24,7 @@ Beta version of MW4
 - improved: auto abort imaging when camera device is disconnected
 - improved: added missing cursor in keypad window
 - improved: 3D simulator drawing
+- improved: updater changes to avoid install in system package
 
 Released version of MW4
 -----------------------

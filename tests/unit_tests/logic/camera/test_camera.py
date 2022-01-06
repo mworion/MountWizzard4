@@ -23,9 +23,9 @@ import unittest.mock as mock
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtTest import QTest
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from logic.camera.camera import Camera
 
 
@@ -255,7 +255,7 @@ def test_expose_8(function):
     def qWaitBreak(a):
         function.exposing = False
 
-    QTest.qWait = qWaitBreak
+    sleepAndEvents = qWaitBreak
     function.exposing = True
     function.framework = 'indi'
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,

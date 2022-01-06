@@ -23,13 +23,13 @@ import glob
 import pytest
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtTest import QTest
 
 # local import
 from mainApp import MountWizzard4
 from base.tpool import Worker
 from loader import extractDataFiles
 from resource import resources
+from gui.utilities.toolsQtWidget import M
 
 
 mwglob = {'dataDir': 'tests/data',
@@ -106,7 +106,7 @@ def test_1(qtbot, qapp):
     qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], 1000)
 
-    QTest.qWait(1000)
+    sleepAndEvents(1000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
 
 

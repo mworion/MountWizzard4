@@ -27,13 +27,13 @@ import shutil
 
 # external packages
 import PyQt5
-from PyQt5.QtTest import QTest
 
 # local import
 from base.packageConfig import checkAutomation
 if checkAutomation():
     from logic.automation.automateWindows import AutomateWindows
 from mainApp import MountWizzard4
+import mainApp
 from base.loggerMW import setupLogging
 import resource.resources as res
 res.qInitResources()
@@ -357,8 +357,8 @@ def test_saveConfig_4(app):
 
 def test_loadMountData_1(app):
     app.mountUp = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(mainApp,
+                           'sleepAndEvents'):
         with mock.patch.object(app.mount,
                                'cycleSetting'):
             with mock.patch.object(app.mount,

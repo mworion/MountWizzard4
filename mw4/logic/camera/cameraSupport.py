@@ -19,11 +19,11 @@
 import logging
 
 # external packages
-from PyQt5.QtTest import QTest
 from astropy.io import fits
 import numpy as np
 
 # local imports
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.transform import JNowToJ2000
 from mountcontrol.convert import formatDstrToText
 
@@ -145,7 +145,7 @@ class CameraSupport:
             if self.abortExpose:
                 break
             text = f'expose {timeLeft:3.0f} s'
-            QTest.qWait(100)
+            sleepAndEvents(100)
             self.signals.message.emit(text)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
@@ -160,7 +160,7 @@ class CameraSupport:
         while 'integrating' not in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
-            QTest.qWait(100)
+            sleepAndEvents(100)
         return True
 
     def waitIntegrate(self, timeLeft):
@@ -172,7 +172,7 @@ class CameraSupport:
             if self.abortExpose:
                 break
             text = f'expose {timeLeft:3.0f} s'
-            QTest.qWait(100)
+            sleepAndEvents(100)
             self.signals.message.emit(text)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
@@ -190,7 +190,7 @@ class CameraSupport:
         while 'downloading' in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
-            QTest.qWait(100)
+            sleepAndEvents(100)
 
         self.signals.downloaded.emit()
         return True
@@ -203,7 +203,7 @@ class CameraSupport:
         while 'image is ready' in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
-            QTest.qWait(100)
+            sleepAndEvents(100)
         return True
 
     def waitFinish(self, function, param):
@@ -215,7 +215,7 @@ class CameraSupport:
         while not function(param):
             if self.abortExpose:
                 break
-            QTest.qWait(100)
+            sleepAndEvents(100)
         return True
 
     def waitCombinedSGPro(self, function, param, expTime):

@@ -30,9 +30,9 @@ if checkAutomation():
 from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
-from PyQt5.QtTest import QTest
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.loggerMW import setCustomLoggingLevel
 from mountcontrol import qtmount
 from gui.mainWindow.mainW import MainWindow
@@ -395,7 +395,7 @@ class MountWizzard4(QObject):
             self.mainW.refreshName()
             self.mainW.refreshModel()
             self.mountUp = True
-            QTest.qWait(500)
+            sleepAndEvents(500)
             self.mount.getTLE()
             return True
 

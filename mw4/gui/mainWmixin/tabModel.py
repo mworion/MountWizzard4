@@ -23,13 +23,12 @@ import json
 from datetime import datetime
 
 # external packages
-from PyQt5.QtTest import QTest
 from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base import transform
-from gui.utilities.toolsQtWidget import QMultiWait
+from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
 from logic.modeldata.modelHandling import writeRetrofitData
 
 
@@ -323,7 +322,7 @@ class Model:
             return False
 
         while self.ui.pauseModel.property('pause'):
-            QTest.qWait(100)
+            sleepAndEvents(100)
         self.log.debug('Imaging started')
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
@@ -837,7 +836,7 @@ class Model:
             return False
         else:
             self.app.message.emit('Actual model clearing, waiting 1s', 0)
-            QTest.qWait(1000)
+            sleepAndEvents(1000)
             self.app.message.emit('Actual model cleared', 0)
             self.refreshModel()
 

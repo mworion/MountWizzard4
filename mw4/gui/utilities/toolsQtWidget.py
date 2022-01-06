@@ -25,6 +25,7 @@ from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QSize, QEvent
+from PyQt5.QtTest import QTest
 import numpy as np
 from qimage2ndarray import rgb_view, array2qimage
 
@@ -37,7 +38,17 @@ __all__ = [
     'MWidget',
     'FileSortProxyModel',
     'QMultiWait',
+    'sleepAndEvents',
 ]
+
+
+def sleepAndEvents(value):
+    """
+    :param value: wait time in msec
+    :return:
+    """
+    QTest.qWait(value)
+    return True
 
 
 class FileSortProxyModel(QSortFilterProxyModel):

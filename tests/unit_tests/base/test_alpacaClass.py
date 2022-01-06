@@ -17,17 +17,19 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+from unittest.mock import patch
 
 # external packages
 import PyQt5
 import pytest
-from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 import requests
 
 # local import
+import base.alpacaClass
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.alpacaClass import AlpacaClass
 from base.loggerMW import setupLogging
 from base.driverDataClass import Signals
@@ -421,8 +423,8 @@ def test_getAndStoreAlpacaProperty():
 def test_workerConnectDevice_1():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(base.alpacaClass,
+                           'sleepAndEvents'):
         with mock.patch.object(app,
                                'setAlpacaProperty'):
             with mock.patch.object(app,
@@ -437,8 +439,8 @@ def test_workerConnectDevice_1():
 def test_workerConnectDevice_2():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(base.alpacaClass,
+                           'sleepAndEvents'):
         with mock.patch.object(app,
                                'setAlpacaProperty'):
             with mock.patch.object(app,

@@ -24,7 +24,6 @@ import glob
 
 # external packages
 from PyQt5.QtWidgets import QInputDialog
-from PyQt5.QtTest import QTest
 from astropy.io import fits
 from skyfield.api import Angle
 import numpy as np
@@ -35,6 +34,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import formatDstrToText, formatDstrToText
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabTools import Tools
+import gui.mainWmixin.tabTools
 import mountcontrol
 
 
@@ -324,8 +324,8 @@ def test_chooseDir_2(function):
 
 def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -334,8 +334,8 @@ def test_moveDuration_1(function):
 
 def test_moveDuration_2(function):
     function.ui.moveDuration.setCurrentIndex(2)
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -344,8 +344,8 @@ def test_moveDuration_2(function):
 
 def test_moveDuration_3(function):
     function.ui.moveDuration.setCurrentIndex(3)
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -354,8 +354,8 @@ def test_moveDuration_3(function):
 
 def test_moveDuration_4(function):
     function.ui.moveDuration.setCurrentIndex(4)
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -364,8 +364,8 @@ def test_moveDuration_4(function):
 
 def test_moveDuration_5(function):
     function.ui.moveDuration.setCurrentIndex(0)
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
         suc = function.moveDuration()
         assert not suc
 

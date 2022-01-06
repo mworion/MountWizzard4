@@ -21,12 +21,13 @@ import unittest.mock as mock
 
 # external packages
 from astropy.io import fits
-from PyQt5.QtTest import QTest
 from skyfield.api import wgs84, Angle
 import numpy as np
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from logic.camera.cameraSupport import CameraSupport
+import logic.camera.cameraSupport
 from base.driverDataClass import Signals
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 
@@ -132,8 +133,8 @@ def test_waitExposed_2(function):
         return function.start
 
     function.abortExpose = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitExposed(func, 'test', 0)
         assert suc
 
@@ -146,8 +147,8 @@ def test_waitExposed_3(function):
         return function.start
 
     function.abortExpose = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitExposed(func, 'test', 1)
         assert suc
 
@@ -155,8 +156,8 @@ def test_waitExposed_3(function):
 def test_waitStart_1(function):
     function.data = {'Device.Message': 'integrating'}
     function.abortExpose = True
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitStart()
         assert suc
 
@@ -168,7 +169,7 @@ def test_waitStart_2(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    QTest.qWait = func
+    logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitStart()
     assert suc
 
@@ -176,8 +177,8 @@ def test_waitStart_2(function):
 def test_waitIntegrate_1(function):
     function.data = {'Device.Message': 'integrating'}
     function.abortExpose = True
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitIntegrate(1)
         assert suc
 
@@ -189,7 +190,7 @@ def test_waitIntegrate_2(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    QTest.qWait = func
+    logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitIntegrate(1)
     assert suc
 
@@ -201,7 +202,7 @@ def test_waitIntegrate_3(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    QTest.qWait = func
+    logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitIntegrate(0)
     assert suc
 
@@ -209,8 +210,8 @@ def test_waitIntegrate_3(function):
 def test_waitDownload_1(function):
     function.data = {'Device.Message': 'downloading'}
     function.abortExpose = True
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitDownload()
         assert suc
 
@@ -222,7 +223,7 @@ def test_waitDownload_2(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    QTest.qWait = func
+    logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitDownload()
     assert suc
 
@@ -230,8 +231,8 @@ def test_waitDownload_2(function):
 def test_waitSave_1(function):
     function.data = {'Device.Message': 'image is ready'}
     function.abortExpose = True
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitSave()
         assert suc
 
@@ -243,7 +244,7 @@ def test_waitSave_2(function):
         function.data = {'Device.Message': 'test'}
 
     function.abortExpose = False
-    QTest.qWait = func
+    logic.camera.cameraSupport.sleepAndEvents = func
     suc = function.waitSave()
     assert suc
 
@@ -256,8 +257,8 @@ def test_waitFinish_1(function):
         return function.start
 
     function.abortExpose = True
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitFinish(func, 0)
         assert suc
 
@@ -270,19 +271,19 @@ def test_waitFinish_2(function):
         return function.start
 
     function.abortExpose = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         suc = function.waitFinish(func, 0)
         assert suc
 
 
 def test_waitCombinedSPro_1(function):
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         with mock.patch.object(function,
                                'waitStart'):
             with mock.patch.object(function,
-                               'waitIntegrate'):
+                                   'waitIntegrate'):
                 with mock.patch.object(function,
                                        'waitDownload'):
                     with mock.patch.object(function,
@@ -294,16 +295,16 @@ def test_waitCombinedSPro_1(function):
 
 
 def test_waitCombinedNINA_1(function):
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(logic.camera.cameraSupport,
+                           'sleepAndEvents'):
         with mock.patch.object(function,
                                'waitIntegrate'):
             with mock.patch.object(function,
                                    'waitStart'):
-                    with mock.patch.object(function,
+                with mock.patch.object(function,
                                        'waitDownload'):
-                        with mock.patch.object(function,
-                                               'waitSave'):
-                            suc = function.waitCombinedNINA(0)
-                            assert suc
+                    with mock.patch.object(function,
+                                           'waitSave'):
+                        suc = function.waitCombinedNINA(0)
+                        assert suc
 

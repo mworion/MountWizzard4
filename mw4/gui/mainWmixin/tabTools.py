@@ -22,11 +22,11 @@ from pathlib import Path
 # external packages
 import PyQt5
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtTest import QTest
 from astropy.io import fits
 from base.transform import J2000ToJNow
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 from mountcontrol.connection import Connection
@@ -352,16 +352,16 @@ class Tools(object):
         :return:
         """
         if self.ui.moveDuration.currentIndex() == 1:
-            QTest.qWait(10000)
+            sleepAndEvents(10000)
 
         elif self.ui.moveDuration.currentIndex() == 2:
-            QTest.qWait(5000)
+            sleepAndEvents(5000)
 
         elif self.ui.moveDuration.currentIndex() == 3:
-            QTest.qWait(2000)
+            sleepAndEvents(2000)
 
         elif self.ui.moveDuration.currentIndex() == 4:
-            QTest.qWait(1000)
+            sleepAndEvents(1000)
 
         else:
             return False

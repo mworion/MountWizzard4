@@ -23,12 +23,12 @@ import time
 # external packages
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtTest import QTest
 
 # local import
 if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
 
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from gui.extWindows.keypadW import KeypadWindow
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsQtWidget import MWidget
@@ -888,7 +888,7 @@ class MainWindow(
                     continue
 
                 waitDeleted = False
-            QTest.qWait(100)
+            sleepAndEvents(100)
         return True
 
     @staticmethod

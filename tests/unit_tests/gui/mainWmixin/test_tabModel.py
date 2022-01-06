@@ -25,7 +25,6 @@ import shutil
 import glob
 
 # external packages
-from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
@@ -38,8 +37,9 @@ from mountcontrol.modelStar import ModelStar
 
 # local import
 from gui.mainWmixin.tabModel import Model
+import gui.mainWmixin.tabModel
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from logic.camera.camera import Camera
 from logic.dome.dome import Dome
 from logic.astrometry.astrometry import Astrometry
@@ -490,7 +490,7 @@ def test_modelImage_2(function):
     def qWaitBreak(a):
         function.ui.pauseModel.setProperty('pause', False)
 
-    QTest.qWait = qWaitBreak
+    gui.mainWmixin.tabModel.sleepAndEvents = qWaitBreak
     function.ui.pauseModel.setProperty('pause', True)
     function
     mPoint = {'lenSequence': 3,

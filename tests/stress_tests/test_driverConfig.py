@@ -23,9 +23,9 @@ import glob
 import pytest
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtTest import QTest
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from mainApp import MountWizzard4
 from base.tpool import Worker
 from loader import extractDataFiles
@@ -131,5 +131,5 @@ def test_configAlpaca(qtbot, qapp):
 
     app.mainW.ui.mainTabWidget.setCurrentIndex(11)
     app.mainW.ui.settingsTabWidget.setCurrentIndex(0)
-    QTest.qWait(5000)
+    sleepAndEvents(5000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)

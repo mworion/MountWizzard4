@@ -18,10 +18,10 @@
 import logging
 
 # external packages
-from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QTimer
 
 # local imports
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from indibase.qtIndiBase import Client
 
 
@@ -544,7 +544,7 @@ class IndiClass:
         self.client.signals.defText.connect(self.addDiscoveredDevice)
         self.client.connectServer()
         self.client.watchDevice()
-        QTest.qWait(2000)
+        sleepAndEvents(2000)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)
         self.client.disconnectServer()
         return self.discoverList

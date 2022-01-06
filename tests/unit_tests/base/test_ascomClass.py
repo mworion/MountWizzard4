@@ -26,14 +26,15 @@ if not platform.system() == 'Windows':
 
 # external packages
 import PyQt5
-from PyQt5.QtTest import QTest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject
 import win32com.client
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.ascomClass import AscomClass
+import base.ascomClass
 from base.loggerMW import setupLogging
 from base.driverDataClass import Signals
 
@@ -185,8 +186,8 @@ def test_getAndStoreAscomProperty():
 def test_workerConnectDevice_1():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(base.ascomClass,
+                           'sleepAndEvents'):
         with mock.patch.object(app,
                                'setAscomProperty'):
             with mock.patch.object(app,
@@ -201,8 +202,8 @@ def test_workerConnectDevice_1():
 def test_workerConnectDevice_2():
     app.serverConnected = False
     app.deviceConnected = False
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(base.ascomClass,
+                           'sleepAndEvents'):
         with mock.patch.object(app,
                                'setAscomProperty'):
             with mock.patch.object(app,

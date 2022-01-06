@@ -24,9 +24,9 @@ if platform.system() == 'Windows':
 
 # external packages
 from PyQt5.QtCore import QTimer, QMutex
-from PyQt5.QtTest import QTest
 
 # local imports
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 from base.driverDataClass import DriverData
 
@@ -180,7 +180,7 @@ class AscomClass(DriverData):
             else:
                 t = f'[{self.deviceName}] connection retry: [{retry}]'
                 self.log.info(t)
-                QTest.qWait(250)
+                sleepAndEvents(250)
         else:
             suc = False
 

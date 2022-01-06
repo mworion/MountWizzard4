@@ -21,12 +21,13 @@ from unittest import mock
 import pytest
 import PyQt5
 from PyQt5.QtCore import QObject, pyqtSignal
-from PyQt5.QtTest import QTest
 from indibase.indiBase import Device
 from base.indiClass import IndiClass
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base import indiClass
+import base.indiClass
 from base.driverDataClass import Signals
 
 host_ip = 'astro-mount.fritz.box'
@@ -502,7 +503,7 @@ def test_addDiscoveredDevice_5(qtbot):
 
 
 def test_discoverDevices_1():
-    with mock.patch.object(QTest,
-                           'qWait'):
+    with mock.patch.object(base.indiClass,
+                           'sleepAndEvents'):
         val = app.discoverDevices('dome')
         assert val == []

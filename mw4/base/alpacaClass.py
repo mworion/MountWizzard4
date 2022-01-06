@@ -21,10 +21,10 @@ import uuid
 
 # external packages
 from PyQt5.QtCore import QTimer
-from PyQt5.QtTest import QTest
 import requests
 
 # local imports
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.driverDataClass import DriverData
 from base.tpool import Worker
 
@@ -340,7 +340,7 @@ class AlpacaClass(DriverData):
             else:
                 t = f' [{self.deviceName}] Connection retry: [{retry}]'
                 self.log.info(t)
-                QTest.qWait(250)
+                sleepAndEvents(250)
 
         if not suc:
             self.app.message.emit(f'ALPACA connect error:[{self.deviceName}]', 2)

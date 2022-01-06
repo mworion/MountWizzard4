@@ -20,12 +20,13 @@ import unittest.mock as mock
 import sys
 import pytest
 import platform
+import time
 
 # external packages
 from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5.QtTest import QTest
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from mw4.update import UpdateGUI, Update
 from base.loggerMW import setupLogging
 
@@ -36,10 +37,10 @@ setupLogging()
 def app():
     with mock.patch.object(QWidget,
                            'show'):
-        with mock.patch.object(QTest,
-                               'qWait'):
-            with mock.patch.object(sys,
-                                   'exit'):
+        with mock.patch.object(sys,
+                               'exit'):
+            with mock.patch.object(time,
+                                   'sleep'):
                 with mock.patch.object(QApplication,
                                        'exec_'):
                     app = UpdateGUI(runnable='python', version='1.2.3')

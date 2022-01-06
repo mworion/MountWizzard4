@@ -32,7 +32,7 @@ from skyfield.api import Angle
 import numpy as np
 
 # local import
-from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from gui.utilities.toolsQtWidget import FileSortProxyModel
 from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
@@ -722,4 +722,9 @@ def test_checkUpdaterOK_3(function):
     function.app.automation.installPath = 'test'
     function.app.automation.updaterApp = 'test'
     suc = function.checkUpdaterOK()
+    assert suc
+
+
+def test_sleepAndEvents(function):
+    suc = sleepAndEvents(1)
     assert suc

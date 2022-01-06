@@ -10,6 +10,10 @@ Unreleased versions of scripts
 
 Released versions of scripts
 ----------------------------
+2.3
+
+- windows only: improved robustness against local installs
+
 2.2
 
 - adding support for astroberry and stellar mate (based on astroberry?)

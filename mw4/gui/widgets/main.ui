@@ -22723,7 +22723,7 @@ When clicking the button, you could change the value.</string>
          <x>400</x>
          <y>15</y>
          <width>366</width>
-         <height>51</height>
+         <height>61</height>
         </rect>
        </property>
        <property name="title">
@@ -22736,7 +22736,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -22757,7 +22757,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>245</x>
-          <y>20</y>
+          <y>25</y>
           <width>116</width>
           <height>21</height>
          </rect>
@@ -22776,7 +22776,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>115</x>
-          <y>20</y>
+          <y>25</y>
           <width>116</width>
           <height>21</height>
          </rect>
@@ -24639,7 +24639,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="ParkPos">
       <attribute name="title">
-       <string>ParkPositions / Relay</string>
+       <string>ParkPos / Relay</string>
       </attribute>
       <widget class="Line" name="line_83">
        <property name="geometry">
@@ -27533,7 +27533,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="AudioMisc">
       <attribute name="title">
-       <string>Update / Time / Audio / GUI / Log</string>
+       <string>Update / TimeSync</string>
       </attribute>
       <widget class="Line" name="line_84">
        <property name="geometry">
@@ -27557,26 +27557,466 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="LoglevelGroup">
+      <widget class="QGroupBox" name="InternetOnlineGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>340</y>
+         <y>15</y>
          <width>366</width>
-         <height>41</height>
+         <height>56</height>
         </rect>
        </property>
        <property name="title">
-        <string>Logging</string>
+        <string>Internet online connection</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QRadioButton" name="loglevelDebug">
+       <widget class="QCheckBox" name="isOnline">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>331</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
+        </property>
+        <property name="text">
+         <string>online and update data files if necessary</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="UpdaterGroup">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>85</y>
+         <width>366</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Updater</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="installVersion">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>264</x>
+          <y>20</y>
+          <width>91</width>
+          <height>46</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting process for updating MountWizzard4 to selected version. MW4 will start an external updater programm. MW4 will be closed during this time. If you would like to keep your settings, please save first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Start 
+Updater</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_23">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Actual version</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_38">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>45</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Available version</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="versionBeta">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Show only beta versions of MountWizzard4</string>
+        </property>
+        <property name="text">
+         <string>Show beta versions</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="versionRelease">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>146</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Show only release versions of MountWizzard4</string>
+        </property>
+        <property name="text">
+         <string>Show releases</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="versionActual">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>135</x>
+          <y>20</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>20</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="versionAvailable">
+        <property name="geometry">
+         <rect>
+          <x>135</x>
+          <y>45</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="maxLength">
+         <number>20</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="versionReleaseNotes">
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>15</y>
+          <y>90</y>
+          <width>146</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Show only beta versions of MountWizzard4</string>
+        </property>
+        <property name="text">
+         <string>Show release notes</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="Line" name="line_87">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>346</width>
+          <height>1</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="GroupClockSync">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>240</y>
+         <width>366</width>
+         <height>66</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Clock sync from computer to mount</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QCheckBox" name="syncTimePC2Mount">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>20</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Sync clocks continously</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="syncNotTracking">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>40</y>
+          <width>176</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Do not sync while tracking</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="clockSync">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable clock comparison</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_18">
+      <attribute name="title">
+       <string>Audio / GUI</string>
+      </attribute>
+      <widget class="QGroupBox" name="automateGroup">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>185</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>Windows automation</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_98">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Timings:</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="automateSlow">
+        <property name="geometry">
+         <rect>
+          <x>275</x>
+          <y>20</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -27593,17 +28033,17 @@ When clicking the button, you could change the value.</string>
          <string>Debug logging will be stored in log file.</string>
         </property>
         <property name="text">
-         <string>Debug</string>
+         <string>Slow</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="loglevelStandard">
+       <widget class="QRadioButton" name="automateFast">
         <property name="geometry">
          <rect>
-          <x>95</x>
-          <y>15</y>
+          <x>100</x>
+          <y>20</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -27620,18 +28060,18 @@ When clicking the button, you could change the value.</string>
          <string>Minimum logging will be stored in log file.</string>
         </property>
         <property name="text">
-         <string>Standard</string>
+         <string>Fast</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="loglevelTrace">
+       <widget class="QRadioButton" name="automateNormal">
         <property name="geometry">
          <rect>
-          <x>270</x>
-          <y>15</y>
-          <width>101</width>
+          <x>180</x>
+          <y>20</y>
+          <width>66</width>
           <height>21</height>
          </rect>
         </property>
@@ -27644,26 +28084,13 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Debug logging and communication will be stored in log file.</string>
+         <string>Debug logging will be stored in log file.</string>
         </property>
         <property name="text">
-         <string>Trace</string>
+         <string>Normal</string>
         </property>
         <property name="checked">
          <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_63">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>15</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Level:</string>
         </property>
        </widget>
       </widget>
@@ -27887,429 +28314,13 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="InternetOnlineGroup">
+      <widget class="QGroupBox" name="GroupGuiAddOns">
        <property name="geometry">
         <rect>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>46</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Internet online connection</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QCheckBox" name="isOnline">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>331</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
-        </property>
-        <property name="text">
-         <string>online and update data files if necessary</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="UpdaterGroup">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>75</y>
-         <width>366</width>
-         <height>126</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Updater</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QPushButton" name="installVersion">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>264</x>
-          <y>20</y>
-          <width>91</width>
-          <height>46</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting process for updating MountWizzard4 to selected version. MW4 will start an external updater programm. MW4 will be closed during this time. If you would like to keep your settings, please save first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Start 
-Updater</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_23">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Actual version</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_38">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Available version</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="versionBeta">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>100</y>
-          <width>171</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Show beta versions</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="versionRelease">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>146</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Show only release versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Show releases</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="versionActual">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>20</y>
-          <width>116</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>20</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="versionAvailable">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>45</y>
-          <width>116</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="maxLength">
-         <number>20</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="versionReleaseNotes">
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>80</y>
-          <width>146</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Show only beta versions of MountWizzard4</string>
-        </property>
-        <property name="text">
-         <string>Show release notes</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="Line" name="line_87">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>75</y>
-          <width>346</width>
-          <height>1</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="GroupClockSync">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>215</y>
-         <width>366</width>
-         <height>56</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Clock sync from computer to mount</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QCheckBox" name="syncTimePC2Mount">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>15</y>
-          <width>171</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Sync clocks continously</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="syncNotTracking">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>35</y>
-          <width>176</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Do not sync while tracking</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="clockSync">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>15</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Enable clock comparison</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="GroupGuiAddOns">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>205</y>
-         <width>366</width>
-         <height>66</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -28322,7 +28333,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>15</y>
+          <y>20</y>
           <width>201</width>
           <height>21</height>
          </rect>
@@ -28352,7 +28363,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
+          <y>45</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -28365,7 +28376,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>175</x>
-          <y>40</y>
+          <y>45</y>
           <width>181</width>
           <height>21</height>
          </rect>
@@ -28390,13 +28401,35 @@ Updater</string>
         </item>
        </widget>
       </widget>
+      <widget class="Line" name="line_90">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>10</y>
+         <width>11</width>
+         <height>371</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>285</y>
+         <y>110</y>
          <width>366</width>
-         <height>41</height>
+         <height>56</height>
         </rect>
        </property>
        <property name="title">
@@ -28409,7 +28442,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>175</x>
-          <y>15</y>
+          <y>25</y>
           <width>181</width>
           <height>21</height>
          </rect>
@@ -28447,7 +28480,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>15</y>
+          <y>25</y>
           <width>136</width>
           <height>21</height>
          </rect>
@@ -28465,131 +28498,15 @@ Updater</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="automateGroup">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>285</y>
-         <width>366</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="title">
-        <string>Windows automation</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_98">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>15</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Timings:</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="automateSlow">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Slow</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="automateFast">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>15</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Minimum logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Fast</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="automateNormal">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>15</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Normal</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
      </widget>
      <widget class="QWidget" name="tab_7">
       <attribute name="title">
-       <string>Misc</string>
+       <string>Log / Misc</string>
       </attribute>
       <widget class="QGroupBox" name="CopyrightGroup_2">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>400</x>
          <y>15</y>
          <width>366</width>
          <height>81</height>
@@ -28615,7 +28532,7 @@ Updater</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial','Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, qimage2ndarray, importlib_metadata, scipy, sep, colour_demosaicing, deepdiff, pywin32, pywinauto&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;astropy, deepdiff, importlib_metadata, pyqt5, pywin32, pywinauto, matplotlib, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -28640,6 +28557,116 @@ p, li { white-space: pre-wrap; }
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
+      </widget>
+      <widget class="QGroupBox" name="LoglevelGroup">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>15</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Logging</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QRadioButton" name="loglevelDebug">
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>20</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Debug logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Debug</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelStandard">
+        <property name="geometry">
+         <rect>
+          <x>95</x>
+          <y>20</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Minimum logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Standard</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelTrace">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Debug logging and communication will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Trace</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_63">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Level:</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -30199,15 +30226,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>showErrorValues</tabstop>
   <tabstop>clearModel</tabstop>
   <tabstop>installVersion</tabstop>
-  <tabstop>loglevelStandard</tabstop>
-  <tabstop>loglevelDebug</tabstop>
-  <tabstop>loglevelTrace</tabstop>
-  <tabstop>soundMountSlewFinished</tabstop>
-  <tabstop>soundDomeSlewFinished</tabstop>
-  <tabstop>soundMountAlert</tabstop>
-  <tabstop>soundModelingFinished</tabstop>
-  <tabstop>soundImageSaved</tabstop>
-  <tabstop>soundImageSolved</tabstop>
   <tabstop>genBuildMax</tabstop>
   <tabstop>genBuildAlign6</tabstop>
   <tabstop>timeShiftDSO</tabstop>
@@ -30437,7 +30455,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>targetRMS</tabstop>
   <tabstop>optimizeOverall</tabstop>
   <tabstop>cancelOptimize</tabstop>
-  <tabstop>activateVirtualStop</tabstop>
   <tabstop>saveConfigAs</tabstop>
   <tabstop>saveConfigQuit</tabstop>
  </tabstops>

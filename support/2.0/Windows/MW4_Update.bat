@@ -24,10 +24,10 @@ echo ##  ##  ##  ##  ##   ###
 echo  ###  ###  #### ##    ##
 echo.
 echo ---------------------------------------------
-echo update script version 2.2
+echo update script version 2.3
 echo ---------------------------------------------
 
-echo update script version 2.2 > update.log 2>&1
+echo update script version 2.3 > update.log 2>&1
 
 echo.
 echo ---------------------------------------------
@@ -86,7 +86,7 @@ echo ---------------------------------------------
 echo python version ok: %P_VER%
 echo ---------------------------------------------
 
-pip install mountwizzard4 --upgrade --no-cache-dir >> update.log 2>&1
+venv\Scripts\python -m pip install mountwizzard4 --upgrade --no-cache-dir >> update.log 2>&1
 
 echo.
 echo ----------------------------------------

@@ -102,8 +102,8 @@ def test_runInstall_1(update):
                            'Popen',
                            return_value=Test()):
         with mock.patch.object(update,
-                               'formatPIP',
-                               return_value='test'):
+                               'isVenv',
+                               return_value=True):
             with mock.patch.object(builtins,
                                    'iter',
                                    return_value=['1', '2']):
@@ -141,8 +141,19 @@ def test_runInstall_2(update):
         with mock.patch.object(update,
                                'formatPIP',
                                return_value=''):
-            suc = update.runInstall()
-            assert not suc
+            with mock.patch.object(update,
+                                   'isVenv',
+                                   return_value=True):
+                suc = update.runInstall()
+                assert not suc
+
+
+def test_runInstall_3(update):
+    with mock.patch.object(update,
+                           'isVenv',
+                           return_value=False):
+        suc = update.runInstall()
+        assert not suc
 
 
 def test_runInstall_3(update):

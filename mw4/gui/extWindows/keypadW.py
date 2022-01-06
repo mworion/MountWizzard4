@@ -18,7 +18,6 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtTest import QTest
 from PyQt5.QtCore import pyqtSignal, QObject, QMutex
 from PyQt5.QtGui import QPixmap
 from qimage2ndarray import array2qimage

@@ -21,7 +21,6 @@ import sys
 import logging
 import subprocess
 import platform
-import time
 
 # external packages
 
@@ -251,7 +250,6 @@ class UpdateGUI:
         self.writeText(text, 2)
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        time.sleep(3)
         self.update.restart(text)
         return True
 
@@ -262,7 +260,6 @@ class UpdateGUI:
         self.cancelButt.setEnabled(False)
         self.updateButt.setEnabled(False)
         self.writeText(f'Installing now version {self.version}', 1)
-        time.sleep(1)
         suc = self.update.runInstall(self.version)
         if suc:
             text = f'Successfully installed {self.version}'
@@ -273,7 +270,6 @@ class UpdateGUI:
 
         self.writeText('Restarting MountWizzard4...', 1)
         self.writeText('...this takes some seconds...', 1)
-        time.sleep(3)
         self.update.restart(text)
         return True
 
@@ -286,7 +282,6 @@ class UpdateCLI:
         self.update = Update(runnable=runnable, writer=self.writeText)
 
         self.writeText(f'Installing now version {self.version}', 1)
-        time.sleep(1)
         suc = self.update.runInstall(self.version)
         if suc:
             text = f'Successfully installed {self.version}'

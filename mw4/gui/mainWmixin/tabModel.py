@@ -322,11 +322,11 @@ class Model:
             self.log.error(f'Empty image queue: {t}')
             return False
 
+        while self.ui.pauseModel.property('pause'):
+            QTest.qWait(100)
         self.log.debug('Imaging started')
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
-        while self.ui.pauseModel.property('pause'):
-            QTest.qWait(100)
 
         self.app.camera.expose(imagePath=mPoint['imagePath'],
                                expTime=mPoint['exposureTime'],

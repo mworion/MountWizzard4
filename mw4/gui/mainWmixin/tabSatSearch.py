@@ -407,7 +407,9 @@ class SatSearch(object):
                     appMag = self.calcAppMag(sat, loc, eph, satRange, timeNow)
                 else:
                     appMag = 99
-
+            else:
+                isSunlit = False
+                appMag = 99
             self.updateTableEntries(row, satParam, isSunlit=isSunlit,
                                     appMag=appMag)
         return True

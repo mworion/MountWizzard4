@@ -27976,7 +27976,7 @@ Updater</string>
      </widget>
      <widget class="QWidget" name="tab_18">
       <attribute name="title">
-       <string>Audio / GUI</string>
+       <string>GUI / Audio</string>
       </attribute>
       <widget class="QGroupBox" name="automateGroup">
        <property name="enabled">

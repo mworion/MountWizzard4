@@ -30,7 +30,8 @@ import PyQt5
 from PyQt5.QtTest import QTest
 
 # local import
-if platform.system() == 'Windows':
+from base.packageConfig import checkAutomation
+if checkAutomation():
     from logic.automation.automateWindows import AutomateWindows
 from mainApp import MountWizzard4
 from base.loggerMW import setupLogging
@@ -63,13 +64,11 @@ def app(qapp):
             with mock.patch.object(PyQt5.QtCore.QBasicTimer,
                                    'start'):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                app.log = logging.getLogger()
                 with mock.patch.object(app.mainW,
-                                       'setAutomationSpeed'):
-                    app.log = logging.getLogger()
-                    with mock.patch.object(app.mainW,
-                                           'setupSatelliteNameList'):
-                        yield app
-                        app.threadPool.waitForDone(5000)
+                                       'setupSatelliteNameList'):
+                    yield app
+                    app.threadPool.waitForDone(5000)
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -103,7 +102,7 @@ def test_checkAndSetAutomation_2(app):
                                'system',
                                return_value='Windows'):
             val = app.checkAndSetAutomation()
-            assert val is None
+            assert val is not None
 
 
 @pytest.mark.skipif(platform.system() != 'Windows',

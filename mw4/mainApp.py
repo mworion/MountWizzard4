@@ -204,10 +204,9 @@ class MountWizzard4(QObject):
             app = automation.updaterApp
             t = f'10micron updater:    [{path}{app}]'
             self.message.emit(t, 1)
-            return automation
         else:
             self.message.emit('No 10micron updater available !', 2)
-            return None
+        return automation
 
     def initConfig(self):
         """

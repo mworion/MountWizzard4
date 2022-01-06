@@ -71,6 +71,10 @@ def test_formatPIP_6(update):
     assert line == 'Successfully installed mountcontrol-0.156'
 
 
+def test_isVenv_1(update):
+    update.isVenv()
+
+
 def test_runInstall_1(update):
     class Test1:
         @staticmethod

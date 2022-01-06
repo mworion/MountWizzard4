@@ -68,12 +68,33 @@ class Update:
 
         return line
 
+    def isVenv(self):
+        """
+        detects if the actual package is running in a virtual environment. this
+        should be the case in any situation as mw4 should be installed in a venv.
+
+        :return: status
+        """
+        hasReal = hasattr(sys, 'real_prefix')
+        hasBase = hasattr(sys, 'base_prefix')
+
+        status = hasReal or hasBase and sys.base_prefix != sys.prefix
+        self.log.debug(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
+        self.log.debug(f'venv path: [{os.environ.get("VIRTUAL_ENV", "")}]')
+        return status
+
     def runInstall(self, versionPackage=''):
         """
         :param versionPackage:   package version to install
         :return: success
         """
-        runnable = ['pip',
+        if not self.isVenv():
+            self.writer('Updater not running in an virtual environment', 2)
+            return False
+
+        runnable = ['python',
+                    '-m',
+                    'pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
                     '--disable-pip-version-check',

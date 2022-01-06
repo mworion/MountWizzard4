@@ -28,6 +28,7 @@ releaseNotes = """
 - improved: auto abort imaging when camera device is disconnected
 - improved: added missing cursor in keypad window
 - improved: 3D simulator drawing
+- improved: updater changes to avoid install in system package
  """
 
 with open('notes.txt', 'w') as f:

@@ -436,7 +436,7 @@ def test_sendSatelliteData_2(function):
 def test_sendSatelliteData_3(function):
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object, object, object)
+        show = pyqtSignal(object, object, object, object, object)
 
     class Test(QObject):
         signals = Test1()

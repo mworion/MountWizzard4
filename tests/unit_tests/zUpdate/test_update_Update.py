@@ -184,10 +184,13 @@ def test_runInstall_4(update):
                            return_value=Test(),
                            side_effect=subprocess.TimeoutExpired('res', 2)):
         with mock.patch.object(update,
-                               'formatPIP',
-                               return_value=''):
-            suc = update.runInstall()
-            assert not suc
+                               'isVenv',
+                               return_value=True):
+            with mock.patch.object(update,
+                                   'formatPIP',
+                                   return_value=''):
+                suc = update.runInstall()
+                assert not suc
 
 
 def test_restart_1(update):

@@ -23,12 +23,24 @@ releaseNotes = """
 - add: support SGPro camera as frontend device
 - add: support N.I.N.A. camera as frontend device
 - add: two modes for SGPro and N.I.N.A.: App / MW4 controlled
-- add: filter satellites visibility for twilight data
+- add: filter satellites for twilight visibility settings
 - add: setting performance for windows automation (slow / normal / fast)
 - improved: auto abort imaging when camera device is disconnected
 - improved: added missing cursor in keypad window
+- improved: flexible satellite handling when mount not connected
 - improved: 3D simulator drawing
 - improved: updater changes to avoid install in system package
+- upgrade: pywin32 library to version 303 (windows)
+- upgrade: skyfield library to 1.41
+- upgrade: numpy library to 1.21.5
+- upgrade: matplotlib to 3.5.1
+- upgrade: scipy library to 1.7.3
+- upgrade requests library to 2.27.2
+- upgrade importlib_metadata library to 4.10.0
+- upgrade deepdiff library to 5.7.0
+- upgrade wakeonlan library to 2.1.0
+- upgrade pybase64 library to 1.2.1
+- upgrade websocket-client library to 1.2.3
  """
 
 with open('notes.txt', 'w') as f:
@@ -68,25 +80,25 @@ setup(
     ],
     python_requires='>=3.7.0, <3.10',
     install_requires=[
-        'numpy==1.21.2',
+        'numpy==1.21.5',
         'pillow==8.3.1',
-        'matplotlib==3.4.2',
+        'matplotlib==3.5.1',
         'pyerfa==2.0.0',
         'astropy==4.3.1',
-        'scipy==1.7.1',
+        'scipy==1.7.3',
         'sep==1.2.0',
-        'requests==2.26.0',
+        'requests==2.27.1',
         'requests_toolbelt==0.9.1',
         'skyfield==1.41',
         'sgp4==2.20',
         'qimage2ndarray==1.8.3',
-        'importlib_metadata==4.6.4',
-        'deepdiff==5.5.0',
-        'wakeonlan==2.0.1',
-        'pybase64==1.2.0',
-        'websocket-client==1.2.1',
+        'importlib_metadata==4.10.0',
+        'deepdiff==5.7.0',
+        'wakeonlan==2.1.0',
+        'pybase64==1.2.1',
+        'websocket-client==1.2.3',
     ]
-    + (['pywin32==301'] if platform.system() == "Windows" else [])
+    + (['pywin32==303'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',

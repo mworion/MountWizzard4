@@ -515,7 +515,7 @@ def test_setVirtualStop(function):
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_1(function):
-    with mock.patch.object(base.packageConfig,
+    with mock.patch.object(gui.mainWmixin.tabSettMisc,
                            'checkAutomation',
                            return_value=False):
         suc = function.setAutomationSpeed()
@@ -524,7 +524,7 @@ def test_setAutomationSpeed_1(function):
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_2(function):
-    with mock.patch.object(base.packageConfig,
+    with mock.patch.object(gui.mainWmixin.tabSettMisc,
                            'checkAutomation',
                            return_value=True):
         suc = function.setAutomationSpeed()

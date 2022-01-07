@@ -169,7 +169,7 @@ def test_workerGetInitialConfig_1():
 def test_workerGetInitialConfig_2():
     val = {
         'Message': 'test',
-        'CanSubframe': True,
+        'SupportsSubframe': True,
         'NumPixelsX': 1000,
         'NumPixelsY': 500,
     }

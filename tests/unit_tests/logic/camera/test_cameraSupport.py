@@ -163,10 +163,10 @@ def test_waitStart_1(function):
 
 
 def test_waitStart_2(function):
-    function.data = {'Device.Message': 'integrating'}
+    function.data = {'Device.Message': 'test'}
 
     def func(p):
-        function.data = {'Device.Message': 'test'}
+        function.data = {'Device.Message': 'integrating'}
 
     function.abortExpose = False
     logic.camera.cameraSupport.sleepAndEvents = func

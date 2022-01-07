@@ -307,24 +307,20 @@ def test_workerPollStatus_1():
 
 def test_workerPollStatus_2():
     app.DEVICE_TYPE = 'Camera'
-
-    app.deviceConnected = True
     with mock.patch.object(app,
                            'requestProperty',
-                           return_value={'State': 5,
+                           return_value={'State': 3,
                                          'Message': 'test'}):
         with mock.patch.object(app,
                                'storePropertyToData'):
-            with mock.patch.object(app,
-                                   'getInitialConfig'):
-                suc = app.workerPollStatus()
-                assert suc
-                assert not app.deviceConnected
+            suc = app.workerPollStatus()
+            assert not suc
 
 
 def test_workerPollStatus_3():
     app.DEVICE_TYPE = 'Camera'
-    app.deviceConnected = False
+
+    app.deviceConnected = True
     with mock.patch.object(app,
                            'requestProperty',
                            return_value={'State': 5,
@@ -340,6 +336,22 @@ def test_workerPollStatus_3():
 
 def test_workerPollStatus_4():
     app.DEVICE_TYPE = 'Camera'
+    app.deviceConnected = False
+    with mock.patch.object(app,
+                           'requestProperty',
+                           return_value={'State': 5,
+                                         'Message': 'test'}):
+        with mock.patch.object(app,
+                               'storePropertyToData'):
+            with mock.patch.object(app,
+                                   'getInitialConfig'):
+                suc = app.workerPollStatus()
+                assert suc
+                assert not app.deviceConnected
+
+
+def test_workerPollStatus_5():
+    app.DEVICE_TYPE = 'Camera'
     app.deviceConnected = True
     with mock.patch.object(app,
                            'requestProperty',
@@ -354,7 +366,7 @@ def test_workerPollStatus_4():
                 assert app.deviceConnected
 
 
-def test_workerPollStatus_5():
+def test_workerPollStatus_6():
     app.DEVICE_TYPE = 'Camera'
     app.deviceConnected = False
     with mock.patch.object(app,

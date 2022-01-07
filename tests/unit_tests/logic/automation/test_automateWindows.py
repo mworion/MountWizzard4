@@ -318,7 +318,7 @@ def test_startUpdater_1(function):
             pass
 
     function.automateFast = False
-    function.automateSlow = False
+    function.automateSlow = True
     with mock.patch.object(automateWindows,
                            'Application',
                            return_value=Test()):
@@ -336,7 +336,7 @@ def test_startUpdater_2(function):
             pass
 
     function.automateFast = True
-    function.automateSlow = True
+    function.automateSlow = False
     with mock.patch.object(automateWindows,
                            'Application',
                            return_value=Test()):

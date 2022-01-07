@@ -68,7 +68,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
-        self.colors = [self.M_RED1, self.M_YELLOW1, self.M_GREEN1]
+        self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
@@ -140,7 +140,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setStyleSheet(self.mw4Style)
-        self.colors = [self.M_RED1, self.M_YELLOW1, self.M_GREEN1]
+        self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.drawSatellite()
         return True
 
@@ -212,11 +212,11 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         observe = self.satellite.at(now)
-        geographic_position_of = wgs84.geographic_position_of(observe)
+        subpoint = wgs84.subpoint(observe)
         difference = self.satellite - location
 
-        self.ui.satLatitude.setText(f'{geographic_position_of.latitude.degrees:3.2f}')
-        self.ui.satLongitude.setText(f'{geographic_position_of.longitude.degrees:3.2f}')
+        self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
+        self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
 
         if self.ui.tabWidget.currentIndex() == 0:
             ra, dec, _ = difference.at(now).radec()
@@ -226,9 +226,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             x, y, z = observe.position.km
             self.plotSatPosSphere1.set_data_3d((x, y, z))
 
-            lat = geographic_position_of.latitude.radians
-            lon = geographic_position_of.longitude.radians
-            elev = geographic_position_of.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
+            lat = subpoint.latitude.radians
+            lon = subpoint.longitude.radians
+            elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
 
             xyz = functions.from_spherical(elev, lat, lon)
             self.plotSatPosSphere2.set_data_3d(xyz)
@@ -241,8 +241,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
             self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
 
-            lat = geographic_position_of.latitude.degrees
-            lon = geographic_position_of.longitude.degrees
+            lat = subpoint.latitude.degrees
+            lon = subpoint.longitude.degrees
             self.plotSatPosEarth.set_data((lon, lat))
 
             alt = alt.degrees
@@ -444,10 +444,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.figure.canvas.draw()
             return False
 
-        geographic_position_ofs = wgs84.geographic_position_of(observe)
-        lat = geographic_position_ofs.latitude.radians
-        lon = geographic_position_ofs.longitude.radians
-        elev = geographic_position_ofs.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
+        subpoints = wgs84.subpoint(observe)
+        lat = subpoints.latitude.radians
+        lon = subpoints.longitude.radians
+        elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
         x, y, z = functions.from_spherical(elev, lat, lon)
         axe.plot(x, y, z, color=self.M_WHITE)
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
@@ -482,7 +482,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def drawEarth(self, obsSite=None, satOrbits=None, altitude=[], azimuth=[]):
         """
-        drawEarth show a full earth view with the path of the geographic_position_of of the
+        drawEarth show a full earth view with the path of the subpoint of the
         satellite drawn on it.
 
         :param obsSite:
@@ -515,10 +515,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.plot(lon, lat, marker='.', markersize=5, color=self.M_YELLOW)
 
         ts = obsSite.ts
-        geographic_position_of = wgs84.geographic_position_of(self.satellite.at(
-            ts.now()))
-        lat = geographic_position_of.latitude.degrees
-        lon = geographic_position_of.longitude.degrees
+        subpoint = wgs84.subpoint(self.satellite.at(ts.now()))
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
         self.plotSatPosEarth, = axe.plot(lon, lat,
                                          marker=self.markerSatellite(),
                                          markersize=35, lw=2, fillstyle='none',
@@ -539,17 +538,17 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
             vector = np.arange(rise, flip, step)
             vecT = ts.tt_jd(vector)
-            geographic_position_ofs = wgs84.geographic_position_of(self.satellite.at(vecT))
-            lat = geographic_position_ofs.latitude.degrees
-            lon = geographic_position_ofs.longitude.degrees
+            subpoints = wgs84.subpoint(self.satellite.at(vecT))
+            lat = subpoints.latitude.degrees
+            lon = subpoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
                 axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i])
 
             vector = np.arange(flip, settle, step)
             vecT = ts.tt_jd(vector)
-            geographic_position_ofs = wgs84.geographic_position_of(self.satellite.at(vecT))
-            lat = geographic_position_ofs.latitude.degrees
-            lon = geographic_position_ofs.longitude.degrees
+            subpoints = wgs84.subpoint(self.satellite.at(vecT))
+            lat = subpoints.latitude.degrees
+            lon = subpoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
                 axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i],
                          linestyle=(0, (0.5, 0.5)))
@@ -559,9 +558,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         step = 0.001 * (settle - rise)
         vector = np.arange(rise - 0.15, settle, step)
         vecT = ts.tt_jd(vector)
-        geographic_position_ofs = wgs84.geographic_position_of(self.satellite.at(vecT))
-        lat = geographic_position_ofs.latitude.degrees
-        lon = geographic_position_ofs.longitude.degrees
+        subpoints = wgs84.subpoint(self.satellite.at(vecT))
+        lat = subpoints.latitude.degrees
+        lon = subpoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
             axe.plot(lon[slc], lat[slc], lw=1, color=self.M_WHITE1, zorder=-10)
         axe.figure.canvas.draw()

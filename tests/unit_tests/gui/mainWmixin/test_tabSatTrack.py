@@ -901,7 +901,8 @@ def test_selectStartEnd_8(function):
 
 
 def test_progTrajectoryToMount_1(function):
-    function.app.deviceStat['mount'] = False
+    function.app.deviceStat['mount'] = True
+    function.ui.useInternalSatCalc.setChecked(True)
     with mock.patch.object(function,
                            'selectStartEnd',
                            return_value=(0, 0)):
@@ -911,24 +912,10 @@ def test_progTrajectoryToMount_1(function):
 
 def test_progTrajectoryToMount_2(function):
     function.app.deviceStat['mount'] = True
-    function.ui.useInternalSatCalc.setChecked(False)
-    with mock.patch.object(function,
-                           'selectStartEnd',
-                           return_value=(1, 2)):
-        with mock.patch.object(function,
-                               'sendSatelliteData'):
-            with mock.patch.object(function.app.mount,
-                                   'calcTLE'):
-                suc = function.progTrajectoryToMount()
-                assert suc
-
-
-def test_progTrajectoryToMount_3(function):
-    function.app.deviceStat['mount'] = True
     function.ui.useInternalSatCalc.setChecked(True)
     with mock.patch.object(function,
                            'selectStartEnd',
-                           return_value=(1, 2)):
+                           return_value=(1, 1)):
         with mock.patch.object(function,
                                'calcTrajectoryData',
                                return_value=(0, 0)):
@@ -939,6 +926,20 @@ def test_progTrajectoryToMount_3(function):
                                        'sendSatelliteData'):
                     suc = function.progTrajectoryToMount()
                     assert suc
+
+
+def test_progTrajectoryToMount_3(function):
+    function.app.deviceStat['mount'] = False
+    function.ui.useInternalSatCalc.setChecked(False)
+    with mock.patch.object(function,
+                           'selectStartEnd',
+                           return_value=(1, 1)):
+        with mock.patch.object(function.app.mount,
+                               'calcTLE'):
+            with mock.patch.object(function,
+                                   'sendSatelliteData'):
+                suc = function.progTrajectoryToMount()
+                assert suc
 
 
 def test_startProg_1(function):

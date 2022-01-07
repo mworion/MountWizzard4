@@ -314,7 +314,7 @@ def test_workerPollStatus_2():
         with mock.patch.object(app,
                                'storePropertyToData'):
             suc = app.workerPollStatus()
-            assert not suc
+            assert suc
 
 
 def test_workerPollStatus_3():

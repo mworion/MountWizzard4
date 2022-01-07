@@ -156,7 +156,7 @@ def test_runInstall_3(update):
         assert not suc
 
 
-def test_runInstall_3(update):
+def test_runInstall_4(update):
     class Test1:
         @staticmethod
         def decode():

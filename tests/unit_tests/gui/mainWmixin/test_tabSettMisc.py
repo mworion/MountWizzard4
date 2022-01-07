@@ -30,6 +30,7 @@ import importlib_metadata
 
 # local import
 from gui.mainWmixin.tabSettMisc import SettMisc
+import gui.mainWmixin.tabSettMisc
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget

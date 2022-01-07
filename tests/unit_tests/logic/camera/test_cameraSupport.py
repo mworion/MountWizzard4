@@ -154,7 +154,7 @@ def test_waitExposed_3(function):
 
 
 def test_waitStart_1(function):
-    function.data = {'Device.Message': 'integrating'}
+    function.data = {'Device.Message': 'test'}
     function.abortExpose = True
     with mock.patch.object(logic.camera.cameraSupport,
                            'sleepAndEvents'):

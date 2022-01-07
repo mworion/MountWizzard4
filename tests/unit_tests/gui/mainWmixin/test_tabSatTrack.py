@@ -442,7 +442,10 @@ def test_sendSatelliteData_3(function):
         signals = Test1()
 
     function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    function.satellite = 1
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     function.satOrbits = 1
     suc = function.sendSatelliteData()
     assert suc

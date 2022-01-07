@@ -359,11 +359,12 @@ class SatTrack(object):
         winObj = self.app.uiWindows['showSatelliteW']
         if not winObj['classObj']:
             return False
-
+        name = self.satellite.name
         winObj['classObj'].signals.show.emit(self.satellite,
                                              self.satOrbits,
                                              alt,
-                                             az)
+                                             az,
+                                             name)
         return True
 
     def clearTrackingParameters(self):

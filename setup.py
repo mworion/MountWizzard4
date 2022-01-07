@@ -19,17 +19,18 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: debayer in all platforms (armv7, StellarMate, Astroberry)
+- add: debayer (4 modes) all platforms (armv7, StellarMate, Astroberry)
 - add: support SGPro camera as frontend device
 - add: support N.I.N.A. camera as frontend device
-- add: two modes for SGPro and N.I.N.A.: App / MW4 controlled
+- add: two modes for SGPro and N.I.N.A.: App or MW4 controlled
 - add: filter satellites for twilight visibility settings
 - add: setting performance for windows automation (slow / normal / fast)
-- improved: auto abort imaging when camera device is disconnected
+- add: auto abort imaging when camera device is disconnected
 - improved: added missing cursor in keypad window
 - improved: flexible satellite handling when mount not connected
+- improved: show selected satellite name in satellite windows title
 - improved: 3D simulator drawing
-- improved: updater changes to avoid install in system package
+- improved: updater now avoids installation into system package
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.5

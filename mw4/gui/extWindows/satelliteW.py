@@ -36,7 +36,7 @@ class SatelliteWindowSignals(QObject):
     """
     """
     __all__ = ['SatelliteWindowSignals']
-    show = pyqtSignal(object, object, object, object)
+    show = pyqtSignal(object, object, object, object, object)
     update = pyqtSignal(object, object)
 
 
@@ -678,7 +678,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         return True
 
     def drawSatellite(self, satellite=None, satOrbits=None, altitude=[],
-                      azimuth=[]):
+                      azimuth=[], name=''):
         """
         drawSatellite draws 4 different views of the actual satellite
         situation: two sphere views, a horizon view and an earth view.
@@ -689,11 +689,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param satOrbits:
         :param altitude:
         :param azimuth:
+        :param name:
         :return: True for test purpose
         """
         if self.closing:
             return False
 
+        self.setWindowTitle(f'Satellite: {name}')
         if satellite is None or satOrbits is None:
             self.drawEarth()
             self.drawHorizonView()

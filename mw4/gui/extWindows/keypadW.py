@@ -36,9 +36,12 @@ class KeypadSignals(QObject):
     textRow = pyqtSignal(object, object)
     imgChunk = pyqtSignal(object, object, object)
     keyPressed = pyqtSignal(object)
+    keyUp = pyqtSignal(object)
+    keyDown = pyqtSignal(object)
     mousePressed = pyqtSignal(object)
     mouseReleased = pyqtSignal(object)
     cursorPos = pyqtSignal(object, object)
+    clearCursor = pyqtSignal()
 
 
 class KeypadWindow(toolsQtWidget.MWidget):
@@ -123,18 +126,32 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals.textRow.disconnect(self.writeTextRow)
         self.signals.cursorPos.disconnect(self.setCursorPos)
         self.signals.imgChunk.disconnect(self.buildGraphics)
+        self.signals.clearCursor.disconnect(self.clearCursor)
         self.app.update1s.disconnect(self.startKeypad)
         self.app.update1s.disconnect(self.drawGraphics)
         self.setupButtons(connect=False)
         super().closeEvent(closeEvent)
 
-    def keyPressEvent(self, keypressEvent):
+    def keyPressEvent(self, keyEvent):
         """
-        :param keypressEvent:
+        :param keyEvent:
         :return:
         """
-        print(keypressEvent)
-        super().keyPressEvent(keypressEvent)
+        key = keyEvent.key()
+        if key == 16777216:
+            key = 27
+        elif key == 16777220:
+            key = 13
+        elif key == 16777249:
+            key == 16
+
+        if self.inputActive and keyEvent.type() == 6:
+            self.signals.keyPressed.emit(key)
+        elif not self.inputActive and keyEvent.type() == 6:
+            self.signals.keyDown.emit(key)
+            self.signals.keyUp.emit(key)
+
+        super().keyPressEvent(keyEvent)
 
     def showWindow(self):
         """
@@ -150,6 +167,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals.textRow.connect(self.writeTextRow)
         self.signals.cursorPos.connect(self.setCursorPos)
         self.signals.imgChunk.connect(self.buildGraphics)
+        self.signals.clearCursor.connect(self.clearCursor)
         self.app.update1s.connect(self.startKeypad)
         self.app.update1s.connect(self.drawGraphics)
         self.setupButtons(connect=True)
@@ -234,8 +252,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         if button not in self.buttons:
             return False
 
-        keyData = self.keypad.buttonCodes[self.buttons[button]]
-        self.signals.mousePressed.emit(keyData)
+        self.signals.mousePressed.emit(self.buttons[button])
         return True
 
     def buttonReleased(self):
@@ -246,8 +263,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         if button not in self.buttons:
             return False
 
-        keyData = self.keypad.buttonCodes[self.buttons[button]]
-        self.signals.mouseReleased.emit(keyData)
+        self.signals.mouseReleased.emit(self.buttons[button])
         return True
 
     def writeTextRow(self, row, text):
@@ -268,7 +284,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
         if row == 4 and not text.startswith('\x00'):
             self.clearGraphics()
 
-        self.clearCursorPos()
         return True
 
     def clearGraphics(self):
@@ -286,12 +301,15 @@ class KeypadWindow(toolsQtWidget.MWidget):
         for row in range(5):
             self.writeTextRow(row, '')
         self.clearGraphics()
+        self.clearCursor()
+        self.inputActive = False
         return True
 
-    def clearCursorPos(self):
+    def clearCursor(self):
         """
         :return:
         """
+        self.inputActive = False
         self.ui.cursor.setVisible(False)
         return True
 

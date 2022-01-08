@@ -21,7 +21,7 @@ import pytest
 
 # external packages
 from PyQt5 import sip
-from PyQt5.QtGui import QCloseEvent
+from PyQt5.QtGui import QCloseEvent, QKeyEvent
 from PyQt5.QtWidgets import QPushButton
 import numpy as np
 
@@ -101,6 +101,90 @@ def test_closeEvent_1(function):
                                        'closeEvent'):
                     function.showWindow()
                     function.closeEvent(QCloseEvent)
+
+
+def test_keyPressEvent_1(function):
+    class KeyEvent:
+        @staticmethod
+        def key():
+            return 0
+
+        @staticmethod
+        def type():
+            return 6
+
+    function.inputActive = True
+    with mock.patch.object(MWidget,
+                           'keyPressEvent'):
+        function.keyPressEvent(KeyEvent())
+
+
+def test_keyPressEvent_2(function):
+    class KeyEvent:
+        @staticmethod
+        def key():
+            return 0
+
+        @staticmethod
+        def type():
+            return 6
+
+    function.inputActive = False
+    function.keypad = None
+    with mock.patch.object(MWidget,
+                           'keyPressEvent'):
+        function.keyPressEvent(KeyEvent())
+
+
+def test_keyPressEvent_3(function):
+    class KeyEvent:
+        @staticmethod
+        def key():
+            return 16777216
+
+        @staticmethod
+        def type():
+            return 6
+
+    function.inputActive = False
+    function.keypad = None
+    with mock.patch.object(MWidget,
+                           'keyPressEvent'):
+        function.keyPressEvent(KeyEvent())
+
+
+def test_keyPressEvent_4(function):
+    class KeyEvent:
+        @staticmethod
+        def key():
+            return 16777220
+
+        @staticmethod
+        def type():
+            return 6
+
+    function.inputActive = False
+    function.keypad = None
+    with mock.patch.object(MWidget,
+                           'keyPressEvent'):
+        function.keyPressEvent(KeyEvent())
+
+
+def test_keyPressEvent_5(function):
+    class KeyEvent:
+        @staticmethod
+        def key():
+            return 16777249
+
+        @staticmethod
+        def type():
+            return 6
+
+    function.inputActive = False
+    function.keypad = None
+    with mock.patch.object(MWidget,
+                           'keyPressEvent'):
+        function.keyPressEvent(KeyEvent())
 
 
 def test_showWindow_1(function):
@@ -252,9 +336,11 @@ def test_clearDisplay(function):
         assert suc
 
 
-def test_clearCursorPos(function):
-    suc = function.clearCursorPos()
+def test_clearCursor(function):
+    function.inputActive = True
+    suc = function.clearCursor()
     assert suc
+    assert not function.inputActive
 
 
 def test_setCursorPos(function):

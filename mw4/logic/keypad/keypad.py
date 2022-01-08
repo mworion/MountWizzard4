@@ -30,6 +30,122 @@ class KeyPad:
     __all__ = ['KeyPad']
     log = logging.getLogger(__name__)
 
+    keyCodesA = {
+        48: 82,
+        49: 92,
+        50: 94,
+        51: 98,
+        52: 32,
+        53: 34,
+        54: 38,
+        55: 22,
+        56: 24,
+        57: 28,
+        27: 84,
+        13: 106,
+        114: 96,
+        113: 88,
+        187: 36,
+        189: 46,
+        38: 11,
+        37: 14,
+        40: 12,
+        39: 18,
+        8: 118
+    }
+
+    keyCodesB = {
+        'a': 13,
+        'b': 15,
+        'c': 16,
+        'd': 17,
+        'e': 19,
+        'f': 20,
+        'g': 21,
+        'h': 23,
+        'i': 25,
+        'j': 26,
+        'k': 27,
+        'l': 29,
+        'm': 30,
+        'n': 31,
+        'o': 33,
+        'p': 35,
+        'q': 37,
+        'r': 39,
+        's': 40,
+        't': 41,
+        'u': 43,
+        'v': 45,
+        'w': 47,
+        'x': 50,
+        'y': 51,
+        'z': 52,
+        ' ': 53,
+        'A': 54,
+        'B': 55,
+        'C': 57,
+        'D': 58,
+        'E': 59,
+        'F': 60,
+        'G': 61,
+        'H': 62,
+        'I': 63,
+        'J': 64,
+        'K': 65,
+        'L': 66,
+        'M': 67,
+        'N': 68,
+        'O': 69,
+        'P': 70,
+        'Q': 71,
+        'R': 72,
+        'S': 73,
+        'T': 74,
+        'U': 75,
+        'V': 76,
+        'W': 77,
+        'X': 78,
+        'Y': 79,
+        'Z': 80,
+        '.': 81,
+        ',': 83,
+        ';': 85,
+        ':': 86,
+        '_': 87,
+        '(': 89,
+        ')': 90,
+        '"': 91,
+        "'": 93,
+        '"': 95,
+        '/': 97,
+        '|': 99,
+        '\\': 100,
+        '%': 101,
+        '&': 103,
+        '@': 105,
+        '=': 107,
+        '?': 109,
+        '[': 110,
+        ']': 111,
+        '<': 112,
+        '>': 113,
+        '0': 82,
+        '1': 92,
+        '2': 94,
+        '3': 98,
+        '4': 32,
+        '5': 34,
+        '6': 38,
+        '7': 22,
+        '8': 24,
+        '9': 28,
+        '\x1b': 84,
+        '\r': 106,
+        '+': 36,
+        '-': 46,
+    }
+
     buttonCodes = {
         'key_0': 82,
         'key_1': 92,
@@ -52,6 +168,7 @@ class KeyPad:
         'key_down': 12,
         'key_right': 18,
     }
+
     charTrans = {
         223: 176,
     }
@@ -60,6 +177,8 @@ class KeyPad:
         self.signals = signals
         self.ws = None
         self.signals.keyPressed.connect(self.keyPressed)
+        self.signals.keyUp.connect(self.keyUp)
+        self.signals.keyDown.connect(self.keyDown)
         self.signals.mousePressed.connect(self.mousePressed)
         self.signals.mouseReleased.connect(self.mouseReleased)
 
@@ -144,8 +263,7 @@ class KeyPad:
             self.signals.cursorPos.emit(value[2] - 1, value[1] - 1)
 
         elif value[0] == 6:
-            pass
-            # print('select 6')
+            self.signals.clearCursor.emit()
 
         elif value[0] == 11:
             pass
@@ -184,6 +302,10 @@ class KeyPad:
         :param key:
         :return:
         """
+        key = self.buttonCodes.get(key, None)
+        if key is None:
+            return False
+
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
@@ -195,6 +317,40 @@ class KeyPad:
         :param key:
         :return:
         """
+        key = self.buttonCodes.get(key, None)
+        if key is None:
+            return False
+
+        message = [2, 5, key]
+        message = message + [self.calcChecksum(message)]
+        message = message + [3]
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        return True
+
+    def keyDown(self, key):
+        """
+        :param key:
+        :return:
+        """
+        key = self.keyCodesA.get(key, None)
+        if key is None:
+            return False
+
+        message = [2, 6, key]
+        message = message + [self.calcChecksum(message)]
+        message = message + [3]
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        return True
+
+    def keyUp(self, key):
+        """
+        :param key:
+        :return:
+        """
+        key = self.keyCodesA.get(key, None)
+        if key is None:
+            return False
+
         message = [2, 5, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
@@ -206,8 +362,21 @@ class KeyPad:
         :param key:
         :return:
         """
-        self.mousePressed(key)
-        self.mouseReleased(key)
+        if key > 255:
+            return False
+
+        key = self.keyCodesB.get(chr(key), None)
+        if key is None:
+            return False
+
+        message = [2, 6, key]
+        message = message + [self.calcChecksum(message)]
+        message = message + [3]
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        message = [2, 5, key]
+        message = message + [self.calcChecksum(message)]
+        message = message + [3]
+        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
         return True
 
     def on_data(self, ws, data, typeOpcode, cont):

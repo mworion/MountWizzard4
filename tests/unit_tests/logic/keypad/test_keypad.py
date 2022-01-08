@@ -33,9 +33,12 @@ def function():
         textRow = pyqtSignal(object, object)
         imgChunk = pyqtSignal(object, object, object)
         keyPressed = pyqtSignal(object)
+        keyUp = pyqtSignal(object)
+        keyDown = pyqtSignal(object)
         mousePressed = pyqtSignal(object)
         mouseReleased = pyqtSignal(object)
         cursorPos = pyqtSignal(object, object)
+        clearCursor = pyqtSignal()
 
     window = KeyPad(signals=Signals())
     yield window
@@ -173,9 +176,20 @@ def test_mousePressed_1(function):
     class WS:
         def send(self, a, b):
             return
+
     function.ws = WS()
-    suc = function.mousePressed(88)
+    suc = function.mousePressed('key_0')
     assert suc
+
+
+def test_mousePressed_2(function):
+    class WS:
+        def send(self, a, b):
+            return
+
+    function.ws = WS()
+    suc = function.mousePressed('test')
+    assert not suc
 
 
 def test_mouseReleased_1(function):
@@ -183,17 +197,77 @@ def test_mouseReleased_1(function):
         def send(self, a, b):
             return
     function.ws = WS()
-    suc = function.mouseReleased(88)
+    suc = function.mouseReleased('key_0')
     assert suc
 
 
+def test_mouseReleased_2(function):
+    class WS:
+        def send(self, a, b):
+            return
+    function.ws = WS()
+    suc = function.mouseReleased('test')
+    assert not suc
+
+
+def test_keyDown_1(function):
+    class WS:
+        def send(self, a, b):
+            return
+
+    function.ws = WS()
+    suc = function.keyDown(48)
+    assert suc
+
+
+def test_keyDown_2(function):
+    class WS:
+        def send(self, a, b):
+            return
+
+    function.ws = WS()
+    suc = function.keyDown(0)
+    assert not suc
+
+
+def test_keyUp_1(function):
+    class WS:
+        def send(self, a, b):
+            return
+    function.ws = WS()
+    suc = function.keyUp(48)
+    assert suc
+
+
+def test_keyUp_2(function):
+    class WS:
+        def send(self, a, b):
+            return
+    function.ws = WS()
+    suc = function.keyUp(0)
+    assert not suc
+
+
 def test_keyPressed_1(function):
+    suc = function.keyPressed(1000)
+    assert not suc
+
+
+def test_keyPressed_2(function):
+    suc = function.keyPressed(10)
+    assert not suc
+
+
+def test_keyPressed_3(function):
+    class WS:
+        def send(self, a, b):
+            return
+
+    function.ws = WS()
     with mock.patch.object(function,
-                           'mousePressed'):
-        with mock.patch.object(function,
-                               'mouseReleased'):
-            suc = function.keyPressed(88)
-            assert suc
+                           'calcChecksum'):
+        suc = function.keyPressed(54)
+        assert suc
 
 
 def test_on_data_1(function):

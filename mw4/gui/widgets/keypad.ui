@@ -994,6 +994,9 @@ PLANET</string>
    <property name="lineWidth">
     <number>3</number>
    </property>
+   <property name="midLineWidth">
+    <number>0</number>
+   </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>

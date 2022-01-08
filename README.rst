@@ -2,9 +2,10 @@ MountWizzard4
 =============
 
 Welcome to MountWizzard4 is a utility for 10micron users for improving the
-workflow for astronomy work and imaging runs on Windows, OSx and Linux
-(Ubuntu 18.04 and 20.04 tested). As a python application, it should run in all
-environments supporting python 3.7-3.9 and PyQt5 as a GUI framework.
+workflow for astronomy work and imaging runs on Windows (10 and 11), OSx (Mojave
+- Monterey), Linux (Ubuntu 18.04 and 20.04) and some Linux ARMV7 distributions
+(Astroberry and StellarMate). As a python application, it should run in all
+environments supporting python 3.7-3.9 and PyQt5 5.15.4 as a GUI framework.
 
 Please check these pages for some hints to your installation:
 https://mountwizzard4.readthedocs.io/en/latest/overview.html
@@ -19,6 +20,9 @@ For being fully operational, MW4 needs either:
 -   ASCOM Alpaca remote server (see: https://ascom-standards.org/FAQs/Index.htm)
     abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
     you want to connect over IP with your environment.
+
+-   Running versions of Sequence Generator Pro or N.I.N.A. as frontend for camera
+    device.
 
 -   For the core devices there is native ASCOM support (Windows platform only).
     Please be reminded, that ASCOM has 32bit and 64bit driver implementations

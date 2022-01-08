@@ -26,7 +26,8 @@ releaseNotes = """
 - add: filter satellites for twilight visibility settings
 - add: setting performance for windows automation (slow / normal / fast)
 - add: auto abort imaging when camera device is disconnected
-- improved: added missing cursor in keypad window
+- add: missing cursor in virtual keypad window
+- add: support for keyboard usage in virtual keypad window
 - improved: flexible satellite handling when mount not connected
 - improved: show selected satellite name in satellite windows title
 - improved: 3D simulator drawing

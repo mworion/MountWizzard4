@@ -58,6 +58,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
         self.buttons = None
+        self.inputActive = False
         self.websocketMutex = QMutex()
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.rows = [
@@ -126,6 +127,14 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.app.update1s.disconnect(self.drawGraphics)
         self.setupButtons(connect=False)
         super().closeEvent(closeEvent)
+
+    def keyPressEvent(self, keypressEvent):
+        """
+        :param keypressEvent:
+        :return:
+        """
+        print(keypressEvent)
+        super().keyPressEvent(keypressEvent)
 
     def showWindow(self):
         """
@@ -292,6 +301,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :param col:
         :return:
         """
+        self.inputActive = True
         x = self.rows[row].x()
         y = self.rows[row].y()
         height = self.rows[row].height()

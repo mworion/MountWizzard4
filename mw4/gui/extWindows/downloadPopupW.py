@@ -64,7 +64,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.move(x, y)
 
         baseName = os.path.basename(url)
-        self.setWindowTitle(f'Downloading [{baseName}]')
+        self.setWindowTitle(f'Downloading {baseName}')
 
         self.threadPool = parentWidget.threadPool
         self.signalProgress.connect(self.setProgressBarToValue)

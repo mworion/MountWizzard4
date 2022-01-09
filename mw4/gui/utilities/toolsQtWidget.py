@@ -193,7 +193,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :param window:
         :return:
         """
-        name = window.windowTitle()
+        name = window.windowTitle().replace(' ', '_')
         timeTrigger = datetime.datetime.now(datetime.timezone.utc)
         timeTag = timeTrigger.strftime('%Y-%m-%d-%H-%M-%S')
         path = self.app.mwGlob['workDir']

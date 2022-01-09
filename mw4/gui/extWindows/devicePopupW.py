@@ -211,7 +211,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        self.setWindowTitle(f'Setup for: {self.deviceType}')
+        self.setWindowTitle(f'Setup driver for {self.deviceType}')
         self.selectTabs()
         self.populateTabs()
         return True

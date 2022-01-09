@@ -695,7 +695,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         if self.closing:
             return False
 
-        self.setWindowTitle(f'Satellite: {name}')
+        self.setWindowTitle(f'Satellite {name}')
         if satellite is None or satOrbits is None:
             self.drawEarth()
             self.drawHorizonView()

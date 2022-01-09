@@ -19,10 +19,10 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: debayer (4 modes) all platforms (armv7, StellarMate, Astroberry)
 - add: support SGPro camera as frontend device
 - add: support N.I.N.A. camera as frontend device
 - add: two modes for SGPro and N.I.N.A.: App or MW4 controlled
+- add: debayer (4 modes) all platforms (armv7, StellarMate, Astroberry)
 - add: filter satellites for twilight visibility settings
 - add: setting performance for windows automation (slow / normal / fast)
 - add: auto abort imaging when camera device is disconnected

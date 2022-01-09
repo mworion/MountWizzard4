@@ -18,6 +18,8 @@
 # standard libraries
 import os
 import logging
+import datetime
+import inspect
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
@@ -30,6 +32,7 @@ import numpy as np
 from qimage2ndarray import rgb_view, array2qimage
 
 # local imports
+import gui
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsMatplotlib import ToolsMatplotlib
 from mountcontrol.convert import formatHstrToText, formatDstrToText
@@ -183,8 +186,48 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             else:
                 if indexValue.startswith(searchString):
                     return index
-
         return 0
+
+    def saveWindowAsPNG(self, window):
+        """
+        :param window:
+        :return:
+        """
+        name = window.windowTitle()
+        timeTrigger = datetime.datetime.now(datetime.timezone.utc)
+        timeTag = timeTrigger.strftime('%Y-%m-%d-%H-%M-%S')
+        path = self.app.mwGlob['workDir']
+        fullFileName = f'{path}/{timeTag}-{name}.png'
+        self.log.info(f'Screenshot: [{fullFileName}]')
+        window.grab().save(fullFileName)
+        return True
+
+    def saveAllWindowsAsPNG(self):
+        """
+        :return:
+        """
+        windows = self.app.uiWindows
+        self.saveWindowAsPNG(self.app.mainW)
+        for window in windows:
+            obj = windows[window]['classObj']
+            if obj:
+                self.saveWindowAsPNG(obj)
+        return True
+
+    def keyPressEvent(self, keyEvent):
+        """
+        Pressing F5 makes a screen copy of the actual window
+        Pressing F6 makes a screen copy of all open windows
+        :param keyEvent:
+        :return:
+        """
+        if keyEvent.key() == 16777268:
+            self.saveWindowAsPNG(self)
+            return
+        elif keyEvent.key() == 16777269:
+            self.saveAllWindowsAsPNG()
+            return
+        super().keyPressEvent(keyEvent)
 
     def img2pixmap(self, img, detect=None, color=None):
         """

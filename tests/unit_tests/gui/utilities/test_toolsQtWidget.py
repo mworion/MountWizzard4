@@ -171,6 +171,62 @@ def test_findIndexValue_5(function):
     assert val == 0
 
 
+def test_saveWindowAsPNG(function):
+    class Save:
+        @staticmethod
+        def save(a):
+            return
+
+    with mock.patch.object(QWidget,
+                           'grab',
+                           return_value=Save()):
+        suc = function.saveWindowAsPNG(QWidget())
+        assert suc
+
+
+def test_saveAllWindowsAsPNG_1(function):
+    function.app.uiWindows = {'test1': {'classObj': None},
+                              'test2': {'classObj': 1}}
+    function.app.mainW = QWidget()
+    with mock.patch.object(function,
+                           'saveWindowAsPNG'):
+        suc = function.saveAllWindowsAsPNG()
+        assert suc
+
+
+def test_keyPressEvent_1(function):
+    class Key:
+        @staticmethod
+        def key():
+            return 16777268
+
+    with mock.patch.object(function,
+                           'saveWindowAsPNG'):
+        function.keyPressEvent(Key())
+
+
+def test_keyPressEvent_2(function):
+    class Key:
+        @staticmethod
+        def key():
+            return 16777269
+
+    with mock.patch.object(function,
+                           'saveAllWindowsAsPNG'):
+        function.keyPressEvent(Key())
+
+
+def test_keyPressEvent_3(function):
+    class Key:
+        @staticmethod
+        def key():
+            return 1
+
+    with mock.patch.object(QWidget,
+                           'keyPressEvent'):
+        function.keyPressEvent(Key())
+
+
 def test_img2pixmap_1(function):
     img = function.img2pixmap(os.getcwd() + '/tests/testData/altitude.png')
     assert isinstance(img, QPixmap)

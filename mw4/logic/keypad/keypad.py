@@ -117,7 +117,7 @@ class KeyPad:
         ')': 90,
         '"': 91,
         "'": 93,
-        '"': 95,
+        # '"': 95, is in the javascript, but duplicate
         '/': 97,
         '|': 99,
         '\\': 100,

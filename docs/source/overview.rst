@@ -17,8 +17,8 @@ polled to make status visible in MW4.
 Overview
 --------
 As a python application, it should run in all environments which support python
-3.7, 3.8 or 3.9 including Qt as a Gui framework. Please notice that python 3.9 and
-older python version prior to 3.7 and python 2 is not supported.
+3.7, 3.8 or 3.9 including Qt as a Gui framework. Please notice that older python
+version prior to 3.7 and python 2 are not supported.
 
 Many video's are linked in the youtube channel:
 

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -18460,7 +18460,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -19918,7 +19918,7 @@ Next point in time when satellite settles.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_402">
+       <widget class="QLabel" name="textCoolerTempUnit">
         <property name="geometry">
          <rect>
           <x>180</x>
@@ -19939,7 +19939,7 @@ Next point in time when satellite settles.</string>
          <string>°</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_400">
+       <widget class="QLabel" name="textCoolerTemp">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -20005,7 +20005,7 @@ Next point in time when satellite settles.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_401">
+       <widget class="QLabel" name="textPower">
         <property name="geometry">
          <rect>
           <x>205</x>
@@ -20090,7 +20090,7 @@ Next point in time when satellite settles.</string>
          <string>Cooler Off</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_407">
+       <widget class="QLabel" name="textCoolerStatus">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -20111,7 +20111,7 @@ Next point in time when satellite settles.</string>
          <string>Cooler status</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_408">
+       <widget class="QLabel" name="textReadoutSpeed">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -20297,7 +20297,7 @@ Next point in time when satellite settles.</string>
          <string>Gain</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_413">
+       <widget class="QLabel" name="textOffset">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -20429,7 +20429,7 @@ Next point in time when satellite settles.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_414">
+       <widget class="QLabel" name="textHumidity">
         <property name="geometry">
          <rect>
           <x>205</x>

@@ -20273,7 +20273,7 @@ Next point in time when satellite settles.</string>
          <string>Binning</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_412">
+       <widget class="QLabel" name="textGain">
         <property name="enabled">
          <bool>true</bool>
         </property>

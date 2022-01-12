@@ -165,7 +165,6 @@ class CameraSGPro(SGProClass, CameraSupport):
                      posY=0,
                      width=1,
                      height=1,
-                     focalLength=1,
                      ):
         """
         :param imagePath:
@@ -176,22 +175,25 @@ class CameraSGPro(SGProClass, CameraSupport):
         :param posY:
         :param width:
         :param height:
-        :param focalLength:
         :return:
         """
-        speed = 'High' if fastReadout else 'Normal'
         params = {'BinningMode': binning,
                   'ExposureLength': max(expTime, 1),
-                  'UseSubframe': True,
-                  'X': int(posX / binning),
-                  'Y': int(posY / binning),
-                  'Width': int(width / binning),
-                  'Height': int(height / binning),
-                  'FrameType': 'Light',
-                  'Speed': speed,
-                  'Path': imagePath,
                   }
+        speed = 'High' if fastReadout else 'Normal'
+        addParams = {
+            'UseSubframe': True,
+            'X': int(posX / binning),
+            'Y': int(posY / binning),
+            'Width': int(width / binning),
+            'Height': int(height / binning),
+            'FrameType': 'Light',
+            'Speed': speed,
+            'Path': imagePath,
+            }
 
+        if 'controlled' not in self.deviceName or True:
+            params = params.update(addParams)
         suc, response = self.sgCaptureImage(params=params)
         if not suc:
             return False

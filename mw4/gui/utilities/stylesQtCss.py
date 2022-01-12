@@ -298,6 +298,9 @@ class Styles:
         QGroupBox::title:disabled{
             color: $M_BLUE1$;
         }
+        QGroupBox[frameless='true'] {
+            border-width: 0px;
+        }        
         QGroupBox::indicator {
             border-width: 1px;
             border-color: $M_GREY$;

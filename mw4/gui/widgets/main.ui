@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -3164,7 +3164,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="refractionTemp1">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3212,7 +3212,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="refractionPress1">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3297,7 +3297,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="powerTemp">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3345,7 +3345,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerDewPoint">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3393,7 +3393,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerHumidity">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3441,7 +3441,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerPress">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3489,7 +3489,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerRainVol">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3537,7 +3537,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerWindDir">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3585,7 +3585,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerWindSpeed">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3633,7 +3633,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerCloudCover">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3681,7 +3681,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="powerSQR">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4082,7 +4082,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="sensorWeatherTemp">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4130,7 +4130,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherPress">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4178,7 +4178,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherDewPoint">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4226,7 +4226,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherHumidity">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4274,7 +4274,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherRainVol">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4322,7 +4322,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindDir">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4370,7 +4370,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindSpeed">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4418,7 +4418,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherCloudCover">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4466,7 +4466,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherSQR">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4536,7 +4536,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="onlineWeatherRainVol">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4584,7 +4584,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindSpeed">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4632,7 +4632,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherCloudCover">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4680,7 +4680,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherTemp">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4728,7 +4728,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherPress">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4776,7 +4776,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherHumidity">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4824,7 +4824,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindDir">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4872,7 +4872,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherDewPoint">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4920,7 +4920,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherSQR">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5074,7 +5074,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="skymeterSQR">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5122,7 +5122,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterTemp">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5170,7 +5170,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterPress">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5218,7 +5218,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterRainVol">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5266,7 +5266,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterWindDir">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5314,7 +5314,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterDewPoint">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5362,7 +5362,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterWindSpeed">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5410,7 +5410,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterHumidity">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5458,7 +5458,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="skymeterCloudCover">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5567,7 +5567,7 @@ to mount</string>
         </property>
         <widget class="QLineEdit" name="directWeatherTemp">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5615,7 +5615,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherPress">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5663,7 +5663,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherDewPoint">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5711,7 +5711,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherHumidity">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -6076,7 +6076,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <widget class="QLineEdit" name="moonPhaseIllumination">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -6124,7 +6124,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="moonPhaseText">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -6215,7 +6215,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="moonPhaseDegree">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -6290,7 +6290,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="moonPhasePercent">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -6390,7 +6390,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <widget class="QLineEdit" name="lunarNodes">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -6481,7 +6481,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <widget class="QLineEdit" name="buildPFileName">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -7681,7 +7681,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="horizonFileName">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8149,7 +8149,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="positionAngle">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8215,7 +8215,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="orthoError">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8260,7 +8260,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="numberStars">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8353,7 +8353,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="azimuthError">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8485,7 +8485,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="altitudeError">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8530,7 +8530,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="errorRMS">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8602,7 +8602,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="terms">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8647,7 +8647,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="polarError">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8827,7 +8827,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="mSlew">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8909,7 +8909,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="mPoints">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -8975,7 +8975,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="mSolve">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -9062,7 +9062,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="mImage">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -9107,7 +9107,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="timeElapsed">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -9173,7 +9173,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="timeFinished">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -9270,7 +9270,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="timeEstimated">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -9662,7 +9662,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="altitudeTurns">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -9728,7 +9728,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="azimuthTurns">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -9937,7 +9937,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QLineEdit" name="errorRMS1">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -10285,7 +10285,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </widget>
       <widget class="QLineEdit" name="numberStars1">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -10410,7 +10410,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <widget class="QLineEdit" name="originalModel">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -10530,6 +10530,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <string>Satellite</string>
     </attribute>
     <widget class="QTabWidget" name="satTabWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -10539,7 +10542,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -11133,7 +11136,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </property>
        <widget class="QLineEdit" name="satSettle_1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11170,7 +11173,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>red</string>
@@ -11199,7 +11202,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satRise_1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11236,7 +11239,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>red</string>
@@ -11328,7 +11331,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satCulminate_1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11365,7 +11368,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>red</string>
@@ -11373,7 +11376,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satFlip_1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11410,7 +11413,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>red</string>
@@ -11418,7 +11421,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satRise_2">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11455,7 +11458,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>yellow</string>
@@ -11463,7 +11466,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satCulminate_2">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11500,7 +11503,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>yellow</string>
@@ -11508,7 +11511,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satFlip_2">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11545,7 +11548,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>yellow</string>
@@ -11553,7 +11556,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satSettle_2">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11590,7 +11593,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>yellow</string>
@@ -11598,7 +11601,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satDate_1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11635,7 +11638,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>red</string>
@@ -11643,7 +11646,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satSettle_3">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11680,7 +11683,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>green</string>
@@ -11688,7 +11691,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satRise_3">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11725,7 +11728,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>green</string>
@@ -11733,7 +11736,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satFlip_3">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11770,7 +11773,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>green</string>
@@ -11778,7 +11781,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satCulminate_3">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11815,7 +11818,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>green</string>
@@ -11823,7 +11826,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satDate_2">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11860,7 +11863,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>yellow</string>
@@ -11868,7 +11871,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satDate_3">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -11905,7 +11908,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="color" stdset="0">
          <string>green</string>
@@ -12016,7 +12019,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
        <widget class="QLineEdit" name="satTrajectoryStart">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12054,7 +12057,7 @@ Next point in time when satellite rises over horizon.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_339">
@@ -12080,7 +12083,7 @@ Next point in time when satellite rises over horizon.</string>
        </widget>
        <widget class="QLineEdit" name="satTrajectoryFlip">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12118,12 +12121,12 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLineEdit" name="satTrajectoryEnd">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12161,7 +12164,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_343">
@@ -12470,7 +12473,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satelliteEpoch">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12507,7 +12510,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_327">
@@ -12554,7 +12557,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satelliteDataAge">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12591,12 +12594,12 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLineEdit" name="satelliteNumber">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12633,12 +12636,12 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLineEdit" name="satelliteName">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12675,7 +12678,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -12828,7 +12831,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QPushButton" name="satOffTimeM10">
@@ -13041,7 +13044,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QPushButton" name="satOffDecM10">
@@ -13254,7 +13257,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QPushButton" name="satOffRaM10">
@@ -13702,6 +13705,9 @@ Next point in time when satellite settles.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QCheckBox" name="powerBootPort4">
       <property name="geometry">
@@ -13821,6 +13827,9 @@ Next point in time when satellite settles.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QCheckBox" name="powerBootPort3">
       <property name="geometry">
@@ -13913,6 +13922,9 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="powerLabel2">
@@ -14019,6 +14031,9 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="powerLabel1">
@@ -14219,6 +14234,9 @@ Next point in time when satellite settles.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QLabel" name="label_287">
       <property name="geometry">
@@ -14287,6 +14305,9 @@ Next point in time when satellite settles.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QLabel" name="label_288">
       <property name="geometry">
@@ -14316,6 +14337,9 @@ Next point in time when satellite settles.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QLineEdit" name="sensorCurrent">
       <property name="enabled">
@@ -14332,6 +14356,9 @@ Next point in time when satellite settles.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QLineEdit" name="consumptionAvgAmps">
       <property name="enabled">
@@ -14347,6 +14374,9 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label_173">
@@ -14376,6 +14406,9 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label_172">
@@ -14437,6 +14470,9 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label_276">
@@ -14628,6 +14664,9 @@ Next point in time when satellite settles.</string>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QLineEdit" name="dewB">
       <property name="enabled">
@@ -14765,6 +14804,9 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLineEdit" name="dewC">
@@ -16567,7 +16609,7 @@ Next point in time when satellite settles.</string>
         </widget>
         <widget class="QLineEdit" name="moveCoordinateRaFloat">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -16604,12 +16646,12 @@ Next point in time when satellite settles.</string>
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="readOnly">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
         </widget>
         <widget class="QLineEdit" name="moveCoordinateDecFloat">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -16646,7 +16688,7 @@ Next point in time when satellite settles.</string>
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="readOnly">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
@@ -16711,7 +16753,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="renameDir">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -16726,6 +16768,9 @@ Next point in time when satellite settles.</string>
           <width>0</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_305">
@@ -19944,7 +19989,7 @@ Next point in time when satellite settles.</string>
         </property>
         <widget class="QLineEdit" name="offsetCam">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -19990,10 +20035,7 @@ Next point in time when satellite settles.</string>
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLabel" name="textCoolerStatus">
@@ -20019,7 +20061,7 @@ Next point in time when satellite settles.</string>
         </widget>
         <widget class="QLineEdit" name="coolerPower">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -20059,7 +20101,7 @@ Next point in time when satellite settles.</string>
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLabel" name="textHumidity">
@@ -20085,7 +20127,7 @@ Next point in time when satellite settles.</string>
         </widget>
         <widget class="QLineEdit" name="coolerTemp">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -20131,10 +20173,7 @@ Next point in time when satellite settles.</string>
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QDoubleSpinBox" name="subFrame">
@@ -20239,7 +20278,7 @@ Next point in time when satellite settles.</string>
         </widget>
         <widget class="QLineEdit" name="humidityCCD">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -20440,7 +20479,7 @@ Next point in time when satellite settles.</string>
         </widget>
         <widget class="QLineEdit" name="gainCam">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -20486,10 +20525,7 @@ Next point in time when satellite settles.</string>
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="input" stdset="0">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLabel" name="textSubFrameUnit">
@@ -20553,7 +20589,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="pixelSizeX">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -20640,7 +20676,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="pixelSizeY">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -20685,7 +20721,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="resolutionX">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -20730,7 +20766,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="resolutionY">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -20859,7 +20895,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="FOVX">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -20904,7 +20940,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="FOVY">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21012,7 +21048,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="pixelY">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21057,7 +21093,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="pixelX">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21123,7 +21159,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="rotation">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21210,7 +21246,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="speed">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21292,7 +21328,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="rayleigh">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21379,7 +21415,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="magLimit">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21424,7 +21460,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="dawes">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21751,7 +21787,7 @@ Next point in time when satellite settles.</string>
        </property>
        <widget class="QLineEdit" name="coverStatusText">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -22442,7 +22478,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="mountMAC">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -22928,7 +22964,7 @@ When clicking the button, you could change the value.</string>
        </property>
        <widget class="QLineEdit" name="fwtime">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -23039,7 +23075,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="product">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -23087,7 +23123,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="fwdate">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -23156,7 +23192,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="hardware">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -23225,7 +23261,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="vString">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -24414,7 +24450,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="domeShutterStatusText">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -27736,7 +27772,7 @@ Updater</string>
        </widget>
        <widget class="QLineEdit" name="versionActual">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -28714,7 +28750,7 @@ p, li { white-space: pre-wrap; }
    </property>
    <widget class="QLineEdit" name="astrometryText">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -28774,7 +28810,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QLineEdit" name="statusText">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -29149,7 +29185,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QLineEdit" name="cameraText">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -29350,7 +29386,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QLineEdit" name="domeText">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -29490,7 +29526,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    </property>
    <widget class="QLineEdit" name="timeUTC">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -29550,7 +29586,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    </widget>
    <widget class="QLineEdit" name="timeComputer">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -29939,7 +29975,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    </property>
    <widget class="QLineEdit" name="profile">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>

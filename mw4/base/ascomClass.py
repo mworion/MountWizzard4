@@ -307,6 +307,7 @@ class AscomClass(DriverData):
         :param loadConfig:
         :return: True for test purpose
         """
+        self.data.clear()
         if not self.deviceName:
             return False
 

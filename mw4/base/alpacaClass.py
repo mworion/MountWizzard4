@@ -443,6 +443,7 @@ class AlpacaClass(DriverData):
         :param loadConfig:
         :return: True for test purpose
         """
+        self.data.clear()
         worker = Worker(self.workerConnectDevice)
         worker.signals.finished.connect(self.getInitialConfig)
         worker.signals.finished.connect(self.startTimer)

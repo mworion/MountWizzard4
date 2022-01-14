@@ -109,21 +109,23 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         :return:
         """
+        if 'controlled' in self.deviceName:
+            return False
         suc, response = self.getCameraProps()
         if not suc:
             return False
 
         self.storePropertyToData(response['Message'],
                                  'CCD_INFO.Message')
-        self.storePropertyToData(response.get('IsoValues', []),
+        self.storePropertyToData(response.get('IsoValues'),
                                  'CCD_INFO.IsoValues')
-        self.storePropertyToData(response.get('GainValues', []),
+        self.storePropertyToData(response.get('GainValues'),
                                  'CCD_INFO.GainValues')
         self.storePropertyToData(response['NumPixelsX'],
                                  'CCD_INFO.CCD_MAX_X')
         self.storePropertyToData(response['NumPixelsY'],
                                  'CCD_INFO.CCD_MAX_Y')
-        canSubframe = response.get('SupportsSubframe', False)
+        canSubframe = response.get('SupportsSubframe')
         if canSubframe:
             self.storePropertyToData(response['NumPixelsX'],
                                      'CCD_FRAME.X')

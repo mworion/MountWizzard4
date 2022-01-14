@@ -197,6 +197,10 @@ class Styles:
             border-style: flat;
             border-radius: 2px;
         }
+        QLineEdit:disabled {
+            background-color: $M_GREY1$;
+            color: $M_GREY$;
+        }
         QLineEdit[keypad] {
             background-color: $M_BACK$;
             color: $M_BLUE$;

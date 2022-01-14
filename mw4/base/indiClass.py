@@ -272,6 +272,7 @@ class IndiClass:
         :param loadConfig:
         :return: success of reconnecting to server
         """
+        self.data.clear()
         self.loadIndiConfig = loadConfig
         self.retryCounter = 0
         self.client.startTimers()

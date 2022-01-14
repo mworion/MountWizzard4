@@ -261,6 +261,7 @@ class NINAClass(DriverData, QObject):
         :param: loadConfig:
         :return: True for test purpose
         """
+        self.data.clear()
         if not self.serverConnected:
             self.serverConnected = True
             self.signals.serverConnected.emit()

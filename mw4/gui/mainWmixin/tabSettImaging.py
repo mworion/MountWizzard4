@@ -99,6 +99,44 @@ class SettImaging(object):
         config['checkAutomaticTelescope'] = self.ui.checkAutomaticTelescope.isChecked()
         return True
 
+    def checkEnableCameraUI(self):
+        coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE')
+        gainCam = self.app.camera.data.get('CCD_GAIN.GAIN')
+        offsetCam = self.app.camera.data.get('CCD_OFFSET.OFFSET')
+        humidityCCD = self.app.camera.data.get('CCD_HUMIDITY.HUMIDITY')
+        coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON')
+        downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW')
+        pixelSizeX = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_X')
+        pixelSizeY = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y')
+        pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X')
+        pixelY = self.app.camera.data.get('CCD_INFO.CCD_MAX_Y')
+
+        enable = coolerTemp is not None
+        self.ui.coolerTemp.setEnabled(enable)
+        enable = coolerPower is not None
+        self.ui.coolerPower.setEnabled(enable)
+        enable = gainCam is not None
+        self.ui.gainCam.setEnabled(enable)
+        enable = offsetCam is not None
+        self.ui.offsetCam.setEnabled(enable)
+        enable = humidityCCD is not None
+        self.ui.humidityCCD.setEnabled(enable)
+        enable = coolerOn is not None
+        self.ui.coolerOn.setEnabled(enable)
+        self.ui.coolerOff.setEnabled(enable)
+        enable = downloadFast is not None
+        self.ui.downloadFast.setEnabled(enable)
+        self.ui.downloadSlow.setEnabled(enable)
+        enable = pixelSizeX is not None
+        self.ui.pixelSizeX.setEnabled(enable)
+        enable = pixelSizeY is not None
+        self.ui.pixelSizeY.setEnabled(enable)
+        enable = pixelX is not None
+        self.ui.pixelX.setEnabled(enable)
+        enable = pixelY is not None
+        self.ui.pixelY.setEnabled(enable)
+
     def updateParameters(self):
         """
         updateParameters reads the data from the classes and writes them to the gui.
@@ -106,6 +144,7 @@ class SettImaging(object):
 
         :return: true for test purpose
         """
+        self.checkEnableCameraUI()
         if self.ui.checkAutomaticTelescope.isChecked():
             self.updateTelescopeParametersToGui()
 

@@ -464,12 +464,6 @@ class SettDevice:
         if isInternal:
             self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_GREEN};')
 
-        deviceName = data['frameworks'][framework]['deviceName']
-        if 'controlled' in deviceName and driver == 'camera':
-            self.enableAppUI()
-        elif 'controlled' not in deviceName and driver == 'camera':
-            self.enableDefaultUI()
-
         self.configDriver(driver=driver)
         if autoStart:
             driverClass.startCommunication(loadConfig=loadConfig)
@@ -629,22 +623,4 @@ class SettDevice:
                                                              f'{self.M_GREY1};')
             self.deviceStat[driver] = False
             self.app.message.emit(f'Disconnected device: [{driver}]', 0)
-        return True
-
-    def enableAppUI(self):
-        """
-        :return: true for test purpose
-        """
-        self.ui.GroupImagingCalculations.setEnabled(False)
-        self.ui.GroupImagingQuality.setEnabled(False)
-        self.ui.GroupControlledCamera.setEnabled(False)
-        return True
-
-    def enableDefaultUI(self):
-        """
-        :return: true for test purpose
-        """
-        self.ui.GroupImagingCalculations.setEnabled(True)
-        self.ui.GroupImagingQuality.setEnabled(True)
-        self.ui.GroupControlledCamera.setEnabled(True)
         return True

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -474,7 +474,7 @@
      </widget>
      <widget class="QLineEdit" name="RAfloat">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -534,7 +534,7 @@
      </widget>
      <widget class="QLineEdit" name="ALT">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -585,7 +585,7 @@
      </widget>
      <widget class="QLineEdit" name="DECfloat">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -669,7 +669,7 @@
      </widget>
      <widget class="QLineEdit" name="HAfloat">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -777,7 +777,7 @@
      </widget>
      <widget class="QLineEdit" name="RA">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -825,7 +825,7 @@
      </widget>
      <widget class="QLineEdit" name="HA">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -873,7 +873,7 @@
      </widget>
      <widget class="QLineEdit" name="AZ">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -921,7 +921,7 @@
      </widget>
      <widget class="QLineEdit" name="DEC">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1072,7 +1072,7 @@
      </widget>
      <widget class="QLineEdit" name="refractionPress">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1141,7 +1141,7 @@
      </widget>
      <widget class="QLineEdit" name="statusRefraction">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1184,7 +1184,7 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -1234,7 +1234,7 @@
      </widget>
      <widget class="QLineEdit" name="slewRate">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1280,7 +1280,7 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -1288,7 +1288,7 @@
      </widget>
      <widget class="QLineEdit" name="pierside">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1333,7 +1333,7 @@
      </widget>
      <widget class="QLineEdit" name="refractionTemp">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1381,7 +1381,7 @@
      </widget>
      <widget class="QLineEdit" name="siteLongitude">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1504,7 +1504,7 @@
      </widget>
      <widget class="QLineEdit" name="UTCExpire">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1552,7 +1552,7 @@
      </widget>
      <widget class="QLineEdit" name="siteLatitude">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1600,7 +1600,7 @@
      </widget>
      <widget class="QLineEdit" name="timeToFlip">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1666,7 +1666,7 @@
      </widget>
      <widget class="QLineEdit" name="statusUnattendedFlip">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1709,7 +1709,7 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -1792,7 +1792,7 @@
      </widget>
      <widget class="QLineEdit" name="timeSidereal">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1879,7 +1879,7 @@
      </widget>
      <widget class="QLineEdit" name="horizonLimitHigh">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1933,7 +1933,7 @@
      </widget>
      <widget class="QLineEdit" name="siteElevation">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2029,7 +2029,7 @@
      </widget>
      <widget class="QLineEdit" name="meridianLimitSlew">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2104,7 +2104,7 @@
      </widget>
      <widget class="QLineEdit" name="statusDualAxisTracking">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2148,7 +2148,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -2180,7 +2180,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="statusGPSSynced">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2297,7 +2297,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="meridianLimitTrack">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2630,7 +2630,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="timeToMeridian">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2675,7 +2675,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="horizonLimitLow">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2735,7 +2735,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="statusWOL">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2778,7 +2778,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -2807,7 +2807,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="mountTypeConnection">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2882,7 +2882,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="statusWebInterface">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -2972,7 +2972,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="timeDeltaPC2Mount">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>

@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -304,7 +304,7 @@
        <rect>
         <x>145</x>
         <y>20</y>
-        <width>116</width>
+        <width>121</width>
         <height>31</height>
        </rect>
       </property>
@@ -326,9 +326,9 @@
      <widget class="QPushButton" name="park">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>20</y>
-        <width>121</width>
+        <width>126</width>
         <height>31</height>
        </rect>
       </property>
@@ -4082,7 +4082,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="sensorWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4130,7 +4130,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4178,7 +4178,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4226,7 +4226,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4274,7 +4274,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherRainVol">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4322,7 +4322,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindDir">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4370,7 +4370,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindSpeed">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4418,7 +4418,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherCloudCover">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4466,7 +4466,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherSQR">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4536,7 +4536,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="onlineWeatherRainVol">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4584,7 +4584,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindSpeed">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4632,7 +4632,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherCloudCover">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4680,7 +4680,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4728,7 +4728,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4776,7 +4776,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4824,7 +4824,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindDir">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4872,7 +4872,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4920,7 +4920,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherSQR">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5567,7 +5567,7 @@ to mount</string>
         </property>
         <widget class="QLineEdit" name="directWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5615,7 +5615,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5663,7 +5663,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5711,7 +5711,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -7407,7 +7407,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortHL">
       <property name="geometry">
        <rect>
-        <x>235</x>
+        <x>240</x>
         <y>20</y>
         <width>111</width>
         <height>20</height>
@@ -7455,7 +7455,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortNothing">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>20</y>
         <width>101</width>
         <height>20</height>
@@ -7482,7 +7482,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QCheckBox" name="checkAvoidFlip">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>55</y>
         <width>336</width>
         <height>20</height>
@@ -7506,7 +7506,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QCheckBox" name="checkAutoDeleteMeridian">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>75</y>
         <width>256</width>
         <height>20</height>
@@ -7533,7 +7533,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>235</x>
+        <x>240</x>
         <y>55</y>
         <width>106</width>
         <height>20</height>
@@ -7557,9 +7557,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="Line" name="line_89">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>45</y>
-        <width>331</width>
+        <width>341</width>
         <height>6</height>
        </rect>
       </property>
@@ -7872,9 +7872,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QPushButton" name="clearBuildP">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>15</x>
        <y>395</y>
-       <width>361</width>
+       <width>366</width>
        <height>25</height>
       </rect>
      </property>
@@ -7988,7 +7988,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QCheckBox" name="keepGeneratedPoints">
      <property name="geometry">
       <rect>
-       <x>25</x>
+       <x>20</x>
        <y>365</y>
        <width>336</width>
        <height>20</height>
@@ -18505,7 +18505,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

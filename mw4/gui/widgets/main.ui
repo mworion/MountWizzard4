@@ -19927,10 +19927,10 @@ Next point in time when satellite settles.</string>
        <widget class="QGroupBox" name="GroupControlledCamera">
         <property name="geometry">
          <rect>
-          <x>9</x>
-          <y>70</y>
-          <width>351</width>
-          <height>131</height>
+          <x>4</x>
+          <y>65</y>
+          <width>361</width>
+          <height>136</height>
          </rect>
         </property>
         <property name="title">
@@ -19948,8 +19948,8 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>280</x>
-           <y>105</y>
+           <x>285</x>
+           <y>110</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -19999,8 +19999,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textCoolerStatus">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>50</y>
+           <x>5</x>
+           <y>60</y>
            <width>91</width>
            <height>21</height>
           </rect>
@@ -20023,8 +20023,8 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>280</x>
-           <y>30</y>
+           <x>285</x>
+           <y>35</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20065,8 +20065,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textHumidity">
          <property name="geometry">
           <rect>
-           <x>195</x>
-           <y>5</y>
+           <x>200</x>
+           <y>10</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -20089,8 +20089,8 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>100</x>
-           <y>30</y>
+           <x>105</x>
+           <y>35</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20140,8 +20140,8 @@ Next point in time when satellite settles.</string>
         <widget class="QDoubleSpinBox" name="subFrame">
          <property name="geometry">
           <rect>
-           <x>100</x>
-           <y>5</y>
+           <x>105</x>
+           <y>10</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20179,8 +20179,8 @@ Next point in time when satellite settles.</string>
         <widget class="QPushButton" name="downloadSlow">
          <property name="geometry">
           <rect>
-           <x>280</x>
-           <y>80</y>
+           <x>285</x>
+           <y>85</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20198,8 +20198,8 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>105</y>
+           <x>5</x>
+           <y>110</y>
            <width>96</width>
            <height>21</height>
           </rect>
@@ -20219,8 +20219,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textPower">
          <property name="geometry">
           <rect>
-           <x>195</x>
-           <y>30</y>
+           <x>200</x>
+           <y>35</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20243,8 +20243,8 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>280</x>
-           <y>5</y>
+           <x>285</x>
+           <y>10</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20285,8 +20285,8 @@ Next point in time when satellite settles.</string>
         <widget class="QPushButton" name="downloadFast">
          <property name="geometry">
           <rect>
-           <x>100</x>
-           <y>75</y>
+           <x>105</x>
+           <y>85</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20301,8 +20301,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textCoolerTempUnit">
          <property name="geometry">
           <rect>
-           <x>170</x>
-           <y>30</y>
+           <x>180</x>
+           <y>35</y>
            <width>16</width>
            <height>21</height>
           </rect>
@@ -20322,8 +20322,8 @@ Next point in time when satellite settles.</string>
         <widget class="QPushButton" name="coolerOn">
          <property name="geometry">
           <rect>
-           <x>100</x>
-           <y>50</y>
+           <x>105</x>
+           <y>60</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20341,8 +20341,8 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>195</x>
-           <y>105</y>
+           <x>200</x>
+           <y>110</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -20362,8 +20362,8 @@ Next point in time when satellite settles.</string>
         <widget class="QPushButton" name="coolerOff">
          <property name="geometry">
           <rect>
-           <x>280</x>
-           <y>55</y>
+           <x>285</x>
+           <y>60</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20378,8 +20378,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textReadoutSpeed">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>75</y>
+           <x>5</x>
+           <y>85</y>
            <width>96</width>
            <height>21</height>
           </rect>
@@ -20399,8 +20399,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textCoolerTemp">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>30</y>
+           <x>5</x>
+           <y>35</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -20420,8 +20420,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textSubFrame">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>5</y>
+           <x>5</x>
+           <y>10</y>
            <width>76</width>
            <height>21</height>
           </rect>
@@ -20444,8 +20444,8 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>100</x>
-           <y>105</y>
+           <x>105</x>
+           <y>110</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20495,8 +20495,8 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textSubFrameUnit">
          <property name="geometry">
           <rect>
-           <x>170</x>
-           <y>5</y>
+           <x>175</x>
+           <y>10</y>
            <width>16</width>
            <height>21</height>
           </rect>

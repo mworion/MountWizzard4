@@ -19949,7 +19949,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>280</x>
-           <y>100</y>
+           <y>105</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20024,7 +20024,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>280</x>
-           <y>25</y>
+           <y>30</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20066,7 +20066,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>195</x>
-           <y>0</y>
+           <y>5</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -20090,7 +20090,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>100</x>
-           <y>25</y>
+           <y>30</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20141,7 +20141,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>100</x>
-           <y>0</y>
+           <y>5</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20180,7 +20180,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>280</x>
-           <y>75</y>
+           <y>80</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20199,7 +20199,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>100</y>
+           <y>105</y>
            <width>96</width>
            <height>21</height>
           </rect>
@@ -20220,7 +20220,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>195</x>
-           <y>25</y>
+           <y>30</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20244,7 +20244,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>280</x>
-           <y>0</y>
+           <y>5</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20302,7 +20302,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>170</x>
-           <y>25</y>
+           <y>30</y>
            <width>16</width>
            <height>21</height>
           </rect>
@@ -20342,7 +20342,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>195</x>
-           <y>100</y>
+           <y>105</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -20363,7 +20363,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>280</x>
-           <y>50</y>
+           <y>55</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20400,7 +20400,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>25</y>
+           <y>30</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -20421,7 +20421,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
+           <y>5</y>
            <width>76</width>
            <height>21</height>
           </rect>
@@ -20445,7 +20445,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>100</x>
-           <y>100</y>
+           <y>105</y>
            <width>66</width>
            <height>21</height>
           </rect>
@@ -20496,7 +20496,7 @@ Next point in time when satellite settles.</string>
          <property name="geometry">
           <rect>
            <x>170</x>
-           <y>0</y>
+           <y>5</y>
            <width>16</width>
            <height>21</height>
           </rect>

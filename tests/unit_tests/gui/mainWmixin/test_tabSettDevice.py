@@ -600,11 +600,49 @@ def test_startDriver_3():
     app.driversData = {
         'telescope': {
             'framework': 'internal',
+            'frameworks': {
+                'internal': {
+                    'deviceName': ''}
             }
+        }
     }
     with mock.patch.object(app,
                            'configDriver'):
         suc = app.startDriver('telescope')
+        assert suc
+
+
+def test_startDriver_4():
+    app.driversData = {
+        'camera': {
+            'framework': 'sgpro',
+            'frameworks': {
+                'sgpro': {
+                    'deviceName': 'controlled'
+                }
+            }
+        }
+    }
+    with mock.patch.object(app,
+                           'configDriver'):
+        suc = app.startDriver('camera')
+        assert suc
+
+
+def test_startDriver_5():
+    app.driversData = {
+        'camera': {
+            'framework': 'sgpro',
+            'frameworks': {
+                'sgpro': {
+                    'deviceName': 'test'
+                }
+            }
+        }
+    }
+    with mock.patch.object(app,
+                           'configDriver'):
+        suc = app.startDriver('camera')
         assert suc
 
 
@@ -822,4 +860,14 @@ def test_deviceDisconnected_2():
     app.sender = Sender
 
     suc = app.deviceDisconnected('dome')
+    assert suc
+
+
+def test_enableAppUI():
+    suc = app.enableAppUI()
+    assert suc
+
+
+def enableDefaultUI():
+    suc = app.enableAppUI()
     assert suc

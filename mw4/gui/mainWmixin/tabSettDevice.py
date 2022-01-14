@@ -466,7 +466,7 @@ class SettDevice:
 
         deviceName = data['frameworks'][framework]['deviceName']
         if 'controlled' in deviceName and driver == 'camera':
-            self.disableNoneAppsUI()
+            self.enableAppUI()
         elif 'controlled' not in deviceName and driver == 'camera':
             self.enableDefaultUI()
 
@@ -631,14 +631,20 @@ class SettDevice:
             self.app.message.emit(f'Disconnected device: [{driver}]', 0)
         return True
 
-    def disableNoneAppsUI(self):
-        self.ui.GroupImagingCalculations.setVisible(False)
-        self.ui.GroupImagingQuality.setVisible(False)
-        self.ui.GroupControlledCamera.setVisible(False)
+    def enableAppUI(self):
+        """
+        :return: true for test purpose
+        """
+        self.ui.GroupImagingCalculations.setEnabled(False)
+        self.ui.GroupImagingQuality.setEnabled(False)
+        self.ui.GroupControlledCamera.setEnabled(False)
         return True
 
     def enableDefaultUI(self):
-        self.ui.GroupImagingCalculations.setVisible(True)
-        self.ui.GroupImagingQuality.setVisible(True)
-        self.ui.GroupControlledCamera.setVisible(True)
+        """
+        :return: true for test purpose
+        """
+        self.ui.GroupImagingCalculations.setEnabled(True)
+        self.ui.GroupImagingQuality.setEnabled(True)
+        self.ui.GroupControlledCamera.setEnabled(True)
         return True

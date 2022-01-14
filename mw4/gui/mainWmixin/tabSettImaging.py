@@ -242,10 +242,8 @@ class SettImaging(object):
         actValue = self.app.camera.data.get(
             'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', None)
         if actValue is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when not connected !')
             return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set cooler temperature',
@@ -265,13 +263,10 @@ class SettImaging(object):
         """
         :return: success
         """
-        msg = PyQt5.QtWidgets.QMessageBox
         actValue = self.app.camera.data.get('CCD_OFFSET.OFFSET', None)
         if actValue is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when not connected !')
             return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set offset',
@@ -291,14 +286,10 @@ class SettImaging(object):
         """
         :return: success
         """
-        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = self.app.camera.data.get('CCD_GAIN.GAIN', None)
         minGain = self.app.camera.data.get('CCD_INFO.GAIN_MIN', 1)
         maxGain = self.app.camera.data.get('CCD_INFO.GAIN_MAX', 200)
-        actValue = self.app.camera.data.get('CCD_GAIN.GAIN', None)
         if actValue is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
@@ -319,14 +310,9 @@ class SettImaging(object):
         """
         :return: success
         """
-        msg = PyQt5.QtWidgets.QMessageBox
         data = self.app.filter.data
-
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
         if actValue is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when not connected !')
             return False
 
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
@@ -359,14 +345,9 @@ class SettImaging(object):
         """
         :return: success
         """
-        msg = PyQt5.QtWidgets.QMessageBox
         data = self.app.filter.data
-
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
         if actValue is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when not connected !')
             return False
 
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
@@ -540,14 +521,11 @@ class SettImaging(object):
         """
         :return: success
         """
-        msg = PyQt5.QtWidgets.QMessageBox
         actValue = self.app.cover.data.get(
             'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
         if actValue is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when not connected !')
             return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set light intensity',

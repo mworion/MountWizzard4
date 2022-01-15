@@ -215,6 +215,46 @@ def test_updateNumber_3():
         assert suc
 
 
+def test_updateNumber_4():
+    app.device = Device()
+    data = {
+        'elementList': {
+            'GAIN': {
+                'min': 1,
+                'max': 1
+            }
+        }
+    }
+    setattr(app.device, 'CCD_GAIN', data)
+    with mock.patch.object(IndiClass,
+                           'updateNumber',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'setExposureState'):
+            suc = app.updateNumber('test', 'CCD_GAIN')
+        assert suc
+
+
+def test_updateNumber_5():
+    app.device = Device()
+    data = {
+        'elementList': {
+            'OFFSET': {
+                'min': 1,
+                'max': 1
+            }
+        }
+    }
+    setattr(app.device, 'CCD_OFFSET', data)
+    with mock.patch.object(IndiClass,
+                           'updateNumber',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'setExposureState'):
+            suc = app.updateNumber('test', 'CCD_OFFSET')
+        assert suc
+
+
 def test_updateHeaderInfo_1():
     header = {}
     app.app.mount.obsSite.raJNow = None

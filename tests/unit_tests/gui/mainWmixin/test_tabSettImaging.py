@@ -84,6 +84,51 @@ def test_storeConfig_1():
     assert suc
 
 
+def test_checkEnableCameraUI():
+    suc = app.checkEnableCameraUI()
+    assert suc
+
+
+def test_updateGainOffset_1():
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = 0
+    app.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    app.app.camera.data['CCD_GAIN.GAIN'] = 0
+    app.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
+    suc = app.updateGainOffset()
+    assert suc
+
+
+def test_updateGainOffset_2():
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = None
+    app.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = None
+    app.app.camera.data['CCD_GAIN.GAIN'] = None
+    app.app.camera.data['CCD_GAIN.GAIN_LIST'] = None
+    suc = app.updateGainOffset()
+    assert suc
+
+
+def test_updateCooler_1():
+    app.app.camera.data['CCD_COOLER.COOLER_ON'] = False
+    suc = app.updateCooler()
+    assert suc
+
+
+def test_updateCooler_2():
+    app.app.camera.data['CCD_COOLER.COOLER_ON'] = True
+    suc = app.updateCooler()
+    assert suc
+
+
+def test_updateFilter():
+    suc = app.updateFilter()
+    assert suc
+
+
+def test_updateFocuser():
+    suc = app.updateFocuser()
+    assert suc
+
+
 def test_updateParameters_1():
     suc = app.updateParameters()
     assert suc
@@ -94,9 +139,7 @@ def test_updateParameters_2():
     app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     app.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
     app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
-    app.app.camera.data['CCD_COOLER.COOLER_ON'] = True
     app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
-    app.app.camera.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = None
 
     app.ui.checkAutomaticTelescope.setChecked(True)
     with mock.patch.object(app,
@@ -110,9 +153,7 @@ def test_updateParameters_3():
     app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     app.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
     app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
-    app.app.camera.data['CCD_COOLER.COOLER_ON'] = True
     app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
-    app.app.camera.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 0
     app.ui.checkAutomaticTelescope.setChecked(False)
     app.ui.aperture.setValue(0)
     app.ui.focalLength.setValue(0)
@@ -183,82 +224,112 @@ def test_setCoolerTemp_5():
             assert not suc
 
 
-def test_setGain_1():
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        suc = app.setGain()
-        assert not suc
-
-
-def test_setGain_2():
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            suc = app.setGain()
-            assert not suc
-
-
-def test_setGain_3():
-    app.app.camera.data['CCD_GAIN.GAIN'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            suc = app.setGain()
-            assert suc
-
-
-def test_setGain_4():
-    app.app.camera.data['CCD_GAIN.GAIN'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, False)):
-            suc = app.setGain()
-            assert not suc
-
-
 def test_setOffset_1():
-    with mock.patch.object(QMessageBox,
-                           'critical'):
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = None
+    suc = app.setOffset()
+    assert not suc
+
+
+def test_setOffset_2():
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_MIN'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_MAX'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    with mock.patch.object(QInputDialog,
+                           'getItem',
+                           return_value=('1', False)):
         suc = app.setOffset()
         assert not suc
 
 
-def test_setOffset_2():
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            suc = app.setOffset()
-            assert not suc
-
-
 def test_setOffset_3():
-    app.app.camera.data['CCD_OFFSET.OFFSET'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            suc = app.setOffset()
-            assert suc
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_MIN'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_MAX'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    with mock.patch.object(QInputDialog,
+                           'getItem',
+                           return_value=('1', True)):
+        suc = app.setOffset()
+        assert suc
 
 
 def test_setOffset_4():
-    app.app.camera.data['CCD_OFFSET.OFFSET'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, False)):
-            suc = app.setOffset()
-            assert not suc
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_MIN'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_MAX'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = None
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=('1', True)):
+        suc = app.setOffset()
+        assert suc
+
+
+def test_setOffset_5():
+    app.app.camera.data['CCD_OFFSET.OFFSET'] = 1
+    app.app.camera.data['CCD_OFFSET.OFFSET_MIN'] = None
+    app.app.camera.data['CCD_OFFSET.OFFSET_MAX'] = None
+    app.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = None
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=('1', True)):
+        suc = app.setOffset()
+        assert suc
+
+
+def test_setGain_1():
+    app.app.camera.data['CCD_GAIN.GAIN'] = None
+    suc = app.setGain()
+    assert not suc
+
+
+def test_setGain_2():
+    app.app.camera.data['CCD_GAIN.GAIN'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_MIN'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_MAX'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
+    with mock.patch.object(QInputDialog,
+                           'getItem',
+                           return_value=('1', False)):
+        suc = app.setGain()
+        assert not suc
+
+
+def test_setGain_3():
+    app.app.camera.data['CCD_GAIN.GAIN'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_MIN'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_MAX'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
+    with mock.patch.object(QInputDialog,
+                           'getItem',
+                           return_value=('1', True)):
+        suc = app.setGain()
+        assert suc
+
+
+def test_setGain_4():
+    app.app.camera.data['CCD_GAIN.GAIN'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_MIN'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_MAX'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_LIST'] = None
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=('1', True)):
+        suc = app.setGain()
+        assert suc
+
+
+def test_setGain_5():
+    app.app.camera.data['CCD_GAIN.GAIN'] = 1
+    app.app.camera.data['CCD_GAIN.GAIN_MIN'] = None
+    app.app.camera.data['CCD_GAIN.GAIN_MAX'] = None
+    app.app.camera.data['CCD_GAIN.GAIN_LIST'] = None
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=('1', True)):
+        suc = app.setGain()
+        assert suc
 
 
 def test_setFilterNumber_1():

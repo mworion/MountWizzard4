@@ -135,14 +135,18 @@ class CameraIndi(IndiClass):
             elements = self.device.CCD_GAIN['elementList']['GAIN']
             self.data['CCD_GAIN.GAIN_MIN'] = elements.get('min', 0)
             self.data['CCD_GAIN.GAIN_MAX'] = elements.get('max', 0)
+
         if propertyName == 'CCD_OFFSET':
             elements = self.device.CCD_OFFSET['elementList']['OFFSET']
             self.data['CCD_OFFSET.OFFSET_MIN'] = elements.get('min', 0)
             self.data['CCD_OFFSET.OFFSET_MAX'] = elements.get('max', 0)
+
         if not super().updateNumber(deviceName, propertyName):
             return False
+
         if propertyName == 'CCD_EXPOSURE':
             self.setExposureState()
+
         if propertyName == 'CCD_TEMPERATURE':
             self.data['CAN_SET_CCD_TEMPERATURE'] = True
         return True

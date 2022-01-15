@@ -199,21 +199,24 @@ class CameraSGPro(SGProClass, CameraSupport):
         else:
             speedParams = {}
 
-        if 'controlled' not in self.deviceName or True:
+        if 'controlled' not in self.deviceName:
             params = {**params, **addParams, **speedParams}
 
         suc, response = self.sgCaptureImage(params=params)
         if not suc:
             return False
+
         receipt = response.get('Receipt', '')
         if not receipt:
             return False
+
         self.waitCombinedSGPro(self.sgGetImagePath, receipt, expTime)
         if not self.abortExpose:
             pre, ext = os.path.splitext(imagePath)
             os.rename(pre + '.fit', imagePath)
         else:
             imagePath = ''
+
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
         self.signals.message.emit('')

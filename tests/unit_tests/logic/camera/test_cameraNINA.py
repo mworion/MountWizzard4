@@ -157,6 +157,13 @@ def test_getCameraProps_2():
 
 
 def test_workerGetInitialConfig_1():
+    app.deviceName = 'controlled'
+    suc = app.workerGetInitialConfig()
+    assert not suc
+
+
+def test_workerGetInitialConfig_2():
+    app.deviceName = 'test'
     with mock.patch.object(app,
                            'storePropertyToData'):
         with mock.patch.object(app,
@@ -166,12 +173,15 @@ def test_workerGetInitialConfig_1():
             assert not suc
 
 
-def test_workerGetInitialConfig_2():
+def test_workerGetInitialConfig_3():
+    app.deviceName = 'test'
     val = {
         'Message': 'test',
         'SupportsSubframe': True,
         'NumPixelsX': 1000,
         'NumPixelsY': 500,
+        'GainValues': ['1'],
+        'IsoValues': ['1'],
     }
     with mock.patch.object(app,
                            'storePropertyToData'):
@@ -183,6 +193,13 @@ def test_workerGetInitialConfig_2():
 
 
 def test_workerPollData_1():
+    app.deviceName = 'controlled'
+    suc = app.workerPollData()
+    assert not suc
+
+
+def test_workerPollData_2():
+    app.deviceName = 'test'
     app.data['CAN_FAST'] = True
     with mock.patch.object(app,
                            'getCameraTemp',
@@ -191,7 +208,8 @@ def test_workerPollData_1():
         assert not suc
 
 
-def test_workerPollData_2():
+def test_workerPollData_3():
+    app.deviceName = 'test'
     app.data['CAN_FAST'] = True
     with mock.patch.object(app,
                            'getCameraTemp',
@@ -201,11 +219,8 @@ def test_workerPollData_2():
 
 
 def test_sendDownloadMode_1():
-    app.data['CAN_FAST'] = True
-    with mock.patch.object(app,
-                           'storePropertyToData'):
-        suc = app.sendDownloadMode()
-        assert suc
+    suc = app.sendDownloadMode()
+    assert suc
 
 
 def test_workerExpose_1():
@@ -217,6 +232,7 @@ def test_workerExpose_1():
 
 
 def test_workerExpose_2():
+    app.deviceName = 'test'
     with mock.patch.object(app,
                            'captureImage',
                            return_value=(True, {})):
@@ -225,6 +241,7 @@ def test_workerExpose_2():
 
 
 def test_workerExpose_3():
+    app.deviceName = 'test'
     with mock.patch.object(app,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):
@@ -241,6 +258,8 @@ def test_workerExpose_3():
 
 
 def test_workerExpose_4():
+    app.deviceName = 'test'
+    app.data['READOUT_QUALITY.QUALITY_LOW'] = True
     with mock.patch.object(app,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):

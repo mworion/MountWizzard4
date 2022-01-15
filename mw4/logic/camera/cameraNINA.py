@@ -200,18 +200,21 @@ class CameraNINA(NINAClass, CameraSupport):
         else:
             speedParams = {}
 
-        if 'controlled' not in self.deviceName or True:
+        if 'controlled' not in self.deviceName:
             params = {**params, **addParams, **speedParams}
 
         suc, response = self.captureImage(params=params)
         if not suc:
             return False
+
         receipt = response.get('Receipt', '')
         if not receipt:
             return False
+
         self.waitCombinedNINA(expTime)
         if self.abortExpose:
             imagePath = ''
+
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
         self.signals.message.emit('')

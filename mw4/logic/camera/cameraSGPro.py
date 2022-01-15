@@ -119,9 +119,11 @@ class CameraSGPro(SGProClass, CameraSupport):
         self.storePropertyToData(response['Message'],
                                  'CCD_INFO.Message')
         self.storePropertyToData(response.get('IsoValues'),
-                                 'CCD_INFO.IsoValues')
+                                 'CCD_GAIN.GAIN_LIST')
         self.storePropertyToData(response.get('GainValues'),
-                                 'CCD_INFO.GainValues')
+                                 'CCD_GAIN.GAIN_LIST')
+        self.storePropertyToData(1,
+                                 'CCD_GAIN.GAIN')
         self.storePropertyToData(response['NumPixelsX'],
                                  'CCD_INFO.CCD_MAX_X')
         self.storePropertyToData(response['NumPixelsY'],
@@ -282,6 +284,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         if not self.deviceConnected:
             return False
+        self.data['CCD_OFFSET.OFFSET'] = offset
         return True
 
     def sendGain(self, gain=0):
@@ -291,4 +294,5 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         if not self.deviceConnected:
             return False
+        self.data['CCD_GAIN.GAIN'] = gain
         return True

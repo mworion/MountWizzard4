@@ -100,6 +100,9 @@ class SettImaging(object):
         return True
 
     def checkEnableCameraUI(self):
+        """
+        :return:
+        """
         coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE')
         gainCam = self.app.camera.data.get('CCD_GAIN.GAIN')
@@ -136,6 +139,65 @@ class SettImaging(object):
         self.ui.pixelX.setEnabled(enable)
         enable = pixelY is not None
         self.ui.pixelY.setEnabled(enable)
+        return True
+
+    def updateGainOffset(self):
+        """
+        :return:
+        """
+        actValue = self.app.camera.data.get('CCD_OFFSET.OFFSET')
+        offsetList = self.app.camera.data.get('CCD_OFFSET.OFFSET_LIST')
+        if offsetList is not None and actValue is not None:
+            offsetList = list(offsetList)
+            self.guiSetText(self.ui.offsetCam, 's', offsetList[actValue])
+        else:
+            self.guiSetText(self.ui.offsetCam, '3.0f', actValue)
+
+        actValue = self.app.camera.data.get('CCD_GAIN.GAIN')
+        gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
+        if gainList is not None and actValue is not None:
+            gainList = list(gainList)
+            self.guiSetText(self.ui.gainCam, 's', gainList[actValue])
+        else:
+            self.guiSetText(self.ui.gainCam, '3.0f', actValue)
+
+        return True
+
+    def updateCooler(self):
+        """
+        :return:
+        """
+        coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+        coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
+        coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON', False)
+        self.guiSetText(self.ui.coolerTemp, '3.1f', coolerTemp)
+        self.guiSetText(self.ui.coolerPower, '3.1f', coolerPower)
+        if coolerOn:
+            self.changeStyleDynamic(self.ui.coolerOn, 'running', True)
+            self.changeStyleDynamic(self.ui.coolerOff, 'running', False)
+        else:
+            self.changeStyleDynamic(self.ui.coolerOn, 'running', False)
+            self.changeStyleDynamic(self.ui.coolerOff, 'running', True)
+        return True
+
+    def updateFilter(self):
+        """
+        :return:
+        """
+        filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+        key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
+        filterName = self.app.filter.data.get(key, 'not found')
+        self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
+        self.guiSetText(self.ui.filterName, 's', filterName)
+        return True
+
+    def updateFocuser(self):
+        """
+        :return:
+        """
+        focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
+        self.guiSetText(self.ui.focuserPosition, '6.0f', focus)
+        return True
 
     def updateParameters(self):
         """
@@ -148,6 +210,11 @@ class SettImaging(object):
         if self.ui.checkAutomaticTelescope.isChecked():
             self.updateTelescopeParametersToGui()
 
+        self.updateGainOffset()
+        self.updateCooler()
+        self.updateFilter()
+        self.updateFocuser()
+
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
         pixelSizeX = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
@@ -157,15 +224,8 @@ class SettImaging(object):
         maxBinX = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
         maxBinY = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
         rotation = self.app.camera.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
-        coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
-        coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
-        gainCam = self.app.camera.data.get('CCD_GAIN.GAIN')
-        offsetCam = self.app.camera.data.get('CCD_OFFSET.OFFSET')
         humidityCCD = self.app.camera.data.get('CCD_HUMIDITY.HUMIDITY')
-        coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON', False)
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
-        focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
-        filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
 
         if maxBinX and maxBinY:
             maxBin = min(maxBinX, maxBinY)
@@ -180,9 +240,6 @@ class SettImaging(object):
         self.app.camera.checkFastDownload = self.ui.checkFastDownload.isChecked()
         self.app.telescope.focalLength = focalLength
         self.app.telescope.aperture = aperture
-
-        key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
-        filterName = self.app.filter.data.get(key, 'not found')
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -212,8 +269,6 @@ class SettImaging(object):
             FOVX = None
             FOVY = None
 
-        self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
-        self.guiSetText(self.ui.filterName, 's', filterName)
         self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
         self.guiSetText(self.ui.pixelSizeY, '2.2f', pixelSizeY)
@@ -221,11 +276,6 @@ class SettImaging(object):
         self.guiSetText(self.ui.pixelY, '5.0f', pixelY)
         self.guiSetText(self.ui.rotation, '3.1f', rotation)
         self.guiSetText(self.ui.humidityCCD, '3.1f', humidityCCD)
-        self.guiSetText(self.ui.coolerTemp, '3.1f', coolerTemp)
-        self.guiSetText(self.ui.coolerPower, '3.1f', coolerPower)
-        self.guiSetText(self.ui.gainCam, '3.0f', gainCam)
-        self.guiSetText(self.ui.offsetCam, '3.0f', offsetCam)
-        self.guiSetText(self.ui.focuserPosition, '6.0f', focus)
         self.guiSetText(self.ui.resolutionX, '2.2f', resolutionX)
         self.guiSetText(self.ui.resolutionY, '2.2f', resolutionY)
         self.guiSetText(self.ui.dawes, '2.2f', dawes)
@@ -233,13 +283,6 @@ class SettImaging(object):
         self.guiSetText(self.ui.magLimit, '2.2f', magLimit)
         self.guiSetText(self.ui.FOVX, '2.2f', FOVX)
         self.guiSetText(self.ui.FOVY, '2.2f', FOVY)
-
-        if coolerOn:
-            self.changeStyleDynamic(self.ui.coolerOn, 'running', True)
-            self.changeStyleDynamic(self.ui.coolerOff, 'running', False)
-        else:
-            self.changeStyleDynamic(self.ui.coolerOn, 'running', False)
-            self.changeStyleDynamic(self.ui.coolerOff, 'running', True)
 
         if downloadFast:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', True)
@@ -277,7 +320,6 @@ class SettImaging(object):
         if not canSetCCDTemp:
             return False
 
-        msg = PyQt5.QtWidgets.QMessageBox
         actValue = self.app.camera.data.get(
             'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', None)
         if actValue is None:
@@ -286,12 +328,8 @@ class SettImaging(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set cooler temperature',
-                               'Value (-20..+20):',
-                               actValue,
-                               -20,
-                               20,
-                               1,
-                               )
+                               'Value (-30..+20):',
+                               actValue, -30, 20, 1)
         if not ok:
             return False
 
@@ -307,14 +345,30 @@ class SettImaging(object):
             return False
 
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set offset',
-                               'Value (0..255):',
-                               actValue,
-                               0,
-                               255,
-                               1,
-                               )
+        offsetList = self.app.camera.data.get('CCD_OFFSET.OFFSET_LIST')
+        offsetMin = self.app.camera.data.get('CCD_OFFSET.OFFSET_MIN')
+        offsetMax = self.app.camera.data.get('CCD_OFFSET.OFFSET_MAX')
+        if offsetList is not None:
+            offsetList = list(offsetList)
+            value, ok = dlg.getItem(self,
+                                    'Set offset', 'Offset entry: ',
+                                    offsetList, actValue)
+            value = offsetList.index(value)
+
+        elif offsetMin is not None and offsetMax is not None:
+            offsetMin = int(offsetMin)
+            offsetMax = int(offsetMax)
+            value, ok = dlg.getInt(self,
+                                   'Set offset',
+                                   f'Values ({offsetMin:4}..{offsetMax:4}):',
+                                   actValue, offsetMin, offsetMax,
+                                   int((offsetMax - offsetMin) / 20))
+        else:
+            value, ok = dlg.getInt(self,
+                                   'Set gain',
+                                   f'Values:',
+                                   actValue)
+
         if not ok:
             return False
 
@@ -326,19 +380,34 @@ class SettImaging(object):
         :return: success
         """
         actValue = self.app.camera.data.get('CCD_GAIN.GAIN', None)
-        minGain = self.app.camera.data.get('CCD_INFO.GAIN_MIN', 1)
-        maxGain = self.app.camera.data.get('CCD_INFO.GAIN_MAX', 200)
         if actValue is None:
             return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set gain',
-                               'Value (0..255):',
-                               actValue,
-                               minGain,
-                               maxGain,
-                               1,
-                               )
+        gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
+        gainMin = self.app.camera.data.get('CCD_GAIN.GAIN_MIN')
+        gainMax = self.app.camera.data.get('CCD_GAIN.GAIN_MAX')
+        if gainList is not None:
+            gainList = list(gainList)
+            value, ok = dlg.getItem(self,
+                                    'Set gain', 'Gain entry: ',
+                                    gainList, actValue)
+            value = gainList.index(value)
+
+        elif gainMin is not None and gainMax is not None:
+            gainMin = int(gainMin)
+            gainMax = int(gainMax)
+            value, ok = dlg.getInt(self,
+                                   'Set offset',
+                                   f'Values ({gainMin:4}..{gainMax:4}):',
+                                   actValue, gainMin, gainMax,
+                                   int((gainMax - gainMin) / 20))
+        else:
+            value, ok = dlg.getInt(self,
+                                   'Set offset',
+                                   f'Values:',
+                                   actValue)
+
         if not ok:
             return False
 

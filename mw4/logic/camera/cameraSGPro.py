@@ -183,6 +183,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         params = {'BinningMode': binning,
                   'ExposureLength': max(expTime, 1),
+                  'Path': imagePath,
                   }
         speed = 'High' if fastReadout else 'Normal'
         addParams = {
@@ -193,11 +194,10 @@ class CameraSGPro(SGProClass, CameraSupport):
             'Height': int(height / binning),
             'FrameType': 'Light',
             'Speed': speed,
-            'Path': imagePath,
             }
 
         if 'controlled' not in self.deviceName or True:
-            params = params.update(addParams)
+            params = {**params, **addParams}
         suc, response = self.sgCaptureImage(params=params)
         if not suc:
             return False
@@ -241,8 +241,7 @@ class CameraSGPro(SGProClass, CameraSupport):
                         posX=posX,
                         posY=posY,
                         width=width,
-                        height=height,
-                        focalLength=focalLength)
+                        height=height)
         self.threadPool.start(worker)
         return True
 

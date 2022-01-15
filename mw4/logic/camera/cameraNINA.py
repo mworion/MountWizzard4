@@ -182,6 +182,7 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         params = {'BinningMode': binning,
                   'ExposureLength': max(expTime, 1),
+                  'Path': imagePath,
                   }
         speed = 'High' if fastReadout else 'Normal'
         addParams = {
@@ -192,11 +193,10 @@ class CameraNINA(NINAClass, CameraSupport):
             'Height': int(height / binning),
             'FrameType': 'Light',
             'Speed': speed,
-            'Path': imagePath,
             }
 
         if 'controlled' not in self.deviceName or True:
-            params = params.update(addParams)
+            params = {**params, **addParams}
 
         suc, response = self.captureImage(params=params)
         if not suc:

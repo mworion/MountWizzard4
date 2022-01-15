@@ -365,7 +365,7 @@ class SettImaging(object):
                                    int((offsetMax - offsetMin) / 20))
         else:
             value, ok = dlg.getInt(self,
-                                   'Set gain',
+                                   'Set offset',
                                    f'Values:',
                                    actValue)
 

@@ -19771,33 +19771,6 @@ Next point in time when satellite settles.</string>
          <double>1.000000000000000</double>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkFastDownload">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>200</y>
-          <width>341</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Use Highspeed download of CCD camera if availabe</string>
-        </property>
-        <property name="text">
-         <string>Use fast image download for modeling (if present)</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="checkKeepImages">
         <property name="geometry">
          <rect>
@@ -19975,7 +19948,7 @@ Next point in time when satellite settles.</string>
           <x>4</x>
           <y>65</y>
           <width>356</width>
-          <height>136</height>
+          <height>156</height>
          </rect>
         </property>
         <property name="title">
@@ -20547,6 +20520,33 @@ Next point in time when satellite settles.</string>
          </property>
          <property name="text">
           <string>%</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkFastDownload">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>135</y>
+           <width>341</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Use Highspeed download of CCD camera if availabe</string>
+         </property>
+         <property name="text">
+          <string>Use fast image download for modeling (if present)</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
         </widget>
        </widget>
@@ -30237,7 +30237,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>binning</tabstop>
   <tabstop>expTimeN</tabstop>
   <tabstop>binningN</tabstop>
-  <tabstop>checkFastDownload</tabstop>
   <tabstop>checkKeepImages</tabstop>
   <tabstop>focuserStepsize</tabstop>
   <tabstop>moveFocuserIn</tabstop>

@@ -216,7 +216,7 @@
         <item row="2" column="3">
          <widget class="QLineEdit" name="numberStacks">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="minimumSize">
            <size>
@@ -229,6 +229,9 @@
             <width>80</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -248,13 +251,16 @@
         <item row="1" column="1" colspan="2">
          <widget class="QLineEdit" name="imageFileName">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="minimumSize">
            <size>
             <width>200</width>
             <height>25</height>
            </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -547,21 +553,30 @@
         <item row="10" column="0" colspan="2">
          <widget class="QLineEdit" name="rotation">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="16" column="0" colspan="2">
          <widget class="QLineEdit" name="expTime">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="29" column="0" colspan="2">
          <widget class="QLineEdit" name="sqm">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -575,7 +590,10 @@
         <item row="4" column="0" colspan="2">
          <widget class="QLineEdit" name="ra">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -636,42 +654,60 @@
         <item row="19" column="0" colspan="2">
          <widget class="QLineEdit" name="filter">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="26" column="0" colspan="2">
          <widget class="QLineEdit" name="ccdTemp">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="1" column="0" colspan="2">
          <widget class="QLineEdit" name="object">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="22" column="0">
          <widget class="QLineEdit" name="binX">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="13" column="0" colspan="2">
          <widget class="QLineEdit" name="scale">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="22" column="1">
          <widget class="QLineEdit" name="binY">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -709,7 +745,10 @@
         <item row="7" column="0" colspan="2">
          <widget class="QLineEdit" name="dec">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

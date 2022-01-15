@@ -42,7 +42,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                ]
 
     framework2tabs = {
-        'indi': 'INDI / INDIGO',
+        'indi': 'INDI',
         'ascom': 'ASCOM',
         'alpaca': 'ALPACA',
         'sgpro': 'SGPRO',

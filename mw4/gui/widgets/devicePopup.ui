@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="ALPACA">
     <attribute name="title">
@@ -634,7 +634,7 @@
    </widget>
    <widget class="QWidget" name="INDI">
     <attribute name="title">
-     <string>INDI / INDIGO</string>
+     <string>INDI</string>
     </attribute>
     <widget class="QLabel" name="label_mountIP_3">
      <property name="geometry">

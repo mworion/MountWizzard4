@@ -13692,7 +13692,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="powerCurrent4">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -13814,7 +13814,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="powerCurrent3">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -13910,7 +13910,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="powerCurrent2">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14019,7 +14019,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="powerCurrent1">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14221,7 +14221,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="sensorPower">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14292,7 +14292,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="sensorVoltage">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14324,7 +14324,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="consumptionWattHours">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14343,7 +14343,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="sensorCurrent">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14362,7 +14362,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="consumptionAvgAmps">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14394,7 +14394,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="consumptionAmpHours">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14458,7 +14458,7 @@ Next point in time when satellite settles.</string>
      </property>
      <widget class="QLineEdit" name="dewCurrentA">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14529,7 +14529,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="dewA">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14575,7 +14575,7 @@ Next point in time when satellite settles.</string>
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -14651,7 +14651,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="dewCurrentB">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14670,7 +14670,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="dewB">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14716,7 +14716,7 @@ Next point in time when satellite settles.</string>
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -14792,7 +14792,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="dewCurrentC">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14811,7 +14811,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QLineEdit" name="dewC">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -14857,7 +14857,7 @@ Next point in time when satellite settles.</string>
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
@@ -15031,7 +15031,7 @@ Next point in time when satellite settles.</string>
      </property>
      <widget class="QLineEdit" name="adjustableOutput">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -21921,7 +21921,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="coverLightIntensity">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -21967,7 +21967,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="input" stdset="0">
          <bool>true</bool>
@@ -22012,7 +22012,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="filterNumber">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -22088,7 +22088,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="filterName">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -22217,7 +22217,7 @@ When clicking the button, you could change the value.</string>
        </widget>
        <widget class="QLineEdit" name="focuserPosition">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>

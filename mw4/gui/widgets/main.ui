@@ -304,7 +304,7 @@
        <rect>
         <x>145</x>
         <y>20</y>
-        <width>116</width>
+        <width>121</width>
         <height>31</height>
        </rect>
       </property>
@@ -326,9 +326,9 @@
      <widget class="QPushButton" name="park">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>20</y>
-        <width>121</width>
+        <width>126</width>
         <height>31</height>
        </rect>
       </property>
@@ -7407,7 +7407,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortHL">
       <property name="geometry">
        <rect>
-        <x>235</x>
+        <x>240</x>
         <y>20</y>
         <width>111</width>
         <height>20</height>
@@ -7455,7 +7455,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QRadioButton" name="checkSortNothing">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>20</y>
         <width>101</width>
         <height>20</height>
@@ -7482,7 +7482,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QCheckBox" name="checkAvoidFlip">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>55</y>
         <width>336</width>
         <height>20</height>
@@ -7506,7 +7506,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QCheckBox" name="checkAutoDeleteMeridian">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>75</y>
         <width>256</width>
         <height>20</height>
@@ -7533,7 +7533,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>235</x>
+        <x>240</x>
         <y>55</y>
         <width>106</width>
         <height>20</height>
@@ -7557,9 +7557,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="Line" name="line_89">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>45</y>
-        <width>331</width>
+        <width>341</width>
         <height>6</height>
        </rect>
       </property>
@@ -7872,9 +7872,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QPushButton" name="clearBuildP">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>15</x>
        <y>395</y>
-       <width>361</width>
+       <width>366</width>
        <height>25</height>
       </rect>
      </property>
@@ -7988,7 +7988,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
     <widget class="QCheckBox" name="keepGeneratedPoints">
      <property name="geometry">
       <rect>
-       <x>25</x>
+       <x>20</x>
        <y>365</y>
        <width>336</width>
        <height>20</height>

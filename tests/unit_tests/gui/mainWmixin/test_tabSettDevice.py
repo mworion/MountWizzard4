@@ -861,13 +861,3 @@ def test_deviceDisconnected_2():
 
     suc = app.deviceDisconnected('dome')
     assert suc
-
-
-def test_enableAppUI():
-    suc = app.enableAppUI()
-    assert suc
-
-
-def enableDefaultUI():
-    suc = app.enableAppUI()
-    assert suc

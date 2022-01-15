@@ -34,6 +34,7 @@ releaseNotes = """
 - improved: show selected satellite name in satellite windows title
 - improved: 3D simulator drawing
 - improved: updater now avoids installation into system package
+- improved: GUI for imaging tab - disable all invalid interfaces 
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.5
@@ -52,7 +53,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.0b2',
+    version='2.2.0b3',
     packages=[
         'mw4',
         'mw4.base',

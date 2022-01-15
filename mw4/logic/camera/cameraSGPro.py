@@ -151,13 +151,11 @@ class CameraSGPro(SGProClass, CameraSupport):
                                  'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         return True
 
-    def sendDownloadMode(self, fastReadout=False):
+    @staticmethod
+    def sendDownloadMode(fastReadout=False):
         """
         :return: success
         """
-        self.storePropertyToData(fastReadout,
-                                 'READOUT_QUALITY.QUALITY_LOW',
-                                 'READOUT_QUALITY.QUALITY_HIGH')
         return True
 
     def workerExpose(self,
@@ -185,7 +183,6 @@ class CameraSGPro(SGProClass, CameraSupport):
                   'ExposureLength': max(expTime, 1),
                   'Path': imagePath,
                   }
-        speed = 'High' if fastReadout else 'Normal'
         addParams = {
             'UseSubframe': True,
             'X': int(posX / binning),
@@ -193,11 +190,16 @@ class CameraSGPro(SGProClass, CameraSupport):
             'Width': int(width / binning),
             'Height': int(height / binning),
             'FrameType': 'Light',
-            'Speed': speed,
             }
+        if 'READOUT_QUALITY.QUALITY_LOW' in self.data:
+            speed = 'High' if fastReadout else 'Normal'
+            speedParams = {'Speed': speed}
+        else:
+            speedParams = {}
 
         if 'controlled' not in self.deviceName or True:
-            params = {**params, **addParams}
+            params = {**params, **addParams, **speedParams}
+
         suc, response = self.sgCaptureImage(params=params)
         if not suc:
             return False

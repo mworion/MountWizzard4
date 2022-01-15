@@ -767,7 +767,12 @@ class Client(QObject):
         """
         for elt in chunk.elt_list:
             name = elt.attr.get('name', '')
-            elementList[name] = {}
+            if not name:
+                return False
+            if name in elementList:
+                elementList[name].clear()
+            else:
+                elementList[name] = {}
             elementList[name]['elementType'] = elt.etype
 
             # as a new blob vector does not contain an initial value, we have to
@@ -1044,7 +1049,6 @@ class Client(QObject):
                 if self.curDepth < 0:
                     self.log.critical(f'Problem parsing event: [{event}]')
                     continue
-
                 elemParsed = indiXML.parseETree(elem)
                 elem.clear()
                 self._parseCmd(elemParsed)

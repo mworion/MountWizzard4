@@ -117,10 +117,12 @@ class CameraNINA(NINAClass, CameraSupport):
 
         self.storePropertyToData(response['Message'],
                                  'CCD_INFO.Message')
-        self.storePropertyToData(response.get('IsoValues'),
-                                 'CCD_GAIN.GAIN_LIST')
-        self.storePropertyToData(response.get('GainValues'),
-                                 'CCD_GAIN.GAIN_LIST')
+        gainList = response.get('IsoValues')
+        if gainList:
+            self.storePropertyToData(gainList, 'CCD_GAIN.GAIN_LIST')
+        gainList = response.get('GainValues')
+        if gainList:
+            self.storePropertyToData(gainList, 'CCD_GAIN.GAIN_LIST')
         self.storePropertyToData(1,
                                  'CCD_GAIN.GAIN')
         self.storePropertyToData(response['NumPixelsX'],
@@ -142,11 +144,13 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         :return: true for test purpose
         """
+        if 'controlled' in self.deviceName:
+            return False
         suc, response = self.getCameraTemp()
         if not suc:
             return False
 
-        self.storePropertyToData(response.get('Temperature', 10),
+        self.storePropertyToData(response.get('Temperature'),
                                  'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         return True
 

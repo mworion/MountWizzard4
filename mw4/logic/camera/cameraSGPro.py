@@ -143,11 +143,13 @@ class CameraSGPro(SGProClass, CameraSupport):
         """
         :return: true for test purpose
         """
+        if 'controlled' in self.deviceName:
+            return False
         suc, response = self.sgGetCameraTemp()
         if not suc:
             return False
 
-        self.storePropertyToData(response.get('Temperature', 10),
+        self.storePropertyToData(response.get('Temperature'),
                                  'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         return True
 

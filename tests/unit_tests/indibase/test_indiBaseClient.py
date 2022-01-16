@@ -633,6 +633,15 @@ def test_getDriverInterface_4(function):
     assert val == 1
 
 
+def test_fillAttributes_0(function):
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': ''}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {}, None)
+    suc = function._fillAttributes(deviceName='test',
+                                   chunk=chunk,
+                                   elementList={})
+    assert not suc
+
+
 def test_fillAttributes_1(function):
     elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'test'}, None)
     chunk = indiXML.DefSwitchVector('defSwitch', [elem], {}, None)
@@ -643,6 +652,15 @@ def test_fillAttributes_1(function):
 
 
 def test_fillAttributes_2(function):
+    elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'test'}, None)
+    chunk = indiXML.DefSwitchVector('defSwitch', [elem], {}, None)
+    suc = function._fillAttributes(deviceName='test',
+                                   chunk=chunk,
+                                   elementList={'test': {}})
+    assert suc
+
+
+def test_fillAttributes_3(function):
     elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'CONNECT'}, None)
     chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'state': 'Ok'}, None)
     suc = function._fillAttributes(deviceName='test',
@@ -651,7 +669,7 @@ def test_fillAttributes_2(function):
     assert suc
 
 
-def test_fillAttributes_3(function):
+def test_fillAttributes_4(function):
     elem = indiXML.DefSwitch('defSwitch', 'On', {'name': 'DISCONNECT'}, None)
     chunk = indiXML.DefSwitchVector('defSwitch', [elem], {'state': 'Ok'}, None)
     suc = function._fillAttributes(deviceName='test',

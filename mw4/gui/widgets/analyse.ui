@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>800</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1200</width>
-    <height>800</height>
+    <width>800</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>2000</width>
-    <height>1400</height>
+    <width>1600</width>
+    <height>1200</height>
    </size>
   </property>
   <property name="sizeIncrement">
@@ -47,9 +47,9 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Model Build File Analysis</string>
+   <string>Analyse Model</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
    <property name="spacing">
     <number>6</number>
    </property>
@@ -81,65 +81,20 @@
      </property>
      <widget class="QLineEdit" name="version">
       <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>760</x>
-        <y>65</y>
-        <width>66</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Courier</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Name of Model Points file, where the data is stored. </string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="readOnly">
        <bool>true</bool>
       </property>
-     </widget>
-     <widget class="QLineEdit" name="filename">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
       <property name="geometry">
        <rect>
-        <x>91</x>
-        <y>5</y>
-        <width>246</width>
-        <height>25</height>
+        <x>650</x>
+        <y>45</y>
+        <width>61</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -171,20 +126,20 @@
      </widget>
      <widget class="QLineEdit" name="subframe">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>600</x>
-        <y>35</y>
-        <width>36</width>
-        <height>25</height>
+        <x>495</x>
+        <y>25</y>
+        <width>41</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -220,16 +175,16 @@
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>65</y>
+        <x>540</x>
+        <y>45</y>
         <width>24</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -247,16 +202,16 @@
      <widget class="QLabel" name="label_21">
       <property name="geometry">
        <rect>
-        <x>830</x>
-        <y>65</y>
+        <x>715</x>
+        <y>45</y>
         <width>16</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -274,16 +229,16 @@
      <widget class="QLabel" name="label_13">
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>65</y>
+        <x>225</x>
+        <y>45</y>
         <width>41</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -300,20 +255,20 @@
      </widget>
      <widget class="QLineEdit" name="modelOrthoError">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>65</y>
-        <width>66</width>
-        <height>25</height>
+        <x>175</x>
+        <y>45</y>
+        <width>46</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -349,16 +304,16 @@
      <widget class="QLabel" name="label_18">
       <property name="geometry">
        <rect>
-        <x>405</x>
-        <y>5</y>
-        <width>42</width>
-        <height>25</height>
+        <x>280</x>
+        <y>65</y>
+        <width>56</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -376,16 +331,16 @@
      <widget class="QLabel" name="pointsWest">
       <property name="geometry">
        <rect>
-        <x>1045</x>
-        <y>5</y>
+        <x>5</x>
+        <y>45</y>
         <width>91</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -406,16 +361,16 @@
      <widget class="QLabel" name="pointsEast">
       <property name="geometry">
        <rect>
-        <x>1045</x>
-        <y>35</y>
+        <x>5</x>
+        <y>65</y>
         <width>91</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -436,16 +391,16 @@
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>35</y>
-        <width>56</width>
-        <height>25</height>
+        <x>420</x>
+        <y>25</y>
+        <width>76</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -463,16 +418,16 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>405</x>
-        <y>65</y>
-        <width>49</width>
-        <height>25</height>
+        <x>280</x>
+        <y>45</y>
+        <width>56</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -489,20 +444,20 @@
      </widget>
      <widget class="QLineEdit" name="firmware">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>840</x>
-        <y>65</y>
-        <width>66</width>
-        <height>25</height>
+        <x>725</x>
+        <y>45</y>
+        <width>61</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -535,16 +490,16 @@
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>65</y>
-        <width>70</width>
-        <height>25</height>
+        <x>105</x>
+        <y>45</y>
+        <width>71</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -561,20 +516,20 @@
      </widget>
      <widget class="QLineEdit" name="time">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>760</x>
+        <x>650</x>
         <y>5</y>
-        <width>146</width>
-        <height>25</height>
+        <width>136</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>25</width>
-        <height>0</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -607,16 +562,16 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>685</x>
+        <x>580</x>
         <y>5</y>
-        <width>70</width>
-        <height>25</height>
+        <width>71</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -634,16 +589,16 @@
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>35</y>
-        <width>69</width>
-        <height>25</height>
+        <x>105</x>
+        <y>25</y>
+        <width>71</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -661,16 +616,16 @@
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>910</x>
-        <y>35</y>
-        <width>54</width>
-        <height>25</height>
+        <x>420</x>
+        <y>5</y>
+        <width>76</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -688,16 +643,16 @@
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>685</x>
-        <y>65</y>
-        <width>66</width>
-        <height>25</height>
+        <x>580</x>
+        <y>45</y>
+        <width>61</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -718,13 +673,13 @@
         <x>5</x>
         <y>5</y>
         <width>80</width>
-        <height>25</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>80</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -740,25 +695,26 @@
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>Load</string>
+       <string>Load
+Model</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="eposure">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>465</x>
-        <y>35</y>
-        <width>46</width>
-        <height>25</height>
+        <x>340</x>
+        <y>25</y>
+        <width>36</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>25</width>
-        <height>0</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -794,16 +750,16 @@
      <widget class="QLabel" name="label_19">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>65</y>
-        <width>81</width>
-        <height>25</height>
+        <x>420</x>
+        <y>45</y>
+        <width>76</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -815,22 +771,22 @@
        </font>
       </property>
       <property name="text">
-       <string>Focal Length</string>
+       <string>FocalLength</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>685</x>
-        <y>35</y>
+        <x>580</x>
+        <y>25</y>
         <width>41</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -848,16 +804,16 @@
      <widget class="QLabel" name="label_16">
       <property name="geometry">
        <rect>
-        <x>515</x>
-        <y>35</y>
+        <x>380</x>
+        <y>25</y>
         <width>16</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -875,16 +831,16 @@
      <widget class="QCheckBox" name="winsorizedLimit">
       <property name="geometry">
        <rect>
-        <x>1045</x>
+        <x>580</x>
         <y>65</y>
-        <width>101</width>
-        <height>25</height>
+        <width>111</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -899,20 +855,20 @@
      </widget>
      <widget class="QLineEdit" name="modelTerms">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>175</x>
         <y>65</y>
         <width>46</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -947,20 +903,20 @@
      </widget>
      <widget class="QLineEdit" name="binning">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>465</x>
-        <y>65</y>
-        <width>46</width>
-        <height>25</height>
+        <x>340</x>
+        <y>45</y>
+        <width>36</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -996,16 +952,16 @@
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>35</y>
+        <x>225</x>
+        <y>25</y>
         <width>41</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1022,20 +978,20 @@
      </widget>
      <widget class="QLineEdit" name="focalLength">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>600</x>
-        <y>65</y>
-        <width>36</width>
-        <height>25</height>
+        <x>495</x>
+        <y>45</y>
+        <width>41</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1071,16 +1027,16 @@
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>5</x>
+        <x>105</x>
         <y>65</y>
-        <width>41</width>
-        <height>25</height>
+        <width>71</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1097,20 +1053,20 @@
      </widget>
      <widget class="QLineEdit" name="mirrored">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>965</x>
-        <y>35</y>
-        <width>61</width>
-        <height>25</height>
+        <x>495</x>
+        <y>5</y>
+        <width>41</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1146,16 +1102,16 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>405</x>
-        <y>35</y>
-        <width>59</width>
-        <height>25</height>
+        <x>280</x>
+        <y>25</y>
+        <width>56</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1173,16 +1129,16 @@
      <widget class="QLabel" name="label_14">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>35</y>
+        <x>225</x>
+        <y>5</y>
         <width>41</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1200,11 +1156,17 @@
      <widget class="QLabel" name="label_15">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>40</y>
+        <x>540</x>
+        <y>25</y>
         <width>16</width>
-        <height>16</height>
+        <height>21</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>21</height>
+       </size>
       </property>
       <property name="font">
        <font>
@@ -1220,20 +1182,20 @@
      </widget>
      <widget class="QLineEdit" name="modelPolarError">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>35</y>
-        <width>66</width>
-        <height>25</height>
+        <x>175</x>
+        <y>25</y>
+        <width>46</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1269,16 +1231,16 @@
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>35</y>
-        <width>72</width>
-        <height>25</height>
+        <x>105</x>
+        <y>5</y>
+        <width>71</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1295,20 +1257,20 @@
      </widget>
      <widget class="QLineEdit" name="solver">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>760</x>
-        <y>35</y>
-        <width>146</width>
-        <height>25</height>
+        <x>650</x>
+        <y>25</y>
+        <width>136</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1340,20 +1302,20 @@
      </widget>
      <widget class="QLineEdit" name="modelErrorRMS">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>35</y>
+        <x>175</x>
+        <y>5</y>
         <width>46</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1388,20 +1350,20 @@
      </widget>
      <widget class="QLineEdit" name="profile">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>465</x>
-        <y>5</y>
-        <width>171</width>
-        <height>25</height>
+        <x>340</x>
+        <y>65</y>
+        <width>76</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1434,16 +1396,16 @@
      <widget class="QLabel" name="label_17">
       <property name="geometry">
        <rect>
-        <x>910</x>
+        <x>280</x>
         <y>5</y>
-        <width>54</width>
-        <height>25</height>
+        <width>56</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1460,20 +1422,20 @@
      </widget>
      <widget class="QLineEdit" name="goodPoints">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>965</x>
+        <x>340</x>
         <y>5</y>
         <width>26</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1508,20 +1470,20 @@
      </widget>
      <widget class="QLineEdit" name="totalPoints">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>1000</x>
+        <x>375</x>
         <y>5</y>
         <width>26</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1557,16 +1519,16 @@
      <widget class="QLabel" name="label_22">
       <property name="geometry">
        <rect>
-        <x>995</x>
+        <x>370</x>
         <y>5</y>
         <width>16</width>
-        <height>25</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>25</height>
+        <height>21</height>
        </size>
       </property>
       <property name="font">
@@ -1584,540 +1546,548 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>200</height>
+      </size>
      </property>
-     <property name="lineWidth">
-      <number>2</number>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="midLineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>General Analyse</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Overview</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="modelPositions" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_14">
+         <property name="title">
+          <string>Model point errors over polar</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="errorDistribution" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_15">
+         <property name="title">
+          <string>Model point errors in ascending order</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="errorAscending" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_16">
+         <property name="title">
+          <string>Image pixel resolution as scale </string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="scaleImage" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Alt / Az Analyse</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>RA Raw Error (PlateSolve)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="raRawErrors" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>DEC Raw Error (PlateSolve)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="decRawErrors" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>RA Error (Model)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="raErrors" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>DEC Error (Model)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="decErrors" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>RA / DEC Analyse</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_8">
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_18">
+         <property name="title">
+          <string>DEC Raw Error (PlateSolve)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="decRawErrorsRef" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_17">
+         <property name="title">
+          <string>RA Raw Error (PlateSolve)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QWidget" name="raRawErrorsRef" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_19">
+         <property name="title">
+          <string>RA Error (Model)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="raErrorsRef" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_20">
+         <property name="title">
+          <string>DEC Error (Model)</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="decErrorsRef" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox_7">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>Overview</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_8">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="modelPositions" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>Image pixel resolution as scale </string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="scaleImage" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QGroupBox" name="groupBox_8">
-       <property name="title">
-        <string>Model point errors in ascending order</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_9">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="errorAscending" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QGroupBox" name="groupBox_5">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>DEC Raw Error (PlateSolve)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_6">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="decRawErrors" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>RA Raw Error (PlateSolve)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="raRawErrors" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QGroupBox" name="groupBox_9">
-       <property name="title">
-        <string>Model point errors over polar</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_10">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="errorDistribution" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>RA Error (Model)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="raErrors" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QGroupBox" name="groupBox_10">
-       <property name="title">
-        <string>RA Raw Error (PlateSolve)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_11">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="raRawErrorsRef" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QGroupBox" name="groupBox_12">
-       <property name="title">
-        <string>RA Error (Model)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_13">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="raErrorsRef" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QGroupBox" name="groupBox_6">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="title">
-        <string>DEC Error (Model)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_7">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="decErrors" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QGroupBox" name="groupBox_13">
-       <property name="title">
-        <string>DEC Raw Error (PlateSolve)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_14">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="decRawErrorsRef" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="3">
-      <widget class="QGroupBox" name="groupBox_11">
-       <property name="title">
-        <string>DEC Error (Model)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_12">
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="decErrorsRef" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

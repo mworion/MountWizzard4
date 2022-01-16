@@ -175,7 +175,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         d = data[0]
         de = data[-1]
 
-        self.ui.filename.setText(os.path.basename(loadFilePath))
+        title = f'Analyse Model     {os.path.basename(loadFilePath)}'
+        self.setWindowTitle(title)
         self.ui.eposure.setText(f'{d.get("exposureTime", "")}')
         self.ui.solver.setText(d.get('astrometryApp', ""))
         self.ui.binning.setText(f'{d.get("binning", 0):1.0f}')

@@ -123,7 +123,6 @@ def test_colorChange(function):
 def test_writeGui_1(function):
     suc = function.writeGui([{'a': 1}], 'test')
     assert suc
-    assert function.ui.filename.text() == 'test'
     assert function.ui.mirrored.text() == ''
 
 

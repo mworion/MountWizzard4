@@ -80,7 +80,7 @@ Windows environment.
         - yes
         - yes
         - yes
-        - Yes
+        - yes
         - no
         - no
     *   - Environ Sensor
@@ -111,6 +111,7 @@ Windows environment.
         - not tested
         - no
         - no
+
 
 It is recommended to use mount firmware 2.16 or later as some of the functions
 don't work with older firmware versions.

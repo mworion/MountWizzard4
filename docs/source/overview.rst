@@ -40,7 +40,7 @@ Windows environment.
         - INDI
         - INDIGO
         - SGPro
-        - N.I.N.A.
+        - NINA
     *   - Camera
         - yes
         - yes

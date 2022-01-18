@@ -31,7 +31,6 @@ framework has some issues. MW4 also support ASCOM devices (camera, dome) in
 Windows environment.
 
 .. list-table:: Supported devices and frameworks in MW4
-    :widths: 28, 12, 12, 12, 12, 12, 12
     :header-rows: 1
 
     *   - Device

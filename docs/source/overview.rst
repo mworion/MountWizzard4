@@ -31,7 +31,7 @@ framework has some issues. MW4 also support ASCOM devices (camera, dome) in
 Windows environment.
 
 .. list-table:: Supported devices and frameworks in MW4
-    :widths: 30, 20, 20, 20, 20
+    :widths: 28, 12, 12, 12, 12, 12, 12
     :header-rows: 1
 
     *   - Device
@@ -40,7 +40,7 @@ Windows environment.
         - INDI
         - INDIGO
         - SGPro
-        - NINA
+        - N.I.N.A.
     *   - Camera
         - yes
         - yes

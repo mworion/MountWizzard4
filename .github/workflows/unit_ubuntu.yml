@@ -61,7 +61,7 @@ jobs:
         cache-name: cache_resource
       with:
         path: ${{ env.res }}
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles(mw4/resource/**.*) }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('mw4/resource/**.*') }}
 
     - uses: actions/setup-python@v2
       with:

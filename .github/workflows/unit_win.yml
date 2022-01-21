@@ -1,7 +1,7 @@
 #
 # GitHub actions for running the unit test of the mountwizzard4 package
 #
-# v0.1, Michael Wuertenberger
+# v1.0, Michael Wuertenberger
 #
 name: unit_win
 
@@ -47,24 +47,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{env.branch}}
-    
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-python-environment
-      with:
-        path: ~/.env
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
 
     - uses: actions/setup-python@v2
       with:
         python-version: '3.9'
 
-    - name: build_widgets_resource
+    - name: build_widgets
       run: |
         python -m pip install PyQt5
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py

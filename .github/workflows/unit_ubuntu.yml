@@ -12,6 +12,7 @@ concurrency:
 
 env:
   wid: 'mw4/gui/widgets/'
+  uiHash: 'mw4/gui/widgets/*.ui'
   uic: 'python -m PyQt5.uic.pyuic'
   ucc: 'python -m PyQt5.pyrcc_main'
   res: 'mw4/resource/'
@@ -53,7 +54,7 @@ jobs:
         cache-name: cache-python-environment
       with:
         path: ${{ env.wid }}
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/*.ui') }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles([env.uiHash]) }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-

@@ -52,7 +52,7 @@ jobs:
         cache-name: cache-python-environment
       with:
         path: ~/.env
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.py') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
@@ -77,7 +77,8 @@ jobs:
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
         ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
-        
+      if: steps.cache-packages.outputs.cache-hit != 'true'
+      
     - name: build_package
       run: |
         python -m pip install setuptools wheel

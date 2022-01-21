@@ -51,8 +51,8 @@ jobs:
       env:
         cache-name: cache-python-environment
       with:
-        path: ~/.env
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/*_ui.py') }}
+        path: ${{ env.wid }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/*.ui') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-

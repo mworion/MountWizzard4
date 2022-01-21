@@ -10,6 +10,11 @@ Unreleased versions of scripts
 
 Released versions of scripts
 ----------------------------
+2.4
+
+- windows only: improved robustness against local installs
+- adding a clean system utility
+
 2.3
 
 - windows only: improved robustness against local installs

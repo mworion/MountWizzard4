@@ -1,9 +1,14 @@
 #
 # GitHub actions for running the unit test of the mountwizzard4 package
 #
-# v0.1, Michael Wuertenberger
+# v1.0, Michael Wuertenberger
 #
 name: unit_macOS
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 env:
   wid: 'mw4/gui/widgets/'
   uic: 'python -m PyQt5.uic.pyuic'

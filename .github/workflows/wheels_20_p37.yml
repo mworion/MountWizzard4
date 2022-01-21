@@ -5,6 +5,14 @@
 #
 name: wheels_20_p37
 
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 on:
   push:
     # Run this action on the trigger event when specific files are touched

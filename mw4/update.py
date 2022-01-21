@@ -91,9 +91,7 @@ class Update:
             self.writer('Updater not running in an virtual environment', 2)
             return False
 
-        runnable = ['python',
-                    '-m',
-                    'pip',
+        runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
                     '--disable-pip-version-check',

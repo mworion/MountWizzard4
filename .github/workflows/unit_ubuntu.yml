@@ -1,7 +1,7 @@
 #
 # GitHub actions for running the unit test of the mountwizzard4 package
 #
-# v0.1, Michael Wuertenberger
+# v1.0, Michael Wuertenberger
 #
 name: unit_ubuntu
 
@@ -52,7 +52,7 @@ jobs:
         cache-name: cache-python-environment
       with:
         path: ~/.env
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.py') }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/*_ui.py') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-

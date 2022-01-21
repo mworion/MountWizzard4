@@ -151,16 +151,61 @@ jobs:
           pytest tests/unit_tests/zLoader
           pytest tests/unit_tests/zUpdate
           pytest tests/unit_tests/zMainApp
-          pytest tests/unit_tests/gui/utilities
-          pytest tests/unit_tests/gui/extWindows
+          pytest tests/unit_tests/gui/mainWindow
+
+  run_tests_macos_2:
+  
+    # The package has 3000+ unit tests, which will be tested on macOS as
+    # the ubuntu version does not have a headless Qt5
+  
+    needs: [build_widgets_resource]
+    runs-on: [macos-latest]
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: widgets
+          path: mw4/gui/widgets
+  
+      - uses: actions/download-artifact@v2
+        with:
+          name: resource
+          path: mw4/resource
+          
+      - name: install_package
+        run: |
+          python -m pip install cython wheel
+          python -m pip install dist/mountwizzard4.tar.gz
+
+      - name: install_pytest
+        run: |
+          python -m pip install pytest
+          python -m pip install pytest-qt
+          python -m pip install pytest-pythonpath
+  
+      - name: running_unit_tests
+        run: |
           pytest tests/unit_tests/base
           pytest tests/unit_tests/logic
           pytest tests/unit_tests/mountcontrol
           pytest tests/unit_tests/indibase
-          pytest tests/unit_tests/gui/mainWindow
 
 
-  run_tests_macos_2:
+  run_tests_macos_3:
   
     # The package has 3000+ unit tests, which will be tested on macOS as
     # the ubuntu version does not have a headless Qt5

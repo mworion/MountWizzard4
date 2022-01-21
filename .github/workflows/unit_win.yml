@@ -203,7 +203,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/base --cov --cov=mw4/
+          pytest tests/unit_tests/base --cov=mw4/
           pytest tests/unit_tests/logic --cov-append --cov=mw4/
           pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/
           pytest tests/unit_tests/indibase --cov-append --cov=mw4/

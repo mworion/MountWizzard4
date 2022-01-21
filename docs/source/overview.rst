@@ -31,7 +31,6 @@ framework has some issues. MW4 also support ASCOM devices (camera, dome) in
 Windows environment.
 
 .. list-table:: Supported devices and frameworks in MW4
-    :widths: 30, 20, 20, 20, 20
     :header-rows: 1
 
     *   - Device
@@ -39,7 +38,11 @@ Windows environment.
         - ALPACA
         - INDI
         - INDIGO
+        - SGPro
+        - N.I.N.A.
     *   - Camera
+        - yes
+        - yes
         - yes
         - yes
         - yes
@@ -49,46 +52,65 @@ Windows environment.
         - yes
         - yes
         - yes
+        - no
+        - no
     *   - Dome
         - yes
         - yes
         - yes
         - not tested
+        - no
+        - no
     *   - Telescope
         - yes
         - yes
         - yes
         - yes
+        - no
+        - no
     *   - Focuser
         - yes
         - yes
         - yes
         - not tested
+        - no
+        - no
     *   - Skymeter
         - yes
         - yes
         - yes
-        - Yes
+        - yes
+        - no
+        - no
     *   - Environ Sensor
         - yes
         - yes
         - yes
+        - no
+        - no
         - no
     *   - Pegasus UPB Environ
         - yes
         - yes
         - yes
         - yes
+        - no
+        - no
     *   - Pegasus UPB Switch
         - yes
         - yes
         - yes
         - yes
+        - no
+        - no
     *   - Cover
         - yes
         - yes
         - yes
         - not tested
+        - no
+        - no
+
 
 It is recommended to use mount firmware 2.16 or later as some of the functions
 don't work with older firmware versions.

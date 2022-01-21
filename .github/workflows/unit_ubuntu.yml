@@ -50,16 +50,14 @@ jobs:
 
     - name: cache_widgets
       uses: actions/cache@v2
-      env:
-        cache-name: cache_widgets
+      id: cache_widgets
       with:
         path: ${{ env.wid }}
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ env.uiHash }}
 
     - name: cache_resource
       uses: actions/cache@v2
-      env:
-        cache-name: cache_resource
+      id: cache_resource
       with:
         path: ${{ env.res }}
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ env.resHash }}
@@ -70,6 +68,7 @@ jobs:
 
     - name: build_widgets
       run: |
+      if: steps.cache_widgets.outputs.cache-hit != 'true'
         python -m pip install PyQt5
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
@@ -83,12 +82,12 @@ jobs:
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
         ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
-      if: steps.cache_widgets.outputs.cache-hit != 'true'
 
     - name: build_ressource
-      run: |
-        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
       if: steps.cache_resource.outputs.cache-hit != 'true'
+      run: |
+        python -m pip install PyQt5
+        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
       
     - name: build_package
       run: |

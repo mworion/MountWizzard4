@@ -1,7 +1,7 @@
 #
 # GitHub actions for checking the installation of MW4 through scripts
 #
-# v 1.0, Michael Wuertenberger
+# v 1.1, Michael Wuertenberger
 #
 name: test_scripts
 

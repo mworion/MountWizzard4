@@ -51,6 +51,8 @@ jobs:
     - name: cache_widgets
       uses: actions/cache@v2
       id: cache_widgets
+      env:
+        cache-name: cache_widgets
       with:
         path: ${{ env.wid }}
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ env.uiHash }}
@@ -58,6 +60,8 @@ jobs:
     - name: cache_resource
       uses: actions/cache@v2
       id: cache_resource
+      env:
+        cache-name: cache_resource
       with:
         path: ${{ env.res }}
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ env.resHash }}

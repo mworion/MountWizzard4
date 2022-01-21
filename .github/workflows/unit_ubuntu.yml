@@ -16,6 +16,7 @@ env:
   uic: 'python -m PyQt5.uic.pyuic'
   ucc: 'python -m PyQt5.pyrcc_main'
   res: 'mw4/resource/'
+  resHash: 'mw4/resource/**.*'
   branch: 'master'
 
 on:
@@ -48,23 +49,27 @@ jobs:
       with:
         ref: ${{env.branch}}
 
-    - name: Cache node modules
+    - name: cache_widgets
       uses: actions/cache@v2
       env:
-        cache-name: cache-python-environment
+        cache-name: cache_widgets
       with:
         path: ${{ env.wid }}
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles([env.uiHash]) }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+
+    - name: cache_resource
+      uses: actions/cache@v2
+      env:
+        cache-name: cache_resource
+      with:
+        path: ${{ env.res }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles([env.resHash]) }}
 
     - uses: actions/setup-python@v2
       with:
         python-version: '3.9'
 
-    - name: build_widgets_resource
+    - name: build_widgets
       run: |
         python -m pip install PyQt5
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
@@ -79,7 +84,12 @@ jobs:
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
         ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
-      if: steps.cache-packages.outputs.cache-hit != 'true'
+      if: steps.cache_widgets.outputs.cache-hit != 'true'
+
+    - name: build_ressource
+      run: |
+        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
+      if: steps.cache_resource.outputs.cache-hit != 'true'
       
     - name: build_package
       run: |

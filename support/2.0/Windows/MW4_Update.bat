@@ -24,10 +24,10 @@ echo ##  ##  ##  ##  ##   ###
 echo  ###  ###  #### ##    ##
 echo.
 echo ---------------------------------------------
-echo update script version 2.3
+echo update script version 2.4
 echo ---------------------------------------------
 
-echo update script version 2.3 > update.log 2>&1
+echo update script version 2.4 > update.log 2>&1
 
 echo.
 echo ---------------------------------------------

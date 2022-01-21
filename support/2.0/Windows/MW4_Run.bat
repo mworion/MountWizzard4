@@ -24,10 +24,10 @@ echo ##  ##  ##  ##  ##   ###
 echo  ###  ###  #### ##    ##
 echo.
 echo ---------------------------------------------
-echo run script version 2.3
+echo run script version 2.4
 echo ---------------------------------------------
 
-echo run script version 2.3 > run.log 2>&1
+echo run script version 2.4 > run.log 2>&1
 
 call venv\Scripts\activate >> run.log 2>&1
 
@@ -81,6 +81,7 @@ echo ---------------------------------------------
 echo python version ok: %P_VER%
 echo ---------------------------------------------
 
+call venv\Scripts\activate >> run.log 2>&1
 SET QT_SCALE_FACTOR=1 >> run.log 2>&1
 SET QT_FONT_DPI=96 >> run.log 2>&1
 venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py >> run.log 2>&1

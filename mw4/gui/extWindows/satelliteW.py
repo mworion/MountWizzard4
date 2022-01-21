@@ -212,7 +212,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         observe = self.satellite.at(now)
-        subpoint = wgs84.subpoint(observe)
+        subpoint = wgs84.subpoint_of(observe)
         difference = self.satellite - location
 
         self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
@@ -444,7 +444,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             axe.figure.canvas.draw()
             return False
 
-        subpoints = wgs84.subpoint(observe)
+        subpoints = wgs84.subpoint_of(observe)
         lat = subpoints.latitude.radians
         lon = subpoints.longitude.radians
         elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
@@ -515,7 +515,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axe.plot(lon, lat, marker='.', markersize=5, color=self.M_YELLOW)
 
         ts = obsSite.ts
-        subpoint = wgs84.subpoint(self.satellite.at(ts.now()))
+        subpoint = wgs84.subpoint_of(self.satellite.at(ts.now()))
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth, = axe.plot(lon, lat,
@@ -538,7 +538,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
             vector = np.arange(rise, flip, step)
             vecT = ts.tt_jd(vector)
-            subpoints = wgs84.subpoint(self.satellite.at(vecT))
+            subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
@@ -546,7 +546,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
             vector = np.arange(flip, settle, step)
             vecT = ts.tt_jd(vector)
-            subpoints = wgs84.subpoint(self.satellite.at(vecT))
+            subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
@@ -558,7 +558,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         step = 0.001 * (settle - rise)
         vector = np.arange(rise - 0.15, settle, step)
         vecT = ts.tt_jd(vector)
-        subpoints = wgs84.subpoint(self.satellite.at(vecT))
+        subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
         for slc in self.unlinkWrap(lon):

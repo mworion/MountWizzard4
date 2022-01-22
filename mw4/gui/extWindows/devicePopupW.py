@@ -42,12 +42,12 @@ class DevicePopup(toolsQtWidget.MWidget):
                ]
 
     framework2tabs = {
-        'indi': 'INDI',
+        'indi': 'INDI / INDIGO',
         'ascom': 'ASCOM',
         'alpaca': 'ALPACA',
-        'sgpro': 'SGPRO',
+        'sgpro': 'SGPro',
         'nina': 'N.I.N.A.',
-        'astrometry': 'ASTROMETRY',
+        'astrometry': 'astrometry',
         'astap': 'ASTAP',
         'onlineWeather': 'Online Weather',
         'relay': 'Relay',
@@ -152,25 +152,21 @@ class DevicePopup(toolsQtWidget.MWidget):
         """
         firstFramework = next(iter(self.data['frameworks']))
         framework = self.data.get('framework')
-
         if not framework:
             framework = firstFramework
 
         frameworkTabText = self.framework2tabs[framework]
         frameworkTabTextList = [self.framework2tabs[x] for x in self.data['frameworks']]
 
-        tabWidget = self.ui.tab.findChild(QWidget, frameworkTabText)
+        tabWidget = self.ui.tab.findChild(QWidget, framework)
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
             if self.ui.tab.tabText(index) in frameworkTabTextList:
                 self.ui.tab.setTabEnabled(index, True)
-
             else:
                 self.ui.tab.setTabEnabled(index, False)
-
-            # self.ui.tab.setStyleSheet(self.getStyle())
         return True
 
     def populateTabs(self):

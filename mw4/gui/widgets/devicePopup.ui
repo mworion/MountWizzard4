@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="ALPACA">
     <attribute name="title">
@@ -522,7 +522,7 @@
    </widget>
    <widget class="QWidget" name="sgpro">
     <attribute name="title">
-     <string>SGPRO</string>
+     <string>SGPro</string>
     </attribute>
     <widget class="QLabel" name="label_mountIP_20">
      <property name="geometry">
@@ -576,7 +576,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_2">
+   <widget class="QWidget" name="nina">
     <attribute name="title">
      <string>N.I.N.A.</string>
     </attribute>
@@ -634,7 +634,7 @@
    </widget>
    <widget class="QWidget" name="INDI">
     <attribute name="title">
-     <string>INDI</string>
+     <string>INDI / INDIGO</string>
     </attribute>
     <widget class="QLabel" name="label_mountIP_3">
      <property name="geometry">
@@ -910,9 +910,9 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="ASTROMETRY">
+   <widget class="QWidget" name="astrometry">
     <attribute name="title">
-     <string>ASTROMETRY</string>
+     <string>astrometry</string>
     </attribute>
     <widget class="QLabel" name="label_mountIP_14">
      <property name="geometry">
@@ -1302,7 +1302,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="ASTAP">
+   <widget class="QWidget" name="astap">
     <attribute name="title">
      <string>ASTAP</string>
     </attribute>

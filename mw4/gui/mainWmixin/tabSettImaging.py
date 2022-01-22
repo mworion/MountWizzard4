@@ -139,6 +139,7 @@ class SettImaging(object):
         self.ui.pixelX.setEnabled(enable)
         enable = pixelY is not None
         self.ui.pixelY.setEnabled(enable)
+        self.ui.subFrame.setEnabled(enable)
         return True
 
     def updateGainOffset(self):

@@ -122,14 +122,14 @@ def test_calcSubFrame_1(function):
     function.data = {'CCD_FRAME.X': 1000,
                      'CCD_FRAME.Y': 1000}
     val = function.calcSubFrame(100)
-    assert not val
+    assert val == (0, 0, 0, 0)
 
 
 def test_calcSubFrame_2(function):
-    function.data = {'CCD_INFO.CCD_MAX_X': 1000,
+    function.data = {'CCD_INFO.CCD_MAX_X': 100,
                      'CCD_FRAME.Y': 1000}
     val = function.calcSubFrame(100)
-    assert not val
+    assert val == (0, 0, 100, 0)
 
 
 def test_calcSubFrame_3(function):
@@ -208,30 +208,12 @@ def test_expose_5(function):
                                    return_value=True):
                 with mock.patch.object(function,
                                        'calcSubFrame',
-                                       return_value=None):
-                    suc = function.expose(imagePath='tests/workDir/image')
-                    assert not suc
-
-
-def test_expose_6(function):
-    function.framework = 'indi'
-    with mock.patch.object(function,
-                           'canSubFrame',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'canBinning',
-                               return_value=True):
-            with mock.patch.object(function.run['indi'],
-                                   'expose',
-                                   return_value=True):
-                with mock.patch.object(function,
-                                       'calcSubFrame',
                                        return_value=(0, 0, 10, 10)):
                     suc = function.expose(imagePath='tests/workDir/image')
                     assert suc
 
 
-def test_expose_7(function):
+def test_expose_6(function):
     function.framework = 'indi'
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,
                      'CCD_INFO.CCD_MAX_Y': 1000}
@@ -251,7 +233,7 @@ def test_expose_7(function):
                     assert not suc
 
 
-def test_expose_8(function):
+def test_expose_7(function):
     def qWaitBreak(a):
         function.exposing = False
 

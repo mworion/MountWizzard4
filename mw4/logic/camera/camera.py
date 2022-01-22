@@ -116,15 +116,10 @@ class Camera:
         :param subFrame: percentage 0-100 of
         :return: success
         """
-        if 'CCD_INFO.CCD_MAX_X' not in self.data:
-            return False
-        if 'CCD_INFO.CCD_MAX_Y' not in self.data:
-            return False
+        maxX = self.data.get('CCD_INFO.CCD_MAX_X', 0)
+        maxY = self.data.get('CCD_INFO.CCD_MAX_Y', 0)
 
-        maxX = self.data['CCD_INFO.CCD_MAX_X']
-        maxY = self.data['CCD_INFO.CCD_MAX_Y']
-
-        if subFrame < 10 or subFrame > 100:
+        if subFrame < 10 or subFrame > 100 or maxX == 0 or maxY == 0:
             width = maxX
             height = maxY
             posX = 0
@@ -169,15 +164,10 @@ class Camera:
         if not imagePath:
             return False
         if subFrame != 100 and not self.canSubFrame(subFrame=subFrame):
-            self.log.warning('Camera does not support subframe')
             subFrame = 100
         if binning != 1 and not self.canBinning(binning=binning):
-            self.log.info('Camera does not support binning, set to 1')
             binning = 1
-
         result = self.calcSubFrame(subFrame=subFrame)
-        if not result:
-            return False
 
         posX, posY, width, height = result
 

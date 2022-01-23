@@ -887,6 +887,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                                      )
         if not suc:
             text = f'Cannot expose:       [{os.path.basename(imagePath)}]'
+            self.abortImage()
             self.app.message.emit(text, 2)
             return False
 

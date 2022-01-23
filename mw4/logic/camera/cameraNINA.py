@@ -123,8 +123,8 @@ class CameraNINA(NINAClass, CameraSupport):
         gainList = response.get('GainValues')
         if gainList:
             self.storePropertyToData(gainList, 'CCD_GAIN.GAIN_LIST')
-        self.storePropertyToData(1,
-                                 'CCD_GAIN.GAIN')
+            self.storePropertyToData(1,
+                                     'CCD_GAIN.GAIN')
         self.storePropertyToData(response['NumPixelsX'],
                                  'CCD_INFO.CCD_MAX_X')
         self.storePropertyToData(response['NumPixelsY'],

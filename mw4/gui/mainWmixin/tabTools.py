@@ -101,8 +101,8 @@ class Tools(object):
         self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
         self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
-
         self.ui.commandInput.returnPressed.connect(self.commandRaw)
+        self.app.mount.signals.slewFinished.connect(self.moveAltAzGuiDefault)
 
     def initConfig(self):
         """
@@ -342,6 +342,15 @@ class Tools(object):
             self.ui.renameProgress.setValue(0)
         return True
 
+    def stopMoveAll(self):
+        """
+        :return: success
+        """
+        for uiR in self.setupMoveClassic:
+            self.changeStyleDynamic(uiR, 'running', False)
+        self.app.mount.obsSite.stopMoveAll()
+        return True
+
     def moveDuration(self):
         """
         :return:
@@ -383,15 +392,6 @@ class Tools(object):
             self.app.mount.obsSite.moveWest()
 
         self.moveDuration()
-        return True
-
-    def stopMoveAll(self):
-        """
-        :return: success
-        """
-        for uiR in self.setupMoveClassic:
-            self.changeStyleDynamic(uiR, 'running', False)
-        self.app.mount.obsSite.stopMoveAll()
         return True
 
     def setSlewSpeed(self):
@@ -446,7 +446,6 @@ class Tools(object):
 
         if alt > altHigh:
             alt = altHigh
-
         elif alt < altLow:
             alt = altLow
 
@@ -454,6 +453,14 @@ class Tools(object):
                                               az_degrees=az)
         suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc
+
+    def moveAltAzGuiDefault(self):
+        """
+        :return:
+        """
+        for ui in self.setupMoveAltAz:
+            self.changeStyleDynamic(ui, 'running', False)
+        return True
 
     def moveAltAz(self):
         """
@@ -469,9 +476,10 @@ class Tools(object):
 
         if alt is None or az is None or stat is None:
             return False
-
         if stat not in [0, 7]:
             return False
+
+        self.changeStyleDynamic(ui, 'running', True)
 
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]

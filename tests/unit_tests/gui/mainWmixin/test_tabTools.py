@@ -501,6 +501,11 @@ def test_slewTargetAltAz_2(function):
         assert not suc
 
 
+def test_moveAltAzGuiDefault(function):
+    suc = function.moveAltAzGuiDefault()
+    assert suc
+
+
 def test_moveAltAz_1(function):
     def Sender():
         return 0

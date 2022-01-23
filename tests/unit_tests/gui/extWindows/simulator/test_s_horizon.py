@@ -50,11 +50,6 @@ def module_setup_teardown():
     yield
 
 
-def test_createLine_1():
-    val = app.createLine(QEntity(), 1, 1, 1)
-    assert isinstance(val, QEntity)
-
-
 def test_createWall_1():
     val = app.createWall(QEntity(), 0, 0, 10)
     assert isinstance(val, QEntity)

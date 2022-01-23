@@ -152,7 +152,7 @@ class NINAClass(DriverData, QObject):
         if self.deviceName == 'N.I.N.A. controlled':
             return True
 
-        for retry in range(0, 3):
+        for retry in range(0, 20):
             suc = self.connectDevice()
             if suc:
                 t = f'[{self.deviceName}] connected, [{retry}] retries'

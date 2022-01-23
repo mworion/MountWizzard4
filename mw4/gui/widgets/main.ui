@@ -27958,7 +27958,7 @@ Updater</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Sync clocks continously</string>
+         <string>Sync clock continously</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -28024,7 +28024,7 @@ Updater</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Enable clock comparison</string>
+         <string>Enable clock sync</string>
         </property>
         <property name="checked">
          <bool>false</bool>

@@ -115,26 +115,23 @@ class CameraNINA(NINAClass, CameraSupport):
         if not suc:
             return False
 
-        self.storePropertyToData(response['Message'],
-                                 'CCD_INFO.Message')
+        self.storePropertyToData(response['Message'], 'CCD_INFO.Message')
         gainList = response.get('IsoValues')
         if gainList:
             self.storePropertyToData(gainList, 'CCD_GAIN.GAIN_LIST')
+
         gainList = response.get('GainValues')
         if gainList:
             self.storePropertyToData(gainList, 'CCD_GAIN.GAIN_LIST')
-            self.storePropertyToData(1,
-                                     'CCD_GAIN.GAIN')
-        self.storePropertyToData(response['NumPixelsX'],
-                                 'CCD_INFO.CCD_MAX_X')
-        self.storePropertyToData(response['NumPixelsY'],
-                                 'CCD_INFO.CCD_MAX_Y')
+            self.storePropertyToData(1, 'CCD_GAIN.GAIN')
+
+        self.storePropertyToData(response['NumPixelsX'], 'CCD_INFO.CCD_MAX_X')
+        self.storePropertyToData(response['NumPixelsY'], 'CCD_INFO.CCD_MAX_Y')
         canSubframe = response.get('SupportsSubframe')
         if canSubframe:
-            self.storePropertyToData(response['NumPixelsX'],
-                                     'CCD_FRAME.X')
-            self.storePropertyToData(response['NumPixelsY'],
-                                     'CCD_FRAME.Y')
+            self.storePropertyToData(response['NumPixelsX'], 'CCD_FRAME.X')
+            self.storePropertyToData(response['NumPixelsY'], 'CCD_FRAME.Y')
+
         self.storePropertyToData(True, 'CAN_SET_CCD_TEMPERATURE')
         self.storePropertyToData(1, 'CCD_BINNING.HOR_BIN')
         self.log.debug(f'Initial data: {self.data}')

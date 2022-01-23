@@ -15,8 +15,8 @@ Beta version of MW4
 ----------------------------
 2.2.0
 
-- add: support SGPro camera as frontend device
-- add: support N.I.N.A. camera as frontend device
+- add: support SGPro camera as device
+- add: support N.I.N.A. camera as device
 - add: two modes for SGPro and N.I.N.A.: App or MW4 controlled
 - add: debayer (4 modes) all platforms (armv7, StellarMate, Astroberry)
 - add: filter satellites for twilight visibility settings
@@ -30,6 +30,9 @@ Beta version of MW4
 - improved: show selected satellite name in satellite windows title
 - improved: 3D simulator drawing
 - improved: updater now avoids installation into system package
+- improved: GUI for imaging tab - disable all invalid interfaces
+- improved: redesign analyse window to get more space for further charts
+- improved: Tools: move mount: better UI, tooltips, multi steps in alt/az
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.5

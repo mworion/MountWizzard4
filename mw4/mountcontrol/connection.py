@@ -180,7 +180,10 @@ class Connection(object):
         for command in commandSet:
             foundCOMMAND_A = False
             for key in sorted(self.COMMAND_A, reverse=True):
+                print(command, key, end=' ')
                 if command.startswith(key):
+                    if len(command) != len(key):
+                        continue
                     foundCOMMAND_A = True
                     break
             if not foundCOMMAND_A:

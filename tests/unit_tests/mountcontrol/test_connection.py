@@ -45,6 +45,13 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(0, minBytes)
         self.assertEqual(0, chunksToReceive)
 
+    def test_responses_withoutCommand_analyseCommand_1(self):
+        conn = Connection()
+        chunksToReceive, getData, minBytes = conn.analyseCommand(':Q#')
+        self.assertEqual(False, getData)
+        self.assertEqual(0, minBytes)
+        self.assertEqual(0, chunksToReceive)
+
     def test_responses_typeA_analyseCommand(self):
         conn = Connection()
         command = ':AP#'

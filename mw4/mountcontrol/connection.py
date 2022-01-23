@@ -88,6 +88,7 @@ class Connection(object):
                 ':TLESCK', ':TROFFADD', ':TROFFCLR', ':TROFFGET', ':TROFFSET',
                 ':TRNEW', ':TRADD', ':TRP', ':TRREPLAY',
                 ':U2',
+                ':WSG', ':WSP', ':WST', ':WSH', ':WSD', ':WSS',
                 ':delalig', ':delalst',
                 ':endalig',
                 ':getain', ':getalp', ':getalst',
@@ -95,7 +96,6 @@ class Connection(object):
                 ':modelcnt', ':modeldel0', ':modelld0', ':modelnam',
                 ':modelsv0',
                 ':newalig', ':newalpt',
-                ':WSG', ':WSP', ':WST', ':WSH', ':WSD', ':WSS',
                 ':shutdown',
                 ]
 
@@ -106,9 +106,9 @@ class Connection(object):
                  ':Q', ':Qe', ':Qn', ':Qs', ':Qw',
                  ':RC', ':Rc', ':RG', ':RM', ':RS', ':RT0', ':RT1', ':RT2',
                  ':RT9',
-                 ':SDAr', ':STOP',
+                 ':SDAr', ':STOP', ':Suaf',
                  ':U2',
-                 ':hP', ':Suaf',
+                 ':hP',
                  ]
 
     # Command list for commands which have a response, but have no end mark
@@ -181,8 +181,6 @@ class Connection(object):
             foundCOMMAND_A = False
             for key in sorted(self.COMMAND_A, reverse=True):
                 if command.startswith(key):
-                    if key == ':Q':
-                        continue
                     foundCOMMAND_A = True
                     break
             if not foundCOMMAND_A:

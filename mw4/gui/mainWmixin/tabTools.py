@@ -260,10 +260,8 @@ class Tools(object):
         :param fileName: fits file to be renamed
         :return: success
         """
-
         if not fileName:
             return False
-
         if not os.path.isfile(fileName):
             return False
 
@@ -278,7 +276,6 @@ class Tools(object):
             else:
                 if 'OBJECT' in fitsHeader:
                     newFilename = fitsHeader['OBJECT'].upper()
-
                 else:
                     newFilename = 'UNKNOWN'
 
@@ -291,7 +288,6 @@ class Tools(object):
                     newFilename += f'_{chunk}'
 
             newFilename += '.fits'
-
             dirName = os.path.dirname(fileName)
             newFilename = f'{dirName}/{newFilename}'
             os.rename(fileName, newFilename)
@@ -307,7 +303,6 @@ class Tools(object):
         """
         pathDir = self.ui.renameDir.text()
         includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
-
         if not os.path.isdir(pathDir):
             self.app.message.emit('No valid input directory given', 2)
             return False
@@ -353,19 +348,14 @@ class Tools(object):
         """
         if self.ui.moveDuration.currentIndex() == 1:
             sleepAndEvents(10000)
-
         elif self.ui.moveDuration.currentIndex() == 2:
             sleepAndEvents(5000)
-
         elif self.ui.moveDuration.currentIndex() == 3:
             sleepAndEvents(2000)
-
         elif self.ui.moveDuration.currentIndex() == 4:
             sleepAndEvents(1000)
-
         else:
             return False
-
         self.stopMoveAll()
         return True
 
@@ -377,6 +367,9 @@ class Tools(object):
         if ui not in self.setupMoveClassic:
             return False
 
+        for uiR in self.setupMoveClassic:
+            self.changeStyleDynamic(uiR, 'running', False)
+
         self.changeStyleDynamic(ui, 'running', True)
         directions = self.setupMoveClassic[ui]
 
@@ -384,7 +377,6 @@ class Tools(object):
             self.app.mount.obsSite.moveNorth()
         elif directions[0] == -1:
             self.app.mount.obsSite.moveSouth()
-
         if directions[1] == 1:
             self.app.mount.obsSite.moveEast()
         elif directions[1] == -1:
@@ -397,15 +389,9 @@ class Tools(object):
         """
         :return: success
         """
+        for uiR in self.setupMoveClassic:
+            self.changeStyleDynamic(uiR, 'running', False)
         self.app.mount.obsSite.stopMoveAll()
-        self.changeStyleDynamic(self.ui.moveNorth, 'running', False)
-        self.changeStyleDynamic(self.ui.moveNorthEast, 'running', False)
-        self.changeStyleDynamic(self.ui.moveEast, 'running', False)
-        self.changeStyleDynamic(self.ui.moveSouthEast, 'running', False)
-        self.changeStyleDynamic(self.ui.moveSouth, 'running', False)
-        self.changeStyleDynamic(self.ui.moveSouthWest, 'running', False)
-        self.changeStyleDynamic(self.ui.moveWest, 'running', False)
-        self.changeStyleDynamic(self.ui.moveNorthWest, 'running', False)
         return True
 
     def setSlewSpeed(self):
@@ -555,19 +541,15 @@ class Tools(object):
 
         try:
             alt = float(alt)
-
         except Exception:
             return None
 
         if self.app.mount.setting.horizonLimitLow is None:
             return None
-
         if self.app.mount.setting.horizonLimitHigh is None:
             return None
-
         if alt > self.app.mount.setting.horizonLimitHigh:
             return None
-
         if alt < self.app.mount.setting.horizonLimitLow:
             return None
 
@@ -584,7 +566,6 @@ class Tools(object):
 
         try:
             az = float(az)
-
         except Exception:
             return None
 

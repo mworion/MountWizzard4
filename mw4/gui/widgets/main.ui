@@ -18545,7 +18545,7 @@ Next point in time when satellite settles.</string>
          <x>400</x>
          <y>10</y>
          <width>366</width>
-         <height>171</height>
+         <height>201</height>
         </rect>
        </property>
        <property name="title">
@@ -18820,6 +18820,68 @@ Next point in time when satellite settles.</string>
          <string>Set</string>
         </property>
        </widget>
+       <widget class="QLabel" name="dome_3">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>170</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Optics Data</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="telescopeSetup">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>170</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure a driver to access optics data like focal length and aperture. Normally this is configured  in the telescope driver. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="telescopeDevice">
+        <property name="geometry">
+         <rect>
+          <x>85</x>
+          <y>170</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is not a telecope driver for the interaction for modeling etc. This driver is used for capturing the configured optics data like focal length from a telecope driver !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupCoreDevices">
        <property name="geometry">
@@ -18827,7 +18889,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>201</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -18840,7 +18902,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>170</y>
+          <y>140</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -18894,7 +18956,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>85</x>
-          <y>170</y>
+          <y>140</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -18920,49 +18982,6 @@ Next point in time when satellite settles.</string>
           <width>0</width>
           <height>0</height>
          </size>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="telescopeDevice">
-        <property name="geometry">
-         <rect>
-          <x>85</x>
-          <y>140</y>
-          <width>221</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QLabel" name="dome_3">
-        <property name="geometry">
-         <rect>
-          <x>11</x>
-          <y>140</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>21</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Telescope</string>
         </property>
        </widget>
        <widget class="QLabel" name="ast">
@@ -19098,29 +19117,13 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>170</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Configure the dome device. A popup will open and ask for the parameters.</string>
-        </property>
-        <property name="text">
-         <string>Set</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="telescopeSetup">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
           <y>140</y>
           <width>51</width>
           <height>21</height>
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the telescope device. A popup will open and ask for the parameters.</string>
+         <string>Configure the dome device. A popup will open and ask for the parameters.</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -30069,8 +30072,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>focuserSetup</tabstop>
   <tabstop>astrometryDevice</tabstop>
   <tabstop>astrometrySetup</tabstop>
-  <tabstop>telescopeDevice</tabstop>
-  <tabstop>telescopeSetup</tabstop>
   <tabstop>domeDevice</tabstop>
   <tabstop>domeSetup</tabstop>
   <tabstop>sensorWeatherDevice</tabstop>

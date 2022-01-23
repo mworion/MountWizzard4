@@ -19,9 +19,11 @@
 # external packages
 import numpy as np
 from PyQt5.QtGui import QVector3D
-from PyQt5.Qt3DExtras import QCuboidMesh
-from PyQt5.Qt3DExtras import QCylinderMesh
+from PyQt5.QtCore import QUrl
+from PyQt5.Qt3DExtras import QCuboidMesh, QTextureMaterial
+from PyQt5.Qt3DExtras import QCylinderMesh, QSphereMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
+from PyQt5.Qt3DRender import QTextureLoader
 from skyfield import functions
 
 # local import
@@ -37,45 +39,6 @@ class SimulatorHorizon:
         self.app = app
         self.horizon = []
         self.horizonRoot = None
-
-    @staticmethod
-    def createLine(rEntity, dx, dy, dz):
-        """
-        create line draw a line between two point or better along dx, dy, dz.
-        Therefore three transformations are made and the resulting vector has to
-        be translated half the length, because is will be drawn symmetrically to
-        the starting point.
-
-        :param rEntity:
-        :param dx:
-        :param dy:
-        :param dz:
-        :return:
-        """
-        radius, alt, az = functions.to_spherical(np.array((dx, dy, dz)))
-        az = np.degrees(az)
-        alt = np.degrees(alt)
-
-        e1 = QEntity(rEntity)
-        trans1 = QTransform()
-        trans1.setRotationZ(az + 90)
-        e1.addComponent(trans1)
-
-        e2 = QEntity(e1)
-        trans2 = QTransform()
-        trans2.setRotationX(-alt)
-        e2.addComponent(trans2)
-
-        e3 = QEntity(e2)
-        mesh = QCylinderMesh()
-        mesh.setRadius(0.008)
-        mesh.setLength(radius)
-        trans3 = QTransform()
-        trans3.setTranslation(QVector3D(0, radius / 2, 0))
-        e3.addComponent(mesh)
-        e3.addComponent(trans3)
-        e3.addComponent(Materials().lines)
-        return e3
 
     @staticmethod
     def createWall(rEntity, alt, az, space):

@@ -4082,7 +4082,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="sensorWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4130,7 +4130,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4178,7 +4178,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4226,7 +4226,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4274,7 +4274,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherRainVol">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4322,7 +4322,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindDir">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4370,7 +4370,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindSpeed">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4418,7 +4418,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherCloudCover">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4466,7 +4466,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherSQR">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4536,7 +4536,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="onlineWeatherRainVol">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4584,7 +4584,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindSpeed">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4632,7 +4632,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherCloudCover">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4680,7 +4680,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4728,7 +4728,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4776,7 +4776,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4824,7 +4824,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindDir">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4872,7 +4872,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4920,7 +4920,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherSQR">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5567,7 +5567,7 @@ to mount</string>
         </property>
         <widget class="QLineEdit" name="directWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5615,7 +5615,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5663,7 +5663,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5711,7 +5711,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -18989,7 +18989,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Astrometry</string>
+         <string>PlateSolver</string>
         </property>
        </widget>
        <widget class="QComboBox" name="astrometryDevice">

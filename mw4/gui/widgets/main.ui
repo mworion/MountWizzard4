@@ -1840,7 +1840,7 @@
        <rect>
         <x>210</x>
         <y>25</y>
-        <width>41</width>
+        <width>46</width>
         <height>21</height>
        </rect>
       </property>
@@ -1853,7 +1853,7 @@
        </font>
       </property>
       <property name="text">
-       <string>HMS</string>
+       <string>H:M:S</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_232">
@@ -2561,7 +2561,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <rect>
         <x>210</x>
         <y>50</y>
-        <width>36</width>
+        <width>46</width>
         <height>21</height>
        </rect>
       </property>
@@ -2574,7 +2574,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </font>
       </property>
       <property name="text">
-       <string>YMD</string>
+       <string>Y-M-D</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_90">

@@ -454,7 +454,7 @@ def formatHstrToText(angle):
     :param angle:
     :return:
     """
-    formatStr = '{1:02} {2:02} {3:02}'
+    formatStr = '{1:02}:{2:02}:{3:02}'
     return angle.hstr(format=formatStr)
 
 
@@ -463,7 +463,7 @@ def formatDstrToText(angle):
     :param angle:
     :return:
     """
-    formatStr = '{0:+>1}{1:02} {2:02} {3:02}'
+    formatStr = '{0:+>1}{1:02}:{2:02}:{3:02}'
     return angle.dstr(format=formatStr)
 
 

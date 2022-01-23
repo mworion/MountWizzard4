@@ -297,7 +297,7 @@ class Astrometry:
         name = self.run[self.framework].deviceName
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
-            self.app.message.emit(f'ASTROMETRY found:    [{name}]', 0)
+            self.app.message.emit(f'PLATE SOLVER found:  [{name}]', 0)
 
         self.log.debug(f'Framework: [{self.framework}], {sucApp}, {sucIndex}')
         return True
@@ -309,5 +309,5 @@ class Astrometry:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.app.message.emit(f'ASTROMETRY remove:   [{name}]', 0)
+        self.app.message.emit(f'PLATE SOLVER remove: [{name}]', 0)
         return True

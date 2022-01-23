@@ -37,6 +37,8 @@ class Tools(object):
     """
 
     def __init__(self):
+        self.targetAlt = None
+        self.targetAz = None
         self.selectorsDropDowns = {'rename1': self.ui.rename1,
                                    'rename2': self.ui.rename2,
                                    'rename3': self.ui.rename3,
@@ -102,7 +104,7 @@ class Tools(object):
         self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
         self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
         self.ui.commandInput.returnPressed.connect(self.commandRaw)
-        self.app.mount.signals.slewFinished.connect(self.moveAltAzGuiDefault)
+        self.app.mount.signals.slewFinished.connect(self.moveAltAzDefault)
 
     def initConfig(self):
         """
@@ -454,10 +456,12 @@ class Tools(object):
         suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc
 
-    def moveAltAzGuiDefault(self):
+    def moveAltAzDefault(self):
         """
         :return:
         """
+        self.targetAlt = None
+        self.targetAz = None
         for ui in self.setupMoveAltAz:
             self.changeStyleDynamic(ui, 'running', False)
         return True
@@ -470,22 +474,24 @@ class Tools(object):
         if ui not in self.setupMoveAltAz:
             return False
 
-        stat = self.app.mount.obsSite.status
         alt = self.app.mount.obsSite.Alt
         az = self.app.mount.obsSite.Az
 
-        if alt is None or az is None or stat is None:
-            return False
-        if stat not in [0, 7]:
+        if alt is None or az is None:
             return False
 
         self.changeStyleDynamic(ui, 'running', True)
-
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]
         directions = self.setupMoveAltAz[ui]
-        targetAlt = alt.degrees + directions[0] * step
-        targetAz = az.degrees + directions[1] * step
+
+        if self.targetAlt is None or self.targetAz is None:
+            targetAlt = self.targetAlt = alt.degrees + directions[0] * step
+            targetAz = self.targetAz = az.degrees + directions[1] * step
+        else:
+            targetAlt = self.targetAlt = self.targetAlt + directions[0] * step
+            targetAz = self.targetAz = self.targetAz + directions[1] * step
+
         targetAz = targetAz % 360
         suc = self.slewTargetAltAz(targetAlt, targetAz)
         return suc

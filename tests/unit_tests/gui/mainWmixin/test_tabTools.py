@@ -501,8 +501,8 @@ def test_slewTargetAltAz_2(function):
         assert not suc
 
 
-def test_moveAltAzGuiDefault(function):
-    suc = function.moveAltAzGuiDefault()
+def test_moveAltAzDefault(function):
+    suc = function.moveAltAzDefault()
     assert suc
 
 
@@ -511,7 +511,6 @@ def test_moveAltAz_1(function):
         return 0
 
     function.sender = Sender
-
     suc = function.moveAltAz()
     assert not suc
 
@@ -521,15 +520,11 @@ def test_moveAltAz_2(function):
         return function.ui.moveNorthEastAltAz
 
     function.sender = Sender
-    function.app.mount.obsSite.status = None
-    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Alt = None
     function.app.mount.obsSite.Az = Angle(degrees=10)
 
-    with mock.patch.object(function,
-                           'slewTargetAltAz',
-                           return_value=False):
-        suc = function.moveAltAz()
-        assert not suc
+    suc = function.moveAltAz()
+    assert not suc
 
 
 def test_moveAltAz_3(function):
@@ -537,7 +532,8 @@ def test_moveAltAz_3(function):
         return function.ui.moveNorthEastAltAz
 
     function.sender = Sender
-    function.app.mount.obsSite.status = 0
+    function.targetAlt = None
+    function.targetAz = None
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=10)
 
@@ -553,23 +549,8 @@ def test_moveAltAz_4(function):
         return function.ui.moveNorthEastAltAz
 
     function.sender = Sender
-    function.app.mount.obsSite.status = 1
-    function.app.mount.obsSite.Alt = Angle(degrees=10)
-    function.app.mount.obsSite.Az = Angle(degrees=10)
-
-    with mock.patch.object(function,
-                           'slewTargetAltAz',
-                           return_value=False):
-        suc = function.moveAltAz()
-        assert not suc
-
-
-def test_moveAltAz_5(function):
-    def Sender():
-        return function.ui.moveNorthEastAltAz
-
-    function.sender = Sender
-    function.app.mount.obsSite.status = 0
+    function.targetAlt = 10
+    function.targetAz = 10
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=10)
 

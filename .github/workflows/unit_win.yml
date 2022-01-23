@@ -266,7 +266,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWmixin --cov --cov=mw4/
+          pytest tests/unit_tests/gui/mainWmixin --cov=mw4/
 
       - name: rename_coveragefile
         run: mv .coverage cov3.dat

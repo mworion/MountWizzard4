@@ -19,12 +19,9 @@
 # external packages
 import numpy as np
 from PyQt5.QtGui import QVector3D
-from PyQt5.QtCore import QUrl
-from PyQt5.Qt3DExtras import QCuboidMesh, QTextureMaterial
-from PyQt5.Qt3DExtras import QCylinderMesh, QSphereMesh
+from PyQt5.Qt3DExtras import QCuboidMesh
+from PyQt5.Qt3DExtras import QCylinderMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
-from PyQt5.Qt3DRender import QTextureLoader
-from skyfield import functions
 
 # local import
 from gui.extWindows.simulator.materials import Materials

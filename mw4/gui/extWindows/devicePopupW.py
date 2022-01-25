@@ -155,7 +155,6 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not framework:
             framework = firstFramework
 
-        frameworkTabText = self.framework2tabs[framework]
         frameworkTabTextList = [self.framework2tabs[x] for x in self.data['frameworks']]
 
         tabWidget = self.ui.tab.findChild(QWidget, framework)

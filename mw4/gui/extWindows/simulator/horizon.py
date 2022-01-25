@@ -20,7 +20,6 @@
 import numpy as np
 from PyQt5.QtGui import QVector3D
 from PyQt5.Qt3DExtras import QCuboidMesh
-from PyQt5.Qt3DExtras import QCylinderMesh
 from PyQt5.Qt3DCore import QEntity, QTransform
 
 # local import

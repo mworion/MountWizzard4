@@ -175,6 +175,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
         self.app.drawHorizonPoints.disconnect(self.horizonCreate)
+        self.app.switchHemisphere.disconnect(self.createScene)
         self.camera.positionChanged.disconnect(self.limitPositionZ)
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
@@ -207,6 +208,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
+        self.app.switchHemisphere.connect(self.createScene)
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.colorChange.connect(self.colorChange)
         self.show()
@@ -386,7 +388,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         for name in self.world:
             tools.linkModel(self.world, name, rEntity)
 
-    def createScene(self):
+    def createScene(self, lat=0):
         """
         createScene initially builds all 3d models and collects them to a scene.
         please look closely which references are used-
@@ -415,7 +417,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             self.ui.checkShowPointer.setChecked(False)
 
         self.createWorld(self.rootEntity)
-        self.telescope.create(self.world['ref']['e'], True)
+        self.telescope.create(self.world['ref']['e'], True, lat)
         self.dome.create(self.world['ref']['e'], dome, isDomeTransparent)
         self.pointer.create(self.world['ref']['e'], pointer)
         self.laser.create(self.world['ref']['e'], laser)

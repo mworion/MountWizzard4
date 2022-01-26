@@ -48,6 +48,7 @@ releaseNotes = """
 - upgrade wakeonlan library to 2.1.0
 - upgrade pybase64 library to 1.2.1
 - upgrade websocket-client library to 1.2.3
+- fix: simulator in southern hemisphere
  """
 
 with open('notes.txt', 'w') as f:

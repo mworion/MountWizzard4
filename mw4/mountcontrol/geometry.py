@@ -338,7 +338,9 @@ class Geometry(object):
         # the rotation around z axis (polar direction) to adjust the orientation
         # of the mount to true north, if the fixed pier does not make it.
         # turning counterclockwise is positive
-        T1 = np.dot(T0, self.transformRotZ(self.azAdj))
+        # we also take into account southern hemisphere
+        rotBase = self.azAdj if lat > 0 else self.azAdj + np.radians(180)
+        T1 = np.dot(T0, self.transformRotZ(rotBase))
         P2 = np.dot(T1, P0)
 
         # next we have the translation between the base plate and the rotation
@@ -352,7 +354,7 @@ class Geometry(object):
 
         # next step is the rotation around y axis for compensation of latitude.
         # the adjustment angle compensates the latitude. for lat = 0 we have 0
-        # degree correction an below north pole there is 90 deg correction needed.
+        # degree correction and below north pole there is 90 deg correction needed.
         # so phi = -lat because it's a turn counterclockwise around Y, all angles
         # are in radians
         self.altAdj = -abs(lat)
@@ -379,10 +381,15 @@ class Geometry(object):
         # HA_sky = HA_mech
         # Beyond the pole
         # HA_sky = HA_mech + 12h, expressed in range ± 12h
+        # You have to take care about southern hemisphere ha axis.
+        if lat < 0:
+            ha = -ha
+            checkPier = 'W'
+        else:
+            checkPier = 'E'
 
-        if pierside == 'E':
+        if pierside == checkPier:
             value = - ha + np.radians(6 / 24 * 360)
-
         else:
             value = - ha + np.radians(18 / 24 * 360)
 
@@ -398,9 +405,11 @@ class Geometry(object):
         # Dec_sky = Dec_mech
         # Beyond the pole
         # Dec_sky = 180d - Dec_mech, expressed in range ± 90d
+        if lat < 0:
+            dec = -dec
 
         value = dec - np.radians(90)
-        if pierside == 'E':
+        if pierside == checkPier:
             value = -value
 
         T6 = np.dot(T5, self.transformRotZ(value))
@@ -421,7 +430,6 @@ class Geometry(object):
         # installed but not centered should be a translation in y. if the ota is
         # de-centered looking in the direction of the ota (out of the hemisphere)
         # to the right it's a negative y otherwise a positive one
-
         vec7 = [0,
                 - self.offLAT,
                 0]
@@ -462,7 +470,6 @@ class Geometry(object):
 
         # we choose the positive solution as we look in the positive direction and
         # can omit the view to the back
-
         intersect = PB + np.dot(t1, PD)
 
         # simplify the names and calculate the geometry angles based on the

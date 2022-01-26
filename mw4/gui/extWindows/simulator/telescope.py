@@ -39,7 +39,7 @@ class SimulatorTelescope:
         self.model = {}
         self.modelRoot = None
 
-    def create(self, rEntity, show):
+    def create(self, rEntity, show, lat=0):
         """
 
         dict {'name of model': {'parent': }}
@@ -169,6 +169,8 @@ class SimulatorTelescope:
                 'mat': Materials().white,
             },
         }
+        if lat < 0:
+            self.model['mountBase']['rot'] = [0, 0, 180]
 
         for name in self.model:
             tools.linkModel(self.model, name, self.modelRoot)

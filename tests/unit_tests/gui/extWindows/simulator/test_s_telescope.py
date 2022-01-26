@@ -87,6 +87,14 @@ def test_create_3(qtbot):
     assert suc
 
 
+def test_create_4(qtbot):
+    e = QEntity()
+    app.modelRoot = e
+    app.model = {'test': {'e': e}}
+    suc = app.create(e, True, -10)
+    assert suc
+
+
 def test_updateSettings_1(qtbot):
     suc = app.updateSettings()
     assert not suc
@@ -162,9 +170,7 @@ def test_updatePositions_3(qtbot):
             't': QTransform()
         },
     }
-
     app.app.mount.obsSite.angularPosRA = 10
     app.app.mount.obsSite.angularPosDEC = 10
-
     suc = app.updatePositions()
     assert suc

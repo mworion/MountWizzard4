@@ -459,3 +459,20 @@ def test_geometry_8(function):
     assert inter is None
     assert PB is None
     assert PD is None
+
+
+def test_geometry_9(function):
+    suc = function.geometry.initializeGeometry('10micron GM1000HPS')
+    assert suc
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
+
+    val = function.geometry.calcTransformationMatrices(dec=Angle(degrees=10),
+                                                       ha=Angle(hours=5),
+                                                       lat=Angle(degrees=-50),
+                                                       pierside='E')
+    alt, az, inter, _, _ = val

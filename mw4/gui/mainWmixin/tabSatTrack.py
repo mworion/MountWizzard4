@@ -635,15 +635,18 @@ class SatTrack(object):
         isMount = self.app.deviceStat['mount']
         start, end = self.selectStartEnd()
 
+        if not start or not end:
+            return False
+
         if isMount and useInternal:
-            if not start or not end:
-                return False
             alt, az = self.calcTrajectoryData(start, end)
             start, end, alt, az = self.filterHorizon(start, end, alt, az)
         else:
-            self.app.mount.calcTLE(start)
             alt = []
             az = []
+
+        if isMount and not useInternal:
+            self.app.mount.calcTLE(start)
 
         self.sendSatelliteData(alt=alt, az=az)
         return True

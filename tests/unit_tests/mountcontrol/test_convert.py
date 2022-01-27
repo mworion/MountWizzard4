@@ -555,7 +555,7 @@ def test_formatHstrToText():
 def test_formatDstrToText():
     values = [
         [Angle(degrees=12), '+12:00:00'],
-        [Angle(degrees=12.000001), '+12 00:00'],
+        [Angle(degrees=12.000001), '+12:00:00'],
         [Angle(degrees=6), '+06:00:00'],
         [Angle(degrees=-6), '-06:00:00'],
     ]

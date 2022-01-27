@@ -543,9 +543,9 @@ def test_convertDecToAngle_2():
 
 def test_formatHstrToText():
     values = [
-        [Angle(hours=12), '12 00 00'],
-        [Angle(hours=12.000001), '12 00 00'],
-        [Angle(hours=6), '06 00 00'],
+        [Angle(hours=12), '12:00:00'],
+        [Angle(hours=12.000001), '12:00:00'],
+        [Angle(hours=6), '06:00:00'],
     ]
     for value in values:
         text = formatHstrToText(value[0])
@@ -554,10 +554,10 @@ def test_formatHstrToText():
 
 def test_formatDstrToText():
     values = [
-        [Angle(degrees=12), '+12 00 00'],
-        [Angle(degrees=12.000001), '+12 00 00'],
-        [Angle(degrees=6), '+06 00 00'],
-        [Angle(degrees=-6), '-06 00 00'],
+        [Angle(degrees=12), '+12:00:00'],
+        [Angle(degrees=12.000001), '+12 00:00'],
+        [Angle(degrees=6), '+06:00:00'],
+        [Angle(degrees=-6), '-06:00:00'],
     ]
     for value in values:
         text = formatDstrToText(value[0])

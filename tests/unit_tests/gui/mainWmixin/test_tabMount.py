@@ -96,7 +96,7 @@ def test_updatePointGui_ra(function):
     value = Angle(hours=45)
     function.app.mount.obsSite.raJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '45 00 00' == function.ui.RA.text()
+    assert '45:00:00' == function.ui.RA.text()
     value = None
     function.app.mount.obsSite.raJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
@@ -108,7 +108,7 @@ def test_updatePointGui_dec_1(function):
     value = Angle(degrees=45)
     function.app.mount.obsSite.decJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '+45 00 00' == function.ui.DEC.text()
+    assert '+45:00:00' == function.ui.DEC.text()
 
 
 def test_updatePointGui_dec_2(function):

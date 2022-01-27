@@ -267,6 +267,19 @@ def test_extractOrbits_5(function):
     assert len(function.satOrbits) == 0
 
 
+def test_extractOrbits_6(function):
+    ts = function.app.mount.obsSite.ts
+
+    now = ts.tt_jd(2459216.1)
+    t0 = ts.tt_jd(2459215.5)
+
+    times = np.array([t0])
+    events = np.array([1])
+
+    function.extractOrbits(now, times, events)
+    assert len(function.satOrbits) == 1
+
+
 def test_calcSatelliteMeridianTransit(function):
     tle = ['NOAA 8',
            '1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998',
@@ -933,6 +946,20 @@ def test_progTrajectoryToMount_2(function):
 
 def test_progTrajectoryToMount_3(function):
     function.app.deviceStat['mount'] = False
+    function.ui.useInternalSatCalc.setChecked(False)
+    with mock.patch.object(function,
+                           'selectStartEnd',
+                           return_value=(1, 1)):
+        with mock.patch.object(function.app.mount,
+                               'calcTLE'):
+            with mock.patch.object(function,
+                                   'sendSatelliteData'):
+                suc = function.progTrajectoryToMount()
+                assert suc
+
+
+def test_progTrajectoryToMount_4(function):
+    function.app.deviceStat['mount'] = True
     function.ui.useInternalSatCalc.setChecked(False)
     with mock.patch.object(function,
                            'selectStartEnd',

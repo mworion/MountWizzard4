@@ -264,8 +264,13 @@ class SatTrack(object):
             if counter > 2:
                 break
 
-        if not self.satOrbits:
+        if not self.satOrbits and np.all(events == 1) and len(events) > 0:
+            self.satOrbits.append({'rise': times[0]})
+            self.satOrbits[0]['culminate'] = times[0] + 0.5
+            self.satOrbits[0]['settle'] = times[0] + 1.0
+        elif not self.satOrbits:
             return False
+
         if 'settle' not in self.satOrbits[-1]:
             del self.satOrbits[counter]
             return False

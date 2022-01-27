@@ -672,14 +672,14 @@ def test_guiSetText_5(function):
     pb = QPushButton()
     suc = function.guiSetText(pb, 'HSTR', Angle(hours=10))
     assert suc
-    assert pb.text() == '10 00 00'
+    assert pb.text() == '10:00:00'
 
 
 def test_guiSetText_6(function):
     pb = QPushButton()
     suc = function.guiSetText(pb, 'DSTR', Angle(degrees=90))
     assert suc
-    assert pb.text() == '+90 00 00'
+    assert pb.text() == '+90:00:00'
 
 
 def test_guiSetText_7(function):

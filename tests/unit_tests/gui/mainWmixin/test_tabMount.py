@@ -134,7 +134,7 @@ def test_updatePointGui_ha_1(function):
     function.app.mount.obsSite.haJNow = value
     function.app.mount.obsSite.timeSidereal = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '12 00 00' == function.ui.HA.text()
+    assert '12:00:00' == function.ui.HA.text()
 
 
 def test_updatePointGui_ha_2(function):
@@ -149,7 +149,7 @@ def test_updatePointGUI_sidereal_1(function):
     value = Angle(hours=12)
     function.app.mount.obsSite.timeSidereal = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '12 00 00' == function.ui.timeSidereal.text()
+    assert '12:00:00' == function.ui.timeSidereal.text()
 
 
 def test_updatePointGUI_sidereal_2(function):

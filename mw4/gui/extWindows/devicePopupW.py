@@ -218,9 +218,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         frameworkData = self.data['frameworks'][framework]
 
         for element in list(frameworkData):
-
             ui = self.framework2gui[framework].get(element)
-
             if isinstance(ui, QComboBox):
                 frameworkData['deviceName'] = ui.currentText()
                 frameworkData[element].clear()
@@ -230,21 +228,15 @@ class DevicePopup(toolsQtWidget.MWidget):
             elif isinstance(ui, QLineEdit):
                 if isinstance(frameworkData[element], str):
                     frameworkData[element] = ui.text()
-
                 elif isinstance(frameworkData[element], int):
                     frameworkData[element] = int(ui.text())
-
                 else:
                     frameworkData[element] = float(ui.text())
 
             elif isinstance(ui, QCheckBox):
                 frameworkData[element] = ui.isChecked()
-
             elif isinstance(ui, QDoubleSpinBox):
                 frameworkData[element] = ui.value()
-
-            else:
-                self.log.debug(f'Element {element} in gui for framework {framework} not found')
         return True
 
     def readFramework(self):

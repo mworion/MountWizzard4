@@ -41,7 +41,7 @@ jobs:
     # operating system, so we could do it on the default os og GitHub.
     # Python 3.9 is chosen as it is the actual version you could work with.
 
-    runs-on: 'ubuntu-latest'
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -345,7 +345,7 @@ jobs:
     
     needs: [ run_tests_windows_1, run_tests_windows_2,
              run_tests_windows_3, run_tests_windows_4]
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2

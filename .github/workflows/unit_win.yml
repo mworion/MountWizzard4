@@ -345,7 +345,7 @@ jobs:
     
     needs: [ run_tests_windows_1, run_tests_windows_2,
              run_tests_windows_3, run_tests_windows_4]
-    runs-on: [ windows-latest ]
+    runs-on: [ubuntu-latest]
     
     steps:
     - uses: actions/checkout@v2

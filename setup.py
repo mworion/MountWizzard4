@@ -39,7 +39,7 @@ releaseNotes = """
 - improved: Tools: move mount: better UI, tooltips, multi steps in alt/az
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
-- upgrade: numpy library to 1.21.5
+- upgrade: numpy library to 1.21.4
 - upgrade: matplotlib to 3.5.1
 - upgrade: scipy library to 1.7.3
 - upgrade requests library to 2.27.2
@@ -56,7 +56,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.0b11',
+    version='2.2.0b12',
     packages=[
         'mw4',
         'mw4.base',
@@ -88,7 +88,7 @@ setup(
     ],
     python_requires='>=3.7.0, <3.10',
     install_requires=[
-        'numpy==1.21.5',
+        'numpy==1.21.4',
         'pillow==8.3.1',
         'matplotlib==3.5.1',
         'pyerfa==2.0.0',

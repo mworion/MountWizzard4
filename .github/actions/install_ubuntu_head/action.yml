@@ -1,6 +1,4 @@
 #
-# GitHub actions for running the unit test of the mountwizzard4 package
-#
 # v1.0, Michael Wuertenberger
 #
 name: install_ubuntu_head
@@ -13,7 +11,7 @@ defaults:
 runs:
   using: 'composite'
   steps:
-    - name: Install Head
+    - name: install Head
       run: |
         sudo apt-get update
         sudo apt-get -y upgrade

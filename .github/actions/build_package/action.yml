@@ -1,6 +1,4 @@
 #
-# GitHub actions for running the unit test of the mountwizzard4 package
-#
 # v1.0, Michael Wuertenberger
 #
 name: build_package

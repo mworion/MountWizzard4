@@ -1,6 +1,4 @@
 #
-# GitHub actions for running the unit test of the mountwizzard4 package
-#
 # v1.0, Michael Wuertenberger
 #
 name: setup test
@@ -13,7 +11,8 @@ defaults:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/download-artifact@v2
+    - name: download dist
+      uses: actions/download-artifact@v2
       with:
         name: dist
         path: dist
@@ -23,12 +22,12 @@ runs:
         with:
           python-version: '3.9'
     
-    - name: install_package
+    - name: install package
       run: |
         python -m pip install cython wheel
         python -m pip install dist/mountwizzard4.tar.gz
 
-    - name: install_pytest
+    - name: install pytest
       run: |
         python -m pip install pytest
         python -m pip install pytest-qt

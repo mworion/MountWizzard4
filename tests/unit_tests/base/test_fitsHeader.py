@@ -130,7 +130,7 @@ def test_getScale_2():
         'FOCALLEN': '570',
     }
     scale = getScale(header=header)
-    assert scale == 1
+    assert scale is None
 
 
 def test_getScale_3():
@@ -139,7 +139,7 @@ def test_getScale_3():
         'XBINNING': '1',
     }
     scale = getScale(header=header)
-    assert scale == 1
+    assert scale is None
 
 
 def test_getScale_4():
@@ -166,4 +166,4 @@ def test_getScale_5():
     header = {
     }
     scale = getScale(header=header)
-    assert scale == 1
+    assert scale is None

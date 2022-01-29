@@ -68,14 +68,14 @@ def getSQM(header={}):
     :param header:
     :return:
     """
-    for key in ['SQM', 'SKY-QLTY', 'MPAS']:
+    for key in ['SQM', 'SKY-QLTY', 'MPSAS']:
         value = header.get(key)
         if value is None:
             continue
         break
     else:
         return None
-    return value
+    return float(value)
 
 
 def getExposure(header={}):
@@ -83,14 +83,14 @@ def getExposure(header={}):
     :param header:
     :return:
     """
-    for key in ['EXPOSURE', 'SKY-EXPTIME']:
+    for key in ['EXPOSURE', 'EXPTIME']:
         value = header.get(key)
         if value is None:
             continue
         break
     else:
         return None
-    return value
+    return float(value)
 
 
 def getScale(header={}):

@@ -4,10 +4,6 @@
 name: setup test coverage
 description: download package install and install testenvironment for coverage
 
-defaults:
-  run:
-    shell: bash
-
 runs:
   using: 'composite'
   steps:
@@ -22,6 +18,7 @@ runs:
         python -m pip install cython wheel
         python -m pip install dist/mountwizzard4.tar.gz
         python -m pip install comtypes==1.1.7
+      shell: bash
 
     - name: install pytest
       run: |
@@ -29,3 +26,4 @@ runs:
           python -m pip install pytest-qt
           python -m pip install pytest-cov
           python -m pip install pytest-pythonpath
+      shell: bash

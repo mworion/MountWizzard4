@@ -4,10 +4,6 @@
 name: build_package
 description: build package and uploads as artifact
 
-defaults:
-  run:
-    shell: bash
-
 runs:
   using: 'composite'
   
@@ -22,6 +18,7 @@ runs:
         python -m pip install setuptools wheel
         python setup.py sdist
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
+      shell: bash
 
     - name: upload_package
       uses: actions/upload-artifact@v2

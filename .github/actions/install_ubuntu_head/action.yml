@@ -4,10 +4,6 @@
 name: install_ubuntu_head
 description: installs headless setup for ubuntu
 
-defaults:
-  run:
-    shell: bash
-
 runs:
   using: 'composite'
   steps:
@@ -20,3 +16,4 @@ runs:
         sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
         sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
           sudo apt-get install -y libxcb-keysyms1
+      shell: bash

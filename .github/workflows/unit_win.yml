@@ -330,10 +330,12 @@ jobs:
 
   coverage:
     #
-    needs: [ run_tests_windows_1, run_tests_windows_2a,
+    needs: [ run_tests_windows_1a, run_tests_windows_1b,
+             run_tests_windows_1b, run_tests_windows_2a,
              run_tests_windows_2b, run_tests_windows_3a,
-             run_tests_windows_3b, run_tests_windows_4,
-             run_tests_windows_5, run_tests_windows_6]
+             run_tests_windows_3b, run_tests_windows_3c,
+             run_tests_windows_4, run_tests_windows_5,
+             run_tests_windows_6]
     runs-on: windows-latest
     
     steps:

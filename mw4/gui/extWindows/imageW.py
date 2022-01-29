@@ -594,40 +594,20 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param header:
         :return: True for test purpose
         """
-        name = header.get('OBJECT', '').upper()
-        self.ui.object.setText(f'{name}')
-
+        self.guiSetText(self.ui.object, 's', header.get('OBJECT', '').upper())
         ra, dec = getCoordinates(header=header)
-
-        self.ui.ra.setText(f'{formatHstrToText(ra)}')
-        self.ui.dec.setText(f'{formatDstrToText(dec)}')
-
-        scale = getScale(header=header)
-        rotation = header.get('ANGLE', 0)
-        self.ui.scale.setText(f'{scale:5.3f}')
-        self.ui.rotation.setText(f'{rotation:6.3f}')
-
-        value = header.get('CCD-TEMP', 0)
-        self.guiSetText(self.ui.ccdTemp, '4.1f', value)
-
-        value = getExposure(header=header)
-        self.guiSetText(self.ui.expTime, '5.1f', value)
-
-        value = header.get('FILTER', 0)
-        value = f'{value}'
-        self.guiSetText(self.ui.filter, 's', value)
-
-        value = header.get('XBINNING', 0)
-        self.guiSetText(self.ui.binX, '1.0f', value)
-        value = header.get('YBINNING', 0)
-        self.guiSetText(self.ui.binY, '1.0f', value)
-
-        value = getSQM(header=header)
-        self.guiSetText(self.ui.sqm, '5.2f', value)
-
+        self.guiSetText(self.ui.ra, 'HSTR', ra)
+        self.guiSetText(self.ui.dec, 'DSTR', dec)
+        self.guiSetText(self.ui.scale, '5.3f', getScale(header=header))
+        self.guiSetText(self.ui.rotation, '6.3f', header.get('ANGLE'))
+        self.guiSetText(self.ui.ccdTemp, '4.1f', header.get('CCD-TEMP'))
+        self.guiSetText(self.ui.expTime, '5.1f', getExposure(header=header))
+        self.guiSetText(self.ui.filter, 's', header.get('FILTER'))
+        self.guiSetText(self.ui.binX, '1.0f', header.get('XBINNING'))
+        self.guiSetText(self.ui.binY, '1.0f', header.get('YBINNING'))
+        self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
         flipped = bool(header.get('FLIPPED', False))
         self.ui.isFlipped.setEnabled(flipped)
-
         return True
 
     def workerPreparePlot(self, header):
@@ -640,7 +620,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             wcsObject = wcs.WCS(header, relax=True)
             hasCelestial = wcsObject.has_celestial
             hasDistortion = wcsObject.has_distortion
-
         else:
             hasCelestial = False
             hasDistortion = False
@@ -651,7 +630,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         canWCS = self.ui.view.currentIndex() in [0, 1, 2]
         useWCS = self.ui.checkUseWCS.isChecked()
-
         if hasDistortion and useWCS and canWCS:
             self.setupDistorted()
         else:
@@ -755,6 +733,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         position = (int(sizeX / 2), int(sizeY / 2))
         size = (int(sizeY / factor), int(sizeX / factor))
+        self.log.debug(f'Image zoomed to position:[{position}], size:[{size}]')
         self.image = Cutout2D(self.image,
                               position=position,
                               size=size,
@@ -834,14 +813,17 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.header = fitsHandle[0].header
 
         if self.image is None or len(self.image) == 0:
+            self.log.debug('No image data in FITS')
             return False
         if self.header is None:
+            self.log.debug('No header data in FITS')
             return False
 
         self.image = np.flipud(self.image)
         bayerPattern = self.header.get('BAYERPAT', '')
         if bayerPattern:
             self.image = self.debayerImage(self.image, bayerPattern)
+            self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)

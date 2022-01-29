@@ -68,11 +68,14 @@ def getSQM(header={}):
     :param header:
     :return:
     """
-    sqm = max(float(header.get('SQM', 0)),
-              float(header.get('SKY-QLTY', 0)),
-              float(header.get('MPSAS', 0)),
-              )
-    return sqm
+    for key in ['SQM', 'SKY-QLTY', 'MPAS']:
+        value = header.get(key)
+        if value is None:
+            continue
+        break
+    else:
+        return None
+    return value
 
 
 def getExposure(header={}):
@@ -80,10 +83,14 @@ def getExposure(header={}):
     :param header:
     :return:
     """
-    expTime = max(float(header.get('EXPOSURE', 0)),
-                  float(header.get('EXPTIME', 0)),
-                  )
-    return expTime
+    for key in ['EXPOSURE', 'SKY-EXPTIME']:
+        value = header.get(key)
+        if value is None:
+            continue
+        break
+    else:
+        return None
+    return value
 
 
 def getScale(header={}):
@@ -104,6 +111,6 @@ def getScale(header={}):
     elif hasAlternatives:
         scale = pixelSize * binning / focalLength * 206.265
     else:
-        scale = 1.0
+        scale = None
 
     return scale

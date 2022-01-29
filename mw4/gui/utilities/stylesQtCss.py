@@ -304,11 +304,11 @@ class Styles:
         }
         QGroupBox[frameless='true'] {
             border-width: 0px;
-        }        
+        }
         QGroupBox[frameless='true']:disabled {
             border-width: 2px;
             border-color: $M_RED$;
-        }        
+        }
         QGroupBox::indicator {
             border-width: 1px;
             border-color: $M_GREY$;

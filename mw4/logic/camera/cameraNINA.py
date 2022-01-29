@@ -43,7 +43,7 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         :return:
         """
-        prop = f'cameratemp'
+        prop = 'cameratemp'
         response = self.requestProperty(prop)
         if response is None:
             return False, {}
@@ -189,8 +189,7 @@ class CameraNINA(NINAClass, CameraSupport):
             'Y': int(posY / binning),
             'Width': int(width / binning),
             'Height': int(height / binning),
-            'FrameType': 'Light',
-            }
+            'FrameType': 'Light'}
         if 'READOUT_QUALITY.QUALITY_LOW' in self.data:
             speed = 'High' if fastReadout else 'Normal'
             speedParams = {'Speed': speed}

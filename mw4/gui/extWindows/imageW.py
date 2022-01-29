@@ -36,7 +36,6 @@ from PIL import Image
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
-from mountcontrol.convert import formatHstrToText, formatDstrToText
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui

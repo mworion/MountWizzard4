@@ -367,7 +367,7 @@ class SettImaging(object):
         else:
             value, ok = dlg.getInt(self,
                                    'Set offset',
-                                   f'Values:',
+                                   'Values:',
                                    actValue)
 
         if not ok:
@@ -406,7 +406,7 @@ class SettImaging(object):
         else:
             value, ok = dlg.getInt(self,
                                    'Set offset',
-                                   f'Values:',
+                                   'Values:',
                                    actValue)
 
         if not ok:

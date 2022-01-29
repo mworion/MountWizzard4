@@ -680,7 +680,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        bkg = sep.Background(self.image)
+        bkg = sep.Background(self.image.astype('float32'))
         self.bk_back = bkg.back()
         self.bk_rms = bkg.rms()
         image_sub = self.image - bkg

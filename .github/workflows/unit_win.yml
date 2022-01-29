@@ -56,13 +56,13 @@ jobs:
           pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
           
       - name: rename_coveragefile
-        run: mv .coverage cov1.dat
+        run: mv .coverage c1.dat
         
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./cov1.dat
+          path: ./c1.dat
 
   run_tests_windows_2:
     #
@@ -85,41 +85,15 @@ jobs:
           pytest tests/unit_tests/indibase --cov-append --cov=mw4/
           
       - name: rename_coveragefile
-        run: mv .coverage cov2.dat
+        run: mv .coverage c2.dat
         
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./cov2.dat
+          path: ./c2.dat
 
   run_tests_windows_3:
-    #
-    needs: build_widgets_resource
-    runs-on: windows-latest
-    
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test_cov
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/mainWmixin --cov=mw4/
-
-      - name: rename_coveragefile
-        run: mv .coverage cov3.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage
-          path: ./cov3.dat
-
-  run_tests_windows_4:
     #
     needs: build_widgets_resource
     runs-on: windows-latest
@@ -139,18 +113,97 @@ jobs:
           pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
           
       - name: rename_coveragefile
-        run: mv .coverage cov4.dat
+        run: mv .coverage c3.dat
         
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./cov4.dat
+          path: ./c3.dat
+
+  run_tests_windows_4:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/gui/mainWmixin1 --cov=mw4/
+
+      - name: rename_coveragefile
+        run: mv .coverage c4.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c4.dat
+
+  run_tests_windows_5:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/gui/mainWmixin2 --cov=mw4/
+
+      - name: rename_coveragefile
+        run: mv .coverage c5.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c5.dat
+
+  run_tests_windows_6:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/gui/mainWmixin3 --cov=mw4/
+
+      - name: rename_coveragefile
+        run: mv .coverage c6.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c6.dat
 
   coverage:
     #
     needs: [ run_tests_windows_1, run_tests_windows_2,
-             run_tests_windows_3, run_tests_windows_4]
+             run_tests_windows_3, run_tests_windows_4,
+             run_tests_windows_5, run_tests_windows_6]
     runs-on: windows-latest
     
     steps:
@@ -178,7 +231,7 @@ jobs:
       run: |
         dir
         python -m pip install coverage
-        python -m coverage combine cov1.dat cov2.dat cov3.dat cov4.dat
+        python -m coverage combine c1.dat c2.dat c3.dat c4.dat c5.dat c6.dat
         python -m coverage xml
 
     - name: upload

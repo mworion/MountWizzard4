@@ -418,31 +418,31 @@ def test_removePrefix_2():
 
 
 def test_updateMessage_1():
-    app.showMessages = False
+    app.messages = False
     suc = app.updateMessage('test', 'text')
     assert not suc
 
 
 def test_updateMessage_2():
-    app.showMessages = True
+    app.messages = True
     suc = app.updateMessage('test', 'text')
     assert suc
 
 
 def test_updateMessage_3():
-    app.showMessages = True
+    app.messages = True
     suc = app.updateMessage('test', '[WARNING] should not be shown')
     assert suc
 
 
 def test_updateMessage_4():
-    app.showMessages = True
+    app.messages = True
     suc = app.updateMessage('test', '[ERROR] should not be shown')
     assert suc
 
 
 def test_updateMessage_5():
-    app.showMessages = True
+    app.messages = True
     suc = app.updateMessage('test', 'NOT should not be shown')
     assert suc
 

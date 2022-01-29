@@ -1,0 +1,21 @@
+#
+# GitHub actions for running the unit test of the mountwizzard4 package
+#
+# v1.0, Michael Wuertenberger
+#
+name: install_ubuntu_head
+description: installs headless setup for ubuntu
+author: Michael Würtenberger
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Head
+      run: |
+        sudo apt-get update
+        sudo apt-get -y upgrade
+        sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
+        sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
+        sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
+        sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
+          sudo apt-get install -y libxcb-keysyms1

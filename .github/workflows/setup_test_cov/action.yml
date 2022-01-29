@@ -3,10 +3,12 @@
 #
 # v1.0, Michael Wuertenberger
 #
-- name: install_package_test_win
+name: setup test coverage
+description: download package install and install testenvironment for coverage
+author: Michael Würtenberger
 
 runs:
-  using 'composite'
+  using: 'composite'
   steps:
     - uses: actions/download-artifact@v2
       with:

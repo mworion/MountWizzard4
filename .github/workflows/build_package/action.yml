@@ -3,10 +3,12 @@
 #
 # v1.0, Michael Wuertenberger
 #
-- name: build_package
+name: build_package
+description: build package and uploads as artifact
+author: Michael Würtenberger
 
 runs:
-  using 'composite'
+  using: 'composite'
   steps:
     - uses: actions/setup-python@v2
       with:

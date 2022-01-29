@@ -105,7 +105,7 @@ def test_readFitsData_1(app):
     ra, dec, sc = app.readFitsData(file)
     assert ra
     assert dec
-    assert sc
+    assert sc is None
 
 
 def test_calcAngleScaleFromWCS_1(app):

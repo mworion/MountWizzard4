@@ -5,7 +5,10 @@
 #
 name: install_ubuntu_head
 description: installs headless setup for ubuntu
-author: Michael Würtenberger
+
+defaults:
+  run:
+    shell: bash
 
 runs:
   using: 'composite'

@@ -5,7 +5,10 @@
 #
 name: setup test coverage
 description: download package install and install testenvironment for coverage
-author: Michael Würtenberger
+
+defaults:
+  run:
+    shell: bash
 
 runs:
   using: 'composite'

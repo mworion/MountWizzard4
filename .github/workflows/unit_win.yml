@@ -36,7 +36,7 @@ jobs:
       - name: build package
         uses: ./.github/actions/build_package
 
-  run_tests_windows_1:
+  run_tests_windows_1a:
     #
     needs: build_widgets_resource
     runs-on: windows-latest
@@ -56,15 +56,67 @@ jobs:
           pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
           
       - name: rename_coveragefile
-        run: mv .coverage c1.dat
+        run: mv .coverage c1a.dat
         
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./c1.dat
+          path: ./c1a.dat
 
-  run_tests_windows_2:
+  run_tests_windows_1b:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/zUpdate --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage c1b.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c1b.dat
+
+  run_tests_windows_1c:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/zMainApp --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage c1c.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c1c.dat
+
+  run_tests_windows_2a:
     #
     needs: build_widgets_resource
     runs-on: windows-latest
@@ -81,19 +133,44 @@ jobs:
         run: |
           pytest tests/unit_tests/base --cov=mw4/
           pytest tests/unit_tests/logic --cov-append --cov=mw4/
-          pytest tests/unit_tests/mountcontrol --cov-append --cov=mw4/
-          pytest tests/unit_tests/indibase --cov-append --cov=mw4/
           
       - name: rename_coveragefile
-        run: mv .coverage c2.dat
+        run: mv .coverage c2a.dat
         
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./c2.dat
+          path: ./c2a.dat
 
-  run_tests_windows_3:
+  run_tests_windows_2b:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/mountcontrol --cov=mw4/
+          pytest tests/unit_tests/indibase --cov-append --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage c2b.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c2b.dat
+
+  run_tests_windows_3a:
     #
     needs: build_widgets_resource
     runs-on: windows-latest
@@ -113,13 +190,65 @@ jobs:
           pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/
           
       - name: rename_coveragefile
-        run: mv .coverage c3.dat
+        run: mv .coverage c3a.dat
         
       - name: upload_coverage
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./c3.dat
+          path: ./c3a.dat
+
+  run_tests_windows_3b:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/gui/extWindows --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage c3b.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c3b.dat
+
+  run_tests_windows_3c:
+    #
+    needs: build_widgets_resource
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test_cov
+  
+      - name: running_unit_tests
+        run: |
+          pytest tests/unit_tests/gui/utilities --cov=mw4/
+          
+      - name: rename_coveragefile
+        run: mv .coverage c3c.dat
+        
+      - name: upload_coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./c3c.dat
 
   run_tests_windows_4:
     #
@@ -201,8 +330,9 @@ jobs:
 
   coverage:
     #
-    needs: [ run_tests_windows_1, run_tests_windows_2,
-             run_tests_windows_3, run_tests_windows_4,
+    needs: [ run_tests_windows_1, run_tests_windows_2a,
+             run_tests_windows_2b, run_tests_windows_3a,
+             run_tests_windows_3b, run_tests_windows_4,
              run_tests_windows_5, run_tests_windows_6]
     runs-on: windows-latest
     
@@ -231,7 +361,7 @@ jobs:
       run: |
         dir
         python -m pip install coverage
-        python -m coverage combine c1.dat c2.dat c3.dat c4.dat c5.dat c6.dat
+        python -m coverage combine c1a.dat c1b.dat c1c.dat c2a.dat c2b.dat c3a.dat c3b.dat c3c.dat c4.dat c5.dat c6.dat
         python -m coverage xml
 
     - name: upload

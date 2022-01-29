@@ -159,7 +159,6 @@ def test_selectImage_2(function, qtbot):
             with qtbot.waitSignal(function.app.showImage):
                 suc = function.selectImage()
                 assert suc
-        assert ['Image [test] selected', 0] == blocker.args
         assert function.folder == 'c:/test'
 
 
@@ -307,6 +306,15 @@ def test_imagePlot_1(function):
     assert suc
 
 
+def test_imagePlot_1b(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.objs = None
+    function.ui.view.setCurrentIndex(1)
+    suc = function.imagePlot()
+    assert not suc
+
+
 def test_imagePlot_2(function):
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
@@ -327,6 +335,16 @@ def test_imagePlot_2(function):
     function.radius = np.array([5, 3, 2])
     suc = function.imagePlot()
     assert suc
+
+
+def test_imagePlot_2b(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.objs = None
+    function.ui.view.setCurrentIndex(2)
+    suc = function.imagePlot()
+    assert not suc
 
 
 def test_imagePlot_3(function):
@@ -351,6 +369,17 @@ def test_imagePlot_3(function):
     assert suc
 
 
+def test_imagePlot_3b(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.objs = None
+    function.ui.view.setCurrentIndex(3)
+    suc = function.imagePlot()
+    assert not suc
+
+
 def test_imagePlot_4(function):
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
@@ -373,6 +402,18 @@ def test_imagePlot_4(function):
     function.ui.view.setCurrentIndex(4)
     suc = function.imagePlot()
     assert suc
+
+
+def test_imagePlot_4b(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.bk_back = None
+    function.ui.view.setCurrentIndex(4)
+    suc = function.imagePlot()
+    assert not suc
 
 
 def test_imagePlot_5(function):
@@ -400,6 +441,19 @@ def test_imagePlot_5(function):
     assert suc
 
 
+def test_imagePlot_5b(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.bk_rms = None
+    function.ui.view.setCurrentIndex(5)
+    suc = function.imagePlot()
+    assert not suc
+
+
 def test_imagePlot_6(function):
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
@@ -424,6 +478,20 @@ def test_imagePlot_6(function):
     function.ui.view.setCurrentIndex(6)
     suc = function.imagePlot()
     assert suc
+
+
+def test_imagePlot_6b(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.objs = None
+    function.ui.view.setCurrentIndex(6)
+    suc = function.imagePlot()
+    assert not suc
 
 
 def test_imagePlot_7(function):
@@ -453,6 +521,21 @@ def test_imagePlot_7(function):
     function.ui.view.setCurrentIndex(7)
     suc = function.imagePlot()
     assert suc
+
+
+def test_imagePlot_7b(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
+    function.radius = None
+    function.ui.view.setCurrentIndex(7)
+    suc = function.imagePlot()
+    assert not suc
 
 
 def test_writeHeaderDataToGUI_1(function):
@@ -503,7 +586,8 @@ def test_workerPreparePlot_2(function):
     with mock.patch.object(function,
                            'setupNormal'):
         with mock.patch.object(function,
-                               'imagePlot'):
+                               'imagePlot',
+                               return_value=True):
             suc = function.workerPreparePlot(function.header)
             assert suc
 
@@ -525,7 +609,8 @@ def test_workerPreparePlot_3(function):
         with mock.patch.object(function,
                                'setupDistorted'):
             with mock.patch.object(function,
-                                   'imagePlot'):
+                                   'imagePlot',
+                                   return_value=False):
                 suc = function.workerPreparePlot(function.header)
                 assert suc
 

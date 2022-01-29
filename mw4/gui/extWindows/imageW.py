@@ -329,7 +329,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                             'FITS files (*.fit*)', enableDir=True)
         loadFilePath, name, ext = val
         if not name:
-            self.app.message('No image selected', 0)
+            self.app.message.emit('No image selected', 0)
             return False
 
         self.ui.imageFileName.setText(name)

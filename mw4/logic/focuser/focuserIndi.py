@@ -46,18 +46,12 @@ class FocuserIndi(IndiClass):
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
 
         update = self.device.getNumber('PERIOD_MS')
-
-        if 'PERIOD' not in update:
-            return False
-
         if update.get('PERIOD', 0) == self.UPDATE_RATE:
             return True
 

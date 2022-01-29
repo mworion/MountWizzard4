@@ -45,18 +45,12 @@ class DomeIndi(IndiClass):
         :param deviceName:
         :return: success
         """
-
         if deviceName != self.deviceName:
             return False
-
         if self.device is None:
             return False
 
         update = self.device.getNumber('POLLING_PERIOD')
-
-        if 'PERIOD_MS' not in update:
-            return False
-
         if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
             return True
 

@@ -52,8 +52,6 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/zLoader --cov=mw4/
-          pytest tests/unit_tests/zUpdate --cov-append --cov=mw4/
-          pytest tests/unit_tests/zMainApp --cov-append --cov=mw4/
           
       - name: rename_coveragefile
         run: mv .coverage c1a.dat
@@ -331,7 +329,7 @@ jobs:
   coverage:
     #
     needs: [ run_tests_windows_1a, run_tests_windows_1b,
-             run_tests_windows_1b, run_tests_windows_2a,
+             run_tests_windows_1c, run_tests_windows_2a,
              run_tests_windows_2b, run_tests_windows_3a,
              run_tests_windows_3b, run_tests_windows_3c,
              run_tests_windows_4, run_tests_windows_5,

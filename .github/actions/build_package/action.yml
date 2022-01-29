@@ -25,7 +25,7 @@ runs:
       run: mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
       shell: bash
 
-    - name: upload_package
+    - name: upload package
       uses: actions/upload-artifact@v2
       with:
         name: dist

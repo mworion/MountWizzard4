@@ -334,7 +334,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
-        self.app.message.emit(f'Image [{name}] selected', 0)
+        self.app.message.emit(f'Image selected:      [{name}]', 0)
         self.folder = os.path.dirname(loadFilePath)
         self.app.showImage.emit(self.imageFileName)
         return True

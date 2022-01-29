@@ -1,96 +1,0 @@
-Hit:1 http://azure.archive.ubuntu.com/ubuntu focal InRelease
-Get:2 http://azure.archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
-Get:3 http://azure.archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
-Get:4 https://packages.microsoft.com/ubuntu/20.04/prod focal InRelease [10.5 kB]
-Get:5 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
-Hit:6 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal InRelease
-Get:7 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1386 kB]
-Get:8 http://azure.archive.ubuntu.com/ubuntu focal-updates/main Translation-en [281 kB]
-Get:9 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 c-n-f Metadata [14.6 kB]
-Get:10 http://azure.archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [606 kB]
-Get:11 http://azure.archive.ubuntu.com/ubuntu focal-updates/restricted Translation-en [86.8 kB]
-Get:12 http://azure.archive.ubuntu.com/ubuntu focal-updates/restricted amd64 c-n-f Metadata [528 B]
-Get:13 http://azure.archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [877 kB]
-Get:14 http://azure.archive.ubuntu.com/ubuntu focal-updates/universe Translation-en [190 kB]
-Get:15 http://azure.archive.ubuntu.com/ubuntu focal-updates/universe amd64 c-n-f Metadata [19.6 kB]
-Get:16 http://azure.archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [41.2 kB]
-Get:17 http://azure.archive.ubuntu.com/ubuntu focal-backports/main Translation-en [9732 B]
-Get:18 http://azure.archive.ubuntu.com/ubuntu focal-backports/main amd64 c-n-f Metadata [516 B]
-Get:19 http://azure.archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [18.9 kB]
-Get:20 http://azure.archive.ubuntu.com/ubuntu focal-backports/universe Translation-en [7524 B]
-Get:21 http://azure.archive.ubuntu.com/ubuntu focal-backports/universe amd64 c-n-f Metadata [644 B]
-Get:22 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 Packages [114 kB]
-Get:23 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [1062 kB]
-Get:24 http://security.ubuntu.com/ubuntu focal-security/main Translation-en [196 kB]
-Get:25 http://security.ubuntu.com/ubuntu focal-security/main amd64 c-n-f Metadata [9076 B]
-Get:26 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [560 kB]
-Get:27 http://security.ubuntu.com/ubuntu focal-security/restricted Translation-en [80.2 kB]
-Get:28 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 c-n-f Metadata [528 B]
-Get:29 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [663 kB]
-Get:30 http://security.ubuntu.com/ubuntu focal-security/universe amd64 c-n-f Metadata [12.9 kB]
-Fetched 6584 kB in 2s (4105 kB/s)
-Reading package lists...
-Selecting previously unselected package qemu.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 234437 files and directories currently installed.)
-Preparing to unpack .../qemu_1%3a4.2-3ubuntu6.18_amd64.deb ...
-Unpacking qemu (1:4.2-3ubuntu6.18) ...
-Selecting previously unselected package qemu-user-static.
-Preparing to unpack .../qemu-user-static_1%3a4.2-3ubuntu6.18_amd64.deb ...
-Unpacking qemu-user-static (1:4.2-3ubuntu6.18) ...
-Setting up qemu (1:4.2-3ubuntu6.18) ...
-Setting up qemu-user-static (1:4.2-3ubuntu6.18) ...
-Processing triggers for man-db (2.9.1-1) ...
-Unable to find image 'multiarch/qemu-user-static:latest' locally
-latest: Pulling from multiarch/qemu-user-static
-01c2cdc13739: Pulling fs layer
-11933eee4160: Pulling fs layer
-30abb83a18eb: Pulling fs layer
-0657daef200b: Pulling fs layer
-10094524a9f3: Pulling fs layer
-0657daef200b: Waiting
-10094524a9f3: Waiting
-30abb83a18eb: Verifying Checksum
-30abb83a18eb: Download complete
-11933eee4160: Download complete
-01c2cdc13739: Verifying Checksum
-01c2cdc13739: Download complete
-0657daef200b: Verifying Checksum
-0657daef200b: Download complete
-01c2cdc13739: Pull complete
-11933eee4160: Pull complete
-30abb83a18eb: Pull complete
-0657daef200b: Pull complete
-10094524a9f3: Download complete
-10094524a9f3: Pull complete
-Digest: sha256:2c8b8fcf1d6badfca797c3fb46b7bb5f705ec7e66363e1cfeb7b7d4c7086e360
-Status: Downloaded newer image for multiarch/qemu-user-static:latest
-Setting /usr/bin/qemu-alpha-static as binfmt interpreter for alpha
-Setting /usr/bin/qemu-arm-static as binfmt interpreter for arm
-Setting /usr/bin/qemu-armeb-static as binfmt interpreter for armeb
-Setting /usr/bin/qemu-sparc-static as binfmt interpreter for sparc
-Setting /usr/bin/qemu-sparc32plus-static as binfmt interpreter for sparc32plus
-Setting /usr/bin/qemu-sparc64-static as binfmt interpreter for sparc64
-Setting /usr/bin/qemu-ppc-static as binfmt interpreter for ppc
-Setting /usr/bin/qemu-ppc64-static as binfmt interpreter for ppc64
-Setting /usr/bin/qemu-ppc64le-static as binfmt interpreter for ppc64le
-Setting /usr/bin/qemu-m68k-static as binfmt interpreter for m68k
-Setting /usr/bin/qemu-mips-static as binfmt interpreter for mips
-Setting /usr/bin/qemu-mipsel-static as binfmt interpreter for mipsel
-Setting /usr/bin/qemu-mipsn32-static as binfmt interpreter for mipsn32
-Setting /usr/bin/qemu-mipsn32el-static as binfmt interpreter for mipsn32el
-Setting /usr/bin/qemu-mips64-static as binfmt interpreter for mips64
-Setting /usr/bin/qemu-mips64el-static as binfmt interpreter for mips64el
-Setting /usr/bin/qemu-sh4-static as binfmt interpreter for sh4
-Setting /usr/bin/qemu-sh4eb-static as binfmt interpreter for sh4eb
-Setting /usr/bin/qemu-s390x-static as binfmt interpreter for s390x
-Setting /usr/bin/qemu-aarch64-static as binfmt interpreter for aarch64
-Setting /usr/bin/qemu-aarch64_be-static as binfmt interpreter for aarch64_be
-Setting /usr/bin/qemu-hppa-static as binfmt interpreter for hppa
-Setting /usr/bin/qemu-riscv32-static as binfmt interpreter for riscv32
-Setting /usr/bin/qemu-riscv64-static as binfmt interpreter for riscv64
-Setting /usr/bin/qemu-xtensa-static as binfmt interpreter for xtensa
-Setting /usr/bin/qemu-xtensaeb-static as binfmt interpreter for xtensaeb
-Setting /usr/bin/qemu-microblaze-static as binfmt interpreter for microblaze
-Setting /usr/bin/qemu-microblazeel-static as binfmt interpreter for microblazeel
-Setting /usr/bin/qemu-or1k-static as binfmt interpreter for or1k
-Setting /usr/bin/qemu-hexagon-static as binfmt interpreter for hexagon

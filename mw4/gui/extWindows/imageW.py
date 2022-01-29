@@ -149,7 +149,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
         self.ui.view.setCurrentIndex(config.get('view', 0))
-
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
@@ -330,6 +329,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                             'FITS files (*.fit*)', enableDir=True)
         loadFilePath, name, ext = val
         if not name:
+            self.app.message('No image selected', 0)
             return False
 
         self.ui.imageFileName.setText(name)
@@ -455,25 +455,31 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.stretch = AsinhStretch(a=value)
         return True
 
-    def imagePlot(self):
+    def imageRawPlot(self, imageDisp):
         """
         :return:
         """
         if self.objs is not None:
-            imageDisp = self.image - self.bk_back
+            imageDisp = imageDisp - self.bk_back
+            self.log.debug('Background from image subtracted')
 
-        else:
-            imageDisp = self.image
+        imageDisp[imageDisp < 0] = 0
+        img = imshow_norm(imageDisp,
+                          ax=self.axe,
+                          origin='lower',
+                          interval=MinMaxInterval(),
+                          stretch=self.stretch,
+                          cmap=self.colorMap,
+                          aspect='auto')
+        return img
 
-        if self.ui.view.currentIndex() in [0, 1, 2, 3]:
-            imageDisp[imageDisp < 0] = 0
-            img = imshow_norm(imageDisp,
-                              ax=self.axe,
-                              origin='lower',
-                              interval=MinMaxInterval(),
-                              stretch=self.stretch,
-                              cmap=self.colorMap,
-                              aspect='auto')
+    def imagePlot(self):
+        """
+        :return:
+        """
+        if self.ui.view.currentIndex() == 0:
+            img = self.imageRawPlot(imageDisp=self.image)
+            self.log.debug('Show 0')
 
             if self.axeCB:
                 colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
@@ -483,7 +489,12 @@ class ImageWindow(toolsQtWidget.MWidget):
                 yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
                 plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 1 and self.objs is not None:
+        if self.ui.view.currentIndex() == 1:
+            if self.objs is None:
+                self.log.debug('Show 1, no SEP data')
+                return False
+
+            self.imageRawPlot(imageDisp=self.image)
             for i in range(len(self.objs)):
                 e = Ellipse(xy=(self.objs['x'][i], self.objs['y'][i]),
                             width=6 * self.objs['a'][i],
@@ -493,7 +504,12 @@ class ImageWindow(toolsQtWidget.MWidget):
                 e.set_edgecolor(self.M_BLUE)
                 self.axe.add_artist(e)
 
-        if self.ui.view.currentIndex() == 2 and self.radius is not None:
+        if self.ui.view.currentIndex() == 2:
+            if self.objs is None or self.radius is None:
+                self.log.debug('Show 2, no SEP radius data')
+                return False
+
+            self.imageRawPlot(imageDisp=self.image)
             draw = self.radius.argsort()[-50:][::-1]
             for i in draw:
                 e = Ellipse(xy=(self.objs['x'][i], self.objs['y'][i]),
@@ -509,8 +525,15 @@ class ImageWindow(toolsQtWidget.MWidget):
                                   xy=(posX, posY),
                                   color=self.M_BLUE,
                                   fontweight='bold')
+            if self.axeCB:
+                self.axeCB.axis('off')
 
-        if self.ui.view.currentIndex() == 3 and self.objs is not None:
+        if self.ui.view.currentIndex() == 3:
+            if self.objs is None:
+                self.log.debug('Show 3, no SEP data')
+                return False
+
+            self.imageRawPlot(imageDisp=self.image)
             a = self.objs['a']
             b = self.objs['b']
             eccentricity = np.sqrt(1 - b ** 2 / a ** 2)
@@ -524,14 +547,12 @@ class ImageWindow(toolsQtWidget.MWidget):
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 4 and self.bk_back is not None:
-            img = imshow_norm(self.bk_back,
-                              ax=self.axe,
-                              origin='lower',
-                              interval=MinMaxInterval(),
-                              stretch=self.stretch,
-                              cmap=self.colorMap,
-                              aspect='auto')
+        if self.ui.view.currentIndex() == 4:
+            if self.bk_back is None:
+                self.log.debug('Show 4, no SEP background data')
+                return False
+
+            img = self.imageRawPlot(imageDisp=self.bk_back)
             if self.axeCB:
                 colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
                 colorbar.set_label('Background level [adu]',
@@ -540,14 +561,12 @@ class ImageWindow(toolsQtWidget.MWidget):
                 yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
                 plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 5 and self.bk_rms is not None:
-            img = imshow_norm(self.bk_rms,
-                              ax=self.axe,
-                              origin='lower',
-                              interval=MinMaxInterval(),
-                              stretch=self.stretch,
-                              cmap=self.colorMap,
-                              aspect='auto')
+        if self.ui.view.currentIndex() == 5:
+            if self.bk_rms is None:
+                self.log.debug('Show 5, no SEP background rms data')
+                return False
+
+            img = self.imageRawPlot(imageDisp=self.bk_rms)
             if self.axeCB:
                 colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
                 colorbar.set_label('Background noise [adu]',
@@ -557,7 +576,11 @@ class ImageWindow(toolsQtWidget.MWidget):
                 plt.setp(yTicks, color=self.M_BLUE,
                          fontweight='bold')
 
-        if self.ui.view.currentIndex() == 6 and self.flux is not None:
+        if self.ui.view.currentIndex() == 6:
+            if self.flux is None or self.objs is None:
+                self.log.debug('Show 5, no SEP flux data')
+                return False
+
             flux = np.log(self.flux)
             area = 3 * flux
             scatter = self.axe.scatter(self.objs['x'], self.objs['y'],
@@ -568,20 +591,21 @@ class ImageWindow(toolsQtWidget.MWidget):
             yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
             plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
-        if self.ui.view.currentIndex() == 7 and self.radius is not None and \
-                self.objs is not None:
+        if self.ui.view.currentIndex() == 7:
+            if self.radius is None or self.objs is None:
+                self.log.debug('Show 7, no SEP radius data')
+                return False
 
             x = self.objs['x']
             y = self.objs['y']
             z = self.radius
-            width = imageDisp.shape[1]
-            height = imageDisp.shape[0]
+            width = self.image.shape[1]
+            height = self.image.shape[0]
             X, Y = np.meshgrid(range(0, width, int(width / 250)),
                                range(0, height, int(height / 250)))
             Z = griddata((x, y), z, (X, Y), method='linear', fill_value=np.mean(z))
             Z = uniform_filter(Z, size=25)
             self.axe.contourf(X, Y, Z, 20)
-
             if self.axeCB:
                 self.axeCB.axis('off')
 
@@ -637,7 +661,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.writeHeaderDataToGUI(header)
         self.stretchImage()
         self.colorImage()
-        self.imagePlot()
+        suc = self.imagePlot()
+        if not suc:
+            t = 'Image type could not be shown - display raw image'
+            self.app.message.emit(t, 2)
+            self.ui.view.setCurrentIndex(0)
         return True
 
     def preparePlot(self):
@@ -656,7 +684,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bk_back = bkg.back()
         self.bk_rms = bkg.rms()
         image_sub = self.image - bkg
-        self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms)
+        self.objs = sep.extract(image_sub, 3, err=bkg.globalrms,
+                                filter_type='conv')
         self.flux, _, _ = sep.sum_circle(image_sub,
                                          self.objs['x'],
                                          self.objs['y'],

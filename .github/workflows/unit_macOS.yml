@@ -58,7 +58,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/install_package_test
+        uses: ./.github/actions/setup_test
   
       - name: running_unit_tests
         run: |
@@ -77,7 +77,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/install_package_test
+        uses: ./.github/actions/setup_test
 
       - name: running_unit_tests
         run: |
@@ -99,7 +99,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/install_package_test
+        uses: ./.github/actions/setup_test
   
       - name: running_unit_tests
         run: |

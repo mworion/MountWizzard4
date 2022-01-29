@@ -5,16 +5,18 @@
 #
 name: build_package
 description: build package and uploads as artifact
-author: Michael Würtenberger
 
 runs:
   using: 'composite'
+  
   steps:
-    - uses: actions/setup-python@v2
+    - name: setup python
+      uses: actions/setup-python@v2
       with:
         python-version: '3.9'
         
-    - name: build_package
+    - name: install package
+      shell: bash
       run: |
         python -m pip install setuptools wheel
         python setup.py sdist

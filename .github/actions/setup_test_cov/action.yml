@@ -13,17 +13,30 @@ runs:
         name: dist
         path: dist
         
-    - name: install package
-      run: |
-        python -m pip install cython wheel
-        python -m pip install dist/mountwizzard4.tar.gz
-        python -m pip install comtypes==1.1.7
+    - name: install #1
+      run: python -m pip install cython wheel
       shell: bash
 
-    - name: install pytest
-      run: |
-          python -m pip install pytest==4.6.11
-          python -m pip install pytest-qt
-          python -m pip install pytest-cov
-          python -m pip install pytest-pythonpath
+    - name: install #2
+      run: python -m pip install dist/mountwizzard4.tar.gz
+      shell: bash
+
+    - name: install #3
+      run:  python -m pip install comtypes==1.1.7
+      shell: bash
+
+    - name: install #4
+      run:  python -m pip install pytest==4.6.11
+      shell: bash
+
+    - name: install #5
+      run:  python -m pip install pytest-qt
+      shell: bash
+
+    - name: install #6
+      run:  python -m pip install pytest-cov
+      shell: bash
+
+    - name: install #7
+      run:  python -m pip install pytest-pythonpath
       shell: bash

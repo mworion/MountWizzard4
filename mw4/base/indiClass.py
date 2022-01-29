@@ -125,7 +125,7 @@ class IndiClass:
         self.discoverList = None
         self.loadIndiConfig = False
         self.isINDIGO = False
-        self.showMessages = False
+        self.messages = False
 
         self.defaultConfig = {
             'deviceName': '',
@@ -478,7 +478,7 @@ class IndiClass:
         :param text: message received
         :return: success
         """
-        if self.showMessages:
+        if self.messages:
             if text.startswith('[WARNING]'):
                 text = self.removePrefix(text, '[WARNING]')
                 self.app.message.emit(f'INDI {device:15s} {text}', 0)

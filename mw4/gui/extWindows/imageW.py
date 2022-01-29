@@ -830,15 +830,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.imageFileName.setText(short)
 
         with fits.open(imagePath, mode='update') as fitsHandle:
-            self.image = fitsHandle[0].data
+            self.image = np.flipud(fitsHandle[0].data)
             self.header = fitsHandle[0].header
 
         if self.image is None or len(self.image) == 0:
             return False
         if self.header is None:
             return False
-
-        self.image = np.flipud(self.image.astype('float32'))
 
         bayerPattern = self.header.get('BAYERPAT', '')
         if bayerPattern:

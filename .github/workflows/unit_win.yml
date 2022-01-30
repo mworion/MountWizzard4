@@ -184,8 +184,6 @@ jobs:
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/gui/mainWindow --cov=mw4/ --cov-config=.coveragerc
-          pytest tests/unit_tests/gui/extWindows --cov-append --cov=mw4/ --cov-config=.coveragerc
-          pytest tests/unit_tests/gui/utilities --cov-append --cov=mw4/ --cov-config=.coveragerc
           
       - name: rename_coveragefile
         run: mv .coverage c3a.dat

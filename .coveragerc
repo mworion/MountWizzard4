@@ -1,8 +1,8 @@
 [run]
-branch = True
+branch = true
 source = mw4/
 omit = mw4/resource/, mw4/gui/widgets/
 parallel = true
 
 [report]
-exclude_lines = if __name__ == .__main__.:
+exclude_lines = if __name__ == "__main__":

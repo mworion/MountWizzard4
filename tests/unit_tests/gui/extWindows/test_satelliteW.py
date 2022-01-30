@@ -295,32 +295,34 @@ def test_drawSphere1_1(function):
 
 
 def test_drawSphere1_2(function, ts):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = ts.now().tt
     observe = satellite.at(ts.tt_jd(tt + np.arange(0, 1, 0.1)))
+    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     suc = function.drawSphere1(observe=observe)
     assert suc
 
 
 def test_drawSphere2_1(function):
     function.app.mount.obsSite.location.latitude = Angle(degrees=45)
-    function.app.mount.obsSite.location.longitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     suc = function.drawSphere2()
     assert not suc
 
 
 def test_drawSphere2_2(function, ts):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
-    observe = satellite.at(ts.tt_jd(tt + np.arange(0, 1, 0.1)))
+    tt = 2459610
+    observe = satellite.at(ts.tt_jd(tt + np.arange(0, 0.1, 0.01)))
     function.app.mount.obsSite.location.latitude = Angle(degrees=45)
-    function.app.mount.obsSite.location.longitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     suc = function.drawSphere2(observe=observe)
     assert suc
 
@@ -337,11 +339,11 @@ def test_drawEarth_1(function):
 
 
 def test_drawEarth_2(function, ts):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
+    tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -361,17 +363,19 @@ def test_drawEarth_2(function, ts):
                   'flip': t3,
                   'settle': t4},
                  ]
+    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     obsSite = function.app.mount.obsSite
     suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
 
 def test_drawEarth_3(function, ts):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
+    tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -390,6 +394,8 @@ def test_drawEarth_3(function, ts):
                   'flip': t3,
                   'settle': t4},
                  ]
+    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     obsSite = function.app.mount.obsSite
     suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
@@ -419,11 +425,11 @@ def test_drawHorizonView_1(function):
 
 
 def test_drawHorizonView_2(function, ts):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
+    tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -443,17 +449,19 @@ def test_drawHorizonView_2(function, ts):
                   'flip': t3,
                   'settle': t4},
                  ]
+    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     obsSite = function.app.mount.obsSite
     suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
 
 def test_drawHorizonView_3(function, ts):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
+    tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -472,6 +480,8 @@ def test_drawHorizonView_3(function, ts):
                   'flip': t3,
                   'settle': t4},
                  ]
+    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     obsSite = function.app.mount.obsSite
     suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
@@ -491,11 +501,11 @@ def test_drawSatellite_1(function):
 
 
 def test_drawSatellite_2(function, ts):
-    tle = ["TIANGONG 1",
-           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
-           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 00.03279710179072"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
+    tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -535,7 +545,7 @@ def test_drawSatellite_3(function, ts):
            "2 25544  51.6440 302.6231 0002845 223.0251 174.3348 15.48881931278570"]
 
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
+    tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -575,7 +585,7 @@ def test_drawSatellite_4(function, ts):
            "2 25544  51.6440 302.6231 0002845 223.0251 174.3348 15.48881931278570"]
 
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
+    tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)

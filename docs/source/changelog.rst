@@ -10,6 +10,9 @@ Ideas for the future
 - receive video indi for sat tracking and horizon setup
 - joystick support
 - data exchange to EKOS SQLite for Location and horizon through SQLite interface
+- SQR calculation
+- split imaging tab into operating and statistics
+- satellite scheduler
 
 Beta version of MW4
 ----------------------------

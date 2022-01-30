@@ -13,6 +13,7 @@ env:
   ucc: 'python -m PyQt5.pyrcc_main'
   res: 'mw4/resource/'
   branch: 'master'
+  cov: '--cov=mw4/ --cov-append --cov-config=.coveragerc'
 
 on:
   push:
@@ -51,7 +52,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zLoader
+          pytest tests/unit_tests/zLoader ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c1a.dat
@@ -77,7 +78,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zUpdate
+          pytest tests/unit_tests/zUpdate ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c1b.dat
@@ -103,7 +104,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zMainApp
+          pytest tests/unit_tests/zMainApp ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c1c.dat
@@ -129,8 +130,8 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/base
-          pytest tests/unit_tests/logic --cov-append
+          pytest tests/unit_tests/base ${{env.cov}}
+          pytest tests/unit_tests/logic ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c2a.dat
@@ -156,8 +157,8 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/mountcontrol
-          pytest tests/unit_tests/indibase
+          pytest tests/unit_tests/mountcontrol ${{env.cov}}
+          pytest tests/unit_tests/indibase ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c2b.dat
@@ -183,7 +184,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWindow
+          pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c3a.dat
@@ -209,7 +210,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/extWindows
+          pytest tests/unit_tests/gui/extWindows ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c3b.dat
@@ -235,7 +236,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/utilities
+          pytest tests/unit_tests/gui/utilities ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c3c.dat
@@ -261,7 +262,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWmixin1
+          pytest tests/unit_tests/gui/mainWmixin1 ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c4.dat
@@ -287,7 +288,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWmixin2
+          pytest tests/unit_tests/gui/mainWmixin2 ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c5.dat
@@ -313,7 +314,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWmixin3
+          pytest tests/unit_tests/gui/mainWmixin3 ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c6.dat

@@ -13,7 +13,7 @@ env:
   ucc: 'python -m PyQt5.pyrcc_main'
   res: 'mw4/resource/'
   branch: 'master'
-  cov: '--cov=mw4/ --cov-append --cov-config=./.coveragerc'
+  cov: '--cov=mw4/ --cov-append'
 
 on:
   push:

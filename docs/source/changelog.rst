@@ -33,9 +33,11 @@ Beta version of MW4
 - improved: GUI for imaging tab - disable all invalid interfaces
 - improved: redesign analyse window to get more space for further charts
 - improved: Tools: move mount: better UI, tooltips, multi steps in alt/az
+- improved: gui in image window when displaying different types
+- improved: reduced memory consumption if display raw images
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
-- upgrade: numpy library to 1.21.5
+- upgrade: numpy library to 1.21.4
 - upgrade: matplotlib to 3.5.1
 - upgrade: scipy library to 1.7.3
 - upgrade requests library to 2.27.2

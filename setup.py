@@ -37,6 +37,8 @@ releaseNotes = """
 - improved: GUI for imaging tab - disable all invalid interfaces 
 - improved: redesign analyse window to get more space for further charts 
 - improved: Tools: move mount: better UI, tooltips, multi steps in alt/az
+- improved: gui in image window when displaying different types
+- improved: reduced memory consumption if display raw images
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.4
@@ -56,7 +58,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.0b12',
+    version='2.2.0b14',
     packages=[
         'mw4',
         'mw4.base',

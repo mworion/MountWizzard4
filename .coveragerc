@@ -1,5 +1,4 @@
 [run]
-branch = true
 source =
     mw4/
 omit =

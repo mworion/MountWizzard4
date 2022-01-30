@@ -1,0 +1,8 @@
+[run]
+branch = True
+source = mw4/
+omit = mw4/resource/, mw4/gui/widgets/
+parallel = true
+
+[report]
+exclude_lines = if __name__ == .__main__.:

@@ -759,7 +759,8 @@ class MainWindow(
         else:
             mode = 'Offline Mode'
 
-        t = f'{mode}  -  Active Threads: {self.threadPool.activeThreadCount():2d}'
+        activeCount = self.threadPool.activeThreadCount()
+        t = f'{mode}  -  Active Threads: {activeCount:2d} / 30'
         self.ui.statusOnline.setTitle(t)
 
         tzT = time.tzname[1] if time.daylight else time.tzname[0]

@@ -85,7 +85,7 @@ def test_initConfig_2():
 def test_initConfig_3():
     config = app.app.config['mainW']
     for i in range(0, 10):
-        config[f'posText{i:1d}'] = i
+        config[f'posText{i:1d}'] = str(i)
         config[f'posAlt{i:1d}'] = i
         config[f'posAz{i:1d}'] = i
     app.initConfig()
@@ -156,7 +156,7 @@ def test_slewParkPos_2(qtbot):
                                'startSlewing',
                                return_value=True):
             suc = app.slewToParkPos()
-            assert not suc
+            assert suc
 
 
 def test_slewParkPos_3(qtbot):

@@ -163,8 +163,8 @@ def test_slewParkPos_3(qtbot):
     def Sender():
         return ui.posButton0
     app.sender = Sender
-    app.ui.posAlt0.setText('40')
-    app.ui.posAz0.setText('180')
+    app.ui.posAlt0.setValue(40)
+    app.ui.posAz0.setValue(180)
     with mock.patch.object(app.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
@@ -181,8 +181,8 @@ def test_slewParkPos_3a(qtbot):
     def Sender():
         return ui.posButton0
     app.sender = Sender
-    app.ui.posAlt0.setText('40')
-    app.ui.posAz0.setText('180')
+    app.ui.posAlt0.setValue(40)
+    app.ui.posAz0.setValue(180)
     with mock.patch.object(app.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
@@ -197,8 +197,8 @@ def test_slewParkPos_4(qtbot):
     def Sender():
         return ui.posButton0
     app.sender = Sender
-    app.ui.posAlt0.setText('-40')
-    app.ui.posAz0.setText('180')
+    app.ui.posAlt0.setValue(-40)
+    app.ui.posAz0.setValie(180)
     with mock.patch.object(app.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=False):
@@ -213,8 +213,8 @@ def test_slewParkPos_5(qtbot):
     def Sender():
         return ui.posButton0
     app.sender = Sender
-    app.ui.posAlt0.setText('180')
-    app.ui.posAz0.setText('180')
+    app.ui.posAlt0.setValue(180)
+    app.ui.posAz0.setValue(180)
     with mock.patch.object(app.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):

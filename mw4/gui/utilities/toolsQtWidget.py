@@ -176,11 +176,9 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
 
             if not indexValue:
                 continue
-
             if relaxed:
                 if searchString in indexValue:
                     return index
-
             else:
                 if indexValue.startswith(searchString):
                     return index

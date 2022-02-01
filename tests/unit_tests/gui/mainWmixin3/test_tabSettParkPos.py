@@ -89,13 +89,13 @@ def test_initConfig_3():
         config[f'posAlt{i:1d}'] = i
         config[f'posAz{i:1d}'] = i
     app.initConfig()
-    assert app.ui.posText0.value() == '0'
+    assert app.ui.posText0.text() == '0'
     assert app.ui.posAlt0.value() == 0
     assert app.ui.posAz0.value() == 0
-    assert app.ui.posText4.value() == '4'
+    assert app.ui.posText4.text() == '4'
     assert app.ui.posAlt4.value() == 4
     assert app.ui.posAz4.value() == 4
-    assert app.ui.posText7.value() == '7'
+    assert app.ui.posText7.text() == '7'
     assert app.ui.posAlt7.value() == 7
     assert app.ui.posAz7.value() == 7
 

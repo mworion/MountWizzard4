@@ -38,6 +38,7 @@ Beta version of MW4
 - improved: Tools: move mount: better UI, tooltips, multi steps in alt/az
 - improved: gui in image window when displaying different types
 - improved: reduced memory consumption if display raw images
+- improved: defining park positions with digit and improve gui for buttons
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.4

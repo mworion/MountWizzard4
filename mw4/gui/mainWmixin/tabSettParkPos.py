@@ -150,14 +150,6 @@ class SettParkPos(object):
             altValue = alt.value()
             azValue = az.value()
             posTextValue = posText.text()
-            
-            if altValue < -5:
-                altValue = -5
-            elif altValue > 90:
-                altValue = 90
-                
-            azValue = azValue % 360
-
             suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
                                                         az_degrees=azValue)
             if suc:

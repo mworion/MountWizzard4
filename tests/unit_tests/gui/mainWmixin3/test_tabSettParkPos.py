@@ -52,8 +52,8 @@ def module_setup_teardown(qtbot):
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
+                                              longitude_degrees=10,
+                                              elevation_m=500)
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -191,38 +191,6 @@ def test_slewParkPos_3a(qtbot):
                                return_value=True):
             suc = app.slewToParkPos()
             assert suc
-
-
-def test_slewParkPos_4(qtbot):
-    def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    app.ui.posAlt0.setValue(-40)
-    app.ui.posAz0.setValue(180)
-    with mock.patch.object(app.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=False):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'startSlewing',
-                               return_value=True):
-            suc = app.slewToParkPos()
-            assert not suc
-
-
-def test_slewParkPos_5(qtbot):
-    def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    app.ui.posAlt0.setValue(180)
-    app.ui.posAz0.setValue(180)
-    with mock.patch.object(app.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'startSlewing',
-                               return_value=False):
-            suc = app.slewToParkPos()
-            assert not suc
 
 
 def test_saveActualPosition_1():

@@ -85,19 +85,19 @@ def test_initConfig_2():
 def test_initConfig_3():
     config = app.app.config['mainW']
     for i in range(0, 10):
-        config[f'posText{i:1d}'] = str(i)
-        config[f'posAlt{i:1d}'] = str(i)
-        config[f'posAz{i:1d}'] = str(i)
+        config[f'posText{i:1d}'] = i
+        config[f'posAlt{i:1d}'] = i
+        config[f'posAz{i:1d}'] = i
     app.initConfig()
-    assert app.ui.posText0.text() == '0'
-    assert app.ui.posAlt0.text() == '0'
-    assert app.ui.posAz0.text() == '0'
-    assert app.ui.posText4.text() == '4'
-    assert app.ui.posAlt4.text() == '4'
-    assert app.ui.posAz4.text() == '4'
-    assert app.ui.posText7.text() == '7'
-    assert app.ui.posAlt7.text() == '7'
-    assert app.ui.posAz7.text() == '7'
+    assert app.ui.posText0.value() == 0
+    assert app.ui.posAlt0.value() == 0
+    assert app.ui.posAz0.value() == 0
+    assert app.ui.posText4.value() == 4
+    assert app.ui.posAlt4.value() == 4
+    assert app.ui.posAz4.value() == 4
+    assert app.ui.posText7.value() == 7
+    assert app.ui.posAlt7.value() == 7
+    assert app.ui.posAz7.value() == 7
 
 
 def test_storeConfig_1():
@@ -198,7 +198,7 @@ def test_slewParkPos_4(qtbot):
         return ui.posButton0
     app.sender = Sender
     app.ui.posAlt0.setValue(-40)
-    app.ui.posAz0.setValie(180)
+    app.ui.posAz0.setValue(180)
     with mock.patch.object(app.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=False):

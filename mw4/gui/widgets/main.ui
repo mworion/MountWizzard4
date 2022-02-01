@@ -24874,7 +24874,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 5</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -24958,7 +24958,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 3</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -25024,7 +25024,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 1</string>
+         <string/>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -25114,7 +25114,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 4</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -25174,7 +25174,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 6</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -25420,7 +25420,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 8</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -25432,9 +25432,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_97">
         <property name="geometry">
          <rect>
-          <x>80</x>
+          <x>55</x>
           <y>25</y>
-          <width>51</width>
+          <width>86</width>
           <height>16</height>
          </rect>
         </property>
@@ -25447,7 +25447,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Text</string>
+         <string>Button Text</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_246">
@@ -25534,7 +25534,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 2</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -25720,7 +25720,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 7</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -25959,7 +25959,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 9</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -25998,7 +25998,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Position 10</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -26188,10 +26188,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26213,10 +26213,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26263,10 +26263,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26313,10 +26313,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26363,10 +26363,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26413,10 +26413,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26463,10 +26463,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26513,10 +26513,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26563,10 +26563,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -26613,10 +26613,10 @@ When clicking the button, you could change the value.</string>
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>-5.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>90.000000000000000</double>
+         <double>360.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>5.000000000000000</double>
@@ -27115,7 +27115,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_198">
         <property name="geometry">
          <rect>
-          <x>235</x>
+          <x>225</x>
           <y>25</y>
           <width>51</width>
           <height>16</height>
@@ -27170,9 +27170,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_45">
         <property name="geometry">
          <rect>
-          <x>85</x>
+          <x>60</x>
           <y>25</y>
-          <width>51</width>
+          <width>71</width>
           <height>16</height>
          </rect>
         </property>
@@ -27185,7 +27185,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Text</string>
+         <string>Button Text</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText3">

@@ -117,7 +117,9 @@ class SettParkPos(object):
         :return: true for test purpose
         """
         for button, textField in zip(self.posButtons, self.posTexts):
-            button.setText(textField.text())
+            text = textField.text()
+            button.setText(text)
+            button.setEnabled(text.strip() != '')
         return True
 
     def parkAtPos(self):

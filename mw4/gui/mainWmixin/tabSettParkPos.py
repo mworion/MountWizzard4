@@ -55,14 +55,14 @@ class SettParkPos(object):
         """
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
-            keyConfig = 'posText{0:1d}'.format(i)
-            textField.setText(config.get(keyConfig, 'Park Pos {0:1d}'.format(i)))
+            keyConfig = f'posText{i:1d}'
+            textField.setText(config.get(keyConfig, f'Park Pos {i:1d}'))
         for i, textField in enumerate(self.posAlt):
-            keyConfig = 'posAlt{0:1d}'.format(i)
-            textField.setText(config.get(keyConfig, ''))
+            keyConfig = f'posAlt{i:1d}'
+            textField.setValue(float(config.get(keyConfig, '0')))
         for i, textField in enumerate(self.posAz):
-            keyConfig = 'posAz{0:1d}'.format(i)
-            textField.setText(config.get(keyConfig, ''))
+            keyConfig = f'posAz{i:1d}'
+            textField.setValue(float(config.get(keyConfig, '0')))
         self.updateParkPosButtonText()
         self.ui.parkMountAfterSlew.setChecked(config.get('parkMountAfterSlew', False))
         return True
@@ -77,14 +77,14 @@ class SettParkPos(object):
         """
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
-            keyConfig = 'posText{0:1d}'.format(i)
+            keyConfig = f'posText{i:1d}'
             config[keyConfig] = textField.text()
         for i, textField in enumerate(self.posAlt):
-            keyConfig = 'posAlt{0:1d}'.format(i)
-            config[keyConfig] = textField.text()
+            keyConfig = f'posAlt{i:1d}'
+            config[keyConfig] = textField.value()
         for i, textField in enumerate(self.posAz):
-            keyConfig = 'posAz{0:1d}'.format(i)
-            config[keyConfig] = textField.text()
+            keyConfig = f'posAz{i:1d}'
+            config[keyConfig] = textField.value()
         config['parkMountAfterSlew'] = self.ui.parkMountAfterSlew.isChecked()
         return True
 
@@ -136,26 +136,19 @@ class SettParkPos(object):
         for button, posText, alt, az in zip(self.posButtons,
                                             self.posTexts,
                                             self.posAlt,
-                                            self.posAz,
-                                            ):
-
+                                            self.posAz):
             if button != self.sender():
                 continue
 
-            try:
-                altValue = float(alt.text())
-                azValue = float(az.text())
-            except Exception as e:
-                self.log.error(f'No usable values in data: error [{e}]')
-                t = 'Missing correct entries in Alt/Az park pos settings'
-                self.app.message.emit(t, 2)
-                return False
-
+            altValue = alt.value()
+            azValue = az.value()
             posTextValue = posText.text()
+            
             if altValue < -5:
                 altValue = -5
             elif altValue > 90:
                 altValue = 90
+                
             azValue = azValue % 360
 
             suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
@@ -194,6 +187,6 @@ class SettParkPos(object):
             if button != self.sender():
                 continue
 
-            alt.setText(f'{obs.Alt.degrees:4.1f}')
-            az.setText(f'{obs.Az.degrees:4.1f}')
+            alt.setValue(obs.Alt.degrees)
+            az.setValue(obs.Az.degrees)
         return True

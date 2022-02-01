@@ -20,6 +20,7 @@
 # external packages
 
 # local import
+from mountcontrol.convert import valueToFloat
 
 
 class SettParkPos(object):
@@ -59,10 +60,14 @@ class SettParkPos(object):
             textField.setText(config.get(keyConfig, f'Park Pos {i:1d}'))
         for i, textField in enumerate(self.posAlt):
             keyConfig = f'posAlt{i:1d}'
-            textField.setValue(float(config.get(keyConfig, '0')))
+            val = valueToFloat(config.get(keyConfig))
+            if val:
+                textField.setValue(val)
         for i, textField in enumerate(self.posAz):
             keyConfig = f'posAz{i:1d}'
-            textField.setValue(float(config.get(keyConfig, '0')))
+            val = valueToFloat(config.get(keyConfig))
+            if val:
+                textField.setValue(val)
         self.updateParkPosButtonText()
         self.ui.parkMountAfterSlew.setChecked(config.get('parkMountAfterSlew', False))
         return True

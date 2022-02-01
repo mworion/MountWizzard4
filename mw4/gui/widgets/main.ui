@@ -4082,7 +4082,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="sensorWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4130,7 +4130,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4178,7 +4178,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4226,7 +4226,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4274,7 +4274,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherRainVol">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4322,7 +4322,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindDir">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4370,7 +4370,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherWindSpeed">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4418,7 +4418,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherCloudCover">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4466,7 +4466,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="sensorWeatherSQR">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4536,7 +4536,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </property>
         <widget class="QLineEdit" name="onlineWeatherRainVol">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4584,7 +4584,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindSpeed">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4632,7 +4632,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherCloudCover">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4680,7 +4680,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4728,7 +4728,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4776,7 +4776,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4824,7 +4824,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherWindDir">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4872,7 +4872,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4920,7 +4920,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </widget>
         <widget class="QLineEdit" name="onlineWeatherSQR">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5567,7 +5567,7 @@ to mount</string>
         </property>
         <widget class="QLineEdit" name="directWeatherTemp">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5615,7 +5615,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherPress">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5663,7 +5663,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherDewPoint">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -5711,7 +5711,7 @@ to mount</string>
         </widget>
         <widget class="QLineEdit" name="directWeatherHumidity">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -24739,7 +24739,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_243">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>200</y>
           <width>16</width>
           <height>21</height>
@@ -24817,45 +24817,6 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAz6">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>230</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_244">
         <property name="geometry">
          <rect>
@@ -24886,7 +24847,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText4">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>170</y>
           <width>121</width>
           <height>21</height>
@@ -24922,90 +24883,12 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAz1">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>80</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAz2">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>110</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_101">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>230</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -25024,49 +24907,10 @@ When clicking the button, you could change the value.</string>
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAlt1">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>80</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_92">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>25</y>
           <width>56</width>
           <height>16</height>
@@ -25087,7 +24931,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText2">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>110</y>
           <width>121</width>
           <height>21</height>
@@ -25126,7 +24970,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_93">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>50</y>
           <width>16</width>
           <height>21</height>
@@ -25153,7 +24997,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText0">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>50</y>
           <width>121</width>
           <height>21</height>
@@ -25186,49 +25030,10 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAlt3">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>140</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_257">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>230</y>
           <width>16</width>
           <height>21</height>
@@ -25255,7 +25060,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_261">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>260</y>
           <width>16</width>
           <height>21</height>
@@ -25282,7 +25087,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText3">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>140</y>
           <width>121</width>
           <height>21</height>
@@ -25321,7 +25126,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_132">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>240</x>
           <y>20</y>
           <width>61</width>
           <height>21</height>
@@ -25342,7 +25147,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText5">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>200</y>
           <width>121</width>
           <height>21</height>
@@ -25383,7 +25188,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>140</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -25434,7 +25239,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>260</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -25451,123 +25256,6 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAlt0">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>50</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAlt5">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>200</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAlt4">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>170</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_247">
@@ -25597,49 +25285,10 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAlt7">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>260</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_131">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>170</y>
           <width>16</width>
           <height>21</height>
@@ -25695,7 +25344,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>170</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -25717,7 +25366,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_209">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>140</y>
           <width>16</width>
           <height>21</height>
@@ -25744,7 +25393,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText7">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>260</y>
           <width>121</width>
           <height>21</height>
@@ -25783,7 +25432,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_97">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>80</x>
           <y>25</y>
           <width>51</width>
           <height>16</height>
@@ -25804,7 +25453,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_246">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>110</y>
           <width>16</width>
           <height>21</height>
@@ -25855,49 +25504,10 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAz7">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>260</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLineEdit" name="posText1">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>80</y>
           <width>121</width>
           <height>21</height>
@@ -25933,51 +25543,12 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAz3">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>140</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_2">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>80</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -25999,7 +25570,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_245">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>80</y>
           <width>16</width>
           <height>21</height>
@@ -26028,7 +25599,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>200</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -26047,51 +25618,12 @@ When clicking the button, you could change the value.</string>
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAlt2">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>110</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_44">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>110</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -26113,7 +25645,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_94">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>20</y>
           <width>51</width>
           <height>21</height>
@@ -26129,45 +25661,6 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>Altitude</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAz4">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>170</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_248">
@@ -26200,7 +25693,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText6">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>230</y>
           <width>121</width>
           <height>21</height>
@@ -26236,129 +25729,12 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAz5">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>200</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAlt6">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>230</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAz0">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>50</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_22">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -26510,7 +25886,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>290</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -26534,7 +25910,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>320</y>
-          <width>46</width>
+          <width>21</width>
           <height>21</height>
          </rect>
         </property>
@@ -26556,7 +25932,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText8">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>290</y>
           <width>121</width>
           <height>21</height>
@@ -26595,7 +25971,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="posText9">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>40</x>
           <y>320</y>
           <width>121</width>
           <height>21</height>
@@ -26658,88 +26034,10 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAlt8">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>290</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAz8">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>290</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_264">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>290</y>
           <width>16</width>
           <height>21</height>
@@ -26806,88 +26104,10 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posAlt9">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>320</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>#99</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="posAz9">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>320</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_267">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>220</x>
           <y>320</y>
           <width>16</width>
           <height>21</height>
@@ -26927,6 +26147,506 @@ When clicking the button, you could change the value.</string>
          <string>Fill</string>
         </property>
        </widget>
+       <widget class="QDoubleSpinBox" name="posAlt0">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>50</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz0">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>50</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz1">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>80</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt1">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>80</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz2">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>110</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt2">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>110</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz3">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>140</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt3">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>140</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz4">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>170</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt4">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>170</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz5">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>200</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt5">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>200</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz6">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>230</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt6">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>230</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz7">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>260</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt7">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>260</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz8">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>290</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt8">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>290</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAz9">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>320</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="posAlt9">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>320</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupRelaySettings">
        <property name="geometry">
@@ -26946,7 +26666,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_149">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>170</y>
           <width>31</width>
           <height>21</height>
@@ -26970,7 +26690,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText2">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>110</y>
           <width>121</width>
           <height>21</height>
@@ -26997,7 +26717,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 3</string>
+         <string>relay 3</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -27009,7 +26729,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText5">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>200</y>
           <width>121</width>
           <height>21</height>
@@ -27036,7 +26756,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 6</string>
+         <string>relay 6</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -27048,7 +26768,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText7">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>260</y>
           <width>121</width>
           <height>21</height>
@@ -27075,7 +26795,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 8</string>
+         <string>relay 8</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -27087,9 +26807,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun6">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>230</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -27097,9 +26817,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun3">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>140</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -27107,9 +26827,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun5">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>200</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -27117,7 +26837,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_220">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>140</y>
           <width>31</width>
           <height>21</height>
@@ -27141,7 +26861,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_129">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>110</y>
           <width>31</width>
           <height>21</height>
@@ -27165,7 +26885,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_211">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>80</y>
           <width>31</width>
           <height>21</height>
@@ -27189,7 +26909,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText4">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>170</y>
           <width>121</width>
           <height>21</height>
@@ -27216,7 +26936,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 5</string>
+         <string>relay 5</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -27228,7 +26948,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText1">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>80</y>
           <width>121</width>
           <height>21</height>
@@ -27255,7 +26975,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 2</string>
+         <string>relay 2</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -27267,7 +26987,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText6">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>230</y>
           <width>121</width>
           <height>21</height>
@@ -27294,7 +27014,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 7</string>
+         <string>relay 7</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -27306,7 +27026,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_255">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>260</y>
           <width>31</width>
           <height>21</height>
@@ -27351,7 +27071,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_199">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>230</y>
           <width>31</width>
           <height>21</height>
@@ -27375,9 +27095,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun1">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>80</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -27385,9 +27105,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun4">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>170</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -27395,7 +27115,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_198">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>235</x>
           <y>25</y>
           <width>51</width>
           <height>16</height>
@@ -27416,9 +27136,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun2">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>110</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -27426,7 +27146,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_43">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>50</y>
           <width>31</width>
           <height>21</height>
@@ -27450,7 +27170,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_45">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>85</x>
           <y>25</y>
           <width>51</width>
           <height>16</height>
@@ -27471,7 +27191,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText3">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>140</y>
           <width>121</width>
           <height>21</height>
@@ -27498,7 +27218,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 4</string>
+         <string>relay 4</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -27510,7 +27230,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLineEdit" name="relayButtonText0">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>45</x>
           <y>50</y>
           <width>121</width>
           <height>21</height>
@@ -27537,7 +27257,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>relais 1</string>
+         <string>relay 1</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
@@ -27546,9 +27266,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun0">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>50</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -27556,7 +27276,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_256">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>5</x>
           <y>200</y>
           <width>31</width>
           <height>21</height>
@@ -27580,9 +27300,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QComboBox" name="relayFun7">
         <property name="geometry">
          <rect>
-          <x>195</x>
+          <x>175</x>
           <y>260</y>
-          <width>161</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -30095,44 +29815,24 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>ascomDisconnect</tabstop>
   <tabstop>checkASCOMAutoConnect</tabstop>
   <tabstop>posText0</tabstop>
-  <tabstop>posAlt0</tabstop>
-  <tabstop>posAz0</tabstop>
   <tabstop>posSave0</tabstop>
   <tabstop>posText1</tabstop>
-  <tabstop>posAlt1</tabstop>
-  <tabstop>posAz1</tabstop>
   <tabstop>posSave1</tabstop>
   <tabstop>posText2</tabstop>
-  <tabstop>posAlt2</tabstop>
-  <tabstop>posAz2</tabstop>
   <tabstop>posSave2</tabstop>
   <tabstop>posText3</tabstop>
-  <tabstop>posAlt3</tabstop>
-  <tabstop>posAz3</tabstop>
   <tabstop>posSave3</tabstop>
   <tabstop>posText4</tabstop>
-  <tabstop>posAlt4</tabstop>
-  <tabstop>posAz4</tabstop>
   <tabstop>posSave4</tabstop>
   <tabstop>posText5</tabstop>
-  <tabstop>posAlt5</tabstop>
-  <tabstop>posAz5</tabstop>
   <tabstop>posSave5</tabstop>
   <tabstop>posText6</tabstop>
-  <tabstop>posAlt6</tabstop>
-  <tabstop>posAz6</tabstop>
   <tabstop>posSave6</tabstop>
   <tabstop>posText7</tabstop>
-  <tabstop>posAlt7</tabstop>
-  <tabstop>posAz7</tabstop>
   <tabstop>posSave7</tabstop>
   <tabstop>posText8</tabstop>
-  <tabstop>posAlt8</tabstop>
-  <tabstop>posAz8</tabstop>
   <tabstop>posSave8</tabstop>
   <tabstop>posText9</tabstop>
-  <tabstop>posAlt9</tabstop>
-  <tabstop>posAz9</tabstop>
   <tabstop>posSave9</tabstop>
   <tabstop>relayButtonText0</tabstop>
   <tabstop>relayFun0</tabstop>

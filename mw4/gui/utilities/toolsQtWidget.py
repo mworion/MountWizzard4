@@ -295,8 +295,6 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         :return:
         """
         icon = widget.icon()
-        if not icon:
-            return False
         pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)))
         mask = pixmap.createMaskFromColor(QColor('transparent'), Qt.MaskInColor)
         pixmap.fill(QColor(color))

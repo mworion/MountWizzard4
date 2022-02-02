@@ -253,7 +253,6 @@ def test_wIcon_1(function):
 
 
 def test_wIcon_2(function):
-    icon = QStyle.SP_DialogApplyButton
     suc = function.wIcon()
     assert not suc
 
@@ -265,9 +264,14 @@ def test_wIcon_3(function):
 
 
 def test_wIcon_4(function):
-    icon = QStyle.SP_DialogApplyButton
     ui = QPushButton()
     suc = function.wIcon(gui=ui, name='load')
+    assert suc
+
+
+def test_changeIconColor_1(function):
+    ui = QPushButton()
+    suc = function.changeIconColor(ui, 'black')
     assert suc
 
 
@@ -317,6 +321,20 @@ def test_changeStyleDynamic_5(function):
     ui = QPushButton()
     ui.setProperty('color', 'red')
     suc = function.changeStyleDynamic(ui, 'color', 'red')
+    assert suc
+
+
+def test_changeStyleDynamic_6(function):
+    ui = QPushButton()
+    suc = function.changeStyleDynamic(ui, 'running', True)
+    suc = function.changeStyleDynamic(ui, 'running', False)
+    assert suc
+
+
+def test_changeStyleDynamic_7(function):
+    ui = QPushButton()
+    suc = function.changeStyleDynamic(ui, 'running', True)
+    suc = function.changeStyleDynamic(ui, 'running', False)
     assert suc
 
 

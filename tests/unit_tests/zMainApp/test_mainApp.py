@@ -120,7 +120,7 @@ def test_checkAndSetAutomation_3(app):
 
 
 def test_initConfig_1(app):
-    shutil.copy('test/testData/test.txt', 'tests/workDir/test.txt')
+    shutil.copy('tests/testData/test.txt', 'tests/workDir/test.txt')
     val = app.initConfig()
     assert val.longitude.degrees == 0
 

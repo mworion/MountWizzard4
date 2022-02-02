@@ -80,7 +80,8 @@ def module_setup_teardown_func(app):
         os.remove('tests/workDir/config/new.cfg')
     if os.path.isfile('tests/workDir/config/profile'):
         os.remove('tests/workDir/config/profile')
-
+    if os.path.isfile('tests/workDir/test.txt'):
+        os.remove('tests/workDir/test.txt')
     yield
 
 

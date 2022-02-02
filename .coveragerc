@@ -4,7 +4,10 @@ source =
 omit =
     mw4/resource/**.*
     mw4/gui/widgets/**.*
-parallel = true
+
+[paths]
+source =
+    mw4/
 
 [report]
 exclude_lines =

@@ -684,8 +684,8 @@ class ManageModel(object):
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
         self.ui.refreshModel.setEnabled(False)
-        self.changeStyleDynamic(self.ui.runOptimize, 'running', 'true')
-        self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', 'true')
+        self.changeStyleDynamic(self.ui.runOptimize, 'running', True)
+        self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', True)
 
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.alignDone.connect(self.runTargetRMS)
@@ -706,11 +706,11 @@ class ManageModel(object):
         else:
             self.app.mount.signals.alignDone.disconnect(self.runSingleRMS)
 
-        self.changeStyleDynamic(self.ui.runOptimize, 'running', 'false')
+        self.changeStyleDynamic(self.ui.runOptimize, 'running', False)
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
-        self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', 'false')
+        self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', False)
         self.app.message.emit('Optimizing done', 2)
 
         return True

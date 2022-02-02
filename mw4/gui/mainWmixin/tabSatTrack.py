@@ -383,7 +383,7 @@ class SatTrack(object):
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setText('Start satellite tracking')
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', 'false')
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
         return True
 
     def updatePasses(self):
@@ -530,7 +530,7 @@ class SatTrack(object):
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
-            self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
             return False
 
         now = self.app.mount.obsSite.ts.now()
@@ -764,7 +764,7 @@ class SatTrack(object):
             return False
 
         self.ui.startSatelliteTracking.setText('Start satellite tracking')
-        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', 'false')
+        self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
         self.app.message.emit('Stopped tracking', 0)
         return suc
 

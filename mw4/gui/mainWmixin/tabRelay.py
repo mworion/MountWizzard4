@@ -45,7 +45,7 @@ class Relay(object):
 
         for status, button in zip(self.app.relay.status, self.relayButtons):
             if status:
-                self.changeStyleDynamic(button, 'running', 'true')
+                self.changeStyleDynamic(button, 'running', True)
             else:
-                self.changeStyleDynamic(button, 'running', 'false')
+                self.changeStyleDynamic(button, 'running', False)
         return True

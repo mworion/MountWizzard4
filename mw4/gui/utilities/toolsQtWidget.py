@@ -22,7 +22,7 @@ import datetime
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidgetItem, QPushButton
 from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QSize, QEvent
@@ -287,6 +287,23 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         gui.style().polish(gui)
         return True
 
+    @staticmethod
+    def changeIconColor(widget, color):
+        """
+        :param widget:
+        :param color:
+        :return:
+        """
+        icon = widget.icon()
+        if not icon:
+            return False
+        pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)))
+        mask = pixmap.createMaskFromColor(QColor('transparent'), Qt.MaskInColor)
+        pixmap.fill(QColor(color))
+        pixmap.setMask(mask)
+        widget.setIcon(QIcon(pixmap))
+        return True
+
     def initUI(self):
         """
         init_UI makes the basic initialisation of the GUI. is sets the window
@@ -301,8 +318,7 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
         self.setWindowIcon(QIcon(':/mw4.ico'))
         return True
 
-    @staticmethod
-    def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
+    def changeStyleDynamic(self, widget=None, widgetProperty=None, value=None):
         """
         changeStyleDynamic changes the stylesheet of a given ui element and
         makes it visible. therefore the element has to be unpolished and
@@ -323,6 +339,12 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             return False
         if widget.property(widgetProperty) == value:
             return True
+
+        if isinstance(widget, QPushButton):
+            if widgetProperty == 'running' and value:
+                self.changeIconColor(widget, self.M_BACK)
+            elif widgetProperty == 'running' and not value:
+                self.changeIconColor(widget, self.M_BLUE)
 
         widget.style().unpolish(widget)
         widget.setProperty(widgetProperty, value)

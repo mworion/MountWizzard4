@@ -52,6 +52,14 @@ class TestConfigData(unittest.TestCase):
         suc = obsSite.setLoaderAndTimescale()
         assert suc
 
+    def test_setLoaderAndTimescale_3(self):
+        obsSite = ObsSite()
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            suc = obsSite.setLoaderAndTimescale()
+            assert suc
+
     def test_Data_without_ts(self):
         obsSite = ObsSite(pathToData='tests/workDir/data')
         self.assertEqual(isinstance(obsSite.ts, Timescale), True)
@@ -97,8 +105,8 @@ class TestConfigData(unittest.TestCase):
         lon = 100
         lat = 45
         obsSite.location = wgs84.latlon(longitude_degrees=lon,
-                                              latitude_degrees=lat,
-                                              elevation_m=elev)
+                                        latitude_degrees=lat,
+                                        elevation_m=elev)
         self.assertAlmostEqual(100, obsSite.location.longitude.dms()[0], 6)
         self.assertAlmostEqual(0, obsSite.location.longitude.dms()[1], 6)
         self.assertAlmostEqual(0, obsSite.location.longitude.dms()[2], 6)

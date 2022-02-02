@@ -133,8 +133,42 @@ def test_parkAtPos_2(qtbot):
 
 def test_slewParkPos_1(qtbot):
     def Sender():
-        return ui.powerPort1
+        return QWidget()
     app.sender = Sender
+    suc = app.slewToParkPos()
+    assert not suc
+
+
+def test_slewParkPos_2(qtbot):
+    def Sender():
+        return ui.posButton0
+    app.sender = Sender
+    with mock.patch.object(app.app.mount.obsSite,
+                           'setTargetAltAz',
+                           return_value=False):
+        suc = app.slewToParkPos()
+        assert not suc
+
+
+def test_slewParkPos_3(qtbot):
+    def Sender():
+        return ui.posButton0
+    app.sender = Sender
+    with mock.patch.object(app.app.mount.obsSite,
+                           'setTargetAltAz',
+                           return_value=True):
+        with mock.patch.object(app.app.mount.obsSite,
+                               'startSlewing',
+                               return_value=False):
+            suc = app.slewToParkPos()
+            assert not suc
+
+
+def test_slewParkPos_4(qtbot):
+    def Sender():
+        return ui.posButton0
+    app.sender = Sender
+    app.ui.parkMountAfterSlew.setChecked(True)
     with mock.patch.object(app.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
@@ -145,44 +179,11 @@ def test_slewParkPos_1(qtbot):
             assert not suc
 
 
-def test_slewParkPos_2(qtbot):
+def test_slewParkPos_5(qtbot):
     def Sender():
         return ui.posButton0
     app.sender = Sender
-    with mock.patch.object(app.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'startSlewing',
-                               return_value=True):
-            suc = app.slewToParkPos()
-            assert suc
-
-
-def test_slewParkPos_3(qtbot):
-    def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    app.ui.posAlt0.setValue(40)
-    app.ui.posAz0.setValue(180)
-    with mock.patch.object(app.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
-                               'startSlewing',
-                               return_value=True):
-            suc = app.slewToParkPos()
-            assert suc
-
-
-def test_slewParkPos_3a(qtbot):
-    app.ui.parkMountAfterSlew.setChecked(True)
-
-    def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    app.ui.posAlt0.setValue(40)
-    app.ui.posAz0.setValue(180)
+    app.ui.parkMountAfterSlew.setChecked(False)
     with mock.patch.object(app.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
@@ -206,13 +207,13 @@ def test_saveActualPosition_2():
 
 def test_saveActualPosition_3():
     def Sender():
-        return ui.posAlt0
+        return QWidget()
 
     app.sender = Sender
     app.app.mount.obsSite.Alt = 40
     app.app.mount.obsSite.Az = 40
     suc = app.saveActualPosition()
-    assert suc
+    assert not suc
 
 
 def test_saveActualPosition_4():

@@ -779,19 +779,19 @@ class MainWindow(
             self.ui.statusText.setText('-')
 
         if self.app.mount.obsSite.status == 0:
-            self.changeStyleDynamic(self.ui.tracking, 'running', 'true')
+            self.changeStyleDynamic(self.ui.tracking, 'running', True)
         else:
-            self.changeStyleDynamic(self.ui.tracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.tracking, 'running', False)
 
         if self.app.mount.obsSite.status == 5:
-            self.changeStyleDynamic(self.ui.park, 'running', 'true')
+            self.changeStyleDynamic(self.ui.park, 'running', True)
         else:
-            self.changeStyleDynamic(self.ui.park, 'running', 'false')
+            self.changeStyleDynamic(self.ui.park, 'running', False)
 
         if self.app.mount.obsSite.status == 1:
-            self.changeStyleDynamic(self.ui.stop, 'running', 'true')
+            self.changeStyleDynamic(self.ui.stop, 'running', True)
         else:
-            self.changeStyleDynamic(self.ui.stop, 'running', 'false')
+            self.changeStyleDynamic(self.ui.stop, 'running', False)
 
         return True
 

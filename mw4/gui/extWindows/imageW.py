@@ -307,17 +307,17 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.solve.setEnabled(False)
 
         if self.deviceStat.get('expose', False):
-            self.changeStyleDynamic(self.ui.expose, 'running', 'true')
+            self.changeStyleDynamic(self.ui.expose, 'running', True)
         elif self.deviceStat.get('exposeN', False):
-            self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
+            self.changeStyleDynamic(self.ui.exposeN, 'running', True)
         else:
-            self.changeStyleDynamic(self.ui.expose, 'running', 'false')
-            self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
+            self.changeStyleDynamic(self.ui.expose, 'running', False)
+            self.changeStyleDynamic(self.ui.exposeN, 'running', False)
 
         if self.deviceStat.get('solve', False):
-            self.changeStyleDynamic(self.ui.solve, 'running', 'true')
+            self.changeStyleDynamic(self.ui.solve, 'running', True)
         else:
-            self.changeStyleDynamic(self.ui.solve, 'running', 'false')
+            self.changeStyleDynamic(self.ui.solve, 'running', False)
 
         return True
 

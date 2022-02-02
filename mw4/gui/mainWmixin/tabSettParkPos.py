@@ -152,8 +152,11 @@ class SettParkPos(object):
             posTextValue = posText.text()
             suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
                                                         az_degrees=azValue)
-            if suc:
-                suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
+            if not suc:
+                self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
+                return False
+            
+            suc = self.app.mount.obsSite.startSlewing(slewType='notrack')    
             if not suc:
                 self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
                 return False
@@ -164,7 +167,6 @@ class SettParkPos(object):
 
             self.app.mount.signals.slewFinished.connect(self.parkAtPos)
             return True
-
         return False
 
     def saveActualPosition(self):

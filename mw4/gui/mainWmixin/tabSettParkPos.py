@@ -38,7 +38,14 @@ class SettParkPos(object):
         self.posAlt = list()
         self.posAz = list()
         self.posSaveButtons = list()
-        self.setupParkPosGui()
+
+        for i in range(0, 10):
+            self.posButtons.append(eval('self.ui.posButton{0:1d}'.format(i)))
+            self.posTexts.append(eval('self.ui.posText{0:1d}'.format(i)))
+            self.posAlt.append(eval('self.ui.posAlt{0:1d}'.format(i)))
+            self.posAz.append(eval('self.ui.posAz{0:1d}'.format(i)))
+            self.posSaveButtons.append(eval('self.ui.posSave{0:1d}'.format(i)))
+
         for posText in self.posTexts:
             posText.editingFinished.connect(self.updateParkPosButtonText)
         for button in self.posButtons:
@@ -48,10 +55,6 @@ class SettParkPos(object):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
@@ -74,10 +77,6 @@ class SettParkPos(object):
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
         :return: True for test purpose
         """
         config = self.app.config['mainW']
@@ -93,26 +92,10 @@ class SettParkPos(object):
         config['parkMountAfterSlew'] = self.ui.parkMountAfterSlew.isChecked()
         return True
 
-    def setupParkPosGui(self):
-        """
-        setupRelayGui handles the modeldata of list for relay handling. to keep many relay in
-        order i collect them in the list for list handling afterwards.
-
-        :return: True for test purpose
-        """
-        # generate the button list and text entry for later use
-        for i in range(0, 10):
-            self.posButtons.append(eval('self.ui.posButton{0:1d}'.format(i)))
-            self.posTexts.append(eval('self.ui.posText{0:1d}'.format(i)))
-            self.posAlt.append(eval('self.ui.posAlt{0:1d}'.format(i)))
-            self.posAz.append(eval('self.ui.posAz{0:1d}'.format(i)))
-            self.posSaveButtons.append(eval('self.ui.posSave{0:1d}'.format(i)))
-        return True
-
     def updateParkPosButtonText(self):
         """
-        updateParkPosButtonText updates the text in the gui button if we change texts in
-        the gui.
+        updateParkPosButtonText updates the text in the gui button if we change
+        texts in the gui.
 
         :return: true for test purpose
         """
@@ -134,45 +117,42 @@ class SettParkPos(object):
 
     def slewToParkPos(self):
         """
-        slewToParkPos takes the configured data from park positions menu and slews the mount
-        to the targeted alt az coordinates and stops tracking. actually there is no chance to
-        park the mount directly.
+        slewToParkPos takes the configured data from park positions menu and
+        slews the mount to the targeted alt az coordinates and stops tracking.
+        actually there is no chance to park the mount directly.
 
         :return: success
         """
-        for button, posText, alt, az in zip(self.posButtons,
-                                            self.posTexts,
-                                            self.posAlt,
-                                            self.posAz):
-            if button != self.sender():
-                continue
+        if self.sender() not in self.posButtons:
+            return False
 
-            altValue = alt.value()
-            azValue = az.value()
-            posTextValue = posText.text()
-            suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
-                                                        az_degrees=azValue)
-            if not suc:
-                self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
-                return False
-            
-            suc = self.app.mount.obsSite.startSlewing(slewType='notrack')    
-            if not suc:
-                self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
-                return False
+        index = self.posButtons.index(self.sender())
+        altValue = self.posAlt[index].value()
+        azValue = self.posAz[index].value()
+        posTextValue = self.posTexts[index].text()
 
-            self.app.message.emit(f'Slew to [{posTextValue}]', 0)
-            if not self.ui.parkMountAfterSlew.isChecked():
-                return True
+        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
+                                                    az_degrees=azValue)
+        if not suc:
+            self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
+            return False
 
-            self.app.mount.signals.slewFinished.connect(self.parkAtPos)
+        suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
+        if not suc:
+            self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
+            return False
+
+        self.app.message.emit(f'Slew to [{posTextValue}]', 0)
+        if not self.ui.parkMountAfterSlew.isChecked():
             return True
+
+        self.app.mount.signals.slewFinished.connect(self.parkAtPos)
         return False
 
     def saveActualPosition(self):
         """
-        saveActualPosition takes the actual mount position alt/az and stores it in the alt az
-        fields in the gui for persistence.
+        saveActualPosition takes the actual mount position alt/az and stores it
+        in the alt az fields in the gui for persistence.
 
         :return: success
         """
@@ -181,13 +161,9 @@ class SettParkPos(object):
             return False
         if not obs.Az:
             return False
-
-        for button, alt, az in zip(self.posSaveButtons,
-                                   self.posAlt,
-                                   self.posAz):
-            if button != self.sender():
-                continue
-
-            alt.setValue(obs.Alt.degrees)
-            az.setValue(obs.Az.degrees)
+        if self.sender() not in self.posSaveButtons:
+            return False
+        index = self.posSaveButtons.index(self.sender())
+        self.posAlt[index].setValue(obs.Alt.degrees)
+        self.posAz[index].setValue(obs.Az.degrees)
         return True

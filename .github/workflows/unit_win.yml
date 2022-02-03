@@ -12,7 +12,7 @@ env:
   uic: 'python -m PyQt5.uic.pyuic'
   ucc: 'python -m PyQt5.pyrcc_main'
   res: 'mw4/resource/'
-  branch: 'master'
+  branch: '2.2.0'
   cov: '--cov=mw4/ --cov-append'
 
 on:

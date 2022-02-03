@@ -276,6 +276,11 @@ class Almanac:
         colCover = QColor(self.M_BACK)
         colFree = QColor('transparent')
         colFrame = QColor(self.M_GREY1)
+
+        penCov = QPen(colCover, 0)
+        penFree = QPen(colFree, 0)
+        penFrame = QPen(colFrame, 3)
+
         height = pixmap.height()
         width = pixmap.width()
         h2 = height / 2
@@ -287,7 +292,7 @@ class Almanac:
         maskPainter = QPainter(moonMask)
         maskPainter.setBrush(Qt.SolidPattern)
         maskPainter.setBrush(colFree)
-        maskPainter.setPen(QPen(colFrame))
+        maskPainter.setPen(penFrame)
 
         if 0 <= mpDegree <= 90:
             maskPainter.setBrush(colCover)
@@ -295,7 +300,7 @@ class Almanac:
 
             r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colCover)
-            maskPainter.setPen(QPen(colCover))
+            maskPainter.setPen(penCov)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         elif 90 < mpDegree <= 180:
@@ -304,7 +309,7 @@ class Almanac:
 
             r = - np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
-            maskPainter.setPen(QPen(colFree))
+            maskPainter.setPen(penFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         elif 180 < mpDegree <= 270:
@@ -313,7 +318,7 @@ class Almanac:
 
             r = - np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
-            maskPainter.setPen(QPen(colFree))
+            maskPainter.setPen(penFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         else:
@@ -321,7 +326,7 @@ class Almanac:
             maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
 
             r = np.cos(np.radians(mpDegree)) * w2
-            maskPainter.setPen(QPen(colCover))
+            maskPainter.setPen(penCov)
             maskPainter.setBrush(colCover)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 

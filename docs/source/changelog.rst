@@ -16,6 +16,15 @@ Ideas for the future
 
 Beta version of MW4
 ----------------------------
+2.3.0
+
+
+Released version of MW4
+-----------------------
+
+Version 2.2
+^^^^^^^^^^^
+
 2.2.0
 
 - add: support SGPro camera as device
@@ -39,6 +48,7 @@ Beta version of MW4
 - improved: gui in image window when displaying different types
 - improved: reduced memory consumption if display raw images
 - improved: defining park positions with digit and improve gui for buttons
+- improved: when pushbutton shows running, invert icons as well
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.4
@@ -52,8 +62,7 @@ Beta version of MW4
 - upgrade websocket-client library to 1.2.3
 - fix: simulator in southern hemisphere
 
-Released version of MW4
------------------------
+
 Version 2.1
 ^^^^^^^^^^^
 2.1.7

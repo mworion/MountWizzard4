@@ -21,6 +21,7 @@ from unittest import mock
 
 # external packages
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QPixmap
 from skyfield.api import wgs84
 
 # local import
@@ -196,19 +197,23 @@ def test_calcMoonPhase_1(function):
 
 
 def test_generateMoonMask_1(function):
-    function.generateMoonMask(64, 64, 45)
+    q = QPixmap(64, 64)
+    function.generateMoonMask(q, 45)
 
 
 def test_generateMoonMask_2(function):
-    function.generateMoonMask(64, 64, 135)
+    q = QPixmap(64, 64)
+    function.generateMoonMask(q, 135)
 
 
 def test_generateMoonMask_3(function):
-    function.generateMoonMask(64, 64, 225)
+    q = QPixmap(64, 64)
+    function.generateMoonMask(q, 225)
 
 
 def test_generateMoonMask_4(function):
-    function.generateMoonMask(64, 64, 315)
+    q = QPixmap(64, 64)
+    function.generateMoonMask(q, 315)
 
 
 def test_updateMoonPhase_1(function):

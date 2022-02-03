@@ -51,7 +51,7 @@ Unit tests:
 
 Test install / run scripts:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|TEST_PACKAGES| |TEST_SCRIPTS| |RPI4_Mate_18_04| |RPI4_Mate_20_04|
+|TEST_PACKAGES| |TEST_SCRIPTS| |RPI4_Mate18| |RPI4_Mate20|
 
 Test coverage:
 ^^^^^^^^^^^^^^
@@ -142,7 +142,7 @@ CS Michel
     :target: https://github.com/mworion/MountWizzard4/issues
 
 .. |COMMITS_MASTER| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/v2.1.0/master
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/2.2.0
     :target: https://github.com/mworion/MountWizzard4/commits/master
 
 .. |COMMITS_WEEK| image::
@@ -154,11 +154,11 @@ CS Michel
 .. |TEST_SCRIPTS| image::
     https://github.com/mworion/MountWizzard4/workflows/test_scripts/badge.svg?branch=master
 
-.. |RPI4_Mate_18_04| image::
-    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_18_04/badge.svg?branch=master
+.. |RPI4_Mate18| image::
+    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate18/badge.svg?branch=master
 
-.. |RPI4_Mate_20_04| image::
-    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate_20_04/badge.svg?branch=master
+.. |RPI4_Mate20| image::
+    https://github.com/mworion/MountWizzard4/workflows/rpi4_mate20/badge.svg?branch=master
 
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg

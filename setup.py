@@ -60,7 +60,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.0',
+    version='2.2.0b15',
     packages=[
         'mw4',
         'mw4.base',
@@ -97,6 +97,7 @@ setup(
         'matplotlib==3.5.1',
         'pyerfa==2.0.0',
         'astropy==4.3.1',
+        'astroquery==0.4.5',
         'scipy==1.7.3',
         'sep==1.2.0',
         'requests==2.27.1',

@@ -21,7 +21,7 @@ import os
 import platform
 
 # external packages
-from skyfield.api import Angle, Timescale, wgs84, Star
+from skyfield.api import Angle, Timescale, wgs84, Star, Loader
 
 # local imports
 import mountcontrol
@@ -57,8 +57,12 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
-            suc = obsSite.setLoaderAndTimescale()
-            assert suc
+            with mock.patch.object(Loader,
+                                   'timescale'):
+                with mock.patch.object(Loader.timescale,
+                                       'now'):
+                    suc = obsSite.setLoaderAndTimescale()
+                    assert suc
 
     def test_Data_without_ts(self):
         obsSite = ObsSite(pathToData='tests/workDir/data')

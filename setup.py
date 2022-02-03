@@ -42,6 +42,7 @@ releaseNotes = """
 - improved: reduced memory consumption if display raw images
 - improved: defining park positions with digit and improve gui for buttons
 - improved: when pushbutton shows running, invert icons as well
+- improve: moon phases in different color schemes
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.4
@@ -61,7 +62,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.0b16',
+    version='2.2.0b17',
     packages=[
         'mw4',
         'mw4.base',

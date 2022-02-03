@@ -19,40 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support SGPro camera as device
-- add: support N.I.N.A. camera as device
-- add: two modes for SGPro and N.I.N.A.: App or MW4 controlled
-- add: debayer (4 modes) all platforms (armv7, StellarMate, Astroberry)
-- add: filter satellites for twilight visibility settings
-- add: setting performance for windows automation (slow / normal / fast)
-- add: auto abort imaging when camera device is disconnected
-- add: missing cursor in virtual keypad window
-- add: support for keyboard usage in virtual keypad window
-- add: screenshot as PNG save for actual window with key F5 
-- add: screenshots as PNG save for all open windows with key F6
-- improved: flexible satellite handling when mount not connected
-- improved: show selected satellite name in satellite windows title
-- improved: 3D simulator drawing
-- improved: updater now avoids installation into system package
-- improved: GUI for imaging tab - disable all invalid interfaces 
-- improved: redesign analyse window to get more space for further charts 
-- improved: Tools: move mount: better UI, tooltips, multi steps in alt/az
-- improved: gui in image window when displaying different types
-- improved: reduced memory consumption if display raw images
-- improved: defining park positions with digit and improve gui for buttons
-- improved: when pushbutton shows running, invert icons as well
-- upgrade: pywin32 library to version 303 (windows)
-- upgrade: skyfield library to 1.41
-- upgrade: numpy library to 1.21.4
-- upgrade: matplotlib to 3.5.1
-- upgrade: scipy library to 1.7.3
-- upgrade requests library to 2.27.2
-- upgrade importlib_metadata library to 4.10.0
-- upgrade deepdiff library to 5.7.0
-- upgrade wakeonlan library to 2.1.0
-- upgrade pybase64 library to 1.2.1
-- upgrade websocket-client library to 1.2.3
-- fix: simulator in southern hemisphere
+
  """
 
 with open('notes.txt', 'w') as f:
@@ -60,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.0b15',
+    version='2.3.0b0',
     packages=[
         'mw4',
         'mw4.base',

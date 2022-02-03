@@ -20,7 +20,7 @@ from dateutil.tz import tzlocal
 
 # external packages
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
-from PyQt5.QtCore import Qt, QPointF
+from PyQt5.QtCore import Qt, QPointF, QRect
 from PyQt5.QtWidgets import QApplication
 from skyfield import almanac
 from skyfield.trigonometry import position_angle_of
@@ -75,6 +75,7 @@ class Almanac:
         self.app.start5s.connect(self.searchTwilightPlot)
         self.app.update30m.connect(self.updateMoonPhase)
         self.app.colorChange.connect(self.colorChangeAlmanac)
+        self.ui.almanacDark.clicked.connect(self.updateMoonPhase)
 
     def initConfig(self):
         """
@@ -113,6 +114,7 @@ class Almanac:
         """
         self.setColors()
         self.searchTwilightPlot()
+        self.updateMoonPhase()
         return True
 
     def plotTwilightData(self, result):
@@ -265,56 +267,63 @@ class Almanac:
 
         return mpIllumination, mpDegree, mpPercent, moonAngle
 
-    @staticmethod
-    def generateMoonMask(width, height, mpDegree):
+    def generateMoonMask(self, pixmap, mpDegree):
         """
-        :param width:
-        :param height:
+        :param pixmap:
         :param mpDegree:
         :return:
         """
+        colCover = QColor(self.M_BACK)
+        colFree = QColor('transparent')
+        colFrame = QColor(self.M_GREY1)
+        height = pixmap.height()
+        width = pixmap.width()
+        h2 = height / 2
+        w2 = width / 2
+
         moonMask = QPixmap(width, height)
+        moonMask.fill(QColor('transparent'))
+
         maskPainter = QPainter(moonMask)
         maskPainter.setBrush(Qt.SolidPattern)
-        maskPainter.setBrush(QColor(255, 255, 255))
-        maskPainter.setPen(QPen(QColor(255, 255, 255)))
-        maskPainter.drawRect(0, 0, width, height)
+        maskPainter.setBrush(colFree)
+        maskPainter.setPen(QPen(colFrame))
 
         if 0 <= mpDegree <= 90:
-            maskPainter.setBrush(QColor(48, 48, 48))
+            maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            r = np.cos(np.radians(mpDegree)) * width / 2
-            maskPainter.setBrush(QColor(48, 48, 48))
-            maskPainter.setPen(QPen(QColor(48, 48, 48)))
-            maskPainter.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+            r = np.cos(np.radians(mpDegree)) * w2
+            maskPainter.setBrush(colCover)
+            maskPainter.setPen(QPen(colCover))
+            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         elif 90 < mpDegree <= 180:
-            maskPainter.setBrush(QColor(48, 48, 48))
+            maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            r = - np.cos(np.radians(mpDegree)) * width / 2
-            maskPainter.setBrush(QColor(255, 255, 255))
-            maskPainter.setPen(QPen(QColor(255, 255, 255)))
-            maskPainter.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+            r = - np.cos(np.radians(mpDegree)) * w2
+            maskPainter.setBrush(colFree)
+            maskPainter.setPen(QPen(colFree))
+            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         elif 180 < mpDegree <= 270:
-            maskPainter.setBrush(QColor(48, 48, 48))
+            maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, - 90 * 16, 180 * 16)
 
-            r = - np.cos(np.radians(mpDegree)) * width / 2
-            maskPainter.setBrush(QColor(255, 255, 255))
-            maskPainter.setPen(QPen(QColor(255, 255, 255)))
-            maskPainter.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+            r = - np.cos(np.radians(mpDegree)) * w2
+            maskPainter.setBrush(colFree)
+            maskPainter.setPen(QPen(colFree))
+            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         else:
-            maskPainter.setBrush(QColor(48, 48, 48))
+            maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
 
-            r = np.cos(np.radians(mpDegree)) * width / 2
-            maskPainter.setPen(QPen(QColor(48, 48, 48)))
-            maskPainter.setBrush(QColor(48, 48, 48))
-            maskPainter.drawEllipse(QPointF(width / 2, height / 2), r, height / 2)
+            r = np.cos(np.radians(mpDegree)) * w2
+            maskPainter.setPen(QPen(colCover))
+            maskPainter.setBrush(colCover)
+            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         maskPainter.end()
         return moonMask
@@ -337,16 +346,17 @@ class Almanac:
                 continue
             self.ui.moonPhaseText.setText(phase)
 
+        moon = QPixmap(':/pics/moon.png')
+        moonMask = self.generateMoonMask(moon, mpDegree)
+
+        m = QPainter(moon)
+        m.setCompositionMode(QPainter.CompositionMode_SourceOver)
+        m.drawPixmap(0, 0, moonMask)
+        m.end()
+
         width = self.ui.moonPic.width()
         height = self.ui.moonPic.height()
-        moon = QPixmap(':/pics/moon.png').scaled(width, height)
-        moonMask = self.generateMoonMask(width, height, mpDegree)
-        moonPhase = QPainter(moon)
-        moonPhase.setCompositionMode(QPainter.CompositionMode_Multiply)
-        moonPhase.drawPixmap(0, 0, moonMask)
-        moonPhase.end()
-        self.ui.moonPic.setPixmap(moon)
-
+        self.ui.moonPic.setPixmap(moon.scaled(width, height))
         return True
 
     def lunarNodes(self):

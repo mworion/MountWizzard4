@@ -6054,9 +6054,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>240</y>
+       <y>230</y>
        <width>271</width>
-       <height>191</height>
+       <height>201</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -6081,7 +6081,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>120</x>
-        <y>165</y>
+        <y>175</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -6174,7 +6174,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>175</x>
-        <y>165</y>
+        <y>175</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -6201,9 +6201,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>35</y>
-        <width>130</width>
-        <height>130</height>
+        <y>40</y>
+        <width>128</width>
+        <height>128</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -6295,7 +6295,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>165</y>
+        <y>175</y>
         <width>26</width>
         <height>21</height>
        </rect>
@@ -6340,7 +6340,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>165</y>
+        <y>175</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -6368,7 +6368,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>180</y>
+       <y>175</y>
        <width>271</width>
        <height>46</height>
       </rect>

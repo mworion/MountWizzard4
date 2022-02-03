@@ -19,7 +19,6 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- improve: moon phases in different color schemes
  """
 
 with open('notes.txt', 'w') as f:

@@ -18,9 +18,13 @@
 
 # external packages
 from PyQt5.QtCore import QMutex
+from astroquery.simbad import Simbad
+from skyfield.api import Angle
 
 # local import
 from base.tpool import Worker
+from mountcontrol.convert import convertRaToAngle, convertDecToAngle
+from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 
 class BuildPoints:
@@ -43,6 +47,8 @@ class BuildPoints:
             'dso': self.genBuildDSO,
             'file': self.genBuildFile,
         }
+        self.simbadRa = None
+        self.simbadDec = None
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign3)
@@ -77,6 +83,8 @@ class BuildPoints:
         self.ui.checkAutoDeleteMeridian.clicked.connect(self.rebuildPoints)
         self.ui.checkAutoDeleteHorizon.clicked.connect(self.rebuildPoints)
         self.app.buildPointsChanged.connect(self.buildPointsChanged)
+        self.ui.generateQuery.editingFinished.connect(self.querySimbad)
+        self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
 
     def initConfig(self):
         """
@@ -120,7 +128,7 @@ class BuildPoints:
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
         self.ui.durationDSO.valueChanged.connect(self.genBuildDSO)
         self.ui.timeShiftDSO.valueChanged.connect(self.genBuildDSO)
-
+        self.setupDsoGui()
         return True
 
     def storeConfig(self):
@@ -353,12 +361,17 @@ class BuildPoints:
         self.lastGenerator = 'dso'
         ra = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
+        lst = self.app.mount.obsSite.timeSidereal
         timeJD = self.app.mount.obsSite.timeJD
         location = self.app.mount.obsSite.location
 
-        if ra is None or dec is None or location is None:
+        if ra is None or dec is None or location is None or lst is None:
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
+
+        if self.simbadRa and self.simbadDec:
+            ra = Angle(hours=self.simbadRa.hours - lst.hours)
+            dec = self.simbadDec
 
         self.ui.numberDSOPoints.setEnabled(False)
         self.ui.durationDSO.setEnabled(False)
@@ -694,4 +707,51 @@ class BuildPoints:
         """
         self.autoDeletePoints()
         self.autoSortPoints()
+        return True
+
+    def setupDsoGui(self):
+        """
+        :return:
+        """
+        isOnline = self.ui.isOnline.isChecked()
+        self.ui.generateQuery.setEnabled(isOnline)
+        self.ui.generateRa.setEnabled(isOnline)
+        self.ui.generateDec.setEnabled(isOnline)
+        self.ui.generateQueryText.setEnabled(isOnline)
+        self.ui.generateRaText.setEnabled(isOnline)
+        self.ui.generateDecText.setEnabled(isOnline)
+        return True
+
+    def querySimbad(self):
+        """
+        :return:
+        """
+        if not self.ui.isOnline.isChecked():
+            self.app.message.emit('MW4 is offline', 2)
+            return False
+
+        ident = self.ui.generateQuery.text().strip()
+        if not ident:
+            self.app.message.emit('No query data given', 2)
+            self.ui.generateRa.setText('')
+            self.ui.generateDec.setText('')
+            return False
+
+        result = Simbad.query_object(ident)
+
+        if not result:
+            self.app.message.emit(f'No response from SIMBAD for {ident}', 2)
+            self.ui.generateRa.setText('')
+            self.ui.generateDec.setText('')
+            self.simbadRa = None
+            self.simbadDec = None
+            return False
+
+        self.simbadRa = convertRaToAngle(result['RA'].value.data[0])
+        text = formatHstrToText(self.simbadRa)
+        self.ui.generateRa.setText(text)
+
+        self.simbadDec = convertDecToAngle(result['DEC'].value.data[0])
+        text = formatDstrToText(self.simbadDec)
+        self.ui.generateDec.setText(text)
         return True

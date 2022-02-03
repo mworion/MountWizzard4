@@ -53,7 +53,7 @@ class TestConfigData(unittest.TestCase):
         assert suc
 
     def test_setLoaderAndTimescale_3(self):
-        obsSite = ObsSite()
+        obsSite = ObsSite(pathToData=pathToData)
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):

@@ -38,6 +38,7 @@ Version 2.2
 - add: support for keyboard usage in virtual keypad window
 - add: screenshot as PNG save for actual window with key F5
 - add: screenshots as PNG save for all open windows with key F6
+- add: query DSO objects for DSO path setting in build model
 - improved: flexible satellite handling when mount not connected
 - improved: show selected satellite name in satellite windows title
 - improved: 3D simulator drawing

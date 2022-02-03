@@ -302,7 +302,6 @@ class Almanac:
             maskPainter.setBrush(colCover)
             maskPainter.setPen(penCov)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
-
         elif 90 < mpDegree <= 180:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
@@ -311,7 +310,6 @@ class Almanac:
             maskPainter.setBrush(colFree)
             maskPainter.setPen(penFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
-
         elif 180 < mpDegree <= 270:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, - 90 * 16, 180 * 16)
@@ -320,7 +318,6 @@ class Almanac:
             maskPainter.setBrush(colFree)
             maskPainter.setPen(penFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
-
         else:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
@@ -376,5 +373,4 @@ class Almanac:
         t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephemeris))
         text = 'descending' if y[0] else 'ascending'
         self.ui.lunarNodes.setText(f'{text}')
-
         return True

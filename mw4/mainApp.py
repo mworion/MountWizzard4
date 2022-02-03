@@ -182,7 +182,7 @@ class MountWizzard4(QObject):
         self.timer0_1s.start(100)
         self.application.aboutToQuit.connect(self.aboutToQuit)
 
-        if os.path.isfile('test.txt'):
+        if os.path.isfile(self.mwGlob["workDir"] + '/test.txt'):
             self.update3s.connect(self.quit)
 
         if len(sys.argv) > 1:

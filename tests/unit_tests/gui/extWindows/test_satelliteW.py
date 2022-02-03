@@ -501,9 +501,9 @@ def test_drawSatellite_1(function):
 
 
 def test_drawSatellite_2(function, ts):
-    tle = ["CALSPHERE 1",
-           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
-           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
+    tle = ["ISS (ZARYA)",
+           "1 25544U 98067A   21103.51063550  .00000247  00000-0  12689-4 0  9995",
+           "2 25544  51.6440 302.6231 0002845 223.0251 174.3348 15.48881931278570"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = 2459610
     t0 = ts.tt_jd(tt + 0)
@@ -540,9 +540,9 @@ def test_drawSatellite_2(function, ts):
 
 
 def test_drawSatellite_3(function, ts):
-    tle = ["ISS (ZARYA)",
-           "1 25544U 98067A   21103.51063550  .00000247  00000-0  12689-4 0  9995",
-           "2 25544  51.6440 302.6231 0002845 223.0251 174.3348 15.48881931278570"]
+    tle = ["METEOSAT-10 (MSG-3)",
+           "1 38552U 12035B   22026.87212005  .00000071  00000+0  00000+0 0  9997",
+           "2 38552   1.3428  31.3751 0000057 333.5373  84.7153  1.00279964 34791"]
 
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = 2459610
@@ -565,7 +565,6 @@ def test_drawSatellite_3(function, ts):
                   'flip': t3,
                   'settle': t4},
                  ]
-
     with mock.patch.object(function,
                            'drawSphere1'):
         with mock.patch.object(function,
@@ -580,9 +579,9 @@ def test_drawSatellite_3(function, ts):
 
 
 def test_drawSatellite_4(function, ts):
-    tle = ["ISS (ZARYA)",
-           "1 25544U 98067A   21103.51063550  .00000247  00000-0  12689-4 0  9995",
-           "2 25544  51.6440 302.6231 0002845 223.0251 174.3348 15.48881931278570"]
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
+           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
 
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = 2459610

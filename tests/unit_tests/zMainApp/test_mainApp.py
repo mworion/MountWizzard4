@@ -48,7 +48,7 @@ def app(qapp):
               'tempDir': 'tests/workDir/temp',
               'imageDir': 'tests/workDir/image',
               'modelDir': 'tests/workDir/model',
-              'workDir': 'mw4/tests/workdir',
+              'workDir': 'tests/workdir',
               }
 
     files = glob.glob('tests/workDir/config/*.cfg')
@@ -56,6 +56,7 @@ def app(qapp):
         os.remove(f)
 
     shutil.copy('tests/testData/de421_23.bsp', 'tests/workDir/data/de421_23.bsp')
+    shutil.copy('tests/testData/test.txt', 'tests/workDir/test.txt')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -80,8 +81,6 @@ def module_setup_teardown_func(app):
         os.remove('tests/workDir/config/new.cfg')
     if os.path.isfile('tests/workDir/config/profile'):
         os.remove('tests/workDir/config/profile')
-    if os.path.isfile('tests/workDir/test.txt'):
-        os.remove('tests/workDir/test.txt')
     yield
 
 
@@ -120,7 +119,6 @@ def test_checkAndSetAutomation_3(app):
 
 
 def test_initConfig_1(app):
-    shutil.copy('tests/testData/test.txt', 'tests/workDir/test.txt')
     val = app.initConfig()
     assert val.longitude.degrees == 0
 

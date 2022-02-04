@@ -74,7 +74,7 @@ jobs:
           
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            GITHUB="https://github.com/mworion/MountWizzard4/blob/master"
+            GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
             SCRIPT="/support/2.0/StellarMate64"
             wget "${GITHUB}${SCRIPT}/MW4_Install.sh"
             chmod 777 MW4_Install.sh

@@ -123,7 +123,6 @@ echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-
 GITHUB="https://github.com/mworion/MountWizzard4/blob/master"
 WHEELS="/support/wheels/ubuntu20.04"
 PRE="${GITHUB}${WHEELS}"

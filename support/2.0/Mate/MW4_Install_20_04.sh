@@ -9,22 +9,32 @@ cd $(dirname "$0")
 echo
 echo --------------------------------------------------------
 echo
-echo "         ███╗   ███╗██╗    ██╗██╗  ██╗"
-echo "         ████╗ ████║██║    ██║██║  ██║"
-echo "         ██╔████╔██║██║ █╗ ██║███████║"
-echo "         ██║╚██╔╝██║██║███╗██║╚════██║"
-echo "         ██║ ╚═╝ ██║╚███╔███╔╝     ██║"
-echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
-echo
-echo "      ███╗   ███╗ █████╗ ████████╗███████╗"
-echo "      ████╗ ████║██╔══██╗╚══██╔══╝██╔════╝"
-echo "      ██╔████╔██║███████║   ██║   █████╗  "
-echo "      ██║╚██╔╝██║██╔══██║   ██║   ██╔══╝  "
-echo "      ██║ ╚═╝ ██║██║  ██║   ██║   ███████╗"
-echo "      ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝"
+echo "             #     # #     # #                   "
+echo "             ##   ## #  #  # #    #              "
+echo "             # # # # #  #  # #    #              "
+echo "             #  #  # #  #  # #    #              "
+echo "             #     # #  #  # #######             "
+echo "             #     # #  #  #      #              "
+echo "             #     #  ## ##       #              "
+echo "                                                 "
+echo " #     # ######  #     # #     # ####### #     # "
+echo " #     # #     # #     # ##    #    #    #     # "
+echo " #     # #     # #     # # #   #    #    #     # "
+echo " #     # ######  #     # #  #  #    #    #     # "
+echo " #     # #     # #     # #   # #    #    #     # "
+echo " #     # #     # #     # #    ##    #    #     # "
+echo "  #####  ######   #####  #     #    #     #####  "
+echo "                                                 "
+echo "          #     #    #    ####### #######        "
+echo "          ##   ##   # #      #    #              "
+echo "          # # # #  #   #     #    #              "
+echo "          #  #  # #     #    #    #####          "
+echo "          #     # #######    #    #              "
+echo "          #     # #     #    #    #              "
+echo "          #     # #     #    #    #######        "
 echo
 echo --------------------------------------------------------
-echo install script version 2.3 Ubuntu Mate 20.04
+echo install script version 2.3
 echo --------------------------------------------------------
 
 echo install script version 2.3 Ubuntu Mate 20.04 > install.log 2>&1
@@ -94,7 +104,7 @@ echo start virtualenv and update tools
 echo --------------------------------------------------------
 
 echo checking system packages, should be no mw4 in >> install.log  2>&1
-python -p pip list >> install.log 2>&1
+python -m pip list >> install.log 2>&1
 
 source venv/bin/activate >> install.log 2>&1
 pip install pip --upgrade >> install.log 2>&1
@@ -106,7 +116,7 @@ echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+GITHUB="https://github.com/mworion/MountWizzard4/blob/master"
 WHEELS="/support/wheels/ubuntu20.04"
 PRE="${GITHUB}${WHEELS}"
 POST="_aarch64.whl"

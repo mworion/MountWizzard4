@@ -9,22 +9,32 @@ cd $(dirname "$0")
 echo
 echo --------------------------------------------------------
 echo
-echo "         ███╗   ███╗██╗    ██╗██╗  ██╗"
-echo "         ████╗ ████║██║    ██║██║  ██║"
-echo "         ██╔████╔██║██║ █╗ ██║███████║"
-echo "         ██║╚██╔╝██║██║███╗██║╚════██║"
-echo "         ██║ ╚═╝ ██║╚███╔███╔╝     ██║"
-echo "         ╚═╝     ╚═╝ ╚══╝╚══╝      ╚═╝"
-echo
-echo "      ███╗   ███╗ █████╗ ████████╗███████╗"
-echo "      ████╗ ████║██╔══██╗╚══██╔══╝██╔════╝"
-echo "      ██╔████╔██║███████║   ██║   █████╗  "
-echo "      ██║╚██╔╝██║██╔══██║   ██║   ██╔══╝  "
-echo "      ██║ ╚═╝ ██║██║  ██║   ██║   ███████╗"
-echo "      ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝"
+echo "             #     # #     # #                   "
+echo "             ##   ## #  #  # #    #              "
+echo "             # # # # #  #  # #    #              "
+echo "             #  #  # #  #  # #    #              "
+echo "             #     # #  #  # #######             "
+echo "             #     # #  #  #      #              "
+echo "             #     #  ## ##       #              "
+echo "                                                 "
+echo " #     # ######  #     # #     # ####### #     # "
+echo " #     # #     # #     # ##    #    #    #     # "
+echo " #     # #     # #     # # #   #    #    #     # "
+echo " #     # ######  #     # #  #  #    #    #     # "
+echo " #     # #     # #     # #   # #    #    #     # "
+echo " #     # #     # #     # #    ##    #    #     # "
+echo "  #####  ######   #####  #     #    #     #####  "
+echo "                                                 "
+echo "          #     #    #    ####### #######        "
+echo "          ##   ##   # #      #    #              "
+echo "          # # # #  #   #     #    #              "
+echo "          #  #  # #     #    #    #####          "
+echo "          #     # #######    #    #              "
+echo "          #     # #     #    #    #              "
+echo "          #     # #     #    #    #######        "
 echo
 echo --------------------------------------------------------
-echo install script version 2.3 Ubuntu Mate 18.04
+echo install script version 2.3
 echo --------------------------------------------------------
 
 echo install script version 2.3 Ubuntu Mate 18.04 > install.log 2>&1
@@ -106,7 +116,7 @@ echo --------------------------------------------------------
 echo installing precompiled packages
 echo --------------------------------------------------------
 
-GITHUB="https://raw.githubusercontent.com/mworion/MountWizzard4/master"
+GITHUB="https://github.com/mworion/MountWizzard4/blob/master"
 WHEELS="/support/wheels/ubuntu20.04"
 PRE="${GITHUB}${WHEELS}"
 POST="_aarch64.whl"

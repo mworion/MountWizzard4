@@ -39,6 +39,7 @@ echo run script version 2.2 astroberry >> run.log 2>&1
 
 export QT_SCALE_FACTOR=1 >> run.log 2>&1
 export QT_FONT_DPI=96 >> run.log 2>&1
+export LC_ALL=C >> run.log 2>&1
 
 echo
 echo --------------------------------------------------------

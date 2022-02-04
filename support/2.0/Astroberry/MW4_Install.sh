@@ -72,10 +72,15 @@ else
   echo --------------------------------------------------------
   echo no valid python version installed
   echo --------------------------------------------------------
+  echo no valid python version installed >> install.log 2>&1
   exit
 fi
 
-echo installing wheel >> install.log 2>&1
+echo
+echo --------------------------------------------------------
+echo updating pip installer
+echo --------------------------------------------------------
+
 python3 -m pip install pip --upgrade >> install.log 2>&1
 
 echo

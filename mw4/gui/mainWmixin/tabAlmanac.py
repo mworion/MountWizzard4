@@ -20,7 +20,7 @@ from dateutil.tz import tzlocal
 
 # external packages
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
-from PyQt5.QtCore import Qt, QPointF, QRect
+from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QApplication
 from skyfield import almanac
 from skyfield.trigonometry import position_angle_of

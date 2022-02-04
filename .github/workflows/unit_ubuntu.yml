@@ -7,10 +7,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  wid: 'mw4/gui/widgets/'
-  uic: 'python -m PyQt5.uic.pyuic'
-  ucc: 'python -m PyQt5.pyrcc_main'
-  res: 'mw4/resource/'
   branch: '2.2.0'
 
 on:

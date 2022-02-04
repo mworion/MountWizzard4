@@ -735,6 +735,8 @@ class BuildPoints:
             self.app.message.emit('No query data given', 2)
             self.ui.generateRa.setText('')
             self.ui.generateDec.setText('')
+            self.simbadRa = None
+            self.simbadDec = None
             return False
 
         result = Simbad.query_object(ident)

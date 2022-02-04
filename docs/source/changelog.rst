@@ -16,6 +16,15 @@ Ideas for the future
 
 Beta version of MW4
 ----------------------------
+2.3.0
+
+
+Released version of MW4
+-----------------------
+
+Version 2.2
+^^^^^^^^^^^
+
 2.2.0
 
 - add: support SGPro camera as device
@@ -29,6 +38,7 @@ Beta version of MW4
 - add: support for keyboard usage in virtual keypad window
 - add: screenshot as PNG save for actual window with key F5
 - add: screenshots as PNG save for all open windows with key F6
+- add: query DSO objects for DSO path setting in build model
 - improved: flexible satellite handling when mount not connected
 - improved: show selected satellite name in satellite windows title
 - improved: 3D simulator drawing
@@ -39,6 +49,8 @@ Beta version of MW4
 - improved: gui in image window when displaying different types
 - improved: reduced memory consumption if display raw images
 - improved: defining park positions with digit and improve gui for buttons
+- improved: when pushbutton shows running, invert icons as well
+- improve: moon phases in different color schemes
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.4
@@ -52,8 +64,7 @@ Beta version of MW4
 - upgrade websocket-client library to 1.2.3
 - fix: simulator in southern hemisphere
 
-Released version of MW4
------------------------
+
 Version 2.1
 ^^^^^^^^^^^
 2.1.7

@@ -24,6 +24,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal, QThreadPool
 from mountcontrol.qtmount import Mount
 from skyfield.api import wgs84, Angle
+from astroquery.simbad import Simbad
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -291,6 +292,11 @@ def test_genBuildDSO_1(function, qtbot):
 
 
 def test_genBuildDSO_2(function, qtbot):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.simbadRa = Angle(hours=0)
+    function.simbadDec = Angle(degrees=0)
     with mock.patch.object(function.app.data,
                            'generateDSOPath',
                            return_value=False):
@@ -303,21 +309,40 @@ def test_genBuildDSO_2(function, qtbot):
 def test_genBuildDSO_3(function):
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
-    with mock.patch.object(function.app.data,
-                           'generateDSOPath',
-                           return_value=True):
-        suc = function.genBuildDSO()
-        assert suc
-
-
-def test_genBuildDSO_4(function):
-    function.app.mount.obsSite.raJNow = 0
-    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = 0
+    function.simbadRa = None
+    function.simbadDec = None
     with mock.patch.object(function.app.data,
                            'generateDSOPath',
                            return_value=False):
         suc = function.genBuildDSO()
         assert not suc
+
+
+def test_genBuildDSO_4(function):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = 0
+    function.simbadRa = None
+    function.simbadDec = None
+    with mock.patch.object(function.app.data,
+                           'generateDSOPath',
+                           return_value=False):
+        suc = function.genBuildDSO()
+        assert not suc
+
+
+def test_genBuildDSO_5(function):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.simbadRa = Angle(hours=0)
+    function.simbadDec = Angle(degrees=0)
+    with mock.patch.object(function.app.data,
+                           'generateDSOPath',
+                           return_value=True):
+        suc = function.genBuildDSO()
+        assert suc
 
 
 def test_genBuildGoldenSpiral_1(function, qtbot):
@@ -651,3 +676,50 @@ def test_rebuildPoints_1(function):
 def test_processPoints(function):
     suc = function.processPoints()
     assert suc
+
+
+def test_setupDsoGui(function):
+    suc = function.setupDsoGui()
+    assert suc
+
+
+def test_querySimbad_1(function):
+    function.ui.isOnline.setChecked(False)
+    suc = function.querySimbad()
+    assert not suc
+
+
+def test_querySimbad_2(function):
+    function.ui.isOnline.setChecked(True)
+    function.ui.generateQuery.setText('')
+    suc = function.querySimbad()
+    assert not suc
+
+
+def test_querySimbad_3(function):
+    function.ui.isOnline.setChecked(True)
+    function.ui.generateQuery.setText('m31')
+    with mock.patch.object(Simbad,
+                           'query_object',
+                           return_value=None):
+        suc = function.querySimbad()
+        assert not suc
+
+
+def test_querySimbad_4(function):
+    class Data2:
+        data = ['10 00 00']
+
+    class Data:
+        value = Data2()
+
+    result = {'RA': Data(),
+              'DEC': Data()}
+
+    function.ui.isOnline.setChecked(True)
+    function.ui.generateQuery.setText('m31')
+    with mock.patch.object(Simbad,
+                           'query_object',
+                           return_value=result):
+        suc = function.querySimbad()
+        assert suc

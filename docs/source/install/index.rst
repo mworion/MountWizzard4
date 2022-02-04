@@ -20,6 +20,7 @@ Installing Process
     update
     platesolvers
     astroberry
+    stellarmate
     rpi3
     rpi4
     setup

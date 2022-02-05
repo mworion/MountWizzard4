@@ -154,8 +154,6 @@ class CameraIndi(IndiClass):
         adding for avoid having no entry in header
         :return:
         """
-        if 'RA' in header and 'DEC' in header:
-            return header
         ra = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
         timeJD = self.app.mount.obsSite.timeJD

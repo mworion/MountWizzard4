@@ -9092,7 +9092,7 @@ class Ui_MainWindow(object):
         self.statusOnline_2.raise_()
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(1)
+        self.mainTabWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(1)
         self.toolsTabWidget.setCurrentIndex(0)

@@ -199,7 +199,7 @@ class Styles:
         }
         QLineEdit:disabled {
             background-color: $M_GREY1$;
-            color: $M_GREY$;
+            color: $M_BLUE$;
         }
         QLineEdit[keypad] {
             background-color: $M_BACK$;

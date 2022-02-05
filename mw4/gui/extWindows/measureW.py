@@ -774,7 +774,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                                              min_n_ticks=4,
                                                              prune='both',
                                                              ))
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',
                                                                       ))
         return True
 
@@ -860,7 +860,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                                              min_n_ticks=4,
                                                              prune='both',
                                                              ))
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',
                                                                       ))
         return True
 

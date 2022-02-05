@@ -273,6 +273,7 @@ class CameraIndi(IndiClass):
         :param width:
         :param height:
         :param focalLength:
+
         :return: success
         """
         if not self.device:

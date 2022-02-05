@@ -149,7 +149,9 @@ class Camera:
                binning=1,
                subFrame=100,
                fastReadout=True,
-               focalLength=1):
+               focalLength=1,
+               ra=None,
+               dec=None):
         """
         :param imagePath:
         :param expTime:
@@ -157,6 +159,8 @@ class Camera:
         :param subFrame:
         :param fastReadout:
         :param focalLength:
+        :param ra:
+        :param dec:
         :return: success
         """
         if self.framework not in self.run.keys():
@@ -182,7 +186,7 @@ class Camera:
                                               posY=posY,
                                               width=width,
                                               height=height,
-                                              focalLength=focalLength)
+                                              focalLength=focalLength,)
         return suc
 
     def abort(self):

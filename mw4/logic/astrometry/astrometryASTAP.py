@@ -207,8 +207,6 @@ class AstrometryASTAP(object):
         else:
             decHint = decHint.degrees
 
-        print(raHint, decHint, raFITS.hours, decFITS.degrees)
-
         options = ['-ra',
                    f'{raHint}',
                    '-spd',

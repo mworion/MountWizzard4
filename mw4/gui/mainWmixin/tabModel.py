@@ -290,7 +290,6 @@ class Model:
                                            raHint=mPoint['raJNowM'],
                                            decHint=mPoint['decJNowM'],
                                            updateFits=False)
-        print(mPoint['raJNowM'], mPoint['decJNowM'])
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
@@ -330,13 +329,6 @@ class Model:
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
-        self.app.camera.expose(imagePath=mPoint['imagePath'],
-                               expTime=mPoint['exposureTime'],
-                               binning=mPoint['binning'],
-                               subFrame=mPoint['subFrame'],
-                               fastReadout=mPoint['fastReadout'],
-                               focalLength=mPoint['focalLength'])
-
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
         mPoint['decJNowM'] = self.app.mount.obsSite.decJNow
         mPoint['angularPosRA'] = self.app.mount.obsSite.angularPosRA
@@ -344,6 +336,15 @@ class Model:
         mPoint['siderealTime'] = self.app.mount.obsSite.timeSidereal
         mPoint['julianDate'] = self.app.mount.obsSite.timeJD
         mPoint['pierside'] = self.app.mount.obsSite.pierside
+
+        self.app.camera.expose(imagePath=mPoint['imagePath'],
+                               expTime=mPoint['exposureTime'],
+                               binning=mPoint['binning'],
+                               subFrame=mPoint['subFrame'],
+                               fastReadout=mPoint['fastReadout'],
+                               focalLength=mPoint['focalLength'],
+                               ra=mPoint['raJNowM'],
+                               dec=mPoint['decJNowM'])
 
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')

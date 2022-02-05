@@ -169,7 +169,7 @@ class AstrometryASTAP(object):
         """
         Solve uses the astap solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go
-        multi platform and we need to focus on MW function, we use the astap
+        multi-platform and we need to focus on MW function, we use the astap
         package which could be downloaded for all platforms. Many thanks
         providing such a nice package.
 
@@ -199,8 +199,15 @@ class AstrometryASTAP(object):
 
         if raHint is None:
             raHint = raFITS.hours
+        else:
+            raHint = raHint.hours
+
         if decHint is None:
             decHint = decFITS.degrees
+        else:
+            decHint = decHint.degrees
+
+        print(raHint, decHint, raFITS.hours, decFITS.degrees)
 
         options = ['-ra',
                    f'{raHint}',

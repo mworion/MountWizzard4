@@ -210,7 +210,7 @@ class Astrometry:
 
     def solveClear(self):
         """
-        the cyclic or long lasting tasks for solving the image should not run
+        the cyclic or long-lasting tasks for solving the image should not run
         twice for the same data at the same time. so there is a mutex to prevent
         his behaviour.
 
@@ -229,8 +229,8 @@ class Astrometry:
                        scaleHint=None, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a
-        threadpool environment of Qt. Otherwise the HMI would be stuck all the
-        time during solving. it is done with an securing mutex to avoid starting
+        threadpool environment of Qt. Otherwise, the HMI would be stuck all the
+        time during solving. it is done with a securing mutex to avoid starting
         solving twice. to solveClear is the partner of solve Threading
 
         :param fitsPath: full path to the fits image file to be solved

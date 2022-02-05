@@ -259,12 +259,12 @@ class Model:
     def modelSolve(self):
         """
         modelSolve is the method called from the signal image saved and starts
-        the solving process for this image. therefore it takes the model point
+        the solving process for this image. therefore, it takes the model point
         from the queue and uses the parameters stored. if the queue is empty (
         which should be to the case), it just returns. after starting the solving
         process in a threaded way (should run in parallel to gui) it puts the
-        model point to the next queue, the result queue. in addition if the image
-        window is present, it send a signal for displaying the actual captured
+        model point to the next queue, the result queue. in addition, if the image
+        window is present, it sends a signal for displaying the actual captured
         image. it shows the actual processed point
         index in GUI
 
@@ -286,8 +286,11 @@ class Model:
         self.app.showImage.emit(mPoint["imagePath"])
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-        self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
+        self.app.astrometry.solveThreading(fitsPath=mPoint['imagePath'],
+                                           raHint=mPoint['raJNowM'],
+                                           decHint=mPoint['decJNowM'],
                                            updateFits=False)
+        print(mPoint['raJNowM'], mPoint['decJNowM'])
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
@@ -298,7 +301,7 @@ class Model:
     def modelImage(self):
         """
         modelImage is the method called from the signal mount and dome slewed
-        finish and starts the imaging for the model point. therefore it takes the
+        finish and starts the imaging for the model point. therefore, it takes the
         model point from the queue and uses the parameters stored. if the queue
         is empty (which should be to the case), it just returns.
         as we are combining the reception of multiple signals for detecting that

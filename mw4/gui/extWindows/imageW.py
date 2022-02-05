@@ -157,6 +157,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
+        self.app.showImage.emit(self.imageFileName)
         return True
 
     def storeConfig(self):
@@ -208,7 +209,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
-        self.showCurrent()
         return True
 
     def closeEvent(self, closeEvent):

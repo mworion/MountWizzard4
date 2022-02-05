@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-
+test
  """
 
 with open('notes.txt', 'w') as f:

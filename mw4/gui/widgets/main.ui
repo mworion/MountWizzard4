@@ -19086,7 +19086,7 @@ Next point in time when satellite settles.</string>
          <double>0.001000000000000</double>
         </property>
         <property name="maximum">
-         <double>300.000000000000000</double>
+         <double>999.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>1.000000000000000</double>
@@ -19226,7 +19226,7 @@ Next point in time when satellite settles.</string>
          <double>0.001000000000000</double>
         </property>
         <property name="maximum">
-         <double>300.000000000000000</double>
+         <double>999.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>1.000000000000000</double>

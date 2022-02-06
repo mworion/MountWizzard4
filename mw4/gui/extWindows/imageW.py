@@ -337,8 +337,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.folder = os.path.dirname(loadFilePath)
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
-        else:
-            self.app.showImage.emit(self.imageFileName)
+        self.app.showImage.emit(self.imageFileName)
         return True
 
     def setupDistorted(self):
@@ -915,8 +914,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        else:
-            self.app.showImage.emit(imagePath)
+        self.app.showImage.emit(imagePath)
 
         return True
 
@@ -944,8 +942,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        else:
-            self.app.showImage.emit(imagePath)
+        self.app.showImage.emit(imagePath)
 
         self.exposeRaw()
         return True
@@ -1013,11 +1010,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.app.message.emit(text, 2)
             return False
 
-        isStack = self.ui.checkStackImages.isChecked()
-        isAutoSolve = self.ui.checkAutoSolve.isChecked()
-
-        if not isStack or isAutoSolve:
-            self.app.showImage.emit(result['solvedPath'])
         return True
 
     def solveImage(self, imagePath=''):

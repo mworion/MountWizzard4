@@ -208,7 +208,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
-        self.showCurrent()
         return True
 
     def closeEvent(self, closeEvent):
@@ -674,28 +673,25 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        try:
-            bkg = sep.Background(self.image)
-            self.bk_back = bkg.back()
-            self.bk_rms = bkg.rms()
-            image_sub = self.image - bkg
-            self.objs = sep.extract(image_sub, 3, err=bkg.globalrms,
-                                    filter_type='conv')
-            self.flux, _, _ = sep.sum_circle(image_sub,
-                                             self.objs['x'],
-                                             self.objs['y'],
-                                             3.0,
-                                             err=bkg.globalrms,
-                                             gain=1.0)
-            self.radius, _ = sep.flux_radius(image_sub,
-                                             self.objs['x'],
-                                             self.objs['y'],
-                                             6.0 * self.objs['a'],
-                                             0.5,
-                                             normflux=self.flux,
-                                             subpix=5)
-        except Exception as e:
-            print(e)
+        bkg = sep.Background(self.image)
+        self.bk_back = bkg.back()
+        self.bk_rms = bkg.rms()
+        image_sub = self.image - bkg
+        self.objs = sep.extract(image_sub, 3, err=bkg.globalrms,
+                                filter_type='conv')
+        self.flux, _, _ = sep.sum_circle(image_sub,
+                                         self.objs['x'],
+                                         self.objs['y'],
+                                         3.0,
+                                         err=bkg.globalrms,
+                                         gain=1.0)
+        self.radius, _ = sep.flux_radius(image_sub,
+                                         self.objs['x'],
+                                         self.objs['y'],
+                                         6.0 * self.objs['a'],
+                                         0.5,
+                                         normflux=self.flux,
+                                         subpix=5)
         return True
 
     def prepareImageForPhotometry(self):

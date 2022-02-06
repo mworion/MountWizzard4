@@ -168,7 +168,10 @@ class Camera:
         decJnow = self.app.mount.obsSite.decJNow
         timeJD = self.app.mount.obsSite.timeJD
         if raJnow is not None and decJnow is not None and timeJD is not None:
-            raJ2000, decJ2000 = J2000ToJNow(raJnow, decJnow, timeJD)
+            raJ2000, decJ2000 = JNowToJ2000(raJnow, decJnow, timeJD)
+        else:
+            raJ2000 = None
+            decJ2000 = None
         if subFrame != 100 and not self.canSubFrame(subFrame=subFrame):
             subFrame = 100
         if binning != 1 and not self.canBinning(binning=binning):

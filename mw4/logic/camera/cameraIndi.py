@@ -270,6 +270,8 @@ class CameraIndi(IndiClass, CameraSupport):
                width=1,
                height=1,
                focalLength=1,
+               ra=None,
+               dec=None,
                ):
         """
         :param imagePath:
@@ -281,6 +283,8 @@ class CameraIndi(IndiClass, CameraSupport):
         :param width:
         :param height:
         :param focalLength:
+        :param ra:
+        :param dec:
 
         :return: success
         """
@@ -288,6 +292,8 @@ class CameraIndi(IndiClass, CameraSupport):
             self.log.error('Expose, but no device present')
             return False
 
+        self.raJ2000 = ra
+        self.decJ2000 = dec
         self.imagePath = imagePath
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
@@ -330,6 +336,8 @@ class CameraIndi(IndiClass, CameraSupport):
         if not self.device:
             return False
 
+        self.raJ2000 = None
+        self.decJ2000 = None
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
         if 'ABORT' not in indiCmd:
             return False

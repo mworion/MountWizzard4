@@ -157,7 +157,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
-        self.app.showImage.emit(self.imageFileName)
         return True
 
     def storeConfig(self):
@@ -209,6 +208,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
+        self.showCurrent()
         return True
 
     def closeEvent(self, closeEvent):
@@ -455,15 +455,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.stretch = AsinhStretch(a=value)
         return True
 
-    def imageRawPlot(self, imageDisp):
+    def imageRawPlot(self, imageDisp=None):
         """
         :return:
         """
-        if self.objs is not None:
-            imageDisp = imageDisp - self.bk_back
-            self.log.debug('Background from image subtracted')
-
-        imageDisp[imageDisp < 0] = 0
         img = imshow_norm(imageDisp,
                           ax=self.axe,
                           origin='lower',
@@ -680,32 +675,35 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        bkg = sep.Background(self.image.astype('float32'))
-        self.bk_back = bkg.back()
-        self.bk_rms = bkg.rms()
-        image_sub = self.image - bkg
-        self.objs = sep.extract(image_sub, 3, err=bkg.globalrms,
-                                filter_type='conv')
-        self.flux, _, _ = sep.sum_circle(image_sub,
-                                         self.objs['x'],
-                                         self.objs['y'],
-                                         3.0,
-                                         err=bkg.globalrms,
-                                         gain=1.0)
-        self.radius, _ = sep.flux_radius(image_sub,
-                                         self.objs['x'],
-                                         self.objs['y'],
-                                         6.0 * self.objs['a'],
-                                         0.5,
-                                         normflux=self.flux,
-                                         subpix=5)
+        try:
+            bkg = sep.Background(self.image)
+            self.bk_back = bkg.back()
+            self.bk_rms = bkg.rms()
+            image_sub = self.image - bkg
+            self.objs = sep.extract(image_sub, 3, err=bkg.globalrms,
+                                    filter_type='conv')
+            self.flux, _, _ = sep.sum_circle(image_sub,
+                                             self.objs['x'],
+                                             self.objs['y'],
+                                             3.0,
+                                             err=bkg.globalrms,
+                                             gain=1.0)
+            self.radius, _ = sep.flux_radius(image_sub,
+                                             self.objs['x'],
+                                             self.objs['y'],
+                                             6.0 * self.objs['a'],
+                                             0.5,
+                                             normflux=self.flux,
+                                             subpix=5)
+        except Exception as e:
+            print(e)
         return True
 
     def prepareImageForPhotometry(self):
         """
         :return:
         """
-        if not self.objs:
+        if self.objs is None:
             worker = Worker(self.workerPhotometry)
             worker.signals.finished.connect(self.preparePlot)
             self.threadPool.start(worker)
@@ -847,7 +845,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.log.debug('No header data in FITS')
             return False
 
-        self.image = np.flipud(self.image)
+        self.image = np.flipud(self.image).astype('float32')
         bayerPattern = self.header.get('BAYERPAT', '')
         if bayerPattern:
             self.image = self.debayerImage(self.image, bayerPattern)

@@ -200,7 +200,7 @@ class CameraIndi(IndiClass):
 
         HDU[0].header = self.updateHeaderInfo(HDU[0].header)
         fits.writeto(self.imagePath, HDU[0].data, HDU[0].header,
-                     overwrite=True, output_verify='silentfix+warn')
+                     overwrite=True, output_verify='silentfix')
         return True
 
     def updateBLOB(self, deviceName, propertyName):

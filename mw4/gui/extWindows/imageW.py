@@ -628,14 +628,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.isFlipped.setEnabled(flipped)
         return True
 
-    def workerPreparePlot(self, header):
+    def workerPreparePlot(self):
         """
-        :param header:
         :return:
         """
         self.updateWindowsStats()
-        if 'CTYPE1' in header:
-            wcsObject = wcs.WCS(header, relax=True)
+        if 'CTYPE1' in self.header:
+            wcsObject = wcs.WCS(self.header, relax=True)
             hasCelestial = wcsObject.has_celestial
             hasDistortion = wcsObject.has_distortion
         else:
@@ -653,7 +652,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         else:
             self.setupNormal()
 
-        self.writeHeaderDataToGUI(header)
+        self.writeHeaderDataToGUI(self.header)
         self.stretchImage()
         self.colorImage()
         suc = self.imagePlot()
@@ -667,7 +666,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        worker = Worker(self.workerPreparePlot, self.header)
+        worker = Worker(self.workerPreparePlot)
         self.threadPool.start(worker)
         return True
 

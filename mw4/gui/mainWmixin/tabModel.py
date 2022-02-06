@@ -347,8 +347,8 @@ class Model:
                                subFrame=mPoint['subFrame'],
                                fastReadout=mPoint['fastReadout'],
                                focalLength=mPoint['focalLength'],
-                               ra=mPoint['raJNowM'],
-                               dec=mPoint['decJNowM'])
+                               ra=mPoint['raJ2000M'],
+                               dec=mPoint['raJ2000M'])
 
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')

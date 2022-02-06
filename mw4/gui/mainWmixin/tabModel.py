@@ -28,6 +28,7 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base import transform
+from base.transform import JNowToJ2000, J2000ToJNow
 from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
 from logic.modeldata.modelHandling import writeRetrofitData
 
@@ -221,9 +222,9 @@ class Model:
 
         isInRange = mPoint.get('errorRMS_S', 0) < self.MAX_ERROR_MODEL_POINT
         if isSuccess and isInRange:
-            raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
-                                                      mPoint['decJ2000S'],
-                                                      mPoint['julianDate'])
+            raJNowS, decJNowS = J2000ToJNow(mPoint['raJ2000S'],
+                                            mPoint['decJ2000S'],
+                                            mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
             t = f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]'
@@ -336,6 +337,9 @@ class Model:
         mPoint['siderealTime'] = self.app.mount.obsSite.timeSidereal
         mPoint['julianDate'] = self.app.mount.obsSite.timeJD
         mPoint['pierside'] = self.app.mount.obsSite.pierside
+        mPoint['raJ2000M'], mPoint['decJ2000M'] = J2000ToJNow(mPoint['raJNowM'],
+                                                              mPoint['decJNowM'],
+                                                              mPoint['julianDate'])
 
         self.app.camera.expose(imagePath=mPoint['imagePath'],
                                expTime=mPoint['exposureTime'],
@@ -1039,9 +1043,9 @@ class Model:
 
         obs = self.app.mount.obsSite
         timeJD = obs.timeJD
-        raJNow, decJNow = transform.J2000ToJNow(result['raJ2000S'],
-                                                result['decJ2000S'],
-                                                timeJD)
+        raJNow, decJNow = J2000ToJNow(result['raJ2000S'],
+                                      result['decJ2000S'],
+                                      timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
         suc = obs.syncPositionToTarget()
         if suc:

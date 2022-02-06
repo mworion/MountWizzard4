@@ -195,29 +195,13 @@ class AstrometryASTAP(object):
             os.remove(wcsPath)
 
         binPathASTAP = self.appPath + '/astap'
-        raFITS, decFITS, _ = self.readFitsData(fitsPath=fitsPath)
+        options = ['-r', f'{self.searchRadius:1.1f}',
+                   '-t', '0.005',
+                   '-z', '0']
 
-        if raHint is None:
-            raHint = raFITS.hours
-        else:
-            raHint = raHint.hours
-
-        if decHint is None:
-            decHint = decFITS.degrees
-        else:
-            decHint = decHint.degrees
-
-        options = ['-ra',
-                   f'{raHint}',
-                   '-spd',
-                   f'{decHint + 90}',
-                   '-r',
-                   f'{self.searchRadius:1.1f}',
-                   '-t',
-                   '0.005',
-                   '-z',
-                   '0',
-                   ]
+        if raHint is not None and decHint is not None:
+            options += ['-ra', f'{raHint.hours}',
+                        '-spd', f'{decHint.degrees + 90}']
 
         suc, retValue = self.runASTAP(binPath=binPathASTAP,
                                       fitsPath=fitsPath,

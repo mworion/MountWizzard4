@@ -335,7 +335,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image selected:      [{name}]', 0)
         self.folder = os.path.dirname(loadFilePath)
-        self.app.showImage.emit(self.imageFileName)
+        if self.ui.checkAutoSolve.isChecked():
+            self.signals.solveImage.emit(self.imageFileName)
+        else:
+            self.app.showImage.emit(self.imageFileName)
         return True
 
     def setupDistorted(self):

@@ -26,9 +26,10 @@ import astropy.io.fits as fits
 from base.tpool import Worker
 from base.indiClass import IndiClass
 from base.transform import JNowToJ2000
+from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraIndi(IndiClass):
+class CameraIndi(IndiClass, CameraSupport):
     """
     """
 
@@ -155,17 +156,24 @@ class CameraIndi(IndiClass):
         :return:
         """
         if 'RA' in header and 'DEC' in header:
-            return header
-        ra = self.app.mount.obsSite.raJNow
-        dec = self.app.mount.obsSite.decJNow
-        timeJD = self.app.mount.obsSite.timeJD
-        if ra is None or dec is None or timeJD is None:
+            t = f'Found FitsRA:[{header["RA"]:4.3f}], '
+            t += f'TargetRA: [{self.raJ2000._degrees:4.3f}], '
+            t += f'FitsDEC: [{header["DEC"]:4.3f}], '
+            t += f'TargetDEC: [{self.decJ2000._degrees:4.3f}]'
+            self.log.debug(t)
             return header
 
-        ra, dec = JNowToJ2000(ra, dec, timeJD)
-        self.log.info('Missing Ra/Dec in header adding from mount')
-        header['RA'] = ra._degrees
-        header['DEC'] = dec.degrees
+        if self.raJ2000 is None or self.decJ2000 is None:
+            self.log.debug('No coordinate for updating the header available')
+            return header
+
+        t = 'Adding missing RA/DEC header '
+        t += f'TargetRA: [{self.raJ2000._degrees:4.3f}], '
+        t += f'TargetDEC: [{self.decJ2000._degrees:4.3f}]'
+        self.log.debug(t)
+
+        header['RA'] = self.raJ2000._degrees
+        header['DEC'] = self.decJ2000.degrees
         return header
 
     def workerSaveBlobSignalsFinished(self):

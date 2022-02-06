@@ -337,7 +337,7 @@ class Model:
         mPoint['siderealTime'] = self.app.mount.obsSite.timeSidereal
         mPoint['julianDate'] = self.app.mount.obsSite.timeJD
         mPoint['pierside'] = self.app.mount.obsSite.pierside
-        mPoint['raJ2000M'], mPoint['decJ2000M'] = J2000ToJNow(mPoint['raJNowM'],
+        mPoint['raJ2000M'], mPoint['decJ2000M'] = JNowToJ2000(mPoint['raJNowM'],
                                                               mPoint['decJNowM'],
                                                               mPoint['julianDate'])
 
@@ -346,9 +346,7 @@ class Model:
                                binning=mPoint['binning'],
                                subFrame=mPoint['subFrame'],
                                fastReadout=mPoint['fastReadout'],
-                               focalLength=mPoint['focalLength'],
-                               ra=mPoint['raJ2000M'],
-                               dec=mPoint['raJ2000M'])
+                               focalLength=mPoint['focalLength'])
 
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')

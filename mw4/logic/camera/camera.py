@@ -22,6 +22,7 @@ import platform
 # external packages
 
 # local imports
+from base.transform import JNowToJ2000
 from base.driverDataClass import Signals
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
@@ -149,9 +150,7 @@ class Camera:
                binning=1,
                subFrame=100,
                fastReadout=True,
-               focalLength=1,
-               ra=None,
-               dec=None):
+               focalLength=1):
         """
         :param imagePath:
         :param expTime:
@@ -159,14 +158,17 @@ class Camera:
         :param subFrame:
         :param fastReadout:
         :param focalLength:
-        :param ra:
-        :param dec:
         :return: success
         """
         if self.framework not in self.run.keys():
             return False
         if not imagePath:
             return False
+        raJnow = self.app.mount.obsSite.raJNow
+        decJnow = self.app.mount.obsSite.decJNow
+        timeJD = self.app.mount.obsSite.timeJD
+        if raJnow is not None and decJnow is not None and timeJD is not None:
+            raJ2000, decJ2000 = J2000ToJNow(raJnow, decJnow, timeJD)
         if subFrame != 100 and not self.canSubFrame(subFrame=subFrame):
             subFrame = 100
         if binning != 1 and not self.canBinning(binning=binning):
@@ -175,9 +177,9 @@ class Camera:
 
         posX, posY, width, height = result
 
-        text = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
-        text += f', width:{width}, height:{height}, fast:{fastReadout}'
-        self.log.debug(text)
+        t = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
+        t += f', width:{width}, height:{height}, fast:{fastReadout}'
+        self.log.debug(t)
         suc = self.run[self.framework].expose(imagePath=imagePath,
                                               expTime=expTime,
                                               binning=binning,
@@ -186,7 +188,9 @@ class Camera:
                                               posY=posY,
                                               width=width,
                                               height=height,
-                                              focalLength=focalLength,)
+                                              focalLength=focalLength,
+                                              ra=raJ2000,
+                                              dec=decJ2000)
         return suc
 
     def abort(self):

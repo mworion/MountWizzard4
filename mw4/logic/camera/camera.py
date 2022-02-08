@@ -164,11 +164,11 @@ class Camera:
             return False
         if not imagePath:
             return False
-        raJnow = self.app.mount.obsSite.raJNow
-        decJnow = self.app.mount.obsSite.decJNow
+        raJNow = self.app.mount.obsSite.raJNow
+        decJNow = self.app.mount.obsSite.decJNow
         timeJD = self.app.mount.obsSite.timeJD
         if raJnow is not None and decJnow is not None and timeJD is not None:
-            raJ2000, decJ2000 = JNowToJ2000(raJnow, decJnow, timeJD)
+            raJ2000, decJ2000 = JNowToJ2000(raJNow, decJNow, timeJD)
         else:
             raJ2000 = None
             decJ2000 = None

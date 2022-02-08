@@ -23,6 +23,7 @@ import unittest.mock as mock
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
+from skyfield.api import Angle, load
 
 # local import
 from gui.utilities.toolsQtWidget import sleepAndEvents
@@ -31,9 +32,18 @@ from logic.camera.camera import Camera
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
+    class Obssite:
+        raJNow = Angle(hours=12)
+        decJNow = Angle(degrees=90)
+        timeJD = load.timescale().tt_jd(2451544.5)
+
+    class Mount:
+        obsSite = Obssite()
+
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+        mount = Mount()
 
     app = Camera(app=Test())
     yield app
@@ -182,8 +192,11 @@ def test_expose_2(function):
 
 def test_expose_3(function):
     function.framework = 'indi'
-    suc = function.expose(imagePath='tests/workDir/image', subFrame=90)
-    assert not suc
+    with mock.patch.object(function.run['indi'],
+                           'expose',
+                           return_value=True):
+        suc = function.expose(imagePath='tests/workDir/image', subFrame=90)
+        assert suc
 
 
 def test_expose_4(function):
@@ -191,12 +204,16 @@ def test_expose_4(function):
     with mock.patch.object(function,
                            'canSubFrame',
                            return_value=True):
-        suc = function.expose(imagePath='tests/workDir/image', binning=2)
-        assert not suc
+        with mock.patch.object(function.run['indi'],
+                               'expose',
+                               return_value=True):
+            suc = function.expose(imagePath='tests/workDir/image', binning=2)
+            assert suc
 
 
 def test_expose_5(function):
     function.framework = 'indi'
+    function.app.mount.obsSite.raJNow = None
     with mock.patch.object(function,
                            'canSubFrame',
                            return_value=True):

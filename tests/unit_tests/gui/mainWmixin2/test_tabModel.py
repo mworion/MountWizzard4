@@ -465,6 +465,8 @@ def test_modelSolve_2(function):
               'imagePath': '',
               'searchRadius': 1,
               'solveTimeout': 10,
+              'raJNowM': 10,
+              'decJNowM': 10,
               }
     function.solveQueue.put(mPoint)
     with mock.patch.object(function.app.astrometry,
@@ -726,6 +728,8 @@ def test_generateSaveModel_1(function):
               'angularPosDEC': Angle(degrees=0),
               'raJ2000S': Angle(hours=0),
               'decJ2000S': Angle(degrees=0),
+              'raJ2000M': Angle(hours=0),
+              'decJ2000M': Angle(degrees=0),
               'siderealTime': Angle(hours=0),
               'julianDate': function.app.mount.obsSite.timeJD,
               }

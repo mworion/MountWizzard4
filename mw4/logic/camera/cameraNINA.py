@@ -227,7 +227,7 @@ class CameraNINA(NINAClass, CameraSupport):
                height=1,
                focalLength=1,
                ra=None,
-               dec=none,
+               dec=None,
                ):
         """
         :return: success

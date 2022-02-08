@@ -2,7 +2,7 @@
 # v1.0, Michael Wuertenberger
 #
 name: setup test coverage
-description: download package install and install testenvironment for coverage
+description: download package install and install test environment for coverage
 
 runs:
   using: 'composite'

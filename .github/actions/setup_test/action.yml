@@ -2,7 +2,7 @@
 # v1.0, Michael Wuertenberger
 #
 name: setup test
-description: downlad package install and install testenvironment
+description: download package install and install testenvironment
 
 runs:
   using: 'composite'

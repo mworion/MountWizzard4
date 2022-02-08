@@ -167,7 +167,7 @@ class Camera:
         raJNow = self.app.mount.obsSite.raJNow
         decJNow = self.app.mount.obsSite.decJNow
         timeJD = self.app.mount.obsSite.timeJD
-        if raJnow is not None and decJnow is not None and timeJD is not None:
+        if raJNow is not None and decJNow is not None and timeJD is not None:
             raJ2000, decJ2000 = JNowToJ2000(raJNow, decJNow, timeJD)
         else:
             raJ2000 = None

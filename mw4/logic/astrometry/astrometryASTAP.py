@@ -203,6 +203,9 @@ class AstrometryASTAP(object):
             options += ['-ra', f'{raHint.hours}',
                         '-spd', f'{decHint.degrees + 90}']
 
+        if self.searchRadius == 180:
+            options += ['-fov', '0']
+
         suc, retValue = self.runASTAP(binPath=binPathASTAP,
                                       fitsPath=fitsPath,
                                       tempFile=tempFile,

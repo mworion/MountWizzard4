@@ -27,6 +27,7 @@ import builtins
 
 # external packages
 from PyQt5.QtCore import QThreadPool
+from skyfield.api import Angle
 
 # local import
 from logic.astrometry.astrometry import Astrometry
@@ -150,17 +151,17 @@ def test_getWCSHeader_2(app):
     assert val
 
 
-def test_solveASTAP_1(app):
+def test_solve_1(app):
     suc = app.solve()
     assert not suc
 
 
-def test_solveASTAP_2(app):
+def test_solve_2(app):
     suc = app.solve()
     assert not suc
 
 
-def test_solveASTAP_3(app):
+def test_solve_3(app):
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=(False, 1)):
@@ -168,7 +169,7 @@ def test_solveASTAP_3(app):
         assert not suc
 
 
-def test_solveASTAP_4(app):
+def test_solve_4(app):
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=(True, 0)):
@@ -176,7 +177,7 @@ def test_solveASTAP_4(app):
         assert not suc
 
 
-def test_solveASTAP_5(app):
+def test_solve_5(app):
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=(True, 0)):
@@ -185,6 +186,22 @@ def test_solveASTAP_5(app):
                                return_value=True):
             shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
             suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
+            assert suc
+
+
+def test_solve_6(app):
+    raHint = Angle(hours=10)
+    decHint = Angle(degrees=10)
+    app.searchRadius = 180
+    with mock.patch.object(app,
+                           'runASTAP',
+                           return_value=(True, 0)):
+        with mock.patch.object(os,
+                               'remove',
+                               return_value=True):
+            shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
+            suc = app.solve(fitsPath='tests/workDir/image/m51.fit',
+                            raHint=raHint, decHint=decHint)
             assert suc
 
 

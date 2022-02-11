@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import logging
+from logging.handlers import RotatingFileHandler
 import datetime
 from dateutil.tz import tzutc
 import sys
@@ -115,14 +116,16 @@ def setupLogging():
     """
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
-    name = f'mw4-{timeTag}.log'
+    logFile = f'mw4-{timeTag}.log'
+    logHandler = RotatingFileHandler(logFile, mode='a', maxBytes=100 * 1024 * 1024,
+                                     backupCount=100, encoding=None, delay=False)
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
                                '[%(levelname)1.1s]'
                                '[%(filename)15.15s]'
                                '[%(lineno)4s]'
                                ' %(message)s',
-                        handlers=[logging.FileHandler(name)],
+                        handlers=[logHandler],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
 
@@ -132,7 +135,8 @@ def setupLogging():
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('matplotlib').setLevel(logging.WARNING)
-    logging.getLogger('astropy').setLevel(logging.ERROR)
+    logging.getLogger('astropy').setLevel(logging.WARNING)
+    logging.getLogger('keyring').setLevel(logging.WARNING)
     addLoggingLevel('HEADER', 55)
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)

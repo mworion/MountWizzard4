@@ -1026,7 +1026,7 @@
       <rect>
        <x>100</x>
        <y>150</y>
-       <width>51</width>
+       <width>46</width>
        <height>21</height>
       </rect>
      </property>
@@ -1063,7 +1063,7 @@
       <rect>
        <x>100</x>
        <y>180</y>
-       <width>51</width>
+       <width>46</width>
        <height>21</height>
       </rect>
      </property>
@@ -1117,7 +1117,7 @@
     <widget class="QLabel" name="label_317">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>150</x>
        <y>180</y>
        <width>21</width>
        <height>21</height>
@@ -1136,7 +1136,7 @@
     <widget class="QLabel" name="label_318">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>150</x>
        <y>150</y>
        <width>61</width>
        <height>21</height>
@@ -1274,7 +1274,7 @@
       <rect>
        <x>100</x>
        <y>180</y>
-       <width>51</width>
+       <width>46</width>
        <height>21</height>
       </rect>
      </property>
@@ -1311,7 +1311,7 @@
       <rect>
        <x>100</x>
        <y>150</y>
-       <width>51</width>
+       <width>46</width>
        <height>21</height>
       </rect>
      </property>
@@ -1384,7 +1384,7 @@
     <widget class="QLabel" name="label_321">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>150</x>
        <y>180</y>
        <width>21</width>
        <height>21</height>
@@ -1403,9 +1403,9 @@
     <widget class="QLabel" name="label_322">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>150</x>
        <y>150</y>
-       <width>191</width>
+       <width>206</width>
        <height>21</height>
       </rect>
      </property>
@@ -1416,7 +1416,7 @@
       </font>
      </property>
      <property name="text">
-      <string>deg    (set to 180 to enable all sky)</string>
+      <string>deg  (use 180 to enable all sky)</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="astapIndexPath">

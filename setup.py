@@ -32,6 +32,7 @@ releaseNotes = """
 - add: screenshot as PNG save for actual window with key F5 
 - add: screenshots as PNG save for all open windows with key F6
 - add: query DSO objects for DSO path setting in build model
+- add: ASTAP could be configured as all sky solver (tip from Han)
 - improved: flexible satellite handling when mount not connected
 - improved: show selected satellite name in satellite windows title
 - improved: 3D simulator drawing
@@ -46,6 +47,7 @@ releaseNotes = """
 - improved: moon phases in different color schemes
 - improved: measurement write actual values in legend
 - improved: max exposure time raised to 999s
+- improved: log files are limited to 100 MB and get rotation (split in files)
 - upgrade: pywin32 library to version 303 (windows)
 - upgrade: skyfield library to 1.41
 - upgrade: numpy library to 1.21.4

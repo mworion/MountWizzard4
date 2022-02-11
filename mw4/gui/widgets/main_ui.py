@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main.ui'
+# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -5920,7 +5920,7 @@ class Ui_MainWindow(object):
         self.expTime.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.expTime.setDecimals(3)
         self.expTime.setMinimum(0.001)
-        self.expTime.setMaximum(300.0)
+        self.expTime.setMaximum(999.0)
         self.expTime.setSingleStep(1.0)
         self.expTime.setProperty("value", 1.0)
         self.expTime.setObjectName("expTime")
@@ -5969,7 +5969,7 @@ class Ui_MainWindow(object):
         self.expTimeN.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.expTimeN.setDecimals(3)
         self.expTimeN.setMinimum(0.001)
-        self.expTimeN.setMaximum(300.0)
+        self.expTimeN.setMaximum(999.0)
         self.expTimeN.setSingleStep(1.0)
         self.expTimeN.setProperty("value", 1.0)
         self.expTimeN.setObjectName("expTimeN")

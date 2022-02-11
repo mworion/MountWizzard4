@@ -865,7 +865,7 @@ class Model:
         """
         astrometryApp = self.ui.astrometryDevice.currentText()
         exposureTime = self.ui.expTime.value()
-        binning = self.ui.binning.value()
+        binning = int(self.ui.binning.value())
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
         focalLength = self.ui.focalLength.value()

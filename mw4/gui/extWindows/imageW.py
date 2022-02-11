@@ -923,7 +923,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: success
         """
         self.expTime = self.app.camera.expTime
-        self.binning = self.app.camera.binning
+        self.binning = int(self.app.camera.binning)
         self.imageStack = None
         self.deviceStat['expose'] = True
         self.ui.checkStackImages.setChecked(False)
@@ -952,7 +952,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: success
         """
         self.expTime = self.app.camera.expTimeN
-        self.binning = self.app.camera.binningN
+        self.binning = int(self.app.camera.binningN)
         self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)

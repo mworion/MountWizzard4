@@ -916,7 +916,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
-
         return True
 
     def exposeImage(self):

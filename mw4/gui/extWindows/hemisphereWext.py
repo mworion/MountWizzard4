@@ -199,8 +199,6 @@ class HemisphereWindowExt:
             self.app.message.emit(t, 2)
             return False
 
-        t = f'Slewing mount to     AZ:[{azimuth:3.1f}], ALT:[{altitude:3.1f}]'
-        self.app.message.emit(t, 0)
         suc = self.slewSelectedTarget(slewType='keep')
         return suc
 

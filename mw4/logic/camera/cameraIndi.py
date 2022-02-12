@@ -94,7 +94,7 @@ class CameraIndi(IndiClass, CameraSupport):
         as it is not explicit defined in the INDI spec. So downloaded is reached
         when that INDI state for CCD_EXPOSURE goes to IDLE or OK -> Jasem  Mutlaq.
         Another definition is done by myself, when INDI state for CCD_EXPOSURE is
-        BUSY and the CCD_EPOSURE_VALUE is not 0, then we should be on integration
+        BUSY and the CCD_EXPOSURE_VALUE is not 0, then we should be on integration
         side, else the download should be started. The whole stuff is made,
         because on ALPACA and ASCOM side it's a step by step sequence, which has
         very defined states for each step. I would like ta have a common

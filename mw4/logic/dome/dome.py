@@ -116,13 +116,13 @@ class Dome:
         if self.isSlewing:
             self.signals.message.emit('slewing')
             self.counterStartSlewing = -1
-            if not self.data.get('Slewing', True):
+remove            if not self.data.get('Slewing'):
                 self.isSlewing = False
                 self.signals.message.emit('wait settle')
                 self.settlingWait.start(self.settlingTime * 1000)
 
         else:
-            if self.data.get('Slewing', True):
+            if self.data.get('Slewing'):
                 self.log.debug('Slewing start by signal')
                 self.isSlewing = True
 

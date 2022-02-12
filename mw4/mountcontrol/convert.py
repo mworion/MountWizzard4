@@ -364,8 +364,8 @@ def convertRaToAngle(value):
         return None
 
     value = value.strip()
-    p1 = re.compile(r'([+-]?)(\d{1,3})H\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
-    p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
+    p1 = re.compile(r'([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
+    p2 = re.compile(r'([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
     p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
     isP1 = p1.fullmatch(value) is not None
     isP2 = p2.fullmatch(value) is not None
@@ -411,8 +411,8 @@ def convertDecToAngle(value):
         return None
 
     value = value.strip()
-    p1 = re.compile(r'([+-]?)(\d{1,3})Deg\s*(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
-    p2 = re.compile(r'([+-]?)(\d{1,3})\s+(\d\d)?\s*(\d\d)?[.,]?(\d*)?')
+    p1 = re.compile(r'([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
+    p2 = re.compile(r'([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
     p3 = re.compile(r'([+-]?)(\d{1,3})[.,]?(\d*)?')
     isP1 = p1.fullmatch(value) is not None
     isP2 = p2.fullmatch(value) is not None

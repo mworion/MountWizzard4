@@ -573,7 +573,7 @@ def test_workerPreparePlot_1(function):
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
-    suc = function.workerPreparePlot(function.header)
+    suc = function.workerPreparePlot()
     assert suc
 
 
@@ -588,7 +588,7 @@ def test_workerPreparePlot_2(function):
         with mock.patch.object(function,
                                'imagePlot',
                                return_value=True):
-            suc = function.workerPreparePlot(function.header)
+            suc = function.workerPreparePlot()
             assert suc
 
 
@@ -611,7 +611,7 @@ def test_workerPreparePlot_3(function):
             with mock.patch.object(function,
                                    'imagePlot',
                                    return_value=False):
-                suc = function.workerPreparePlot(function.header)
+                suc = function.workerPreparePlot()
                 assert suc
 
 
@@ -1022,7 +1022,6 @@ def test_solveDone_2(function, qtbot):
 
 
 def test_solveDone_3(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(False)
     function.ui.checkStackImages.setChecked(True)
     result = {
         'success': True,
@@ -1041,28 +1040,6 @@ def test_solveDone_3(function, qtbot):
         suc = function.solveDone(result=result)
         assert suc
     assert ['Solved :             RA: 10:00:00 (10.000), DEC: +20:00:00 (20.000), ', 0] == blocker.args
-
-
-def test_solveDone_4(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(True)
-    function.ui.checkStackImages.setChecked(False)
-    result = {
-        'success': True,
-        'raJ2000S': Angle(hours=10),
-        'decJ2000S': Angle(degrees=20),
-        'angleS': 30,
-        'scaleS': 1,
-        'errorRMS_S': 3,
-        'flippedS': False,
-        'imagePath': 'test',
-        'solvedPath': 'testFile',
-        'message': 'test',
-    }
-
-    function.app.astrometry.signals.done.connect(function.solveDone)
-    with qtbot.waitSignal(function.app.showImage):
-        suc = function.solveDone(result=result)
-        assert suc
 
 
 def test_solveImage_1(function, qtbot):

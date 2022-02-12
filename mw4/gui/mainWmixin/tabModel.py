@@ -28,6 +28,7 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base import transform
+from base.transform import JNowToJ2000, J2000ToJNow
 from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
 from logic.modeldata.modelHandling import writeRetrofitData
 
@@ -221,9 +222,9 @@ class Model:
 
         isInRange = mPoint.get('errorRMS_S', 0) < self.MAX_ERROR_MODEL_POINT
         if isSuccess and isInRange:
-            raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
-                                                      mPoint['decJ2000S'],
-                                                      mPoint['julianDate'])
+            raJNowS, decJNowS = J2000ToJNow(mPoint['raJ2000S'],
+                                            mPoint['decJ2000S'],
+                                            mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
             t = f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]'
@@ -259,12 +260,12 @@ class Model:
     def modelSolve(self):
         """
         modelSolve is the method called from the signal image saved and starts
-        the solving process for this image. therefore it takes the model point
+        the solving process for this image. therefore, it takes the model point
         from the queue and uses the parameters stored. if the queue is empty (
         which should be to the case), it just returns. after starting the solving
         process in a threaded way (should run in parallel to gui) it puts the
-        model point to the next queue, the result queue. in addition if the image
-        window is present, it send a signal for displaying the actual captured
+        model point to the next queue, the result queue. in addition, if the image
+        window is present, it sends a signal for displaying the actual captured
         image. it shows the actual processed point
         index in GUI
 
@@ -286,7 +287,9 @@ class Model:
         self.app.showImage.emit(mPoint["imagePath"])
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-        self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
+        self.app.astrometry.solveThreading(fitsPath=mPoint['imagePath'],
+                                           raHint=mPoint['raJNowM'],
+                                           decHint=mPoint['decJNowM'],
                                            updateFits=False)
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
@@ -298,7 +301,7 @@ class Model:
     def modelImage(self):
         """
         modelImage is the method called from the signal mount and dome slewed
-        finish and starts the imaging for the model point. therefore it takes the
+        finish and starts the imaging for the model point. therefore, it takes the
         model point from the queue and uses the parameters stored. if the queue
         is empty (which should be to the case), it just returns.
         as we are combining the reception of multiple signals for detecting that
@@ -327,13 +330,6 @@ class Model:
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
-        self.app.camera.expose(imagePath=mPoint['imagePath'],
-                               expTime=mPoint['exposureTime'],
-                               binning=mPoint['binning'],
-                               subFrame=mPoint['subFrame'],
-                               fastReadout=mPoint['fastReadout'],
-                               focalLength=mPoint['focalLength'])
-
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
         mPoint['decJNowM'] = self.app.mount.obsSite.decJNow
         mPoint['angularPosRA'] = self.app.mount.obsSite.angularPosRA
@@ -341,6 +337,16 @@ class Model:
         mPoint['siderealTime'] = self.app.mount.obsSite.timeSidereal
         mPoint['julianDate'] = self.app.mount.obsSite.timeJD
         mPoint['pierside'] = self.app.mount.obsSite.pierside
+        mPoint['raJ2000M'], mPoint['decJ2000M'] = JNowToJ2000(mPoint['raJNowM'],
+                                                              mPoint['decJNowM'],
+                                                              mPoint['julianDate'])
+
+        self.app.camera.expose(imagePath=mPoint['imagePath'],
+                               expTime=mPoint['exposureTime'],
+                               binning=mPoint['binning'],
+                               subFrame=mPoint['subFrame'],
+                               fastReadout=mPoint['fastReadout'],
+                               focalLength=mPoint['focalLength'])
 
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
@@ -590,6 +596,8 @@ class Model:
             sPoint.update(mPoint)
             sPoint['raJNowM'] = sPoint['raJNowM'].hours
             sPoint['decJNowM'] = sPoint['decJNowM'].degrees
+            sPoint['raJ2000M'] = sPoint['raJ2000M'].hours
+            sPoint['decJ2000M'] = sPoint['decJ2000M'].degrees
             sPoint['angularPosRA'] = sPoint['angularPosRA'].degrees
             sPoint['angularPosDEC'] = sPoint['angularPosDEC'].degrees
             sPoint['raJNowS'] = sPoint['raJNowS'].hours
@@ -857,7 +865,7 @@ class Model:
         """
         astrometryApp = self.ui.astrometryDevice.currentText()
         exposureTime = self.ui.expTime.value()
-        binning = self.ui.binning.value()
+        binning = int(self.ui.binning.value())
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
         focalLength = self.ui.focalLength.value()
@@ -1035,9 +1043,9 @@ class Model:
 
         obs = self.app.mount.obsSite
         timeJD = obs.timeJD
-        raJNow, decJNow = transform.J2000ToJNow(result['raJ2000S'],
-                                                result['decJ2000S'],
-                                                timeJD)
+        raJNow, decJNow = J2000ToJNow(result['raJ2000S'],
+                                      result['decJ2000S'],
+                                      timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
         suc = obs.syncPositionToTarget()
         if suc:

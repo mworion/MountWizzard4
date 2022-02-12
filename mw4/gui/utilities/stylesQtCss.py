@@ -145,9 +145,6 @@ class Styles:
             color: $M_BLUE$;
             background-color: $M_BACK$;
         }
-        QLineEdit::item:active {
-            border-color: $M_BLUE$;
-        }
         QTextEdit {
             color: $M_WHITE$;
             background-color: $M_BLACK$;
@@ -197,9 +194,12 @@ class Styles:
             border-style: flat;
             border-radius: 2px;
         }
+        QLineEdit::item:active {
+            border-color: $M_BLUE$;
+        }
         QLineEdit:disabled {
             background-color: $M_GREY1$;
-            color: $M_GREY$;
+            color: $M_BLUE$;
         }
         QLineEdit[keypad] {
             background-color: $M_BACK$;

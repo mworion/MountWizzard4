@@ -33,6 +33,8 @@ class CameraSupport:
     """
     __all__ = ['CameraSupport']
     log = logging.getLogger(__name__)
+    raJ2000 = None
+    decJ2000 = None
 
     def writeHeaderInfo(self, header, obs, expTime, binning, focalLength):
         """
@@ -72,15 +74,12 @@ class CameraSupport:
         header.append(('SQM',
                        self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
 
-        ra = obs.raJNow
-        dec = obs.decJNow
-        obsTime = obs.timeJD
-        isMount = ra is not None and dec is not None and obsTime is not None
-        isMount = isMount and obs.location is not None
+        hasCoordinate = self.raJ2000 is not None and self.decJ2000 is not None
+        isMount = obs.location is not None
+        if hasCoordinate:
+            header.append(('RA', self.raJ2000._degrees, 'Float value in degree'))
+            header.append(('DEC', self.decJ2000.degrees, 'Float value in degree'))
         if isMount:
-            ra, dec = JNowToJ2000(ra, dec, obsTime)
-            header.append(('RA', ra._degrees, 'Float value in degree'))
-            header.append(('DEC', dec.degrees, 'Float value in degree'))
             header.append(('TELESCOP', self.app.mount.firmware.product,
                            'Mount version from firmware'))
             lat = obs.location.latitude

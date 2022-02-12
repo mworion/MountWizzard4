@@ -208,7 +208,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
-        self.showCurrent()
         return True
 
     def closeEvent(self, closeEvent):
@@ -336,6 +335,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image selected:      [{name}]', 0)
         self.folder = os.path.dirname(loadFilePath)
+        if self.ui.checkAutoSolve.isChecked():
+            self.signals.solveImage.emit(self.imageFileName)
         self.app.showImage.emit(self.imageFileName)
         return True
 
@@ -455,15 +456,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.stretch = AsinhStretch(a=value)
         return True
 
-    def imageRawPlot(self, imageDisp):
+    def imageRawPlot(self, imageDisp=None):
         """
         :return:
         """
-        if self.objs is not None:
-            imageDisp = imageDisp - self.bk_back
-            self.log.debug('Background from image subtracted')
-
-        imageDisp[imageDisp < 0] = 0
         img = imshow_norm(imageDisp,
                           ax=self.axe,
                           origin='lower',
@@ -633,14 +629,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.isFlipped.setEnabled(flipped)
         return True
 
-    def workerPreparePlot(self, header):
+    def workerPreparePlot(self):
         """
-        :param header:
         :return:
         """
         self.updateWindowsStats()
-        if 'CTYPE1' in header:
-            wcsObject = wcs.WCS(header, relax=True)
+        if 'CTYPE1' in self.header:
+            wcsObject = wcs.WCS(self.header, relax=True)
             hasCelestial = wcsObject.has_celestial
             hasDistortion = wcsObject.has_distortion
         else:
@@ -658,7 +653,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         else:
             self.setupNormal()
 
-        self.writeHeaderDataToGUI(header)
+        self.writeHeaderDataToGUI(self.header)
         self.stretchImage()
         self.colorImage()
         suc = self.imagePlot()
@@ -672,7 +667,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        worker = Worker(self.workerPreparePlot, self.header)
+        worker = Worker(self.workerPreparePlot)
         self.threadPool.start(worker)
         return True
 
@@ -680,7 +675,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        bkg = sep.Background(self.image.astype('float32'))
+        bkg = sep.Background(self.image)
         self.bk_back = bkg.back()
         self.bk_rms = bkg.rms()
         image_sub = self.image - bkg
@@ -705,7 +700,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if not self.objs:
+        if self.objs is None:
             worker = Worker(self.workerPhotometry)
             worker.signals.finished.connect(self.preparePlot)
             self.threadPool.start(worker)
@@ -847,7 +842,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.log.debug('No header data in FITS')
             return False
 
-        self.image = np.flipud(self.image)
+        self.image = np.flipud(self.image).astype('float32')
         bayerPattern = self.header.get('BAYERPAT', '')
         if bayerPattern:
             self.image = self.debayerImage(self.image, bayerPattern)
@@ -919,8 +914,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        else:
-            self.app.showImage.emit(imagePath)
+        self.app.showImage.emit(imagePath)
 
         return True
 
@@ -929,7 +923,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: success
         """
         self.expTime = self.app.camera.expTime
-        self.binning = self.app.camera.binning
+        self.binning = int(self.app.camera.binning)
         self.imageStack = None
         self.deviceStat['expose'] = True
         self.ui.checkStackImages.setChecked(False)
@@ -948,9 +942,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        else:
-            self.app.showImage.emit(imagePath)
-
+        self.app.showImage.emit(imagePath)
         self.exposeRaw()
         return True
 
@@ -959,7 +951,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: success
         """
         self.expTime = self.app.camera.expTimeN
-        self.binning = self.app.camera.binningN
+        self.binning = int(self.app.camera.binningN)
         self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
@@ -1017,11 +1009,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.app.message.emit(text, 2)
             return False
 
-        isStack = self.ui.checkStackImages.isChecked()
-        isAutoSolve = self.ui.checkAutoSolve.isChecked()
-
-        if not isStack or isAutoSolve:
-            self.app.showImage.emit(result['solvedPath'])
         return True
 
     def solveImage(self, imagePath=''):

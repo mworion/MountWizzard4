@@ -169,7 +169,7 @@ class AstrometryASTAP(object):
         """
         Solve uses the astap solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go
-        multi platform and we need to focus on MW function, we use the astap
+        multi-platform and we need to focus on MW function, we use the astap
         package which could be downloaded for all platforms. Many thanks
         providing such a nice package.
 
@@ -195,24 +195,16 @@ class AstrometryASTAP(object):
             os.remove(wcsPath)
 
         binPathASTAP = self.appPath + '/astap'
-        raFITS, decFITS, _ = self.readFitsData(fitsPath=fitsPath)
+        options = ['-r', f'{self.searchRadius:1.1f}',
+                   '-t', '0.005',
+                   '-z', '0']
 
-        if raHint is None:
-            raHint = raFITS.hours
-        if decHint is None:
-            decHint = decFITS.degrees
+        if raHint is not None and decHint is not None:
+            options += ['-ra', f'{raHint.hours}',
+                        '-spd', f'{decHint.degrees + 90}']
 
-        options = ['-ra',
-                   f'{raHint}',
-                   '-spd',
-                   f'{decHint + 90}',
-                   '-r',
-                   f'{self.searchRadius:1.1f}',
-                   '-t',
-                   '0.005',
-                   '-z',
-                   '0',
-                   ]
+        if self.searchRadius == 180:
+            options += ['-fov', '0']
 
         suc, retValue = self.runASTAP(binPath=binPathASTAP,
                                       fitsPath=fitsPath,

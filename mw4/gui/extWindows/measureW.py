@@ -412,8 +412,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            )
             plotList.append(r1)
             plotList.append(r2)
-            labelList.append('Sensor Temp')
-            labelList.append('Sensor Dew')
+            value = data['sensorWeatherTemp'][-1]
+            labelList.append(f'{value:3.1f} Sensor Temp')
+            value = data['sensorWeatherDew'][-1]
+            labelList.append(f'{value:3.1f} Sensor Dew')
 
         if 'onlineWeather' in self.app.measure.devices:
             r3, = axe.plot(data['time'][start:-1:cycle],
@@ -431,8 +433,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            )
             plotList.append(r3)
             plotList.append(r4)
-            labelList.append('Online Temp')
-            labelList.append('Online Dew')
+            value = data['onlineWeatherTemp'][-1]
+            labelList.append(f'{value:3.1f} Online Temp')
+            value = data['onlineWeatherDew'][-1]
+            labelList.append(f'{value:3.1f} Online Dew')
 
         if 'directWeather' in self.app.measure.devices:
             r5, = axe.plot(data['time'][start:-1:cycle],
@@ -450,8 +454,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            )
             plotList.append(r5)
             plotList.append(r6)
-            labelList.append('Direct Temp')
-            labelList.append('Direct Dew')
+            value = data['directWeatherTemp'][-1]
+            labelList.append(f'{value:3.1f} Direct Temp')
+            value = data['directWeatherDew'][-1]
+            labelList.append(f'{value:3.1f} Direct Dew')
 
         if 'power' in self.app.measure.devices:
             r7, = axe.plot(data['time'][start:-1:cycle],
@@ -469,8 +475,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            )
             plotList.append(r7)
             plotList.append(r8)
-            labelList.append('Power Temp')
-            labelList.append('Power Dew')
+            value = data['powTemp'][-1]
+            labelList.append(f'{value:3.1f} Power Temp')
+            value = data['powDew'][-1]
+            labelList.append(f'{value:3.1f} Power Dew')
 
         if 'skymeter' in self.app.measure.devices:
             r9, = axe.plot(data['time'][start:-1:cycle],
@@ -480,7 +488,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_YELLOW,
                            )
             plotList.append(r9)
-            labelList.append('Skymeter Temp')
+            value = data['skyTemp'][-1]
+            labelList.append(f'{value:3.1f} Skymeter Temp')
 
         if 'camera' in self.app.measure.devices:
             r9, = axe.plot(data['time'][start:-1:cycle],
@@ -490,7 +499,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_BLUE,
                            )
             plotList.append(r9)
-            labelList.append('Camera Temp')
+            value = data['cameraTemp'][-1]
+            labelList.append(f'{value:3.1f} Camera Temp')
 
         if not labelList:
             return False
@@ -544,7 +554,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_WHITE,
                            )
             plotList.append(r1)
-            labelList.append('Sensor Temp')
+            value = data['sensorWeatherPress'][-1]
+            labelList.append(f'{value:3.0f} Sensor Press')
 
         if 'onlineWeather' in self.app.measure.devices:
             r2, = axe.plot(data['time'][start:-1:cycle],
@@ -554,7 +565,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_GREEN,
                            )
             plotList.append(r2)
-            labelList.append('Online Press')
+            value = data['onlineWeatherPress'][-1]
+            labelList.append(f'{value:3.0f} Online Press')
 
         if 'directWeather' in self.app.measure.devices:
             r3, = axe.plot(data['time'][start:-1:cycle],
@@ -564,7 +576,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_RED,
                            )
             plotList.append(r3)
-            labelList.append('Direct Press')
+            value = data['directWeatherPress'][-1]
+            labelList.append(f'{value:3.0f} Direct Press')
 
         if not labelList:
             return False
@@ -618,7 +631,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_WHITE,
                            )
             plotList.append(r1)
-            labelList.append('Sensor Hum')
+            value = data['sensorWeatherHum'][-1]
+            labelList.append(f'{value:3.0f}% Sensor Hum')
 
         if 'onlineWeather' in self.app.measure.devices:
             r2, = axe.plot(data['time'][start:-1:cycle],
@@ -628,7 +642,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_GREEN,
                            )
             plotList.append(r2)
-            labelList.append('Online Hum')
+            value = data['onlineWeatherHum'][-1]
+            labelList.append(f'{value:3.0f}% Online Hum')
 
         if 'directWeather' in self.app.measure.devices:
             r3, = axe.plot(data['time'][start:-1:cycle],
@@ -638,7 +653,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_RED,
                            )
             plotList.append(r3)
-            labelList.append('Direct Hum')
+            value = data['directWeatherHum'][-1]
+            labelList.append(f'{value:3.0f}% Direct Hum')
 
         if 'power' in self.app.measure.devices:
             r4, = axe.plot(data['time'][start:-1:cycle],
@@ -648,7 +664,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_PINK1,
                            )
             plotList.append(r4)
-            labelList.append('Power Hum')
+            value = data['powHum'][-1]
+            labelList.append(f'{value:3.0f}% Power Hum')
 
         if not labelList:
             return False
@@ -702,7 +719,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_WHITE,
                            )
             plotList.append(r1)
-            labelList.append('Skymeter SQR')
+            value = data['skySQR'][-1]
+            labelList.append(f'{value:3.2f} Skymeter SQR')
 
         if not labelList:
             return False
@@ -755,7 +773,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            color=self.M_WHITE,
                            )
             plotList.append(r1)
-            labelList.append('Voltage')
+            value = data['powVolt'][-1]
+            labelList.append(f'{value:3.2f} Voltage')
 
         if not labelList:
             return False
@@ -774,7 +793,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                                              min_n_ticks=4,
                                                              prune='both',
                                                              ))
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',
                                                                       ))
         return True
 
@@ -837,11 +856,16 @@ class MeasureWindow(toolsQtWidget.MWidget):
             plotList.append(r3)
             plotList.append(r4)
             plotList.append(r5)
-            labelList.append('Curr Sum')
-            labelList.append('Curr 1')
-            labelList.append('Curr 2')
-            labelList.append('Curr 3')
-            labelList.append('Curr 4')
+            value0 = data['powCurr'][-1]
+            value1 = data['powCurr1'][-1]
+            value2 = data['powCurr2'][-1]
+            value3 = data['powCurr3'][-1]
+            value4 = data['powCurr4'][-1]
+            labelList.append(f'{value0:3.2f} Curr Sum')
+            labelList.append(f'{value1:3.2f} Curr 1')
+            labelList.append(f'{value2:3.2f} Curr 2')
+            labelList.append(f'{value3:3.2f} Curr 3')
+            labelList.append(f'{value4:3.2f} Curr 4')
 
         if not labelList:
             return False
@@ -860,7 +884,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                                              min_n_ticks=4,
                                                              prune='both',
                                                              ))
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',
                                                                       ))
         return True
 

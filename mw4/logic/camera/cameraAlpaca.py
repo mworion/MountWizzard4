@@ -147,11 +147,15 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
                width=1,
                height=1,
                focalLength=1,
+               ra=None,
+               dec=None,
                ):
         """
 
         :return: success
         """
+        self.raJ2000 = ra
+        self.decJ2000 = dec
         self.abortExpose = False
         worker = Worker(self.workerExpose,
                         imagePath=imagePath,
@@ -170,6 +174,8 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         """
         :return: success
         """
+        self.raJ2000 = None
+        self.decJ2000 = None
         self.abortExpose = True
         if not self.deviceConnected:
             return False

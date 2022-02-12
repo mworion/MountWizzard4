@@ -109,6 +109,7 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         :return:
         """
+        self.storePropertyToData(1, 'CCD_BINNING.HOR_BIN')
         if 'controlled' in self.deviceName:
             return False
         suc, response = self.getCameraProps()
@@ -133,7 +134,6 @@ class CameraNINA(NINAClass, CameraSupport):
             self.storePropertyToData(response['NumPixelsY'], 'CCD_FRAME.Y')
 
         self.storePropertyToData(True, 'CAN_SET_CCD_TEMPERATURE')
-        self.storePropertyToData(1, 'CCD_BINNING.HOR_BIN')
         self.log.debug(f'Initial data: {self.data}')
         return True
 
@@ -183,13 +183,15 @@ class CameraNINA(NINAClass, CameraSupport):
                   'ExposureLength': max(expTime, 1),
                   'Path': imagePath,
                   }
+
         addParams = {
             'UseSubframe': True,
-            'X': int(posX / binning),
-            'Y': int(posY / binning),
-            'Width': int(width / binning),
-            'Height': int(height / binning),
+            'X': int(posX),
+            'Y': int(posY),
+            'Width': int(width),
+            'Height': int(height),
             'FrameType': 'Light'}
+
         if 'READOUT_QUALITY.QUALITY_LOW' in self.data:
             speed = 'High' if fastReadout else 'Normal'
             speedParams = {'Speed': speed}
@@ -226,13 +228,16 @@ class CameraNINA(NINAClass, CameraSupport):
                width=1,
                height=1,
                focalLength=1,
+               ra=None,
+               dec=None,
                ):
         """
         :return: success
         """
         if not self.deviceConnected:
             return False
-
+        self.raJ2000 = ra
+        self.decJ2000 = dec
         self.abortExpose = False
         worker = Worker(self.workerExpose,
                         imagePath=imagePath,
@@ -250,6 +255,8 @@ class CameraNINA(NINAClass, CameraSupport):
         """
         :return: success
         """
+        self.raJ2000 = None
+        self.decJ2000 = None
         self.abortExpose = True
         if not self.deviceConnected:
             return False

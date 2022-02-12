@@ -268,6 +268,8 @@ def test_updateHeaderInfo_1():
 def test_updateHeaderInfo_2():
     header = {'RA': 90,
               'DEC': 90}
+    app.raJ2000 = Angle(hours=12)
+    app.decJ2000 = Angle(degrees=90)
     app.app.mount.obsSite.raJNow = None
     app.app.mount.obsSite.decJNow = None
     app.app.mount.obsSite.timeJD = None
@@ -282,6 +284,8 @@ def test_updateHeaderInfo_3():
     app.app.mount.obsSite.raJNow = Angle(hours=12)
     app.app.mount.obsSite.decJNow = Angle(degrees=180)
     app.app.mount.obsSite.timeJD = tsTest
+    app.raJ2000 = Angle(hours=12)
+    app.decJ2000 = Angle(degrees=90)
     h = app.updateHeaderInfo(header)
     assert 'RA' in h
     assert 'DEC' in h

@@ -26,9 +26,10 @@ import astropy.io.fits as fits
 from base.tpool import Worker
 from base.indiClass import IndiClass
 from base.transform import JNowToJ2000
+from logic.camera.cameraSupport import CameraSupport
 
 
-class CameraIndi(IndiClass):
+class CameraIndi(IndiClass, CameraSupport):
     """
     """
 
@@ -93,7 +94,7 @@ class CameraIndi(IndiClass):
         as it is not explicit defined in the INDI spec. So downloaded is reached
         when that INDI state for CCD_EXPOSURE goes to IDLE or OK -> Jasem  Mutlaq.
         Another definition is done by myself, when INDI state for CCD_EXPOSURE is
-        BUSY and the CCD_EPOSURE_VALUE is not 0, then we should be on integration
+        BUSY and the CCD_EXPOSURE_VALUE is not 0, then we should be on integration
         side, else the download should be started. The whole stuff is made,
         because on ALPACA and ASCOM side it's a step by step sequence, which has
         very defined states for each step. I would like ta have a common
@@ -154,18 +155,25 @@ class CameraIndi(IndiClass):
         adding for avoid having no entry in header
         :return:
         """
-        if 'RA' in header and 'DEC' in header:
-            return header
-        ra = self.app.mount.obsSite.raJNow
-        dec = self.app.mount.obsSite.decJNow
-        timeJD = self.app.mount.obsSite.timeJD
-        if ra is None or dec is None or timeJD is None:
+        if self.raJ2000 is None or self.decJ2000 is None:
+            self.log.debug('No coordinate for updating the header available')
             return header
 
-        ra, dec = JNowToJ2000(ra, dec, timeJD)
-        self.log.info('Missing Ra/Dec in header adding from mount')
-        header['RA'] = ra._degrees
-        header['DEC'] = dec.degrees
+        if 'RA' in header and 'DEC' in header:
+            t = f'Found FitsRA:[{header["RA"]:4.3f}], '
+            t += f'TargetRA: [{self.raJ2000._degrees:4.3f}], '
+            t += f'FitsDEC: [{header["DEC"]:4.3f}], '
+            t += f'TargetDEC: [{self.decJ2000._degrees:4.3f}]'
+            self.log.debug(t)
+            return header
+
+        t = 'Adding missing RA/DEC header '
+        t += f'TargetRA: [{self.raJ2000._degrees:4.3f}], '
+        t += f'TargetDEC: [{self.decJ2000._degrees:4.3f}]'
+        self.log.debug(t)
+
+        header['RA'] = self.raJ2000._degrees
+        header['DEC'] = self.decJ2000.degrees
         return header
 
     def workerSaveBlobSignalsFinished(self):
@@ -200,7 +208,7 @@ class CameraIndi(IndiClass):
 
         HDU[0].header = self.updateHeaderInfo(HDU[0].header)
         fits.writeto(self.imagePath, HDU[0].data, HDU[0].header,
-                     overwrite=True, output_verify='silentfix+warn')
+                     overwrite=True, output_verify='silentfix')
         return True
 
     def updateBLOB(self, deviceName, propertyName):
@@ -262,6 +270,8 @@ class CameraIndi(IndiClass):
                width=1,
                height=1,
                focalLength=1,
+               ra=None,
+               dec=None,
                ):
         """
         :param imagePath:
@@ -273,12 +283,17 @@ class CameraIndi(IndiClass):
         :param width:
         :param height:
         :param focalLength:
+        :param ra:
+        :param dec:
+
         :return: success
         """
         if not self.device:
             self.log.error('Expose, but no device present')
             return False
 
+        self.raJ2000 = ra
+        self.decJ2000 = dec
         self.imagePath = imagePath
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
@@ -321,6 +336,8 @@ class CameraIndi(IndiClass):
         if not self.device:
             return False
 
+        self.raJ2000 = None
+        self.decJ2000 = None
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
         if 'ABORT' not in indiCmd:
             return False

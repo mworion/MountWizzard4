@@ -208,6 +208,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
+        self.showCurrent()
         return True
 
     def closeEvent(self, closeEvent):

@@ -146,6 +146,46 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(1, minBytes)
         self.assertEqual(6, chunksToReceive)
 
+    def test_responses_real_analyseCommand_2(self):
+        conn = Connection()
+        command = ':Suaf1#'
+        chunksToReceive, getData, minBytes = conn.analyseCommand(command)
+        self.assertEqual(False, getData)
+        self.assertEqual(0, minBytes)
+        self.assertEqual(0, chunksToReceive)
+
+    def test_responses_real_analyseCommand_3(self):
+        conn = Connection()
+        command = ':RC3#'
+        chunksToReceive, getData, minBytes = conn.analyseCommand(command)
+        self.assertEqual(False, getData)
+        self.assertEqual(0, minBytes)
+        self.assertEqual(0, chunksToReceive)
+
+    def test_responses_real_analyseCommand_4(self):
+        conn = Connection()
+        command = ':RG2#'
+        chunksToReceive, getData, minBytes = conn.analyseCommand(command)
+        self.assertEqual(False, getData)
+        self.assertEqual(0, minBytes)
+        self.assertEqual(0, chunksToReceive)
+
+    def test_responses_real_analyseCommand_5(self):
+        conn = Connection()
+        command = ':RG#'
+        chunksToReceive, getData, minBytes = conn.analyseCommand(command)
+        self.assertEqual(False, getData)
+        self.assertEqual(0, minBytes)
+        self.assertEqual(0, chunksToReceive)
+
+    def test_responses_real_analyseCommand_6(self):
+        conn = Connection()
+        command = ':RC#'
+        chunksToReceive, getData, minBytes = conn.analyseCommand(command)
+        self.assertEqual(False, getData)
+        self.assertEqual(0, minBytes)
+        self.assertEqual(0, chunksToReceive)
+
     def test_closeClientHard_1(self):
         conn = Connection()
         val = conn.closeClientHard('')

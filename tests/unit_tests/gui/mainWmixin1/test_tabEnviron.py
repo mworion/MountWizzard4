@@ -194,6 +194,7 @@ def test_selectRefractionSource_2(function):
     def Sender():
         return function.ui.onlineWeatherGroup
 
+    function.ui.onlineWeatherGroup.setChecked(False)
     function.refractionSource = 'onlineWeather'
     function.sender = Sender
     suc = function.selectRefractionSource()
@@ -204,7 +205,7 @@ def test_selectRefractionSource_3(function):
     def Sender():
         return function.ui.onlineWeatherGroup
 
-    function.refractionSource = 'onlineWeather'
+    function.refractionSource = 'directWeather'
     function.ui.onlineWeatherGroup.setChecked(True)
     function.sender = Sender
     suc = function.selectRefractionSource()
@@ -229,7 +230,7 @@ def test_updateFilterRefractionParameters_2(function):
 def test_updateFilterRefractionParameters_3(function):
     function.refractionSource = 'onlineWeather'
     function.app.onlineWeather.data = {'temperature': 10,
-                                  'pressure': 1000}
+                                       'pressure': 1000}
     suc = function.updateFilterRefractionParameters()
     assert suc
 

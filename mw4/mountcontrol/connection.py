@@ -111,6 +111,9 @@ class Connection(object):
                  ':hP',
                  ]
 
+    # Command list for commands which don't reply anything, but give a parameter
+    COMMAND_P = [':RC', ':Rc', ':RG', ':Suaf']
+
     # Command list for commands which have a response, but have no end mark
     # mostly these commands response value of '0' or '1'
     COMMAND_B = [':FLIP', ':shutdown', ':GREF', ':Guaf',
@@ -165,7 +168,7 @@ class Connection(object):
         data show be received.
 
         the command slots will be sorted in reverse order to ensure that longer
-        commands with the same leading characters will be tested first. otherwise
+        commands with the same leading characters will be tested first. otherwise,
         the test will be ended before testing al commands.
 
         :param commandString:       string sent to the mount
@@ -181,7 +184,7 @@ class Connection(object):
             foundCOMMAND_A = False
             for key in sorted(self.COMMAND_A, reverse=True):
                 if command.startswith(key):
-                    if len(command) != len(key):
+                    if len(command) != len(key) and key not in self.COMMAND_P:
                         continue
                     foundCOMMAND_A = True
                     break

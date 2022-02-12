@@ -73,6 +73,18 @@ def test_writeHeaderInfo_3(function):
     assert header['OBJECT'] == 'SKY_OBJECT'
 
 
+def test_writeHeaderInfo_4(function):
+    header = fits.PrimaryHDU(data=np.array([])).header
+    obs = function.app.mount.obsSite
+    obs.location = None
+    obs.raJNow = Angle(hours=0)
+    obs.decJNow = Angle(degrees=0)
+    function.raJ2000 = Angle(hours=0)
+    function.decJ2000 = Angle(degrees=0)
+    header = function.writeHeaderInfo(header, obs, 1, 1, 100)
+    assert header['OBJECT'] == 'SKY_OBJECT'
+
+
 def test_saveFits_1(function):
     data = np.array([])
     function.abortExpose = True

@@ -152,6 +152,19 @@ def test_selectImage_1(function):
 
 
 def test_selectImage_2(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(False)
+    with mock.patch.object(MWidget,
+                           'openFile',
+                           return_value=('c:/test/test.fits', 'test', '.fits')):
+        with qtbot.waitSignal(function.app.message) as blocker:
+            with qtbot.waitSignal(function.app.showImage):
+                suc = function.selectImage()
+                assert suc
+        assert function.folder == 'c:/test'
+
+
+def test_selectImage_3(function, qtbot):
+    function.ui.checkAutoSolve.setChecked(True)
     with mock.patch.object(MWidget,
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):

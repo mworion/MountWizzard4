@@ -177,7 +177,7 @@ def test_workerGetInitialConfig_3():
     app.deviceName = 'test'
     val = {
         'Message': 'test',
-        'CanSubframe': True,
+        'SupportsSubframe': True,
         'NumPixelsX': 1000,
         'NumPixelsY': 500,
         'GainValues': ['1'],

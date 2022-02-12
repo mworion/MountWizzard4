@@ -155,16 +155,16 @@ class CameraIndi(IndiClass, CameraSupport):
         adding for avoid having no entry in header
         :return:
         """
+        if self.raJ2000 is None or self.decJ2000 is None:
+            self.log.debug('No coordinate for updating the header available')
+            return header
+
         if 'RA' in header and 'DEC' in header:
             t = f'Found FitsRA:[{header["RA"]:4.3f}], '
             t += f'TargetRA: [{self.raJ2000._degrees:4.3f}], '
             t += f'FitsDEC: [{header["DEC"]:4.3f}], '
             t += f'TargetDEC: [{self.decJ2000._degrees:4.3f}]'
             self.log.debug(t)
-            return header
-
-        if self.raJ2000 is None or self.decJ2000 is None:
-            self.log.debug('No coordinate for updating the header available')
             return header
 
         t = 'Adding missing RA/DEC header '

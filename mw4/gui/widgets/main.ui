@@ -10217,7 +10217,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -12325,7 +12325,7 @@ Next point in time when satellite settles.</string>
       </widget>
       <widget class="QGroupBox" name="satOffGroupTime">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -12346,7 +12346,7 @@ Next point in time when satellite settles.</string>
        </property>
        <widget class="QPushButton" name="satOffTimeM100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12365,7 +12365,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satOffTimeVal">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12409,7 +12409,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeM10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12428,7 +12428,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeP10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12447,7 +12447,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeM1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12466,7 +12466,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeP1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12516,7 +12516,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeP100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12536,7 +12536,7 @@ Next point in time when satellite settles.</string>
       </widget>
       <widget class="QGroupBox" name="satOffGroupDec">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -12557,7 +12557,7 @@ Next point in time when satellite settles.</string>
        </property>
        <widget class="QPushButton" name="satOffDecM100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12576,7 +12576,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satOffDecVal">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12620,7 +12620,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecM10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12639,7 +12639,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecP10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12658,7 +12658,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecM1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12677,7 +12677,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecP1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12727,7 +12727,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecP100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12747,7 +12747,7 @@ Next point in time when satellite settles.</string>
       </widget>
       <widget class="QGroupBox" name="satOffGroupRa">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -12768,7 +12768,7 @@ Next point in time when satellite settles.</string>
        </property>
        <widget class="QPushButton" name="satOffRaM100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12787,7 +12787,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satOffRaVal">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12831,7 +12831,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaM10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12850,7 +12850,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaP10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12869,7 +12869,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaM1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12888,7 +12888,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaP1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12938,7 +12938,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaP100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>

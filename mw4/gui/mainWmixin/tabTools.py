@@ -432,11 +432,11 @@ class Tools(object):
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
-            t = f'Slewing mount to:    Az:[{azimuthT}], Alt:[{altitudeT}]'
+            t = f'Slewing mount to:    Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
             self.app.message.emit(t, 0)
 
         else:
-            t = f'Cannot slew to:      Az:[{azimuthT}], Alt:[{altitudeT}]'
+            t = f'Cannot slew to:      Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
             self.app.message.emit(t, 2)
         return suc
 
@@ -446,19 +446,12 @@ class Tools(object):
         :param az:
         :return:
         """
-        altHigh = self.app.mount.setting.horizonLimitHigh
-        altLow = self.app.mount.setting.horizonLimitLow
-
-        if alt > altHigh:
-            alt = altHigh
-        elif alt < altLow:
-            alt = altLow
-
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
                                                     az_degrees=az)
         if not suc:
-            t = f'Cannot slew to:      Az:[{azimuthT}], Alt:[{altitudeT}]'
+            t = f'Cannot set target :  Az:[{az:3.1f}], Alt:[{alt:3.1f}]'
             self.app.message.emit(t, 2)
+            return False
 
         suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc

@@ -636,12 +636,12 @@ class ObsSite(object):
             “5Object on the other side #”
 
         the types of slew is:
-        - 'normal'      slew to coordinates and tracking on
-        - 'notrack':    slew to coordinates and tracking off
-        - 'stop':       slew to coordinates and park
+        - 'normal'      slew to coordinate and tracking on
+        - 'notrack':    slew to coordinate and tracking off
+        - 'stop':       slew to coordinate and park
         - 'park':       slew to coordinates and park
-        - 'polar':      slew to coordinates and miss for polar alignment
-        - 'ortho':      slew to coordinates and miss for orthogonal alignment
+        - 'polar':      slew to coordinate and miss for polar alignment
+        - 'ortho':      slew to coordinate and miss for orthogonal alignment
         - 'keep':       choose between normal and notrack to keep the tracking mode
 
         :param slewType:

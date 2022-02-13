@@ -609,66 +609,6 @@ def test_setDEC_3(function):
         assert suc
 
 
-def test_checkAlt_1(function):
-    val = function.checkAlt('')
-    assert val is None
-
-
-def test_checkAlt_2(function):
-    val = function.checkAlt('12H')
-    assert val is None
-
-
-def test_checkAlt_3(function):
-    function.app.mount.setting.horizonLimitLow = None
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_4(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = None
-    val = function.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_5(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('85')
-    assert val is None
-
-
-def test_checkAlt_6(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_7(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('50')
-    assert val == 50
-
-
-def test_checkAz_1(function):
-    val = function.checkAz('')
-    assert val is None
-
-
-def test_checkAz_2(function):
-    val = function.checkAz('12H')
-    assert val is None
-
-
-def test_checkAz_3(function):
-    val = function.checkAz('400')
-    assert val == 40
-
-
 def test_moveAltAzAbsolute_1(function):
     function.ui.moveCoordinateAlt.setText('50h')
     function.ui.moveCoordinateAz.setText('50h')

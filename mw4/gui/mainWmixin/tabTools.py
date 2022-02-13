@@ -29,6 +29,7 @@ from base.transform import J2000ToJNow
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
+from mountcontrol.convert import valueToFloat
 from mountcontrol.connection import Connection
 
 
@@ -418,7 +419,7 @@ class Tools(object):
         if azimuthT is None or altitudeT is None:
             return False
 
-        azimuthT = altitudeT.degrees
+        azimuthT = azimuthT.degrees
         altitudeT = altitudeT.degrees
 
         if self.app.deviceStat['dome']:
@@ -431,10 +432,12 @@ class Tools(object):
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
-            self.app.message.emit('Slewing mount', 0)
+            t = f'Slewing mount to:    Az:[{azimuthT}], Alt:[{altitudeT}]'
+            self.app.message.emit(t, 0)
 
         else:
-            self.app.message.emit('Cannot slew to: {azimuthT}, {altitudeT}', 2)
+            t = f'Cannot slew to:      Az:[{azimuthT}], Alt:[{altitudeT}]'
+            self.app.message.emit(t, 2)
         return suc
 
     def slewTargetAltAz(self, alt, az):
@@ -451,8 +454,12 @@ class Tools(object):
         elif alt < altLow:
             alt = altLow
 
-        self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
-                                              az_degrees=az)
+        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
+                                                    az_degrees=az)
+        if not suc:
+            t = f'Cannot slew to:      Az:[{azimuthT}], Alt:[{altitudeT}]'
+            self.app.message.emit(t, 2)
+
         suc = self.slewSelectedTargetWithDome(slewType='keep')
         return suc
 
@@ -545,62 +552,22 @@ class Tools(object):
         self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.4f}')
         return True
 
-    def checkAlt(self, alt):
-        """
-        :param alt:
-        :return:
-        """
-        if not alt:
-            return None
-
-        try:
-            alt = float(alt)
-        except Exception:
-            return None
-
-        if self.app.mount.setting.horizonLimitLow is None:
-            return None
-        if self.app.mount.setting.horizonLimitHigh is None:
-            return None
-        if alt > self.app.mount.setting.horizonLimitHigh:
-            return None
-        if alt < self.app.mount.setting.horizonLimitLow:
-            return None
-
-        return alt
-
-    @staticmethod
-    def checkAz(az):
-        """
-        :param az:
-        :return:
-        """
-        if not az:
-            return None
-
-        try:
-            az = float(az)
-        except Exception:
-            return None
-
-        az = (az + 360) % 360
-        return az
-
     def moveAltAzAbsolute(self):
         """
         :return:
         """
         alt = self.ui.moveCoordinateAlt.text()
-        alt = self.checkAlt(alt)
+        alt = valueToFloat(alt)
         if alt is None:
             return False
 
         az = self.ui.moveCoordinateAz.text()
-        az = self.checkAz(az)
+        az = valueToFloat(az)
         if az is None:
             return False
 
-        suc = self.slewTargetAltAz(float(alt), float(az))
+        az = (az + 360) % 360
+        suc = self.slewTargetAltAz(alt, az)
         return suc
 
     def moveRaDecAbsolute(self):

@@ -24,7 +24,6 @@ import numpy as np
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.transform import JNowToJ2000
 from mountcontrol.convert import formatDstrToText
 
 

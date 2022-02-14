@@ -27,7 +27,6 @@ from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
-from base import transform
 from base.transform import JNowToJ2000, J2000ToJNow
 from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
 from logic.modeldata.modelHandling import writeRetrofitData

@@ -175,36 +175,6 @@ def test_selectImage_3(function, qtbot):
         assert function.folder == 'c:/test'
 
 
-def test_setupDistorted_1(function):
-    header = fits.PrimaryHDU().header
-    header['naxis'] = 2
-
-    suc = function.setupDistorted()
-    assert suc
-    assert function.axe is not None
-    assert function.axeCB is None
-
-
-def test_setupDistorted_2(function):
-    function.ui.checkShowGrid.setChecked(True)
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-
-    suc = function.setupDistorted()
-    assert suc
-    assert function.axe is not None
-
-
-def test_setupDistorted_3(function):
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-
-    suc = function.setupDistorted()
-    assert suc
-    assert function.axe is not None
-    assert function.axeCB is None
-
-
 def test_setupNormal_1(function):
     function.ui.zoom.addItem(' 1x Zoom')
     function.ui.checkShowGrid.setChecked(True)
@@ -583,19 +553,14 @@ def test_writeHeaderDataToGUI_4(function):
 
 
 def test_workerPreparePlot_1(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    suc = function.workerPreparePlot()
-    assert suc
-
-
-def test_workerPreparePlot_2(function):
+    function.ui.view.addItem('test')
+    function.ui.view.addItem('test')
     function.ui.zoom.addItem(' 1x Zoom')
     function.image = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
     function.header['CTYPE1'] = '2'
     function.header['NAXIS'] = 2
+    function.ui.view.setCurrentIndex(1)
     with mock.patch.object(function,
                            'setupNormal'):
         with mock.patch.object(function,
@@ -605,7 +570,7 @@ def test_workerPreparePlot_2(function):
             assert suc
 
 
-def test_workerPreparePlot_3(function):
+def test_workerPreparePlot_2(function):
     function.ui.view.addItem('test')
     function.ui.view.addItem('test')
     function.ui.zoom.addItem(' 1x Zoom')
@@ -614,18 +579,13 @@ def test_workerPreparePlot_3(function):
     function.header['CTYPE1'] = '2'
     function.header['NAXIS'] = 2
     function.ui.view.setCurrentIndex(1)
-    function.ui.checkUseWCS.setChecked(True)
-    with mock.patch.object(wcs.WCS,
-                           'has_distortion',
-                           return_value=True):
-        function.setupDistorted = function.setupNormal
+    with mock.patch.object(function,
+                           'setupNormal'):
         with mock.patch.object(function,
-                               'setupDistorted'):
-            with mock.patch.object(function,
-                                   'imagePlot',
-                                   return_value=False):
-                suc = function.workerPreparePlot()
-                assert suc
+                               'imagePlot',
+                               return_value=False):
+            suc = function.workerPreparePlot()
+            assert not suc
 
 
 def test_preparePlot_1(function):

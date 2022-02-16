@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/image.ui'
+# Form implementation generated from reading ui file 'image.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -19,7 +19,6 @@ class Ui_ImageDialog(object):
         ImageDialog.setMaximumSize(QtCore.QSize(1600, 1200))
         ImageDialog.setSizeIncrement(QtCore.QSize(10, 10))
         font = QtGui.QFont()
-        font.setFamily("Arial")
         font.setPointSize(10)
         ImageDialog.setFont(font)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(ImageDialog)
@@ -122,10 +121,10 @@ class Ui_ImageDialog(object):
         self.view.setMinimumSize(QtCore.QSize(220, 25))
         self.view.setObjectName("view")
         self.gridLayout_3.addWidget(self.view, 0, 0, 1, 2)
-        self.checkUseWCS = QtWidgets.QCheckBox(self.groupBox_2)
-        self.checkUseWCS.setMinimumSize(QtCore.QSize(0, 20))
-        self.checkUseWCS.setObjectName("checkUseWCS")
-        self.gridLayout_3.addWidget(self.checkUseWCS, 2, 1, 1, 1)
+        self.isFlipped = QtWidgets.QLabel(self.groupBox_2)
+        self.isFlipped.setEnabled(False)
+        self.isFlipped.setObjectName("isFlipped")
+        self.gridLayout_3.addWidget(self.isFlipped, 2, 1, 1, 1)
         self.horizontalLayout_5.addWidget(self.groupBox_2)
         self.line_4 = QtWidgets.QFrame(ImageDialog)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -312,31 +311,6 @@ class Ui_ImageDialog(object):
         self.line_12.setObjectName("line_12")
         self.gridLayout.addWidget(self.line_12, 27, 0, 1, 2)
         self.gridLayout_2.addWidget(self.groupBox, 0, 0, 1, 1)
-        self.attributsgroup = QtWidgets.QGroupBox(ImageDialog)
-        self.attributsgroup.setObjectName("attributsgroup")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.attributsgroup)
-        self.verticalLayout_6.setContentsMargins(4, 8, 4, 4)
-        self.verticalLayout_6.setSpacing(4)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        spacerItem2 = QtWidgets.QSpacerItem(20, 5, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_6.addItem(spacerItem2)
-        self.hasWCS = QtWidgets.QLabel(self.attributsgroup)
-        self.hasWCS.setEnabled(False)
-        self.hasWCS.setMinimumSize(QtCore.QSize(0, 16))
-        self.hasWCS.setObjectName("hasWCS")
-        self.verticalLayout_6.addWidget(self.hasWCS)
-        self.hasDistortion = QtWidgets.QLabel(self.attributsgroup)
-        self.hasDistortion.setEnabled(False)
-        self.hasDistortion.setObjectName("hasDistortion")
-        self.verticalLayout_6.addWidget(self.hasDistortion)
-        self.isFlipped = QtWidgets.QLabel(self.attributsgroup)
-        self.isFlipped.setEnabled(False)
-        self.isFlipped.setObjectName("isFlipped")
-        self.verticalLayout_6.addWidget(self.isFlipped)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_6.addItem(spacerItem3)
-        self.verticalLayout_6.setStretch(4, 1)
-        self.gridLayout_2.addWidget(self.attributsgroup, 1, 0, 1, 1)
         self.image = QtWidgets.QWidget(ImageDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
@@ -370,7 +344,7 @@ class Ui_ImageDialog(object):
         self.checkShowCrosshair.setText(_translate("ImageDialog", "Show crosshair  "))
         self.checkShowGrid.setToolTip(_translate("ImageDialog", "<html><head/><body><p>Show a grid across the image.</p></body></html>"))
         self.checkShowGrid.setText(_translate("ImageDialog", "Show grid"))
-        self.checkUseWCS.setText(_translate("ImageDialog", "Use WCS"))
+        self.isFlipped.setText(_translate("ImageDialog", "Is Flipped"))
         self.imagesettings.setTitle(_translate("ImageDialog", "Image settings"))
         self.groupBox.setTitle(_translate("ImageDialog", "Fits Header"))
         self.label_9.setText(_translate("ImageDialog", "CCD Temp [deg]"))
@@ -384,10 +358,6 @@ class Ui_ImageDialog(object):
         self.label_10.setText(_translate("ImageDialog", "Filter"))
         self.label_2.setText(_translate("ImageDialog", "RA [hours]"))
         self.label.setText(_translate("ImageDialog", "Object Name"))
-        self.attributsgroup.setTitle(_translate("ImageDialog", "Image attributes"))
-        self.hasWCS.setText(_translate("ImageDialog", "WCS Header"))
-        self.hasDistortion.setText(_translate("ImageDialog", "Distortion Param"))
-        self.isFlipped.setText(_translate("ImageDialog", "Is Flipped"))
 
 
 if __name__ == "__main__":

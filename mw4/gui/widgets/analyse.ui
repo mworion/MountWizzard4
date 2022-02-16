@@ -42,7 +42,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -99,9 +98,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -144,9 +141,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -189,9 +184,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -216,9 +209,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -243,9 +234,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -273,9 +262,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -318,9 +305,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -345,9 +330,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -375,9 +358,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -405,9 +386,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -432,9 +411,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -462,9 +439,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -504,9 +479,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -534,9 +507,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -576,9 +547,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -603,9 +572,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -630,9 +597,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -657,9 +622,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -684,7 +647,6 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -719,9 +681,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -764,9 +724,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -791,9 +749,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -818,9 +774,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -845,7 +799,6 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -873,9 +826,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -921,9 +872,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -966,9 +915,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -996,9 +943,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1041,9 +986,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1071,9 +1014,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1116,9 +1057,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1143,9 +1082,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1170,9 +1107,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1200,9 +1135,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1245,9 +1178,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1275,9 +1206,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1320,9 +1249,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1368,9 +1295,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1410,9 +1335,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1440,9 +1363,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1488,9 +1409,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Courier</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1533,9 +1452,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1554,7 +1471,7 @@ Model</string>
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -1989,6 +1906,21 @@ Model</string>
           <bool>true</bool>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QWidget" name="raRawErrorsRef" native="true">
             <property name="sizePolicy">

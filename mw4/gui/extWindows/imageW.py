@@ -195,7 +195,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
         self.ui.view.currentIndexChanged.connect(self.preparePlot)
-        self.ui.checkUseWCS.clicked.connect(self.preparePlot)
         self.ui.checkShowGrid.clicked.connect(self.preparePlot)
         self.ui.checkShowCrosshair.clicked.connect(self.preparePlot)
         self.ui.solve.clicked.connect(self.solveCurrent)
@@ -227,7 +226,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
         self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
         self.ui.view.currentIndexChanged.disconnect(self.preparePlot)
-        self.ui.checkUseWCS.clicked.disconnect(self.preparePlot)
         self.ui.checkShowGrid.clicked.disconnect(self.preparePlot)
         self.ui.checkShowCrosshair.clicked.disconnect(self.preparePlot)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
@@ -339,49 +337,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
         self.app.showImage.emit(self.imageFileName)
-        return True
-
-    def setupDistorted(self):
-        """
-        setupDistorted tries to setup all necessary context for displaying the
-        image with wcs distorted coordinates.
-
-        :return: true for test purpose
-        """
-        self.fig.clf()
-        self.axe = self.fig.add_subplot(1, 1, 1,
-                                        projection=wcs.WCS(self.header, relax=True),
-                                        facecolor=self.M_BACK)
-
-        self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
-        self.axeCB = None
-        self.axe.coords.frame.set_color(self.M_BLUE)
-
-        axe0 = self.axe.coords[0]
-        axe1 = self.axe.coords[1]
-
-        if self.ui.checkShowGrid.isChecked():
-            axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
-            axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
-
-        axe0.tick_params(colors=self.M_BLUE, labelsize=12)
-        axe1.tick_params(colors=self.M_BLUE, labelsize=12)
-        axe0.set_axislabel('Right Ascension',
-                           color=self.M_BLUE,
-                           fontsize=12,
-                           fontweight='bold')
-        axe1.set_axislabel('Declination',
-                           color=self.M_BLUE,
-                           fontsize=12,
-                           fontweight='bold')
-        axe0.set_ticks(number=10)
-        axe1.set_ticks(number=10)
-        axe0.set_ticks_position('lr')
-        axe0.set_ticklabel_position('lr')
-        axe0.set_axislabel_position('lr')
-        axe1.set_ticks_position('tb')
-        axe1.set_ticklabel_position('tb')
-        axe1.set_axislabel_position('tb')
         return True
 
     def setupNormal(self):
@@ -635,25 +590,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.updateWindowsStats()
-        if 'CTYPE1' in self.header:
-            wcsObject = wcs.WCS(self.header, relax=True)
-            hasCelestial = wcsObject.has_celestial
-            hasDistortion = wcsObject.has_distortion
-        else:
-            hasCelestial = False
-            hasDistortion = False
-
-        self.ui.hasDistortion.setEnabled(hasDistortion)
-        self.ui.checkUseWCS.setEnabled(hasDistortion)
-        self.ui.hasWCS.setEnabled(hasCelestial)
-
-        canWCS = self.ui.view.currentIndex() in [0, 1, 2]
-        useWCS = self.ui.checkUseWCS.isChecked()
-        if hasDistortion and useWCS and canWCS:
-            self.setupDistorted()
-        else:
-            self.setupNormal()
-
+        self.setupNormal()
         self.writeHeaderDataToGUI(self.header)
         self.stretchImage()
         self.colorImage()
@@ -662,7 +599,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             t = 'Image type could not be shown - display raw image'
             self.app.message.emit(t, 2)
             self.ui.view.setCurrentIndex(0)
-        return True
+        return suc
 
     def preparePlot(self):
         """

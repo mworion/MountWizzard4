@@ -456,6 +456,9 @@ class ImageWindow(toolsQtWidget.MWidget):
                 e.set_edgecolor(self.M_BLUE)
                 self.axe.add_artist(e)
 
+            if self.axeCB:
+                self.axeCB.axis('off')
+
         if self.ui.view.currentIndex() == 2:
             if self.objs is None or self.radius is None:
                 self.log.debug('Show 2, no SEP radius data')
@@ -617,8 +620,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bk_back = bkg.back()
         self.bk_rms = bkg.rms()
         image_sub = self.image - bkg
-        self.objs = sep.extract(image_sub, 3, err=bkg.globalrms,
-                                filter_type='conv')
+        self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms,
+                                filter_type='conv',
+                                minarea=10)
         self.flux, _, _ = sep.sum_circle(image_sub,
                                          self.objs['x'],
                                          self.objs['y'],
@@ -780,6 +784,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not os.path.isfile(imagePath):
             return False
 
+        self.ui.loading.setText('Loading....')
         self.imageFileName = imagePath
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)

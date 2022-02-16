@@ -319,6 +319,9 @@ class Ui_ImageDialog(object):
         self.image.setSizePolicy(sizePolicy)
         self.image.setMinimumSize(QtCore.QSize(0, 0))
         self.image.setObjectName("image")
+        self.loading = QtWidgets.QLabel(self.image)
+        self.loading.setGeometry(QtCore.QRect(205, 185, 181, 51))
+        self.loading.setObjectName("loading")
         self.gridLayout_2.addWidget(self.image, 0, 1, 2, 1)
         self.verticalLayout_2.addLayout(self.gridLayout_2)
         self.verticalLayout_2.setStretch(2, 1)
@@ -358,6 +361,7 @@ class Ui_ImageDialog(object):
         self.label_10.setText(_translate("ImageDialog", "Filter"))
         self.label_2.setText(_translate("ImageDialog", "RA [hours]"))
         self.label.setText(_translate("ImageDialog", "Object Name"))
+        self.loading.setText(_translate("ImageDialog", "TextLabel"))
 
 
 if __name__ == "__main__":

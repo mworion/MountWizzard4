@@ -826,6 +826,19 @@
          <height>0</height>
         </size>
        </property>
+       <widget class="QLabel" name="loading">
+        <property name="geometry">
+         <rect>
+          <x>205</x>
+          <y>185</y>
+          <width>181</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
       </widget>
      </item>
     </layout>

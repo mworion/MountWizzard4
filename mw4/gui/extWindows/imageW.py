@@ -609,7 +609,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.threadPool.start(worker)
         return True
 
-    def workerPhotometry(self):
+    def workerPreparePhotometry(self):
         """
         :return:
         """
@@ -634,17 +634,16 @@ class ImageWindow(toolsQtWidget.MWidget):
                                          subpix=5)
         return True
 
-    def prepareImageForPhotometry(self):
+    def preparePhotometry(self):
         """
         :return:
         """
         if self.objs is None:
-            worker = Worker(self.workerPhotometry)
+            worker = Worker(self.workerPreparePhotometry)
             worker.signals.finished.connect(self.preparePlot)
             self.threadPool.start(worker)
         else:
             self.preparePlot()
-
         return True
 
     def stackImages(self):
@@ -742,34 +741,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         image = np.array(Image.fromarray(image).resize((h, w)))
         return image
 
-    def showImage(self, imagePath=''):
+    def workerLoadImage(self):
         """
-        tho idea of processing the image data until it is shown on screen is
-        to split the pipeline in several atomic steps, which follow each other.
-        each step is calling the next one and depending on which user interaction
-        is done and how the use case for changing the view is the entrance of the
-        pipeline is chosen adequately.
-
-        so we have step 1 loading data and processing if to final monochrome and
-        sized format
-        - loading data
-        - debayer if necessary
-        - getting header data and cleaning it up
-        - zoom and stack
-
-        :param: imagePath:
         :return:
         """
-        if not imagePath:
-            return False
-        if not os.path.isfile(imagePath):
-            return False
-
-        self.imageFileName = imagePath
-        full, short, ext = self.extractNames([imagePath])
+        full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
 
-        with fits.open(imagePath, mode='update') as fitsHandle:
+        with fits.open(self.imageFileName, mode='update') as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
 
@@ -786,18 +765,25 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.image = self.debayerImage(self.image, bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
-        # correct faulty headers, because some imaging programs did not
-        # interpret the Keywords in the right manner (SGPro)
-        if self.header.get('CTYPE1', '').endswith('DEF'):
-            self.header['CTYPE1'] = self.header['CTYPE1'].replace('DEF', 'TAN')
-
-        if self.header.get('CTYPE2', '').endswith('DEF'):
-            self.header['CTYPE2'] = self.header['CTYPE2'].replace('DEF', 'TAN')
-
         self.zoomImage()
         self.stackImages()
         self.objs = None
-        self.prepareImageForPhotometry()
+        return True
+
+    def showImage(self, imagePath=''):
+        """
+        :param: imagePath:
+        :return:
+        """
+        if not imagePath:
+            return False
+        if not os.path.isfile(imagePath):
+            return False
+
+        self.imageFileName = imagePath
+        worker = Worker(self.workerLoadImage)
+        worker.signals.finished.connect(self.preparePhotometry)
+        self.threadPool.start(worker)
         return True
 
     def showCurrent(self):

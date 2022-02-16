@@ -60,6 +60,7 @@ releaseNotes = """
 - upgrade pybase64 library to 1.2.1
 - upgrade websocket-client library to 1.2.3
 - fix: simulator in southern hemisphere
+- remove: wcs coordinate in image window as solvers do not support it
  """
 
 with open('notes.txt', 'w') as f:

@@ -19,6 +19,7 @@
 import unittest.mock as mock
 import pytest
 import shutil
+import os
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
@@ -595,14 +596,14 @@ def test_preparePlot_1(function):
         assert suc
 
 
-def test_workerPhotometry_1(function):
+def test_workerPreparePhotometry_1(function):
     function.image = np.random.rand(100, 100) + 1
     function.image[50][50] = 100
     function.image[51][50] = 50
     function.image[50][51] = 50
     function.image[50][49] = 50
     function.image[49][50] = 50
-    suc = function.workerPhotometry()
+    suc = function.workerPreparePhotometry()
     assert suc
     assert function.bk_back is not None
     assert function.bk_rms is not None
@@ -611,19 +612,19 @@ def test_workerPhotometry_1(function):
     assert function.objs is not None
 
 
-def test_prepareImageForPhotometry_1(function):
+def test_preparePhotometry_1(function):
     function.objs = None
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.prepareImageForPhotometry()
+        suc = function.preparePhotometry()
         assert suc
 
 
-def test_prepareImageForPhotometry_2(function):
+def test_preparePhotometry_2(function):
     function.objs = 1
     with mock.patch.object(function,
                            'preparePlot'):
-        suc = function.prepareImageForPhotometry()
+        suc = function.preparePhotometry()
         assert suc
 
 
@@ -728,17 +729,7 @@ def test_debayerImage_5(function):
     assert img.shape == (100, 100)
 
 
-def test_showImage_1(function):
-    suc = function.showImage()
-    assert not suc
-
-
-def test_showImage_2(function):
-    suc = function.showImage('test')
-    assert not suc
-
-
-def test_showImage_3(function):
+def test_workerLoadImage_1(function):
     class Data:
         data = np.random.rand(100, 100)
         header = None
@@ -753,15 +744,16 @@ def test_showImage_3(function):
             return
 
     function.ui.zoom.addItem(' 1x Zoom')
+    function.imageFileName = 'tests/workDir/image/m51.fit'
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
+        suc = function.workerLoadImage()
         assert not suc
 
 
-def test_showImage_4(function):
+def test_workerLoadImage_2(function):
     class Data:
         data = None
         header = 2
@@ -776,28 +768,16 @@ def test_showImage_4(function):
             return
 
     function.ui.zoom.addItem(' 1x Zoom')
+    function.imageFileName = 'tests/workDir/image/m51.fit'
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
+        suc = function.workerLoadImage()
         assert not suc
 
 
-def test_showImage_5(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
-    with mock.patch.object(function,
-                           'zoomImage'):
-        with mock.patch.object(function,
-                               'stackImages'):
-            with mock.patch.object(function,
-                                   'prepareImageForPhotometry'):
-                suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
-                assert suc
-
-
-def test_showImage_6(function):
+def test_workerLoadImage_3(function):
     class Data:
         data = np.random.rand(100, 100)
         header = {'BAYERPAT': 1,
@@ -815,6 +795,7 @@ def test_showImage_6(function):
             return
 
     function.ui.zoom.addItem(' 1x Zoom')
+    function.imageFileName = 'tests/workDir/image/m51.fit'
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
@@ -823,10 +804,28 @@ def test_showImage_6(function):
                                'zoomImage'):
             with mock.patch.object(function,
                                    'stackImages'):
-                with mock.patch.object(function,
-                                       'prepareImageForPhotometry'):
-                    suc = function.showImage(imagePath='tests/workDir/image/m51.fit')
-                    assert suc
+                suc = function.workerLoadImage()
+                assert suc
+
+
+def test_showImage_1(function):
+    suc = function.showImage()
+    assert not suc
+
+
+def test_showImage_2(function):
+    suc = function.showImage('test')
+    assert not suc
+
+
+def test_showImage_3(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(function.threadPool,
+                               'start'):
+            suc = function.showImage('tests')
+            assert suc
 
 
 def test_showCurrent_1(function):

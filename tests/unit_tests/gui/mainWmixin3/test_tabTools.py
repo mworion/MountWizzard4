@@ -478,27 +478,36 @@ def test_slewSelectedTargetWithDome_4(function):
 
 
 def test_slewTargetAltAz_1(function):
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.obsSite.status = 0
-
-    with mock.patch.object(function,
-                           'slewSelectedTargetWithDome',
-                           return_value=True):
-        suc = function.slewTargetAltAz(100, 10)
-        assert suc
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=False):
+            suc = function.slewTargetAltAz(100, 10)
+            assert not suc
 
 
 def test_slewTargetAltAz_2(function):
-    function.app.mount.setting.horizonLimitHigh = 80
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.obsSite.status = 1
-
-    with mock.patch.object(function,
-                           'slewSelectedTargetWithDome',
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
                            return_value=False):
-        suc = function.slewTargetAltAz(-10, 10)
-        assert not suc
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=True):
+            suc = function.slewTargetAltAz(-10, 10)
+            assert not suc
+
+
+def test_slewTargetAltAz_3(function):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=True):
+            suc = function.slewTargetAltAz(100, 10)
+            assert suc
 
 
 def test_moveAltAzDefault(function):
@@ -607,66 +616,6 @@ def test_setDEC_3(function):
                            return_value=('12', True)):
         suc = function.setDEC()
         assert suc
-
-
-def test_checkAlt_1(function):
-    val = function.checkAlt('')
-    assert val is None
-
-
-def test_checkAlt_2(function):
-    val = function.checkAlt('12H')
-    assert val is None
-
-
-def test_checkAlt_3(function):
-    function.app.mount.setting.horizonLimitLow = None
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_4(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = None
-    val = function.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_5(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('85')
-    assert val is None
-
-
-def test_checkAlt_6(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('5')
-    assert val is None
-
-
-def test_checkAlt_7(function):
-    function.app.mount.setting.horizonLimitLow = 10
-    function.app.mount.setting.horizonLimitHigh = 70
-    val = function.checkAlt('50')
-    assert val == 50
-
-
-def test_checkAz_1(function):
-    val = function.checkAz('')
-    assert val is None
-
-
-def test_checkAz_2(function):
-    val = function.checkAz('12H')
-    assert val is None
-
-
-def test_checkAz_3(function):
-    val = function.checkAz('400')
-    assert val == 40
 
 
 def test_moveAltAzAbsolute_1(function):

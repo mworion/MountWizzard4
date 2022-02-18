@@ -6716,7 +6716,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>410</x>
        <y>15</y>
        <width>366</width>
-       <height>121</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="title">
@@ -6934,9 +6934,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QPushButton" name="genBuildDSO">
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>95</y>
-        <width>356</width>
+        <x>220</x>
+        <y>70</y>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>
@@ -6944,15 +6944,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Generates model points along DSO track for a give time and other parameters.</string>
       </property>
       <property name="text">
-       <string>Generate DSO Track</string>
+       <string>DSO Track</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="generateDec">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>145</x>
         <y>70</y>
-        <width>91</width>
+        <width>66</width>
         <height>21</height>
        </rect>
       </property>
@@ -6990,9 +6990,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLineEdit" name="generateRa">
       <property name="geometry">
        <rect>
-        <x>60</x>
+        <x>40</x>
         <y>70</y>
-        <width>91</width>
+        <width>61</width>
         <height>21</height>
        </rect>
       </property>
@@ -7049,9 +7049,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="generateDecText">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>115</x>
         <y>70</y>
-        <width>36</width>
+        <width>31</width>
         <height>21</height>
        </rect>
       </property>
@@ -7089,7 +7089,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>220</x>
         <y>45</y>
-        <width>91</width>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>
@@ -7209,9 +7209,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>175</y>
+       <y>180</y>
        <width>361</width>
-       <height>101</height>
+       <height>141</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -7383,14 +7383,123 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
+     <widget class="QCheckBox" name="checkAutoDeleteHorizon">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>95</y>
+        <width>256</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
+      </property>
+      <property name="text">
+       <string>Auto delete points below horizon</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkSafetyMarginHorizon">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>115</y>
+        <width>271</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
+      </property>
+      <property name="text">
+       <string>Add safety distance to horizon line with</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="safetyMarginHorizon">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>115</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Number of points.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>10.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>1.000000000000000</double>
+      </property>
+      <property name="value">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_162">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>115</y>
+        <width>16</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>°</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_10">
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>295</y>
+       <y>345</y>
        <width>366</width>
-       <height>121</height>
+       <height>71</height>
       </rect>
      </property>
      <property name="title">
@@ -7520,31 +7629,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkAutoDeleteHorizon">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>75</y>
-        <width>256</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
-      </property>
-      <property name="text">
-       <string>Auto delete points below horizon</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QPushButton" name="clearHorizonMask">
       <property name="enabled">
        <bool>true</bool>
@@ -7571,90 +7655,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="text">
        <string>Clear</string>
-      </property>
-     </widget>
-     <widget class="QDoubleSpinBox" name="safetyMarginHorizon">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>95</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Number of points.</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="decimals">
-       <number>0</number>
-      </property>
-      <property name="minimum">
-       <double>0.000000000000000</double>
-      </property>
-      <property name="maximum">
-       <double>10.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>1.000000000000000</double>
-      </property>
-      <property name="value">
-       <double>10.000000000000000</double>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_162">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>95</y>
-        <width>16</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>°</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkSafetyMarginHorizon">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>95</y>
-        <width>271</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
-      </property>
-      <property name="text">
-       <string>Add safety distance to horizon line with</string>
       </property>
      </widget>
     </widget>
@@ -7776,7 +7776,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>415</x>
-       <y>145</y>
+       <y>140</y>
        <width>336</width>
        <height>20</height>
       </rect>
@@ -10217,7 +10217,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -12325,7 +12325,7 @@ Next point in time when satellite settles.</string>
       </widget>
       <widget class="QGroupBox" name="satOffGroupTime">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -12346,7 +12346,7 @@ Next point in time when satellite settles.</string>
        </property>
        <widget class="QPushButton" name="satOffTimeM100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12365,7 +12365,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satOffTimeVal">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12409,7 +12409,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeM10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12428,7 +12428,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeP10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12447,7 +12447,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeM1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12466,7 +12466,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeP1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12516,7 +12516,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffTimeP100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12536,7 +12536,7 @@ Next point in time when satellite settles.</string>
       </widget>
       <widget class="QGroupBox" name="satOffGroupDec">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -12557,7 +12557,7 @@ Next point in time when satellite settles.</string>
        </property>
        <widget class="QPushButton" name="satOffDecM100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12576,7 +12576,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satOffDecVal">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12620,7 +12620,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecM10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12639,7 +12639,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecP10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12658,7 +12658,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecM1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12677,7 +12677,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecP1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12727,7 +12727,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffDecP100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12747,7 +12747,7 @@ Next point in time when satellite settles.</string>
       </widget>
       <widget class="QGroupBox" name="satOffGroupRa">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -12768,7 +12768,7 @@ Next point in time when satellite settles.</string>
        </property>
        <widget class="QPushButton" name="satOffRaM100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12787,7 +12787,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QLineEdit" name="satOffRaVal">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12831,7 +12831,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaM10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12850,7 +12850,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaP10">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12869,7 +12869,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaM1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12888,7 +12888,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaP1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12938,7 +12938,7 @@ Next point in time when satellite settles.</string>
        </widget>
        <widget class="QPushButton" name="satOffRaP100">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -28917,14 +28917,11 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>cancelModel</tabstop>
   <tabstop>plateSolveSync</tabstop>
   <tabstop>parkMountAfterModel</tabstop>
-  <tabstop>checkSafetyMarginHorizon</tabstop>
   <tabstop>batchModel</tabstop>
-  <tabstop>safetyMarginHorizon</tabstop>
   <tabstop>excludeDonePoints</tabstop>
   <tabstop>pauseModel</tabstop>
   <tabstop>endModel</tabstop>
   <tabstop>clearHorizonMask</tabstop>
-  <tabstop>checkAutoDeleteHorizon</tabstop>
   <tabstop>showNumbers</tabstop>
   <tabstop>genBuildSpiralMax</tabstop>
   <tabstop>durationDSO</tabstop>

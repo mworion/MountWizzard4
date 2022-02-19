@@ -111,13 +111,6 @@ def test_colorChange(function):
         assert suc
 
 
-def test_setupDropDownGui(function):
-    function.setupDropDownGui()
-    assert function.ui.color.count() == 4
-    assert function.ui.zoom.count() == 5
-    assert function.ui.stretch.count() == 8
-
-
 def test_updateWindowsStats_1(function):
     function.deviceStat['expose'] = True
     function.deviceStat['exposeN'] = False
@@ -176,424 +169,106 @@ def test_selectImage_3(function, qtbot):
         assert function.folder == 'c:/test'
 
 
-def test_setupNormal_1(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.ui.checkShowGrid.setChecked(True)
-    function.ui.checkShowCrosshair.setChecked(True)
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-
-    suc = function.setupNormal()
-    assert suc
-    assert function.axe is not None
-    assert function.axeCB is not None
-
-
-def test_setupNormal_2(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.ui.checkShowGrid.setChecked(True)
-    function.ui.checkShowCrosshair.setChecked(True)
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-
-    suc = function.setupNormal()
-    assert suc
-    assert function.axe is not None
-    assert function.axeCB is not None
-
-
-def test_setupNormal_3(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.ui.checkShowGrid.setChecked(True)
-    function.ui.checkShowCrosshair.setChecked(True)
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-
-    suc = function.setupNormal()
-    assert suc
-    assert function.axe is not None
-    assert function.axeCB is not None
-
-
-def test_setupNormal_4(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.ui.checkShowGrid.setChecked(False)
-    function.ui.checkShowCrosshair.setChecked(False)
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-
-    suc = function.setupNormal()
-    assert suc
-    assert function.axe is not None
-    assert function.axeCB is not None
-
-
-def test_colorImage_1(function):
-    function.ui.color.addItem('Grey')
+def test_setBarColor_1(function):
     function.ui.color.setCurrentIndex(0)
-    suc = function.colorImage()
-    assert suc
-    assert function.colorMap == 'gray'
+    with mock.patch.object(function.ui.image,
+                           'setColorMap'):
+        suc = function.setBarColor()
+        assert suc
 
 
-def test_colorImage_2(function):
-    function.ui.color.addItem('Grey')
-    function.ui.color.addItem('Cool')
-    function.ui.color.setCurrentIndex(1)
-    suc = function.colorImage()
-    assert suc
-    assert function.colorMap == 'plasma'
+def test_setCrosshair_1(function):
+    function.ui.color.setCurrentIndex(0)
+    with mock.patch.object(function.ui.image,
+                           'showCrosshair'):
+        suc = function.setCrosshair()
+        assert suc
 
 
-def test_stretchImage_1(function):
-    function.stretchValues = {'Low': 1}
-    suc = function.stretchImage()
-    assert suc
+def test_addEllipse(function):
+    x = np.ones(100)
+    y = np.ones(100)
+    a = np.ones(100)
+    b = np.ones(100)
+    theta = np.ones(100)
+    with mock.patch.object(function.ui.image.plotItem,
+                           'addItem'):
+        suc = function.addEllipse(x, y, a, b, theta)
+        assert suc
 
 
-def test_stretchImage_2(function):
-    function.stretchValues = {'Low': 1}
-    suc = function.stretchImage()
-    assert suc
-    assert isinstance(function.stretch, astropy.visualization.AsinhStretch)
+def test_addText(function):
+    x = np.ones(100)
+    y = np.ones(100)
+    text = np.ones(100)
+    with mock.patch.object(function.ui.image.plotItem,
+                           'addItem'):
+        suc = function.addText(x, y, text)
+        assert suc
 
 
-def test_imagePlot_0(function):
-    function.ui.view.addItem('test')
+def test_searchBest(function):
+    function.objs = {
+        'x': np.ones(100),
+        'y': np.ones(100),
+        'a': np.ones(100),
+        'b': np.ones(100),
+        'theta': np.ones(100),
+    }
+    function.radius = np.ones(100)
+    val = function.searchBest()
+    assert len(val) == 6
+
+
+def test_setImage_0(function):
     function.image = np.random.rand(100, 100)
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
     function.ui.view.setCurrentIndex(0)
     suc = function.setImage()
     assert suc
 
 
-def test_imagePlot_1(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
+def test_setImage_1(function):
+    function.objs = {
+        'x': np.ones(100),
+        'y': np.ones(100),
+        'a': np.ones(100),
+        'b': np.ones(100),
+        'theta': np.ones(100),
+    }
+    function.radius = np.ones(100)
     function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.objs = np.ones(
-        10,
-        dtype=[('x', '<f8'), ('y', '<f8'),
-               ('a', '<f8'), ('b', '<f8'),
-               ('theta', '<f8'), ('flux', '<f8')])
-    function.bk_back = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(1)
     suc = function.setImage()
     assert suc
 
 
-def test_imagePlot_1b(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.objs = None
+def test_setImage_1b(function):
+    function.image = np.random.rand(100, 100)
     function.ui.view.setCurrentIndex(1)
     suc = function.setImage()
     assert not suc
 
 
-def test_imagePlot_2(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
+def test_setImage_2(function):
+    function.objs = {
+        'x': np.ones(100),
+        'y': np.ones(100),
+        'a': np.ones(100),
+        'b': np.ones(100),
+        'theta': np.ones(100),
+    }
+    function.radius = np.ones(100)
     function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.objs = np.ones(
-        10,
-        dtype=[('x', '<f8'), ('y', '<f8'),
-               ('a', '<f8'), ('b', '<f8'),
-               ('theta', '<f8'), ('flux', '<f8')])
-    function.bk_back = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(2)
-    function.radius = np.array([5, 3, 2])
     suc = function.setImage()
     assert suc
 
 
-def test_imagePlot_2b(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.objs = None
+def test_setImage_2b(function):
+    function.image = np.random.rand(100, 100)
     function.ui.view.setCurrentIndex(2)
     suc = function.setImage()
     assert not suc
-
-
-def test_imagePlot_3(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.objs = np.ones(
-        10,
-        dtype=[('x', '<f8'), ('y', '<f8'),
-               ('a', '<f8'), ('b', '<f8'),
-               ('theta', '<f8'), ('flux', '<f8')])
-    function.bk_back = np.zeros([100, 100])
-    function.ui.view.setCurrentIndex(3)
-    suc = function.setImage()
-    assert suc
-
-
-def test_imagePlot_3b(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.objs = None
-    function.ui.view.setCurrentIndex(3)
-    suc = function.setImage()
-    assert not suc
-
-
-def test_imagePlot_4(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.objs = np.ones(
-        10,
-        dtype=[('x', '<f8'), ('y', '<f8'),
-               ('a', '<f8'), ('b', '<f8'),
-               ('theta', '<f8'), ('flux', '<f8')])
-    function.bk_back = np.zeros([100, 100])
-    function.bk_rms = np.zeros([100, 100])
-    function.ui.view.setCurrentIndex(4)
-    suc = function.setImage()
-    assert suc
-
-
-def test_imagePlot_4b(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.bk_back = None
-    function.ui.view.setCurrentIndex(4)
-    suc = function.setImage()
-    assert not suc
-
-
-def test_imagePlot_5(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.objs = np.ones(
-        10,
-        dtype=[('x', '<f8'), ('y', '<f8'),
-               ('a', '<f8'), ('b', '<f8'),
-               ('theta', '<f8'), ('flux', '<f8')])
-    function.bk_back = np.zeros([100, 100])
-    function.bk_rms = np.zeros([100, 100])
-    function.ui.view.setCurrentIndex(5)
-    suc = function.setImage()
-    assert suc
-
-
-def test_imagePlot_5b(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.bk_rms = None
-    function.ui.view.setCurrentIndex(5)
-    suc = function.setImage()
-    assert not suc
-
-
-def test_imagePlot_6(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.objs = np.ones(
-        10,
-        dtype=[('x', '<f8'), ('y', '<f8'),
-               ('a', '<f8'), ('b', '<f8'),
-               ('theta', '<f8'), ('flux', '<f8')])
-    function.bk_back = np.random.rand(100, 100) + 1
-    function.flux = np.random.rand(10) + 1
-    function.ui.view.setCurrentIndex(6)
-    suc = function.setImage()
-    assert suc
-
-
-def test_imagePlot_6b(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.objs = None
-    function.ui.view.setCurrentIndex(6)
-    suc = function.setImage()
-    assert not suc
-
-
-def test_imagePlot_7(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.image = np.random.rand(300, 300)
-    function.header = fits.PrimaryHDU().header
-    function.axe = function.fig.add_subplot(label=0)
-    function.axeCB = function.fig.add_subplot(label=1)
-    function.stretch = AsinhStretch()
-    function.colorMap = 'rainbow'
-    function.objs = np.ones(
-        100,
-        dtype=[('x', '<f8'), ('y', '<f8'),
-               ('a', '<f8'), ('b', '<f8'),
-               ('theta', '<f8'), ('flux', '<f8')])
-    function.objs['x'] = np.random.rand(100)
-    function.objs['y'] = np.random.rand(100)
-    function.bk_back = np.zeros([300, 300])
-    function.radius = np.random.rand(100)
-    function.ui.view.setCurrentIndex(7)
-    suc = function.setImage()
-    assert suc
-
-
-def test_imagePlot_7b(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.radius = None
-    function.ui.view.setCurrentIndex(7)
-    suc = function.setImage()
-    assert not suc
-
-
-def test_writeHeaderDataToGUI_1(function):
-    function.header = fits.PrimaryHDU().header
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
-
-
-def test_writeHeaderDataToGUI_2(function):
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
-
-
-def test_writeHeaderDataToGUI_3(function):
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-    function.header['OBJCTRA'] = '+08 00 00'
-    function.header['OBJCTDEC'] = '90 00 00'
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
-
-
-def test_writeHeaderDataToGUI_4(function):
-    function.header = fits.PrimaryHDU().header
-    function.header['naxis'] = 2
-    function.header['RA'] = 12.0
-    function.header['DEC'] = 80.0
-    suc = function.writeHeaderDataToGUI(function.header)
-    assert suc
-
-
-def test_workerPreparePlot_1(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.header['CTYPE1'] = '2'
-    function.header['NAXIS'] = 2
-    function.ui.view.setCurrentIndex(1)
-    with mock.patch.object(function,
-                           'setupNormal'):
-        with mock.patch.object(function,
-                               'setImage',
-                               return_value=True):
-            suc = function.workerPreparePlot()
-            assert suc
-
-
-def test_workerPreparePlot_2(function):
-    function.ui.view.addItem('test')
-    function.ui.view.addItem('test')
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.header['CTYPE1'] = '2'
-    function.header['NAXIS'] = 2
-    function.ui.view.setCurrentIndex(1)
-    with mock.patch.object(function,
-                           'setupNormal'):
-        with mock.patch.object(function,
-                               'setImage',
-                               return_value=False):
-            suc = function.workerPreparePlot()
-            assert not suc
-
-
-def test_preparePlot_1(function):
-    with mock.patch.object(function.threadPool,
-                           'start'):
-        suc = function.preparePlot()
-        assert suc
 
 
 def test_workerPreparePhotometry_1(function):
@@ -623,7 +298,7 @@ def test_preparePhotometry_1(function):
 def test_preparePhotometry_2(function):
     function.objs = 1
     with mock.patch.object(function,
-                           'preparePlot'):
+                           'setImage'):
         suc = function.preparePhotometry()
         assert suc
 
@@ -676,29 +351,6 @@ def test_clearStack_2(function):
     assert function.ui.numberStacks.text() == 'test'
 
 
-def test_zoomImage_1(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.header['NAXIS'] = 2
-    function.ui.zoom.setCurrentIndex(0)
-    suc = function.zoomImage()
-    assert not suc
-    assert function.image.shape == (100, 100)
-
-
-def test_zoomImage_2(function):
-    function.ui.zoom.addItem(' 1x Zoom')
-    function.ui.zoom.addItem(' 2x Zoom')
-    function.image = np.random.rand(100, 100)
-    function.header = fits.PrimaryHDU().header
-    function.header['NAXIS'] = 2
-    function.ui.zoom.setCurrentIndex(1)
-    suc = function.zoomImage()
-    assert suc
-    assert function.image.shape == (50, 50)
-
-
 def test_debayerImage_1(function):
     img = np.random.rand(100, 100)
     img = function.debayerImage(img, 'GBRG')
@@ -729,6 +381,37 @@ def test_debayerImage_5(function):
     assert img.shape == (100, 100)
 
 
+def test_writeHeaderDataToGUI_1(function):
+    function.header = fits.PrimaryHDU().header
+    suc = function.writeHeaderDataToGUI(function.header)
+    assert suc
+
+
+def test_writeHeaderDataToGUI_2(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    suc = function.writeHeaderDataToGUI(function.header)
+    assert suc
+
+
+def test_writeHeaderDataToGUI_3(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    function.header['OBJCTRA'] = '+08 00 00'
+    function.header['OBJCTDEC'] = '90 00 00'
+    suc = function.writeHeaderDataToGUI(function.header)
+    assert suc
+
+
+def test_writeHeaderDataToGUI_4(function):
+    function.header = fits.PrimaryHDU().header
+    function.header['naxis'] = 2
+    function.header['RA'] = 12.0
+    function.header['DEC'] = 80.0
+    suc = function.writeHeaderDataToGUI(function.header)
+    assert suc
+
+
 def test_workerLoadImage_1(function):
     class Data:
         data = np.random.rand(100, 100)
@@ -743,7 +426,6 @@ def test_workerLoadImage_1(function):
         def __exit__(a, b, c):
             return
 
-    function.ui.zoom.addItem(' 1x Zoom')
     function.imageFileName = 'tests/workDir/image/m51.fit'
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
@@ -767,7 +449,6 @@ def test_workerLoadImage_2(function):
         def __exit__(a, b, c):
             return
 
-    function.ui.zoom.addItem(' 1x Zoom')
     function.imageFileName = 'tests/workDir/image/m51.fit'
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
@@ -794,18 +475,15 @@ def test_workerLoadImage_3(function):
         def __exit__(a, b, c):
             return
 
-    function.ui.zoom.addItem(' 1x Zoom')
     function.imageFileName = 'tests/workDir/image/m51.fit'
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
         with mock.patch.object(function,
-                               'zoomImage'):
-            with mock.patch.object(function,
-                                   'stackImages'):
-                suc = function.workerLoadImage()
-                assert suc
+                               'stackImages'):
+            suc = function.workerLoadImage()
+            assert suc
 
 
 def test_showImage_1(function):

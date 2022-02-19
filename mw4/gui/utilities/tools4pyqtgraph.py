@@ -104,4 +104,4 @@ class PlotImageBar(pg.PlotWidget, Styles):
         delList = [x for x in self.plotItem.items if isinstance(x, itemType)]
         for item in delList:
             self.plotItem.removeItem(item)
-
+        return True

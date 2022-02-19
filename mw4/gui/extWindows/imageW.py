@@ -281,6 +281,60 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
         return True
 
+    def addEllipse(self, x, y, a, b, theta):
+        """
+        :return:
+        """
+        d = 2
+        for i in range(len(x)):
+            w = (abs(np.cos(theta[i])) * a[i] + abs(np.sin(theta[i])) * b[i]) * d
+            h = (abs(np.sin(theta[i])) * a[i] + abs(np.cos(theta[i])) * b[i]) * d
+            ellipse = pg.QtGui.QGraphicsEllipseItem(x[i] - w,
+                                                    y[i] - h,
+                                                    2 * w, 2 * h)
+            ellipse.setPen(self.ui.image.pen)
+            self.ui.image.plotItem.addItem(ellipse)
+        return True
+
+    def addText(self, x, y, textValue):
+        """
+        :param x:
+        :param y:
+        :param textValue:
+        :return:
+        """
+        d = 3
+        for i in range(len(x)):
+            posX = x[i] + d
+            posY = y[i] + d
+            text = pg.TextItem(text=f'{textValue[i]:2.2f}',
+                               anchor=(0, 0),
+                               color=self.M_BLUE,
+                               angle=0)
+            text.setPos(posX, posY)
+            self.ui.image.plotItem.addItem(text)
+        return True
+
+    def searchBest(self):
+        """
+        :return:
+        """
+        draw = self.radius.argsort()[-50:][::-1]
+        x = []
+        y = []
+        a = []
+        b = []
+        r = []
+        t = []
+        for i in draw:
+            x.append(self.objs['x'][i])
+            y.append(self.objs['y'][i])
+            a.append(self.objs['a'][i])
+            b.append(self.objs['b'][i])
+            t.append(self.objs['theta'][i])
+            r.append(self.radius[i])
+        return x, y, a, b, t, r
+
     def setImage(self):
         """
         :return:
@@ -294,43 +348,26 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.image.setImage(imageDisp=self.image)
             self.log.debug('Show 0')
 
-        if self.ui.view.currentIndex() == 1:
+        elif self.ui.view.currentIndex() == 1:
             if self.objs is None:
                 self.log.debug('Show 1, no SEP data')
                 return False
 
             self.ui.image.setImage(imageDisp=self.image)
-            for i in range(len(self.objs)):
-                x = self.objs['x'][i]
-                y = self.objs['y'][i]
-                r = (self.objs['a'][i] + self.objs['b'][i]) * 3
-                ellipse = pg.QtGui.QGraphicsEllipseItem(x - r, y - r, 2 * r, 2 * r)
-                ellipse.setPen(self.ui.image.pen)
-                self.ui.image.plotItem.addItem(ellipse)
+            self.addEllipse(self.objs['x'], self.objs['y'],
+                            self.objs['a'], self.objs['b'],
+                            self.objs['theta'])
 
-        if self.ui.view.currentIndex() == 2:
+        elif self.ui.view.currentIndex() == 2:
             if self.objs is None or self.radius is None:
                 self.log.debug('Show 2, no SEP radius data')
                 return False
 
             self.ui.image.setImage(imageDisp=self.image)
-            draw = self.radius.argsort()[-50:][::-1]
-            for i in draw:
-                x = self.objs['x'][i]
-                y = self.objs['y'][i]
-                r = (self.objs['a'][i] + self.objs['b'][i]) * 3
-                ellipse = pg.QtGui.QGraphicsEllipseItem(x - r, y - r, 2 * r, 2 * r)
-                ellipse.setPen(self.ui.image.pen)
-                self.ui.image.plotItem.addItem(ellipse)
+            x, y, a, b, t, r = self.searchBest()
+            self.addEllipse(x, y, a, b, t)
+            self.addText(x, y, r)
 
-                posX = self.objs['x'][i] + self.objs['a'][i] + 5
-                posY = self.objs['b'][i] + self.objs['y'][i] + 5
-                text = pg.TextItem(text=f'{self.radius[i]:2.2f}',
-                                   anchor=(0, 0),
-                                   color=self.M_BLUE,
-                                   angle=0)
-                text.setPos(posX, posY)
-                self.ui.image.plotItem.addItem(text)
         return True
 
     def workerPreparePhotometry(self):
@@ -344,6 +381,19 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms,
                                 filter_type='conv',
                                 minarea=10)
+        self.flux, _, _ = sep.sum_circle(image_sub,
+                                         self.objs['x'],
+                                         self.objs['y'],
+                                         3.0,
+                                         err=bkg.globalrms,
+                                         gain=1.0)
+        self.radius, _ = sep.flux_radius(image_sub,
+                                         self.objs['x'],
+                                         self.objs['y'],
+                                         6.0 * self.objs['a'],
+                                         0.5,
+                                         normflux=self.flux,
+                                         subpix=5)
         return True
 
     def preparePhotometry(self):

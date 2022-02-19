@@ -53,7 +53,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -300,8 +300,46 @@
         <property name="spacing">
          <number>4</number>
         </property>
-        <item row="3" column="0">
-         <widget class="QCheckBox" name="checkShowCrosshair">
+        <item row="0" column="0" colspan="2">
+         <widget class="QComboBox" name="view">
+          <property name="minimumSize">
+           <size>
+            <width>220</width>
+            <height>25</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>Image Raw</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Image with Sources</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Photometry: HFD value</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="Line" name="line_2">
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="midLineWidth">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QRadioButton" name="showCrosshair">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -316,53 +354,39 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="checkShowGrid">
+        <item row="1" column="0">
+         <widget class="QComboBox" name="color">
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show a grid across the image.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Show grid</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="Line" name="line_2">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QComboBox" name="view">
-          <property name="minimumSize">
-           <size>
-            <width>220</width>
             <height>25</height>
            </size>
           </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="isFlipped">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Is Flipped</string>
-          </property>
+          <item>
+           <property name="text">
+            <string>Grey</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Rainbow</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Cividis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Magma</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Extreme</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -382,67 +406,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="imagesettings">
-       <property name="title">
-        <string>Image settings</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="spacing">
-         <number>4</number>
-        </property>
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>10</number>
-        </property>
-        <property name="rightMargin">
-         <number>4</number>
-        </property>
-        <property name="bottomMargin">
-         <number>4</number>
-        </property>
-        <item>
-         <widget class="QComboBox" name="stretch">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>25</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="color">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>25</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="zoom">
-          <property name="minimumSize">
-           <size>
-            <width>90</width>
-            <height>25</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
+      <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>5</width>
+         <width>40</width>
          <height>20</height>
         </size>
        </property>
@@ -813,7 +786,7 @@
       </widget>
      </item>
      <item row="0" column="1" rowspan="2">
-      <widget class="QWidget" name="image" native="true">
+      <widget class="PlotImageBar" name="image" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>1</horstretch>
@@ -826,25 +799,20 @@
          <height>0</height>
         </size>
        </property>
-       <widget class="QLabel" name="loading">
-        <property name="geometry">
-         <rect>
-          <x>205</x>
-          <y>185</y>
-          <width>181</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotImageBar</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <designerdata>

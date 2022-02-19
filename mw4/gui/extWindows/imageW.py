@@ -33,6 +33,7 @@ from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
 import sep
 from PIL import Image
+import pyqtgraph as pg
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
@@ -63,6 +64,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
 
+        self.barItem = None
+        self.imageItem = None
+
         self.imageFileName = ''
         self.imageFileNameOld = ''
         self.expTime = 1
@@ -72,8 +76,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.header = None
         self.imageStack = None
         self.numberStack = 0
-        self.colorMap = None
-        self.stretch = None
         self.objs = None
         self.bk_back = None
         self.bk_rms = None
@@ -85,44 +87,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             'exposeN': False,
             'solve': False,
         }
-        self.view = {0: 'Image Raw',
-                     1: 'Image with Sources',
-                     2: 'Photometry: HFD value',
-                     3: 'Photometry: Eccentricity',
-                     4: 'Photometry: Background level',
-                     5: 'Photometry: Background noise',
-                     6: 'Photometry: Flux',
-                     7: 'Photometry: HFD Contour',
-                     }
-
-        self.colorMaps = {'Grey': 'gray',
-                          'Cool': 'plasma',
-                          'Rainbow': 'rainbow',
-                          'Spectral': 'nipy_spectral',
-                          }
-
-        self.stretchValues = {'Low XX': 0.2,
-                              'Low X': 0.1,
-                              'Low': 0.05,
-                              'Mid': 0.025,
-                              'High': 0.005,
-                              'Super ': 0.0025,
-                              'Super X': 0.001,
-                              'Super XX': 0.0005,
-                              }
-
-        self.zoomLevel = {' 1x Zoom': 1,
-                          ' 2x Zoom': 2,
-                          ' 4x Zoom': 4,
-                          ' 8x Zoom': 8,
-                          '16x Zoom': 16,
-                          }
-
-        self.imageMat = self.embedMatplot(self.ui.image, constrainedLayout=False)
-        # self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.fig = self.imageMat.figure
-        self.axe = None
-        self.axeCB = None
 
         self.app.update1s.connect(self.updateWindowsStats)
 
@@ -145,18 +109,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         if x != 0 and y != 0:
             self.move(x, y)
 
-        self.setupDropDownGui()
         self.ui.color.setCurrentIndex(config.get('color', 0))
-        self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
         self.ui.view.setCurrentIndex(config.get('view', 0))
-        self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
         self.ui.checkStackImages.setChecked(config.get('checkStackImages', False))
-        self.ui.checkShowCrosshair.setChecked(config.get('checkShowCrosshair', False))
-        self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
+        self.ui.showCrosshair.setChecked(config.get('showCrosshair', False))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
+        self.setCrosshair()
         return True
 
     def storeConfig(self):
@@ -171,13 +132,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['color'] = self.ui.color.currentIndex()
-        config['zoom'] = self.ui.zoom.currentIndex()
         config['view'] = self.ui.view.currentIndex()
-        config['stretch'] = self.ui.stretch.currentIndex()
         config['imageFileName'] = self.imageFileName
         config['checkStackImages'] = self.ui.checkStackImages.isChecked()
-        config['checkShowCrosshair'] = self.ui.checkShowCrosshair.isChecked()
-        config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
+        config['showCrosshair'] = self.ui.showCrosshair.isChecked()
         config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
         config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
         return True
@@ -191,12 +149,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: true for test purpose
         """
         self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.preparePlot)
-        self.ui.stretch.currentIndexChanged.connect(self.preparePlot)
-        self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
-        self.ui.view.currentIndexChanged.connect(self.preparePlot)
-        self.ui.checkShowGrid.clicked.connect(self.preparePlot)
-        self.ui.checkShowCrosshair.clicked.connect(self.preparePlot)
+        self.ui.color.currentIndexChanged.connect(self.setBarColor)
+        self.ui.view.currentIndexChanged.connect(self.setImage)
+        self.ui.showCrosshair.clicked.connect(self.setCrosshair)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
@@ -222,12 +177,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.storeConfig()
         self.ui.load.clicked.disconnect(self.selectImage)
-        self.ui.color.currentIndexChanged.disconnect(self.preparePlot)
-        self.ui.stretch.currentIndexChanged.disconnect(self.preparePlot)
-        self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
-        self.ui.view.currentIndexChanged.disconnect(self.preparePlot)
-        self.ui.checkShowGrid.clicked.disconnect(self.preparePlot)
-        self.ui.checkShowCrosshair.clicked.disconnect(self.preparePlot)
+        self.ui.color.currentIndexChanged.disconnect(self.setBarColor)
+        self.ui.view.currentIndexChanged.disconnect(self.setImage)
+        self.ui.showCrosshair.clicked.disconnect(self.setCrosshair)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
@@ -245,32 +197,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.setStyleSheet(self.mw4Style)
         self.showCurrent()
-        return True
-
-    def setupDropDownGui(self):
-        """
-        :return: success for test
-        """
-        self.ui.color.clear()
-        self.ui.color.setView(PyQt5.QtWidgets.QListView())
-        for text in self.colorMaps:
-            self.ui.color.addItem(text)
-
-        self.ui.zoom.clear()
-        self.ui.zoom.setView(PyQt5.QtWidgets.QListView())
-        for text in self.zoomLevel:
-            self.ui.zoom.addItem(text)
-
-        self.ui.stretch.clear()
-        self.ui.stretch.setView(PyQt5.QtWidgets.QListView())
-        for text in self.stretchValues:
-            self.ui.stretch.addItem(text)
-
-        self.ui.view.clear()
-        self.ui.view.setView(PyQt5.QtWidgets.QListView())
-        for menuNumber in self.view:
-            self.ui.view.addItem(self.view[menuNumber])
-
         return True
 
     def updateWindowsStats(self):
@@ -339,277 +265,72 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.showImage.emit(self.imageFileName)
         return True
 
-    def setupNormal(self):
-        """
-        :return: True for test purpose
-        """
-        self.fig.clf()
-        self.axe = self.fig.add_subplot(1, 1, 1,
-                                        facecolor=self.M_BACK)
-
-        self.fig.subplots_adjust(bottom=0.1, top=0.9, left=0.1, right=0.85)
-        self.axeCB = self.fig.add_axes([0.88, 0.1, 0.02, 0.8])
-        self.axe.spines['bottom'].set_color(self.M_BLUE)
-        self.axe.spines['top'].set_color(self.M_BLUE)
-        self.axe.spines['left'].set_color(self.M_BLUE)
-        self.axe.spines['right'].set_color(self.M_BLUE)
-
-        factor = self.zoomLevel[self.ui.zoom.currentText()]
-        sizeX = self.header.get('NAXIS1', 1) / factor
-        sizeY = self.header.get('NAXIS2', 1) / factor
-        midX = int(sizeX / 2)
-        midY = int(sizeY / 2)
-        number = 10
-
-        if self.ui.checkShowCrosshair.isChecked():
-            self.axe.axvline(midX, color=self.M_RED)
-            self.axe.axhline(midY, color=self.M_RED)
-
-        if self.ui.checkShowGrid.isChecked():
-            self.axe.grid(True, color=self.M_GREY, ls='solid', alpha=1)
-
-        self.axe.tick_params(axis='x', which='major',
-                             colors=self.M_BLUE, labelsize=12)
-        self.axe.tick_params(axis='y', which='major',
-                             colors=self.M_BLUE, labelsize=12)
-
-        valueX, _ = np.linspace(-midX, midX, num=number, retstep=True)
-        textX = list((str(int(x)) for x in valueX))
-        ticksX = list((x + midX for x in valueX))
-        self.axe.set_xticks(ticksX)
-        self.axe.set_xticklabels(textX)
-
-        valueY, _ = np.linspace(-midY, midY, num=number, retstep=True)
-        textY = list((str(int(x)) for x in valueY))
-        ticksY = list((x + midY for x in valueY))
-        self.axe.set_yticks(ticksY)
-        self.axe.set_yticklabels(textY)
-
-        self.axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE,
-                            fontsize=12, fontweight='bold')
-        self.axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE,
-                            fontsize=12, fontweight='bold')
-
-        self.axe.set_xlim(0, sizeX)
-        self.axe.set_ylim(0, sizeY)
-        return True
-
-    def colorImage(self):
-        """
-        :return: True
-        """
-        fallback = list(self.colorMaps.keys())[0]
-        self.colorMap = self.colorMaps.get(self.ui.color.currentText(), fallback)
-        return True
-
-    def stretchImage(self):
-        """
-        :return: True
-        """
-        fallback = list(self.stretchValues.keys())[0]
-        value = self.stretchValues.get(self.ui.stretch.currentText(),
-                                       self.stretchValues[fallback])
-        self.stretch = AsinhStretch(a=value)
-        return True
-
-    def imageRawPlot(self, imageDisp=None):
+    def setBarColor(self):
         """
         :return:
         """
-        img = imshow_norm(imageDisp,
-                          ax=self.axe,
-                          origin='lower',
-                          interval=MinMaxInterval(),
-                          stretch=self.stretch,
-                          cmap=self.colorMap,
-                          aspect='auto')
-        return img
+        cMap = ['CET-L2', 'plasma', 'cividis', 'magma', 'CET-D1A']
+        colorMap = cMap[self.ui.color.currentIndex()]
+        self.ui.image.setColorMap(colorMap)
+        return True
 
-    def imagePlot(self):
+    def setCrosshair(self):
         """
         :return:
         """
+        self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
+        return True
+
+    def setImage(self):
+        """
+        :return:
+        """
+        self.setBarColor()
+        self.setCrosshair()
+        self.ui.image.clearItems(pg.QtGui.QGraphicsEllipseItem)
+        self.ui.image.clearItems(pg.TextItem)
+
         if self.ui.view.currentIndex() == 0:
-            img = self.imageRawPlot(imageDisp=self.image)
+            self.ui.image.setImage(imageDisp=self.image)
             self.log.debug('Show 0')
-
-            if self.axeCB:
-                colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
-                colorbar.set_label('Value [pixel value]',
-                                   color=self.M_BLUE,
-                                   fontsize=12)
-                yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-                plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
 
         if self.ui.view.currentIndex() == 1:
             if self.objs is None:
                 self.log.debug('Show 1, no SEP data')
                 return False
 
-            self.imageRawPlot(imageDisp=self.image)
+            self.ui.image.setImage(imageDisp=self.image)
             for i in range(len(self.objs)):
-                e = Ellipse(xy=(self.objs['x'][i], self.objs['y'][i]),
-                            width=6 * self.objs['a'][i],
-                            height=6 * self.objs['b'][i],
-                            angle=self.objs['theta'][i] * 180. / np.pi)
-                e.set_facecolor('none')
-                e.set_edgecolor(self.M_BLUE)
-                self.axe.add_artist(e)
-
-            if self.axeCB:
-                self.axeCB.axis('off')
+                x = self.objs['x'][i]
+                y = self.objs['y'][i]
+                r = (self.objs['a'][i] + self.objs['b'][i]) * 3
+                ellipse = pg.QtGui.QGraphicsEllipseItem(x - r, y - r, 2 * r, 2 * r)
+                ellipse.setPen(self.ui.image.pen)
+                self.ui.image.plotItem.addItem(ellipse)
 
         if self.ui.view.currentIndex() == 2:
             if self.objs is None or self.radius is None:
                 self.log.debug('Show 2, no SEP radius data')
                 return False
 
-            self.imageRawPlot(imageDisp=self.image)
+            self.ui.image.setImage(imageDisp=self.image)
             draw = self.radius.argsort()[-50:][::-1]
             for i in draw:
-                e = Ellipse(xy=(self.objs['x'][i], self.objs['y'][i]),
-                            width=6 * self.objs['a'][i],
-                            height=6 * self.objs['b'][i],
-                            angle=self.objs['theta'][i] * 180.0 / np.pi)
-                e.set_facecolor('none')
-                e.set_edgecolor(self.M_BLUE)
-                self.axe.add_artist(e)
+                x = self.objs['x'][i]
+                y = self.objs['y'][i]
+                r = (self.objs['a'][i] + self.objs['b'][i]) * 3
+                ellipse = pg.QtGui.QGraphicsEllipseItem(x - r, y - r, 2 * r, 2 * r)
+                ellipse.setPen(self.ui.image.pen)
+                self.ui.image.plotItem.addItem(ellipse)
+
                 posX = self.objs['x'][i] + self.objs['a'][i] + 5
                 posY = self.objs['b'][i] + self.objs['y'][i] + 5
-                self.axe.annotate(f'{self.radius[i]:2.1f}',
-                                  xy=(posX, posY),
-                                  color=self.M_BLUE,
-                                  fontweight='bold')
-            if self.axeCB:
-                self.axeCB.axis('off')
-
-        if self.ui.view.currentIndex() == 3:
-            if self.objs is None:
-                self.log.debug('Show 3, no SEP data')
-                return False
-
-            self.imageRawPlot(imageDisp=self.image)
-            a = self.objs['a']
-            b = self.objs['b']
-            eccentricity = np.sqrt(1 - b ** 2 / a ** 2)
-            area = 5
-            scatter = self.axe.scatter(self.objs['x'], self.objs['y'],
-                                       c=eccentricity, s=area, cmap='gnuplot2')
-
-            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
-            colorbar.set_label('Eccentricity []', color=self.M_BLUE,
-                               fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        if self.ui.view.currentIndex() == 4:
-            if self.bk_back is None:
-                self.log.debug('Show 4, no SEP background data')
-                return False
-
-            img = self.imageRawPlot(imageDisp=self.bk_back)
-            if self.axeCB:
-                colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
-                colorbar.set_label('Background level [adu]',
+                text = pg.TextItem(text=f'{self.radius[i]:2.2f}',
+                                   anchor=(0, 0),
                                    color=self.M_BLUE,
-                                   fontsize=12)
-                yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-                plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        if self.ui.view.currentIndex() == 5:
-            if self.bk_rms is None:
-                self.log.debug('Show 5, no SEP background rms data')
-                return False
-
-            img = self.imageRawPlot(imageDisp=self.bk_rms)
-            if self.axeCB:
-                colorbar = self.fig.colorbar(img[0], cax=self.axeCB)
-                colorbar.set_label('Background noise [adu]',
-                                   color=self.M_BLUE,
-                                   fontsize=12)
-                yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-                plt.setp(yTicks, color=self.M_BLUE,
-                         fontweight='bold')
-
-        if self.ui.view.currentIndex() == 6:
-            if self.flux is None or self.objs is None:
-                self.log.debug('Show 5, no SEP flux data')
-                return False
-
-            flux = np.log(self.flux)
-            area = 3 * flux
-            scatter = self.axe.scatter(self.objs['x'], self.objs['y'],
-                                       c=flux, s=area, cmap=self.colorMap)
-
-            colorbar = self.fig.colorbar(scatter, cax=self.axeCB)
-            colorbar.set_label('Flux [log(x)]', color=self.M_BLUE, fontsize=12)
-            yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
-            plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        if self.ui.view.currentIndex() == 7:
-            if self.radius is None or self.objs is None:
-                self.log.debug('Show 7, no SEP radius data')
-                return False
-
-            x = self.objs['x']
-            y = self.objs['y']
-            z = self.radius
-            width = self.image.shape[1]
-            height = self.image.shape[0]
-            X, Y = np.meshgrid(range(0, width, int(width / 250)),
-                               range(0, height, int(height / 250)))
-            Z = griddata((x, y), z, (X, Y), method='linear', fill_value=np.mean(z))
-            Z = uniform_filter(Z, size=25)
-            self.axe.contourf(X, Y, Z, 20)
-            if self.axeCB:
-                self.axeCB.axis('off')
-
-        self.axe.figure.canvas.draw()
-        return True
-
-    def writeHeaderDataToGUI(self, header):
-        """
-        :param header:
-        :return: True for test purpose
-        """
-        self.guiSetText(self.ui.object, 's', header.get('OBJECT', '').upper())
-        ra, dec = getCoordinates(header=header)
-        self.guiSetText(self.ui.ra, 'HSTR', ra)
-        self.guiSetText(self.ui.dec, 'DSTR', dec)
-        self.guiSetText(self.ui.scale, '5.3f', getScale(header=header))
-        self.guiSetText(self.ui.rotation, '6.3f', header.get('ANGLE'))
-        self.guiSetText(self.ui.ccdTemp, '4.1f', header.get('CCD-TEMP'))
-        self.guiSetText(self.ui.expTime, '5.1f', getExposure(header=header))
-        self.guiSetText(self.ui.filter, 's', header.get('FILTER'))
-        self.guiSetText(self.ui.binX, '1.0f', header.get('XBINNING'))
-        self.guiSetText(self.ui.binY, '1.0f', header.get('YBINNING'))
-        self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
-        flipped = bool(header.get('FLIPPED', False))
-        self.ui.isFlipped.setEnabled(flipped)
-        return True
-
-    def workerPreparePlot(self):
-        """
-        :return:
-        """
-        self.updateWindowsStats()
-        self.setupNormal()
-        self.writeHeaderDataToGUI(self.header)
-        self.stretchImage()
-        self.colorImage()
-        suc = self.imagePlot()
-        if not suc:
-            t = 'Image type could not be shown - display raw image'
-            self.app.message.emit(t, 2)
-            self.ui.view.setCurrentIndex(0)
-        return suc
-
-    def preparePlot(self):
-        """
-        :return:
-        """
-        worker = Worker(self.workerPreparePlot)
-        self.threadPool.start(worker)
+                                   angle=0)
+                text.setPos(posX, posY)
+                self.ui.image.plotItem.addItem(text)
         return True
 
     def workerPreparePhotometry(self):
@@ -623,19 +344,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms,
                                 filter_type='conv',
                                 minarea=10)
-        self.flux, _, _ = sep.sum_circle(image_sub,
-                                         self.objs['x'],
-                                         self.objs['y'],
-                                         3.0,
-                                         err=bkg.globalrms,
-                                         gain=1.0)
-        self.radius, _ = sep.flux_radius(image_sub,
-                                         self.objs['x'],
-                                         self.objs['y'],
-                                         6.0 * self.objs['a'],
-                                         0.5,
-                                         normflux=self.flux,
-                                         subpix=5)
         return True
 
     def preparePhotometry(self):
@@ -644,10 +352,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         if self.objs is None:
             worker = Worker(self.workerPreparePhotometry)
-            worker.signals.finished.connect(self.preparePlot)
+            worker.signals.finished.connect(self.setImage)
             self.threadPool.start(worker)
         else:
-            self.preparePlot()
+            self.setImage()
         return True
 
     def stackImages(self):
@@ -683,26 +391,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.numberStacks.setText('single')
             return False
 
-        return True
-
-    def zoomImage(self):
-        """
-        :return: true
-        """
-        sizeY, sizeX = self.image.shape
-        fallback = list(self.zoomLevel.keys())[0]
-        factor = self.zoomLevel.get(self.ui.zoom.currentText(), fallback)
-        if factor == 1:
-            return
-
-        position = (int(sizeX / 2), int(sizeY / 2))
-        size = (int(sizeY / factor), int(sizeX / factor))
-        self.log.debug(f'Image zoomed to position:[{position}], size:[{size}]')
-        self.image = Cutout2D(self.image,
-                              position=position,
-                              size=size,
-                              wcs=wcs.WCS(self.header, relax=True),
-                              copy=True).data
         return True
 
     def debayerImage(self, image, pattern):
@@ -745,6 +433,25 @@ class ImageWindow(toolsQtWidget.MWidget):
         image = np.array(Image.fromarray(image).resize((h, w)))
         return image
 
+    def writeHeaderDataToGUI(self, header):
+        """
+        :param header:
+        :return: True for test purpose
+        """
+        self.guiSetText(self.ui.object, 's', header.get('OBJECT', '').upper())
+        ra, dec = getCoordinates(header=header)
+        self.guiSetText(self.ui.ra, 'HSTR', ra)
+        self.guiSetText(self.ui.dec, 'DSTR', dec)
+        self.guiSetText(self.ui.scale, '5.3f', getScale(header=header))
+        self.guiSetText(self.ui.rotation, '6.3f', header.get('ANGLE'))
+        self.guiSetText(self.ui.ccdTemp, '4.1f', header.get('CCD-TEMP'))
+        self.guiSetText(self.ui.expTime, '5.1f', getExposure(header=header))
+        self.guiSetText(self.ui.filter, 's', header.get('FILTER'))
+        self.guiSetText(self.ui.binX, '1.0f', header.get('XBINNING'))
+        self.guiSetText(self.ui.binY, '1.0f', header.get('YBINNING'))
+        self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
+        return True
+
     def workerLoadImage(self):
         """
         :return:
@@ -769,7 +476,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.image = self.debayerImage(self.image, bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
-        self.zoomImage()
+        self.updateWindowsStats()
+        self.writeHeaderDataToGUI(self.header)
         self.stackImages()
         self.objs = None
         return True
@@ -784,7 +492,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not os.path.isfile(imagePath):
             return False
 
-        self.ui.loading.setText('Loading....')
         self.imageFileName = imagePath
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)

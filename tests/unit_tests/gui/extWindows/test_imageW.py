@@ -266,7 +266,7 @@ def test_imagePlot_0(function):
     function.stretch = AsinhStretch()
     function.colorMap = 'rainbow'
     function.ui.view.setCurrentIndex(0)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -286,7 +286,7 @@ def test_imagePlot_1(function):
                ('theta', '<f8'), ('flux', '<f8')])
     function.bk_back = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(1)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -295,7 +295,7 @@ def test_imagePlot_1b(function):
     function.ui.view.addItem('test')
     function.objs = None
     function.ui.view.setCurrentIndex(1)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert not suc
 
 
@@ -317,7 +317,7 @@ def test_imagePlot_2(function):
     function.bk_back = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(2)
     function.radius = np.array([5, 3, 2])
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -327,7 +327,7 @@ def test_imagePlot_2b(function):
     function.ui.view.addItem('test')
     function.objs = None
     function.ui.view.setCurrentIndex(2)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert not suc
 
 
@@ -349,7 +349,7 @@ def test_imagePlot_3(function):
                ('theta', '<f8'), ('flux', '<f8')])
     function.bk_back = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(3)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -360,7 +360,7 @@ def test_imagePlot_3b(function):
     function.ui.view.addItem('test')
     function.objs = None
     function.ui.view.setCurrentIndex(3)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert not suc
 
 
@@ -384,7 +384,7 @@ def test_imagePlot_4(function):
     function.bk_back = np.zeros([100, 100])
     function.bk_rms = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(4)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -396,7 +396,7 @@ def test_imagePlot_4b(function):
     function.ui.view.addItem('test')
     function.bk_back = None
     function.ui.view.setCurrentIndex(4)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert not suc
 
 
@@ -421,7 +421,7 @@ def test_imagePlot_5(function):
     function.bk_back = np.zeros([100, 100])
     function.bk_rms = np.zeros([100, 100])
     function.ui.view.setCurrentIndex(5)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -434,7 +434,7 @@ def test_imagePlot_5b(function):
     function.ui.view.addItem('test')
     function.bk_rms = None
     function.ui.view.setCurrentIndex(5)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert not suc
 
 
@@ -460,7 +460,7 @@ def test_imagePlot_6(function):
     function.bk_back = np.random.rand(100, 100) + 1
     function.flux = np.random.rand(10) + 1
     function.ui.view.setCurrentIndex(6)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -474,7 +474,7 @@ def test_imagePlot_6b(function):
     function.ui.view.addItem('test')
     function.objs = None
     function.ui.view.setCurrentIndex(6)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert not suc
 
 
@@ -503,7 +503,7 @@ def test_imagePlot_7(function):
     function.bk_back = np.zeros([300, 300])
     function.radius = np.random.rand(100)
     function.ui.view.setCurrentIndex(7)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert suc
 
 
@@ -518,7 +518,7 @@ def test_imagePlot_7b(function):
     function.ui.view.addItem('test')
     function.radius = None
     function.ui.view.setCurrentIndex(7)
-    suc = function.imagePlot()
+    suc = function.setImage()
     assert not suc
 
 
@@ -565,7 +565,7 @@ def test_workerPreparePlot_1(function):
     with mock.patch.object(function,
                            'setupNormal'):
         with mock.patch.object(function,
-                               'imagePlot',
+                               'setImage',
                                return_value=True):
             suc = function.workerPreparePlot()
             assert suc
@@ -583,7 +583,7 @@ def test_workerPreparePlot_2(function):
     with mock.patch.object(function,
                            'setupNormal'):
         with mock.patch.object(function,
-                               'imagePlot',
+                               'setImage',
                                return_value=False):
             suc = function.workerPreparePlot()
             assert not suc

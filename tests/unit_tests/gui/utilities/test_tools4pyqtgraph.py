@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 
 # external packages
 import pyqtgraph as pg
@@ -55,7 +56,15 @@ def test_showCrosshair(function):
     assert suc
 
 
-def test_clearItems(function):
-    function.plotItem.addItem(pg.TextItem())
-    suc = function.clearItems(pg.TextItem)
-    assert suc
+def test_addEllipse(function):
+    with mock.patch.object(function.plotItem,
+                           'addItem'):
+        suc = function.addEllipse(0, 0, 1, 1, 0)
+        assert suc
+
+
+def test_addValueAnnotation(function):
+    with mock.patch.object(function.plotItem,
+                           'addItem'):
+        suc = function.addValueAnnotation(0, 0, 10)
+        assert suc

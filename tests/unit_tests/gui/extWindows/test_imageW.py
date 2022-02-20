@@ -185,41 +185,6 @@ def test_setCrosshair_1(function):
         assert suc
 
 
-def test_addEllipse(function):
-    x = np.ones(100)
-    y = np.ones(100)
-    a = np.ones(100)
-    b = np.ones(100)
-    theta = np.ones(100)
-    with mock.patch.object(function.ui.image.plotItem,
-                           'addItem'):
-        suc = function.addEllipse(x, y, a, b, theta)
-        assert suc
-
-
-def test_addText(function):
-    x = np.ones(100)
-    y = np.ones(100)
-    text = np.ones(100)
-    with mock.patch.object(function.ui.image.plotItem,
-                           'addItem'):
-        suc = function.addText(x, y, text)
-        assert suc
-
-
-def test_searchBest(function):
-    function.objs = {
-        'x': np.ones(100),
-        'y': np.ones(100),
-        'a': np.ones(100),
-        'b': np.ones(100),
-        'theta': np.ones(100),
-    }
-    function.radius = np.ones(100)
-    val = function.searchBest()
-    assert len(val) == 6
-
-
 def test_setImage_0(function):
     function.image = np.random.rand(100, 100)
     function.ui.view.setCurrentIndex(0)

@@ -272,69 +272,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
         return True
 
-    def addEllipse(self, x, y, a, b, theta):
-        """
-        :return:
-        """
-        d = 2
-        for i in range(len(x)):
-            w = (abs(np.cos(theta[i])) * a[i] + abs(np.sin(theta[i])) * b[i]) * d
-            h = (abs(np.sin(theta[i])) * a[i] + abs(np.cos(theta[i])) * b[i]) * d
-            ellipse = pg.QtGui.QGraphicsEllipseItem(x[i] - w,
-                                                    y[i] - h,
-                                                    2 * w, 2 * h)
-            ellipse.setPen(self.ui.image.pen)
-            self.ui.image.plotItem.addItem(ellipse)
-        return True
-
-    def addText(self, x, y, textValue):
-        """
-        :param x:
-        :param y:
-        :param textValue:
-        :return:
-        """
-        d = 3
-        for i in range(len(x)):
-            posX = x[i] + d
-            posY = y[i] + d
-            text = pg.TextItem(text=f'{textValue[i]:2.2f}',
-                               anchor=(0, 0),
-                               color=self.M_BLUE,
-                               angle=0)
-            text.setPos(posX, posY)
-            self.ui.image.plotItem.addItem(text)
-        return True
-
-    def searchBest(self):
-        """
-        :return:
-        """
-        draw = self.radius.argsort()[-50:][::-1]
-        x = []
-        y = []
-        a = []
-        b = []
-        r = []
-        t = []
-        for i in draw:
-            x.append(self.objs['x'][i])
-            y.append(self.objs['y'][i])
-            a.append(self.objs['a'][i])
-            b.append(self.objs['b'][i])
-            t.append(self.objs['theta'][i])
-            r.append(self.radius[i])
-        return x, y, a, b, t, r
-
     def setImage(self):
         """
         :return:
         """
         self.setBarColor()
         self.setCrosshair()
-        self.ui.image.clearItems(pg.QtGui.QGraphicsEllipseItem)
-        self.ui.image.clearItems(pg.TextItem)
-
         if self.ui.view.currentIndex() == 0:
             self.ui.image.setImage(imageDisp=self.image)
             self.log.debug('Show 0')
@@ -345,9 +288,10 @@ class ImageWindow(toolsQtWidget.MWidget):
                 return False
 
             self.ui.image.setImage(imageDisp=self.image)
-            self.addEllipse(self.objs['x'], self.objs['y'],
-                            self.objs['a'], self.objs['b'],
-                            self.objs['theta'])
+            for i in range(len(self.objs)):
+                self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
+                                         self.objs['a'][i], self.objs['b'][i],
+                                         self.objs['theta'][i])
 
         elif self.ui.view.currentIndex() == 2:
             if self.objs is None or self.radius is None:
@@ -355,10 +299,13 @@ class ImageWindow(toolsQtWidget.MWidget):
                 return False
 
             self.ui.image.setImage(imageDisp=self.image)
-            x, y, a, b, t, r = self.searchBest()
-            self.addEllipse(x, y, a, b, t)
-            self.addText(x, y, r)
-
+            draw = self.radius.argsort()[-50:][::-1]
+            for i in draw:
+                self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
+                                         self.objs['a'][i], self.objs['b'][i],
+                                         self.objs['theta'][i])
+                self.ui.image.addValueAnnotation(self.objs['x'][i], self.objs['y'][i],
+                                                 self.radius[i])
         return True
 
     def workerPreparePhotometry(self):
@@ -700,8 +647,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         updateFits = self.ui.checkEmbedData.isChecked()
         self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.astrometry.solveThreading(fitsPath=imagePath,
-                                           updateFits=updateFits,
-                                           )
+                                           updateFits=updateFits)
         self.deviceStat['solve'] = True
         text = f'Solving:             [{os.path.basename(imagePath)}]'
         self.app.message.emit(text, 0)

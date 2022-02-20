@@ -30,9 +30,10 @@ __all__ = [
 ]
 
 
-class PlotImageBar(pg.PlotWidget, Styles):
+class PlotNormal(pg.PlotWidget, Styles):
     """
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -40,29 +41,41 @@ class PlotImageBar(pg.PlotWidget, Styles):
                             imageAxisOrder='row-major')
         self.setBackground(self.M_BACK)
         self.plotItem = self.getPlotItem()
-        self.imageItem = pg.ImageItem()
-        self.barItem = pg.ColorBarItem()
         self.pen = pg.mkPen(color=self.M_BLUE)
+        self.plotItem.getViewBox().setMenuEnabled(False)
+        self.plotItem.showAxes((True, True, True, True))
+        self.plotItem.hideButtons()
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.plotItem.getAxis(side).setPen(self.pen)
+            self.plotItem.getAxis(side).setTextPen(self.pen)
+
+
+class PlotImageBar(PlotNormal):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.imageItem = None
+        self.barItem = pg.ColorBarItem()
         self.lx = None
         self.ly = None
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.barItem.getAxis(side).setPen(self.pen)
+            self.barItem.getAxis(side).setTextPen(self.pen)
 
+    def constructPlot(self):
+        """
+        :return:
+        """
+        self.plotItem.clear()
+        self.imageItem = pg.ImageItem()
         self.plotItem.addItem(self.imageItem)
         self.barItem.setImageItem(self.imageItem, insert_in=self.plotItem)
         self.lx = self.plotItem.addLine(x=0, pen=self.pen)
         self.ly = self.plotItem.addLine(y=0, pen=self.pen)
-
-        self.plotItem.getViewBox().setMenuEnabled(False)
-        self.plotItem.showAxes((True, True, True, True))
-        for side in ('left', 'top', 'right', 'bottom'):
-            self.plotItem.getAxis(side).setPen(self.pen)
-            self.plotItem.getAxis(side).setTextPen(self.pen)
-            self.barItem.getAxis(side).setPen(self.pen)
-            self.barItem.getAxis(side).setTextPen(self.pen)
-
-        self.plotItem.hideButtons()
-        self.plotItem.setLabel('left', text='[Pixel]')
-        self.plotItem.setLabel('bottom', text='[Pixel]')
-        self.barItem.setLabel('right', text='ADU')
+        self.lx.setVisible(False)
+        self.ly.setVisible(False)
 
     def setColorMap(self, colorMap):
         """
@@ -78,6 +91,7 @@ class PlotImageBar(pg.PlotWidget, Styles):
         :param imageDisp:
         :return:
         """
+        self.constructPlot()
         self.imageItem.setImage(imageDisp)
         y, x = imageDisp.shape
         self.plotItem.setLimits(xMin=0, xMax=x, yMin=0, yMax=y)
@@ -100,8 +114,33 @@ class PlotImageBar(pg.PlotWidget, Styles):
             self.ly.setVisible(value)
         return True
 
-    def clearItems(self, itemType):
-        delList = [x for x in self.plotItem.items if isinstance(x, itemType)]
-        for item in delList:
-            self.plotItem.removeItem(item)
+    def addEllipse(self, x, y, a, b, theta):
+        """
+        :return:
+        """
+        d = 2
+        w = (abs(np.cos(theta)) * a + abs(np.sin(theta)) * b) * d
+        h = (abs(np.sin(theta)) * a + abs(np.cos(theta)) * b) * d
+        ellipse = pg.QtGui.QGraphicsEllipseItem(x - w, y - h,
+                                                2 * w, 2 * h)
+        ellipse.setPen(self.pen)
+        self.plotItem.addItem(ellipse)
+        return True
+
+    def addValueAnnotation(self, x, y, value):
+        """
+        :param x:
+        :param y:
+        :param value:
+        :return:
+        """
+        d = 3
+        posX = x + d
+        posY = y + d
+        text = pg.TextItem(text=f'{value:2.2f}',
+                           anchor=(0, 0),
+                           color=self.M_BLUE,
+                           angle=0)
+        text.setPos(posX, posY)
+        self.plotItem.addItem(text)
         return True

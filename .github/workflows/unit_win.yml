@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  branch: '2.2.0'
+  branch: 'master'
   cov: '--cov=mw4/ --cov-append'
 
 on:

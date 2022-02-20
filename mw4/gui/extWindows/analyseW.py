@@ -62,9 +62,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.angularPosDEC = None
 
         self.wIcon(self.ui.load, 'load')
-        self.scaleImage = self.embedMatplot(self.ui.scaleImage)
         self.modelPositions = self.embedMatplot(self.ui.modelPositions)
-        self.errorAscending = self.embedMatplot(self.ui.errorAscending)
         self.errorDistribution = self.embedMatplot(self.ui.errorDistribution)
 
         self.ui.load.clicked.connect(self.loadModel)
@@ -390,7 +388,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         y = self.errorDEC_S
         y = [x if p == 'W' else -x for x, p in zip(y, p)]
         self.ui.decRawErrorsRef.plot(self.angularPosDEC, y, self.pierside, True)
-        return
+        return True
 
     def draw_raErrorsRef(self):
         """
@@ -400,8 +398,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raErrorsRef.setLabel('left', 'Error per Star [arcsec]')
         self.ui.raErrorsRef.plot(self.angularPosRA, self.errorRA,
                                  self.pierside)
-
-        return
+        return True
 
     def draw_decErrorsRef(self):
         """
@@ -413,152 +410,41 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         y = self.errorDEC
         y = [x if p == 'W' else -x for x, p in zip(y, p)]
         self.ui.decErrorsRef.plot(self.angularPosDEC, y, self.pierside, True)
-
-        return
+        return True
 
     def draw_scaleImage(self):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.scaleImage)
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.3f',))
-        x = self.index
-        y = self.scaleS
-        p = self.pierside
-        xLabel = 'Star Number'
-        yLabel = 'Image Scale [arcsec/pix]'
-        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
+        self.ui.scaleImage.setLabel('bottom', 'Star Number')
+        self.ui.scaleImage.setLabel('left', 'Image Scale [arcsec/pix]')
+        self.ui.scaleImage.plot(self.index, self.scaleS, self.pierside)
         return True
 
     def draw_errorAscending(self):
         """
         :return:    True if ok for testing
         """
-        axe, fig = self.generateFlat(widget=self.errorAscending)
-        xLabel = 'Star'
-        yLabel = 'Error per Star [arcsec]'
-
-        y = self.errorRMS
-        pierside = self.pierside
-        x = self.index
-
-        temp = sorted(zip(y, pierside))
+        self.ui.errorAscending.setLabel('bottom', 'Star')
+        self.ui.errorAscending.setLabel('left', 'Error per Star [arcsec]')
+        temp = sorted(zip(self.errorRMS, self.pierside))
         y = [x[0] for x in temp]
         p = [x[1] for x in temp]
-
-        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, False, 3)
+        self.ui.errorAscending.plot(self.index, y, p)
         return True
 
     def draw_modelPositions(self):
         """
-        showModelPosition draws a polar plot of the align model stars and their
-        errors in color. the basic setup of the plot is taking place in the
-        central widget class. which is instantiated from there. important: the
-        coordinate in model is in HA and DEC  and not in RA and DEC. using
-        skyfield is a little bit misleading, because you address the hour angle
-        as .ra.hours
-
-        the vectors displayed are derived from the spec of 10micron:
-            ppp is the polar angle of the measured star with respect to the
-            modeled star in the equatorial system in degrees from 0 to 359 (0
-            towards the north pole, 90 towards east)
-
         :return:    True if ok for testing
         """
-        axe, fig = self.generatePolar(widget=self.modelPositions)
-        axe.set_ylim(0, 90)
-        axe.set_yticklabels('')
-
-        altitude = self.altitude
-        azimuth = self.azimuth
-        error = self.errorRMS
-        ang = self.errorAngle
-
-        cm = plt.cm.get_cmap('RdYlGn_r')
-        sMax = max(error)
-        sMin = min(error)
-        az = azimuth / 180.0 * np.pi
-        alt = 90 - altitude
-
-        scatter = axe.scatter(az, alt, c=error, vmin=sMin, vmax=sMax, cmap=cm)
-
-        norm = Normalize(vmin=sMin, vmax=sMax)
-        sm = plt.cm.ScalarMappable(cmap=cm, norm=norm)
-        sm.set_array([])
-
-        fm = ticker.FormatStrFormatter('%1.0f')
-        cb = plt.colorbar(sm, pad=0.1, fraction=0.12, aspect=25, shrink=0.9, format=fm)
-        cb.set_label('Error [arcsec]', color=self.M_BLUE)
-        yTicks = plt.getp(cb.ax.axes, 'yticklabels')
-        plt.setp(yTicks, color=self.M_BLUE, fontweight='bold')
-
-        lat = self.latitude
-
-        if lat is None:
-            axe.figure.canvas.draw()
-            return True
-
-        npX = (90 - lat) * np.cos(np.radians(0 + 90))
-        npY = (90 - lat) * np.sin(np.radians(0 + 90))
-
-        axe.plot(0, 90 - lat, marker='o', markersize=10, color=self.M_BLUE, alpha=0.8,
-                 zorder=-10)
-        axe.plot(0, 90 - lat, marker='o', markersize=20, color=self.M_BLUE, alpha=0.8,
-                 lw=10, fillstyle='none', zorder=-10)
-        axe.plot(0, 90 - lat, marker='o', markersize=35, color=self.M_BLUE, alpha=0.8,
-                 lw=10, fillstyle='none', zorder=-10)
-
-        for alt, az, ang, err in zip(altitude, azimuth, ang, error):
-            pX = (90 - alt) * np.cos(np.radians(az + 90))
-            pY = (90 - alt) * np.sin(np.radians(az + 90))
-
-            vec = np.arctan2(pY - npY, pX - npX) + np.radians(90) + np.radians(ang)
-
-            x = az / 180.0 * np.pi
-            y = 90 - alt
-            u = np.sin(vec)
-            v = np.cos(vec)
-
-            col = cm((err - sMin) / sMax)
-
-            axe.quiver(x, y, u, v,
-                       color=col,
-                       scale=17,
-                       headlength=0,
-                       headwidth=1,
-                       alpha=0.8,
-                       zorder=-10,
-                       )
-
-        self.generateColorbar(figure=fig, scatter=scatter, label='Error [arcsec]')
-        axe.figure.canvas.draw()
-
+        self.ui.modelPositions.plot(self.azimuth, self.altitude, self.errorRMS)
         return True
 
     def draw_errorDistribution(self):
         """
-        showErrorDistribution draws a polar plot of the align model stars and
-        their errors in color. the basic setup of the plot is taking place in the
-        central widget class. which is instantiated from there. important: the
-        coordinate in model is in HA and DEC  and not in RA and DEC. using
-        skyfield is a little bit misleading, because you address the hour angle
-        as .ra.hours
-
         :return:    True if ok for testing
         """
-        axe, fig = self.generatePolar(widget=self.errorDistribution)
-        x = [val / 180.0 * np.pi for val in self.errorAngle]
-        y = self.errorRMS
-
-        for x, y, pierside in zip(x, y, self.pierside):
-            if pierside == 'W':
-                color = self.M_GREEN
-
-            else:
-                color = self.M_YELLOW
-
-            axe.plot(x, y, marker='.', markersize=7, linestyle='none', color=color)
-        axe.figure.canvas.draw()
+        self.ui.errorDistribution.plot(self.errorAngle, self.errorRMS, self.errorRMS)
         return True
 
     def drawAll(self):

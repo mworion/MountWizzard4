@@ -21,6 +21,7 @@ import logging
 # external packages
 import numpy as np
 import pyqtgraph as pg
+from PyQt5.QtCore import QRectF
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -30,7 +31,7 @@ __all__ = [
 ]
 
 
-class PlotNormal(pg.PlotWidget, Styles):
+class Plot(pg.PlotWidget, Styles):
     """
     """
     def __init__(self, *args, **kwargs):
@@ -41,6 +42,7 @@ class PlotNormal(pg.PlotWidget, Styles):
         self.setBackground(self.M_BACK)
         self.plotItem = self.getPlotItem()
         self.pen = pg.mkPen(color=self.M_BLUE)
+        self.penGrid = pg.mkPen(color=self.M_GREY)
         self.plotItem.getViewBox().setMenuEnabled(False)
         self.plotItem.showAxes((True, True, True, True))
         self.plotItem.hideButtons()
@@ -49,7 +51,114 @@ class PlotNormal(pg.PlotWidget, Styles):
             self.plotItem.getAxis(side).setTextPen(self.pen)
 
 
-class PlotNormalScatterPier(PlotNormal):
+class PlotNormalScatterPierPoints(Plot):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.scatterItem = None
+        self.plotItem.setMouseEnabled(x=False, y=False)
+
+    def constructPlot(self):
+        """
+        :return:
+        """
+        self.plotItem.clear()
+        self.scatterItem = pg.ScatterPlotItem(pen=pg.mkPen(None),
+                                              hoverable=True,
+                                              hoverSymbol='s',
+                                              hoverSize=15,
+                                              hoverPen=self.pen,
+                                              )
+        self.plotItem.addItem(self.scatterItem)
+        self.plotItem.getAxis('bottom').setGrid(64)
+        self.plotItem.getAxis('left').setGrid(64)
+
+    def plot(self, x, y, pier):
+        self.constructPlot()
+
+        spots = [{'pos': (x[i], y[i]),
+                  'data': f'{y[i]:4.1f}',
+                  'brush': self.M_YELLOW if pier[i] == 'E' else self.M_GREEN,
+                  } for i in range(len(x))]
+        self.scatterItem.addPoints(spots)
+
+
+class PlotPolarScatterBar(Plot):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.scatterItem = None
+        self.barItem = pg.ColorBarItem(width=10, pen=self.pen)
+        # self.plotItem.setMouseEnabled(x=False, y=False)
+        self.plotItem.setLimits(xMin=-100, xMax=100, yMin=-100, yMax=100,
+                                minXRange=200, minYRange=200)
+        self.plotItem.showAxes((False, False, False, False))
+        self.plotItem.setAspectLocked()
+
+    def constructPlot(self):
+        """
+        :return:
+        """
+        self.plotItem.clear()
+        self.scatterItem = pg.ScatterPlotItem(hoverable=True,
+                                              hoverSymbol='s',
+                                              hoverSize=15,
+                                              hoverPen=self.pen,
+                                              )
+        self.plotItem.addItem(self.scatterItem)
+        self.barItem.setColorMap(pg.colormap.get('CET-D3'))
+        self.plotItem.layout.addItem(self.barItem, 2, 5)
+        self.plotItem.layout.setColumnFixedWidth(4, 5)
+
+        self.plotItem.addLine(x=0, pen=self.penGrid)
+        self.plotItem.addLine(y=0, pen=self.penGrid)
+        for r in range(0, 90, 10):
+            circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
+            circle.setPen(self.penGrid)
+            circle.setZValue(-10)
+            self.plotItem.addItem(circle)
+        for r in range(10, 90, 20):
+            text = pg.TextItem(text=f'{r:2.0f}',
+                               anchor=(1, 1),
+                               color=self.M_BLUE,
+                               angle=0)
+            text.setPos(5, 82 - r)
+            self.plotItem.addItem(text)
+
+        circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
+        circle.setPen(self.pen)
+        self.plotItem.addItem(circle)
+
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.barItem.getAxis(side).setPen(self.pen)
+            self.barItem.getAxis(side).setTextPen(self.pen)
+
+    def plot(self, x, y, z):
+        """
+        :param x:
+        :param y:
+        :param z:
+        :return:
+        """
+        self.constructPlot()
+        minE = np.min(z)
+        maxE = np.max(z)
+        val = (z - minE) / (maxE - minE)
+        x = np.radians(-x + 90)
+        self.barItem.setLevels(values=(minE, maxE))
+        cMap = pg.colormap.get('CET-D3')
+        posX = (90 - y) * np.cos(x)
+        posY = (90 - y) * np.sin(x)
+        spots = [{'pos': (posX[i], posY[i]),
+                  'data': f'{z[i]:4.1f}',
+                  'brush': cMap.mapToQColor(val[i]),
+                  } for i in range(len(x))]
+        self.scatterItem.addPoints(spots)
+
+
+class PlotNormalScatterPier(Plot):
     """
     """
     def __init__(self, *args, **kwargs):
@@ -87,7 +196,6 @@ class PlotNormalScatterPier(PlotNormal):
         self.plotItem.getAxis('top').setTicks(ticksX)
         self.plotItem.getAxis('bottom').setGrid(64)
         self.plotItem.getAxis('left').setGrid(64)
-        self.plotItem.getAxis('right').setGrid(64)
 
     def plot(self, x, y, pier, dec=False):
         self.constructPlot(dec)
@@ -99,7 +207,7 @@ class PlotNormalScatterPier(PlotNormal):
         self.scatterItem.addPoints(spots)
 
 
-class PlotNormalScatter(PlotNormal):
+class PlotNormalScatter(Plot):
     """
     """
     def __init__(self, *args, **kwargs):
@@ -150,14 +258,14 @@ class PlotNormalScatter(PlotNormal):
         self.scatterItem.addPoints(spots)
 
 
-class PlotImageBar(PlotNormal):
+class PlotImageBar(Plot):
     """
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.imageItem = None
-        self.barItem = pg.ColorBarItem()
+        self.barItem = pg.ColorBarItem(width=20, pen=self.pen)
         self.lx = None
         self.ly = None
         for side in ('left', 'top', 'right', 'bottom'):

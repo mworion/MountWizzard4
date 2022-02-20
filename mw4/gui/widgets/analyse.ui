@@ -1471,7 +1471,7 @@ Model</string>
       </size>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -1506,19 +1506,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="modelPositions" native="true">
+           <widget class="PlotPolarScatterBar" name="modelPositions" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1546,19 +1546,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="errorDistribution" native="true">
+           <widget class="PlotPolarScatterBar" name="errorDistribution" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1586,19 +1586,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="errorAscending" native="true">
+           <widget class="PlotNormalScatterPierPoints" name="errorAscending" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1626,19 +1626,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="scaleImage" native="true">
+           <widget class="PlotNormalScatterPierPoints" name="scaleImage" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -2032,6 +2032,18 @@ Model</string>
   </customwidget>
   <customwidget>
    <class>PlotNormalScatterPier</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlotNormalScatterPierPoints</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlotPolarScatterBar</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>

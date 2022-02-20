@@ -492,10 +492,10 @@ class Ui_AnalyseDialog(object):
         self.groupBox.setProperty("large", True)
         self.groupBox.setObjectName("groupBox")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setContentsMargins(4, 12, 8, 0)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.modelPositions = QtWidgets.QWidget(self.groupBox)
+        self.modelPositions = PlotPolarScatterBar(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -509,10 +509,10 @@ class Ui_AnalyseDialog(object):
         self.groupBox_14.setProperty("large", True)
         self.groupBox_14.setObjectName("groupBox_14")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.groupBox_14)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(4, 12, 8, 0)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.errorDistribution = QtWidgets.QWidget(self.groupBox_14)
+        self.errorDistribution = PlotPolarScatterBar(self.groupBox_14)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -526,10 +526,10 @@ class Ui_AnalyseDialog(object):
         self.groupBox_15.setProperty("large", True)
         self.groupBox_15.setObjectName("groupBox_15")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.groupBox_15)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_3.setContentsMargins(4, 12, 8, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.errorAscending = QtWidgets.QWidget(self.groupBox_15)
+        self.errorAscending = PlotNormalScatterPierPoints(self.groupBox_15)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -543,10 +543,10 @@ class Ui_AnalyseDialog(object):
         self.groupBox_16.setProperty("large", True)
         self.groupBox_16.setObjectName("groupBox_16")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.groupBox_16)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_4.setContentsMargins(4, 12, 8, 0)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.scaleImage = QtWidgets.QWidget(self.groupBox_16)
+        self.scaleImage = PlotNormalScatterPierPoints(self.groupBox_16)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -710,7 +710,7 @@ class Ui_AnalyseDialog(object):
         self.verticalLayout.addWidget(self.tabWidget)
 
         self.retranslateUi(AnalyseDialog)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(AnalyseDialog)
 
     def retranslateUi(self, AnalyseDialog):
@@ -777,7 +777,7 @@ class Ui_AnalyseDialog(object):
         self.groupBox_19.setTitle(_translate("AnalyseDialog", "RA Error (Model)"))
         self.groupBox_20.setTitle(_translate("AnalyseDialog", "DEC Error (Model)"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("AnalyseDialog", "RA / DEC Analyse"))
-from gui.utilities.tools4pyqtgraph import PlotNormalScatter, PlotNormalScatterPier
+from gui.utilities.tools4pyqtgraph import PlotNormalScatter, PlotNormalScatterPier, PlotNormalScatterPierPoints, PlotPolarScatterBar
 
 
 if __name__ == "__main__":

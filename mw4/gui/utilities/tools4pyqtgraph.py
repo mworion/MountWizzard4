@@ -26,7 +26,7 @@ import pyqtgraph as pg
 from gui.utilities.stylesQtCss import Styles
 
 __all__ = [
-    'MW_PlotWidget',
+    'PlotImageBar',
 ]
 
 

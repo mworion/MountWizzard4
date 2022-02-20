@@ -21,16 +21,7 @@ import os
 # external packages
 import PyQt5.QtWidgets
 import numpy as np
-from scipy.interpolate import griddata
-from scipy.ndimage import uniform_filter
 from astropy.io import fits
-from astropy import wcs
-from astropy.nddata import Cutout2D
-from astropy.visualization import MinMaxInterval
-from astropy.visualization import AsinhStretch
-from astropy.visualization import imshow_norm
-from matplotlib.patches import Ellipse
-import matplotlib.pyplot as plt
 import sep
 from PIL import Image
 import pyqtgraph as pg

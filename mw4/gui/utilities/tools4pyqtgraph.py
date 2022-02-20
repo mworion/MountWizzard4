@@ -33,7 +33,6 @@ __all__ = [
 class PlotNormal(pg.PlotWidget, Styles):
     """
     """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -48,6 +47,107 @@ class PlotNormal(pg.PlotWidget, Styles):
         for side in ('left', 'top', 'right', 'bottom'):
             self.plotItem.getAxis(side).setPen(self.pen)
             self.plotItem.getAxis(side).setTextPen(self.pen)
+
+
+class PlotNormalScatterPier(PlotNormal):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.scatterItem = None
+        self.plotItem.setMouseEnabled(x=False, y=False)
+
+    def constructPlot(self, dec=False):
+        """
+        :return:
+        """
+        self.plotItem.clear()
+        self.scatterItem = pg.ScatterPlotItem(pen=pg.mkPen(None),
+                                              hoverable=True,
+                                              hoverSymbol='s',
+                                              hoverSize=15,
+                                              hoverPen=self.pen,
+                                              )
+        self.plotItem.addItem(self.scatterItem)
+        if dec:
+            ticksX = [
+                [(x, f'{x}') for x in range(-60, 90, 30)],
+                [(x, '') for x in range(-75, 90, 15)],
+            ]
+            self.plotItem.setLimits(xMin=-90, xMax=90)
+            self.plotItem.setRange(xRange=(-90, 90), padding=0)
+        else:
+            ticksX = [
+                [(x, f'{x}') for x in range(30, 180, 30)],
+                [(x, '') for x in range(15, 180, 15)],
+            ]
+            self.plotItem.setLimits(xMin=0, xMax=180)
+            self.plotItem.setRange(xRange=(0, 180), padding=0)
+        self.plotItem.getAxis('bottom').setTicks(ticksX)
+        self.plotItem.getAxis('top').setTicks(ticksX)
+        self.plotItem.getAxis('bottom').setGrid(64)
+        self.plotItem.getAxis('left').setGrid(64)
+        self.plotItem.getAxis('right').setGrid(64)
+
+    def plot(self, x, y, pier, dec=False):
+        self.constructPlot(dec)
+
+        spots = [{'pos': (x[i], y[i]),
+                  'data': f'{y[i]:4.1f}',
+                  'brush': self.M_YELLOW if pier[i] == 'E' else self.M_GREEN,
+                  } for i in range(len(x))]
+        self.scatterItem.addPoints(spots)
+
+
+class PlotNormalScatter(PlotNormal):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.scatterItem = None
+        self.plotItem.setLimits(xMin=0, yMin=0, xMax=360, yMax=90)
+        self.plotItem.setMouseEnabled(x=False, y=False)
+        self.plotItem.setRange(xRange=(0, 360), yRange=(0, 90), padding=0)
+
+    def constructPlot(self):
+        """
+        :return:
+        """
+        self.plotItem.clear()
+        self.scatterItem = pg.ScatterPlotItem(pen=pg.mkPen(None),
+                                              hoverable=True,
+                                              hoverSymbol='s',
+                                              hoverSize=15,
+                                              hoverPen=self.pen,
+                                              )
+        self.plotItem.addItem(self.scatterItem)
+        ticksX = [
+            [(x, f'{x}') for x in range(30, 360, 30)],
+            [(x, '') for x in range(15, 360, 15)],
+        ]
+        self.plotItem.getAxis('bottom').setTicks(ticksX)
+        self.plotItem.getAxis('top').setTicks(ticksX)
+        self.plotItem.getAxis('bottom').setGrid(64)
+        ticksY = [
+            [(x, f'{x}') for x in range(10, 90, 10)],
+            [(x, '') for x in range(15, 90, 5)],
+        ]
+        self.plotItem.getAxis('left').setTicks(ticksY)
+        self.plotItem.getAxis('right').setTicks(ticksY)
+        self.plotItem.getAxis('left').setGrid(64)
+
+    def plot(self, x, y, z):
+        self.constructPlot()
+        err = np.abs(z)
+        minE = np.min(err)
+        maxE = np.max(err)
+        val = (err - minE) / (maxE - minE)
+        cMap = pg.colormap.get('CET-D3')
+        spots = [{'pos': (x[i], y[i]),
+                  'data': f'{err[i]:4.1f}',
+                  'brush': cMap.mapToQColor(val[i]),
+                  } for i in range(len(x))]
+        self.scatterItem.addPoints(spots)
 
 
 class PlotImageBar(PlotNormal):

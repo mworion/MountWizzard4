@@ -62,14 +62,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.angularPosDEC = None
 
         self.wIcon(self.ui.load, 'load')
-        self.raRawErrors = self.embedMatplot(self.ui.raRawErrors)
-        self.decRawErrors = self.embedMatplot(self.ui.decRawErrors)
-        self.raErrors = self.embedMatplot(self.ui.raErrors)
-        self.decErrors = self.embedMatplot(self.ui.decErrors)
-        self.raRawErrorsRef = self.embedMatplot(self.ui.raRawErrorsRef)
-        self.decRawErrorsRef = self.embedMatplot(self.ui.decRawErrorsRef)
-        self.raErrorsRef = self.embedMatplot(self.ui.raErrorsRef)
-        self.decErrorsRef = self.embedMatplot(self.ui.decErrorsRef)
         self.scaleImage = self.embedMatplot(self.ui.scaleImage)
         self.modelPositions = self.embedMatplot(self.ui.modelPositions)
         self.errorAscending = self.embedMatplot(self.ui.errorAscending)
@@ -346,107 +338,83 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.raRawErrors, horizon=True)
-        x = self.azimuth
-        y = self.altitude
-        z = np.abs(self.errorRA_S)
-        xLabel = 'Azimuth [deg]'
-        yLabel = 'Altitude [deg]'
-        self.scatterFigureFlat(axe, x, y, z, xLabel, yLabel)
+        self.ui.raRawErrors.setLabel('bottom', 'Azimuth [deg]')
+        self.ui.raRawErrors.setLabel('left', 'Altitude [deg]')
+        self.ui.raRawErrors.plot(self.azimuth, self.altitude, self.errorRA_S)
         return True
 
     def draw_decRawErrors(self):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.decRawErrors, horizon=True)
-        x = self.azimuth
-        y = self.altitude
-        z = np.abs(self.errorDEC_S)
-        xLabel = 'Azimuth [deg]'
-        yLabel = 'Altitude [deg]'
-        self.scatterFigureFlat(axe, x, y, z, xLabel, yLabel)
+        self.ui.decRawErrors.setLabel('bottom', 'Azimuth [deg]')
+        self.ui.decRawErrors.setLabel('left', 'Altitude [deg]')
+        self.ui.decRawErrors.plot(self.azimuth, self.altitude, self.errorDEC_S)
         return True
 
     def draw_raErrors(self):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.raErrors, horizon=True)
-        x = self.azimuth
-        y = self.altitude
-        z = np.abs(self.errorRA)
-        xLabel = 'Azimuth [deg]'
-        yLabel = 'Altitude [deg]'
-        self.scatterFigureFlat(axe, x, y, z, xLabel, yLabel)
+        self.ui.raErrors.setLabel('bottom', 'Azimuth [deg]')
+        self.ui.raErrors.setLabel('left', 'Altitude [deg]')
+        self.ui.raErrors.plot(self.azimuth, self.altitude, self.errorRA)
         return True
 
     def draw_decError(self):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.decErrors, horizon=True)
-        x = self.azimuth
-        y = self.altitude
-        z = np.abs(self.errorDEC)
-        xLabel = 'Azimuth [deg]'
-        yLabel = 'Altitude [deg]'
-        self.scatterFigureFlat(axe, x, y, z, xLabel, yLabel)
-        return True
-
-    def draw_raErrorsRef(self):
-        """
-        :return:    True if ok for testing
-        """
-        axe, _ = self.generateFlat(widget=self.raErrorsRef)
-        x = self.angularPosRA
-        y = self.errorRA
-        p = self.pierside
-        xLabel = 'RA Encoder Abs [deg]'
-        yLabel = 'Error per Star [arcsec]'
-        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
-        return True
-
-    def draw_decErrorsRef(self):
-        """
-        :return:    True if ok for testing
-        """
-        axe, _ = self.generateFlat(widget=self.decErrorsRef)
-        x = self.angularPosDEC
-        y = self.errorDEC
-        p = self.pierside
-        y = [x if p == 'W' else -x for x, p in zip(y, p)]
-        xLabel = 'DEC Encoder Abs [deg]'
-        yLabel = 'Error per Star [arcsec]'
-        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
+        self.ui.decErrors.setLabel('bottom', 'Azimuth [deg]')
+        self.ui.decErrors.setLabel('left', 'Altitude [deg]')
+        self.ui.decErrors.plot(self.azimuth, self.altitude, self.errorDEC)
         return True
 
     def draw_raRawErrorsRef(self):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.raRawErrorsRef)
-        x = self.angularPosRA
-        y = self.errorRA_S
-        p = self.pierside
-        xLabel = 'RA Encoder Abs [deg]'
-        yLabel = 'Error per Star [arcsec]'
-        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
+        self.ui.raRawErrorsRef.setLabel('bottom', 'RA Encoder Abs [deg]')
+        self.ui.raRawErrorsRef.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.raRawErrorsRef.plot(self.angularPosRA, self.errorRA_S,
+                                    self.pierside)
         return True
 
     def draw_decRawErrorsRef(self):
         """
         :return:    True if ok for testing
         """
-        axe, _ = self.generateFlat(widget=self.decRawErrorsRef)
-        x = self.angularPosDEC
-        y = self.errorDEC_S
+        self.ui.decRawErrorsRef.setLabel('bottom', 'DEC Encoder Abs [deg]')
+        self.ui.decRawErrorsRef.setLabel('left', 'Error per Star [arcsec]')
         p = self.pierside
-        y = [y if p == 'W' else -y for y, p in zip(y, p)]
-        xLabel = 'DEC Encoder Abs [deg]'
-        yLabel = 'Error per Star [arcsec]'
-        self.plotFigureFlat(axe, x, y, p, xLabel, yLabel, True, 3)
-        return True
+        y = self.errorDEC_S
+        y = [x if p == 'W' else -x for x, p in zip(y, p)]
+        self.ui.decRawErrorsRef.plot(self.angularPosDEC, y, self.pierside, True)
+        return
+
+    def draw_raErrorsRef(self):
+        """
+        :return:    True if ok for testing
+        """
+        self.ui.raErrorsRef.setLabel('bottom', 'RA Encoder Abs [deg]')
+        self.ui.raErrorsRef.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.raErrorsRef.plot(self.angularPosRA, self.errorRA,
+                                 self.pierside)
+
+        return
+
+    def draw_decErrorsRef(self):
+        """
+        :return:    True if ok for testing
+        """
+        self.ui.decErrorsRef.setLabel('bottom', 'DEC Encoder Abs [deg]')
+        self.ui.decErrorsRef.setLabel('left', 'Error per Star [arcsec]')
+        p = self.pierside
+        y = self.errorDEC
+        y = [x if p == 'W' else -x for x, p in zip(y, p)]
+        self.ui.decErrorsRef.plot(self.angularPosDEC, y, self.pierside, True)
+
+        return
 
     def draw_scaleImage(self):
         """

@@ -1688,19 +1688,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="raRawErrors" native="true">
+           <widget class="PlotNormalScatter" name="raRawErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1728,19 +1728,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="decRawErrors" native="true">
+           <widget class="PlotNormalScatter" name="decRawErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1768,19 +1768,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="raErrors" native="true">
+           <widget class="PlotNormalScatter" name="raErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1808,19 +1808,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="decErrors" native="true">
+           <widget class="PlotNormalScatter" name="decErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1870,19 +1870,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="decRawErrorsRef" native="true">
+           <widget class="PlotNormalScatterPier" name="decRawErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1910,19 +1910,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="raRawErrorsRef" native="true">
+           <widget class="PlotNormalScatterPier" name="raRawErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1950,19 +1950,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="raErrorsRef" native="true">
+           <widget class="PlotNormalScatterPier" name="raErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1990,19 +1990,19 @@ Model</string>
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="decErrorsRef" native="true">
+           <widget class="PlotNormalScatterPier" name="decErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -2023,6 +2023,20 @@ Model</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotNormalScatter</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlotNormalScatterPier</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <designerdata>

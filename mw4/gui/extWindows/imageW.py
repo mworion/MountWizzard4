@@ -24,7 +24,6 @@ import numpy as np
 from astropy.io import fits
 import sep
 from PIL import Image
-import pyqtgraph as pg
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS

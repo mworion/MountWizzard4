@@ -16,12 +16,10 @@
 #
 ###########################################################
 # standard libraries
-import logging
 
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt5.QtCore import QRectF
 
 # local imports
 from gui.utilities.stylesQtCss import Styles

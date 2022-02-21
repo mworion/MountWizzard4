@@ -20,7 +20,6 @@ import os
 
 # external packages
 import numpy as np
-from scipy.stats.mstats import winsorize
 
 # local import
 from gui.utilities import toolsQtWidget

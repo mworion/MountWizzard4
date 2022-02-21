@@ -19,10 +19,6 @@ import json
 import os
 
 # external packages
-from PyQt5.QtWidgets import QApplication
-from matplotlib import pyplot as plt
-from matplotlib import ticker
-from matplotlib.colors import Normalize
 import numpy as np
 from scipy.stats.mstats import winsorize
 
@@ -373,5 +369,4 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             if self.closing:
                 break
             chart()
-            QApplication.processEvents()
         return True

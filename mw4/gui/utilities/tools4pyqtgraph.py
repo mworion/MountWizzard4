@@ -75,8 +75,10 @@ class PlotNormalScatterPierPoints(Plot):
         self.plotItem.getAxis('left').setGrid(64)
 
     def plot(self, x, y, pier):
+        """
+        :return:
+        """
         self.constructPlot()
-
         spots = [{'pos': (x[i], y[i]),
                   'data': f'{y[i]:4.1f}',
                   'brush': self.M_YELLOW if pier[i] == 'E' else self.M_GREEN,
@@ -198,6 +200,9 @@ class PlotNormalScatterPier(Plot):
         self.plotItem.getAxis('left').setGrid(64)
 
     def plot(self, x, y, pier, dec=False):
+        """
+        :return:
+        """
         self.constructPlot(dec)
 
         spots = [{'pos': (x[i], y[i]),
@@ -245,6 +250,12 @@ class PlotNormalScatter(Plot):
         self.plotItem.getAxis('left').setGrid(64)
 
     def plot(self, x, y, z):
+        """
+        :param x:
+        :param y:
+        :param z:
+        :return:
+        """
         self.constructPlot()
         err = np.abs(z)
         minE = np.min(err)

@@ -146,7 +146,7 @@ class PlotPolarScatterBar(Plot):
         minE = np.min(z)
         maxE = np.max(z)
         val = (z - minE) / (maxE - minE)
-        x = np.radians(-x + 90)
+        x = np.radians(90 - x)
         self.barItem.setLevels(values=(minE, maxE))
         cMap = pg.colormap.get('CET-D3')
         posX = (90 - y) * np.cos(x)

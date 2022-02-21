@@ -20,6 +20,7 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
+from PyQt5.QtCore import QPointF
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -66,8 +67,7 @@ class PlotNormalScatterPierPoints(Plot):
                                               hoverable=True,
                                               hoverSymbol='s',
                                               hoverSize=15,
-                                              hoverPen=self.pen,
-                                              )
+                                              hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
         self.plotItem.getAxis('bottom').setGrid(64)
         self.plotItem.getAxis('left').setGrid(64)
@@ -91,11 +91,16 @@ class PlotPolarScatterBar(Plot):
         super().__init__(*args, **kwargs)
         self.scatterItem = None
         self.barItem = pg.ColorBarItem(width=10, pen=self.pen)
-        # self.plotItem.setMouseEnabled(x=False, y=False)
-        self.plotItem.setLimits(xMin=-100, xMax=100, yMin=-100, yMax=100,
-                                minXRange=200, minYRange=200)
-        self.plotItem.showAxes((False, False, False, False))
+        self.plotItem.setMouseEnabled(x=True, y=True)
+        self.plotItem.showAxes((False, False, False, False),
+                               showValues=(False, False, False, False))
+        self.plotItem.setXRange(-80, 80)
+        self.plotItem.setYRange(-80, 80)
         self.plotItem.setAspectLocked()
+        self.plotItem.setLabel('bottom', text=' ')
+        self.plotItem.getAxis('bottom').setHeight(10)
+        self.plotItem.getAxis('bottom').setPen(pg.mkPen(self.M_BACK))
+        self.plotItem.getAxis('bottom').setTextPen(pg.mkPen(self.M_BACK))
 
     def constructPlot(self):
         """
@@ -104,28 +109,38 @@ class PlotPolarScatterBar(Plot):
         self.plotItem.clear()
         self.scatterItem = pg.ScatterPlotItem(hoverable=True,
                                               hoverSymbol='s',
-                                              hoverSize=15,
-                                              hoverPen=self.pen,
-                                              )
-        self.plotItem.addItem(self.scatterItem)
+                                              hoverSize=30,
+                                              hoverPen=self.pen)
         self.barItem.setColorMap(pg.colormap.get('CET-D3'))
         self.plotItem.layout.addItem(self.barItem, 2, 5)
         self.plotItem.layout.setColumnFixedWidth(4, 5)
-
+        self.plotItem.addItem(self.scatterItem)
         self.plotItem.addLine(x=0, pen=self.penGrid)
         self.plotItem.addLine(y=0, pen=self.penGrid)
         for r in range(0, 90, 10):
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
-            circle.setZValue(-10)
             self.plotItem.addItem(circle)
-        for r in range(10, 90, 20):
-            text = pg.TextItem(text=f'{r:2.0f}',
-                               anchor=(1, 1),
-                               color=self.M_BLUE,
-                               angle=0)
-            text.setPos(5, 82 - r)
-            self.plotItem.addItem(text)
+
+        textDic = {
+            '10': [QPointF(80, 80) * 0.69, self.M_GREY, '10pt'],
+            '30': [QPointF(60, 60) * 0.69, self.M_GREY, '10pt'],
+            '50': [QPointF(40, 40) * 0.69, self.M_GREY, '10pt'],
+            '70': [QPointF(20, 20) * 0.69, self.M_GREY, '10pt'],
+            'N': [QPointF(0, 84), self.M_BLUE, '12pt'],
+            'W': [QPointF(-84, 0), self.M_BLUE, '12pt'],
+            'S': [QPointF(0, -84), self.M_BLUE, '12pt'],
+            'E': [QPointF(84, 0), self.M_BLUE, '12pt'],
+        }
+        for text in textDic:
+            label = pg.LabelItem(text=text,
+                                 color=textDic[text][1],
+                                 angle=180,
+                                 size=textDic[text][2],
+                                 bold=True)
+            label.scale(-1, 1)
+            label.setPos(QPointF(-8, 11) + textDic[text][0])
+            self.plotItem.addItem(label)
 
         circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
         circle.setPen(self.pen)
@@ -147,6 +162,7 @@ class PlotPolarScatterBar(Plot):
         maxE = np.max(z)
         val = (z - minE) / (maxE - minE)
         x = np.radians(90 - x)
+
         self.barItem.setLevels(values=(minE, maxE))
         cMap = pg.colormap.get('CET-D3')
         posX = (90 - y) * np.cos(x)
@@ -154,6 +170,7 @@ class PlotPolarScatterBar(Plot):
         spots = [{'pos': (posX[i], posY[i]),
                   'data': f'{z[i]:4.1f}',
                   'brush': cMap.mapToQColor(val[i]),
+                  'size': 6,
                   } for i in range(len(x))]
         self.scatterItem.addPoints(spots)
 
@@ -175,8 +192,7 @@ class PlotNormalScatterPier(Plot):
                                               hoverable=True,
                                               hoverSymbol='s',
                                               hoverSize=15,
-                                              hoverPen=self.pen,
-                                              )
+                                              hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
         if dec:
             ticksX = [
@@ -229,8 +245,7 @@ class PlotNormalScatter(Plot):
                                               hoverable=True,
                                               hoverSymbol='s',
                                               hoverSize=15,
-                                              hoverPen=self.pen,
-                                              )
+                                              hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
         ticksX = [
             [(x, f'{x}') for x in range(30, 360, 30)],
@@ -355,9 +370,7 @@ class PlotImageBar(Plot):
         posX = x + d
         posY = y + d
         text = pg.TextItem(text=f'{value:2.2f}',
-                           anchor=(0, 0),
-                           color=self.M_BLUE,
-                           angle=0)
+                           color=self.M_BLUE)
         text.setPos(posX, posY)
         self.plotItem.addItem(text)
         return True

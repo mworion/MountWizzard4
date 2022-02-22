@@ -57,9 +57,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.angularPosDEC = None
 
         self.wIcon(self.ui.load, 'load')
-        self.modelPositions = self.embedMatplot(self.ui.modelPositions)
-        self.errorDistribution = self.embedMatplot(self.ui.errorDistribution)
-
         self.ui.load.clicked.connect(self.loadModel)
         self.ui.winsorizedLimit.clicked.connect(self.drawAll)
         self.app.colorChange.connect(self.colorChange)
@@ -350,14 +347,17 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.modelPositions.plot(self.azimuth, self.altitude, self.errorRMS)
+        self.ui.modelPositions.plot(self.azimuth, self.altitude,
+                                    self.errorRMS, self.errorAngle)
+        self.ui.modelPositions.plotLoc(self.latitude)
         return True
 
     def draw_errorDistribution(self):
         """
         :return:    True if ok for testing
         """
-        self.ui.errorDistribution.plot(self.errorAngle, self.errorRMS, self.errorRMS)
+        self.ui.errorDistribution.plot(self.errorRMS, self.errorAngle,
+                                       self.pierside)
         return True
 
     def drawAll(self):

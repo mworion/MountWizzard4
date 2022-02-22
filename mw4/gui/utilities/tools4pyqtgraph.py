@@ -84,42 +84,34 @@ class PlotNormalScatterPierPoints(Plot):
         self.scatterItem.addPoints(spots)
 
 
-class PlotPolarScatterBar(Plot):
+class PlotPolarScatterPier(Plot):
     """
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.scatterItem = None
-        self.barItem = pg.ColorBarItem(width=10, pen=self.pen)
-        self.plotItem.setMouseEnabled(x=True, y=True)
-        self.plotItem.showAxes((False, False, False, False),
-                               showValues=(False, False, False, False))
-        self.plotItem.setXRange(-80, 80)
-        self.plotItem.setYRange(-80, 80)
+        self.plotItem.setMouseEnabled(x=False, y=False)
+        self.plotItem.showAxes(False, showValues=False)
         self.plotItem.setAspectLocked()
-        self.plotItem.setLabel('bottom', text=' ')
-        self.plotItem.getAxis('bottom').setHeight(10)
-        self.plotItem.getAxis('bottom').setPen(pg.mkPen(self.M_BACK))
-        self.plotItem.getAxis('bottom').setTextPen(pg.mkPen(self.M_BACK))
 
     def constructPlot(self):
         """
         :return:
         """
         self.plotItem.clear()
-        self.scatterItem = pg.ScatterPlotItem(hoverable=True,
+        self.scatterItem = pg.ScatterPlotItem(pen=pg.mkPen(None),
+                                              hoverable=True,
                                               hoverSymbol='s',
-                                              hoverSize=30,
+                                              hoverSize=15,
                                               hoverPen=self.pen)
-        self.barItem.setColorMap(pg.colormap.get('CET-D3'))
-        self.plotItem.layout.addItem(self.barItem, 2, 5)
-        self.plotItem.layout.setColumnFixedWidth(4, 5)
         self.plotItem.addItem(self.scatterItem)
+
         self.plotItem.addLine(x=0, pen=self.penGrid)
         self.plotItem.addLine(y=0, pen=self.penGrid)
         for r in range(0, 90, 10):
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
+            circle.setZValue(-10)
             self.plotItem.addItem(circle)
 
         textDic = {
@@ -144,17 +136,97 @@ class PlotPolarScatterBar(Plot):
 
         circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
         circle.setPen(self.pen)
+        circle.setZValue(-10)
+        self.plotItem.addItem(circle)
+
+    def plot(self, x, ang, pier):
+        """
+        :param x:
+        :param ang:
+        :param pier:
+        :return:
+        """
+        self.constructPlot()
+        posX = x * np.cos(ang)
+        posY = x * np.sin(ang)
+
+        spots = [{'pos': (posX[i], posY[i]),
+                  'data': f'{x[i]:4.1f}',
+                  'brush': self.M_YELLOW if pier[i] == 'E' else self.M_GREEN,
+                  } for i in range(len(x))]
+        self.scatterItem.addPoints(spots)
+
+
+class PlotPolarScatterBar(Plot):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.scatterItem = None
+        self.barItem = pg.ColorBarItem(width=10, pen=self.pen)
+        self.plotItem.setMouseEnabled(x=False, y=False)
+        self.plotItem.showAxes(False, showValues=False)
+        self.plotItem.setXRange(-80, 80)
+        self.plotItem.setYRange(-80, 80)
+        self.plotItem.setAspectLocked()
+
+    def constructPlot(self):
+        """
+        :return:
+        """
+        self.plotItem.clear()
+        self.scatterItem = pg.ScatterPlotItem(pen=pg.mkPen(None),
+                                              hoverable=True,
+                                              hoverSymbol='s',
+                                              hoverSize=15,
+                                              hoverPen=self.pen)
+        self.plotItem.addItem(self.scatterItem)
+        self.barItem.setColorMap(pg.colormap.get('CET-D3'))
+        self.plotItem.layout.addItem(self.barItem, 2, 4)
+
+        self.plotItem.addLine(x=0, pen=self.penGrid)
+        self.plotItem.addLine(y=0, pen=self.penGrid)
+        for r in range(0, 90, 10):
+            circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
+            circle.setPen(self.penGrid)
+            circle.setZValue(-10)
+            self.plotItem.addItem(circle)
+
+        textDic = {
+            '10': [QPointF(80, 80) * 0.69, self.M_GREY, '10pt'],
+            '30': [QPointF(60, 60) * 0.69, self.M_GREY, '10pt'],
+            '50': [QPointF(40, 40) * 0.69, self.M_GREY, '10pt'],
+            '70': [QPointF(20, 20) * 0.69, self.M_GREY, '10pt'],
+            'N': [QPointF(0, 84), self.M_BLUE, '12pt'],
+            'W': [QPointF(-84, 0), self.M_BLUE, '12pt'],
+            'S': [QPointF(0, -84), self.M_BLUE, '12pt'],
+            'E': [QPointF(84, 0), self.M_BLUE, '12pt'],
+        }
+        for text in textDic:
+            label = pg.LabelItem(text=text,
+                                 color=textDic[text][1],
+                                 angle=180,
+                                 size=textDic[text][2],
+                                 bold=True)
+            label.scale(-1, 1)
+            label.setPos(QPointF(-8, 11) + textDic[text][0])
+            self.plotItem.addItem(label)
+
+        circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
+        circle.setPen(self.pen)
+        circle.setZValue(-10)
         self.plotItem.addItem(circle)
 
         for side in ('left', 'top', 'right', 'bottom'):
             self.barItem.getAxis(side).setPen(self.pen)
             self.barItem.getAxis(side).setTextPen(self.pen)
 
-    def plot(self, x, y, z):
+    def plot(self, x, y, z, ang):
         """
         :param x:
         :param y:
         :param z:
+        :param ang:
         :return:
         """
         self.constructPlot()
@@ -167,12 +239,43 @@ class PlotPolarScatterBar(Plot):
         cMap = pg.colormap.get('CET-D3')
         posX = (90 - y) * np.cos(x)
         posY = (90 - y) * np.sin(x)
+
         spots = [{'pos': (posX[i], posY[i]),
                   'data': f'{z[i]:4.1f}',
                   'brush': cMap.mapToQColor(val[i]),
-                  'size': 6,
+                  'size': 7,
                   } for i in range(len(x))]
         self.scatterItem.addPoints(spots)
+        for i in range(len(x)):
+            arrow = pg.ArrowItem()
+            arrow.setStyle(angle=ang[i] - 90,
+                           tipAngle=0,
+                           headLen=0,
+                           tailWidth=2,
+                           tailLen=15,
+                           pen=pg.mkPen(color=cMap.mapToQColor(val[i])),
+                           brush=pg.mkBrush(color=cMap.mapToQColor(val[i])),
+                           )
+            arrow.setPos(QPointF(posX[i], posY[i]))
+            arrow.setZValue(-1)
+            self.plotItem.addItem(arrow)
+
+    def plotLoc(self, lat):
+        """
+        :param lat:
+        :return:
+        """
+        circle = pg.QtGui.QGraphicsEllipseItem(-3, -3, 6, 6)
+        circle.setPen(pg.mkPen(color=self.M_BLUE))
+        circle.setBrush(pg.mkBrush(color=self.M_BLUE))
+        circle.setPos(0, lat)
+        circle.setZValue(-10)
+        self.plotItem.addItem(circle)
+        circle = pg.QtGui.QGraphicsEllipseItem(-10, -10, 20, 20)
+        circle.setPen(pg.mkPen(color=self.M_BLUE, width=2))
+        circle.setPos(0, lat)
+        circle.setZValue(-10)
+        self.plotItem.addItem(circle)
 
 
 class PlotNormalScatterPier(Plot):

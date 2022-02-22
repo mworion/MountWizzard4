@@ -1478,6 +1478,9 @@ Model</string>
        <string>General Analyse</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
        <property name="leftMargin">
         <number>4</number>
        </property>
@@ -1515,7 +1518,7 @@ Model</string>
            <number>8</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <item>
            <widget class="PlotPolarScatterBar" name="modelPositions" native="true">
@@ -1555,10 +1558,10 @@ Model</string>
            <number>8</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <item>
-           <widget class="PlotPolarScatterBar" name="errorDistribution" native="true">
+           <widget class="PlotPolarScatterPier" name="errorDistribution" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -2044,6 +2047,12 @@ Model</string>
   </customwidget>
   <customwidget>
    <class>PlotPolarScatterBar</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlotPolarScatterPier</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>

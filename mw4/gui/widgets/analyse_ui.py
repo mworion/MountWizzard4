@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/analyse.ui'
+# Form implementation generated from reading ui file 'analyse.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -485,6 +485,7 @@ class Ui_AnalyseDialog(object):
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.tab)
+        self.gridLayout_2.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.gridLayout_2.setContentsMargins(4, 4, 4, 4)
         self.gridLayout_2.setSpacing(4)
         self.gridLayout_2.setObjectName("gridLayout_2")
@@ -492,7 +493,7 @@ class Ui_AnalyseDialog(object):
         self.groupBox.setProperty("large", True)
         self.groupBox.setObjectName("groupBox")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox)
-        self.horizontalLayout.setContentsMargins(4, 12, 8, 0)
+        self.horizontalLayout.setContentsMargins(4, 12, 8, 8)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.modelPositions = PlotPolarScatterBar(self.groupBox)
@@ -509,10 +510,10 @@ class Ui_AnalyseDialog(object):
         self.groupBox_14.setProperty("large", True)
         self.groupBox_14.setObjectName("groupBox_14")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.groupBox_14)
-        self.horizontalLayout_2.setContentsMargins(4, 12, 8, 0)
+        self.horizontalLayout_2.setContentsMargins(4, 12, 8, 8)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.errorDistribution = PlotPolarScatterBar(self.groupBox_14)
+        self.errorDistribution = PlotPolarScatterPier(self.groupBox_14)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -777,7 +778,7 @@ class Ui_AnalyseDialog(object):
         self.groupBox_19.setTitle(_translate("AnalyseDialog", "RA Error (Model)"))
         self.groupBox_20.setTitle(_translate("AnalyseDialog", "DEC Error (Model)"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("AnalyseDialog", "RA / DEC Analyse"))
-from gui.utilities.tools4pyqtgraph import PlotNormalScatter, PlotNormalScatterPier, PlotNormalScatterPierPoints, PlotPolarScatterBar
+from gui.utilities.tools4pyqtgraph import PlotNormalScatter, PlotNormalScatterPier, PlotNormalScatterPierPoints, PlotPolarScatterBar, PlotPolarScatterPier
 
 
 if __name__ == "__main__":

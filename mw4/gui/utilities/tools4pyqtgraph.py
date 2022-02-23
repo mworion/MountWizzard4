@@ -90,9 +90,18 @@ class PlotPolarScatterPier(Plot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.scatterItem = None
-        self.plotItem.setMouseEnabled(x=False, y=False)
         self.plotItem.showAxes(False, showValues=False)
+        self.plotItem.setXRange(-80, 80)
+        self.plotItem.setYRange(-80, 80)
         self.plotItem.setAspectLocked()
+
+    def mouseDoubleClickEvent(self, e):
+        """
+        :param e:
+        :return:
+        """
+        self.plotItem.setXRange(-80, 80)
+        self.plotItem.setYRange(-80, 80)
 
     def constructPlot(self):
         """
@@ -105,20 +114,15 @@ class PlotPolarScatterPier(Plot):
                                               hoverSize=15,
                                               hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
-
         self.plotItem.addLine(x=0, pen=self.penGrid)
         self.plotItem.addLine(y=0, pen=self.penGrid)
+
         for r in range(0, 90, 10):
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
-            circle.setZValue(-10)
             self.plotItem.addItem(circle)
 
         textDic = {
-            '10': [QPointF(80, 80) * 0.69, self.M_GREY, '10pt'],
-            '30': [QPointF(60, 60) * 0.69, self.M_GREY, '10pt'],
-            '50': [QPointF(40, 40) * 0.69, self.M_GREY, '10pt'],
-            '70': [QPointF(20, 20) * 0.69, self.M_GREY, '10pt'],
             'N': [QPointF(0, 84), self.M_BLUE, '12pt'],
             'W': [QPointF(-84, 0), self.M_BLUE, '12pt'],
             'S': [QPointF(0, -84), self.M_BLUE, '12pt'],
@@ -136,7 +140,6 @@ class PlotPolarScatterPier(Plot):
 
         circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
         circle.setPen(self.pen)
-        circle.setZValue(-10)
         self.plotItem.addItem(circle)
 
     def plot(self, x, ang, pier):
@@ -147,8 +150,9 @@ class PlotPolarScatterPier(Plot):
         :return:
         """
         self.constructPlot()
-        posX = x * np.cos(ang)
-        posY = x * np.sin(ang)
+        ang = np.radians(90 - ang)
+        posX = x / np.max(x) * 90 * np.cos(ang)
+        posY = x / np.max(x) * 90 * np.sin(ang)
 
         spots = [{'pos': (posX[i], posY[i]),
                   'data': f'{x[i]:4.1f}',
@@ -164,11 +168,18 @@ class PlotPolarScatterBar(Plot):
         super().__init__(*args, **kwargs)
         self.scatterItem = None
         self.barItem = pg.ColorBarItem(width=10, pen=self.pen)
-        self.plotItem.setMouseEnabled(x=False, y=False)
         self.plotItem.showAxes(False, showValues=False)
         self.plotItem.setXRange(-80, 80)
         self.plotItem.setYRange(-80, 80)
         self.plotItem.setAspectLocked()
+
+    def mouseDoubleClickEvent(self, e):
+        """
+        :param e:
+        :return:
+        """
+        self.plotItem.setXRange(-80, 80)
+        self.plotItem.setYRange(-80, 80)
 
     def constructPlot(self):
         """
@@ -189,7 +200,6 @@ class PlotPolarScatterBar(Plot):
         for r in range(0, 90, 10):
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
-            circle.setZValue(-10)
             self.plotItem.addItem(circle)
 
         textDic = {
@@ -214,7 +224,6 @@ class PlotPolarScatterBar(Plot):
 
         circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
         circle.setPen(self.pen)
-        circle.setZValue(-10)
         self.plotItem.addItem(circle)
 
         for side in ('left', 'top', 'right', 'bottom'):
@@ -257,7 +266,6 @@ class PlotPolarScatterBar(Plot):
                            brush=pg.mkBrush(color=cMap.mapToQColor(val[i])),
                            )
             arrow.setPos(QPointF(posX[i], posY[i]))
-            arrow.setZValue(-1)
             self.plotItem.addItem(arrow)
 
     def plotLoc(self, lat):
@@ -269,12 +277,10 @@ class PlotPolarScatterBar(Plot):
         circle.setPen(pg.mkPen(color=self.M_BLUE))
         circle.setBrush(pg.mkBrush(color=self.M_BLUE))
         circle.setPos(0, lat)
-        circle.setZValue(-10)
         self.plotItem.addItem(circle)
         circle = pg.QtGui.QGraphicsEllipseItem(-10, -10, 20, 20)
         circle.setPen(pg.mkPen(color=self.M_BLUE, width=2))
         circle.setPos(0, lat)
-        circle.setZValue(-10)
         self.plotItem.addItem(circle)
 
 

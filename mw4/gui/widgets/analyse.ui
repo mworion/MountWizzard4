@@ -1521,7 +1521,7 @@ Model</string>
            <number>8</number>
           </property>
           <item>
-           <widget class="PlotPolarScatterBar" name="modelPositions" native="true">
+           <widget class="PolarScatter" name="modelPositions" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1561,7 +1561,7 @@ Model</string>
            <number>8</number>
           </property>
           <item>
-           <widget class="PlotPolarScatterPier" name="errorDistribution" native="true">
+           <widget class="QWidget" name="errorDistribution" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1601,7 +1601,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatterPierPoints" name="errorAscending" native="true">
+           <widget class="NormalScatter" name="errorAscending" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1641,7 +1641,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatterPierPoints" name="scaleImage" native="true">
+           <widget class="NormalScatter" name="scaleImage" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1703,7 +1703,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatter" name="raRawErrors" native="true">
+           <widget class="NormalScatter" name="raRawErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1743,7 +1743,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatter" name="decRawErrors" native="true">
+           <widget class="NormalScatter" name="decRawErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1783,7 +1783,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatter" name="raErrors" native="true">
+           <widget class="NormalScatter" name="raErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1823,7 +1823,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatter" name="decErrors" native="true">
+           <widget class="NormalScatter" name="decErrors" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1885,7 +1885,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatterPier" name="decRawErrorsRef" native="true">
+           <widget class="NormalScatter" name="decRawErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1925,7 +1925,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatterPier" name="raRawErrorsRef" native="true">
+           <widget class="NormalScatter" name="raRawErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -1965,7 +1965,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatterPier" name="raErrorsRef" native="true">
+           <widget class="NormalScatter" name="raErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -2005,7 +2005,7 @@ Model</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="PlotNormalScatterPier" name="decErrorsRef" native="true">
+           <widget class="NormalScatter" name="decErrorsRef" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -2028,31 +2028,13 @@ Model</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PlotNormalScatter</class>
+   <class>NormalScatter</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>PlotNormalScatterPier</class>
-   <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PlotNormalScatterPierPoints</class>
-   <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PlotPolarScatterBar</class>
-   <extends>QWidget</extends>
-   <header>gui.utilities.tools4pyqtgraph</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PlotPolarScatterPier</class>
+   <class>PolarScatter</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>

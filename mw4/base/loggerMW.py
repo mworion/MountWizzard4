@@ -116,7 +116,7 @@ def setupLogging():
     """
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
-    logFile = f'mw4-{timeTag}.log'
+    logFile = f'./mw4-{timeTag}.log'
     logHandler = RotatingFileHandler(logFile, mode='a', maxBytes=100 * 1024 * 1024,
                                      backupCount=100, encoding=None, delay=False)
     logging.basicConfig(level=logging.DEBUG,

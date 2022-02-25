@@ -39,13 +39,29 @@ def test_Plot():
     Plot()
 
 
+def test_Plot_mouseDoubleClickEvent():
+    p = Plot()
+    p.defRange = {'xMin':0, 'xMax': 1, 'yMin': 0, 'yMax': 1}
+    with mock.patch.object(p.plotItem,
+                           'setRange'):
+        suc = p.mouseDoubleClickEvent(None)
+        assert suc
+
+
 def test_PolarScatter():
-    function = PolarScatter()
+    p = PolarScatter()
+
+
+def test_PolarScatter_makeGrid():
+    p = PolarScatter()
+    suc = p.makeGrid()
+    assert suc
 
 
 def test_PolarScatter_plot():
-    function = PolarScatter()
-    function.plot(np.array([0, 1]), np.array([1, 2]))
+    p = PolarScatter()
+    suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]))
+    assert suc
 
 
 def test_NormalScatter():

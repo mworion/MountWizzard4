@@ -76,6 +76,7 @@ class Plot(pg.PlotWidget, Styles):
                                yRange=(yMin, yMax - yMin),
                                padding=None, update=True,
                                disableAutoRange=True)
+        return True
 
 
 class PolarScatter(Plot):
@@ -120,6 +121,7 @@ class PolarScatter(Plot):
         circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
         circle.setPen(self.pen)
         self.plotItem.addItem(circle)
+        return True
 
     def plot(self, x, y, **kwargs):
         """
@@ -201,6 +203,7 @@ class PolarScatter(Plot):
                            )
             arrow.setPos(QPointF(posX[i], posY[i]))
             self.plotItem.addItem(arrow)
+        return True
 
     def plotLoc(self, lat):
         """

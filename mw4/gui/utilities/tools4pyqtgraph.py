@@ -77,10 +77,75 @@ class Plot(pg.PlotWidget, Styles):
                                yRange=(yMin, yMax - yMin),
                                padding=None, update=True,
                                disableAutoRange=True)
+
+
+class NormalScatter(Plot):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.plotItem.showAxes(True, showValues=True)
+        self.colorInx = None
+        self.col = None
+
+    def plot(self, x, y, **kwargs):
+        """
+        :param x:
+        :param y:
+        :param kwargs:
+        :return:
+        """
+        self.plotItem.clear()
+        self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSymbol='s',
+                                              hoverSize=15, hoverPen=self.pen)
+        self.plotItem.addItem(self.scatterItem)
+        self.defRange = kwargs.get('range', {})
+        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
+        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
+        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
+        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
+        self.plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=yMin, yMax=yMax,
+                                minXRange=(xMax - xMin) / 2,
+                                maxXRange=xMax - xMin,
+                                minYRange=(yMax - yMin) / 2,
+                                maxYRange=yMax - yMin)
+        self.mouseDoubleClickEvent(None)
+
+        dataVal = kwargs.get('data', y)
+        self.col = kwargs.get('color', self.M_BLUE)
+        if isinstance(self.col, (str, QColor)):
+            self.col = [self.col] * len(x)
+
+        if 'z' in kwargs:
+            z = kwargs.get('z')
+            err = np.abs(z)
+            minE = np.min(err)
+            maxE = np.max(err)
+            self.colorInx = (err - minE) / (maxE - minE)
+
+        hasBar = kwargs.get('bar', False)
+        if hasBar and 'z' in kwargs:
+            self.barItem.setVisible(True)
+            self.barItem.setLevels(values=(minE, maxE))
+            self.barItem.setColorMap(self.cMapGYR)
+
+        spots = []
+        for i in range(len(x)):
+            if 'z' in kwargs:
+                colorVal = self.cMapGYR.mapToQColor(self.colorInx[i])
+            else:
+                colorVal = self.col[i]
+            spots.append(
+                {'pos': (x[i], y[i]),
+                 'data':  dataVal[i],
+                 'brush': colorVal,
+                 'pen': colorVal
+                 })
+        self.scatterItem.addPoints(spots)
         return True
 
 
-class PolarScatter(Plot):
+class PolarScatter(NormalScatter):
     """
     """
     def __init__(self, *args, **kwargs):
@@ -131,59 +196,12 @@ class PolarScatter(Plot):
         :param kwargs:
         :return:
         """
-        self.plotItem.clear()
-        self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSymbol='s',
-                                              hoverSize=15, hoverPen=self.pen)
-        self.plotItem.addItem(self.scatterItem)
-        self.defRange = kwargs.get('range', {})
-        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
-        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
-        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
-        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
-        self.plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=yMin, yMax=yMax,
-                                minXRange=(xMax - xMin),
-                                maxXRange=xMax - xMin,
-                                minYRange=(yMax - yMin),
-                                maxYRange=yMax - yMin)
-        self.mouseDoubleClickEvent(None)
-
-        dataVal = kwargs.get('data', y)
-        col = kwargs.get('color', self.M_BLUE)
-        if isinstance(col, (str, QColor)):
-            col = [col] * len(x)
-
-        if 'z' in kwargs:
-            z = kwargs.get('z')
-            err = np.abs(z)
-            minE = np.min(err)
-            maxE = np.max(err)
-            colorInx = (err - minE) / (maxE - minE)
-
-        hasBar = kwargs.get('bar', False)
-        if hasBar and 'z' in kwargs:
-            self.barItem.setVisible(True)
-            self.barItem.setLevels(values=(minE, maxE))
-            self.barItem.setColorMap(self.cMapGYR)
-        self.makeGrid()
-
         x = np.radians(90 - x)
         posX = (90 - y) * np.cos(x)
         posY = (90 - y) * np.sin(x)
 
-        spots = []
-        for i in range(len(x)):
-            if 'z' in kwargs:
-                colorVal = self.cMapGYR.mapToQColor(colorInx[i])
-            else:
-                colorVal = col[i]
-            spots.append(
-                {'pos': (posX[i], posY[i]),
-                 'data':  dataVal[i],
-                 'brush': colorVal,
-                 'pen': colorVal,
-                 'size': 7,
-                 })
-        self.scatterItem.addPoints(spots)
+        super().plot(posX, posY, **kwargs)
+        self.makeGrid()
 
         ang = kwargs.get('ang')
         if ang is None:
@@ -192,9 +210,9 @@ class PolarScatter(Plot):
         for i in range(len(x)):
             arrow = pg.ArrowItem()
             if 'z' in kwargs:
-                colorVal = self.cMapGYR.mapToQColor(colorInx[i])
+                colorVal = self.cMapGYR.mapToQColor(self.colorInx[i])
             else:
-                colorVal = col[i]
+                colorVal = self.col[i]
             arrow.setStyle(angle=ang[i] - 90,
                            tipAngle=0,
                            headLen=0,
@@ -221,70 +239,6 @@ class PolarScatter(Plot):
         circle.setPen(pg.mkPen(color=self.M_BLUE, width=2))
         circle.setPos(0, lat)
         self.plotItem.addItem(circle)
-        return True
-
-
-class NormalScatter(Plot):
-    """
-    """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.plotItem.showAxes(True, showValues=True)
-
-    def plot(self, x, y, **kwargs):
-        """
-        :param x:
-        :param y:
-        :param kwargs:
-        :return:
-        """
-        self.plotItem.clear()
-        self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSymbol='s',
-                                              hoverSize=15, hoverPen=self.pen)
-        self.plotItem.addItem(self.scatterItem)
-        self.defRange = kwargs.get('range', {})
-        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
-        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
-        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
-        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
-        self.plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=yMin, yMax=yMax,
-                                minXRange=(xMax - xMin) / 2,
-                                maxXRange=xMax - xMin,
-                                minYRange=(yMax - yMin) / 2,
-                                maxYRange=yMax - yMin)
-        self.mouseDoubleClickEvent(None)
-
-        dataVal = kwargs.get('data', y)
-        col = kwargs.get('color', self.M_BLUE)
-        if isinstance(col, (str, QColor)):
-            col = [col] * len(x)
-
-        if 'z' in kwargs:
-            z = kwargs.get('z')
-            err = np.abs(z)
-            minE = np.min(err)
-            maxE = np.max(err)
-            colorInx = (err - minE) / (maxE - minE)
-
-        hasBar = kwargs.get('bar', False)
-        if hasBar and 'z' in kwargs:
-            self.barItem.setVisible(True)
-            self.barItem.setLevels(values=(minE, maxE))
-            self.barItem.setColorMap(self.cMapGYR)
-
-        spots = []
-        for i in range(len(x)):
-            if 'z' in kwargs:
-                colorVal = self.cMapGYR.mapToQColor(colorInx[i])
-            else:
-                colorVal = col[i]
-            spots.append(
-                {'pos': (x[i], y[i]),
-                 'data':  dataVal[i],
-                 'brush': colorVal,
-                 'pen': colorVal
-                 })
-        self.scatterItem.addPoints(spots)
         return True
 
 

@@ -21,6 +21,7 @@
 import numpy as np
 import pyqtgraph as pg
 from PyQt5.QtCore import QPointF
+from PyQt5.QtGui import QColor
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -148,13 +149,11 @@ class PolarScatter(Plot):
 
         dataVal = kwargs.get('data', y)
         col = kwargs.get('color', self.M_BLUE)
-        if len(col) == 1:
-            col = col * np.ones()
+        if isinstance(col, (str, QColor)):
+            col = [col] * len(x)
 
         if 'z' in kwargs:
             z = kwargs.get('z')
-            if z is None:
-                return
             err = np.abs(z)
             minE = np.min(err)
             maxE = np.max(err)
@@ -188,18 +187,21 @@ class PolarScatter(Plot):
 
         ang = kwargs.get('ang')
         if ang is None:
-            return
+            return False
 
         for i in range(len(x)):
             arrow = pg.ArrowItem()
-            color = self.cMapGYR.mapToQColor(colorInx[i])
+            if 'z' in kwargs:
+                colorVal = self.cMapGYR.mapToQColor(colorInx[i])
+            else:
+                colorVal = col[i]
             arrow.setStyle(angle=ang[i] - 90,
                            tipAngle=0,
                            headLen=0,
                            tailWidth=2,
                            tailLen=15,
-                           pen=pg.mkPen(color=color),
-                           brush=pg.mkBrush(color=color),
+                           pen=pg.mkPen(color=colorVal),
+                           brush=pg.mkBrush(color=colorVal),
                            )
             arrow.setPos(QPointF(posX[i], posY[i]))
             self.plotItem.addItem(arrow)
@@ -219,6 +221,7 @@ class PolarScatter(Plot):
         circle.setPen(pg.mkPen(color=self.M_BLUE, width=2))
         circle.setPos(0, lat)
         self.plotItem.addItem(circle)
+        return True
 
 
 class NormalScatter(Plot):
@@ -253,13 +256,11 @@ class NormalScatter(Plot):
 
         dataVal = kwargs.get('data', y)
         col = kwargs.get('color', self.M_BLUE)
-        if len(col) == 1:
-            col = col * np.ones()
+        if isinstance(col, (str, QColor)):
+            col = [col] * len(x)
 
         if 'z' in kwargs:
             z = kwargs.get('z')
-            if z is None:
-                return
             err = np.abs(z)
             minE = np.min(err)
             maxE = np.max(err)
@@ -284,6 +285,7 @@ class NormalScatter(Plot):
                  'pen': colorVal
                  })
         self.scatterItem.addPoints(spots)
+        return True
 
 
 class PlotImageBar(Plot):

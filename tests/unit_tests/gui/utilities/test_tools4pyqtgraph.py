@@ -41,7 +41,7 @@ def test_Plot():
 
 def test_Plot_mouseDoubleClickEvent():
     p = Plot()
-    p.defRange = {'xMin':0, 'xMax': 1, 'yMin': 0, 'yMax': 1}
+    p.defRange = {'xMin': 0, 'xMax': 1, 'yMin': 0, 'yMax': 1}
     with mock.patch.object(p.plotItem,
                            'setRange'):
         suc = p.mouseDoubleClickEvent(None)
@@ -58,9 +58,42 @@ def test_PolarScatter_makeGrid():
     assert suc
 
 
-def test_PolarScatter_plot():
+def test_PolarScatter_plot1():
     p = PolarScatter()
-    suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]))
+    with mock.patch.object(p,
+                           'mouseDoubleClickEvent'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     color='#000000', z=np.array([2, 3, 4]), bar=True)
+        assert not suc
+
+
+def test_PolarScatter_plot2():
+    p = PolarScatter()
+    with mock.patch.object(p,
+                           'mouseDoubleClickEvent'):
+        with mock.patch.object(p,
+                               'makeGrid'):
+            suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                         color=['#000000', '#000000', '#000000'],
+                         ang=np.array([2, 3, 4]))
+            assert suc
+
+
+def test_PolarScatter_plot3():
+    p = PolarScatter()
+    with mock.patch.object(p,
+                           'mouseDoubleClickEvent'):
+        with mock.patch.object(p,
+                               'makeGrid'):
+            suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                         z=np.array([2, 3, 4]),
+                         ang=np.array([2, 3, 4]))
+            assert suc
+
+
+def test_PolarScatter_plotLoc():
+    p = PolarScatter()
+    suc = p.plotLoc(47)
     assert suc
 
 
@@ -68,9 +101,33 @@ def test_NormalScatter():
     function = NormalScatter()
 
 
-def test_NormalScatter_plot():
-    function = NormalScatter()
-    function.plot(np.array([0]), np.array([1]), np.array([2]))
+def test_NormalScatter_plot1():
+    p = NormalScatter()
+    with mock.patch.object(p,
+                           'mouseDoubleClickEvent'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     color='#000000', z=np.array([2, 3, 4]), bar=True)
+        assert suc
+
+
+def test_NormalScatter_plot2():
+    p = NormalScatter()
+    with mock.patch.object(p,
+                           'mouseDoubleClickEvent'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     color=['#000000', '#000000', '#000000'],
+                     ang=np.array([2, 3, 4]))
+        assert suc
+
+
+def test_NormalScatter_plot3():
+    p = PolarScatter()
+    with mock.patch.object(p,
+                           'mouseDoubleClickEvent'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     z=np.array([2, 3, 4]),
+                     ang=np.array([2, 3, 4]))
+        assert suc
 
 
 def test_PlotImageBar_constructPlot():

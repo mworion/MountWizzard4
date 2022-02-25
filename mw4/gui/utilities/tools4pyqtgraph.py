@@ -20,8 +20,7 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt5.QtCore import QPointF, QRectF
-from PyQt5.QtGui import QColor
+from PyQt5.QtCore import QPointF
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -50,9 +49,10 @@ class Plot(pg.PlotWidget, Styles):
         self.imageItem = None
 
         self.barItem = pg.ColorBarItem(width=10, pen=self.pen)
-        self.plotItem.layout.addItem(self.barItem, 2, 5)
         self.barItem.setVisible(False)
 
+        self.plotItem.layout.addItem(self.barItem, 2, 5)
+        self.plotItem.layout.setColumnFixedWidth(4, 5)
         self.plotItem.getViewBox().setMenuEnabled(False)
         self.plotItem.hideButtons()
 
@@ -60,8 +60,8 @@ class Plot(pg.PlotWidget, Styles):
             self.plotItem.getAxis(side).setPen(self.pen)
             self.plotItem.getAxis(side).setTextPen(self.pen)
             self.barItem.getAxis(side).setPen(self.pen)
-            self.barItem.getAxis(side).setTextPen(self.pen)
             self.plotItem.getAxis(side).setGrid(64)
+            self.barItem.getAxis(side).setTextPen(self.pen)
 
     def mouseDoubleClickEvent(self, e):
         """
@@ -72,8 +72,10 @@ class Plot(pg.PlotWidget, Styles):
         yMin = self.defRange.get('yMin')
         xMax = self.defRange.get('xMax')
         yMax = self.defRange.get('yMax')
-        self.plotItem.setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin),
-                               padding=None, update=True, disableAutoRange=True)
+        self.plotItem.setRange(xRange=(xMin, xMax - xMin),
+                               yRange=(yMin, yMax - yMin),
+                               padding=None, update=True,
+                               disableAutoRange=True)
 
 
 class PolarScatter(Plot):
@@ -131,16 +133,21 @@ class PolarScatter(Plot):
                                               hoverSize=15, hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
-        self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
-        self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
-        self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
-        self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
+        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
+        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
+        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
+        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
+        self.plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=yMin, yMax=yMax,
+                                minXRange=(xMax - xMin),
+                                maxXRange=xMax - xMin,
+                                minYRange=(yMax - yMin),
+                                maxYRange=yMax - yMin)
         self.mouseDoubleClickEvent(None)
 
         dataVal = kwargs.get('data', y)
         col = kwargs.get('color', self.M_BLUE)
         if len(col) == 1:
-            col = col * no.ones()
+            col = col * np.ones()
 
         if 'z' in kwargs:
             z = kwargs.get('z')
@@ -156,7 +163,6 @@ class PolarScatter(Plot):
             self.barItem.setVisible(True)
             self.barItem.setLevels(values=(minE, maxE))
             self.barItem.setColorMap(self.cMapGYR)
-
         self.makeGrid()
 
         x = np.radians(90 - x)
@@ -245,7 +251,7 @@ class NormalScatter(Plot):
         dataVal = kwargs.get('data', y)
         col = kwargs.get('color', self.M_BLUE)
         if len(col) == 1:
-            col = col * no.ones()
+            col = col * np.ones()
 
         if 'z' in kwargs:
             z = kwargs.get('z')

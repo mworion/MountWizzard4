@@ -192,20 +192,20 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                 model[key].append(modelJSON[index][key])
 
         self.latitude = modelJSON[0].get('latitude')
-        self.pierside = np.asarray(model['pierside'])
-        self.countSequence = np.asarray(model['countSequence'])
-        self.index = np.asarray(model['errorIndex']) - 1
-        self.scaleS = np.asarray(model['scaleS'])
-        self.altitude = np.asarray(model['altitude'])
-        self.azimuth = np.asarray(model['azimuth'])
-        self.errorAngle = np.asarray(model['errorAngle'])
-        self.errorRMS = np.asarray(model['errorRMS'])
-        self.errorRA_S = np.asarray(model['errorRA_S'])
-        self.errorDEC_S = np.asarray(model['errorDEC_S'])
-        self.errorRA = np.asarray(model['errorRA'])
-        self.errorDEC = np.asarray(model['errorDEC'])
-        self.angularPosRA = np.asarray(model['angularPosRA'])
-        self.angularPosDEC = np.asarray(model['angularPosDEC'])
+        self.pierside = np.array(model['pierside'])
+        self.countSequence = np.array(model['countSequence'], dtype=np.int64)
+        self.index = np.array(model['errorIndex'], dtype=np.int64) - 1
+        self.scaleS = np.array(model['scaleS'], dtype=np.float32)
+        self.altitude = np.array(model['altitude'], dtype=np.float32)
+        self.azimuth = np.array(model['azimuth'], dtype=np.float32)
+        self.errorAngle = np.array(model['errorAngle'], dtype=np.float32)
+        self.errorRMS = np.array(model['errorRMS'], dtype=np.float32)
+        self.errorRA_S = np.array(model['errorRA_S'], dtype=np.float32)
+        self.errorDEC_S = np.array(model['errorDEC_S'], dtype=np.float32)
+        self.errorRA = np.array(model['errorRA'], dtype=np.float32)
+        self.errorDEC = np.array(model['errorDEC'], dtype=np.float32)
+        self.angularPosRA = np.array(model['angularPosRA'], dtype=np.float32)
+        self.angularPosDEC = np.array(model['angularPosDEC'], dtype=np.float32)
         return True
 
     def processModel(self, loadFilePath):
@@ -248,7 +248,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         self.ui.raRawErrors.setLabel('bottom', 'Azimuth [deg]')
         self.ui.raRawErrors.setLabel('left', 'Altitude [deg]')
+        self.ui.raRawErrors.barItem.setLabel('right', 'Error []')
         self.ui.raRawErrors.plot(self.azimuth, self.altitude, z=self.errorRA_S,
+                                 bar=True, data=self.errorRA_S,
                                  range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
         return True
 
@@ -258,7 +260,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         self.ui.decRawErrors.setLabel('bottom', 'Azimuth [deg]')
         self.ui.decRawErrors.setLabel('left', 'Altitude [deg]')
+        self.ui.decRawErrors.barItem.setLabel('right', 'Error []')
         self.ui.decRawErrors.plot(self.azimuth, self.altitude, z=self.errorDEC_S,
+                                  bar=True, data=self.errorDEC_S,
                                   range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
         return True
 
@@ -268,7 +272,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         self.ui.raErrors.setLabel('bottom', 'Azimuth [deg]')
         self.ui.raErrors.setLabel('left', 'Altitude [deg]')
+        self.ui.raErrors.barItem.setLabel('right', 'Error [RMS]')
         self.ui.raErrors.plot(self.azimuth, self.altitude, z=self.errorRA,
+                              bar=True, data=self.errorRA,
                               range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
         return True
 
@@ -280,6 +286,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decErrors.setLabel('left', 'Altitude [deg]')
         self.ui.decErrors.barItem.setLabel('right', 'Error [RMS]')
         self.ui.decErrors.plot(self.azimuth, self.altitude, z=self.errorDEC,
+                               bar=True, data=self.errorDEC,
                                range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
         return True
 

@@ -1561,7 +1561,7 @@ Model</string>
            <number>8</number>
           </property>
           <item>
-           <widget class="QWidget" name="errorDistribution" native="true">
+           <widget class="PolarScatter" name="errorDistribution" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>

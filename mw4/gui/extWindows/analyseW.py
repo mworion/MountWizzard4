@@ -368,7 +368,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                                     z=self.errorRMS, ang=self.errorAngle,
                                     range={'xMin': -91, 'yMin': -91,
                                            'xMax': 91, 'yMax': 91},
-                                    bar=True, data=self.errorRMS)
+                                    bar=True, data=self.errorRMS,
+                                    reverse=True)
         self.ui.modelPositions.plotLoc(self.latitude)
         return True
 
@@ -376,7 +377,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        return
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
         self.ui.errorDistribution.plot(self.errorRMS, self.errorAngle, color=color)
         return True

@@ -104,11 +104,11 @@ class NormalScatter(Plot):
         yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
         xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
         yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
-        self.plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=yMin, yMax=yMax,
-                                minXRange=(xMax - xMin) / 2,
-                                maxXRange=xMax - xMin,
-                                minYRange=(yMax - yMin) / 2,
-                                maxYRange=yMax - yMin)
+        #self.plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=yMin, yMax=yMax,
+        #                        minXRange=(xMax - xMin) / 2,
+        #                        maxXRange=xMax - xMin,
+        #                        minYRange=(yMax - yMin) / 2,
+        #                        maxYRange=yMax - yMin)
         self.mouseDoubleClickEvent(None)
 
         dataVal = kwargs.get('data', y)
@@ -153,17 +153,12 @@ class PolarScatter(NormalScatter):
         self.plotItem.showAxes(False, showValues=False)
         self.plotItem.setAspectLocked()
 
-    def makeGrid(self):
+    def setLabel(self, x, y, **kwargs):
         """
+        :param x:
+        :param y:
         :return:
         """
-        self.plotItem.addLine(x=0, pen=self.penGrid)
-        self.plotItem.addLine(y=0, pen=self.penGrid)
-        for r in range(0, 90, 10):
-            circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
-            circle.setPen(self.penGrid)
-            self.plotItem.addItem(circle)
-
         textDic = {
             '10': [QPointF(80, 80) * 0.69, self.M_GREY, '10pt'],
             '30': [QPointF(60, 60) * 0.69, self.M_GREY, '10pt'],
@@ -174,7 +169,7 @@ class PolarScatter(NormalScatter):
             'S': [QPointF(0, -84), self.M_BLUE, '12pt'],
             'E': [QPointF(84, 0), self.M_BLUE, '12pt'],
         }
-        for text in textDic:
+        for text in []:
             label = pg.LabelItem(text=text,
                                  color=textDic[text][1],
                                  angle=180,
@@ -184,28 +179,63 @@ class PolarScatter(NormalScatter):
             label.setPos(QPointF(-8, 11) + textDic[text][0])
             self.plotItem.addItem(label)
 
-        circle = pg.QtGui.QGraphicsEllipseItem(-90, -90, 180, 180)
+    def setGrid(self, x, y, **kwargs):
+        """
+        :param x:
+        :param y:
+        :return:
+        """
+        if kwargs.get('reverse', False):
+            maxR = 90
+            gridLines = range(10, maxR, 10)
+        else:
+            maxR = int(np.max(y) / 7) * 8
+            gridLines = range(0, maxR, int(np.max(y) / 7))
+
+        self.plotItem.addLine(x=0, pen=self.penGrid)
+        self.plotItem.addLine(y=0, pen=self.penGrid)
+        for r in gridLines:
+            circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
+            circle.setPen(self.penGrid)
+            self.plotItem.addItem(circle)
+            if kwargs.get('reverse', False):
+                text = f'{90 - r}'
+            else:
+                text = f'{r}'
+            label = pg.LabelItem(text=text,
+                                 color=self.M_GREY,
+                                 angle=180,
+                                 size='10pt')
+            label.scale(-1, 1)
+            label.setPos(QPointF(-8, 11) + QPointF(r * 0.69, r * 0.69))
+            self.plotItem.addItem(label)
+
+        circle = pg.QtGui.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2, maxR * 2)
         circle.setPen(self.pen)
         self.plotItem.addItem(circle)
         return True
 
     def plot(self, x, y, **kwargs):
         """
-        :param x:
-        :param y:
+        :param x: azimuth
+        :param y: altitude
         :param kwargs:
         :return:
         """
         x = np.radians(90 - x)
-        posX = (90 - y) * np.cos(x)
-        posY = (90 - y) * np.sin(x)
-
+        if kwargs.get('reverse', False):
+            posX = (90 - y) * np.cos(x)
+            posY = (90 - y) * np.sin(x)
+        else:
+            posX = y * np.cos(x)
+            posY = y * np.sin(x)
         super().plot(posX, posY, **kwargs)
-        self.makeGrid()
+        self.setGrid(posX, posY, **kwargs)
 
         ang = kwargs.get('ang')
         if ang is None:
             return False
+        ang = np.degrees(ang)
 
         for i in range(len(x)):
             arrow = pg.ArrowItem()

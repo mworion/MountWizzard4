@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/analyse.ui'
+# Form implementation generated from reading ui file 'analyse.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -513,7 +513,7 @@ class Ui_AnalyseDialog(object):
         self.horizontalLayout_2.setContentsMargins(4, 12, 8, 8)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.errorDistribution = QtWidgets.QWidget(self.groupBox_14)
+        self.errorDistribution = PolarScatter(self.groupBox_14)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

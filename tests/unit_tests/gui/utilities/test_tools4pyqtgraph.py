@@ -25,10 +25,8 @@ import numpy as np
 
 # local import
 from gui.utilities.tools4pyqtgraph import Plot
-from gui.utilities.tools4pyqtgraph import PlotNormalScatter
-from gui.utilities.tools4pyqtgraph import PlotPolarScatterBar
-from gui.utilities.tools4pyqtgraph import PlotNormalScatterPier
-from gui.utilities.tools4pyqtgraph import PlotNormalScatterPierPoints
+from gui.utilities.tools4pyqtgraph import PolarScatter
+from gui.utilities.tools4pyqtgraph import NormalScatter
 from gui.utilities.tools4pyqtgraph import PlotImageBar
 
 
@@ -41,53 +39,21 @@ def test_Plot():
     Plot()
 
 
-def test_PlotNormalScatterPierPoints_constructPlot():
-    function = PlotNormalScatterPierPoints()
-    function.constructPlot()
+def test_PolarScatter():
+    function = PolarScatter()
 
 
-def test_PlotNormalScatterPierPoints_plot():
-    function = PlotNormalScatterPierPoints()
-    function.plot(np.array([0]), np.array([1]), np.array(['E']))
+def test_PolarScatter_plot():
+    function = PolarScatter()
+    function.plot(np.array([0, 1]), np.array([1, 2]))
 
 
-def test_PlotPolarScatterBar_constructPlot():
-    function = PlotPolarScatterBar()
-    function.constructPlot()
+def test_NormalScatter():
+    function = NormalScatter()
 
 
-def test_PlotPolarScatterBar_plot():
-    function = PlotPolarScatterBar()
-    function.plot(np.array([0]), np.array([1]), np.array([2]))
-
-
-def test_PlotNormalScatterPier_constructPlot_1():
-    function = PlotNormalScatterPier()
-    function.constructPlot(True)
-
-
-def test_PlotNormalScatterPier_constructPlot_2():
-    function = PlotNormalScatterPier()
-    function.constructPlot(False)
-
-
-def test_PlotNormalScatterPier_plot():
-    function = PlotNormalScatterPier()
-    function.plot(np.array([0]), np.array([1]), np.array([2]), True)
-
-
-def test_PlotPolarScatterBar_plot():
-    function = PlotPolarScatterBar()
-    function.plot(np.array([1]), np.array([1]), np.array([2]))
-
-
-def test_PlotNormalScatter_constructPlot():
-    function = PlotNormalScatter()
-    function.constructPlot()
-
-
-def test_PlotNormalScatter_plot():
-    function = PlotNormalScatter()
+def test_NormalScatter_plot():
+    function = NormalScatter()
     function.plot(np.array([0]), np.array([1]), np.array([2]))
 
 

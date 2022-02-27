@@ -140,8 +140,13 @@ class NormalScatter(Plot):
                  'data':  dataVal[i],
                  'brush': colorVal,
                  'pen': colorVal,
+                 'size': 5,
                  })
-        self.scatterItem.addPoints(spots, tip=kwargs.get('tip'))
+        tip = kwargs.get('tip')
+        if tip is None:
+            self.scatterItem.addPoints(spots)
+        else:
+            self.scatterItem.addPoints(spots, tip=tip)
         return True
 
 
@@ -179,17 +184,19 @@ class PolarScatter(NormalScatter):
             label.setPos(QPointF(-8, 11) + textDic[text][0])
             self.plotItem.addItem(label)
 
-    def setGrid(self, x, y, **kwargs):
+    def setGrid(self, y, **kwargs):
         """
         :param x:
         :param y:
         :return:
         """
-        # define the grid
         if kwargs.get('reverse', False):
             maxR = 90
             stepLines = 10
             gridLines = range(10, maxR, stepLines)
+            circle = pg.QtGui.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2, maxR * 2)
+            circle.setPen(self.pen)
+            self.plotItem.addItem(circle)
         else:
             maxR = int(np.max(y) / 7 * 8)
             stepLines = 5
@@ -211,15 +218,12 @@ class PolarScatter(NormalScatter):
             font = QFont(self.window().font().family(),
                          self.window().font().pointSize() * 1.2)
             text = pg.TextItem(text=text,
-                               color=self.M_GREY)
+                               color=self.M_GREY,
+                               anchor=(0.5, 0.5))
 
             text.setFont(font)
             text.setPos(r * 0.69, r * 0.69)
             self.plotItem.addItem(text)
-
-        circle = pg.QtGui.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2, maxR * 2)
-        circle.setPen(self.pen)
-        self.plotItem.addItem(circle)
         return True
 
     def plot(self, x, y, **kwargs):
@@ -237,7 +241,7 @@ class PolarScatter(NormalScatter):
             posX = y * np.cos(x)
             posY = y * np.sin(x)
         super().plot(posX, posY, limits=False, **kwargs)
-        self.setGrid(posX, posY, **kwargs)
+        self.setGrid(y, **kwargs)
 
         ang = kwargs.get('ang')
         if ang is None:
@@ -253,14 +257,13 @@ class PolarScatter(NormalScatter):
             arrow.setStyle(angle=ang[i] - 90,
                            tipAngle=0,
                            headLen=0,
-                           tailWidth=2,
-                           tailLen=15,
+                           tailWidth=1,
+                           tailLen=12,
                            pen=pg.mkPen(color=colorVal),
                            brush=pg.mkBrush(color=colorVal),
                            )
             arrow.setPos(posX[i], posY[i])
             self.plotItem.addItem(arrow)
-        self.plotItem.getViewBox().scaleBy(x=1.5)
         return True
 
     def plotLoc(self, lat):

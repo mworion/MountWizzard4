@@ -252,7 +252,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raRawErrors.plot(
             self.azimuth, self.altitude, z=self.errorRA_S, data=self.errorRA_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_decRawErrors(self):
@@ -265,7 +265,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decRawErrors.plot(
             self.azimuth, self.altitude, z=self.errorDEC_S, data=self.errorDEC_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_raErrors(self):
@@ -278,7 +278,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raErrors.plot(
             self.azimuth, self.altitude, z=self.errorRA, data=self.errorRA,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_decError(self):
@@ -291,7 +291,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decErrors.plot(
             self.azimuth, self.altitude, z=self.errorDEC, data=self.errorDEC,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_raRawErrorsRef(self):
@@ -304,7 +304,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raRawErrorsRef.plot(
             self.angularPosRA, self.errorRA_S, color=color,
             range={'xMin': 0, 'xMax': 180}, data=self.pierside,
-            tip='AngularRA:{x:0.1f}\nErrorRa:{y:0.1f}\nPier: {data}'.format)
+            tip='AngularRA: {x:0.1f}\nErrorRa: {y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_decRawErrorsRef(self):
@@ -318,7 +318,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decRawErrorsRef.plot(
             self.angularPosDEC, y, color=color,
             range={'xMin': -90, 'xMax': 90}, data=self.pierside,
-            tip='AngularDEC:{x:0.1f}\nErrorDec:{y:0.1f}\nPier: {data}'.format)
+            tip='AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_raErrorsRef(self):
@@ -331,7 +331,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raErrorsRef.plot(
             self.angularPosRA, self.errorRA, color=color,
             range={'xMin': 0, 'xMax': 180}, data=self.pierside,
-            tip='AngularRA:{x:0.1f}\nErrorRA:{y:0.1f}\nPier: {data}'.format)
+            tip='AngularRA: {x:0.1f}\nErrorRA: {y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_decErrorsRef(self):
@@ -345,7 +345,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decErrorsRef.plot(
             self.angularPosDEC, y, color=color,
             range={'xMin': -90, 'xMax': 90}, data=self.pierside,
-            tip='AngularDEC:{x:0.1f}\nErrorDec:{y:0.1f}\nPier: {data}'.format)
+            tip='AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_scaleImage(self):
@@ -379,7 +379,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.modelPositions.plot(
             self.azimuth, self.altitude, z=self.errorRMS, ang=self.errorAngle,
             range={'xMin': -91, 'yMin': -91, 'xMax': 91, 'yMax': 91},
-            bar=True, data=self.errorRMS, reverse=True)
+            bar=True, data=self.errorRMS, reverse=True,
+            tip='ErrorRMS: {data:0.1f}'.format)
         self.ui.modelPositions.plotLoc(self.latitude)
         return True
 
@@ -388,7 +389,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :return:    True if ok for testing
         """
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
-        self.ui.errorDistribution.plot(self.errorAngle, self.errorRMS, color=color)
+        self.ui.errorDistribution.plot(
+            self.errorAngle, self.errorRMS, color=color, data=self.pierside,
+            tip='ErrorRMS: {y:0.1f}\nPier: {data}'.format)
         return True
 
     def drawAll(self):

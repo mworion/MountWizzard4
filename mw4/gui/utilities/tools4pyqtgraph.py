@@ -20,8 +20,8 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt5.QtCore import QPointF
-from PyQt5.QtGui import QColor
+from PyQt5.QtCore import QRectF
+from PyQt5.QtGui import QColor, QFont
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -73,10 +73,7 @@ class Plot(pg.PlotWidget, Styles):
         yMin = self.defRange.get('yMin')
         xMax = self.defRange.get('xMax')
         yMax = self.defRange.get('yMax')
-        self.plotItem.setRange(xRange=(xMin, xMax - xMin),
-                               yRange=(yMin, yMax - yMin),
-                               padding=None, update=True,
-                               disableAutoRange=True)
+        self.plotItem.setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
 
 
 class NormalScatter(Plot):
@@ -96,19 +93,22 @@ class NormalScatter(Plot):
         :return:
         """
         self.plotItem.clear()
-        self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSymbol='s',
-                                              hoverSize=15, hoverPen=self.pen)
+        self.scatterItem = pg.ScatterPlotItem(hoverable=True,
+                                              hoverSize=10, hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
         xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
         yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
         xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
         yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
-        #self.plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=yMin, yMax=yMax,
-        #                        minXRange=(xMax - xMin) / 2,
-        #                        maxXRange=xMax - xMin,
-        #                        minYRange=(yMax - yMin) / 2,
-        #                        maxYRange=yMax - yMin)
+
+        if kwargs.get('limits', True):
+            self.plotItem.setLimits(xMin=xMin, xMax=xMax,
+                                    yMin=yMin, yMax=yMax,
+                                    minXRange=(xMax - xMin) / 2,
+                                    maxXRange=(xMax - xMin),
+                                    minYRange=(yMax - yMin) / 2,
+                                    maxYRange=(yMax - yMin))
         self.mouseDoubleClickEvent(None)
 
         dataVal = kwargs.get('data', y)
@@ -151,7 +151,7 @@ class PolarScatter(NormalScatter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.plotItem.showAxes(False, showValues=False)
-        self.plotItem.setAspectLocked()
+        self.plotItem.setAspectLocked(True)
 
     def setLabel(self, x, y, **kwargs):
         """
@@ -185,35 +185,37 @@ class PolarScatter(NormalScatter):
         :param y:
         :return:
         """
+        # define the grid
         if kwargs.get('reverse', False):
             maxR = 90
             stepLines = 10
             gridLines = range(10, maxR, stepLines)
-            sizeFont = f'{maxR / 90 * stepLines}pt'
-
         else:
             maxR = int(np.max(y) / 7 * 8)
             stepLines = 5
             gridLines = np.arange(0, maxR, stepLines)
-            sizeFont = f'{maxR / 90 * stepLines}pt'
 
         self.plotItem.addLine(x=0, pen=self.penGrid)
         self.plotItem.addLine(y=0, pen=self.penGrid)
+
         for r in gridLines:
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
             self.plotItem.addItem(circle)
+
             if kwargs.get('reverse', False):
                 text = f'{90 - r}'
             else:
                 text = f'{r}'
-            label = pg.LabelItem(text=text,
-                                 color=self.M_GREY,
-                                 angle=180,
-                                 size=sizeFont)
-            label.scale(-1, 1)
-            label.setPos(QPointF(-8, 11) + QPointF(r * 0.69, r * 0.69))
-            self.plotItem.addItem(label)
+
+            font = QFont(self.window().font().family(),
+                         self.window().font().pointSize() * 1.2)
+            text = pg.TextItem(text=text,
+                               color=self.M_GREY)
+
+            text.setFont(font)
+            text.setPos(r * 0.69, r * 0.69)
+            self.plotItem.addItem(text)
 
         circle = pg.QtGui.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2, maxR * 2)
         circle.setPen(self.pen)
@@ -234,7 +236,7 @@ class PolarScatter(NormalScatter):
         else:
             posX = y * np.cos(x)
             posY = y * np.sin(x)
-        super().plot(posX, posY, **kwargs)
+        super().plot(posX, posY, limits=False, **kwargs)
         self.setGrid(posX, posY, **kwargs)
 
         ang = kwargs.get('ang')
@@ -256,8 +258,9 @@ class PolarScatter(NormalScatter):
                            pen=pg.mkPen(color=colorVal),
                            brush=pg.mkBrush(color=colorVal),
                            )
-            arrow.setPos(QPointF(posX[i], posY[i]))
+            arrow.setPos(posX[i], posY[i])
             self.plotItem.addItem(arrow)
+        self.plotItem.getViewBox().scaleBy(x=1.5)
         return True
 
     def plotLoc(self, lat):

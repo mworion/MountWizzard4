@@ -249,9 +249,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raRawErrors.setLabel('bottom', 'Azimuth [deg]')
         self.ui.raRawErrors.setLabel('left', 'Altitude [deg]')
         self.ui.raRawErrors.barItem.setLabel('right', 'Error []')
-        self.ui.raRawErrors.plot(self.azimuth, self.altitude, z=self.errorRA_S,
-                                 bar=True, data=self.errorRA_S,
-                                 range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
+        self.ui.raRawErrors.plot(
+            self.azimuth, self.altitude, z=self.errorRA_S, data=self.errorRA_S,
+            range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
+            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_decRawErrors(self):
@@ -261,9 +262,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decRawErrors.setLabel('bottom', 'Azimuth [deg]')
         self.ui.decRawErrors.setLabel('left', 'Altitude [deg]')
         self.ui.decRawErrors.barItem.setLabel('right', 'Error []')
-        self.ui.decRawErrors.plot(self.azimuth, self.altitude, z=self.errorDEC_S,
-                                  bar=True, data=self.errorDEC_S,
-                                  range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
+        self.ui.decRawErrors.plot(
+            self.azimuth, self.altitude, z=self.errorDEC_S, data=self.errorDEC_S,
+            range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
+            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_raErrors(self):
@@ -273,9 +275,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raErrors.setLabel('bottom', 'Azimuth [deg]')
         self.ui.raErrors.setLabel('left', 'Altitude [deg]')
         self.ui.raErrors.barItem.setLabel('right', 'Error [RMS]')
-        self.ui.raErrors.plot(self.azimuth, self.altitude, z=self.errorRA,
-                              bar=True, data=self.errorRA,
-                              range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
+        self.ui.raErrors.plot(
+            self.azimuth, self.altitude, z=self.errorRA, data=self.errorRA,
+            range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
+            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_decError(self):
@@ -285,9 +288,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decErrors.setLabel('bottom', 'Azimuth [deg]')
         self.ui.decErrors.setLabel('left', 'Altitude [deg]')
         self.ui.decErrors.barItem.setLabel('right', 'Error [RMS]')
-        self.ui.decErrors.plot(self.azimuth, self.altitude, z=self.errorDEC,
-                               bar=True, data=self.errorDEC,
-                               range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90})
+        self.ui.decErrors.plot(
+            self.azimuth, self.altitude, z=self.errorDEC, data=self.errorDEC,
+            range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
+            tip='Az:{x:0.0f}\nAlt:{y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
     def draw_raRawErrorsRef(self):
@@ -297,8 +301,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raRawErrorsRef.setLabel('bottom', 'RA Encoder Abs [deg]')
         self.ui.raRawErrorsRef.setLabel('left', 'Error per Star [arcsec]')
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
-        self.ui.raRawErrorsRef.plot(self.angularPosRA, self.errorRA_S,
-                                    color=color, range={'xMin': 0, 'xMax': 180})
+        self.ui.raRawErrorsRef.plot(
+            self.angularPosRA, self.errorRA_S, color=color,
+            range={'xMin': 0, 'xMax': 180}, data=self.pierside,
+            tip='AngularRA:{x:0.1f}\nErrorRa:{y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_decRawErrorsRef(self):
@@ -309,8 +315,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decRawErrorsRef.setLabel('left', 'Error per Star [arcsec]')
         y = [x if p == 'W' else -x for x, p in zip(self.errorDEC_S, self.pierside)]
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
-        self.ui.decRawErrorsRef.plot(self.angularPosDEC, y,
-                                     color=color, range={'xMin': -90, 'xMax': 90})
+        self.ui.decRawErrorsRef.plot(
+            self.angularPosDEC, y, color=color,
+            range={'xMin': -90, 'xMax': 90}, data=self.pierside,
+            tip='AngularDEC:{x:0.1f}\nErrorDec:{y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_raErrorsRef(self):
@@ -320,8 +328,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raErrorsRef.setLabel('bottom', 'RA Encoder Abs [deg]')
         self.ui.raErrorsRef.setLabel('left', 'Error per Star [arcsec]')
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
-        self.ui.raErrorsRef.plot(self.angularPosRA, self.errorRA,
-                                 color=color, range={'xMin': 0, 'xMax': 180})
+        self.ui.raErrorsRef.plot(
+            self.angularPosRA, self.errorRA, color=color,
+            range={'xMin': 0, 'xMax': 180}, data=self.pierside,
+            tip='AngularRA:{x:0.1f}\nErrorRA:{y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_decErrorsRef(self):
@@ -332,8 +342,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decErrorsRef.setLabel('left', 'Error per Star [arcsec]')
         y = [x if p == 'W' else -x for x, p in zip(self.errorDEC, self.pierside)]
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
-        self.ui.decErrorsRef.plot(self.angularPosDEC, y,
-                                  color=color, range={'xMin': -90, 'xMax': 90})
+        self.ui.decErrorsRef.plot(
+            self.angularPosDEC, y, color=color,
+            range={'xMin': -90, 'xMax': 90}, data=self.pierside,
+            tip='AngularDEC:{x:0.1f}\nErrorDec:{y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_scaleImage(self):

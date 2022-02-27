@@ -139,9 +139,9 @@ class NormalScatter(Plot):
                 {'pos': (x[i], y[i]),
                  'data':  dataVal[i],
                  'brush': colorVal,
-                 'pen': colorVal
+                 'pen': colorVal,
                  })
-        self.scatterItem.addPoints(spots)
+        self.scatterItem.addPoints(spots, tip=kwargs.get('tip'))
         return True
 
 

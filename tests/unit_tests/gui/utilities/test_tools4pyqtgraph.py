@@ -51,16 +51,22 @@ def test_PolarScatter():
     p = PolarScatter()
 
 
-def test_PolarScatter_makeGrid():
+def test_PolarScatter_setGrid_1():
     p = PolarScatter()
-    suc = p.makeGrid()
+    suc = p.setGrid(np.array([0, 1, 2]), np.array([2, 3, 4]))
+    assert suc
+
+
+def test_PolarScatter_setGrid_2():
+    p = PolarScatter()
+    suc = p.setGrid(np.array([0, 1, 2]), np.array([2, 3, 4]), reverse=True)
     assert suc
 
 
 def test_PolarScatter_plot1():
     p = PolarScatter()
     with mock.patch.object(p,
-                           'makeGrid'):
+                           'setGrid'):
         suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
                      color='#000000', z=np.array([2, 3, 4]))
         assert not suc
@@ -69,7 +75,7 @@ def test_PolarScatter_plot1():
 def test_PolarScatter_plot2():
     p = PolarScatter()
     with mock.patch.object(p,
-                           'makeGrid'):
+                           'setGrid'):
         suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
                      color=['#000000', '#000000', '#000000'],
                      ang=np.array([2, 3, 4]))

@@ -41,10 +41,10 @@ class Plot(pg.PlotWidget, Styles):
 
         self.pen = pg.mkPen(color=self.M_BLUE)
         self.penGrid = pg.mkPen(color=self.M_GREY)
+        self.setBackground(self.M_BACK)
         self.cMapGYR = pg.ColorMap([0, 0.6, 1.0],
                                    [self.M_GREEN, self.M_YELLOW, self.M_RED])
         self.defRange = {}
-        self.setBackground(self.M_BACK)
         self.plotItem = self.getPlotItem()
         self.scatterItem = None
         self.imageItem = None
@@ -56,13 +56,26 @@ class Plot(pg.PlotWidget, Styles):
         self.plotItem.layout.setColumnFixedWidth(4, 5)
         self.plotItem.getViewBox().setMenuEnabled(False)
         self.plotItem.hideButtons()
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.plotItem.getAxis(side).setPen(self.pen)
+            self.plotItem.getAxis(side).setTextPen(self.pen)
+            self.plotItem.getAxis(side).setGrid(32)
+            self.barItem.getAxis(side).setPen(self.pen)
+            self.barItem.getAxis(side).setTextPen(self.pen)
 
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.pen = pg.mkPen(color=self.M_BLUE)
+        self.penGrid = pg.mkPen(color=self.M_GREY)
+        self.setBackground(self.M_BACK)
         for side in ('left', 'top', 'right', 'bottom'):
             self.plotItem.getAxis(side).setPen(self.pen)
             self.plotItem.getAxis(side).setTextPen(self.pen)
             self.barItem.getAxis(side).setPen(self.pen)
-            self.plotItem.getAxis(side).setGrid(64)
             self.barItem.getAxis(side).setTextPen(self.pen)
+        return True
 
     def mouseDoubleClickEvent(self, e):
         """
@@ -266,7 +279,6 @@ class PlotImageBar(Plot):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.plotItem.showGrid(x=False, y=False, alpha=0)
         self.lx = None
         self.ly = None
 

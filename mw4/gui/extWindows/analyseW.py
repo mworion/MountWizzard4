@@ -376,12 +376,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :return:    True if ok for testing
         """
         self.ui.modelPositions.barItem.setLabel('right', 'Error [RMS]')
-        self.ui.modelPositions.plot(self.azimuth, self.altitude,
-                                    z=self.errorRMS, ang=self.errorAngle,
-                                    range={'xMin': -91, 'yMin': -91,
-                                           'xMax': 91, 'yMax': 91},
-                                    bar=True, data=self.errorRMS,
-                                    reverse=True)
+        self.ui.modelPositions.plot(
+            self.azimuth, self.altitude, z=self.errorRMS, ang=self.errorAngle,
+            range={'xMin': -91, 'yMin': -91, 'xMax': 91, 'yMax': 91},
+            bar=True, data=self.errorRMS, reverse=True)
         self.ui.modelPositions.plotLoc(self.latitude)
         return True
 
@@ -390,7 +388,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :return:    True if ok for testing
         """
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
-        self.ui.errorDistribution.plot(self.errorRMS, self.errorAngle, color=color)
+        self.ui.errorDistribution.plot(self.errorAngle, self.errorRMS, color=color)
         return True
 
     def drawAll(self):

@@ -262,16 +262,6 @@ def test_draw_modelPositions_1(function):
     function.azimuth = np.array([0, 1, 2])
     function.errorRMS = np.array([0, 2, 4])
     function.errorAngle = np.array([0, 0, 0])
-    function.latitude = None
-    suc = function.draw_modelPositions()
-    assert suc
-
-
-def test_draw_modelPositions_2(function):
-    function.altitude = np.array([0, 1, 2])
-    function.azimuth = np.array([0, 1, 2])
-    function.errorRMS = np.array([0, 2, 4])
-    function.errorAngle = np.array([0, 0, 0])
     function.latitude = 48
     suc = function.draw_modelPositions()
     assert suc
@@ -279,7 +269,7 @@ def test_draw_modelPositions_2(function):
 
 def test_draw_errorDistribution_1(function):
     function.errorRMS = np.array([0, 2, 4])
-    function.errorAngle = np.array([0, 0, 0])
+    function.errorAngle = np.array([0, 1, 2])
     function.pierside = ['E', 'W', 'E']
     suc = function.draw_errorDistribution()
     assert suc

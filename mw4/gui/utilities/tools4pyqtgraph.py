@@ -187,10 +187,15 @@ class PolarScatter(NormalScatter):
         """
         if kwargs.get('reverse', False):
             maxR = 90
-            gridLines = range(10, maxR, 10)
+            stepLines = 10
+            gridLines = range(10, maxR, stepLines)
+            sizeFont = f'{maxR / 90 * stepLines}pt'
+
         else:
-            maxR = int(np.max(y) / 7) * 8
-            gridLines = range(0, maxR, int(np.max(y) / 7))
+            maxR = int(np.max(y) / 7 * 8)
+            stepLines = 5
+            gridLines = np.arange(0, maxR, stepLines)
+            sizeFont = f'{maxR / 90 * stepLines}pt'
 
         self.plotItem.addLine(x=0, pen=self.penGrid)
         self.plotItem.addLine(y=0, pen=self.penGrid)
@@ -205,7 +210,7 @@ class PolarScatter(NormalScatter):
             label = pg.LabelItem(text=text,
                                  color=self.M_GREY,
                                  angle=180,
-                                 size='10pt')
+                                 size=sizeFont)
             label.scale(-1, 1)
             label.setPos(QPointF(-8, 11) + QPointF(r * 0.69, r * 0.69))
             self.plotItem.addItem(label)

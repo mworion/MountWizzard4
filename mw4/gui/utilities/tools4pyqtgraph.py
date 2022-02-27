@@ -158,32 +158,6 @@ class PolarScatter(NormalScatter):
         self.plotItem.showAxes(False, showValues=False)
         self.plotItem.setAspectLocked(True)
 
-    def setLabel(self, x, y, **kwargs):
-        """
-        :param x:
-        :param y:
-        :return:
-        """
-        textDic = {
-            '10': [QPointF(80, 80) * 0.69, self.M_GREY, '10pt'],
-            '30': [QPointF(60, 60) * 0.69, self.M_GREY, '10pt'],
-            '50': [QPointF(40, 40) * 0.69, self.M_GREY, '10pt'],
-            '70': [QPointF(20, 20) * 0.69, self.M_GREY, '10pt'],
-            'N': [QPointF(0, 84), self.M_BLUE, '12pt'],
-            'W': [QPointF(-84, 0), self.M_BLUE, '12pt'],
-            'S': [QPointF(0, -84), self.M_BLUE, '12pt'],
-            'E': [QPointF(84, 0), self.M_BLUE, '12pt'],
-        }
-        for text in []:
-            label = pg.LabelItem(text=text,
-                                 color=textDic[text][1],
-                                 angle=180,
-                                 size=textDic[text][2],
-                                 bold=True)
-            label.scale(-1, 1)
-            label.setPos(QPointF(-8, 11) + textDic[text][0])
-            self.plotItem.addItem(label)
-
     def setGrid(self, y, **kwargs):
         """
         :param x:
@@ -198,32 +172,36 @@ class PolarScatter(NormalScatter):
             circle.setPen(self.pen)
             self.plotItem.addItem(circle)
         else:
-            maxR = int(np.max(y) / 7 * 8)
+            maxR = int(np.max(y))
             stepLines = 5
             gridLines = np.arange(0, maxR, stepLines)
 
         self.plotItem.addLine(x=0, pen=self.penGrid)
         self.plotItem.addLine(y=0, pen=self.penGrid)
 
+        font = QFont(self.window().font().family(),
+                     self.window().font().pointSize() * 1.2)
         for r in gridLines:
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
             self.plotItem.addItem(circle)
-
             if kwargs.get('reverse', False):
                 text = f'{90 - r}'
             else:
                 text = f'{r}'
+            textItem = pg.TextItem(text=text, color=self.M_GREY, anchor=(0.5, 0.5))
+            textItem.setFont(font)
+            textItem.setPos(r * 0.69, r * 0.69)
+            self.plotItem.addItem(textItem)
 
-            font = QFont(self.window().font().family(),
-                         self.window().font().pointSize() * 1.2)
-            text = pg.TextItem(text=text,
-                               color=self.M_GREY,
-                               anchor=(0.5, 0.5))
-
-            text.setFont(font)
-            text.setPos(r * 0.69, r * 0.69)
-            self.plotItem.addItem(text)
+        for text, x, y in zip(['N', 'E', 'S', 'W'],
+                              [0, maxR, 0, -maxR],
+                              [maxR, 0, -maxR, 0]):
+            textItem = pg.TextItem(color=self.M_BLUE, anchor=(0.5, 0.5))
+            textItem.setHtml(f'<b>{text}</b>')
+            textItem.setFont(font)
+            textItem.setPos(x * 0.88, y * 0.88)
+            self.plotItem.addItem(textItem)
         return True
 
     def plot(self, x, y, **kwargs):
@@ -288,7 +266,7 @@ class PlotImageBar(Plot):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+        self.plotItem.showGrid(x=False, y=False, alpha=0)
         self.lx = None
         self.ly = None
 

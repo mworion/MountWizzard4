@@ -355,7 +355,9 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.scaleImage.setLabel('bottom', 'Star Number')
         self.ui.scaleImage.setLabel('left', 'Image Scale [arcsec/pix]')
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
-        self.ui.scaleImage.plot(self.index, self.scaleS, color=color)
+        self.ui.scaleImage.plot(
+            self.index, self.scaleS, color=color, data=self.pierside,
+            tip='PointNo: {x:0.0f}\nScale: {y:0.1f}\nPier: {data}'.format)
         return True
 
     def draw_errorAscending(self):
@@ -368,7 +370,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         y = [x[0] for x in temp]
         pierside = [x[1] for x in temp]
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in pierside]
-        self.ui.errorAscending.plot(self.index, y, color=color)
+        self.ui.errorAscending.plot(
+            self.index, y, color=color, data=pierside,
+            tip='ErrorRMS: {y:0.1f}\nPier: {data}'.format)
+
         return True
 
     def draw_modelPositions(self):

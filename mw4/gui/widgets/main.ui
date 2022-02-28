@@ -102,7 +102,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -9846,121 +9846,19 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <attribute name="title">
        <string>Model Positions</string>
       </attribute>
-      <widget class="QWidget" name="modelPosition" native="true">
+      <widget class="PolarScatter" name="modelPositions" native="true">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>5</y>
-         <width>481</width>
-         <height>361</height>
+         <x>10</x>
+         <y>10</y>
+         <width>461</width>
+         <height>366</height>
         </rect>
        </property>
        <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="showErrorValues">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>365</y>
-         <width>91</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="sizeIncrement">
-        <size>
-         <width>0</width>
-         <height>18</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show model point error in arcsec close to the model point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Error values</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="showNumbers">
-       <property name="geometry">
-        <rect>
-         <x>155</x>
-         <y>365</y>
-         <width>81</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="sizeIncrement">
-        <size>
-         <width>0</width>
-         <height>18</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the number close to the model point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Numbers</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="showNoAnnotation">
-       <property name="geometry">
-        <rect>
-         <x>35</x>
-         <y>365</y>
-         <width>101</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="sizeIncrement">
-        <size>
-         <width>0</width>
-         <height>18</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No annotations are shown close to the model point. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>No Annotation</string>
-       </property>
-       <property name="checked">
         <bool>true</bool>
        </property>
       </widget>
@@ -9970,7 +9868,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>440</x>
+         <x>75</x>
          <y>365</y>
          <width>21</width>
          <height>21</height>
@@ -10010,7 +9908,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QLabel" name="label_76">
        <property name="geometry">
         <rect>
-         <x>380</x>
+         <x>15</x>
          <y>365</y>
          <width>61</width>
          <height>21</height>
@@ -10031,16 +9929,16 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <attribute name="title">
        <string>Error Distribution</string>
       </attribute>
-      <widget class="QWidget" name="errorDistribution" native="true">
+      <widget class="PolarScatter" name="errorDistribution" native="true">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>5</y>
-         <width>481</width>
-         <height>381</height>
+         <x>10</x>
+         <y>10</y>
+         <width>461</width>
+         <height>366</height>
         </rect>
        </property>
        <property name="autoFillBackground">
@@ -10052,16 +9950,16 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <attribute name="title">
        <string>Error Ascending</string>
       </attribute>
-      <widget class="QWidget" name="errorAscending" native="true">
+      <widget class="NormalScatter" name="errorAscending" native="true">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>5</y>
-         <width>471</width>
-         <height>381</height>
+         <x>10</x>
+         <y>15</y>
+         <width>461</width>
+         <height>361</height>
         </rect>
        </property>
        <property name="autoFillBackground">
@@ -28690,6 +28588,20 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <zorder>main</zorder>
   <zorder>statusOnline_2</zorder>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PolarScatter</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NormalScatter</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>cameraDevice</tabstop>
   <tabstop>cameraSetup</tabstop>
@@ -28880,7 +28792,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>settleTimeDome</tabstop>
   <tabstop>isOnline</tabstop>
   <tabstop>versionAvailable</tabstop>
-  <tabstop>showErrorValues</tabstop>
   <tabstop>clearModel</tabstop>
   <tabstop>installVersion</tabstop>
   <tabstop>genBuildMax</tabstop>
@@ -28912,7 +28823,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>genBuildGrid</tabstop>
   <tabstop>runModel</tabstop>
   <tabstop>numberBuildRetries</tabstop>
-  <tabstop>showNoAnnotation</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>cancelModel</tabstop>
   <tabstop>plateSolveSync</tabstop>
@@ -28922,7 +28832,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>pauseModel</tabstop>
   <tabstop>endModel</tabstop>
   <tabstop>clearHorizonMask</tabstop>
-  <tabstop>showNumbers</tabstop>
   <tabstop>genBuildSpiralMax</tabstop>
   <tabstop>durationDSO</tabstop>
   <tabstop>numberDSOPoints</tabstop>

@@ -153,7 +153,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                      self.ui.errorDistribution]:
             plot.colorChange()
         self.drawAll()
-        pass
         return True
 
     def writeGui(self, data, loadFilePath):
@@ -405,7 +404,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.errorAscending.plot(
             self.index, y, color=color, data=pierside,
             tip='ErrorRMS: {y:0.1f}\nPier: {data}'.format)
-
         return True
 
     def draw_modelPositions(self):

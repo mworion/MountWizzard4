@@ -45,9 +45,6 @@ class ManageModel(object):
         ms.alignDone.connect(self.showErrorDistribution)
         ms.namesDone.connect(self.setNameList)
 
-        self.ui.showErrorValues.clicked.connect(self.showModelPosition)
-        self.ui.showNumbers.clicked.connect(self.showModelPosition)
-        self.ui.showNoAnnotation.clicked.connect(self.showModelPosition)
         self.ui.refreshName.clicked.connect(self.refreshName)
         self.ui.refreshModel.clicked.connect(self.refreshModel)
         self.ui.clearModel.clicked.connect(self.clearModel)
@@ -70,9 +67,6 @@ class ManageModel(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.showErrorValues.setChecked(config.get('showErrorValues', False))
-        self.ui.showNumbers.setChecked(config.get('showNumbers', False))
-        self.ui.showNoAnnotation.setChecked(config.get('showNoAnnotation', True))
         self.ui.targetRMS.setValue(config.get('targetRMS', 10))
         self.ui.optimizeOverall.setChecked(config.get('optimizeOverall', True))
         self.ui.optimizeSingle.setChecked(config.get('optimizeSingle', True))
@@ -87,9 +81,6 @@ class ManageModel(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['showErrorValues'] = self.ui.showErrorValues.isChecked()
-        config['showNumbers'] = self.ui.showNumbers.isChecked()
-        config['showNoAnnotation'] = self.ui.showNoAnnotation.isChecked()
         config['targetRMS'] = self.ui.targetRMS.value()
         config['optimizeOverall'] = self.ui.optimizeOverall.isChecked()
         config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
@@ -100,6 +91,9 @@ class ManageModel(object):
         """
         :return:
         """
+        for plot in [self.ui.modelPosition, self.ui.errorDistribution,
+                     self.ui.errorAscending]:
+            plot.colorChange()
         self.showModelPosition()
         self.showErrorAscending()
         self.showErrorDistribution()
@@ -207,167 +201,55 @@ class ManageModel(object):
 
     def showModelPosition(self):
         """
-        showModelPosition draws a polar plot of the align model stars and their
-        errors in color. the basic setup of the plot is taking place in the
-        central widget class. which is instantiated from there. important: the
-        coordinate in model is in HA and DEC  and not in RA and DEC. using
-        skyfield is a little bit misleading, because you address the hour angle
-         as .ra.hours
-
         :return:    True if ok for testing
         """
         model = self.app.mount.model
-        if model is None:
-            hasNoStars = True
-        else:
-            hasNoStars = model.starList is None or not model.starList
-
-        axe, fig = self.generatePolar(widget=self.modelPositionPlot)
-
-        axe.set_yticks(range(0, 90, 10))
-        axe.set_ylim(0, 90)
-        yLabel = ['', '', '', '', '', '', '', '', '']
-        axe.set_yticklabels(yLabel)
-
-        if hasNoStars:
-            axe.figure.canvas.draw()
-            return False
-
-        altitude = np.asarray([x.alt.degrees for x in model.starList])
-        azimuth = np.asarray([x.az.degrees for x in model.starList])
-        error = np.asarray([x.errorRMS for x in model.starList])
-        self.plane = [(alt, az) for alt, az in zip(altitude, azimuth)]
-
-        # and plot it
-        cm = matplotlib.pyplot.cm.get_cmap('RdYlGn_r')
-        colors = np.asarray(error)
-        scaleErrorMax = max(colors)
-        scaleErrorMin = min(colors)
-        area = [200 if x >= max(colors) else 60 for x in error]
-        theta = azimuth / 180.0 * np.pi
-        r = 90 - altitude
-        scatter = axe.scatter(theta,
-                              r,
-                              c=colors,
-                              vmin=scaleErrorMin,
-                              vmax=scaleErrorMax,
-                              s=area,
-                              cmap=cm,
-                              zorder=0,
-                              )
-
-        if self.ui.showErrorValues.isChecked():
-            for star in model.starList:
-                text = f'{star.errorRMS:3.1f}'
-                axe.annotate(text,
-                             xy=(theta[star.number - 1],
-                                 r[star.number - 1]),
-                             color=self.M_BLUE,
-                             fontsize=9,
-                             fontweight='bold',
-                             zorder=1,
-                             )
-
-        elif self.ui.showNumbers.isChecked():
-            for star in model.starList:
-                text = f'{star.number:3.0f}'
-                axe.annotate(text,
-                             xy=(theta[star.number - 1],
-                                 r[star.number - 1]),
-                             color=self.M_BLUE,
-                             fontsize=9,
-                             fontweight='bold',
-                             zorder=1,
-                             )
-        self.generateColorbar(scatter=scatter, figure=fig, label='Error [arcsec]')
-        axe.figure.canvas.draw()
+        altitude = np.array([x.alt.degrees for x in model.starList])
+        if len(altitude) == 0:
+            return
+        azimuth = np.array([x.az.degrees for x in model.starList])
+        error = np.array([x.errorRMS for x in model.starList])
+        errorAngle = np.array([x.errorAngle.degrees for x in model.starList])
+        self.ui.modelPositions.barItem.setLabel('right', 'Error [RMS]')
+        self.ui.modelPositions.plot(
+            azimuth, altitude, z=error, ang=errorAngle,
+            range={'xMin': -91, 'yMin': -91, 'xMax': 91, 'yMax': 91},
+            bar=True, data=error, reverse=True,
+            tip='ErrorRMS: {data:0.1f}'.format)
+        self.ui.modelPositions.plotLoc(
+            self.app.mount.obsSite.location.latitude.degrees)
         return True
 
     def showErrorAscending(self):
         """
-        showErrorAscending draws a plot of the align model stars and their
-        errors in ascending order.
-
         :return:    True if ok for testing
         """
         model = self.app.mount.model
-        if model is None:
-            hasNoStars = True
-        else:
-            hasNoStars = model.starList is None or not model.starList
-
-        axe, _ = self.generateFlat(widget=self.errorAscendingPlot,
-                                   title='Model Point Errors in ascending order')
-        if hasNoStars:
-            axe.figure.canvas.draw()
-            return False
-
-        axe.set_xlabel('Star',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        axe.set_ylabel('Error per Star [RMS]',
-                       color=self.M_BLUE,
-                       fontweight='bold',
-                       fontsize=12)
-        errors = [star.errorRMS for star in model.starList]
-        errors.sort()
-        index = range(0, len(errors))
-        axe.plot(index,
-                 errors,
-                 marker='.',
-                 markersize=5,
-                 linestyle='none',
-                 color=self.M_GREEN)
-
-        value = self.ui.targetRMS.value()
-        axe.plot([0, len(index) - 1],
-                 [value, value],
-                 lw=3,
-                 color=self.M_PINK)
-        axe.figure.canvas.draw()
+        error = np.array([star.errorRMS for star in model.starList])
+        if len(error) == 0:
+            return
+        index = np.array([star.number for star in model.starList])
+        self.ui.errorAscending.setLabel('bottom', 'Starcount')
+        self.ui.errorAscending.setLabel('left', 'Error per Star [arcsec]')
+        temp = sorted(zip(error))
+        y = [x[0] for x in temp]
+        self.ui.errorAscending.plot(
+            index, y, color=self.M_GREEN,
+            tip='ErrorRMS: {y:0.1f}'.format)
         return True
 
     def showErrorDistribution(self):
         """
-        showErrorDistribution draws a polar plot of the align model stars and
-        their errors in color. the basic setup of the plot is taking place in the
-        central widget class. which is instantiated from there. important: the
-        coordinate in model is in HA and DEC  and not in RA and DEC. using
-        skyfield is a little bit misleading, because you address the hour
-        angle as ra.hours
-
         :return:    True if ok for testing
         """
-
         model = self.app.mount.model
-        if model is None:
-            hasNoStars = True
-        else:
-            hasNoStars = model.starList is None or not model.starList
-
-        axe, _ = self.generatePolar(widget=self.errorDistributionPlot,
-                                    title='Error Distribution')
-        if hasNoStars:
-            axe.figure.canvas.draw()
-            return False
-
-        angles = [star.errorAngle.degrees / 180.0 * np.pi for star in model.starList]
-        errors = [star.errorRMS for star in model.starList]
-        axe.plot(angles,
-                 errors,
-                 marker='.',
-                 markersize=5,
-                 linestyle='none',
-                 color=self.M_GREEN)
-
-        values = [self.ui.targetRMS.value()] * 73
-        angles = np.arange(0, 365 / 180.0 * np.pi, 5 / 180.0 * np.pi)
-        axe.plot(angles,
-                 values,
-                 lw=3,
-                 color=self.M_PINK)
-        axe.figure.canvas.draw()
+        error = np.array([x.errorRMS for x in model.starList])
+        if len(error) == 0:
+            return
+        errorAngle = np.array([x.errorAngle.degrees for x in model.starList])
+        self.ui.errorDistribution.plot(
+            errorAngle, error, color=self.M_GREEN,
+            tip='ErrorRMS: {y:0.1f}'.format)
         return True
 
     def clearRefreshName(self):

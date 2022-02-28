@@ -167,12 +167,6 @@ class MainWindow(
         }
         self.mwSuper('__init__')
 
-        self.modelPositionPlot = self.embedMatplot(self.ui.modelPosition)
-        self.modelPositionPlot.figure.canvas.mpl_connect(
-            'button_press_event', self.onMouseEdit
-        )
-        self.errorAscendingPlot = self.embedMatplot(self.ui.errorAscending)
-        self.errorDistributionPlot = self.embedMatplot(self.ui.errorDistribution)
         self.twilight = self.embedMatplot(self.ui.twilight)
 
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)

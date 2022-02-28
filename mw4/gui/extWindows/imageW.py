@@ -276,7 +276,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setBarColor()
-        self.setCrosshair()
         if self.ui.view.currentIndex() == 0:
             self.ui.image.setImage(imageDisp=self.image)
             self.log.debug('Show 0')
@@ -305,6 +304,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                                          self.objs['theta'][i])
                 self.ui.image.addValueAnnotation(self.objs['x'][i], self.objs['y'][i],
                                                  self.radius[i])
+        self.setCrosshair()
         return True
 
     def workerPreparePhotometry(self):

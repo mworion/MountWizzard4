@@ -17,7 +17,6 @@
 ###########################################################
 # standard libraries
 import os
-import time
 import gzip
 import shutil
 
@@ -27,6 +26,7 @@ import requests
 
 # local import
 from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
@@ -141,7 +141,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
             t = f'Download [{url}] timed out!'
             self.parentWidget.app.message.emit(t, 2)
             self.signalProgressBarColor.emit('red')
-            time.sleep(1)
+            sleepAndEvents(1000)
             return False
         except Exception as e:
             t = f'Error in unzip [{url}]'
@@ -149,12 +149,12 @@ class DownloadPopup(toolsQtWidget.MWidget):
             t = f'Error in unzip [{url}], {e}'
             self.log.warning(t)
             self.signalProgressBarColor.emit('red')
-            time.sleep(1)
+            sleepAndEvents(1000)
             return False
         else:
             self.signalProgressBarColor.emit('green')
         finally:
-            time.sleep(1)
+            sleepAndEvents(1000)
 
         if not unzip:
             return True

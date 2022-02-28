@@ -28,8 +28,8 @@ from PyQt5.QtCore import QThreadPool, pyqtSignal, QObject
 from PyQt5.QtWidgets import QWidget
 import requests
 
-
 # local import
+import gui.extWindows.downloadPopupW
 from gui.extWindows.downloadPopupW import DownloadPopup
 
 
@@ -100,8 +100,8 @@ def test_downloadFileWorker_2(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            side_effect=TimeoutError):
-        with mock.patch.object(time,
-                               'sleep'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
             suc = function.downloadFileWorker(url='', dest='tests/workDir/temp/test.txt')
             assert not suc
 
@@ -110,8 +110,8 @@ def test_downloadFileWorker_3(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            side_effect=TimeoutError):
-        with mock.patch.object(time,
-                               'sleep'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt')
             assert not suc
@@ -121,8 +121,8 @@ def test_downloadFileWorker_4(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            side_effect=Exception):
-        with mock.patch.object(time,
-                               'sleep'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt')
             assert not suc
@@ -131,8 +131,8 @@ def test_downloadFileWorker_4(function):
 def test_downloadFileWorker_5(function):
     with mock.patch.object(function,
                            'getFileFromUrl'):
-        with mock.patch.object(time,
-                               'sleep'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt')
             assert not suc
@@ -141,8 +141,8 @@ def test_downloadFileWorker_5(function):
 def test_downloadFileWorker_6(function):
     with mock.patch.object(function,
                            'getFileFromUrl'):
-        with mock.patch.object(time,
-                               'sleep'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
                                               dest='test/workDir/temp/test.txt',
                                               unzip=False)
@@ -152,8 +152,8 @@ def test_downloadFileWorker_6(function):
 def test_downloadFileWorker_7(function):
     with mock.patch.object(function,
                            'getFileFromUrl'):
-        with mock.patch.object(time,
-                               'sleep'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
             with mock.patch.object(function,
                                    'unzipFile',
                                    side_effect=Exception):
@@ -167,8 +167,8 @@ def test_downloadFileWorker_8(function):
                            'getFileFromUrl'):
         with mock.patch.object(function,
                                'unzipFile'):
-            with mock.patch.object(time,
-                                   'sleep'):
+            with mock.patch.object(gui.extWindows.downloadPopupW,
+                                   'sleepAndEvents'):
                 suc = function.downloadFileWorker(url='',
                                                   dest='test/workDir/temp/test.txt')
                 assert suc

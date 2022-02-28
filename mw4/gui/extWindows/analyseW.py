@@ -92,7 +92,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             y = 0
         if x != 0 and y != 0:
             self.move(x, y)
-        self.ui.winsorizedLimit.setChecked(config.get('winsorizedLimit', False))
         return True
 
     def storeConfig(self):
@@ -107,7 +106,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        config['winsorizedLimit'] = self.ui.winsorizedLimit.isChecked()
         return True
 
     def closeEvent(self, closeEvent):

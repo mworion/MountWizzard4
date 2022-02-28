@@ -146,7 +146,7 @@ def test_selectImage_1(function):
 
 
 def test_selectImage_2(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(False)
+    function.ui.autoSolve.setChecked(False)
     with mock.patch.object(MWidget,
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
@@ -158,7 +158,7 @@ def test_selectImage_2(function, qtbot):
 
 
 def test_selectImage_3(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(True)
+    function.ui.autoSolve.setChecked(True)
     with mock.patch.object(MWidget,
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
@@ -269,7 +269,7 @@ def test_preparePhotometry_2(function):
 
 
 def test_stackImages_1(function):
-    function.ui.checkStackImages.setChecked(False)
+    function.ui.stackImages.setChecked(False)
     suc = function.stackImages()
     assert not suc
     assert function.imageStack is None
@@ -280,7 +280,7 @@ def test_stackImages_2(function):
     function.image = np.random.rand(100, 100)
     function.imageStack = np.random.rand(50, 50)
     function.header = fits.PrimaryHDU().header
-    function.ui.checkStackImages.setChecked(True)
+    function.ui.stackImages.setChecked(True)
 
     suc = function.stackImages()
     assert suc
@@ -293,7 +293,7 @@ def test_stackImages_3(function):
     function.image = np.random.rand(100, 100)
     function.imageStack = np.random.rand(100, 100)
     function.header = fits.PrimaryHDU().header
-    function.ui.checkStackImages.setChecked(True)
+    function.ui.stackImages.setChecked(True)
 
     suc = function.stackImages()
     assert suc
@@ -302,7 +302,7 @@ def test_stackImages_3(function):
 
 def test_clearStack_1(function):
     function.ui.numberStacks.setText('test')
-    function.ui.checkStackImages.setChecked(False)
+    function.ui.stackImages.setChecked(False)
     suc = function.clearStack()
     assert not suc
     assert function.ui.numberStacks.text() == 'single'
@@ -310,7 +310,7 @@ def test_clearStack_1(function):
 
 def test_clearStack_2(function):
     function.ui.numberStacks.setText('test')
-    function.ui.checkStackImages.setChecked(True)
+    function.ui.stackImages.setChecked(True)
     suc = function.clearStack()
     assert suc
     assert function.ui.numberStacks.text() == 'test'
@@ -501,7 +501,7 @@ def test_exposeRaw_2(function, qtbot):
 
 
 def test_exposeImageDone_1(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(False)
+    function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
     with qtbot.waitSignal(function.app.message) as blocker:
         with qtbot.waitSignal(function.app.showImage):
@@ -511,7 +511,7 @@ def test_exposeImageDone_1(function, qtbot):
 
 
 def test_exposeImageDone_2(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(True)
+    function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
     with qtbot.waitSignal(function.app.message) as blocker:
         with qtbot.waitSignal(function.signals.solveImage):
@@ -527,7 +527,7 @@ def test_exposeImage_1(function):
 
 
 def test_exposeImageNDone_1(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(False)
+    function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
     with qtbot.waitSignal(function.app.message) as blocker:
         with qtbot.waitSignal(function.app.showImage):
@@ -537,7 +537,7 @@ def test_exposeImageNDone_1(function, qtbot):
 
 
 def test_exposeImageNDone_2(function, qtbot):
-    function.ui.checkAutoSolve.setChecked(True)
+    function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
     with qtbot.waitSignal(function.app.message) as blocker:
         with qtbot.waitSignal(function.signals.solveImage):
@@ -637,7 +637,7 @@ def test_solveDone_2(function, qtbot):
 
 
 def test_solveDone_3(function, qtbot):
-    function.ui.checkStackImages.setChecked(True)
+    function.ui.stackImages.setChecked(True)
     result = {
         'success': True,
         'raJ2000S': Angle(hours=10),

@@ -103,10 +103,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.view.setCurrentIndex(config.get('view', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
-        self.ui.checkStackImages.setChecked(config.get('checkStackImages', False))
+        self.ui.stackImages.setChecked(config.get('stackImages', False))
         self.ui.showCrosshair.setChecked(config.get('showCrosshair', False))
-        self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
-        self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
+        self.ui.autoSolve.setChecked(config.get('autoSolve', False))
+        self.ui.embedData.setChecked(config.get('embedData', False))
         self.setCrosshair()
         return True
 
@@ -124,10 +124,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['color'] = self.ui.color.currentIndex()
         config['view'] = self.ui.view.currentIndex()
         config['imageFileName'] = self.imageFileName
-        config['checkStackImages'] = self.ui.checkStackImages.isChecked()
+        config['stackImages'] = self.ui.stackImages.isChecked()
         config['showCrosshair'] = self.ui.showCrosshair.isChecked()
-        config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
-        config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
+        config['autoSolve'] = self.ui.autoSolve.isChecked()
+        config['embedData'] = self.ui.embedData.isChecked()
         return True
 
     def showWindow(self):
@@ -145,7 +145,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
-        self.ui.checkStackImages.clicked.connect(self.clearStack)
+        self.ui.stackImages.clicked.connect(self.clearStack)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.solveImage.connect(self.solveImage)
@@ -173,7 +173,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
-        self.ui.checkStackImages.clicked.disconnect(self.clearStack)
+        self.ui.stackImages.clicked.disconnect(self.clearStack)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.solveImage.disconnect(self.solveImage)
@@ -246,11 +246,11 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.app.message.emit('No image selected', 0)
             return False
 
-        self.ui.imageFileName.setText(name)
+        self.setWindowTitle(f'Imaging:   {name}')
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image selected:      [{name}]', 0)
         self.folder = os.path.dirname(loadFilePath)
-        if self.ui.checkAutoSolve.isChecked():
+        if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
         self.app.showImage.emit(self.imageFileName)
         return True
@@ -349,7 +349,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if not self.ui.checkStackImages.isChecked():
+        if not self.ui.stackImages.isChecked():
             self.imageStack = None
             self.ui.numberStacks.setText('single')
             return False
@@ -372,7 +372,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if not self.ui.checkStackImages.isChecked():
+        if not self.ui.stackImages.isChecked():
             self.imageStack = None
             self.numberStack = 0
             self.ui.numberStacks.setText('single')
@@ -443,9 +443,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        full, short, ext = self.extractNames([self.imageFileName])
-        self.ui.imageFileName.setText(short)
-
         with fits.open(self.imageFileName, mode='update') as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
@@ -480,6 +477,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         self.imageFileName = imagePath
+        full, short, ext = self.extractNames([self.imageFileName])
+        self.setWindowTitle(f'Imaging:   {short}')
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)
         self.threadPool.start(worker)
@@ -535,7 +534,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         text = f'Exposed:             [{os.path.basename(imagePath)}]'
         self.app.message.emit(text, 0)
 
-        if self.ui.checkAutoSolve.isChecked():
+        if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
         return True
@@ -548,7 +547,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.binning = int(self.app.camera.binning)
         self.imageStack = None
         self.deviceStat['expose'] = True
-        self.ui.checkStackImages.setChecked(False)
+        self.ui.stackImages.setChecked(False)
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.ui.numberStacks.setText('...')
         self.exposeRaw()
@@ -562,7 +561,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         text = f'Exposed:             [{os.path.basename(imagePath)}]'
         self.app.message.emit(text, 0)
 
-        if self.ui.checkAutoSolve.isChecked():
+        if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
         self.exposeRaw()
@@ -643,7 +642,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not os.path.isfile(imagePath):
             return False
 
-        updateFits = self.ui.checkEmbedData.isChecked()
+        updateFits = self.ui.embedData.isChecked()
         self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.astrometry.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)

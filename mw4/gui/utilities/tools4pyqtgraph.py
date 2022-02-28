@@ -173,8 +173,8 @@ class PolarScatter(NormalScatter):
 
     def setGrid(self, y, **kwargs):
         """
-        :param x:
         :param y:
+        :param kwargs:
         :return:
         """
         if kwargs.get('reverse', False):
@@ -282,6 +282,9 @@ class PlotImageBar(Plot):
         super().__init__(*args, **kwargs)
         self.lx = None
         self.ly = None
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.plotItem.getAxis(side).setGrid(0)
+        self.defRange = {}
 
     def constructPlot(self):
         """
@@ -306,16 +309,26 @@ class PlotImageBar(Plot):
         self.barItem.setColorMap(cMap)
         return True
 
-    def setImage(self, imageDisp):
+    def setImage(self, imageDisp, **kwargs):
         """
         :param imageDisp:
+        :param kwargs:
         :return:
         """
         self.constructPlot()
         self.imageItem.setImage(imageDisp)
         y, x = imageDisp.shape
-        self.plotItem.setLimits(xMin=0, xMax=x, yMin=0, yMax=y)
-        self.plotItem.setRange(xRange=(0, x), yRange=(0, y))
+
+        self.defRange = kwargs.get('range', {})
+        xMin = self.defRange['xMin'] = self.defRange.get('xMin', 0)
+        yMin = self.defRange['yMin'] = self.defRange.get('yMin', 0)
+        xMax = self.defRange['xMax'] = self.defRange.get('xMax', x)
+        yMax = self.defRange['yMax'] = self.defRange.get('yMax', y)
+
+        if kwargs.get('limits', True):
+            self.plotItem.setLimits(xMin=xMin, xMax=xMax,
+                                    yMin=yMin, yMax=yMax)
+        self.mouseDoubleClickEvent(None)
         minB = np.min(imageDisp)
         maxB = 2 * np.mean(imageDisp)
         self.barItem.setLevels(values=(minB, maxB))

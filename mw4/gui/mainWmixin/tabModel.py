@@ -437,8 +437,8 @@ class Model:
         if not winImage:
             return False
 
-        winImage.ui.checkAutoSolve.setChecked(False)
-        winImage.ui.checkStackImages.setChecked(False)
+        winImage.ui.autoSolve.setChecked(False)
+        winImage.ui.stackImages.setChecked(False)
 
         if not winImage.deviceStat['expose']:
             return False

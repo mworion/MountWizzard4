@@ -74,23 +74,6 @@ def test_getFileFromUrl_1(function):
         @staticmethod
         def iter_content(a):
             return [b's' * 512]
-    function.cancel = False
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Response()):
-        with mock.patch.object(builtins,
-                               'open'):
-            suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
-            assert suc
-
-
-def test_getFileFromUrl_2(function):
-    class Response:
-        headers = {}
-
-        @staticmethod
-        def iter_content(a):
-            return [b's' * 512]
     with mock.patch.object(requests,
                            'get',
                            return_value=Response()):

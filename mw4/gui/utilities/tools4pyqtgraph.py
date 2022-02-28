@@ -150,7 +150,7 @@ class NormalScatter(Plot):
                 colorVal = self.col[i]
             spots.append(
                 {'pos': (x[i], y[i]),
-                 'data':  dataVal[i],
+                 'data': dataVal[i],
                  'brush': colorVal,
                  'pen': colorVal,
                  'size': 6,

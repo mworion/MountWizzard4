@@ -23,8 +23,6 @@ from PyQt5.QtCore import QObject, pyqtSignal, QFile
 from PyQt5.QtWidgets import QApplication
 import numpy as np
 import matplotlib.path as mpath
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
-from skyfield import functions
 from skyfield.api import wgs84
 
 # local import
@@ -464,18 +462,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         self.satellite = satellite
-        timescale = self.app.mount.obsSite.ts
-        dayAngle = satellite.model.no_kozai * 24 * 60 / np.pi * 180
-        if dayAngle < 400:
-            forecastTime = 24
-        else:
-            forecastTime = 3
-
-        forecast = np.arange(0, forecastTime, 0.005 * forecastTime / 3) / 24
-        now = timescale.now()
-        timeVector = timescale.tt_jd(now.tt + forecast)
-        observe = self.satellite.at(timeVector)
-
         self.drawEarth(self.app.mount.obsSite,
                        satOrbits=satOrbits, altitude=altitude, azimuth=azimuth)
         self.drawHorizonView(self.app.mount.obsSite,

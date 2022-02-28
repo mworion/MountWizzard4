@@ -24,7 +24,6 @@ import os
 from PyQt5.QtWidgets import QMessageBox, QLineEdit, QInputDialog
 from PyQt5.QtCore import Qt
 import numpy as np
-import matplotlib.pyplot
 
 # local import
 from logic.modeldata.modelHandling import writeRetrofitData

@@ -102,10 +102,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
             for n, chunk in enumerate(r.iter_content(512)):
                 progressPercent = int(n * 512 / totalSizeBytes * 100)
                 self.signalProgress.emit(progressPercent)
-
                 if chunk:
                     f.write(chunk)
-
             self.signalProgress.emit(100)
         return True
 

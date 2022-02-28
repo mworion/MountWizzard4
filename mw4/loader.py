@@ -44,6 +44,7 @@ from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSIO
 from PyQt5.QtGui import QMouseEvent, QIcon
 from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
 from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
+import pyqtgraph as pg
 from importlib_metadata import version
 
 # local import
@@ -108,7 +109,10 @@ class QAwesomeTooltipEventFilter(QObject):
         """
         Tooltip-specific event filter handling the passed Qt object and event.
         """
-        if event.type() == QEvent.ToolTipChange:
+        if event.type() in [QEvent.ToolTipChange, QEvent.ToolTip]:
+            if isinstance(widget, pg.ViewBox):
+                return True
+
             if not isinstance(widget, QWidget):
                 self.log.warning('QObject "{}" not a widget.'.format(widget))
                 return False
@@ -124,18 +128,6 @@ class QAwesomeTooltipEventFilter(QObject):
                 widget.setToolTip(tooltip)
 
                 return True
-
-        elif event.type() == QEvent.ToolTip:
-            if not isinstance(widget, QWidget):
-                self.log.warning('QObject "{}" not a widget.'.format(widget))
-                return False
-
-            tooltip = widget.toolTip()
-
-            if tooltip == '<html><head/><body><p><br/></p></body></html>':
-                widget.setToolTip(None)
-                return True
-
         return super().eventFilter(widget, event)
 
 

@@ -23,6 +23,7 @@ import glob
 # external packages
 from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QWidget
+import pyqtgraph as pg
 
 # local import
 from loader import QAwesomeTooltipEventFilter
@@ -38,6 +39,13 @@ def module_setup_teardown(qtbot):
         os.remove(f)
 
     yield
+
+
+def test_eventFilter_0(qtbot):
+    widget = pg.ViewBox()
+    event = QEvent(QEvent.ToolTipChange)
+    suc = app.eventFilter(widget=widget, event=event)
+    assert suc
 
 
 def test_eventFilter_1(qtbot):

@@ -89,15 +89,12 @@ def test_initConfig_1(function):
                            'showModelPosition'):
         function.initConfig()
         assert function.ui.targetRMS.value() == 10
-        assert not function.ui.showErrorValues.isChecked()
 
 
 def test_storeConfig_1(function):
     function.ui.targetRMS.setValue(33)
-    function.ui.showErrorValues.setChecked(True)
     function.storeConfig()
     conf = function.app.config['mainW']
-    assert conf['showErrorValues']
     assert 33 == conf['targetRMS']
 
 
@@ -237,14 +234,6 @@ def test_findFittingModel_4(function):
     function.app.mwGlob['modelDir'] = 'tests/workDir/model'
 
 
-def test_showModelPosition_0(function):
-    function.app.mount.model = None
-
-    function.ui.showErrorValues.setChecked(True)
-    suc = function.showModelPosition()
-    assert not suc
-
-
 def test_showModelPosition_1(function):
     function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     function.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
@@ -253,7 +242,6 @@ def test_showModelPosition_1(function):
                                          '17:43:41.26,+59*15:30.7,   8.4,005',
                                          ],
                                         4)
-    function.ui.showErrorValues.setChecked(True)
     suc = function.showModelPosition()
     assert suc
 
@@ -261,7 +249,6 @@ def test_showModelPosition_1(function):
 def test_showModelPosition_2(function):
     function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     function.app.mount.model._starList = list()
-    function.ui.showErrorValues.setChecked(True)
     suc = function.showModelPosition()
     assert not suc
 
@@ -269,13 +256,11 @@ def test_showModelPosition_2(function):
 def test_showModelPosition_3(function):
     function.app.mount.obsSite.location = []
     function.app.mount.model._starList = list()
-    function.ui.showErrorValues.setChecked(True)
     suc = function.showModelPosition()
     assert not suc
 
 
 def test_showModelPosition_4(function):
-    function.ui.showErrorValues.setChecked(True)
     function.app.mount.model._starList = list()
     suc = function.showModelPosition()
     assert not suc
@@ -289,15 +274,8 @@ def test_showModelPosition_5(function):
                                          '17:43:41.26,+59*15:30.7,   8.4,005',
                                          ],
                                         4)
-    function.ui.showNumbers.setChecked(True)
     suc = function.showModelPosition()
     assert suc
-
-
-def test_showErrorAscending_0(function):
-    function.app.mount.model = None
-    suc = function.showErrorAscending()
-    assert not suc
 
 
 def test_showErrorAscending_1(function):
@@ -329,12 +307,6 @@ def test_showErrorAscending_3(function):
 def test_showErrorAscending_4(function):
     function.app.mount.model._starList = list()
     suc = function.showErrorAscending()
-    assert not suc
-
-
-def test_showErrorDistribution_0(function):
-    function.app.mount.model = None
-    suc = function.showErrorDistribution()
     assert not suc
 
 
@@ -856,67 +828,71 @@ def test_deleteDialog_2(function):
         assert suc
 
 
-def test_onMouseEdit_1(function):
+def test_pointClicked_1(function):
     class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = False
-        dblclick = True
-        button = 1
+        @staticmethod
+        def button():
+            return 1
 
-    suc = function.onMouseEdit(Event())
+        @staticmethod
+        def double():
+            return True
+
+    suc = function.pointClicked(None, None, Event())
     assert not suc
 
 
-def test_onMouseEdit_2(function):
+def test_pointClicked_2(function):
     class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
+        @staticmethod
+        def button():
+            return 2
 
-    suc = function.onMouseEdit(Event())
+        @staticmethod
+        def double():
+            return False
+
+    suc = function.pointClicked(None, None, Event())
     assert not suc
 
 
-def test_onMouseEdit_3(function):
+def test_pointClicked_3(function):
     class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
+        @staticmethod
+        def button():
+            return 1
 
-    function.plane = [(0, 0), (0, 360)]
+        @staticmethod
+        def double():
+            return False
 
-    suc = function.onMouseEdit(Event())
+    class Points:
+        @staticmethod
+        def data():
+            return []
+
+    points = [Points()]
+    suc = function.pointClicked(None, points, Event())
     assert not suc
 
 
-def test_onMouseEdit_4(function):
+def test_pointClicked_4(function):
     class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
+        @staticmethod
+        def button():
+            return 1
 
-    function.plane = [(0, 0), (0, 360)]
+        @staticmethod
+        def double():
+            return False
 
-    suc = function.onMouseEdit(Event())
-    assert not suc
+    class Points:
+        @staticmethod
+        def data():
+            return [1]
 
+    points = [Points()]
 
-def test_onMouseEdit_5(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
-
-    function.plane = [(0, 0), (0, 360)]
     function.app.mount.model.starList = list()
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
@@ -929,50 +905,26 @@ def test_onMouseEdit_5(function):
     with mock.patch.object(function,
                            'deleteDialog',
                            return_value=False):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=0):
-            suc = function.onMouseEdit(Event())
-            assert not suc
+        suc = function.pointClicked(None, points, Event())
+        assert not suc
 
 
-def test_onMouseEdit_5b(function):
+def test_pointClicked_5(function):
     class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
+        @staticmethod
+        def button():
+            return 1
 
-    function.plane = [(0, 0), (0, 360)]
-    function.app.mount.model.starList = list()
-    a = ModelStar(obsSite=function.app.mount.obsSite)
-    a.alt = 0
-    a.az = 0
-    a.coord = Star(ra_hours=0, dec_degrees=0)
-    a.errorAngle = Angle(degrees=0)
-    a.errorRMS = 1
-    function.app.mount.model.starList.append(a)
+        @staticmethod
+        def double():
+            return False
 
-    with mock.patch.object(function,
-                           'deleteDialog',
-                           return_value=False):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=None):
-            suc = function.onMouseEdit(Event())
-            assert not suc
+    class Points:
+        @staticmethod
+        def data():
+            return [1]
 
-
-def test_onMouseEdit_6(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
-
-    function.plane = [(0, 0), (0, 360)]
+    points = [Points()]
     function.app.mount.model.starList = list()
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
@@ -985,25 +937,29 @@ def test_onMouseEdit_6(function):
     with mock.patch.object(function,
                            'deleteDialog',
                            return_value=True):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=0):
-            with mock.patch.object(function.app.mount.model,
-                                   'deletePoint',
-                                   return_value=False):
-                suc = function.onMouseEdit(Event())
-                assert not suc
+        with mock.patch.object(function.app.mount.model,
+                               'deletePoint',
+                               return_value=False):
+            suc = function.pointClicked(None, points, Event())
+            assert not suc
 
 
-def test_onMouseEdit_7(function):
+def test_pointClicked_6(function):
     class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
+        @staticmethod
+        def button():
+            return 1
 
-    function.plane = [(0, 0), (0, 360)]
+        @staticmethod
+        def double():
+            return False
+
+    class Points:
+        @staticmethod
+        def data():
+            return [1]
+
+    points = [Points()]
     function.app.mount.model.starList = list()
     a = ModelStar(obsSite=function.app.mount.obsSite)
     a.alt = 0
@@ -1016,13 +972,10 @@ def test_onMouseEdit_7(function):
     with mock.patch.object(function,
                            'deleteDialog',
                            return_value=True):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=0):
-            with mock.patch.object(function.app.mount.model,
-                                   'deletePoint',
-                                   return_value=True):
-                with mock.patch.object(function,
-                                       'refreshModel'):
-                    suc = function.onMouseEdit(Event())
-                    assert suc
+        with mock.patch.object(function.app.mount.model,
+                               'deletePoint',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'refreshModel'):
+                suc = function.pointClicked(None, points, Event())
+                assert suc

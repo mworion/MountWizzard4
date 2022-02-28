@@ -649,9 +649,9 @@ class ManageModel(object):
             return False
         if event.button() != Qt.MouseButton.LeftButton:
             return False
-        index = points[0].data()[0] - 1
-        if index is None:
+        if len(points[0].data()) == 0:
             return False
+        index = points[0].data()[0] - 1
 
         error = self.app.mount.model.starList[index].errorRMS
         text = f'Do you want to delete \npoint {index + 1:3.0f}'

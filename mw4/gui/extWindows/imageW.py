@@ -246,7 +246,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.app.message.emit('No image selected', 0)
             return False
 
-        self.setWindowTitle(f'Imaging:   {name}')
+        self.setWindowTitle(f'Imaging   {name}')
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image selected:      [{name}]', 0)
         self.folder = os.path.dirname(loadFilePath)
@@ -478,7 +478,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.imageFileName = imagePath
         full, short, ext = self.extractNames([self.imageFileName])
-        self.setWindowTitle(f'Imaging:   {short}')
+        self.setWindowTitle(f'Imaging   {short}')
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)
         self.threadPool.start(worker)

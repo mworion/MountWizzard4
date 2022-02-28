@@ -22,6 +22,7 @@ import os
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QLineEdit, QInputDialog
+from PyQt5.QtCore import Qt
 import numpy as np
 import matplotlib.pyplot
 
@@ -91,7 +92,7 @@ class ManageModel(object):
         """
         :return:
         """
-        for plot in [self.ui.modelPosition, self.ui.errorDistribution,
+        for plot in [self.ui.modelPositions, self.ui.errorDistribution,
                      self.ui.errorAscending]:
             plot.colorChange()
         self.showModelPosition()
@@ -179,13 +180,11 @@ class ManageModel(object):
             with open(modelFilePath, 'r') as inFile:
                 try:
                     buildModelData = json.load(inFile)
-
                 except Exception as e:
                     self.log.warning(f'Cannot load model file: {[inFile]}, error: {e}')
                     continue
 
             pointsIn, pointsOut = self.compareModel(buildModelData, mountModel)
-
             if len(pointsIn) > 2:
                 self.fittedModelPoints = pointsIn
                 self.fittedModelPath = modelFilePath
@@ -206,18 +205,20 @@ class ManageModel(object):
         model = self.app.mount.model
         altitude = np.array([x.alt.degrees for x in model.starList])
         if len(altitude) == 0:
-            return
+            return False
         azimuth = np.array([x.az.degrees for x in model.starList])
         error = np.array([x.errorRMS for x in model.starList])
         errorAngle = np.array([x.errorAngle.degrees for x in model.starList])
+        index = np.array([star.number for star in model.starList])
         self.ui.modelPositions.barItem.setLabel('right', 'Error [RMS]')
         self.ui.modelPositions.plot(
             azimuth, altitude, z=error, ang=errorAngle,
             range={'xMin': -91, 'yMin': -91, 'xMax': 91, 'yMax': 91},
-            bar=True, data=error, reverse=True,
-            tip='ErrorRMS: {data:0.1f}'.format)
+            bar=True, data=list(zip(index, error)), reverse=True,
+            tip='PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}'.format)
         self.ui.modelPositions.plotLoc(
             self.app.mount.obsSite.location.latitude.degrees)
+        self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
         return True
 
     def showErrorAscending(self):
@@ -227,7 +228,8 @@ class ManageModel(object):
         model = self.app.mount.model
         error = np.array([star.errorRMS for star in model.starList])
         if len(error) == 0:
-            return
+            return False
+
         index = np.array([star.number for star in model.starList])
         self.ui.errorAscending.setLabel('bottom', 'Starcount')
         self.ui.errorAscending.setLabel('left', 'Error per Star [arcsec]')
@@ -245,7 +247,7 @@ class ManageModel(object):
         model = self.app.mount.model
         error = np.array([x.errorRMS for x in model.starList])
         if len(error) == 0:
-            return
+            return False
         errorAngle = np.array([x.errorAngle.degrees for x in model.starList])
         self.ui.errorDistribution.plot(
             errorAngle, error, color=self.M_GREEN,
@@ -498,10 +500,8 @@ class ManageModel(object):
         mount = self.app.mount
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningOptimize = False
-
         if mount.model.numberStars is None:
             numberStars = 0
-
         else:
             numberStars = mount.model.numberStars
 
@@ -512,7 +512,6 @@ class ManageModel(object):
             if not suc:
                 self.runningOptimize = False
                 self.app.message.emit(f'Star [{wStar.number + 1:3.0f}] cannot be deleted', 2)
-
             else:
                 text = f'Point: {wStar.number + 1:3.0f}: '
                 text += f'RMS of {wStar.errorRMS:5.1f} arcsec deleted.'
@@ -531,10 +530,8 @@ class ManageModel(object):
         mount = self.app.mount
         if all([star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]):
             self.runningOptimize = False
-
         if mount.model.numberStars is None:
             numberStars = 0
-
         else:
             numberStars = mount.model.numberStars
 
@@ -572,7 +569,6 @@ class ManageModel(object):
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.alignDone.connect(self.runTargetRMS)
             self.runTargetRMS()
-
         else:
             self.app.mount.signals.alignDone.connect(self.runSingleRMS)
             self.runSingleRMS()
@@ -584,7 +580,6 @@ class ManageModel(object):
         """
         if self.ui.optimizeOverall.isChecked():
             self.app.mount.signals.alignDone.disconnect(self.runTargetRMS)
-
         else:
             self.app.mount.signals.alignDone.disconnect(self.runSingleRMS)
 
@@ -610,7 +605,6 @@ class ManageModel(object):
         """
         if not self.fittedModelPath:
             return False
-
         if not os.path.isfile(self.fittedModelPath):
             return False
 
@@ -641,31 +635,21 @@ class ManageModel(object):
         reply = msg.question(self, 'Deleting point', question, msg.Yes | msg.No, msg.No)
         if reply != msg.Yes:
             return False
-
         else:
             return True
 
-    def onMouseEdit(self, event):
+    def pointClicked(self, scatterPlotItem, points, event):
         """
-        onMouseEdit handles the mouse event in normal mode. this means depending on the
-        edit mode (horizon or model points) a left click adds a new point and right click
-        deletes the selected point.
-
+        :param scatterPlotItem:
+        :param points:
         :param event: mouse events
         :return: success
         """
-        if not event.inaxes:
+        if event.double():
             return False
-
-        if not self.plane:
+        if event.button() != Qt.MouseButton.LeftButton:
             return False
-
-        if not event.dblclick:
-            return False
-
-        event.xdata = (np.degrees(event.xdata) + 360) % 360
-        event.ydata = 90 - event.ydata
-        index = self.getIndexPoint(event=event, plane=self.plane, epsilon=5)
+        index = points[0].data()[0] - 1
         if index is None:
             return False
 
@@ -685,5 +669,4 @@ class ManageModel(object):
         text += ' arcsec deleted.'
         self.app.message.emit(text, 0)
         self.refreshModel()
-
         return True

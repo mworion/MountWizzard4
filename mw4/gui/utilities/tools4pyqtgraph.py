@@ -37,7 +37,8 @@ class Plot(pg.PlotWidget, Styles):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         pg.setConfigOptions(antialias=True,
-                            imageAxisOrder='row-major')
+                            imageAxisOrder='row-major',
+                            crashWarning=True)
 
         self.pen = pg.mkPen(color=self.M_BLUE)
         self.penGrid = pg.mkPen(color=self.M_GREY)
@@ -153,7 +154,7 @@ class NormalScatter(Plot):
                  'data':  dataVal[i],
                  'brush': colorVal,
                  'pen': colorVal,
-                 'size': 5,
+                 'size': 6,
                  })
         tip = kwargs.get('tip')
         if tip is None:
@@ -204,16 +205,17 @@ class PolarScatter(NormalScatter):
                 text = f'{r}'
             textItem = pg.TextItem(text=text, color=self.M_GREY, anchor=(0.5, 0.5))
             textItem.setFont(font)
-            textItem.setPos(r * 0.69, r * 0.69)
+            textItem.setPos(r * 0.7, r * 0.7)
             self.plotItem.addItem(textItem)
 
-        for text, x, y in zip(['N', 'E', 'S', 'W'],
-                              [0, maxR, 0, -maxR],
-                              [maxR, 0, -maxR, 0]):
+        for text, x, y in zip(
+                ['N', 'E', 'S', 'W', 'NE', 'SE', 'SW', 'NW'],
+                [0, maxR, 0, -maxR, maxR * 0.7, maxR * 0.7, -maxR * 0.7, - maxR * 0.7],
+                [maxR, 0, -maxR, 0, maxR * 0.7, - maxR * 0.7, - maxR * 0.7, maxR * 0.7]):
             textItem = pg.TextItem(color=self.M_BLUE, anchor=(0.5, 0.5))
             textItem.setHtml(f'<b>{text}</b>')
             textItem.setFont(font)
-            textItem.setPos(x * 0.88, y * 0.88)
+            textItem.setPos(x, y)
             self.plotItem.addItem(textItem)
         return True
 

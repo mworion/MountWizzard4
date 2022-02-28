@@ -47,45 +47,9 @@ def test_Plot_mouseDoubleClickEvent():
         p.mouseDoubleClickEvent(None)
 
 
-def test_PolarScatter():
-    p = PolarScatter()
-
-
-def test_PolarScatter_setGrid_1():
-    p = PolarScatter()
-    suc = p.setGrid(np.array([0, 1, 2]), np.array([2, 3, 4]))
-    assert suc
-
-
-def test_PolarScatter_setGrid_2():
-    p = PolarScatter()
-    suc = p.setGrid(np.array([0, 1, 2]), np.array([2, 3, 4]), reverse=True)
-    assert suc
-
-
-def test_PolarScatter_plot1():
-    p = PolarScatter()
-    with mock.patch.object(p,
-                           'setGrid'):
-        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
-                     color='#000000', z=np.array([2, 3, 4]))
-        assert not suc
-
-
-def test_PolarScatter_plot2():
-    p = PolarScatter()
-    with mock.patch.object(p,
-                           'setGrid'):
-        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
-                     color=['#000000', '#000000', '#000000'],
-                     ang=np.array([2, 3, 4]))
-        assert suc
-
-
-def test_PolarScatter_plotLoc():
-    p = PolarScatter()
-    suc = p.plotLoc(47)
-    assert suc
+def test_Plot_colorChange():
+    p = Plot()
+    p.colorChange()
 
 
 def test_NormalScatter():
@@ -117,8 +81,51 @@ def test_NormalScatter_plot3():
                            'mouseDoubleClickEvent'):
         suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
                      z=np.array([2, 3, 4]),
-                     ang=np.array([2, 3, 4]))
+                     ang=np.array([2, 3, 4]),
+                     tip='{data}'.format)
         assert suc
+
+
+def test_PolarScatter():
+    p = PolarScatter()
+
+
+def test_PolarScatter_setGrid_1():
+    p = PolarScatter()
+    suc = p.setGrid(np.array([0, 1, 2]))
+    assert suc
+
+
+def test_PolarScatter_setGrid_2():
+    p = PolarScatter()
+    suc = p.setGrid(np.array([0, 1, 2]), reverse=True)
+    assert suc
+
+
+def test_PolarScatter_plot1():
+    p = PolarScatter()
+    with mock.patch.object(p,
+                           'setGrid'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     color='#000000', z=np.array([2, 3, 4]))
+        assert not suc
+
+
+def test_PolarScatter_plot2():
+    p = PolarScatter()
+    with mock.patch.object(p,
+                           'setGrid'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     color=['#000000', '#000000', '#000000'],
+                     ang=np.array([2, 3, 4]),
+                     reverse=True)
+        assert suc
+
+
+def test_PolarScatter_plotLoc():
+    p = PolarScatter()
+    suc = p.plotLoc(47)
+    assert suc
 
 
 def test_PlotImageBar_constructPlot():

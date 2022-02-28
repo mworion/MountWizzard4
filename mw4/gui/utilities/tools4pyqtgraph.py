@@ -193,7 +193,7 @@ class PolarScatter(NormalScatter):
         self.plotItem.addLine(y=0, pen=self.penGrid)
 
         font = QFont(self.window().font().family(),
-                     self.window().font().pointSize() * 1.2)
+                     int(self.window().font().pointSize() * 1.2))
         for r in gridLines:
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)

@@ -37,8 +37,7 @@ class Plot(pg.PlotWidget, Styles):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         pg.setConfigOptions(antialias=True,
-                            imageAxisOrder='row-major',
-                            crashWarning=True)
+                            imageAxisOrder='row-major')
 
         self.pen = pg.mkPen(color=self.M_BLUE)
         self.penGrid = pg.mkPen(color=self.M_GREY)
@@ -186,7 +185,7 @@ class PolarScatter(NormalScatter):
             circle.setPen(self.pen)
             self.plotItem.addItem(circle)
         else:
-            maxR = int(np.max(y))
+            maxR = int(np.max(y) * 1.1)
             stepLines = 5
             gridLines = np.arange(0, maxR, stepLines)
 

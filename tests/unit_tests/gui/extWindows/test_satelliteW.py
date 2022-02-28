@@ -187,56 +187,25 @@ def test_updatePositions_5(function):
 
 
 def test_updatePositions_6(function):
-    function.satellite = 1
-    function.plotSatPosEarth = 1
-    function.plotSatPosHorizon = 1
+    tle = ["CALSPHERE 1",
+           "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
+           "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670"]
+    ts = function.app.mount.obsSite.ts
+    now = ts.tt_jd(2459523.2430)
+    function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    suc = function.updatePositions(now='t', location='loc')
-    assert not suc
+    function.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
+    function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
+    location = function.app.mount.obsSite.location
+    with mock.patch.object(function.plotSatPosEarth,
+                           'set_data'):
+        with mock.patch.object(function.plotSatPosHorizon,
+                               'set_data'):
+            suc = function.updatePositions(now=now, location=location)
+            assert suc
 
 
 def test_updatePositions_7(function):
-    function.satellite = 1
-    function.plotSatPosEarth = 1
-    function.plotSatPosHorizon = 1
-    function.plotSatPosSphere1 = 1
-
-    suc = function.updatePositions(now='t', location='loc')
-    assert not suc
-
-
-def test_updatePositions_8(function):
-    tle = ["CALSPHERE 1",
-           "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
-           "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670"]
-    ts = function.app.mount.obsSite.ts
-    now = ts.tt_jd(2459523.2430)
-    function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    function.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
-    function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
-    function.plotSatPosSphere1, = ax.plot([1], [1], [1])
-    function.plotSatPosSphere2, = ax.plot([1], [1], [1])
-
-    function.ui.tabWidget.setCurrentIndex(0)
-    location = function.app.mount.obsSite.location
-
-    with mock.patch.object(function.plotSatPosSphere1,
-                           'set_data_3d'):
-        with mock.patch.object(function.plotSatPosSphere2,
-                               'set_data_3d'):
-            with mock.patch.object(function.plotSatPosEarth,
-                                   'set_data'):
-                with mock.patch.object(function.plotSatPosHorizon,
-                                       'set_data'):
-                    suc = function.updatePositions(now=now, location=location)
-                    assert suc
-
-
-def test_updatePositions_9(function):
     tle = ["CALSPHERE 1",
            "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
            "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670"]
@@ -245,86 +214,15 @@ def test_updatePositions_9(function):
 
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
     function.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
     function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
-    function.plotSatPosSphere1, = ax.plot([1], [1], [1])
-    function.plotSatPosSphere2, = ax.plot([1], [1], [1])
-
-    function.ui.tabWidget.setCurrentIndex(1)
     location = function.app.mount.obsSite.location
-
-    with mock.patch.object(function.plotSatPosSphere1,
-                           'set_data_3d'):
-        with mock.patch.object(function.plotSatPosSphere2,
-                               'set_data_3d'):
-            with mock.patch.object(function.plotSatPosEarth,
-                                   'set_data'):
-                with mock.patch.object(function.plotSatPosHorizon,
-                                       'set_data'):
-                    suc = function.updatePositions(now=now, location=location)
-                    assert suc
-
-
-def test_makeCubeLimits_1(function):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    function.makeCubeLimits(ax)
-
-
-def test_makeCubeLimits_2(function):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    function.makeCubeLimits(ax, hw=(1, 2, 3))
-
-
-def test_makeCubeLimits_3(function):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    function.makeCubeLimits(ax, hw=3)
-
-
-def test_drawSphere1_1(function):
-    suc = function.drawSphere1()
-    assert not suc
-
-
-def test_drawSphere1_2(function, ts):
-    tle = ["CALSPHERE 1",
-           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
-           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
-    satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = ts.now().tt
-    observe = satellite.at(ts.tt_jd(tt + np.arange(0, 1, 0.1)))
-    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
-    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
-    suc = function.drawSphere1(observe=observe)
-    assert suc
-
-
-def test_drawSphere2_1(function):
-    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
-    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
-    suc = function.drawSphere2()
-    assert not suc
-
-
-def test_drawSphere2_2(function, ts):
-    tle = ["CALSPHERE 1",
-           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
-           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
-    satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = 2459610
-    observe = satellite.at(ts.tt_jd(tt + np.arange(0, 0.1, 0.01)))
-    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
-    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
-    suc = function.drawSphere2(observe=observe)
-    assert suc
+    with mock.patch.object(function.plotSatPosEarth,
+                           'set_data'):
+        with mock.patch.object(function.plotSatPosHorizon,
+                               'set_data'):
+            suc = function.updatePositions(now=now, location=location)
+            assert suc
 
 
 def test_unlinkWrap(function):
@@ -489,15 +387,11 @@ def test_drawHorizonView_3(function, ts):
 
 def test_drawSatellite_1(function):
     with mock.patch.object(function,
-                           'drawSphere1'):
+                           'drawEarth'):
         with mock.patch.object(function,
-                               'drawSphere2'):
-            with mock.patch.object(function,
-                                   'drawEarth'):
-                with mock.patch.object(function,
-                                       'drawHorizonView'):
-                    suc = function.drawSatellite()
-                    assert not suc
+                               'drawHorizonView'):
+            suc = function.drawSatellite()
+            assert not suc
 
 
 def test_drawSatellite_2(function, ts):
@@ -525,18 +419,13 @@ def test_drawSatellite_2(function, ts):
                   'flip': t3,
                   'settle': t4},
                  ]
-
     with mock.patch.object(function,
-                           'drawSphere1'):
+                           'drawEarth'):
         with mock.patch.object(function,
-                               'drawSphere2'):
-            with mock.patch.object(function,
-                                   'drawEarth'):
-                with mock.patch.object(function,
-                                       'drawHorizonView'):
-                    suc = function.drawSatellite(satellite=satellite,
-                                                 satOrbits=satOrbits)
-                    assert suc
+                               'drawHorizonView'):
+            suc = function.drawSatellite(satellite=satellite,
+                                         satOrbits=satOrbits)
+            assert suc
 
 
 def test_drawSatellite_3(function, ts):
@@ -566,16 +455,12 @@ def test_drawSatellite_3(function, ts):
                   'settle': t4},
                  ]
     with mock.patch.object(function,
-                           'drawSphere1'):
+                           'drawEarth'):
         with mock.patch.object(function,
-                               'drawSphere2'):
-            with mock.patch.object(function,
-                                   'drawEarth'):
-                with mock.patch.object(function,
-                                       'drawHorizonView'):
-                    suc = function.drawSatellite(satellite=satellite,
-                                                 satOrbits=satOrbits)
-                    assert suc
+                               'drawHorizonView'):
+            suc = function.drawSatellite(satellite=satellite,
+                                         satOrbits=satOrbits)
+            assert suc
 
 
 def test_drawSatellite_4(function, ts):

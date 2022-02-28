@@ -56,15 +56,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.closing = False
         self.signals = SatelliteWindowSignals()
         self.satellite = None
-        self.plotSatPosSphere1 = None
-        self.plotSatPosSphere2 = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
         self.pointerAltAz = None
-        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1,
-                                               constrainedLayout=False)
-        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2,
-                                               constrainedLayout=False)
         self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
@@ -95,7 +89,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             y = 0
         if x != 0 and y != 0:
             self.move(x, y)
-        self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
 
         return True
 
@@ -111,7 +104,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        config['tabWidget'] = self.ui.tabWidget.currentIndex()
         return True
 
     def closeEvent(self, closeEvent):
@@ -206,10 +198,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
         if self.plotSatPosHorizon is None:
             return False
-        if self.plotSatPosSphere1 is None:
-            return False
-        if self.plotSatPosSphere2 is None:
-            return False
 
         observe = self.satellite.at(now)
         subpoint = wgs84.subpoint_of(observe)
@@ -218,246 +206,20 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
         self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
 
-        if self.ui.tabWidget.currentIndex() == 0:
-            ra, dec, _ = difference.at(now).radec()
-            self.ui.satRa.setText(f'{ra.hours:3.2f}')
-            self.ui.satDec.setText(f'{dec.degrees:3.2f}')
+        alt, az, _ = difference.at(now).altaz()
+        self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
+        self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
 
-            x, y, z = observe.position.km
-            self.plotSatPosSphere1.set_data_3d((x, y, z))
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
+        self.plotSatPosEarth.set_data((lon, lat))
 
-            lat = subpoint.latitude.radians
-            lon = subpoint.longitude.radians
-            elev = subpoint.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
+        alt = alt.degrees
+        az = az.degrees
+        self.plotSatPosHorizon.set_data((az, alt))
 
-            xyz = functions.from_spherical(elev, lat, lon)
-            self.plotSatPosSphere2.set_data_3d(xyz)
-
-            self.satSphereMat1.figure.canvas.draw()
-            self.satSphereMat2.figure.canvas.draw()
-
-        else:
-            alt, az, _ = difference.at(now).altaz()
-            self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
-            self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
-
-            lat = subpoint.latitude.degrees
-            lon = subpoint.longitude.degrees
-            self.plotSatPosEarth.set_data((lon, lat))
-
-            alt = alt.degrees
-            az = az.degrees
-            self.plotSatPosHorizon.set_data((az, alt))
-
-            self.satEarthMat.figure.canvas.draw()
-            self.satHorizonMat.figure.canvas.draw()
-        return True
-
-    @staticmethod
-    def makeCubeLimits(axe, centers=None, hw=None):
-        """
-        :param axe:
-        :param centers:
-        :param hw:
-        :return:
-        """
-        limits = axe.get_xlim(), axe.get_ylim(), axe.get_zlim()
-        if centers is None:
-            centers = [0.5 * sum(pair) for pair in limits]
-
-        if hw is None:
-            widths = [pair[1] - pair[0] for pair in limits]
-            hw = 0.5 * max(widths)
-            axe.set_xlim(centers[0] - hw, centers[0] + hw)
-            axe.set_ylim(centers[1] - hw, centers[1] + hw)
-            axe.set_zlim(centers[2] - hw, centers[2] + hw)
-
-        else:
-            try:
-                hwx, hwy, hwz = hw
-                axe.set_xlim(centers[0] - hwx, centers[0] + hwx)
-                axe.set_ylim(centers[1] - hwy, centers[1] + hwy)
-                axe.set_zlim(centers[2] - hwz, centers[2] + hwz)
-            except Exception:
-                axe.set_xlim(centers[0] - hw, centers[0] + hw)
-                axe.set_ylim(centers[1] - hw, centers[1] + hw)
-                axe.set_zlim(centers[2] - hw, centers[2] + hw)
-
-        return centers, hw
-
-    def drawSphere1(self, observe=None):
-        """
-        draw sphere and put face color als image overlay:
-        https://stackoverflow.com/questions/53074908/
-        map-an-image-onto-a-sphere-and-plot-3d-trajectories
-        but performance problems
-        see also:
-        https://space.stackexchange.com/questions/25958/
-        how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
-
-        :param observe:
-        :return: success
-        """
-        figure = self.satSphereMat1.figure
-        figure.clf()
-        figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
-        axe = figure.add_subplot(111, projection='3d')
-
-        axe.set_facecolor((0, 0, 0, 0))
-        axe.tick_params(colors=self.M_GREY, labelsize=12)
-        axe.set_axis_off()
-        axe.xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-
-        theta = np.linspace(0, 2 * np.pi, 51)
-        cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
-        lon0 = self.EARTH_RADIUS * np.vstack((cth, zth, sth))
-        longitudes = []
-        lonBase = np.arange(-180, 180, 15)
-        for phi in np.radians(lonBase):
-            cph, sph = [f(phi) for f in [np.cos, np.sin]]
-            lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
-                             lon0[1] * cph + lon0[0] * sph,
-                             lon0[2]))
-            longitudes.append(lon)
-        lats = []
-        latBase = np.arange(-75, 90, 15)
-        for phi in np.radians(latBase):
-            cph, sph = [f(phi) for f in [np.cos, np.sin]]
-            lat = self.EARTH_RADIUS * np.vstack((cth * cph, sth * cph, zth + sph))
-            lats.append(lat)
-
-        for i, longitude in enumerate(longitudes):
-            x, y, z = longitude
-            axe.plot(x, y, z, lw=1, color=self.M_GREY)
-        for i, lat in enumerate(lats):
-            x, y, z = lat
-            axe.plot(x, y, z, lw=1, color=self.M_GREY)
-
-        axe.plot([0, 0], [0, 0],
-                 [- self.EARTH_RADIUS * 1.1, self.EARTH_RADIUS * 1.1],
-                 lw=3, color=self.M_BLUE)
-        axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N', fontsize=14,
-                 color=self.M_BLUE)
-        axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S', fontsize=14,
-                 color=self.M_BLUE)
-
-        if observe is None:
-            axe.figure.canvas.draw()
-            return False
-
-        x, y, z = observe.position.km
-        axe.plot(x, y, z, color=self.M_WHITE)
-        self.plotSatPosSphere1, = axe.plot([x[0]], [y[0]], [z[0]],
-                                           marker=self.markerSatellite(),
-                                           markersize=35,
-                                           linewidth=2,
-                                           fillstyle='none',
-                                           color=self.M_WHITE)
-        self.makeCubeLimits(axe)
-        axe.figure.canvas.draw()
-        return True
-
-    def drawSphere2(self, observe=None):
-        """
-        draw sphere and put face color als image overlay:
-        https://stackoverflow.com/questions/53074908/
-        map-an-image-onto-a-sphere-and-plot-3d-trajectories
-        but performance problems
-        see also:
-        https://space.stackexchange.com/questions/25958/
-        how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
-
-        :param observe:
-        :return: success
-        """
-        figure = self.satSphereMat2.figure
-        figure.clf()
-        figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
-        axe = figure.add_subplot(111, projection='3d')
-
-        axe.set_facecolor((0, 0, 0, 0))
-        axe.tick_params(colors=self.M_GREY, labelsize=12)
-        axe.set_axis_off()
-        axe.xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-
-        theta = np.linspace(0, 2 * np.pi, 51)
-        cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
-        lon0 = self.EARTH_RADIUS * np.vstack((cth, zth, sth))
-        longitudes = []
-        lonBase = np.arange(-180, 180, 15)
-
-        for phi in np.radians(lonBase):
-            cph, sph = [f(phi) for f in [np.cos, np.sin]]
-            lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
-                             lon0[1] * cph + lon0[0] * sph,
-                             lon0[2]))
-            longitudes.append(lon)
-        lats = []
-        latBase = np.arange(-75, 90, 15)
-
-        for phi in np.radians(latBase):
-            cph, sph = [f(phi) for f in [np.cos, np.sin]]
-            lat = self.EARTH_RADIUS * np.vstack((cth * cph, sth * cph, zth + sph))
-            lats.append(lat)
-        for i, longitude in enumerate(longitudes):
-            x, y, z = longitude
-            axe.plot(x, y, z, lw=1, color=self.M_GREY)
-        for i, lat in enumerate(lats):
-            x, y, z = lat
-            axe.plot(x, y, z, lw=1, color=self.M_GREY)
-
-        axe.plot([0, 0], [0, 0],
-                 [- self.EARTH_RADIUS * 1.1, self.EARTH_RADIUS * 1.1],
-                 lw=3, color=self.M_BLUE)
-        axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N', fontsize=14,
-                 color=self.M_BLUE)
-        axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S', fontsize=14,
-                 color=self.M_BLUE)
-
-        for key in self.world.keys():
-            QApplication.processEvents()
-            shape = self.world[key]
-            x, y, z = functions.from_spherical(self.EARTH_RADIUS,
-                                               shape['yRad'],
-                                               shape['xRad'])
-            verts = [list(zip(x, y, z))]
-            collect = Line3DCollection(verts,
-                                       colors=self.M_BLUE1,
-                                       lw=1,
-                                       alpha=1)
-            axe.add_collection3d(collect)
-            collect = Poly3DCollection(verts,
-                                       edgecolors=self.M_BLUE,
-                                       alpha=0.3)
-            axe.add_collection3d(collect)
-
-        lat = self.app.mount.obsSite.location.latitude.radians
-        lon = self.app.mount.obsSite.location.longitude.radians
-        x, y, z = functions.from_spherical(self.EARTH_RADIUS, lat, lon)
-        axe.plot(x, y, z, marker='.', markersize=12, color=self.M_YELLOW)
-
-        if observe is None:
-            axe.figure.canvas.draw()
-            return False
-
-        subpoints = wgs84.subpoint_of(observe)
-        lat = subpoints.latitude.radians
-        lon = subpoints.longitude.radians
-        elev = subpoints.elevation.m / 1000 + self.EARTH_RADIUS * 1.1
-        x, y, z = functions.from_spherical(elev, lat, lon)
-        axe.plot(x, y, z, color=self.M_WHITE)
-        self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
-                                           marker=self.markerSatellite(),
-                                           markersize=35,
-                                           linewidth=2,
-                                           fillstyle='none',
-                                           color=self.M_WHITE)
-        self.makeCubeLimits(axe)
-        axe.figure.canvas.draw()
+        self.satEarthMat.figure.canvas.draw()
+        self.satHorizonMat.figure.canvas.draw()
         return True
 
     @staticmethod
@@ -699,8 +461,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         if satellite is None or satOrbits is None:
             self.drawEarth()
             self.drawHorizonView()
-            self.drawSphere1()
-            self.drawSphere2()
             return False
 
         self.satellite = satellite
@@ -721,6 +481,4 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.drawHorizonView(self.app.mount.obsSite,
                              satOrbits=satOrbits,
                              altitude=altitude, azimuth=azimuth)
-        self.drawSphere1(observe=observe)
-        self.drawSphere2(observe=observe)
         return True

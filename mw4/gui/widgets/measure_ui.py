@@ -89,7 +89,7 @@ class Ui_MeasureDialog(object):
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setObjectName("line")
         self.verticalLayout.addWidget(self.line)
-        self.measure = QtWidgets.QWidget(MeasureDialog)
+        self.measure = PlotMeasure(MeasureDialog)
         self.measure.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -118,6 +118,7 @@ class Ui_MeasureDialog(object):
         self.label_3.setText(_translate("MeasureDialog", "Lower chart"))
         self.timeGroup.setTitle(_translate("MeasureDialog", "Measurement window"))
         self.label_4.setText(_translate("MeasureDialog", "Select size"))
+from gui.utilities.tools4pyqtgraph import PlotMeasure
 
 
 if __name__ == "__main__":

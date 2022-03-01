@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+from datetime import datetime as dt
 
 # external packages
 import numpy as np
@@ -39,18 +40,20 @@ class CustomViewBox(pg.ViewBox):
     def mouseClickEvent(self, ev):
         if ev.button() == Qt.MouseButton.RightButton:
             self.autoRange()
+            self.enableAutoRange(x=True, y=True)
 
 
 class PlotBase(pg.PlotWidget, Styles):
     """
     """
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs, viewBox=CustomViewBox())
+        super().__init__(viewBox=CustomViewBox())
         pg.setConfigOptions(antialias=True,
                             imageAxisOrder='row-major')
 
-        self.pen = pg.mkPen(color=self.M_BLUE)
+        self.pen = pg.mkPen(color=self.M_BLUE, width=2)
         self.penGrid = pg.mkPen(color=self.M_GREY)
+        self.brushGrid = pg.mkBrush(color=self.M_GREY + '80')
         self.setBackground(self.M_BACK)
         self.cMapGYR = pg.ColorMap([0, 0.6, 1.0],
                                    [self.M_GREEN, self.M_YELLOW, self.M_RED])
@@ -58,6 +61,10 @@ class PlotBase(pg.PlotWidget, Styles):
         self.plotItem = self.getPlotItem()
         self.scatterItem = None
         self.imageItem = None
+
+        self.viewBox = self.plotItem.getViewBox()
+        self.viewBox.rbScaleBox.setPen(self.pen)
+        self.viewBox.rbScaleBox.setBrush(self.brushGrid)
 
         self.barItem = pg.ColorBarItem(width=15, interactive=False)
         self.barItem.setVisible(False)
@@ -232,6 +239,7 @@ class PolarScatter(NormalScatter):
         else:
             posX = y * np.cos(x)
             posY = y * np.sin(x)
+
         super().plot(posX, posY, limits=False, **kwargs)
         self.setGrid(y, **kwargs)
 
@@ -379,8 +387,34 @@ class PlotImageBar(PlotBase):
         return True
 
 
-class Plot(PlotBase):
+class TimeAxis(pg.AxisItem):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def tickStrings(self, values, scale, spacing):
+        ticks = []
+        for x in values:
+            lStr = dt.fromtimestamp(x).strftime('%H:%M:%S')
+            ticks.append(lStr)
+        return ticks
+
+
+class PlotMeasure(PlotBase):
     """
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.plotDataItem = pg.PlotDataItem()
+        self.plotItem.addItem(self.plotDataItem)
+
+        self.plotItem.showAxes(True, showValues=True)
+        self.plotItem.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
+        self.plotItem.setClipToView(True)
+
+        self.plotDataItem.setDownsampling(method='mean')
+        self.plotDataItem.setPen(self.M_BLUE, width=2)
+
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.plotItem.getAxis(side).setPen(self.pen)
+            self.plotItem.getAxis(side).setTextPen(self.pen)
+            self.plotItem.getAxis(side).setGrid(128)

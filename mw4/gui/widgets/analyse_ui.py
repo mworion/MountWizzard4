@@ -420,7 +420,7 @@ class Ui_AnalyseDialog(object):
         self.modelErrorRMS.setObjectName("modelErrorRMS")
         self.profile = QtWidgets.QLineEdit(self.frame)
         self.profile.setEnabled(True)
-        self.profile.setGeometry(QtCore.QRect(340, 65, 76, 21))
+        self.profile.setGeometry(QtCore.QRect(340, 65, 196, 21))
         self.profile.setMinimumSize(QtCore.QSize(0, 21))
         font = QtGui.QFont()
         font.setPointSize(10)

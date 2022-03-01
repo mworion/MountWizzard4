@@ -41,7 +41,7 @@ class CustomViewBox(pg.ViewBox):
             self.autoRange()
 
 
-class Plot(pg.PlotWidget, Styles):
+class PlotBase(pg.PlotWidget, Styles):
     """
     """
     def __init__(self, *args, **kwargs):
@@ -88,7 +88,7 @@ class Plot(pg.PlotWidget, Styles):
         return True
 
 
-class NormalScatter(Plot):
+class NormalScatter(PlotBase):
     """
     """
     def __init__(self, *args, **kwargs):
@@ -275,7 +275,7 @@ class PolarScatter(NormalScatter):
         return True
 
 
-class PlotImageBar(Plot):
+class PlotImageBar(PlotBase):
     """
     """
     def __init__(self, *args, **kwargs):
@@ -377,3 +377,10 @@ class PlotImageBar(Plot):
         text.setPos(posX, posY)
         self.plotItem.addItem(text)
         return True
+
+
+class Plot(PlotBase):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

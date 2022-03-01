@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/measure.ui'
+# Form implementation generated from reading ui file 'measure.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -25,7 +25,6 @@ class Ui_MeasureDialog(object):
         MeasureDialog.setSizeIncrement(QtCore.QSize(10, 10))
         MeasureDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()
-        font.setFamily("Arial")
         font.setPointSize(10)
         MeasureDialog.setFont(font)
         self.verticalLayout = QtWidgets.QVBoxLayout(MeasureDialog)

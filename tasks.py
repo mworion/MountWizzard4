@@ -35,7 +35,7 @@ client = {
     'ubuntuRig': {
         'user': 'mw@astro-comp.fritz.box',
         'work': '/home/mw/test',
-        'scp': 'mw@astro-ubuntu.fritz.box:/home/mw/test',
+        'scp': 'mw@astro-comp.fritz.box:/home/mw/test',
     },
     'win10-32-old': {
         'user': 'mw@astro-win10-32-old.fritz.box',
@@ -392,7 +392,7 @@ def test_comp(c):
     user = client['ubuntuRig']['user']
     work = client['ubuntuRig']['work']
     scp = client['ubuntuRig']['scp']
-    test_ubuntu(c, user, work, scp)
+    test_ubuntu_main(c, user, work, scp)
     printMW('test ubuntu rig install finished\n')
 
 

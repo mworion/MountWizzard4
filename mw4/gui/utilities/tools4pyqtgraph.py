@@ -47,7 +47,7 @@ class PlotBase(pg.PlotWidget, Styles):
     """
     """
     def __init__(self, *args, **kwargs):
-        super().__init__(viewBox=CustomViewBox())
+        super().__init__(*args, **kwargs, viewBox=CustomViewBox())
         pg.setConfigOptions(antialias=True,
                             imageAxisOrder='row-major')
 
@@ -116,10 +116,10 @@ class NormalScatter(PlotBase):
                                               hoverSize=10, hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
-        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x) * 1.1)
-        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y) * 1.1)
-        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x) * 1.1)
-        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y) * 1.1)
+        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
+        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
+        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
+        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
 
         if kwargs.get('limits', True):
             self.plotItem.setLimits(xMin=xMin, xMax=xMax,
@@ -239,7 +239,6 @@ class PolarScatter(NormalScatter):
         else:
             posX = y * np.cos(x)
             posY = y * np.sin(x)
-
         super().plot(posX, posY, limits=False, **kwargs)
         self.setGrid(y, **kwargs)
 

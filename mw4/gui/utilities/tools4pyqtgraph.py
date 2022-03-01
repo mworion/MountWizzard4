@@ -20,7 +20,7 @@
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt5.QtCore import QRectF
+from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtGui import QColor, QFont
 
 # local imports
@@ -31,11 +31,21 @@ __all__ = [
 ]
 
 
+class CustomViewBox(pg.ViewBox):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setMouseMode(self.RectMode)
+
+    def mouseClickEvent(self, ev):
+        if ev.button() == Qt.MouseButton.RightButton:
+            self.autoRange()
+
+
 class Plot(pg.PlotWidget, Styles):
     """
     """
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs, viewBox=CustomViewBox())
         pg.setConfigOptions(antialias=True,
                             imageAxisOrder='row-major')
 
@@ -49,7 +59,7 @@ class Plot(pg.PlotWidget, Styles):
         self.scatterItem = None
         self.imageItem = None
 
-        self.barItem = pg.ColorBarItem(width=10, pen=self.pen)
+        self.barItem = pg.ColorBarItem(width=15, interactive=False)
         self.barItem.setVisible(False)
 
         self.plotItem.layout.addItem(self.barItem, 2, 5)
@@ -77,17 +87,6 @@ class Plot(pg.PlotWidget, Styles):
             self.barItem.getAxis(side).setTextPen(self.pen)
         return True
 
-    def mouseDoubleClickEvent(self, e):
-        """
-        :param e:
-        :return:
-        """
-        xMin = self.defRange.get('xMin')
-        yMin = self.defRange.get('yMin')
-        xMax = self.defRange.get('xMax')
-        yMax = self.defRange.get('yMax')
-        self.plotItem.setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
-
 
 class NormalScatter(Plot):
     """
@@ -110,10 +109,10 @@ class NormalScatter(Plot):
                                               hoverSize=10, hoverPen=self.pen)
         self.plotItem.addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
-        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
-        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
-        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
-        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
+        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x) * 1.1)
+        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y) * 1.1)
+        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x) * 1.1)
+        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y) * 1.1)
 
         if kwargs.get('limits', True):
             self.plotItem.setLimits(xMin=xMin, xMax=xMax,
@@ -122,7 +121,8 @@ class NormalScatter(Plot):
                                     maxXRange=(xMax - xMin),
                                     minYRange=(yMax - yMin) / 2,
                                     maxYRange=(yMax - yMin))
-        self.mouseDoubleClickEvent(None)
+        self.plotItem.setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
+        self.plotItem.autoRange()
 
         dataVal = kwargs.get('data', y)
         self.col = kwargs.get('color', self.M_BLUE)
@@ -185,7 +185,7 @@ class PolarScatter(NormalScatter):
             circle.setPen(self.pen)
             self.plotItem.addItem(circle)
         else:
-            maxR = int(np.max(y) * 1.1)
+            maxR = int(np.max(y))
             stepLines = 5
             gridLines = np.arange(0, maxR, stepLines)
 
@@ -193,7 +193,7 @@ class PolarScatter(NormalScatter):
         self.plotItem.addLine(y=0, pen=self.penGrid)
 
         font = QFont(self.window().font().family(),
-                     int(self.window().font().pointSize() * 1.2))
+                     int(self.window().font().pointSize() * 1.1))
         for r in gridLines:
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
@@ -328,7 +328,9 @@ class PlotImageBar(Plot):
         if kwargs.get('limits', True):
             self.plotItem.setLimits(xMin=xMin, xMax=xMax,
                                     yMin=yMin, yMax=yMax)
-        self.mouseDoubleClickEvent(None)
+        self.plotItem.setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
+        self.plotItem.autoRange()
+
         minB = np.min(imageDisp)
         maxB = 2 * np.mean(imageDisp)
         self.barItem.setLevels(values=(minB, maxB))

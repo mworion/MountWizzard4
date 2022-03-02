@@ -132,7 +132,6 @@ class MeasureData:
         self.data['powTemp'] = np.empty(shape=[0, 1])
         self.data['powDew'] = np.empty(shape=[0, 1])
         self.data['cameraTemp'] = np.empty(shape=[0, 1])
-        self.data['test'] = np.empty(shape=[0, 1])
 
         return True
 
@@ -331,7 +330,6 @@ class MeasureData:
         ccd = self.app.camera
         temp = ccd.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         dat['cameraTemp'] = np.append(dat['cameraTemp'], temp)
-        dat['test'] = np.append(dat['test'], 10 + np.random.rand())
 
         self.mutexMeasure.unlock()
 

@@ -66,7 +66,8 @@ class PlotBase(pg.PlotWidget, Styles):
         self.viewBox.rbScaleBox.setPen(self.pen)
         self.viewBox.rbScaleBox.setBrush(self.brushGrid)
 
-        self.barItem = pg.ColorBarItem(width=15, interactive=False)
+        interactive = kwargs.get('interactive', False)
+        self.barItem = pg.ColorBarItem(width=15, interactive=interactive)
         self.barItem.setVisible(False)
 
         self.plotItem.layout.addItem(self.barItem, 2, 5)
@@ -286,7 +287,7 @@ class PlotImageBar(PlotBase):
     """
     """
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, interactive=True, **kwargs)
         self.lx = None
         self.ly = None
         for side in ('left', 'top', 'right', 'bottom'):

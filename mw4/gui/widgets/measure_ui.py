@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/measure.ui'
+# Form implementation generated from reading ui file 'measure.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -40,10 +40,10 @@ class Ui_MeasureDialog(object):
         self.gridLayout = QtWidgets.QGridLayout(self.measureGroup)
         self.gridLayout.setContentsMargins(4, 6, 4, 4)
         self.gridLayout.setObjectName("gridLayout")
-        self.measureSet1 = QtWidgets.QComboBox(self.measureGroup)
-        self.measureSet1.setMinimumSize(QtCore.QSize(150, 25))
-        self.measureSet1.setObjectName("measureSet1")
-        self.gridLayout.addWidget(self.measureSet1, 1, 0, 1, 1)
+        self.set1 = QtWidgets.QComboBox(self.measureGroup)
+        self.set1.setMinimumSize(QtCore.QSize(150, 25))
+        self.set1.setObjectName("set1")
+        self.gridLayout.addWidget(self.set1, 1, 0, 1, 1)
         self.label_2 = QtWidgets.QLabel(self.measureGroup)
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
@@ -53,14 +53,14 @@ class Ui_MeasureDialog(object):
         self.label_3 = QtWidgets.QLabel(self.measureGroup)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 0, 2, 1, 1)
-        self.measureSet2 = QtWidgets.QComboBox(self.measureGroup)
-        self.measureSet2.setMinimumSize(QtCore.QSize(150, 25))
-        self.measureSet2.setObjectName("measureSet2")
-        self.gridLayout.addWidget(self.measureSet2, 1, 1, 1, 1)
-        self.measureSet3 = QtWidgets.QComboBox(self.measureGroup)
-        self.measureSet3.setMinimumSize(QtCore.QSize(150, 25))
-        self.measureSet3.setObjectName("measureSet3")
-        self.gridLayout.addWidget(self.measureSet3, 1, 2, 1, 1)
+        self.set2 = QtWidgets.QComboBox(self.measureGroup)
+        self.set2.setMinimumSize(QtCore.QSize(150, 25))
+        self.set2.setObjectName("set2")
+        self.gridLayout.addWidget(self.set2, 1, 1, 1, 1)
+        self.set3 = QtWidgets.QComboBox(self.measureGroup)
+        self.set3.setMinimumSize(QtCore.QSize(150, 25))
+        self.set3.setObjectName("set3")
+        self.gridLayout.addWidget(self.set3, 1, 2, 1, 1)
         self.horizontalLayout.addWidget(self.measureGroup)
         self.line_2 = QtWidgets.QFrame(MeasureDialog)
         self.line_2.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -68,19 +68,6 @@ class Ui_MeasureDialog(object):
         self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_2.setObjectName("line_2")
         self.horizontalLayout.addWidget(self.line_2)
-        self.timeGroup = QtWidgets.QGroupBox(MeasureDialog)
-        self.timeGroup.setObjectName("timeGroup")
-        self.gridLayout_2 = QtWidgets.QGridLayout(self.timeGroup)
-        self.gridLayout_2.setContentsMargins(4, 6, 4, 4)
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.timeSet = QtWidgets.QComboBox(self.timeGroup)
-        self.timeSet.setMinimumSize(QtCore.QSize(150, 25))
-        self.timeSet.setObjectName("timeSet")
-        self.gridLayout_2.addWidget(self.timeSet, 1, 0, 1, 1)
-        self.label_4 = QtWidgets.QLabel(self.timeGroup)
-        self.label_4.setObjectName("label_4")
-        self.gridLayout_2.addWidget(self.label_4, 0, 0, 1, 1)
-        self.horizontalLayout.addWidget(self.timeGroup)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.line = QtWidgets.QFrame(MeasureDialog)
         self.line.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -116,8 +103,6 @@ class Ui_MeasureDialog(object):
         self.label_2.setText(_translate("MeasureDialog", "Middle chart"))
         self.label.setText(_translate("MeasureDialog", "Upper chart"))
         self.label_3.setText(_translate("MeasureDialog", "Lower chart"))
-        self.timeGroup.setTitle(_translate("MeasureDialog", "Measurement window"))
-        self.label_4.setText(_translate("MeasureDialog", "Select size"))
 from gui.utilities.tools4pyqtgraph import PlotMeasure
 
 

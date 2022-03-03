@@ -230,8 +230,8 @@ class ManageModel(object):
             return False
 
         index = np.array([star.number for star in model.starList])
-        self.ui.errorAscending.setLabel('bottom', 'Starcount')
-        self.ui.errorAscending.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.errorAscending.p1.setLabel('bottom', 'Starcount')
+        self.ui.errorAscending.p1.setLabel('left', 'Error per Star [arcsec]')
         temp = sorted(zip(error))
         y = [x[0] for x in temp]
         self.ui.errorAscending.plot(

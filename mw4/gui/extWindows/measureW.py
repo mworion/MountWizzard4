@@ -19,7 +19,7 @@
 from datetime import datetime as dt
 
 # external packages
-import PyQt5
+from PyQt5.QtWidgets import QListView
 import numpy as np
 import pyqtgraph as pg
 
@@ -49,7 +49,44 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.refreshCounter = 1
         self.measureIndex = 0
         self.timeIndex = 0
-        self.plot = None
+
+        self.mSetUI = [self.ui.set1,
+                       self.ui.set2,
+                       self.ui.set3]
+
+        self.oldTitle = [None, None, None]
+
+        self.dataPlots = {
+            'No chart': {},
+            'RA Stability': {},
+            'DEC Stability': {},
+            'RA Angular Error': {},
+            'DEC Angular Error': {},
+            'Temperature': {
+                'general': {'range': (-20, 20),
+                            'label': 'Temperature [°C]'},
+                'sensorWeatherTemp': {'pd': None,
+                                      'name': 'direct',
+                                      'pen': self.M_GREEN},
+                'onlineWeatherTemp': {'pd': None,
+                                      'name': 'direct',
+                                      'pen': self.M_YELLOW}
+            },
+            'Pressure': {
+                'general': {'range': (900, 1100),
+                            'label': 'Pressure [hPa]'},
+                'sensorWeatherPress': {'pd': None,
+                                       'name': 'direct',
+                                       'pen': self.M_GREEN},
+                'onlineWeatherPress': {'pd': None,
+                                       'name': 'direct',
+                                       'pen': self.M_YELLOW}
+            },
+            'Humidity': {},
+            'Sky Quality': {},
+            'Voltage': {},
+            'Current': {},
+        }
 
     def initConfig(self):
         """
@@ -69,10 +106,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
             y = 0
         if x != 0 and y != 0:
             self.move(x, y)
-        self.ui.measureSet1.setCurrentIndex(config.get('measureSet1', 0))
-        self.ui.measureSet2.setCurrentIndex(config.get('measureSet2', 0))
-        self.ui.measureSet3.setCurrentIndex(config.get('measureSet3', 0))
-        self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
+        self.setupButtons()
+        self.ui.set1.setCurrentIndex(config.get('set1', 0))
+        self.ui.set2.setCurrentIndex(config.get('set2', 0))
+        self.ui.set3.setCurrentIndex(config.get('set3', 0))
         self.drawMeasure()
         return True
 
@@ -87,10 +124,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        config['measureSet1'] = self.ui.measureSet1.currentIndex()
-        config['measureSet2'] = self.ui.measureSet2.currentIndex()
-        config['measureSet3'] = self.ui.measureSet3.currentIndex()
-        config['timeSet'] = self.ui.timeSet.currentIndex()
+        config['set1'] = self.ui.set1.currentIndex()
+        config['set2'] = self.ui.set2.currentIndex()
+        config['set3'] = self.ui.set3.currentIndex()
         return True
 
     def showWindow(self):
@@ -98,12 +134,11 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.show()
-        self.ui.timeSet.currentIndexChanged.connect(self.cycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.connect(self.cycleRefresh)
-        self.ui.measureSet2.currentIndexChanged.connect(self.cycleRefresh)
-        self.ui.measureSet3.currentIndexChanged.connect(self.cycleRefresh)
+        self.ui.set1.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.set2.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.set3.currentIndexChanged.connect(self.drawMeasure)
         self.app.colorChange.connect(self.colorChange)
-        self.app.update1s.connect(self.cycleRefresh)
+        self.app.update1s.connect(self.drawMeasure)
         return True
 
     def closeEvent(self, closeEvent):
@@ -111,12 +146,11 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.app.update1s.disconnect(self.cycleRefresh)
+        self.app.update1s.disconnect(self.drawMeasure)
         self.storeConfig()
-        self.ui.timeSet.currentIndexChanged.disconnect(self.cycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.disconnect(self.cycleRefresh)
-        self.ui.measureSet2.currentIndexChanged.disconnect(self.cycleRefresh)
-        self.ui.measureSet3.currentIndexChanged.disconnect(self.cycleRefresh)
+        self.ui.set1.currentIndexChanged.disconnect(self.drawMeasure)
+        self.ui.set2.currentIndexChanged.disconnect(self.drawMeasure)
+        self.ui.set3.currentIndexChanged.disconnect(self.drawMeasure)
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
@@ -129,26 +163,67 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.drawMeasure()
         return True
 
-    def cycleRefresh(self):
+    def setupButtons(self):
         """
-        :return: True for test purpose
+        setupButtons prepares the dynamic content od the buttons in measurement
+        window. it write the bottom texts and number as well as the coloring for
+        the actual setting
+
+        :return: success for test purpose
         """
-        data = self.app.measure.data
-        if len(data['time']) < 1:
-            return False
-        self.plotRa()
+        for mSet in self.mSetUI:
+            mSet.clear()
+            mSet.setView(QListView())
+            for text in self.dataPlots:
+                if text == 'No chart':
+                    mSet.addItem(text)
+                    continue
+                if self.dataPlots[text]:
+                    mSet.addItem(text)
         return True
 
-    def plotRa(self):
+    @staticmethod
+    def setPlotItem(plotItem, general):
         """
-        :return: success
+        :param plotItem:
+        :param general:
+        :return:
+        """
+        yMin, yMax = general.get('range', (None, None))
+        if yMin and yMax:
+            plotItem.setLimits(yMin=yMin, yMax=yMax,
+                               minYRange=(yMax - yMin) / 2,
+                               maxYRange=(yMax - yMin))
+            plotItem.setYRange(yMin, yMax)
+        label = general.get('label', '')
+        plotItem.setLabel('left', label)
+        return True
+
+    def plotY(self, plotItem, x, values):
+        """
+        :param plotItem:
+        :param x:
+        :param values:
+        :return:
         """
         data = self.app.measure.data
-        if len(data['time']) < 1:
-            return False
-        x = data['time'].astype('datetime64[s]').astype('int')
-        y = data['powCurr']
-        self.ui.measure.plotDataItem.setData(x=x, y=y)
+        for value in values:
+            if value == 'general':
+                continue
+
+            pen = values[value].get('pen', self.M_BLUE)
+            name = values[value].get('name', value)
+            pd = values[value]['pd']
+
+            if pd is None:
+                pd = pg.PlotDataItem()
+                plotItem.addItem(pd)
+                newPlot = True
+
+            pd.setData(x=x, y=data[value], pen=pen,
+                       autoDownsample=True, name=name)
+        if newPlot:
+            self.setPlotItem(plotItem, values['general'])
         return True
 
     def drawMeasure(self):
@@ -156,9 +231,22 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return: success
         """
         data = self.app.measure.data
-        if 'time' not in data:
+        if len(data.get('time', [])) < 1:
             return False
 
-        self.plotRa()
+        ui = self.ui.measure
+        plotItems = [ui.p1, ui.p2, ui.p3]
+        uis = [self.ui.set1, self.ui.set2, self.ui.set3]
 
+        x = data['time'].astype('datetime64[s]').astype('int')
+        for i, val in enumerate(zip(uis, plotItems)):
+            ui, plotItem = val
+            title = ui.currentText()
+            self.oldTitle[i] = title
+            if title == 'No chart':
+                plotItem.setVisible(False)
+                plotItem.clear()
+                continue
+            plotItem.setVisible(True)
+            self.plotY(plotItem, x, self.dataPlots[title])
         return True

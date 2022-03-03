@@ -79,8 +79,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             self.p1.getAxis(side).setPen(self.pen)
             self.p1.getAxis(side).setTextPen(self.pen)
             self.p1.getAxis(side).setGrid(32)
-            self.p1.getAxis(side).setPen(self.pen)
-            self.p1.getAxis(side).setTextPen(self.pen)
+            self.barItem.getAxis(side).setPen(self.pen)
+            self.barItem.getAxis(side).setTextPen(self.pen)
 
     def colorChange(self):
         """
@@ -290,7 +290,7 @@ class PlotImageBar(PlotBase):
     """
     """
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, interactive=True, **kwargs)
+        super().__init__(*args, **kwargs)
         self.lx = None
         self.ly = None
         self.p1.getViewBox().setMouseMode(pg.ViewBox().PanMode)
@@ -411,23 +411,41 @@ class PlotMeasure(PlotBase):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.p1.getViewBox().setMouseMode(pg.ViewBox().PanMode)
-        self.plotDataItem = pg.PlotDataItem()
-        self.p1.addItem(self.plotDataItem)
+        self.nextRow()
+        self.p2 = self.addPlot()
+        self.nextRow()
+        self.p3 = self.addPlot()
 
+        self.p1.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         self.p1.showAxes(True, showValues=True)
         self.p1.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
         self.p1.setClipToView(True)
-
-        self.plotDataItem.setDownsampling(auto=True, method='mean')
-        self.plotDataItem.setPen(self.M_BLUE, width=2)
-
+        self.p1.hideButtons()
         for side in ('left', 'top', 'right', 'bottom'):
             self.p1.getAxis(side).setPen(self.pen)
             self.p1.getAxis(side).setTextPen(self.pen)
-            self.p1.getAxis(side).setGrid(128)
+            self.p1.getAxis(side).setGrid(32)
 
-        self.nextRow()
-        p2 = self.addPlot()
-        self.nextRow()
-        p3 = self.addPlot()
+        self.p2.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        self.p2.getViewBox().setMenuEnabled(False)
+        self.p2.getViewBox().setXLink(self.p1.getViewBox())
+        self.p2.showAxes(True, showValues=True)
+        self.p2.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
+        self.p2.setClipToView(True)
+        self.p2.hideButtons()
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.p2.getAxis(side).setGrid(32)
+            self.p2.getAxis(side).setPen(self.pen)
+            self.p2.getAxis(side).setTextPen(self.pen)
+
+        self.p3.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        self.p3.getViewBox().setMenuEnabled(False)
+        self.p3.getViewBox().setXLink(self.p1.getViewBox())
+        self.p3.showAxes(True, showValues=True)
+        self.p3.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
+        self.p3.setClipToView(True)
+        self.p3.hideButtons()
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.p3.getAxis(side).setPen(self.pen)
+            self.p3.getAxis(side).setTextPen(self.pen)
+            self.p3.getAxis(side).setGrid(32)

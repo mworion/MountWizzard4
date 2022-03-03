@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/analyse.ui'
+# Form implementation generated from reading ui file 'analyse.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #

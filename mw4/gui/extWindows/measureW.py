@@ -147,7 +147,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         if len(data['time']) < 1:
             return False
         x = data['time'].astype('datetime64[s]').astype('int')
-        y = data['test']
+        y = data['powCurr']
         self.ui.measure.plotDataItem.setData(x=x, y=y)
         return True
 

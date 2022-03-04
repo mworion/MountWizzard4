@@ -20,6 +20,7 @@ from datetime import datetime as dt
 
 # external packages
 from PyQt5.QtWidgets import QListView
+from PyQt5.QtCore import QMutex
 import numpy as np
 import pyqtgraph as pg
 
@@ -46,46 +47,78 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
-        self.refreshCounter = 1
-        self.measureIndex = 0
-        self.timeIndex = 0
-
+        self.drawLock = QMutex()
+        self.oldTitle = [None, None, None]
         self.mSetUI = [self.ui.set1,
                        self.ui.set2,
                        self.ui.set3]
-
-        self.oldTitle = [None, None, None]
 
         self.dataPlots = {
             'No chart': {},
             'RA Stability': {},
             'DEC Stability': {},
-            'RA Angular Error': {},
-            'DEC Angular Error': {},
+            'RA Angular Error': {
+
+            },
+            'DEC Angular Error': {
+
+            },
             'Temperature': {
-                'general': {'range': (-20, 20),
+                'general': {'range': (-20, 40),
+                            'leg': None,
                             'label': 'Temperature [°C]'},
                 'sensorWeatherTemp': {'pd': None,
-                                      'name': 'direct',
+                                      'name': 'sensor',
                                       'pen': self.M_GREEN},
-                'onlineWeatherTemp': {'pd': None,
+                'directWeatherTemp': {'pd': None,
                                       'name': 'direct',
+                                      'pen': self.M_RED},
+                'onlineWeatherTemp': {'pd': None,
+                                      'name': 'online',
                                       'pen': self.M_YELLOW}
             },
             'Pressure': {
-                'general': {'range': (900, 1100),
+                'general': {'range': (900, 1050),
+                            'leg': None,
                             'label': 'Pressure [hPa]'},
                 'sensorWeatherPress': {'pd': None,
-                                       'name': 'direct',
+                                       'name': 'sensor',
                                        'pen': self.M_GREEN},
-                'onlineWeatherPress': {'pd': None,
+                'directWeatherPress': {'pd': None,
                                        'name': 'direct',
+                                       'pen': self.M_RED},
+                'onlineWeatherPress': {'pd': None,
+                                       'name': 'online',
                                        'pen': self.M_YELLOW}
             },
-            'Humidity': {},
-            'Sky Quality': {},
-            'Voltage': {},
-            'Current': {},
+            'Humidity': {
+                'general': {'range': (0, 100),
+                            'leg': None,
+                            'label': 'Humidity [%]'},
+                'sensorWeatherHum': {'pd': None,
+                                     'name': 'sensor',
+                                     'pen': self.M_GREEN},
+                'directWeatherHum': {'pd': None,
+                                     'name': 'direct',
+                                     'pen': self.M_RED},
+                'onlineWeatherHum': {'pd': None,
+                                     'name': 'online',
+                                     'pen': self.M_YELLOW}
+            },
+            'Sky Quality': {
+                'general': {'range': (0, 22),
+                            'leg': None,
+                            'label': 'Sky Quality [mpas]'},
+                'skySQR': {'pd': None,
+                           'name': 'SQR',
+                           'pen': self.M_GREEN},
+            },
+            'Voltage': {
+
+            },
+            'Current': {
+
+            },
         }
 
     def initConfig(self):
@@ -159,7 +192,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setStyleSheet(self.mw4Style)
-        self.measureMat.parentWidget().setStyleSheet(self.mw4Style)
+        self.ui.measure.colorChange()
         self.drawMeasure()
         return True
 
@@ -182,48 +215,70 @@ class MeasureWindow(toolsQtWidget.MWidget):
                     mSet.addItem(text)
         return True
 
-    @staticmethod
-    def setPlotItem(plotItem, general):
+    def constructPlotItem(self, plotItem, values, x):
         """
         :param plotItem:
-        :param general:
+        :param values:
+        :param x:
         :return:
         """
-        yMin, yMax = general.get('range', (None, None))
+        yMin, yMax = values['general'].get('range', (None, None))
         if yMin and yMax:
             plotItem.setLimits(yMin=yMin, yMax=yMax,
-                               minYRange=(yMax - yMin) / 2,
+                               minYRange=(yMax - yMin) / 4,
                                maxYRange=(yMax - yMin))
-            plotItem.setYRange(yMin, yMax)
-        label = general.get('label', '')
+        label = values['general'].get('label', '-')
         plotItem.setLabel('left', label)
+        legend = pg.LegendItem(pen=self.ui.measure.pen,
+                               offset=(65, 5),
+                               verSpacing=-5,
+                               labelTextColor=self.M_BLUE,
+                               labelTextSize='10pt',
+                               brush=pg.mkBrush(color=self.M_BACK))
+        legend.setParentItem(plotItem)
+        values['general']['leg'] = legend
+        plotItem.setLimits(xMin=x[0])
         return True
 
-    def plotY(self, plotItem, x, values):
+    def plotting(self, plotItem, x, values):
         """
         :param plotItem:
         :param x:
         :param values:
         :return:
         """
+        newPlot = values['general']['label'] != plotItem.getAxis('left').labelText
+        if newPlot:
+            self.constructPlotItem(plotItem, values, x)
+
         data = self.app.measure.data
         for value in values:
             if value == 'general':
                 continue
-
-            pen = values[value].get('pen', self.M_BLUE)
+            pen = pg.mkPen(values[value].get('pen', self.ui.measure.pen), width=2)
             name = values[value].get('name', value)
             pd = values[value]['pd']
-
             if pd is None:
-                pd = pg.PlotDataItem()
-                plotItem.addItem(pd)
-                newPlot = True
+                pd = plotItem.plot()
+                values[value]['pd'] = pd
+                values['general']['leg'].addItem(pd, name)
+            pd.setData(x=x[5:], y=data[value][5:], pen=pen, name=name)
+        return True
 
-            pd.setData(x=x, y=data[value], pen=pen,
-                       autoDownsample=True, name=name)
-        if newPlot:
-            self.setPlotItem(plotItem, values['general'])
+    @staticmethod
+    def resetPlotItem(plotItem, values):
+        """
+        :param plotItem:
+        :param values:
+        :return:
+        """
+        plotItem.clear()
+        for value in values:
+            if value == 'general':
+                values['general']['leg'].clear()
+                values['general']['leg'] = None
+                continue
+            values[value]['pd'] = None
         return True
 
     def drawMeasure(self):
@@ -231,22 +286,29 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return: success
         """
         data = self.app.measure.data
-        if len(data.get('time', [])) < 1:
+        if len(data.get('time', [])) < 5:
+            return False
+        if not self.drawLock.tryLock():
             return False
 
         ui = self.ui.measure
         plotItems = [ui.p1, ui.p2, ui.p3]
         uis = [self.ui.set1, self.ui.set2, self.ui.set3]
-
         x = data['time'].astype('datetime64[s]').astype('int')
-        for i, val in enumerate(zip(uis, plotItems)):
-            ui, plotItem = val
+
+        for i, v in enumerate(zip(uis, plotItems)):
+            ui, plotItem = v
             title = ui.currentText()
+            if title != self.oldTitle[i] and self.oldTitle[i] is not None:
+                self.resetPlotItem(
+                    plotItem, self.dataPlots[self.oldTitle[i]])
+
             self.oldTitle[i] = title
-            if title == 'No chart':
-                plotItem.setVisible(False)
-                plotItem.clear()
+            isVisible = title != 'No chart'
+            plotItem.setVisible(isVisible)
+            if not isVisible:
                 continue
-            plotItem.setVisible(True)
-            self.plotY(plotItem, x, self.dataPlots[title])
+
+            self.plotting(plotItem, x, self.dataPlots[title])
+        self.drawLock.unlock()
         return True

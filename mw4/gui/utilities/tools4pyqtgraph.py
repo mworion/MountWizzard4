@@ -412,15 +412,18 @@ class PlotMeasure(PlotBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.nextRow()
-        self.p2 = self.addPlot()
+        self.p2 = self.addPlot(viewBox=CustomViewBox())
+        self.p2.setVisible(False)
         self.nextRow()
-        self.p3 = self.addPlot()
+        self.p3 = self.addPlot(viewBox=CustomViewBox())
+        self.p3.setVisible(False)
 
         self.p1.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         self.p1.showAxes(True, showValues=True)
         self.p1.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
         self.p1.setClipToView(True)
         self.p1.hideButtons()
+        self.p1.getAxis('left').setWidth(60)
         for side in ('left', 'top', 'right', 'bottom'):
             self.p1.getAxis(side).setPen(self.pen)
             self.p1.getAxis(side).setTextPen(self.pen)
@@ -433,6 +436,7 @@ class PlotMeasure(PlotBase):
         self.p2.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
         self.p2.setClipToView(True)
         self.p2.hideButtons()
+        self.p2.getAxis('left').setWidth(60)
         for side in ('left', 'top', 'right', 'bottom'):
             self.p2.getAxis(side).setGrid(32)
             self.p2.getAxis(side).setPen(self.pen)
@@ -445,7 +449,20 @@ class PlotMeasure(PlotBase):
         self.p3.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
         self.p3.setClipToView(True)
         self.p3.hideButtons()
+        self.p3.getAxis('left').setWidth(60)
         for side in ('left', 'top', 'right', 'bottom'):
             self.p3.getAxis(side).setPen(self.pen)
             self.p3.getAxis(side).setTextPen(self.pen)
             self.p3.getAxis(side).setGrid(32)
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        super().colorChange()
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.p2.getAxis(side).setPen(self.pen)
+            self.p2.getAxis(side).setTextPen(self.pen)
+            self.p3.getAxis(side).setPen(self.pen)
+            self.p3.getAxis(side).setTextPen(self.pen)
+        return True

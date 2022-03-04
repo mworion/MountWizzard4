@@ -57,8 +57,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.dataPlots = {
             'No chart': {},
             'Axis Control Stability': {
-                'general': {'leg': None,
-                            'label': 'Delta angle [arcsec]'},
+                'gen': {'leg': None,
+                        'label': 'Delta angle [arcsec]'},
                 'deltaRaJNow': {'pd': None,
                                 'name': 'RA',
                                 'pen': self.M_GREEN},
@@ -67,8 +67,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                  'pen': self.M_RED},
             },
             'Angular Tracking Mismatch': {
-                'general': {'leg': None,
-                            'label': 'Angle error [arcsec]'},
+                'gen': {'leg': None,
+                        'label': 'Angle error [arcsec]'},
                 'errorAngularPosRA': {'pd': None,
                                       'name': 'RA counter',
                                       'pen': self.M_GREEN},
@@ -77,9 +77,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                        'pen': self.M_RED},
             },
             'Temperature': {
-                'general': {'range': (-20, 40),
-                            'leg': None,
-                            'label': 'Temperature [°C]'},
+                'gen': {'range': (-20, 40),
+                        'leg': None,
+                        'label': 'Temperature [°C]'},
                 'sensorWeatherTemp': {'pd': None,
                                       'name': 'Sensor',
                                       'pen': self.M_GREEN},
@@ -97,17 +97,17 @@ class MeasureWindow(toolsQtWidget.MWidget):
                             'pen': self.M_PINK},
             },
             'Camera Temperature': {
-                'general': {'range': (-20, 20),
-                            'leg': None,
-                            'label': 'Camera Temperature [°C]'},
+                'gen': {'range': (-20, 20),
+                        'leg': None,
+                        'label': 'Camera Temperature [°C]'},
                 'cameraTemp': {'pd': None,
                                'name': 'Camera',
                                'pen': self.M_PINK},
             },
             'Dew Temperature': {
-                'general': {'range': (-20, 40),
-                            'leg': None,
-                            'label': 'Dew Temperature [°C]'},
+                'gen': {'range': (-20, 40),
+                        'leg': None,
+                        'label': 'Dew Temperature [°C]'},
                 'sensorWeatherDew': {'pd': None,
                                      'name': 'Sensor',
                                      'pen': self.M_GREEN},
@@ -122,9 +122,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            'pen': self.M_PINK},
             },
             'Pressure': {
-                'general': {'range': (900, 1050),
-                            'leg': None,
-                            'label': 'Pressure [hPa]'},
+                'gen': {'range': (900, 1050),
+                        'leg': None,
+                        'label': 'Pressure [hPa]'},
                 'sensorWeatherPress': {'pd': None,
                                        'name': 'Sensor',
                                        'pen': self.M_GREEN},
@@ -136,9 +136,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                        'pen': self.M_YELLOW},
             },
             'Humidity': {
-                'general': {'range': (0, 100),
-                            'leg': None,
-                            'label': 'Humidity [%]'},
+                'gen': {'range': (0, 100),
+                        'leg': None,
+                        'label': 'Humidity [%]'},
                 'sensorWeatherHum': {'pd': None,
                                      'name': 'Sensor',
                                      'pen': self.M_GREEN},
@@ -153,25 +153,25 @@ class MeasureWindow(toolsQtWidget.MWidget):
                              'pen': self.M_PINK},
             },
             'Sky Quality': {
-                'general': {'range': (0, 22),
-                            'leg': None,
-                            'label': 'Sky Quality [mpas]'},
+                'gen': {'range': (0, 22),
+                        'leg': None,
+                        'label': 'Sky Quality [mpas]'},
                 'skySQR': {'pd': None,
                            'name': 'SQR',
                            'pen': self.M_BLUE},
             },
             'Voltage': {
-                'general': {'range': (8, 14),
-                            'leg': None,
-                            'label': 'Supply Voltage [V]'},
+                'gen': {'range': (8, 14),
+                        'leg': None,
+                        'label': 'Supply Voltage [V]'},
                 'powVolt': {'pd': None,
                             'name': 'Main Sensor',
                             'pen': self.M_YELLOW},
             },
             'Current': {
-                'general': {'range': (0, 5),
-                            'leg': None,
-                            'label': 'Current [A]'},
+                'gen': {'range': (0, 5),
+                        'leg': None,
+                        'label': 'Current [A]'},
                 'powCurr': {'pd': None,
                             'name': 'Sum',
                             'pen': self.M_BLUE},
@@ -188,12 +188,19 @@ class MeasureWindow(toolsQtWidget.MWidget):
                              'name': 'Sum',
                              'pen': self.M_YELLOW},
             },
-            'Time Diff Comp - Mount': {
-                'general': {'leg': None,
-                            'label': 'Time Difference [ms]'},
+            'Time Diff Comp-Mount': {
+                'gen': {'leg': None,
+                        'label': 'Time Difference [ms]'},
                 'timeDiff': {'pd': None,
                              'name': 'MountControl',
                              'pen': self.M_YELLOW},
+            },
+            'Focus Position': {
+                'gen': {'leg': None,
+                        'label': 'Focus Position [units]'},
+                'focusPosition': {'pd': None,
+                                  'name': 'MountControl',
+                                  'pen': self.M_YELLOW},
             },
         }
 
@@ -294,12 +301,12 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :param x:
         :return:
         """
-        yMin, yMax = values['general'].get('range', (None, None))
+        yMin, yMax = values['gen'].get('range', (None, None))
         if yMin and yMax:
             plotItem.setLimits(yMin=yMin, yMax=yMax,
                                minYRange=(yMax - yMin) / 4,
                                maxYRange=(yMax - yMin))
-        label = values['general'].get('label', '-')
+        label = values['gen'].get('label', '-')
         plotItem.setLabel('left', label)
         legend = pg.LegendItem(pen=self.ui.measure.pen,
                                offset=(65, 5),
@@ -308,7 +315,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                labelTextSize='10pt',
                                brush=pg.mkBrush(color=self.M_BACK))
         legend.setParentItem(plotItem)
-        values['general']['leg'] = legend
+        values['gen']['leg'] = legend
         plotItem.setLimits(xMin=x[0])
         return True
 
@@ -319,13 +326,14 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :param values:
         :return:
         """
-        newPlot = values['general']['label'] != plotItem.getAxis('left').labelText
+        newPlot = values['gen']['label'] != plotItem.getAxis('left').labelText
+        newPlot = newPlot or values['gen']['leg'] is None
         if newPlot:
             self.constructPlotItem(plotItem, values, x)
 
         data = self.app.measure.data
         for value in values:
-            if value == 'general':
+            if value == 'gen':
                 continue
             pen = pg.mkPen(values[value].get('pen', self.ui.measure.pen), width=2)
             name = values[value].get('name', value)
@@ -333,7 +341,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
             if pd is None:
                 pd = plotItem.plot()
                 values[value]['pd'] = pd
-                values['general']['leg'].addItem(pd, name)
+                if values['gen']['leg'] is not None:
+                    values['gen']['leg'].addItem(pd, name)
             pd.setData(x=x[5:], y=data[value][5:], pen=pen, name=name)
         return True
 
@@ -345,11 +354,10 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return:
         """
         plotItem.clear()
-        plotItem.setLabel('left', '-')
         for value in values:
-            if value == 'general':
-                values['general']['leg'].clear()
-                values['general']['leg'] = None
+            if value == 'gen':
+                values['gen']['leg'].clear()
+                values['gen']['leg'] = None
                 continue
             values[value]['pd'] = None
         return True

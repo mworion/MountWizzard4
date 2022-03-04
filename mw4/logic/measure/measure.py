@@ -35,7 +35,7 @@ class MeasureData:
     log = logging.getLogger(__name__)
 
     # maximum size of measurement task
-    MAXSIZE = 24 * 60 * 60
+    MAXSIZE = 48 * 60 * 60
 
     def __init__(self, app):
         super().__init__()
@@ -223,7 +223,6 @@ class MeasureData:
         """
         getDirectWeather checks if data is already collected and send 0 in case of missing
         data.
-
         :return: values
         """
         temp = self.app.mount.setting.weatherTemperature
@@ -333,6 +332,8 @@ class MeasureData:
         dat['cameraTemp'] = np.append(dat['cameraTemp'], temp)
         delta = self.app.mount.obsSite.timeDiff * 1000
         dat['timeDiff'] = np.append(dat['timeDiff'], delta)
+        if len(dat['timeDiff']) > 60:
+            dat['timeDiff'][0:58].fill(dat['timeDiff'][59])
 
         self.mutexMeasure.unlock()
 

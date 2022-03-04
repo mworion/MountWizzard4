@@ -419,9 +419,15 @@ class PlotMeasure(PlotBase):
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
         self.nextRow()
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
+        self.nextRow()
+        self.p.append(self.addPlot(viewBox=CustomViewBox()))
+        self.p[1].setXLink(self.p[0])
+        self.p[2].setXLink(self.p[0])
+        self.p[3].setXLink(self.p[0])
+        self.p[4].setXLink(self.p[0])
 
         for plotItem in self.p:
-            plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+            plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
             plotItem.showAxes(True, showValues=True)
             plotItem.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
             plotItem.setClipToView(True)
@@ -432,5 +438,3 @@ class PlotMeasure(PlotBase):
                 plotItem.getAxis(side).setTextPen(self.pen)
                 plotItem.getAxis(side).setGrid(32)
             plotItem.setVisible(False)
-
-        self.p[0].setVisible(True)

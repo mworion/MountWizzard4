@@ -106,10 +106,27 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
+        <item row="0" column="4">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Lower chart</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QComboBox" name="set3">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Lower middle chart</string>
           </property>
          </widget>
         </item>
@@ -140,8 +157,8 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="3">
-         <widget class="QComboBox" name="set3">
+        <item row="1" column="4">
+         <widget class="QComboBox" name="set4">
           <property name="minimumSize">
            <size>
             <width>150</width>
@@ -161,9 +178,9 @@
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Lower middle chart</string>
+           <string>Middle chart</string>
           </property>
          </widget>
         </item>

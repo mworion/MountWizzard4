@@ -51,12 +51,13 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.mSetUI = [self.ui.set0,
                        self.ui.set1,
                        self.ui.set2,
-                       self.ui.set3]
+                       self.ui.set3,
+                       self.ui.set4]
         self.oldTitle = [None] * len(self.mSetUI)
 
         self.dataPlots = {
             'No chart': {},
-            'Axis Control Stability': {
+            'Axis Stability': {
                 'gen': {'leg': None,
                         'label': 'Delta angle [arcsec]'},
                 'deltaRaJNow': {'pd': None,
@@ -66,7 +67,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                  'name': 'DEC',
                                  'pen': self.M_RED},
             },
-            'Angular Tracking Mismatch': {
+            'Angular Tracking': {
                 'gen': {'leg': None,
                         'label': 'Angle error [arcsec]'},
                 'errorAngularPosRA': {'pd': None,
@@ -158,7 +159,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                         'label': 'Sky Quality [mpas]'},
                 'skySQR': {'pd': None,
                            'name': 'SQR',
-                           'pen': self.M_BLUE},
+                           'pen': self.M_YELLOW},
             },
             'Voltage': {
                 'gen': {'range': (8, 14),
@@ -174,18 +175,18 @@ class MeasureWindow(toolsQtWidget.MWidget):
                         'label': 'Current [A]'},
                 'powCurr': {'pd': None,
                             'name': 'Sum',
-                            'pen': self.M_BLUE},
+                            'pen': self.M_CYAN1},
                 'powCurr1': {'pd': None,
-                             'name': 'Sum',
+                             'name': 'Current 1',
                              'pen': self.M_GREEN},
                 'powCurr2': {'pd': None,
-                             'name': 'Sum',
+                             'name': 'Current 2',
                              'pen': self.M_PINK},
                 'powCurr3': {'pd': None,
-                             'name': 'Sum',
+                             'name': 'Current 3',
                              'pen': self.M_RED},
                 'powCurr4': {'pd': None,
-                             'name': 'Sum',
+                             'name': 'Current 4',
                              'pen': self.M_YELLOW},
             },
             'Time Diff Comp-Mount': {
@@ -272,6 +273,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """
         self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
+        for ui, plotItem in zip(self.mSetUI, self.ui.measure.p):
+            values = self.dataPlots[ui.currentText()]
+            self.resetPlotItem(plotItem, values)
         self.drawMeasure()
         return True
 
@@ -335,7 +339,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         for value in values:
             if value == 'gen':
                 continue
-            pen = pg.mkPen(values[value].get('pen', self.ui.measure.pen), width=2)
+            pen = pg.mkPen(values[value].get('pen'), width=2)
             name = values[value].get('name', value)
             pd = values[value]['pd']
             if pd is None:
@@ -362,6 +366,14 @@ class MeasureWindow(toolsQtWidget.MWidget):
             values[value]['pd'] = None
         return True
 
+    def triggerUpdate(self):
+        """
+        :return:
+        """
+        self.resize(self.width() - 1, self.height())
+        self.resize(self.width() + 1, self.height())
+        return True
+
     def drawMeasure(self):
         """
         :return: success
@@ -375,6 +387,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         ui = self.ui.measure
         x = data['time'].astype('datetime64[s]').astype('int')
 
+        noChart = all([True for x in self.oldTitle if x in ['No chart', None]])
+
         for i, v in enumerate(zip(self.mSetUI, ui.p)):
             ui, plotItem = v
             title = ui.currentText()
@@ -384,6 +398,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
             self.oldTitle[i] = title
             isVisible = title != 'No chart'
+            if noChart and isVisible:
+                self.triggerUpdate()
             plotItem.setVisible(isVisible)
             if not isVisible:
                 continue

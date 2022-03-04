@@ -48,6 +48,8 @@ class Styles:
             'M_GREEN1': ['#006000', '#004000', '#009000', ],
             'M_PINK': ['#FF00FF', '#C000C0', '#E000E0', ],
             'M_PINK1': ['#B000B0', '#900090', '#900090', ],
+            'M_CYAN': ['#00FFFF', '#00FFFF', '#00FFFF', ],
+            'M_CYAN1': ['#00B0B0', '#00B0B0', '#00B0B0', ],
             'checkmark': ['checkmark0', 'checkmark1', 'checkmark2', ],
             'arrow-up': ['arrow-up0', 'arrow-up1', 'arrow-up2', ],
             'arrow-down': ['arrow-down0', 'arrow-down1', 'arrow-down2', ],
@@ -909,6 +911,14 @@ class Styles:
     @property
     def M_PINK1(self):
         return self.cs['M_PINK1'][self.colorSet]
+
+    @property
+    def M_CYAN(self):
+        return self.cs['M_CYAN'][self.colorSet]
+
+    @property
+    def M_CYAN1(self):
+        return self.cs['M_CYAN1'][self.colorSet]
 
     @property
     def mw4Style(self):

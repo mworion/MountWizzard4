@@ -149,9 +149,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
                 'onlineWeatherHum': {'pd': None,
                                      'name': 'Online',
                                      'pen': self.M_YELLOW},
-                'powerHum': {'pd': None,
-                             'name': 'Power sensor',
-                             'pen': self.M_PINK},
+                'powHum': {'pd': None,
+                           'name': 'Power sensor',
+                           'pen': self.M_PINK},
             },
             'Sky Quality': {
                 'gen': {'range': (0, 22),
@@ -250,7 +250,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """
         self.show()
         for ui in self.mSetUI:
-            ui.currentIndexChanged.connect(self.drawMeasure)
+            ui.currentIndexChanged.connect(self.changeChart)
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.drawMeasure)
         return True
@@ -263,7 +263,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.app.update1s.disconnect(self.drawMeasure)
         self.storeConfig()
         for ui in self.mSetUI:
-            ui.currentIndexChanged.disconnect(self.drawMeasure)
+            ui.currentIndexChanged.disconnect(self.changeChart)
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
@@ -372,6 +372,20 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """
         self.resize(self.width() - 1, self.height())
         self.resize(self.width() + 1, self.height())
+        return True
+
+    def changeChart(self, index):
+        """
+        :param index:
+        :return:
+        """
+        sender = self.sender()
+        for ui in self.mSetUI:
+            if ui == sender:
+                continue
+            if index == ui.currentIndex():
+                sender.setCurrentIndex(0)
+        self.drawMeasure()
         return True
 
     def drawMeasure(self):

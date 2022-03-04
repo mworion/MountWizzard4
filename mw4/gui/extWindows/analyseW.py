@@ -240,11 +240,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.raRawErrors.p1.setLabel('bottom', 'Azimuth [deg]')
-        self.ui.raRawErrors.p1.setLabel('left', 'Altitude [deg]')
+        self.ui.raRawErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
+        self.ui.raRawErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
-        self.ui.raRawErrors.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.raRawErrors.p1.getAxis('top').setTicks([ticks])
+        self.ui.raRawErrors.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.raRawErrors.p[0].getAxis('top').setTicks([ticks])
         self.ui.raRawErrors.plot(
             self.azimuth, self.altitude, z=self.errorRA_S, data=self.errorRA_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
@@ -255,11 +255,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.decRawErrors.p1.setLabel('bottom', 'Azimuth [deg]')
-        self.ui.decRawErrors.p1.setLabel('left', 'Altitude [deg]')
+        self.ui.decRawErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
+        self.ui.decRawErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
-        self.ui.decRawErrors.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.decRawErrors.p1.getAxis('top').setTicks([ticks])
+        self.ui.decRawErrors.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.decRawErrors.p[0].getAxis('top').setTicks([ticks])
         self.ui.decRawErrors.plot(
             self.azimuth, self.altitude, z=self.errorDEC_S, data=self.errorDEC_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
@@ -270,11 +270,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.raErrors.p1.setLabel('bottom', 'Azimuth [deg]')
-        self.ui.raErrors.p1.setLabel('left', 'Altitude [deg]')
+        self.ui.raErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
+        self.ui.raErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
-        self.ui.raErrors.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.raErrors.p1.getAxis('top').setTicks([ticks])
+        self.ui.raErrors.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.raErrors.p[0].getAxis('top').setTicks([ticks])
         self.ui.raErrors.plot(
             self.azimuth, self.altitude, z=self.errorRA, data=self.errorRA,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
@@ -285,11 +285,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.decErrors.p1.setLabel('bottom', 'Azimuth [deg]')
-        self.ui.decErrors.p1.setLabel('left', 'Altitude [deg]')
+        self.ui.decErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
+        self.ui.decErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
-        self.ui.decErrors.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.decErrors.p1.getAxis('top').setTicks([ticks])
+        self.ui.decErrors.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.decErrors.p[0].getAxis('top').setTicks([ticks])
         self.ui.decErrors.plot(
             self.azimuth, self.altitude, z=self.errorDEC, data=self.errorDEC,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
@@ -300,11 +300,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.raRawErrorsRef.p1.setLabel('bottom', 'RA Encoder Abs [deg]')
-        self.ui.raRawErrorsRef.p1.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.raRawErrorsRef.p[0].setLabel('bottom', 'RA Encoder Abs [deg]')
+        self.ui.raRawErrorsRef.p[0].setLabel('left', 'Error per Star [arcsec]')
         ticks = [(x, f'{x}') for x in range(30, 180, 30)]
-        self.ui.raRawErrorsRef.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.raRawErrorsRef.p1.getAxis('top').setTicks([ticks])
+        self.ui.raRawErrorsRef.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.raRawErrorsRef.p[0].getAxis('top').setTicks([ticks])
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
         self.ui.raRawErrorsRef.plot(
             self.angularPosRA, self.errorRA_S, color=color,
@@ -316,11 +316,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.decRawErrorsRef.p1.setLabel('bottom', 'DEC Encoder Abs [deg]')
-        self.ui.decRawErrorsRef.p1.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.decRawErrorsRef.p[0].setLabel('bottom', 'DEC Encoder Abs [deg]')
+        self.ui.decRawErrorsRef.p[0].setLabel('left', 'Error per Star [arcsec]')
         ticks = [(x, f'{x}') for x in range(-80, 90, 20)]
-        self.ui.decRawErrorsRef.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.decRawErrorsRef.p1.getAxis('top').setTicks([ticks])
+        self.ui.decRawErrorsRef.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.decRawErrorsRef.p[0].getAxis('top').setTicks([ticks])
         y = [x if p == 'W' else -x for x, p in zip(self.errorDEC_S, self.pierside)]
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
         self.ui.decRawErrorsRef.plot(
@@ -333,11 +333,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.raErrorsRef.p1.setLabel('bottom', 'RA Encoder Abs [deg]')
-        self.ui.raErrorsRef.p1.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.raErrorsRef.p[0].setLabel('bottom', 'RA Encoder Abs [deg]')
+        self.ui.raErrorsRef.p[0].setLabel('left', 'Error per Star [arcsec]')
         ticks = [(x, f'{x}') for x in range(30, 180, 30)]
-        self.ui.raErrorsRef.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.raErrorsRef.p1.getAxis('top').setTicks([ticks])
+        self.ui.raErrorsRef.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.raErrorsRef.p[0].getAxis('top').setTicks([ticks])
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
         self.ui.raErrorsRef.plot(
             self.angularPosRA, self.errorRA, color=color,
@@ -349,11 +349,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.decErrorsRef.p1.setLabel('bottom', 'DEC Encoder Abs [deg]')
-        self.ui.decErrorsRef.p1.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.decErrorsRef.p[0].setLabel('bottom', 'DEC Encoder Abs [deg]')
+        self.ui.decErrorsRef.p[0].setLabel('left', 'Error per Star [arcsec]')
         ticks = [(x, f'{x}') for x in range(-80, 90, 20)]
-        self.ui.decErrorsRef.p1.getAxis('bottom').setTicks([ticks])
-        self.ui.decErrorsRef.p1.getAxis('top').setTicks([ticks])
+        self.ui.decErrorsRef.p[0].getAxis('bottom').setTicks([ticks])
+        self.ui.decErrorsRef.p[0].getAxis('top').setTicks([ticks])
         y = [x if p == 'W' else -x for x, p in zip(self.errorDEC, self.pierside)]
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
         self.ui.decErrorsRef.plot(
@@ -366,8 +366,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.scaleImage.p1.setLabel('bottom', 'Star Number')
-        self.ui.scaleImage.p1.setLabel('left', 'Image Scale [arcsec/pix]')
+        self.ui.scaleImage.p[0].setLabel('bottom', 'Star Number')
+        self.ui.scaleImage.p[0].setLabel('left', 'Image Scale [arcsec/pix]')
         color = [self.M_GREEN if p == 'W' else self.M_YELLOW for p in self.pierside]
         self.ui.scaleImage.plot(
             self.index, self.scaleS, color=color, data=self.pierside,
@@ -378,8 +378,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
-        self.ui.errorAscending.p1.setLabel('bottom', 'Starcount')
-        self.ui.errorAscending.p1.setLabel('left', 'Error per Star [arcsec]')
+        self.ui.errorAscending.p[0].setLabel('bottom', 'Starcount')
+        self.ui.errorAscending.p[0].setLabel('left', 'Error per Star [arcsec]')
         temp = sorted(zip(self.errorRMS, self.pierside))
         y = [x[0] for x in temp]
         pierside = [x[1] for x in temp]

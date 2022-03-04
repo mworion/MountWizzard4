@@ -109,6 +109,7 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
                       'powTemp',
                       'powDew',
                       'cameraTemp',
+                      'timeDiff',
                       ]
 
         self.csvWriter = csv.DictWriter(self.csvFile, fieldnames=fieldnames)

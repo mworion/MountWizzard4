@@ -60,25 +60,27 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.defRange = {}
         self.scatterItem = None
         self.imageItem = None
+        self.p = []
 
         self.setBackground(self.M_BACK)
-        self.p1 = self.addPlot(viewBox=CustomViewBox())
-        self.p1.getViewBox().setMouseMode(pg.ViewBox().RectMode)
-        self.p1.getViewBox().rbScaleBox.setPen(self.pen)
-        self.p1.getViewBox().rbScaleBox.setBrush(self.brushGrid)
+        self.p.append(self.addPlot(viewBox=CustomViewBox()))
+        self.p[0].getViewBox().setMouseMode(pg.ViewBox().RectMode)
+        self.p[0].getViewBox().rbScaleBox.setPen(self.pen)
+        self.p[0].getViewBox().rbScaleBox.setBrush(self.brushGrid)
 
         interactive = kwargs.get('interactive', False)
         self.barItem = pg.ColorBarItem(width=15, interactive=interactive)
         self.barItem.setVisible(False)
 
-        self.p1.layout.addItem(self.barItem, 2, 5)
-        self.p1.layout.setColumnFixedWidth(4, 5)
-        self.p1.getViewBox().setMenuEnabled(False)
-        self.p1.hideButtons()
+        self.p[0].layout.addItem(self.barItem, 2, 5)
+        self.p[0].layout.setColumnFixedWidth(4, 5)
+        self.p[0].getViewBox().setMenuEnabled(False)
+        self.p[0].hideButtons()
         for side in ('left', 'top', 'right', 'bottom'):
-            self.p1.getAxis(side).setPen(self.pen)
-            self.p1.getAxis(side).setTextPen(self.pen)
-            self.p1.getAxis(side).setGrid(32)
+            for plotItem in self.p:
+                plotItem.getAxis(side).setPen(self.pen)
+                plotItem.getAxis(side).setTextPen(self.pen)
+                plotItem.getAxis(side).setGrid(32)
             self.barItem.getAxis(side).setPen(self.pen)
             self.barItem.getAxis(side).setTextPen(self.pen)
 
@@ -90,8 +92,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.penGrid = pg.mkPen(color=self.M_GREY)
         self.setBackground(self.M_BACK)
         for side in ('left', 'top', 'right', 'bottom'):
-            self.p1.getAxis(side).setPen(self.pen)
-            self.p1.getAxis(side).setTextPen(self.pen)
+            for plotItem in self.p:
+                plotItem.getAxis(side).setPen(self.pen)
+                plotItem.getAxis(side).setTextPen(self.pen)
             self.barItem.getAxis(side).setPen(self.pen)
             self.barItem.getAxis(side).setTextPen(self.pen)
         return True
@@ -102,10 +105,10 @@ class NormalScatter(PlotBase):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.p1.showAxes(True, showValues=True)
+        self.p[0].showAxes(True, showValues=True)
         self.colorInx = None
         self.col = None
-        self.p1.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        self.p[0].getViewBox().setMouseMode(pg.ViewBox().PanMode)
 
     def plot(self, x, y, **kwargs):
         """
@@ -114,10 +117,10 @@ class NormalScatter(PlotBase):
         :param kwargs:
         :return:
         """
-        self.p1.clear()
+        self.p[0].clear()
         self.scatterItem = pg.ScatterPlotItem(hoverable=True,
                                               hoverSize=10, hoverPen=self.pen)
-        self.p1.addItem(self.scatterItem)
+        self.p[0].addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
         xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
         yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
@@ -125,14 +128,14 @@ class NormalScatter(PlotBase):
         yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
 
         if kwargs.get('limits', True):
-            self.p1.setLimits(xMin=xMin, xMax=xMax,
-                              yMin=yMin, yMax=yMax,
-                              minXRange=(xMax - xMin) / 2,
-                              maxXRange=(xMax - xMin),
-                              minYRange=(yMax - yMin) / 2,
-                              maxYRange=(yMax - yMin))
-        self.p1.setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
-        self.p1.autoRange()
+            self.p[0].setLimits(xMin=xMin, xMax=xMax,
+                                yMin=yMin, yMax=yMax,
+                                minXRange=(xMax - xMin) / 2,
+                                maxXRange=(xMax - xMin),
+                                minYRange=(yMax - yMin) / 2,
+                                maxYRange=(yMax - yMin))
+        self.p[0].setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
+        self.p[0].autoRange()
 
         dataVal = kwargs.get('data', y)
         self.col = kwargs.get('color', self.M_BLUE)
@@ -178,9 +181,9 @@ class PolarScatter(NormalScatter):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.p1.showAxes(False, showValues=False)
-        self.p1.setAspectLocked(True)
-        self.p1.getViewBox().setMouseMode(pg.ViewBox().RectMode)
+        self.p[0].showAxes(False, showValues=False)
+        self.p[0].setAspectLocked(True)
+        self.p[0].getViewBox().setMouseMode(pg.ViewBox().RectMode)
 
     def setGrid(self, y, **kwargs):
         """
@@ -194,21 +197,21 @@ class PolarScatter(NormalScatter):
             gridLines = range(10, maxR, stepLines)
             circle = pg.QtGui.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2, maxR * 2)
             circle.setPen(self.pen)
-            self.p1.addItem(circle)
+            self.p[0].addItem(circle)
         else:
             maxR = int(np.max(y))
             stepLines = 5
             gridLines = np.arange(0, maxR, stepLines)
 
-        self.p1.addLine(x=0, pen=self.penGrid)
-        self.p1.addLine(y=0, pen=self.penGrid)
+        self.p[0].addLine(x=0, pen=self.penGrid)
+        self.p[0].addLine(y=0, pen=self.penGrid)
 
         font = QFont(self.window().font().family(),
                      int(self.window().font().pointSize() * 1.1))
         for r in gridLines:
             circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
-            self.p1.addItem(circle)
+            self.p[0].addItem(circle)
             if kwargs.get('reverse', False):
                 text = f'{90 - r}'
             else:
@@ -216,7 +219,7 @@ class PolarScatter(NormalScatter):
             textItem = pg.TextItem(text=text, color=self.M_GREY, anchor=(0.5, 0.5))
             textItem.setFont(font)
             textItem.setPos(r * 0.7, r * 0.7)
-            self.p1.addItem(textItem)
+            self.p[0].addItem(textItem)
 
         for text, x, y in zip(
                 ['N', 'E', 'S', 'W', 'NE', 'SE', 'SW', 'NW'],
@@ -226,7 +229,7 @@ class PolarScatter(NormalScatter):
             textItem.setHtml(f'<b>{text}</b>')
             textItem.setFont(font)
             textItem.setPos(x, y)
-            self.p1.addItem(textItem)
+            self.p[0].addItem(textItem)
         return True
 
     def plot(self, x, y, **kwargs):
@@ -263,10 +266,9 @@ class PolarScatter(NormalScatter):
                            tailWidth=1,
                            tailLen=12,
                            pen=pg.mkPen(color=colorVal),
-                           brush=pg.mkBrush(color=colorVal),
-                           )
+                           brush=pg.mkBrush(color=colorVal),)
             arrow.setPos(posX[i], posY[i])
-            self.p1.addItem(arrow)
+            self.p[0].addItem(arrow)
         return True
 
     def plotLoc(self, lat):
@@ -278,11 +280,11 @@ class PolarScatter(NormalScatter):
         circle.setPen(pg.mkPen(color=self.M_BLUE))
         circle.setBrush(pg.mkBrush(color=self.M_BLUE))
         circle.setPos(0, lat)
-        self.p1.addItem(circle)
+        self.p[0].addItem(circle)
         circle = pg.QtGui.QGraphicsEllipseItem(-10, -10, 20, 20)
         circle.setPen(pg.mkPen(color=self.M_BLUE, width=2))
         circle.setPos(0, lat)
-        self.p1.addItem(circle)
+        self.p[0].addItem(circle)
         return True
 
 
@@ -293,23 +295,23 @@ class PlotImageBar(PlotBase):
         super().__init__(*args, **kwargs)
         self.lx = None
         self.ly = None
-        self.p1.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        self.p[0].getViewBox().setMouseMode(pg.ViewBox().PanMode)
 
         for side in ('left', 'top', 'right', 'bottom'):
-            self.p1.getAxis(side).setGrid(0)
+            self.p[0].getAxis(side).setGrid(0)
         self.defRange = {}
 
     def constructPlot(self):
         """
         :return:
         """
-        self.p1.clear()
+        self.p[0].clear()
         self.imageItem = pg.ImageItem()
-        self.p1.addItem(self.imageItem)
+        self.p[0].addItem(self.imageItem)
         self.barItem.setVisible(True)
-        self.barItem.setImageItem(self.imageItem, insert_in=self.p1)
-        self.lx = self.p1.addLine(x=0, pen=self.pen)
-        self.ly = self.p1.addLine(y=0, pen=self.pen)
+        self.barItem.setImageItem(self.imageItem, insert_in=self.p[0])
+        self.lx = self.p[0].addLine(x=0, pen=self.pen)
+        self.ly = self.p[0].addLine(y=0, pen=self.pen)
         self.lx.setVisible(False)
         self.ly.setVisible(False)
 
@@ -339,10 +341,10 @@ class PlotImageBar(PlotBase):
         yMax = self.defRange['yMax'] = self.defRange.get('yMax', y)
 
         if kwargs.get('limits', True):
-            self.p1.setLimits(xMin=xMin, xMax=xMax,
+            self.p[0].setLimits(xMin=xMin, xMax=xMax,
                                     yMin=yMin, yMax=yMax)
-        self.p1.setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
-        self.p1.autoRange()
+        self.p[0].setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
+        self.p[0].autoRange()
 
         minB = np.min(imageDisp)
         maxB = 2 * np.mean(imageDisp)
@@ -372,7 +374,7 @@ class PlotImageBar(PlotBase):
         ellipse = pg.QtGui.QGraphicsEllipseItem(x - w, y - h,
                                                 2 * w, 2 * h)
         ellipse.setPen(self.pen)
-        self.p1.addItem(ellipse)
+        self.p[0].addItem(ellipse)
         return True
 
     def addValueAnnotation(self, x, y, value):
@@ -388,7 +390,7 @@ class PlotImageBar(PlotBase):
         text = pg.TextItem(text=f'{value:2.2f}',
                            color=self.M_BLUE)
         text.setPos(posX, posY)
-        self.p1.addItem(text)
+        self.p[0].addItem(text)
         return True
 
 
@@ -412,57 +414,23 @@ class PlotMeasure(PlotBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.nextRow()
-        self.p2 = self.addPlot(viewBox=CustomViewBox())
-        self.p2.setVisible(False)
+        self.p.append(self.addPlot(viewBox=CustomViewBox()))
         self.nextRow()
-        self.p3 = self.addPlot(viewBox=CustomViewBox())
-        self.p3.setVisible(False)
+        self.p.append(self.addPlot(viewBox=CustomViewBox()))
+        self.nextRow()
+        self.p.append(self.addPlot(viewBox=CustomViewBox()))
 
-        self.p1.getViewBox().setMouseMode(pg.ViewBox().PanMode)
-        self.p1.showAxes(True, showValues=True)
-        self.p1.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
-        self.p1.setClipToView(True)
-        self.p1.hideButtons()
-        self.p1.getAxis('left').setWidth(60)
-        for side in ('left', 'top', 'right', 'bottom'):
-            self.p1.getAxis(side).setPen(self.pen)
-            self.p1.getAxis(side).setTextPen(self.pen)
-            self.p1.getAxis(side).setGrid(32)
+        for plotItem in self.p:
+            plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+            plotItem.showAxes(True, showValues=True)
+            plotItem.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
+            plotItem.setClipToView(True)
+            plotItem.hideButtons()
+            plotItem.getAxis('left').setWidth(60)
+            for side in ('left', 'top', 'right', 'bottom'):
+                plotItem.getAxis(side).setPen(self.pen)
+                plotItem.getAxis(side).setTextPen(self.pen)
+                plotItem.getAxis(side).setGrid(32)
+            plotItem.setVisible(False)
 
-        self.p2.getViewBox().setMouseMode(pg.ViewBox().PanMode)
-        self.p2.getViewBox().setMenuEnabled(False)
-        self.p2.getViewBox().setXLink(self.p1.getViewBox())
-        self.p2.showAxes(True, showValues=True)
-        self.p2.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
-        self.p2.setClipToView(True)
-        self.p2.hideButtons()
-        self.p2.getAxis('left').setWidth(60)
-        for side in ('left', 'top', 'right', 'bottom'):
-            self.p2.getAxis(side).setGrid(32)
-            self.p2.getAxis(side).setPen(self.pen)
-            self.p2.getAxis(side).setTextPen(self.pen)
-
-        self.p3.getViewBox().setMouseMode(pg.ViewBox().PanMode)
-        self.p3.getViewBox().setMenuEnabled(False)
-        self.p3.getViewBox().setXLink(self.p1.getViewBox())
-        self.p3.showAxes(True, showValues=True)
-        self.p3.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
-        self.p3.setClipToView(True)
-        self.p3.hideButtons()
-        self.p3.getAxis('left').setWidth(60)
-        for side in ('left', 'top', 'right', 'bottom'):
-            self.p3.getAxis(side).setPen(self.pen)
-            self.p3.getAxis(side).setTextPen(self.pen)
-            self.p3.getAxis(side).setGrid(32)
-
-    def colorChange(self):
-        """
-        :return:
-        """
-        super().colorChange()
-        for side in ('left', 'top', 'right', 'bottom'):
-            self.p2.getAxis(side).setPen(self.pen)
-            self.p2.getAxis(side).setTextPen(self.pen)
-            self.p3.getAxis(side).setPen(self.pen)
-            self.p3.getAxis(side).setTextPen(self.pen)
-        return True
+        self.p[0].setVisible(True)

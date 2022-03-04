@@ -132,6 +132,7 @@ class MeasureData:
         self.data['powTemp'] = np.empty(shape=[0, 1])
         self.data['powDew'] = np.empty(shape=[0, 1])
         self.data['cameraTemp'] = np.empty(shape=[0, 1])
+        self.data['timeDiff'] = np.empty(shape=[0, 1])
 
         return True
 
@@ -330,6 +331,8 @@ class MeasureData:
         ccd = self.app.camera
         temp = ccd.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         dat['cameraTemp'] = np.append(dat['cameraTemp'], temp)
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        dat['timeDiff'] = np.append(dat['timeDiff'], delta)
 
         self.mutexMeasure.unlock()
 

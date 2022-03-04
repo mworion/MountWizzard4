@@ -48,62 +48,109 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.drawLock = QMutex()
-        self.oldTitle = [None, None, None]
-        self.mSetUI = [self.ui.set1,
+        self.mSetUI = [self.ui.set0,
+                       self.ui.set1,
                        self.ui.set2,
                        self.ui.set3]
+        self.oldTitle = [None] * len(self.mSetUI)
 
         self.dataPlots = {
             'No chart': {},
-            'RA Stability': {},
-            'DEC Stability': {},
-            'RA Angular Error': {
-
+            'Axis Control Stability': {
+                'general': {'leg': None,
+                            'label': 'Delta angle [arcsec]'},
+                'deltaRaJNow': {'pd': None,
+                                'name': 'RA',
+                                'pen': self.M_GREEN},
+                'deltaDecJNow': {'pd': None,
+                                 'name': 'DEC',
+                                 'pen': self.M_RED},
             },
-            'DEC Angular Error': {
-
+            'Angular Tracking Mismatch': {
+                'general': {'leg': None,
+                            'label': 'Angle error [arcsec]'},
+                'errorAngularPosRA': {'pd': None,
+                                      'name': 'RA counter',
+                                      'pen': self.M_GREEN},
+                'errorAngularPosDEC': {'pd': None,
+                                       'name': 'DEC counter',
+                                       'pen': self.M_RED},
             },
             'Temperature': {
                 'general': {'range': (-20, 40),
                             'leg': None,
                             'label': 'Temperature [°C]'},
                 'sensorWeatherTemp': {'pd': None,
-                                      'name': 'sensor',
+                                      'name': 'Sensor',
                                       'pen': self.M_GREEN},
                 'directWeatherTemp': {'pd': None,
-                                      'name': 'direct',
+                                      'name': 'Direct',
                                       'pen': self.M_RED},
                 'onlineWeatherTemp': {'pd': None,
-                                      'name': 'online',
-                                      'pen': self.M_YELLOW}
+                                      'name': 'Online',
+                                      'pen': self.M_YELLOW},
+                'skyTemp': {'pd': None,
+                            'name': 'SQR sensor',
+                            'pen': self.M_BLUE},
+                'powTemp': {'pd': None,
+                            'name': 'Power sensor',
+                            'pen': self.M_PINK},
+            },
+            'Camera Temperature': {
+                'general': {'range': (-20, 20),
+                            'leg': None,
+                            'label': 'Camera Temperature [°C]'},
+                'cameraTemp': {'pd': None,
+                               'name': 'Camera',
+                               'pen': self.M_PINK},
+            },
+            'Dew Temperature': {
+                'general': {'range': (-20, 40),
+                            'leg': None,
+                            'label': 'Dew Temperature [°C]'},
+                'sensorWeatherDew': {'pd': None,
+                                     'name': 'Sensor',
+                                     'pen': self.M_GREEN},
+                'directWeatherDew': {'pd': None,
+                                     'name': 'Direct',
+                                     'pen': self.M_RED},
+                'onlineWeatherDew': {'pd': None,
+                                     'name': 'Online',
+                                     'pen': self.M_YELLOW},
+                'powDew': {'pd': None,
+                           'name': 'Power sensor',
+                           'pen': self.M_PINK},
             },
             'Pressure': {
                 'general': {'range': (900, 1050),
                             'leg': None,
                             'label': 'Pressure [hPa]'},
                 'sensorWeatherPress': {'pd': None,
-                                       'name': 'sensor',
+                                       'name': 'Sensor',
                                        'pen': self.M_GREEN},
                 'directWeatherPress': {'pd': None,
-                                       'name': 'direct',
+                                       'name': 'Direct',
                                        'pen': self.M_RED},
                 'onlineWeatherPress': {'pd': None,
-                                       'name': 'online',
-                                       'pen': self.M_YELLOW}
+                                       'name': 'Online',
+                                       'pen': self.M_YELLOW},
             },
             'Humidity': {
                 'general': {'range': (0, 100),
                             'leg': None,
                             'label': 'Humidity [%]'},
                 'sensorWeatherHum': {'pd': None,
-                                     'name': 'sensor',
+                                     'name': 'Sensor',
                                      'pen': self.M_GREEN},
                 'directWeatherHum': {'pd': None,
-                                     'name': 'direct',
+                                     'name': 'Direct',
                                      'pen': self.M_RED},
                 'onlineWeatherHum': {'pd': None,
-                                     'name': 'online',
-                                     'pen': self.M_YELLOW}
+                                     'name': 'Online',
+                                     'pen': self.M_YELLOW},
+                'powerHum': {'pd': None,
+                             'name': 'Power sensor',
+                             'pen': self.M_PINK},
             },
             'Sky Quality': {
                 'general': {'range': (0, 22),
@@ -111,13 +158,42 @@ class MeasureWindow(toolsQtWidget.MWidget):
                             'label': 'Sky Quality [mpas]'},
                 'skySQR': {'pd': None,
                            'name': 'SQR',
-                           'pen': self.M_GREEN},
+                           'pen': self.M_BLUE},
             },
             'Voltage': {
-
+                'general': {'range': (8, 14),
+                            'leg': None,
+                            'label': 'Supply Voltage [V]'},
+                'powVolt': {'pd': None,
+                            'name': 'Main Sensor',
+                            'pen': self.M_YELLOW},
             },
             'Current': {
-
+                'general': {'range': (0, 5),
+                            'leg': None,
+                            'label': 'Current [A]'},
+                'powCurr': {'pd': None,
+                            'name': 'Sum',
+                            'pen': self.M_BLUE},
+                'powCurr1': {'pd': None,
+                             'name': 'Sum',
+                             'pen': self.M_GREEN},
+                'powCurr2': {'pd': None,
+                             'name': 'Sum',
+                             'pen': self.M_PINK},
+                'powCurr3': {'pd': None,
+                             'name': 'Sum',
+                             'pen': self.M_RED},
+                'powCurr4': {'pd': None,
+                             'name': 'Sum',
+                             'pen': self.M_YELLOW},
+            },
+            'Time Diff Comp - Mount': {
+                'general': {'leg': None,
+                            'label': 'Time Difference [ms]'},
+                'timeDiff': {'pd': None,
+                             'name': 'MountControl',
+                             'pen': self.M_YELLOW},
             },
         }
 
@@ -140,9 +216,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         if x != 0 and y != 0:
             self.move(x, y)
         self.setupButtons()
-        self.ui.set1.setCurrentIndex(config.get('set1', 0))
-        self.ui.set2.setCurrentIndex(config.get('set2', 0))
-        self.ui.set3.setCurrentIndex(config.get('set3', 0))
+        for i, ui in enumerate(self.mSetUI):
+            ui.setCurrentIndex(config.get(f'set{i}', 0))
         self.drawMeasure()
         return True
 
@@ -157,9 +232,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        config['set1'] = self.ui.set1.currentIndex()
-        config['set2'] = self.ui.set2.currentIndex()
-        config['set3'] = self.ui.set3.currentIndex()
+        for i, ui in enumerate(self.mSetUI):
+            config[f'set{i}'] = ui.currentIndex()
         return True
 
     def showWindow(self):
@@ -167,9 +241,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.show()
-        self.ui.set1.currentIndexChanged.connect(self.drawMeasure)
-        self.ui.set2.currentIndexChanged.connect(self.drawMeasure)
-        self.ui.set3.currentIndexChanged.connect(self.drawMeasure)
+        for ui in self.mSetUI:
+            ui.currentIndexChanged.connect(self.drawMeasure)
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.drawMeasure)
         return True
@@ -181,9 +254,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """
         self.app.update1s.disconnect(self.drawMeasure)
         self.storeConfig()
-        self.ui.set1.currentIndexChanged.disconnect(self.drawMeasure)
-        self.ui.set2.currentIndexChanged.disconnect(self.drawMeasure)
-        self.ui.set3.currentIndexChanged.disconnect(self.drawMeasure)
+        for ui in self.mSetUI:
+            ui.currentIndexChanged.disconnect(self.drawMeasure)
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
@@ -273,6 +345,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return:
         """
         plotItem.clear()
+        plotItem.setLabel('left', '-')
         for value in values:
             if value == 'general':
                 values['general']['leg'].clear()
@@ -292,11 +365,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
             return False
 
         ui = self.ui.measure
-        plotItems = [ui.p1, ui.p2, ui.p3]
-        uis = [self.ui.set1, self.ui.set2, self.ui.set3]
         x = data['time'].astype('datetime64[s]').astype('int')
 
-        for i, v in enumerate(zip(uis, plotItems)):
+        for i, v in enumerate(zip(self.mSetUI, ui.p)):
             ui, plotItem = v
             title = ui.currentText()
             if title != self.oldTitle[i] and self.oldTitle[i] is not None:

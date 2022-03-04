@@ -48,7 +48,7 @@
   <property name="windowTitle">
    <string>Measurements</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <property name="spacing">
     <number>4</number>
    </property>
@@ -65,7 +65,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -99,20 +99,27 @@
         <property name="bottomMargin">
          <number>4</number>
         </property>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Upper middle chart</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Lower chart</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
-         <widget class="QComboBox" name="set1">
+         <widget class="QComboBox" name="set0">
           <property name="minimumSize">
            <size>
             <width>150</width>
             <height>25</height>
            </size>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Middle chart</string>
           </property>
          </widget>
         </item>
@@ -123,15 +130,8 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Lower chart</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
-         <widget class="QComboBox" name="set2">
+         <widget class="QComboBox" name="set1">
           <property name="minimumSize">
            <size>
             <width>150</width>
@@ -140,7 +140,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <widget class="QComboBox" name="set3">
           <property name="minimumSize">
            <size>
@@ -150,39 +150,27 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="2">
+         <widget class="QComboBox" name="set2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Lower middle chart</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
-     <item>
-      <widget class="Line" name="line_2">
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
     </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <property name="lineWidth">
-      <number>2</number>
-     </property>
-     <property name="midLineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="PlotMeasure" name="measure" native="true">

@@ -22,6 +22,7 @@ from dateutil.tz import tzlocal
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QApplication
+import pyqtgraph as pg
 from skyfield import almanac
 from skyfield.trigonometry import position_angle_of
 import numpy as np
@@ -113,6 +114,7 @@ class Almanac:
         :return:
         """
         self.setColors()
+        self.ui.twilight.colorChange()
         self.searchTwilightPlot()
         self.updateMoonPhase()
         return True
@@ -123,42 +125,53 @@ class Almanac:
         :return: true for test purpose
         """
         ts, t, e = result
-        minLim = int(t[0].tt) + 1
-        maxLim = int(t[-1].tt) - 1
-        midLim = minLim + (maxLim - minLim) / 2
+        xMin = int(t[0].tt) + 1
+        xMax = int(t[-1].tt) - 1
 
-        axe, fig = self.generateFlat(widget=self.twilight)
         yTicks = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
-        yLabels = ['12', '14', '16', '18', '20', '22', '24',
-                   '02', '04', '06', '08', '10', '12']
-        axe.set_yticks(yTicks)
-        axe.set_yticklabels(yLabels, fontsize=10)
-        xTicks = np.arange(minLim, maxLim, (maxLim - minLim) / 11)
+        yLabels = ['', '14', '16', '18', '20', '22', '24',
+                   '02', '04', '06', '08', '10', '']
+        xTicks = np.arange(xMin, xMax, (xMax - xMin) / 10)
         xLabels = ts.tt_jd(xTicks).utc_strftime('%d%b')
         xLabels[0] = ''
-        axe.set_xlim(minLim, maxLim)
-        axe.set_xticks(xTicks)
-        axe.set_xticklabels(xLabels, fontsize=10)
-        axe.grid(color=self.M_GREY, alpha=0.5)
-        axe.set_ylim(0, 24)
+        xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
+        yTicks = [(x, y) for x, y in zip(yTicks, yLabels)]
 
-        for ti, event in zip(t, e):
-            QApplication.processEvents()
-            if self.closing:
-                break
-            hour = int(ti.astimezone(tzlocal()).strftime('%H'))
-            minute = int(ti.astimezone(tzlocal()).strftime('%M'))
-            y = (hour + 12 + minute / 60) % 24
-            day = round(ti.tt + 0.5, 0)
-            axe.bar(day, height=24 - y, bottom=y, width=1,
-                    color=self.colors[event])
-        else:
-            x = [midLim - 1, midLim - 1, midLim + 1, midLim + 1]
-            y = [0, 24, 24, 0]
-            axe.fill(x, y, self.M_GREY, alpha=0.5)
-            axe.figure.canvas.draw()
-            return True
-        return False
+        plotItem = self.ui.twilight.p[0]
+        plotItem.disableAutoRange()
+        plotItem.getAxis('bottom').setTicks([xTicks])
+        plotItem.getAxis('left').setTicks([yTicks])
+        plotItem.getAxis('top').setTicks([xTicks])
+        plotItem.getAxis('right').setTicks([yTicks])
+        plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=0, yMax=24)
+
+        pens = []
+        brushes = []
+        for i in range(5):
+            pens.append(pg.mkPen(color=self.colors[i]))
+            brushes.append(pg.mkBrush(color=self.colors[i]))
+        penBar = [pens[x] for x in e]
+        brushBar = [brushes[x] for x in e]
+
+        tLoc = t.astimezone(tzlocal())
+        refDay = [x.replace(hour=0, minute=0, second=0, microsecond=0) for x in tLoc]
+        dayLoc = tLoc - refDay
+        yH = [x.total_seconds() / 3600 for x in dayLoc]
+        xD = np.array([int(x) for x in t.tt])
+        plotItem.clear()
+        for i in range(len(t)):
+            if yH[i] > 12:
+                rect = pg.QtGui.QGraphicsRectItem(
+                    xD[i], yH[i] - 12, 1, 24 - (yH[i] - 12))
+            else:
+                rect = pg.QtGui.QGraphicsRectItem(
+                    xD[i], 12 + yH[i], 1, 24 - (12 + yH[i]))
+            rect.setPen(penBar[i])
+            rect.setBrush(brushBar[i])
+            plotItem.addItem(rect)
+        plotItem.setYRange(0, 24)
+        plotItem.setXRange(xMin, xMax)
+        return True
 
     def displayTwilightData(self, timeEvents, events):
         """

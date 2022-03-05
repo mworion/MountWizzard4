@@ -394,7 +394,7 @@ class PlotImageBar(PlotBase):
         return True
 
 
-class TimeAxis(pg.AxisItem):
+class TimeMeasure(pg.AxisItem):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -429,7 +429,7 @@ class PlotMeasure(PlotBase):
         for plotItem in self.p:
             plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
             plotItem.showAxes(True, showValues=True)
-            plotItem.setAxisItems({'bottom': TimeAxis(orientation='bottom')})
+            plotItem.setAxisItems({'bottom': TimeMeasure(orientation='bottom')})
             plotItem.setClipToView(True)
             plotItem.hideButtons()
             plotItem.getAxis('left').setWidth(60)
@@ -438,3 +438,19 @@ class PlotMeasure(PlotBase):
                 plotItem.getAxis(side).setTextPen(self.pen)
                 plotItem.getAxis(side).setGrid(32)
             plotItem.setVisible(False)
+
+
+class PlotAlmanac(PlotBase):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.p[0].setMouseEnabled(x=False, y=False)
+        self.p[0].showAxes(True, showValues=True)
+        self.p[0].hideButtons()
+        self.p[0].setClipToView(True)
+        for side in ('left', 'top', 'right', 'bottom'):
+            self.p[0].getAxis(side).setPen(self.pen)
+            self.p[0].getAxis(side).setTextPen(self.pen)
+            self.p[0].getAxis(side).setGrid(32)

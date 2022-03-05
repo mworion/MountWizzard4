@@ -26,7 +26,6 @@ import pyqtgraph as pg
 
 # local import
 from gui.utilities import toolsQtWidget
-from gui.utilities.tools4pyqtgraph import TimeAxis
 from gui.widgets import measure_ui
 
 

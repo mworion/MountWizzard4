@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -1964,7 +1964,7 @@ class Ui_MainWindow(object):
         self.almanacCivil = QtWidgets.QPushButton(self.almanacGroup)
         self.almanacCivil.setObjectName("almanacCivil")
         self.gridLayout_2.addWidget(self.almanacCivil, 1, 0, 1, 1)
-        self.twilight = QtWidgets.QWidget(self.almanacGroup)
+        self.twilight = PlotAlmanac(self.almanacGroup)
         self.twilight.setEnabled(True)
         self.twilight.setToolTip("")
         self.twilight.setAutoFillBackground(True)
@@ -9062,7 +9062,7 @@ class Ui_MainWindow(object):
         self.statusOnline_2.raise_()
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(5)
+        self.mainTabWidget.setCurrentIndex(2)
         self.tabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
         self.toolsTabWidget.setCurrentIndex(0)
@@ -10977,7 +10977,7 @@ class Ui_MainWindow(object):
         self.statusOnline_2.setTitle(_translate("MainWindow", "Profile"))
         self.profile.setToolTip(_translate("MainWindow", "Shows the actual selected profile name."))
         self.profile.setText(_translate("MainWindow", "-"))
-from gui.utilities.tools4pyqtgraph import NormalScatter, PolarScatter
+from gui.utilities.tools4pyqtgraph import NormalScatter, PlotAlmanac, PolarScatter
 
 
 if __name__ == "__main__":

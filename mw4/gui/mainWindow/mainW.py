@@ -166,9 +166,6 @@ class MainWindow(
             'mount': self.ui.mountConnected,
         }
         self.mwSuper('__init__')
-
-        self.twilight = self.embedMatplot(self.ui.twilight)
-
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.settingDone.connect(self.updateMountWeatherStat)

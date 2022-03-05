@@ -102,7 +102,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -5675,7 +5675,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
       </item>
       <item row="2" column="0" colspan="4">
-       <widget class="QWidget" name="twilight" native="true">
+       <widget class="PlotAlmanac" name="twilight" native="true">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -28597,6 +28597,12 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   </customwidget>
   <customwidget>
    <class>NormalScatter</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlotAlmanac</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>

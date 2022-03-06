@@ -28,7 +28,13 @@ from PyQt5.QtGui import QColor, QFont
 from gui.utilities.stylesQtCss import Styles
 
 __all__ = [
-    'PlotImageBar',
+    'ImageBar',
+    'PlotBase',
+    'NormalScatter',
+    'PolarScatter',
+    'Measure'
+    'CustomViewBox',
+    'TimeMeasure'
 ]
 
 

@@ -22,6 +22,7 @@ import pytest
 # external packages
 import numpy as np
 from PyQt5.QtGui import QCloseEvent
+import pyqtgraph as pg
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
@@ -145,296 +146,89 @@ def test_closeEvent_1(function):
 def test_colorChange(function):
     with mock.patch.object(function,
                            'drawMeasure'):
-        suc = function.colorChange()
+        with mock.patch.object(function.ui.measure,
+                               'colorChange'):
+            with mock.patch.object(function,
+                                   'resetPlotItem'):
+                suc = function.colorChange()
         assert suc
 
 
-def test_setupAxes_0(function):
-    suc = function.setupAxes(numberPlots=0)
-    assert not suc
-
-
-def test_setupAxes_1(function):
-    axe, fig = function.generateFlat(widget=function.measureMat)
-    suc = function.setupAxes(figure=fig, numberPlots=-1)
-    assert not suc
-
-
-def test_setupAxes_2(function):
-    axe, fig = function.generateFlat(widget=function.measureMat)
-    suc = function.setupAxes(figure=fig, numberPlots=4)
-    assert not suc
-
-
-def test_setupAxes_3(function):
-    axe, fig = function.generateFlat(widget=function.measureMat)
-    suc = function.setupAxes(figure=fig, numberPlots=1)
-    assert suc
-    assert len(function.measureMat.figure.axes) == 1
-
-
-def test_setupAxes_4(function):
-    axe, fig = function.generateFlat(widget=function.measureMat)
-    suc = function.setupAxes(figure=fig, numberPlots=4)
-    assert not suc
-
-
-def test_setupAxes_5(function):
-    axe, fig = function.generateFlat(widget=function.measureMat)
-    suc = function.setupAxes(figure=fig, numberPlots=2)
-    assert suc
-    assert len(function.measureMat.figure.axes) == 2
-
-
-def test_plotRa_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotRa(axe=axe,
-                          title='test',
-                          data=function.app.measure.data,
-                          cycle=1,
-                          )
+def test_setupButtons(function):
+    suc = function.setupButtons()
     assert suc
 
 
-def test_plotDec_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotDec(axe=axe,
-                           title='test',
-                           data=function.app.measure.data,
-                           cycle=1,
-                           )
+def test_constructPlotItem_1(function):
+    plotItem = pg.PlotItem()
+    values = function.dataPlots['Current']
+    x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
+    suc = function.constructPlotItem(plotItem, values, x)
     assert suc
 
 
-def test_plotErrorAngularPosRA_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotErrorAngularPosRa(axe=axe,
-                                         title='test',
-                                         data=function.app.measure.data,
-                                         cycle=1,
-                                         )
+def test_plotting_1(function):
+    plotItem = pg.PlotItem()
+    values = function.dataPlots['Current']
+    x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
+    suc = function.plotting(plotItem, values, x)
     assert suc
 
 
-def test_plotErrorAngularPosDec_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotErrorAngularPosDec(axe=axe,
-                                          title='test',
-                                          data=function.app.measure.data,
-                                          cycle=1,
-                                          )
+def test_resetPlotItem(function):
+    plotItem = pg.PlotItem()
+    values = function.dataPlots['Current']
+    suc = function.resetPlotItem(plotItem, values)
     assert suc
 
 
-def test_plotTemperature_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotTemperature(axe=axe,
-                                   title='test',
-                                   data=function.app.measure.data,
-                                   cycle=1,
-                                   )
+def test_triggerUpdate(function):
+    suc = function.triggerUpdate()
     assert suc
 
 
-def test_plotTemperature_2(function):
-    function.app.measure.devices = {}
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotTemperature(axe=axe,
-                                   title='test',
-                                   data=function.app.measure.data,
-                                   cycle=1,
-                                   )
-    assert not suc
+def test_changeChart(function):
+    def sender():
+        return function.ui.set0
 
-
-def test_plotPressure_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotPressure(axe=axe,
-                                title='test',
-                                data=function.app.measure.data,
-                                cycle=1,
-                                )
-    assert suc
-
-
-def test_plotPressure_2(function):
-    function.app.measure.devices = {}
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotPressure(axe=axe,
-                                title='test',
-                                data=function.app.measure.data,
-                                cycle=1,
-                                )
-    assert not suc
-
-
-def test_plotHumidity_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotHumidity(axe=axe,
-                                title='test',
-                                data=function.app.measure.data,
-                                cycle=1,
-                                )
-    assert suc
-
-
-def test_plotHumidity_2(function):
-    function.app.measure.devices = {}
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotHumidity(axe=axe,
-                                title='test',
-                                data=function.app.measure.data,
-                                cycle=1,
-                                )
-    assert not suc
-
-
-def test_plotSQR_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotSQR(axe=axe,
-                           title='test',
-                           data=function.app.measure.data,
-                           cycle=1,
-                           )
-    assert suc
-
-
-def test_plotSQR_2(function):
-    function.app.measure.devices = {}
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotSQR(axe=axe,
-                           title='test',
-                           data=function.app.measure.data,
-                           cycle=1,
-                           )
-    assert not suc
-
-
-def test_plotVoltage_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotVoltage(axe=axe,
-                               title='test',
-                               data=function.app.measure.data,
-                               cycle=1,
-                               )
-    assert suc
-
-
-def test_plotVoltage_2(function):
-    function.app.measure.devices = {}
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotVoltage(axe=axe,
-                               title='test',
-                               data=function.app.measure.data,
-                               cycle=1,
-                               )
-    assert not suc
-
-
-def test_plotCurrent_1(function):
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotCurrent(axe=axe,
-                               title='test',
-                               data=function.app.measure.data,
-                               cycle=1,
-                               )
-    assert suc
-
-
-def test_plotCurrent_2(function):
-    function.app.measure.devices = {}
-    fig = function.measureMat.figure
-    function.setupAxes(figure=fig, numberPlots=1)
-    axe = function.measureMat.figure.axes[0]
-    suc = function.plotCurrent(axe=axe,
-                               title='test',
-                               data=function.app.measure.data,
-                               cycle=1,
-                               )
-    assert not suc
+    function.sender = sender
+    function.ui.set4.addItem('No chart')
+    function.ui.set0.setCurrentIndex(0)
+    with mock.patch.object(function,
+                           'drawMeasure'):
+        suc = function.changeChart(0)
+        assert suc
 
 
 def test_drawMeasure_1(function):
-    function.ui.measureSet1.addItem('No chart')
-    function.ui.measureSet2.addItem('No chart')
-    function.ui.measureSet3.addItem('No chart')
+    function.app.measure.data['time'] = np.empty(shape=[0, 1], dtype='datetime64')
     suc = function.drawMeasure()
     assert not suc
 
 
 def test_drawMeasure_2(function):
-    function.ui.measureSet1.addItem('No chart')
-    function.ui.measureSet1.addItem('Pressure')
-    function.ui.measureSet2.addItem('No chart')
-    function.ui.measureSet3.addItem('No chart')
-    function.ui.measureSet1.setCurrentIndex(1)
-    suc = function.drawMeasure(1)
-    assert suc
+    function.drawLock.lock()
+    suc = function.drawMeasure()
+    function.drawLock.unlock()
+    assert not suc
 
 
 def test_drawMeasure_3(function):
-    function.app.measure.data = {}
-    function.ui.measureSet1.addItem('No chart')
-    function.ui.measureSet2.addItem('No chart')
-    function.ui.measureSet3.addItem('No chart')
-    suc = function.drawMeasure()
-    assert not suc
-
-
-def test_drawMeasure_4(function):
-    function.app.measure.data['time'] = [1, 2, 3]
-    function.ui.measureSet1.addItem('No chart')
-    function.ui.measureSet2.addItem('No chart')
-    function.ui.measureSet3.addItem('No chart')
-    suc = function.drawMeasure()
-    assert not suc
-
-
-def test_drawMeasure_5(function):
-    function.ui.measureSet1.addItem('No chart')
-    function.ui.measureSet2.addItem('No chart')
-    function.ui.measureSet3.addItem('No chart')
+    function.ui.set0.addItem('No chart')
+    function.ui.set1.addItem('Current')
+    function.ui.set2.addItem('No chart')
+    function.ui.set3.addItem('No chart')
+    function.ui.set4.addItem('No chart')
+    function.ui.set0.setCurrentIndex(0)
+    function.ui.set1.setCurrentIndex(0)
+    function.ui.set2.setCurrentIndex(0)
+    function.ui.set3.setCurrentIndex(0)
+    function.ui.set4.setCurrentIndex(0)
     with mock.patch.object(function,
-                           'setupAxes',
-                           return_value=None):
-        suc = function.drawMeasure()
-        assert not suc
-
-
-def test_drawMeasure_6(function):
-    function.ui.measureSet1.addItem('Pressure')
-    function.ui.measureSet2.addItem('No chart')
-    function.ui.measureSet3.addItem('Pressure')
-
-    suc = function.drawMeasure()
-    assert suc
+                           'plotting'):
+        with mock.patch.object(function,
+                               'resetPlotItem'):
+            with mock.patch.object(function,
+                                   'triggerUpdate'):
+                suc = function.drawMeasure()
+                assert suc

@@ -273,7 +273,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
         for ui, plotItem in zip(self.mSetUI, self.ui.measure.p):
-            values = self.dataPlots[ui.currentText()]
+            values = self.dataPlots.get(ui.currentText(), 0)
             self.resetPlotItem(plotItem, values)
         self.drawMeasure()
         return True
@@ -322,11 +322,11 @@ class MeasureWindow(toolsQtWidget.MWidget):
         plotItem.setLimits(xMin=x[0])
         return True
 
-    def plotting(self, plotItem, x, values):
+    def plotting(self, plotItem, values, x):
         """
         :param plotItem:
-        :param x:
         :param values:
+        :param x:
         :return:
         """
         newPlot = values['gen']['label'] != plotItem.getAxis('left').labelText
@@ -359,10 +359,9 @@ class MeasureWindow(toolsQtWidget.MWidget):
         plotItem.clear()
         for value in values:
             if value == 'gen':
-                values['gen']['leg'].clear()
                 values['gen']['leg'] = None
-                continue
-            values[value]['pd'] = None
+            else:
+                values[value]['pd'] = None
         return True
 
     def triggerUpdate(self):
@@ -411,11 +410,11 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
             self.oldTitle[i] = title
             isVisible = title != 'No chart'
+            plotItem.setVisible(isVisible)
             if not isVisible:
                 continue
 
-            plotItem.setVisible(True)
-            self.plotting(plotItem, x, self.dataPlots[title])
+            self.plotting(plotItem, self.dataPlots[title], x)
             if noChart:
                 self.triggerUpdate()
                 plotItem.autoRange()

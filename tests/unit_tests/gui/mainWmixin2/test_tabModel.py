@@ -56,8 +56,8 @@ def module(qapp):
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
     class Test3:
-        checkAutoSolve = QCheckBox()
-        checkStackImages = QCheckBox()
+        autoSolve = QCheckBox()
+        stackImages = QCheckBox()
 
     class Test2:
         deviceStat = {}

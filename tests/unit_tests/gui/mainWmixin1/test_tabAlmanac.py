@@ -23,6 +23,7 @@ from unittest import mock
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QPixmap
 from skyfield.api import wgs84
+import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
@@ -98,11 +99,9 @@ def test_plotTwilightData_1(function):
     function.closing = False
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
-    t = [tsNow, tsNow]
-    e = [1, 1]
+    t = ts.tt_jd([tsNow.tt, tsNow.tt])
+    e = np.array([1, 1])
     result = (ts, t, e)
-    widget = QWidget()
-    function.twilight = function.embedMatplot(widget)
     suc = function.plotTwilightData(result)
     assert suc
 
@@ -111,13 +110,11 @@ def test_plotTwilightData_2(function):
     function.closing = True
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
-    t = [tsNow, tsNow]
-    e = [1, 1]
+    t = ts.tt_jd([tsNow.tt, tsNow.tt])
+    e = np.array([1, 1])
     result = (ts, t, e)
-    widget = QWidget()
-    function.twilight = function.embedMatplot(widget)
     suc = function.plotTwilightData(result)
-    assert not suc
+    assert suc
 
 
 def test_calcTwilightData_1(function):
@@ -135,8 +132,8 @@ def test_searchTwilightWorker_1(function):
                             elevation_m=0)
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
-    t = [tsNow, tsNow]
-    e = [1, 1]
+    t = ts.tt_jd([tsNow.tt, tsNow.tt])
+    e = np.array([1, 1])
     with mock.patch.object(function,
                            'calcTwilightData',
                            return_value=(t, e)):

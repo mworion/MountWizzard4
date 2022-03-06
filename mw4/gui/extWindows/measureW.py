@@ -16,12 +16,10 @@
 #
 ###########################################################
 # standard libraries
-from datetime import datetime as dt
 
 # external packages
 from PyQt5.QtWidgets import QListView
 from PyQt5.QtCore import QMutex
-import numpy as np
 import pyqtgraph as pg
 
 # local import

@@ -32,7 +32,7 @@ __all__ = [
     'PlotBase',
     'NormalScatter',
     'PolarScatter',
-    'Measure'
+    'Measure',
     'CustomViewBox',
     'TimeMeasure'
 ]

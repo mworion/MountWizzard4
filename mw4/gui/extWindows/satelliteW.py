@@ -135,49 +135,22 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.app.sendSatelliteData.emit()
         return True
 
-    @staticmethod
-    def markerSatellite():
-        """
-        markerSatellite constructs a custom marker for presentation of
-        satellite view
-
-        :return: marker
-        """
-        circle = mpath.Path.unit_circle()
-
-        rect1p = [[0, 0], [1, 2], [-1, 4], [3, 8], [8, 3], [4, -1], [2, 1],
-                  [6, 5], [5, 6], [1, 2], [2, 1], [0, 0]]
-        rect1p = np.array(rect1p) * 0.75
-        rect1c = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 79]
-        rect1c = np.array(rect1c)
-
-        verts = np.concatenate([rect1p,
-                                rect1p * -1,
-                                circle.vertices])
-        codes = np.concatenate([rect1c,
-                                rect1c,
-                                circle.codes])
-        marker = mpath.Path(verts, codes)
-        return marker
-
     def updatePointerAltAz(self, obsSite):
         """
         :return: success
         """
-        return
         if self.pointerAltAz is None:
             return False
 
         if obsSite.Alt is None or obsSite.Az is None:
             self.pointerAltAz.set_visible(False)
             return False
-
         else:
-            self.pointerAltAz.set_visible(True)
+            self.pointerAltAz.setVisible(True)
 
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
-        self.pointerAltAz.set_data((az, alt))
+        self.pointerAltAz.setData(x=[az], y=[alt])
         return True
 
     def updatePositions(self, now=None, location=None):
@@ -192,8 +165,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
         if self.plotSatPosEarth is None:
             return False
-        #if self.plotSatPosHorizon is None:
-        #    return False
+        if self.plotSatPosHorizon is None:
+            return False
 
         observe = self.satellite.at(now)
         subpoint = wgs84.subpoint_of(observe)
@@ -209,7 +182,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosEarth.setVisible(True)
         alt = alt.degrees
         az = az.degrees
-        # self.plotSatPosHorizon.set_data((az, alt))
+        self.plotSatPosHorizon.setData(x=[az], y=[alt])
+        self.plotSatPosHorizon.setVisible(True)
         return True
 
     @staticmethod
@@ -235,13 +209,14 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param plotItem:
         :return:
         """
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         xTicks = [(x, f'{x:0.0f}') for x in np.arange(-135, 136, 45)]
         plotItem.getAxis('bottom').setTicks([xTicks])
         plotItem.getAxis('top').setTicks([xTicks])
-        plotItem.setLabel('bottom', 'Longitude in degrees')
-        plotItem.setLabel('left', 'Latitude in degrees')
+        plotItem.setLabel('bottom', 'Longitude [deg]')
+        plotItem.setLabel('left', 'Latitude [deg]')
         plotItem.setLimits(xMin=-180, xMax=180, yMin=-90, yMax=90,
-                           minXRange=360/4, minYRange=180/4)
+                           minXRange=360 / 4, minYRange=180 / 4)
         plotItem.disableAutoRange()
         plotItem.setXRange(-180, 180)
         plotItem.setYRange(-90, 90)
@@ -281,8 +256,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param obsSite:
         :return:
         """
-        ts = obsSite.ts
-        subpoint = wgs84.subpoint_of(self.satellite.at(ts.now()))
+        subpoint = wgs84.subpoint_of(self.satellite.at(obsSite.ts.now()))
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
 
@@ -302,7 +276,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param satOrbits:
         :return:
         """
-        ts = obsSite.ts
         for i, satOrbit in enumerate(satOrbits):
             rise = satOrbit['rise'].tt
             settle = satOrbit['settle'].tt
@@ -312,7 +285,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
             flip = satOrbit['flip'].tt
             vector = np.arange(rise, flip, step)
-            vecT = ts.tt_jd(vector)
+            vecT = obsSite.ts.tt_jd(vector)
             subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
@@ -322,7 +295,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
                 plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)
-            vecT = ts.tt_jd(vector)
+            vecT = obsSite.ts.tt_jd(vector)
             subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
@@ -335,7 +308,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         settle = satOrbits[-1]['settle'].tt
         step = 0.001 * (settle - rise)
         vector = np.arange(rise - 0.15, settle, step)
-        vecT = ts.tt_jd(vector)
+        vecT = obsSite.ts.tt_jd(vector)
         subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
@@ -366,6 +339,27 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.drawEarthTrajectory(plotItem, obsSite, satOrbits)
         return True
 
+    @staticmethod
+    def prepareHorizon(plotItem):
+        """
+        :param plotItem:
+        :return:
+        """
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        xTicks = [(x, f'{x:0.0f}') for x in np.arange(30, 360, 30)]
+        plotItem.getAxis('bottom').setTicks([xTicks])
+        plotItem.getAxis('top').setTicks([xTicks])
+        plotItem.setLabel('bottom', 'Azimuth [deg]')
+        plotItem.setLabel('left', 'Altitude [deg]')
+        plotItem.setLimits(xMin=0, xMax=360, yMin=-0, yMax=90,
+                           minXRange=360 / 4, minYRange=90 / 4)
+        plotItem.disableAutoRange()
+        plotItem.setXRange(0, 360)
+        plotItem.setYRange(0, 90)
+        plotItem.setMouseEnabled(x=True, y=True)
+        plotItem.clear()
+        return True
+
     def staticHorizon(self, axes=None):
         """
         :param axes: matplotlib axes object
@@ -384,25 +378,81 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         axes.plot(az, alt, color=self.M_BLUE, marker='', alpha=0.7, lw=2)
         return True
 
-    @staticmethod
-    def markerAltAz():
+    def prepareHorizonSatellite(self, plotItem, obsSite):
         """
-        :return: marker
+        :param plotItem:
+        :param obsSite:
+        :return:
         """
-        circleB = mpath.Path.unit_circle()
-        circleM = mpath.Path.unit_circle()
-        circleS = mpath.Path.unit_circle()
-        circleC = mpath.Path.unit_circle()
-        verts = np.concatenate([circleB.vertices,
-                                0.8 * circleM.vertices,
-                                0.15 * circleS.vertices,
-                                0.1 * circleC.vertices])
-        codes = np.concatenate([circleB.codes,
-                                circleM.codes,
-                                circleS.codes,
-                                circleC.codes])
-        marker = mpath.Path(verts, codes)
-        return marker
+        alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
+        pd = pg.PlotDataItem(
+            x=[az.degrees], y=[alt.degrees], symbol='d', symbolSize=20,
+            symbolPen=pg.mkPen(color=self.M_PINK),
+            symbolBrush=pg.mkBrush(color=self.M_PINK1 + '80'))
+        pd.setVisible(False)
+        pd.setZValue(10)
+        plotItem.addItem(pd)
+        return pd
+
+    def preparePointer(self, plotItem):
+        """
+        :param plotItem:
+        :return:
+        """
+        pd = pg.PlotDataItem(
+            x=[180], y=[45], symbol='o', symbolSize=20,
+            symbolPen=pg.mkPen(color=self.M_PINK),
+            symbolBrush=pg.mkBrush(color=self.M_PINK + '80'))
+        pd.setVisible(False)
+        pd.setZValue(10)
+        plotItem.addItem(pd)
+        return pd
+
+    def drawHorizonTrajectory(self, plotItem, obsSite, satOrbits,
+                              azimuth, altitude):
+        """
+        :param plotItem:
+        :param obsSite:
+        :param satOrbits:
+        :param azimuth:
+        :param altitude:
+        :return:
+        """
+        ts = obsSite.ts
+        for i, satOrbit in enumerate(satOrbits):
+            rise = satOrbit['rise'].tt
+            settle = satOrbit['settle'].tt
+            step = 0.005 * (settle - rise)
+
+            if 'flip' not in satOrbit:
+                satOrbit['flip'] = satOrbit['settle']
+
+            flip = satOrbit['flip'].tt
+            vector = np.arange(rise, flip, step)
+            vecT = ts.tt_jd(vector)
+            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+
+            pen = pg.mkPen(width=4, color=self.colors[i])
+            for slc in self.unlinkWrap(az.degrees):
+                pd = pg.PlotDataItem(
+                    x=az.degrees[slc], y=alt.degrees[slc], pen=pen)
+                plotItem.addItem(pd)
+
+            vector = np.arange(flip, settle, step)
+            vecT = ts.tt_jd(vector)
+            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
+            pen = pg.mkPen(width=4, color=self.colors[i], style=Qt.DotLine)
+            for slc in self.unlinkWrap(az.degrees):
+                pd = pg.PlotDataItem(
+                    x=az.degrees[slc], y=alt.degrees[slc], pen=pen)
+                plotItem.addItem(pd)
+
+        pen = pg.mkPen(width=7, color=self.M_WHITE + 'C0')
+        for slc in self.unlinkWrap(azimuth):
+            pd = pg.PlotDataItem(
+                x=azimuth[slc], y=altitude[slc], pen=pen)
+            # pd.setZValue(-5)
+            plotItem.addItem(pd)
 
     def drawHorizonView(self, obsSite=None, satOrbits=None,
                         altitude=[], azimuth=[], isSunlit=[]):
@@ -417,65 +467,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param isSunlit:
         :return: success
         """
-        return
-        axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
-        self.staticHorizon(axes=axe)
+        plotItem = self.ui.satHorizon.p[0]
+        self.prepareHorizon(plotItem)
+        # self.staticHorizon(axes=axe)
 
         if not satOrbits or obsSite is None:
-            axe.figure.canvas.draw()
             return False
 
-        ts = obsSite.ts
-        for i, satOrbit in enumerate(satOrbits):
-            QApplication.processEvents()
-            rise = satOrbit['rise'].tt
-            settle = satOrbit['settle'].tt
-            step = 0.005 * (settle - rise)
-
-            if 'flip' not in satOrbit:
-                satOrbit['flip'] = satOrbit['settle']
-
-            flip = satOrbit['flip'].tt
-            vector = np.arange(rise, flip, step)
-            vecT = ts.tt_jd(vector)
-            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-            for slc in self.unlinkWrap(az.degrees):
-                axe.plot(az.degrees[slc], alt.degrees[slc], lw=3,
-                         color=self.colors[i])
-
-            vector = np.arange(flip, settle, step)
-            vecT = ts.tt_jd(vector)
-            alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-            for slc in self.unlinkWrap(az.degrees):
-                axe.plot(az.degrees[slc], alt.degrees[slc], lw=3,
-                         color=self.colors[i], linestyle=(0, (0.5, 0.5)))
-
-        for slc in self.unlinkWrap(azimuth):
-            axe.plot(azimuth[slc], altitude[slc],
-                     color=self.M_WHITE, lw=7, alpha=0.8, zorder=-5)
-        # color = np.where(isSunlit, 'red', 'blue')
-        # axe.scatter(azimuth, altitude, marker='o', color=color)
-
-        ts = obsSite.ts
-        alt, az, _ = (self.satellite - obsSite.location).at(ts.now()).altaz()
-        QApplication.processEvents()
-        self.plotSatPosHorizon, = axe.plot(az.degrees, alt.degrees,
-                                           marker=self.markerSatellite(),
-                                           markersize=35, lw=2, fillstyle='none',
-                                           ls='none', color=self.M_WHITE,
-                                           zorder=10)
-
-        self.pointerAltAz, = axe.plot(np.radians(180), 45,
-                                      zorder=-5,
-                                      color=self.M_PINK,
-                                      marker=self.markerAltAz(),
-                                      markersize=20,
-                                      linestyle='none',
-                                      fillstyle='none',
-                                      clip_on=False,
-                                      visible=False,
-                                      )
-        axe.figure.canvas.draw()
+        self.drawHorizonTrajectory(
+            plotItem, obsSite, satOrbits, altitude, azimuth)
+        self.plotSatPosHorizon = self.prepareHorizonSatellite(
+            plotItem, obsSite)
+        self.pointerAltAz = self.preparePointer(plotItem)
         return True
 
     def drawSatellite(self, satellite=None, satOrbits=None, altitude=[],

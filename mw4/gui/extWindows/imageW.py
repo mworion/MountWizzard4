@@ -186,6 +186,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setStyleSheet(self.mw4Style)
+        self.ui.image.colorChange()
         self.showCurrent()
         return True
 

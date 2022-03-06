@@ -190,7 +190,7 @@
     </layout>
    </item>
    <item>
-    <widget class="PlotMeasure" name="measure" native="true">
+    <widget class="Measure" name="measure" native="true">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -236,7 +236,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PlotMeasure</class>
+   <class>Measure</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>

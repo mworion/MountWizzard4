@@ -773,7 +773,7 @@
       </widget>
      </item>
      <item row="0" column="1" rowspan="2">
-      <widget class="PlotImageBar" name="image" native="true">
+      <widget class="ImageBar" name="image" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>1</horstretch>
@@ -794,7 +794,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PlotImageBar</class>
+   <class>ImageBar</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>

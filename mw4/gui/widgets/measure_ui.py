@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/measure.ui'
+# Form implementation generated from reading ui file 'measure.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -77,7 +77,7 @@ class Ui_MeasureDialog(object):
         self.gridLayout.addWidget(self.label_5, 0, 2, 1, 1)
         self.horizontalLayout.addWidget(self.measureGroup)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.measure = PlotMeasure(MeasureDialog)
+        self.measure = Measure(MeasureDialog)
         self.measure.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -106,7 +106,7 @@ class Ui_MeasureDialog(object):
         self.label_4.setText(_translate("MeasureDialog", "Lower middle chart"))
         self.label.setText(_translate("MeasureDialog", "Upper chart"))
         self.label_5.setText(_translate("MeasureDialog", "Middle chart"))
-from gui.utilities.tools4pyqtgraph import PlotMeasure
+from gui.utilities.tools4pyqtgraph import Measure
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/satellite.ui'
+# Form implementation generated from reading ui file 'satellite.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -190,10 +190,10 @@ class Ui_SatelliteDialog(object):
         self.groupEarth.setProperty("large", True)
         self.groupEarth.setObjectName("groupEarth")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupEarth)
-        self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_5.setContentsMargins(4, 12, 8, 4)
         self.gridLayout_5.setSpacing(0)
         self.gridLayout_5.setObjectName("gridLayout_5")
-        self.satEarth = QtWidgets.QWidget(self.groupEarth)
+        self.satEarth = PlotBase(self.groupEarth)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -212,10 +212,10 @@ class Ui_SatelliteDialog(object):
         self.groupHorizon.setProperty("large", True)
         self.groupHorizon.setObjectName("groupHorizon")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.groupHorizon)
-        self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_4.setContentsMargins(4, 12, 8, 4)
         self.gridLayout_4.setSpacing(0)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.satHorizon = QtWidgets.QWidget(self.groupHorizon)
+        self.satHorizon = PlotBase(self.groupHorizon)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -254,6 +254,7 @@ class Ui_SatelliteDialog(object):
         self.groupEarth.setTitle(_translate("SatelliteDialog", "Satellite path over earth surface"))
         self.groupHorizon.setToolTip(_translate("SatelliteDialog", "Shows the visible track of the satellite when being observed from the position of the mount. "))
         self.groupHorizon.setTitle(_translate("SatelliteDialog", "Satellite path over horizon from observer location"))
+from gui.utilities.tools4pyqtgraph import PlotBase
 
 
 if __name__ == "__main__":

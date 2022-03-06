@@ -19,11 +19,12 @@ import pickle
 from io import BytesIO
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal, QFile
+from PyQt5.QtCore import QObject, pyqtSignal, QFile, Qt
 from PyQt5.QtWidgets import QApplication
 import numpy as np
 import matplotlib.path as mpath
 from skyfield.api import wgs84
+import pyqtgraph as pg
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -57,8 +58,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
         self.pointerAltAz = None
-        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
-        self.satEarthMat = self.embedMatplot(self.ui.satEarth)
 
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         stream = QFile(':/data/worldmap.dat')
@@ -130,8 +129,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.setStyleSheet(self.mw4Style)
+        self.ui.satEarth.colorChange()
+        self.ui.satHorizon.colorChange()
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
-        self.drawSatellite()
+        self.app.sendSatelliteData.emit()
         return True
 
     @staticmethod
@@ -163,6 +164,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         :return: success
         """
+        return
         if self.pointerAltAz is None:
             return False
 
@@ -180,58 +182,45 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def updatePositions(self, now=None, location=None):
         """
-        updatePositions is triggered once a second and update the satellite
-        position in each view.
-
         :return: success
         """
         if now is None:
             return False
         if location is None:
             return False
-
         if self.satellite is None:
             return False
         if self.plotSatPosEarth is None:
             return False
-        if self.plotSatPosHorizon is None:
-            return False
+        #if self.plotSatPosHorizon is None:
+        #    return False
 
         observe = self.satellite.at(now)
         subpoint = wgs84.subpoint_of(observe)
         difference = self.satellite - location
-
         self.ui.satLatitude.setText(f'{subpoint.latitude.degrees:3.2f}')
         self.ui.satLongitude.setText(f'{subpoint.longitude.degrees:3.2f}')
-
         alt, az, _ = difference.at(now).altaz()
         self.ui.satAltitude.setText(f'{alt.degrees:3.2f}')
         self.ui.satAzimuth.setText(f'{az.degrees:3.2f}')
-
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
-        self.plotSatPosEarth.set_data((lon, lat))
-
+        self.plotSatPosEarth.setData(x=[lon], y=[lat])
+        self.plotSatPosEarth.setVisible(True)
         alt = alt.degrees
         az = az.degrees
-        self.plotSatPosHorizon.set_data((az, alt))
-
-        self.satEarthMat.figure.canvas.draw()
-        self.satHorizonMat.figure.canvas.draw()
+        # self.plotSatPosHorizon.set_data((az, alt))
         return True
 
     @staticmethod
-    def unlinkWrap(dat, limits=[-180, 180], thresh=0.95):
+    def unlinkWrap(dat, limits=(-180, 180), thresh=0.95):
         """
         Iterate over contiguous regions of `dat` (i.e. where it does not
         jump from near one limit to the other).
-
         This function returns an iterator object that yields slice
         objects, which index the contiguous portions of `dat`.
-
         This function implicitly assumes that all points in `dat` fall
         within `limits`.
-
         """
         jump = np.nonzero(np.abs(np.diff(dat)) > ((limits[1] - limits[0]) * thresh))[0]
         lastIndex = 0
@@ -240,78 +229,107 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             lastIndex = ind + 1
         yield slice(lastIndex, len(dat))
 
-    def drawEarth(self, obsSite=None, satOrbits=None, altitude=[], azimuth=[]):
+    @staticmethod
+    def prepareEarth(plotItem):
         """
-        drawEarth show a full earth view with the path of the subpoint of the
-        satellite drawn on it.
-
-        :param obsSite:
-        :param satOrbits:
-        :param altitude:
-        :param azimuth:
-        :return: success
+        :param plotItem:
+        :return:
         """
-        axe, fig = self.generateFlat(widget=self.satEarthMat)
-        axe.set_xticks(np.arange(-180, 181, 45))
-        axe.set_xticklabels(['180 W', '135 W', '90 W', '45 W', '0',
-                             '45 E', '90 E', '135 E', '180 E'],
-                            rotation=30)
-        axe.set_xlabel('Longitude in degrees')
-        axe.set_ylabel('Latitude in degrees')
-        axe.set_ylim([-90, 90])
-        axe.set_xlim([-180, 180])
+        xTicks = [(x, f'{x:0.0f}') for x in np.arange(-135, 136, 45)]
+        plotItem.getAxis('bottom').setTicks([xTicks])
+        plotItem.getAxis('top').setTicks([xTicks])
+        plotItem.setLabel('bottom', 'Longitude in degrees')
+        plotItem.setLabel('left', 'Latitude in degrees')
+        plotItem.setLimits(xMin=-180, xMax=180, yMin=-90, yMax=90,
+                           minXRange=360/4, minYRange=180/4)
+        plotItem.disableAutoRange()
+        plotItem.setXRange(-180, 180)
+        plotItem.setYRange(-90, 90)
+        plotItem.setMouseEnabled(x=True, y=True)
+        plotItem.clear()
+        return True
 
+    def drawShoreLine(self, plotItem):
+        """
+        :param plotItem:
+        :return:
+        """
         for key in self.world.keys():
             shape = self.world[key]
-            axe.fill(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, alpha=0.2)
-            axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, lw=1, alpha=0.4)
+            pd = pg.PlotDataItem(
+                x=shape['xDeg'], y=shape['yDeg'], pen=self.ui.satEarth.pen)
+            plotItem.addItem(pd)
 
-        if not satOrbits or obsSite is None:
-            axe.figure.canvas.draw()
-            return False
-
+    def drawPosition(self, plotItem, obsSite):
+        """
+        :param plotItem:
+        :param obsSite:
+        :return:
+        """
         lat = obsSite.location.latitude.degrees
         lon = obsSite.location.longitude.degrees
-        axe.plot(lon, lat, marker='.', markersize=5, color=self.M_YELLOW)
+        pd = pg.PlotDataItem(
+            x=[lon], y=[lat], symbol='o', symbolSize=5,
+            symbolPen=pg.mkPen(color=self.M_YELLOW),
+            symbolBrush=pg.mkBrush(color=self.M_YELLOW))
+        plotItem.addItem(pd)
+        return True
 
+    def prepareEarthSatellite(self, plotItem, obsSite):
+        """
+        :param plotItem:
+        :param obsSite:
+        :return:
+        """
         ts = obsSite.ts
         subpoint = wgs84.subpoint_of(self.satellite.at(ts.now()))
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
-        self.plotSatPosEarth, = axe.plot(lon, lat,
-                                         marker=self.markerSatellite(),
-                                         markersize=35, lw=2, fillstyle='none',
-                                         ls='none', color=self.M_WHITE,
-                                         clip_on=False,
-                                         zorder=10)
 
+        pd = pg.PlotDataItem(
+            x=[lat], y=[lon], symbol='d', symbolSize=20,
+            symbolPen=pg.mkPen(color=self.M_PINK),
+            symbolBrush=pg.mkBrush(color=self.M_PINK1 + '80'))
+        pd.setVisible(False)
+        pd.setZValue(10)
+        plotItem.addItem(pd)
+        return pd
+
+    def drawEarthTrajectory(self, plotItem, obsSite, satOrbits):
+        """
+        :param plotItem:
+        :param obsSite:
+        :param satOrbits:
+        :return:
+        """
+        ts = obsSite.ts
         for i, satOrbit in enumerate(satOrbits):
-            QApplication.processEvents()
             rise = satOrbit['rise'].tt
             settle = satOrbit['settle'].tt
             step = 0.005 * (settle - rise)
-
             if 'flip' not in satOrbit:
                 satOrbit['flip'] = satOrbit['settle']
 
             flip = satOrbit['flip'].tt
-
             vector = np.arange(rise, flip, step)
             vecT = ts.tt_jd(vector)
             subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
+            pen = pg.mkPen(width=4, color=self.colors[i])
             for slc in self.unlinkWrap(lon):
-                axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i])
+                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen)
+                plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)
             vecT = ts.tt_jd(vector)
             subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
+            pen = pg.mkPen(width=4, color=self.colors[i], style=Qt.DotLine)
             for slc in self.unlinkWrap(lon):
-                axe.plot(lon[slc], lat[slc], lw=4, color=self.colors[i],
-                         linestyle=(0, (0.5, 0.5)))
+                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen)
+                plotItem.addItem(pd)
 
         rise = satOrbits[0]['rise'].tt
         settle = satOrbits[-1]['settle'].tt
@@ -321,9 +339,31 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
+        pen = pg.mkPen(width=1, color=self.M_WHITE1)
         for slc in self.unlinkWrap(lon):
-            axe.plot(lon[slc], lat[slc], lw=1, color=self.M_WHITE1, zorder=-10)
-        axe.figure.canvas.draw()
+            pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen)
+            pd.setZValue(-10)
+            plotItem.addItem(pd)
+        return True
+
+    def drawEarth(self, obsSite=None, satOrbits=None):
+        """
+        :param obsSite:
+        :param satOrbits:
+        :return: success
+        """
+        plotItem = self.ui.satEarth.p[0]
+        self.prepareEarth(plotItem)
+        self.drawShoreLine(plotItem)
+        if obsSite is None:
+            return False
+
+        self.drawPosition(plotItem, obsSite)
+        if not satOrbits:
+            return False
+
+        self.plotSatPosEarth = self.prepareEarthSatellite(plotItem, obsSite)
+        self.drawEarthTrajectory(plotItem, obsSite, satOrbits)
         return True
 
     def staticHorizon(self, axes=None):
@@ -377,6 +417,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param isSunlit:
         :return: success
         """
+        return
         axe, fig = self.generateFlat(widget=self.satHorizonMat, horizon=True)
         self.staticHorizon(axes=axe)
 
@@ -440,10 +481,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
     def drawSatellite(self, satellite=None, satOrbits=None, altitude=[],
                       azimuth=[], name=''):
         """
-        drawSatellite draws 4 different views of the actual satellite
-        situation: two sphere views, a horizon view and an earth view.
-        satellites with an day angle < 400 means less than one orbit per day and
-        might be stationary visible (geostationary)
+        drawSatellite draws 2 different views of the actual satellite
+        situation: a horizon view and an earth view.
 
         :param satellite:
         :param satOrbits:
@@ -456,15 +495,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         self.setWindowTitle(f'Satellite {name}')
-        if satellite is None or satOrbits is None:
-            self.drawEarth()
-            self.drawHorizonView()
-            return False
-
         self.satellite = satellite
-        self.drawEarth(self.app.mount.obsSite,
-                       satOrbits=satOrbits, altitude=altitude, azimuth=azimuth)
-        self.drawHorizonView(self.app.mount.obsSite,
-                             satOrbits=satOrbits,
+        self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)
+        self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits,
                              altitude=altitude, azimuth=azimuth)
         return True

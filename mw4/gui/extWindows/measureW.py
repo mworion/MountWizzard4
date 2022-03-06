@@ -400,7 +400,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         ui = self.ui.measure
         x = data['time'].astype('datetime64[s]').astype('int')
 
-        noChart = all([True for x in self.oldTitle if x in ['No chart', None]])
+        noChart = all([x in ['No chart', None] for x in self.oldTitle])
 
         for i, v in enumerate(zip(self.mSetUI, ui.p)):
             ui, plotItem = v
@@ -411,12 +411,15 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
             self.oldTitle[i] = title
             isVisible = title != 'No chart'
-            if noChart and isVisible:
-                self.triggerUpdate()
-            plotItem.setVisible(isVisible)
             if not isVisible:
                 continue
 
+            plotItem.setVisible(True)
             self.plotting(plotItem, x, self.dataPlots[title])
+            if noChart:
+                self.triggerUpdate()
+                plotItem.autoRange()
+                plotItem.enableAutoRange(x=True, y=True)
+
         self.drawLock.unlock()
         return True

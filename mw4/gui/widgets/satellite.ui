@@ -48,7 +48,7 @@
   <property name="windowTitle">
    <string>Satellite</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="0">
    <property name="leftMargin">
     <number>4</number>
    </property>
@@ -512,22 +512,22 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="spacing">
            <number>0</number>
           </property>
           <item row="0" column="0">
-           <widget class="QWidget" name="satEarth" native="true">
+           <widget class="PlotBase" name="satEarth" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -561,22 +561,22 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
           <property name="leftMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>12</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>4</number>
           </property>
           <property name="spacing">
            <number>0</number>
           </property>
           <item row="0" column="0">
-           <widget class="QWidget" name="satHorizon" native="true">
+           <widget class="PlotBase" name="satHorizon" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -597,6 +597,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotBase</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <designerdata>

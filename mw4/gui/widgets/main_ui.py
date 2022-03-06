@@ -1964,7 +1964,7 @@ class Ui_MainWindow(object):
         self.almanacCivil = QtWidgets.QPushButton(self.almanacGroup)
         self.almanacCivil.setObjectName("almanacCivil")
         self.gridLayout_2.addWidget(self.almanacCivil, 1, 0, 1, 1)
-        self.twilight = PlotAlmanac(self.almanacGroup)
+        self.twilight = PlotBase(self.almanacGroup)
         self.twilight.setEnabled(True)
         self.twilight.setToolTip("")
         self.twilight.setAutoFillBackground(True)
@@ -10977,7 +10977,7 @@ class Ui_MainWindow(object):
         self.statusOnline_2.setTitle(_translate("MainWindow", "Profile"))
         self.profile.setToolTip(_translate("MainWindow", "Shows the actual selected profile name."))
         self.profile.setText(_translate("MainWindow", "-"))
-from gui.utilities.tools4pyqtgraph import NormalScatter, PlotAlmanac, PolarScatter
+from gui.utilities.tools4pyqtgraph import NormalScatter, PlotBase, PolarScatter
 
 
 if __name__ == "__main__":

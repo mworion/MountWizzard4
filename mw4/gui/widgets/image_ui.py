@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/image.ui'
+# Form implementation generated from reading ui file 'image.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -290,7 +290,7 @@ class Ui_ImageDialog(object):
         self.line_12.setObjectName("line_12")
         self.gridLayout.addWidget(self.line_12, 27, 0, 1, 2)
         self.gridLayout_2.addWidget(self.groupBox, 0, 0, 1, 1)
-        self.image = PlotImageBar(ImageDialog)
+        self.image = ImageBar(ImageDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
@@ -341,7 +341,7 @@ class Ui_ImageDialog(object):
         self.label_10.setText(_translate("ImageDialog", "Filter"))
         self.label_2.setText(_translate("ImageDialog", "RA [hours]"))
         self.label.setText(_translate("ImageDialog", "Object Name"))
-from gui.utilities.tools4pyqtgraph import PlotImageBar
+from gui.utilities.tools4pyqtgraph import ImageBar
 
 
 if __name__ == "__main__":

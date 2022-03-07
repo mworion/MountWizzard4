@@ -303,7 +303,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return:
         """
         yMin, yMax = values['gen'].get('range', (None, None))
-        if yMin and yMax:
+        if yMin is not None and yMax is not None:
             plotItem.setLimits(yMin=yMin, yMax=yMax,
                                minYRange=(yMax - yMin) / 4,
                                maxYRange=(yMax - yMin))

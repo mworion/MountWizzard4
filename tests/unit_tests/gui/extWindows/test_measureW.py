@@ -161,7 +161,7 @@ def test_setupButtons(function):
 
 def test_constructPlotItem_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots['Current']
+    values = function.dataPlots = {'gen': {'range': (0, 1)}}
     x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
     suc = function.constructPlotItem(plotItem, values, x)
     assert suc
@@ -216,7 +216,7 @@ def test_drawMeasure_2(function):
 def test_drawMeasure_3(function):
     function.ui.set0.addItem('No chart')
     function.ui.set1.addItem('Current')
-    function.ui.set2.addItem('No chart')
+    function.ui.set2.addItem('Temperature')
     function.ui.set3.addItem('No chart')
     function.ui.set4.addItem('No chart')
     function.ui.set0.setCurrentIndex(0)
@@ -224,6 +224,7 @@ def test_drawMeasure_3(function):
     function.ui.set2.setCurrentIndex(0)
     function.ui.set3.setCurrentIndex(0)
     function.ui.set4.setCurrentIndex(0)
+    function.oldTitle = [None, 'Voltage', None, None, None]
     with mock.patch.object(function,
                            'plotting'):
         with mock.patch.object(function,

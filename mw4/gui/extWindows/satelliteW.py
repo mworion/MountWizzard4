@@ -67,8 +67,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.penPointer = pg.mkPen(color=self.M_PINK, width=2)
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=2)
-        self.brushHorizon = pg.mkBrush(color=self.M_BLUE + '40')
+        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
+        self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
 
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
@@ -241,9 +241,16 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         for key in self.world.keys():
             shape = self.world[key]
-            pd = pg.PlotDataItem(
-                x=shape['xDeg'], y=shape['yDeg'], pen=self.ui.satEarth.pen)
+            x = np.array(shape['xDeg'])
+            y = np.array(shape['yDeg'])
+            pd = pg.PlotDataItem(x=x, y=y, pen=self.penHorizon)
             plotItem.addItem(pd)
+
+            path = pg.arrayToQPath(x, y)
+            poly = pg.QtGui.QGraphicsPathItem(path)
+            poly.setPen(self.penHorizon)
+            poly.setBrush(self.brushHorizon)
+            plotItem.addItem(poly)
 
     def drawPosition(self, plotItem, obsSite):
         """
@@ -352,8 +359,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         xTicks = [(x, f'{x:0.0f}') for x in np.arange(30, 360, 30)]
+        yTicks = [(x, f'{x:0.0f}') for x in np.arange(10, 90, 10)]
         plotItem.getAxis('bottom').setTicks([xTicks])
         plotItem.getAxis('top').setTicks([xTicks])
+        plotItem.getAxis('left').setTicks([yTicks])
         plotItem.setLabel('bottom', 'Azimuth [deg]')
         plotItem.setLabel('left', 'Altitude [deg]')
         plotItem.setLimits(xMin=0, xMax=360, yMin=-0, yMax=90,
@@ -376,10 +385,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         alt, az = zip(*self.app.data.horizonP)
         alt = np.array(alt)
         az = np.array(az)
+        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
+        azF = np.concatenate([[0], [0], az, [360], [360]])
 
         pd = pg.PlotDataItem(
             x=az, y=alt, pen=self.penHorizon, brush=self.brushHorizon)
         plotItem.addItem(pd)
+
+        path = pg.arrayToQPath(azF, altF)
+        poly = pg.QtGui.QGraphicsPathItem(path)
+        poly.setPen(self.penHorizon)
+        poly.setBrush(self.brushHorizon)
+        plotItem.addItem(poly)
         return True
 
     def prepareHorizonSatellite(self, plotItem, obsSite):

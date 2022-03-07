@@ -116,12 +116,7 @@ def test_colorChange(function):
         suc = function.colorChange()
         assert suc
 
-
-def test_markerSatellite(function):
-    val = function.markerSatellite()
-    assert val is not None
-
-
+        
 def test_updatePointerAltAz_1(function):
     function.pointerAltAz = None
     suc = function.updatePointerAltAz(function.app.mount.obsSite)
@@ -189,8 +184,8 @@ def test_updatePositions_6(function):
     now = ts.tt_jd(2459523.2430)
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    function.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
-    function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
+    function.plotSatPosEarth, = pg.PlotItemData(x=[1, 0], y=[1, 0])
+    function.plotSatPosHorizon, = pg.PlotItemData(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth,
                            'setData'):
@@ -209,8 +204,8 @@ def test_updatePositions_7(function):
 
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    function.plotSatPosEarth, = plt.plot([1, 0], [1, 0])
-    function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
+    function.plotSatPosEarth = pg.PlotItemData(x=[1, 0], y=[1, 0])
+    function.plotSatPosHorizon = pg.PlotItemData(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth,
                            'setData'):
@@ -293,25 +288,7 @@ def test_drawEarth_3(function, ts):
     suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
-
-def test_staticHorizon_1(function):
-    function.app.data.horizonP = []
-    axe, _ = function.generateFlat(widget=function.satHorizonMat, horizon=False)
-    suc = function.staticHorizon(axe)
-    assert not suc
-
-
-def test_staticHorizon_2(function):
-    axe, _ = function.generateFlat(widget=function.satHorizonMat, horizon=False)
-    function.app.data.horizonP = [(0, 0), (0, 360)]
-    suc = function.staticHorizon(axe)
-    assert suc
-
-
-def test_markerAltAz(function):
-    function.markerAltAz()
-
-
+    
 def test_drawHorizonView_1(function):
     suc = function.drawHorizonView()
     assert not suc
@@ -386,7 +363,7 @@ def test_drawSatellite_1(function):
         with mock.patch.object(function,
                                'drawHorizonView'):
             suc = function.drawSatellite()
-            assert not suc
+            assert suc
 
 
 def test_drawSatellite_2(function, ts):

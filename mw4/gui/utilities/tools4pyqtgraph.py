@@ -295,12 +295,12 @@ class PolarScatter(NormalScatter):
         :param lat:
         :return:
         """
-        circle = pg.QtGui.QGraphicsEllipseItem(-3, -3, 6, 6)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-3, -3, 6, 6)
         circle.setPen(pg.mkPen(color=self.M_BLUE))
         circle.setBrush(pg.mkBrush(color=self.M_BLUE))
         circle.setPos(0, lat)
         self.p[0].addItem(circle)
-        circle = pg.QtGui.QGraphicsEllipseItem(-10, -10, 20, 20)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-10, -10, 20, 20)
         circle.setPen(pg.mkPen(color=self.M_BLUE, width=2))
         circle.setPos(0, lat)
         self.p[0].addItem(circle)
@@ -383,7 +383,7 @@ class ImageBar(PlotBase):
         d = 2
         w = (abs(np.cos(theta)) * a + abs(np.sin(theta)) * b) * d
         h = (abs(np.sin(theta)) * a + abs(np.cos(theta)) * b) * d
-        ellipse = pg.QtGui.QGraphicsEllipseItem(x - w, y - h,
+        ellipse = pg.QtWidgets.QGraphicsEllipseItem(x - w, y - h,
                                                 2 * w, 2 * h)
         ellipse.setPen(self.pen)
         self.p[0].addItem(ellipse)

@@ -58,16 +58,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
         for color in self.colors:
-            self.pens.append(pg.mkPen(color=color, width=4))
-            self.pens.append(pg.mkPen(color=color, width=4, style=Qt.DotLine))
-        self.penWhite = pg.mkPen(width=7, color=self.M_WHITE1)
+            self.pens.append(pg.mkPen(color=color, width=3))
+            self.pens.append(pg.mkPen(color=color, width=3, style=Qt.DotLine))
+        self.penWhite = pg.mkPen(width=2, color=self.M_WHITE1 + '80')
         self.brushSat = pg.mkBrush(color=self.M_PINK1 + '80')
         self.brushPointer = pg.mkBrush(color=self.M_PINK + '80')
         self.penSat = pg.mkPen(color=self.M_PINK1)
-        self.penPointer = pg.mkPen(color=self.M_PINK)
-        self.penLocation = pg.mkPen(color=self.M_YELLOW)
+        self.penPointer = pg.mkPen(color=self.M_PINK, width=2)
+        self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-                             
+        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=2)
+        self.brushHorizon = pg.mkBrush(color=self.M_BLUE + '40')
+
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
@@ -252,7 +254,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = obsSite.location.latitude.degrees
         lon = obsSite.location.longitude.degrees
         pd = pg.PlotDataItem(
-            x=[lon], y=[lat], symbol='o', symbolSize=5,
+            x=[lon], y=[lat], symbol='o', symbolSize=9,
             symbolPen=self.penLocation, symbolBrush=self.brushLocation)
         plotItem.addItem(pd)
         return True
@@ -376,8 +378,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         az = np.array(az)
 
         pd = pg.PlotDataItem(
-            x=az, y=alt, symbol='d', symbolSize=20,
-            symbolPen=self.penSat, symbolBrush=self.brushSat)
+            x=az, y=alt, pen=self.penHorizon, brush=self.brushHorizon)
         plotItem.addItem(pd)
         return True
 

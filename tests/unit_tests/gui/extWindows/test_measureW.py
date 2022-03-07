@@ -233,3 +233,25 @@ def test_drawMeasure_3(function):
                                    'triggerUpdate'):
                 suc = function.drawMeasure()
                 assert suc
+
+
+def test_drawMeasure_4(function):
+    function.ui.set0.addItem('No chart')
+    function.ui.set1.addItem('No chart')
+    function.ui.set2.addItem('No chart')
+    function.ui.set3.addItem('No chart')
+    function.ui.set4.addItem('Temperature')
+    function.ui.set0.setCurrentIndex(0)
+    function.ui.set1.setCurrentIndex(0)
+    function.ui.set2.setCurrentIndex(0)
+    function.ui.set3.setCurrentIndex(0)
+    function.ui.set4.setCurrentIndex(0)
+    function.oldTitle = [None, None, None, None, None]
+    with mock.patch.object(function,
+                           'plotting'):
+        with mock.patch.object(function,
+                               'resetPlotItem'):
+            with mock.patch.object(function,
+                                   'triggerUpdate'):
+                suc = function.drawMeasure()
+                assert suc

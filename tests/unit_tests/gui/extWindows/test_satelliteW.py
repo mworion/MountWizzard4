@@ -288,6 +288,20 @@ def test_drawEarth_3(function, ts):
     suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
+
+def test_staticHorizon_1(function):
+    plotItem = pg.PlotDataItem()
+    function.app.data.horizonP = []
+    suc = function.staticHorizon(plotItem)
+    assert not suc
+
+
+def test_staticHorizon_2(function):
+    plotItem = pg.PlotItem()
+    function.app.data.horizonP = [(1, 1), (2, 2)]
+    suc = function.staticHorizon(plotItem)
+    assert suc
+
     
 def test_drawHorizonView_1(function):
     suc = function.drawHorizonView()

@@ -363,9 +363,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.clear()
         return True
 
-    def staticHorizon(self, axes=None):
+    def staticHorizon(self, plotItem):
         """
-        :param axes: matplotlib axes object
+        :param plotItem:
         :return:
         """
         if not self.app.data.horizonP:
@@ -374,11 +374,11 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         alt, az = zip(*self.app.data.horizonP)
         alt = np.array(alt)
         az = np.array(az)
-        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
-        azF = np.concatenate([[0], [0], az, [360], [360]])
 
-        axes.fill(azF, altF, color=self.M_GREY1, alpha=0.5, zorder=-10)
-        axes.plot(az, alt, color=self.M_BLUE, marker='', alpha=0.7, lw=2)
+        pd = pg.PlotDataItem(
+            x=az, y=alt, symbol='d', symbolSize=20,
+            symbolPen=self.penSat, symbolBrush=self.brushSat)
+        plotItem.addItem(pd)
         return True
 
     def prepareHorizonSatellite(self, plotItem, obsSite):
@@ -467,7 +467,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
-        # self.staticHorizon(axes=axe)
+        self.staticHorizon(plotItem)
 
         if not satOrbits or obsSite is None:
             return False

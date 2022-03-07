@@ -307,7 +307,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
-                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen=self.pens[2 * i + 1])
+                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.pens[2 * i + 1])
                 plotItem.addItem(pd)
 
         rise = satOrbits[0]['rise'].tt

@@ -184,8 +184,8 @@ def test_updatePositions_6(function):
     now = ts.tt_jd(2459523.2430)
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    function.plotSatPosEarth, = pg.PlotItemData(x=[1, 0], y=[1, 0])
-    function.plotSatPosHorizon, = pg.PlotItemData(x=[1, 0], y=[1, 0])
+    function.plotSatPosEarth, = pg.PlotDataItem(x=[1, 0], y=[1, 0])
+    function.plotSatPosHorizon, = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth,
                            'setData'):
@@ -204,8 +204,8 @@ def test_updatePositions_7(function):
 
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
 
-    function.plotSatPosEarth = pg.PlotItemData(x=[1, 0], y=[1, 0])
-    function.plotSatPosHorizon = pg.PlotItemData(x=[1, 0], y=[1, 0])
+    function.plotSatPosEarth = pg.PlotDataItem(x=[1, 0], y=[1, 0])
+    function.plotSatPosHorizon = pg.PlotDataItem(x=[1, 0], y=[1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth,
                            'setData'):

@@ -60,8 +60,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
         for color in self.colors:
-            self.pens.append(pg.mkPen(color=color, width=4)
-            self.pens.append(pg.mkPen(color=color, width=4, style=Qt.DotLine)
+            self.pens.append(pg.mkPen(color=color, width=4))
+            self.pens.append(pg.mkPen(color=color, width=4, style=Qt.DotLine))
         self.penWhite = pg.mkPen(width=7, color=self.M_WHITE1)
         self.brushSat = pg.mkBrush(color=self.M_PINK1 + '80')
         self.brushPointer = pg.mkBrush(color=self.M_PINK + '80')

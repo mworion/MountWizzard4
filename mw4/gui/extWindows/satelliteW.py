@@ -153,7 +153,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             return False
 
         if obsSite.Alt is None or obsSite.Az is None:
-            self.pointerAltAz.set_visible(False)
+            self.pointerAltAz.setVisible(False)
             return False
         else:
             self.pointerAltAz.setVisible(True)

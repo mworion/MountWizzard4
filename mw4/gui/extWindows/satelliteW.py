@@ -43,8 +43,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
     """
     """
     __all__ = ['SatelliteWindow']
-    FORECAST_TIME = 3
-    EARTH_RADIUS = 6378.0
 
     def __init__(self, app):
         super().__init__()
@@ -60,6 +58,18 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.pointerAltAz = None
 
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
+        self.pens = []
+        for color in self.colors:
+            self.pens.append(pg.mkPen(color=color, width=4)
+            self.pens.append(pg.mkPen(color=color, width=4, style=Qt.DotLine)
+        self.penWhite = pg.mkPen(width=7, color=self.M_WHITE1)
+        self.brushSat = pg.mkBrush(color=self.M_PINK1 + '80')
+        self.brushPointer = pg.mkBrush(color=self.M_PINK + '80')
+        self.penSat = pg.mkPen(color=self.M_PINK1)
+        self.penPointer = pg.mkPen(color=self.M_PINK)
+        self.penLocation = pg.mkPen(color=self.M_YELLOW)
+        self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
+                             
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
@@ -245,8 +255,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lon = obsSite.location.longitude.degrees
         pd = pg.PlotDataItem(
             x=[lon], y=[lat], symbol='o', symbolSize=5,
-            symbolPen=pg.mkPen(color=self.M_YELLOW),
-            symbolBrush=pg.mkBrush(color=self.M_YELLOW))
+            symbolPen=self.penLocation, symbolBrush=self.brushLocation)
         plotItem.addItem(pd)
         return True
 
@@ -262,8 +271,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
         pd = pg.PlotDataItem(
             x=[lat], y=[lon], symbol='d', symbolSize=20,
-            symbolPen=pg.mkPen(color=self.M_PINK),
-            symbolBrush=pg.mkBrush(color=self.M_PINK1 + '80'))
+            symbolPen=self.penSat, symbolBrush=self.brushSat)
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -289,9 +297,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
-            pen = pg.mkPen(width=4, color=self.colors[i])
             for slc in self.unlinkWrap(lon):
-                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen)
+                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.pens[2 * i])
                 plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)
@@ -299,9 +306,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
             lat = subpoints.latitude.degrees
             lon = subpoints.longitude.degrees
-            pen = pg.mkPen(width=4, color=self.colors[i], style=Qt.DotLine)
             for slc in self.unlinkWrap(lon):
-                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen)
+                pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen=self.pens[2 * i + 1])
                 plotItem.addItem(pd)
 
         rise = satOrbits[0]['rise'].tt
@@ -312,9 +318,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         subpoints = wgs84.subpoint_of(self.satellite.at(vecT))
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
-        pen = pg.mkPen(width=1, color=self.M_WHITE1)
         for slc in self.unlinkWrap(lon):
-            pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pen)
+            pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.penWhite)
             pd.setZValue(-10)
             plotItem.addItem(pd)
         return True
@@ -387,8 +392,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
         pd = pg.PlotDataItem(
             x=[az.degrees], y=[alt.degrees], symbol='d', symbolSize=20,
-            symbolPen=pg.mkPen(color=self.M_PINK),
-            symbolBrush=pg.mkBrush(color=self.M_PINK1 + '80'))
+            symbolPen=self.penSat, symbolBrush=self.brushSat)
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -401,8 +405,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         pd = pg.PlotDataItem(
             x=[180], y=[45], symbol='o', symbolSize=20,
-            symbolPen=pg.mkPen(color=self.M_PINK),
-            symbolBrush=pg.mkBrush(color=self.M_PINK + '80'))
+            symbolPen=self.penPointer, symbolBrush=self.brushPointer)
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -432,26 +435,23 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             vecT = ts.tt_jd(vector)
             alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
 
-            pen = pg.mkPen(width=4, color=self.colors[i])
             for slc in self.unlinkWrap(az.degrees):
                 pd = pg.PlotDataItem(
-                    x=az.degrees[slc], y=alt.degrees[slc], pen=pen)
+                    x=az.degrees[slc], y=alt.degrees[slc], pen=self.pens[2 * i])
                 plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)
             vecT = ts.tt_jd(vector)
             alt, az, _ = (self.satellite - obsSite.location).at(vecT).altaz()
-            pen = pg.mkPen(width=4, color=self.colors[i], style=Qt.DotLine)
             for slc in self.unlinkWrap(az.degrees):
                 pd = pg.PlotDataItem(
-                    x=az.degrees[slc], y=alt.degrees[slc], pen=pen)
+                    x=az.degrees[slc], y=alt.degrees[slc], pen=self.pens[2 * i + 1])
                 plotItem.addItem(pd)
 
-        pen = pg.mkPen(width=7, color=self.M_WHITE + 'C0')
         for slc in self.unlinkWrap(azimuth):
             pd = pg.PlotDataItem(
-                x=azimuth[slc], y=altitude[slc], pen=pen)
-            # pd.setZValue(-5)
+                x=azimuth[slc], y=altitude[slc], pen=self.penWhite)
+            pd.setZValue(-5)
             plotItem.addItem(pd)
 
     def drawHorizonView(self, obsSite=None, satOrbits=None,

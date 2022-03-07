@@ -20,9 +20,7 @@ from io import BytesIO
 
 # external packages
 from PyQt5.QtCore import QObject, pyqtSignal, QFile, Qt
-from PyQt5.QtWidgets import QApplication
 import numpy as np
-import matplotlib.path as mpath
 from skyfield.api import wgs84
 import pyqtgraph as pg
 

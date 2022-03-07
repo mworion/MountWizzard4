@@ -20,14 +20,12 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-import matplotlib
-matplotlib.use('Qt5Agg')
 from PyQt5.QtGui import QCloseEvent
-import matplotlib.pyplot as plt
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
 from skyfield.api import load
 import numpy as np
+import pyqtgraph as pg
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
@@ -131,8 +129,7 @@ def test_updatePointerAltAz_1(function):
 
 
 def test_updatePointerAltAz_2(function):
-    axe, _ = function.generateFlat(widget=function.satEarthMat, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = None
     suc = function.updatePointerAltAz(function.app.mount.obsSite)
@@ -140,8 +137,7 @@ def test_updatePointerAltAz_2(function):
 
 
 def test_updatePointerAltAz_3(function):
-    axe, _ = function.generateFlat(widget=function.satEarthMat, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = None
     function.app.mount.obsSite.Az = Angle(degrees=80)
     suc = function.updatePointerAltAz(function.app.mount.obsSite)
@@ -149,8 +145,7 @@ def test_updatePointerAltAz_3(function):
 
 
 def test_updatePointerAltAz_4(function):
-    axe, _ = function.generateFlat(widget=function.satEarthMat, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerAltAz = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = Angle(degrees=80)
     suc = function.updatePointerAltAz(function.app.mount.obsSite)
@@ -198,9 +193,9 @@ def test_updatePositions_6(function):
     function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth,
-                           'set_data'):
+                           'setData'):
         with mock.patch.object(function.plotSatPosHorizon,
-                               'set_data'):
+                               'setData'):
             suc = function.updatePositions(now=now, location=location)
             assert suc
 
@@ -218,9 +213,9 @@ def test_updatePositions_7(function):
     function.plotSatPosHorizon, = plt.plot([1, 0], [1, 0])
     location = function.app.mount.obsSite.location
     with mock.patch.object(function.plotSatPosEarth,
-                           'set_data'):
+                           'setData'):
         with mock.patch.object(function.plotSatPosHorizon,
-                               'set_data'):
+                               'setData'):
             suc = function.updatePositions(now=now, location=location)
             assert suc
 

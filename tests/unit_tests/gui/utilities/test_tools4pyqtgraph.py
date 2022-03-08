@@ -181,12 +181,12 @@ def test_ImageBar_addValueAnnotation():
 
         
 def test_TimeMeasure():
-    TimeMeasure()
+    TimeMeasure(orientation='left')
 
         
 def test_TimeMeasure_tickStrings():
     values = [0, 1, 2]
-    TimeMeasure.tickStrings(values, None, None)
+    TimeMeasure(orientation='left').tickStrings(values, 0, 0)
     
 
 def test_Measure():

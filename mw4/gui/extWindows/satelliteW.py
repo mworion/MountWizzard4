@@ -19,10 +19,10 @@ import pickle
 from io import BytesIO
 
 # external packages
-from PyQt5.QtCore import QObject, QFile, Qt, pyqtSignal
-import pyqtgraph as pg
+from PyQt5.QtCore import QObject, pyqtSignal, QFile, Qt
 import numpy as np
 from skyfield.api import wgs84
+import pyqtgraph as pg
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -48,8 +48,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.threadPool = app.threadPool
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
-        self.signals = SatelliteWindowSignals()
         self.closing = False
+        self.signals = SatelliteWindowSignals()
         self.satellite = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
@@ -75,13 +75,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         pickleData = stream.readAll()
         stream.close()
         self.world = pickle.load(BytesIO(pickleData))
-
         self.signals.show.connect(self.drawSatellite)
         self.signals.update.connect(self.updatePositions)
 
     def initConfig(self):
         """
-        :return: 
+        :return:
         """
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
@@ -101,7 +100,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def storeConfig(self):
         """
-        :return: 
+        :return:
         """
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
@@ -125,7 +124,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
 
     def showWindow(self):
         """
-        :return:
+        :return: True for test purpose
         """
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.colorChange.connect(self.colorChange)

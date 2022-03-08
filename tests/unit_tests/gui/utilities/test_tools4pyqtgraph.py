@@ -31,6 +31,8 @@ from gui.utilities.tools4pyqtgraph import PolarScatter
 from gui.utilities.tools4pyqtgraph import NormalScatter
 from gui.utilities.tools4pyqtgraph import ImageBar
 from gui.utilities.tools4pyqtgraph import Measure
+from gui.utilities.tools4pyqtgraph import TimeMeasure
+from gui.utilities.tools4pyqtgraph import CustomViewBox
 
 
 @pytest.fixture(autouse=True, scope='module')

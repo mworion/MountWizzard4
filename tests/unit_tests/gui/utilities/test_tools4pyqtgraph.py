@@ -21,6 +21,7 @@ import unittest.mock as mock
 
 # external packages
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import Qt
 import numpy as np
 import pyqtgraph as pg
 
@@ -37,6 +38,19 @@ def module(qapp):
     yield
 
 
+def CustomViewBox():
+    CustomViewBox()
+
+
+def CustomViewBox_mouseClickEvent():
+    class Event:
+        @staticmethod
+        def button():
+            return Qt.MouseButton.RightButton
+        
+    CustomViewBox.mouseClickEvent(Event())
+
+    
 def test_PlotBase():
     PlotBase()
 
@@ -163,6 +177,15 @@ def test_ImageBar_addValueAnnotation():
         suc = function.addValueAnnotation(0, 0, 10)
         assert suc
 
+        
+def test_TimeMeasure():
+    TimeMeasure()
+
+        
+def test_TimeMeasure_tickStrings():
+    values = [0, 1, 2]
+    TimeMeasure.tickStrings(values, None, None)
+    
 
 def test_Measure():
     Measure()

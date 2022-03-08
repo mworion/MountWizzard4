@@ -19,13 +19,14 @@ import pickle
 from io import BytesIO
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal, QFile, Qt
+from PyQt5.QtCore import QObject, QFile, Qt, pyqtSignal
 import numpy as np
 from skyfield.api import wgs84
 import pyqtgraph as pg
 
 # local import
 from gui.utilities import toolsQtWidget
+from gui.utilities.speedup import symbol_from_svg
 from gui.widgets import satellite_ui
 
 
@@ -69,6 +70,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
         self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
         self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
+
+        self.satSym = symbol_from_svg('sat')
 
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
@@ -274,7 +277,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         pd = pg.PlotDataItem(
-            x=[lat], y=[lon], symbol='d', symbolSize=20,
+            x=[lat], y=[lon], symbol=self.satSym, symbolSize=20,
             symbolPen=self.penSat, symbolBrush=self.brushSat)
         pd.setVisible(False)
         pd.setZValue(10)

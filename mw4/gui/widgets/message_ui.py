@@ -20,12 +20,11 @@ class Ui_MessageDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MessageDialog.sizePolicy().hasHeightForWidth())
         MessageDialog.setSizePolicy(sizePolicy)
-        MessageDialog.setMinimumSize(QtCore.QSize(800, 260))
+        MessageDialog.setMinimumSize(QtCore.QSize(800, 300))
         MessageDialog.setMaximumSize(QtCore.QSize(800, 1200))
         MessageDialog.setSizeIncrement(QtCore.QSize(10, 10))
         MessageDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()
-        font.setFamily("Arial")
         font.setPointSize(10)
         MessageDialog.setFont(font)
         self.verticalLayout = QtWidgets.QVBoxLayout(MessageDialog)
@@ -63,19 +62,17 @@ class Ui_MessageDialog(object):
         self.message.setSizeIncrement(QtCore.QSize(10, 10))
         self.message.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()
-        font.setFamily("Courier New")
         font.setPointSize(10)
         font.setBold(False)
-        font.setWeight(50)
         self.message.setFont(font)
         self.message.setAcceptDrops(False)
         self.message.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.message.setFrameShadow(QtWidgets.QFrame.Plain)
         self.message.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.message.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Courier New\',\'Arial\',\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Courier New\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Arial\'; font-weight:600;\"><br /></p></body></html>")
         self.message.setAcceptRichText(False)
         self.message.setTextInteractionFlags(QtCore.Qt.NoTextInteraction)

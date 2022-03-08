@@ -20,13 +20,13 @@ from io import BytesIO
 
 # external packages
 from PyQt5.QtCore import QObject, QFile, Qt, pyqtSignal
+from PyQt5.QtGui import QPainterPath, QTransform
 import numpy as np
 from skyfield.api import wgs84
 import pyqtgraph as pg
 
 # local import
 from gui.utilities import toolsQtWidget
-from gui.utilities.speedup import symbol_from_svg
 from gui.widgets import satellite_ui
 
 
@@ -71,7 +71,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
         self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
 
-        self.satSym = symbol_from_svg('sat')
+        self.satSym = self.makeSat()
 
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
@@ -144,6 +144,25 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.ui.satHorizon.colorChange()
         self.app.sendSatelliteData.emit()
         return True
+
+    @staticmethod
+    def makeSat():
+        path = QPainterPath()
+        tr = QTransform()
+        path.addRect(-0.5, -0.15, 0.1, 0.3)
+        path.addRect(-0.35, -0.15, 0.1, 0.3)
+        path.addRect(-0.2, -0.15, 0.1, 0.3)
+        path.moveTo(-0.1, -0.15)
+        path.lineTo(-0.1, -0.15)
+        path.lineTo(0, 0)
+        path.lineTo(-0.1, 0.15)
+        path.lineTo(-0.1, 0.15)
+        tr.rotate(180)
+        path.addPath(tr.map(path))
+        tr.rotate(45)
+        path = tr.map(path)
+        path.addEllipse(-0.05, -0.05, 0.1, 0.1)
+        return path
 
     def updatePointerAltAz(self, obsSite):
         """
@@ -277,7 +296,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         pd = pg.PlotDataItem(
-            x=[lat], y=[lon], symbol=self.satSym, symbolSize=20,
+            x=[lat], y=[lon], symbol=self.satSym, symbolSize=40,
             symbolPen=self.penSat, symbolBrush=self.brushSat)
         pd.setVisible(False)
         pd.setZValue(10)

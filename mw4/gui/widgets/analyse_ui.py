@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/analyse.ui'
+# Form implementation generated from reading ui file 'analyse.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -259,13 +259,13 @@ class Ui_AnalyseDialog(object):
         font.setBold(True)
         self.label_16.setFont(font)
         self.label_16.setObjectName("label_16")
-        self.winsorizedLimit = QtWidgets.QCheckBox(self.frame)
-        self.winsorizedLimit.setGeometry(QtCore.QRect(580, 65, 111, 21))
-        self.winsorizedLimit.setMinimumSize(QtCore.QSize(0, 21))
+        self.showHorizon = QtWidgets.QCheckBox(self.frame)
+        self.showHorizon.setGeometry(QtCore.QRect(580, 65, 111, 21))
+        self.showHorizon.setMinimumSize(QtCore.QSize(0, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.winsorizedLimit.setFont(font)
-        self.winsorizedLimit.setObjectName("winsorizedLimit")
+        self.showHorizon.setFont(font)
+        self.showHorizon.setObjectName("showHorizon")
         self.modelTerms = QtWidgets.QLineEdit(self.frame)
         self.modelTerms.setEnabled(True)
         self.modelTerms.setGeometry(QtCore.QRect(175, 65, 46, 21))
@@ -744,7 +744,7 @@ class Ui_AnalyseDialog(object):
         self.label_19.setText(_translate("AnalyseDialog", "FocalLength"))
         self.label_2.setText(_translate("AnalyseDialog", "Solver"))
         self.label_16.setText(_translate("AnalyseDialog", "s"))
-        self.winsorizedLimit.setText(_translate("AnalyseDialog", "Winzorized"))
+        self.showHorizon.setText(_translate("AnalyseDialog", "show horizon"))
         self.modelTerms.setToolTip(_translate("AnalyseDialog", "Name of Model Points file, where the data is stored. "))
         self.binning.setToolTip(_translate("AnalyseDialog", "Name of Model Points file, where the data is stored. "))
         self.label_12.setText(_translate("AnalyseDialog", "arcsec"))

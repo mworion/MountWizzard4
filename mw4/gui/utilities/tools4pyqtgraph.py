@@ -57,8 +57,11 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         pg.setConfigOptions(antialias=True, imageAxisOrder='row-major')
 
         self.pen = pg.mkPen(color=self.M_BLUE, width=1)
+        self.brush = pg.mkBrush(color=self.M_BLUE + '80')
         self.penGrid = pg.mkPen(color=self.M_GREY)
         self.brushGrid = pg.mkBrush(color=self.M_GREY + '80')
+        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
+        self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
         self.setBackground(self.M_BACK)
         self.cMapGYR = pg.ColorMap([0, 0.6, 1.0],
                                    [self.M_GREEN, self.M_YELLOW, self.M_RED])
@@ -70,13 +73,18 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.setBackground(self.M_BACK)
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
         self.setupItems()
+        self.colorChange()
 
     def colorChange(self):
         """
         :return:
         """
-        self.pen = pg.mkPen(color=self.M_BLUE)
+        self.pen = pg.mkPen(color=self.M_BLUE, width=1)
+        self.brush = pg.mkBrush(color=self.M_BLUE + '80')
         self.penGrid = pg.mkPen(color=self.M_GREY)
+        self.brushGrid = pg.mkBrush(color=self.M_GREY + '80')
+        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
+        self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
         self.setBackground(self.M_BACK)
         for side in ('left', 'top', 'right', 'bottom'):
             for plotItem in self.p:
@@ -117,6 +125,23 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             self.barItem.getAxis(side).setTextPen(self.pen)
         self.p[0].layout.addItem(self.barItem, 2, 5)
         self.p[0].layout.setColumnFixedWidth(4, 5)
+        return True
+
+    def staticHorizon(self, horizonP):
+        """
+        :param horizonP:
+        :return:
+        """
+        alt, az = zip(*horizonP)
+        alt = np.array(alt)
+        az = np.array(az)
+        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
+        azF = np.concatenate([[0], [0], az, [360], [360]])
+        path = pg.arrayToQPath(azF, altF)
+        poly = pg.QtGui.QGraphicsPathItem(path)
+        poly.setPen(self.penHorizon)
+        poly.setBrush(self.brushHorizon)
+        self.p[0].addItem(poly)
         return True
 
 
@@ -214,13 +239,14 @@ class PolarScatter(NormalScatter):
             maxR = 90
             stepLines = 10
             gridLines = range(10, maxR, stepLines)
-            circle = pg.QtGui.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2, maxR * 2)
+            circle = pg.QtWidgets.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2,
+                                                       maxR * 2)
             circle.setPen(self.pen)
             self.p[0].addItem(circle)
         else:
             maxR = int(np.max(y))
-            stepLines = 5
-            gridLines = np.arange(0, maxR, stepLines)
+            steps = 7
+            gridLines = np.round(np.linspace(0, maxR, steps), 1)
 
         self.p[0].addLine(x=0, pen=self.penGrid)
         self.p[0].addLine(y=0, pen=self.penGrid)
@@ -228,7 +254,7 @@ class PolarScatter(NormalScatter):
         font = QFont(self.window().font().family(),
                      int(self.window().font().pointSize() * 1.1))
         for r in gridLines:
-            circle = pg.QtGui.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
+            circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
             circle.setPen(self.penGrid)
             self.p[0].addItem(circle)
             if kwargs.get('reverse', False):
@@ -296,12 +322,16 @@ class PolarScatter(NormalScatter):
         :return:
         """
         circle = pg.QtWidgets.QGraphicsEllipseItem(-3, -3, 6, 6)
-        circle.setPen(pg.mkPen(color=self.M_BLUE))
-        circle.setBrush(pg.mkBrush(color=self.M_BLUE))
+        circle.setPen(self.pen)
+        circle.setBrush(self.brush)
+        circle.setPos(0, lat)
+        self.p[0].addItem(circle)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-5, -5, 10, 10)
+        circle.setPen(self.pen)
         circle.setPos(0, lat)
         self.p[0].addItem(circle)
         circle = pg.QtWidgets.QGraphicsEllipseItem(-10, -10, 20, 20)
-        circle.setPen(pg.mkPen(color=self.M_BLUE, width=2))
+        circle.setPen(self.pen)
         circle.setPos(0, lat)
         self.p[0].addItem(circle)
         return True

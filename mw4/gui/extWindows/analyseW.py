@@ -58,7 +58,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
 
         self.wIcon(self.ui.load, 'load')
         self.ui.load.clicked.connect(self.loadModel)
-        self.ui.winsorizedLimit.clicked.connect(self.drawAll)
         self.app.colorChange.connect(self.colorChange)
 
         self.charts = [self.draw_raRawErrors,
@@ -92,6 +91,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             y = 0
         if x != 0 and y != 0:
             self.move(x, y)
+        self.ui.showHorizon.setChecked(config.get('showHorizon', False))
         return True
 
     def storeConfig(self):
@@ -106,6 +106,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
+        config['showHorizon'] = self.ui.showHorizon.isChecked()
         return True
 
     def closeEvent(self, closeEvent):
@@ -116,6 +117,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.closing = True
         self.storeConfig()
         self.app.showAnalyse.disconnect(self.showAnalyse)
+        self.ui.showHorizon.clicked.disconnect(self.drawAll)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -124,6 +126,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         self.show()
         self.app.showAnalyse.connect(self.showAnalyse)
+        self.ui.showHorizon.clicked.connect(self.drawAll)
         return True
 
     def colorChange(self):
@@ -249,6 +252,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorRA_S, data=self.errorRA_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+        if self.ui.showHorizon.isChecked():
+            self.ui.raRawErrors.staticHorizon(self.app.data.horizonP)
         return True
 
     def draw_decRawErrors(self):
@@ -264,6 +269,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorDEC_S, data=self.errorDEC_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+        if self.ui.showHorizon.isChecked():
+            self.ui.decRawErrors.staticHorizon(self.app.data.horizonP)
         return True
 
     def draw_raErrors(self):
@@ -279,6 +286,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorRA, data=self.errorRA,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+        if self.ui.showHorizon.isChecked():
+            self.ui.raErrors.staticHorizon(self.app.data.horizonP)
         return True
 
     def draw_decError(self):
@@ -294,6 +303,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorDEC, data=self.errorDEC,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+        if self.ui.showHorizon.isChecked():
+            self.ui.decErrors.staticHorizon(self.app.data.horizonP)
         return True
 
     def draw_raRawErrorsRef(self):

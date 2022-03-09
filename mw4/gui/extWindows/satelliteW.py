@@ -68,8 +68,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.penPointer = pg.mkPen(color=self.M_PINK, width=2)
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-        self.penHorizon = pg.mkPen(color=self.M_BLUE + '80', width=1)
-        self.brushHorizon = pg.mkBrush(color=self.M_BLUE2 + '40')
 
         self.satSym = self.makeSat()
 
@@ -267,8 +265,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             y = np.array(shape['yDeg'])
             path = pg.arrayToQPath(x, y)
             poly = pg.QtGui.QGraphicsPathItem(path)
-            poly.setPen(self.penHorizon)
-            poly.setBrush(self.brushHorizon)
+            poly.setPen(self.ui.satEarth.penHorizon)
+            poly.setBrush(self.ui.satEarth.brushHorizon)
             plotItem.addItem(poly)
         return True
 
@@ -393,26 +391,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         plotItem.clear()
         return True
 
-    def staticHorizon(self, plotItem):
-        """
-        :param plotItem:
-        :return:
-        """
-        if not self.app.data.horizonP:
-            return False
-
-        alt, az = zip(*self.app.data.horizonP)
-        alt = np.array(alt)
-        az = np.array(az)
-        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
-        azF = np.concatenate([[0], [0], az, [360], [360]])
-        path = pg.arrayToQPath(azF, altF)
-        poly = pg.QtGui.QGraphicsPathItem(path)
-        poly.setPen(self.penHorizon)
-        poly.setBrush(self.brushHorizon)
-        plotItem.addItem(poly)
-        return True
-
     def prepareHorizonSatellite(self, plotItem, obsSite):
         """
         :param plotItem:
@@ -499,7 +477,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
-        self.staticHorizon(plotItem)
+        self.ui.satHorizon.staticHorizon(self.app.data.horizonP)
 
         if not satOrbits or obsSite is None:
             return False

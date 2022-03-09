@@ -782,7 +782,7 @@ Model</string>
        <string>s</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="winsorizedLimit">
+     <widget class="QCheckBox" name="showHorizon">
       <property name="geometry">
        <rect>
         <x>580</x>
@@ -803,7 +803,7 @@ Model</string>
        </font>
       </property>
       <property name="text">
-       <string>Winzorized</string>
+       <string>show horizon</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="modelTerms">

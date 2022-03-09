@@ -137,7 +137,6 @@ class Almanac:
         yTicks = [(x, y) for x, y in zip(yTicks, yLabels)]
 
         plotItem = self.ui.twilight.p[0]
-        plotItem.setMouseEnabled(x=False, y=False)
         plotItem.getAxis('bottom').setTicks([xTicks])
         plotItem.getAxis('left').setTicks([yTicks])
         plotItem.getAxis('top').setTicks([xTicks])
@@ -145,6 +144,7 @@ class Almanac:
         plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=0, yMax=24)
         plotItem.setYRange(0, 24)
         plotItem.setXRange(xMin, xMax)
+
         pens = []
         brushes = []
         for i in range(5):
@@ -158,6 +158,7 @@ class Almanac:
         dayLoc = tLoc - refDay
         yH = [x.total_seconds() / 3600 for x in dayLoc]
         xD = np.array([int(x) for x in t.tt])
+
         plotItem.clear()
         for i in range(len(t)):
             if yH[i] > 12:

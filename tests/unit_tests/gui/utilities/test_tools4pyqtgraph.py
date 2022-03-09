@@ -40,11 +40,11 @@ def module(qapp):
     yield
 
 
-def CustomViewBox():
+def test_CustomViewBox():
     CustomViewBox()
 
 
-def CustomViewBox_mouseClickEvent():
+def test_CustomViewBox_mouseClickEvent():
     class Event:
         @staticmethod
         def button():

@@ -50,7 +50,7 @@ def test_CustomViewBox_mouseClickEvent():
         def button():
             return Qt.MouseButton.RightButton
         
-    CustomViewBox.mouseClickEvent(ev=Event())
+    CustomViewBox().mouseClickEvent(ev=Event())
 
     
 def test_PlotBase():

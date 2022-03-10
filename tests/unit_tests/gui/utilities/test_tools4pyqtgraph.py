@@ -72,7 +72,7 @@ def test_PlotBase_staticHorizon_1():
     plotItem = pg.PlotItem()
     with mock.patch.object(p,
                            'show'):
-        suc = p.staticHorizon(plotItem, [(0, 0)])
+        suc = p.staticHorizon([(0, 0)])
         assert suc
 
 
@@ -81,7 +81,7 @@ def test_PlotBase_staticHorizon_2():
     plotItem = pg.PlotItem()
     with mock.patch.object(p,
                            'show'):
-        suc = p.staticHorizon(plotItem, [(1, 1), (2, 2)])
+        suc = p.staticHorizon([(1, 1), (2, 2)])
         assert suc
 
 

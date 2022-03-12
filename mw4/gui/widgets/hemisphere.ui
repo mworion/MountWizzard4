@@ -42,7 +42,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -125,7 +124,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -150,7 +148,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -175,7 +172,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -206,7 +202,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -231,7 +226,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -349,7 +343,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -380,7 +373,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -405,7 +397,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -436,7 +427,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -492,7 +482,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -520,7 +509,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -652,7 +640,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -791,7 +778,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="graphics" stretch="1,1">
+    <layout class="QHBoxLayout" name="graphics" stretch="1">
      <item>
       <widget class="QWidget" name="hemisphere" native="true">
        <property name="enabled">
@@ -833,108 +820,6 @@
        <property name="styleSheet">
         <string notr="true"/>
        </property>
-       <widget class="QWidget" name="hemisphereMove" native="true">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>1</x>
-          <y>0</y>
-          <width>391</width>
-          <height>451</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>270</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="sizeIncrement">
-         <size>
-          <width>10</width>
-          <height>10</height>
-         </size>
-        </property>
-        <property name="baseSize">
-         <size>
-          <width>10</width>
-          <height>10</height>
-         </size>
-        </property>
-        <property name="autoFillBackground">
-         <bool>true</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QWidget" name="polar" native="true">
-       <widget class="QWidget" name="polarMove" native="true">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>391</width>
-          <height>451</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>270</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="sizeIncrement">
-         <size>
-          <width>10</width>
-          <height>10</height>
-         </size>
-        </property>
-        <property name="baseSize">
-         <size>
-          <width>10</width>
-          <height>10</height>
-         </size>
-        </property>
-        <property name="autoFillBackground">
-         <bool>true</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
       </widget>
      </item>
     </layout>

@@ -22,7 +22,7 @@ from datetime import datetime as dt
 import numpy as np
 import pyqtgraph as pg
 from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtGui import QColor, QFont
+from PyQt5.QtGui import QColor, QFont, QTransform
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -43,6 +43,7 @@ class CustomViewBox(pg.ViewBox):
         super().__init__(*args, **kwargs)
 
     def mouseClickEvent(self, ev):
+        super().mouseClickEvent(ev)
         if ev.button() == Qt.MouseButton.RightButton:
             self.autoRange()
             self.enableAutoRange(x=True, y=True)
@@ -359,6 +360,7 @@ class ImageBar(PlotBase):
         :return:
         """
         self.p[0].clear()
+        self.p[0].showAxes(True, showValues=True)
         self.imageItem = pg.ImageItem()
         self.p[0].addItem(self.imageItem)
         self.barItem.setImageItem(self.imageItem, insert_in=self.p[0])
@@ -413,11 +415,11 @@ class ImageBar(PlotBase):
         """
         :return:
         """
-        d = 2
-        w = (abs(np.cos(theta)) * a + abs(np.sin(theta)) * b) * d
-        h = (abs(np.sin(theta)) * a + abs(np.cos(theta)) * b) * d
-        ellipse = pg.QtWidgets.QGraphicsEllipseItem(x - w, y - h,
-                                                2 * w, 2 * h)
+        ellipse = pg.QtWidgets.QGraphicsEllipseItem(-a, -b, 2 * a, 2 * b)
+        ellipse.setPos(x, y)
+        tr = QTransform()
+        tr.rotate(np.degrees(theta))
+        ellipse.setTransform(tr)
         ellipse.setPen(self.pen)
         self.p[0].addItem(ellipse)
         return True
@@ -479,6 +481,7 @@ class Measure(PlotBase):
 
         self.setupItems()
         for plotItem in self.p:
+            plotItem.showAxes(True, showValues=True)
             plotItem.setAxisItems({'bottom': TimeMeasure(orientation='bottom')})
             plotItem.getAxis('bottom').setPen(self.pen)
             plotItem.getAxis('bottom').setTextPen(self.pen)

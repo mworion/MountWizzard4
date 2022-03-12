@@ -239,6 +239,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param plotItem:
         :return:
         """
+        plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         xTicks = [(x, f'{x:0.0f}') for x in np.arange(-135, 136, 45)]
         plotItem.getAxis('bottom').setTicks([xTicks])
@@ -375,6 +376,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return:
         """
         plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.showAxes(True, showValues=True)
         xTicks = [(x, f'{x:0.0f}') for x in np.arange(30, 360, 30)]
         yTicks = [(x, f'{x:0.0f}') for x in np.arange(10, 90, 10)]
         plotItem.getAxis('bottom').setTicks([xTicks])

@@ -47,7 +47,7 @@ class EditHorizon:
         """
         config = self.app.config['hemisphereW']
         self.ui.horizonMaskFileName.setText(config.get('horizonMaskFileName', ''))
-        fileName = self.app.config['mainW'].get('horizonMaskFileName')
+        fileName = config.get('horizonMaskFileName')
         self.app.data.loadHorizonP(fileName=fileName)
         return True
 

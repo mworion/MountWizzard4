@@ -21,11 +21,12 @@ import os.path
 
 import PyQt5
 from PyQt5.QtCore import QRect, Qt
-from PyQt5.QtGui import QGuiApplication, QCursor
+from PyQt5.QtGui import QGuiApplication, QCursor, QFont
 import numpy as np
 import matplotlib.patches as mpatches
 from matplotlib.colors import LinearSegmentedColormap
 from PIL import Image
+import pyqtgraph as pg
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -113,13 +114,13 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
             y = 0
         if x != 0 and y != 0:
             self.move(x, y)
-        self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
-        self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
-        self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
-        self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
-        self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', True))
+        self.ui.showSlewPath.setChecked(config.get('showSlewPath', False))
+        self.ui.showMountLimits.setChecked(config.get('showMountLimits', False))
+        self.ui.showCelestial.setChecked(config.get('showCelestial', False))
+        self.ui.showAlignStar.setChecked(config.get('showAlignStar', False))
+        self.ui.showHorizon.setChecked(config.get('showHorizon', True))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
-        self.ui.checkUseTerrain.setChecked(config.get('useTerrain', False))
+        self.ui.showTerrain.setChecked(config.get('showTerrain', False))
         self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
         self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
         self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
@@ -154,13 +155,13 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
-        config['checkShowMeridian'] = self.ui.checkShowMeridian.isChecked()
-        config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
-        config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
-        config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
+        config['showSlewPath'] = self.ui.showSlewPath.isChecked()
+        config['showMountLimits'] = self.ui.showMountLimits.isChecked()
+        config['showCelestial'] = self.ui.showCelestial.isChecked()
+        config['showAlignStar'] = self.ui.showAlignStar.isChecked()
+        config['showHorizon'] = self.ui.showHorizon.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
-        config['useTerrain'] = self.ui.checkUseTerrain.isChecked()
+        config['showTerrain'] = self.ui.showTerrain.isChecked()
         config['terrainAlpha'] = self.ui.terrainAlpha.value()
         config['azimuthShift'] = self.ui.azimuthShift.value()
         config['altitudeShift'] = self.ui.altitudeShift.value()
@@ -196,15 +197,15 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
         self.app.enableEditPoints.connect(self.enableEditPoints)
-        self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
-        self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
-        self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
-        self.ui.checkShowMeridian.clicked.connect(self.drawHemisphere)
-        self.ui.checkShowCelestial.clicked.connect(self.drawHemisphere)
+        self.ui.showSlewPath.clicked.connect(self.drawHemisphere)
+        self.ui.showHorizon.clicked.connect(self.drawHemisphere)
+        self.ui.showAlignStar.clicked.connect(self.drawHemisphere)
+        self.ui.showMountLimits.clicked.connect(self.drawHemisphere)
+        self.ui.showCelestial.clicked.connect(self.drawHemisphere)
+        self.ui.showTerrain.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
-        self.ui.checkUseTerrain.clicked.connect(self.drawHemisphere)
         self.ui.azimuthShift.valueChanged.connect(self.drawHemisphere)
         self.ui.altitudeShift.valueChanged.connect(self.drawHemisphere)
         self.ui.terrainAlpha.valueChanged.connect(self.drawHemisphere)
@@ -257,6 +258,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         """
         self.setStyleSheet(self.mw4Style)
         self.setModeColors()
+        self.ui.hemisphere.colorChange()
         self.drawHemisphere()
         return True
 
@@ -280,10 +282,9 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :param relevance:
         :return: calculated color
         """
-        colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
-        cMap = LinearSegmentedColormap.from_list("MyMap", colors)
-        color = cMap(relevance)
-        size = 10 + int(relevance * 5)
+        cMap = pg.ColorMap([0, 0.6, 1.0], [self.M_RED, self.M_YELLOW, self.M_GREEN])
+        color = cMap[relevance]
+        size = 8 + int(relevance * 5)
         return color, size
 
     def togglePolar(self):
@@ -505,74 +506,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.drawHemisphere()
         return True
 
-    def staticHorizon(self, axes=None, polar=False):
-        """
-        :param axes:
-        :param polar:
-        :return:
-        """
-        if not self.app.data.horizonP:
-            return False
-
-        alt, az = zip(*self.app.data.horizonP)
-
-        if polar:
-            az = np.radians(az)
-            alt = np.array(alt)
-            azF = np.radians(range(0, 361, 5))
-            altF = np.interp(azF, az, alt)
-
-            axes.set_facecolor(f'{self.M_GREY}80')
-            axes.fill(azF,
-                      90 - altF,
-                      color=self.M_BACK,
-                      zorder=-10)
-
-            axes.plot(az,
-                      90 - alt,
-                      color=self.MODE[self.operationMode]['horColor'],
-                      marker=self.MODE['normal']['horMarker'],
-                      alpha=0.5,
-                      zorder=0,
-                      ls='none')
-
-            axes.plot(azF,
-                      90 - altF,
-                      color=self.MODE[self.operationMode]['horColor'],
-                      marker='',
-                      alpha=0.7,
-                      zorder=0,
-                      lw=2)
-
-        else:
-            alt = np.array(alt)
-            az = np.array(az)
-            altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
-            azF = np.concatenate([[0], [0], az, [360], [360]])
-            axes.fill(azF,
-                      altF,
-                      color=self.M_GREY,
-                      alpha=0.5,
-                      zorder=0)
-
-            axes.plot(az,
-                      alt,
-                      color=self.MODE[self.operationMode]['horColor'],
-                      marker=self.MODE[self.operationMode]['horMarker'],
-                      alpha=0.5,
-                      zorder=0,
-                      ls='none')
-
-            axes.plot(az,
-                      alt,
-                      color=self.MODE[self.operationMode]['horColor'],
-                      marker='',
-                      alpha=0.7,
-                      zorder=0,
-                      lw=2)
-
-        return True
-
     def staticModelData(self, axes=None, polar=False):
         """
         :param axes:
@@ -647,174 +580,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
 
         return True
 
-    def staticCelestialEquator(self, axes=None, polar=False):
-        """
-        :param axes:
-        :param polar:
-        :return:
-        """
-        celestial = self.app.data.generateCelestialEquator()
-        if not celestial:
-            return False
-
-        alt, az = zip(*celestial)
-        alt = np.array(alt)
-        az = np.array(az)
-
-        if polar:
-            self.celestialPath, = axes.plot(np.radians(-az),
-                                            90 - alt,
-                                            '.',
-                                            markersize=1,
-                                            fillstyle='none',
-                                            zorder=20,
-                                            color=self.M_WHITE1)
-        else:
-            self.celestialPath, = axes.plot(az,
-                                            alt,
-                                            '.',
-                                            markersize=1,
-                                            fillstyle='none',
-                                            zorder=20,
-                                            color=self.M_WHITE1)
-        return True
-
-    def staticMeridianLimits(self, axes=None):
-        """
-        :param axes:
-        :return:
-        """
-        slew = self.app.mount.setting.meridianLimitSlew
-        track = self.app.mount.setting.meridianLimitTrack
-        if slew is None or track is None:
-            return False
-
-        self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
-                                               2 * slew,
-                                               90,
-                                               zorder=15,
-                                               color=self.M_YELLOW,
-                                               alpha=0.5)
-        axes.add_patch(self.meridianSlew)
-
-        self.meridianTrack = mpatches.Rectangle((180 - track, 0),
-                                                2 * track,
-                                                90,
-                                                zorder=10,
-                                                color=self.M_YELLOW1,
-                                                alpha=0.5)
-        axes.add_patch(self.meridianTrack)
-        return True
-
-    def staticHorizonLimits(self, axes=None, polar=False):
-        """
-        :param axes:
-        :param polar:
-        :return:
-        """
-        if self.app.mount.setting.horizonLimitHigh is not None:
-            high = self.app.mount.setting.horizonLimitHigh
-        else:
-            high = 90
-
-        if self.app.mount.setting.horizonLimitLow is not None:
-            low = self.app.mount.setting.horizonLimitLow
-        else:
-            low = 0
-
-        self.horizonLimitHigh = mpatches.Rectangle((0, high),
-                                                   360,
-                                                   90 - high,
-                                                   zorder=0,
-                                                   color=self.M_RED,
-                                                   alpha=0.5,
-                                                   visible=True)
-
-        self.horizonLimitLow = mpatches.Rectangle((0, 0),
-                                                  360,
-                                                  low,
-                                                  zorder=0,
-                                                  color=self.M_RED,
-                                                  alpha=0.5,
-                                                  visible=True)
-        axes.add_patch(self.horizonLimitHigh)
-        axes.add_patch(self.horizonLimitLow)
-        return True
-
-    def staticTerrainMask(self, axes=None, polar=False):
-        """
-        :param axes:
-        :param polar:
-        :return:
-        """
-        if not self.imageTerrain:
-            return False
-
-        shiftAz = self.ui.azimuthShift.value()
-        shiftAlt = self.ui.altitudeShift.value()
-        alpha = self.ui.terrainAlpha.value()
-        imgF = self.imageTerrain.crop((4 * shiftAz, 60 + shiftAlt * 2,
-                                       1440 + 4 * shiftAz, 420 + shiftAlt * 2))
-        (w, h) = imgF.size
-        img = list(imgF.getdata())
-        img = np.array(img).reshape((h, w))
-
-        if polar:
-            phi = np.linspace(0, 2 * np.pi, img.shape[1] + 1)
-            r = np.linspace(0, 90, img.shape[0] + 1)
-
-            Phi, R = np.meshgrid(phi, r)
-            axes.pcolormesh(Phi, 90 - R, img[:, :], linewidth=0, linestyle='None',
-                            zorder=-10, cmap='gray', alpha=alpha * 0.1)
-
-        else:
-            axes.imshow(img, aspect='auto', extent=(0, 360, 90, 0),
-                        zorder=-10, cmap='gray', alpha=alpha)
-        return True
-
-    def drawHemisphereStatic(self, axes=None, polar=False):
-        """
-         drawHemisphereStatic renders the static part of the hemisphere window
-         and puts all drawing on the static plane. the content consist of:
-            - modeldata points
-            - horizon mask
-            - celestial paths
-            - meridian limits
-        with all their styles an coloring
-
-        :param axes: matplotlib axes object
-        :param polar: flag if polar should be drawn
-        :return: success
-        """
-        if polar:
-            if self.ui.checkShowCelestial.isChecked():
-                self.staticCelestialEquator(axes=axes, polar=polar)
-
-            if self.ui.checkUseHorizon.isChecked():
-                self.staticHorizon(axes=axes, polar=polar)
-
-            self.staticModelData(axes=axes, polar=polar)
-
-            if self.ui.checkUseTerrain.isChecked():
-                self.staticTerrainMask(axes=axes, polar=polar)
-        else:
-            if self.ui.checkUseHorizon.isChecked():
-                self.staticHorizon(axes=axes)
-                self.staticHorizonLimits(axes=axes)
-
-            if self.ui.checkShowCelestial.isChecked():
-                self.staticCelestialEquator(axes=axes)
-
-            if self.ui.checkShowMeridian.isChecked():
-                self.staticMeridianLimits(axes=axes)
-
-            self.staticModelData(axes=axes, polar=polar)
-
-            if self.ui.checkUseTerrain.isChecked():
-                self.staticTerrainMask(axes=axes)
-
-        return True
-
     def drawHemisphereMoving(self, axes=None, polar=False):
         """
         drawHemisphereMoving is rendering the moving part which consists of:
@@ -861,68 +626,184 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
             axes.add_patch(self.pointerDome)
         return True
 
-    def drawAlignmentStars(self, axes=None):
+    def prepareHemisphere(self):
         """
-        drawAlignmentStars is rendering the alignment star map. this moves over
-        time with the speed of earth turning. so we have to update the rendering,
-        but on low speed without having any user interaction.
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        plotItem.showAxes(True, showValues=True)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
+        xTicks = [(x, f'{x:0.0f}') for x in np.arange(30, 331, 30)]
+        plotItem.getAxis('bottom').setTicks([xTicks])
+        plotItem.getAxis('top').setTicks([xTicks])
+        yTicks = [(x, f'{x:0.0f}') for x in np.arange(10, 90, 10)]
+        plotItem.getAxis('left').setTicks([yTicks])
+        plotItem.getAxis('right').setTicks([yTicks])
+        plotItem.setLabel('bottom', 'Azimuth [deg]')
+        plotItem.setLabel('left', 'Altitude [deg]')
+        plotItem.setLimits(xMin=0, xMax=360, yMin=0, yMax=90,
+                           minXRange=360 / 4, minYRange=180 / 4)
+        plotItem.setXRange(0, 360)
+        plotItem.setYRange(0, 90)
+        plotItem.disableAutoRange()
+        plotItem.setMouseEnabled(x=True, y=True)
+        plotItem.clear()
 
-        :param axes: matplotlib axes object
-        :return: true for test purpose
+    def staticCelestialEquator(self):
         """
-        if not self.mutexDraw.tryLock():
+        :return:
+        """
+        celestial = self.app.data.generateCelestialEquator()
+        if not celestial:
             return False
 
+        plotItem = self.ui.hemisphere.p[0]
+        alt, az = zip(*celestial)
+        alt = np.array(alt)
+        az = np.array(az)
+        self.celestialPath = pg.ScatterPlotItem()
+        self.celestialPath.setData(
+            x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1), size=1)
+        plotItem.addItem(self.celestialPath)
+        return True
+
+    def staticHorizon(self):
+        """
+        :return:
+        """
+        if not self.app.data.horizonP:
+            return False
+
+        self.ui.hemisphere.staticHorizon(self.app.data.horizonP)
+        return True
+
+    def staticTerrainMask(self):
+        """
+        :return:
+        """
+        if not self.imageTerrain:
+            return False
+
+        shiftAz = self.ui.azimuthShift.value()
+        shiftAlt = self.ui.altitudeShift.value()
+        alpha = self.ui.terrainAlpha.value()
+        imgF = self.imageTerrain.crop((4 * shiftAz, 60 + shiftAlt * 2,
+                                       1440 + 4 * shiftAz, 420 + shiftAlt * 2))
+        imgF = imgF.resize((360, 90), Image.ANTIALIAS)
+        (w, h) = imgF.size
+        img = list(imgF.getdata())
+        img = np.array(img).reshape((h, w))
+
+        imgItem = pg.ImageItem(img)
+        cMap = pg.colormap.get('CET-L2')
+        imgItem.setColorMap(cMap)
+        imgItem.setOpts(opacity=alpha)
+        imgItem.setZValue(-10)
+        self.ui.hemisphere.p[0].addItem(imgItem)
+        return True
+
+    def staticMeridianLimits(self):
+        """
+
+        :return:
+        """
+        slew = self.app.mount.setting.meridianLimitSlew
+        track = self.app.mount.setting.meridianLimitTrack
+        if slew is None or track is None:
+            return False
+
+        mSlew = pg.QtWidgets.QGraphicsRectItem(180 - slew, 0, 2 * slew, 90)
+        mSlew.setPen(pg.mkPen(color=self.M_YELLOW + '80'))
+        mSlew.setBrush(pg.mkBrush(color=self.M_YELLOW + '80'))
+        mSlew.setZValue(-15)
+        self.ui.hemisphere.p[0].addItem(mSlew)
+
+        mTrack = pg.QtWidgets.QGraphicsRectItem(180 - track, 0, 2 * track, 90)
+        mTrack.setPen(pg.mkPen(color=self.M_YELLOW1 + '80'))
+        mTrack.setBrush(pg.mkBrush(color=self.M_YELLOW1 + '80'))
+        mTrack.setZValue(-15)
+        self.ui.hemisphere.p[0].addItem(mTrack)
+        return True
+
+    def staticHorizonLimits(self):
+        """
+        :return:
+        """
+        if self.app.mount.setting.horizonLimitHigh is not None:
+            high = self.app.mount.setting.horizonLimitHigh
+        else:
+            high = 90
+
+        if self.app.mount.setting.horizonLimitLow is not None:
+            low = self.app.mount.setting.horizonLimitLow
+        else:
+            low = 0
+
+        hLow = pg.QtWidgets.QGraphicsRectItem(0, high, 360, 90 - high)
+        hLow.setPen(pg.mkPen(color=self.M_RED + '80'))
+        hLow.setBrush(pg.mkBrush(color=self.M_RED + '80'))
+        hLow.setZValue(-20)
+        self.ui.hemisphere.p[0].addItem(hLow)
+
+        hHigh = pg.QtWidgets.QGraphicsRectItem(0, 0, 360, low)
+        hHigh.setPen(pg.mkPen(color=self.M_RED + '80'))
+        hHigh.setBrush(pg.mkBrush(color=self.M_RED + '80'))
+        hHigh.setZValue(-20)
+        self.ui.hemisphere.p[0].addItem(hHigh)
+        return True
+
+    def drawAlignmentStars(self):
+        """
+        :return: true for test purpose
+        """
         self.starsAlignAnnotate = list()
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
 
-        self.starsAlign, = axes.plot(hip.az,
-                                     hip.alt,
-                                     marker=self.markerStar(),
-                                     markersize=8,
-                                     linestyle='None',
-                                     color=self.MODE[self.operationMode]['starColor'],
-                                     zorder=30,
-                                     )
+        self.starsAlign = pg.ScatterPlotItem()
+        self.starsAlign.setData(
+            x=hip.az, y=hip.alt, symbol='star',
+            size=self.MODE[self.operationMode]['starSize'],
+            pen=pg.mkPen(color=self.MODE[self.operationMode]['starColor']),
+            brush=pg.mkBrush(color=self.MODE[self.operationMode]['starColor']))
+        self.starsAlign.setZValue(30)
+        self.ui.hemisphere.p[0].addItem(self.starsAlign)
 
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
             if self.operationMode == 'star':
                 rel = self.calculateRelevance(alt=alt, az=az)
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
-                fontSize = 12
+                fontSize = 7
                 fontColor = self.M_WHITE1
-            annotation = axes.annotate(name,
-                                       xy=(az, alt),
-                                       xytext=(2, 2),
-                                       textcoords='offset points',
-                                       xycoords='data',
-                                       color=fontColor,
-                                       zorder=30,
-                                       fontsize=fontSize,
-                                       clip_on=True,
-                                       )
-            self.starsAlignAnnotate.append(annotation)
-        self.mutexDraw.unlock()
+
+            textItem = pg.TextItem(text=name, color=fontColor, anchor=(0.5, 1.1))
+            font = QFont(self.window().font().family(),
+                         int(self.window().font().pointSize() * fontSize / 8))
+            textItem.setFont(font)
+            textItem.setPos(az, alt)
+            textItem.setZValue(30)
+            self.ui.hemisphere.p[0].addItem(textItem)
         return True
 
     def drawHemisphere(self):
         """
-        drawHemisphere is the basic renderer for all items and widgets in the
-        hemisphere window. it takes care of drawing the grid, enables three
-        layers of transparent widgets for static content, moving content and star
-        maps. this is mainly done to get a reasonable performance when redrawing
-        the canvas. in addition it initializes the objects for points markers,
-        patches, lines etc. for making the window nice and user-friendly. the
-        user interaction on the hemisphere windows is done by the event handler
-        of matplotlib itself implementing an on Mouse handler, which takes care
-        of functions.
-
         :return: True for test purpose
         """
         if self.closingWindow:
             return False
-        hasPolar = self.ui.showPolar.isChecked()
+
+        self.prepareHemisphere()
+        if self.ui.showCelestial.isChecked():
+            self.staticCelestialEquator()
+        if self.ui.showHorizon.isChecked():
+            self.staticHorizon()
+        if self.ui.showTerrain.isChecked():
+            self.staticTerrainMask()
+        if self.ui.showAlignStar.isChecked():
+            self.drawAlignmentStars()
+        if self.ui.showMountLimits.isChecked():
+            self.staticMeridianLimits()
+            self.staticHorizonLimits()
 
         return True

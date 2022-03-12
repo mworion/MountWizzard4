@@ -133,6 +133,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         :param horizonP:
         :return:
         """
+        if len(horizonP) == 0:
+            return False
         alt, az = zip(*horizonP)
         alt = np.array(alt)
         az = np.array(az)
@@ -142,6 +144,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         poly = pg.QtGui.QGraphicsPathItem(path)
         poly.setPen(self.penHorizon)
         poly.setBrush(self.brushHorizon)
+        poly.setZValue(-5)
         self.p[0].addItem(poly)
         return True
 

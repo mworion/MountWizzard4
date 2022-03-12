@@ -120,6 +120,7 @@ class SatSearch(object):
 
         self.app.update1s.connect(self.satCalcDynamicTable)
         self.app.update10m.connect(self.updateSatTable)
+        self.ui.satTimeUTC.toggled.connect(self.satCalcTable)
 
     def initConfig(self):
         """
@@ -346,7 +347,7 @@ class SatSearch(object):
 
         if isUp is not None:
             if isUp[0]:
-                t = f'{isUp[1][0].tt_strftime("%H:%M")}'
+                t = self.convertTime(isUp[1][0], '%H:%M')
             else:
                 t = ''
 
@@ -544,6 +545,8 @@ class SatSearch(object):
         if not self.satTableBaseValid or self.closing:
             return False
 
+        title = 'Setup ' + self.timeZoneString()
+        self.ui.satSetupGroup.setTitle(title)
         self.satTableDynamicValid = False
         self.ui.satIsUp.setEnabled(False)
         self.ui.satIsSunlit.setEnabled(False)

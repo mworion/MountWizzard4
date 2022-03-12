@@ -18,9 +18,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import platform
 import os
-import math
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
@@ -28,13 +26,14 @@ from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
 from PyQt5.QtCore import pyqtSignal, QObject, QEvent, Qt, QPoint
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtTest import QTest
-from skyfield.api import Angle
+from skyfield.api import Angle, load
 import numpy as np
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from gui.utilities.toolsQtWidget import FileSortProxyModel
 from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
+from gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 
 
@@ -48,6 +47,8 @@ def function(module):
 
     window = MWidget()
     window.app = App()
+    window.ui = Ui_MainWindow()
+    window.ui.setupUi(window)
     yield window
 
 
@@ -802,3 +803,31 @@ def test_checkUpdaterOK_3(function):
 def test_sleepAndEvents(function):
     suc = sleepAndEvents(1)
     assert suc
+
+
+def test_convertTime_1(function):
+    ts = load.timescale()
+    t = ts.tt(2000, 1, 1, 12, 0)
+    function.ui.satTimeUTC.setChecked(True)
+    val = function.convertTime(t, '%H:%M')
+    assert val == '11:59'
+
+
+def test_convertTime_2(function):
+    ts = load.timescale()
+    t = ts.tt(2000, 1, 1, 12, 0)
+    function.ui.satTimeUTC.setChecked(False)
+    val = function.convertTime(t, '%H:%M')
+    assert val == '12:58'
+
+
+def test_timeZoneString_1(function):
+    function.ui.satTimeUTC.setChecked(True)
+    val = function.timeZoneString()
+    assert val == '(time is UTC)'
+
+
+def test_timeZoneString_2(function):
+    function.ui.satTimeUTC.setChecked(False)
+    val = function.timeZoneString()
+    assert val == '(time is local)'

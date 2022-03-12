@@ -19,6 +19,7 @@
 import os
 import logging
 import datetime
+from dateutil.tz import tzlocal
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
@@ -729,3 +730,22 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
             return ''
 
         return self.app.automation.updaterApp
+
+    def convertTime(self, value, fString):
+        """
+        :return:
+        """
+        isUTC = self.ui.satTimeUTC.isChecked()
+        if isUTC:
+            return value.utc_strftime(fString)
+        else:
+            return value.astimezone(tzlocal()).strftime(fString)
+
+    def timeZoneString(self):
+        """
+        :return:
+        """
+        if self.ui.satTimeUTC.isChecked():
+            return '(time is UTC)'
+        else:
+            return '(time is local)'

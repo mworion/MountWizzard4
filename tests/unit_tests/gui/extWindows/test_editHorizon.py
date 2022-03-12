@@ -21,7 +21,7 @@ import pytest
 # external packages
 
 # local import
-from gui.mainWmixin.tabSettHorizon import SettHorizon
+from gui.extWindows.tabSettHorizon import SettHorizon
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow

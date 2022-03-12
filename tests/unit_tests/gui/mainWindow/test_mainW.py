@@ -200,11 +200,6 @@ def function_setup_teardown(qtbot):
         os.remove(f)
 
 
-def test_mwSuper():
-    suc = app.mwSuper('')
-    assert suc
-
-
 def test_initConfig_1():
     app.app.config['mainW'] = {}
     with mock.patch.object(app,

@@ -21,7 +21,7 @@
 # local import
 
 
-class SettHorizon:
+class EditHorizon:
     """
     """
 
@@ -31,6 +31,12 @@ class SettHorizon:
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
         self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
 
+        # horizon
+        self.wIcon(self.ui.loadHorizonMask, 'load')
+        self.wIcon(self.ui.saveHorizonMask, 'save')
+        self.wIcon(self.ui.saveHorizonMaskAs, 'save')
+        self.wIcon(self.ui.clearHorizonMask, 'trash')
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -39,9 +45,9 @@ class SettHorizon:
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
-        fileName = self.app.config['mainW'].get('horizonFileName')
+        config = self.app.config['hemisphereW']
+        self.ui.horizonMaskFileName.setText(config.get('horizonMaskFileName', ''))
+        fileName = self.app.config['mainW'].get('horizonMaskFileName')
         self.app.data.loadHorizonP(fileName=fileName)
         return True
 
@@ -53,8 +59,8 @@ class SettHorizon:
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        config['horizonFileName'] = self.ui.horizonFileName.text()
+        config = self.app.config['hemisphereW']
+        config['horizonMaskFileName'] = self.ui.horizonMaskFileName.text()
         return True
 
     def loadHorizonMask(self):
@@ -72,7 +78,7 @@ class SettHorizon:
 
         suc = self.app.data.loadHorizonP(fileName=fileName, ext=ext)
         if suc:
-            self.ui.horizonFileName.setText(fileName)
+            self.ui.horizonMaskFileName.setText(fileName)
             self.app.message.emit(f'Horizon mask [{fileName}] loaded', 0)
         else:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be loaded', 2)
@@ -84,7 +90,7 @@ class SettHorizon:
         """
         :return: success
         """
-        fileName = self.ui.horizonFileName.text()
+        fileName = self.ui.horizonMaskFileName.text()
         if not fileName:
             self.app.message.emit('Horizon mask file name not given', 2)
             return False
@@ -111,7 +117,7 @@ class SettHorizon:
 
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
-            self.ui.horizonFileName.setText(fileName)
+            self.ui.horizonMaskFileName.setText(fileName)
             self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
         else:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
@@ -122,6 +128,6 @@ class SettHorizon:
         :return:
         """
         self.app.data.horizonP = []
-        self.ui.horizonFileName.setText('')
+        self.ui.horizonMaskFileName.setText('')
         self.app.redrawHemisphere.emit()
         return True

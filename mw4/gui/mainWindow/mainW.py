@@ -53,7 +53,6 @@ from gui.mainWmixin.tabTools import Tools
 from gui.mainWmixin.tabPower import Power
 from gui.mainWmixin.tabSettDevice import SettDevice
 from gui.mainWmixin.tabSettMount import SettMount
-from gui.mainWmixin.tabSettHorizon import SettHorizon
 from gui.mainWmixin.tabSettImaging import SettImaging
 from gui.mainWmixin.tabSettDome import SettDome
 from gui.mainWmixin.tabSettParkPos import SettParkPos
@@ -78,7 +77,6 @@ class MainWindow(
     Tools,
     SettDevice,
     SettMount,
-    SettHorizon,
     SettImaging,
     SettDome,
     SettParkPos,
@@ -87,7 +85,7 @@ class MainWindow(
     """
     the main window class handles the main menu as well as the show and no show
     part of any other window. all necessary processing for functions of that gui
-    will be linked to this class. therefore window classes will have a threadpool
+    will be linked to this class. therefore, window classes will have a threadpool
     for managing async processing if needed.
     """
 
@@ -192,25 +190,6 @@ class MainWindow(
         self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.updateDeviceStats)
-
-    def mwSuper(self, func):
-        """
-        mwSuper is a replacement for super() to manage the mixin style of
-        implementation it's not an ideal way to do it, but mwSuper() call the
-        method of every ! parent class if they exist.
-
-        :param func:
-        :return: true for test purpose
-        """
-        for base in self.__class__.__bases__:
-            if base.__name__ == "MWidget":
-                continue
-
-            if hasattr(base, func):
-                funcAttrib = getattr(base, func)
-                funcAttrib(self)
-
-        return True
 
     def initConfig(self):
         """
@@ -355,12 +334,6 @@ class MainWindow(
         self.wIcon(self.ui.genBuildSpiralNorm, 'run')
         self.wIcon(self.ui.genBuildSpiralMin, 'run')
         self.wIcon(self.ui.genBuildDSO, 'run')
-
-        # horizon
-        self.wIcon(self.ui.loadHorizonMask, 'load')
-        self.wIcon(self.ui.saveHorizonMask, 'save')
-        self.wIcon(self.ui.saveHorizonMaskAs, 'save')
-        self.wIcon(self.ui.clearHorizonMask, 'trash')
 
         # model
         self.wIcon(self.ui.plateSolveSync, 'start')

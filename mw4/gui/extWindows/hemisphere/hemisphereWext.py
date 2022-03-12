@@ -92,10 +92,6 @@ class HemisphereWindowExt:
             self.operationMode = 'build'
             self.ui.addPositionToHorizon.setEnabled(False)
 
-        elif self.ui.checkEditHorizonMask.isChecked():
-            self.operationMode = 'horizon'
-            self.ui.addPositionToHorizon.setEnabled(True)
-
         elif self.ui.checkPolarAlignment.isChecked():
             self.ui.checkShowAlignStar.setChecked(True)
             self.operationMode = 'star'

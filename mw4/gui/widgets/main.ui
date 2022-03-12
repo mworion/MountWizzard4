@@ -102,7 +102,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -6315,7 +6315,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>105</y>
+       <y>115</y>
        <width>366</width>
        <height>76</height>
       </rect>
@@ -6633,7 +6633,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>265</y>
+       <y>295</y>
        <width>366</width>
        <height>46</height>
       </rect>
@@ -7129,7 +7129,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>330</y>
+       <y>370</y>
        <width>366</width>
        <height>46</height>
       </rect>
@@ -7209,7 +7209,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>180</y>
+       <y>275</y>
        <width>361</width>
        <height>141</height>
       </rect>
@@ -7493,176 +7493,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_10">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>345</y>
-       <width>366</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Horizon mask file</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="saveHorizonMask">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>45</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Saves the horizon mask in the given file.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Save</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="saveHorizonMaskAs">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>45</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Saves the horizon mask in a new file.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Save as</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="loadHorizonMask">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>45</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Loads the horizon mask from given file.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Load</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="horizonFileName">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>351</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Name of Horizon Points file, where the data is stored. </string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="clearHorizonMask">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>45</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>Saves the horizon mask in a new file.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Clear</string>
-      </property>
-     </widget>
-    </widget>
     <widget class="QPushButton" name="clearBuildP">
      <property name="geometry">
       <rect>
-       <x>15</x>
-       <y>395</y>
+       <x>410</x>
+       <y>225</y>
        <width>366</width>
        <height>21</height>
       </rect>
@@ -7696,7 +7531,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>200</y>
+       <y>220</y>
        <width>366</width>
        <height>46</height>
       </rect>
@@ -7776,7 +7611,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>415</x>
-       <y>140</y>
+       <y>185</y>
        <width>336</width>
        <height>20</height>
       </rect>
@@ -10115,7 +9950,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -17315,7 +17150,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -28304,7 +28139,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>portUSB5</tabstop>
   <tabstop>portUSB6</tabstop>
   <tabstop>hubUSB</tabstop>
-  <tabstop>saveHorizonMask</tabstop>
   <tabstop>openImageW</tabstop>
   <tabstop>openSatelliteW</tabstop>
   <tabstop>mountConnected</tabstop>
@@ -28388,13 +28222,11 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>genBuildNorm</tabstop>
   <tabstop>genBuildMed</tabstop>
   <tabstop>checkSortHL</tabstop>
-  <tabstop>saveHorizonMaskAs</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>
   <tabstop>clearBuildP</tabstop>
   <tabstop>buildPFileName</tabstop>
   <tabstop>setRefractionManual</tabstop>
   <tabstop>checkAvoidFlip</tabstop>
-  <tabstop>loadHorizonMask</tabstop>
   <tabstop>checkRefracCont</tabstop>
   <tabstop>genBuildFile</tabstop>
   <tabstop>genBuildAlign9</tabstop>
@@ -28413,7 +28245,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>excludeDonePoints</tabstop>
   <tabstop>pauseModel</tabstop>
   <tabstop>endModel</tabstop>
-  <tabstop>clearHorizonMask</tabstop>
   <tabstop>genBuildSpiralMax</tabstop>
   <tabstop>durationDSO</tabstop>
   <tabstop>numberDSOPoints</tabstop>

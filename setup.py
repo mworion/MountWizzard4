@@ -19,7 +19,13 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-test
+- add: satellites: all time values could be UTC or local time now
+- add: all charts zoom able
+- add: measure window has max 5 charts now (from 3)
+- add: measure window more values (time delat, focus, etc)
+- add: analyse charts could show horizon and values for each point 
+- improve: complete rework of charting: performance and functions
+
  """
 
 with open('notes.txt', 'w') as f:

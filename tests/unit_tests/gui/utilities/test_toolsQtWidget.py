@@ -831,3 +831,8 @@ def test_timeZoneString_2(function):
     function.ui.satTimeUTC.setChecked(False)
     val = function.timeZoneString()
     assert val == '(time is local)'
+
+
+def test_mwSuper(function):
+    suc = function.mwSuper('')
+    assert suc

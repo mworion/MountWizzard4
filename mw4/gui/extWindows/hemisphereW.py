@@ -28,13 +28,14 @@ from matplotlib.colors import LinearSegmentedColormap
 from PIL import Image
 
 # local import
-from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import hemisphere_ui
-from gui.extWindows.hemisphereWext import HemisphereWindowExt
+from gui.extWindows.hemisphere.hemisphereWext import HemisphereWindowExt
+from gui.extWindows.hemisphere.editHorizon import EditHorizon
 from base.transform import diffModulusAbs
 
 
-class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
+class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
     """
     the hemisphere window class handles all interaction with model points
     show / edit etc. the z orders is aligned as follows:
@@ -66,6 +67,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.app = app
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
+        self.mwSuper('__init__')
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.operationMode = 'normal'
         self.MODE = None
@@ -92,14 +94,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.imageTerrain = None
         self.closingWindow = False
         self.hemMouse = None
-
-        self.ui.hemisphereMove.stackUnder(self.ui.hemisphere)
-        self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
-        self.hemisphereMatMove = self.embedMatplot(self.ui.hemisphereMove)
-
-        self.ui.polar.stackUnder(self.ui.polarMove)
-        self.polarMat = self.embedMatplot(self.ui.polar)
-        self.polarMatMove = self.embedMatplot(self.ui.polarMove)
 
     def initConfig(self):
         """
@@ -129,6 +123,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
         self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
         self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
+        self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
 
         terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
         if not os.path.isfile(terrainFile):
@@ -144,6 +139,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.imageTerrain = Image.new('L', (2880, 480), 128)
         self.imageTerrain.paste(img, (0, 60))
         self.imageTerrain.paste(img, (1440, 60))
+        self.mwSuper('initConfig')
         return True
 
     def storeConfig(self):
@@ -168,6 +164,9 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         config['terrainAlpha'] = self.ui.terrainAlpha.value()
         config['azimuthShift'] = self.ui.azimuthShift.value()
         config['altitudeShift'] = self.ui.altitudeShift.value()
+        config['tabWidget'] = self.ui.tabWidget.currentIndex()
+
+        self.mwSuper('storeConfig')
         return True
 
     def closeEvent(self, closeEvent):
@@ -179,62 +178,14 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.setOperationMode()
         self.storeConfig()
         self.closingWindow = True
-        self.app.update10s.disconnect(self.updateAlignStar)
-        self.app.update1s.disconnect(self.hemisphereMatMove.figure.canvas.draw)
-        self.app.update1s.disconnect(self.polarMatMove.figure.canvas.draw)
-        self.app.redrawHemisphere.disconnect(self.drawHemisphere)
-        self.app.updatePointMarker.disconnect(self.updatePointMarker)
-        self.app.updatePointMarker.disconnect(self.updatePolarPointMarker)
-        self.app.mount.signals.settingDone.disconnect(self.updateOnChangedParams)
-        self.app.enableEditPoints.disconnect(self.enableEditPoints)
-        self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)
-        self.ui.checkShowMeridian.clicked.disconnect(self.drawHemisphere)
-        self.ui.checkShowCelestial.clicked.disconnect(self.drawHemisphere)
-        self.ui.checkUseHorizon.clicked.disconnect(self.drawHemisphere)
-        self.ui.checkEditNone.clicked.disconnect(self.setOperationMode)
-        self.ui.checkEditHorizonMask.clicked.disconnect(self.setOperationMode)
-        self.ui.checkEditBuildPoints.clicked.disconnect(self.setOperationMode)
-        self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
-        self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
-        self.ui.checkUseTerrain.clicked.disconnect(self.drawHemisphere)
-        self.ui.azimuthShift.valueChanged.disconnect(self.drawHemisphere)
-        self.ui.altitudeShift.valueChanged.disconnect(self.drawHemisphere)
-        self.ui.terrainAlpha.valueChanged.disconnect(self.drawHemisphere)
-
-        self.ui.showPolar.clicked.disconnect(self.togglePolar)
-        self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
-        self.app.mount.signals.pointDone.disconnect(self.updatePointerPolarAltAz)
-        self.app.dome.signals.azimuth.disconnect(self.updateDome)
-        self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
-        self.app.dome.signals.serverDisconnected.disconnect(self.updateDome)
-        self.app.colorChange.disconnect(self.colorChange)
         QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
-
         super().closeEvent(closeEvent)
-
-    def resizeEvent(self, event):
-        """
-        :param event:
-        :return:
-        """
-        geometry = self.ui.hemisphere.geometry()
-        newGeometry = QRect(0, 0, geometry.width(), geometry.height())
-        self.ui.hemisphereMove.setGeometry(newGeometry)
-
-        if self.ui.showPolar.isChecked():
-            geometry = self.ui.polar.geometry()
-            newGeometry = QRect(0, 0, geometry.width(), geometry.height())
-            self.ui.polarMove.setGeometry(newGeometry)
-
-        super().resizeEvent(event)
 
     def showWindow(self):
         """
         :return:
         """
         self.app.update10s.connect(self.updateAlignStar)
-        self.app.update1s.connect(self.hemisphereMatMove.figure.canvas.draw)
-        self.app.update1s.connect(self.polarMatMove.figure.canvas.draw)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.updatePointMarker.connect(self.updatePointMarker)
         self.app.updatePointMarker.connect(self.updatePolarPointMarker)
@@ -251,7 +202,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         self.ui.checkShowMeridian.clicked.connect(self.drawHemisphere)
         self.ui.checkShowCelestial.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)
-        self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkUseTerrain.clicked.connect(self.drawHemisphere)
@@ -262,9 +212,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         self.ui.showPolar.clicked.connect(self.togglePolar)
         self.ui.addPositionToHorizon.clicked.connect(self.addHorizonPointManual)
-        hem = self.hemisphereMat.figure.canvas
-        self.hemMouse = hem.mpl_connect('button_press_event', self.onMouseDispatcher)
-        hem.mpl_connect('motion_notify_event', self.showMouseCoordinates)
         self.togglePolar()
         self.show()
         return True
@@ -343,12 +290,11 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         :return: success
         """
+        return
         if self.ui.showPolar.isChecked():
-            self.ui.polar.setMaximumSize(16777215, 16777215)
             self.ui.polar.setVisible(True)
 
         else:
-            self.ui.polar.setFixedWidth(1)
             self.ui.polar.setVisible(False)
 
         self.drawHemisphere()
@@ -385,6 +331,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         :return: success
         """
+        return
         if self.pointerAltAz is None:
             return False
 
@@ -404,6 +351,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         :return: success
         """
+        return
         if self.pointerPolarAltAz is None:
             return False
 
@@ -428,6 +376,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         :param azimuth:
         :return: success
         """
+        return
         if self.pointerDome is None:
             return False
         if not isinstance(azimuth, (int, float)):
@@ -462,6 +411,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         :return: success
         """
+        return
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
             marker, mSize, color, _ = self.getMarkerStatusParams(active, index)
@@ -477,6 +427,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         :return: success
         """
+        return
         if not self.pointsPolarBuild:
             return False
 
@@ -502,6 +453,7 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
 
         :return: success
         """
+        return
         if self.starsAlign is None:
             return False
         if self.starsAlignAnnotate is None:
@@ -971,51 +923,6 @@ class HemisphereWindow(toolsQtWidget.MWidget, HemisphereWindowExt):
         """
         if self.closingWindow:
             return False
-
-        axe, _ = self.generateFlat(widget=self.hemisphereMat,
-                                   horizon=True)
-        axeMove, _ = self.generateFlat(widget=self.hemisphereMatMove,
-                                       horizon=True,
-                                       showAxes=False)
         hasPolar = self.ui.showPolar.isChecked()
-        if hasPolar:
-            axePolar, _ = self.generatePolar(widget=self.polarMat,
-                                             horizon=True,
-                                             reverse=True)
-            axePolarMove, _ = self.generatePolar(widget=self.polarMatMove,
-                                                 horizon=True,
-                                                 showAxes=False,
-                                                 reverse=True)
-        else:
-            self.pointerPolarAltAz = None
-            self.pointsBuildAnnotate = None
-            self.pointsPolarBuild = None
-            self.pointsPolarBuildAnnotate = None
-            self.polarMat.figure.clf()
-            self.polarMatMove.figure.clf()
-
-        axe.figure.canvas.flush_events()
-        g = self.ui.hemisphere.geometry()
-        self.ui.hemisphereMove.setGeometry(QRect(0, 0, g.width(), g.height()))
-
-        if hasPolar:
-            axePolar.figure.canvas.flush_events()
-            g = self.ui.polar.geometry()
-            self.ui.polarMove.setGeometry(QRect(0, 0, g.width(), g.height()))
-
-        if self.ui.checkShowAlignStar.isChecked():
-            self.drawAlignmentStars(axes=axe)
-        else:
-            self.starsAlign = None
-            self.starsAlignAnnotate = None
-
-        self.drawHemisphereStatic(axes=axe)
-        self.drawHemisphereMoving(axes=axeMove)
-        axe.figure.canvas.draw()
-
-        if hasPolar:
-            self.drawHemisphereStatic(axes=axePolar, polar=True)
-            self.drawHemisphereMoving(axes=axePolarMove, polar=True)
-            axePolar.figure.canvas.draw()
 
         return True

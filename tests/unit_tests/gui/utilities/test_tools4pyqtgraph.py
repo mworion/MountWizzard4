@@ -49,8 +49,9 @@ def test_CustomViewBox_mouseClickEvent():
         @staticmethod
         def button():
             return Qt.MouseButton.RightButton
-        
-    CustomViewBox().mouseClickEvent(ev=Event())
+    with mock.patch.object(pg.ViewBox,
+                           'mouseClickEvent'):
+        CustomViewBox().mouseClickEvent(ev=Event())
 
     
 def test_PlotBase():
@@ -69,7 +70,6 @@ def test_PlotBase_setupItems():
 
 def test_PlotBase_staticHorizon_1():
     p = PlotBase()
-    plotItem = pg.PlotItem()
     with mock.patch.object(p,
                            'show'):
         suc = p.staticHorizon([(0, 0)])
@@ -78,7 +78,6 @@ def test_PlotBase_staticHorizon_1():
 
 def test_PlotBase_staticHorizon_2():
     p = PlotBase()
-    plotItem = pg.PlotItem()
     with mock.patch.object(p,
                            'show'):
         suc = p.staticHorizon([(1, 1), (2, 2)])
@@ -86,7 +85,7 @@ def test_PlotBase_staticHorizon_2():
 
 
 def test_NormalScatter():
-    function = NormalScatter()
+    NormalScatter()
 
 
 def test_NormalScatter_plot1():

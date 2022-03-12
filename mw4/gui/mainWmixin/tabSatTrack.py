@@ -18,82 +18,11 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
 import numpy as np
 from sgp4.exporter import export_tle
 from skyfield import almanac
 
 # local import
-from mountcontrol.convert import valueToInt
-
-
-class SatControlWidget(QObject):
-    """
-    """
-
-    log = logging.getLogger(__name__)
-    valueChanged = pyqtSignal(object)
-
-    def __init__(self, ui, minVal, maxVal):
-        super().__init__()
-        self.ui = ui
-        self.minVal = minVal
-        self.maxVal = maxVal
-        self.ui[0].setMinimum(minVal)
-        self.ui[0].setMaximum(maxVal)
-        self.ui[0].sliderReleased.connect(self.updateSatOff)
-        self.ui[1].editingFinished.connect(self.updateSatOffVal)
-        self.ui[2].clicked.connect(self.updateSatOffButton)
-        self.ui[3].clicked.connect(self.updateSatOffButton)
-        self.ui[4].clicked.connect(self.updateSatOffButton)
-        self.ui[5].clicked.connect(self.updateSatOffButton)
-        self.ui[6].clicked.connect(self.updateSatOffButton)
-        self.ui[7].clicked.connect(self.updateSatOffButton)
-
-    def updateSatOff(self):
-        """
-        :return:
-        """
-        val = self.ui[0].value()
-        self.ui[1].setText(str(val))
-        self.valueChanged.emit(val)
-        return True
-
-    def updateSatOffButton(self):
-        """
-        :return:
-        """
-        senders = {self.ui[2]: 100,
-                   self.ui[3]: 10,
-                   self.ui[4]: 1,
-                   self.ui[5]: -100,
-                   self.ui[6]: -10,
-                   self.ui[7]: -1,
-                   }
-        delta = senders[self.sender()]
-        val = self.ui[0].value()
-        val += delta
-        val = min(self.maxVal, val)
-        val = max(self.minVal, val)
-        self.ui[0].setValue(val)
-        self.ui[1].setText(str(val))
-        self.valueChanged.emit(val)
-        return True
-
-    def updateSatOffVal(self):
-        """
-        :return:
-        """
-        val = valueToInt(self.ui[1].text())
-        if val is None:
-            val = self.ui[0].value()
-            self.ui[1].setText(str(val))
-        else:
-            val = min(self.maxVal, val)
-            val = max(self.minVal, val)
-            self.ui[0].setValue(val)
-            self.valueChanged.emit(val)
-        return True
 
 
 class SatTrack(object):
@@ -145,37 +74,9 @@ class SatTrack(object):
         self.ui.progTrajectory.clicked.connect(self.startProg)
 
         self.app.update1s.connect(self.updateOrbit)
-        self.satOffTime = SatControlWidget([self.ui.satOffTime,
-                                            self.ui.satOffTimeVal,
-                                            self.ui.satOffTimeP100,
-                                            self.ui.satOffTimeP10,
-                                            self.ui.satOffTimeP1,
-                                            self.ui.satOffTimeM100,
-                                            self.ui.satOffTimeM10,
-                                            self.ui.satOffTimeM1,
-                                            ], -1000, 1000)
-        self.satOffRa = SatControlWidget([self.ui.satOffRa,
-                                          self.ui.satOffRaVal,
-                                          self.ui.satOffRaP100,
-                                          self.ui.satOffRaP10,
-                                          self.ui.satOffRaP1,
-                                          self.ui.satOffRaM100,
-                                          self.ui.satOffRaM10,
-                                          self.ui.satOffRaM1,
-                                          ], -1800, 1800)
-        self.satOffDec = SatControlWidget([self.ui.satOffDec,
-                                           self.ui.satOffDecVal,
-                                           self.ui.satOffDecP100,
-                                           self.ui.satOffDecP10,
-                                           self.ui.satOffDecP1,
-                                           self.ui.satOffDecM100,
-                                           self.ui.satOffDecM10,
-                                           self.ui.satOffDecM1,
-                                           ], -1800, 1800)
-
-        self.satOffTime.valueChanged.connect(self.setTrackingOffsets)
-        self.satOffRa.valueChanged.connect(self.setTrackingOffsets)
-        self.satOffDec.valueChanged.connect(self.setTrackingOffsets)
+        self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
+        self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
+        self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
 
     def initConfig(self):
         """
@@ -777,13 +678,9 @@ class SatTrack(object):
             return False
 
         if obs.status == 10:
-            self.ui.satOffGroupTime.setEnabled(True)
-            self.ui.satOffGroupRa.setEnabled(True)
-            self.ui.satOffGroupDec.setEnabled(True)
+            self.ui.satOffGroup.setEnabled(True)
         else:
-            self.ui.satOffGroupTime.setEnabled(False)
-            self.ui.satOffGroupRa.setEnabled(False)
-            self.ui.satOffGroupDec.setEnabled(False)
+            self.ui.satOffGroup.setEnabled(False)
         return True
 
     def followMount(self, obs):

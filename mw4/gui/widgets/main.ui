@@ -102,7 +102,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -10115,7 +10115,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -12221,7 +12221,7 @@ Next point in time when satellite settles.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="satOffGroupTime">
+      <widget class="QGroupBox" name="satOffGroup">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -12237,620 +12237,111 @@ Next point in time when satellite settles.</string>
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in time when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
-        <string>Time offset: (-1000... 1000 ms)</string>
+        <string>Offset satellite position</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="satOffTimeM100">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="satOffTime">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>100</x>
           <y>45</y>
-          <width>36</width>
+          <width>70</width>
           <height>21</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-100</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="satOffTimeVal">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>45</y>
-          <width>61</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>This is calculated by the mount computer !
-Next point in time when satellite settles.</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffTimeM10">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-10</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffTimeP10">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+10</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffTimeM1">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-1</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffTimeP1">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>235</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+1</string>
-        </property>
-       </widget>
-       <widget class="QSlider" name="satOffTime">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>20</y>
-          <width>346</width>
-          <height>21</height>
-         </rect>
+        <property name="decimals">
+         <number>0</number>
         </property>
         <property name="minimum">
-         <number>-1000</number>
+         <double>-999.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>1000</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="invertedAppearance">
-         <bool>false</bool>
-        </property>
-        <property name="invertedControls">
-         <bool>true</bool>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::NoTicks</enum>
-        </property>
-        <property name="tickInterval">
-         <number>100</number>
+         <double>999.000000000000000</double>
         </property>
        </widget>
-       <widget class="QPushButton" name="satOffTimeP100">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="satOffRa">
         <property name="geometry">
          <rect>
-          <x>315</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+100</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="satOffGroupDec">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>190</y>
-         <width>366</width>
-         <height>76</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in DEC axis when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="title">
-        <string>DEC offset: (-1800... 1800 arcsec)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QPushButton" name="satOffDecM100">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-100</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="satOffDecVal">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>45</y>
-          <width>61</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>This is calculated by the mount computer !
-Next point in time when satellite settles.</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffDecM10">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-10</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffDecP10">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+10</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffDecM1">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-1</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffDecP1">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>235</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+1</string>
-        </property>
-       </widget>
-       <widget class="QSlider" name="satOffDec">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
+          <x>100</x>
           <y>20</y>
-          <width>346</width>
+          <width>70</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="decimals">
+         <number>0</number>
         </property>
         <property name="minimum">
-         <number>-1000</number>
+         <double>-1800.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>1000</number>
+         <double>1800.000000000000000</double>
         </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="invertedAppearance">
-         <bool>false</bool>
-        </property>
-        <property name="invertedControls">
-         <bool>true</bool>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::NoTicks</enum>
-        </property>
-        <property name="tickInterval">
-         <number>100</number>
+        <property name="singleStep">
+         <double>10.000000000000000</double>
         </property>
        </widget>
-       <widget class="QPushButton" name="satOffDecP100">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="satOffDec">
         <property name="geometry">
          <rect>
-          <x>315</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+100</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="satOffGroupRa">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>100</y>
-         <width>366</width>
-         <height>76</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in RA axis when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="title">
-        <string>RA offset: (-1800... 1800 arcsec)</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QPushButton" name="satOffRaM100">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-100</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="satOffRaVal">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>150</x>
-          <y>45</y>
-          <width>61</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>This is calculated by the mount computer !
-Next point in time when satellite settles.</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffRaM10">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-10</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffRaP10">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+10</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffRaM1">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>-1</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="satOffRaP1">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>235</x>
-          <y>45</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>+1</string>
-        </property>
-       </widget>
-       <widget class="QSlider" name="satOffRa">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
+          <x>280</x>
           <y>20</y>
-          <width>346</width>
+          <width>70</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="decimals">
+         <number>0</number>
         </property>
         <property name="minimum">
-         <number>-1000</number>
+         <double>-1800.000000000000000</double>
         </property>
         <property name="maximum">
-         <number>1000</number>
+         <double>1800.000000000000000</double>
         </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="invertedAppearance">
-         <bool>false</bool>
-        </property>
-        <property name="invertedControls">
-         <bool>true</bool>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::NoTicks</enum>
-        </property>
-        <property name="tickInterval">
-         <number>100</number>
+        <property name="singleStep">
+         <double>10.000000000000000</double>
         </property>
        </widget>
-       <widget class="QPushButton" name="satOffRaP100">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QLabel" name="label_125">
         <property name="geometry">
          <rect>
-          <x>315</x>
-          <y>45</y>
-          <width>36</width>
+          <x>15</x>
+          <y>20</y>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <property name="text">
+         <string>RA offset</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_126">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>20</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
         </property>
         <property name="text">
-         <string>+100</string>
+         <string>DEC offset</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_150">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>45</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Time offset</string>
         </property>
        </widget>
       </widget>
@@ -28590,7 +28081,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PlotBase</class>
+   <class>NormalScatter</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>
@@ -28602,7 +28093,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>NormalScatter</class>
+   <class>PlotBase</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>
@@ -28987,30 +28478,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>satelliteName</tabstop>
   <tabstop>startSatelliteTracking</tabstop>
   <tabstop>stopSatelliteTracking</tabstop>
-  <tabstop>satOffTimeM100</tabstop>
-  <tabstop>satOffTimeVal</tabstop>
-  <tabstop>satOffTimeM10</tabstop>
-  <tabstop>satOffTimeP10</tabstop>
-  <tabstop>satOffTimeM1</tabstop>
-  <tabstop>satOffTimeP1</tabstop>
-  <tabstop>satOffTime</tabstop>
-  <tabstop>satOffTimeP100</tabstop>
-  <tabstop>satOffDecM100</tabstop>
-  <tabstop>satOffDecVal</tabstop>
-  <tabstop>satOffDecM10</tabstop>
-  <tabstop>satOffDecP10</tabstop>
-  <tabstop>satOffDecM1</tabstop>
-  <tabstop>satOffDecP1</tabstop>
-  <tabstop>satOffDec</tabstop>
-  <tabstop>satOffDecP100</tabstop>
-  <tabstop>satOffRaM100</tabstop>
-  <tabstop>satOffRaVal</tabstop>
-  <tabstop>satOffRaM10</tabstop>
-  <tabstop>satOffRaP10</tabstop>
-  <tabstop>satOffRaM1</tabstop>
-  <tabstop>satOffRaP1</tabstop>
-  <tabstop>satOffRa</tabstop>
-  <tabstop>satOffRaP100</tabstop>
   <tabstop>mpcExtendedFilter</tabstop>
   <tabstop>commandInput</tabstop>
   <tabstop>commandOutput</tabstop>

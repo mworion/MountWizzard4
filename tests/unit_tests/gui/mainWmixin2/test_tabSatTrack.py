@@ -64,32 +64,6 @@ def function(module):
     yield window
     window.closing = True
 
-
-def test_SatControlWidget_1(function):
-    suc = function.satOffTime.updateSatOff()
-    assert suc
-
-
-def test_SatControlWidget_2(function):
-    def sender():
-        return function.ui.satOffTimeP100
-
-    function.satOffTime.sender = sender
-    suc = function.satOffTime.updateSatOffButton()
-    assert suc
-
-
-def test_SatControlWidget_3(function):
-    function.ui.satOffTimeVal.setText('egr')
-    suc = function.satOffTime.updateSatOffVal()
-    assert suc
-
-
-def test_SatControlWidget_4(function):
-    function.ui.satOffTimeVal.setText('123')
-    suc = function.satOffTime.updateSatOffVal()
-    assert suc
-
     
 def test_initConfig_1(function):
     class Test:

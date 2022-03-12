@@ -72,7 +72,6 @@ class SatTrack(object):
         self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
-        self.ui.satTimeUTC.toggled.connect(self.showSatPasses)
 
         self.app.update1s.connect(self.updateOrbit)
         self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
@@ -100,6 +99,7 @@ class SatTrack(object):
             self.installPath = self.app.automation.installPath
         else:
             self.installPath = self.app.mwGlob['dataDir']
+        self.ui.satTimeUTC.toggled.connect(self.showSatPasses)
         return True
 
     def storeConfig(self):
@@ -753,4 +753,4 @@ class SatTrack(object):
                                                           DECcorr=valD)
         if not suc:
             self.app.message.emit('Cannot change offset', 2)
-        return True
+        return suc

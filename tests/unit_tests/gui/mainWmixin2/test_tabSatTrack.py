@@ -1325,3 +1325,19 @@ def test_followMount_4(function):
     obs.Alt = Angle(degrees=1)
     suc = function.followMount(obs)
     assert suc
+
+
+def test_setTrackingOffsets_1(function):
+    with mock.patch.object(function.app.mount.satellite,
+                           'setTrackingOffsets',
+                           return_value=True):
+        suc = function.setTrackingOffsets()
+        assert suc
+
+
+def test_setTrackingOffsets_2(function):
+    with mock.patch.object(function.app.mount.satellite,
+                           'setTrackingOffsets',
+                           return_value=False):
+        suc = function.setTrackingOffsets()
+        assert not suc

@@ -108,7 +108,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             plotItem.disableAutoRange()
             plotItem.setClipToView(True)
             plotItem.setOwnedByLayout(True)
-            plotItem.showAxes(True, showValues=True)
+            plotItem.showAxes(False, showValues=False)
             for side in ('left', 'top', 'right', 'bottom'):
                 plotItem.getAxis(side).setPen(self.pen)
                 plotItem.getAxis(side).setTextPen(self.pen)
@@ -153,6 +153,7 @@ class NormalScatter(PlotBase):
         self.setupItems()
         self.colorInx = None
         self.col = None
+        self.p[0].setVisible(True)
 
     def plot(self, x, y, **kwargs):
         """
@@ -162,6 +163,7 @@ class NormalScatter(PlotBase):
         :return:
         """
         self.p[0].clear()
+        self.p[0].showAxes(True, showValues=True)
         self.scatterItem = pg.ScatterPlotItem(hoverable=True,
                                               hoverSize=10, hoverPen=self.pen)
         self.p[0].addItem(self.scatterItem)
@@ -225,7 +227,6 @@ class PolarScatter(NormalScatter):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.p[0].showAxes(False, showValues=False)
         self.p[0].setAspectLocked(True)
         self.addBarItem()
 
@@ -235,6 +236,7 @@ class PolarScatter(NormalScatter):
         :param kwargs:
         :return:
         """
+        textAngle = np.radians(30)
         if kwargs.get('reverse', False):
             maxR = 90
             stepLines = 10
@@ -263,7 +265,7 @@ class PolarScatter(NormalScatter):
                 text = f'{r}'
             textItem = pg.TextItem(text=text, color=self.M_GREY, anchor=(0.5, 0.5))
             textItem.setFont(font)
-            textItem.setPos(r * 0.7, r * 0.7)
+            textItem.setPos(r * np.cos(textAngle), r * np.sin(textAngle))
             self.p[0].addItem(textItem)
 
         for text, x, y in zip(
@@ -292,6 +294,7 @@ class PolarScatter(NormalScatter):
             posX = y * np.cos(x)
             posY = y * np.sin(x)
         super().plot(posX, posY, limits=False, **kwargs)
+        self.p[0].showAxes(False, showValues=False)
         self.setGrid(y, **kwargs)
 
         ang = kwargs.get('ang')
@@ -321,7 +324,7 @@ class PolarScatter(NormalScatter):
         :param lat:
         :return:
         """
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-3, -3, 6, 6)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-2.5, -2.5, 5, 5)
         circle.setPen(self.pen)
         circle.setBrush(self.brush)
         circle.setPos(0, lat)
@@ -330,7 +333,7 @@ class PolarScatter(NormalScatter):
         circle.setPen(self.pen)
         circle.setPos(0, lat)
         self.p[0].addItem(circle)
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-10, -10, 20, 20)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-7.5, -7.5, 15, 15)
         circle.setPen(self.pen)
         circle.setPos(0, lat)
         self.p[0].addItem(circle)

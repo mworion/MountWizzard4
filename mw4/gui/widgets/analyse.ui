@@ -1681,7 +1681,7 @@ Model</string>
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>RA Raw Error (PlateSolve)</string>
+          <string>RA Raw Error (PlateSolve Result, w/o Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
@@ -1721,7 +1721,7 @@ Model</string>
        <item row="1" column="0">
         <widget class="QGroupBox" name="groupBox_7">
          <property name="title">
-          <string>DEC Raw Error (PlateSolve)</string>
+          <string>DEC Raw Error (PlateSolve Result, w/o Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
@@ -1761,7 +1761,7 @@ Model</string>
        <item row="0" column="1">
         <widget class="QGroupBox" name="groupBox_8">
          <property name="title">
-          <string>RA Error (Model)</string>
+          <string>RA Error (with Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
@@ -1801,7 +1801,7 @@ Model</string>
        <item row="1" column="1">
         <widget class="QGroupBox" name="groupBox_9">
          <property name="title">
-          <string>DEC Error (Model)</string>
+          <string>DEC Error (with Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
@@ -1863,7 +1863,7 @@ Model</string>
        <item row="1" column="0">
         <widget class="QGroupBox" name="groupBox_18">
          <property name="title">
-          <string>DEC Raw Error (PlateSolve)</string>
+          <string>DEC Raw Error (PlateSolve Result, w/o Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
@@ -1903,7 +1903,7 @@ Model</string>
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_17">
          <property name="title">
-          <string>RA Raw Error (PlateSolve)</string>
+          <string>RA Raw Error (PlateSolve Result, w/o Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
@@ -1943,7 +1943,7 @@ Model</string>
        <item row="0" column="1">
         <widget class="QGroupBox" name="groupBox_19">
          <property name="title">
-          <string>RA Error (Model)</string>
+          <string>RA Error (with Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
@@ -1983,7 +1983,7 @@ Model</string>
        <item row="1" column="1">
         <widget class="QGroupBox" name="groupBox_20">
          <property name="title">
-          <string>DEC Error (Model)</string>
+          <string>DEC Error (with Model)</string>
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>

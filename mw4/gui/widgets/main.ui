@@ -102,7 +102,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -10674,7 +10674,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <attribute name="title">
        <string>Tracking</string>
       </attribute>
-      <widget class="QGroupBox" name="groupBox_59">
+      <widget class="QGroupBox" name="satPassesGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -10684,7 +10684,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Satellite passes (time in UTC)</string>
+        <string>Satellite passes</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -11487,7 +11487,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_60">
+      <widget class="QGroupBox" name="satTrackGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -11497,7 +11497,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Satellite tracking (time in UTC)</string>
+        <string>Satellite tracking</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -12234,7 +12234,7 @@ Next point in time when satellite settles.</string>
         </rect>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in time when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changing the offset in time, ra, dec when mount is in satellite tracking state. Available for firmware 3.x ongoing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
         <string>Offset satellite position</string>
@@ -17315,7 +17315,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -26135,7 +26135,7 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>185</y>
+         <y>255</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -26623,6 +26623,91 @@ Updater</string>
         </property>
         <property name="text">
          <string>Length of prediction</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="automateGroup_2">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>185</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>Time units</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_163">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Sat passes and tracking</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="satTimeUTC">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>20</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Minimum logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>UTC</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="satTimeLocal">
+        <property name="geometry">
+         <rect>
+          <x>275</x>
+          <y>20</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Debug logging will be stored in log file.</string>
+        </property>
+        <property name="text">
+         <string>Local</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>

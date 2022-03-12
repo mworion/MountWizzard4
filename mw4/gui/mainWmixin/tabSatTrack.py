@@ -15,7 +15,7 @@
 #
 ###########################################################
 # standard libraries
-import logging
+from dateutil.tz import tzlocal
 
 # external packages
 import numpy as np
@@ -72,6 +72,7 @@ class SatTrack(object):
         self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
+        self.ui.satTimeUTC.toggled.connect(self.showSatPasses)
 
         self.app.update1s.connect(self.updateOrbit)
         self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
@@ -306,6 +307,12 @@ class SatTrack(object):
         """
         if not self.satellite:
             return False
+        isUTC = self.ui.satTimeUTC.isChecked()
+        if isUTC:
+            self.ui.satPassesGroup.setTitle('Satellite passes (time in UTC)')
+        else:
+            self.ui.satPassesGroup.setTitle('Satellite passes (local time)')
+
         self.clearTrackingParameters()
         obsSite = self.app.mount.obsSite
         times, events = self.calcPassEvents(obsSite)
@@ -326,24 +333,37 @@ class SatTrack(object):
         for i, satOrbit in enumerate(self.satOrbits):
             riseT = satOrbit.get('rise', None)
             if riseT is not None:
-                riseStr = riseT.utc_strftime(fString)
-                dateStr = riseT.utc_strftime(fStringDate)
+                if isUTC:
+                    riseStr = riseT.utc_strftime(fString)
+                    dateStr = riseT.utc_strftime(fStringDate)
+                else:
+                    dateStr = riseT.astimezone(tzlocal()).strftime(fStringDate)
+                    riseStr = riseT.astimezone(tzlocal()).strftime(fString)
             else:
                 riseStr = 'unknown'
                 dateStr = '---'
             culminateT = satOrbit.get('culminate', None)
             if culminateT is not None:
-                culminateStr = culminateT.utc_strftime(fString)
+                if isUTC:
+                    culminateStr = culminateT.utc_strftime(fString)
+                else:
+                    culminateStr = culminateT.astimezone(tzlocal()).strftime(fString)
             else:
                 culminateStr = 'unknown'
             settleT = satOrbit.get('settle', None)
             if settleT is not None:
-                settleStr = settleT.utc_strftime(fString)
+                if isUTC:
+                    settleStr = settleT.utc_strftime(fString)
+                else:
+                    settleStr = settleT.astimezone(tzlocal()).strftime(fString)
             else:
                 settleStr = 'unknown'
             flipT = satOrbit.get('flip', None)
             if flipT is not None:
-                flipStr = flipT.utc_strftime(fString)
+                if isUTC:
+                    flipStr = flipT.utc_strftime(fString)
+                else:
+                    flipStr = flipT.astimezone(tzlocal()).strftime(fString)
             else:
                 flipStr = 'no flip'
 
@@ -591,15 +611,26 @@ class SatTrack(object):
         if params is None:
             return False
         self.ui.trajectoryProgress.setValue(0)
+        isUTC = self.ui.satTimeUTC.isChecked()
+        if isUTC:
+            self.ui.satTrackGroup.setTitle('Satellite tracking (time in UTC)')
+        else:
+            self.ui.satTrackGroup.setTitle('Satellite tracking (local time)')
 
         if params.jdStart is not None and self.satOrbits:
-            t = params.jdStart.utc_strftime('%d %b  %H:%M:%S')
+            if isUTC:
+                t = params.jdStart.utc_strftime('%d %b  %H:%M:%S')
+            else:
+                t = params.jdStart.astimezone(tzlocal()).strftime("%d %b  %H:%M:%S")
             self.ui.satTrajectoryStart.setText(t)
         else:
             self.ui.satTrajectoryStart.setText('No transit')
 
         if params.jdEnd is not None and self.satOrbits:
-            t = params.jdEnd.utc_strftime('%d %b  %H:%M:%S')
+            if isUTC:
+                t = params.jdEnd.utc_strftime('%d %b  %H:%M:%S')
+            else:
+                t = params.jdEnd.astimezone(tzlocal()).strftime("%d %b  %H:%M:%S")
             self.ui.satTrajectoryEnd.setText(t)
         else:
             self.ui.satTrajectoryEnd.setText('No transit')
@@ -615,7 +646,6 @@ class SatTrack(object):
         if params.jdStart is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
             self.ui.startSatelliteTracking.setEnabled(True)
-
         else:
             self.ui.stopSatelliteTracking.setEnabled(False)
             self.ui.startSatelliteTracking.setEnabled(False)

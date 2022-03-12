@@ -455,6 +455,7 @@ def test_showSatPasses_1(function):
                            'settle': ts.tt_jd(2459215.7)},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
+    function.ui.satTimeUTC.setChecked(True)
     with mock.patch.object(function,
                            'clearTrackingParameters'):
         with mock.patch.object(function,
@@ -482,6 +483,7 @@ def test_showSatPasses_2(function):
                            'settle': ts.tt_jd(2459215.7)},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
+    function.ui.satTimeUTC.setChecked(True)
     with mock.patch.object(function,
                            'clearTrackingParameters'):
         with mock.patch.object(function,
@@ -507,6 +509,88 @@ def test_showSatPasses_3(function):
                            'flip': ts.tt_jd(2459215.6),},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
+    function.ui.satTimeUTC.setChecked(True)
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'calcPassEvents',
+                               return_value=(0, 0)):
+            with mock.patch.object(function,
+                                   'extractOrbits'):
+                with mock.patch.object(function,
+                                       'addMeridianTransit'):
+                    with mock.patch.object(function,
+                                           'progTrajectoryToMount'):
+                        suc = function.showSatPasses()
+                        assert suc
+
+
+def test_showSatPasses_4(function):
+    ts = function.app.mount.obsSite.ts
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    function.ui.satTimeUTC.setChecked(False)
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'calcPassEvents',
+                               return_value=(0, 0)):
+            with mock.patch.object(function,
+                                   'extractOrbits'):
+                with mock.patch.object(function,
+                                       'addMeridianTransit'):
+                    with mock.patch.object(function,
+                                           'progTrajectoryToMount'):
+                        suc = function.showSatPasses()
+                        assert suc
+
+
+def test_showSatPasses_5(function):
+    ts = function.app.mount.obsSite.ts
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    function.ui.satTimeUTC.setChecked(False)
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'calcPassEvents',
+                               return_value=(0, 0)):
+            with mock.patch.object(function,
+                                   'extractOrbits'):
+                with mock.patch.object(function,
+                                       'addMeridianTransit'):
+                    with mock.patch.object(function,
+                                           'progTrajectoryToMount'):
+                        suc = function.showSatPasses()
+                        assert suc
+
+
+def test_showSatPasses_6(function):
+    ts = function.app.mount.obsSite.ts
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satOrbits = [{'culminate': ts.tt_jd(2459215.6),
+                           'flip': ts.tt_jd(2459215.6),},
+                          {'rise': ts.tt_jd(2459216.5),
+                           'settle': ts.tt_jd(2459216.7)}]
+    function.ui.satTimeUTC.setChecked(False)
     with mock.patch.object(function,
                            'clearTrackingParameters'):
         with mock.patch.object(function,
@@ -994,6 +1078,7 @@ def test_updateSatelliteTrackGui_2(function):
         message = 'e'
         altitude = 1
 
+    function.ui.satTimeUTC.setChecked(True)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
                            'culminate': ts.tt_jd(2459215.6),
@@ -1013,6 +1098,47 @@ def test_updateSatelliteTrackGui_3(function):
         message = 'e'
         altitude = 1
 
+    function.ui.satTimeUTC.setChecked(True)
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+
+    suc = function.updateSatelliteTrackGui(Test())
+    assert suc
+
+
+def test_updateSatelliteTrackGui_4(function):
+    ts = function.app.mount.obsSite.ts
+
+    class Test:
+        jdStart = ts.tt_jd(2459215.5)
+        jdEnd = ts.tt_jd(2459215.6)
+        flip = False
+        message = 'e'
+        altitude = 1
+
+    function.ui.satTimeUTC.setChecked(False)
+    function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
+                           'flip': ts.tt_jd(2459215.6),
+                           'culminate': ts.tt_jd(2459215.6),
+                           'settle': ts.tt_jd(2459215.7)}]
+
+    suc = function.updateSatelliteTrackGui(Test())
+    assert suc
+
+
+def test_updateSatelliteTrackGui_5(function):
+    ts = function.app.mount.obsSite.ts
+
+    class Test:
+        jdStart = None
+        jdEnd = None
+        flip = True
+        message = 'e'
+        altitude = 1
+
+    function.ui.satTimeUTC.setChecked(False)
     function.satOrbits = [{'rise': ts.tt_jd(2459215.5),
                            'flip': ts.tt_jd(2459215.6),
                            'culminate': ts.tt_jd(2459215.6),

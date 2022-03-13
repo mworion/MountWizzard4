@@ -252,7 +252,7 @@
            <string>Enabling the edit mode for model build points.</string>
           </property>
           <property name="text">
-           <string>Terrain image</string>
+           <string>Terrain</string>
           </property>
          </widget>
         </item>
@@ -595,7 +595,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
         <item>
-         <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0">
+         <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0">
           <item row="5" column="0" colspan="2">
            <spacer name="verticalSpacer">
             <property name="orientation">

@@ -136,7 +136,9 @@ class Almanac:
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(yTicks, yLabels)]
         plotItem = self.ui.twilight.p[0]
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
+        plotItem.getViewBox().xRange = (0, 360)
+        plotItem.getViewBox().yRange = (0, 90)
         plotItem.showAxes(True, showValues=True)
         plotItem.getAxis('bottom').setTicks([xTicks])
         plotItem.getAxis('left').setTicks([yTicks])

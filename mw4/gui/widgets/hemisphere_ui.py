@@ -338,7 +338,7 @@ class Ui_HemisphereDialog(object):
         self.showPolar.setText(_translate("HemisphereDialog", "Show Polar"))
         self.showSlewPath.setText(_translate("HemisphereDialog", "Slew path "))
         self.showTerrain.setToolTip(_translate("HemisphereDialog", "Enabling the edit mode for model build points."))
-        self.showTerrain.setText(_translate("HemisphereDialog", "Terrain image"))
+        self.showTerrain.setText(_translate("HemisphereDialog", "Terrain"))
         self.showHorizon.setToolTip(_translate("HemisphereDialog", "<html><head/><body><p>Use horizon mask file in hemisphere window.</p></body></html>"))
         self.showHorizon.setText(_translate("HemisphereDialog", "Horizon mask "))
         self.operationMode.setTitle(_translate("HemisphereDialog", "Operation Mode"))

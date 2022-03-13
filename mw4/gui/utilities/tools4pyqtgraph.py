@@ -41,12 +41,18 @@ __all__ = [
 class CustomViewBox(pg.ViewBox):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.xRange = None
+        self.yRange = None
 
     def mouseClickEvent(self, ev):
         super().mouseClickEvent(ev)
         if ev.button() == Qt.MouseButton.RightButton:
-            self.autoRange()
-            self.enableAutoRange(x=True, y=True)
+            if self.xRange:
+                self.setXRange(self.xRange[0], self.xRange[1])
+            if self.yRange:
+                self.setYRange(self.yRange[0], self.yRange[1])
+            if self.xRange is None and self.yRange is None:
+                self.enableAutoRange(x=True, y=True)
 
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):
@@ -71,8 +77,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.imageItem = None
         self.barItem = None
         self.p = []
-        self.setBackground(self.M_BACK)
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
+        self.setBackground(self.M_BACK)
         self.setupItems()
         self.colorChange()
 
@@ -172,19 +178,21 @@ class NormalScatter(PlotBase):
                                               hoverSize=10, hoverPen=self.pen)
         self.p[0].addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
-        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x))
-        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y))
-        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x))
-        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y))
+        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x) * 1.2)
+        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y) * 1.2)
+        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x) * 1.2)
+        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y) * 1.2)
 
         if kwargs.get('limits', True):
             self.p[0].setLimits(xMin=xMin, xMax=xMax,
                                 yMin=yMin, yMax=yMax,
-                                minXRange=(xMax - xMin) / 2,
+                                minXRange=(xMax - xMin) / 4,
                                 maxXRange=(xMax - xMin),
-                                minYRange=(yMax - yMin) / 2,
+                                minYRange=(yMax - yMin) / 4,
                                 maxYRange=(yMax - yMin))
         self.p[0].setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
+        self.p[0].getViewBox().xRange = (xMin, xMax)
+        self.p[0].getViewBox().yRange = (yMin, yMax)
         self.p[0].autoRange()
 
         dataVal = kwargs.get('data', y)

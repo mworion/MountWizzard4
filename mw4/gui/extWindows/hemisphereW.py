@@ -70,6 +70,8 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.meridianTrack = None
         self.imageTerrain = None
         self.hemMouse = None
+        self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(
+            self.mouseMovedHemisphere)
 
     def initConfig(self):
         """
@@ -190,6 +192,32 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.show()
         return True
 
+    def mouseMoved(self, plotItem, pos):
+        """
+        :param plotItem:
+        :param pos:
+        :return:
+        """
+        mousePoint = plotItem.getViewBox().mapSceneToView(pos)
+        x = mousePoint.x()
+        y = mousePoint.y()
+        if 0 < x < 360 and 0 < y < 90:
+            self.ui.azimuth.setText(f'{x:3.1f}')
+            self.ui.altitude.setText(f'{y:3.1f}')
+        else:
+            self.ui.azimuth.setText('')
+            self.ui.altitude.setText('')
+        return True
+
+    def mouseMovedHemisphere(self, pos):
+        """
+        :param pos:
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        self.mouseMoved(plotItem, pos)
+        return True
+
     def colorChange(self):
         """
         :return:
@@ -276,13 +304,16 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
             self.drawHemisphere()
         return needRedraw
 
-    def prepareHemisphere(self):
+    @staticmethod
+    def preparePlotItem(plotItem):
         """
+        :param plotItem:
         :return:
         """
-        plotItem = self.ui.hemisphere.p[0]
         plotItem.showAxes(True, showValues=True)
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
+        plotItem.getViewBox().xRange = (0, 360)
+        plotItem.getViewBox().yRange = (0, 90)
         xTicks = [(x, f'{x:0.0f}') for x in np.arange(30, 331, 30)]
         plotItem.getAxis('bottom').setTicks([xTicks])
         plotItem.getAxis('top').setTicks([xTicks])
@@ -291,13 +322,20 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         plotItem.getAxis('right').setTicks([yTicks])
         plotItem.setLabel('bottom', 'Azimuth [deg]')
         plotItem.setLabel('left', 'Altitude [deg]')
-        plotItem.setLimits(xMin=0, xMax=360, yMin=0, yMax=90,
-                           minXRange=360 / 4, minYRange=180 / 4)
+        plotItem.setLimits(xMin=0, xMax=360, yMin=0, yMax=90)
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
         plotItem.setMouseEnabled(x=False, y=False)
         plotItem.clear()
+        return True
+
+    def prepareHemisphere(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        self.preparePlotItem(plotItem)
         self.pointerAltAz = None
         self.pointerDome = None
         self.modelPoints = None

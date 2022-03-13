@@ -15,16 +15,12 @@
 #
 ###########################################################
 # standard libraries
-
-# external packages
 import os.path
 
-import PyQt5
-from PyQt5.QtCore import QRect, Qt
+# external packages
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QGuiApplication, QCursor, QFont
 import numpy as np
-import matplotlib.patches as mpatches
-from matplotlib.colors import LinearSegmentedColormap
 from PIL import Image
 import pyqtgraph as pg
 
@@ -56,11 +52,9 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
     on the moving plane we have (and set to the z order)
         - dome                  0
         - pointing marker       10
-
     """
 
-    __all__ = ['HemisphereWindow',
-               ]
+    __all__ = ['HemisphereWindow']
 
     def __init__(self, app):
         super().__init__()
@@ -69,31 +63,14 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
         self.mwSuper('__init__')
-        self.mutexDraw = PyQt5.QtCore.QMutex()
         self.operationMode = 'normal'
-        self.MODE = None
-        self.setModeColors()
         self.pointerAltAz = None
         self.pointerDome = None
-        self.pointsBuild = None
-        self.starsAlign = None
-        self.starsAlignAnnotate = None
-        self.meridianSlew = None
-        self.meridianTrack = None
         self.horizonLimitHigh = None
         self.horizonLimitLow = None
-        self.celestialPath = None
-        self.celestialPolarPath = None
-        self.meridianSlewParam = None
-        self.meridianTrackParam = None
-        self.horizonLimitHighParam = None
-        self.horizonLimitLowParam = None
-        self.pointerPolarAltAz = None
-        self.pointsBuildAnnotate = None
-        self.pointsPolarBuild = None
-        self.pointsPolarBuildAnnotate = None
+        self.meridianSlew = None
+        self.meridianTrack = None
         self.imageTerrain = None
-        self.closingWindow = False
         self.hemMouse = None
 
     def initConfig(self):
@@ -175,10 +152,9 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :param closeEvent:
         :return:
         """
-        self.ui.checkEditNone.setChecked(True)
+        self.ui.normalMode.setChecked(True)
         self.setOperationMode()
         self.storeConfig()
-        self.closingWindow = True
         QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
         super().closeEvent(closeEvent)
 
@@ -187,78 +163,58 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :return:
         """
         self.app.update10s.connect(self.updateAlignStar)
-        self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.updatePointMarker.connect(self.updatePointMarker)
-        self.app.updatePointMarker.connect(self.updatePolarPointMarker)
+        self.app.colorChange.connect(self.colorChange)
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
-        self.app.mount.signals.pointDone.connect(self.updatePointerPolarAltAz)
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
-        self.app.enableEditPoints.connect(self.enableEditPoints)
+
+        self.ui.normalMode.clicked.connect(self.setOperationMode)
+        self.ui.editMode.clicked.connect(self.setOperationMode)
+        self.ui.alignmentMode.clicked.connect(self.setOperationMode)
+
+        self.app.redrawHemisphere.connect(self.drawHemisphere)
+        self.ui.azimuthShift.valueChanged.connect(self.drawHemisphere)
+        self.ui.altitudeShift.valueChanged.connect(self.drawHemisphere)
+        self.ui.terrainAlpha.valueChanged.connect(self.drawHemisphere)
         self.ui.showSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.showHorizon.clicked.connect(self.drawHemisphere)
         self.ui.showAlignStar.clicked.connect(self.drawHemisphere)
         self.ui.showMountLimits.clicked.connect(self.drawHemisphere)
         self.ui.showCelestial.clicked.connect(self.drawHemisphere)
         self.ui.showTerrain.clicked.connect(self.drawHemisphere)
-        self.ui.checkEditNone.clicked.connect(self.setOperationMode)
-        self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
-        self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
-        self.ui.azimuthShift.valueChanged.connect(self.drawHemisphere)
-        self.ui.altitudeShift.valueChanged.connect(self.drawHemisphere)
-        self.ui.terrainAlpha.valueChanged.connect(self.drawHemisphere)
-        self.app.colorChange.connect(self.colorChange)
 
-        self.ui.showPolar.clicked.connect(self.togglePolar)
         self.ui.addPositionToHorizon.clicked.connect(self.addHorizonPointManual)
-        self.togglePolar()
+        self.drawHemisphere()
         self.show()
-        return True
-
-    def setModeColors(self):
-        """
-        :return:
-        """
-        self.MODE = dict(
-            normal=dict(horMarker='None',
-                        horColor=self.M_BLUE,
-                        buildPColor=self.M_GREEN,
-                        starSize=6,
-                        starColor=self.M_YELLOW1,
-                        starAnnColor=self.M_WHITE1),
-
-            build=dict(horMarker='None',
-                       horColor=self.M_BLUE,
-                       buildPColor=self.M_PINK,
-                       starSize=6,
-                       starColor=self.M_YELLOW1,
-                       starAnnColor=self.M_WHITE1),
-
-            horizon=dict(horMarker='o',
-                         horColor=self.M_PINK,
-                         buildPColor=self.M_GREEN1,
-                         starSize=6,
-                         starColor=self.M_YELLOW1,
-                         starAnnColor=self.M_WHITE1),
-
-            star=dict(horMarker='None',
-                      horColor=self.M_BLUE1,
-                      buildPColor=self.M_GREEN1,
-                      starSize=12,
-                      starColor=self.M_YELLOW,
-                      starAnnColor=self.M_WHITE)
-        )
         return True
 
     def colorChange(self):
         """
         :return:
         """
+        self.mwSuper('colorChange')
         self.setStyleSheet(self.mw4Style)
-        self.setModeColors()
         self.ui.hemisphere.colorChange()
+        self.ui.horizon.colorChange()
+        self.drawHemisphere()
+        return True
+
+    def setOperationMode(self):
+        """
+        :return: success
+        """
+        if self.ui.normalMode.isChecked():
+            self.operationMode = 'normal'
+        elif self.ui.editMode.isChecked():
+            self.operationMode = 'build'
+        elif self.ui.alignmentMode.isChecked():
+            self.ui.showAlignStar.setChecked(True)
+            self.operationMode = 'star'
+            self.app.data.clearBuildP()
+
         self.drawHemisphere()
         return True
 
@@ -287,45 +243,26 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         size = 8 + int(relevance * 5)
         return color, size
 
-    def togglePolar(self):
-        """
-        :return: success
-        """
-        return
-        if self.ui.showPolar.isChecked():
-            self.ui.polar.setVisible(True)
-
-        else:
-            self.ui.polar.setVisible(False)
-
-        self.drawHemisphere()
-        return True
-
     def updateOnChangedParams(self, sett):
         """
         :param sett:
         :return: status redraw
         """
         needRedraw = False
-        if self.meridianSlewParam != sett.meridianLimitSlew:
-            self.meridianSlewParam = sett.meridianLimitSlew
+        if self.meridianSlew != sett.meridianLimitSlew:
+            self.meridianSlew = sett.meridianLimitSlew
             needRedraw = True
-
-        if self.meridianTrackParam != sett.meridianLimitTrack:
-            self.meridianTrackParam = sett.meridianLimitTrack
+        if self.meridianTrack != sett.meridianLimitTrack:
+            self.meridianTrack = sett.meridianLimitTrack
             needRedraw = True
-
-        if self.horizonLimitHighParam != sett.horizonLimitHigh:
-            self.horizonLimitHighParam = sett.horizonLimitHigh
+        if self.horizonLimitHigh != sett.horizonLimitHigh:
+            self.horizonLimitHigh = sett.horizonLimitHigh
             needRedraw = True
-
-        if self.horizonLimitLowParam != sett.horizonLimitLow:
-            self.horizonLimitLowParam = sett.horizonLimitLow
+        if self.horizonLimitLow != sett.horizonLimitLow:
+            self.horizonLimitLow = sett.horizonLimitLow
             needRedraw = True
-
         if needRedraw:
             self.drawHemisphere()
-
         return needRedraw
 
     def updatePointerAltAz(self):
@@ -346,26 +283,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
-        return True
-
-    def updatePointerPolarAltAz(self):
-        """
-        :return: success
-        """
-        return
-        if self.pointerPolarAltAz is None:
-            return False
-
-        obsSite = self.app.mount.obsSite
-        if obsSite.Alt is None or obsSite.Az is None:
-            self.pointerPolarAltAz.set_visible(False)
-            return False
-        else:
-            self.pointerPolarAltAz.set_visible(True)
-
-        alt = 90 - obsSite.Alt.degrees
-        az = obsSite.Az.radians
-        self.pointerPolarAltAz.set_data((az, alt))
         return True
 
     def updateDome(self, azimuth):
@@ -389,25 +306,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.pointerDome.set_visible(visible)
         return True
 
-    def getMarkerStatusParams(self, active, index):
-        """
-        :param active:
-        :param index:
-        :return: values
-        """
-        if active:
-            marker = self.markerPoint()
-            color = self.MODE[self.operationMode]['buildPColor']
-            mSize = 9
-            annotationText = f'{index + 1:2d}'
-        else:
-            marker = '$\u2714$'
-            color = self.M_YELLOW
-            mSize = 11
-            annotationText = f'{index + 1:2d}'
-
-        return marker, mSize, color, annotationText
-
     def updatePointMarker(self):
         """
         :return: success
@@ -415,32 +313,11 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         return
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
-            marker, mSize, color, _ = self.getMarkerStatusParams(active, index)
             self.pointsBuild[index].set_marker(marker)
-            self.pointsBuild[index].set_markersize(mSize)
             self.pointsBuild[index].set_color(color)
             self.pointsBuildAnnotate[index].set_color(color)
 
         self.hemisphereMat.figure.canvas.draw()
-        return True
-
-    def updatePolarPointMarker(self):
-        """
-        :return: success
-        """
-        return
-        if not self.pointsPolarBuild:
-            return False
-
-        for index, point in enumerate(self.app.data.buildP):
-            active = point[2]
-            marker, mSize, color, _ = self.getMarkerStatusParams(active, index)
-            self.pointsPolarBuild[index].set_marker(marker)
-            self.pointsPolarBuild[index].set_markersize(mSize)
-            self.pointsPolarBuild[index].set_color(color)
-            self.pointsPolarBuildAnnotate[index].set_color(color)
-
-        self.polarMat.figure.canvas.draw()
         return True
 
     def updateAlignStar(self):
@@ -450,7 +327,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         window is in show status. If the object is not created, the routing
         returns false. Due to the fact that all annotation are only shown if in
         axes when coordinate are in data, after some time, no annotation will be
-        shown, because just moved. Therefore we add each time the annotation again.
+        shown, because just moved. Therefore, we add each time the annotation again.
 
         :return: success
         """
@@ -469,7 +346,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
 
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
             starAnnotation.remove()
-        self.starsAlignAnnotate = list()
 
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
             if self.operationMode == 'star':
@@ -494,145 +370,13 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.mutexDraw.unlock()
         return True
 
-    def clearHemisphere(self):
-        """
-        clearHemisphere is called when after startup the location of the mount
-        is changed to reconstruct correctly the hemisphere window
-
-        :return: True for test Purpose
-        """
-        self.pointsBuild = None
-        self.app.data.clearBuildP()
-        self.drawHemisphere()
-        return True
-
-    def staticModelData(self, axes=None, polar=False):
-        """
-        :param axes:
-        :param polar:
-        :return:
-        """
-        points = self.app.data.buildP
-        if not points:
-            return False
-
-        if polar:
-            self.pointsPolarBuild = list()
-            self.pointsPolarBuildAnnotate = list()
-        else:
-            self.pointsBuild = list()
-            self.pointsBuildAnnotate = list()
-
-        for index, point in enumerate(points):
-            az = point[1]
-            alt = point[0]
-            active = point[2]
-
-            marker, mSize, color, text = self.getMarkerStatusParams(active, index)
-
-            if self.ui.checkShowSlewPath.isChecked() and index > 0:
-                if polar:
-                    axes.plot(np.radians((points[index - 1][1], points[index][1])),
-                              (90 - points[index - 1][0], 90 - points[index][0]),
-                              ls=':', lw=1, color=self.M_WHITE, zorder=40)
-                else:
-                    axes.plot((points[index - 1][1], points[index][1]),
-                              (points[index - 1][0], points[index][0]),
-                              ls=':', lw=1, color=self.M_WHITE, zorder=40)
-
-            if polar:
-                p, = axes.plot(np.radians(az), 90 - alt,
-                               marker=marker,
-                               markersize=mSize,
-                               fillstyle='none',
-                               color=self.MODE['normal']['buildPColor'],
-                               zorder=40,
-                               )
-                self.pointsPolarBuild.append(p)
-            else:
-                p, = axes.plot(az, alt,
-                               marker=marker,
-                               markersize=mSize,
-                               fillstyle='none',
-                               color=self.MODE[self.operationMode]['buildPColor'],
-                               zorder=40,
-                               )
-                self.pointsBuild.append(p)
-
-            if polar:
-                annotation = axes.annotate(text,
-                                           xy=(np.radians(az), 90 - alt),
-                                           xytext=(2, -10),
-                                           textcoords='offset points',
-                                           color=color,
-                                           zorder=40,
-                                           )
-                self.pointsPolarBuildAnnotate.append(annotation)
-            else:
-                annotation = axes.annotate(text,
-                                           xy=(az, alt),
-                                           xytext=(2, -10),
-                                           textcoords='offset points',
-                                           color=color,
-                                           zorder=40,
-                                           )
-                self.pointsBuildAnnotate.append(annotation)
-
-        return True
-
-    def drawHemisphereMoving(self, axes=None, polar=False):
-        """
-        drawHemisphereMoving is rendering the moving part which consists of:
-            - pointer: where the mount points to
-            - dome widget: which shows the position of the dome opening
-        the dynamic ones are located on a separate plane to improve rendering
-        speed, because we update this part very often.
-
-        :param axes: matplotlib axes object
-        :param polar: flag if polar should be drawn
-        :return:
-        """
-        if polar:
-            self.pointerPolarAltAz, = axes.plot(np.radians(180), 45,
-                                                zorder=10,
-                                                color=self.M_PINK,
-                                                marker=self.markerAltAz(),
-                                                markersize=25,
-                                                linestyle='none',
-                                                fillstyle='none',
-                                                clip_on=False,
-                                                visible=False,
-                                                )
-        else:
-            self.pointerAltAz, = axes.plot(180, 45,
-                                           zorder=10,
-                                           color=self.M_PINK,
-                                           marker=self.markerAltAz(),
-                                           markersize=25,
-                                           linestyle='none',
-                                           fillstyle='none',
-                                           clip_on=False,
-                                           visible=False,
-                                           )
-            self.pointerDome = mpatches.Rectangle((165, 1),
-                                                  30,
-                                                  88,
-                                                  zorder=0,
-                                                  color=self.M_GREY,
-                                                  lw=3,
-                                                  clip_on=True,
-                                                  fill=True,
-                                                  visible=False)
-            axes.add_patch(self.pointerDome)
-        return True
-
     def prepareHemisphere(self):
         """
         :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         plotItem.showAxes(True, showValues=True)
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         xTicks = [(x, f'{x:0.0f}') for x in np.arange(30, 331, 30)]
         plotItem.getAxis('bottom').setTicks([xTicks])
         plotItem.getAxis('top').setTicks([xTicks])
@@ -646,10 +390,10 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
-        plotItem.setMouseEnabled(x=True, y=True)
+        plotItem.setMouseEnabled(x=False, y=False)
         plotItem.clear()
 
-    def staticCelestialEquator(self):
+    def drawCelestialEquator(self):
         """
         :return:
         """
@@ -661,29 +405,29 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         alt, az = zip(*celestial)
         alt = np.array(alt)
         az = np.array(az)
-        self.celestialPath = pg.ScatterPlotItem()
-        self.celestialPath.setData(
+        pd = pg.ScatterPlotItem()
+        pd.setData(
             x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1), size=1)
-        plotItem.addItem(self.celestialPath)
+        plotItem.addItem(pd)
         return True
 
-    def staticHorizon(self):
+    def drawHorizon(self):
         """
         :return:
         """
         if not self.app.data.horizonP:
             return False
-
-        self.ui.hemisphere.staticHorizon(self.app.data.horizonP)
+        self.ui.hemisphere.drawHorizon(self.app.data.horizonP)
         return True
 
-    def staticTerrainMask(self):
+    def drawTerrainMask(self):
         """
         :return:
         """
         if not self.imageTerrain:
             return False
 
+        plotItem = self.ui.hemisphere.p[0]
         shiftAz = self.ui.azimuthShift.value()
         shiftAlt = self.ui.altitudeShift.value()
         alpha = self.ui.terrainAlpha.value()
@@ -699,12 +443,11 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         imgItem.setColorMap(cMap)
         imgItem.setOpts(opacity=alpha)
         imgItem.setZValue(-10)
-        self.ui.hemisphere.p[0].addItem(imgItem)
+        plotItem.addItem(imgItem)
         return True
 
-    def staticMeridianLimits(self):
+    def drawMeridianLimits(self):
         """
-
         :return:
         """
         slew = self.app.mount.setting.meridianLimitSlew
@@ -712,23 +455,26 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         if slew is None or track is None:
             return False
 
+        plotItem = self.ui.hemisphere.p[0]
+
         mSlew = pg.QtWidgets.QGraphicsRectItem(180 - slew, 0, 2 * slew, 90)
         mSlew.setPen(pg.mkPen(color=self.M_YELLOW + '80'))
         mSlew.setBrush(pg.mkBrush(color=self.M_YELLOW + '80'))
         mSlew.setZValue(-15)
-        self.ui.hemisphere.p[0].addItem(mSlew)
+        plotItem.addItem(mSlew)
 
         mTrack = pg.QtWidgets.QGraphicsRectItem(180 - track, 0, 2 * track, 90)
         mTrack.setPen(pg.mkPen(color=self.M_YELLOW1 + '80'))
         mTrack.setBrush(pg.mkBrush(color=self.M_YELLOW1 + '80'))
         mTrack.setZValue(-15)
-        self.ui.hemisphere.p[0].addItem(mTrack)
+        plotItem.addItem(mTrack)
         return True
 
-    def staticHorizonLimits(self):
+    def drawHorizonLimits(self):
         """
         :return:
         """
+        plotItem = self.ui.hemisphere.p[0]
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
         else:
@@ -743,31 +489,31 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         hLow.setPen(pg.mkPen(color=self.M_RED + '80'))
         hLow.setBrush(pg.mkBrush(color=self.M_RED + '80'))
         hLow.setZValue(-20)
-        self.ui.hemisphere.p[0].addItem(hLow)
+        plotItem.addItem(hLow)
 
         hHigh = pg.QtWidgets.QGraphicsRectItem(0, 0, 360, low)
         hHigh.setPen(pg.mkPen(color=self.M_RED + '80'))
         hHigh.setBrush(pg.mkBrush(color=self.M_RED + '80'))
         hHigh.setZValue(-20)
-        self.ui.hemisphere.p[0].addItem(hHigh)
+        plotItem.addItem(hHigh)
         return True
 
     def drawAlignmentStars(self):
         """
         :return: true for test purpose
         """
-        self.starsAlignAnnotate = list()
+        plotItem = self.ui.hemisphere.p[0]
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
 
-        self.starsAlign = pg.ScatterPlotItem()
-        self.starsAlign.setData(
-            x=hip.az, y=hip.alt, symbol='star',
-            size=self.MODE[self.operationMode]['starSize'],
-            pen=pg.mkPen(color=self.MODE[self.operationMode]['starColor']),
-            brush=pg.mkBrush(color=self.MODE[self.operationMode]['starColor']))
-        self.starsAlign.setZValue(30)
-        self.ui.hemisphere.p[0].addItem(self.starsAlign)
+        pd = pg.ScatterPlotItem()
+        color = self.M_YELLOW if self.operationMode == 'star' else self.M_YELLOW1
+        size = 12 if self.operationMode == 'star' else 6
+        pd.setData(
+            x=hip.az, y=hip.alt, symbol='star', size=size,
+            pen=pg.mkPen(color=color), brush=pg.mkBrush(color=color))
+        pd.setZValue(30)
+        plotItem.addItem(pd)
 
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
             if self.operationMode == 'star':
@@ -783,27 +529,89 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
             textItem.setFont(font)
             textItem.setPos(az, alt)
             textItem.setZValue(30)
-            self.ui.hemisphere.p[0].addItem(textItem)
+            plotItem.addItem(textItem)
+        return True
+
+    def drawModelData(self):
+        """
+        :return:
+        """
+        points = self.app.data.buildP
+        if not points:
+            return False
+
+        plotItem = self.ui.hemisphere.p[0]
+        for index, point in enumerate(points):
+            az = point[1]
+            alt = point[0]
+            active = point[2]
+
+            if self.ui.showSlewPath.isChecked() and index > 0:
+                pd = pg.PlotDataItem()
+                pd.setData(
+                    x=[points[index - 1][1], points[index][1]],
+                    y=[points[index - 1][0], points[index][0]],
+                    pen=pg.mkPen(color=self.M_WHITE + '80', style=Qt.DashLine))
+                pd.setZValue(40)
+                plotItem.addItem(pd)
+
+            color = self.M_PINK if self.operationMode == 'edit' else self.M_GREEN
+            pd = pg.ScatterPlotItem()
+            pd.setPen(pg.mkPen(color=color))
+            pd.setBrush(pg.mkBrush(color=color + '40'))
+            pd.setData(x=[az], y=[alt], symbol='o', size=10)
+            pd.setZValue(40)
+            plotItem.addItem(pd)
+
+            text = f'{index + 1:02d}'
+            color = self.M_GREEN if active else self.M_YELLOW
+            textItem = pg.TextItem(text=text, color=color, anchor=(0.5, 1.1))
+            textItem.setPos(az, alt)
+            textItem.setZValue(40)
+            plotItem.addItem(textItem)
+        return True
+
+    def drawPointerAltAz(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        self.pointerAltAz = pg.ScatterPlotItem(x=[180], y=[45], symbol='h', size=25)
+        self.pointerAltAz.setPen(pg.mkPen(color=self.M_PINK1))
+        self.pointerAltAz.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
+        self.pointerAltAz.setZValue(10)
+        plotItem.addItem(self.pointerAltAz)
+        return True
+
+    def drawDome(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
+        self.pointerDome.setPen(pg.mkPen(color=self.M_GREY))
+        self.pointerDome.setBrush(pg.mkBrush(color=self.M_GREY + '80'))
+        self.pointerDome.setVisible(False)
+        plotItem.addItem(self.pointerDome)
         return True
 
     def drawHemisphere(self):
         """
         :return: True for test purpose
         """
-        if self.closingWindow:
-            return False
-
         self.prepareHemisphere()
         if self.ui.showCelestial.isChecked():
-            self.staticCelestialEquator()
+            self.drawCelestialEquator()
         if self.ui.showHorizon.isChecked():
-            self.staticHorizon()
+            self.drawHorizon()
         if self.ui.showTerrain.isChecked():
-            self.staticTerrainMask()
+            self.drawTerrainMask()
         if self.ui.showAlignStar.isChecked():
             self.drawAlignmentStars()
         if self.ui.showMountLimits.isChecked():
-            self.staticMeridianLimits()
-            self.staticHorizonLimits()
-
+            self.drawMeridianLimits()
+            self.drawHorizonLimits()
+        self.drawModelData()
+        self.drawPointerAltAz()
+        self.drawDome()
         return True

@@ -479,7 +479,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
-        self.ui.satHorizon.staticHorizon(self.app.data.horizonP)
+        self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
 
         if not satOrbits or obsSite is None:
             return False

@@ -72,7 +72,7 @@ def test_PlotBase_staticHorizon_1():
     p = PlotBase()
     with mock.patch.object(p,
                            'show'):
-        suc = p.staticHorizon([(0, 0)])
+        suc = p.drawHorizon([(0, 0)])
         assert suc
 
 
@@ -80,7 +80,7 @@ def test_PlotBase_staticHorizon_2():
     p = PlotBase()
     with mock.patch.object(p,
                            'show'):
-        suc = p.staticHorizon([(1, 1), (2, 2)])
+        suc = p.drawHorizon([(1, 1), (2, 2)])
         assert suc
 
 

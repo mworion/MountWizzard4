@@ -77,43 +77,6 @@ class HemisphereWindowExt:
         marker = mpath.Path(verts, codes)
         return marker
 
-    def setOperationMode(self):
-        """
-        setOperationMode changes the operation mode of the hemisphere window(s)
-        depending on the choice, colors and styles will be changed.
-
-        :return: success
-        """
-        if self.ui.checkEditNone.isChecked():
-            self.operationMode = 'normal'
-            self.ui.addPositionToHorizon.setEnabled(False)
-
-        elif self.ui.checkEditBuildPoints.isChecked():
-            self.operationMode = 'build'
-            self.ui.addPositionToHorizon.setEnabled(False)
-
-        elif self.ui.checkPolarAlignment.isChecked():
-            self.ui.showAlignStar.setChecked(True)
-            self.operationMode = 'star'
-            self.ui.addPositionToHorizon.setEnabled(False)
-
-        self.drawHemisphere()
-        return True
-
-    def enableEditPoints(self, status):
-        """
-        :param status:
-        :return:
-        """
-        self.ui.operationMode.setEnabled(status)
-        hem = self.hemisphereMat.figure.canvas
-        if status:
-            self.hemMouse = hem.mpl_connect('button_press_event',
-                                            self.onMouseDispatcher)
-        else:
-            hem.mpl_disconnect(self.hemMouse)
-        return True
-
     def showMouseCoordinates(self, event):
         """
         :param event:

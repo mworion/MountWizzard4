@@ -432,7 +432,7 @@ def test_staticHorizon_1(function):
     function.ui.checkUseHorizon.setChecked(False)
     function.app.data.horizonP = list()
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.staticHorizon(axe)
+    suc = function.drawHorizon(axe)
     assert not suc
 
 
@@ -440,7 +440,7 @@ def test_staticHorizon_2(function):
     function.ui.checkUseHorizon.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.app.data.horizonP = [(0, 0), (0, 360)]
-    suc = function.staticHorizon(axe)
+    suc = function.drawHorizon(axe)
     assert suc
 
 
@@ -448,7 +448,7 @@ def test_staticHorizon_3(function):
     function.ui.checkUseHorizon.setChecked(False)
     function.app.data.horizonP = list()
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.staticHorizon(axe, polar=True)
+    suc = function.drawHorizon(axe, polar=True)
     assert not suc
 
 
@@ -456,7 +456,7 @@ def test_staticHorizon_4(function):
     function.ui.checkUseHorizon.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.app.data.horizonP = [(0, 0), (0, 360)]
-    suc = function.staticHorizon(axe, polar=True)
+    suc = function.drawHorizon(axe, polar=True)
     assert suc
 
 
@@ -509,14 +509,14 @@ def test_staticModelData_6(function):
 def test_staticCelestialEquator_1(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.ui.checkShowCelestial.setChecked(True)
-    suc = function.staticCelestialEquator(axe)
+    suc = function.drawCelestialEquator(axe)
     assert suc
 
 
 def test_staticCelestialEquator_2(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.ui.checkShowCelestial.setChecked(True)
-    suc = function.staticCelestialEquator(axe, polar=True)
+    suc = function.drawCelestialEquator(axe, polar=True)
     assert suc
 
 
@@ -526,7 +526,7 @@ def test_staticCelestialEquator_3(function):
     with mock.patch.object(function.app.data,
                            'generateCelestialEquator',
                            return_value=None):
-        suc = function.staticCelestialEquator(axe, polar=True)
+        suc = function.drawCelestialEquator(axe, polar=True)
         assert not suc
 
 
@@ -534,7 +534,7 @@ def test_staticMeridianLimits_1(function):
     function.app.mount.setting.meridianLimitSlew = None
     function.app.mount.setting.meridianLimitTrack = None
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.staticMeridianLimits(axe)
+    suc = function.drawMeridianLimits(axe)
     assert not suc
 
 
@@ -542,7 +542,7 @@ def test_staticMeridianLimits_2(function):
     function.app.mount.setting.meridianLimitSlew = 10
     function.app.mount.setting.meridianLimitTrack = 10
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.staticMeridianLimits(axe)
+    suc = function.drawMeridianLimits(axe)
     assert suc
 
 
@@ -550,7 +550,7 @@ def test_staticHorizonLimits_1(function):
     function.app.mount.setting.horizonLimitHigh = None
     function.app.mount.setting.horizonLimitLow = None
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.staticHorizonLimits(axe)
+    suc = function.drawHorizonLimits(axe)
     assert suc
 
 
@@ -558,7 +558,7 @@ def test_staticHorizonLimits_2(function):
     function.app.mount.setting.horizonLimitHigh = 10
     function.app.mount.setting.horizonLimitLow = 10
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.staticHorizonLimits(axe)
+    suc = function.drawHorizonLimits(axe)
     assert suc
 
 
@@ -567,7 +567,7 @@ def test_staticTerrainMask_1(function):
     function.imageTerrain = None
     with mock.patch.object(axe,
                            'imshow'):
-        suc = function.staticTerrainMask(axe)
+        suc = function.drawTerrainMask(axe)
         assert not suc
 
 
@@ -584,7 +584,7 @@ def test_staticTerrainMask_2(function):
     function.imageTerrain.paste(img, (360, 0))
     with mock.patch.object(axe,
                            'imshow'):
-        suc = function.staticTerrainMask(axe)
+        suc = function.drawTerrainMask(axe)
         assert suc
 
 
@@ -601,7 +601,7 @@ def test_staticTerrainMask_3(function):
     function.imageTerrain.paste(img, (360, 0))
     with mock.patch.object(axe,
                            'pcolormesh'):
-        suc = function.staticTerrainMask(axe, polar=True)
+        suc = function.drawTerrainMask(axe, polar=True)
         assert suc
 
 
@@ -612,7 +612,7 @@ def test_drawHemisphereStatic_1(function):
     function.ui.checkUseTerrain.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     with mock.patch.object(function,
-                           'staticTerrainMask'):
+                           'drawTerrainMask'):
         suc = function.drawHemisphereStatic(axe)
         assert suc
 

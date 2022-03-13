@@ -253,7 +253,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         if self.ui.showHorizon.isChecked():
-            self.ui.raRawErrors.staticHorizon(self.app.data.horizonP)
+            self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_decRawErrors(self):
@@ -270,7 +270,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         if self.ui.showHorizon.isChecked():
-            self.ui.decRawErrors.staticHorizon(self.app.data.horizonP)
+            self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_raErrors(self):
@@ -287,7 +287,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         if self.ui.showHorizon.isChecked():
-            self.ui.raErrors.staticHorizon(self.app.data.horizonP)
+            self.ui.raErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_decError(self):
@@ -304,7 +304,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         if self.ui.showHorizon.isChecked():
-            self.ui.decErrors.staticHorizon(self.app.data.horizonP)
+            self.ui.decErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_raRawErrorsRef(self):

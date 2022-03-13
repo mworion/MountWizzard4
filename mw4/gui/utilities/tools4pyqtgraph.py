@@ -128,7 +128,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.p[0].layout.setColumnFixedWidth(4, 5)
         return True
 
-    def staticHorizon(self, horizonP):
+    def drawHorizon(self, horizonP):
         """
         :param horizonP:
         :return:

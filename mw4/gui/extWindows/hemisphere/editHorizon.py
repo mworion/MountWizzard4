@@ -30,12 +30,7 @@ class EditHorizon:
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
         self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
-
-        # horizon
-        self.wIcon(self.ui.loadHorizonMask, 'load')
-        self.wIcon(self.ui.saveHorizonMask, 'save')
-        self.wIcon(self.ui.saveHorizonMaskAs, 'save')
-        self.wIcon(self.ui.clearHorizonMask, 'trash')
+        self.setIcons()
 
     def initConfig(self):
         """
@@ -61,6 +56,23 @@ class EditHorizon:
         """
         config = self.app.config['hemisphereW']
         config['horizonMaskFileName'] = self.ui.horizonMaskFileName.text()
+        return True
+
+    def setIcons(self):
+        """
+        :return:
+        """
+        self.wIcon(self.ui.loadHorizonMask, 'load')
+        self.wIcon(self.ui.saveHorizonMask, 'save')
+        self.wIcon(self.ui.saveHorizonMaskAs, 'save')
+        self.wIcon(self.ui.clearHorizonMask, 'trash')
+        return True
+
+    def colorChange(self):
+        """
+        :return:
+        """
+        self.setIcons()
         return True
 
     def loadHorizonMask(self):

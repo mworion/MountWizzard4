@@ -33,14 +33,23 @@ class EditHorizon:
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
         self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
+        self.ui.horizon.p[0].scene().sigMouseClicked.connect(self.test)
         self.horizonPlot = None
         self.setIcons()
 
-    def test1(self, points, ev):
-        print(points, ev)
+    def test(self, ev):
+        pos = ev.pos()
+        mod = ev.modifiers()
+        double = ev.double()
+        mousePoint = self.ui.horizon.p[0].getViewBox().mapSceneToView(ev.scenePos())
+        # print('Test', pos, mousePoint, ev.button(), double, mod)
 
-    def test2(self, points, ev):
-        print(points, ev)
+    def test1(self, points, ev):
+        print('Sig', points, ev.button())
+        pass
+
+    def test2(self, points, a, ev):
+        print('SigPos', points, a, ev.button(), ev.double())
 
     def initConfig(self):
         """

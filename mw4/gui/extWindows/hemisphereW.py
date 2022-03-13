@@ -19,7 +19,7 @@ import os.path
 
 # external packages
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QGuiApplication, QCursor, QFont, QTransform, QPainterPath
+from PyQt5.QtGui import QGuiApplication, QCursor, QFont, QPainterPath
 import numpy as np
 from PIL import Image
 import pyqtgraph as pg

@@ -21,7 +21,7 @@ import pytest
 # external packages
 
 # local import
-from gui.extWindows.editHorizon import EditHorizon
+from gui.extWindows.hemisphere.editHorizon import EditHorizon
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow

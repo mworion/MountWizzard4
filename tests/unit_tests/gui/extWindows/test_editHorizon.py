@@ -21,7 +21,7 @@ import pytest
 # external packages
 
 # local import
-from gui.extWindows.tabSettHorizon import SettHorizon
+from gui.extWindows.hemisphere.editHorizon import EditHorizon
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
@@ -34,16 +34,9 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
-
-    class Mixin(MWidget, SettHorizon):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            SettHorizon.__init__(self)
-
-    window = Mixin()
+    window = EditHorizon()
+    window.app = App()
+    window.ui = Ui_MainWindow()
     yield window
 
 

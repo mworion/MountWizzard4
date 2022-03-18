@@ -62,6 +62,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.pointerDome = None
         self.modelPoints = None
         self.modelPointsText = None
+        self.horizon = None
         self.alignmentStars = None
         self.alignmentStarsText = None
         self.horizonLimitHigh = None
@@ -98,9 +99,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.ui.showHorizon.setChecked(config.get('showHorizon', True))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
         self.ui.showTerrain.setChecked(config.get('showTerrain', False))
-        self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
-        self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
-        self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
 
         terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
@@ -139,9 +137,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         config['showHorizon'] = self.ui.showHorizon.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
         config['showTerrain'] = self.ui.showTerrain.isChecked()
-        config['terrainAlpha'] = self.ui.terrainAlpha.value()
-        config['azimuthShift'] = self.ui.azimuthShift.value()
-        config['altitudeShift'] = self.ui.altitudeShift.value()
         config['tabWidget'] = self.ui.tabWidget.currentIndex()
 
         self.mwSuper('storeConfig')
@@ -177,9 +172,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.ui.editMode.clicked.connect(self.setOperationMode)
         self.ui.alignmentMode.clicked.connect(self.setOperationMode)
 
-        self.ui.azimuthShift.valueChanged.connect(self.drawHemisphere)
-        self.ui.altitudeShift.valueChanged.connect(self.drawHemisphere)
-        self.ui.terrainAlpha.valueChanged.connect(self.drawHemisphere)
         self.ui.showSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.showHorizon.clicked.connect(self.drawHemisphere)
         self.ui.showAlignStar.clicked.connect(self.drawHemisphere)
@@ -310,6 +302,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :param plotItem:
         :return:
         """
+        plotItem.clear()
         plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
         plotItem.getViewBox().xRange = (0, 360)
@@ -327,7 +320,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
         plotItem.setMouseEnabled(x=False, y=False)
-        plotItem.clear()
         return True
 
     def prepareHemisphere(self):
@@ -340,6 +332,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.pointerDome = None
         self.modelPoints = None
         self.modelPointsText = None
+        self.horizon = None
         self.alignmentStars = None
         self.alignmentStarsText = None
 
@@ -367,19 +360,31 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         """
         :return:
         """
-        if not self.app.data.horizonP:
+        hp = self.app.data.horizonP
+        if not hp:
             return False
-        self.ui.hemisphere.drawHorizon(self.app.data.horizonP)
+
+        if not self.horizon:
+            plotItem = self.ui.hemisphere.p[0]
+            self.horizon = pg.PlotCurveItem(
+                pen=pg.mkPen(color=self.M_BLUE, width=2))
+            plotItem.addItem(self.horizon)
+
+        alt, az = zip(*hp)
+        alt = np.array(alt)
+        az = np.array(az)
+        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
+        azF = np.concatenate([[0], [0], az, [360], [360]])
+        self.horizon.setData(x=azF, y=altF)
         return True
 
-    def drawTerrainMask(self):
+    def drawTerrainMask(self, plotItem):
         """
         :return:
         """
         if not self.imageTerrain:
             return False
 
-        plotItem = self.ui.hemisphere.p[0]
         shiftAz = self.ui.azimuthShift.value()
         shiftAlt = self.ui.altitudeShift.value()
         alpha = self.ui.terrainAlpha.value()
@@ -613,7 +618,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         if self.ui.showHorizon.isChecked():
             self.drawHorizon()
         if self.ui.showTerrain.isChecked():
-            self.drawTerrainMask()
+            self.drawTerrainMask(self.ui.hemisphere.p[0])
         if self.ui.showMountLimits.isChecked():
             self.drawMeridianLimits()
             self.drawHorizonLimits()

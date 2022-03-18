@@ -33,7 +33,6 @@ from qimage2ndarray import rgb_view, array2qimage
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
-from gui.utilities.toolsMatplotlib import ToolsMatplotlib
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 __all__ = [
@@ -131,7 +130,7 @@ class QCustomTableWidgetItem(QTableWidgetItem):
             return QTableWidgetItem.__lt__(self, other)
 
 
-class MWidget(QWidget, Styles, ToolsMatplotlib):
+class MWidget(QWidget, Styles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4 and
     extends the standard widgets. All widgets configs which are used mor than
@@ -146,8 +145,8 @@ class MWidget(QWidget, Styles, ToolsMatplotlib):
     but except for the main one are sizable.
     """
 
-    __all__ = ['MWidget',
-               ]
+    __all__ = ['MWidget']
+    log = logging.getLogger(__name__)
 
     def __init__(self):
         super().__init__()

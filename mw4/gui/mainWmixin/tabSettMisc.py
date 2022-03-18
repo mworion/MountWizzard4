@@ -44,7 +44,6 @@ class SettMisc(object):
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
         self.process = None
-        self.mutexInstall = PyQt5.QtCore.QMutex()
 
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)

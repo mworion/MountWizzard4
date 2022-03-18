@@ -41,18 +41,266 @@ __all__ = [
 class CustomViewBox(pg.ViewBox):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.plotDataItem = None
         self.xRange = None
         self.yRange = None
+        self.dragOffset = None
+        self.dragPoint = None
+        self.enableDrag = kwargs.get('enableDrag', False)
+        self.enableEdit = kwargs.get('enableEdit', False)
+        self.enableRange = kwargs.get('enableRange', False)
+        self.enableLimitX = kwargs.get('enableLimitX', False)
+
+    def setEnableDrag(self, status):
+        """
+        :param status:
+        :return:
+        """
+        self.enableDrag = status
+        return True
+
+    def setEnableEdit(self, status):
+        """
+        :param status:
+        :return:
+        """
+        self.enableEdit = status
+        return True
+
+    def setEnableRange(self, status):
+        """
+        :param status:
+        :return:
+        """
+        self.enableRange = status
+        return True
+
+    def setEnableLimitX(self, status):
+        """
+        :param status:
+        :return:
+        """
+        self.enableLimitX = status
+        return True
+
+    def setPlotDataItem(self, plotDataItem):
+        """
+        :param plotDataItem:
+        :return:
+        """
+        self.plotDataItem = plotDataItem
+        return True
+
+    @staticmethod
+    def distance(a, b):
+        """
+        :param a:
+        :param b:
+        :return:
+        """
+        return np.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+
+    def isBetween(self, a, b, c):
+        """
+        :param a:
+        :param b:
+        :param c:
+        :return:
+        """
+        d = self.distance(a, c) + self.distance(c, b) - self.distance(a, b)
+        return np.abs(d)
+
+    def getCurveIndex(self, pos, epsilon=1):
+        """
+        :param pos:
+        :param epsilon:
+        :return:
+        """
+        data = self.plotDataItem.curve.getData()
+        curve = [(x, y) for x, y in zip(data[0], data[1])]
+        for index in range(0, len(curve) - 1):
+            d = self.isBetween(curve[index], curve[index + 1], (pos.x(), pos.y()))
+            if d < epsilon:
+                break
+        else:
+            return 0
+        return index + 1
+
+    def getNearestPointIndex(self, pos):
+        """
+        :param pos:
+        :return: index or none
+        """
+        data = self.plotDataItem.curve.getData()
+        x = data[0]
+        y = data[1]
+        d = np.sqrt((x - pos.x()) ** 2 / 4 + (y - pos.y()) ** 2)
+        index = int(d.argsort()[:1][0])
+        return index + 1
+
+    def addUpdate(self, index, pos):
+        """
+        :param index:
+        :param pos:
+        :return:
+        """
+        data = self.plotDataItem.getData()
+        x = data[0]
+        y = data[1]
+        x = np.concatenate((x[0:index], [pos.x()], x[index:]))
+        y = np.concatenate((y[0:index], [pos.y()], y[index:]))
+        self.plotDataItem.setData(x=x, y=y)
+        return True
+
+    def delUpdate(self, index):
+        """
+        :param index:
+        :return:
+        """
+        data = self.plotDataItem.getData()
+        x = data[0]
+        y = data[1]
+        x = np.delete(x, index)
+        y = np.delete(y, index)
+        self.plotDataItem.setData(x=x, y=y)
+        return True
+
+    def checkLimits(self, data, index, pos):
+        """
+        :param data:
+        :param index:
+        :param pos:
+        :return:
+        """
+        if self.xRange:
+            if pos.x() > self.xRange[1]:
+                px = self.xRange[1]
+            elif pos.x() < self.xRange[0]:
+                px = self.xRange[0]
+            else:
+                px = pos.x()
+        if self.yRange:
+            if pos.y() > self.yRange[1]:
+                py = self.yRange[1]
+            elif pos.y() < self.yRange[0]:
+                py = self.yRange[0]
+            else:
+                py = pos.y()
+
+        x = data[0]
+        y = data[1]
+        x[index] = px
+        y[index] = py
+        if not self.enableLimitX:
+            return x, y
+
+        if index == 0:
+            x[index] = np.minimum(px, x[index + 1])
+        elif index == len(x):
+            x[index] = np.maximum(x[index - 1], px)
+        else:
+            if px < x[index - 1]:
+                x[index] = x[index - 1]
+            elif px > x[index + 1]:
+                x[index] = x[index + 1]
+        return x, y
+
+    def rightMouseRange(self):
+        """
+        :return:
+        """
+        if self.xRange:
+            self.setXRange(self.xRange[0], self.xRange[1])
+        if self.yRange:
+            self.setYRange(self.yRange[0], self.yRange[1])
+        if self.xRange is None and self.yRange is None:
+            self.enableAutoRange(x=True, y=True)
+        return True
+
+    def mouseDragEvent(self, ev):
+        """
+        :param ev:
+        :return:
+        """
+        if not self.enableDrag:
+            ev.ignore()
+            return
+
+        if ev.button() != Qt.LeftButton:
+            ev.ignore()
+            return
+
+        if ev.isStart():
+            posScene = ev.buttonDownScenePos()
+            pos = self.mapSceneToView(posScene)
+            spot = self.plotDataItem.scatter.pointsAt(pos)
+            if len(spot) == 0:
+                ev.ignore()
+                return
+            spot = spot[0]
+            self.dragPoint = spot
+            self.dragOffset = spot.pos() - pos
+
+        elif ev.isFinish():
+            self.dragPoint = None
+            return
+        else:
+            if self.dragPoint is None:
+                ev.ignore()
+                return
+
+        posScene = ev.scenePos()
+        pos = self.mapSceneToView(posScene)
+        posNew = pos + self.dragOffset
+        index = self.dragPoint.index()
+        data = self.plotDataItem.getData()
+        x, y = self.checkLimits(data, index, posNew)
+        self.plotDataItem.setData(x=x, y=y)
+        ev.accept()
 
     def mouseClickEvent(self, ev):
-        super().mouseClickEvent(ev)
-        if ev.button() == Qt.MouseButton.RightButton:
-            if self.xRange:
-                self.setXRange(self.xRange[0], self.xRange[1])
-            if self.yRange:
-                self.setYRange(self.yRange[0], self.yRange[1])
-            if self.xRange is None and self.yRange is None:
-                self.enableAutoRange(x=True, y=True)
+        """
+        :param ev:
+        :return:
+        """
+        posScene = ev.scenePos()
+        pos = self.mapSceneToView(posScene)
+        spot = self.plotDataItem.scatter.pointsAt(pos)
+
+        if ev.button() == Qt.RightButton:
+            if len(spot) == 0:
+                if not self.enableRange:
+                    ev.ignore()
+                    return
+                self.rightMouseRange()
+            else:
+                if not self.enableEdit:
+                    ev.ignore()
+                    return
+                spot = spot[0]
+                ind = spot.index()
+                self.delUpdate(ind)
+            ev.accept()
+            return
+
+        if ev.button() == Qt.LeftButton:
+            if not self.enableEdit:
+                ev.ignore()
+                return
+            posScene = ev.scenePos()
+            pos = self.mapSceneToView(posScene)
+            inCurve = self.plotDataItem.curve.contains(pos)
+            if inCurve:
+                index = self.getCurveIndex(pos)
+                self.addUpdate(index, pos)
+            else:
+                index = self.getNearestPointIndex(pos)
+                self.addUpdate(index, pos)
+            ev.accept()
+            return
+
+        ev.ignore()
+        return
 
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):
@@ -78,7 +326,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.barItem = None
         self.p = []
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
-        self.setBackground(self.M_BACK)
         self.setupItems()
         self.colorChange()
 
@@ -499,3 +746,5 @@ class Measure(PlotBase):
             plotItem.enableAutoRange(x=True, y=True)
             plotItem.getAxis('left').setWidth(60)
             plotItem.setVisible(False)
+
+

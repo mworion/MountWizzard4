@@ -28,28 +28,15 @@ class EditHorizon:
     """
 
     def __init__(self):
+        """
+        """
+        self.horizonPlot = None
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
         self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
-        self.ui.horizon.p[0].scene().sigMouseClicked.connect(self.test)
-        self.horizonPlot = None
         self.setIcons()
-
-    def test(self, ev):
-        pos = ev.pos()
-        mod = ev.modifiers()
-        double = ev.double()
-        mousePoint = self.ui.horizon.p[0].getViewBox().mapSceneToView(ev.scenePos())
-        # print('Test', pos, mousePoint, ev.button(), double, mod)
-
-    def test1(self, points, ev):
-        print('Sig', points, ev.button())
-        pass
-
-    def test2(self, points, a, ev):
-        print('SigPos', points, a, ev.button(), ev.double())
 
     def initConfig(self):
         """
@@ -61,8 +48,15 @@ class EditHorizon:
         """
         config = self.app.config['hemisphereW']
         self.ui.horizonMaskFileName.setText(config.get('horizonMaskFileName', ''))
+        self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
+        self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
+        self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
         fileName = config.get('horizonMaskFileName')
         self.app.data.loadHorizonP(fileName=fileName)
+        self.ui.azimuthShift.valueChanged.connect(self.drawEditHorizon)
+        self.ui.altitudeShift.valueChanged.connect(self.drawEditHorizon)
+        self.ui.terrainAlpha.valueChanged.connect(self.drawEditHorizon)
+        self.ui.showTerrain.clicked.connect(self.drawEditHorizon)
         self.drawEditHorizon()
         return True
 
@@ -76,6 +70,9 @@ class EditHorizon:
         """
         config = self.app.config['hemisphereW']
         config['horizonMaskFileName'] = self.ui.horizonMaskFileName.text()
+        config['terrainAlpha'] = self.ui.terrainAlpha.value()
+        config['azimuthShift'] = self.ui.azimuthShift.value()
+        config['altitudeShift'] = self.ui.altitudeShift.value()
         return True
 
     def mouseMovedHorizon(self, pos):
@@ -173,36 +170,44 @@ class EditHorizon:
         self.app.data.horizonP = []
         self.ui.horizonMaskFileName.setText('')
         self.app.redrawHemisphere.emit()
-        self.horizonPlot = None
         self.drawEditHorizon()
+        return True
+
+    def drawHorizonData(self):
+        """
+        :return:
+        """
+        hp = self.app.data.horizonP
+        if len(hp) == 0:
+            return False
+        alt, az = zip(*hp)
+        alt = np.array(alt)
+        az = np.array(az)
+        self.horizonPlot.setData(x=az, y=alt)
         return True
 
     def drawEditHorizon(self):
         """
         :return:
         """
-        self.preparePlotItem(self.ui.horizon.p[0])
-        horizonP = self.app.data.horizonP
-        if not self.app.data.horizonP:
-            return False
-
-        if self.horizonPlot is None:
-            self.horizonPlot = pg.PlotDataItem()
-            self.horizonPlot.sigClicked.connect(self.test1)
-            self.horizonPlot.sigPointsClicked.connect(self.test2)
-            self.ui.horizon.p[0].addItem(self.horizonPlot)
-
-        alt, az = zip(*horizonP)
-        alt = np.array(alt)
-        az = np.array(az)
-        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
-        azF = np.concatenate([[0], [0], az, [360], [360]])
-        self.horizonPlot.setData(
-            x=azF, y=altF, size=10, symbol='o', connect='all',
+        plotItem = self.ui.horizon.p[0]
+        self.preparePlotItem(plotItem)
+        self.horizonPlot = pg.PlotDataItem(
             symbolBrush=pg.mkBrush(color=self.M_PINK + '40'),
             symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
             brush=pg.mkBrush(color=self.M_PINK + '40'),
-            pen=pg.mkPen(color=self.M_PINK1, width=2))
-        self.horizonPlot.setCurveClickable(True, width=5)
-        self.horizonPlot.setFillBrush(pg.mkBrush(color=self.M_PINK + '20'))
+            pen=pg.mkPen(color=self.M_PINK1, width=2),
+            symbolSize=4, symbol='o', connect='all')
+        plotItem.addItem(self.horizonPlot)
+        vb = plotItem.getViewBox()
+        vb.setPlotDataItem(self.horizonPlot)
+        vb.setEnableEdit(True)
+        vb.setEnableDrag(True)
+        vb.setEnableRange(True)
+        vb.setEnableLimitX(True)
+
+        if self.ui.showTerrain.isChecked():
+            self.drawTerrainMask(plotItem)
+        self.drawHorizonData()
+        self.app.redrawHemisphere.emit()
         return True

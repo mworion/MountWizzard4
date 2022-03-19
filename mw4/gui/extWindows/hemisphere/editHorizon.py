@@ -36,6 +36,9 @@ class EditHorizon:
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
         self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
+        # self.ui.addPositionToHorizon.clicked.connect()
+        self.ui.showTerrain.clicked.connect(self.drawEditHorizon)
+
         self.setIcons()
 
     def initConfig(self):
@@ -47,16 +50,17 @@ class EditHorizon:
         :return: True for test purpose
         """
         config = self.app.config['hemisphereW']
-        self.ui.horizonMaskFileName.setText(config.get('horizonMaskFileName', ''))
+        fileName = config.get('horizonMaskFileName', '')
+        self.ui.horizonMaskFileName.setText(fileName)
+        self.app.data.loadHorizonP(fileName=fileName)
+
         self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
         self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
         self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
-        fileName = config.get('horizonMaskFileName')
-        self.app.data.loadHorizonP(fileName=fileName)
+
         self.ui.azimuthShift.valueChanged.connect(self.drawEditHorizon)
         self.ui.altitudeShift.valueChanged.connect(self.drawEditHorizon)
         self.ui.terrainAlpha.valueChanged.connect(self.drawEditHorizon)
-        self.ui.showTerrain.clicked.connect(self.drawEditHorizon)
         self.drawEditHorizon()
         return True
 
@@ -163,6 +167,16 @@ class EditHorizon:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
         return True
 
+    def storeHorizonData(self):
+        """
+        :return:
+        """
+        data = self.horizonPlot.curve.getData()
+        hp = [(y, x) for x, y in zip(data[0], data[1])]
+        self.app.data.horizonP = hp
+        self.app.redrawHorizon.emit()
+        return True
+
     def clearHorizonMask(self):
         """
         :return:
@@ -201,13 +215,10 @@ class EditHorizon:
         plotItem.addItem(self.horizonPlot)
         vb = plotItem.getViewBox()
         vb.setPlotDataItem(self.horizonPlot)
-        vb.setEnableEdit(True)
-        vb.setEnableDrag(True)
-        vb.setEnableRange(True)
-        vb.setEnableLimitX(True)
+        vb.setOpts(enableLimitX=True)
+        self.horizonPlot.sigPlotChanged.connect(self.storeHorizonData)
 
         if self.ui.showTerrain.isChecked():
             self.drawTerrainMask(plotItem)
         self.drawHorizonData()
-        self.app.redrawHemisphere.emit()
         return True

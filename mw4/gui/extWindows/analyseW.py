@@ -59,6 +59,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.wIcon(self.ui.load, 'load')
         self.ui.load.clicked.connect(self.loadModel)
         self.app.colorChange.connect(self.colorChange)
+        self.app.redrawHorizon.connect(self.drawHorizon)
 
         self.charts = [self.draw_raRawErrors,
                        self.draw_decRawErrors,
@@ -71,7 +72,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                        self.draw_scaleImage,
                        self.draw_modelPositions,
                        self.draw_errorAscending,
-                       self.draw_errorDistribution]
+                       self.draw_errorDistribution,
+                       self.drawHorizon]
 
     def initConfig(self):
         """
@@ -252,8 +254,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorRA_S, data=self.errorRA_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
-        if self.ui.showHorizon.isChecked():
-            self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_decRawErrors(self):
@@ -269,8 +269,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorDEC_S, data=self.errorDEC_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
-        if self.ui.showHorizon.isChecked():
-            self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_raErrors(self):
@@ -286,8 +284,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorRA, data=self.errorRA,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
-        if self.ui.showHorizon.isChecked():
-            self.ui.raErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_decError(self):
@@ -303,8 +299,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.azimuth, self.altitude, z=self.errorDEC, data=self.errorDEC,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
-        if self.ui.showHorizon.isChecked():
-            self.ui.decErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def draw_raRawErrorsRef(self):
@@ -421,6 +415,17 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.errorDistribution.plot(
             self.errorAngle, self.errorRMS, color=color, data=self.pierside,
             tip='ErrorRMS: {y:0.1f}\nPier: {data}'.format)
+        return True
+
+    def drawHorizon(self):
+        """
+        :return:
+        """
+        if self.ui.showHorizon.isChecked():
+            self.ui.raErrors.drawHorizon(self.app.data.horizonP)
+            self.ui.decErrors.drawHorizon(self.app.data.horizonP)
+            self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
+            self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
         return True
 
     def drawAll(self):

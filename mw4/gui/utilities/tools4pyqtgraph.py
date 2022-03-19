@@ -46,42 +46,8 @@ class CustomViewBox(pg.ViewBox):
         self.yRange = None
         self.dragOffset = None
         self.dragPoint = None
-        self.enableDrag = kwargs.get('enableDrag', False)
-        self.enableEdit = kwargs.get('enableEdit', False)
-        self.enableRange = kwargs.get('enableRange', False)
-        self.enableLimitX = kwargs.get('enableLimitX', False)
-
-    def setEnableDrag(self, status):
-        """
-        :param status:
-        :return:
-        """
-        self.enableDrag = status
-        return True
-
-    def setEnableEdit(self, status):
-        """
-        :param status:
-        :return:
-        """
-        self.enableEdit = status
-        return True
-
-    def setEnableRange(self, status):
-        """
-        :param status:
-        :return:
-        """
-        self.enableRange = status
-        return True
-
-    def setEnableLimitX(self, status):
-        """
-        :param status:
-        :return:
-        """
-        self.enableLimitX = status
-        return True
+        self.enableLimitX = None
+        self.setOpts(*args, **kwargs)
 
     def setPlotDataItem(self, plotDataItem):
         """
@@ -89,6 +55,15 @@ class CustomViewBox(pg.ViewBox):
         :return:
         """
         self.plotDataItem = plotDataItem
+        return True
+
+    def setOpts(self, *args, **kwargs):
+        """
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        self.enableLimitX = kwargs.get('enableLimitX', False)
         return True
 
     @staticmethod
@@ -110,7 +85,7 @@ class CustomViewBox(pg.ViewBox):
         d = self.distance(a, c) + self.distance(c, b) - self.distance(a, b)
         return np.abs(d)
 
-    def getCurveIndex(self, pos, epsilon=1):
+    def getCurveIndex(self, pos, epsilon=2):
         """
         :param pos:
         :param epsilon:
@@ -123,12 +98,13 @@ class CustomViewBox(pg.ViewBox):
             if d < epsilon:
                 break
         else:
-            return 0
+            return None
         return index + 1
 
-    def getNearestPointIndex(self, pos):
+    def getNearestPointIndex(self, pos, epsilon=2):
         """
         :param pos:
+        :param epsilon:
         :return: index or none
         """
         data = self.plotDataItem.curve.getData()
@@ -136,6 +112,8 @@ class CustomViewBox(pg.ViewBox):
         y = data[1]
         d = np.sqrt((x - pos.x()) ** 2 / 4 + (y - pos.y()) ** 2)
         index = int(d.argsort()[:1][0])
+        if d[index] >= epsilon:
+            return None
         return index + 1
 
     def addUpdate(self, index, pos):
@@ -222,8 +200,8 @@ class CustomViewBox(pg.ViewBox):
         :param ev:
         :return:
         """
-        if not self.enableDrag:
-            ev.ignore()
+        if not self.plotDataItem:
+            super().mouseDragEvent(ev)
             return
 
         if ev.button() != Qt.LeftButton:
@@ -263,20 +241,22 @@ class CustomViewBox(pg.ViewBox):
         :param ev:
         :return:
         """
+        if self.plotDataItem is None and ev.button() == Qt.RightButton:
+            self.rightMouseRange()
+            ev.accept()
+            return
+        elif self.plotDataItem is None:
+            ev.ignore()
+            return
+
         posScene = ev.scenePos()
         pos = self.mapSceneToView(posScene)
         spot = self.plotDataItem.scatter.pointsAt(pos)
 
         if ev.button() == Qt.RightButton:
             if len(spot) == 0:
-                if not self.enableRange:
-                    ev.ignore()
-                    return
                 self.rightMouseRange()
             else:
-                if not self.enableEdit:
-                    ev.ignore()
-                    return
                 spot = spot[0]
                 ind = spot.index()
                 self.delUpdate(ind)
@@ -284,18 +264,17 @@ class CustomViewBox(pg.ViewBox):
             return
 
         if ev.button() == Qt.LeftButton:
-            if not self.enableEdit:
-                ev.ignore()
-                return
             posScene = ev.scenePos()
             pos = self.mapSceneToView(posScene)
             inCurve = self.plotDataItem.curve.contains(pos)
             if inCurve:
                 index = self.getCurveIndex(pos)
-                self.addUpdate(index, pos)
+                if index is not None:
+                    self.addUpdate(index, pos)
             else:
                 index = self.getNearestPointIndex(pos)
-                self.addUpdate(index, pos)
+                if index is not None:
+                    self.addUpdate(index, pos)
             ev.accept()
             return
 
@@ -324,6 +303,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.scatterItem = None
         self.imageItem = None
         self.barItem = None
+        self.horizon = None
         self.p = []
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
         self.setupItems()
@@ -386,8 +366,13 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         :param horizonP:
         :return:
         """
+        if self.horizon:
+            self.p[0].removeItem(self.horizon)
+
         if len(horizonP) == 0:
+            self.horizon = None
             return False
+
         alt, az = zip(*horizonP)
         alt = np.array(alt)
         az = np.array(az)
@@ -398,6 +383,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         poly.setPen(self.penHorizon)
         poly.setBrush(self.brushHorizon)
         poly.setZValue(-5)
+        self.horizon = poly
         self.p[0].addItem(poly)
         return True
 

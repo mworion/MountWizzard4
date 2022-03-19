@@ -160,6 +160,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.app.update3s.connect(self.drawAlignmentStars)
         self.app.updatePointMarker.connect(self.drawModelPoints)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
+        self.app.redrawHorizon.connect(self.drawHorizon)
         self.app.colorChange.connect(self.colorChange)
 
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
@@ -178,8 +179,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.ui.showMountLimits.clicked.connect(self.drawHemisphere)
         self.ui.showCelestial.clicked.connect(self.drawHemisphere)
         self.ui.showTerrain.clicked.connect(self.drawHemisphere)
-
-        self.ui.addPositionToHorizon.clicked.connect(self.addHorizonPointManual)
         self.drawHemisphere()
         self.show()
         return True

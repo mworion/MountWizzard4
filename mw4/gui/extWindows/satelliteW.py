@@ -78,6 +78,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.world = pickle.load(BytesIO(pickleData))
         self.signals.show.connect(self.drawSatellite)
         self.signals.update.connect(self.updatePositions)
+        self.app.redrawHorizon.connect(self.drawHorizon)
 
     def initConfig(self):
         """
@@ -464,6 +465,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             pd.setZValue(-5)
             plotItem.addItem(pd)
 
+    def drawHorizon(self):
+        """
+        :return:
+        """
+        self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
+        return True
+
     def drawHorizonView(self, obsSite=None, satOrbits=None,
                         altitude=[], azimuth=[], isSunlit=[]):
         """
@@ -479,7 +487,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
-        self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
+        self.drawHorizon()
 
         if not satOrbits or obsSite is None:
             return False

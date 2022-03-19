@@ -211,7 +211,7 @@ class EditHorizon:
             symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
             brush=pg.mkBrush(color=self.M_PINK + '40'),
             pen=pg.mkPen(color=self.M_PINK1, width=2),
-            symbolSize=4, symbol='o', connect='all')
+            symbolSize=10, symbol='o', connect='all')
         plotItem.addItem(self.horizonPlot)
         vb = plotItem.getViewBox()
         vb.setPlotDataItem(self.horizonPlot)

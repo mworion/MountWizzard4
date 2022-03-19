@@ -167,6 +167,7 @@ class MountWizzard4(QObject):
         self.skymeter = Skymeter(self)
         self.power = PegasusUPB(self)
         self.data = DataPoint(self)
+        self.loadHorizonData()
         self.hipparcos = Hipparcos(self)
         self.measure = MeasureData(self)
         self.remote = Remote(self)
@@ -191,7 +192,7 @@ class MountWizzard4(QObject):
 
     def checkAndSetAutomation(self):
         """
-        the windows automation with pywinauto has a serious bug in python lib.
+        the windows' automation with pywinauto has a serious bug in python lib.
         the bugfix is done from python 3.8.2 onwards. so to enable this work,
         we have to check the python version used and set the topic adequately.
 
@@ -333,7 +334,6 @@ class MountWizzard4(QObject):
                 name = 'config'
 
         self.config['profileName'] = name
-
         fileName = f'{configDir}/{name}.cfg'
 
         if not os.path.isfile(fileName):
@@ -383,6 +383,15 @@ class MountWizzard4(QObject):
                       outfile,
                       sort_keys=True,
                       indent=4)
+        return True
+
+    def loadHorizonData(self):
+        """
+        :return:
+        """
+        config = self.config['hemisphereW']
+        fileName = config.get('horizonMaskFileName', '')
+        self.data.loadHorizonP(fileName=fileName)
         return True
 
     def loadMountData(self, status):

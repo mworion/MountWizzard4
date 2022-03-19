@@ -38,7 +38,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self)
-        self.closing = False
 
         self.latitude = None
         self.pierside = None
@@ -116,10 +115,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.closing = True
         self.storeConfig()
-        self.app.showAnalyse.disconnect(self.showAnalyse)
-        self.ui.showHorizon.clicked.disconnect(self.drawAll)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -431,8 +427,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
+        if self.index is None:
+            return False
         for chart in self.charts:
-            if self.closing:
-                break
             chart()
         return True

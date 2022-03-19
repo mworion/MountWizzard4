@@ -185,16 +185,16 @@ class CustomViewBox(pg.ViewBox):
         """
         :return:
         """
-        xRange = self.state['limits']['xRange']
-        yRange = self.state['limits']['yRange']
-        if None not in xRange:
-            self.setXRange(xRange[0], xRange[1])
-        else:
+        xRange = self.state['limits']['xLimits']
+        yRange = self.state['limits']['yLimits']
+        if None in xRange or any(np.abs(xRange) > 1e300):
             self.enableAutoRange(x=True)
-        if None not in yRange:
-            self.setYRange(yRange[0], yRange[1])
         else:
+            self.setXRange(xRange[0], xRange[1])
+        if None in yRange or any(np.abs(xRange) > 1e300):
             self.enableAutoRange(y=True)
+        else:
+            self.setYRange(yRange[0], yRange[1])
         return True
 
     def mouseDragEvent(self, ev):
@@ -373,6 +373,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         if len(horizonP) == 0:
             self.horizon = None
             return False
+        if not self.p[0].items:
+            return False
 
         alt, az = zip(*horizonP)
         alt = np.array(alt)
@@ -428,7 +430,7 @@ class NormalScatter(PlotBase):
                 self.p[0].setLimits(yMin=yMin, yMax=yMax,
                                     minYRange=(yMax - yMin) / 4,
                                     maxYRange=(yMax - yMin))
-                self.p[0].setXRange(yMin, yMax - yMin)
+                self.p[0].setYRange(yMin, yMax - yMin)
         self.p[0].getViewBox().rightMouseRange()
 
         dataVal = kwargs.get('data', y)

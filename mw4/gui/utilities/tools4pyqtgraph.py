@@ -148,20 +148,20 @@ class CustomViewBox(pg.ViewBox):
         :param pos:
         :return:
         """
-        if self.xRange:
-            if pos.x() > self.xRange[1]:
-                px = self.xRange[1]
-            elif pos.x() < self.xRange[0]:
-                px = self.xRange[0]
-            else:
-                px = pos.x()
-        if self.yRange:
-            if pos.y() > self.yRange[1]:
-                py = self.yRange[1]
-            elif pos.y() < self.yRange[0]:
-                py = self.yRange[0]
-            else:
-                py = pos.y()
+        xRange = self.state['limits']['xLimits']
+        yRange = self.state['limits']['yLimits']
+        px = pos.x()
+        py = pos.y()
+        if None not in xRange:
+            if pos.x() > xRange[1]:
+                px = xRange[1]
+            elif pos.x() < xRange[0]:
+                px = xRange[0]
+        if None not in yRange:
+            if pos.y() > yRange[1]:
+                py = yRange[1]
+            elif pos.y() < yRange[0]:
+                py = yRange[0]
 
         x = data[0]
         y = data[1]

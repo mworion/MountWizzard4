@@ -61,18 +61,18 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.app.colorChange.connect(self.colorChange)
         self.app.redrawHorizon.connect(self.drawHorizon)
 
-        self.charts = [self.draw_raRawErrors,
-                       self.draw_decRawErrors,
-                       self.draw_raErrors,
-                       self.draw_decError,
-                       self.draw_raErrorsRef,
-                       self.draw_decErrorsRef,
-                       self.draw_raRawErrorsRef,
-                       self.draw_decRawErrorsRef,
-                       self.draw_scaleImage,
-                       self.draw_modelPositions,
-                       self.draw_errorAscending,
-                       self.draw_errorDistribution,
+        self.charts = [self.drawRaRawErrors,
+                       self.drawDecRawErrors,
+                       self.drawRaErrors,
+                       self.drawDecError,
+                       self.drawRaErrorsRef,
+                       self.drawDecErrorsRef,
+                       self.drawRaRawErrorsRef,
+                       self.drawDecRawErrorsRef,
+                       self.drawScaleImage,
+                       self.drawModelPositions,
+                       self.drawErrorAscending,
+                       self.drawErrorDistribution,
                        self.drawHorizon]
 
     def initConfig(self):
@@ -241,7 +241,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.processModel(path)
         return True
 
-    def draw_raRawErrors(self):
+    def drawRaRawErrors(self):
         """
         :return:    True if ok for testing
         """
@@ -256,7 +256,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
-    def draw_decRawErrors(self):
+    def drawDecRawErrors(self):
         """
         :return:    True if ok for testing
         """
@@ -271,7 +271,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
-    def draw_raErrors(self):
+    def drawRaErrors(self):
         """
         :return:    True if ok for testing
         """
@@ -286,7 +286,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
-    def draw_decError(self):
+    def drawDecError(self):
         """
         :return:    True if ok for testing
         """
@@ -301,7 +301,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
         return True
 
-    def draw_raRawErrorsRef(self):
+    def drawRaRawErrorsRef(self):
         """
         :return:    True if ok for testing
         """
@@ -317,7 +317,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='AngularRA: {x:0.1f}\nErrorRa: {y:0.1f}\nPier: {data}'.format)
         return True
 
-    def draw_decRawErrorsRef(self):
+    def drawDecRawErrorsRef(self):
         """
         :return:    True if ok for testing
         """
@@ -334,7 +334,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}'.format)
         return True
 
-    def draw_raErrorsRef(self):
+    def drawRaErrorsRef(self):
         """
         :return:    True if ok for testing
         """
@@ -350,7 +350,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='AngularRA: {x:0.1f}\nErrorRA: {y:0.1f}\nPier: {data}'.format)
         return True
 
-    def draw_decErrorsRef(self):
+    def drawDecErrorsRef(self):
         """
         :return:    True if ok for testing
         """
@@ -367,7 +367,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='AngularDEC: {x:0.1f}\nErrorDec: {y:0.1f}\nPier: {data}'.format)
         return True
 
-    def draw_scaleImage(self):
+    def drawScaleImage(self):
         """
         :return:    True if ok for testing
         """
@@ -379,7 +379,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='PointNo: {x:0.0f}\nScale: {y:0.1f}\nPier: {data}'.format)
         return True
 
-    def draw_errorAscending(self):
+    def drawErrorAscending(self):
         """
         :return:    True if ok for testing
         """
@@ -394,7 +394,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             tip='ErrorRMS: {y:0.1f}\nPier: {data}'.format)
         return True
 
-    def draw_modelPositions(self):
+    def drawModelPositions(self):
         """
         :return:    True if ok for testing
         """
@@ -407,7 +407,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.modelPositions.plotLoc(self.latitude)
         return True
 
-    def draw_errorDistribution(self):
+    def drawErrorDistribution(self):
         """
         :return:    True if ok for testing
         """
@@ -426,7 +426,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.ui.decErrors.drawHorizon(self.app.data.horizonP)
             self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
             self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
-        return True
 
     def drawAll(self):
         """

@@ -359,22 +359,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         """
         :return:
         """
-        hp = self.app.data.horizonP
-        if not hp:
-            return False
-
-        if not self.horizon:
-            plotItem = self.ui.hemisphere.p[0]
-            self.horizon = pg.PlotCurveItem(
-                pen=pg.mkPen(color=self.M_BLUE, width=2))
-            plotItem.addItem(self.horizon)
-
-        alt, az = zip(*hp)
-        alt = np.array(alt)
-        az = np.array(az)
-        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
-        azF = np.concatenate([[0], [0], az, [360], [360]])
-        self.horizon.setData(x=azF, y=altF)
+        self.ui.hemisphere.drawHorizon(self.app.data.horizonP)
         return True
 
     def drawTerrainMask(self, plotItem):

@@ -21,7 +21,7 @@ from datetime import datetime as dt
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt5.QtCore import QRectF, Qt
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QTransform
 
 # local imports
@@ -42,8 +42,6 @@ class CustomViewBox(pg.ViewBox):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.plotDataItem = None
-        self.xRange = None
-        self.yRange = None
         self.dragOffset = None
         self.dragPoint = None
         self.enableLimitX = None
@@ -187,12 +185,16 @@ class CustomViewBox(pg.ViewBox):
         """
         :return:
         """
-        if self.xRange:
-            self.setXRange(self.xRange[0], self.xRange[1])
-        if self.yRange:
-            self.setYRange(self.yRange[0], self.yRange[1])
-        if self.xRange is None and self.yRange is None:
-            self.enableAutoRange(x=True, y=True)
+        xRange = self.state['limits']['xRange']
+        yRange = self.state['limits']['yRange']
+        if None not in xRange:
+            self.setXRange(xRange[0], xRange[1])
+        else:
+            self.enableAutoRange(x=True)
+        if None not in yRange:
+            self.setYRange(yRange[0], yRange[1])
+        else:
+            self.enableAutoRange(y=True)
         return True
 
     def mouseDragEvent(self, ev):
@@ -368,7 +370,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         """
         if self.horizon:
             self.p[0].removeItem(self.horizon)
-
         if len(horizonP) == 0:
             self.horizon = None
             return False
@@ -411,22 +412,24 @@ class NormalScatter(PlotBase):
                                               hoverSize=10, hoverPen=self.pen)
         self.p[0].addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
-        xMin = self.defRange['xMin'] = self.defRange.get('xMin', np.min(x) * 1.2)
-        yMin = self.defRange['yMin'] = self.defRange.get('yMin', np.min(y) * 1.2)
-        xMax = self.defRange['xMax'] = self.defRange.get('xMax', np.max(x) * 1.2)
-        yMax = self.defRange['yMax'] = self.defRange.get('yMax', np.max(y) * 1.2)
+
+        xMin = self.defRange.get('xMin')
+        yMin = self.defRange.get('yMin')
+        xMax = self.defRange.get('xMax')
+        yMax = self.defRange.get('yMax')
 
         if kwargs.get('limits', True):
-            self.p[0].setLimits(xMin=xMin, xMax=xMax,
-                                yMin=yMin, yMax=yMax,
-                                minXRange=(xMax - xMin) / 4,
-                                maxXRange=(xMax - xMin),
-                                minYRange=(yMax - yMin) / 4,
-                                maxYRange=(yMax - yMin))
-        self.p[0].setRange(QRectF(xMin, yMin, xMax - xMin, yMax - yMin))
-        self.p[0].getViewBox().xRange = (xMin, xMax)
-        self.p[0].getViewBox().yRange = (yMin, yMax)
-        self.p[0].autoRange()
+            if xMin is not None and xMax is not None:
+                self.p[0].setLimits(xMin=xMin, xMax=xMax,
+                                    minXRange=(xMax - xMin) / 4,
+                                    maxXRange=(xMax - xMin))
+                self.p[0].setXRange(xMin, xMax - xMin)
+            if yMin is not None and yMax is not None:
+                self.p[0].setLimits(yMin=yMin, yMax=yMax,
+                                    minYRange=(yMax - yMin) / 4,
+                                    maxYRange=(yMax - yMin))
+                self.p[0].setXRange(yMin, yMax - yMin)
+        self.p[0].getViewBox().rightMouseRange()
 
         dataVal = kwargs.get('data', y)
         self.col = kwargs.get('color', self.M_BLUE)

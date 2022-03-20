@@ -171,9 +171,10 @@ class HemisphereWindow(MWidget, EditHorizon):
         :return:
         """
         mousePoint = plotItem.getViewBox().mapSceneToView(pos)
+        vr = plotItem.getViewBox().viewRange()
         x = mousePoint.x()
         y = mousePoint.y()
-        if 0 < x < 360 and 0 < y < 90:
+        if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:
             self.ui.azimuth.setText(f'{x:3.1f}')
             self.ui.altitude.setText(f'{y:3.1f}')
             QGuiApplication.setOverrideCursor(QCursor(Qt.CrossCursor))
@@ -281,20 +282,12 @@ class HemisphereWindow(MWidget, EditHorizon):
         plotItem.setLabel('bottom', 'Azimuth [deg]')
         plotItem.setLabel('left', 'Altitude [deg]')
         plotItem.setLimits(xMin=0, xMax=360, yMin=0, yMax=90,
-                           minXRange=180, maxXRange=360,
-                           minYRange=45, maxYRange=90)
+                           minXRange=120, maxXRange=360,
+                           minYRange=30, maxYRange=90)
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
         return True
-
-    def mouseDoubleClick(self, ev, posView):
-        """
-        :param ev:
-        :param posView:
-        :return:
-        """
-        print(ev, posView)
 
     def prepareHemisphere(self):
         """
@@ -421,12 +414,13 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         plotItem = self.ui.hemisphere.p[0]
         hip = self.app.hipparcos
-        self.alignmentStars = []
         self.alignmentStarsText = []
+        pd = pg.ScatterPlotItem(
+            symbol='star', size=6, pen=pg.mkPen(color=self.M_YELLOW1))
+        pd.setZValue(30)
+        self.alignmentStars = pd
+        plotItem.addItem(pd)
         for i in range(len(hip.name)):
-            pd = pg.ScatterPlotItem(symbol='star', size=6)
-            self.alignmentStars.append(pd)
-            plotItem.addItem(pd)
             textItem = pg.TextItem(anchor=(0.5, 1.1))
             self.alignmentStarsText.append(textItem)
             plotItem.addItem(textItem)
@@ -443,9 +437,8 @@ class HemisphereWindow(MWidget, EditHorizon):
 
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
-
         isAlign = self.ui.alignmentModeHem.isChecked()
-
+        self.alignmentStars.setData(x=hip.az, y=hip.alt)
         for i, val in enumerate(zip(hip.alt, hip.az, hip.name)):
             alt, az, name = val
             color = self.M_YELLOW if isAlign else self.M_YELLOW1
@@ -458,11 +451,10 @@ class HemisphereWindow(MWidget, EditHorizon):
                 fontSize = 7
                 fontColor = self.M_WHITE1
 
-            self.alignmentStars[i].setData(
-                x=hip.az, y=hip.alt,  size=size,
-                pen=pg.mkPen(color=color), brush=pg.mkBrush(color=color))
-            self.alignmentStars[i].setZValue(30)
-
+            item = self.alignmentStars.points()[i]
+            item.setPen(pg.mkPen(color=color))
+            item.setBrush(pg.mkBrush(color=color))
+            item.setSize(size)
             font = QFont(self.window().font().family(),
                          int(self.window().font().pointSize() * fontSize / 9))
             self.alignmentStarsText[i].setText(name)
@@ -659,4 +651,122 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.drawDome()
         if self.ui.showHorizon.isChecked():
             self.drawHorizonOnHem()
+        return True
+
+    def slewSelectedTarget(self, slewType='normal'):
+        """
+        :param slewType:
+        :return: success
+        """
+        azimuthT = self.app.mount.obsSite.AzTarget.degrees
+        altitudeT = self.app.mount.obsSite.AltTarget.degrees
+
+        if self.app.deviceStat['dome']:
+            self.app.dome.avoidFirstOvershoot()
+            delta = self.app.dome.slewDome(altitude=altitudeT,
+                                           azimuth=azimuthT)
+
+            geoStat = 'Geometry corrected' if delta else 'Equal mount'
+            t = f'Slewing dome:        [{geoStat}],'
+            t += f' AZ:[{azimuthT:3.1f}] delta: [{delta:3.1f}]'
+            self.app.message.emit(t, 0)
+
+        suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
+
+        if suc:
+            t = f'Slewing mount to     AZ:[{azimuthT:3.1f}], ALT:[{altitudeT:3.1f}]'
+            self.app.message.emit(t, 0)
+        else:
+            t = f'Cannot slew to       AZ:[{azimuthT:3.1f}], ALT:[{altitudeT:3.1f}]'
+            self.app.message.emit(t, 2)
+
+        return suc
+
+    def slewDirect(self, ev, posView):
+        """
+        :param ev:
+        :param posView:
+        :return:
+        """
+        azimuth = int(posView.x() + 0.5)
+        altitude = int(posView.y() + 0.5)
+
+        question = '<b>Manual slewing to coordinate</b>'
+        question += '<br><br>Selected coordinates are:<br>'
+        question += f'<font color={self.M_BLUE}> Altitude: {altitude:3.1f}°'
+        question += f'   Azimuth: {azimuth:3.1f}°</font>'
+        question += '<br><br>Would you like to start slewing?<br>'
+
+        suc = self.messageDialog(self, 'Slewing mount', question)
+        if not suc:
+            return False
+
+        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
+                                                    az_degrees=azimuth)
+        if not suc:
+            t = f'Cannot slew to       AZ:[{azimuth:3.1f}], ALT:[{altitude:3.1f}]'
+            self.app.message.emit(t, 2)
+            return False
+
+        suc = self.slewSelectedTarget(slewType='keep')
+        return suc
+
+    def slewStar(self, ev, posView):
+        """
+        :param ev:
+        :param posView:
+        :return:
+        """
+        if not self.app.mount.model.numberStars:
+            self.app.message.emit('No model for alignment present!', 2)
+            return False
+        spot = self.alignmentStars.pointsAt(posView)
+        if len(spot) == 0:
+            return False
+
+        index = spot[0].index()
+        hip = self.app.hipparcos
+        name = hip.name[index]
+        ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
+
+        question = '<b>Polar / Ortho Alignment procedure</b>'
+        question += '<br>Selected alignment star: '
+        question += f'<font color={self.M_BLUE}>{name}.</font>'
+        question += '<br>Would you like to start alignment?<br>'
+
+        isDAT = self.app.mount.setting.statusDualAxisTracking
+        warning = f'<br><i><font color={self.M_YELLOW}>'
+        warning += 'Dual Axis Tracking is actually enabled!<br>'
+        warning += 'It should be off during alignment process.</font></i>'
+
+        buttons = ['Cancel', 'Ortho Align', 'Polar Align']
+        question = question + warning if isDAT else question
+        reply = self.messageDialog(self, 'Slewing mount', question, buttons)
+        if reply == 0:
+            return False
+        elif reply == 1:
+            alignType = 'ortho'
+        else:
+            alignType = 'polar'
+
+        suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
+                                                    dec_degrees=dec)
+        if not suc:
+            self.app.message.emit(f'Cannot slew to:      [{name}]', 2)
+            return False
+
+        self.app.message.emit(f'Align [{reply}] to:    [{name}]', 1)
+        suc = self.slewSelectedTarget(slewType=alignType)
+        return suc
+
+    def mouseDoubleClick(self, ev, posView):
+        """
+        :param ev:
+        :param posView:
+        :return:
+        """
+        if self.ui.alignmentModeHem.isChecked():
+            self.slewStar(ev, posView)
+        elif self.ui.normalModeHem.isChecked():
+            self.slewDirect(ev, posView)
         return True

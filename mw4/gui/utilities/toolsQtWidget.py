@@ -438,11 +438,12 @@ class MWidget(QWidget, Styles):
         """
         return dlg.exec_()
 
-    def messageDialog(self, parentWidget, title, question):
+    def messageDialog(self, parentWidget, title, question, buttons=None):
         """
         :param parentWidget:
         :param title:
         :param question:
+        :param buttons:
         :return: OK
         """
         msg = QMessageBox()
@@ -453,18 +454,26 @@ class MWidget(QWidget, Styles):
         pixmap = QPixmap(':/icon/question.svg').scaled(64, 64)
         msg.setIconPixmap(pixmap)
         msg.setText(question)
-        msg.setStandardButtons(msg.Yes | msg.No)
-        msg.setDefaultButton(msg.No)
+        if buttons is None:
+            msg.setStandardButtons(msg.Yes | msg.No)
+            msg.setDefaultButton(msg.No)
+        else:
+            for button in buttons:
+                msg.addButton(button, QMessageBox.AcceptRole)
+            msg.setDefaultButton(QMessageBox.Cancel)
         msg.show()
         x = parentWidget.x() + int((parentWidget.width() - msg.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - msg.height()) / 2)
         msg.move(x, y)
         reply = self.runDialog(msg)
 
-        if reply != msg.Yes:
-            return False
+        if buttons is None:
+            if reply != msg.Yes:
+                return False
+            else:
+                return True
         else:
-            return True
+            return reply
 
     def openFile(self,
                  window=None,

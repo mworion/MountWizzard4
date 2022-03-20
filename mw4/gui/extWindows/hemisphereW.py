@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import os.path
 
 # external packages
 from PyQt5.QtCore import Qt
@@ -61,7 +60,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.pointerAltAz = None
         self.pointerDome = None
         self.modelPoints = None
-        self.modelPointsText = None
+        self.modelPointsText = []
         self.horizon = None
         self.alignmentStars = None
         self.alignmentStarsText = None
@@ -100,21 +99,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.ui.showPolar.setChecked(config.get('showPolar', False))
         self.ui.showTerrain.setChecked(config.get('showTerrain', False))
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
-
-        terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
-        if not os.path.isfile(terrainFile):
-            self.imageTerrain = None
-            return False
-
-        img = Image.open(terrainFile).convert('LA')
-        (w, h) = img.size
-        img = img.crop((0, 0, w, h / 2))
-        img = img.resize((1440, 360))
-        img = img.transpose(Image.FLIP_TOP_BOTTOM)
-
-        self.imageTerrain = Image.new('L', (2880, 480), 128)
-        self.imageTerrain.paste(img, (0, 60))
-        self.imageTerrain.paste(img, (1440, 60))
         self.mwSuper('initConfig')
         return True
 
@@ -138,7 +122,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         config['showPolar'] = self.ui.showPolar.isChecked()
         config['showTerrain'] = self.ui.showTerrain.isChecked()
         config['tabWidget'] = self.ui.tabWidget.currentIndex()
-
         self.mwSuper('storeConfig')
         return True
 
@@ -147,10 +130,9 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :param closeEvent:
         :return:
         """
-        self.ui.normalMode.setChecked(True)
-        self.setOperationMode()
+        self.ui.normalModeHem.setChecked(True)
+        self.ui.normalModeHor.setChecked(True)
         self.storeConfig()
-        QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -158,7 +140,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :return:
         """
         self.app.update3s.connect(self.drawAlignmentStars)
-        self.app.updatePointMarker.connect(self.drawModelPoints)
+        self.app.updatePointMarker.connect(self.drawModel)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.redrawHorizon.connect(self.drawHorizon)
         self.app.colorChange.connect(self.colorChange)
@@ -169,9 +151,9 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
         self.app.dome.signals.serverDisconnected.connect(self.drawDome)
 
-        self.ui.normalMode.clicked.connect(self.setOperationMode)
-        self.ui.editMode.clicked.connect(self.setOperationMode)
-        self.ui.alignmentMode.clicked.connect(self.setOperationMode)
+        self.ui.normalModeHem.clicked.connect(self.setOperationModeHem)
+        self.ui.editModeHem.clicked.connect(self.setOperationModeHem)
+        self.ui.alignmentModeHem.clicked.connect(self.setOperationModeHem)
 
         self.ui.showSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.showHorizon.clicked.connect(self.drawHemisphere)
@@ -220,18 +202,14 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.mwSuper('colorChange')
         return True
 
-    def setOperationMode(self):
+    def setOperationModeHem(self):
         """
         :return: success
         """
-        if self.ui.normalMode.isChecked():
-            self.operationMode = 'normal'
-        elif self.ui.editMode.isChecked():
-            self.operationMode = 'edit'
+        if self.ui.editModeHem.isChecked():
             self.drawModelPoints()
-        elif self.ui.alignmentMode.isChecked():
+        elif self.ui.alignmentModeHem.isChecked():
             self.ui.showAlignStar.setChecked(True)
-            self.operationMode = 'star'
             self.app.data.clearBuildP()
 
         self.drawHemisphere()
@@ -303,9 +281,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         """
         plotItem.clear()
         plotItem.showAxes(True, showValues=True)
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
-        plotItem.getViewBox().xRange = (0, 360)
-        plotItem.getViewBox().yRange = (0, 90)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
         xTicks = [(x, f'{x:0.0f}') for x in np.arange(30, 331, 30)]
         plotItem.getAxis('bottom').setTicks([xTicks])
         plotItem.getAxis('top').setTicks([xTicks])
@@ -314,11 +290,13 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         plotItem.getAxis('right').setTicks([yTicks])
         plotItem.setLabel('bottom', 'Azimuth [deg]')
         plotItem.setLabel('left', 'Altitude [deg]')
-        plotItem.setLimits(xMin=0, xMax=360, yMin=0, yMax=90)
+        plotItem.setLimits(xMin=0, xMax=360, yMin=0, yMax=90,
+                           minXRange=180, maxXRange=360,
+                           minYRange=45, maxYRange=90)
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
-        plotItem.setMouseEnabled(x=False, y=False)
+        # plotItem.setMouseEnabled(x=False, y=False)
         return True
 
     def prepareHemisphere(self):
@@ -330,7 +308,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.pointerAltAz = None
         self.pointerDome = None
         self.modelPoints = None
-        self.modelPointsText = None
+        self.modelPointsText = []
         self.horizon = None
         self.alignmentStars = None
         self.alignmentStarsText = None
@@ -450,6 +428,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
 
+        isAlign = self.ui.alignmentModeHem.isChecked()
         if self.alignmentStars is None:
             self.alignmentStars = []
             self.alignmentStarsText = []
@@ -463,10 +442,10 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
 
         for i, val in enumerate(zip(hip.alt, hip.az, hip.name)):
             alt, az, name = val
-            color = self.M_YELLOW if self.operationMode == 'star' else self.M_YELLOW1
+            color = self.M_YELLOW if isAlign else self.M_YELLOW1
 
-            size = 10 if self.operationMode == 'star' else 6
-            if self.operationMode == 'star':
+            size = 10 if isAlign else 6
+            if isAlign:
                 rel = self.calculateRelevance(alt=alt, az=az)
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
@@ -491,59 +470,108 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         """
         :return:
         """
-        plotItem = self.ui.hemisphere.p[0]
         points = self.app.data.buildP
         if not points:
             return False
+        x = [x[1] for x in points]
+        y = [x[0] for x in points]
+        act = [x[2] for x in points]
 
-        if self.modelPoints is None:
-            self.modelPoints = []
-            self.modelPointsText = []
-            for i in range(len(points)):
-                pd = pg.ScatterPlotItem(symbol='o', size=10)
-                self.modelPoints.append(pd)
-                plotItem.addItem(pd)
-                textItem = pg.TextItem(anchor=(0.5, 1.1))
-                self.modelPointsText.append(textItem)
-                plotItem.addItem(textItem)
-
-        for i, point in enumerate(points):
-            az = point[1]
-            alt = point[0]
-            active = point[2]
-
+        self.modelPoints.setData(x=x, y=y)
+        isEdit = self.ui.editModeHem.isChecked()
+        for i in range(len(x)):
+            active = act[i]
             colActive = self.M_GREEN if active else self.M_YELLOW
-            color = self.M_PINK if self.operationMode == 'edit' else colActive
+            color = self.M_PINK if isEdit else colActive
 
-            self.modelPoints[i].setPen(pg.mkPen(color=color, width=1.5))
-            self.modelPoints[i].setBrush(pg.mkBrush(color=color + '40'))
-            self.modelPoints[i].setData(x=[az], y=[alt])
-            self.modelPoints[i].setZValue(40)
+            item = self.modelPoints.scatter.points()[i]
+            item.setPen(pg.mkPen(color=color, width=1.5))
+            item.setBrush(pg.mkBrush(color=color + '40'))
+        return True
 
-            text = f'{i + 1}'
-            self.modelPointsText[i].setText(text)
-            self.modelPointsText[i].setColor(color)
-            self.modelPointsText[i].setPos(az, alt)
-            self.modelPointsText[i].setZValue(40)
-
-    def drawModelSlewPath(self):
+    def drawModelText(self):
         """
         :return:
         """
+        plotItem = self.ui.hemisphere.p[0]
         points = self.app.data.buildP
         if not points:
             return False
+        x = [x[1] for x in points]
+        y = [x[0] for x in points]
+        act = [x[2] for x in points]
 
+        for textItem in self.modelPointsText:
+            self.ui.hemisphere.p[0].removeItem(textItem)
+        self.modelPointsText = []
+
+        self.modelPoints.setData(x=x, y=y)
+        isEdit = self.ui.editModeHem.isChecked()
+        if isEdit:
+            facFont = 1
+        else:
+            facFont = 0.8
+        font = QFont(self.window().font().family(),
+                     int(self.window().font().pointSize() * facFont))
+        for i in range(len(x)):
+            az = x[i]
+            alt = y[i]
+            active = act[i]
+            colActive = self.M_GREEN if active else self.M_YELLOW
+            color = self.M_PINK if isEdit else colActive
+
+            text = f'{i + 1}'
+            textItem = pg.TextItem(anchor=(0.5, 1.1))
+            textItem.setText(text)
+            textItem.setFont(font)
+            textItem.setColor(color)
+            textItem.setPos(az, alt)
+            textItem.setZValue(40)
+            self.modelPointsText.append(textItem)
+            plotItem.addItem(textItem)
+        return True
+
+    def updateDataModel(self, x, y):
+        """
+        :return:
+        """
+        bp = [(y, x, True) for x, y in zip(x, y)]
+        self.app.data.buildP = bp
+        self.drawModelPoints()
+        self.drawModelText()
+        self.app.buildPointsChanged.emit()
+        return True
+
+    def drawModel(self):
+        """
+        :return:
+        """
         plotItem = self.ui.hemisphere.p[0]
-        for index, point in enumerate(points):
-            if self.ui.showSlewPath.isChecked() and index > 0:
-                pd = pg.PlotDataItem()
-                pd.setData(
-                    x=[points[index - 1][1], points[index][1]],
-                    y=[points[index - 1][0], points[index][0]],
-                    pen=pg.mkPen(color=self.M_WHITE + '80', style=Qt.DashLine))
-                pd.setZValue(40)
-                plotItem.addItem(pd)
+        if self.ui.showSlewPath.isChecked():
+            pen = pg.mkPen(color=self.M_WHITE + '80', style=Qt.DashLine)
+        else:
+            pen = None
+
+        if self.ui.editModeHem.isChecked():
+            self.modelPoints = pg.PlotDataItem(
+                symbolBrush=pg.mkBrush(color=self.M_PINK + '40'),
+                symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
+                symbolSize=10, symbol='o', connect='all', pen=pen)
+            vb = plotItem.getViewBox()
+            vb.setPlotDataItem(self.modelPoints)
+            vb.updateData = self.updateDataModel
+        else:
+            self.modelPoints = pg.PlotDataItem(
+                symbolBrush=pg.mkBrush(color=self.M_GREEN + '40'),
+                symbolPen=pg.mkPen(color=self.M_GREEN1, width=2),
+                symbolSize=8, symbol='o', connect='all', pen=pen)
+            vb = plotItem.getViewBox()
+            vb.setPlotDataItem(None)
+        self.modelPoints.setZValue(40)
+        plotItem.addItem(self.modelPoints)
+
+        self.drawModelPoints()
+        self.drawModelText()
         return True
 
     def drawPointerAltAz(self):
@@ -599,16 +627,15 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.prepareHemisphere()
         if self.ui.showCelestial.isChecked():
             self.drawCelestialEquator()
-        if self.ui.showHorizon.isChecked():
-            self.drawHorizon()
         if self.ui.showTerrain.isChecked():
             self.drawTerrainMask(self.ui.hemisphere.p[0])
         if self.ui.showMountLimits.isChecked():
             self.drawMeridianLimits()
             self.drawHorizonLimits()
         self.drawAlignmentStars()
-        self.drawModelPoints()
-        self.drawModelSlewPath()
+        self.drawModel()
         self.drawPointerAltAz()
         self.drawDome()
+        if self.ui.showHorizon.isChecked():
+            self.drawHorizon()
         return True

@@ -45,6 +45,8 @@ class CustomViewBox(pg.ViewBox):
         self.dragOffset = None
         self.dragPoint = None
         self.enableLimitX = None
+        self.epsilonCurve = 2
+        self.epsilonFree = 360
         self.setOpts(*args, **kwargs)
 
     def setPlotDataItem(self, plotDataItem):
@@ -62,6 +64,15 @@ class CustomViewBox(pg.ViewBox):
         :return:
         """
         self.enableLimitX = kwargs.get('enableLimitX', False)
+        return True
+
+    def updateData(self, x, y):
+        """
+        :param x:
+        :param y:
+        :return:
+        """
+        self.plotDataItem.setData(x=x, y=y)
         return True
 
     @staticmethod
@@ -83,34 +94,34 @@ class CustomViewBox(pg.ViewBox):
         d = self.distance(a, c) + self.distance(c, b) - self.distance(a, b)
         return np.abs(d)
 
-    def getCurveIndex(self, pos, epsilon=2):
+    def getCurveIndex(self, pos):
         """
         :param pos:
-        :param epsilon:
         :return:
         """
         data = self.plotDataItem.curve.getData()
         curve = [(x, y) for x, y in zip(data[0], data[1])]
         for index in range(0, len(curve) - 1):
             d = self.isBetween(curve[index], curve[index + 1], (pos.x(), pos.y()))
-            if d < epsilon:
+            if d < self.epsilonCurve:
                 break
         else:
             return None
         return index + 1
 
-    def getNearestPointIndex(self, pos, epsilon=2):
+    def getNearestPointIndex(self, pos):
         """
         :param pos:
-        :param epsilon:
         :return: index or none
         """
         data = self.plotDataItem.curve.getData()
+        if len(data[0]) == 0:
+            return 0
         x = data[0]
         y = data[1]
         d = np.sqrt((x - pos.x()) ** 2 / 4 + (y - pos.y()) ** 2)
         index = int(d.argsort()[:1][0])
-        if d[index] >= epsilon:
+        if d[index] >= self.epsilonFree:
             return None
         return index + 1
 
@@ -123,9 +134,13 @@ class CustomViewBox(pg.ViewBox):
         data = self.plotDataItem.getData()
         x = data[0]
         y = data[1]
-        x = np.concatenate((x[0:index], [pos.x()], x[index:]))
-        y = np.concatenate((y[0:index], [pos.y()], y[index:]))
-        self.plotDataItem.setData(x=x, y=y)
+        if x is not None and y is not None:
+            x = np.concatenate((x[0:index], [pos.x()], x[index:]))
+            y = np.concatenate((y[0:index], [pos.y()], y[index:]))
+        else:
+            x = np.array([pos.x()])
+            y = np.array([pos.y()])
+        self.updateData(x=x, y=y)
         return True
 
     def delUpdate(self, index):
@@ -138,7 +153,7 @@ class CustomViewBox(pg.ViewBox):
         y = data[1]
         x = np.delete(x, index)
         y = np.delete(y, index)
-        self.plotDataItem.setData(x=x, y=y)
+        self.updateData(x=x, y=y)
         return True
 
     def checkLimits(self, data, index, pos):
@@ -235,7 +250,7 @@ class CustomViewBox(pg.ViewBox):
         index = self.dragPoint.index()
         data = self.plotDataItem.getData()
         x, y = self.checkLimits(data, index, posNew)
-        self.plotDataItem.setData(x=x, y=y)
+        self.updateData(x=x, y=y)
         ev.accept()
 
     def mouseClickEvent(self, ev):
@@ -248,7 +263,7 @@ class CustomViewBox(pg.ViewBox):
             ev.accept()
             return
         elif self.plotDataItem is None:
-            ev.ignore()
+            super().mouseClickEvent(ev)
             return
 
         posScene = ev.scenePos()
@@ -342,7 +357,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             plotItem.getViewBox().setMenuEnabled(False)
             plotItem.hideButtons()
             plotItem.disableAutoRange()
-            plotItem.setClipToView(True)
             plotItem.setOwnedByLayout(True)
             plotItem.showAxes(False, showValues=False)
             for side in ('left', 'top', 'right', 'bottom'):

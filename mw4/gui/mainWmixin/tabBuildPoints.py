@@ -564,7 +564,7 @@ class BuildPoints:
         if not self.app.uiWindows['showHemisphereW']['classObj']:
             return False
 
-        self.app.uiWindows['showHemisphereW']['classObj'].clearHemisphere()
+        self.app.redrawHemisphere.emit()
         return True
 
     def autoDeletePoints(self):

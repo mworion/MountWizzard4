@@ -15,10 +15,12 @@
 #
 ###########################################################
 # standard libraries
+import os
 
 # external packages
 import numpy as np
 import pyqtgraph as pg
+from PIL import Image
 
 # local import
 
@@ -31,6 +33,7 @@ class EditHorizon:
         """
         """
         self.horizonPlot = None
+        self.imageTerrain = None
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
@@ -61,6 +64,25 @@ class EditHorizon:
         self.ui.azimuthShift.valueChanged.connect(self.drawEditHorizon)
         self.ui.altitudeShift.valueChanged.connect(self.drawEditHorizon)
         self.ui.terrainAlpha.valueChanged.connect(self.drawEditHorizon)
+
+        self.ui.normalModeHor.clicked.connect(self.setOperationModeHor)
+        self.ui.editModeHor.clicked.connect(self.setOperationModeHor)
+
+        terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
+        if not os.path.isfile(terrainFile):
+            self.imageTerrain = None
+            return False
+
+        img = Image.open(terrainFile).convert('LA')
+        (w, h) = img.size
+        img = img.crop((0, 0, w, h / 2))
+        img = img.resize((1440, 360))
+        img = img.transpose(Image.FLIP_TOP_BOTTOM)
+
+        self.imageTerrain = Image.new('L', (2880, 480), 128)
+        self.imageTerrain.paste(img, (0, 60))
+        self.imageTerrain.paste(img, (1440, 60))
+
         self.drawEditHorizon()
         return True
 
@@ -167,12 +189,24 @@ class EditHorizon:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
         return True
 
-    def storeHorizonData(self):
+    def setOperationModeHor(self):
+        """
+        :return: success
+        """
+        if self.ui.editModeHor.isChecked():
+            self.ui.addPositionToHorizon.setEnabled(True)
+        else:
+            self.ui.addPositionToHorizon.setEnabled(False)
+
+        self.drawEditHorizon()
+        return True
+
+    def updateDataHorizon(self, x, y):
         """
         :return:
         """
-        data = self.horizonPlot.curve.getData()
-        hp = [(y, x) for x, y in zip(data[0], data[1])]
+        self.horizonPlot.setData(x=x, y=y)
+        hp = [(y, x) for x, y in zip(x, y)]
         self.app.data.horizonP = hp
         self.app.redrawHorizon.emit()
         return True
@@ -206,17 +240,27 @@ class EditHorizon:
         """
         plotItem = self.ui.horizon.p[0]
         self.preparePlotItem(plotItem)
-        self.horizonPlot = pg.PlotDataItem(
-            symbolBrush=pg.mkBrush(color=self.M_PINK + '40'),
-            symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
-            brush=pg.mkBrush(color=self.M_PINK + '40'),
-            pen=pg.mkPen(color=self.M_PINK1, width=2),
-            symbolSize=10, symbol='o', connect='all')
-        plotItem.addItem(self.horizonPlot)
-        vb = plotItem.getViewBox()
-        vb.setPlotDataItem(self.horizonPlot)
-        vb.setOpts(enableLimitX=True)
-        self.horizonPlot.sigPlotChanged.connect(self.storeHorizonData)
+
+        if self.ui.editModeHor.isChecked():
+            self.horizonPlot = pg.PlotDataItem(
+                symbolBrush=pg.mkBrush(color=self.M_PINK + '40'),
+                symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
+                brush=pg.mkBrush(color=self.M_PINK + '40'),
+                pen=pg.mkPen(color=self.M_PINK1, width=2),
+                symbolSize=10, symbol='o', connect='all')
+            plotItem.addItem(self.horizonPlot)
+            vb = plotItem.getViewBox()
+            vb.setPlotDataItem(self.horizonPlot)
+            vb.updateData = self.updateDataHorizon
+            vb.setOpts(enableLimitX=True)
+        else:
+            self.horizonPlot = pg.PlotDataItem(
+                symbolBrush=pg.mkBrush(color=self.M_BLUE + '40'),
+                symbolPen=pg.mkPen(color=self.M_BLUE1, width=2),
+                brush=pg.mkBrush(color=self.M_BLUE + '40'),
+                pen=pg.mkPen(color=self.M_BLUE1, width=2),
+                symbolSize=5, symbol='o', connect='all')
+            plotItem.addItem(self.horizonPlot)
 
         if self.ui.showTerrain.isChecked():
             self.drawTerrainMask(plotItem)

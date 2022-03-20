@@ -18,7 +18,7 @@
 
 # external packages
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QGuiApplication, QCursor, QFont, QPainterPath
+from PyQt5.QtGui import QFont
 import numpy as np
 from PIL import Image
 import pyqtgraph as pg
@@ -26,12 +26,11 @@ import pyqtgraph as pg
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import hemisphere_ui
-from gui.extWindows.hemisphere.hemisphereWext import HemisphereWindowExt
 from gui.extWindows.hemisphere.editHorizon import EditHorizon
 from base.transform import diffModulusAbs
 
 
-class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
+class HemisphereWindow(MWidget, EditHorizon):
     """
     the hemisphere window class handles all interaction with model points
     show / edit etc. the z orders is aligned as follows:
@@ -215,17 +214,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.drawHemisphereTab()
         return True
 
-    @staticmethod
-    def makePointer():
-        path = QPainterPath()
-        path.moveTo(0, -1)
-        path.lineTo(0, 1)
-        path.moveTo(-1, 0)
-        path.lineTo(1, 0)
-        path.addEllipse(-0.1, -0.1, 0.2, 0.2)
-        path.addEllipse(-0.3, -0.3, 0.6, 0.6)
-        return path
-
     def calculateRelevance(self, alt=None, az=None):
         """
         :param alt:
@@ -326,8 +314,8 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         az = np.array(az)
         pd = pg.ScatterPlotItem()
         pd.setData(
-            x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1),
-            brush=pg.mkBrush(color=self.M_WHITE + '80'), size=1)
+            x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1, size=0.9),
+            brush=pg.mkBrush(color=self.M_WHITE), size=0.9)
         pd.setZValue(5)
         plotItem.addItem(pd)
         return True
@@ -589,8 +577,8 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         symbol = self.makePointer()
         self.pointerHem = pg.ScatterPlotItem(symbol=symbol, size=40)
         self.pointerHem.setData(x=[0], y=[45])
-        self.pointerHem.setPen(pg.mkPen(color=self.M_WHITE1))
-        self.pointerHem.setBrush(pg.mkBrush(color=self.M_WHITE + '20'))
+        self.pointerHem.setPen(pg.mkPen(color=self.M_PINK))
+        self.pointerHem.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
         self.pointerHem.setZValue(10)
         plotItem.addItem(self.pointerHem)
         return True

@@ -25,6 +25,7 @@ from dateutil.tz import tzlocal
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
 from PyQt5.QtWidgets import QTableWidgetItem, QPushButton
 from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
+from PyQt5.QtGui import QPainterPath, QTransform
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QSize, QEvent
 from PyQt5.QtTest import QTest
@@ -766,3 +767,33 @@ class MWidget(QWidget, Styles):
                 funcAttrib = getattr(base, func)
                 funcAttrib(self)
         return True
+
+    @staticmethod
+    def makePointer():
+        path = QPainterPath()
+        path.moveTo(0, -1)
+        path.lineTo(0, 1)
+        path.moveTo(-1, 0)
+        path.lineTo(1, 0)
+        path.addEllipse(-0.1, -0.1, 0.2, 0.2)
+        path.addEllipse(-0.3, -0.3, 0.6, 0.6)
+        return path
+
+    @staticmethod
+    def makeSat():
+        path = QPainterPath()
+        tr = QTransform()
+        path.addRect(-0.5, -0.15, 0.1, 0.3)
+        path.addRect(-0.35, -0.15, 0.1, 0.3)
+        path.addRect(-0.2, -0.15, 0.1, 0.3)
+        path.moveTo(-0.1, -0.15)
+        path.lineTo(-0.1, -0.15)
+        path.lineTo(0, 0)
+        path.lineTo(-0.1, 0.15)
+        path.lineTo(-0.1, 0.15)
+        tr.rotate(180)
+        path.addPath(tr.map(path))
+        tr.rotate(45)
+        path = tr.map(path)
+        path.addEllipse(-0.05, -0.05, 0.1, 0.1)
+        return path

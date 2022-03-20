@@ -20,7 +20,6 @@ from io import BytesIO
 
 # external packages
 from PyQt5.QtCore import QObject, QFile, Qt, pyqtSignal
-from PyQt5.QtGui import QPainterPath, QTransform
 import numpy as np
 from skyfield.api import wgs84
 import pyqtgraph as pg
@@ -62,15 +61,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             self.pens.append(pg.mkPen(color=color, width=3))
             self.pens.append(pg.mkPen(color=color, width=3, style=Qt.DotLine))
         self.penWhite = pg.mkPen(width=2, color=self.M_WHITE1 + '80')
-        self.brushSat = pg.mkBrush(color=self.M_PINK1 + '80')
-        self.brushPointer = pg.mkBrush(color=self.M_PINK + '80')
-        self.penSat = pg.mkPen(color=self.M_PINK1)
-        self.penPointer = pg.mkPen(color=self.M_PINK, width=2)
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-
-        self.satSym = self.makeSat()
-
         stream = QFile(':/data/worldmap.dat')
         stream.open(QFile.ReadOnly)
         pickleData = stream.readAll()
@@ -143,25 +135,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.ui.satHorizon.colorChange()
         self.app.sendSatelliteData.emit()
         return True
-
-    @staticmethod
-    def makeSat():
-        path = QPainterPath()
-        tr = QTransform()
-        path.addRect(-0.5, -0.15, 0.1, 0.3)
-        path.addRect(-0.35, -0.15, 0.1, 0.3)
-        path.addRect(-0.2, -0.15, 0.1, 0.3)
-        path.moveTo(-0.1, -0.15)
-        path.lineTo(-0.1, -0.15)
-        path.lineTo(0, 0)
-        path.lineTo(-0.1, 0.15)
-        path.lineTo(-0.1, 0.15)
-        tr.rotate(180)
-        path.addPath(tr.map(path))
-        tr.rotate(45)
-        path = tr.map(path)
-        path.addEllipse(-0.05, -0.05, 0.1, 0.1)
-        return path
 
     def updatePointerAltAz(self, obsSite):
         """
@@ -296,8 +269,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         pd = pg.PlotDataItem(
-            x=[lat], y=[lon], symbol=self.satSym, symbolSize=40,
-            symbolPen=self.penSat, symbolBrush=self.brushSat)
+            x=[lat], y=[lon], symbol=self.makeSat(), symbolSize=40,
+            symbolPen=pg.mkPen(color=self.M_PINK),
+            symbolBrush=pg.mkBrush(color=self.M_PINK + '20'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -403,7 +377,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
         pd = pg.PlotDataItem(
             x=[az.degrees], y=[alt.degrees], symbol='d', symbolSize=20,
-            symbolPen=self.penSat, symbolBrush=self.brushSat)
+            symbolPen=pg.mkPen(color=self.M_PINK),
+            symbolBrush=pg.mkBrush(color=self.M_PINK + '20'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -415,8 +390,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return:
         """
         pd = pg.PlotDataItem(
-            x=[180], y=[45], symbol='o', symbolSize=20,
-            symbolPen=self.penPointer, symbolBrush=self.brushPointer)
+            x=[180], y=[45], symbol=self.makePointer(), symbolSize=40,
+            symbolPen=pg.mkPen(color=self.M_PINK),
+            symbolBrush=pg.mkBrush(color=self.M_PINK + '20'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -469,7 +445,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.satHorizon.drawHorizonOnHem(self.app.data.horizonP)
+        self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
         return True
 
     def drawHorizonView(self, obsSite=None, satOrbits=None,
@@ -487,8 +463,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
-        self.drawHorizon()
-
         if not satOrbits or obsSite is None:
             return False
 
@@ -497,6 +471,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.plotSatPosHorizon = self.prepareHorizonSatellite(
             plotItem, obsSite)
         self.pointerAltAz = self.preparePointer(plotItem)
+        self.drawHorizon()
         return True
 
     def drawSatellite(self, satellite=None, satOrbits=None, altitude=[],

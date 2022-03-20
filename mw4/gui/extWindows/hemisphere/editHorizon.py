@@ -258,8 +258,8 @@ class EditHorizon:
         symbol = self.makePointer()
         self.pointerHor = pg.ScatterPlotItem(symbol=symbol, size=40)
         self.pointerHor.setData(x=[0], y=[45])
-        self.pointerHor.setPen(pg.mkPen(color=self.M_WHITE1))
-        self.pointerHor.setBrush(pg.mkBrush(color=self.M_WHITE + '20'))
+        self.pointerHor.setPen(pg.mkPen(color=self.M_PINK))
+        self.pointerHor.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
         self.pointerHor.setZValue(10)
         plotItem.addItem(self.pointerHor)
         return True
@@ -313,10 +313,9 @@ class EditHorizon:
         """
         :return:
         """
-        plotItem = self.ui.horizon.p[0]
         self.prepareHorizonView()
         if self.ui.showTerrain.isChecked():
-            self.drawTerrainMask(plotItem)
+            self.drawTerrainMask(self.ui.horizon.p[0])
         self.setupHorizonView()
         self.drawHorizonView()
         if self.ui.editModeHor.isChecked():

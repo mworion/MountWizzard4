@@ -409,6 +409,33 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="3">
+         <widget class="QCheckBox" name="showRefModel">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Enabling the edit mode for model build points.</string>
+          </property>
+          <property name="text">
+           <string>RefModel</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>

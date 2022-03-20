@@ -18,7 +18,7 @@
 
 # external packages
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np
 from PIL import Image
 import pyqtgraph as pg
@@ -176,9 +176,11 @@ class HemisphereWindow(MWidget, EditHorizon):
         if 0 < x < 360 and 0 < y < 90:
             self.ui.azimuth.setText(f'{x:3.1f}')
             self.ui.altitude.setText(f'{y:3.1f}')
+            QGuiApplication.setOverrideCursor(QCursor(Qt.CrossCursor))
         else:
             self.ui.azimuth.setText('')
             self.ui.altitude.setText('')
+            QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
         return True
 
     def mouseMovedHemisphere(self, pos):

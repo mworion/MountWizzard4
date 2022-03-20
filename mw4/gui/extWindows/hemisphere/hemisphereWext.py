@@ -221,7 +221,7 @@ class HemisphereWindowExt:
 
     def editHorizonMask(self, data=None, event=None):
         """
-        editHorizonMask does dispatching the different mouse clicks for adding
+        editHorizonMask does dispatch the different mouse clicks for adding
         or deleting horizon mask points and call the function accordingly.
 
         :param data: point in tuples (alt, az)

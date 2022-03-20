@@ -469,7 +469,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
+        self.ui.satHorizon.drawHorizonOnHem(self.app.data.horizonP)
         return True
 
     def drawHorizonView(self, obsSite=None, satOrbits=None,

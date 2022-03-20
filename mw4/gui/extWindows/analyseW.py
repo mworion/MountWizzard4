@@ -418,10 +418,10 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :return:
         """
         if self.ui.showHorizon.isChecked():
-            self.ui.raErrors.drawHorizon(self.app.data.horizonP)
-            self.ui.decErrors.drawHorizon(self.app.data.horizonP)
-            self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
-            self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
+            self.ui.raErrors.drawHorizonOnHem(self.app.data.horizonP)
+            self.ui.decErrors.drawHorizonOnHem(self.app.data.horizonP)
+            self.ui.raRawErrors.drawHorizonOnHem(self.app.data.horizonP)
+            self.ui.decRawErrors.drawHorizonOnHem(self.app.data.horizonP)
 
     def drawAll(self):
         """

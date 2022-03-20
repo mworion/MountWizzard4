@@ -122,13 +122,13 @@ def test_makeSat(function):
 
         
 def test_updatePointerAltAz_1(function):
-    function.pointerAltAz = None
+    function.pointerHem = None
     suc = function.updatePointerAltAz(function.app.mount.obsSite)
     assert not suc
 
 
 def test_updatePointerAltAz_2(function):
-    function.pointerAltAz = pg.PlotDataItem()
+    function.pointerHem = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = None
     suc = function.updatePointerAltAz(function.app.mount.obsSite)
@@ -136,7 +136,7 @@ def test_updatePointerAltAz_2(function):
 
 
 def test_updatePointerAltAz_3(function):
-    function.pointerAltAz = pg.PlotDataItem()
+    function.pointerHem = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = None
     function.app.mount.obsSite.Az = Angle(degrees=80)
     suc = function.updatePointerAltAz(function.app.mount.obsSite)
@@ -144,7 +144,7 @@ def test_updatePointerAltAz_3(function):
 
 
 def test_updatePointerAltAz_4(function):
-    function.pointerAltAz = pg.PlotDataItem()
+    function.pointerHem = pg.PlotDataItem()
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = Angle(degrees=80)
     suc = function.updatePointerAltAz(function.app.mount.obsSite)

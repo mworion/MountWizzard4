@@ -57,11 +57,10 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.ui.setupUi(self)
         self.mwSuper('__init__')
         self.operationMode = 'normal'
-        self.pointerAltAz = None
+        self.pointerHem = None
         self.pointerDome = None
         self.modelPoints = None
         self.modelPointsText = []
-        self.horizon = None
         self.alignmentStars = None
         self.alignmentStarsText = None
         self.horizonLimitHigh = None
@@ -140,13 +139,14 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :return:
         """
         self.app.update3s.connect(self.drawAlignmentStars)
-        self.app.updatePointMarker.connect(self.drawModel)
-        self.app.redrawHemisphere.connect(self.drawHemisphere)
-        self.app.redrawHorizon.connect(self.drawHorizon)
+        self.app.updatePointMarker.connect(self.setupModel)
+        self.app.redrawHemisphere.connect(self.drawHemisphereTab)
+        self.app.redrawHorizon.connect(self.drawHorizonOnHem)
+        self.app.redrawHorizon.connect(self.drawHorizonOnHem)
         self.app.colorChange.connect(self.colorChange)
 
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
-        self.app.mount.signals.pointDone.connect(self.drawPointerAltAz)
+        self.app.mount.signals.pointDone.connect(self.drawPointerHem)
         self.app.dome.signals.azimuth.connect(self.drawDome)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
         self.app.dome.signals.serverDisconnected.connect(self.drawDome)
@@ -155,13 +155,13 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.ui.editModeHem.clicked.connect(self.setOperationModeHem)
         self.ui.alignmentModeHem.clicked.connect(self.setOperationModeHem)
 
-        self.ui.showSlewPath.clicked.connect(self.drawHemisphere)
-        self.ui.showHorizon.clicked.connect(self.drawHemisphere)
-        self.ui.showAlignStar.clicked.connect(self.drawHemisphere)
-        self.ui.showMountLimits.clicked.connect(self.drawHemisphere)
-        self.ui.showCelestial.clicked.connect(self.drawHemisphere)
-        self.ui.showTerrain.clicked.connect(self.drawHemisphere)
-        self.drawHemisphere()
+        self.ui.showSlewPath.clicked.connect(self.drawHemisphereTab)
+        self.ui.showHorizon.clicked.connect(self.drawHemisphereTab)
+        self.ui.showAlignStar.clicked.connect(self.drawHemisphereTab)
+        self.ui.showMountLimits.clicked.connect(self.drawHemisphereTab)
+        self.ui.showCelestial.clicked.connect(self.drawHemisphereTab)
+        self.ui.showTerrain.clicked.connect(self.drawHemisphereTab)
+        self.drawHemisphereTab()
         self.show()
         return True
 
@@ -198,7 +198,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.setStyleSheet(self.mw4Style)
         self.ui.hemisphere.colorChange()
         self.ui.horizon.colorChange()
-        self.drawHemisphere()
+        self.drawHemisphereTab()
         self.mwSuper('colorChange')
         return True
 
@@ -212,7 +212,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
             self.ui.showAlignStar.setChecked(True)
             self.app.data.clearBuildP()
 
-        self.drawHemisphere()
+        self.drawHemisphereTab()
         return True
 
     @staticmethod
@@ -270,7 +270,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
             self.horizonLimitLow = sett.horizonLimitLow
             needRedraw = True
         if needRedraw:
-            self.drawHemisphere()
+            self.drawHemisphereTab()
         return needRedraw
 
     @staticmethod
@@ -296,7 +296,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
-        # plotItem.setMouseEnabled(x=False, y=False)
         return True
 
     def prepareHemisphere(self):
@@ -305,13 +304,13 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         """
         plotItem = self.ui.hemisphere.p[0]
         self.preparePlotItem(plotItem)
-        self.pointerAltAz = None
+        self.pointerHem = None
         self.pointerDome = None
         self.modelPoints = None
         self.modelPointsText = []
-        self.horizon = None
         self.alignmentStars = None
         self.alignmentStarsText = None
+        return True
 
     def drawCelestialEquator(self):
         """
@@ -333,7 +332,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         plotItem.addItem(pd)
         return True
 
-    def drawHorizon(self):
+    def drawHorizonOnHem(self):
         """
         :return:
         """
@@ -417,28 +416,36 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         plotItem.addItem(hHigh)
         return True
 
+    def setupAlignmentStars(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        hip = self.app.hipparcos
+        self.alignmentStars = []
+        self.alignmentStarsText = []
+        for i in range(len(hip.name)):
+            pd = pg.ScatterPlotItem(symbol='star', size=6)
+            self.alignmentStars.append(pd)
+            plotItem.addItem(pd)
+            textItem = pg.TextItem(anchor=(0.5, 1.1))
+            self.alignmentStarsText.append(textItem)
+            plotItem.addItem(textItem)
+        return True
+
     def drawAlignmentStars(self):
         """
         :return: true for test purpose
         """
         if not self.ui.showAlignStar.isChecked():
             return False
+        if self.alignmentStars is None:
+            return
 
-        plotItem = self.ui.hemisphere.p[0]
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
 
         isAlign = self.ui.alignmentModeHem.isChecked()
-        if self.alignmentStars is None:
-            self.alignmentStars = []
-            self.alignmentStarsText = []
-            for i in range(len(hip.name)):
-                pd = pg.ScatterPlotItem(symbol='star', size=6)
-                self.alignmentStars.append(pd)
-                plotItem.addItem(pd)
-                textItem = pg.TextItem(anchor=(0.5, 1.1))
-                self.alignmentStarsText.append(textItem)
-                plotItem.addItem(textItem)
 
         for i, val in enumerate(zip(hip.alt, hip.az, hip.name)):
             alt, az, name = val
@@ -542,7 +549,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.app.buildPointsChanged.emit()
         return True
 
-    def drawModel(self):
+    def setupModel(self):
         """
         :return:
         """
@@ -574,28 +581,48 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.drawModelText()
         return True
 
-    def drawPointerAltAz(self):
+    def setupPointerHem(self):
         """
         :return:
         """
-        if not self.pointerAltAz:
-            plotItem = self.ui.hemisphere.p[0]
-            symbol = self.makePointer()
-            self.pointerAltAz = pg.ScatterPlotItem(symbol=symbol, size=40)
-            self.pointerAltAz.setData(x=[0], y=[45])
-            self.pointerAltAz.setPen(pg.mkPen(color=self.M_PINK1))
-            self.pointerAltAz.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
-            self.pointerAltAz.setZValue(10)
-            plotItem.addItem(self.pointerAltAz)
+        plotItem = self.ui.hemisphere.p[0]
+        symbol = self.makePointer()
+        self.pointerHem = pg.ScatterPlotItem(symbol=symbol, size=40)
+        self.pointerHem.setData(x=[0], y=[45])
+        self.pointerHem.setPen(pg.mkPen(color=self.M_WHITE1))
+        self.pointerHem.setBrush(pg.mkBrush(color=self.M_WHITE + '20'))
+        self.pointerHem.setZValue(10)
+        plotItem.addItem(self.pointerHem)
+        return True
+
+    def drawPointerHem(self):
+        """
+        :return:
+        """
+        if self.pointerHem is None:
+            return
 
         obsSite = self.app.mount.obsSite
         if obsSite.Alt is None or obsSite.Az is None:
-            self.pointerAltAz.setVisible(False)
+            self.pointerHem.setVisible(False)
             return False
+
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
-        self.pointerAltAz.setData(x=[az], y=[alt])
-        self.pointerAltAz.setVisible(True)
+        self.pointerHem.setData(x=[az], y=[alt])
+        self.pointerHem.setVisible(True)
+        return True
+
+    def setupDome(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
+        self.pointerDome.setPen(pg.mkPen(color=self.M_GREY))
+        self.pointerDome.setBrush(pg.mkBrush(color=self.M_GREY + '80'))
+        self.pointerDome.setVisible(False)
+        plotItem.addItem(self.pointerDome)
         return True
 
     def drawDome(self, azimuth=None):
@@ -603,14 +630,6 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         :param azimuth:
         :return:
         """
-        if not self.pointerDome:
-            plotItem = self.ui.hemisphere.p[0]
-            self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-            self.pointerDome.setPen(pg.mkPen(color=self.M_GREY))
-            self.pointerDome.setBrush(pg.mkBrush(color=self.M_GREY + '80'))
-            self.pointerDome.setVisible(False)
-            plotItem.addItem(self.pointerDome)
-
         if not isinstance(azimuth, (int, float)):
             self.pointerDome.setVisible(False)
             return False
@@ -620,7 +639,7 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         self.pointerDome.setVisible(visible)
         return True
 
-    def drawHemisphere(self):
+    def drawHemisphereTab(self):
         """
         :return: True for test purpose
         """
@@ -632,10 +651,13 @@ class HemisphereWindow(MWidget, HemisphereWindowExt, EditHorizon):
         if self.ui.showMountLimits.isChecked():
             self.drawMeridianLimits()
             self.drawHorizonLimits()
+        self.setupAlignmentStars()
         self.drawAlignmentStars()
-        self.drawModel()
-        self.drawPointerAltAz()
+        self.setupModel()
+        self.setupPointerHem()
+        self.drawPointerHem()
+        self.setupDome()
         self.drawDome()
         if self.ui.showHorizon.isChecked():
-            self.drawHorizon()
+            self.drawHorizonOnHem()
         return True

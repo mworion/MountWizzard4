@@ -53,7 +53,7 @@ def test_markerStar(function):
 def test_setOperationMode_1(function):
     function.ui.checkEditNone.setChecked(True)
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.setOperationMode()
         assert suc
         assert function.operationMode == 'normal'
@@ -62,7 +62,7 @@ def test_setOperationMode_1(function):
 def test_setOperationMode_2(function):
     function.ui.checkEditBuildPoints.setChecked(True)
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.setOperationMode()
         assert suc
         assert function.operationMode == 'build'
@@ -71,7 +71,7 @@ def test_setOperationMode_2(function):
 def test_setOperationMode_3(function):
     function.ui.checkEditHorizonMask.setChecked(True)
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.setOperationMode()
         assert suc
         assert function.operationMode == 'horizon'
@@ -80,7 +80,7 @@ def test_setOperationMode_3(function):
 def test_setOperationMode_4(function):
     function.ui.checkPolarAlignment.setChecked(True)
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.setOperationMode()
         assert suc
         assert function.operationMode == 'star'
@@ -262,7 +262,7 @@ def test_addHorizonPointManual_0(function):
                                'addHorizonP',
                                return_value=False):
             with mock.patch.object(function,
-                                   'drawHemisphere'):
+                                   'drawHemisphereTab'):
                 suc = function.addHorizonPointManual()
                 assert not suc
 
@@ -278,7 +278,7 @@ def test_addHorizonPointManual_1(function):
                                'addHorizonP',
                                return_value=False):
             with mock.patch.object(function,
-                                   'drawHemisphere'):
+                                   'drawHemisphereTab'):
                 suc = function.addHorizonPointManual()
                 assert not suc
 
@@ -294,7 +294,7 @@ def test_addHorizonPointManual_2(function):
                                'addHorizonP',
                                return_value=False):
             with mock.patch.object(function,
-                                   'drawHemisphere'):
+                                   'drawHemisphereTab'):
                 suc = function.addHorizonPointManual()
                 assert not suc
 
@@ -310,7 +310,7 @@ def test_addHorizonPointManual_3(function):
                                'addHorizonP',
                                return_value=True):
             with mock.patch.object(function,
-                                   'drawHemisphere'):
+                                   'drawHemisphereTab'):
                 suc = function.addHorizonPointManual()
                 assert suc
 
@@ -432,7 +432,7 @@ def test_editHorizonMask_1(function):
                            'addHorizonPoint',
                            return_value=False):
         with mock.patch.object(function,
-                               'drawHemisphere'):
+                               'drawHemisphereTab'):
             suc = function.editHorizonMask(data=function.app.data, event=Event())
             assert not suc
 
@@ -602,7 +602,7 @@ def test_editBuildPoints_1(function):
                            'addBuildPoint',
                            return_value=False):
         with mock.patch.object(function,
-                               'drawHemisphere'):
+                               'drawHemisphereTab'):
             suc = function.editBuildPoints(data=function.app.data, event=Event())
             assert not suc
 
@@ -620,7 +620,7 @@ def test_editBuildPoints_2(function):
                            'deleteBuildPoint',
                            return_value=False):
         with mock.patch.object(function,
-                               'drawHemisphere'):
+                               'drawHemisphereTab'):
             suc = function.editBuildPoints(data=function.app.data, event=Event())
             assert not suc
 
@@ -632,7 +632,7 @@ def test_editBuildPoints_3(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.pointsBuild, = axe.plot(0, 0)
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.editBuildPoints(data=function.app.data, event=Event())
         assert not suc
 
@@ -650,7 +650,7 @@ def test_editBuildPoints_4(function):
                            'deleteBuildPoint',
                            return_value=False):
         with mock.patch.object(function,
-                               'drawHemisphere'):
+                               'drawHemisphereTab'):
             suc = function.editBuildPoints(data=function.app.data, event=Event())
             assert not suc
 

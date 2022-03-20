@@ -34,13 +34,15 @@ class EditHorizon:
         """
         self.horizonPlot = None
         self.imageTerrain = None
+        self.pointerHor = None
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
         self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
-        # self.ui.addPositionToHorizon.clicked.connect()
-        self.ui.showTerrain.clicked.connect(self.drawEditHorizon)
+        self.ui.addPositionToHorizon.clicked.connect(self.addActualPosition)
+        self.app.mount.signals.pointDone.connect(self.drawPointerHor)
+        self.ui.showTerrain.clicked.connect(self.drawHorizonTab)
 
         self.setIcons()
 
@@ -61,9 +63,9 @@ class EditHorizon:
         self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
         self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
 
-        self.ui.azimuthShift.valueChanged.connect(self.drawEditHorizon)
-        self.ui.altitudeShift.valueChanged.connect(self.drawEditHorizon)
-        self.ui.terrainAlpha.valueChanged.connect(self.drawEditHorizon)
+        self.ui.azimuthShift.valueChanged.connect(self.drawHorizonTab)
+        self.ui.altitudeShift.valueChanged.connect(self.drawHorizonTab)
+        self.ui.terrainAlpha.valueChanged.connect(self.drawHorizonTab)
 
         self.ui.normalModeHor.clicked.connect(self.setOperationModeHor)
         self.ui.editModeHor.clicked.connect(self.setOperationModeHor)
@@ -83,7 +85,7 @@ class EditHorizon:
         self.imageTerrain.paste(img, (0, 60))
         self.imageTerrain.paste(img, (1440, 60))
 
-        self.drawEditHorizon()
+        self.drawHorizonTab()
         return True
 
     def storeConfig(self):
@@ -148,8 +150,7 @@ class EditHorizon:
             self.app.message.emit(f'Horizon mask [{fileName}] cannot no be loaded', 2)
 
         self.app.redrawHemisphere.emit()
-        self.horizonPlot = None
-        self.drawEditHorizon()
+        self.drawHorizonTab()
         return True
 
     def saveHorizonMask(self):
@@ -198,7 +199,7 @@ class EditHorizon:
         else:
             self.ui.addPositionToHorizon.setEnabled(False)
 
-        self.drawEditHorizon()
+        self.drawHorizonTab()
         return True
 
     def updateDataHorizon(self, x, y):
@@ -217,11 +218,26 @@ class EditHorizon:
         """
         self.app.data.horizonP = []
         self.ui.horizonMaskFileName.setText('')
-        self.app.redrawHemisphere.emit()
-        self.drawEditHorizon()
+        self.app.redrawHorizon.emit()
+        self.drawHorizonTab()
         return True
 
-    def drawHorizonData(self):
+    def addActualPosition(self):
+        """
+        :return:
+        """
+        return True
+
+    def prepareHorizonView(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.horizon.p[0]
+        self.preparePlotItem(plotItem)
+        self.pointerHor = None
+        return True
+
+    def drawHorizonView(self):
         """
         :return:
         """
@@ -234,13 +250,43 @@ class EditHorizon:
         self.horizonPlot.setData(x=az, y=alt)
         return True
 
-    def drawEditHorizon(self):
+    def setupPointerHor(self):
         """
         :return:
         """
         plotItem = self.ui.horizon.p[0]
-        self.preparePlotItem(plotItem)
+        symbol = self.makePointer()
+        self.pointerHor = pg.ScatterPlotItem(symbol=symbol, size=40)
+        self.pointerHor.setData(x=[0], y=[45])
+        self.pointerHor.setPen(pg.mkPen(color=self.M_WHITE1))
+        self.pointerHor.setBrush(pg.mkBrush(color=self.M_WHITE + '20'))
+        self.pointerHor.setZValue(10)
+        plotItem.addItem(self.pointerHor)
+        return True
 
+    def drawPointerHor(self):
+        """
+        :return:
+        """
+        if self.pointerHor is None:
+            return
+
+        obsSite = self.app.mount.obsSite
+        if obsSite.Alt is None or obsSite.Az is None:
+            self.pointerHor.setVisible(False)
+            return False
+
+        alt = obsSite.Alt.degrees
+        az = obsSite.Az.degrees
+        self.pointerHor.setData(x=[az], y=[alt])
+        self.pointerHor.setVisible(True)
+        return True
+
+    def setupHorizonView(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.horizon.p[0]
         if self.ui.editModeHor.isChecked():
             self.horizonPlot = pg.PlotDataItem(
                 symbolBrush=pg.mkBrush(color=self.M_PINK + '40'),
@@ -261,8 +307,19 @@ class EditHorizon:
                 pen=pg.mkPen(color=self.M_BLUE1, width=2),
                 symbolSize=5, symbol='o', connect='all')
             plotItem.addItem(self.horizonPlot)
+        return True
 
+    def drawHorizonTab(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.horizon.p[0]
+        self.prepareHorizonView()
         if self.ui.showTerrain.isChecked():
             self.drawTerrainMask(plotItem)
-        self.drawHorizonData()
+        self.setupHorizonView()
+        self.drawHorizonView()
+        if self.ui.editModeHor.isChecked():
+            self.setupPointerHor()
+            self.drawPointerHor()
         return True

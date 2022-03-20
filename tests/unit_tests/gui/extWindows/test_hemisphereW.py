@@ -94,7 +94,7 @@ def test_storeConfig_1(function):
 
 def test_closeEvent_1(function):
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         with mock.patch.object(function,
                                'show'):
             with mock.patch.object(MWidget,
@@ -112,7 +112,7 @@ def test_resizeEvent_1(function):
 
 def test_showWindow_1(function):
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         with mock.patch.object(function,
                                'show'):
             suc = function.showWindow()
@@ -121,7 +121,7 @@ def test_showWindow_1(function):
 
 def test_colorChange(function):
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.colorChange()
         assert suc
 
@@ -198,7 +198,7 @@ def test_updateOnChangedParams_1(function):
         horizonLimitLow = 0
 
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.updateOnChangedParams(Test())
         assert suc
 
@@ -216,20 +216,20 @@ def test_updateOnChangedParams_2(function):
     function.horizonLimitLowParam = 0
 
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.updateOnChangedParams(Test())
         assert not suc
 
 
 def test_updatePointerAltAz_1(function):
-    function.pointerAltAz = None
+    function.pointerHem = None
     suc = function.updatePointerAltAz()
     assert not suc
 
 
 def test_updatePointerAltAz_2(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerHem, = axe.plot(0, 0)
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = None
     suc = function.updatePointerAltAz()
@@ -238,7 +238,7 @@ def test_updatePointerAltAz_2(function):
 
 def test_updatePointerAltAz_3(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerHem, = axe.plot(0, 0)
     function.app.mount.obsSite.Alt = None
     function.app.mount.obsSite.Az = Angle(degrees=80)
     suc = function.updatePointerAltAz()
@@ -247,7 +247,7 @@ def test_updatePointerAltAz_3(function):
 
 def test_updatePointerAltAz_4(function):
     axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerAltAz, = axe.plot(0, 0)
+    function.pointerHem, = axe.plot(0, 0)
     function.app.mount.obsSite.Alt = Angle(degrees=80)
     function.app.mount.obsSite.Az = Angle(degrees=80)
     suc = function.updatePointerAltAz()
@@ -423,7 +423,7 @@ def test_updateAlignStar_6(function):
 
 def test_clearHemisphere(function):
     with mock.patch.object(function,
-                           'drawHemisphere'):
+                           'drawHemisphereTab'):
         suc = function.clearHemisphere()
         assert suc
 
@@ -432,7 +432,7 @@ def test_staticHorizon_1(function):
     function.ui.checkUseHorizon.setChecked(False)
     function.app.data.horizonP = list()
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHorizon(axe)
+    suc = function.drawHorizonOnHem(axe)
     assert not suc
 
 
@@ -440,7 +440,7 @@ def test_staticHorizon_2(function):
     function.ui.checkUseHorizon.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.app.data.horizonP = [(0, 0), (0, 360)]
-    suc = function.drawHorizon(axe)
+    suc = function.drawHorizonOnHem(axe)
     assert suc
 
 
@@ -448,7 +448,7 @@ def test_staticHorizon_3(function):
     function.ui.checkUseHorizon.setChecked(False)
     function.app.data.horizonP = list()
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHorizon(axe, polar=True)
+    suc = function.drawHorizonOnHem(axe, polar=True)
     assert not suc
 
 
@@ -456,7 +456,7 @@ def test_staticHorizon_4(function):
     function.ui.checkUseHorizon.setChecked(True)
     axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
     function.app.data.horizonP = [(0, 0), (0, 360)]
-    suc = function.drawHorizon(axe, polar=True)
+    suc = function.drawHorizonOnHem(axe, polar=True)
     assert suc
 
 
@@ -668,19 +668,19 @@ def test_drawAlignmentStars_3(function):
 def test_drawHemisphere_1(function):
     function.closingWindow = False
     function.ui.checkShowAlignStar.setChecked(True)
-    suc = function.drawHemisphere()
+    suc = function.drawHemisphereTab()
     assert suc
 
 
 def test_drawHemisphere_2(function):
     function.closingWindow = False
     function.ui.checkShowAlignStar.setChecked(False)
-    suc = function.drawHemisphere()
+    suc = function.drawHemisphereTab()
     assert suc
 
 
 def test_drawHemisphere_3(function):
     function.closingWindow = True
     function.ui.checkShowAlignStar.setChecked(False)
-    suc = function.drawHemisphere()
+    suc = function.drawHemisphereTab()
     assert not suc

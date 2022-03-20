@@ -76,6 +76,10 @@ class CustomViewBox(pg.ViewBox):
         return True
 
     @staticmethod
+    def callbackMDC(ev, posView):
+        return True
+
+    @staticmethod
     def distance(a, b):
         """
         :param a:
@@ -297,6 +301,17 @@ class CustomViewBox(pg.ViewBox):
 
         ev.ignore()
         return
+
+    def mouseDoubleClickEvent(self, ev):
+        """
+        :param ev:
+        :return:
+        """
+        if self.plotDataItem is not None:
+            return
+        posScene = ev.scenePos()
+        posView = self.mapSceneToView(posScene)
+        self.callbackMDC(ev, posView)
 
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):

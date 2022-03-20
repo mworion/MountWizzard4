@@ -288,6 +288,14 @@ class HemisphereWindow(MWidget, EditHorizon):
         plotItem.disableAutoRange()
         return True
 
+    def mouseDoubleClick(self, ev, posView):
+        """
+        :param ev:
+        :param posView:
+        :return:
+        """
+        print(ev, posView)
+
     def prepareHemisphere(self):
         """
         :return:
@@ -300,6 +308,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.modelPointsText = []
         self.alignmentStars = None
         self.alignmentStarsText = None
+        plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
         return True
 
     def drawCelestialEquator(self):

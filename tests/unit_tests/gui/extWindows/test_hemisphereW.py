@@ -24,7 +24,6 @@ import shutil
 # external packages
 from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QCloseEvent
-import matplotlib.patches as mpatches
 from skyfield.api import Angle, wgs84
 from PIL import Image
 

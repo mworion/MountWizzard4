@@ -20,7 +20,7 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtGui import QCloseEvent, QPainterPath
+from PyQt5.QtGui import QCloseEvent
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
 from skyfield.api import load
@@ -114,11 +114,6 @@ def test_colorChange(function):
                            'drawSatellite'):
         suc = function.colorChange()
         assert suc
-
-
-def test_makeSat(function):
-    val = function.makeSat()
-    assert isinstance(val, QPainterPath)
 
         
 def test_updatePointerAltAz_1(function):

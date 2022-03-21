@@ -21,10 +21,10 @@ import pytest
 import os
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QStyle
+from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget
 from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
 from PyQt5.QtCore import pyqtSignal, QObject, QEvent, Qt, QPoint
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QPainterPath
 from PyQt5.QtTest import QTest
 from skyfield.api import Angle, load
 import numpy as np
@@ -836,3 +836,8 @@ def test_timeZoneString_2(function):
 def test_mwSuper(function):
     suc = function.mwSuper('')
     assert suc
+
+
+def test_makeSat(function):
+    val = function.makeSat()
+    assert isinstance(val, QPainterPath)

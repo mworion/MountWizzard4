@@ -23,7 +23,7 @@ import os
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget
 from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
-from PyQt5.QtCore import pyqtSignal, QObject, QEvent, Qt, QPoint
+from PyQt5.QtCore import pyqtSignal, QObject, Qt, QPoint
 from PyQt5.QtGui import QIcon, QPixmap, QPainterPath
 from PyQt5.QtTest import QTest
 from skyfield.api import Angle, load
@@ -833,9 +833,24 @@ def test_timeZoneString_2(function):
     assert val == '(time is local)'
 
 
-def test_mwSuper(function):
-    suc = function.mwSuper('')
+def test_mwSuper_1(function):
+    class Test1:
+        @staticmethod
+        def test1(a):
+            pass
+
+    class Test(MWidget, Test1):
+        @staticmethod
+        def test(a):
+            pass
+
+    suc = Test().mwSuper('test1')
     assert suc
+
+
+def test_makePointer(function):
+    val = function.makePointer()
+    assert isinstance(val, QPainterPath)
 
 
 def test_makeSat(function):

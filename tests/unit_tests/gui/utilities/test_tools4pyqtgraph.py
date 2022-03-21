@@ -18,9 +18,11 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import builtins
 
 # external packages
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import QPointF
 import numpy as np
 import pyqtgraph as pg
 
@@ -227,6 +229,297 @@ def test_CustomViewBox_16():
                            'updateData'):
         suc = vb.delUpdate(0)
         assert suc
+
+
+def test_CustomViewBox_checkLimits_1():
+    class Pos:
+        @staticmethod
+        def x():
+            return -2
+
+        @staticmethod
+        def y():
+            return -2
+
+    vb = CustomViewBox()
+    vb.enableLimitX = False
+    vb.state['limits']['xLimits'] = [-1, 1]
+    vb.state['limits']['yLimits'] = [-1, 1]
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    data = pdi.getData()
+    vb.plotDataItem = pdi
+    x, y = vb.checkLimits(data, 1, Pos())
+    assert x[1] == -1
+    assert y[1] == -1
+
+
+def test_CustomViewBox_checkLimits_2():
+    class Pos:
+        @staticmethod
+        def x():
+            return 2
+
+        @staticmethod
+        def y():
+            return 2
+
+    vb = CustomViewBox()
+    vb.enableLimitX = False
+    vb.state['limits']['xLimits'] = [-1, 1]
+    vb.state['limits']['yLimits'] = [-1, 1]
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    data = pdi.getData()
+    vb.plotDataItem = pdi
+    x, y = vb.checkLimits(data, 1, Pos())
+    assert x[1] == 1
+    assert y[1] == 1
+
+
+def test_CustomViewBox_checkLimits_3():
+    class Pos:
+        @staticmethod
+        def x():
+            return -2
+
+        @staticmethod
+        def y():
+            return -2
+
+    vb = CustomViewBox()
+    vb.enableLimitX = True
+    vb.state['limits']['xLimits'] = [-10, 10]
+    vb.state['limits']['yLimits'] = [-10, 10]
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    data = pdi.getData()
+    vb.plotDataItem = pdi
+    x, y = vb.checkLimits(data, 1, Pos())
+    assert x[1] == 0
+
+
+def test_CustomViewBox_checkLimits_4():
+    class Pos:
+        @staticmethod
+        def x():
+            return 3
+
+        @staticmethod
+        def y():
+            return 3
+
+    vb = CustomViewBox()
+    vb.enableLimitX = True
+    vb.state['limits']['xLimits'] = [-10, 10]
+    vb.state['limits']['yLimits'] = [-10, 10]
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    data = pdi.getData()
+    vb.plotDataItem = pdi
+    x, y = vb.checkLimits(data, 1, Pos())
+    assert x[1] == 2
+
+
+def test_CustomViewBox_checkLimits_5():
+    class Pos:
+        @staticmethod
+        def x():
+            return -2
+
+        @staticmethod
+        def y():
+            return -2
+
+    vb = CustomViewBox()
+    vb.enableLimitX = True
+    vb.state['limits']['xLimits'] = [-10, 10]
+    vb.state['limits']['yLimits'] = [-10, 10]
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    data = pdi.getData()
+    vb.plotDataItem = pdi
+    x, y = vb.checkLimits(data, 0, Pos())
+    assert x[0] == -2
+
+
+def test_CustomViewBox_checkLimits_6():
+    class Pos:
+        @staticmethod
+        def x():
+            return 3
+
+        @staticmethod
+        def y():
+            return 3
+
+    vb = CustomViewBox()
+    vb.enableLimitX = True
+    vb.state['limits']['xLimits'] = [-10, 10]
+    vb.state['limits']['yLimits'] = [-10, 10]
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    data = pdi.getData()
+    vb.plotDataItem = pdi
+    x, y = vb.checkLimits(data, 2, Pos())
+    assert x[2] == 3
+
+
+def test_CustomViewBox_rightMouseRange_1():
+    vb = CustomViewBox()
+    vb.state['limits']['xLimits'] = [None, 10]
+    vb.state['limits']['yLimits'] = [None, 10]
+
+    with mock.patch.object(vb,
+                           'enableAutoRange'):
+        suc = vb.rightMouseRange()
+        assert suc
+
+
+def test_CustomViewBox_rightMouseRange_2():
+    vb = CustomViewBox()
+    vb.state['limits']['xLimits'] = [-10, 10]
+    vb.state['limits']['yLimits'] = [-10, 10]
+
+    with mock.patch.object(vb,
+                           'setYRange'):
+        with mock.patch.object(vb,
+                               'setXRange'):
+            suc = vb.rightMouseRange()
+            assert suc
+
+
+def test_CustomViewBox_mouseDragEvent_1():
+    ev = 'test'
+    vb = CustomViewBox()
+    with mock.patch.object(builtins,
+                           'super'):
+        vb.mouseDragEvent(ev)
+
+
+def test_CustomViewBox_mouseDragEvent_2():
+    class EV:
+        @staticmethod
+        def button():
+            return 0
+
+        @staticmethod
+        def ignore():
+            return 1
+
+    ev = EV()
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    vb.mouseDragEvent(ev)
+
+
+def test_CustomViewBox_mouseDragEvent_3():
+    class EV:
+        @staticmethod
+        def button():
+            return 1
+
+        @staticmethod
+        def ignore():
+            return 1
+
+        @staticmethod
+        def isStart():
+            return True
+
+        @staticmethod
+        def buttonDownScenePos():
+            return (0, 0)
+
+    ev = EV()
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem()
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        vb.mouseDragEvent(ev)
+
+
+def test_CustomViewBox_mouseDragEvent_4():
+    class EV:
+        @staticmethod
+        def button():
+            return 1
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def isStart():
+            return True
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+        @staticmethod
+        def buttonDownScenePos():
+            return (0, 0)
+
+    ev = EV()
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2], symbol='o')
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        with mock.patch.object(vb.plotDataItem.scatter,
+                               'pointsAt',
+                               return_value=vb.plotDataItem.scatter.points()):
+            vb.mouseDragEvent(ev)
+
+
+def test_CustomViewBox_mouseDragEvent_5():
+    class EV:
+        @staticmethod
+        def button():
+            return 1
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def isStart():
+            return False
+
+        @staticmethod
+        def isFinish():
+            return True
+
+    ev = EV()
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem()
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        vb.mouseDragEvent(ev)
+
+
+def test_CustomViewBox_mouseDragEvent_6():
+    class EV:
+        @staticmethod
+        def button():
+            return 1
+
+        @staticmethod
+        def ignore():
+            return 1
+
+        @staticmethod
+        def isStart():
+            return False
+
+        @staticmethod
+        def isFinish():
+            return False
+
+    ev = EV()
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        vb.mouseDragEvent(ev)
 
 
 def test_PlotBase():

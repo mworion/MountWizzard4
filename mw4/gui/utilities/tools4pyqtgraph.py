@@ -193,7 +193,7 @@ class CustomViewBox(pg.ViewBox):
 
         if index == 0:
             x[index] = np.minimum(px, x[index + 1])
-        elif index == len(x):
+        elif index == len(x) - 1:
             x[index] = np.maximum(x[index - 1], px)
         else:
             if px < x[index - 1]:
@@ -223,7 +223,7 @@ class CustomViewBox(pg.ViewBox):
         :param ev:
         :return:
         """
-        if not self.plotDataItem:
+        if self.plotDataItem is None:
             super().mouseDragEvent(ev)
             return
 
@@ -244,6 +244,7 @@ class CustomViewBox(pg.ViewBox):
 
         elif ev.isFinish():
             self.dragPoint = None
+            ev.accept()
             return
         else:
             if self.dragPoint is None:

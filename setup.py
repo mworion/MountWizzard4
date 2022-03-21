@@ -69,6 +69,7 @@ setup(
         'pillow==8.3.1',
         'pyqtgraph==0.12.4',
         'pyerfa==2.0.0',
+        'python-dateutil==2.8.1',
         'astropy==4.3.1',
         'astroquery==0.4.5',
         'scipy==1.7.3',

@@ -107,7 +107,7 @@ def test_versionPackage_1(function):
                            'get',
                            return_value=Test(),
                            side_effect=Exception()):
-        val = function.versionPackage('matplotlib')
+        val = function.versionPackage('astropy')
         assert val[0] is None
         assert val[1] is None
 
@@ -125,7 +125,7 @@ def test_versionPackage_2(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        pack, comm, ver = function.versionPackage('matplotlib')
+        pack, comm, ver = function.versionPackage('astropy')
         assert pack == '1.0.0'
         assert comm == 'test'
         assert ver == ['1.0.0', '1.0.0b1']
@@ -144,7 +144,7 @@ def test_versionPackage_3(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        pack, comm, _ = function.versionPackage('matplotlib')
+        pack, comm, _ = function.versionPackage('astropy')
         assert pack == '1.0.0b1'
         assert comm == 'test'
 

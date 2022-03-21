@@ -39,7 +39,6 @@ sys.coinit_flags = 2
 
 # external packages
 import astropy
-import matplotlib
 from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
 from PyQt5.QtGui import QMouseEvent, QIcon
 from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
@@ -54,7 +53,6 @@ from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
 res.qInitResources()
-matplotlib.use('Qt5Agg')
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
 log = logging.getLogger()

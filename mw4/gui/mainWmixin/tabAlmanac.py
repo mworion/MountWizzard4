@@ -165,7 +165,7 @@ class Almanac:
         plotItem.clear()
         for i in range(len(t)):
             if yH[i] > 12:
-                rect = pg.QtGui.QGraphicsRectItem(
+                rect = pg.QtWidgets.QGraphicsRectItem(
                     xD[i], yH[i] - 12, 1, 24 - (yH[i] - 12))
             else:
                 rect = pg.QtGui.QGraphicsRectItem(

@@ -134,7 +134,6 @@ def setupLogging():
     logging.getLogger('PyQt5').setLevel(logging.WARNING)
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
-    logging.getLogger('matplotlib').setLevel(logging.WARNING)
     logging.getLogger('astropy').setLevel(logging.WARNING)
     logging.getLogger('keyring').setLevel(logging.WARNING)
     addLoggingLevel('HEADER', 55)

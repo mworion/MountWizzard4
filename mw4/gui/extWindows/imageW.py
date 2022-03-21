@@ -157,11 +157,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
     def closeEvent(self, closeEvent):
         """
-        closeEvent overlays the window close event of qt. first it stores all
-        persistent data for the windows and its functions, than removes al signal
-        / slot connections removes the matplotlib embedding and finally calls the
-        parent calls for handling the framework close event.
-
         :param closeEvent:
         :return: True for test purpose
         """

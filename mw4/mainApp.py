@@ -389,7 +389,7 @@ class MountWizzard4(QObject):
         """
         :return:
         """
-        config = self.config['hemisphereW']
+        config = self.config.get('hemisphereW', {})
         fileName = config.get('horizonMaskFileName', '')
         self.data.loadHorizonP(fileName=fileName)
         return True

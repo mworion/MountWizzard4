@@ -21,7 +21,6 @@ import unittest.mock as mock
 
 # external packages
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import Qt
 import numpy as np
 import pyqtgraph as pg
 
@@ -40,20 +39,196 @@ def module(qapp):
     yield
 
 
-def test_CustomViewBox():
+def test_CustomViewBox_0():
     CustomViewBox()
 
 
-def test_CustomViewBox_mouseClickEvent():
-    class Event:
-        @staticmethod
-        def button():
-            return Qt.MouseButton.RightButton
-    with mock.patch.object(pg.ViewBox,
-                           'mouseClickEvent'):
-        CustomViewBox().mouseClickEvent(ev=Event())
+def test_CustomViewBox_1():
+    vb = CustomViewBox()
+    vb.setPlotDataItem('test')
+    assert vb.plotDataItem == 'test'
 
-    
+
+def test_CustomViewBox_2():
+    vb = CustomViewBox()
+    vb.setOpts(enableLimitX=True)
+    assert vb.enableLimitX
+
+
+def test_CustomViewBox_3():
+    pdi = pg.PlotDataItem()
+    vb = CustomViewBox()
+    vb.plotDataItem = pdi
+    vb.updateData([0, 1, 2], [0, 1, 2])
+
+
+def test_CustomViewBox_4():
+    vb = CustomViewBox()
+    suc = vb.callbackMDC(1, 2)
+    assert suc
+
+
+def test_CustomViewBox_5():
+    vb = CustomViewBox()
+    val = vb.distance([1, 1], [2, 1])
+    assert val == 1
+
+
+def test_CustomViewBox_6():
+    vb = CustomViewBox()
+    val = vb.isBetween([1, 1], [3, 1], [2, 1])
+    assert val == 0
+
+
+def test_CustomViewBox_7():
+    vb = CustomViewBox()
+    val = vb.isBetween([1, 1], [3, 1], [2, 3])
+    assert val > 2
+
+
+def test_CustomViewBox_8():
+    class Pos:
+        @staticmethod
+        def x():
+            return 1
+
+        @staticmethod
+        def y():
+            return 1
+
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    vb.plotDataItem = pdi
+    val = vb.getCurveIndex(Pos())
+    assert val == 1
+
+
+def test_CustomViewBox_9():
+    class Pos:
+        @staticmethod
+        def x():
+            return 5
+
+        @staticmethod
+        def y():
+            return 5
+
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    vb.plotDataItem = pdi
+    val = vb.getCurveIndex(Pos())
+    assert val is None
+
+
+def test_CustomViewBox_10():
+    class Pos:
+        @staticmethod
+        def x():
+            return 2
+
+        @staticmethod
+        def y():
+            return 2
+
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem(x=[], y=[])
+    vb.plotDataItem = pdi
+    val = vb.getNearestPointIndex(Pos())
+    assert val == 0
+
+
+def test_CustomViewBox_11():
+    class Pos:
+        @staticmethod
+        def x():
+            return 1000
+
+        @staticmethod
+        def y():
+            return 1000
+
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    vb.plotDataItem = pdi
+    val = vb.getNearestPointIndex(Pos())
+    assert val is None
+
+
+def test_CustomViewBox_12():
+    class Pos:
+        @staticmethod
+        def x():
+            return 3
+
+        @staticmethod
+        def y():
+            return 3
+
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    vb.plotDataItem = pdi
+    val = vb.getNearestPointIndex(Pos())
+    assert val == 3
+
+
+def test_CustomViewBox_13():
+    class Pos:
+        @staticmethod
+        def x():
+            return 1
+
+        @staticmethod
+        def y():
+            return 1
+
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    vb.plotDataItem = pdi
+    with mock.patch.object(vb,
+                           'updateData'):
+        suc = vb.addUpdate(0, Pos())
+        assert suc
+
+
+def test_CustomViewBox_14():
+    class Pos:
+        @staticmethod
+        def x():
+            return 1
+
+        @staticmethod
+        def y():
+            return 1
+
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem()
+    vb.plotDataItem = pdi
+    with mock.patch.object(vb,
+                           'updateData'):
+        suc = vb.addUpdate(0, Pos())
+        assert suc
+
+
+def test_CustomViewBox_15():
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem()
+    vb.plotDataItem = pdi
+    with mock.patch.object(vb,
+                           'updateData'):
+        suc = vb.delUpdate(0)
+        assert not suc
+
+
+def test_CustomViewBox_16():
+    vb = CustomViewBox()
+    pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
+    vb.plotDataItem = pdi
+    with mock.patch.object(vb,
+                           'updateData'):
+        suc = vb.delUpdate(0)
+        assert suc
+
+
 def test_PlotBase():
     PlotBase()
 
@@ -70,17 +245,32 @@ def test_PlotBase_setupItems():
 
 def test_PlotBase_staticHorizon_1():
     p = PlotBase()
+    p.horizon = pg.PlotDataItem()
+    p.p.append(p.horizon)
     with mock.patch.object(p,
                            'show'):
-        suc = p.drawHorizon([(0, 0)])
-        assert suc
+        suc = p.drawHorizon([])
+        assert not suc
 
 
 def test_PlotBase_staticHorizon_2():
     p = PlotBase()
+    p.horizon = pg.PlotDataItem()
+    p.p.append(p.horizon)
     with mock.patch.object(p,
                            'show'):
-        suc = p.drawHorizon([(1, 1), (2, 2)])
+        suc = p.drawHorizon([(0, 0)])
+        assert not suc
+
+
+def test_PlotBase_staticHorizon_3():
+    p = PlotBase()
+    p.horizon = pg.PlotDataItem()
+    p.p.append(p.horizon)
+    p.p[0].addItem(pg.PlotDataItem())
+    with mock.patch.object(p,
+                           'show'):
+        suc = p.drawHorizon([(0, 0), (1, 1)])
         assert suc
 
 

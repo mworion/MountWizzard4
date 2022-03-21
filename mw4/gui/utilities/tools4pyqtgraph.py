@@ -155,6 +155,8 @@ class CustomViewBox(pg.ViewBox):
         data = self.plotDataItem.getData()
         x = data[0]
         y = data[1]
+        if x is None and y is None:
+            return False
         x = np.delete(x, index)
         y = np.delete(y, index)
         self.updateData(x=x, y=y)

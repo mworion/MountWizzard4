@@ -312,6 +312,7 @@ def test_staticHorizonLimits_2(function):
 
 
 def test_setupAlignmentStars(function):
+    function.app.data.hip = ['test']
     suc = function.setupAlignmentStars()
     assert suc
 
@@ -323,15 +324,143 @@ def test_drawAlignmentStars_1(function):
 
 
 def test_drawAlignmentStars_2(function):
-    function.ui.showAlignStar.setChecked(True)
+    function.ui.showAlignStar.setChecked(False)
+    function.alignmentStars = None
     suc = function.drawAlignmentStars()
     assert not suc
 
 
 def test_drawAlignmentStars_3(function):
+    function.alignmentStarsText = []
+    function.alignmentStarsText.append(pg.TextItem())
+    function.ui.showAlignStar.setChecked(False)
+    function.alignmentStars = pg.ScatterPlotItem()
+    suc = function.drawAlignmentStars()
+    assert not suc
+
+
+def test_drawAlignmentStars_4(function):
+    function.alignmentStarsText = []
+    function.alignmentStarsText.append(pg.TextItem())
     function.ui.showAlignStar.setChecked(True)
     function.alignmentStars = pg.ScatterPlotItem()
     suc = function.drawAlignmentStars()
+    assert suc
+
+
+def test_drawModelPoints_1(function):
+    suc = function.drawModelPoints()
+    assert not suc
+
+
+def test_drawModelPoints_2(function):
+    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol='o')
+    function.app.data.buildP = [(1, 1, True), (2, 2, False)]
+    suc = function.drawModelPoints()
+    assert suc
+
+
+def test_drawModelText_1(function):
+    function.app.data.buildP = None
+    suc = function.drawModelText()
+    assert not suc
+
+
+def test_drawModelText_2(function):
+    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol='o')
+    function.app.data.buildP = [(1, 1, True), (2, 2, False)]
+    function.ui.editModeHem.setChecked(True)
+    function.modelPointsText.append(pg.TextItem())
+    suc = function.drawModelText()
+    assert suc
+
+
+def test_drawModelText_3(function):
+    function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol='o')
+    function.app.data.buildP = [(1, 1, True), (2, 2, False)]
+    function.ui.editModeHem.setChecked(False)
+    suc = function.drawModelText()
+    assert suc
+
+
+def test_updateDataModel(function):
+    with mock.patch.object(function,
+                           'drawModelPoints'):
+        with mock.patch.object(function,
+                               'drawModelText'):
+            suc = function.updateDataModel([1, 2], [1, 2])
+            assert suc
+
+
+def test_setupModel_1(function):
+    function.ui.showSlewPath.setChecked(True)
+    function.ui.editModeHem.setChecked(True)
+    with mock.patch.object(function,
+                           'drawModelPoints'):
+        with mock.patch.object(function,
+                               'drawModelText'):
+            suc = function.setupModel()
+            assert suc
+
+
+def test_setupModel_2(function):
+    function.ui.showSlewPath.setChecked(False)
+    function.ui.editModeHem.setChecked(False)
+    with mock.patch.object(function,
+                           'drawModelPoints'):
+        with mock.patch.object(function,
+                               'drawModelText'):
+            suc = function.setupModel()
+            assert suc
+
+
+def test_setupPointerHem(function):
+    suc = function.setupPointerHem()
+    assert suc
+
+
+def test_drawPointerHem_1(function):
+    suc = function.drawPointerHem()
+    assert not suc
+
+
+def test_drawPointerHem_2(function):
+    function.pointerHem = pg.ScatterPlotItem()
+    suc = function.drawPointerHem()
+    assert not suc
+
+
+def test_drawPointerHem_3(function):
+    function.pointerHem = pg.ScatterPlotItem()
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    suc = function.drawPointerHem()
+    assert suc
+
+
+def test_setupDome(function):
+    suc = function.setupDome()
+    assert suc
+
+
+def test_drawDome_1(function):
+    function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
+    suc = function.drawDome('test')
+    assert not suc
+
+
+def test_drawDome_2(function):
+    function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
+    suc = function.drawDome(azimuth=100)
+    assert suc
+
+
+def test_drawHemisphereTab_1(function):
+    function.ui.showCelestial.setChecked(True)
+    function.ui.showTerrain.setChecked(True)
+    function.ui.showMountLimits.setChecked(True)
+    function.ui.showHorizon.setChecked(True)
+    suc = function.drawHemisphereTab()
     assert suc
 
 
@@ -380,260 +509,185 @@ def test_slewSelectedTarget_3(function):
                 assert suc
 
 
-def test_onMouseStar_1(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = False
-        dblclick = False
-        button = 0
-
-    suc = function.onMouseStar(Event())
-    assert not suc
-
-
-def test_onMouseStar_2(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
-
-    suc = function.onMouseStar(Event())
-    assert not suc
-
-
-def test_onMouseStar_2b(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 3
-
-    function.app.mount.model.numberStars = 3
-    suc = function.onMouseStar(Event())
-    assert not suc
-
-
-def test_onMouseStar_3(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 3
-
-    function.app.mount.model.numberStars = 3
-    suc = function.onMouseStar(Event())
-    assert not suc
-
-
-def test_onMouseStar_4(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
-
-    function.app.mount.model.numberStars = 3
+def test_slewDirect_1(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=False):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=None):
-            suc = function.onMouseStar(Event())
-            assert not suc
-
-
-def test_onMouseStar_5(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 3
-
-    function.app.mount.model.numberStars = 3
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=None):
-            suc = function.onMouseStar(Event())
-            assert not suc
-
-
-def test_onMouseStar_6(function):
-    function.app.hipparcos.name = ['test']
-
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
-
-    function.app.mount.model.numberStars = 3
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=0):
-            with mock.patch.object(function.app.hipparcos,
-                                   'getAlignStarRaDecFromName',
-                                   return_value=(0, 0)):
-                suc = function.onMouseStar(Event())
-                assert not suc
-
-
-def test_onMouseStar_7(function):
-    function.app.hipparcos.name = ['test']
-
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
-
-    function.app.mount.model.numberStars = 3
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=0):
-            with mock.patch.object(function.app.hipparcos,
-                                   'getAlignStarRaDecFromName',
-                                   return_value=(0, 0)):
-                with mock.patch.object(function,
-                                       'slewSelectedTarget',
-                                       return_value=False):
-                    suc = function.onMouseStar(Event())
-                    assert not suc
-
-
-def test_onMouseStar_8(function):
-    function.app.hipparcos.name = ['test']
-
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
-
-    function.app.mount.model.numberStars = 3
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'getIndexPoint',
-                               return_value=0):
-            with mock.patch.object(function.app.hipparcos,
-                                   'getAlignStarRaDecFromName',
-                                   return_value=(0, 0)):
-                with mock.patch.object(function,
-                                       'slewSelectedTarget',
-                                       return_value=True):
-                    with mock.patch.object(function.app.mount.obsSite,
-                                           'setTargetRaDec',
-                                           return_value=True):
-                        suc = function.onMouseStar(Event())
-                        assert suc
-
-
-def test_onMouseNormal_1(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = False
-        dblclick = False
-        button = 0
-
-    suc = function.onMouseNormal(Event())
-    assert not suc
-
-
-def test_onMouseNormal_2(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 0
-
-    suc = function.onMouseNormal(Event())
-    assert not suc
-
-
-def test_onMouseNormal_3(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = False
-        button = 1
-
-    suc = function.onMouseNormal(Event())
-    assert not suc
-
-
-def test_onMouseNormal_4(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
-
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-        suc = function.onMouseNormal(Event())
+        suc = function.slewDirect(QPointF(1, 1))
         assert not suc
 
 
-def test_onMouseNormal_5(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
-
+def test_slewDirect_2(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function,
-                               'slewSelectedTarget',
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetAltAz',
                                return_value=False):
-            suc = function.onMouseNormal(Event())
+            suc = function.slewDirect(QPointF(1, 1))
             assert not suc
 
 
-def test_onMouseNormal_6(function):
-    class Event:
-        xdata = 10
-        ydata = 10
-        inaxes = True
-        dblclick = True
-        button = 1
-
+def test_slewDirect_3(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function,
-                               'slewSelectedTarget',
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetAltAz',
                                return_value=True):
-            with mock.patch.object(function.app.mount.obsSite,
-                                   'setTargetAltAz',
+            with mock.patch.object(function,
+                                   'slewSelectedTarget',
+                                   return_value=False):
+                suc = function.slewDirect(QPointF(1, 1))
+                assert not suc
+
+
+def test_slewDirect_4(function):
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetAltAz',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'slewSelectedTarget',
                                    return_value=True):
-                suc = function.onMouseNormal(Event())
+                suc = function.slewDirect(QPointF(1, 1))
                 assert suc
+
+
+def test_slewStar_1(function):
+    function.app.mount.model.numberStars = None
+    suc = function.slewStar(QPointF(1, 1))
+    assert not suc
+
+
+def test_slewStar_2(function):
+    function.app.mount.model.numberStars = 5
+    function.alignmentStars = pg.ScatterPlotItem()
+    with mock.patch.object(function.alignmentStars,
+                           'pointsAt',
+                           return_value=[]):
+        suc = function.slewStar(QPointF(1, 1))
+        assert not suc
+
+
+def test_slewStar_3(function):
+    class Spot:
+        @staticmethod
+        def index():
+            return 0
+
+    function.app.hipparcos.name = ['test']
+    function.app.mount.model.numberStars = 5
+    function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
+    with mock.patch.object(function.alignmentStars,
+                           'pointsAt',
+                           return_value=[Spot()]):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=0):
+            with mock.patch.object(function.app.hipparcos,
+                                   'getAlignStarRaDecFromName',
+                                   return_value=(0, 0)):
+                suc = function.slewStar(QPointF(1, 1))
+                assert not suc
+
+
+def test_slewStar_4(function):
+    class Spot:
+        @staticmethod
+        def index():
+            return 0
+
+    function.app.hipparcos.name = ['test']
+    function.app.mount.model.numberStars = 5
+    function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
+    with mock.patch.object(function.alignmentStars,
+                           'pointsAt',
+                           return_value=[Spot()]):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=1):
+            with mock.patch.object(function.app.hipparcos,
+                                   'getAlignStarRaDecFromName',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function.app.mount.obsSite,
+                                       'setTargetRaDec',
+                                       return_value=False):
+                    suc = function.slewStar(QPointF(1, 1))
+                    assert not suc
+
+
+def test_slewStar_5(function):
+    class Spot:
+        @staticmethod
+        def index():
+            return 0
+
+    function.app.hipparcos.name = ['test']
+    function.app.mount.model.numberStars = 5
+    function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
+    with mock.patch.object(function.alignmentStars,
+                           'pointsAt',
+                           return_value=[Spot()]):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=2):
+            with mock.patch.object(function.app.hipparcos,
+                                   'getAlignStarRaDecFromName',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function.app.mount.obsSite,
+                                       'setTargetRaDec',
+                                       return_value=True):
+                    with mock.patch.object(function,
+                                           'slewSelectedTarget',
+                                           return_value=False):
+                        suc = function.slewStar(QPointF(1, 1))
+                        assert not suc
+
+
+def test_slewStar_6(function):
+    class Spot:
+        @staticmethod
+        def index():
+            return 0
+
+    function.app.hipparcos.name = ['test']
+    function.app.mount.model.numberStars = 5
+    function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
+    with mock.patch.object(function.alignmentStars,
+                           'pointsAt',
+                           return_value=[Spot()]):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=2):
+            with mock.patch.object(function.app.hipparcos,
+                                   'getAlignStarRaDecFromName',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function.app.mount.obsSite,
+                                       'setTargetRaDec',
+                                       return_value=True):
+                    with mock.patch.object(function,
+                                           'slewSelectedTarget',
+                                           return_value=True):
+                        suc = function.slewStar(QPointF(1, 1))
+                        assert suc
+
+
+def test_mouseDoubleClick_1(function):
+    function.ui.alignmentModeHem.setChecked(True)
+    function.ui.normalModeHem.setChecked(False)
+    with mock.patch.object(function,
+                           'slewStar'):
+        suc = function.mouseDoubleClick(1, 2)
+        assert suc
+
+
+def test_mouseDoubleClick_2(function):
+    function.ui.alignmentModeHem.setChecked(False)
+    function.ui.normalModeHem.setChecked(True)
+    with mock.patch.object(function,
+                           'slewDirect'):
+        suc = function.mouseDoubleClick(1, 2)
+        assert suc

@@ -591,7 +591,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         :return:
         """
         if self.pointerHem is None:
-            return
+            return False
 
         obsSite = self.app.mount.obsSite
         if obsSite.Alt is None or obsSite.Az is None:
@@ -625,7 +625,7 @@ class HemisphereWindow(MWidget, EditHorizon):
             self.pointerDome.setVisible(False)
             return False
 
-        visible = self.app.deviceStat['dome']
+        visible = self.app.deviceStat.get('dome', False)
         self.pointerDome.setRect(azimuth - 15, 1, 30, 88)
         self.pointerDome.setVisible(visible)
         return True
@@ -682,9 +682,8 @@ class HemisphereWindow(MWidget, EditHorizon):
 
         return suc
 
-    def slewDirect(self, ev, posView):
+    def slewDirect(self, posView):
         """
-        :param ev:
         :param posView:
         :return:
         """
@@ -711,9 +710,8 @@ class HemisphereWindow(MWidget, EditHorizon):
         suc = self.slewSelectedTarget(slewType='keep')
         return suc
 
-    def slewStar(self, ev, posView):
+    def slewStar(self, posView):
         """
-        :param ev:
         :param posView:
         :return:
         """
@@ -766,7 +764,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         :return:
         """
         if self.ui.alignmentModeHem.isChecked():
-            self.slewStar(ev, posView)
+            self.slewStar(posView)
         elif self.ui.normalModeHem.isChecked():
-            self.slewDirect(ev, posView)
+            self.slewDirect(posView)
         return True

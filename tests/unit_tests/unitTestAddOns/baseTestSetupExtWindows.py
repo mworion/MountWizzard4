@@ -131,9 +131,9 @@ class Hipparcos:
     def getAlignStarRaDecFromName():
         return
 
-    az = []
-    alt = []
-    name = []
+    name = ['test']
+    alt = [10]
+    az = [10]
 
 
 class Dome(QObject):

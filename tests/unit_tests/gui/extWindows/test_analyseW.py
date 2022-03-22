@@ -178,7 +178,7 @@ def test_draw_raRawErrors(function):
     function.errorDEC_S = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.draw_raRawErrors()
+    suc = function.drawRaRawErrors()
     assert suc
 
 
@@ -187,7 +187,7 @@ def test_draw_decRawErrors(function):
     function.errorDEC_S = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.draw_decRawErrors()
+    suc = function.drawDecRawErrors()
     assert suc
 
 
@@ -196,7 +196,7 @@ def test_draw_raErrors(function):
     function.errorDEC = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.draw_raErrors()
+    suc = function.drawRaErrors()
     assert suc
 
 
@@ -205,7 +205,7 @@ def test_draw_decErrors(function):
     function.errorDEC = [0, 1, 2]
     function.azimuth = [0, 1, 2]
     function.altitude = [0, 1, 2]
-    suc = function.draw_decError()
+    suc = function.drawDecError()
     assert suc
 
 
@@ -213,7 +213,7 @@ def test_draw_raErrorsRef(function):
     function.angularPosRA = [0, 1, 2]
     function.errorRA = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
-    suc = function.draw_raErrorsRef()
+    suc = function.drawRaErrorsRef()
     assert suc
 
 
@@ -221,7 +221,7 @@ def test_draw_decErrorsRef(function):
     function.angularPosDEC = [0, 0, 0]
     function.errorDEC = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
-    suc = function.draw_decErrorsRef()
+    suc = function.drawDecErrorsRef()
     assert suc
 
 
@@ -229,7 +229,7 @@ def test_draw_raRawErrorsRef(function):
     function.angularPosRA = [0, 1, 2]
     function.errorRA_S = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
-    suc = function.draw_raRawErrorsRef()
+    suc = function.drawRaRawErrorsRef()
     assert suc
 
 
@@ -237,7 +237,7 @@ def test_draw_decRawErrorsRef(function):
     function.errorDEC_S = [0, 0, 0]
     function.angularPosDEC = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
-    suc = function.draw_decRawErrorsRef()
+    suc = function.drawDecRawErrorsRef()
     assert suc
 
 
@@ -245,7 +245,7 @@ def test_draw_scaleImage(function):
     function.index = [0, 1, 2]
     function.scaleS = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
-    suc = function.draw_scaleImage()
+    suc = function.drawScaleImage()
     assert suc
 
 
@@ -253,7 +253,7 @@ def test_draw_errorAscending(function):
     function.errorRMS = [0, 1, 2]
     function.index = [0, 0, 0]
     function.pierside = ['E', 'W', 'E']
-    suc = function.draw_errorAscending()
+    suc = function.drawErrorAscending()
     assert suc
 
 
@@ -263,7 +263,7 @@ def test_draw_modelPositions_1(function):
     function.errorRMS = np.array([0, 2, 4])
     function.errorAngle = np.array([0, 0, 0])
     function.latitude = 48
-    suc = function.draw_modelPositions()
+    suc = function.drawModelPositions()
     assert suc
 
 
@@ -271,24 +271,15 @@ def test_draw_errorDistribution_1(function):
     function.errorRMS = np.array([0, 2, 4])
     function.errorAngle = np.array([0, 1, 2])
     function.pierside = ['E', 'W', 'E']
-    suc = function.draw_errorDistribution()
+    suc = function.drawErrorDistribution()
     assert suc
 
 
-def test_drawAll_1(function):
+def test_drawAll(function):
     def test():
         pass
 
-    function.charts = [test]
-    suc = function.drawAll()
-    assert suc
-
-
-def test_drawAll_2(function):
-    def test():
-        pass
-
-    function.closing = True
+    function.index = []
     function.charts = [test]
     suc = function.drawAll()
     assert suc

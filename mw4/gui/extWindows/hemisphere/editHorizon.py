@@ -122,7 +122,7 @@ class EditHorizon:
         self.wIcon(self.ui.clearHorizonMask, 'trash')
         return True
 
-    def colorChange(self):
+    def colorChangeHorizon(self):
         """
         :return:
         """
@@ -269,7 +269,7 @@ class EditHorizon:
         :return:
         """
         if self.pointerHor is None:
-            return
+            return False
 
         obsSite = self.app.mount.obsSite
         if obsSite.Alt is None or obsSite.Az is None:

@@ -201,7 +201,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.hemisphere.colorChange()
         self.ui.horizon.colorChange()
         self.drawHemisphereTab()
-        self.mwSuper('colorChange')
+        self.colorChangeHorizon()
         return True
 
     def setOperationModeHem(self):

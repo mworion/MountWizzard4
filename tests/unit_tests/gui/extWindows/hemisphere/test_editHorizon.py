@@ -19,6 +19,8 @@ import unittest.mock as mock
 import pytest
 
 # external packages
+import pyqtgraph as pg
+from skyfield.api import Angle
 
 # local import
 from gui.extWindows.hemisphereW import HemisphereWindow
@@ -44,6 +46,23 @@ def test_initConfig_1(function):
 
 def test_storeConfig_1(function):
     suc = function.storeConfig()
+    assert suc
+
+
+def test_mouseMovedHorizon_1(function):
+    with mock.patch.object(function,
+                           'mouseMoved'):
+        suc = function.mouseMovedHorizon('test')
+        assert suc
+
+
+def test_setIcons(function):
+    suc = function.setIcons()
+    assert suc
+
+
+def test_colorChange(function):
+    suc = function.colorChangeHorizon()
     assert suc
 
 
@@ -157,6 +176,101 @@ def test_saveHorizonMaskFileAs_3(function, qtbot):
             assert ['Horizon mask [test] cannot no be saved', 2] == blocker.args
 
 
+def test_setOperationModeHor_1(function):
+    function.ui.editModeHor.setChecked(True)
+    suc = function.setOperationModeHor()
+    assert suc
+
+
+def test_setOperationModeHor_2(function):
+    function.ui.editModeHor.setChecked(False)
+    suc = function.setOperationModeHor()
+    assert suc
+
+
+def test_updateDataHorizon(function):
+    function.horizonPlot = pg.PlotDataItem()
+    suc = function.updateDataHorizon([1, 2], [1, 2])
+    assert suc
+
+
 def test_clearHorizonMask(function):
     suc = function.clearHorizonMask()
+    assert suc
+
+
+def test_addActualPosition(function):
+    suc = function.addActualPosition()
+    assert suc
+
+
+def test_prepareHorizonView(function):
+    with mock.patch.object(function,
+                           'preparePlotItem'):
+        suc = function.prepareHorizonView()
+        assert suc
+
+
+def test_drawHorizonView_1(function):
+    function.horizonPlot = pg.PlotDataItem()
+    suc = function.drawHorizonView()
+    assert not suc
+
+
+def test_drawHorizonView_2(function):
+    function.app.data.horizonP = [(1, 1), (2, 2)]
+    function.horizonPlot = pg.PlotDataItem(x=[1], y=[1])
+    suc = function.drawHorizonView()
+    assert suc
+
+
+def test_setupPointerHor(function):
+    suc = function.prepareHorizonView()
+    assert suc
+
+
+def test_drawPointerHor_1(function):
+    function.pointerHor = None
+    suc = function.drawPointerHor()
+    assert not suc
+
+
+def test_drawPointerHor_2(function):
+    function.pointerHor = pg.ScatterPlotItem()
+    function.app.mount.obsSite.Alt = None
+    suc = function.drawPointerHor()
+    assert not suc
+
+
+def test_drawPointerHor_3(function):
+    function.pointerHor = pg.ScatterPlotItem()
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=20)
+    suc = function.drawPointerHor()
+    assert suc
+
+
+def test_setupHorizonView_1(function):
+    function.ui.editModeHor.setChecked(True)
+    suc = function.setupHorizonView()
+    assert suc
+
+
+def test_setupHorizonView_2(function):
+    function.ui.editModeHor.setChecked(False)
+    suc = function.setupHorizonView()
+    assert suc
+
+
+def test_drawHorizonTab_1(function):
+    function.ui.showTerrain.setChecked(True)
+    function.ui.editModeHor.setChecked(True)
+    suc = function.drawHorizonTab()
+    assert suc
+
+
+def test_drawHorizonTab_2(function):
+    function.ui.showTerrain.setChecked(False)
+    function.ui.editModeHor.setChecked(False)
+    suc = function.drawHorizonTab()
     assert suc

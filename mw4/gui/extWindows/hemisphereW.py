@@ -335,7 +335,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         :return:
         """
-        if not self.imageTerrain:
+        if self.imageTerrain is None:
             return False
 
         shiftAz = self.ui.azimuthShift.value()
@@ -433,7 +433,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         if not self.ui.showAlignStar.isChecked():
             return False
         if self.alignmentStars is None:
-            return
+            return False
 
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()

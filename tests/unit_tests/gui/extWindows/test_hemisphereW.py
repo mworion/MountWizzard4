@@ -22,9 +22,11 @@ import os
 import shutil
 
 # external packages
-from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QCloseEvent
 from skyfield.api import Angle, wgs84
+import numpy as np
+import pyqtgraph as pg
 from PIL import Image
 
 # local import
@@ -47,48 +49,57 @@ def function(module):
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        suc = function.initConfig()
-        assert not suc
+        with mock.patch.object(function,
+                               'mwSuper'):
+            suc = function.initConfig()
+            assert suc
 
 
-def test_initConfig_3(function):
+def test_initConfig_2(function):
     function.app.config['hemisphereW']['winPosX'] = 10000
     function.app.config['hemisphereW']['winPosY'] = 10000
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        suc = function.initConfig()
-        assert not suc
+        with mock.patch.object(function,
+                               'mwSuper'):
+            suc = function.initConfig()
+            assert suc
 
 
-def test_initConfig_4(function):
+def test_initConfig_3(function):
     function.app.config['hemisphereW'] = {}
     function.app.config['hemisphereW']['winPosX'] = 100
     function.app.config['hemisphereW']['winPosY'] = 100
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
-        suc = function.initConfig()
-        assert not suc
+        with mock.patch.object(function,
+                               'mwSuper'):
+            suc = function.initConfig()
+            assert suc
 
 
-def test_initConfig_5(function):
+def test_initConfig_4(function):
     shutil.copy('tests/testData/terrain.jpg', 'tests/workDir/config/terrain.jpg')
     function.app.config['hemisphereW'] = {}
     function.app.config['hemisphereW']['winPosX'] = 100
     function.app.config['hemisphereW']['winPosY'] = 100
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(function,
+                           'mwSuper'):
+        suc = function.initConfig()
+        assert suc
 
 
 def test_storeConfig_1(function):
     function.app.config = {}
-    suc = function.storeConfig()
-    assert suc
+    with mock.patch.object(function,
+                           'mwSuper'):
+        suc = function.storeConfig()
+        assert suc
 
 
 def test_closeEvent_1(function):
@@ -102,13 +113,6 @@ def test_closeEvent_1(function):
                 function.closeEvent(QCloseEvent)
 
 
-def test_resizeEvent_1(function):
-    function.ui.showPolar.setChecked(True)
-    with mock.patch.object(MWidget,
-                           'resizeEvent'):
-        function.resizeEvent(QEvent)
-
-
 def test_showWindow_1(function):
     with mock.patch.object(function,
                            'drawHemisphereTab'):
@@ -118,11 +122,40 @@ def test_showWindow_1(function):
             assert suc
 
 
+def test_mouseMoved_1(function):
+    pd = pg.PlotItem()
+    suc = function.mouseMoved(pd, pos=QPointF(1, 1))
+    assert suc
+
+
+def test_mouseMoved_2(function):
+    pd = pg.PlotItem()
+    suc = function.mouseMoved(pd, pos=QPointF(0.5, 0.5))
+    assert suc
+
+
+def test_mouseMovedHemisphere(function):
+    suc = function.mouseMovedHemisphere(pos=QPointF(1, 1))
+    assert suc
+
+
 def test_colorChange(function):
     with mock.patch.object(function,
                            'drawHemisphereTab'):
         suc = function.colorChange()
         assert suc
+
+
+def test_setOperationModeHem_1(function):
+    function.ui.editModeHem.setChecked(True)
+    suc = function.setOperationModeHem()
+    assert suc
+
+
+def test_setOperationModeHem_2(function):
+    function.ui.alignmentModeHem.setChecked(True)
+    suc = function.setOperationModeHem()
+    assert suc
 
 
 def test_calculateRelevance_1(function):
@@ -163,30 +196,13 @@ def test_calculateRelevance_5(function):
 def test_selectFontParam_1(function):
     function.colorSet = 0
     col, size = function.selectFontParam(0)
-    assert round(col[0], 3) == 0.753
-    assert round(col[1], 3) == 0.188
-    assert round(col[2], 3) == 0.188
-    assert size == 10
+    assert size == 8
 
 
 def test_selectFontParam_2(function):
     function.colorSet = 0
     col, size = function.selectFontParam(1)
-    assert round(col[0], 3) == 0.753
-    assert round(col[1], 3) == 0.193
-    assert round(col[2], 3) == 0.187
-    assert size == 15
-
-
-def test_togglePolar_1(function):
-    suc = function.togglePolar()
-    assert suc
-
-
-def test_togglePolar_2(function):
-    function.ui.showPolar.setChecked(True)
-    suc = function.togglePolar()
-    assert suc
+    assert size == 13
 
 
 def test_updateOnChangedParams_1(function):
@@ -209,10 +225,10 @@ def test_updateOnChangedParams_2(function):
         horizonLimitHigh = 0
         horizonLimitLow = 0
 
-    function.meridianSlewParam = 0
-    function.meridianTrackParam = 0
-    function.horizonLimitHighParam = 0
-    function.horizonLimitLowParam = 0
+    function.meridianSlew = 0
+    function.meridianTrack = 0
+    function.horizonLimitHigh = 0
+    function.horizonLimitLow = 0
 
     with mock.patch.object(function,
                            'drawHemisphereTab'):
@@ -220,469 +236,103 @@ def test_updateOnChangedParams_2(function):
         assert not suc
 
 
-def test_updatePointerAltAz_1(function):
-    function.pointerHem = None
-    suc = function.updatePointerAltAz()
-    assert not suc
-
-
-def test_updatePointerAltAz_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerHem, = axe.plot(0, 0)
-    function.app.mount.obsSite.Alt = Angle(degrees=80)
-    function.app.mount.obsSite.Az = None
-    suc = function.updatePointerAltAz()
-    assert not suc
-
-
-def test_updatePointerAltAz_3(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerHem, = axe.plot(0, 0)
-    function.app.mount.obsSite.Alt = None
-    function.app.mount.obsSite.Az = Angle(degrees=80)
-    suc = function.updatePointerAltAz()
-    assert not suc
-
-
-def test_updatePointerAltAz_4(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerHem, = axe.plot(0, 0)
-    function.app.mount.obsSite.Alt = Angle(degrees=80)
-    function.app.mount.obsSite.Az = Angle(degrees=80)
-    suc = function.updatePointerAltAz()
+def test_preparePlotItem(function):
+    pd = pg.PlotItem()
+    suc = function.preparePlotItem(pd)
     assert suc
 
 
-def test_updatePointerPolarAltAz_1(function):
-    function.pointerPolarAltAz = None
-    suc = function.updatePointerPolarAltAz()
-    assert not suc
-
-
-def test_updatePointerPolarAltAz_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerPolarAltAz, = axe.plot(0, 0)
-    function.app.mount.obsSite.Alt = Angle(degrees=80)
-    function.app.mount.obsSite.Az = None
-    suc = function.updatePointerPolarAltAz()
-    assert not suc
-
-
-def test_updatePointerPolarAltAz_3(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerPolarAltAz, = axe.plot(0, 0)
-    function.app.mount.obsSite.Alt = None
-    function.app.mount.obsSite.Az = Angle(degrees=80)
-    suc = function.updatePointerPolarAltAz()
-    assert not suc
-
-
-def test_updatePointerPolarAltAz_4(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerPolarAltAz, = axe.plot(0, 0)
-    function.app.mount.obsSite.Alt = Angle(degrees=80)
-    function.app.mount.obsSite.Az = Angle(degrees=80)
-    suc = function.updatePointerPolarAltAz()
+def test_prepareHemisphere(function):
+    suc = function.prepareHemisphere()
     assert suc
 
 
-def test_updateDome_1(function):
-    suc = function.updateDome(0)
-    assert not suc
-
-
-def test_updateDome_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMatMove, horizon=False)
-    function.pointerDome, = axe.plot(0, 0)
-    suc = function.updateDome('test')
-    assert not suc
-
-
-def test_updateDome_3(function):
-    function.pointerDome = mpatches.Rectangle((0, 5), 1, 5)
-    function.app.deviceStat['dome'] = True
-    suc = function.updateDome(0)
-    assert suc
-
-
-def test_getMarkerStatusParams_1(function):
-    val = function.getMarkerStatusParams(True, 0)
-    marker, markersize, color, text = val
-    assert markersize == 9
-    assert color == function.M_GREEN
-    assert text == ' 1'
-
-
-def test_getMarkerStatusParams_2(function):
-    val = function.getMarkerStatusParams(False, 1)
-    marker, markersize, color, text = val
-    assert marker == '$\u2714$'
-    assert markersize == 11
-    assert color == function.M_YELLOW
-    assert text == ' 2'
-
-
-def test_updatePointMarker_1(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.pointsBuild = list()
-    function.pointsBuildAnnotate = list()
-    p, = axe.plot(0, 0)
-    function.pointsBuild.append(p)
-    function.pointsBuild.append(p)
-    function.pointsBuildAnnotate.append(axe.annotate('test', (0, 0)))
-    function.pointsBuildAnnotate.append(axe.annotate('test', (0, 0)))
-
-    function.app.data.buildP = [(0, 0, True), (0, 360, False)]
-    suc = function.updatePointMarker()
-    assert suc
-
-
-def test_updatePolarPointMarker_1(function):
-    function.pointsPolarBuild = list()
-    suc = function.updatePolarPointMarker()
-    assert not suc
-
-
-def test_updatePolarPointMarker_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.pointsPolarBuild = list()
-    function.pointsPolarBuildAnnotate = list()
-    p, = axe.plot(0, 0)
-    function.pointsPolarBuild.append(p)
-    function.pointsPolarBuild.append(p)
-    function.pointsPolarBuildAnnotate.append(axe.annotate('test', (0, 0)))
-    function.pointsPolarBuildAnnotate.append(axe.annotate('test', (0, 0)))
-
-    function.app.data.buildP = [(0, 0, True), (0, 360, False)]
-    suc = function.updatePolarPointMarker()
-    assert suc
-
-
-def test_updateAlignStar_1(function):
-    function.ui.checkShowAlignStar.setChecked(False)
-    suc = function.updateAlignStar()
-    assert not suc
-
-
-def test_updateAlignStar_2(function):
-    function.ui.checkShowAlignStar.setChecked(True)
-    suc = function.updateAlignStar()
-    assert not suc
-
-
-def test_updateAlignStar_3(function):
-    function.ui.checkShowAlignStar.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.starsAlign, = axe.plot(0, 0)
-    function.starsAlignAnnotate = None
-    suc = function.updateAlignStar()
-    assert not suc
-
-
-def test_updateAlignStar_4(function):
-    function.ui.checkShowAlignStar.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.starsAlign, = axe.plot(0, 0)
-    function.starsAlignAnnotate = [axe.annotate('test', (0, 0))]
-    function.app.hipparcos.alt = [1]
-    function.app.hipparcos.az = [1]
-    function.app.hipparcos.name = ['test']
-    function.mutexDraw.lock()
-    suc = function.updateAlignStar()
-    assert not suc
-    function.mutexDraw.unlock()
-
-
-def test_updateAlignStar_5(function):
-    function.ui.checkShowAlignStar.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.starsAlign, = axe.plot(0, 0)
-    function.starsAlignAnnotate = [axe.annotate('test', (0, 0))]
-    function.app.hipparcos.alt = [1]
-    function.app.hipparcos.az = [1]
-    function.app.hipparcos.name = ['test']
-
-    suc = function.updateAlignStar()
-    assert suc
-
-
-def test_updateAlignStar_6(function):
-    function.ui.checkShowAlignStar.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.starsAlign, = axe.plot(0, 0)
-    function.starsAlignAnnotate = [axe.annotate('test', (0, 0))]
-    function.app.hipparcos.alt = [1]
-    function.app.hipparcos.az = [1]
-    function.app.hipparcos.name = ['test']
-
-    function.operationMode = 'star'
-    suc = function.updateAlignStar()
-    assert suc
-
-
-def test_clearHemisphere(function):
-    with mock.patch.object(function,
-                           'drawHemisphereTab'):
-        suc = function.clearHemisphere()
-        assert suc
-
-
-def test_staticHorizon_1(function):
-    function.ui.checkUseHorizon.setChecked(False)
-    function.app.data.horizonP = list()
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHorizonOnHem(axe)
-    assert not suc
-
-
-def test_staticHorizon_2(function):
-    function.ui.checkUseHorizon.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.horizonP = [(0, 0), (0, 360)]
-    suc = function.drawHorizonOnHem(axe)
-    assert suc
-
-
-def test_staticHorizon_3(function):
-    function.ui.checkUseHorizon.setChecked(False)
-    function.app.data.horizonP = list()
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHorizonOnHem(axe, polar=True)
-    assert not suc
-
-
-def test_staticHorizon_4(function):
-    function.ui.checkUseHorizon.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.horizonP = [(0, 0), (0, 360)]
-    suc = function.drawHorizonOnHem(axe, polar=True)
-    assert suc
-
-
-def test_staticModelData_1(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.buildP = list()
-    suc = function.staticModelData(axe)
-    assert not suc
-
-
-def test_staticModelData_2(function):
-    function.ui.checkShowSlewPath.setChecked(False)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.buildP = [(0, 0, True), (0, 360, True)]
-    suc = function.staticModelData(axe)
-    assert suc
-
-
-def test_staticModelData_3(function):
-    function.ui.checkShowSlewPath.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.buildP = [(0, 0, True), (0, 360, False)]
-    suc = function.staticModelData(axe)
-    assert suc
-
-
-def test_staticModelData_4(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.buildP = list()
-    suc = function.staticModelData(axe, polar=True)
-    assert not suc
-
-
-def test_staticModelData_5(function):
-    function.ui.checkShowSlewPath.setChecked(False)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.buildP = [(0, 0, True), (0, 360, True)]
-    suc = function.staticModelData(axe, polar=True)
-    assert suc
-
-
-def test_staticModelData_6(function):
-    function.ui.checkShowSlewPath.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.data.buildP = [(0, 0, True), (0, 360, False)]
-    suc = function.staticModelData(axe, polar=True)
-    assert suc
-
-
-def test_staticCelestialEquator_1(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.ui.checkShowCelestial.setChecked(True)
-    suc = function.drawCelestialEquator(axe)
-    assert suc
-
-
-def test_staticCelestialEquator_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.ui.checkShowCelestial.setChecked(True)
-    suc = function.drawCelestialEquator(axe, polar=True)
-    assert suc
-
-
-def test_staticCelestialEquator_3(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.ui.checkShowCelestial.setChecked(True)
+def test_drawCelestialEquator_1(function):
     with mock.patch.object(function.app.data,
                            'generateCelestialEquator',
                            return_value=None):
-        suc = function.drawCelestialEquator(axe, polar=True)
+        suc = function.drawCelestialEquator()
         assert not suc
 
 
-def test_staticMeridianLimits_1(function):
-    function.app.mount.setting.meridianLimitSlew = None
-    function.app.mount.setting.meridianLimitTrack = None
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawMeridianLimits(axe)
+def test_drawCelestialEquator_2(function):
+    with mock.patch.object(function.app.data,
+                           'generateCelestialEquator',
+                           return_value=[(1, 1)]):
+        suc = function.drawCelestialEquator()
+        assert suc
+
+
+def test_drawHorizonOnHem(function):
+    suc = function.drawHorizonOnHem()
+    assert suc
+
+
+def test_drawTerrainMask_1(function):
+    pd = pg.PlotItem()
+    function.imageTerrain = None
+    suc = function.drawTerrainMask(pd)
     assert not suc
 
 
-def test_staticMeridianLimits_2(function):
+def test_drawTerrainMask_2(function):
+    pd = pg.PlotItem()
+    function.imageTerrain = Image.fromarray(np.array([[1, 2], [1, 2]],
+                                                     dtype=np.uint8))
+    suc = function.drawTerrainMask(pd)
+    assert suc
+
+
+def test_drawMeridianLimits_1(function):
+    function.app.mount.setting.meridianLimitSlew = None
+    function.app.mount.setting.meridianLimitTrack = None
+    suc = function.drawMeridianLimits()
+    assert not suc
+
+
+def test_drawMeridianLimits2(function):
     function.app.mount.setting.meridianLimitSlew = 10
     function.app.mount.setting.meridianLimitTrack = 10
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawMeridianLimits(axe)
+    suc = function.drawMeridianLimits()
     assert suc
 
 
 def test_staticHorizonLimits_1(function):
     function.app.mount.setting.horizonLimitHigh = None
     function.app.mount.setting.horizonLimitLow = None
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHorizonLimits(axe)
+    suc = function.drawHorizonLimits()
     assert suc
 
 
 def test_staticHorizonLimits_2(function):
     function.app.mount.setting.horizonLimitHigh = 10
     function.app.mount.setting.horizonLimitLow = 10
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHorizonLimits(axe)
+    suc = function.drawHorizonLimits()
     assert suc
 
 
-def test_staticTerrainMask_1(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.imageTerrain = None
-    with mock.patch.object(axe,
-                           'imshow'):
-        suc = function.drawTerrainMask(axe)
-        assert not suc
-
-
-def test_staticTerrainMask_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    img = Image.open('tests/testData/terrain.jpg').convert('LA')
-    (w, h) = img.size
-    img = img.crop((0, 0, w, h / 2))
-    img = img.resize((360, 90))
-    img = img.transpose(Image.FLIP_TOP_BOTTOM)
-
-    function.imageTerrain = Image.new('L', (720, 90))
-    function.imageTerrain.paste(img)
-    function.imageTerrain.paste(img, (360, 0))
-    with mock.patch.object(axe,
-                           'imshow'):
-        suc = function.drawTerrainMask(axe)
-        assert suc
-
-
-def test_staticTerrainMask_3(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    img = Image.open('tests/testData/terrain.jpg').convert('LA')
-    (w, h) = img.size
-    img = img.crop((0, 0, w, h / 2))
-    img = img.resize((360, 90))
-    img = img.transpose(Image.FLIP_TOP_BOTTOM)
-
-    function.imageTerrain = Image.new('L', (720, 90))
-    function.imageTerrain.paste(img)
-    function.imageTerrain.paste(img, (360, 0))
-    with mock.patch.object(axe,
-                           'pcolormesh'):
-        suc = function.drawTerrainMask(axe, polar=True)
-        assert suc
-
-
-def test_drawHemisphereStatic_1(function):
-    function.ui.checkUseHorizon.setChecked(True)
-    function.ui.checkShowCelestial.setChecked(True)
-    function.ui.checkShowMeridian.setChecked(True)
-    function.ui.checkUseTerrain.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    with mock.patch.object(function,
-                           'drawTerrainMask'):
-        suc = function.drawHemisphereStatic(axe)
-        assert suc
-
-
-def test_drawHemisphereStatic_2(function):
-    function.ui.checkUseHorizon.setChecked(True)
-    function.ui.checkShowCelestial.setChecked(True)
-    function.ui.checkShowMeridian.setChecked(True)
-    function.ui.checkUseTerrain.setChecked(True)
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHemisphereStatic(axe, polar=True)
-    assert suc
-
-
-def test_drawHemisphereMoving_1(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    suc = function.drawHemisphereMoving(axe)
+def test_setupAlignmentStars(function):
+    suc = function.setupAlignmentStars()
     assert suc
 
 
 def test_drawAlignmentStars_1(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.hipparcos.alt = [1]
-    function.app.hipparcos.az = [1]
-    function.app.hipparcos.name = ['test']
-    function.mutexDraw.lock()
-    suc = function.drawAlignmentStars(axe)
+    function.ui.showAlignStar.setChecked(False)
+    suc = function.drawAlignmentStars()
     assert not suc
-    function.mutexDraw.unlock()
 
 
 def test_drawAlignmentStars_2(function):
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.hipparcos.alt = [1]
-    function.app.hipparcos.az = [1]
-    function.app.hipparcos.name = ['test']
-
-    suc = function.drawAlignmentStars(axe)
-    assert suc
+    function.ui.showAlignStar.setChecked(True)
+    suc = function.drawAlignmentStars()
+    assert not suc
 
 
 def test_drawAlignmentStars_3(function):
-    function.operationMode = 'star'
-    axe, _ = function.generateFlat(widget=function.hemisphereMat, horizon=False)
-    function.app.hipparcos.alt = [1]
-    function.app.hipparcos.az = [1]
-    function.app.hipparcos.name = ['test']
-
-    suc = function.drawAlignmentStars(axe)
+    function.ui.showAlignStar.setChecked(True)
+    function.alignmentStars = pg.ScatterPlotItem()
+    suc = function.drawAlignmentStars()
     assert suc
-
-
-def test_drawHemisphere_1(function):
-    function.closingWindow = False
-    function.ui.checkShowAlignStar.setChecked(True)
-    suc = function.drawHemisphereTab()
-    assert suc
-
-
-def test_drawHemisphere_2(function):
-    function.closingWindow = False
-    function.ui.checkShowAlignStar.setChecked(False)
-    suc = function.drawHemisphereTab()
-    assert suc
-
-
-def test_drawHemisphere_3(function):
-    function.closingWindow = True
-    function.ui.checkShowAlignStar.setChecked(False)
-    suc = function.drawHemisphereTab()
-    assert not suc
 
 
 def test_slewSelectedTarget_1(function):

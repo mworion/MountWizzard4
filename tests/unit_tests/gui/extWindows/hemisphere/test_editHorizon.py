@@ -88,7 +88,7 @@ def test_loadHorizonMaskFile_3(function, qtbot):
 
 
 def test_saveHorizonMaskFile_1(function, qtbot):
-    function.ui.horizonFileName.setText('test')
+    function.ui.horizonMaskFileName.setText('test')
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('build', 'test', 'bpts')):
@@ -102,7 +102,7 @@ def test_saveHorizonMaskFile_1(function, qtbot):
 
 
 def test_saveHorizonMaskFile_2(function, qtbot):
-    function.ui.horizonFileName.setText('')
+    function.ui.horizonMaskFileName.setText('')
     with qtbot.waitSignal(function.app.message) as blocker:
         suc = function.saveHorizonMask()
         assert not suc
@@ -110,7 +110,7 @@ def test_saveHorizonMaskFile_2(function, qtbot):
 
 
 def test_saveHorizonMaskFile_3(function, qtbot):
-    function.ui.horizonFileName.setText('test')
+    function.ui.horizonMaskFileName.setText('test')
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('build', 'test', 'bpts')):

@@ -240,6 +240,7 @@ class App(QObject):
     update1s = pyqtSignal()
     message = pyqtSignal(str, int)
     redrawHemisphere = pyqtSignal()
+    redrawHorizon = pyqtSignal()
     updatePointMarker = pyqtSignal()
     updateDomeSettings = pyqtSignal()
     drawBuildPoints = pyqtSignal()

@@ -538,6 +538,7 @@ class App(QObject):
     updateDomeSettings = pyqtSignal()
     drawHorizonPoints = pyqtSignal()
     redrawHemisphere = pyqtSignal()
+    redrawHorizon = pyqtSignal()
     colorChange = pyqtSignal()
     message = pyqtSignal(str, int)
     messageQueue = Queue()

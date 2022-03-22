@@ -21,10 +21,8 @@ import pytest
 # external packages
 
 # local import
-from gui.extWindows.hemisphere.editHorizon import EditHorizon
+from gui.extWindows.hemisphereW import HemisphereWindow
 from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
-from gui.utilities.toolsQtWidget import MWidget
-from gui.widgets.main_ui import Ui_MainWindow
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -34,9 +32,7 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
-    window = EditHorizon()
-    window.app = App()
-    window.ui = Ui_MainWindow()
+    window = HemisphereWindow(app=App())
     yield window
 
 

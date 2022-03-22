@@ -473,6 +473,9 @@ class OnlineWeather:
 
 
 class Data:
+    buildP = []
+    horizonP = []
+
     @staticmethod
     def loadHorizonP(fileName=''):
         return

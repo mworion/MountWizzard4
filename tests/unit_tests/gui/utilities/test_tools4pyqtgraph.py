@@ -522,12 +522,206 @@ def test_CustomViewBox_mouseDragEvent_6():
         vb.mouseDragEvent(ev)
 
 
+def test_CustomViewBox_mouseClickEvent_1():
+    class EV:
+        @staticmethod
+        def button():
+            return 2
+
+        @staticmethod
+        def accept():
+            return 1
+
+    vb = CustomViewBox()
+    vb.plotDataItem = None
+    vb.mouseClickEvent(EV())
+
+
+def test_CustomViewBox_mouseClickEvent_2():
+    class EV:
+        @staticmethod
+        def button():
+            return 1
+
+        @staticmethod
+        def accept():
+            return 1
+
+    vb = CustomViewBox()
+    vb.plotDataItem = None
+    with mock.patch.object(builtins,
+                           'super'):
+        vb.mouseClickEvent(EV())
+
+
+def test_CustomViewBox_mouseClickEvent_3():
+    class EV:
+        @staticmethod
+        def button():
+            return 2
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem()
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        with mock.patch.object(vb.plotDataItem.scatter,
+                               'pointsAt',
+                               return_value=vb.plotDataItem.scatter.points()):
+            with mock.patch.object(vb,
+                                   'rightMouseRange'):
+                vb.mouseClickEvent(EV())
+
+
+def test_CustomViewBox_mouseClickEvent_4():
+    class EV:
+        @staticmethod
+        def button():
+            return 2
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol='o')
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        with mock.patch.object(vb.plotDataItem.scatter,
+                               'pointsAt',
+                               return_value=vb.plotDataItem.scatter.points()):
+            with mock.patch.object(vb,
+                                   'delUpdate'):
+                vb.mouseClickEvent(EV())
+
+
+def test_CustomViewBox_mouseClickEvent_5():
+    class EV:
+        @staticmethod
+        def button():
+            return 1
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol='o')
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        with mock.patch.object(vb.plotDataItem.curve,
+                               'contains',
+                               return_value=True):
+            with mock.patch.object(vb,
+                                   'getCurveIndex',
+                                   return_value=0):
+                with mock.patch.object(vb,
+                                       'addUpdate'):
+                    vb.mouseClickEvent(EV())
+
+
+def test_CustomViewBox_mouseClickEvent_6():
+    class EV:
+        @staticmethod
+        def button():
+            return 1
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol='o')
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        with mock.patch.object(vb.plotDataItem.curve,
+                               'contains',
+                               return_value=False):
+            with mock.patch.object(vb,
+                                   'getNearestPointIndex',
+                                   return_value=0):
+                with mock.patch.object(vb,
+                                       'addUpdate'):
+                    vb.mouseClickEvent(EV())
+
+
+def test_CustomViewBox_mouseClickEvent_7():
+    class EV:
+        @staticmethod
+        def button():
+            return 0
+
+        @staticmethod
+        def ignore():
+            return 1
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol='o')
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        with mock.patch.object(vb.plotDataItem.scatter,
+                               'pointsAt',
+                               return_value=False):
+            vb.mouseClickEvent(EV())
+
+
+def test_CustomViewBox_mouseDoubleClickEvent_1():
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol='o')
+    vb.mouseDoubleClickEvent(1)
+
+
+def test_CustomViewBox_mouseDoubleClickEvent_2():
+    class EV:
+        @staticmethod
+        def scenePos():
+            return 1
+
+    vb = CustomViewBox()
+    vb.plotDataItem = None
+    with mock.patch.object(vb,
+                           'mapSceneToView',
+                           return_value=QPointF(0, 0)):
+        with mock.patch.object(vb,
+                               'callbackMDC'):
+            vb.mouseDoubleClickEvent(EV())
+
+
 def test_PlotBase():
     PlotBase()
 
 
 def test_PlotBase_colorChange():
     p = PlotBase()
+    p.addBarItem()
     p.colorChange()
 
 
@@ -588,11 +782,21 @@ def test_NormalScatter_plot2():
 
 
 def test_NormalScatter_plot3():
-    p = PolarScatter()
+    p = NormalScatter()
     suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
                  z=np.array([2, 3, 4]),
                  ang=np.array([2, 3, 4]),
                  tip='{data}'.format)
+    assert suc
+
+
+def test_NormalScatter_plot4():
+    p = NormalScatter()
+    suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                 z=np.array([2, 3, 4]),
+                 ang=np.array([2, 3, 4]),
+                 tip='{data}'.format,
+                 limits=True, range={'xMin': 0, 'xMax': 1, 'yMin': 0, 'yMax': 1})
     assert suc
 
 
@@ -629,6 +833,17 @@ def test_PolarScatter_plot2():
                      color=['#000000', '#000000', '#000000'],
                      ang=np.array([2, 3, 4]),
                      reverse=True)
+        assert suc
+
+
+def test_PolarScatter_plot3():
+    p = PolarScatter()
+    with mock.patch.object(p,
+                           'setGrid'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     color=['#000000', '#000000', '#000000'],
+                     ang=np.array([2, 3, 4]),
+                     reverse=True, z=np.array([0, 1, 2]))
         assert suc
 
 
@@ -685,7 +900,7 @@ def test_TimeMeasure():
 
         
 def test_TimeMeasure_tickStrings():
-    values = [0, 1, 2]
+    values = [-1, 0, 1]
     TimeMeasure(orientation='left').tickStrings(values, 0, 0)
     
 

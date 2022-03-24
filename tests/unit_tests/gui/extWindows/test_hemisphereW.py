@@ -123,7 +123,7 @@ def test_showWindow_1(function):
 
 
 def test_mouseMoved_1(function):
-    pd = pg.PlotItem()
+    pd = pg.PlotItem(x=[0, 1], y=[0, 1])
     suc = function.mouseMoved(pd, pos=QPointF(1, 1))
     assert suc
 
@@ -324,7 +324,7 @@ def test_drawAlignmentStars_1(function):
 
 
 def test_drawAlignmentStars_2(function):
-    function.ui.showAlignStar.setChecked(False)
+    function.ui.showAlignStar.setChecked(True)
     function.alignmentStars = None
     suc = function.drawAlignmentStars()
     assert not suc
@@ -333,10 +333,10 @@ def test_drawAlignmentStars_2(function):
 def test_drawAlignmentStars_3(function):
     function.alignmentStarsText = []
     function.alignmentStarsText.append(pg.TextItem())
-    function.ui.showAlignStar.setChecked(False)
+    function.ui.showAlignStar.setChecked(True)
     function.alignmentStars = pg.ScatterPlotItem()
     suc = function.drawAlignmentStars()
-    assert not suc
+    assert suc
 
 
 def test_drawAlignmentStars_4(function):

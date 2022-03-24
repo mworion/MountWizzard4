@@ -60,7 +60,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         for color in self.colors:
             self.pens.append(pg.mkPen(color=color, width=3))
             self.pens.append(pg.mkPen(color=color, width=3, style=Qt.DotLine))
-        self.penWhite = pg.mkPen(width=2, color=self.M_WHITE1 + '80')
+        self.penWhite1 = pg.mkPen(width=1.5, color=self.M_WHITE1 + '80')
+        self.penWhite = pg.mkPen(width=5, color=self.M_WHITE)
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
         stream = QFile(':/data/worldmap.dat')
@@ -269,7 +270,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         pd = pg.PlotDataItem(
-            x=[lat], y=[lon], symbol=self.makeSat(), symbolSize=40,
+            x=[lat], y=[lon], symbol=self.makeSat(), symbolSize=35,
             symbolPen=pg.mkPen(color=self.M_PINK),
             symbolBrush=pg.mkBrush(color=self.M_PINK + '20'))
         pd.setVisible(False)
@@ -319,7 +320,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lat = subpoints.latitude.degrees
         lon = subpoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
-            pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.penWhite)
+            pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=self.penWhite1)
             pd.setZValue(-10)
             plotItem.addItem(pd)
         return True
@@ -376,7 +377,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
         pd = pg.PlotDataItem(
-            x=[az.degrees], y=[alt.degrees], symbol='d', symbolSize=20,
+            x=[az.degrees], y=[alt.degrees], symbol=self.makeSat(), symbolSize=35,
             symbolPen=pg.mkPen(color=self.M_PINK),
             symbolBrush=pg.mkBrush(color=self.M_PINK + '20'))
         pd.setVisible(False)
@@ -399,13 +400,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         return pd
 
     def drawHorizonTrajectory(self, plotItem, obsSite, satOrbits,
-                              azimuth, altitude):
+                              altitude, azimuth):
         """
         :param plotItem:
         :param obsSite:
         :param satOrbits:
-        :param azimuth:
         :param altitude:
+        :param azimuth:
         :return:
         """
         ts = obsSite.ts

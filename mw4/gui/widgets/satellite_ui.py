@@ -20,7 +20,7 @@ class Ui_SatelliteDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(SatelliteDialog.sizePolicy().hasHeightForWidth())
         SatelliteDialog.setSizePolicy(sizePolicy)
-        SatelliteDialog.setMinimumSize(QtCore.QSize(800, 300))
+        SatelliteDialog.setMinimumSize(QtCore.QSize(800, 350))
         SatelliteDialog.setMaximumSize(QtCore.QSize(1600, 1200))
         SatelliteDialog.setSizeIncrement(QtCore.QSize(10, 10))
         SatelliteDialog.setBaseSize(QtCore.QSize(10, 10))

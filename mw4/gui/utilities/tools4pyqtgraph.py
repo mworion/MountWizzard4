@@ -290,11 +290,9 @@ class CustomViewBox(pg.ViewBox):
         if ev.button() == Qt.LeftButton:
             posScene = ev.scenePos()
             pos = self.mapSceneToView(posScene)
-            inCurve = self.plotDataItem.curve.contains(pos)
-            if inCurve:
-                index = self.getCurveIndex(pos)
-                if index is not None:
-                    self.addUpdate(index, pos)
+            index = self.getCurveIndex(pos)
+            if index is not None:
+                self.addUpdate(index, pos)
             else:
                 index = self.getNearestPointIndex(pos)
                 if index is not None:

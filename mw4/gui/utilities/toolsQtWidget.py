@@ -792,7 +792,6 @@ class MWidget(QWidget, Styles):
     def makeSat():
         path = QPainterPath()
         tr = QTransform()
-        path.addRect(-0.5, -0.15, 0.1, 0.3)
         path.addRect(-0.35, -0.15, 0.1, 0.3)
         path.addRect(-0.2, -0.15, 0.1, 0.3)
         path.moveTo(-0.1, -0.15)

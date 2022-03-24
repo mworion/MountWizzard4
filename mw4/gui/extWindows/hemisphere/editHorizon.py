@@ -18,6 +18,7 @@
 import os
 
 # external packages
+from PyQt5.QtCore import QPointF
 import numpy as np
 import pyqtgraph as pg
 from PIL import Image
@@ -225,6 +226,16 @@ class EditHorizon:
         """
         :return:
         """
+        vb = self.ui.horizon.p[0].getViewBox()
+        az = self.app.mount.obsSite.Az
+        alt = self.app.mount.obsSite.Alt
+        if alt is None and az is None:
+            return False
+        az = az.degrees
+        alt = alt.degrees
+        index = vb.getNearestPointIndex(QPointF(az, alt))
+        if index is not None:
+            vb.addUpdate(index, QPointF(az, alt))
         return True
 
     def prepareHorizonView(self):

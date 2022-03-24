@@ -209,7 +209,17 @@ def test_clearHorizonMask(function):
     assert suc
 
 
-def test_addActualPosition(function):
+def test_addActualPosition_1(function):
+    suc = function.addActualPosition()
+    assert not suc
+
+
+def test_addActualPosition_2(function):
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=20)
+    pd = pg.PlotDataItem(x=[10, 11], y=[10, 100], symbol='o')
+    vb = function.ui.horizon.p[0].getViewBox()
+    vb.plotDataItem = pd
     suc = function.addActualPosition()
     assert suc
 

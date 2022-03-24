@@ -627,15 +627,12 @@ def test_CustomViewBox_mouseClickEvent_5():
     with mock.patch.object(vb,
                            'mapSceneToView',
                            return_value=QPointF(0, 0)):
-        with mock.patch.object(vb.plotDataItem.curve,
-                               'contains',
-                               return_value=True):
+        with mock.patch.object(vb,
+                               'getCurveIndex',
+                               return_value=0):
             with mock.patch.object(vb,
-                                   'getCurveIndex',
-                                   return_value=0):
-                with mock.patch.object(vb,
-                                       'addUpdate'):
-                    vb.mouseClickEvent(EV())
+                                   'addUpdate'):
+                vb.mouseClickEvent(EV())
 
 
 def test_CustomViewBox_mouseClickEvent_6():
@@ -657,9 +654,9 @@ def test_CustomViewBox_mouseClickEvent_6():
     with mock.patch.object(vb,
                            'mapSceneToView',
                            return_value=QPointF(0, 0)):
-        with mock.patch.object(vb.plotDataItem.curve,
-                               'contains',
-                               return_value=False):
+        with mock.patch.object(vb,
+                               'getCurveIndex',
+                               return_value=None):
             with mock.patch.object(vb,
                                    'getNearestPointIndex',
                                    return_value=0):

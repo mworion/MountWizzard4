@@ -451,6 +451,20 @@ def test_messageDialog_2(function):
                 assert suc
 
 
+def test_messageDialog_3(function):
+    widget = QWidget()
+    with mock.patch.object(QMessageBox,
+                           'question',
+                           return_value=QMessageBox.Yes):
+        with mock.patch.object(QMessageBox,
+                               'show'):
+            with mock.patch.object(function,
+                                   'runDialog',
+                                   return_value=QMessageBox.Yes):
+                suc = function.messageDialog(widget, 'test', 'test', ['A', 'B'])
+                assert suc
+
+
 def test_openFile_1(function):
     full, short, ext = function.openFile()
     assert full == ''

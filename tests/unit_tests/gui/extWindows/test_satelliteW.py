@@ -220,8 +220,16 @@ def test_unlinkWrap(function):
         a = slc
 
 
-def test_drawEarth_1(function):
+def test_drawEarth_0(function):
     suc = function.drawEarth()
+    assert not suc
+
+
+def test_drawEarth_1(function):
+    function.app.mount.obsSite.location.latitude = Angle(degrees=45)
+    function.app.mount.obsSite.location.longitude = Angle(degrees=11)
+    obsSite = function.app.mount.obsSite
+    suc = function.drawEarth(obsSite=obsSite)
     assert not suc
 
 

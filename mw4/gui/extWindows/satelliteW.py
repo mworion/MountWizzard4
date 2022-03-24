@@ -58,9 +58,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
         for color in self.colors:
-            self.pens.append(pg.mkPen(color=color, width=3))
-            self.pens.append(pg.mkPen(color=color, width=3, style=Qt.DotLine))
-        self.penWhite1 = pg.mkPen(width=1.5, color=self.M_WHITE1 + '80')
+            self.pens.append(pg.mkPen(color=color, width=2))
+            self.pens.append(pg.mkPen(color=color, width=2, style=Qt.DotLine))
+        self.penWhite1 = pg.mkPen(width=1, color=self.M_WHITE1 + '80')
         self.penWhite = pg.mkPen(width=5, color=self.M_WHITE)
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
@@ -271,8 +271,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lon = subpoint.longitude.degrees
         pd = pg.PlotDataItem(
             x=[lat], y=[lon], symbol=self.makeSat(), symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_PINK),
-            symbolBrush=pg.mkBrush(color=self.M_PINK + '20'))
+            symbolPen=pg.mkPen(color=self.M_CYAN1),
+            symbolBrush=pg.mkBrush(color=self.M_CYAN + '40'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)
@@ -378,8 +378,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         alt, az, _ = (self.satellite - obsSite.location).at(obsSite.ts.now()).altaz()
         pd = pg.PlotDataItem(
             x=[az.degrees], y=[alt.degrees], symbol=self.makeSat(), symbolSize=35,
-            symbolPen=pg.mkPen(color=self.M_PINK),
-            symbolBrush=pg.mkBrush(color=self.M_PINK + '20'))
+            symbolPen=pg.mkPen(color=self.M_CYAN1),
+            symbolBrush=pg.mkBrush(color=self.M_CYAN + '40'))
         pd.setVisible(False)
         pd.setZValue(10)
         plotItem.addItem(pd)

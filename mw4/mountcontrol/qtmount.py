@@ -82,10 +82,11 @@ class Mount(mountcontrol.mount.Mount):
 
     """
 
-    CYCLE_POINTING = 550
+    CYCLE_POINTING = 350
     CYCLE_DOME = 950
     CYCLE_CLOCK = 1000
     CYCLE_MOUNT_UP = 2700
+    CYCLE_SETTING = 3100
     CYCLE_SETTING = 3100
 
     # set timeout

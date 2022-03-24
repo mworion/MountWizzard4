@@ -25,6 +25,7 @@ releaseNotes = """
 - add: measure window more values (time delat, focus, etc)
 - add: analyse charts could show horizon and values for each point 
 - improve: complete rework of charting: performance and functions
+- remove: matplotlib usage and replace with pyqtgraph
 
  """
 

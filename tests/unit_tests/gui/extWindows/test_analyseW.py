@@ -275,6 +275,18 @@ def test_draw_errorDistribution_1(function):
     assert suc
 
 
+def test_drawHorizon_1(function):
+    function.ui.showHorizon.setChecked(False)
+    suc = function.drawHorizon()
+    assert not suc
+
+
+def test_drawHorizon_2(function):
+    function.ui.showHorizon.setChecked(True)
+    suc = function.drawHorizon()
+    assert suc
+
+
 def test_drawAll(function):
     def test():
         pass

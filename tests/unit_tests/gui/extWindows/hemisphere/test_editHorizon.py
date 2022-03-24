@@ -17,6 +17,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import os
 
 # external packages
 import pyqtgraph as pg
@@ -42,6 +43,15 @@ def test_initConfig_1(function):
     function.app.config['mainW'] = {}
     suc = function.initConfig()
     assert suc
+
+
+def test_initConfig_2(function):
+    function.app.config['mainW'] = {}
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        suc = function.mwSuper('initConfig')
+        assert suc
 
 
 def test_storeConfig_1(function):

@@ -54,7 +54,7 @@ class EditHorizon:
 
         :return: True for test purpose
         """
-        config = self.app.config['hemisphereW']
+        config = self.app.config.get('hemisphereW', {})
         fileName = config.get('horizonMaskFileName', '')
         self.ui.horizonMaskFileName.setText(fileName)
         self.app.data.loadHorizonP(fileName=fileName)
@@ -71,6 +71,7 @@ class EditHorizon:
         self.ui.editModeHor.clicked.connect(self.setOperationModeHor)
 
         terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
+        self.drawHorizonTab()
         if not os.path.isfile(terrainFile):
             self.imageTerrain = None
             return False
@@ -84,8 +85,6 @@ class EditHorizon:
         self.imageTerrain = Image.new('L', (2880, 480), 128)
         self.imageTerrain.paste(img, (0, 60))
         self.imageTerrain.paste(img, (1440, 60))
-
-        self.drawHorizonTab()
         return True
 
     def storeConfig(self):

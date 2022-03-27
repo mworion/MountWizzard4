@@ -1146,7 +1146,7 @@ def test_sort_7():
 
 def test_generateCelestialEquator_1():
     value = app.generateCelestialEquator()
-    assert len(value) == 3480
+    assert len(value) == 1728
 
 
 def test_generateCelestialEquator_2():

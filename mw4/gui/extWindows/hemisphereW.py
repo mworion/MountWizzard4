@@ -300,7 +300,7 @@ class HemisphereWindow(MWidget, EditHorizon):
             self.ui.hemisphere.ci.layout.setColumnStretchFactor(0, 17)
             self.ui.hemisphere.ci.layout.setColumnStretchFactor(1, 0)
             plotItem.setVisible(False)
-            return
+            return False
 
         plotItem.setVisible(True)
         self.ui.hemisphere.ci.layout.setColumnStretchFactor(0, 17)

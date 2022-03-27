@@ -242,6 +242,20 @@ def test_preparePlotItem(function):
     assert suc
 
 
+def test_preparePolarItem_1(function):
+    pd = pg.PlotItem()
+    function.ui.showPolar.setChecked(False)
+    suc = function.preparePolarItem(pd)
+    assert not suc
+
+
+def test_preparePolarItem_2(function):
+    pd = pg.PlotItem()
+    function.ui.showPolar.setChecked(True)
+    suc = function.preparePolarItem(pd)
+    assert suc
+
+
 def test_prepareHemisphere(function):
     suc = function.prepareHemisphere()
     assert suc

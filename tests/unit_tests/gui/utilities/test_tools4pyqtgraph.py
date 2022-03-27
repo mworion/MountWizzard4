@@ -737,6 +737,14 @@ def test_PlotBase_addBarItem_2():
     p.addBarItem(plotItem=p.p[0])
 
 
+def test_findItemByName():
+    p = PlotBase()
+    item = pg.TextItem()
+    item.name = 'test'
+    p.p[0].addItem(item)
+    assert item == p.findItemByName(p.p[0], 'test')
+
+
 def test_PlotBase_drawHorizon_0():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
@@ -775,6 +783,17 @@ def test_PlotBase_drawHorizon_3():
     with mock.patch.object(p,
                            'show'):
         suc = p.drawHorizon([(0, 0), (1, 1)])
+        assert suc
+
+
+def test_PlotBase_drawHorizon_4():
+    p = PlotBase()
+    p.horizon = pg.PlotDataItem()
+    p.p.append(p.horizon)
+    p.p[0].addItem(pg.PlotDataItem())
+    with mock.patch.object(p,
+                           'show'):
+        suc = p.drawHorizon([(0, 0), (1, 1)], polar=True)
         assert suc
 
 

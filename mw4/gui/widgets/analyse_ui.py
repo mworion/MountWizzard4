@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'analyse.ui'
+# Form implementation generated from reading ui file './mw4/gui/widgets/analyse.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -768,15 +768,15 @@ class Ui_AnalyseDialog(object):
         self.groupBox_15.setTitle(_translate("AnalyseDialog", "Model point errors in ascending order"))
         self.groupBox_16.setTitle(_translate("AnalyseDialog", "Image pixel resolution as scale "))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("AnalyseDialog", "General Analyse"))
-        self.groupBox_2.setTitle(_translate("AnalyseDialog", "RA Raw Error (PlateSolve)"))
-        self.groupBox_7.setTitle(_translate("AnalyseDialog", "DEC Raw Error (PlateSolve)"))
-        self.groupBox_8.setTitle(_translate("AnalyseDialog", "RA Error (Model)"))
-        self.groupBox_9.setTitle(_translate("AnalyseDialog", "DEC Error (Model)"))
+        self.groupBox_2.setTitle(_translate("AnalyseDialog", "RA Raw Error (PlateSolve Result, w/o Model)"))
+        self.groupBox_7.setTitle(_translate("AnalyseDialog", "DEC Raw Error (PlateSolve Result, w/o Model)"))
+        self.groupBox_8.setTitle(_translate("AnalyseDialog", "RA Error (with Model)"))
+        self.groupBox_9.setTitle(_translate("AnalyseDialog", "DEC Error (with Model)"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("AnalyseDialog", "Alt / Az Analyse"))
-        self.groupBox_18.setTitle(_translate("AnalyseDialog", "DEC Raw Error (PlateSolve)"))
-        self.groupBox_17.setTitle(_translate("AnalyseDialog", "RA Raw Error (PlateSolve)"))
-        self.groupBox_19.setTitle(_translate("AnalyseDialog", "RA Error (Model)"))
-        self.groupBox_20.setTitle(_translate("AnalyseDialog", "DEC Error (Model)"))
+        self.groupBox_18.setTitle(_translate("AnalyseDialog", "DEC Raw Error (PlateSolve Result, w/o Model)"))
+        self.groupBox_17.setTitle(_translate("AnalyseDialog", "RA Raw Error (PlateSolve Result, w/o Model)"))
+        self.groupBox_19.setTitle(_translate("AnalyseDialog", "RA Error (with Model)"))
+        self.groupBox_20.setTitle(_translate("AnalyseDialog", "DEC Error (with Model)"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("AnalyseDialog", "RA / DEC Analyse"))
 from gui.utilities.tools4pyqtgraph import NormalScatter, PolarScatter
 

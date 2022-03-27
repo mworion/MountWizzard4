@@ -41,6 +41,7 @@ setup(
         'mw4.gui',
         'mw4.indibase',
         'mw4.gui.extWindows',
+        'mw4.gui.extWindows.hemisphere',
         'mw4.gui.extWindows.simulator',
         'mw4.gui.mainWmixin',
         'mw4.gui.mainWindow',

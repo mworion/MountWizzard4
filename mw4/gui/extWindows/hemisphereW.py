@@ -308,7 +308,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         plotItem.showAxes(False, showValues=False)
         plotItem.setMouseEnabled(x=False, y=False)
         plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
-        plotItem.getViewBox().rightMouseRange()
         plotItem.setXRange(-90, 90)
         plotItem.setYRange(-90, 90)
         plotItem.disableAutoRange()
@@ -684,6 +683,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.drawPointerHem()
         self.setupDome()
         self.drawDome()
+        self.ui.hemisphere.p[1].getViewBox().rightMouseRange()
         if self.ui.showHorizon.isChecked():
             self.drawHorizonOnHem()
         return True

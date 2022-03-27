@@ -502,16 +502,16 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         """
         if plotItem is None:
             plotItem = self.p[0]
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-2.5, -2.5, 5, 5)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-2, -2, 4, 4)
         circle.setPen(self.pen)
         circle.setBrush(self.brush)
         circle.setPos(0, 90 - lat)
         plotItem.addItem(circle)
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-5, -5, 10, 10)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-4, -4, 8, 8)
         circle.setPen(self.pen)
         circle.setPos(0, 90 - lat)
         plotItem.addItem(circle)
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-7.5, -7.5, 15, 15)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-6, -6, 12, 12)
         circle.setPen(self.pen)
         circle.setPos(0, 90 - lat)
         plotItem.addItem(circle)

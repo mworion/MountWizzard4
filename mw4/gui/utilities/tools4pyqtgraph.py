@@ -22,7 +22,7 @@ from datetime import datetime as dt
 import numpy as np
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QFont, QTransform
+from PyQt5.QtGui import QColor, QFont, QTransform, QPainterPath
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -380,28 +380,41 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 plotItem.getAxis(side).setTextPen(self.pen)
                 plotItem.getAxis(side).setGrid(32)
 
-    def addBarItem(self, interactive=False):
+    def addBarItem(self, interactive=False, plotItem=None):
         """
+        :param interactive:
+        :param plotItem:
         :return:
         """
+        if plotItem is None:
+            plotItem = self.p[0]
         self.barItem = pg.ColorBarItem(width=15, interactive=interactive)
         self.barItem.setVisible(False)
         for side in ('left', 'top', 'right', 'bottom'):
             self.barItem.getAxis(side).setPen(self.pen)
             self.barItem.getAxis(side).setTextPen(self.pen)
-        self.p[0].layout.addItem(self.barItem, 2, 5)
-        self.p[0].layout.setColumnFixedWidth(4, 5)
+        plotItem.layout.addItem(self.barItem, 2, 5)
+        plotItem.layout.setColumnFixedWidth(4, 5)
         return True
 
-    def drawHorizon(self, horizonP):
+    @staticmethod
+    def findItemByName(plotItem, name):
+        for item in plotItem.items:
+            if hasattr(item, 'name'):
+                if item.name == name:
+                    return item
+
+    def drawHorizon(self, horizonP, plotItem=None, polar=False):
         """
         :param horizonP:
+        :param plotItem:
+        :param polar:
         :return:
         """
-        if self.horizon:
-            self.p[0].removeItem(self.horizon)
+        if plotItem is None:
+            plotItem = self.p[0]
+        plotItem.removeItem(self.findItemByName(plotItem, 'horizon'))
         if len(horizonP) == 0:
-            self.horizon = None
             return False
         if not self.p[0].items:
             return False
@@ -409,15 +422,99 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         alt, az = zip(*horizonP)
         alt = np.array(alt)
         az = np.array(az)
-        altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
-        azF = np.concatenate([[0], [0], az, [360], [360]])
-        path = pg.arrayToQPath(azF, altF)
-        poly = pg.QtGui.QGraphicsPathItem(path)
-        poly.setPen(self.penHorizon)
-        poly.setBrush(self.brushHorizon)
-        poly.setZValue(-5)
-        self.horizon = poly
-        self.p[0].addItem(poly)
+        path = QPainterPath()
+        if not polar:
+            altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
+            azF = np.concatenate([[0], [0], az, [360], [360]])
+        else:
+            x = np.radians(90 - az)
+            azF = (90 - alt) * np.cos(x)
+            altF = (90 - alt) * np.sin(x)
+            path.addEllipse(-90, -90, 180, 180)
+
+        horPath = pg.arrayToQPath(azF, altF)
+        path.addPath(horPath)
+        horItem = pg.QtWidgets.QGraphicsPathItem(path)
+        horItem.setPen(self.penHorizon)
+        horItem.setBrush(self.brushHorizon)
+        horItem.setZValue(-5)
+        horItem.name = 'horizon'
+        plotItem.addItem(horItem)
+        return True
+
+    def setGrid(self, y=0, plotItem=None, **kwargs):
+        """
+        :param y:
+        :param plotItem:
+        :param kwargs:
+        :return:
+        """
+        if plotItem is None:
+            plotItem = self.p[0]
+        textAngle = np.radians(30)
+        if kwargs.get('reverse', False):
+            maxR = 90
+            stepLines = 10
+            gridLines = range(10, maxR, stepLines)
+            circle = pg.QtWidgets.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2,
+                                                       maxR * 2)
+            circle.setPen(self.pen)
+            plotItem.addItem(circle)
+        else:
+            maxR = int(np.max(y))
+            steps = 7
+            gridLines = np.round(np.linspace(0, maxR, steps), 1)
+
+        plotItem.addLine(x=0, pen=self.penGrid)
+        plotItem.addLine(y=0, pen=self.penGrid)
+
+        font = QFont(self.window().font().family(),
+                     int(self.window().font().pointSize() * 1.1))
+        for r in gridLines:
+            circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
+            circle.setPen(self.penGrid)
+            plotItem.addItem(circle)
+            if kwargs.get('reverse', False):
+                text = f'{90 - r}'
+            else:
+                text = f'{r}'
+            textItem = pg.TextItem(text=text, color=self.M_GREY, anchor=(0.5, 0.5))
+            textItem.setFont(font)
+            textItem.setPos(r * np.cos(textAngle), r * np.sin(textAngle))
+            plotItem.addItem(textItem)
+
+        for text, x, y in zip(
+                ['N', 'E', 'S', 'W', 'NE', 'SE', 'SW', 'NW'],
+                [0, maxR, 0, -maxR, maxR * 0.7, maxR * 0.7, -maxR * 0.7, - maxR * 0.7],
+                [maxR, 0, -maxR, 0, maxR * 0.7, - maxR * 0.7, - maxR * 0.7, maxR * 0.7]):
+            textItem = pg.TextItem(color=self.M_BLUE, anchor=(0.5, 0.5))
+            textItem.setHtml(f'<b>{text}</b>')
+            textItem.setFont(font)
+            textItem.setPos(x, y)
+            plotItem.addItem(textItem)
+        return True
+
+    def plotLoc(self, lat, plotItem=None):
+        """
+        :param lat:
+        :param plotItem:
+        :return:
+        """
+        if plotItem is None:
+            plotItem = self.p[0]
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-2.5, -2.5, 5, 5)
+        circle.setPen(self.pen)
+        circle.setBrush(self.brush)
+        circle.setPos(0, 90 - lat)
+        plotItem.addItem(circle)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-5, -5, 10, 10)
+        circle.setPen(self.pen)
+        circle.setPos(0, 90 - lat)
+        plotItem.addItem(circle)
+        circle = pg.QtWidgets.QGraphicsEllipseItem(-7.5, -7.5, 15, 15)
+        circle.setPen(self.pen)
+        circle.setPos(0, 90 - lat)
+        plotItem.addItem(circle)
         return True
 
 
@@ -510,55 +607,6 @@ class PolarScatter(NormalScatter):
         self.p[0].setAspectLocked(True)
         self.addBarItem()
 
-    def setGrid(self, y, **kwargs):
-        """
-        :param y:
-        :param kwargs:
-        :return:
-        """
-        textAngle = np.radians(30)
-        if kwargs.get('reverse', False):
-            maxR = 90
-            stepLines = 10
-            gridLines = range(10, maxR, stepLines)
-            circle = pg.QtWidgets.QGraphicsEllipseItem(-maxR, -maxR, maxR * 2,
-                                                       maxR * 2)
-            circle.setPen(self.pen)
-            self.p[0].addItem(circle)
-        else:
-            maxR = int(np.max(y))
-            steps = 7
-            gridLines = np.round(np.linspace(0, maxR, steps), 1)
-
-        self.p[0].addLine(x=0, pen=self.penGrid)
-        self.p[0].addLine(y=0, pen=self.penGrid)
-
-        font = QFont(self.window().font().family(),
-                     int(self.window().font().pointSize() * 1.1))
-        for r in gridLines:
-            circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
-            circle.setPen(self.penGrid)
-            self.p[0].addItem(circle)
-            if kwargs.get('reverse', False):
-                text = f'{90 - r}'
-            else:
-                text = f'{r}'
-            textItem = pg.TextItem(text=text, color=self.M_GREY, anchor=(0.5, 0.5))
-            textItem.setFont(font)
-            textItem.setPos(r * np.cos(textAngle), r * np.sin(textAngle))
-            self.p[0].addItem(textItem)
-
-        for text, x, y in zip(
-                ['N', 'E', 'S', 'W', 'NE', 'SE', 'SW', 'NW'],
-                [0, maxR, 0, -maxR, maxR * 0.7, maxR * 0.7, -maxR * 0.7, - maxR * 0.7],
-                [maxR, 0, -maxR, 0, maxR * 0.7, - maxR * 0.7, - maxR * 0.7, maxR * 0.7]):
-            textItem = pg.TextItem(color=self.M_BLUE, anchor=(0.5, 0.5))
-            textItem.setHtml(f'<b>{text}</b>')
-            textItem.setFont(font)
-            textItem.setPos(x, y)
-            self.p[0].addItem(textItem)
-        return True
-
     def plot(self, x, y, **kwargs):
         """
         :param x: azimuth
@@ -597,26 +645,6 @@ class PolarScatter(NormalScatter):
                            brush=pg.mkBrush(color=colorVal),)
             arrow.setPos(posX[i], posY[i])
             self.p[0].addItem(arrow)
-        return True
-
-    def plotLoc(self, lat):
-        """
-        :param lat:
-        :return:
-        """
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-2.5, -2.5, 5, 5)
-        circle.setPen(self.pen)
-        circle.setBrush(self.brush)
-        circle.setPos(0, lat)
-        self.p[0].addItem(circle)
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-5, -5, 10, 10)
-        circle.setPen(self.pen)
-        circle.setPos(0, lat)
-        self.p[0].addItem(circle)
-        circle = pg.QtWidgets.QGraphicsEllipseItem(-7.5, -7.5, 15, 15)
-        circle.setPen(self.pen)
-        circle.setPos(0, lat)
-        self.p[0].addItem(circle)
         return True
 
 
@@ -769,3 +797,12 @@ class Measure(PlotBase):
             plotItem.setVisible(False)
 
 
+class Hemisphere(PlotBase):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p.append(self.addPlot(viewBox=CustomViewBox()))
+        self.setupItems()
+        self.p[1].getViewBox().setAspectLocked(True)
+        self.p[1].setVisible(False)

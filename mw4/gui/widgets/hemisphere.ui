@@ -42,6 +42,7 @@
   </property>
   <property name="font">
    <font>
+    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -130,6 +131,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -160,6 +162,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -190,6 +193,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -250,6 +254,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -274,6 +279,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -298,6 +304,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -344,6 +351,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -368,6 +376,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -395,6 +404,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -425,6 +435,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -488,6 +499,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -574,6 +586,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -626,7 +639,7 @@
         <number>4</number>
        </property>
        <item row="0" column="0" rowspan="2">
-        <widget class="PlotBase" name="hemisphere" native="true"/>
+        <widget class="Hemisphere" name="hemisphere" native="true"/>
        </item>
       </layout>
      </widget>
@@ -868,6 +881,7 @@
             </property>
             <property name="font">
              <font>
+              <family>Arial</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -898,6 +912,7 @@
             </property>
             <property name="font">
              <font>
+              <family>Arial</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1056,6 +1071,12 @@
  <customwidgets>
   <customwidget>
    <class>PlotBase</class>
+   <extends>QWidget</extends>
+   <header>gui.utilities.tools4pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Hemisphere</class>
    <extends>QWidget</extends>
    <header>gui.utilities.tools4pyqtgraph</header>
    <container>1</container>

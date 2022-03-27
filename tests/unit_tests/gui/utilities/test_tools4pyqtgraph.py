@@ -727,7 +727,27 @@ def test_PlotBase_setupItems():
     p.setupItems()
 
 
-def test_PlotBase_staticHorizon_1():
+def test_PlotBase_addBarItem_1():
+    p = PlotBase()
+    p.addBarItem()
+
+
+def test_PlotBase_addBarItem_2():
+    p = PlotBase()
+    p.addBarItem(plotItem=p.p[0])
+
+
+def test_PlotBase_drawHorizon_0():
+    p = PlotBase()
+    p.horizon = pg.PlotDataItem()
+    p.p.append(p.horizon)
+    with mock.patch.object(p,
+                           'show'):
+        suc = p.drawHorizon([], plotItem=p.p[0])
+        assert not suc
+
+
+def test_PlotBase_drawHorizon_1():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
@@ -737,7 +757,7 @@ def test_PlotBase_staticHorizon_1():
         assert not suc
 
 
-def test_PlotBase_staticHorizon_2():
+def test_PlotBase_drawHorizon_2():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
@@ -747,7 +767,7 @@ def test_PlotBase_staticHorizon_2():
         assert not suc
 
 
-def test_PlotBase_staticHorizon_3():
+def test_PlotBase_drawHorizon_3():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
@@ -756,6 +776,24 @@ def test_PlotBase_staticHorizon_3():
                            'show'):
         suc = p.drawHorizon([(0, 0), (1, 1)])
         assert suc
+
+
+def test_PlotBase_setGrid_0():
+    p = PlotBase()
+    suc = p.setGrid(np.array([0, 1, 2]), plotItem=p.p[0])
+    assert suc
+
+
+def test_PlotBase_setGrid_1():
+    p = PlotBase()
+    suc = p.setGrid(np.array([0, 1, 2]))
+    assert suc
+
+
+def test_PlotBase_setGrid_2():
+    p = PlotBase()
+    suc = p.setGrid(np.array([0, 1, 2]), reverse=True)
+    assert suc
 
 
 def test_NormalScatter():
@@ -799,18 +837,6 @@ def test_NormalScatter_plot4():
 
 def test_PolarScatter():
     p = PolarScatter()
-
-
-def test_PolarScatter_setGrid_1():
-    p = PolarScatter()
-    suc = p.setGrid(np.array([0, 1, 2]))
-    assert suc
-
-
-def test_PolarScatter_setGrid_2():
-    p = PolarScatter()
-    suc = p.setGrid(np.array([0, 1, 2]), reverse=True)
-    assert suc
 
 
 def test_PolarScatter_plot1():

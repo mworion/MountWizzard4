@@ -141,7 +141,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.app.updatePointMarker.connect(self.setupModel)
         self.app.redrawHemisphere.connect(self.drawHemisphereTab)
         self.app.redrawHorizon.connect(self.drawHorizonOnHem)
-        self.app.redrawHorizon.connect(self.drawHorizonOnHem)
         self.app.colorChange.connect(self.colorChange)
 
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
@@ -159,6 +158,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.showAlignStar.clicked.connect(self.drawHemisphereTab)
         self.ui.showMountLimits.clicked.connect(self.drawHemisphereTab)
         self.ui.showCelestial.clicked.connect(self.drawHemisphereTab)
+        self.ui.showPolar.clicked.connect(self.drawHemisphereTab)
         self.ui.showTerrain.clicked.connect(self.drawHemisphereTab)
         self.drawHemisphereTab()
         self.show()
@@ -289,12 +289,42 @@ class HemisphereWindow(MWidget, EditHorizon):
         plotItem.disableAutoRange()
         return True
 
+    def preparePolarItem(self, plotItem):
+        """
+        :param plotItem:
+        :return:
+        """
+        plotItem.clear()
+        showPolar = self.ui.showPolar.isChecked()
+        if not showPolar:
+            self.ui.hemisphere.ci.layout.setColumnStretchFactor(0, 17)
+            self.ui.hemisphere.ci.layout.setColumnStretchFactor(1, 0)
+            plotItem.setVisible(False)
+            return
+
+        plotItem.setVisible(True)
+        self.ui.hemisphere.ci.layout.setColumnStretchFactor(0, 17)
+        self.ui.hemisphere.ci.layout.setColumnStretchFactor(1, 10)
+        plotItem.showAxes(False, showValues=False)
+        plotItem.setMouseEnabled(x=False, y=False)
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.getViewBox().rightMouseRange()
+        plotItem.setXRange(-90, 90)
+        plotItem.setYRange(-90, 90)
+        plotItem.disableAutoRange()
+        self.ui.hemisphere.setGrid(plotItem=plotItem, reverse=True)
+        lat = self.app.mount.obsSite.location.latitude.degrees
+        self.ui.hemisphere.plotLoc(lat, plotItem=plotItem)
+        return True
+
     def prepareHemisphere(self):
         """
         :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         self.preparePlotItem(plotItem)
+        polarItem = self.ui.hemisphere.p[1]
+        self.preparePolarItem(polarItem)
         self.pointerHem = None
         self.pointerDome = None
         self.modelPoints = None
@@ -328,7 +358,12 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         :return:
         """
-        self.ui.hemisphere.drawHorizon(self.app.data.horizonP)
+
+        p0 = self.ui.hemisphere.p[0]
+        p1 = self.ui.hemisphere.p[1]
+        self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p0)
+        self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p1,
+                                       polar=True)
         return True
 
     def drawTerrainMask(self, plotItem):

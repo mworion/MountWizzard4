@@ -805,15 +805,15 @@ class DataPoint(object):
 
         for dec in range(-75, 90, 15):
             for ha in range(- 119, 120, 2):
-                az, alt = HaDecToAltAz(ha / 10, dec, lat)
+                alt, az = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
-                    celestialEquator.append((az, alt))
+                    celestialEquator.append((alt, az))
 
         for ha in range(-115, 120, 10):
             for dec in range(- 90, 90, 2):
-                az, alt = HaDecToAltAz(ha / 10, dec, lat)
+                alt, az = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
-                    celestialEquator.append((az, alt))
+                    celestialEquator.append((alt, az))
 
         return celestialEquator
 

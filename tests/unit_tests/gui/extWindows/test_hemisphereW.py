@@ -420,20 +420,15 @@ def test_setupPointerHem(function):
 
 
 def test_drawPointerHem_1(function):
+    function.setupPointerHem()
     suc = function.drawPointerHem()
     assert not suc
 
 
 def test_drawPointerHem_2(function):
-    function.pointerHem = pg.ScatterPlotItem()
-    suc = function.drawPointerHem()
-    assert not suc
-
-
-def test_drawPointerHem_3(function):
-    function.pointerHem = pg.ScatterPlotItem()
     function.app.mount.obsSite.Az = Angle(degrees=10)
     function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.setupPointerHem()
     suc = function.drawPointerHem()
     assert suc
 

@@ -17,6 +17,8 @@
 # standard libraries
 
 # external packages
+import copy
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np
@@ -56,9 +58,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.setupUi(self)
         self.mwSuper('__init__')
         self.operationMode = 'normal'
-        self.pointerHem = None
         self.pointerDome = None
-        self.modelPoints = None
         self.modelPointsText = []
         self.alignmentStars = None
         self.alignmentStarsText = None
@@ -324,9 +324,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.preparePlotItem(plotItem)
         polarItem = self.ui.hemisphere.p[1]
         self.preparePolarItem(polarItem)
-        self.pointerHem = None
         self.pointerDome = None
-        self.modelPoints = None
         self.modelPointsText = []
         self.alignmentStars = None
         self.alignmentStarsText = None
@@ -341,16 +339,18 @@ class HemisphereWindow(MWidget, EditHorizon):
         if not celestial:
             return False
 
-        plotItem = self.ui.hemisphere.p[0]
-        alt, az = zip(*celestial)
-        alt = np.array(alt)
-        az = np.array(az)
-        pd = pg.ScatterPlotItem()
-        pd.setData(
-            x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1, size=0.9),
-            brush=pg.mkBrush(color=self.M_WHITE), size=0.9)
-        pd.setZValue(5)
-        plotItem.addItem(pd)
+        for i, plotItem in enumerate(self.ui.hemisphere.p):
+            alt, az = zip(*celestial)
+            alt = np.array(alt)
+            az = np.array(az)
+            pd = pg.ScatterPlotItem()
+            if i == 1:
+                az, alt = self.ui.hemisphere.toPolar(az, alt)
+            pd.setData(
+                x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1, size=0.9),
+                brush=pg.mkBrush(color=self.M_WHITE), size=0.9)
+            pd.setZValue(5)
+            plotItem.addItem(pd)
         return True
 
     def drawHorizonOnHem(self):
@@ -505,20 +505,28 @@ class HemisphereWindow(MWidget, EditHorizon):
         points = self.app.data.buildP
         if not points:
             return False
+
         x = [x[1] for x in points]
         y = [x[0] for x in points]
         act = [x[2] for x in points]
 
-        self.modelPoints.setData(x=x, y=y)
-        isEdit = self.ui.editModeHem.isChecked()
-        for i in range(len(x)):
-            active = act[i]
-            colActive = self.M_GREEN if active else self.M_YELLOW
-            color = self.M_PINK if isEdit else colActive
+        for index, plotItem in enumerate(self.ui.hemisphere.p):
+            item = self.ui.hemisphere.findItemByName(plotItem, 'model')
+            if not item:
+                continue
+            if index == 1:
+                x, y = self.ui.hemisphere.toPolar(x, y)
+            item.setData(x=x, y=y)
 
-            item = self.modelPoints.scatter.points()[i]
-            item.setPen(pg.mkPen(color=color, width=1.5))
-            item.setBrush(pg.mkBrush(color=color + '40'))
+            isEdit = self.ui.editModeHem.isChecked()
+            for i in range(len(x)):
+                active = act[i]
+                colActive = self.M_GREEN if active else self.M_YELLOW
+                color = self.M_PINK if isEdit else colActive
+
+                spot = item.scatter.points()[i]
+                spot.setPen(pg.mkPen(color=color, width=1.5))
+                spot.setBrush(pg.mkBrush(color=color + '40'))
         return True
 
     def drawModelText(self):
@@ -536,8 +544,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         for textItem in self.modelPointsText:
             self.ui.hemisphere.p[0].removeItem(textItem)
         self.modelPointsText = []
-
-        self.modelPoints.setData(x=x, y=y)
         isEdit = self.ui.editModeHem.isChecked()
         if isEdit:
             facFont = 1
@@ -578,29 +584,33 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         :return:
         """
-        plotItem = self.ui.hemisphere.p[0]
-        if self.ui.showSlewPath.isChecked():
-            pen = pg.mkPen(color=self.M_WHITE + '80', style=Qt.DashLine)
-        else:
-            pen = None
+        for i, plotItem in enumerate(self.ui.hemisphere.p):
+            if self.ui.showSlewPath.isChecked():
+                pen = pg.mkPen(color=self.M_WHITE + '80', style=Qt.DashLine)
+            else:
+                pen = None
 
-        if self.ui.editModeHem.isChecked():
-            self.modelPoints = pg.PlotDataItem(
-                symbolBrush=pg.mkBrush(color=self.M_PINK + '40'),
-                symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
-                symbolSize=10, symbol='o', connect='all', pen=pen)
-            vb = plotItem.getViewBox()
-            vb.setPlotDataItem(self.modelPoints)
-            vb.updateData = self.updateDataModel
-        else:
-            self.modelPoints = pg.PlotDataItem(
-                symbolBrush=pg.mkBrush(color=self.M_GREEN + '40'),
-                symbolPen=pg.mkPen(color=self.M_GREEN1, width=2),
-                symbolSize=8, symbol='o', connect='all', pen=pen)
-            vb = plotItem.getViewBox()
-            vb.setPlotDataItem(None)
-        self.modelPoints.setZValue(40)
-        plotItem.addItem(self.modelPoints)
+            if self.ui.editModeHem.isChecked():
+                pd = pg.PlotDataItem(
+                    symbolBrush=pg.mkBrush(color=self.M_PINK + '40'),
+                    symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
+                    symbolSize=10, symbol='o', connect='all', pen=pen)
+                pd.nameStr = 'model'
+                vb = plotItem.getViewBox()
+                vb.setPlotDataItem(pd)
+                if i == 0:
+                    vb.updateData = self.updateDataModel
+            else:
+                pd = pg.PlotDataItem(
+                    symbolBrush=pg.mkBrush(color=self.M_GREEN + '40'),
+                    symbolPen=pg.mkPen(color=self.M_GREEN1, width=2),
+                    symbolSize=8, symbol='o', connect='all', pen=pen)
+                pd.nameStr = 'model'
+                vb = plotItem.getViewBox()
+                if i == 0:
+                    vb.setPlotDataItem(None)
+            pd.setZValue(40)
+            plotItem.addItem(pd)
 
         self.drawModelPoints()
         self.drawModelText()
@@ -610,32 +620,40 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         :return:
         """
-        plotItem = self.ui.hemisphere.p[0]
-        symbol = self.makePointer()
-        self.pointerHem = pg.ScatterPlotItem(symbol=symbol, size=40)
-        self.pointerHem.setData(x=[0], y=[45])
-        self.pointerHem.setPen(pg.mkPen(color=self.M_PINK))
-        self.pointerHem.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
-        self.pointerHem.setZValue(10)
-        plotItem.addItem(self.pointerHem)
+        for plotItem in self.ui.hemisphere.p:
+            symbol = self.makePointer()
+            pd = pg.ScatterPlotItem(symbol=symbol, size=40)
+            pd.setData(x=[0], y=[0])
+            pd.setPen(pg.mkPen(color=self.M_PINK))
+            pd.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
+            pd.setZValue(10)
+            pd.nameStr = 'pointer'
+            plotItem.addItem(pd)
         return True
 
     def drawPointerHem(self):
         """
         :return:
         """
-        if self.pointerHem is None:
-            return False
+        items = []
+        for plotItem in self.ui.hemisphere.p:
+            item = self.ui.hemisphere.findItemByName(plotItem, 'pointer')
+            if item:
+                items.append(item)
 
         obsSite = self.app.mount.obsSite
-        if obsSite.Alt is None or obsSite.Az is None:
-            self.pointerHem.setVisible(False)
+        isVisible = not (obsSite.Alt is None or obsSite.Az is None)
+        for item in items:
+            item.setVisible(isVisible)
+
+        if not isVisible:
             return False
 
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
-        self.pointerHem.setData(x=[az], y=[alt])
-        self.pointerHem.setVisible(True)
+        items[0].setData(x=[az], y=[alt])
+        x, y = self.ui.hemisphere.toPolar([az], [alt])
+        items[1].setData(x=x, y=y)
         return True
 
     def setupDome(self):

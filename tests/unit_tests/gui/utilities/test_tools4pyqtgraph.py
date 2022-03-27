@@ -737,10 +737,27 @@ def test_PlotBase_addBarItem_2():
     p.addBarItem(plotItem=p.p[0])
 
 
+def test_toPolar():
+    p = PlotBase()
+    az = [0, 90, 180, 270]
+    alt = [0, 0, 0, 0]
+    x, y = p.toPolar(az, alt)
+    assert len(x) == 4
+    assert len(y) == 4
+    assert round(x[0], 0) == 0
+    assert round(x[1], 0) == 90
+    assert round(x[2], 0) == 0
+    assert round(x[3], 0) == -90
+    assert round(y[0], 0) == 90
+    assert round(y[1], 0) == 0
+    assert round(y[2], 0) == -90
+    assert round(y[3], 0) == 0
+
+
 def test_findItemByName():
     p = PlotBase()
     item = pg.TextItem()
-    item.name = 'test'
+    item.nameStr = 'test'
     p.p[0].addItem(item)
     assert item == p.findItemByName(p.p[0], 'test')
 

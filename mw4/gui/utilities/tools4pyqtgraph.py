@@ -398,10 +398,19 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         return True
 
     @staticmethod
+    def toPolar(az, alt):
+        az = np.array(az)
+        alt = np.array(alt)
+        theta = np.radians(90 - az)
+        x = (90 - alt) * np.cos(theta)
+        y = (90 - alt) * np.sin(theta)
+        return x, y
+
+    @staticmethod
     def findItemByName(plotItem, name):
         for item in plotItem.items:
-            if hasattr(item, 'name'):
-                if item.name == name:
+            if hasattr(item, 'nameStr'):
+                if item.nameStr == name:
                     return item
 
     def drawHorizon(self, horizonP, plotItem=None, polar=False):
@@ -427,9 +436,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
             azF = np.concatenate([[0], [0], az, [360], [360]])
         else:
-            x = np.radians(90 - az)
-            azF = (90 - alt) * np.cos(x)
-            altF = (90 - alt) * np.sin(x)
+            azF, altF = self.toPolar(az, alt)
             path.addEllipse(-90, -90, 180, 180)
 
         horPath = pg.arrayToQPath(azF, altF)
@@ -438,7 +445,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         horItem.setPen(self.penHorizon)
         horItem.setBrush(self.brushHorizon)
         horItem.setZValue(-5)
-        horItem.name = 'horizon'
+        horItem.nameStr = 'horizon'
         plotItem.addItem(horItem)
         return True
 

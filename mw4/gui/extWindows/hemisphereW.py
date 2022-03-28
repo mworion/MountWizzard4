@@ -141,6 +141,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.app.redrawHemisphere.connect(self.drawHemisphereTab)
         self.app.redrawHorizon.connect(self.drawHorizonOnHem)
         self.app.colorChange.connect(self.colorChange)
+        self.app.enableEditPoints.connect(self.enableOperationModeChange)
 
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.drawPointerHem)
@@ -201,6 +202,16 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.horizon.colorChange()
         self.drawHemisphereTab()
         self.colorChangeHorizon()
+        return True
+
+    def enableOperationModeChange(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if not value:
+            self.ui.normalModeHem.setChecked(True)
+        self.ui.operationModeGroup.setEnabled(value)
         return True
 
     def setOperationModeHem(self):

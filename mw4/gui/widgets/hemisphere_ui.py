@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/hemisphere.ui'
+# Form implementation generated from reading ui file 'hemisphere.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -36,16 +36,16 @@ class Ui_HemisphereDialog(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(4)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.groupBox = QtWidgets.QGroupBox(HemisphereDialog)
-        self.groupBox.setMinimumSize(QtCore.QSize(120, 0))
-        self.groupBox.setProperty("large", True)
-        self.groupBox.setObjectName("groupBox")
-        self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox)
+        self.operationModeGroup = QtWidgets.QGroupBox(HemisphereDialog)
+        self.operationModeGroup.setMinimumSize(QtCore.QSize(120, 0))
+        self.operationModeGroup.setProperty("large", True)
+        self.operationModeGroup.setObjectName("operationModeGroup")
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.operationModeGroup)
         self.gridLayout_7.setContentsMargins(10, 15, 15, 10)
         self.gridLayout_7.setHorizontalSpacing(15)
         self.gridLayout_7.setVerticalSpacing(5)
         self.gridLayout_7.setObjectName("gridLayout_7")
-        self.normalModeHem = QtWidgets.QRadioButton(self.groupBox)
+        self.normalModeHem = QtWidgets.QRadioButton(self.operationModeGroup)
         self.normalModeHem.setMinimumSize(QtCore.QSize(0, 21))
         self.normalModeHem.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
@@ -55,7 +55,7 @@ class Ui_HemisphereDialog(object):
         self.normalModeHem.setChecked(True)
         self.normalModeHem.setObjectName("normalModeHem")
         self.gridLayout_7.addWidget(self.normalModeHem, 0, 0, 1, 1)
-        self.editModeHem = QtWidgets.QRadioButton(self.groupBox)
+        self.editModeHem = QtWidgets.QRadioButton(self.operationModeGroup)
         self.editModeHem.setMinimumSize(QtCore.QSize(0, 21))
         self.editModeHem.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
@@ -64,7 +64,7 @@ class Ui_HemisphereDialog(object):
         self.editModeHem.setFont(font)
         self.editModeHem.setObjectName("editModeHem")
         self.gridLayout_7.addWidget(self.editModeHem, 1, 0, 1, 1)
-        self.alignmentModeHem = QtWidgets.QRadioButton(self.groupBox)
+        self.alignmentModeHem = QtWidgets.QRadioButton(self.operationModeGroup)
         self.alignmentModeHem.setEnabled(True)
         self.alignmentModeHem.setMinimumSize(QtCore.QSize(0, 21))
         self.alignmentModeHem.setMaximumSize(QtCore.QSize(16777215, 20))
@@ -74,7 +74,7 @@ class Ui_HemisphereDialog(object):
         self.alignmentModeHem.setFont(font)
         self.alignmentModeHem.setObjectName("alignmentModeHem")
         self.gridLayout_7.addWidget(self.alignmentModeHem, 2, 0, 1, 1)
-        self.horizontalLayout.addWidget(self.groupBox)
+        self.horizontalLayout.addWidget(self.operationModeGroup)
         self.groupBox_3 = QtWidgets.QGroupBox(HemisphereDialog)
         self.groupBox_3.setProperty("large", True)
         self.groupBox_3.setObjectName("groupBox_3")
@@ -362,13 +362,13 @@ class Ui_HemisphereDialog(object):
         self.verticalLayout.addWidget(self.tabWidget)
 
         self.retranslateUi(HemisphereDialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(HemisphereDialog)
 
     def retranslateUi(self, HemisphereDialog):
         _translate = QtCore.QCoreApplication.translate
         HemisphereDialog.setWindowTitle(_translate("HemisphereDialog", "Hemisphere"))
-        self.groupBox.setTitle(_translate("HemisphereDialog", "Operation Mode"))
+        self.operationModeGroup.setTitle(_translate("HemisphereDialog", "Operation Mode"))
         self.normalModeHem.setToolTip(_translate("HemisphereDialog", "Switching the hemisphere window to normal working mode."))
         self.normalModeHem.setText(_translate("HemisphereDialog", "Normal"))
         self.editModeHem.setToolTip(_translate("HemisphereDialog", "Enabling the edit mode for model build points."))

@@ -146,6 +146,11 @@ def test_colorChange(function):
         assert suc
 
 
+def test_enableOperationModeChange_1(function):
+    suc = function.enableOperationModeChange(False)
+    assert suc
+
+
 def test_setOperationModeHem_1(function):
     function.ui.editModeHem.setChecked(True)
     suc = function.setOperationModeHem()

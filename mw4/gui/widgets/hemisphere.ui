@@ -83,7 +83,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="operationModeGroup">
        <property name="minimumSize">
         <size>
          <width>120</width>
@@ -616,7 +616,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="HemisphereTab">
       <attribute name="title">

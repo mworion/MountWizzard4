@@ -458,7 +458,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         """
         if plotItem is None:
             plotItem = self.p[0]
-        textAngle = np.radians(30)
+        textAngle = np.radians(150)
         if kwargs.get('reverse', False):
             maxR = 90
             stepLines = 10
@@ -485,15 +485,18 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 text = f'{90 - r}'
             else:
                 text = f'{r}'
-            textItem = pg.TextItem(text=text, color=self.M_GREY, anchor=(0.5, 0.5))
+            textItem = pg.TextItem(text=text, color=self.M_BLUE, anchor=(0.5, 0.5))
             textItem.setFont(font)
             textItem.setPos(r * np.cos(textAngle), r * np.sin(textAngle))
             plotItem.addItem(textItem)
 
+        maxL = maxR * 1.1
         for text, x, y in zip(
                 ['N', 'E', 'S', 'W', 'NE', 'SE', 'SW', 'NW'],
-                [0, maxR, 0, -maxR, maxR * 0.7, maxR * 0.7, -maxR * 0.7, - maxR * 0.7],
-                [maxR, 0, -maxR, 0, maxR * 0.7, - maxR * 0.7, - maxR * 0.7, maxR * 0.7]):
+                [0, maxL, 0, -maxL, maxL * 0.75,
+                 maxL * 0.75, -maxL * 0.75, - maxL * 0.75],
+                [maxL, 0, -maxL, 0, maxL * 0.75,
+                 - maxL * 0.75, - maxL * 0.75, maxL * 0.75]):
             textItem = pg.TextItem(color=self.M_BLUE, anchor=(0.5, 0.5))
             textItem.setHtml(f'<b>{text}</b>')
             textItem.setFont(font)

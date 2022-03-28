@@ -36,11 +36,12 @@ class HemisphereWindow(MWidget, EditHorizon):
     show / edit etc. the z orders is aligned as follows:
 
     on the static plane we have (and set to the z order)
+        - terrain image         -10
         - horizon               0
         - horizon limits        0
+        - celestial path        0
         - meridian limit track  10
-        - meridian limit slew   15
-        - celestial path        20
+        - meridian limit slew   20
         - alignment stars       30
         - build points          40
         - checked build points  50
@@ -347,7 +348,6 @@ class HemisphereWindow(MWidget, EditHorizon):
             pd.setData(
                 x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1, size=0.9),
                 brush=pg.mkBrush(color=self.M_WHITE), size=0.9)
-            pd.setZValue(5)
             plotItem.addItem(pd)
         return True
 
@@ -408,7 +408,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         mTrack = pg.QtWidgets.QGraphicsRectItem(180 - track, 0, 2 * track, 90)
         mTrack.setPen(pg.mkPen(color=self.M_YELLOW1 + '40'))
         mTrack.setBrush(pg.mkBrush(color=self.M_YELLOW + '40'))
-        mTrack.setZValue(15)
+        mTrack.setZValue(20)
         plotItem.addItem(mTrack)
         return True
 
@@ -480,7 +480,7 @@ class HemisphereWindow(MWidget, EditHorizon):
                 rel = self.calculateRelevance(alt=alt, az=az)
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
-                fontSize = 7
+                fontSize = 8
                 fontColor = self.M_WHITE1
 
             item = self.alignmentStars.points()[i]
@@ -546,7 +546,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         if isEdit:
             facFont = 1
         else:
-            facFont = 0.8
+            facFont = 0.85
         font = QFont(self.window().font().family(),
                      int(self.window().font().pointSize() * facFont))
         for i in range(len(x)):
@@ -584,7 +584,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         for i, plotItem in enumerate(self.ui.hemisphere.p):
             if self.ui.showSlewPath.isChecked():
-                pen = pg.mkPen(color=self.M_WHITE + '80', style=Qt.DashLine)
+                pen = pg.mkPen(color=self.M_GREEN, style=Qt.DashLine)
             else:
                 pen = None
 
@@ -624,7 +624,7 @@ class HemisphereWindow(MWidget, EditHorizon):
             pd.setData(x=[0], y=[0])
             pd.setPen(pg.mkPen(color=self.M_PINK))
             pd.setBrush(pg.mkBrush(color=self.M_PINK + '20'))
-            pd.setZValue(10)
+            pd.setZValue(60)
             pd.nameStr = 'pointer'
             plotItem.addItem(pd)
         return True

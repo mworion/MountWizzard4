@@ -17,8 +17,6 @@
 # standard libraries
 
 # external packages
-import copy
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np

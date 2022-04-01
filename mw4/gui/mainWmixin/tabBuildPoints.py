@@ -66,8 +66,6 @@ class BuildPoints:
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
-        self.ui.durationDSO.valueChanged.connect(self.genBuildDSO)
-        self.ui.timeShiftDSO.valueChanged.connect(self.genBuildDSO)
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
@@ -98,8 +96,6 @@ class BuildPoints:
         self.ui.altitudeMin.valueChanged.disconnect(self.genBuildGrid)
         self.ui.altitudeMax.valueChanged.disconnect(self.genBuildGrid)
         self.ui.numberDSOPoints.valueChanged.disconnect(self.genBuildDSO)
-        self.ui.durationDSO.valueChanged.disconnect(self.genBuildDSO)
-        self.ui.timeShiftDSO.valueChanged.disconnect(self.genBuildDSO)
 
         self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
         self.ui.numberGridPointsRow.setValue(config.get('numberGridPointsRow', 5))
@@ -107,8 +103,6 @@ class BuildPoints:
         self.ui.altitudeMin.setValue(config.get('altitudeMin', 30))
         self.ui.altitudeMax.setValue(config.get('altitudeMax', 75))
         self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 15))
-        self.ui.durationDSO.setValue(config.get('durationDSO', 7))
-        self.ui.timeShiftDSO.setValue(config.get('timeShiftDSO', 0))
 
         self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
         self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', True))
@@ -128,8 +122,6 @@ class BuildPoints:
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
-        self.ui.durationDSO.valueChanged.connect(self.genBuildDSO)
-        self.ui.timeShiftDSO.valueChanged.connect(self.genBuildDSO)
         self.setupDsoGui()
         return True
 
@@ -144,8 +136,6 @@ class BuildPoints:
         config['altitudeMin'] = self.ui.altitudeMin.value()
         config['altitudeMax'] = self.ui.altitudeMax.value()
         config['numberDSOPoints'] = self.ui.numberDSOPoints.value()
-        config['durationDSO'] = self.ui.durationDSO.value()
-        config['timeShiftDSO'] = self.ui.timeShiftDSO.value()
         config['checkAutoDeleteMeridian'] = self.ui.checkAutoDeleteMeridian.isChecked()
         config['checkAutoDeleteHorizon'] = self.ui.checkAutoDeleteHorizon.isChecked()
         config['checkSafetyMarginHorizon'] = self.ui.checkSafetyMarginHorizon.isChecked()
@@ -370,43 +360,31 @@ class BuildPoints:
         :return: success
         """
         self.lastGenerator = 'dso'
-        ra = self.app.mount.obsSite.raJNow
+        ha = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
         lst = self.app.mount.obsSite.timeSidereal
         timeJD = self.app.mount.obsSite.timeJD
         location = self.app.mount.obsSite.location
 
-        if ra is None or dec is None or location is None or lst is None:
+        if ha is None or dec is None or location is None or lst is None:
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
 
         if self.simbadRa and self.simbadDec:
-            ra = Angle(hours=self.simbadRa.hours - lst.hours)
+            ha = self.simbadRa
             dec = self.simbadDec
 
         self.ui.numberDSOPoints.setEnabled(False)
-        self.ui.durationDSO.setEnabled(False)
-        self.ui.timeShiftDSO.setEnabled(False)
-
         numberPoints = self.ui.numberDSOPoints.value()
-        duration = self.ui.durationDSO.value()
-        timeShift = self.ui.timeShiftDSO.value()
-
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateDSOPath(ra=ra,
+        suc = self.app.data.generateDSOPath(ha=ha,
                                             dec=dec,
                                             timeJD=timeJD,
                                             location=location,
                                             numberPoints=numberPoints,
-                                            duration=duration,
-                                            timeShift=timeShift,
-                                            keep=keep,
-                                            )
-
+                                            keep=keep)
         if not suc:
             self.ui.numberDSOPoints.setEnabled(True)
-            self.ui.durationDSO.setEnabled(True)
-            self.ui.timeShiftDSO.setEnabled(True)
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
 
@@ -414,8 +392,6 @@ class BuildPoints:
             self.app.data.ditherPoints()
         self.processPoints()
         self.ui.numberDSOPoints.setEnabled(True)
-        self.ui.durationDSO.setEnabled(True)
-        self.ui.timeShiftDSO.setEnabled(True)
         return True
 
     def genBuildSpiralMax(self):

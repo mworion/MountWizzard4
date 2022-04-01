@@ -24,7 +24,8 @@ import csv
 
 # external packages
 import numpy as np
-import skyfield.api
+from skyfield.api import Star, Angle
+from skyfield import almanac
 from scipy.spatial import distance
 
 # local imports
@@ -119,10 +120,7 @@ class DataPoint(object):
                     120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0],
             }
 
-    def __init__(self,
-                 app=None,
-                 ):
-
+    def __init__(self, app=None):
         self.app = app
         self.configDir = app.mwGlob['configDir']
         self._horizonP = list()
@@ -816,27 +814,41 @@ class DataPoint(object):
 
         return celestialEquator
 
-    def generateDSOPath(self, ra=0, dec=0, timeJD=0, location=None,
-                        numberPoints=0, duration=0, timeShift=0, keep=False):
+    def calcPath(self, ts, numberPoints, edgeDSO, ha, dec, location):
+        """
+        :param ts:
+        :param numberPoints:
+        :param edgeDSO:
+        :param ha:
+        :param dec:
+        :param location:
+        :return:
+        """
+        buildP = []
+        for i in range(numberPoints):
+            starTime = ts.tt_jd(edgeDSO + i / numberPoints)
+            az, alt = transform.J2000ToAltAz(ha, dec, starTime, location)
+            if alt.degrees > 0:
+                buildP.append((alt.degrees, az.degrees % 360, True))
+        return buildP
+
+    def generateDSOPath(self, ha=0, dec=0, timeJD=0, location=None,
+                        numberPoints=0, keep=False):
         """
         generateDSOPath calculates a list of model points along the desired path
         beginning at ra, dec coordinates, which is in time duration hours long
         and consists of numberPoints model points. TimeShift moves the pearl of
         points to an earlier or later point in time.
 
-        :param ra:
+        :param ha:
         :param dec:
         :param timeJD:
         :param location:
         :param numberPoints:
-        :param duration:
-        :param timeShift:
         :param keep:
         :return: True for test purpose
         """
         if numberPoints < 1:
-            return False
-        if duration == 0:
             return False
         if location is None:
             return False
@@ -845,13 +857,28 @@ class DataPoint(object):
         if not keep:
             self.clearBuildP()
 
-        for i in range(0, numberPoints):
-            startPoint = ra.hours - i * duration / numberPoints - timeShift
-            raCalc = skyfield.api.Angle(hours=startPoint)
-            az, alt = transform.J2000ToAltAz(raCalc, dec, timeJD, location)
-            if alt.degrees > 0:
-                self.addBuildP((alt.degrees, az.degrees % 360, True))
+        star = Star(ra=ha, dec=dec)
+        startTime = timeJD
+        ts = self.app.mount.obsSite.ts
+        endTime = ts.tt_jd(timeJD.tt + 1.1)
+        eph = self.app.ephemeris
+        f = almanac.risings_and_settings(eph, star, location)
+        f.step_days = 0.08
+        t, y = almanac.find_discrete(startTime, endTime, f)
 
+        index = next((x for x in y if x == 1), None)
+        if index is None:
+            edgeDSO = int(ts.now().tt) - 0.5
+        else:
+            edgeDSO = t[index].tt
+
+        number = numberPoints
+        buildPs = []
+        while len(buildPs) < numberPoints:
+            buildPs = self.calcPath(ts, number, edgeDSO, ha, dec, location)
+            number += 1
+        for buildP in buildPs:
+            self.addBuildP(buildP)
         return True
 
     def generateGoldenSpiral(self, numberPoints, keep=False):

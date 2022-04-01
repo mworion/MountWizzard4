@@ -20,6 +20,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- update: builtin data for finals200.all
 - fix: download iers data: fix file not found feedback
  """
 

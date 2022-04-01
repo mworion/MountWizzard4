@@ -68,6 +68,7 @@ class SettMisc(object):
             self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
             self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
             self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
+            self.app.mount.signals.mountUp.connect(self.connectionLost)
             self.setupAudioSignals()
 
     def initConfig(self):
@@ -96,6 +97,10 @@ class SettMisc(object):
         self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
+        self.ui.soundConnectionLost.setCurrentIndex(config.get('soundConnectionLost',
+                                                               0))
+        self.ui.soundSatStartTracking.setCurrentIndex(config.get(
+            'soundSatStartTracking', 0))
 
         isWindows = platform.system() == 'Windows'
         self.ui.automateGroup.setVisible(isWindows)
@@ -132,7 +137,19 @@ class SettMisc(object):
         config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
         config['soundImageSaved'] = self.ui.soundImageSaved.currentIndex()
         config['soundImageSolved'] = self.ui.soundImageSolved.currentIndex()
+        config['soundConnectionLost'] = self.ui.soundConnectionLost.currentIndex()
+        config['soundSatStartTracking'] = self.ui.soundSatStartTracking.currentIndex()
         return True
+
+    def connectionLost(self, status):
+        """
+        :param status:
+        :return:
+        """
+        if not status and pConf.isAvailable:
+            self.playSound('ConnectionLost')
+            return True
+        return False
 
     def setWeatherOnline(self):
         """
@@ -356,7 +373,8 @@ class SettMisc(object):
         self.guiAudioList['MountAlert'] = self.ui.soundMountAlert
         self.guiAudioList['ModelingFinished'] = self.ui.soundModelingFinished
         self.guiAudioList['ImageSaved'] = self.ui.soundImageSaved
-        self.guiAudioList['ImageSolved'] = self.ui.soundImageSolved
+        self.guiAudioList['ConnectionLost'] = self.ui.soundConnectionLost
+        self.guiAudioList['SatStartTracking'] = self.ui.soundSatStartTracking
 
         for itemKey, itemValue in self.guiAudioList.items():
             self.guiAudioList[itemKey].addItem('None')

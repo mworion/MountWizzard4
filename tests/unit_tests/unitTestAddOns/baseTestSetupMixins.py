@@ -232,6 +232,7 @@ class Mount(QObject):
         locationDone = pyqtSignal()
         settingDone = pyqtSignal()
         pointDone = pyqtSignal()
+        mountUp = pyqtSignal()
         firmwareDone = pyqtSignal()
         calcTLEdone = pyqtSignal()
         getTLEdone = pyqtSignal()

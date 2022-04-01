@@ -19,7 +19,6 @@
 import pytest
 from unittest import mock
 import logging
-import subprocess
 import platform
 import os
 
@@ -35,7 +34,7 @@ from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
-import base.packageConfig
+import base.packageConfig as pConf
 setupLogging()
 
 
@@ -69,6 +68,18 @@ def test_initConfig_1(function):
 
 def test_storeConfig_1(function):
     suc = function.storeConfig()
+    assert suc
+
+
+def test_connectionLost_1(function):
+    pConf.isAvailable = True
+    suc = function.connectionLost(True)
+    assert not suc
+
+
+def test_connectionLost_2(function):
+    pConf.isAvailable = True
+    suc = function.connectionLost(False)
     assert suc
 
 

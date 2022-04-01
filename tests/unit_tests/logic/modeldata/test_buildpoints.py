@@ -24,27 +24,18 @@ import unittest.mock as mock
 
 # external packages
 import skyfield.api
-from skyfield.api import Angle
-from skyfield.api import wgs84
-from mountcontrol.mount import Mount
+from skyfield.api import Angle, wgs84
 import numpy as np
 
 # local import
 from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.buildpoints import HaDecToAltAz
 from base import transform
+from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test():
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        mwGlob = {'configDir': 'tests/workDir/config'}
-
     global app
 
     config = 'tests/workDir/config'
@@ -55,7 +46,7 @@ def module_setup_teardown():
         if item.endswith('.hpts'):
             os.remove(os.path.join(config, item))
 
-    app = DataPoint(app=Test())
+    app = DataPoint(app=App())
     yield
 
 

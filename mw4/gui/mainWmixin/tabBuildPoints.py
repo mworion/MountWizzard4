@@ -79,6 +79,7 @@ class BuildPoints:
         self.ui.checkSortNothing.clicked.connect(self.rebuildPoints)
         self.ui.checkSortEW.clicked.connect(self.rebuildPoints)
         self.ui.checkSortHL.clicked.connect(self.rebuildPoints)
+        self.ui.ditherBuildPoints.clicked.connect(self.rebuildPoints)
         self.ui.checkAvoidFlip.clicked.connect(self.rebuildPoints)
         self.ui.checkAutoDeleteMeridian.clicked.connect(self.rebuildPoints)
         self.ui.checkAutoDeleteHorizon.clicked.connect(self.rebuildPoints)
@@ -297,9 +298,9 @@ class BuildPoints:
             self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
 
-        self.processPoints()
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
+        self.processPoints()
         return True
 
     def genBuildMed(self):
@@ -317,9 +318,9 @@ class BuildPoints:
             self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
 
-        self.processPoints()
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
+        self.processPoints()
         return True
 
     def genBuildNorm(self):
@@ -337,9 +338,9 @@ class BuildPoints:
             self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
 
-        self.processPoints()
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
+        self.processPoints()
         return True
 
     def genBuildMin(self):
@@ -357,9 +358,9 @@ class BuildPoints:
             self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
 
-        self.processPoints()
         if self.ui.ditherBuildPoints.isChecked():
             self.app.data.ditherPoints()
+        self.processPoints()
         return True
 
     def genBuildDSO(self):
@@ -409,13 +410,12 @@ class BuildPoints:
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
 
+        if self.ui.ditherBuildPoints.isChecked():
+            self.app.data.ditherPoints()
         self.processPoints()
         self.ui.numberDSOPoints.setEnabled(True)
         self.ui.durationDSO.setEnabled(True)
         self.ui.timeShiftDSO.setEnabled(True)
-
-        if self.ui.ditherBuildPoints.isChecked():
-            self.app.data.ditherPoints()
         return True
 
     def genBuildSpiralMax(self):

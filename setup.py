@@ -28,6 +28,7 @@ releaseNotes = """
 - add: set dither or nor for model build points on celestial paths
 - improve: complete rework of charting: performance and functions
 - improve: iers download messages
+- improve: optimized DSO path generation (always fit, less params)
 - remove: matplotlib usage and replace with pyqtgraph
 
  """

@@ -1158,11 +1158,9 @@ def test_generateCelestialEquator_2():
 def test_generateDSOPath_1():
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    suc = app.generateDSOPath(ra=ra,
+    suc = app.generateDSOPath(ha=ra,
                               dec=dec,
                               numberPoints=0,
-                              duration=1,
-                              timeShift=0,
                               )
     assert not suc
 
@@ -1170,11 +1168,9 @@ def test_generateDSOPath_1():
 def test_generateDSOPath_2():
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    suc = app.generateDSOPath(ra=ra,
+    suc = app.generateDSOPath(ha=ra,
                               dec=dec,
                               numberPoints=1,
-                              duration=0,
-                              timeShift=0,
                               )
     assert not suc
 
@@ -1182,11 +1178,9 @@ def test_generateDSOPath_2():
 def test_generateDSOPath_3():
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    suc = app.generateDSOPath(ra=ra,
+    suc = app.generateDSOPath(ha=ra,
                               dec=dec,
                               numberPoints=1,
-                              duration=1,
-                              timeShift=0,
                               )
     assert not suc
 
@@ -1197,11 +1191,9 @@ def test_generateDSOPath_4():
     with mock.patch.object(transform,
                            'J2000ToAltAz',
                            return_value=(Angle(degrees=10), Angle(degrees=10))):
-        suc = app.generateDSOPath(ra=ra,
+        suc = app.generateDSOPath(ha=ra,
                                   dec=dec,
                                   numberPoints=1,
-                                  duration=1,
-                                  timeShift=0,
                                   timeJD=app.app.mount.obsSite.timeJD,
                                   location=app.app.mount.obsSite.location,
                                   )

@@ -105,6 +105,7 @@ class MainWindow(
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.closing = False
+        self.satStatus = False
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
         self.uiWindows['showMessageW'] = {
@@ -756,6 +757,12 @@ class MainWindow(
             self.changeStyleDynamic(self.ui.stop, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.stop, 'running', False)
+
+        if self.app.mount.obsSite.status == 10 and not self.satStatus:
+            self.app.playSound.emit('SatStartTracking')
+            self.satStatus = True
+        elif self.app.mount.obsSite.status != 0:
+            self.satStatus = False
 
         return True
 

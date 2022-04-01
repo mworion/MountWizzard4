@@ -124,6 +124,7 @@ def function_setup_teardown(qtbot):
         redrawSimulator = pyqtSignal()
         drawHorizonPoints = pyqtSignal()
         drawBuildPoints = pyqtSignal()
+        playSound = pyqtSignal(object)
         buildPointsChanged = pyqtSignal()
         updateDomeSettings = pyqtSignal()
         showImage = pyqtSignal(str)
@@ -597,6 +598,18 @@ def test_updateStatusGUI_4():
             return None
 
     app.app.mount.obsSite.status = 1
+    suc = app.updateStatusGUI(OB)
+    assert suc
+
+
+def test_updateStatusGUI_5():
+    class OB:
+        @staticmethod
+        def statusText():
+            return None
+
+    app.app.mount.obsSite.status = 10
+    app.satStatus = False
     suc = app.updateStatusGUI(OB)
     assert suc
 

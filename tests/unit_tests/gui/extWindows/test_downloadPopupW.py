@@ -70,6 +70,27 @@ def test_setProgressBarToValue(function):
 def test_getFileFromUrl_1(function):
     class Response:
         headers = {}
+        text = 'test'
+        status_code = 200
+
+        @staticmethod
+        def iter_content(a):
+            return [b's' * 512]
+    function.cancel = False
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Response()):
+        with mock.patch.object(builtins,
+                               'open'):
+            suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
+            assert suc
+
+
+def test_getFileFromUrl_2(function):
+    class Response:
+        headers = {}
+        text = 'test'
+        status_code = 200
 
         @staticmethod
         def iter_content(a):
@@ -81,6 +102,42 @@ def test_getFileFromUrl_1(function):
                                'open'):
             suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
             assert suc
+
+
+def test_getFileFromUrl_3(function):
+    class Response:
+        headers = {}
+        text = '<'
+        status_code = 200
+
+        @staticmethod
+        def iter_content(a):
+            return [b's' * 512]
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Response()):
+        with mock.patch.object(builtins,
+                               'open'):
+            suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
+            assert not suc
+
+
+def test_getFileFromUrl_4(function):
+    class Response:
+        headers = {}
+        text = 'test'
+        status_code = 500
+
+        @staticmethod
+        def iter_content(a):
+            return [b's' * 512]
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Response()):
+        with mock.patch.object(builtins,
+                               'open'):
+            suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
+            assert not suc
 
 
 def test_unzipFile(function):
@@ -99,6 +156,7 @@ def test_downloadFileWorker_2(function):
     shutil.copy('tests/testData/visual.txt', 'tests/workDir/temp/test.txt')
     with mock.patch.object(function,
                            'getFileFromUrl',
+                           return_value=True,
                            side_effect=TimeoutError):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
@@ -109,6 +167,7 @@ def test_downloadFileWorker_2(function):
 def test_downloadFileWorker_3(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
+                           return_value=True,
                            side_effect=TimeoutError):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
@@ -120,6 +179,7 @@ def test_downloadFileWorker_3(function):
 def test_downloadFileWorker_4(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
+                           return_value=True,
                            side_effect=Exception):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
@@ -130,7 +190,8 @@ def test_downloadFileWorker_4(function):
 
 def test_downloadFileWorker_5(function):
     with mock.patch.object(function,
-                           'getFileFromUrl'):
+                           'getFileFromUrl',
+                           return_value=True):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
@@ -140,7 +201,8 @@ def test_downloadFileWorker_5(function):
 
 def test_downloadFileWorker_6(function):
     with mock.patch.object(function,
-                           'getFileFromUrl'):
+                           'getFileFromUrl',
+                           return_value=True,):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             suc = function.downloadFileWorker(url='',
@@ -151,7 +213,8 @@ def test_downloadFileWorker_6(function):
 
 def test_downloadFileWorker_7(function):
     with mock.patch.object(function,
-                           'getFileFromUrl'):
+                           'getFileFromUrl',
+                           return_value=True,):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
             with mock.patch.object(function,
@@ -164,7 +227,8 @@ def test_downloadFileWorker_7(function):
 
 def test_downloadFileWorker_8(function):
     with mock.patch.object(function,
-                           'getFileFromUrl'):
+                           'getFileFromUrl',
+                           return_value=True,):
         with mock.patch.object(function,
                                'unzipFile'):
             with mock.patch.object(gui.extWindows.downloadPopupW,
@@ -172,6 +236,19 @@ def test_downloadFileWorker_8(function):
                 suc = function.downloadFileWorker(url='',
                                                   dest='test/workDir/temp/test.txt')
                 assert suc
+
+
+def test_downloadFileWorker_9(function):
+    with mock.patch.object(function,
+                           'getFileFromUrl',
+                           return_value=False,):
+        with mock.patch.object(function,
+                               'unzipFile'):
+            with mock.patch.object(time,
+                                   'sleep'):
+                suc = function.downloadFileWorker(url='',
+                                                  dest='test/workDir/temp/test.txt')
+                assert not suc
 
 
 def test_processResult(function):

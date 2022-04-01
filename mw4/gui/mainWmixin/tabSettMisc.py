@@ -68,7 +68,7 @@ class SettMisc(object):
             self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
             self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
             self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
-            self.app.mount.signals.mountUp.connect(self.connectionLost)
+            self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
 
     def initConfig(self):
@@ -140,16 +140,6 @@ class SettMisc(object):
         config['soundConnectionLost'] = self.ui.soundConnectionLost.currentIndex()
         config['soundSatStartTracking'] = self.ui.soundSatStartTracking.currentIndex()
         return True
-
-    def connectionLost(self, status):
-        """
-        :param status:
-        :return:
-        """
-        if not status and pConf.isAvailable:
-            self.playSound('ConnectionLost')
-            return True
-        return False
 
     def setWeatherOnline(self):
         """
@@ -375,6 +365,7 @@ class SettMisc(object):
         self.guiAudioList['ImageSaved'] = self.ui.soundImageSaved
         self.guiAudioList['ConnectionLost'] = self.ui.soundConnectionLost
         self.guiAudioList['SatStartTracking'] = self.ui.soundSatStartTracking
+        self.guiAudioList['ImageSolved'] = self.ui.soundImageSolved
 
         for itemKey, itemValue in self.guiAudioList.items():
             self.guiAudioList[itemKey].addItem('None')

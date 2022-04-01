@@ -75,6 +75,7 @@ class MountWizzard4(QObject):
     updatePointMarker = pyqtSignal()
     drawBuildPoints = pyqtSignal()
     enableEditPoints = pyqtSignal(object)
+    playSound = pyqtSignal(object)
     buildPointsChanged = pyqtSignal()
     drawHorizonPoints = pyqtSignal()
     updateDomeSettings = pyqtSignal()
@@ -406,7 +407,6 @@ class MountWizzard4(QObject):
             self.mainW.refreshName()
             self.mainW.refreshModel()
             self.mountUp = True
-            sleepAndEvents(500)
             self.mount.getTLE()
             return True
 
@@ -415,6 +415,7 @@ class MountWizzard4(QObject):
             self.mount.resetData()
             self.mount.obsSite.location = location
             self.mountUp = False
+            self.playSound.emit('ConnectionLost')
             return False
         return status
 

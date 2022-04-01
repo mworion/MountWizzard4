@@ -175,6 +175,7 @@ class Mount(object):
         self.guiSetText(self.ui.horizonLimitLow, '3.0f', sett.horizonLimitLow)
         self.guiSetText(self.ui.horizonLimitHigh, '3.0f', sett.horizonLimitHigh)
 
+        # todo: this might be a little bit too slow
         if self.app.mount.obsSite.status is None:
             self.changeStyleDynamic(self.ui.followSat, 'running', False)
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', False)

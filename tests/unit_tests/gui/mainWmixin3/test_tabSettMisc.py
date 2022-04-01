@@ -71,18 +71,6 @@ def test_storeConfig_1(function):
     assert suc
 
 
-def test_connectionLost_1(function):
-    pConf.isAvailable = True
-    suc = function.connectionLost(True)
-    assert not suc
-
-
-def test_connectionLost_2(function):
-    pConf.isAvailable = True
-    suc = function.connectionLost(False)
-    assert suc
-
-
 def test_setWeatherOnline_1(function):
     function.app.onlineWeather = None
     suc = function.setWeatherOnline()

@@ -541,6 +541,7 @@ class App(QObject):
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
     colorChange = pyqtSignal()
+    playSound = pyqtSignal(object)
     message = pyqtSignal(str, int)
     messageQueue = Queue()
     mount = Mount()

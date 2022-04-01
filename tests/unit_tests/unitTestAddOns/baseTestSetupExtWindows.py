@@ -245,6 +245,7 @@ class App(QObject):
     updatePointMarker = pyqtSignal()
     updateDomeSettings = pyqtSignal()
     drawBuildPoints = pyqtSignal()
+    playSound = pyqtSignal(object)
     buildPointsChanged = pyqtSignal()
     enableEditPoints = pyqtSignal(object)
     drawHorizonPoints = pyqtSignal()

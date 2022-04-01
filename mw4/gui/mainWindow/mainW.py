@@ -335,6 +335,7 @@ class MainWindow(
         self.wIcon(self.ui.genBuildSpiralNorm, 'run')
         self.wIcon(self.ui.genBuildSpiralMin, 'run')
         self.wIcon(self.ui.genBuildDSO, 'run')
+        self.wIcon(self.ui.genModel, 'run')
 
         # model
         self.wIcon(self.ui.plateSolveSync, 'start')

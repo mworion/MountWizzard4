@@ -413,6 +413,18 @@ def test_genBuildGoldenSpiral_2c(function, qtbot):
         assert ['Golden spiral cannot be generated', 2] == blocker.args
 
 
+def test_genModel_1(function, qtbot):
+    class Star:
+        alt = Angle(degrees=10)
+        az = Angle(degrees=10)
+
+    function.app.mount.model.starList = [Star()]
+    with mock.patch.object(function.app.data,
+                           'addBuildP'):
+        suc = function.genModel()
+        assert suc
+
+
 def test_loadBuildFile_1(function, qtbot):
     with mock.patch.object(function,
                            'openFile',

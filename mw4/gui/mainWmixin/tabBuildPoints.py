@@ -46,6 +46,7 @@ class BuildPoints:
             'min': self.genBuildMin,
             'dso': self.genBuildDSO,
             'file': self.genBuildFile,
+            'model': self.genModel,
         }
         self.simbadRa = None
         self.simbadDec = None
@@ -65,6 +66,7 @@ class BuildPoints:
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
+        self.ui.genModel.clicked.connect(self.genModel)
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
@@ -452,6 +454,23 @@ class BuildPoints:
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
+
+        self.processPoints()
+        return True
+
+    def genModel(self):
+        """
+        :return: success
+        """
+        self.lastGenerator = 'model'
+
+        keep = self.ui.keepGeneratedPoints.isChecked()
+        if not keep:
+            self.app.data.clearBuildP()
+
+        model = self.app.mount.model
+        for star in model.starList:
+            self.app.data.addBuildP((star.alt.degrees, star.az.degrees, True))
 
         self.processPoints()
         return True

@@ -26,6 +26,7 @@ releaseNotes = """
 - add: analyse charts could show horizon and values for each point 
 - add: sound for connection lost and sat start tracking
 - add: set dither or nor for model build points on celestial paths
+- add: generate model point from actual used mount model
 - improve: complete rework of charting: performance and functions
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)

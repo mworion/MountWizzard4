@@ -25,6 +25,7 @@ releaseNotes = """
 - add: measure window more values (time delat, focus, etc)
 - add: analyse charts could show horizon and values for each point 
 - add: sound for connection lost and sat start tracking
+- add: set dither or nor for model build points on celestial paths
 - improve: complete rework of charting: performance and functions
 - improve: iers download messages
 - remove: matplotlib usage and replace with pyqtgraph

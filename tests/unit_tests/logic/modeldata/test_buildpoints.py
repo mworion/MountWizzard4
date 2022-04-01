@@ -1216,3 +1216,10 @@ def test_generateGoldenSpiral_1():
 def test_generateGoldenSpiral_2():
     suc = app.generateGoldenSpiral(200)
     assert suc
+
+
+def test_ditherPoints():
+    app.buildP = [(10, 10, True)]
+    app.ditherPoints()
+    assert app.buildP[0][0] != 10
+    assert app.buildP[0][1] != 10

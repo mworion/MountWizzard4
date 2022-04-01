@@ -761,7 +761,7 @@ class MainWindow(
         if self.app.mount.obsSite.status == 10 and not self.satStatus:
             self.app.playSound.emit('SatStartTracking')
             self.satStatus = True
-        elif self.app.mount.obsSite.status != 0:
+        elif self.app.mount.obsSite.status != 10:
             self.satStatus = False
 
         return True

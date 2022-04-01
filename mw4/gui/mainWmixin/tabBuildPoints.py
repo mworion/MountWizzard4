@@ -120,6 +120,7 @@ class BuildPoints:
         self.ui.useDomeAz.setChecked(config.get('useDomeAz', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
         self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
+        self.ui.ditherBuildPoints.setChecked(config.get('ditherBuildPoints', False))
 
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
@@ -154,6 +155,7 @@ class BuildPoints:
         config['useDomeAz'] = self.ui.useDomeAz.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
         config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
+        config['ditherBuildPoints'] = self.ui.ditherBuildPoints.isChecked()
 
         return True
 
@@ -296,6 +298,8 @@ class BuildPoints:
             return False
 
         self.processPoints()
+        if self.ui.ditherBuildPoints.isChecked():
+            self.app.data.ditherPoints()
         return True
 
     def genBuildMed(self):
@@ -314,6 +318,8 @@ class BuildPoints:
             return False
 
         self.processPoints()
+        if self.ui.ditherBuildPoints.isChecked():
+            self.app.data.ditherPoints()
         return True
 
     def genBuildNorm(self):
@@ -332,6 +338,8 @@ class BuildPoints:
             return False
 
         self.processPoints()
+        if self.ui.ditherBuildPoints.isChecked():
+            self.app.data.ditherPoints()
         return True
 
     def genBuildMin(self):
@@ -350,6 +358,8 @@ class BuildPoints:
             return False
 
         self.processPoints()
+        if self.ui.ditherBuildPoints.isChecked():
+            self.app.data.ditherPoints()
         return True
 
     def genBuildDSO(self):
@@ -403,6 +413,9 @@ class BuildPoints:
         self.ui.numberDSOPoints.setEnabled(True)
         self.ui.durationDSO.setEnabled(True)
         self.ui.timeShiftDSO.setEnabled(True)
+
+        if self.ui.ditherBuildPoints.isChecked():
+            self.app.data.ditherPoints()
         return True
 
     def genBuildSpiralMax(self):

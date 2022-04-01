@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -7829,6 +7829,29 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <string>Keep points from existing generation</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="ditherBuildPoints">
+     <property name="geometry">
+      <rect>
+       <x>415</x>
+       <y>160</y>
+       <width>336</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to start build model point from the pierside where the mount is actually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Dither model point positions if possible</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="Modelbuild">
     <attribute name="title">
@@ -10202,7 +10225,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -17526,7 +17549,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

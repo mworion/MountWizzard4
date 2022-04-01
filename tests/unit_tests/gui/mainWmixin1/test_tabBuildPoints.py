@@ -197,6 +197,7 @@ def test_genBuildMax_2(function, qtbot):
 
 
 def test_genBuildMax_3(function):
+    function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=True):
@@ -220,6 +221,7 @@ def test_genBuildMed_2(function, qtbot):
 
 
 def test_genBuildMed_3(function):
+    function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=True):
@@ -243,6 +245,7 @@ def test_genBuildNorm_2(function, qtbot):
 
 
 def test_genBuildNorm_3(function):
+    function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=True):
@@ -277,6 +280,7 @@ def test_genBuildMin_2(function, qtbot):
 
 
 def test_genBuildMin_3(function):
+    function.ui.ditherBuildPoints.setChecked(True)
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=True):

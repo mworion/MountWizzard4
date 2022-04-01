@@ -667,10 +667,9 @@ class DataPoint(object):
         for dec, step, start, stop in self.genHaDecParams(selection, lat):
             for ha in range(start, stop, step):
                 alt, az = HaDecToAltAz(ha / 10, dec, lat)
-                # only values with above horizon = 0
 
+                # only values with above horizon = 0
                 if 5 <= alt <= 85 and 2 < az < 358:
-                    alt += random.uniform(-2, 2)
                     self.addBuildP((alt, az, True))
 
         return True
@@ -883,4 +882,18 @@ class DataPoint(object):
             if alt > 0:
                 self.addBuildP((alt, az, True))
 
+        return True
+
+    def ditherPoints(self):
+        """
+        :return:
+        """
+        newBuildP = []
+        for point in self.buildP:
+            alt = point[0]
+            az = point[1]
+            alt += random.uniform(-1, 1)
+            az += random.uniform(-1, 1)
+            newBuildP.append((alt, az, True))
+        self.buildP = newBuildP
         return True

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -2780,6 +2780,14 @@ class Ui_MainWindow(object):
         font.setBold(False)
         self.keepGeneratedPoints.setFont(font)
         self.keepGeneratedPoints.setObjectName("keepGeneratedPoints")
+        self.ditherBuildPoints = QtWidgets.QCheckBox(self.Modelpoints)
+        self.ditherBuildPoints.setGeometry(QtCore.QRect(415, 160, 336, 20))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(False)
+        self.ditherBuildPoints.setFont(font)
+        self.ditherBuildPoints.setObjectName("ditherBuildPoints")
         self.mainTabWidget.addTab(self.Modelpoints, "")
         self.Modelbuild = QtWidgets.QWidget()
         self.Modelbuild.setObjectName("Modelbuild")
@@ -9587,11 +9595,11 @@ class Ui_MainWindow(object):
         self.statusOnline_2.raise_()
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(10)
+        self.mainTabWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
-        self.satTabWidget.setCurrentIndex(0)
+        self.satTabWidget.setCurrentIndex(1)
         self.toolsTabWidget.setCurrentIndex(0)
-        self.settingsTabWidget.setCurrentIndex(2)
+        self.settingsTabWidget.setCurrentIndex(0)
         self.tabDomeExplain.setCurrentIndex(9)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cameraDevice, self.cameraSetup)
@@ -10323,6 +10331,8 @@ class Ui_MainWindow(object):
         self.genBuildAlign12.setText(_translate("MainWindow", "12 points"))
         self.keepGeneratedPoints.setToolTip(_translate("MainWindow", "<html><head/><body><p>If checked, MW4 tries to start build model point from the pierside where the mount is actually.</p></body></html>"))
         self.keepGeneratedPoints.setText(_translate("MainWindow", "Keep points from existing generation"))
+        self.ditherBuildPoints.setToolTip(_translate("MainWindow", "<html><head/><body><p>If checked, MW4 tries to start build model point from the pierside where the mount is actually.</p></body></html>"))
+        self.ditherBuildPoints.setText(_translate("MainWindow", "Dither model point positions if possible"))
         self.mainTabWidget.setTabText(self.mainTabWidget.indexOf(self.Modelpoints), _translate("MainWindow", "Model Points"))
         self.groupBox_11.setTitle(_translate("MainWindow", "Alignment info from mount computer"))
         self.label_169.setText(_translate("MainWindow", "arcsec"))

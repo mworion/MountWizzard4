@@ -97,6 +97,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
         """
         r = requests.get(url, stream=True, timeout=1)
         totalSizeBytes = int(r.headers.get('content-length', 1))
+        if r.text.startswith('<') or r.status_code != 200:
+            return False
 
         with open(dest, 'wb') as f:
             for n, chunk in enumerate(r.iter_content(512)):
@@ -138,7 +140,9 @@ class DownloadPopup(toolsQtWidget.MWidget):
             os.remove(dest)
 
         try:
-            self.getFileFromUrl(url, dest)
+            suc = self.getFileFromUrl(url, dest)
+            if not suc:
+                raise FileNotFoundError
         except TimeoutError:
             t = f'Download [{url}] timed out!'
             self.parentWidget.app.message.emit(t, 2)
@@ -146,12 +150,11 @@ class DownloadPopup(toolsQtWidget.MWidget):
             time.sleep(1)
             return False
         except Exception as e:
-            t = f'Error in unzip [{url}]'
+            t = f'General error [{url}]'
             self.parentWidget.app.message.emit(t, 2)
-            t = f'Error in unzip [{url}], {e}'
+            t = f'General error [{url}], {e}'
             self.log.warning(t)
             self.signalProgressBarColor.emit('red')
-            time.sleep(1)
             return False
         else:
             self.signalProgressBarColor.emit('green')

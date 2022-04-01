@@ -275,7 +275,7 @@ class MinorPlanetTime:
         source = 'finals2000A.all'
         url = 'https://datacenter.iers.org/data/9/' + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
-        self.app.message.emit(f'Download skyfield:   [{source}]', 1)
+        self.app.message.emit(f'Download IERS intern:[{source}]', 1)
         DownloadPopup(self, url=url, dest=dest, unzip=False)
 
         source = 'finals.data'

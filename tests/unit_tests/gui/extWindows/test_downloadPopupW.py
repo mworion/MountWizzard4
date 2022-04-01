@@ -244,8 +244,8 @@ def test_downloadFileWorker_9(function):
                            return_value=False,):
         with mock.patch.object(function,
                                'unzipFile'):
-            with mock.patch.object(time,
-                                   'sleep'):
+            with mock.patch.object(gui.extWindows.downloadPopupW,
+                                   'sleepAndEvents'):
                 suc = function.downloadFileWorker(url='',
                                                   dest='test/workDir/temp/test.txt')
                 assert not suc

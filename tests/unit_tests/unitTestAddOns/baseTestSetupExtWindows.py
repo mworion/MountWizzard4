@@ -188,6 +188,7 @@ class Mount(QObject):
     class MountSignals(QObject):
         settingDone = pyqtSignal()
         pointDone = pyqtSignal()
+        alignDone = pyqtSignal()
 
     class MountObsSite:
 

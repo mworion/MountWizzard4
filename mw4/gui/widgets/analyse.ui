@@ -42,6 +42,7 @@
   </property>
   <property name="font">
    <font>
+    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -98,6 +99,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -141,6 +143,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -184,6 +187,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -209,6 +213,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -234,6 +239,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -262,6 +268,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -305,6 +312,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -330,6 +338,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -358,6 +367,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -386,6 +396,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -411,6 +422,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -439,6 +451,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -479,6 +492,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -507,6 +521,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -547,6 +562,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -572,6 +588,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -597,6 +614,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -622,6 +640,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -647,6 +666,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -681,6 +701,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -724,6 +745,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -749,6 +771,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -774,6 +797,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -799,11 +823,12 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>show horizon</string>
+       <string>Horizon mask</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="modelTerms">
@@ -826,6 +851,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -872,6 +898,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -915,6 +942,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -943,6 +971,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -986,6 +1015,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -1014,6 +1044,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -1057,6 +1088,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -1082,6 +1114,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -1107,6 +1140,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -1135,6 +1169,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -1178,6 +1213,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -1206,6 +1242,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -1249,6 +1286,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -1295,6 +1333,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -1335,6 +1374,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
@@ -1363,6 +1403,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -1409,6 +1450,7 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
@@ -1452,12 +1494,38 @@ Model</string>
       </property>
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
        <string>/</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="showISO">
+      <property name="geometry">
+       <rect>
+        <x>695</x>
+        <y>65</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>21</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>ISO curves</string>
       </property>
      </widget>
     </widget>

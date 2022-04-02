@@ -82,7 +82,7 @@ class Mount(mountcontrol.mount.Mount):
 
     """
 
-    CYCLE_POINTING = 350
+    CYCLE_POINTING = 500
     CYCLE_DOME = 950
     CYCLE_CLOCK = 1000
     CYCLE_MOUNT_UP = 2700
@@ -91,19 +91,11 @@ class Mount(mountcontrol.mount.Mount):
     # set timeout
     SOCKET_TIMEOUT = 3.5
 
-    def __init__(self,
-                 host=None,
-                 MAC=None,
-                 threadPool=None,
-                 pathToData=None,
-                 verbose=None,
-                 ):
+    def __init__(self, host=None, MAC=None,
+                 threadPool=None, pathToData=None,verbose=None):
 
-        super().__init__(host=host,
-                         MAC=MAC,
-                         pathToData=pathToData,
-                         verbose=verbose,
-                         )
+        super().__init__(host=host, MAC=MAC,
+                         pathToData=pathToData, verbose=verbose)
 
         self.threadPool = threadPool
         self.mountUp = False

@@ -23,6 +23,8 @@ import numpy as np
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QTransform, QPainterPath
+from scipy.interpolate import griddata
+from scipy.ndimage import uniform_filter
 
 # local imports
 from gui.utilities.stylesQtCss import Styles
@@ -320,7 +322,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs, show=True)
-
         pg.setConfigOptions(antialias=True, imageAxisOrder='row-major')
 
         self.pen = pg.mkPen(color=self.M_BLUE, width=1)
@@ -422,6 +423,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         """
         if plotItem is None:
             plotItem = self.p[0]
+
         plotItem.removeItem(self.findItemByName(plotItem, 'horizon'))
         if len(horizonP) == 0:
             return False
@@ -447,6 +449,43 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         horItem.setZValue(-5)
         horItem.nameStr = 'horizon'
         plotItem.addItem(horItem)
+        return True
+
+    def addIsoItem(self, x, y, z, plotItem=None, levels=20):
+        """
+        :param x:
+        :param y:
+        :param z:
+        :param plotItem:
+        :param levels:
+        :return:
+        """
+        if plotItem is None:
+            plotItem = self.p[0]
+        z = np.abs(z)
+        az = np.concatenate([x - 360, x, x + 360])
+        alt = np.concatenate([y, y, y])
+        err = np.concatenate([z, z, z])
+
+        xm, ym = np.meshgrid(np.linspace(0, 360, 360), np.linspace(0, 90, 90))
+        zm = griddata((az, alt), err, (xm, ym), method='linear',
+                      fill_value=np.min(err))
+        zm = uniform_filter(zm, size=10)
+        err = np.abs(zm)
+        minE = np.min(err)
+        maxE = np.max(err)
+
+        for level in np.linspace(minE, maxE, levels):
+            colorInx = (level - minE) / (maxE - minE)
+            colorVal = self.cMapGYR.mapToQColor(colorInx)
+            colorVal.setAlpha(128)
+
+            pd = pg.IsocurveItem()
+            pd.setData(zm, level)
+            pd.setPen(pg.mkPen(color=colorVal))
+            pd.setZValue(-10)
+            pg.nameStr = 'iso'
+            plotItem.addItem(pd)
         return True
 
     def setGrid(self, y=0, plotItem=None, **kwargs):
@@ -606,6 +645,11 @@ class NormalScatter(PlotBase):
             self.scatterItem.addPoints(spots)
         else:
             self.scatterItem.addPoints(spots, tip=tip)
+
+        isoLevels = kwargs.get('isoLevels', 0)
+        if isoLevels != 0 and 'z' in kwargs:
+            # pass
+            self.addIsoItem(x, y, z, levels=isoLevels)
         return True
 
 

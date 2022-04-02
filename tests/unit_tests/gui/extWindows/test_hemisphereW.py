@@ -33,6 +33,7 @@ from PIL import Image
 from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
+import gui
 
 
 @pytest.fixture(scope='module')
@@ -498,15 +499,14 @@ def test_drawModelIsoCurve_1(function):
 
 
 def test_drawModelIsoCurve_2(function):
-    data = (
-        np.random.uniform(low=10, high=350, size=(50,)),
-        np.random.uniform(low=15, high=85, size=(50,)),
-        np.random.uniform(low=5, high=15, size=(50,)))
     with mock.patch.object(function,
                            'getMountModelData',
-                           return_value=data):
-        suc = function.drawModelIsoCurve()
-        assert suc
+                           return_value=(1, 1, 1)):
+        with mock.patch.object(gui.extWindows.hemisphereW,
+                               'addIsoItem',
+                               return_value=True):
+            suc = function.drawModelIsoCurve()
+            assert suc
 
 
 def test_drawHemisphereTab_1(function):

@@ -20,8 +20,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np
-from scipy.interpolate import griddata
-from scipy.ndimage import uniform_filter
 from PIL import Image
 import pyqtgraph as pg
 
@@ -707,39 +705,18 @@ class HemisphereWindow(MWidget, EditHorizon):
         alt = np.array([x.alt.degrees for x in model.starList])
         az = np.array([x.az.degrees for x in model.starList])
         err = np.array([x.errorRMS for x in model.starList])
-
-        alt = np.concatenate([alt, alt, alt])
-        err = np.concatenate([err, err, err])
-        az = np.concatenate([az - 360, az, az + 360])
         return az, alt, err
 
     def drawModelIsoCurve(self):
         """
         :return:
         """
-        plotItem = self.ui.hemisphere.p[0]
         az, alt, err = self.getMountModelData()
         if az is None or alt is None or err is None:
             return False
 
-        xm, ym = np.meshgrid(np.linspace(0, 360, 360), np.linspace(0, 90, 90))
-        zm = griddata((az, alt), err, (xm, ym), method='linear',
-                      fill_value=np.min(err))
-        zm = uniform_filter(zm, size=10)
-
-        err = np.abs(zm)
-        minE = np.min(err)
-        maxE = np.max(err)
-        for level in np.linspace(minE, maxE, 20):
-            pd = pg.IsocurveItem()
-            colorInx = (level - minE) / (maxE - minE)
-            colorVal = self.ui.hemisphere.cMapGYR.mapToQColor(colorInx)
-            colorVal.setAlpha(128)
-            pd.setData(zm, level)
-            pd.setPen(pg.mkPen(color=colorVal))
-            pd.setZValue(-10)
-            plotItem.addItem(pd)
-        return True
+        suc = self.ui.hemisphere.addIsoItem(az, alt, err)
+        return suc
 
     def drawHemisphereTab(self):
         """

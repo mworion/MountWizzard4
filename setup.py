@@ -20,7 +20,6 @@ import platform
 
 releaseNotes = """
 - add: all charts zoomable
-- add: all charts have tooltips for values
 - add: measure window has max 5 charts now (from 3)
 - add: measure window more values (time delta, focus, etc)
 - add: analyse charts could show horizon and values for each point 
@@ -32,6 +31,7 @@ releaseNotes = """
 - add: hemisphere: edit horizon model much more efficient
 - add: satellites: all time values could be UTC or local time now
 - improve: complete rework of charting: performance and functions
+- improve: cleanup of gui
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
 - remove: matplotlib usage and replace with pyqtgraph

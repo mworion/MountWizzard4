@@ -23,6 +23,7 @@ import numpy as np
 
 # local import
 from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from gui.widgets import analyse_ui
 
 
@@ -93,6 +94,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         if x != 0 and y != 0:
             self.move(x, y)
         self.ui.showHorizon.setChecked(config.get('showHorizon', False))
+        self.ui.showISO.setChecked(config.get('showISO', False))
         return True
 
     def storeConfig(self):
@@ -108,6 +110,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['showHorizon'] = self.ui.showHorizon.isChecked()
+        config['showISO'] = self.ui.showISO.isChecked()
         return True
 
     def closeEvent(self, closeEvent):
@@ -125,6 +128,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.show()
         self.app.showAnalyse.connect(self.showAnalyse)
         self.ui.showHorizon.clicked.connect(self.drawAll)
+        self.ui.showISO.clicked.connect(self.drawAll)
         return True
 
     def colorChange(self):
@@ -224,7 +228,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
                             multiple=False,
                             reverseOrder=True)
         loadFilePath, fileName, ext = val
-        if loadFilePath:
+        if os.path.isfile(loadFilePath):
             self.processModel(loadFilePath)
         return True
 
@@ -233,7 +237,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         :param path:
         :return: True for test purpose
         """
-        if path:
+        if os.path.isfile(path):
             self.processModel(path)
         return True
 
@@ -241,6 +245,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return:    True if ok for testing
         """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
         self.ui.raRawErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
         self.ui.raRawErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
@@ -249,13 +255,16 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raRawErrors.plot(
             self.azimuth, self.altitude, z=self.errorRA_S, data=self.errorRA_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format,
+            isoLevels=isoLevels)
         return True
 
     def drawDecRawErrors(self):
         """
         :return:    True if ok for testing
         """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
         self.ui.decRawErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
         self.ui.decRawErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
@@ -264,13 +273,16 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decRawErrors.plot(
             self.azimuth, self.altitude, z=self.errorDEC_S, data=self.errorDEC_S,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format,
+            isoLevels=isoLevels)
         return True
 
     def drawRaErrors(self):
         """
         :return:    True if ok for testing
         """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
         self.ui.raErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
         self.ui.raErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
@@ -279,13 +291,16 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.raErrors.plot(
             self.azimuth, self.altitude, z=self.errorRA, data=self.errorRA,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format,
+            isoLevels=isoLevels)
         return True
 
     def drawDecError(self):
         """
         :return:    True if ok for testing
         """
+        hasISO = self.ui.showISO.isChecked()
+        isoLevels = 20 if hasISO else 0
         self.ui.decErrors.p[0].setLabel('bottom', 'Azimuth [deg]')
         self.ui.decErrors.p[0].setLabel('left', 'Altitude [deg]')
         ticks = [(x, f'{x}') for x in range(30, 360, 30)]
@@ -294,7 +309,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decErrors.plot(
             self.azimuth, self.altitude, z=self.errorDEC, data=self.errorDEC,
             range={'xMin': 0, 'yMin': 0, 'xMax': 360, 'yMax': 90},
-            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format)
+            tip='Az: {x:0.0f}\nAlt: {y:0.1f}\nError: {data:0.1f}'.format,
+            isoLevels=isoLevels)
         return True
 
     def drawRaRawErrorsRef(self):
@@ -434,4 +450,5 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             return False
         for chart in self.charts:
             chart()
+            sleepAndEvents(1)
         return True

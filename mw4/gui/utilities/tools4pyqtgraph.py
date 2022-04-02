@@ -552,10 +552,10 @@ class NormalScatter(PlotBase):
         self.p[0].addItem(self.scatterItem)
         self.defRange = kwargs.get('range', {})
 
-        xMin = self.defRange.get('xMin')
-        yMin = self.defRange.get('yMin')
-        xMax = self.defRange.get('xMax')
-        yMax = self.defRange.get('yMax')
+        xMin = self.defRange.get('xMin', np.min(x))
+        yMin = self.defRange.get('yMin', np.min(y))
+        xMax = self.defRange.get('xMax', np.max(x))
+        yMax = self.defRange.get('yMax', np.max(y))
 
         if kwargs.get('limits', True):
             if xMin is not None and xMax is not None:

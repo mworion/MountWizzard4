@@ -24,8 +24,7 @@ import unittest.mock as mock
 
 # external packages
 import skyfield.api
-from skyfield.api import Angle
-from skyfield.api import wgs84
+from skyfield.api import Angle, wgs84, load
 from mountcontrol.mount import Mount
 import numpy as np
 
@@ -44,6 +43,7 @@ def module_setup_teardown():
                                               longitude_degrees=10,
                                               elevation_m=500)
         mwGlob = {'configDir': 'tests/workDir/config'}
+        ephemeris = load('tests/testData/de421_23.bsp')
 
     global app
 

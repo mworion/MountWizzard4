@@ -349,6 +349,22 @@ def test_genBuildDSO_5(function):
         assert suc
 
 
+def test_genBuildDSO_6(function):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.ui.ditherBuildPoints.setChecked(True)
+    function.simbadRa = Angle(hours=0)
+    function.simbadDec = Angle(degrees=0)
+    with mock.patch.object(function.app.data,
+                           'generateDSOPath',
+                           return_value=True):
+        with mock.patch.object(function.app.data,
+                               'ditherPoints'):
+            suc = function.genBuildDSO()
+            assert suc
+
+
 def test_genBuildGoldenSpiral_1(function, qtbot):
     with qtbot.assertNotEmitted(function.app.message):
         suc = function.genBuildSpiralMax()
@@ -418,7 +434,7 @@ def test_genModel_1(function, qtbot):
         alt = Angle(degrees=10)
         az = Angle(degrees=10)
 
-    function.app.mount.model.starList = [Star()]
+    function.app.mount.model.starList.append(Star())
     with mock.patch.object(function.app.data,
                            'addBuildP'):
         suc = function.genModel()

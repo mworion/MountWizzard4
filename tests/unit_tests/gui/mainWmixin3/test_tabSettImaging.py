@@ -639,15 +639,15 @@ def test_setLightIntensity_4():
 
 
 def test_updateDomeGui_1():
-    app.app.cover.data['DOME_MOTION.DOME_CW'] = True
-    app.app.cover.data['DOME_MOTION.DOME_CCW'] = True
+    app.app.dome.data['DOME_MOTION.DOME_CW'] = True
+    app.app.dome.data['DOME_MOTION.DOME_CCW'] = True
     suc = app.updateDomeGui()
     assert suc
 
 
 def test_updateDomeGui_2():
-    app.app.cover.data['DOME_MOTION.DOME_CW'] = False
-    app.app.cover.data['DOME_MOTION.DOME_CCW'] = False
+    app.app.dome.data['DOME_MOTION.DOME_CW'] = False
+    app.app.dome.data['DOME_MOTION.DOME_CCW'] = False
     suc = app.updateDomeGui()
     assert suc
 

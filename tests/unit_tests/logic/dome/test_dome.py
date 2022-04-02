@@ -588,6 +588,58 @@ def test_closeShutter_3():
         assert suc
 
 
+def test_slewCW_1():
+    app.data = {}
+    suc = app.slewCW()
+    assert not suc
+
+
+def test_slewCW_2():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'slewCW',
+                           return_value=False):
+        suc = app.slewCW()
+        assert not suc
+
+
+def test_slewCW_3():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'slewCW',
+                           return_value=True):
+        suc = app.slewCW()
+        assert suc
+
+
+def test_slewCCW_1():
+    app.data = {}
+    suc = app.slewCCW()
+    assert not suc
+
+
+def test_slewCCW_2():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'slewCCW',
+                           return_value=False):
+        suc = app.slewCCW()
+        assert not suc
+
+
+def test_slewCCW_3():
+    app.data = {'AZ': 1}
+    app.framework = 'indi'
+    with mock.patch.object(app.run['indi'],
+                           'slewCCW',
+                           return_value=True):
+        suc = app.slewCCW()
+        assert suc
+
+
 def test_abortSlew_1():
     app.data = {}
     suc = app.abortSlew()

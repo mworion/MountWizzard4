@@ -318,3 +318,11 @@ def test_measureTask_8():
     app.setEmptyData()
     suc = app.measureTask()
     assert suc
+
+
+def test_measureTask_9():
+    app.devices = ['camera']
+    app.setEmptyData()
+    app.data['timeDiff'] = np.ones(100)
+    suc = app.measureTask()
+    assert suc

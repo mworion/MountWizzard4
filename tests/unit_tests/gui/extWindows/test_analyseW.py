@@ -19,6 +19,7 @@
 import pytest
 import unittest.mock as mock
 import json
+import os
 
 # external packages
 from PyQt5.QtGui import QCloseEvent, QResizeEvent
@@ -150,27 +151,36 @@ def test_loadModel_1(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('', '', '')):
-        with mock.patch.object(function,
-                               'processModel'):
-            suc = function.loadModel()
-            assert suc
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'processModel'):
+                suc = function.loadModel()
+                assert suc
 
 
 def test_loadModel_2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('test', 'test', 'test')):
-        with mock.patch.object(function,
-                               'processModel'):
-            suc = function.loadModel()
-            assert suc
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'processModel'):
+                suc = function.loadModel()
+                assert suc
 
 
 def test_showAnalyse_1(function):
     with mock.patch.object(function,
                            'processModel'):
-        suc = function.showAnalyse('test')
-        assert suc
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            suc = function.showAnalyse('test')
+            assert suc
 
 
 def test_draw_raRawErrors(function):
@@ -287,7 +297,7 @@ def test_drawHorizon_2(function):
     assert suc
 
 
-def test_drawAll(function):
+def test_drawAll_1(function):
     def test():
         pass
 
@@ -295,3 +305,13 @@ def test_drawAll(function):
     function.charts = [test]
     suc = function.drawAll()
     assert suc
+
+
+def test_drawAll_2(function):
+    def test():
+        pass
+
+    function.index = None
+    function.charts = [test]
+    suc = function.drawAll()
+    assert not suc

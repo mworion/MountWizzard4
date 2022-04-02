@@ -1200,6 +1200,24 @@ def test_generateDSOPath_4():
         assert suc
 
 
+def test_generateDSOPath_5():
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=0)
+    with mock.patch.object(transform,
+                           'J2000ToAltAz',
+                           return_value=(Angle(degrees=10), Angle(degrees=10))):
+        with mock.patch.object(skyfield.almanac,
+                               'find_discrete',
+                               return_value=([], [])):
+            suc = app.generateDSOPath(ha=ra,
+                                      dec=dec,
+                                      numberPoints=1,
+                                      timeJD=app.app.mount.obsSite.timeJD,
+                                      location=app.app.mount.obsSite.location,
+                                      )
+            assert suc
+
+
 def test_generateGoldenSpiral_1():
     suc = app.generateGoldenSpiral(0)
     assert not suc

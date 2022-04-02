@@ -24,7 +24,7 @@ import csv
 
 # external packages
 import numpy as np
-from skyfield.api import Star, Angle
+from skyfield.api import Star
 from skyfield import almanac
 from scipy.spatial import distance
 

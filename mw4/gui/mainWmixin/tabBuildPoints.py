@@ -19,7 +19,6 @@
 # external packages
 from PyQt5.QtCore import QMutex
 from astroquery.simbad import Simbad
-from skyfield.api import Angle
 
 # local import
 from base.tpool import Worker

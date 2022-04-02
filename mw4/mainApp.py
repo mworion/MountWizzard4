@@ -32,7 +32,6 @@ from skyfield.api import wgs84
 from importlib_metadata import version
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.loggerMW import setCustomLoggingLevel
 from mountcontrol import qtmount
 from gui.mainWindow.mainW import MainWindow

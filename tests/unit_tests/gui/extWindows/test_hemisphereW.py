@@ -485,7 +485,7 @@ def test_getMountModelData_2(function):
 
     function.app.mount.model.starList = [Star()]
     val = function.getMountModelData()
-    assert val[0][0] == -340
+    assert val[0][0] == 20
     assert val[1][0] == 10
     assert val[2][0] == 5
 
@@ -502,7 +502,7 @@ def test_drawModelIsoCurve_2(function):
     with mock.patch.object(function,
                            'getMountModelData',
                            return_value=(1, 1, 1)):
-        with mock.patch.object(gui.extWindows.hemisphereW,
+        with mock.patch.object(function.ui.hemisphere,
                                'addIsoItem',
                                return_value=True):
             suc = function.drawModelIsoCurve()

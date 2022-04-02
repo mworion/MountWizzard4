@@ -34,7 +34,6 @@ from gui.utilities.tools4pyqtgraph import ImageBar
 from gui.utilities.tools4pyqtgraph import Measure
 from gui.utilities.tools4pyqtgraph import TimeMeasure
 from gui.utilities.tools4pyqtgraph import CustomViewBox
-from gui.utilities.tools4pyqtgraph import addIsoItem
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -815,6 +814,15 @@ def test_PlotBase_drawHorizon_4():
         assert suc
 
 
+def test_addIsoItem_1():
+    p = PlotBase()
+    az = np.random.uniform(low=10, high=350, size=(50,))
+    alt = np.random.uniform(low=15, high=85, size=(50,))
+    err = np.random.uniform(low=5, high=15, size=(50,))
+    suc = p.addIsoItem(az, alt, err)
+    assert suc
+
+
 def test_PlotBase_setGrid_0():
     p = PlotBase()
     suc = p.setGrid(np.array([0, 1, 2]), plotItem=p.p[0])
@@ -966,14 +974,3 @@ def test_TimeMeasure_tickStrings():
 
 def test_Measure():
     Measure()
-
-
-def test_addIsoItem_1():
-    az = np.random.uniform(low=10, high=350, size=(50,))
-    alt = np.random.uniform(low=15, high=85, size=(50,))
-    err = np.random.uniform(low=5, high=15, size=(50,))
-
-    plotItem = pg.PlotItem()
-    colormap = pg.colormap.get('viridis')
-    suc = addIsoItem(plotItem, colormap, az, alt, err)
-    assert suc

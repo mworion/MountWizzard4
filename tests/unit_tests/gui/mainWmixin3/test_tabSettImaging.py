@@ -36,6 +36,7 @@ from logic.camera.camera import Camera
 from logic.focuser.focuser import Focuser
 from logic.filter.filter import Filter
 from logic.cover.cover import Cover
+from logic.dome.dome import Dome
 from logic.telescope.telescope import Telescope
 
 
@@ -59,6 +60,7 @@ def module_setup_teardown(qtbot):
         filter = Filter(app=Test1())
         telescope = Telescope(app=Test1())
         cover = Cover(app=Test1())
+        dome = Dome(app=Test1())
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -141,7 +143,7 @@ def test_updateParameters_2():
     app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
     app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
 
-    app.ui.checkAutomaticTelescope.setChecked(True)
+    app.ui.automaticTelescope.setChecked(True)
     with mock.patch.object(app,
                            'updateTelescopeParametersToGui'):
         suc = app.updateParameters()
@@ -154,7 +156,7 @@ def test_updateParameters_3():
     app.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
     app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
     app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
-    app.ui.checkAutomaticTelescope.setChecked(False)
+    app.ui.automaticTelescope.setChecked(False)
     app.ui.aperture.setValue(0)
     app.ui.focalLength.setValue(0)
     with mock.patch.object(app,
@@ -634,3 +636,49 @@ def test_setLightIntensity_4():
                                    return_value=True):
                 suc = app.setLightIntensity()
                 assert suc
+
+
+def test_updateDomeGui_1():
+    app.app.cover.data['DOME_MOTION.DOME_CW'] = True
+    app.app.cover.data['DOME_MOTION.DOME_CCW'] = True
+    suc = app.updateDomeGui()
+    assert suc
+
+
+def test_updateDomeGui_2():
+    app.app.cover.data['DOME_MOTION.DOME_CW'] = False
+    app.app.cover.data['DOME_MOTION.DOME_CCW'] = False
+    suc = app.updateDomeGui()
+    assert suc
+
+
+def test_domeSlewCW_1():
+    with mock.patch.object(app.app.dome,
+                           'slewCW',
+                           return_value=False):
+        suc = app.domeSlewCW()
+        assert not suc
+
+
+def test_domeSlewCW_2():
+    with mock.patch.object(app.app.dome,
+                           'slewCW',
+                           return_value=True):
+        suc = app.domeSlewCW()
+        assert suc
+
+
+def test_domeSlewCCW_1():
+    with mock.patch.object(app.app.dome,
+                           'slewCCW',
+                           return_value=False):
+        suc = app.domeSlewCCW()
+        assert not suc
+
+
+def test_domeSlewCCW_2():
+    with mock.patch.object(app.app.dome,
+                           'slewCCW',
+                           return_value=True):
+        suc = app.domeSlewCCW()
+        assert suc

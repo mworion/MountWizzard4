@@ -362,7 +362,7 @@ class Ui_HemisphereDialog(object):
         self.verticalLayout.addWidget(self.tabWidget)
 
         self.retranslateUi(HemisphereDialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(HemisphereDialog)
 
     def retranslateUi(self, HemisphereDialog):

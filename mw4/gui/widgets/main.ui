@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -17460,7 +17460,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -18707,7 +18707,7 @@ Next point in time when satellite settles.</string>
          <double>1.000000000000000</double>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkKeepImages">
+       <widget class="QCheckBox" name="keepImages">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -19234,7 +19234,7 @@ Next point in time when satellite settles.</string>
         <widget class="QLabel" name="textCoolerTempUnit">
          <property name="geometry">
           <rect>
-           <x>180</x>
+           <x>175</x>
            <y>35</y>
            <width>16</width>
            <height>21</height>
@@ -19437,7 +19437,7 @@ Next point in time when satellite settles.</string>
          </property>
         </widget>
        </widget>
-       <widget class="QCheckBox" name="checkFastDownload">
+       <widget class="QCheckBox" name="fastDownload">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -20027,7 +20027,7 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="GroupFlipFlat_2">
+      <widget class="QGroupBox" name="GroupDome">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -20173,15 +20173,15 @@ When clicking the button, you could change the value.</string>
 Slew</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="domeSlewStatusText">
+       <widget class="QLineEdit" name="domeAzimuth">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>310</x>
           <y>45</y>
-          <width>101</width>
+          <width>26</width>
           <height>21</height>
          </rect>
         </property>
@@ -20218,6 +20218,46 @@ Slew</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="textCoolerTempUnit_2">
+        <property name="geometry">
+         <rect>
+          <x>340</x>
+          <y>45</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="textReadoutSpeed_2">
+        <property name="geometry">
+         <rect>
+          <x>255</x>
+          <y>45</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Azimuth</string>
         </property>
        </widget>
       </widget>
@@ -22338,7 +22378,7 @@ Slew</string>
          <double>100.000000000000000</double>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkAutomaticTelescope">
+       <widget class="QCheckBox" name="automaticTelescope">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -22762,7 +22802,7 @@ Slew</string>
          <string>Data from Driver</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="autoDomeDriver">
+       <widget class="QCheckBox" name="automaticDome">
         <property name="geometry">
          <rect>
           <x>15</x>
@@ -28891,7 +28931,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>binning</tabstop>
   <tabstop>expTimeN</tabstop>
   <tabstop>binningN</tabstop>
-  <tabstop>checkKeepImages</tabstop>
+  <tabstop>keepImages</tabstop>
   <tabstop>focuserStepsize</tabstop>
   <tabstop>moveFocuserIn</tabstop>
   <tabstop>moveFocuserOut</tabstop>
@@ -28912,7 +28952,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>offGEM</tabstop>
   <tabstop>offLAT</tabstop>
   <tabstop>useDomeGeometry</tabstop>
-  <tabstop>autoDomeDriver</tabstop>
+  <tabstop>automaticDome</tabstop>
   <tabstop>copyFromDomeDriver</tabstop>
   <tabstop>tabDomeExplain</tabstop>
   <tabstop>settleTimeDome</tabstop>

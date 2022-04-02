@@ -126,6 +126,22 @@ class DomeAlpaca(AlpacaClass):
             self.getAlpacaProperty('closeshutter')
         return True
 
+    def slewCW(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+        return True
+
+    def slewCCW(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+        return True
+
     def abortSlew(self):
         """
         :return: success

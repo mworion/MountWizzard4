@@ -84,7 +84,7 @@ class Camera:
     binning = 1
     binningN = 1
     subFrame = 100
-    checkFastDownload = False
+    fastDownload = False
 
 
 class Measure:

@@ -739,7 +739,7 @@ class Model:
         else:
             self.app.message.emit('Model programming error', 2)
 
-        if not self.ui.checkKeepImages.isChecked():
+        if not self.ui.keepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
@@ -866,7 +866,7 @@ class Model:
         exposureTime = self.ui.expTime.value()
         binning = int(self.ui.binning.value())
         subFrame = self.ui.subFrame.value()
-        fastReadout = self.ui.checkFastDownload.isChecked()
+        fastReadout = self.ui.fastDownload.isChecked()
         focalLength = self.ui.focalLength.value()
         lenSequence = len(self.app.data.buildP)
         framework = self.app.astrometry.framework
@@ -1117,7 +1117,7 @@ class Model:
         expTime = self.ui.expTime.value()
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
-        fastReadout = self.ui.checkFastDownload.isChecked()
+        fastReadout = self.ui.fastDownload.isChecked()
         focalLength = self.ui.focalLength.value()
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.exposeRaw(expTime, binning, subFrame, fastReadout, focalLength)

@@ -171,6 +171,30 @@ def test_closeShutter_2():
         assert suc
 
 
+def test_slewCW_1():
+    app.deviceConnected = False
+    suc = app.slewCW()
+    assert not suc
+
+
+def test_slewCW_2():
+    app.deviceConnected = True
+    suc = app.slewCW()
+    assert suc
+
+
+def test_slewCCW_1():
+    app.deviceConnected = False
+    suc = app.slewCCW()
+    assert not suc
+
+
+def test_slewCCW_2():
+    app.deviceConnected = True
+    suc = app.slewCCW()
+    assert suc
+
+
 def test_abortSlew_1():
     app.deviceConnected = False
     with mock.patch.object(app,

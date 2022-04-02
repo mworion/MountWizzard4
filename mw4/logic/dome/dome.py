@@ -348,6 +348,28 @@ class Dome:
         suc = self.run[self.framework].closeShutter()
         return suc
 
+    def slewCW(self):
+        """
+        :return: success
+        """
+        if not self.data:
+            self.log.error('No data dict available')
+            return False
+
+        suc = self.run[self.framework].slewCW()
+        return suc
+
+    def slewCCW(self):
+        """
+        :return: success
+        """
+        if not self.data:
+            self.log.error('No data dict available')
+            return False
+
+        suc = self.run[self.framework].slewCCW()
+        return suc
+
     def abortSlew(self):
         """
         :return: success

@@ -479,7 +479,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         subFrame = self.app.camera.subFrame
-        fastReadout = self.app.camera.checkFastDownload
+        fastReadout = self.app.camera.fastDownload
 
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = time + '-exposure.fits'

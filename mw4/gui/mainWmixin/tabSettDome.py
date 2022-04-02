@@ -110,7 +110,7 @@ class SettDome(object):
         self.ui.offLAT.setValue(config.get('offLAT', 0))
         self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
         self.ui.useDomeGeometry.setChecked(config.get('useDomeGeometry', False))
-        self.ui.autoDomeDriver.setChecked(config.get('autoDomeDriver', False))
+        self.ui.automaticDome.setChecked(config.get('automaticDome', False))
         self.ui.useDynamicFollowing.setChecked(config.get('useDynamicFollowing', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
         self.setUseGeometry()
@@ -136,7 +136,7 @@ class SettDome(object):
         config['offGEM'] = self.ui.offGEM.value()
         config['offLAT'] = self.ui.offLAT.value()
         config['useDomeGeometry'] = self.ui.useDomeGeometry.isChecked()
-        config['autoDomeDriver'] = self.ui.autoDomeDriver.isChecked()
+        config['automaticDome'] = self.ui.automaticDome.isChecked()
         config['useDynamicFollowing'] = self.ui.useDynamicFollowing.isChecked()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
         return True
@@ -166,7 +166,7 @@ class SettDome(object):
 
         :return: true for test purpose
         """
-        if self.ui.autoDomeDriver.isChecked():
+        if self.ui.automaticDome.isChecked():
             self.updateDomeGeometryToGui()
 
         self.app.mount.geometry.domeRadius = self.ui.domeRadius.value()

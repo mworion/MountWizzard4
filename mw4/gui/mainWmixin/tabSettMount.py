@@ -54,6 +54,7 @@ class SettMount(object):
         self.ui.mountWolPort.setText(config.get('mountWolPort', '9'))
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
+        self.ui.automaticTelescope.setChecked(config.get('automaticTelescope', False))
         return True
 
     def storeConfig(self):
@@ -68,6 +69,7 @@ class SettMount(object):
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
         config['settleTimeMount'] = self.ui.settleTimeMount.value()
         config['port3492'] = self.ui.port3492.isChecked()
+        config['automaticTelescope'] = self.ui.automaticTelescope.isChecked()
         return True
 
     def mountBoot(self):

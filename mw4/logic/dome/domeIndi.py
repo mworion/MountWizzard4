@@ -95,7 +95,6 @@ class DomeIndi(IndiClass):
                 azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION',
                                         0)
                 self.signals.azimuth.emit(azimuth)
-
                 slewing = self.device.ABS_DOME_POSITION['state'] == 'Busy'
                 self.data['Slewing'] = slewing
 
@@ -116,17 +115,14 @@ class DomeIndi(IndiClass):
         """
         if self.device is None:
             return False
-
         if self.deviceName is None or not self.deviceName:
             return False
 
         position = self.device.getNumber('ABS_DOME_POSITION')
-
         if 'DOME_ABSOLUTE_POSITION' not in position:
             return False
 
         position['DOME_ABSOLUTE_POSITION'] = azimuth
-
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='ABS_DOME_POSITION',
                                         elements=position,
@@ -139,18 +135,15 @@ class DomeIndi(IndiClass):
         """
         if self.device is None:
             return False
-
         if self.deviceName is None or not self.deviceName:
             return False
 
         position = self.device.getSwitch('DOME_SHUTTER')
-
         if 'SHUTTER_OPEN' not in position:
             return False
 
         position['SHUTTER_OPEN'] = 'On'
         position['SHUTTER_CLOSE'] = 'Off'
-
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_SHUTTER',
                                         elements=position,
@@ -163,20 +156,59 @@ class DomeIndi(IndiClass):
         """
         if self.device is None:
             return False
-
         if self.deviceName is None or not self.deviceName:
             return False
 
         position = self.device.getSwitch('DOME_SHUTTER')
-
         if 'SHUTTER_CLOSE' not in position:
             return False
 
         position['SHUTTER_OPEN'] = 'Off'
         position['SHUTTER_CLOSE'] = 'On'
-
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_SHUTTER',
+                                        elements=position,
+                                        )
+        return suc
+
+    def slewCW(self):
+        """
+        :return: success
+        """
+        if self.device is None:
+            return False
+        if self.deviceName is None or not self.deviceName:
+            return False
+
+        position = self.device.getSwitch('DOME_MOTION')
+        if 'DOME_CW' not in position:
+            return False
+
+        position['DOME_CW'] = 'On'
+        position['DOME_CCW'] = 'Off'
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='DOME_MOTION',
+                                        elements=position,
+                                        )
+        return suc
+
+    def slewCCW(self):
+        """
+        :return: success
+        """
+        if self.device is None:
+            return False
+        if self.deviceName is None or not self.deviceName:
+            return False
+
+        position = self.device.getSwitch('DOME_MOTION')
+        if 'DOME_CW' not in position:
+            return False
+
+        position['DOME_CW'] = 'Off'
+        position['DOME_CCW'] = 'On'
+        suc = self.client.sendNewSwitch(deviceName=self.deviceName,
+                                        propertyName='DOME_MOTION',
                                         elements=position,
                                         )
         return suc
@@ -187,17 +219,14 @@ class DomeIndi(IndiClass):
         """
         if self.device is None:
             return False
-
         if self.deviceName is None or not self.deviceName:
             return False
 
         position = self.device.getSwitch('DOME_ABORT_MOTION')
-
         if 'ABORT' not in position:
             return False
 
         position['ABORT'] = 'On'
-
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_ABORT_MOTION',
                                         elements=position,

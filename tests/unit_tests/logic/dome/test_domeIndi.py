@@ -341,6 +341,124 @@ def test_closeShutter_6():
             assert suc
 
 
+def test_slewCW_1():
+    suc = app.slewCW()
+    assert not suc
+
+
+def test_slewCW_2():
+    app.device = Device()
+    suc = app.slewCW()
+    assert not suc
+
+
+def test_slewCW_3():
+    app.device = Device()
+    app.deviceName = 'test'
+    suc = app.slewCW()
+    assert not suc
+
+
+def test_slewCW_4():
+    app.device = Device()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'DOME_CW': 1}):
+        suc = app.slewCW()
+        assert not suc
+
+
+def test_slewCW_5():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'DOME_CW': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.slewCW()
+            assert not suc
+
+
+def test_slewCW_6():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'DOME_CW': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = app.slewCW()
+            assert suc
+
+
+def test_slewCCW_1():
+    suc = app.slewCCW()
+    assert not suc
+
+
+def test_slewCCW_2():
+    app.device = Device()
+    suc = app.slewCCW()
+    assert not suc
+
+
+def test_slewCCW_3():
+    app.device = Device()
+    app.deviceName = 'test'
+    suc = app.slewCCW()
+    assert not suc
+
+
+def test_slewCCW_4():
+    app.device = Device()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'DOME_CW': 1}):
+        suc = app.slewCCW()
+        assert not suc
+
+
+def test_slewCCW_5():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'DOME_CW': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.slewCCW()
+            assert not suc
+
+
+def test_slewCCW_6():
+    app.device = Device()
+    app.client = Client()
+    app.deviceName = 'test'
+
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'DOME_CW': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = app.slewCCW()
+            assert suc
+
+
 def test_abortSlew_1():
     suc = app.abortSlew()
     assert not suc

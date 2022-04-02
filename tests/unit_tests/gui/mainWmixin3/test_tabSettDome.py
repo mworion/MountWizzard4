@@ -115,13 +115,13 @@ def test_setZoff10micronInMount(function):
 
 
 def test_setUseGeometry_1(function):
-    function.ui.autoDomeDriver.setChecked(False)
+    function.ui.automaticDome.setChecked(False)
     suc = function.setUseGeometry()
     assert suc
 
 
 def test_setUseGeometry_2(function):
-    function.ui.autoDomeDriver.setChecked(True)
+    function.ui.automaticDome.setChecked(True)
     with mock.patch.object(function,
                            'updateDomeGeometryToGui'):
         suc = function.setUseGeometry()

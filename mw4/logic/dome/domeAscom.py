@@ -118,12 +118,28 @@ class DomeAscom(AscomClass):
         self.callMethodThreaded(self.client.CloseShutter)
         return True
 
-    def abortSlew(self):
+    def slewCW(self):
         """
         :return: success
         """
         if not self.deviceConnected:
             return False
 
-        self.callMethodThreaded(self.client.AbortSlew)
+        self.callMethodThreaded(self.client.OpenShutter)
+        return True
+
+    def slewCCW(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+        return True
+
+    def abortSlew(self):
+        """
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
         return True

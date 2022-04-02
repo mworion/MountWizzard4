@@ -44,6 +44,8 @@ class SettImaging(object):
         self.clickable(self.ui.filterName).connect(self.setFilterName)
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
+        self.ui.domeSlewCW.clicked.connect(self.domeSlewCW)
+        self.ui.domeSlewCCW.clicked.connect(self.domeSlewCCW)
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
         self.ui.coverLightOn.clicked.connect(self.switchLightOn)
         self.ui.coverLightOff.clicked.connect(self.switchLightOff)
@@ -61,6 +63,7 @@ class SettImaging(object):
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
         self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateCoverLightGui)
+        self.app.update1s.connect(self.updateDomeGui)
         self.app.update1s.connect(self.updateParameters)
 
     def initConfig(self):
@@ -76,9 +79,8 @@ class SettImaging(object):
         self.ui.focalLength.setValue(config.get('focalLength', 100))
         self.ui.aperture.setValue(config.get('aperture', 100))
         self.ui.focuserStepsize.setValue(config.get('focuserStepsize', 100))
-        self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
-        self.ui.checkKeepImages.setChecked(config.get('checkKeepImages', False))
-        self.ui.checkAutomaticTelescope.setChecked(config.get('checkAutomaticTelescope', False))
+        self.ui.fastDownload.setChecked(config.get('fastDownload', False))
+        self.ui.keepImages.setChecked(config.get('keepImages', False))
         return True
 
     def storeConfig(self):
@@ -94,9 +96,8 @@ class SettImaging(object):
         config['focalLength'] = self.ui.focalLength.value()
         config['aperture'] = self.ui.aperture.value()
         config['focuserStepsize'] = self.ui.focuserStepsize.value()
-        config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
-        config['checkKeepImages'] = self.ui.checkKeepImages.isChecked()
-        config['checkAutomaticTelescope'] = self.ui.checkAutomaticTelescope.isChecked()
+        config['fastDownload'] = self.ui.fastDownload.isChecked()
+        config['keepImages'] = self.ui.keepImages.isChecked()
         return True
 
     def checkEnableCameraUI(self):
@@ -208,7 +209,7 @@ class SettImaging(object):
         :return: true for test purpose
         """
         self.checkEnableCameraUI()
-        if self.ui.checkAutomaticTelescope.isChecked():
+        if self.ui.automaticTelescope.isChecked():
             self.updateTelescopeParametersToGui()
 
         self.updateGainOffset()
@@ -238,7 +239,7 @@ class SettImaging(object):
         self.app.camera.binning = self.ui.binning.value()
         self.app.camera.binningN = self.ui.binningN.value()
         self.app.camera.subFrame = self.ui.subFrame.value()
-        self.app.camera.checkFastDownload = self.ui.checkFastDownload.isChecked()
+        self.app.camera.fastDownload = self.ui.fastDownload.isChecked()
         self.app.telescope.focalLength = focalLength
         self.app.telescope.aperture = aperture
 
@@ -652,4 +653,42 @@ class SettImaging(object):
         if not suc:
             self.app.message.emit('Light intensity could not be set', 2)
 
+        return suc
+
+    def updateDomeGui(self):
+        """
+        :return: True for test purpose
+        """
+        value = self.app.dome.data.get('DOME_MOTION.DOME_CW', None)
+        if value:
+            self.changeStyleDynamic(self.ui.domeSlewCW, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.domeSlewCW, 'running', False)
+
+        value = self.app.dome.data.get('DOME_MOTION.DOME_CCW', None)
+        if value:
+            self.changeStyleDynamic(self.ui.domeSlewCCW, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.domeSlewCCW, 'running', False)
+
+        value = self.app.dome.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
+        self.guiSetText(self.ui.domeAzimuth, '3.0f', value)
+        return True
+
+    def domeSlewCW(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.slewCW()
+        if not suc:
+            self.app.message.emit('Dome could not be slewed', 2)
+        return suc
+
+    def domeSlewCCW(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.slewCCW()
+        if not suc:
+            self.app.message.emit('Dome could not be slewed', 2)
         return suc

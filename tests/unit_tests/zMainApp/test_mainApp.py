@@ -357,22 +357,20 @@ def test_saveConfig_4(app):
 
 def test_loadMountData_1(app):
     app.mountUp = False
-    with mock.patch.object(mainApp,
-                           'sleepAndEvents'):
+    with mock.patch.object(app.mount,
+                           'cycleSetting'):
         with mock.patch.object(app.mount,
-                               'cycleSetting'):
+                               'getFW'):
             with mock.patch.object(app.mount,
-                                   'getFW'):
-                with mock.patch.object(app.mount,
-                                       'getLocation'):
+                                   'getLocation'):
+                with mock.patch.object(app.mainW,
+                                       'refreshName'):
                     with mock.patch.object(app.mainW,
-                                           'refreshName'):
-                        with mock.patch.object(app.mainW,
-                                               'refreshModel'):
-                            with mock.patch.object(app.mount,
-                                                   'getTLE'):
-                                suc = app.loadMountData(True)
-                                assert suc
+                                           'refreshModel'):
+                        with mock.patch.object(app.mount,
+                                               'getTLE'):
+                            suc = app.loadMountData(True)
+                            assert suc
 
 
 def test_loadMountData_2(app):

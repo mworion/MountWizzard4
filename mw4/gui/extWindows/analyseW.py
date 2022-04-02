@@ -450,5 +450,5 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             return False
         for chart in self.charts:
             chart()
-            sleepAndEvents(1)
+            sleepAndEvents(0)
         return True

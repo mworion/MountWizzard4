@@ -20,9 +20,10 @@ import platform
 
 releaseNotes = """
 - add: all charts zoomable
-- add: measure window has max 5 charts now (from 3)
-- add: measure window more values (time delta, focus, etc)
-- add: analyse charts could show horizon and values for each point 
+- add: measure: window has max 5 charts now (from 3)
+- add: measure: more values (time delta, focus, etc)
+- add: analyse: charts could show horizon and values for each point 
+- add: analyse: alt / az charts with iso error curves 
 - add: sound for connection lost and sat start tracking
 - add: model points: multiple variants for edit and move points
 - add: model points: set dither on celestial paths

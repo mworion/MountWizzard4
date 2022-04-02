@@ -210,9 +210,7 @@ def test_colorChange(function):
 
 
 def test_setupButtons_1(function):
-    suc = function.setupButtons(True)
-    assert suc
-    suc = function.setupButtons(False)
+    suc = function.setupButtons()
     assert suc
 
 

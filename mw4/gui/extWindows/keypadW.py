@@ -121,15 +121,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
         """
         self.storeConfig()
         self.keypad.closeWebsocket()
-        self.app.colorChange.disconnect(self.colorChange)
-        self.app.hostChanged.disconnect(self.hostChanged)
-        self.signals.textRow.disconnect(self.writeTextRow)
-        self.signals.cursorPos.disconnect(self.setCursorPos)
-        self.signals.imgChunk.disconnect(self.buildGraphics)
-        self.signals.clearCursor.disconnect(self.clearCursor)
-        self.app.update1s.disconnect(self.startKeypad)
-        self.app.update1s.disconnect(self.drawGraphics)
-        self.setupButtons(connect=False)
         super().closeEvent(closeEvent)
 
     def keyPressEvent(self, keyEvent):
@@ -170,7 +161,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals.clearCursor.connect(self.clearCursor)
         self.app.update1s.connect(self.startKeypad)
         self.app.update1s.connect(self.drawGraphics)
-        self.setupButtons(connect=True)
+        self.setupButtons()
         self.show()
         self.startKeypad()
         return True
@@ -183,7 +174,10 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.clearGraphics()
         return True
 
-    def setupButtons(self, connect=True):
+    def setupButtons(self):
+        """
+        :return:
+        """
         self.buttons = {
             self.ui.b0: 'key_0',
             self.ui.b1: 'key_1',
@@ -207,12 +201,8 @@ class KeypadWindow(toolsQtWidget.MWidget):
             self.ui.benter: 'key_enter',
         }
         for button in self.buttons:
-            if connect:
-                button.pressed.connect(self.buttonPressed)
-                button.released.connect(self.buttonReleased)
-            else:
-                button.pressed.disconnect(self.buttonPressed)
-                button.released.disconnect(self.buttonReleased)
+            button.pressed.connect(self.buttonPressed)
+            button.released.connect(self.buttonReleased)
         return True
 
     def websocketClear(self):

@@ -83,9 +83,6 @@ class MessageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.storeConfig()
-        self.ui.clear.clicked.disconnect(self.clearWindow)
-        self.app.update1s.disconnect(self.writeMessage)
-        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self):

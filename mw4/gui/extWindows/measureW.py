@@ -257,11 +257,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.app.update1s.disconnect(self.drawMeasure)
         self.storeConfig()
-        for ui in self.mSetUI:
-            ui.currentIndexChanged.disconnect(self.changeChart)
-        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def colorChange(self):

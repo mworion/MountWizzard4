@@ -161,19 +161,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.storeConfig()
-        self.ui.load.clicked.disconnect(self.selectImage)
-        self.ui.color.currentIndexChanged.disconnect(self.setBarColor)
-        self.ui.view.currentIndexChanged.disconnect(self.setImage)
-        self.ui.showCrosshair.clicked.disconnect(self.setCrosshair)
-        self.ui.solve.clicked.disconnect(self.solveCurrent)
-        self.ui.expose.clicked.disconnect(self.exposeImage)
-        self.ui.exposeN.clicked.disconnect(self.exposeImageN)
-        self.ui.stackImages.clicked.disconnect(self.clearStack)
-        self.ui.abortImage.clicked.disconnect(self.abortImage)
-        self.ui.abortSolve.clicked.disconnect(self.abortSolve)
-        self.signals.solveImage.disconnect(self.solveImage)
-        self.app.showImage.disconnect(self.showImage)
-        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def colorChange(self):
@@ -620,6 +607,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             text += f'Scale: {result["scaleS"]:4.3f}, '
             text += f'Error: {result["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
+            if self.ui.embedData.isChecked():
+                self.showCurrent()
 
         else:
             text = f'Solving error:       {result.get("message")}'

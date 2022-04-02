@@ -637,6 +637,7 @@ def test_solveDone_2(function, qtbot):
 
 
 def test_solveDone_3(function, qtbot):
+    function.ui.embedData.setChecked(True)
     function.ui.stackImages.setChecked(True)
     result = {
         'success': True,

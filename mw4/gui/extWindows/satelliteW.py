@@ -111,7 +111,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         self.closing = True
         self.storeConfig()
-        self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 

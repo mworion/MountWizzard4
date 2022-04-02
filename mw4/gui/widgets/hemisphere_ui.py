@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/hemisphere.ui'
+# Form implementation generated from reading ui file 'hemisphere.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -144,15 +144,15 @@ class Ui_HemisphereDialog(object):
         self.showHorizon.setChecked(True)
         self.showHorizon.setObjectName("showHorizon")
         self.gridLayout.addWidget(self.showHorizon, 1, 0, 1, 1)
-        self.showRefModel = QtWidgets.QCheckBox(self.groupBox_3)
-        self.showRefModel.setMinimumSize(QtCore.QSize(0, 20))
-        self.showRefModel.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.showIsoModel = QtWidgets.QCheckBox(self.groupBox_3)
+        self.showIsoModel.setMinimumSize(QtCore.QSize(0, 20))
+        self.showIsoModel.setMaximumSize(QtCore.QSize(16777215, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
-        self.showRefModel.setFont(font)
-        self.showRefModel.setObjectName("showRefModel")
-        self.gridLayout.addWidget(self.showRefModel, 1, 3, 1, 1)
+        self.showIsoModel.setFont(font)
+        self.showIsoModel.setObjectName("showIsoModel")
+        self.gridLayout.addWidget(self.showIsoModel, 1, 3, 1, 1)
         self.horizontalLayout.addWidget(self.groupBox_3)
         self.operationMode = QtWidgets.QGroupBox(HemisphereDialog)
         self.operationMode.setProperty("large", True)
@@ -386,8 +386,8 @@ class Ui_HemisphereDialog(object):
         self.showTerrain.setText(_translate("HemisphereDialog", "Terrain"))
         self.showHorizon.setToolTip(_translate("HemisphereDialog", "<html><head/><body><p>Use horizon mask file in hemisphere window.</p></body></html>"))
         self.showHorizon.setText(_translate("HemisphereDialog", "Horizon mask "))
-        self.showRefModel.setToolTip(_translate("HemisphereDialog", "Enabling the edit mode for model build points."))
-        self.showRefModel.setText(_translate("HemisphereDialog", "RefModel"))
+        self.showIsoModel.setToolTip(_translate("HemisphereDialog", "Enabling the edit mode for model build points."))
+        self.showIsoModel.setText(_translate("HemisphereDialog", "Model Error"))
         self.operationMode.setTitle(_translate("HemisphereDialog", "Coordinates"))
         self.label.setText(_translate("HemisphereDialog", "Altitude:"))
         self.label_2.setText(_translate("HemisphereDialog", "Azimuth:"))

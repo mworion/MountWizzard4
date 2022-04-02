@@ -19,19 +19,22 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: satellites: all time values could be UTC or local time now
-- add: all charts zoom able
+- add: all charts zoomable
+- add: all charts have tooltips for values
 - add: measure window has max 5 charts now (from 3)
-- add: measure window more values (time delat, focus, etc)
+- add: measure window more values (time delta, focus, etc)
 - add: analyse charts could show horizon and values for each point 
 - add: sound for connection lost and sat start tracking
-- add: set dither or nor for model build points on celestial paths
-- add: generate model point from actual used mount model
+- add: model points: multiple variants for edit and move points
+- add: model points: set dither on celestial paths
+- add: model points: generate from actual used mount model
+- add: hemisphere: show actual model error in background
+- add: hemisphere: edit horizon model much more efficient
+- add: satellites: all time values could be UTC or local time now
 - improve: complete rework of charting: performance and functions
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
 - remove: matplotlib usage and replace with pyqtgraph
-
  """
 
 with open('notes.txt', 'w') as f:

@@ -420,7 +420,7 @@
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QCheckBox" name="showRefModel">
+         <widget class="QCheckBox" name="showIsoModel">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -443,7 +443,7 @@
            <string>Enabling the edit mode for model build points.</string>
           </property>
           <property name="text">
-           <string>RefModel</string>
+           <string>Model Error</string>
           </property>
          </widget>
         </item>

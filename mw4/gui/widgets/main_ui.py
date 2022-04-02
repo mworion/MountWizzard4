@@ -2467,7 +2467,7 @@ class Ui_MainWindow(object):
         self.genBuildNorm.setGeometry(QtCore.QRect(185, 20, 86, 21))
         self.genBuildNorm.setObjectName("genBuildNorm")
         self.groupBox_5 = QtWidgets.QGroupBox(self.Modelpoints)
-        self.groupBox_5.setGeometry(QtCore.QRect(410, 15, 366, 106))
+        self.groupBox_5.setGeometry(QtCore.QRect(410, 15, 366, 101))
         self.groupBox_5.setProperty("large", True)
         self.groupBox_5.setObjectName("groupBox_5")
         self.label_188 = QtWidgets.QLabel(self.groupBox_5)

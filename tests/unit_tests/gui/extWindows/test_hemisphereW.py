@@ -469,6 +469,46 @@ def test_drawDome_2(function):
     assert suc
 
 
+def test_getMountModelData_1(function):
+    val = function.getMountModelData()
+    assert val[0] is None
+    assert val[1] is None
+    assert val[2] is None
+
+
+def test_getMountModelData_2(function):
+    class Star:
+        alt = Angle(degrees=10)
+        az = Angle(degrees=20)
+        errorRMS = 5
+
+    function.app.mount.model.starList = [Star()]
+    val = function.getMountModelData()
+    assert val[0][0] == -340
+    assert val[1][0] == 10
+    assert val[2][0] == 5
+
+
+def test_drawModelIsoCurve_1(function):
+    with mock.patch.object(function,
+                           'getMountModelData',
+                           return_value=(None, None, None)):
+        suc = function.drawModelIsoCurve()
+        assert not suc
+
+
+def test_drawModelIsoCurve_2(function):
+    data = (
+        np.random.uniform(low=10, high=350, size=(50,)),
+        np.random.uniform(low=15, high=85, size=(50,)),
+        np.random.uniform(low=5, high=15, size=(50,)))
+    with mock.patch.object(function,
+                           'getMountModelData',
+                           return_value=data):
+        suc = function.drawModelIsoCurve()
+        assert suc
+
+
 def test_drawHemisphereTab_1(function):
     function.ui.showCelestial.setChecked(True)
     function.ui.showTerrain.setChecked(True)

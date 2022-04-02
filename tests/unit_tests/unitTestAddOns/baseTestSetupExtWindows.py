@@ -164,6 +164,7 @@ class Dome(QObject):
 class Mount(QObject):
     class Model:
         numberStars = None
+        starList = []
 
     class MountGeometry:
         offNorth = 0

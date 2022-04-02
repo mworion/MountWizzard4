@@ -20,6 +20,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np
+from scipy.interpolate import griddata
+from scipy.ndimage import uniform_filter
 from PIL import Image
 import pyqtgraph as pg
 
@@ -95,6 +97,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.showHorizon.setChecked(config.get('showHorizon', True))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
         self.ui.showTerrain.setChecked(config.get('showTerrain', False))
+        self.ui.showIsoModel.setChecked(config.get('showIsoModel', False))
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
         self.mwSuper('initConfig')
         return True
@@ -118,6 +121,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         config['showHorizon'] = self.ui.showHorizon.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
         config['showTerrain'] = self.ui.showTerrain.isChecked()
+        config['showIsoModel'] = self.ui.showIsoModel.isChecked()
         config['tabWidget'] = self.ui.tabWidget.currentIndex()
         self.mwSuper('storeConfig')
         return True
@@ -142,6 +146,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.app.redrawHorizon.connect(self.drawHorizonOnHem)
         self.app.colorChange.connect(self.colorChange)
         self.app.enableEditPoints.connect(self.enableOperationModeChange)
+        self.app.mount.signals.alignDone.connect(self.drawHemisphereTab)
 
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.drawPointerHem)
@@ -160,6 +165,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.showCelestial.clicked.connect(self.drawHemisphereTab)
         self.ui.showPolar.clicked.connect(self.drawHemisphereTab)
         self.ui.showTerrain.clicked.connect(self.drawHemisphereTab)
+        self.ui.showIsoModel.clicked.connect(self.drawHemisphereTab)
         self.drawHemisphereTab()
         self.show()
         return True
@@ -691,6 +697,50 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.pointerDome.setVisible(visible)
         return True
 
+    def getMountModelData(self):
+        """
+        :return:
+        """
+        model = self.app.mount.model
+        if len(model.starList) == 0:
+            return None, None, None
+        alt = np.array([x.alt.degrees for x in model.starList])
+        az = np.array([x.az.degrees for x in model.starList])
+        err = np.array([x.errorRMS for x in model.starList])
+
+        alt = np.concatenate([alt, alt, alt])
+        err = np.concatenate([err, err, err])
+        az = np.concatenate([az - 360, az, az + 360])
+        return az, alt, err
+
+    def drawModelIsoCurve(self):
+        """
+        :return:
+        """
+        plotItem = self.ui.hemisphere.p[0]
+        az, alt, err = self.getMountModelData()
+        if az is None or alt is None or err is None:
+            return False
+
+        xm, ym = np.meshgrid(np.linspace(0, 360, 360), np.linspace(0, 90, 90))
+        zm = griddata((az, alt), err, (xm, ym), method='linear',
+                      fill_value=np.min(err))
+        zm = uniform_filter(zm, size=10)
+
+        err = np.abs(zm)
+        minE = np.min(err)
+        maxE = np.max(err)
+        for level in np.linspace(minE, maxE, 20):
+            pd = pg.IsocurveItem()
+            colorInx = (level - minE) / (maxE - minE)
+            colorVal = self.ui.hemisphere.cMapGYR.mapToQColor(colorInx)
+            colorVal.setAlpha(128)
+            pd.setData(zm, level)
+            pd.setPen(pg.mkPen(color=colorVal))
+            pd.setZValue(-10)
+            plotItem.addItem(pd)
+        return True
+
     def drawHemisphereTab(self):
         """
         :return: True for test purpose
@@ -703,6 +753,8 @@ class HemisphereWindow(MWidget, EditHorizon):
         if self.ui.showMountLimits.isChecked():
             self.drawMeridianLimits()
             self.drawHorizonLimits()
+        if self.ui.showIsoModel.isChecked():
+            self.drawModelIsoCurve()
         self.setupAlignmentStars()
         self.drawAlignmentStars()
         self.setupModel()

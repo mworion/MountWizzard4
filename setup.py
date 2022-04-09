@@ -30,7 +30,7 @@ releaseNotes = """
 - add: model points: generate from actual used mount model
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
-- add: dome: control azimuth move for INDI
+- add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui

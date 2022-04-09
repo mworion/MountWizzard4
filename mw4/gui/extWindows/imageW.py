@@ -19,7 +19,7 @@
 import os
 
 # external packages
-import PyQt5.QtWidgets
+from PyQt5.QtCore import pyqtSignal, QObject
 import numpy as np
 from astropy.io import fits
 import sep
@@ -33,11 +33,12 @@ from gui.widgets import image_ui
 from base.tpool import Worker
 
 
-class ImageWindowSignals(PyQt5.QtCore.QObject):
+class ImageWindowSignals(QObject):
     """
     """
     __all__ = ['ImageWindowSignals']
-    solveImage = PyQt5.QtCore.pyqtSignal(object)
+    solveImage = pyqtSignal(object)
+    showTitle = pyqtSignal(object)
 
 
 class ImageWindow(toolsQtWidget.MWidget):
@@ -100,13 +101,15 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.move(x, y)
 
         self.ui.color.setCurrentIndex(config.get('color', 0))
-        self.ui.view.setCurrentIndex(config.get('view', 0))
+        self.ui.tabImage.setCurrentIndex(config.get('tabImage', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
         self.ui.stackImages.setChecked(config.get('stackImages', False))
         self.ui.showCrosshair.setChecked(config.get('showCrosshair', False))
+        self.ui.aspectLocked.setChecked(config.get('aspectLocked', False))
         self.ui.autoSolve.setChecked(config.get('autoSolve', False))
         self.ui.embedData.setChecked(config.get('embedData', False))
+        self.ui.enablePhotometry.setChecked(config.get('enablePhotometry', False))
         self.setCrosshair()
         return True
 
@@ -122,12 +125,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['color'] = self.ui.color.currentIndex()
-        config['view'] = self.ui.view.currentIndex()
+        config['tabImage'] = self.ui.tabImage.currentIndex()
         config['imageFileName'] = self.imageFileName
         config['stackImages'] = self.ui.stackImages.isChecked()
         config['showCrosshair'] = self.ui.showCrosshair.isChecked()
+        config['aspectLocked'] = self.ui.aspectLocked.isChecked()
         config['autoSolve'] = self.ui.autoSolve.isChecked()
         config['embedData'] = self.ui.embedData.isChecked()
+        config['enablePhotometry'] = self.ui.enablePhotometry.isChecked()
         return True
 
     def showWindow(self):
@@ -140,8 +145,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
-        self.ui.view.currentIndexChanged.connect(self.setImage)
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
+        self.ui.enablePhotometry.clicked.connect(self.preparePhotometry)
+        self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
@@ -149,10 +155,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.solveImage.connect(self.solveImage)
+        self.signals.showTitle.connect(self.showTitle)
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
         self.showCurrent()
+        self.setAspectLocked()
         return True
 
     def closeEvent(self, closeEvent):
@@ -218,6 +226,15 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         return True
 
+    def showTitle(self, text):
+        """
+        :param text:
+        :return:
+        """
+        fileName = os.path.basename(self.imageFileName)
+        self.setWindowTitle(f'Imaging:   {fileName}   {text}')
+        return True
+
     def selectImage(self):
         """
         :return: success
@@ -229,7 +246,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.app.message.emit('No image selected', 0)
             return False
 
-        self.setWindowTitle(f'Imaging   {name}')
+        self.signals.showTitle.emit('')
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image selected:      [{name}]', 0)
         self.folder = os.path.dirname(loadFilePath)
@@ -254,39 +271,54 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
         return True
 
+    def setAspectLocked(self):
+        """
+        :return:
+        """
+        isLocked = self.ui.aspectLocked.isChecked()
+        self.ui.image.p[0].setAspectLocked(isLocked)
+        self.ui.background.p[0].setAspectLocked(isLocked)
+        self.ui.backgroundRMS.p[0].setAspectLocked(isLocked)
+        return True
+
     def setImage(self):
         """
         :return:
         """
         self.setBarColor()
-        if self.ui.view.currentIndex() == 0:
-            self.ui.image.setImage(imageDisp=self.image)
-            self.log.debug('Show 0')
+        self.ui.image.setImage(imageDisp=self.image)
 
-        elif self.ui.view.currentIndex() == 1:
-            if self.objs is None:
-                self.log.debug('Show 1, no SEP data')
-                return False
+        """
+        if self.objs is None:
+            self.log.debug('Show 1, no SEP data')
+            return False
 
-            self.ui.image.setImage(imageDisp=self.image)
-            for i in range(len(self.objs)):
-                self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
-                                         self.objs['a'][i], self.objs['b'][i],
-                                         self.objs['theta'][i])
+        self.ui.image.setImage(imageDisp=self.image)
+        for i in range(len(self.objs)):
+            self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
+                                     self.objs['a'][i], self.objs['b'][i],
+                                     self.objs['theta'][i])
 
-        elif self.ui.view.currentIndex() == 2:
-            if self.objs is None or self.radius is None:
-                self.log.debug('Show 2, no SEP radius data')
-                return False
+        if self.objs is None or self.radius is None:
+            self.log.debug('Show 2, no SEP radius data')
+            return False
 
-            self.ui.image.setImage(imageDisp=self.image)
-            draw = self.radius.argsort()[-50:][::-1]
-            for i in draw:
-                self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
-                                         self.objs['a'][i], self.objs['b'][i],
-                                         self.objs['theta'][i])
-                self.ui.image.addValueAnnotation(self.objs['x'][i], self.objs['y'][i],
-                                                 self.radius[i])
+        self.ui.image.setImage(imageDisp=self.image)
+        draw = self.radius.argsort()[-50:][::-1]
+        for i in draw:
+            self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
+                                     self.objs['a'][i], self.objs['b'][i],
+                                     self.objs['theta'][i])
+            self.ui.image.addValueAnnotation(self.objs['x'][i], self.objs['y'][i],
+                                             self.radius[i])
+
+        """
+        if self.bk_back is not None:
+            self.ui.background.setImage(imageDisp=self.bk_back)
+
+        if self.bk_rms is not None:
+            self.ui.backgroundRMS.setImage(imageDisp=self.bk_rms)
+
         self.setCrosshair()
         return True
 
@@ -299,7 +331,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bk_rms = bkg.rms()
         image_sub = self.image - bkg
         self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms,
-                                filter_type='conv',
+                                filter_type='matched',
                                 minarea=10)
         self.flux, _, _ = sep.sum_circle(image_sub,
                                          self.objs['x'],
@@ -320,11 +352,21 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if self.objs is None:
+        doPhotometry = self.ui.enablePhotometry.isChecked()
+
+        for i in range(1, self.ui.tabImage.count()):
+            self.ui.tabImage.setTabEnabled(i, doPhotometry)
+
+        if doPhotometry:
             worker = Worker(self.workerPreparePhotometry)
             worker.signals.finished.connect(self.setImage)
             self.threadPool.start(worker)
         else:
+            self.objs = None
+            self.bk_back = None
+            self.bk_rms = None
+            self.radius = None
+            self.flux = None
             self.setImage()
         return True
 
@@ -334,7 +376,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         if not self.ui.stackImages.isChecked():
             self.imageStack = None
-            self.ui.numberStacks.setText('single')
             return False
 
         if np.shape(self.image) != np.shape(self.imageStack):
@@ -348,7 +389,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.numberStack += 1
 
         self.image = self.imageStack / self.numberStack
-        self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
+        self.signals.showTitle.emit(f'stacked: {self.numberStack:3.0f}')
         return True
 
     def clearStack(self):
@@ -358,7 +399,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not self.ui.stackImages.isChecked():
             self.imageStack = None
             self.numberStack = 0
-            self.ui.numberStacks.setText('single')
+            self.signals.showTitle.emit('')
             return False
 
         return True
@@ -446,7 +487,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.updateWindowsStats()
         self.writeHeaderDataToGUI(self.header)
         self.stackImages()
-        self.objs = None
         return True
 
     def showImage(self, imagePath=''):
@@ -460,8 +500,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         self.imageFileName = imagePath
-        full, short, ext = self.extractNames([self.imageFileName])
-        self.setWindowTitle(f'Imaging   {short}')
+        self.signals.showTitle.emit('')
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)
         self.threadPool.start(worker)
@@ -532,7 +571,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.deviceStat['expose'] = True
         self.ui.stackImages.setChecked(False)
         self.app.camera.signals.saved.connect(self.exposeImageDone)
-        self.ui.numberStacks.setText('...')
         self.exposeRaw()
         return True
 
@@ -559,7 +597,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
-        self.ui.numberStacks.setText('...')
         self.exposeRaw()
         return True
 

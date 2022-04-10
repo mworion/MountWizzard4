@@ -73,7 +73,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.objs = None
         self.bkg = None
         self.flux = None
-        self.radius = None
+        self.HFD = None
 
         self.deviceStat = {
             'expose': False,
@@ -268,6 +268,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.background.setColorMap(colorMap)
         self.ui.backgroundRMS.setColorMap(colorMap)
         self.ui.hfd.setColorMap(colorMap)
+        self.ui.tilt.setColorMap(colorMap)
         self.ui.roundness.setColorMap(colorMap)
         self.ui.aberation.setColorMap(colorMap)
         return True
@@ -289,8 +290,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.background.p[0].setAspectLocked(isLocked)
         self.ui.backgroundRMS.p[0].setAspectLocked(isLocked)
         self.ui.hfd.p[0].setAspectLocked(isLocked)
+        self.ui.tilt.p[0].setAspectLocked(isLocked)
         self.ui.roundness.p[0].setAspectLocked(isLocked)
-        self.ui.aberation.p[0].setAspectLocked(isLocked)
         return True
 
     @staticmethod
@@ -325,15 +326,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         doPhotometry = self.ui.enablePhotometry.isChecked()
-
         for i in range(1, self.ui.tabImage.count()):
             self.ui.tabImage.setTabEnabled(i, doPhotometry)
 
         self.setBarColor()
         self.ui.image.setImage(imageDisp=self.image)
         self.setCrosshair()
-        if self.radius is None:
-            print('no radius')
+        if self.HFD is None:
             return False
 
         # base calculations
@@ -341,6 +340,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         rangeX = np.linspace(0, xs, int(xs / 5))
         rangeY = np.linspace(0, ys, int(ys / 5))
         xm, ym = np.meshgrid(rangeX, rangeY)
+        filterConst = int(xs / 20)
+        medianHFD = np.median(self.HFD)
+        self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
+        self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
 
         # image with detected sources
         self.ui.imageSource.setImage(imageDisp=self.image)
@@ -353,20 +356,25 @@ class ImageWindow(toolsQtWidget.MWidget):
         maxB = np.max(self.bkg.back()) / self.bkg.globalback
         minB = np.min(self.bkg.back()) / self.bkg.globalback
         img = self.bkg.back() / self.bkg.globalback
-        img = uniform_filter(img, size=int(xs / 5))
+        img = uniform_filter(img, size=filterConst)
         self.ui.background.setImage(imageDisp=img)
         self.ui.background.barItem.setLevels((minB, maxB))
 
         # background rms
         img = self.bkg.rms()
-        img = uniform_filter(img, size=int(xs / 5))
+        img = uniform_filter(img, size=filterConst)
         self.ui.backgroundRMS.setImage(imageDisp=img)
 
         # hfd values
-        img = griddata((self.objs['x'], self.objs['y']), self.radius, (xm, ym),
-                       method='nearest', fill_value=np.min(self.radius))
-        img = uniform_filter(img, size=int(xs / 5))
+        img = griddata((self.objs['x'], self.objs['y']), self.HFD, (xm, ym),
+                       method='nearest', fill_value=np.min(self.HFD))
+        img = uniform_filter(img, size=filterConst)
         self.ui.hfd.setImage(imageDisp=img)
+        hfdPercentile10 = np.percentile(self.HFD, 90)
+        self.ui.hfdPercentile.setText(f'{hfdPercentile10:1.1f}')
+
+        # tilt values
+        self.ui.tilt.setImage(imageDisp=img)
 
         # roundness as image
         a = self.objs['a']
@@ -375,17 +383,20 @@ class ImageWindow(toolsQtWidget.MWidget):
         minB, maxB = np.percentile(aspectRatio, (50, 95))
         img = griddata((self.objs['x'], self.objs['y']), aspectRatio, (xm, ym),
                        method='nearest', fill_value=np.min(aspectRatio))
-        img = uniform_filter(img, size=int(xs / 5))
+        img = uniform_filter(img, size=filterConst)
         self.ui.roundness.setImage(imageDisp=img)
         self.ui.roundness.barItem.setLevels((minB, maxB))
+        aspectRatioPercentile10 = np.percentile(aspectRatio, 90)
+        self.ui.aspectRatioPercentile.setText(f'{aspectRatioPercentile10:1.1f}')
 
         # aberation inspection
         abb = self.calcAberationInspectView(self.image)
         self.ui.aberation.setImage(abb)
-        plotItem = self.ui.aberation.p[0]
-        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
-        plotItem.setMouseEnabled(x=False, y=False)
-        plotItem.getViewBox().rightMouseRange()
+        self.ui.aberation.p[0].setAspectLocked(True)
+        self.ui.aberation.p[0].getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        self.ui.aberation.p[0].showAxes(False, showValues=False)
+        self.ui.aberation.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.aberation.p[0].getViewBox().rightMouseRange()
         return True
 
     def workerPreparePhotometry(self):
@@ -395,11 +406,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
         image_sub = self.image - self.bkg
         obj = sep.extract(
-            image_sub, 3, err=self.bkg.globalrms, filter_type='matched', minarea=14)
+            image_sub, 1.5, err=self.bkg.globalrms, filter_type='matched',
+            minarea=7)
 
-        # remove large objects
+        # remove objects without need
         r = np.sqrt(obj['a'] * obj['a'] + obj['b'] * obj['b'])
-        obj = obj[(r < 5) & (r > 1.25)]
+        obj = obj[(r < 7) & (r > 1.1)]
         self.objs = obj
 
         kronRad, krFlag = sep.kron_radius(
@@ -419,9 +431,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         fluxErr[useCircle] = cFluxErr
         flag[useCircle] = cFlag
 
-        self.radius, _ = sep.flux_radius(
+        radius, _ = sep.flux_radius(
             image_sub, obj['x'], obj['y'], 6.0 * obj['a'], 0.5,
             normflux=self.flux, subpix=5)
+
+        # to get HFD
+        self.HFD = 2 * radius
 
         return True
 
@@ -437,7 +452,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         else:
             self.objs = None
             self.bkg = None
-            self.radius = None
+            self.HFD = None
             self.flux = None
             self.setImage()
         return True
@@ -473,7 +488,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.numberStack = 0
             self.signals.showTitle.emit('')
             return False
-
         return True
 
     def debayerImage(self, image, pattern):
@@ -573,9 +587,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.imageFileName = imagePath
         self.signals.showTitle.emit('')
-        self.radius = None
-        for i in range(1, self.ui.tabImage.count()):
-            self.ui.tabImage.setTabEnabled(i, False)
+        self.HFD = None
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)
         self.threadPool.start(worker)

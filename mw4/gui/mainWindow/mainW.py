@@ -104,7 +104,6 @@ class MainWindow(
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.closing = False
         self.satStatus = False
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
@@ -233,8 +232,6 @@ class MainWindow(
         tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Relay')
         tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
         self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
-        ui = self.ui.toolsTabWidget
-        ui.setStyleSheet(ui.styleSheet())
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
@@ -277,7 +274,6 @@ class MainWindow(
         """
         :return:    nothing
         """
-        self.closing = True
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()

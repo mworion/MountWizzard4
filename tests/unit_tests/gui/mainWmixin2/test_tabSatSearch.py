@@ -54,7 +54,6 @@ def function(module):
             self.databaseProcessing = DataWriter(self.app)
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
-            self.closing = False
             self.ui.setupUi(self)
             SatSearch.__init__(self)
             SatTrack.__init__(self)

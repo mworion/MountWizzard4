@@ -19,11 +19,14 @@
 import os
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
 import numpy as np
-from astropy.io import fits
 import sep
+import pyqtgraph as pg
+from PyQt5.QtCore import pyqtSignal, QObject
+from astropy.io import fits
 from PIL import Image
+from scipy.interpolate import griddata
+from scipy.ndimage import uniform_filter
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
@@ -68,8 +71,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageStack = None
         self.numberStack = 0
         self.objs = None
-        self.bk_back = None
-        self.bk_rms = None
+        self.bkg = None
         self.flux = None
         self.radius = None
 
@@ -262,6 +264,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         cMap = ['CET-L2', 'plasma', 'cividis', 'magma', 'CET-D1A']
         colorMap = cMap[self.ui.color.currentIndex()]
         self.ui.image.setColorMap(colorMap)
+        self.ui.imageSource.setColorMap(colorMap)
+        self.ui.background.setColorMap(colorMap)
+        self.ui.backgroundRMS.setColorMap(colorMap)
+        self.ui.hfd.setColorMap(colorMap)
+        self.ui.roundness.setColorMap(colorMap)
+        self.ui.aberation.setColorMap(colorMap)
         return True
 
     def setCrosshair(self):
@@ -277,78 +285,42 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         isLocked = self.ui.aspectLocked.isChecked()
         self.ui.image.p[0].setAspectLocked(isLocked)
+        self.ui.imageSource.p[0].setAspectLocked(isLocked)
         self.ui.background.p[0].setAspectLocked(isLocked)
         self.ui.backgroundRMS.p[0].setAspectLocked(isLocked)
+        self.ui.hfd.p[0].setAspectLocked(isLocked)
+        self.ui.roundness.p[0].setAspectLocked(isLocked)
+        self.ui.aberation.p[0].setAspectLocked(isLocked)
         return True
+
+    @staticmethod
+    def calcAberationInspectView(img):
+        """
+        :param img:
+        :return:
+        """
+        size = 250
+        h, w = img.shape
+        if w < 3 * size or h < 3 * size:
+            return img
+
+        dw = int((w - 3 * size) / 2)
+        dh = int((h - 3 * size) / 2)
+
+        img = np.delete(img, np.s_[size:size + dh], axis=0)
+        img = np.delete(img, np.s_[size * 2:size * 2 + dh], axis=0)
+        img = np.delete(img, np.s_[size:size + dw], axis=1)
+        img = np.delete(img, np.s_[size * 2:size * 2 + dw], axis=1)
+
+        img[size - 1:size + 1, :] = 0
+        img[2 * size - 1:2 * size + 1, :] = 0
+
+        img[:, size - 1:size + 1] = 0
+        img[:, 2 * size - 1:2 * size + 1] = 0
+
+        return img
 
     def setImage(self):
-        """
-        :return:
-        """
-        self.setBarColor()
-        self.ui.image.setImage(imageDisp=self.image)
-
-        """
-        if self.objs is None:
-            self.log.debug('Show 1, no SEP data')
-            return False
-
-        self.ui.image.setImage(imageDisp=self.image)
-        for i in range(len(self.objs)):
-            self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
-                                     self.objs['a'][i], self.objs['b'][i],
-                                     self.objs['theta'][i])
-
-        if self.objs is None or self.radius is None:
-            self.log.debug('Show 2, no SEP radius data')
-            return False
-
-        self.ui.image.setImage(imageDisp=self.image)
-        draw = self.radius.argsort()[-50:][::-1]
-        for i in draw:
-            self.ui.image.addEllipse(self.objs['x'][i], self.objs['y'][i],
-                                     self.objs['a'][i], self.objs['b'][i],
-                                     self.objs['theta'][i])
-            self.ui.image.addValueAnnotation(self.objs['x'][i], self.objs['y'][i],
-                                             self.radius[i])
-
-        """
-        if self.bk_back is not None:
-            self.ui.background.setImage(imageDisp=self.bk_back)
-
-        if self.bk_rms is not None:
-            self.ui.backgroundRMS.setImage(imageDisp=self.bk_rms)
-
-        self.setCrosshair()
-        return True
-
-    def workerPreparePhotometry(self):
-        """
-        :return:
-        """
-        bkg = sep.Background(self.image)
-        self.bk_back = bkg.back()
-        self.bk_rms = bkg.rms()
-        image_sub = self.image - bkg
-        self.objs = sep.extract(image_sub, 1.5, err=bkg.globalrms,
-                                filter_type='matched',
-                                minarea=10)
-        self.flux, _, _ = sep.sum_circle(image_sub,
-                                         self.objs['x'],
-                                         self.objs['y'],
-                                         3.0,
-                                         err=bkg.globalrms,
-                                         gain=1.0)
-        self.radius, _ = sep.flux_radius(image_sub,
-                                         self.objs['x'],
-                                         self.objs['y'],
-                                         6.0 * self.objs['a'],
-                                         0.5,
-                                         normflux=self.flux,
-                                         subpix=5)
-        return True
-
-    def preparePhotometry(self):
         """
         :return:
         """
@@ -357,14 +329,114 @@ class ImageWindow(toolsQtWidget.MWidget):
         for i in range(1, self.ui.tabImage.count()):
             self.ui.tabImage.setTabEnabled(i, doPhotometry)
 
+        self.setBarColor()
+        self.ui.image.setImage(imageDisp=self.image)
+        self.setCrosshair()
+        if self.radius is None:
+            print('no radius')
+            return False
+
+        # base calculations
+        ys, xs = self.image.shape
+        rangeX = np.linspace(0, xs, int(xs / 5))
+        rangeY = np.linspace(0, ys, int(ys / 5))
+        xm, ym = np.meshgrid(rangeX, rangeY)
+
+        # image with detected sources
+        self.ui.imageSource.setImage(imageDisp=self.image)
+        for i in range(len(self.objs)):
+            self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
+                                           self.objs['a'][i], self.objs['b'][i],
+                                           self.objs['theta'][i])
+
+        # background
+        maxB = np.max(self.bkg.back()) / self.bkg.globalback
+        minB = np.min(self.bkg.back()) / self.bkg.globalback
+        img = self.bkg.back() / self.bkg.globalback
+        img = uniform_filter(img, size=int(xs / 5))
+        self.ui.background.setImage(imageDisp=img)
+        self.ui.background.barItem.setLevels((minB, maxB))
+
+        # background rms
+        img = self.bkg.rms()
+        img = uniform_filter(img, size=int(xs / 5))
+        self.ui.backgroundRMS.setImage(imageDisp=img)
+
+        # hfd values
+        img = griddata((self.objs['x'], self.objs['y']), self.radius, (xm, ym),
+                       method='nearest', fill_value=np.min(self.radius))
+        img = uniform_filter(img, size=int(xs / 5))
+        self.ui.hfd.setImage(imageDisp=img)
+
+        # roundness as image
+        a = self.objs['a']
+        b = self.objs['b']
+        aspectRatio = np.maximum(a/b, b/a)
+        minB, maxB = np.percentile(aspectRatio, (50, 95))
+        img = griddata((self.objs['x'], self.objs['y']), aspectRatio, (xm, ym),
+                       method='nearest', fill_value=np.min(aspectRatio))
+        img = uniform_filter(img, size=int(xs / 5))
+        self.ui.roundness.setImage(imageDisp=img)
+        self.ui.roundness.barItem.setLevels((minB, maxB))
+
+        # aberation inspection
+        abb = self.calcAberationInspectView(self.image)
+        self.ui.aberation.setImage(abb)
+        plotItem = self.ui.aberation.p[0]
+        plotItem.getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        plotItem.setMouseEnabled(x=False, y=False)
+        plotItem.getViewBox().rightMouseRange()
+        return True
+
+    def workerPreparePhotometry(self):
+        """
+        :return:
+        """
+        self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
+        image_sub = self.image - self.bkg
+        obj = sep.extract(
+            image_sub, 3, err=self.bkg.globalrms, filter_type='matched', minarea=14)
+
+        # remove large objects
+        r = np.sqrt(obj['a'] * obj['a'] + obj['b'] * obj['b'])
+        obj = obj[(r < 5) & (r > 1.25)]
+        self.objs = obj
+
+        kronRad, krFlag = sep.kron_radius(
+            image_sub, obj['x'], obj['y'], obj['a'], obj['b'], obj['theta'], 6.0)
+
+        self.flux, fluxErr, flag = sep.sum_ellipse(
+            image_sub, obj['x'], obj['y'], obj['a'], obj['b'], obj['theta'],
+            2.5 * kronRad, subpix=1)
+
+        flag |= krFlag
+        r_min = 1.75
+        useCircle = kronRad * np.sqrt(obj['a'] * obj['b']) < r_min
+        cFlux, cFluxErr, cFlag = sep.sum_circle(
+            image_sub, obj['x'][useCircle], obj['y'][useCircle], r_min, subpix=1)
+
+        self.flux[useCircle] = cFlux
+        fluxErr[useCircle] = cFluxErr
+        flag[useCircle] = cFlag
+
+        self.radius, _ = sep.flux_radius(
+            image_sub, obj['x'], obj['y'], 6.0 * obj['a'], 0.5,
+            normflux=self.flux, subpix=5)
+
+        return True
+
+    def preparePhotometry(self):
+        """
+        :return:
+        """
+        doPhotometry = self.ui.enablePhotometry.isChecked()
         if doPhotometry:
             worker = Worker(self.workerPreparePhotometry)
             worker.signals.finished.connect(self.setImage)
             self.threadPool.start(worker)
         else:
             self.objs = None
-            self.bk_back = None
-            self.bk_rms = None
+            self.bkg = None
             self.radius = None
             self.flux = None
             self.setImage()
@@ -501,6 +573,9 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.imageFileName = imagePath
         self.signals.showTitle.emit('')
+        self.radius = None
+        for i in range(1, self.ui.tabImage.count()):
+            self.ui.tabImage.setTabEnabled(i, False)
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)
         self.threadPool.start(worker)

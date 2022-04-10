@@ -47,7 +47,6 @@ def function(module):
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            self.closing = False
             Almanac.__init__(self)
 
     window = Mixin()

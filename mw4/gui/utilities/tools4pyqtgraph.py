@@ -389,7 +389,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         """
         if plotItem is None:
             plotItem = self.p[0]
-        self.barItem = pg.ColorBarItem(width=15, interactive=interactive)
+        self.barItem = pg.ColorBarItem(width=15, interactive=interactive,
+                                       rounding=0.1)
         self.barItem.setVisible(False)
         for side in ('left', 'top', 'right', 'bottom'):
             self.barItem.getAxis(side).setPen(self.pen)
@@ -451,29 +452,31 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.addItem(horItem)
         return True
 
-    def addIsoItem(self, x, y, z, plotItem=None, levels=20):
+    def addIsoItem(self, x, y, z, plotItem=None, rangeX=None,
+                   rangeY=None, levels=20):
         """
         :param x:
         :param y:
         :param z:
         :param plotItem:
+        :param rangeX:
+        :param rangeY:
         :param levels:
         :return:
         """
         if plotItem is None:
             plotItem = self.p[0]
-        z = np.abs(z)
-        az = np.concatenate([x - 360, x, x + 360])
-        alt = np.concatenate([y, y, y])
-        err = np.concatenate([z, z, z])
+        if rangeX is None:
+            rangeX = np.linspace(0, 360, 360)
+        if rangeY is None:
+            rangeY = np.linspace(0, 90, 90)
 
-        xm, ym = np.meshgrid(np.linspace(0, 360, 360), np.linspace(0, 90, 90))
-        zm = griddata((az, alt), err, (xm, ym), method='linear',
-                      fill_value=np.min(err))
+        xm, ym = np.meshgrid(rangeX, rangeY)
+        zm = griddata((x, y), z, (xm, ym), method='linear',
+                      fill_value=np.min(z))
         zm = uniform_filter(zm, size=10)
-        err = np.abs(zm)
-        minE = np.min(err)
-        maxE = np.max(err)
+        minE = np.min(zm)
+        maxE = np.max(zm)
 
         for level in np.linspace(minE, maxE, levels):
             colorInx = (level - minE) / (maxE - minE)
@@ -486,6 +489,22 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             pd.setZValue(-10)
             pg.nameStr = 'iso'
             plotItem.addItem(pd)
+        return True
+
+    def addIsoItemHorizon(self, x, y, z, plotItem=None, levels=20):
+        """
+        :param x:
+        :param y:
+        :param z:
+        :param plotItem:
+        :param levels:
+        :return:
+        """
+        z = np.abs(z)
+        az = np.concatenate([x - 360, x, x + 360])
+        alt = np.concatenate([y, y, y])
+        err = np.concatenate([z, z, z])
+        self.addIsoItem(az, alt, err, plotItem=plotItem, levels=levels)
         return True
 
     def setGrid(self, y=0, plotItem=None, **kwargs):
@@ -648,8 +667,7 @@ class NormalScatter(PlotBase):
 
         isoLevels = kwargs.get('isoLevels', 0)
         if isoLevels != 0 and 'z' in kwargs:
-            # pass
-            self.addIsoItem(x, y, z, levels=isoLevels)
+            self.addIsoItemHorizon(x, y, z, levels=isoLevels)
         return True
 
 
@@ -752,7 +770,7 @@ class ImageBar(PlotBase):
         yMinR = max(yMax / 100, 100)
         self.p[0].setLimits(xMin=0, xMax=xMax, yMin=0, yMax=yMax,
                             minXRange=xMinR, minYRange=yMinR)
-        self.p[0].autoRange()
+        self.p[0].getViewBox().rightMouseRange()
 
         minB = np.min(imageDisp)
         maxB = 2 * np.mean(imageDisp)
@@ -776,7 +794,7 @@ class ImageBar(PlotBase):
         """
         :return:
         """
-        ellipse = pg.QtWidgets.QGraphicsEllipseItem(-a, -b, 2 * a, 2 * b)
+        ellipse = pg.QtWidgets.QGraphicsEllipseItem(-a, -b, 2 * a + 1, 2 * b + 1)
         ellipse.setPos(x, y)
         tr = QTransform()
         tr.rotate(np.degrees(theta))

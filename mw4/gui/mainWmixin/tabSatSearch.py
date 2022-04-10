@@ -376,7 +376,7 @@ class SatSearch(object):
         """
         :return:
         """
-        if not self.satTableDynamicValid or self.closing:
+        if not self.satTableDynamicValid:
             return False
         if self.ui.satTabWidget.currentIndex() != 0:
             return False
@@ -501,7 +501,7 @@ class SatSearch(object):
 
         for row in range(numSats):
             QApplication.processEvents()
-            if not self.satTableBaseValid or self.closing:
+            if not self.satTableBaseValid:
                 break
             name = satTab.model().index(row, 1).data()
             sat = self.satellites[name]
@@ -542,7 +542,7 @@ class SatSearch(object):
         """
         :return:
         """
-        if not self.satTableBaseValid or self.closing:
+        if not self.satTableBaseValid:
             return False
 
         title = 'Setup ' + self.timeZoneString()

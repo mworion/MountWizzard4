@@ -54,7 +54,6 @@ def function(module):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            self.closing = False
             SatSearch.__init__(self)
             SatTrack.__init__(self)
 

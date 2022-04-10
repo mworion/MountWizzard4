@@ -48,7 +48,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.threadPool = app.threadPool
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
-        self.closing = False
         self.signals = SatelliteWindowSignals()
         self.satellite = None
         self.plotSatPosHorizon = None
@@ -109,7 +108,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.closing = True
         self.storeConfig()
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
@@ -484,9 +482,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param name:
         :return: True for test purpose
         """
-        if self.closing:
-            return False
-
         self.setWindowTitle(f'Satellite {name}')
         self.satellite = satellite
         self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)

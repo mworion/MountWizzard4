@@ -370,7 +370,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         :return:
         """
-
         p0 = self.ui.hemisphere.p[0]
         p1 = self.ui.hemisphere.p[1]
         self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p0)
@@ -715,7 +714,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         if az is None or alt is None or err is None:
             return False
 
-        suc = self.ui.hemisphere.addIsoItem(az, alt, err)
+        suc = self.ui.hemisphere.addIsoItemHorizon(az, alt, err)
         return suc
 
     def drawHemisphereTab(self):

@@ -23,6 +23,7 @@ import numpy as np
 import sep
 import pyqtgraph as pg
 from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtWidgets import QApplication
 from astropy.io import fits
 from PIL import Image
 from scipy.interpolate import griddata
@@ -313,11 +314,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         img = np.delete(img, np.s_[size:size + dw], axis=1)
         img = np.delete(img, np.s_[size * 2:size * 2 + dw], axis=1)
 
-        img[size - 1:size + 1, :] = 0
-        img[2 * size - 1:2 * size + 1, :] = 0
-
-        img[:, size - 1:size + 1] = 0
-        img[:, 2 * size - 1:2 * size + 1] = 0
+        img[size - 2:size + 2, :] = 0
+        img[2 * size - 2:2 * size + 2, :] = 0
+        img[:, size - 2:size + 2] = 0
+        img[:, 2 * size - 2:2 * size + 2] = 0
 
         return img
 
@@ -325,78 +325,97 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        doPhotometry = self.ui.enablePhotometry.isChecked()
-        for i in range(1, self.ui.tabImage.count()):
-            self.ui.tabImage.setTabEnabled(i, doPhotometry)
-
         self.setBarColor()
         self.ui.image.setImage(imageDisp=self.image)
         self.setCrosshair()
+        QApplication.processEvents()
         if self.HFD is None:
             return False
 
         # base calculations
+        scale = 5
         ys, xs = self.image.shape
-        rangeX = np.linspace(0, xs, int(xs / 5))
-        rangeY = np.linspace(0, ys, int(ys / 5))
+        rangeX = np.linspace(0, xs, int(xs / scale))
+        rangeY = np.linspace(0, ys, int(ys / scale))
         xm, ym = np.meshgrid(rangeX, rangeY)
-        filterConst = int(xs / 20)
+        filterConst = int(xs / scale / 2)
         medianHFD = np.median(self.HFD)
         self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
         self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
 
-        # image with detected sources
-        self.ui.imageSource.setImage(imageDisp=self.image)
-        for i in range(len(self.objs)):
-            self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
-                                           self.objs['a'][i], self.objs['b'][i],
-                                           self.objs['theta'][i])
-
         # background
-        maxB = np.max(self.bkg.back()) / self.bkg.globalback
-        minB = np.min(self.bkg.back()) / self.bkg.globalback
+        self.ui.tabImage.setTabEnabled(1, True)
+        QApplication.processEvents()
+        back = self.bkg.back()
+        maxB = np.max(back) / self.bkg.globalback
+        minB = np.min(back) / self.bkg.globalback
         img = self.bkg.back() / self.bkg.globalback
         img = uniform_filter(img, size=filterConst)
         self.ui.background.setImage(imageDisp=img)
         self.ui.background.barItem.setLevels((minB, maxB))
 
-        # background rms
-        img = self.bkg.rms()
-        img = uniform_filter(img, size=filterConst)
-        self.ui.backgroundRMS.setImage(imageDisp=img)
-
         # hfd values
+        self.ui.tabImage.setTabEnabled(2, True)
+        QApplication.processEvents()
         img = griddata((self.objs['x'], self.objs['y']), self.HFD, (xm, ym),
                        method='nearest', fill_value=np.min(self.HFD))
         img = uniform_filter(img, size=filterConst)
         self.ui.hfd.setImage(imageDisp=img)
         hfdPercentile10 = np.percentile(self.HFD, 90)
         self.ui.hfdPercentile.setText(f'{hfdPercentile10:1.1f}')
+        self.ui.hfd.p[0].getAxis('left').setScale(scale=scale)
+        self.ui.hfd.p[0].getAxis('bottom').setScale(scale=scale)
 
         # tilt values
+        self.ui.tabImage.setTabEnabled(3, True)
+        QApplication.processEvents()
         self.ui.tilt.setImage(imageDisp=img)
+        self.ui.tilt.p[0].getAxis('left').setScale(scale=scale)
+        self.ui.tilt.p[0].getAxis('bottom').setScale(scale=scale)
 
         # roundness as image
+        self.ui.tabImage.setTabEnabled(4, True)
+        QApplication.processEvents()
         a = self.objs['a']
         b = self.objs['b']
         aspectRatio = np.maximum(a/b, b/a)
         minB, maxB = np.percentile(aspectRatio, (50, 95))
         img = griddata((self.objs['x'], self.objs['y']), aspectRatio, (xm, ym),
-                       method='nearest', fill_value=np.min(aspectRatio))
+                       method='linear', fill_value=np.min(aspectRatio))
         img = uniform_filter(img, size=filterConst)
         self.ui.roundness.setImage(imageDisp=img)
         self.ui.roundness.barItem.setLevels((minB, maxB))
         aspectRatioPercentile10 = np.percentile(aspectRatio, 90)
         self.ui.aspectRatioPercentile.setText(f'{aspectRatioPercentile10:1.1f}')
+        self.ui.roundness.p[0].getAxis('left').setScale(scale=scale)
+        self.ui.roundness.p[0].getAxis('bottom').setScale(scale=scale)
 
         # aberation inspection
+        self.ui.tabImage.setTabEnabled(5, True)
+        QApplication.processEvents()
+        self.ui.aberation.p[0].setAspectLocked(True)
         abb = self.calcAberationInspectView(self.image)
         self.ui.aberation.setImage(abb)
-        self.ui.aberation.p[0].setAspectLocked(True)
         self.ui.aberation.p[0].getViewBox().setMouseMode(pg.ViewBox().PanMode)
         self.ui.aberation.p[0].showAxes(False, showValues=False)
         self.ui.aberation.p[0].setMouseEnabled(x=False, y=False)
         self.ui.aberation.p[0].getViewBox().rightMouseRange()
+
+        # image with detected sources
+        self.ui.tabImage.setTabEnabled(6, True)
+        QApplication.processEvents()
+        self.ui.imageSource.setImage(imageDisp=self.image)
+        for i in range(len(self.objs)):
+            self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
+                                           self.objs['a'][i], self.objs['b'][i],
+                                           self.objs['theta'][i])
+
+        # background rms
+        self.ui.tabImage.setTabEnabled(7, True)
+        QApplication.processEvents()
+        img = self.bkg.rms()
+        img = uniform_filter(img, size=filterConst)
+        self.ui.backgroundRMS.setImage(imageDisp=img)
         return True
 
     def workerPreparePhotometry(self):
@@ -406,12 +425,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
         image_sub = self.image - self.bkg
         obj = sep.extract(
-            image_sub, 1.5, err=self.bkg.globalrms, filter_type='matched',
-            minarea=7)
+            image_sub, 2.5, err=self.bkg.globalrms, filter_type='matched',
+            minarea=14)
 
         # remove objects without need
         r = np.sqrt(obj['a'] * obj['a'] + obj['b'] * obj['b'])
-        obj = obj[(r < 7) & (r > 1.1)]
+        obj = obj[(r < 5) & (r > 1.25)]
         self.objs = obj
 
         kronRad, krFlag = sep.kron_radius(
@@ -437,7 +456,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         # to get HFD
         self.HFD = 2 * radius
-
+        self.image = self.image - self.bkg * 0.5
         return True
 
     def preparePhotometry(self):
@@ -549,6 +568,20 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
         return True
 
+    @staticmethod
+    def checkFormatImage(image):
+        """
+        :param image:
+        :return:
+        """
+        if not image[0][0].dtype == np.dtype('float32'):
+            image = np.flipud(image).astype('float32')
+        else:
+            image = np.flipud(image)
+
+        image = image / np.max(image) * 65536
+        return image
+
     def workerLoadImage(self):
         """
         :return:
@@ -564,7 +597,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.log.debug('No header data in FITS')
             return False
 
-        self.image = np.flipud(self.image).astype('float32')
+        self.image = self.checkFormatImage(self.image)
         bayerPattern = self.header.get('BAYERPAT', '')
         if bayerPattern:
             self.image = self.debayerImage(self.image, bayerPattern)
@@ -573,6 +606,20 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.updateWindowsStats()
         self.writeHeaderDataToGUI(self.header)
         self.stackImages()
+        return True
+
+    def clearGui(self):
+        """
+        :return:
+        """
+        self.signals.showTitle.emit('')
+        self.HFD = None
+        self.ui.medianHFD.setText('')
+        self.ui.hfdPercentile.setText('')
+        self.ui.numberStars.setText('')
+        self.ui.aspectRatioPercentile.setText('')
+        for i in range(1, self.ui.tabImage.count()):
+            self.ui.tabImage.setTabEnabled(i, False)
         return True
 
     def showImage(self, imagePath=''):
@@ -585,9 +632,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not os.path.isfile(imagePath):
             return False
 
+        if not self.deviceStat['exposeN']:
+            self.clearGui()
+
         self.imageFileName = imagePath
-        self.signals.showTitle.emit('')
-        self.HFD = None
         worker = Worker(self.workerLoadImage)
         worker.signals.finished.connect(self.preparePhotometry)
         self.threadPool.start(worker)

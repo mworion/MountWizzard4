@@ -390,7 +390,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         if plotItem is None:
             plotItem = self.p[0]
         self.barItem = pg.ColorBarItem(width=15, interactive=interactive,
-                                       rounding=0.1)
+                                       rounding=0.025)
         self.barItem.setVisible(False)
         for side in ('left', 'top', 'right', 'bottom'):
             self.barItem.getAxis(side).setPen(self.pen)

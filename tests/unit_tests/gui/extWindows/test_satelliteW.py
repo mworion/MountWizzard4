@@ -440,36 +440,3 @@ def test_drawSatellite_3(function, ts):
             suc = function.drawSatellite(satellite=satellite,
                                          satOrbits=satOrbits)
             assert suc
-
-
-def test_drawSatellite_4(function, ts):
-    tle = ["CALSPHERE 1",
-           "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
-           "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
-
-    satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    tt = 2459610
-    t0 = ts.tt_jd(tt + 0)
-    t1 = ts.tt_jd(tt + 0.1)
-    t2 = ts.tt_jd(tt + 0.2)
-    t3 = ts.tt_jd(tt + 0.3)
-    t4 = ts.tt_jd(tt + 0.4)
-
-    satOrbits = [{'rise': t0,
-                  'flip': t0,
-                  'culminate': t0,
-                  'settle': t1},
-                 {'rise': t2,
-                  'flip': t2,
-                  'culminate': t2,
-                  'settle': t3},
-                 {'rise': t3,
-                  'culminate': t3,
-                  'flip': t3,
-                  'settle': t4},
-                 ]
-
-    function.closing = True
-    suc = function.drawSatellite(satellite=satellite,
-                                 satOrbits=satOrbits)
-    assert not suc

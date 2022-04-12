@@ -210,7 +210,7 @@ def test_preparePhotometry_1(function):
 def test_preparePhotometry_2(function):
     function.ui.enablePhotometry.setChecked(False)
     with mock.patch.object(function,
-                           'setImage'):
+                           'showTabImages'):
         suc = function.preparePhotometry()
         assert suc
 

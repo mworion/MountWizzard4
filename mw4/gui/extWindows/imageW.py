@@ -320,18 +320,10 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         return img
 
-    def setImage(self):
+    def baseCalcTabInfo(self):
         """
         :return:
         """
-        self.setBarColor()
-        self.ui.image.setImage(imageDisp=self.image)
-        self.setCrosshair()
-        QApplication.processEvents()
-        if self.HFD is None:
-            return False
-
-        # base calculations
         scale = 5
         ys, xs = self.image.shape
         rangeX = np.linspace(0, xs, int(xs / scale))
@@ -341,10 +333,23 @@ class ImageWindow(toolsQtWidget.MWidget):
         medianHFD = np.median(self.HFD)
         self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
         self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
+        return scale, filterConst, xm, ym
 
-        # background
-        self.ui.tabImage.setTabEnabled(1, True)
+    def showTabRaw(self):
+        """
+        :return:
+        """
+        self.ui.image.setImage(imageDisp=self.image)
+        self.setCrosshair()
         QApplication.processEvents()
+        return True
+
+    def showTabBackground(self, filterConst):
+        """
+        :param filterConst:
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(1, True)
         back = self.bkg.back()
         maxB = np.max(back) / self.bkg.globalback
         minB = np.min(back) / self.bkg.globalback
@@ -352,10 +357,18 @@ class ImageWindow(toolsQtWidget.MWidget):
         img = uniform_filter(img, size=filterConst)
         self.ui.background.setImage(imageDisp=img)
         self.ui.background.barItem.setLevels((minB, maxB))
-
-        # hfd values
-        self.ui.tabImage.setTabEnabled(2, True)
         QApplication.processEvents()
+        return True
+
+    def showTabHFD(self, filterConst, scale, xm, ym):
+        """
+        :param filterConst:
+        :param scale:
+        :param xm:
+        :param ym:
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(2, True)
         img = griddata((self.objs['x'], self.objs['y']), self.HFD, (xm, ym),
                        method='nearest', fill_value=np.min(self.HFD))
         img = uniform_filter(img, size=filterConst)
@@ -364,17 +377,31 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.hfdPercentile.setText(f'{hfdPercentile10:1.1f}')
         self.ui.hfd.p[0].getAxis('left').setScale(scale=scale)
         self.ui.hfd.p[0].getAxis('bottom').setScale(scale=scale)
-
-        # tilt values
-        self.ui.tabImage.setTabEnabled(3, True)
         QApplication.processEvents()
+        return img
+
+    def showTabTilt(self, scale, img):
+        """
+        :param scale:
+        :param img:
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(3, True)
         self.ui.tilt.setImage(imageDisp=img)
         self.ui.tilt.p[0].getAxis('left').setScale(scale=scale)
         self.ui.tilt.p[0].getAxis('bottom').setScale(scale=scale)
-
-        # roundness as image
-        self.ui.tabImage.setTabEnabled(4, True)
         QApplication.processEvents()
+        return True
+
+    def showTabRoundness(self, filterConst, scale, xm, ym):
+        """
+        :param filterConst:
+        :param scale:
+        :param xm:
+        :param ym:
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(4, True)
         a = self.objs['a']
         b = self.objs['b']
         aspectRatio = np.maximum(a/b, b/a)
@@ -388,10 +415,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.aspectRatioPercentile.setText(f'{aspectRatioPercentile10:1.1f}')
         self.ui.roundness.p[0].getAxis('left').setScale(scale=scale)
         self.ui.roundness.p[0].getAxis('bottom').setScale(scale=scale)
-
-        # aberation inspection
-        self.ui.tabImage.setTabEnabled(5, True)
         QApplication.processEvents()
+        return True
+
+    def showTabAberationInspect(self):
+        """
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(5, True)
         self.ui.aberation.p[0].setAspectLocked(True)
         abb = self.calcAberationInspectView(self.image)
         self.ui.aberation.setImage(abb)
@@ -399,22 +430,52 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.aberation.p[0].showAxes(False, showValues=False)
         self.ui.aberation.p[0].setMouseEnabled(x=False, y=False)
         self.ui.aberation.p[0].getViewBox().rightMouseRange()
-
-        # image with detected sources
-        self.ui.tabImage.setTabEnabled(6, True)
         QApplication.processEvents()
+        return True
+
+    def showTabImageSources(self):
+        """
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(6, True)
         self.ui.imageSource.setImage(imageDisp=self.image)
         for i in range(len(self.objs)):
             self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
                                            self.objs['a'][i], self.objs['b'][i],
                                            self.objs['theta'][i])
-
-        # background rms
-        self.ui.tabImage.setTabEnabled(7, True)
         QApplication.processEvents()
+        return True
+
+    def showTabBackgroundRMS(self, filterConst):
+        """
+        :param filterConst:
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(7, True)
         img = self.bkg.rms()
         img = uniform_filter(img, size=filterConst)
         self.ui.backgroundRMS.setImage(imageDisp=img)
+        QApplication.processEvents()
+        return True
+
+    def showTabImages(self):
+        """
+        :return:
+        """
+        self.setBarColor()
+        self.showTabRaw()
+        if self.HFD is None:
+            return False
+
+        scale, filterConst, xm, ym = self.baseCalcTabInfo()
+
+        self.showTabBackground(filterConst)
+        img = self.showTabHFD(filterConst, scale, xm, ym)
+        self.showTabTilt(scale, img)
+        self.showTabRoundness(filterConst, scale, xm, ym)
+        self.showTabAberationInspect()
+        self.showTabImageSources()
+        self.showTabBackgroundRMS(filterConst)
         return True
 
     def workerPreparePhotometry(self):
@@ -465,13 +526,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         doPhotometry = self.ui.enablePhotometry.isChecked()
         if doPhotometry:
             worker = Worker(self.workerPreparePhotometry)
-            worker.signals.finished.connect(self.setImage)
+            worker.signals.finished.connect(self.showTabImages)
             self.threadPool.start(worker)
         else:
             self.objs = None
             self.bkg = None
             self.HFD = None
-            self.setImage()
+            self.showTabImages()
         return True
 
     def stackImages(self):

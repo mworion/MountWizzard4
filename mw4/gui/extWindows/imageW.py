@@ -73,7 +73,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.numberStack = 0
         self.objs = None
         self.bkg = None
-        self.flux = None
         self.HFD = None
 
         self.deviceStat = {
@@ -436,7 +435,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         kronRad, krFlag = sep.kron_radius(
             image_sub, obj['x'], obj['y'], obj['a'], obj['b'], obj['theta'], 6.0)
 
-        self.flux, fluxErr, flag = sep.sum_ellipse(
+        flux, fluxErr, flag = sep.sum_ellipse(
             image_sub, obj['x'], obj['y'], obj['a'], obj['b'], obj['theta'],
             2.5 * kronRad, subpix=1)
 
@@ -446,17 +445,17 @@ class ImageWindow(toolsQtWidget.MWidget):
         cFlux, cFluxErr, cFlag = sep.sum_circle(
             image_sub, obj['x'][useCircle], obj['y'][useCircle], r_min, subpix=1)
 
-        self.flux[useCircle] = cFlux
+        flux[useCircle] = cFlux
         fluxErr[useCircle] = cFluxErr
         flag[useCircle] = cFlag
 
         radius, _ = sep.flux_radius(
             image_sub, obj['x'], obj['y'], 6.0 * obj['a'], 0.5,
-            normflux=self.flux, subpix=5)
+            normflux=flux, subpix=5)
 
         # to get HFD
         self.HFD = 2 * radius
-        self.image = self.image - self.bkg * 0.5
+        self.image = self.image - self.bkg.back() * 0.5
         return True
 
     def preparePhotometry(self):
@@ -472,7 +471,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.objs = None
             self.bkg = None
             self.HFD = None
-            self.flux = None
             self.setImage()
         return True
 

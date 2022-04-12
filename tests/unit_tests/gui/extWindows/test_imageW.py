@@ -185,57 +185,6 @@ def test_setCrosshair_1(function):
         assert suc
 
 
-def test_setImage_0(function):
-    function.image = np.random.rand(100, 100)
-    function.ui.view.setCurrentIndex(0)
-    suc = function.setImage()
-    assert suc
-
-
-def test_setImage_1(function):
-    function.objs = {
-        'x': np.ones(100),
-        'y': np.ones(100),
-        'a': np.ones(100),
-        'b': np.ones(100),
-        'theta': np.ones(100),
-    }
-    function.radius = np.ones(100)
-    function.image = np.random.rand(100, 100)
-    function.ui.view.setCurrentIndex(1)
-    suc = function.setImage()
-    assert suc
-
-
-def test_setImage_1b(function):
-    function.image = np.random.rand(100, 100)
-    function.ui.view.setCurrentIndex(1)
-    suc = function.setImage()
-    assert not suc
-
-
-def test_setImage_2(function):
-    function.objs = {
-        'x': np.ones(100),
-        'y': np.ones(100),
-        'a': np.ones(100),
-        'b': np.ones(100),
-        'theta': np.ones(100),
-    }
-    function.radius = np.ones(100)
-    function.image = np.random.rand(100, 100)
-    function.ui.view.setCurrentIndex(2)
-    suc = function.setImage()
-    assert suc
-
-
-def test_setImage_2b(function):
-    function.image = np.random.rand(100, 100)
-    function.ui.view.setCurrentIndex(2)
-    suc = function.setImage()
-    assert not suc
-
-
 def test_workerPreparePhotometry_1(function):
     function.image = np.random.rand(100, 100) + 1
     function.image[50][50] = 100
@@ -245,15 +194,13 @@ def test_workerPreparePhotometry_1(function):
     function.image[49][50] = 50
     suc = function.workerPreparePhotometry()
     assert suc
-    assert function.bk_back is not None
-    assert function.bk_rms is not None
-    assert function.flux is not None
-    assert function.radius is not None
+    assert function.bkg is not None
+    assert function.HFD is not None
     assert function.objs is not None
 
 
 def test_preparePhotometry_1(function):
-    function.objs = None
+    function.ui.enablePhotometry.setChecked(True)
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.preparePhotometry()
@@ -261,7 +208,7 @@ def test_preparePhotometry_1(function):
 
 
 def test_preparePhotometry_2(function):
-    function.objs = 1
+    function.ui.enablePhotometry.setChecked(False)
     with mock.patch.object(function,
                            'setImage'):
         suc = function.preparePhotometry()
@@ -273,7 +220,6 @@ def test_stackImages_1(function):
     suc = function.stackImages()
     assert not suc
     assert function.imageStack is None
-    assert function.ui.numberStacks.text() == 'single'
 
 
 def test_stackImages_2(function):
@@ -301,19 +247,15 @@ def test_stackImages_3(function):
 
 
 def test_clearStack_1(function):
-    function.ui.numberStacks.setText('test')
     function.ui.stackImages.setChecked(False)
     suc = function.clearStack()
     assert not suc
-    assert function.ui.numberStacks.text() == 'single'
 
 
 def test_clearStack_2(function):
-    function.ui.numberStacks.setText('test')
     function.ui.stackImages.setChecked(True)
     suc = function.clearStack()
     assert suc
-    assert function.ui.numberStacks.text() == 'test'
 
 
 def test_debayerImage_1(function):

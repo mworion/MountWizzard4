@@ -414,8 +414,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             if hasattr(item, 'nameStr'):
                 if item.nameStr == name:
                     return item
-        else:
-            return None
+        return None
 
     def drawHorizon(self, horizonP, plotItem=None, polar=False):
         """

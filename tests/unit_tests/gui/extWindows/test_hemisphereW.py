@@ -499,9 +499,11 @@ def test_drawModelIsoCurve_1(function):
 
 
 def test_drawModelIsoCurve_2(function):
+    val = np.array([1])
+    data = (val, val, val)
     with mock.patch.object(function,
                            'getMountModelData',
-                           return_value=(1, 1, 1)):
+                           return_value=data):
         with mock.patch.object(function.ui.hemisphere,
                                'addIsoItem',
                                return_value=True):

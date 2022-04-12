@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'image.ui'
+# Form implementation generated from reading ui file './mw4/gui/widgets/image.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -73,11 +73,11 @@ class Ui_ImageDialog(object):
         self.autoSolve = QtWidgets.QCheckBox(self.groupBox_3)
         self.autoSolve.setMinimumSize(QtCore.QSize(110, 21))
         self.autoSolve.setObjectName("autoSolve")
-        self.gridLayout_4.addWidget(self.autoSolve, 2, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.autoSolve, 2, 3, 1, 1)
         self.embedData = QtWidgets.QCheckBox(self.groupBox_3)
         self.embedData.setMinimumSize(QtCore.QSize(110, 21))
         self.embedData.setObjectName("embedData")
-        self.gridLayout_4.addWidget(self.embedData, 2, 3, 1, 1)
+        self.gridLayout_4.addWidget(self.embedData, 2, 1, 1, 1)
         self.horizontalLayout_5.addWidget(self.groupBox_3)
         self.line_13 = QtWidgets.QFrame(ImageDialog)
         self.line_13.setFrameShadow(QtWidgets.QFrame.Plain)

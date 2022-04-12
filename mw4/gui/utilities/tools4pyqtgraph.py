@@ -767,6 +767,8 @@ class ImageBar(PlotBase):
         """
         self.constructPlot()
         self.imageItem.setImage(imageDisp)
+        if imageDisp is None:
+            return False
         yMax, xMax = imageDisp.shape
         xMinR = max(xMax / 100, 100)
         yMinR = max(yMax / 100, 100)

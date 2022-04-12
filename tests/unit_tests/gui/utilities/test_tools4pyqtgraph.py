@@ -932,7 +932,13 @@ def test_ImageBar_setColorMap():
     assert suc
 
 
-def test_ImageBar_setImage():
+def test_ImageBar_setImage_1():
+    function = ImageBar()
+    suc = function.setImage(None)
+    assert not suc
+
+
+def test_ImageBar_setImage_2():
     function = ImageBar()
     img = np.random.rand(100, 100)
     suc = function.setImage(img)

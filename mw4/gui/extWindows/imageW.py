@@ -378,16 +378,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.hfd.p[0].getAxis('left').setScale(scale=scale)
         self.ui.hfd.p[0].getAxis('bottom').setScale(scale=scale)
         QApplication.processEvents()
-        return img
+        return True
 
-    def showTabTilt(self, scale, img):
+    def showTabTilt(self, scale):
         """
         :param scale:
-        :param img:
         :return:
         """
         self.ui.tabImage.setTabEnabled(3, True)
-        self.ui.tilt.setImage(imageDisp=img)
+        self.ui.tilt.setImage(imageDisp=self.image)
         self.ui.tilt.p[0].getAxis('left').setScale(scale=scale)
         self.ui.tilt.p[0].getAxis('bottom').setScale(scale=scale)
         QApplication.processEvents()
@@ -470,8 +469,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         scale, filterConst, xm, ym = self.baseCalcTabInfo()
 
         self.showTabBackground(filterConst)
-        img = self.showTabHFD(filterConst, scale, xm, ym)
-        self.showTabTilt(scale, img)
+        self.showTabHFD(filterConst, scale, xm, ym)
+        self.showTabTilt(scale)
         self.showTabRoundness(filterConst, scale, xm, ym)
         self.showTabAberationInspect()
         self.showTabImageSources()

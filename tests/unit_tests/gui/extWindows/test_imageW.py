@@ -211,6 +211,8 @@ def test_calcAberrationInspectView_2(function):
 
 
 def test_baseCalcTabInfo(function):
+    function.HFD = np.linspace(20, 30, 20)
+    function.image = np.random.rand(100, 100) + 1
     suc = function.baseCalcTabInfo()
     assert suc
 
@@ -240,6 +242,7 @@ def test_workerShowTabHFD(function):
 
 
 def test_showTabHFD(function):
+    function.HFD = np.linspace(20, 30, 20)
     img = np.random.rand(100, 100) + 1
     suc = function.showTabHFD(img)
     assert suc
@@ -267,6 +270,70 @@ def test_workerShowTabRoundness(function):
                                return_value=img):
             val = function.workerShowTabRoundness()
             assert len(val) == 4
+
+
+def test_showTabRoundness(function):
+    result = (np.random.rand(20, 1),
+              np.random.rand(100, 100) + 1,
+              1, 2)
+    suc = function.showTabRoundness(result)
+    assert suc
+
+
+def test_showTabAberrationInspect(function):
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.showTabAberrationInspect()
+    assert suc
+
+
+def test_showTabImageSources(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20),
+                     'theta': np.random.rand(20, 1) + 10,
+                     'a': np.random.rand(20, 1) + 10,
+                     'b': np.random.rand(20, 1) + 10}
+    function.image = np.random.rand(100, 100) + 1
+    with mock.patch.object(function.ui.imageSource,
+                           'addEllipse'):
+        suc = function.showTabImageSources()
+        assert suc
+
+
+def test_showTabBackgroundRMS(function):
+    img = np.random.rand(100, 100) + 1
+    function.filterConst = 5
+    function.bkg = sep.Background(img)
+    suc = function.showTabBackgroundRMS()
+    assert suc
+
+
+def test_showTabImages_1(function):
+    with mock.patch.object(function,
+                           'showTabRaw'):
+        suc = function.showTabImages()
+        assert not suc
+
+
+def test_showTabImages_2(function):
+    function.HFD = np.linspace(20, 30, 20)
+    with mock.patch.object(function,
+                           'showTabRaw'):
+        with mock.patch.object(function,
+                               'baseCalcTabInfo'):
+            with mock.patch.object(function.threadPool,
+                                   'start'):
+                with mock.patch.object(function,
+                                       'showTabBackground'):
+                    with mock.patch.object(function,
+                                           'showTabTilt'):
+                        with mock.patch.object(function,
+                                               'showTabAberrationInspect'):
+                            with mock.patch.object(function,
+                                                   'showTabImageSources'):
+                                with mock.patch.object(function,
+                                                       'showTabBackgroundRMS'):
+                                    suc = function.showTabImages()
+                                    assert suc
 
 
 def test_workerPreparePhotometry_1(function):

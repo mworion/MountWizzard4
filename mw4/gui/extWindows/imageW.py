@@ -321,8 +321,48 @@ class ImageWindow(toolsQtWidget.MWidget):
         img[2 * size - 2:2 * size + 2, :] = 0
         img[:, size - 2:size + 2] = 0
         img[:, 2 * size - 2:2 * size + 2] = 0
-
         return img
+
+    def calcTiltValuesTriangle(self):
+        """
+        :return:
+        """
+        outer = 0
+        inner = 0
+        segments = [0, 0, 0]
+        return outer, inner, segments
+
+    def calcTiltValuesSquare(self):
+        """
+        :return:
+        """
+        h, w = self.image.shape
+        stepY = int(h / 3)
+        stepX = int(w / 3)
+
+        xRange = [0, stepX, 2 * stepX, 3 * stepX]
+        yRange = [0, stepY, 2 * stepY, 3 * stepY]
+        x = self.objs['x']
+        y = self.objs['y']
+        medianHFD = np.zeros((3, 3))
+        for ix in range(3):
+            for iy in range(3):
+                xMin = xRange[ix]
+                xMax = xRange[ix + 1]
+                yMin = yRange[iy]
+                yMax = yRange[iy + 1]
+                hfd = self.HFD[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
+                med_hfd = np.median(hfd)
+                medianHFD[ix][iy] = med_hfd
+
+        radius75 = np.sqrt(h * h + w * w) * 0.75
+        r = np.sqrt(x * x + y * y)
+        outer = np.median(self.HFD[r > radius75])
+        inner = medianHFD[1][1]
+        best = np.min(medianHFD.flatten())
+        worst = np.max(medianHFD.flatten())
+        overall = np.median(self.HFD)
+        return outer, inner, best, worst, overall, medianHFD
 
     def baseCalcTabInfo(self):
         """
@@ -386,14 +426,28 @@ class ImageWindow(toolsQtWidget.MWidget):
         QApplication.processEvents()
         return True
 
+    def workerShowTabTilt(self):
+        """
+        :return:
+        """
+        text = ['none', 'almost none', 'mild', 'moderate', 'severe', 'extreme']
+        outer, inner, best, worst, overall, segHFD = self.calcTiltValuesSquare()
+
+        tiltDiff = worst - best
+        tiltPercent = 100 * tiltDiff / overall
+        print(f'Tilt HFD {tiltDiff:1.2f} ({tiltPercent:1.0f}%)')
+        print(f'UL: {segHFD[2][0]:1.2f} UR: {segHFD[2][2]:1.2f}')
+        print(f'Mid:{segHFD[1][1]:1.2f}')
+        print(f'LL:{segHFD[0][0]:1.2f}, LR:{segHFD[0][2]:1.2f}')
+        print(f'Off-axis aberration:{outer - inner:1.2f}')
+        print()
+        return True
+
     def showTabTilt(self):
         """
         :return:
         """
         self.ui.tabImage.setTabEnabled(3, True)
-        self.ui.tilt.setImage(imageDisp=self.image)
-        self.ui.tilt.p[0].getAxis('left').setScale(scale=self.scale)
-        self.ui.tilt.p[0].getAxis('bottom').setScale(scale=self.scale)
         QApplication.processEvents()
         return True
 
@@ -491,6 +545,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         worker.signals.result.connect(self.showTabRoundness)
         self.threadPool.start(worker)
 
+        worker = Worker(self.workerShowTabTilt)
+        worker.signals.result.connect(self.showTabTilt)
+        self.threadPool.start(worker)
+
         self.showTabBackground()
         self.showTabTilt()
         self.showTabAberrationInspect()
@@ -505,14 +563,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
         image_sub = self.image - self.bkg
-        obj = sep.extract(
-            image_sub, 2.5, err=self.bkg.globalrms, filter_type='matched',
-            minarea=14)
+
+        obj = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
+                          filter_type='matched', minarea=11)
 
         # remove objects without need
         r = np.sqrt(obj['a'] * obj['a'] + obj['b'] * obj['b'])
-        obj = obj[(r < 5) & (r > 1.25)]
-        self.objs = obj
+        mask = (r < 15) & (r > 0.8)
+        obj = obj[mask]
 
         kronRad, krFlag = sep.kron_radius(
             image_sub, obj['x'], obj['y'], obj['a'], obj['b'], obj['theta'], 6.0)
@@ -523,6 +581,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         flag |= krFlag
         r_min = 1.75
+
         useCircle = kronRad * np.sqrt(obj['a'] * obj['b']) < r_min
         cFlux, cFluxErr, cFlag = sep.sum_circle(
             image_sub, obj['x'][useCircle], obj['y'][useCircle], r_min, subpix=1)
@@ -535,8 +594,12 @@ class ImageWindow(toolsQtWidget.MWidget):
             image_sub, obj['x'], obj['y'], 6.0 * obj['a'], 0.5,
             normflux=flux, subpix=5)
 
+        sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms)
+        mask = sn > 5
+
         # to get HFD
-        self.HFD = 2 * radius
+        self.objs = obj[mask]
+        self.HFD = 2 * radius[mask]
         return True
 
     def clearGui(self):

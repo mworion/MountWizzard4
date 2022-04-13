@@ -336,7 +336,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         medianHFD = np.median(self.HFD)
         self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
         self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
-        return
+        return True
 
     def showTabRaw(self):
         """

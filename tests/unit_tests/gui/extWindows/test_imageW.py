@@ -23,14 +23,13 @@ import os
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
-import astropy.visualization
-from astropy.visualization import AsinhStretch
 from astropy.io import fits
-from astropy import wcs
 from skyfield.api import Angle
 import numpy as np
+import sep
 
 # local import
+import gui.extWindows.imageW
 from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.imageW import ImageWindow
@@ -137,6 +136,11 @@ def test_updateWindowsStats_2(function):
     assert suc
 
 
+def test_showTitle(function):
+    suc = function.showTitle('test')
+    assert suc
+
+
 def test_selectImage_1(function):
     with mock.patch.object(MWidget,
                            'openFile',
@@ -183,6 +187,86 @@ def test_setCrosshair_1(function):
                            'showCrosshair'):
         suc = function.setCrosshair()
         assert suc
+
+
+def test_setAspectLocked(function):
+    suc = function.setAspectLocked()
+    assert suc
+
+
+def test_calcAberrationInspectView_1(function):
+    imgIn = np.random.rand(1000, 1000) + 1
+    img = function.calcAberrationInspectView(imgIn)
+    h, w = img.shape
+    assert w == function.aberrationSize * 3
+    assert h == function.aberrationSize * 3
+
+
+def test_calcAberrationInspectView_2(function):
+    imgIn = np.random.rand(100, 100) + 1
+    img = function.calcAberrationInspectView(imgIn)
+    h, w = img.shape
+    assert w == imgIn.shape[0]
+    assert h == imgIn.shape[1]
+
+
+def test_baseCalcTabInfo(function):
+    suc = function.baseCalcTabInfo()
+    assert suc
+
+
+def test_showTabRaw(function):
+    suc = function.showTabRaw()
+    assert suc
+
+
+def test_showTabBackground(function):
+    img = np.random.rand(100, 100) + 1
+    function.filterConst = 5
+    function.bkg = sep.Background(img)
+    suc = function.showTabBackground()
+    assert suc
+
+
+def test_workerShowTabHFD(function):
+    function.filterConst = 5
+    function.xm = np.linspace(0, 100, 100)
+    function.ym = np.linspace(0, 100, 100)
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.HFD = np.linspace(20, 30, 20)
+    img = function.workerShowTabHFD()
+    assert img.shape[0] == 100
+
+
+def test_showTabHFD(function):
+    img = np.random.rand(100, 100) + 1
+    suc = function.showTabHFD(img)
+    assert suc
+
+
+def test_showTabTilt(function):
+    suc = function.showTabTilt()
+    assert suc
+
+
+def test_workerShowTabRoundness(function):
+    img = np.random.rand(100, 100) + 1
+    function.filterConst = 5
+    function.xm = np.linspace(0, 100, 100)
+    function.ym = np.linspace(0, 100, 100)
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20),
+                     'a': np.random.rand(20, 1) + 10,
+                     'b': np.random.rand(20, 1) + 10}
+    with mock.patch.object(gui.extWindows.imageW,
+                           'griddata',
+                           return_value=img):
+        with mock.patch.object(gui.extWindows.imageW,
+                               'uniform_filter',
+                               return_value=img):
+            val = function.workerShowTabRoundness()
+            assert len(val) == 4
 
 
 def test_workerPreparePhotometry_1(function):

@@ -737,13 +737,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param image:
         :return:
         """
-        if not image[0][0].dtype == np.dtype('float32'):
-            image = np.flipud(image).astype('float32')
-        else:
-            image = np.flipud(image)
-
-        image = image / np.max(image) * 65536
-        return image
+        image = np.flipud(image)
+        image = image / np.max(image) * 65536.0
+        return image.astype('float32')
 
     def workerLoadImage(self):
         """

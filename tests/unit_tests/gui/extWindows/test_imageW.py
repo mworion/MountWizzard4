@@ -210,6 +210,20 @@ def test_calcAberrationInspectView_2(function):
     assert h == imgIn.shape[1]
 
 
+def test_calcTiltValuesTriangle(function):
+    val = function.calcTiltValuesTriangle()
+    assert len(val) == 6
+
+
+def test_calcTiltValuesSquare(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.image = np.random.rand(1000, 1000) + 1
+    function.HFD = np.linspace(20, 30, 20)
+    val = function.calcTiltValuesSquare()
+    assert len(val) == 6
+
+
 def test_baseCalcTabInfo(function):
     function.HFD = np.linspace(20, 30, 20)
     function.image = np.random.rand(100, 100) + 1
@@ -251,6 +265,16 @@ def test_showTabHFD(function):
 def test_showTabTilt(function):
     suc = function.showTabTilt()
     assert suc
+
+
+def test_workerShowTabTilt(function):
+    segments = np.ones((3, 3))
+    results = (1, 2, 3, 4, 5, segments)
+    with mock.patch.object(function,
+                           'calcTiltValuesSquare',
+                           return_value=results):
+        suc = function.workerShowTabTilt()
+        assert suc
 
 
 def test_workerShowTabRoundness(function):
@@ -468,6 +492,12 @@ def test_writeHeaderDataToGUI_4(function):
     function.header['DEC'] = 80.0
     suc = function.writeHeaderDataToGUI(function.header)
     assert suc
+
+
+def test_checkFormatImage(function):
+    img = np.random.rand(100, 100) + 1
+    img = function.checkFormatImage(img)
+    assert img.dtype == np.dtype('float32')
 
 
 def test_workerLoadImage_1(function):

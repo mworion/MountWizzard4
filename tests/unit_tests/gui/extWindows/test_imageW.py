@@ -212,7 +212,7 @@ def test_calcAberrationInspectView_2(function):
 
 def test_calcTiltValuesTriangle(function):
     val = function.calcTiltValuesTriangle()
-    assert len(val) == 6
+    assert len(val) == 3
 
 
 def test_calcTiltValuesSquare(function):

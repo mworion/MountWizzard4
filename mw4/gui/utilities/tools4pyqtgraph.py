@@ -325,6 +325,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         pg.setConfigOptions(antialias=True, imageAxisOrder='row-major')
 
         self.pen = pg.mkPen(color=self.M_BLUE, width=1)
+        self.penPink = pg.mkPen(color=self.M_PINK, width=1)
         self.brush = pg.mkBrush(color=self.M_BLUE + '80')
         self.penGrid = pg.mkPen(color=self.M_GREY)
         self.brushGrid = pg.mkBrush(color=self.M_GREY + '80')
@@ -802,7 +803,7 @@ class ImageBar(PlotBase):
         tr = QTransform()
         tr.rotate(np.degrees(theta))
         ellipse.setTransform(tr)
-        ellipse.setPen(self.pen)
+        ellipse.setPen(self.penPink)
         self.p[0].addItem(ellipse)
         return True
 

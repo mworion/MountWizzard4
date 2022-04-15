@@ -674,10 +674,10 @@ class Styles:
         QTabBar::tab:disabled {
             color: $M_GREY$;
             border-color: $M_GREY1$;
-            width: 0;
-            height: 0;
-            padding: 0;
-            border: none;
+        }
+        QTabBar::tab:[invisible='true'] {
+            color: $M_GREY$;
+            border-color: $M_GREY1$;
         }
         /* slider */
         QSlider

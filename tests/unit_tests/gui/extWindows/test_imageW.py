@@ -181,6 +181,11 @@ def test_setBarColor_1(function):
         assert suc
 
 
+def test_copyLevels(function):
+    suc = function.copyLevels()
+    assert suc
+
+
 def test_setCrosshair_1(function):
     function.ui.color.setCurrentIndex(0)
     with mock.patch.object(function.ui.image,
@@ -211,17 +216,21 @@ def test_calcAberrationInspectView_2(function):
 
 
 def test_calcTiltValuesTriangle(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.image = np.random.rand(100, 100) + 1
+    function.HFD = np.linspace(20, 30, 20)
     val = function.calcTiltValuesTriangle()
-    assert len(val) == 3
+    assert val.shape == (36, )
 
 
 def test_calcTiltValuesSquare(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
-    function.image = np.random.rand(1000, 1000) + 1
+    function.image = np.random.rand(100, 100) + 1
     function.HFD = np.linspace(20, 30, 20)
     val = function.calcTiltValuesSquare()
-    assert len(val) == 6
+    assert val.shape == (3, 3)
 
 
 def test_baseCalcTabInfo(function):
@@ -262,19 +271,50 @@ def test_showTabHFD(function):
     assert suc
 
 
-def test_showTabTilt(function):
-    suc = function.showTabTilt()
+def test_showTabTiltSquare(function):
+    function.medianHFD = 1
+    function.result = (np.ones((3, 3)), np.ones(36))
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.showTabTiltSquare()
     assert suc
+
+
+def test_showTabTiltTriangle(function):
+    function.innerHFD = 1
+    function.result = (np.ones((3, 3)), np.ones(36))
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.showTabTiltTriangle()
+    assert suc
+
+
+def test_showTabTilt(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.image = np.random.rand(100, 100) + 1
+    function.HFD = np.linspace(20, 30, 20)
+    result = (np.ones((3, 3)), np.ones(36))
+    with mock.patch.object(function,
+                           'showTabTiltSquare'):
+        with mock.patch.object(function,
+                               'showTabTiltSquare'):
+            with mock.patch.object(np,
+                                   'median',
+                                   return_value=1):
+                suc = function.showTabTilt(result)
+                assert suc
 
 
 def test_workerShowTabTilt(function):
     segments = np.ones((3, 3))
-    results = (1, 2, 3, 4, 5, segments)
+    results = segments
     with mock.patch.object(function,
                            'calcTiltValuesSquare',
                            return_value=results):
-        suc = function.workerShowTabTilt()
-        assert suc
+        with mock.patch.object(function,
+                               'calcTiltValuesTriangle',
+                               return_value=results):
+            suc = function.workerShowTabTilt()
+            assert suc
 
 
 def test_workerShowTabRoundness(function):

@@ -79,6 +79,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ym = None
         self.scale = 5
         self.aberrationSize = 250
+        self.result = None
+        self.medianHFD = None
+        self.innerHFD = None
 
         self.deviceStat = {
             'expose': False,
@@ -161,6 +164,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.stackImages.clicked.connect(self.clearStack)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
+        self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
+        self.ui.offsetTiltAngle.valueChanged.connect(self.showTabTiltTriangle)
         self.signals.solveImage.connect(self.solveImage)
         self.signals.showTitle.connect(self.showTitle)
         self.app.showImage.connect(self.showImage)
@@ -273,9 +278,21 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.background.setColorMap(colorMap)
         self.ui.backgroundRMS.setColorMap(colorMap)
         self.ui.hfd.setColorMap(colorMap)
-        self.ui.tilt.setColorMap(colorMap)
+        self.ui.tiltSquare.setColorMap(colorMap)
+        self.ui.tiltTriangle.setColorMap(colorMap)
         self.ui.roundness.setColorMap(colorMap)
         self.ui.aberration.setColorMap(colorMap)
+        return True
+
+    def copyLevels(self):
+        """
+        :return:
+        """
+        level = self.ui.image.barItem.levels()
+        self.ui.tiltSquare.barItem.setLevels(level)
+        self.ui.tiltTriangle.barItem.setLevels(level)
+        self.ui.aberration.barItem.setLevels(level)
+        self.ui.imageSource.barItem.setLevels(level)
         return True
 
     def setCrosshair(self):
@@ -292,10 +309,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         isLocked = self.ui.aspectLocked.isChecked()
         self.ui.image.p[0].setAspectLocked(isLocked)
         self.ui.imageSource.p[0].setAspectLocked(isLocked)
+        self.ui.tiltSquare.p[0].setAspectLocked(isLocked)
+        self.ui.tiltTriangle.p[0].setAspectLocked(isLocked)
         self.ui.background.p[0].setAspectLocked(isLocked)
         self.ui.backgroundRMS.p[0].setAspectLocked(isLocked)
         self.ui.hfd.p[0].setAspectLocked(isLocked)
-        self.ui.tilt.p[0].setAspectLocked(isLocked)
         self.ui.roundness.p[0].setAspectLocked(isLocked)
         return True
 
@@ -316,21 +334,26 @@ class ImageWindow(toolsQtWidget.MWidget):
         img = np.delete(img, np.s_[size * 2:size * 2 + dh], axis=0)
         img = np.delete(img, np.s_[size:size + dw], axis=1)
         img = np.delete(img, np.s_[size * 2:size * 2 + dw], axis=1)
-
-        img[size - 2:size + 2, :] = 0
-        img[2 * size - 2:2 * size + 2, :] = 0
-        img[:, size - 2:size + 2] = 0
-        img[:, 2 * size - 2:2 * size + 2] = 0
         return img
 
     def calcTiltValuesTriangle(self):
         """
         :return:
         """
-        outer = 0
-        inner = 0
-        segments = [0, 0, 0]
-        return outer, inner, segments
+        h, w = self.image.shape
+        x = self.objs['x'] - w / 2
+        y = self.objs['y'] - h / 2
+        r = np.sqrt(x * x + y * y)
+        mask1 = np.sqrt(h * h + w * w) * 0.25 < r
+        mask2 = np.sqrt(h * h + w * w) > r
+        segHFD = np.zeros(36)
+        angles = np.arctan2(y, x)
+        rangeA = np.radians(range(-180, 181, 10))
+        for i in range(36):
+            mask3 = rangeA[i] < angles
+            mask4 = rangeA[i + 1] > angles
+            segHFD[i] = np.median(self.HFD[mask1 & mask2 & mask3 & mask4])
+        return segHFD
 
     def calcTiltValuesSquare(self):
         """
@@ -344,7 +367,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         yRange = [0, stepY, 2 * stepY, 3 * stepY]
         x = self.objs['x']
         y = self.objs['y']
-        medianHFD = np.zeros((3, 3))
+        segHFD = np.zeros((3, 3))
         for ix in range(3):
             for iy in range(3):
                 xMin = xRange[ix]
@@ -353,16 +376,8 @@ class ImageWindow(toolsQtWidget.MWidget):
                 yMax = yRange[iy + 1]
                 hfd = self.HFD[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
                 med_hfd = np.median(hfd)
-                medianHFD[ix][iy] = med_hfd
-
-        radius75 = np.sqrt(h * h + w * w) * 0.75
-        r = np.sqrt(x * x + y * y)
-        outer = np.median(self.HFD[r > radius75])
-        inner = medianHFD[1][1]
-        best = np.min(medianHFD.flatten())
-        worst = np.max(medianHFD.flatten())
-        overall = np.median(self.HFD)
-        return outer, inner, best, worst, overall, medianHFD
+                segHFD[ix][iy] = med_hfd
+        return segHFD
 
     def baseCalcTabInfo(self):
         """
@@ -373,9 +388,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         rangeY = np.linspace(0, ys, int(ys / self.scale))
         self.xm, self.ym = np.meshgrid(rangeX, rangeY)
         self.filterConst = int(xs / self.scale / 2)
-        medianHFD = np.median(self.HFD)
-        self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
-        self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
         return True
 
     def showTabRaw(self):
@@ -384,21 +396,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.ui.image.setImage(imageDisp=self.image)
         self.setCrosshair()
-        QApplication.processEvents()
-        return True
-
-    def showTabBackground(self):
-        """
-        :return:
-        """
-        self.ui.tabImage.setTabEnabled(1, True)
-        back = self.bkg.back()
-        maxB = np.max(back) / self.bkg.globalback
-        minB = np.min(back) / self.bkg.globalback
-        img = self.bkg.back() / self.bkg.globalback
-        img = uniform_filter(img, size=self.filterConst)
-        self.ui.background.setImage(imageDisp=img)
-        self.ui.background.barItem.setLevels((minB, maxB))
         QApplication.processEvents()
         return True
 
@@ -417,12 +414,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param img:
         :return:
         """
-        self.ui.tabImage.setTabEnabled(2, True)
+        self.ui.tabImage.setTabEnabled(1, True)
         self.ui.hfd.setImage(imageDisp=img)
+        self.ui.hfd.p[0].showAxes(False, showValues=False)
+        self.ui.hfd.p[0].setMouseEnabled(x=False, y=False)
         hfdPercentile10 = np.percentile(self.HFD, 90)
         self.ui.hfdPercentile.setText(f'{hfdPercentile10:1.1f}')
-        self.ui.hfd.p[0].getAxis('left').setScale(scale=self.scale)
-        self.ui.hfd.p[0].getAxis('bottom').setScale(scale=self.scale)
+        medianHFD = np.median(self.HFD)
+        self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
+        self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
         QApplication.processEvents()
         return True
 
@@ -430,24 +430,132 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        text = ['none', 'almost none', 'mild', 'moderate', 'severe', 'extreme']
-        outer, inner, best, worst, overall, segHFD = self.calcTiltValuesSquare()
+        resultSquare = self.calcTiltValuesSquare()
+        resultTriangle = self.calcTiltValuesTriangle()
+        return (resultSquare, resultTriangle)
 
-        tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / overall
-        print(f'Tilt HFD {tiltDiff:1.2f} ({tiltPercent:1.0f}%)')
-        print(f'UL: {segHFD[2][0]:1.2f} UR: {segHFD[2][2]:1.2f}')
-        print(f'Mid:{segHFD[1][1]:1.2f}')
-        print(f'LL:{segHFD[0][0]:1.2f}, LR:{segHFD[0][2]:1.2f}')
-        print(f'Off-axis aberration:{outer - inner:1.2f}')
-        print()
-        return True
-
-    def showTabTilt(self):
+    def showTabTiltSquare(self):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(3, True)
+        segHFD = self.result[0]
+        best = np.min([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
+        worst = np.max([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
+
+        tiltDiff = worst - best
+        tiltPercent = 100 * tiltDiff / self.medianHFD
+
+        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
+        self.ui.textTiltHFD.setText(t)
+
+        h, w = self.image.shape
+        self.ui.tiltSquare.p[0].clear()
+        self.ui.tiltSquare.setImage(self.image)
+        self.ui.tiltSquare.p[0].showAxes(False, showValues=False)
+        self.ui.tiltSquare.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.tiltSquare.barItem.setVisible(False)
+        pen = pg.mkPen(color=self.M_YELLOW)
+        for ix in range(3):
+            for iy in range(3):
+                text = f'{segHFD[ix][iy]:1.2f}'
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_YELLOW)
+                textItem.setText(text)
+                posX = ix * w / 3 + w / 6
+                posY = iy * h / 3 + h / 6
+                textItem.setPos(posX, posY)
+                self.ui.tiltSquare.p[0].addItem(textItem)
+        for ix in range(1, 3):
+            posX = ix * w / 3
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(pen)
+            lineItem.setLine(posX, 0, posX, h)
+            self.ui.tiltSquare.p[0].addItem(lineItem)
+        for iy in range(1, 3):
+            posY = iy * h / 3
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(pen)
+            lineItem.setLine(0, posY, w, posY)
+            self.ui.tiltSquare.p[0].addItem(lineItem)
+        return True
+
+    def showTabTiltTriangle(self):
+        """
+        :return:
+        """
+        h, w = self.image.shape
+        r = min(h, w) / 2
+        cx = w / 2
+        cy = h / 2
+
+        segHFD = self.result[1]
+        segHFD = [1, 2, 3]
+        self.ui.tiltTriangle.p[0].clear()
+        self.ui.tiltTriangle.setImage(self.image)
+        self.ui.tiltTriangle.p[0].showAxes(False, showValues=False)
+        self.ui.tiltTriangle.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.tiltTriangle.barItem.setVisible(False)
+        pen = pg.mkPen(color=self.M_YELLOW)
+        ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
+        ellipseItem.setRect(cx - r, cy - r, 2 * r, 2 * r)
+        ellipseItem.setPen(pen)
+        self.ui.tiltTriangle.p[0].addItem(ellipseItem)
+        r25 = 0.25 * r
+        ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
+        ellipseItem.setRect(cx - r25, cy - r25, 2 * r25, 2 * r25)
+        ellipseItem.setPen(pen)
+        self.ui.tiltTriangle.p[0].addItem(ellipseItem)
+
+        offsetTiltAngle = self.ui.offsetTiltAngle.value()
+
+        text = f'{self.innerHFD:1.2f}'
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_YELLOW)
+        textItem.setText(text)
+        textItem.setPos(cx, cy)
+        self.ui.tiltTriangle.p[0].addItem(textItem)
+
+        for i, angle in enumerate(range(0, 360, 120)):
+            angleSep = np.radians(angle + offsetTiltAngle + 60)
+            angleText = np.radians(angle + offsetTiltAngle)
+            posX1 = cx + r25 * np.sin(angleSep)
+            posX2 = cx + r * np.sin(angleSep)
+            posY1 = cy + r25 * np.cos(angleSep)
+            posY2 = cy + r * np.cos(angleSep)
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setLine(posX1, posY1, posX2, posY2)
+            lineItem.setPen(pen)
+            self.ui.tiltTriangle.p[0].addItem(lineItem)
+            text = f'{segHFD[i]:1.2f}'
+            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_YELLOW)
+            textItem.setText(text)
+            posX = cx + r * 0.625 * np.sin(angleText)
+            posY = cy + r * 0.625 * np.cos(angleText)
+            textItem.setPos(posX, posY)
+            self.ui.tiltTriangle.p[0].addItem(textItem)
+
+        return True
+
+    def showTabTilt(self, result):
+        """
+        :return:
+        """
+        self.result = result
+        h, w = self.image.shape
+        x = self.objs['x'] - w / 2
+        y = self.objs['y'] - h / 2
+        self.medianHFD = np.median(self.HFD)
+        r = np.sqrt(x * x + y * y)
+        maskOuter = np.sqrt(h * h / 4 + w * w / 4) * 0.75 < r
+        maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > r
+        outerHFD = np.median(self.HFD[maskOuter])
+        self.innerHFD = np.median(self.HFD[maskInner])
+        offAxisDiff = outerHFD - self.innerHFD
+        offAxisPercent = 100 * offAxisDiff / self.medianHFD
+        t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
+        self.ui.textTiltOffAxis.setText(t)
+
+        self.ui.tabImage.setTabEnabled(2, True)
+        self.showTabTiltSquare()
+        self.showTabTiltTriangle()
         QApplication.processEvents()
         return True
 
@@ -470,14 +578,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param result:
         :return:
         """
-        self.ui.tabImage.setTabEnabled(4, True)
+        self.ui.tabImage.setTabEnabled(3, True)
         aspectRatio, img, minB, maxB = result
         self.ui.roundness.setImage(imageDisp=img)
+        self.ui.roundness.p[0].showAxes(False, showValues=False)
+        self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
         self.ui.roundness.barItem.setLevels((minB, maxB))
         aspectRatioPercentile10 = np.percentile(aspectRatio, 90)
         self.ui.aspectRatioPercentile.setText(f'{aspectRatioPercentile10:1.1f}')
-        self.ui.roundness.p[0].getAxis('left').setScale(scale=self.scale)
-        self.ui.roundness.p[0].getAxis('bottom').setScale(scale=self.scale)
         QApplication.processEvents()
         return True
 
@@ -485,32 +593,57 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(5, True)
-        self.ui.aberration.p[0].setAspectLocked(True)
+        self.ui.tabImage.setTabEnabled(4, True)
+        self.ui.aberration.barItem.setVisible(False)
         abb = self.calcAberrationInspectView(self.image)
+        h, w = abb.shape
+        self.ui.aberration.p[0].clear()
         self.ui.aberration.setImage(abb)
-        self.ui.aberration.p[0].getViewBox().setMouseMode(pg.ViewBox().PanMode)
+        self.ui.aberration.p[0].setAspectLocked(True)
         self.ui.aberration.p[0].showAxes(False, showValues=False)
         self.ui.aberration.p[0].setMouseEnabled(x=False, y=False)
-
-        maxB = 1.5 * np.median(abb)
-        minB = np.mean(abb)
-        self.ui.aberration.barItem.setLevels((minB, maxB))
-
-        self.ui.aberration.p[0].getViewBox().rightMouseRange()
+        pen = pg.mkPen(color=self.M_YELLOW)
+        for ix in range(1, 3):
+            posX = ix * w / 3
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(pen)
+            lineItem.setLine(posX, 0, posX, h)
+            self.ui.aberration.p[0].addItem(lineItem)
+        for iy in range(1, 3):
+            posY = iy * h / 3
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(pen)
+            lineItem.setLine(0, posY, w, posY)
+            self.ui.aberration.p[0].addItem(lineItem)
         QApplication.processEvents()
+        self.ui.aberration.p[0].getViewBox().rightMouseRange()
         return True
 
     def showTabImageSources(self):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(6, True)
+        self.ui.tabImage.setTabEnabled(5, True)
         self.ui.imageSource.setImage(imageDisp=self.image)
         for i in range(len(self.objs)):
             self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
                                            self.objs['a'][i], self.objs['b'][i],
                                            self.objs['theta'][i])
+        QApplication.processEvents()
+        return True
+
+    def showTabBackground(self):
+        """
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(6, True)
+        back = self.bkg.back()
+        maxB = np.max(back) / self.bkg.globalback
+        minB = np.min(back) / self.bkg.globalback
+        img = self.bkg.back() / self.bkg.globalback
+        img = uniform_filter(img, size=self.filterConst)
+        self.ui.background.setImage(imageDisp=img)
+        self.ui.background.barItem.setLevels((minB, maxB))
         QApplication.processEvents()
         return True
 
@@ -550,11 +683,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.threadPool.start(worker)
 
         self.showTabBackground()
-        self.showTabTilt()
         self.showTabAberrationInspect()
         self.showTabImageSources()
         self.showTabBackgroundRMS()
-        self.changeStyleDynamic(self.ui.photometryGroup, 'running', False)
+
+        self.changeStyleDynamic(self.ui.tabImage, 'running', False)
         return True
 
     def workerPreparePhotometry(self):
@@ -594,8 +727,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             image_sub, obj['x'], obj['y'], 6.0 * obj['a'], 0.5,
             normflux=flux, subpix=5)
 
-        sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms)
-        mask = sn > 5
+        sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms / 1.46)
+        mask = (sn > 10) & (2 * radius < 20)
 
         # to get HFD
         self.objs = obj[mask]
@@ -614,7 +747,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.image.setImage(None)
         for i in range(1, self.ui.tabImage.count()):
             self.ui.tabImage.setTabEnabled(i, False)
-        self.changeStyleDynamic(self.ui.photometryGroup, 'running', False)
+        self.changeStyleDynamic(self.ui.tabImage, 'running', False)
         return True
 
     def preparePhotometry(self):
@@ -622,10 +755,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         doPhotometry = self.ui.enablePhotometry.isChecked()
-        self.ui.photometryGroup.setEnabled(doPhotometry)
+        # self.ui.photometryGroup.setEnabled(doPhotometry)
         if doPhotometry:
             self.ui.stackImages.setChecked(False)
-            self.changeStyleDynamic(self.ui.photometryGroup, 'running', True)
+            self.changeStyleDynamic(self.ui.tabImage, 'running', True)
             worker = Worker(self.workerPreparePhotometry)
             worker.signals.finished.connect(self.showTabImages)
             self.threadPool.start(worker)

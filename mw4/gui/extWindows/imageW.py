@@ -24,6 +24,7 @@ import sep
 import pyqtgraph as pg
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QFont
 from astropy.io import fits
 from PIL import Image
 from scipy.interpolate import griddata
@@ -82,6 +83,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.result = None
         self.medianHFD = None
         self.innerHFD = None
+        self.pen = pg.mkPen(color=self.M_BLUE, width=3)
+        self.font = QFont(self.window().font().family(), 16)
+        self.font.setBold(True)
 
         self.deviceStat = {
             'expose': False,
@@ -189,6 +193,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.setStyleSheet(self.mw4Style)
         self.ui.image.colorChange()
+        self.pen = pg.mkPen(color=self.M_BLUE)
         self.showCurrent()
         return True
 
@@ -336,25 +341,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         img = np.delete(img, np.s_[size * 2:size * 2 + dw], axis=1)
         return img
 
-    def calcTiltValuesTriangle(self):
-        """
-        :return:
-        """
-        h, w = self.image.shape
-        x = self.objs['x'] - w / 2
-        y = self.objs['y'] - h / 2
-        r = np.sqrt(x * x + y * y)
-        mask1 = np.sqrt(h * h + w * w) * 0.25 < r
-        mask2 = np.sqrt(h * h + w * w) > r
-        segHFD = np.zeros(36)
-        angles = np.arctan2(y, x)
-        rangeA = np.radians(range(-180, 181, 10))
-        for i in range(36):
-            mask3 = rangeA[i] < angles
-            mask4 = rangeA[i + 1] > angles
-            segHFD[i] = np.median(self.HFD[mask1 & mask2 & mask3 & mask4])
-        return segHFD
-
     def calcTiltValuesSquare(self):
         """
         :return:
@@ -378,6 +364,25 @@ class ImageWindow(toolsQtWidget.MWidget):
                 med_hfd = np.median(hfd)
                 segHFD[ix][iy] = med_hfd
         return segHFD
+
+    def calcTiltValuesTriangle(self):
+        """
+        :return:
+        """
+        h, w = self.image.shape
+        x = self.objs['x'] - w / 2
+        y = self.objs['y'] - h / 2
+        r = min(h / 2, w / 2)
+        mask1 = np.sqrt(h * h + w * w) * 0.25 < r
+        mask2 = np.sqrt(h * h + w * w) > r
+        segHFD = np.zeros(36)
+        angles = np.mod(np.arctan2(y, x), 2*np.pi)
+        rangeA = np.radians(range(0, 361, 10))
+        for i in range(36):
+            mask3 = rangeA[i] < angles
+            mask4 = rangeA[i + 1] > angles
+            segHFD[i] = np.median(self.HFD[mask1 & mask2 & mask3 & mask4])
+        return np.concatenate([segHFD, segHFD])
 
     def baseCalcTabInfo(self):
         """
@@ -422,7 +427,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.hfdPercentile.setText(f'{hfdPercentile10:1.1f}')
         medianHFD = np.median(self.HFD)
         self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
-        self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
+        self.ui.squareNumberStars.setText(f'{len(self.HFD):1.0f}')
+        self.ui.triangleNumberStars.setText(f'{len(self.HFD):1.0f}')
         QApplication.processEvents()
         return True
 
@@ -439,27 +445,18 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         segHFD = self.result[0]
-        best = np.min([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
-        worst = np.max([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
-
-        tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.medianHFD
-
-        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
-        self.ui.textTiltHFD.setText(t)
-
         h, w = self.image.shape
         self.ui.tiltSquare.p[0].clear()
         self.ui.tiltSquare.setImage(self.image)
         self.ui.tiltSquare.p[0].showAxes(False, showValues=False)
         self.ui.tiltSquare.p[0].setMouseEnabled(x=False, y=False)
         self.ui.tiltSquare.barItem.setVisible(False)
-        pen = pg.mkPen(color=self.M_YELLOW)
         for ix in range(3):
             for iy in range(3):
                 text = f'{segHFD[ix][iy]:1.2f}'
-                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_YELLOW)
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
                 textItem.setText(text)
+                textItem.setFont(self.font)
                 posX = ix * w / 3 + w / 6
                 posY = iy * h / 3 + h / 6
                 textItem.setPos(posX, posY)
@@ -467,15 +464,23 @@ class ImageWindow(toolsQtWidget.MWidget):
         for ix in range(1, 3):
             posX = ix * w / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(pen)
+            lineItem.setPen(self.pen)
             lineItem.setLine(posX, 0, posX, h)
             self.ui.tiltSquare.p[0].addItem(lineItem)
         for iy in range(1, 3):
             posY = iy * h / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(pen)
+            lineItem.setPen(self.pen)
             lineItem.setLine(0, posY, w, posY)
             self.ui.tiltSquare.p[0].addItem(lineItem)
+
+        best = np.min([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
+        worst = np.max([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
+        tiltDiff = worst - best
+        tiltPercent = 100 * tiltDiff / self.medianHFD
+
+        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
+        self.ui.textSquareTiltHFD.setText(t)
         return True
 
     def showTabTiltTriangle(self):
@@ -488,49 +493,61 @@ class ImageWindow(toolsQtWidget.MWidget):
         cy = h / 2
 
         segHFD = self.result[1]
-        segHFD = [1, 2, 3]
         self.ui.tiltTriangle.p[0].clear()
         self.ui.tiltTriangle.setImage(self.image)
         self.ui.tiltTriangle.p[0].showAxes(False, showValues=False)
         self.ui.tiltTriangle.p[0].setMouseEnabled(x=False, y=False)
         self.ui.tiltTriangle.barItem.setVisible(False)
-        pen = pg.mkPen(color=self.M_YELLOW)
         ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
         ellipseItem.setRect(cx - r, cy - r, 2 * r, 2 * r)
-        ellipseItem.setPen(pen)
+        ellipseItem.setPen(self.pen)
         self.ui.tiltTriangle.p[0].addItem(ellipseItem)
         r25 = 0.25 * r
         ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
         ellipseItem.setRect(cx - r25, cy - r25, 2 * r25, 2 * r25)
-        ellipseItem.setPen(pen)
+        ellipseItem.setPen(self.pen)
         self.ui.tiltTriangle.p[0].addItem(ellipseItem)
 
         offsetTiltAngle = self.ui.offsetTiltAngle.value()
 
         text = f'{self.innerHFD:1.2f}'
-        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_YELLOW)
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
         textItem.setText(text)
+        textItem.setFont(self.font)
         textItem.setPos(cx, cy)
         self.ui.tiltTriangle.p[0].addItem(textItem)
+        segData = [0, 0, 0]
 
         for i, angle in enumerate(range(0, 360, 120)):
-            angleSep = np.radians(angle + offsetTiltAngle + 60)
-            angleText = np.radians(angle + offsetTiltAngle)
-            posX1 = cx + r25 * np.sin(angleSep)
-            posX2 = cx + r * np.sin(angleSep)
-            posY1 = cy + r25 * np.cos(angleSep)
-            posY2 = cy + r * np.cos(angleSep)
+            angleSep = np.radians(angle + offsetTiltAngle + 210)
+            angleText = np.radians(angle + offsetTiltAngle + 270)
+            posX1 = cx + r25 * np.cos(angleSep)
+            posX2 = cx + r * np.cos(angleSep)
+            posY1 = cy + r25 * np.sin(angleSep)
+            posY2 = cy + r * np.sin(angleSep)
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setLine(posX1, posY1, posX2, posY2)
-            lineItem.setPen(pen)
+            lineItem.setPen(self.pen)
             self.ui.tiltTriangle.p[0].addItem(lineItem)
-            text = f'{segHFD[i]:1.2f}'
-            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_YELLOW)
+            startIndexSeg = int((angle + offsetTiltAngle + 210) / 10)
+            endIndexSeg = int((angle + offsetTiltAngle + 330) / 10)
+            segData[i] = np.mean(segHFD[startIndexSeg:endIndexSeg])
+            text = f'{segData[i]:1.2f}'
+            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
+            textItem.setFont(self.font)
             textItem.setText(text)
-            posX = cx + r * 0.625 * np.sin(angleText)
-            posY = cy + r * 0.625 * np.cos(angleText)
+            posX = cx + r * 0.625 * np.cos(angleText)
+            posY = cy + r * 0.625 * np.sin(angleText)
             textItem.setPos(posX, posY)
             self.ui.tiltTriangle.p[0].addItem(textItem)
+
+        best = np.min(segData)
+        worst = np.max(segData)
+        tiltDiff = worst - best
+        tiltPercent = 100 * tiltDiff / self.medianHFD
+
+        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
+        self.ui.textTriangleTiltHFD.setText(t)
 
         return True
 
@@ -548,12 +565,25 @@ class ImageWindow(toolsQtWidget.MWidget):
         maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > r
         outerHFD = np.median(self.HFD[maskOuter])
         self.innerHFD = np.median(self.HFD[maskInner])
-        offAxisDiff = outerHFD - self.innerHFD
+
+        centerSquareHFD = result[0][1][1]
+        offAxisDiff = outerHFD - centerSquareHFD
         offAxisPercent = 100 * offAxisDiff / self.medianHFD
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
-        self.ui.textTiltOffAxis.setText(t)
+        self.ui.textSquareTiltOffAxis.setText(t)
+
+        centerTriangleHFD = self.innerHFD
+        offAxisDiff = outerHFD - centerTriangleHFD
+        offAxisPercent = 100 * offAxisDiff / self.medianHFD
+        t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
+        self.ui.textTriangleTiltOffAxis.setText(t)
+
+        t = f'{self.medianHFD:1.2f}'
+        self.ui.triangleMedianHDF.setText(t)
+        self.ui.squareMedianHDF.setText(t)
 
         self.ui.tabImage.setTabEnabled(2, True)
+        self.ui.tabImage.setTabEnabled(3, True)
         self.showTabTiltSquare()
         self.showTabTiltTriangle()
         QApplication.processEvents()
@@ -578,7 +608,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param result:
         :return:
         """
-        self.ui.tabImage.setTabEnabled(3, True)
+        self.ui.tabImage.setTabEnabled(4, True)
         aspectRatio, img, minB, maxB = result
         self.ui.roundness.setImage(imageDisp=img)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
@@ -593,7 +623,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(4, True)
+        self.ui.tabImage.setTabEnabled(5, True)
         self.ui.aberration.barItem.setVisible(False)
         abb = self.calcAberrationInspectView(self.image)
         h, w = abb.shape
@@ -602,17 +632,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.aberration.p[0].setAspectLocked(True)
         self.ui.aberration.p[0].showAxes(False, showValues=False)
         self.ui.aberration.p[0].setMouseEnabled(x=False, y=False)
-        pen = pg.mkPen(color=self.M_YELLOW)
         for ix in range(1, 3):
             posX = ix * w / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(pen)
+            lineItem.setPen(self.pen)
             lineItem.setLine(posX, 0, posX, h)
             self.ui.aberration.p[0].addItem(lineItem)
         for iy in range(1, 3):
             posY = iy * h / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(pen)
+            lineItem.setPen(self.pen)
             lineItem.setLine(0, posY, w, posY)
             self.ui.aberration.p[0].addItem(lineItem)
         QApplication.processEvents()
@@ -623,7 +652,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(5, True)
+        self.ui.tabImage.setTabEnabled(6, True)
         self.ui.imageSource.setImage(imageDisp=self.image)
         for i in range(len(self.objs)):
             self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
@@ -636,7 +665,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(6, True)
+        self.ui.tabImage.setTabEnabled(7, True)
         back = self.bkg.back()
         maxB = np.max(back) / self.bkg.globalback
         minB = np.min(back) / self.bkg.globalback
@@ -651,7 +680,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(7, True)
+        self.ui.tabImage.setTabEnabled(8, True)
         img = self.bkg.rms()
         img = uniform_filter(img, size=self.filterConst)
         self.ui.backgroundRMS.setImage(imageDisp=img)
@@ -697,41 +726,41 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
         image_sub = self.image - self.bkg
 
-        obj = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
-                          filter_type='matched', minarea=11)
+        objs = sep.extract(image_sub, 3.0, err=self.bkg.globalrms,
+                           filter_type='matched', minarea=11)
 
         # remove objects without need
-        r = np.sqrt(obj['a'] * obj['a'] + obj['b'] * obj['b'])
-        mask = (r < 15) & (r > 0.8)
-        obj = obj[mask]
+        r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
+        mask = (r < 10) & (r > 0.8)
+        objs = objs[mask]
 
         kronRad, krFlag = sep.kron_radius(
-            image_sub, obj['x'], obj['y'], obj['a'], obj['b'], obj['theta'], 6.0)
+            image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'], 6.0)
 
         flux, fluxErr, flag = sep.sum_ellipse(
-            image_sub, obj['x'], obj['y'], obj['a'], obj['b'], obj['theta'],
+            image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'],
             2.5 * kronRad, subpix=1)
 
         flag |= krFlag
         r_min = 1.75
 
-        useCircle = kronRad * np.sqrt(obj['a'] * obj['b']) < r_min
+        useCircle = kronRad * np.sqrt(objs['a'] * objs['b']) < r_min
         cFlux, cFluxErr, cFlag = sep.sum_circle(
-            image_sub, obj['x'][useCircle], obj['y'][useCircle], r_min, subpix=1)
+            image_sub, objs['x'][useCircle], objs['y'][useCircle], r_min, subpix=1)
 
         flux[useCircle] = cFlux
         fluxErr[useCircle] = cFluxErr
         flag[useCircle] = cFlag
 
         radius, _ = sep.flux_radius(
-            image_sub, obj['x'], obj['y'], 6.0 * obj['a'], 0.5,
+            image_sub, objs['x'], objs['y'], 6.0 * objs['a'], 0.5,
             normflux=flux, subpix=5)
 
         sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms / 1.46)
         mask = (sn > 10) & (2 * radius < 20)
 
         # to get HFD
-        self.objs = obj[mask]
+        self.objs = objs[mask]
         self.HFD = 2 * radius[mask]
         return True
 
@@ -755,7 +784,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         doPhotometry = self.ui.enablePhotometry.isChecked()
-        # self.ui.photometryGroup.setEnabled(doPhotometry)
         if doPhotometry:
             self.ui.stackImages.setChecked(False)
             self.changeStyleDynamic(self.ui.tabImage, 'running', True)

@@ -375,9 +375,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         h, w = self.image.shape
         x = self.objs['x'] - w / 2
         y = self.objs['y'] - h / 2
-        r = min(h / 2, w / 2)
-        mask1 = np.sqrt(h * h + w * w) * 0.25 < r
-        mask2 = np.sqrt(h * h + w * w) > r
+        radius = min(h / 2, w / 2)
+        mask1 = np.sqrt(h * h + w * w) * 0.25 < radius
+        mask2 = np.sqrt(h * h + w * w) > radius
         segHFD = np.zeros(36)
         angles = np.mod(np.arctan2(y, x), 2*np.pi)
         rangeA = np.radians(range(0, 361, 10))
@@ -392,18 +392,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         h, w = self.image.shape
-
         rangeX = np.linspace(0, w, int(w / self.scale))
         rangeY = np.linspace(0, h, int(h / self.scale))
         self.xm, self.ym = np.meshgrid(rangeX, rangeY)
         self.filterConst = int(w / self.scale / 2)
-
         x = self.objs['x'] - w / 2
         y = self.objs['y'] - h / 2
         self.medianHFD = np.median(self.HFD)
-        r = np.sqrt(x * x + y * y)
-        maskOuter = np.sqrt(h * h / 4 + w * w / 4) * 0.75 < r
-        maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > r
+        radius = np.sqrt(x * x + y * y)
+        maskOuter = np.sqrt(h * h / 4 + w * w / 4) * 0.75 < radius
+        maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > radius
         self.outerHFD = np.median(self.HFD[maskOuter])
         self.innerHFD = np.median(self.HFD[maskInner])
         return True
@@ -421,8 +419,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        img = griddata((self.objs['x'], self.objs['y']), self.HFD, (self.xm,
-                                                                    self.ym),
+        img = griddata((self.objs['x'], self.objs['y']),
+                       self.HFD, (self.xm, self.ym),
                        method='nearest', fill_value=np.min(self.HFD))
         img = uniform_filter(img, size=self.filterConst)
         return img
@@ -444,17 +442,26 @@ class ImageWindow(toolsQtWidget.MWidget):
         QApplication.processEvents()
         return True
 
+    @staticmethod
+    def clearImageTab(imageWidget):
+        """
+        :param imageWidget:
+        :return:
+        """
+        imageWidget.p[0].clear()
+        imageWidget.p[0].showAxes(False, showValues=False)
+        imageWidget.p[0].setMouseEnabled(x=False, y=False)
+        imageWidget.barItem.setVisible(False)
+        return True
+
     def showTabTiltSquare(self, segHFD):
         """
         :param segHFD:
         :return:
         """
         h, w = self.image.shape
-        self.ui.tiltSquare.p[0].clear()
+        self.clearImageTab(self.ui.tiltSquare)
         self.ui.tiltSquare.setImage(self.image)
-        self.ui.tiltSquare.p[0].showAxes(False, showValues=False)
-        self.ui.tiltSquare.p[0].setMouseEnabled(x=False, y=False)
-        self.ui.tiltSquare.barItem.setVisible(False)
         for ix in range(3):
             for iy in range(3):
                 text = f'{segHFD[ix][iy]:1.2f}'
@@ -507,11 +514,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         cx = w / 2
         cy = h / 2
 
-        self.ui.tiltTriangle.p[0].clear()
+        self.clearImageTab(self.ui.tiltTriangle)
         self.ui.tiltTriangle.setImage(self.image)
-        self.ui.tiltTriangle.p[0].showAxes(False, showValues=False)
-        self.ui.tiltTriangle.p[0].setMouseEnabled(x=False, y=False)
-        self.ui.tiltTriangle.barItem.setVisible(False)
         ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
         ellipseItem.setRect(cx - r, cy - r, 2 * r, 2 * r)
         ellipseItem.setPen(self.pen)
@@ -593,7 +597,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param result:
         :return:
         """
-        self.ui.tabImage.setTabEnabled(4, True)
         aspectRatio, img, minB, maxB = result
         self.ui.roundness.setImage(imageDisp=img)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
@@ -601,6 +604,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.roundness.barItem.setLevels((minB, maxB))
         aspectRatioPercentile10 = np.percentile(aspectRatio, 90)
         self.ui.aspectRatioPercentile.setText(f'{aspectRatioPercentile10:1.1f}')
+
+        self.ui.tabImage.setTabEnabled(4, True)
         QApplication.processEvents()
         return True
 
@@ -608,15 +613,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(5, True)
         self.ui.aberration.barItem.setVisible(False)
         abb = self.calcAberrationInspectView(self.image)
         h, w = abb.shape
         self.ui.aberration.p[0].clear()
-        self.ui.aberration.setImage(abb)
         self.ui.aberration.p[0].setAspectLocked(True)
         self.ui.aberration.p[0].showAxes(False, showValues=False)
         self.ui.aberration.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.aberration.setImage(abb)
         for ix in range(1, 3):
             posX = ix * w / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
@@ -629,6 +633,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             lineItem.setPen(self.pen)
             lineItem.setLine(0, posY, w, posY)
             self.ui.aberration.p[0].addItem(lineItem)
+
+        self.ui.tabImage.setTabEnabled(5, True)
         QApplication.processEvents()
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
         return True
@@ -637,12 +643,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(6, True)
         self.ui.imageSource.setImage(imageDisp=self.image)
         for i in range(len(self.objs)):
             self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
                                            self.objs['a'][i], self.objs['b'][i],
                                            self.objs['theta'][i])
+        self.ui.tabImage.setTabEnabled(6, True)
         QApplication.processEvents()
         return True
 
@@ -650,7 +656,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(7, True)
         back = self.bkg.back()
         maxB = np.max(back) / self.bkg.globalback
         minB = np.min(back) / self.bkg.globalback
@@ -658,6 +663,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         img = uniform_filter(img, size=self.filterConst)
         self.ui.background.setImage(imageDisp=img)
         self.ui.background.barItem.setLevels((minB, maxB))
+        self.ui.tabImage.setTabEnabled(7, True)
         QApplication.processEvents()
         return True
 
@@ -665,10 +671,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(8, True)
         img = self.bkg.rms()
         img = uniform_filter(img, size=self.filterConst)
         self.ui.backgroundRMS.setImage(imageDisp=img)
+        self.ui.tabImage.setTabEnabled(8, True)
         QApplication.processEvents()
         return True
 

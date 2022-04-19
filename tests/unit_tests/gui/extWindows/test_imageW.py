@@ -273,6 +273,12 @@ def test_showTabHFD(function):
     assert suc
 
 
+def test_clearImageTab(function):
+    widget = function.ui.tiltSquare
+    suc = function.clearImageTab(widget)
+    assert suc
+
+
 def test_showTabTiltSquare(function):
     function.HFD = np.linspace(20, 30, 20)
     function.medianHFD = 1

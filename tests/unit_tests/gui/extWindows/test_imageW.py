@@ -215,25 +215,27 @@ def test_calcAberrationInspectView_2(function):
     assert h == imgIn.shape[1]
 
 
-def test_calcTiltValuesTriangle(function):
+def test_workerCalcTiltValuesTriangle(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.HFD = np.linspace(20, 30, 20)
-    val = function.calcTiltValuesTriangle()
-    assert val.shape == (36, )
+    val = function.workerCalcTiltValuesTriangle()
+    assert val.shape == (72, )
 
 
-def test_calcTiltValuesSquare(function):
+def test_workerCalcTiltValuesSquare(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.HFD = np.linspace(20, 30, 20)
-    val = function.calcTiltValuesSquare()
+    val = function.workerCalcTiltValuesSquare()
     assert val.shape == (3, 3)
 
 
 def test_baseCalcTabInfo(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
     function.HFD = np.linspace(20, 30, 20)
     function.image = np.random.rand(100, 100) + 1
     suc = function.baseCalcTabInfo()
@@ -272,49 +274,23 @@ def test_showTabHFD(function):
 
 
 def test_showTabTiltSquare(function):
+    function.HFD = np.linspace(20, 30, 20)
     function.medianHFD = 1
-    function.result = (np.ones((3, 3)), np.ones(36))
+    function.innerHFD = 1
+    function.outerHFD = 1
     function.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltSquare()
+    suc = function.showTabTiltSquare(np.ones((3, 3)))
     assert suc
 
 
 def test_showTabTiltTriangle(function):
-    function.innerHFD = 1
-    function.result = (np.ones((3, 3)), np.ones(36))
-    function.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltTriangle()
-    assert suc
-
-
-def test_showTabTilt(function):
-    function.objs = {'x': np.linspace(0, 50, 20),
-                     'y': np.linspace(50, 100, 20)}
-    function.image = np.random.rand(100, 100) + 1
     function.HFD = np.linspace(20, 30, 20)
-    result = (np.ones((3, 3)), np.ones(36))
-    with mock.patch.object(function,
-                           'showTabTiltSquare'):
-        with mock.patch.object(function,
-                               'showTabTiltSquare'):
-            with mock.patch.object(np,
-                                   'median',
-                                   return_value=1):
-                suc = function.showTabTilt(result)
-                assert suc
-
-
-def test_workerShowTabTilt(function):
-    segments = np.ones((3, 3))
-    results = segments
-    with mock.patch.object(function,
-                           'calcTiltValuesSquare',
-                           return_value=results):
-        with mock.patch.object(function,
-                               'calcTiltValuesTriangle',
-                               return_value=results):
-            suc = function.workerShowTabTilt()
-            assert suc
+    function.innerHFD = 1
+    function.outerHFD = 1
+    function.medianHFD = 1
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.showTabTiltTriangle(np.ones(72))
+    assert suc
 
 
 def test_workerShowTabRoundness(function):
@@ -389,15 +365,13 @@ def test_showTabImages_2(function):
                 with mock.patch.object(function,
                                        'showTabBackground'):
                     with mock.patch.object(function,
-                                           'showTabTilt'):
+                                           'showTabAberrationInspect'):
                         with mock.patch.object(function,
-                                               'showTabAberrationInspect'):
+                                               'showTabImageSources'):
                             with mock.patch.object(function,
-                                                   'showTabImageSources'):
-                                with mock.patch.object(function,
-                                                       'showTabBackgroundRMS'):
-                                    suc = function.showTabImages()
-                                    assert suc
+                                                   'showTabBackgroundRMS'):
+                                suc = function.showTabImages()
+                                assert suc
 
 
 def test_workerPreparePhotometry_1(function):

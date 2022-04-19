@@ -83,6 +83,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.result = None
         self.medianHFD = None
         self.innerHFD = None
+        self.outerHFD = None
         self.pen = pg.mkPen(color=self.M_BLUE, width=3)
         self.font = QFont(self.window().font().family(), 16)
         self.font.setBold(True)
@@ -124,6 +125,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.autoSolve.setChecked(config.get('autoSolve', False))
         self.ui.embedData.setChecked(config.get('embedData', False))
         self.ui.enablePhotometry.setChecked(config.get('enablePhotometry', False))
+        self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
         self.setCrosshair()
         return True
 
@@ -147,6 +149,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['autoSolve'] = self.ui.autoSolve.isChecked()
         config['embedData'] = self.ui.embedData.isChecked()
         config['enablePhotometry'] = self.ui.enablePhotometry.isChecked()
+        config['offsetTiltAngle'] = self.ui.offsetTiltAngle.value()
         return True
 
     def showWindow(self):
@@ -341,7 +344,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         img = np.delete(img, np.s_[size * 2:size * 2 + dw], axis=1)
         return img
 
-    def calcTiltValuesSquare(self):
+    def workerCalcTiltValuesSquare(self):
         """
         :return:
         """
@@ -365,7 +368,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 segHFD[ix][iy] = med_hfd
         return segHFD
 
-    def calcTiltValuesTriangle(self):
+    def workerCalcTiltValuesTriangle(self):
         """
         :return:
         """
@@ -388,11 +391,21 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        ys, xs = self.image.shape
-        rangeX = np.linspace(0, xs, int(xs / self.scale))
-        rangeY = np.linspace(0, ys, int(ys / self.scale))
+        h, w = self.image.shape
+
+        rangeX = np.linspace(0, w, int(w / self.scale))
+        rangeY = np.linspace(0, h, int(h / self.scale))
         self.xm, self.ym = np.meshgrid(rangeX, rangeY)
-        self.filterConst = int(xs / self.scale / 2)
+        self.filterConst = int(w / self.scale / 2)
+
+        x = self.objs['x'] - w / 2
+        y = self.objs['y'] - h / 2
+        self.medianHFD = np.median(self.HFD)
+        r = np.sqrt(x * x + y * y)
+        maskOuter = np.sqrt(h * h / 4 + w * w / 4) * 0.75 < r
+        maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > r
+        self.outerHFD = np.median(self.HFD[maskOuter])
+        self.innerHFD = np.median(self.HFD[maskInner])
         return True
 
     def showTabRaw(self):
@@ -426,25 +439,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         hfdPercentile10 = np.percentile(self.HFD, 90)
         self.ui.hfdPercentile.setText(f'{hfdPercentile10:1.1f}')
         medianHFD = np.median(self.HFD)
-        self.ui.medianHFD.setText(f'{medianHFD:1.1f}')
-        self.ui.squareNumberStars.setText(f'{len(self.HFD):1.0f}')
-        self.ui.triangleNumberStars.setText(f'{len(self.HFD):1.0f}')
+        self.ui.medianHFD.setText(f'{medianHFD:1.2f}')
+        self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
         QApplication.processEvents()
         return True
 
-    def workerShowTabTilt(self):
+    def showTabTiltSquare(self, segHFD):
         """
+        :param segHFD:
         :return:
         """
-        resultSquare = self.calcTiltValuesSquare()
-        resultTriangle = self.calcTiltValuesTriangle()
-        return (resultSquare, resultTriangle)
-
-    def showTabTiltSquare(self):
-        """
-        :return:
-        """
-        segHFD = self.result[0]
         h, w = self.image.shape
         self.ui.tiltSquare.p[0].clear()
         self.ui.tiltSquare.setImage(self.image)
@@ -481,10 +485,21 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
         self.ui.textSquareTiltHFD.setText(t)
+
+        offAxisDiff = self.outerHFD - segHFD[1][1]
+        offAxisPercent = 100 * offAxisDiff / self.medianHFD
+        t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
+        self.ui.textSquareTiltOffAxis.setText(t)
+        self.ui.squareMedianHDF.setText(f'{self.medianHFD:1.2f}')
+        self.ui.squareNumberStars.setText(f'{len(self.HFD):1.0f}')
+
+        self.ui.tabImage.setTabEnabled(2, True)
+        QApplication.processEvents()
         return True
 
-    def showTabTiltTriangle(self):
+    def showTabTiltTriangle(self, segHFD):
         """
+        :param segHFD:
         :return:
         """
         h, w = self.image.shape
@@ -492,7 +507,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         cx = w / 2
         cy = h / 2
 
-        segHFD = self.result[1]
         self.ui.tiltTriangle.p[0].clear()
         self.ui.tiltTriangle.setImage(self.image)
         self.ui.tiltTriangle.p[0].showAxes(False, showValues=False)
@@ -549,43 +563,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
         self.ui.textTriangleTiltHFD.setText(t)
 
-        return True
-
-    def showTabTilt(self, result):
-        """
-        :return:
-        """
-        self.result = result
-        h, w = self.image.shape
-        x = self.objs['x'] - w / 2
-        y = self.objs['y'] - h / 2
-        self.medianHFD = np.median(self.HFD)
-        r = np.sqrt(x * x + y * y)
-        maskOuter = np.sqrt(h * h / 4 + w * w / 4) * 0.75 < r
-        maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > r
-        outerHFD = np.median(self.HFD[maskOuter])
-        self.innerHFD = np.median(self.HFD[maskInner])
-
-        centerSquareHFD = result[0][1][1]
-        offAxisDiff = outerHFD - centerSquareHFD
-        offAxisPercent = 100 * offAxisDiff / self.medianHFD
-        t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
-        self.ui.textSquareTiltOffAxis.setText(t)
-
-        centerTriangleHFD = self.innerHFD
-        offAxisDiff = outerHFD - centerTriangleHFD
+        offAxisDiff = self.outerHFD - self.innerHFD
         offAxisPercent = 100 * offAxisDiff / self.medianHFD
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textTriangleTiltOffAxis.setText(t)
+        self.ui.triangleMedianHDF.setText(f'{self.medianHFD:1.2f}')
+        self.ui.triangleNumberStars.setText(f'{len(self.HFD):1.0f}')
 
-        t = f'{self.medianHFD:1.2f}'
-        self.ui.triangleMedianHDF.setText(t)
-        self.ui.squareMedianHDF.setText(t)
-
-        self.ui.tabImage.setTabEnabled(2, True)
         self.ui.tabImage.setTabEnabled(3, True)
-        self.showTabTiltSquare()
-        self.showTabTiltTriangle()
         QApplication.processEvents()
         return True
 
@@ -707,8 +692,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         worker.signals.result.connect(self.showTabRoundness)
         self.threadPool.start(worker)
 
-        worker = Worker(self.workerShowTabTilt)
-        worker.signals.result.connect(self.showTabTilt)
+        worker = Worker(self.workerCalcTiltValuesSquare)
+        worker.signals.result.connect(self.showTabTiltSquare)
+        self.threadPool.start(worker)
+
+        worker = Worker(self.workerCalcTiltValuesTriangle)
+        worker.signals.result.connect(self.showTabTiltTriangle)
         self.threadPool.start(worker)
 
         self.showTabBackground()

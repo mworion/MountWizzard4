@@ -73,7 +73,7 @@ class Almanac:
         self.setColors()
         self.app.start1s.connect(self.searchTwilightList)
         self.app.start5s.connect(self.searchTwilightPlot)
-        self.app.update30m.connect(self.updateMoonPhase)
+        self.app.update1s.connect(self.updateMoonPhase)
         self.app.colorChange.connect(self.colorChangeAlmanac)
         self.ui.almanacDark.clicked.connect(self.updateMoonPhase)
 
@@ -292,10 +292,12 @@ class Almanac:
         colCover = QColor(self.M_BACK)
         colFree = QColor('transparent')
         colFrame = QColor(self.M_GREY1)
+        colRed = QColor(self.M_RED)
 
         penCov = QPen(colCover, 0)
         penFree = QPen(colFree, 0)
         penFrame = QPen(colFrame, 3)
+        penRed = QPen(colRed, 3)
 
         height = pixmap.height()
         width = pixmap.width()
@@ -311,29 +313,36 @@ class Almanac:
         maskPainter.setPen(penFrame)
 
         if 0 <= mpDegree <= 90:
+            # left half covered
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
+            # right half opens up
             r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colCover)
             maskPainter.setPen(penCov)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
+
         elif 90 < mpDegree <= 180:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            r = - np.cos(np.radians(mpDegree)) * w2
+            maskPainter.setCompositionMode(QPainter.CompositionMode_Clear)
+            r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
-            maskPainter.setPen(penFree)
+            maskPainter.setPen(colFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
+
         elif 180 < mpDegree <= 270:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, - 90 * 16, 180 * 16)
 
-            r = - np.cos(np.radians(mpDegree)) * w2
+            maskPainter.setCompositionMode(QPainter.CompositionMode_Clear)
+            r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
             maskPainter.setPen(penFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
+
         else:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
@@ -354,7 +363,6 @@ class Almanac:
         :return: true for test purpose
         """
         mpIllumination, mpDegree, mpPercent, mAngle = self.calcMoonPhase()
-
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.2f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')

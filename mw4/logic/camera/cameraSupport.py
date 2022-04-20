@@ -24,7 +24,6 @@ import numpy as np
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from base.transform import JNowToJ2000
 from mountcontrol.convert import formatDstrToText
 
 
@@ -110,6 +109,7 @@ class CameraSupport:
         hdu.header = self.writeHeaderInfo(hdu.header, obs, expTime,
                                           binning, focalLength)
         hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
+        sleepAndEvents(100)
         self.log.info(f'Saved Image: [{imagePath}]')
         return imagePath
 

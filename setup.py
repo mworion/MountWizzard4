@@ -21,6 +21,7 @@ import platform
 
 releaseNotes = """
 - fix: almanac moon phase drawing error
+- fix: ascom camera flush fits file fast enough
  """
 
 with open('notes.txt', 'w') as f:

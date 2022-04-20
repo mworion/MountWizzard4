@@ -20,8 +20,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- update: builtin data for finals200.all
-- fix: download iers data: fix file not found feedback
+- fix: almanac moon phase drawing error
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.1',
+    version='2.2.2',
     packages=[
         'mw4',
         'mw4.base',

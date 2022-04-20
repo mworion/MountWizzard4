@@ -1022,7 +1022,7 @@ class Model:
             return False
 
         if result['success']:
-            text = 'Solved :             '
+            text = 'Solved:              '
             text += f'RA: {convertToHMS(result["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
             text += f'DEC: {convertToDMS(result["decJ2000S"])} '

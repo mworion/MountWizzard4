@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -6113,8 +6113,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>225</x>
-        <y>135</y>
+        <x>85</x>
+        <y>130</y>
         <width>36</width>
         <height>21</height>
        </rect>
@@ -6161,8 +6161,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>105</y>
+        <x>5</x>
+        <y>100</y>
         <width>136</width>
         <height>21</height>
        </rect>
@@ -6194,7 +6194,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string/>
       </property>
       <property name="maxLength">
-       <number>20</number>
+       <number>-1</number>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6206,8 +6206,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_146">
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>135</y>
+        <x>5</x>
+        <y>130</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -6233,7 +6233,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="moonPic">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>150</x>
         <y>25</y>
         <width>128</width>
         <height>128</height>
@@ -6252,7 +6252,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>185</x>
+        <x>45</x>
         <y>80</y>
         <width>31</width>
         <height>21</height>
@@ -6297,7 +6297,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_155">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>80</x>
         <y>80</y>
         <width>16</width>
         <height>21</height>
@@ -6327,7 +6327,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>235</x>
+        <x>95</x>
         <y>80</y>
         <width>26</width>
         <height>21</height>
@@ -6372,7 +6372,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_161">
       <property name="geometry">
        <rect>
-        <x>265</x>
+        <x>125</x>
         <y>80</y>
         <width>16</width>
         <height>21</height>
@@ -6396,15 +6396,15 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lunarNodes">
+     <widget class="QLineEdit" name="lunarNode1">
       <property name="enabled">
        <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>5</x>
-        <y>180</y>
-        <width>276</width>
+        <x>55</x>
+        <y>160</y>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -6435,7 +6435,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string/>
       </property>
       <property name="maxLength">
-       <number>20</number>
+       <number>-1</number>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -6477,7 +6477,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>185</x>
+        <x>45</x>
         <y>25</y>
         <width>96</width>
         <height>21</height>
@@ -6510,7 +6510,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string/>
       </property>
       <property name="maxLength">
-       <number>8</number>
+       <number>-1</number>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6522,7 +6522,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_170">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>5</x>
         <y>25</y>
         <width>31</width>
         <height>21</height>
@@ -6549,8 +6549,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_171">
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>50</y>
+        <x>5</x>
+        <y>45</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -6579,8 +6579,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>185</x>
-        <y>50</y>
+        <x>45</x>
+        <y>45</y>
         <width>96</width>
         <height>21</height>
        </rect>
@@ -6612,7 +6612,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string/>
       </property>
       <property name="maxLength">
-       <number>8</number>
+       <number>-1</number>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6624,7 +6624,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_189">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>5</x>
         <y>80</y>
         <width>46</width>
         <height>21</height>
@@ -6651,8 +6651,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <widget class="QLabel" name="label_194">
       <property name="geometry">
        <rect>
-        <x>265</x>
-        <y>135</y>
+        <x>125</x>
+        <y>130</y>
         <width>16</width>
         <height>21</height>
        </rect>
@@ -6673,6 +6673,54 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </property>
       <property name="wordWrap">
        <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lunarNode2">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>55</x>
+        <y>180</y>
+        <width>226</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Shows the actual lunar node for your site.</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="maxLength">
+       <number>-1</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

@@ -190,6 +190,7 @@ class Almanac:
         """
         text = ''
         self.ui.twilightEvents.clear()
+        self.ui.twilightEvents.setTextColor(QColor(self.M_BLUE))
 
         for timeEvent, event in zip(timeEvents, events):
             text += f'{self.convertTime(timeEvent,"%H:%M:%S")} '
@@ -292,8 +293,8 @@ class Almanac:
         sunApparent = locObserver.observe(sun).apparent()
         moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
 
-        t0 = ts.tt_jd(int(timeJD.tt) + 0.5)
-        t1 = ts.tt_jd(int(timeJD.tt) + 2.5)
+        t0 = ts.tt_jd(int(timeJD.tt))
+        t1 = ts.tt_jd(int(timeJD.tt) + 1)
 
         f = almanac.risings_and_settings(ephemeris, ephemeris['moon'], loc)
         moonTime, moonEvents = almanac.find_discrete(t0, t1, f)
@@ -383,8 +384,8 @@ class Almanac:
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.1f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')
-        self.ui.moonRise.setText(self.convertTime(moonRise, '%H:%M:%S'))
-        self.ui.moonSet.setText(self.convertTime(moonSet, '%H:%M:%S'))
+        self.ui.moonRise.setText(self.convertTime(moonRise, '%d %b - %H:%M'))
+        self.ui.moonSet.setText(self.convertTime(moonSet, '%d %b - %H:%M'))
         title = 'Moon ' + self.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
 
@@ -416,6 +417,10 @@ class Almanac:
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 29)
         t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephemeris))
-        text = 'descending' if y[0] else 'ascending'
-        self.ui.lunarNodes.setText(f'{text}')
+        nodeText = 'descending' if y[0] else 'ascending'
+        timeText = self.convertTime(t[0], '%d %b - %H:%M')
+        self.ui.lunarNode1.setText(f'{timeText}  {nodeText}')
+        nodeText = 'descending' if y[1] else 'ascending'
+        timeText = self.convertTime(t[1], '%d %b - %H:%M')
+        self.ui.lunarNode2.setText(f'{timeText}  {nodeText}')
         return True

@@ -22,6 +22,8 @@ releaseNotes = """
 - add: all charts zoomable
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
+- add: almanac now supports UTC / local time
+- add: almanac support set/rise times moon
 - add: analyse: charts could show horizon and values for each point 
 - add: analyse: alt / az charts with iso error curves 
 - add: sound for connection lost and sat start tracking

@@ -215,17 +215,23 @@ def test_generateMoonMask_4(function):
 
 
 def test_updateMoonPhase_1(function):
+    ts = function.app.mount.obsSite.ts
+    tsNow = ts.now()
+    t = ts.tt_jd([tsNow.tt, tsNow.tt])
     with mock.patch.object(function,
                            'calcMoonPhase',
-                           return_value=(20, 45, .20, 0, 0, 0)):
+                           return_value=(20, 45, .20, 0, t, [0, 1])):
         suc = function.updateMoonPhase()
         assert suc
 
 
 def test_updateMoonPhase_2(function):
+    ts = function.app.mount.obsSite.ts
+    tsNow = ts.now()
+    t = ts.tt_jd([tsNow.tt, tsNow.tt])
     with mock.patch.object(function,
                            'calcMoonPhase',
-                           return_value=(45, 135, .45, 0, 0, 0)):
+                           return_value=(45, 135, .45, 0, t, [0, 1])):
         suc = function.updateMoonPhase()
         assert suc
 

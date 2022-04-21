@@ -118,6 +118,8 @@ class Almanac:
         self.ui.twilight.colorChange()
         self.searchTwilightPlot()
         self.updateMoonPhase()
+        self.searchTwilightList()
+        self.lunarNodes()
         return True
 
     def plotTwilightData(self, result):
@@ -271,16 +273,16 @@ class Almanac:
 
         :return: fraction of illumination, degree phase and percent phase
         """
-        sun = self.app.ephemeris['sun']
-        moon = self.app.ephemeris['moon']
-        earth = self.app.ephemeris['earth']
+        ephemeris = self.app.ephemeris
+        sun = ephemeris['sun']
+        moon = ephemeris['moon']
+        earth = ephemeris['earth']
         now = self.app.mount.obsSite.ts.now()
         loc = self.app.mount.obsSite.location
         ts = self.app.mount.obsSite.ts
         timeJD = self.app.mount.obsSite.timeJD
-        ephemeris = self.app.ephemeris
-
         e = earth.at(timeJD)
+
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
@@ -378,19 +380,19 @@ class Almanac:
         :return: true for test purpose
         """
         val = self.calcMoonPhase()
-        mpIllumination, mpDegree, mpPercent, moonAngle, moonTime, moonEvents = val
+        mpIllumination, mpDegree, mpPercent, moonAngle, moonTimes, moonEvents = val
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.1f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')
 
         text = ''
-        self.ui.riseSetEvents.clear()
-        self.ui.riseSetEvents.setTextColor(QColor(self.M_BLUE))
+        self.ui.riseSetEventsMoon.clear()
+        self.ui.riseSetEventsMoon.setTextColor(QColor(self.M_BLUE))
         moon = ['rise', 'set']
-        for timeEvent, event in zip(moonTime, moonEvents):
-            textTime = self.convertTime(timeEvent, '%d.%m. %H:%M')
-            text += f'{textTime} {moon[event]}'
-            self.ui.riseSetEvents.insertPlainText(text)
+        for moonTime, moonEvent in zip(moonTimes, moonEvents):
+            textTime = self.convertTime(moonTime, '%d.%m. %H:%M')
+            text += f'{textTime} {moon[moonEvent]}'
+            self.ui.riseSetEventsMoon.insertPlainText(text)
             text = '\n'
         title = 'Moon ' + self.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
@@ -419,10 +421,11 @@ class Almanac:
         """
         ts = self.app.mount.obsSite.ts
         timeJD = self.app.mount.obsSite.timeJD
+        ephemeris = self.app.ephemeris
 
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 29)
-        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephemeris))
+        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(ephemeris))
 
         text = ''
         self.ui.nodeEvents.clear()

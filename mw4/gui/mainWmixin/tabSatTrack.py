@@ -98,7 +98,7 @@ class SatTrack(object):
             self.installPath = self.app.automation.installPath
         else:
             self.installPath = self.app.mwGlob['dataDir']
-        self.ui.satTimeUTC.toggled.connect(self.showSatPasses)
+        self.ui.satunitTimeUTC.toggled.connect(self.showSatPasses)
         return True
 
     def storeConfig(self):

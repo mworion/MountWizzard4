@@ -822,7 +822,7 @@ def test_sleepAndEvents(function):
 def test_convertTime_1(function):
     ts = load.timescale()
     t = ts.tt(2000, 1, 1, 12, 0)
-    function.ui.satTimeUTC.setChecked(True)
+    function.ui.unitTimeUTC.setChecked(True)
     val = function.convertTime(t, '%H:%M')
     assert val
 
@@ -830,19 +830,19 @@ def test_convertTime_1(function):
 def test_convertTime_2(function):
     ts = load.timescale()
     t = ts.tt(2000, 1, 1, 12, 0)
-    function.ui.satTimeUTC.setChecked(False)
+    function.ui.unitTimeUTC.setChecked(False)
     val = function.convertTime(t, '%H:%M')
     assert val
 
 
 def test_timeZoneString_1(function):
-    function.ui.satTimeUTC.setChecked(True)
+    function.ui.unitTimeUTC.setChecked(True)
     val = function.timeZoneString()
     assert val == '(time is UTC)'
 
 
 def test_timeZoneString_2(function):
-    function.ui.satTimeUTC.setChecked(False)
+    function.ui.unitTimeUTC.setChecked(False)
     val = function.timeZoneString()
     assert val == '(time is local)'
 

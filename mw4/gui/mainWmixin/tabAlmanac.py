@@ -76,6 +76,8 @@ class Almanac:
         self.app.update1s.connect(self.updateMoonPhase)
         self.app.colorChange.connect(self.colorChangeAlmanac)
         self.ui.almanacDark.clicked.connect(self.updateMoonPhase)
+        self.ui.unitTimeUTC.toggled.connect(self.displayTwilightData)
+        self.ui.unitTimeUTC.toggled.connect(self.updateMoonPhase)
 
     def initConfig(self):
         """
@@ -126,6 +128,7 @@ class Almanac:
         ts, t, e = result
         xMin = int(t[0].tt) + 1
         xMax = int(t[-1].tt) - 1
+        xNow = (xMax - xMin) / 2 + xMin
 
         yTicks = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
         yLabels = ['', '14', '16', '18', '20', '22', '24',
@@ -135,6 +138,7 @@ class Almanac:
         xLabels[0] = ''
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(yTicks, yLabels)]
+        penLine = pg.mkPen(color=self.M_PINK1 + '80', width=2)
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
         plotItem.getViewBox().xRange = (0, 360)
@@ -173,7 +177,9 @@ class Almanac:
             rect.setPen(penBar[i])
             rect.setBrush(brushBar[i])
             plotItem.addItem(rect)
+        plotItem.addLine(x=xNow, pen=penLine)
 
+        self.changeStyleDynamic(self.ui.almanacGroup, 'running', False)
         return True
 
     def displayTwilightData(self, timeEvents, events):
@@ -186,10 +192,12 @@ class Almanac:
         self.ui.twilightEvents.clear()
 
         for timeEvent, event in zip(timeEvents, events):
-            text += f'{timeEvent.astimezone(tzlocal()).strftime("%H:%M:%S")} '
+            text += f'{self.convertTime(timeEvent,"%H:%M:%S")} '
             text += f'{almanac.TWILIGHTS[event]}'
             self.ui.twilightEvents.insertPlainText(text)
             text = '\n'
+        title = 'Sun ' + self.timeZoneString()
+        self.ui.sunAlmanacGroup.setTitle(title)
         return True
 
     def calcTwilightData(self, ts, location, tWinL=0, tWinH=0):
@@ -235,6 +243,7 @@ class Almanac:
         self.ui.almanacGroup.setTitle(f'Twilight passes for: {text}')
 
         ts = self.app.mount.obsSite.ts
+        self.changeStyleDynamic(self.ui.almanacGroup, 'running', True)
         worker = Worker(self.searchTwilightWorker, ts, location, timeWindow)
         worker.signals.result.connect(self.plotTwilightData)
         self.threadPool.start(worker)
@@ -265,23 +274,34 @@ class Almanac:
         moon = self.app.ephemeris['moon']
         earth = self.app.ephemeris['earth']
         now = self.app.mount.obsSite.ts.now()
-        loc = self.app.mount.obsSite.location + earth
+        loc = self.app.mount.obsSite.location
+        ts = self.app.mount.obsSite.ts
+        timeJD = self.app.mount.obsSite.timeJD
+        ephemeris = self.app.ephemeris
 
-        e = earth.at(self.app.mount.obsSite.timeJD)
+        e = earth.at(timeJD)
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
-        mpIllumination = almanac.fraction_illuminated(self.app.ephemeris,
-                                                      'moon', now)
+        mpIllumination = almanac.fraction_illuminated(ephemeris, 'moon', now)
         mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         mpPercent = mpDegree / 360
 
-        locObserver = loc.at(self.app.mount.obsSite.timeJD)
+        locObserver = (loc + earth).at(timeJD)
         moonApparent = locObserver.observe(moon).apparent()
         sunApparent = locObserver.observe(sun).apparent()
         moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
 
-        return mpIllumination, mpDegree, mpPercent, moonAngle
+        t0 = ts.tt_jd(int(timeJD.tt) + 0.5)
+        t1 = ts.tt_jd(int(timeJD.tt) + 2.5)
+
+        f = almanac.risings_and_settings(ephemeris, ephemeris['moon'], loc)
+        moonTime, moonEvents = almanac.find_discrete(t0, t1, f)
+
+        moonRise = moonTime[np.where(moonEvents == 1)[0][0]]
+        moonSet = moonTime[np.where(moonEvents == 0)[0][0]]
+
+        return mpIllumination, mpDegree, mpPercent, moonAngle, moonRise, moonSet
 
     def generateMoonMask(self, pixmap, mpDegree):
         """
@@ -292,12 +312,10 @@ class Almanac:
         colCover = QColor(self.M_BACK)
         colFree = QColor('transparent')
         colFrame = QColor(self.M_GREY1)
-        colRed = QColor(self.M_RED)
 
         penCov = QPen(colCover, 0)
         penFree = QPen(colFree, 0)
         penFrame = QPen(colFrame, 3)
-        penRed = QPen(colRed, 3)
 
         height = pixmap.height()
         width = pixmap.width()
@@ -313,11 +331,9 @@ class Almanac:
         maskPainter.setPen(penFrame)
 
         if 0 <= mpDegree <= 90:
-            # left half covered
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            # right half opens up
             r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colCover)
             maskPainter.setPen(penCov)
@@ -362,10 +378,15 @@ class Almanac:
 
         :return: true for test purpose
         """
-        mpIllumination, mpDegree, mpPercent, mAngle = self.calcMoonPhase()
-        self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.2f}')
+        val = self.calcMoonPhase()
+        mpIllumination, mpDegree, mpPercent, moonAngle, moonRise, moonSet = val
+        self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.1f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')
+        self.ui.moonRise.setText(self.convertTime(moonRise, '%H:%M:%S'))
+        self.ui.moonSet.setText(self.convertTime(moonSet, '%H:%M:%S'))
+        title = 'Moon ' + self.timeZoneString()
+        self.ui.moonAlmanacGroup.setTitle(title)
 
         for phase in self.phasesText:
             if int(mpPercent * 100) not in range(*self.phasesText[phase]['range']):

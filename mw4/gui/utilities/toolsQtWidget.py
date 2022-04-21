@@ -744,7 +744,7 @@ class MWidget(QWidget, Styles):
         """
         :return:
         """
-        isUTC = self.ui.satTimeUTC.isChecked()
+        isUTC = self.ui.unitTimeUTC.isChecked()
         if isUTC:
             return value.utc_strftime(fString)
         else:
@@ -754,7 +754,7 @@ class MWidget(QWidget, Styles):
         """
         :return:
         """
-        if self.ui.satTimeUTC.isChecked():
+        if self.ui.unitTimeUTC.isChecked():
             return '(time is UTC)'
         else:
             return '(time is local)'

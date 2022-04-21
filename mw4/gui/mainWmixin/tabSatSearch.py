@@ -120,7 +120,7 @@ class SatSearch(object):
 
         self.app.update1s.connect(self.satCalcDynamicTable)
         self.app.update10m.connect(self.updateSatTable)
-        self.ui.satTimeUTC.toggled.connect(self.satCalcTable)
+        self.ui.unitTimeUTC.toggled.connect(self.satCalcTable)
 
     def initConfig(self):
         """

@@ -40,16 +40,16 @@ class Almanac:
         'Waxing crescent': {
             'range': (1, 23),
         },
-        'First Quarter': {
+        'First quarter': {
             'range': (23, 27),
         },
-        'Waxing Gibbous': {
+        'Waxing gibbous': {
             'range': (27, 48),
         },
         'Full moon': {
             'range': (48, 52),
         },
-        'Waning Gibbous': {
+        'Waning gibbous': {
             'range': (52, 73),
         },
         'Third quarter': {
@@ -294,15 +294,13 @@ class Almanac:
         moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
 
         t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + 1)
+        t1 = ts.tt_jd(int(timeJD.tt) + 2)
 
         f = almanac.risings_and_settings(ephemeris, ephemeris['moon'], loc)
         moonTime, moonEvents = almanac.find_discrete(t0, t1, f)
-
-        moonRise = moonTime[np.where(moonEvents == 1)[0][0]]
-        moonSet = moonTime[np.where(moonEvents == 0)[0][0]]
-
-        return mpIllumination, mpDegree, mpPercent, moonAngle, moonRise, moonSet
+        moonTime = moonTime[0:3]
+        moonEvents = moonEvents[0:3]
+        return mpIllumination, mpDegree, mpPercent, moonAngle, moonTime, moonEvents
 
     def generateMoonMask(self, pixmap, mpDegree):
         """
@@ -380,12 +378,20 @@ class Almanac:
         :return: true for test purpose
         """
         val = self.calcMoonPhase()
-        mpIllumination, mpDegree, mpPercent, moonAngle, moonRise, moonSet = val
+        mpIllumination, mpDegree, mpPercent, moonAngle, moonTime, moonEvents = val
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.1f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')
-        self.ui.moonRise.setText(self.convertTime(moonRise, '%d %b - %H:%M'))
-        self.ui.moonSet.setText(self.convertTime(moonSet, '%d %b - %H:%M'))
+
+        text = ''
+        self.ui.riseSetEvents.clear()
+        self.ui.riseSetEvents.setTextColor(QColor(self.M_BLUE))
+        moon = ['rise', 'set']
+        for timeEvent, event in zip(moonTime, moonEvents):
+            textTime = self.convertTime(timeEvent, '%d.%m. %H:%M')
+            text += f'{textTime} {moon[event]}'
+            self.ui.riseSetEvents.insertPlainText(text)
+            text = '\n'
         title = 'Moon ' + self.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
 
@@ -417,10 +423,14 @@ class Almanac:
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 29)
         t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(self.app.ephemeris))
-        nodeText = 'descending' if y[0] else 'ascending'
-        timeText = self.convertTime(t[0], '%d %b - %H:%M')
-        self.ui.lunarNode1.setText(f'{timeText}  {nodeText}')
-        nodeText = 'descending' if y[1] else 'ascending'
-        timeText = self.convertTime(t[1], '%d %b - %H:%M')
-        self.ui.lunarNode2.setText(f'{timeText}  {nodeText}')
+
+        text = ''
+        self.ui.nodeEvents.clear()
+        self.ui.nodeEvents.setTextColor(QColor(self.M_BLUE))
+        node = ['ascending', 'descending']
+        for timeEvent, event in zip(t, y):
+            textTime = self.convertTime(timeEvent, '%d.%m. %H:%M')
+            text += f'{textTime} {node[event]}'
+            self.ui.nodeEvents.insertPlainText(text)
+            text = '\n'
         return True

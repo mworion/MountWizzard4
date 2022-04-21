@@ -76,7 +76,7 @@ class Almanac:
         self.app.update1s.connect(self.updateMoonPhase)
         self.app.colorChange.connect(self.colorChangeAlmanac)
         self.ui.almanacDark.clicked.connect(self.updateMoonPhase)
-        self.ui.unitTimeUTC.toggled.connect(self.displayTwilightData)
+        self.ui.unitTimeUTC.toggled.connect(self.searchTwilightList)
         self.ui.unitTimeUTC.toggled.connect(self.updateMoonPhase)
 
     def initConfig(self):

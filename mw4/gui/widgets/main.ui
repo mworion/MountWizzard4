@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -6120,7 +6120,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string/>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the actual moon phase in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -6324,6 +6324,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <height>56</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing next 3 rise / set events with time of moon&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
      </widget>
      <widget class="QTextBrowser" name="nodeEvents">
       <property name="geometry">
@@ -6333,6 +6336,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <width>236</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing next 2 node events with time of moon&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_170">
@@ -17538,7 +17544,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -26766,7 +26772,7 @@ Updater</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Minimum logging will be stored in log file.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches time units in satellite and almanac to UTC times&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>UTC</string>
@@ -26792,7 +26798,7 @@ Updater</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches time units in satellite and almanac to local times&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Local</string>

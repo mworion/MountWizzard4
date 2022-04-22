@@ -385,11 +385,7 @@ class Mount(object):
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Track',
                                'Value (1-30):',
-                               actValue,
-                               1,
-                               30,
-                               1,
-                               )
+                               actValue, 1, 30, 1)
 
         if not ok:
             return False
@@ -413,11 +409,7 @@ class Mount(object):
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Slew',
                                'Value (0-30):',
-                               actValue,
-                               0,
-                               30,
-                               1,
-                               )
+                               actValue, 0, 30, 1)
 
         if not ok:
             return False
@@ -441,11 +433,7 @@ class Mount(object):
         value, ok = dlg.getInt(self,
                                'Set Horizon Limit High',
                                'Value (0-90):',
-                               actValue,
-                               0,
-                               90,
-                               1,
-                               )
+                               actValue, 0, 90, 1)
 
         if not ok:
             return False
@@ -469,11 +457,7 @@ class Mount(object):
         value, ok = dlg.getInt(self,
                                'Set Horizon Limit Low',
                                'Value (-5 - 90):',
-                               actValue,
-                               -5,
-                               90,
-                               1,
-                               )
+                               actValue, -5, 90, 1,)
 
         if not ok:
             return False
@@ -499,11 +483,7 @@ class Mount(object):
         value, ok = dlg.getInt(self,
                                'Set Slew Rate',
                                f'Value ({minRate}-{maxRate}):',
-                               actValue,
-                               minRate,
-                               maxRate,
-                               1,
-                               )
+                               actValue, minRate, maxRate, 1)
 
         if not ok:
             return False
@@ -557,8 +537,7 @@ class Mount(object):
                                 'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
                                 'positive',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
-                                self.ui.siteLongitude.text(),
-                                )
+                                self.ui.siteLongitude.text())
         if not ok:
             return False
 
@@ -579,8 +558,7 @@ class Mount(object):
                                 'Set Site Latitude',
                                 'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
-                                self.ui.siteLatitude.text(),
-                                )
+                                self.ui.siteLatitude.text())
         if not ok:
             return False
 
@@ -601,10 +579,7 @@ class Mount(object):
                                   'Set Site Elevation',
                                   'Format: d.d',
                                   obs.location.elevation.m,
-                                  0,
-                                  8000,
-                                  1,
-                                  )
+                                  0, 8000, 1)
         if not ok:
             return False
 
@@ -624,9 +599,7 @@ class Mount(object):
                                 'Set Unattended Flip',
                                 'Value: On / Off',
                                 ['ON', 'OFF'],
-                                0,
-                                False,
-                                )
+                                0, False)
         if not ok:
             return False
         suc = sett.setUnattendedFlip(value == 'ON')
@@ -649,9 +622,7 @@ class Mount(object):
                                 'Set Dual Axis Tracking',
                                 'Value: On / Off',
                                 ['ON', 'OFF'],
-                                0,
-                                False,
-                                )
+                                0, False)
         if not ok:
             return False
 
@@ -675,9 +646,7 @@ class Mount(object):
                                 'Set Wake On Lan',
                                 'Value: On / Off',
                                 ['ON', 'OFF'],
-                                0,
-                                False,
-                                )
+                                0, False)
         if not ok:
             return False
 
@@ -701,9 +670,7 @@ class Mount(object):
                                 'Set Refraction Correction',
                                 'Value: On / Off',
                                 ['ON', 'OFF'],
-                                0,
-                                False,
-                                )
+                                0, False)
         if not ok:
             return False
 

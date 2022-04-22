@@ -675,10 +675,6 @@ class Styles:
             color: $M_GREY$;
             border-color: $M_GREY1$;
         }
-        QTabBar::tab:[invisible='true'] {
-            color: $M_GREY$;
-            border-color: $M_GREY1$;
-        }
         /* slider */
         QSlider
         {   background-color: $M_GREY1$;

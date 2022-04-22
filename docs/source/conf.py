@@ -49,7 +49,10 @@ master_doc = 'index'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autosectionlabel']
+extensions = ['rst2pdf.pdfbuilder', 'sphinx.ext.autosectionlabel']
+
+# drawio_binary_path = '/Applications/draw.io.app/Contents/MacOS/draw.io'
+# diagrams_exporter_path = './'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -58,7 +61,6 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -72,7 +74,7 @@ html_theme = 'alabaster'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-pdf_documents = [('index', u'handbook', u'MountWizzard4', u'mworion')]
+pdf_documents = [('index', u'MountWizzard4', u'MountWizzard4', u'mworion')]
 # index - master document
 # rst2pdf - name of the generated pdf
 # Sample rst2pdf doc - title of the pdf

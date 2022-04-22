@@ -198,7 +198,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with left mouse click and a ortho align star with right mouse click.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with mouse double click and chose the type of alignment.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Align</string>
@@ -258,6 +258,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the celestial circles in the view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Celestial paths </string>
           </property>
@@ -282,6 +285,9 @@
             <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the mount limits&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Mount limits </string>
@@ -308,6 +314,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the align stars in horizin view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Align stars </string>
           </property>
@@ -329,6 +338,9 @@
             <width>16777215</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show an additional polar diagram on right side in hemisphere view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Show Polar</string>
@@ -354,6 +366,9 @@
             <family>Arial</family>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the slew path of the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Slew path </string>
@@ -381,7 +396,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Enabling the edit mode for model build points.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the terrain image in background&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Terrain</string>
@@ -409,7 +424,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use horizon mask file in hemisphere window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use horizon mask in hemisphere window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Horizon mask </string>
@@ -440,7 +455,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Enabling the edit mode for model build points.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing the actual used mount model as reference.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Model Error</string>
@@ -677,6 +692,9 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adjusting the terrain image to view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="title">
           <string>Terrain Image</string>
          </property>
@@ -886,7 +904,7 @@
              </font>
             </property>
             <property name="toolTip">
-             <string>Switching the hemisphere window to normal working mode.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switching the horizon view to normal working mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Normal</string>
@@ -917,10 +935,10 @@
              </font>
             </property>
             <property name="toolTip">
-             <string>Enabling the edit mode for model build points.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enabling the edit mode for horizon mask.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>Edit Model</string>
+             <string>Edit Horizon</string>
             </property>
            </widget>
           </item>

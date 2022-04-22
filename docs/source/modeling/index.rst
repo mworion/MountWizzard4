@@ -26,7 +26,7 @@ for doing an alignment which is good for 20-30 min exposures and have round star
 MW4 has a straight forward approach for building models. The following chart shows
 each basic step.
 
-.. image:: image/workflow.drawio.svg
+.. drawio-image:: image/workflow.drawio
     :align: center
 
 

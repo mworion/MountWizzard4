@@ -56,7 +56,7 @@ Modeling automatics
 The automation process is explained by the next drawing. It is quite simple, but
 there are some important topic, which you should care about.
 
-.. image:: image/model_process.drawio.svg
+.. drawio-image:: image/model_process.drawio
     :align: center
 
 MW4 tries to do as much steps at the same time as possible to reach the minimum

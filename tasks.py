@@ -434,3 +434,11 @@ def test_macMonterey(c):
     scp = client['macMonterey']['scp']
     test_mac(c, user, work, scp)
     printMW('test Monterey install finished\n')
+
+
+@task(pre=[version_doc])
+def make_pdf(c):
+    printMW('Generate PDF for distro')
+    with c.cd('docs'):
+        runMW(c, 'make latexpdf')
+    printMW('Generation finished\n')

@@ -220,19 +220,12 @@ class MainWindow(
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
         self.ui.toolsTabWidget.setCurrentIndex(config.get('toolsTabWidget', 0))
         self.ui.satTabWidget.setCurrentIndex(config.get('satTabWidget', 0))
+
         if not packageConfig.isAnalyse:
-            tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Analyse')
-            tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
-            self.ui.toolsTabWidget.setTabVisible(tabIndex, False)
+            self.deviceStat['analyse'] = False
 
-        tabWidget = self.ui.mainTabWidget.findChild(QWidget, 'Power')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabVisible(tabIndex, False)
-
-        tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Relay')
-        tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
-        self.ui.toolsTabWidget.setTabVisible(tabIndex, False)
         self.mwSuper('initConfig')
+        self.smartTabGui()
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
         self.show()
@@ -590,6 +583,10 @@ class MainWindow(
             },
             'Relay': {
                 'statID': 'relay',
+                'tab': self.ui.toolsTabWidget,
+            },
+            'Analyse': {
+                'statID': 'analyse',
                 'tab': self.ui.toolsTabWidget,
             },
         }

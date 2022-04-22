@@ -41,11 +41,9 @@ class SimulatorTelescope:
 
     def create(self, rEntity, show, lat=0):
         """
-
-        dict {'name of model': {'parent': }}
-
         :param rEntity: root of the 3D models
         :param show: root of the 3D models
+        :param lat: root of the 3D models
         :return:
         """
 

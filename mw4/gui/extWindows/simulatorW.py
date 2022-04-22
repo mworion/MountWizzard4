@@ -181,7 +181,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
-        self.app.switchHemisphere.connect(self.createScene)
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.colorChange.connect(self.colorChange)
         self.show()
@@ -361,7 +360,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         for name in self.world:
             tools.linkModel(self.world, name, rEntity)
 
-    def createScene(self, lat=0):
+    def createScene(self):
         """
         createScene initially builds all 3d models and collects them to a scene.
         please look closely which references are used-
@@ -389,6 +388,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             self.ui.checkShowPointer.setEnabled(False)
             self.ui.checkShowPointer.setChecked(False)
 
+        lat = self.app.mount.obsSite.location.latitude.degrees
         self.createWorld(self.rootEntity)
         self.telescope.create(self.world['ref']['e'], True, lat)
         self.dome.create(self.world['ref']['e'], dome, isDomeTransparent)

@@ -254,7 +254,6 @@ class App(QObject):
     sendSatelliteData = pyqtSignal()
     colorChange = pyqtSignal()
     hostChanged = pyqtSignal()
-    switchHemisphere = pyqtSignal(object)
     showAnalyse = pyqtSignal(object)
     showImage = pyqtSignal(object)
     messageQueue = Queue()

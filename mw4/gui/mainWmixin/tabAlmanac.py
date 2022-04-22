@@ -71,13 +71,13 @@ class Almanac:
         self.twilightEvents = None
         self.colors = None
         self.setColors()
-        self.app.start1s.connect(self.searchTwilightList)
-        self.app.start5s.connect(self.searchTwilightPlot)
-        self.app.update1s.connect(self.updateMoonPhase)
+        self.app.start1s.connect(self.showTwilightDataList)
+        self.app.start5s.connect(self.showTwilightDataPlot)
+        self.app.update1s.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.colorChangeAlmanac)
-        self.ui.almanacDark.clicked.connect(self.updateMoonPhase)
-        self.ui.unitTimeUTC.toggled.connect(self.searchTwilightList)
-        self.ui.unitTimeUTC.toggled.connect(self.updateMoonPhase)
+        self.ui.almanacDark.clicked.connect(self.showMoonPhase)
+        self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataList)
+        self.ui.unitTimeUTC.toggled.connect(self.showMoonPhase)
 
     def initConfig(self):
         """
@@ -85,9 +85,8 @@ class Almanac:
         """
         config = self.app.config['mainW']
         self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
-        self.ui.almanacPrediction.currentIndexChanged.connect(self.searchTwilightPlot)
-        self.updateMoonPhase()
-        self.lunarNodes()
+        self.ui.almanacPrediction.currentIndexChanged.connect(self.showTwilightDataPlot)
+        self.showMoonPhase()
         return True
 
     def storeConfig(self):
@@ -116,10 +115,9 @@ class Almanac:
         """
         self.setColors()
         self.ui.twilight.colorChange()
-        self.searchTwilightPlot()
-        self.updateMoonPhase()
-        self.searchTwilightList()
-        self.lunarNodes()
+        self.showTwilightDataPlot()
+        self.showMoonPhase()
+        self.showTwilightDataList()
         return True
 
     def plotTwilightData(self, result):
@@ -140,7 +138,7 @@ class Almanac:
         xLabels[0] = ''
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(yTicks, yLabels)]
-        penLine = pg.mkPen(color=self.M_PINK1 + '80', width=2)
+        penLine = pg.mkPen(color=self.M_PINK + '80', width=2)
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox().RectMode)
         plotItem.getViewBox().xRange = (0, 360)
@@ -184,7 +182,7 @@ class Almanac:
         self.changeStyleDynamic(self.ui.almanacGroup, 'running', False)
         return True
 
-    def displayTwilightData(self, timeEvents, events):
+    def listTwilightData(self, timeEvents, events):
         """
         :param timeEvents:
         :param events:
@@ -219,7 +217,7 @@ class Almanac:
         twilightTime, twilightEvents = almanac.find_discrete(t0, t1, f)
         return twilightTime, twilightEvents
 
-    def searchTwilightWorker(self, ts, location, timeWindow):
+    def workerCalcTwilightDataPlot(self, ts, location, timeWindow):
         """
         :param ts:
         :param location:
@@ -231,7 +229,7 @@ class Almanac:
                                      tWinH=timeWindow)
         return ts, t, e
 
-    def searchTwilightPlot(self):
+    def showTwilightDataPlot(self):
         """
         :return: true for test purpose
         """
@@ -247,12 +245,12 @@ class Almanac:
 
         ts = self.app.mount.obsSite.ts
         self.changeStyleDynamic(self.ui.almanacGroup, 'running', True)
-        worker = Worker(self.searchTwilightWorker, ts, location, timeWindow)
+        worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
         worker.signals.result.connect(self.plotTwilightData)
         self.threadPool.start(worker)
         return True
 
-    def searchTwilightList(self):
+    def showTwilightDataList(self):
         """
         :return: true for test purpose
         """
@@ -263,7 +261,7 @@ class Almanac:
         ts = self.app.mount.obsSite.ts
         result = self.calcTwilightData(ts, location, tWinL=0, tWinH=1)
         self.twilightTime, self.twilightEvents = result
-        self.displayTwilightData(self.twilightTime[:8], self.twilightEvents[:8])
+        self.listTwilightData(self.twilightTime[:8], self.twilightEvents[:8])
         return True
 
     def calcMoonPhase(self):
@@ -283,26 +281,43 @@ class Almanac:
         timeJD = self.app.mount.obsSite.timeJD
         e = earth.at(timeJD)
 
+        # calc phases for obstruction
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
         mpIllumination = almanac.fraction_illuminated(ephemeris, 'moon', now)
         mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         mpPercent = mpDegree / 360
+        retVal = [mpIllumination, mpDegree, mpPercent]
 
         locObserver = (loc + earth).at(timeJD)
         moonApparent = locObserver.observe(moon).apparent()
         sunApparent = locObserver.observe(sun).apparent()
         moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
+        retVal.append(moonAngle)
 
+        # calc rise and set times
         t0 = ts.tt_jd(int(timeJD.tt))
         t1 = ts.tt_jd(int(timeJD.tt) + 2)
 
         f = almanac.risings_and_settings(ephemeris, ephemeris['moon'], loc)
-        moonTime, moonEvents = almanac.find_discrete(t0, t1, f)
-        moonTime = moonTime[0:3]
+        moonTimes, moonEvents = almanac.find_discrete(t0, t1, f)
+        moonTimes = moonTimes[0:3]
         moonEvents = moonEvents[0:3]
-        return mpIllumination, mpDegree, mpPercent, moonAngle, moonTime, moonEvents
+        retVal.append(moonTimes)
+        retVal.append(moonEvents)
+
+        # calc nodes
+        t0 = ts.tt_jd(int(timeJD.tt))
+        t1 = ts.tt_jd(int(timeJD.tt) + 29)
+        f = almanac.moon_nodes(ephemeris)
+        nodeTimes, nodeEvents = almanac.find_discrete(t0, t1, f)
+        nodeTimes = nodeTimes[0:2]
+        nodeEvents = nodeEvents[0:2]
+        retVal.append(nodeTimes)
+        retVal.append(nodeEvents)
+
+        return retVal
 
     def generateMoonMask(self, pixmap, mpDegree):
         """
@@ -372,19 +387,21 @@ class Almanac:
         maskPainter.end()
         return moonMask
 
-    def updateMoonPhase(self):
+    def showMoonPhase(self):
         """
-        It will also write some description for the moon phase. In addition I
+        It will also write some description for the moon phase. In addition, I
         will show an image of the moon showing the moon phase as picture.
 
         :return: true for test purpose
         """
-        val = self.calcMoonPhase()
-        mpIllumination, mpDegree, mpPercent, moonAngle, moonTimes, moonEvents = val
+        calcMoon = self.calcMoonPhase()
+
+        mpIllumination, mpDegree, mpPercent, moonAngle = calcMoon[0:4]
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.1f}')
         self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')
 
+        moonTimes, moonEvents = calcMoon[4:6]
         text = ''
         self.ui.riseSetEventsMoon.clear()
         self.ui.riseSetEventsMoon.setTextColor(QColor(self.M_BLUE))
@@ -402,6 +419,17 @@ class Almanac:
                 continue
             self.ui.moonPhaseText.setText(phase)
 
+        nodeTimes, nodeEvents = calcMoon[6:8]
+        text = ''
+        self.ui.nodeEvents.clear()
+        self.ui.nodeEvents.setTextColor(QColor(self.M_BLUE))
+        node = ['ascending', 'descending']
+        for nodeTime, nodeEvent in zip(nodeTimes, nodeEvents):
+            textTime = self.convertTime(nodeTime, '%d.%m. %H:%M')
+            text += f'{textTime} {node[nodeEvent]}'
+            self.ui.nodeEvents.insertPlainText(text)
+            text = '\n'
+
         moon = QPixmap(':/pics/moon.png')
         moonMask = self.generateMoonMask(moon, mpDegree)
 
@@ -413,27 +441,4 @@ class Almanac:
         width = self.ui.moonPic.width()
         height = self.ui.moonPic.height()
         self.ui.moonPic.setPixmap(moon.scaled(width, height))
-        return True
-
-    def lunarNodes(self):
-        """
-        :return: true for test purpose
-        """
-        ts = self.app.mount.obsSite.ts
-        timeJD = self.app.mount.obsSite.timeJD
-        ephemeris = self.app.ephemeris
-
-        t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + 29)
-        t, y = almanac.find_discrete(t0, t1, almanac.moon_nodes(ephemeris))
-
-        text = ''
-        self.ui.nodeEvents.clear()
-        self.ui.nodeEvents.setTextColor(QColor(self.M_BLUE))
-        node = ['ascending', 'descending']
-        for timeEvent, event in zip(t, y):
-            textTime = self.convertTime(timeEvent, '%d.%m. %H:%M')
-            text += f'{textTime} {node[event]}'
-            self.ui.nodeEvents.insertPlainText(text)
-            text = '\n'
         return True

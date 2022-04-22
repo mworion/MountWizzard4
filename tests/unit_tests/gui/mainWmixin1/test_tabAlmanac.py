@@ -55,17 +55,15 @@ def function(module):
 
 def test_initConfig_1(function):
     with mock.patch.object(function,
-                           'updateMoonPhase'):
+                           'showMoonPhase'):
         with mock.patch.object(function,
-                               'searchTwilightPlot'):
+                               'showTwilightDataPlot'):
             with mock.patch.object(function,
-                                   'searchTwilightList'):
+                                   'showTwilightDataList'):
                 with mock.patch.object(function,
-                                       'displayTwilightData'):
-                    with mock.patch.object(function,
-                                           'lunarNodes'):
-                        suc = function.initConfig()
-                        assert suc
+                                       'listTwilightData'):
+                    suc = function.initConfig()
+                    assert suc
 
 
 def test_storeConfig_1(function):
@@ -89,7 +87,7 @@ def test_setColors(function):
 
 def test_colorChangeAlmanac(function):
     with mock.patch.object(function,
-                           'searchTwilightPlot'):
+                           'showTwilightDataPlot'):
         suc = function.colorChangeAlmanac()
         assert suc
 
@@ -136,7 +134,7 @@ def test_searchTwilightWorker_1(function):
     with mock.patch.object(function,
                            'calcTwilightData',
                            return_value=(t, e)):
-        suc = function.searchTwilightWorker(ts, location, timeWindow=0)
+        suc = function.workerCalcTwilightDataPlot(ts, location, timeWindow=0)
         assert suc
 
 
@@ -144,7 +142,7 @@ def test_searchTwilightPlot_1(function):
     function.app.mount.obsSite.location = None
     with mock.patch.object(threading.Thread,
                            'start'):
-        suc = function.searchTwilightPlot()
+        suc = function.showTwilightDataPlot()
         assert not suc
 
 
@@ -154,7 +152,7 @@ def test_searchTwilightPLot_2(function):
                                                        elevation_m=0)
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.searchTwilightPlot()
+        suc = function.showTwilightDataPlot()
         assert suc
 
 
@@ -162,7 +160,7 @@ def test_searchTwilightList_1(function):
     function.app.mount.obsSite.location = None
     with mock.patch.object(threading.Thread,
                            'start'):
-        suc = function.searchTwilightList()
+        suc = function.showTwilightDataList()
         assert not suc
 
 
@@ -171,8 +169,8 @@ def test_searchTwilightList_2(function):
                                                        longitude_degrees=0,
                                                        elevation_m=0)
     with mock.patch.object(function,
-                           'displayTwilightData'):
-        suc = function.searchTwilightList()
+                           'listTwilightData'):
+        suc = function.showTwilightDataList()
         assert suc
 
 
@@ -180,18 +178,13 @@ def test_displayTwilightData_1(function):
     tsNow = function.app.mount.obsSite.ts.now()
     t = [tsNow, tsNow]
     e = [1, 1]
-    suc = function.displayTwilightData(t, e)
+    suc = function.listTwilightData(t, e)
     assert suc
 
 
 def test_calcMoonPhase_1(function):
-    a, b, c, d, e, f = function.calcMoonPhase()
-    assert a is not None
-    assert b is not None
-    assert c is not None
-    assert d is not None
-    assert e is not None
-    assert f is not None
+    val = function.calcMoonPhase()
+    assert len(val) == 8
 
 
 def test_generateMoonMask_1(function):
@@ -218,10 +211,11 @@ def test_updateMoonPhase_1(function):
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
+    val = (20, 45, .20, 0, t, [0, 1], t, [0, 1])
     with mock.patch.object(function,
                            'calcMoonPhase',
-                           return_value=(20, 45, .20, 0, t, [0, 1])):
-        suc = function.updateMoonPhase()
+                           return_value=val):
+        suc = function.showMoonPhase()
         assert suc
 
 
@@ -229,13 +223,9 @@ def test_updateMoonPhase_2(function):
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
+    val = (20, 45, .20, 0, t, [0, 1], t, [0, 1])
     with mock.patch.object(function,
                            'calcMoonPhase',
-                           return_value=(45, 135, .45, 0, t, [0, 1])):
-        suc = function.updateMoonPhase()
+                           return_value=val):
+        suc = function.showMoonPhase()
         assert suc
-
-
-def test_lunarNodes_1(function):
-    suc = function.lunarNodes()
-    assert suc

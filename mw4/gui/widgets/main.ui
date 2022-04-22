@@ -7339,7 +7339,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QRadioButton" name="checkSortHL">
+     <widget class="QRadioButton" name="sortHL">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -7362,7 +7362,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>High/Low ALT</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="checkSortEW">
+     <widget class="QRadioButton" name="sortEW">
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -7385,7 +7385,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>East/West AZ</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="checkSortNothing">
+     <widget class="QRadioButton" name="sortNothing">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -7411,7 +7411,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkAvoidFlip">
+     <widget class="QCheckBox" name="avoidFlip">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -7434,7 +7434,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Avoid meridian flip at start</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkAutoDeleteMeridian">
+     <widget class="QCheckBox" name="autoDeleteMeridian">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -7505,7 +7505,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkAutoDeleteHorizon">
+     <widget class="QCheckBox" name="autoDeleteHorizon">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -7531,7 +7531,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkSafetyMarginHorizon">
+     <widget class="QCheckBox" name="useSafetyMargin">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -7554,7 +7554,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <string>Add safety distance to horizon line with</string>
       </property>
      </widget>
-     <widget class="QDoubleSpinBox" name="safetyMarginHorizon">
+     <widget class="QDoubleSpinBox" name="safetyMarginValue">
       <property name="geometry">
        <rect>
         <x>290</x>
@@ -29046,19 +29046,19 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>installVersion</tabstop>
   <tabstop>genBuildMax</tabstop>
   <tabstop>genBuildAlign6</tabstop>
-  <tabstop>checkSortNothing</tabstop>
-  <tabstop>checkSortEW</tabstop>
+  <tabstop>sortNothing</tabstop>
+  <tabstop>sortEW</tabstop>
   <tabstop>settingsTabWidget</tabstop>
   <tabstop>genBuildDSO</tabstop>
   <tabstop>genBuildSpiralNorm</tabstop>
   <tabstop>genBuildMin</tabstop>
   <tabstop>genBuildNorm</tabstop>
   <tabstop>genBuildMed</tabstop>
-  <tabstop>checkSortHL</tabstop>
+  <tabstop>sortHL</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>
   <tabstop>buildPFileName</tabstop>
   <tabstop>setRefractionManual</tabstop>
-  <tabstop>checkAvoidFlip</tabstop>
+  <tabstop>avoidFlip</tabstop>
   <tabstop>checkRefracCont</tabstop>
   <tabstop>genBuildFile</tabstop>
   <tabstop>genBuildAlign9</tabstop>
@@ -29177,7 +29177,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>refreshModel</tabstop>
   <tabstop>runOptimize</tabstop>
   <tabstop>timeDeltaPC2Mount</tabstop>
-  <tabstop>checkAutoDeleteMeridian</tabstop>
+  <tabstop>autoDeleteMeridian</tabstop>
   <tabstop>retriesReverse</tabstop>
   <tabstop>normalTiming</tabstop>
   <tabstop>conservativeTiming</tabstop>

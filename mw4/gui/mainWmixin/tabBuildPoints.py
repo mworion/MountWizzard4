@@ -75,13 +75,13 @@ class BuildPoints:
         self.ui.genBuildSpiralNorm.clicked.connect(self.genBuildSpiralNorm)
         self.ui.genBuildSpiralMin.clicked.connect(self.genBuildSpiralMin)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
-        self.ui.checkSortNothing.clicked.connect(self.rebuildPoints)
-        self.ui.checkSortEW.clicked.connect(self.rebuildPoints)
-        self.ui.checkSortHL.clicked.connect(self.rebuildPoints)
+        self.ui.sortNothing.clicked.connect(self.rebuildPoints)
+        self.ui.sortEW.clicked.connect(self.rebuildPoints)
+        self.ui.sortHL.clicked.connect(self.rebuildPoints)
         self.ui.ditherBuildPoints.clicked.connect(self.rebuildPoints)
-        self.ui.checkAvoidFlip.clicked.connect(self.rebuildPoints)
-        self.ui.checkAutoDeleteMeridian.clicked.connect(self.rebuildPoints)
-        self.ui.checkAutoDeleteHorizon.clicked.connect(self.rebuildPoints)
+        self.ui.avoidFlip.clicked.connect(self.rebuildPoints)
+        self.ui.autoDeleteMeridian.clicked.connect(self.rebuildPoints)
+        self.ui.autoDeleteHorizon.clicked.connect(self.rebuildPoints)
         self.app.buildPointsChanged.connect(self.buildPointsChanged)
         self.ui.generateQuery.editingFinished.connect(self.querySimbad)
         self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
@@ -105,16 +105,15 @@ class BuildPoints:
         self.ui.altitudeMax.setValue(config.get('altitudeMax', 75))
         self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 15))
 
-        self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
-        self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', True))
-        self.ui.checkSafetyMarginHorizon.setChecked(config.get('checkSafetyMarginHorizon',
-                                                               False))
-        self.ui.safetyMarginHorizon.setValue(config.get('safetyMarginHorizon', 0))
-        self.ui.checkAvoidFlip.setChecked(config.get('checkAvoidFlip', False))
-        self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
-        self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
+        self.ui.autoDeleteMeridian.setChecked(config.get('autoDeleteMeridian', False))
+        self.ui.autoDeleteHorizon.setChecked(config.get('autoDeleteHorizon', True))
+        self.ui.useSafetyMargin.setChecked(config.get('useSafetyMargin', False))
+        self.ui.safetyMarginValue.setValue(config.get('safetyMarginValue', 0))
+        self.ui.avoidFlip.setChecked(config.get('avoidFlip', False))
+        self.ui.sortNothing.setChecked(config.get('sortNothing', True))
+        self.ui.sortEW.setChecked(config.get('sortEW', False))
         self.ui.useDomeAz.setChecked(config.get('useDomeAz', False))
-        self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
+        self.ui.sortHL.setChecked(config.get('sortHL', False))
         self.ui.keepGeneratedPoints.setChecked(config.get('keepGeneratedPoints', False))
         self.ui.ditherBuildPoints.setChecked(config.get('ditherBuildPoints', False))
 
@@ -137,15 +136,15 @@ class BuildPoints:
         config['altitudeMin'] = self.ui.altitudeMin.value()
         config['altitudeMax'] = self.ui.altitudeMax.value()
         config['numberDSOPoints'] = self.ui.numberDSOPoints.value()
-        config['checkAutoDeleteMeridian'] = self.ui.checkAutoDeleteMeridian.isChecked()
-        config['checkAutoDeleteHorizon'] = self.ui.checkAutoDeleteHorizon.isChecked()
-        config['checkSafetyMarginHorizon'] = self.ui.checkSafetyMarginHorizon.isChecked()
-        config['safetyMarginHorizon'] = self.ui.safetyMarginHorizon.value()
-        config['checkAvoidFlip'] = self.ui.checkAvoidFlip.isChecked()
-        config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
-        config['checkSortEW'] = self.ui.checkSortEW.isChecked()
+        config['autoDeleteMeridian'] = self.ui.autoDeleteMeridian.isChecked()
+        config['autoDeleteHorizon'] = self.ui.autoDeleteHorizon.isChecked()
+        config['useSafetyMargin'] = self.ui.useSafetyMargin.isChecked()
+        config['safetyMarginValue'] = self.ui.safetyMarginValue.value()
+        config['avoidFlip'] = self.ui.avoidFlip.isChecked()
+        config['sortNothing'] = self.ui.sortNothing.isChecked()
+        config['sortEW'] = self.ui.sortEW.isChecked()
         config['useDomeAz'] = self.ui.useDomeAz.isChecked()
-        config['checkSortHL'] = self.ui.checkSortHL.isChecked()
+        config['sortHL'] = self.ui.sortHL.isChecked()
         config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
         config['ditherBuildPoints'] = self.ui.ditherBuildPoints.isChecked()
 
@@ -582,12 +581,12 @@ class BuildPoints:
 
         :return: True for test purpose
         """
-        if self.ui.checkAutoDeleteHorizon.isChecked():
+        if self.ui.autoDeleteHorizon.isChecked():
             self.app.data.deleteBelowHorizon()
-        if self.ui.checkAutoDeleteMeridian.isChecked():
+        if self.ui.autoDeleteMeridian.isChecked():
             self.app.data.deleteCloseMeridian()
-        if self.ui.checkSafetyMarginHorizon.isChecked():
-            value = self.ui.safetyMarginHorizon.value()
+        if self.ui.safetyMarginHorizon.isChecked():
+            value = self.ui.safetyMarginValueHorizon.value()
             self.app.data.deleteCloseHorizonLine(value)
         return True
 
@@ -667,12 +666,12 @@ class BuildPoints:
 
         :return: success if sorted
         """
-        eastwest = self.ui.checkSortEW.isChecked()
-        highlow = self.ui.checkSortHL.isChecked()
-        avoidFlip = self.ui.checkAvoidFlip.isChecked()
+        eastwest = self.ui.sortEW.isChecked()
+        highlow = self.ui.sortHL.isChecked()
+        avoidFlip = self.ui.avoidFlip.isChecked()
         useDomeAz = self.ui.useDomeAz.isChecked()
         enableDomeAz = self.ui.useDomeAz.isEnabled()
-        noSort = self.ui.checkSortNothing.isChecked()
+        noSort = self.ui.sortNothing.isChecked()
         pierside = self.app.mount.obsSite.pierside
 
         if not avoidFlip:

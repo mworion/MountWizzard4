@@ -181,7 +181,7 @@ def test_genBuildAlign12_2(function):
 
 
 def test_genBuildMax_1(function):
-    function.ui.checkAutoDeleteHorizon.setChecked(False)
+    function.ui.autoDeleteHorizon.setChecked(False)
     suc = function.genBuildMax()
     assert not suc
 
@@ -254,7 +254,7 @@ def test_genBuildNorm_3(function):
 
 
 def test_genBuildMin_1(function, qtbot):
-    function.ui.checkAutoDeleteHorizon.setChecked(True)
+    function.ui.autoDeleteHorizon.setChecked(True)
     with qtbot.waitSignal(function.app.message) as blocker:
         suc = function.genBuildMin()
         assert not suc
@@ -262,7 +262,7 @@ def test_genBuildMin_1(function, qtbot):
 
 
 def test_genBuildMin_1b(function, qtbot):
-    function.ui.checkAutoDeleteHorizon.setChecked(False)
+    function.ui.autoDeleteHorizon.setChecked(False)
     with qtbot.waitSignal(function.app.message) as blocker:
         suc = function.genBuildMin()
         assert not suc
@@ -547,7 +547,7 @@ def test_saveBuildFileAs_3(function, qtbot):
 
 def test_genBuildFile_1(function, qtbot):
     function.ui.buildPFileName.setText('')
-    function.ui.checkAutoDeleteHorizon.setChecked(True)
+    function.ui.autoDeleteHorizon.setChecked(True)
     with qtbot.waitSignal(function.app.message) as blocker:
         suc = function.genBuildFile()
         assert not suc
@@ -556,7 +556,7 @@ def test_genBuildFile_1(function, qtbot):
 
 def test_genBuildFile_2(function, qtbot):
     function.ui.buildPFileName.setText('test')
-    function.ui.checkAutoDeleteHorizon.setChecked(True)
+    function.ui.autoDeleteHorizon.setChecked(True)
     with mock.patch.object(function.app.data,
                            'loadBuildP',
                            return_value=False):
@@ -568,7 +568,7 @@ def test_genBuildFile_2(function, qtbot):
 
 def test_genBuildFile_3(function):
     function.ui.buildPFileName.setText('test')
-    function.ui.checkAutoDeleteHorizon.setChecked(True)
+    function.ui.autoDeleteHorizon.setChecked(True)
     with mock.patch.object(function.app.data,
                            'loadBuildP',
                            return_value=True):
@@ -578,7 +578,7 @@ def test_genBuildFile_3(function):
 
 def test_genBuildFile_4(function):
     function.ui.buildPFileName.setText('test')
-    function.ui.checkAutoDeleteHorizon.setChecked(False)
+    function.ui.autoDeleteHorizon.setChecked(False)
     with mock.patch.object(function.app.data,
                            'loadBuildP',
                            return_value=True):
@@ -603,9 +603,9 @@ def test_clearBuildP_2(function):
 
 
 def test_autoDeletePoints(function):
-    function.ui.checkAutoDeleteHorizon.setChecked(True)
-    function.ui.checkAutoDeleteMeridian.setChecked(True)
-    function.ui.checkSafetyMarginHorizon.setChecked(True)
+    function.ui.autoDeleteHorizon.setChecked(True)
+    function.ui.autoDeleteMeridian.setChecked(True)
+    function.ui.useSafetyMargin.setChecked(True)
     suc = function.autoDeletePoints()
     assert suc
 
@@ -659,9 +659,9 @@ def test_sortMountAz(function):
 
 
 def test_autoSortPoints_1(function):
-    function.ui.checkSortEW.setChecked(False)
-    function.ui.checkSortHL.setChecked(False)
-    function.ui.checkAvoidFlip.setChecked(False)
+    function.ui.sortEW.setChecked(False)
+    function.ui.sortHL.setChecked(False)
+    function.ui.avoidFlip.setChecked(False)
     function.ui.useDomeAz.setChecked(False)
     function.ui.useDomeAz.setEnabled(False)
     suc = function.autoSortPoints()
@@ -669,9 +669,9 @@ def test_autoSortPoints_1(function):
 
 
 def test_autoSortPoints_2(function):
-    function.ui.checkSortEW.setChecked(True)
-    function.ui.checkSortHL.setChecked(False)
-    function.ui.checkAvoidFlip.setChecked(False)
+    function.ui.sortEW.setChecked(True)
+    function.ui.sortHL.setChecked(False)
+    function.ui.avoidFlip.setChecked(False)
     function.ui.useDomeAz.setChecked(True)
     function.ui.useDomeAz.setEnabled(True)
     with mock.patch.object(function,
@@ -681,9 +681,9 @@ def test_autoSortPoints_2(function):
 
 
 def test_autoSortPoints_3(function):
-    function.ui.checkSortEW.setChecked(False)
-    function.ui.checkSortHL.setChecked(False)
-    function.ui.checkAvoidFlip.setChecked(True)
+    function.ui.sortEW.setChecked(False)
+    function.ui.sortHL.setChecked(False)
+    function.ui.avoidFlip.setChecked(True)
     function.ui.useDomeAz.setChecked(False)
     function.ui.useDomeAz.setEnabled(False)
     with mock.patch.object(function,

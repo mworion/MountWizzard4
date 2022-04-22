@@ -673,6 +673,12 @@
      </item>
      <item row="1" column="2" rowspan="3">
       <widget class="QTabWidget" name="tabImage">
+       <property name="minimumSize">
+        <size>
+         <width>140</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -898,7 +904,7 @@
             <widget class="QLineEdit" name="textSquareTiltOffAxis">
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>140</width>
                <height>0</height>
               </size>
              </property>
@@ -908,7 +914,7 @@
             <widget class="QLineEdit" name="textSquareTiltHFD">
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>140</width>
                <height>0</height>
               </size>
              </property>
@@ -1021,16 +1027,6 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="textTriangleTiltHFD">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_21">
              <property name="minimumSize">
@@ -1070,16 +1066,6 @@
              </property>
              <property name="text">
               <string>Off-Axis aberration [HFD]</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="textTriangleTiltOffAxis">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
              </property>
             </widget>
            </item>
@@ -1150,6 +1136,26 @@
               <size>
                <width>60</width>
                <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="textTriangleTiltOffAxis">
+             <property name="minimumSize">
+              <size>
+               <width>140</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="textTriangleTiltHFD">
+             <property name="minimumSize">
+              <size>
+               <width>140</width>
+               <height>0</height>
               </size>
              </property>
             </widget>

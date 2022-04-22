@@ -51,6 +51,13 @@ class ImageWindow(toolsQtWidget.MWidget):
     """
     __all__ = ['ImageWindow']
 
+    TILT = {'none': 5,
+            'almost none': 10,
+            'mild': 15,
+            'moderate': 20,
+            'severe': 30,
+            'extreme': 1000}
+
     def __init__(self, app):
         super().__init__()
 
@@ -490,7 +497,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         tiltDiff = worst - best
         tiltPercent = 100 * tiltDiff / self.medianHFD
 
-        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
+        for tiltHint in self.TILT:
+            if tiltPercent < self.TILT[tiltHint]:
+                break
+        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
         self.ui.textSquareTiltHFD.setText(t)
 
         offAxisDiff = self.outerHFD - segHFD[1][1]
@@ -564,7 +574,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         tiltDiff = worst - best
         tiltPercent = 100 * tiltDiff / self.medianHFD
 
-        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%)'
+        for tiltHint in self.TILT:
+            if tiltPercent < self.TILT[tiltHint]:
+                break
+        t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
         self.ui.textTriangleTiltHFD.setText(t)
 
         offAxisDiff = self.outerHFD - self.innerHFD

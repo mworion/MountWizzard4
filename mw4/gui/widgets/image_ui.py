@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/image.ui'
+# Form implementation generated from reading ui file 'image.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -254,6 +254,7 @@ class Ui_ImageDialog(object):
         self.gridLayout.addWidget(self.scale, 12, 1, 1, 1)
         self.gridLayout_2.addWidget(self.headerGroup, 1, 0, 1, 1)
         self.tabImage = QtWidgets.QTabWidget(ImageDialog)
+        self.tabImage.setMinimumSize(QtCore.QSize(140, 0))
         self.tabImage.setObjectName("tabImage")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -337,11 +338,11 @@ class Ui_ImageDialog(object):
         self.label_5.setObjectName("label_5")
         self.gridLayout_13.addWidget(self.label_5, 1, 3, 1, 1)
         self.textSquareTiltOffAxis = QtWidgets.QLineEdit(self.tab_5)
-        self.textSquareTiltOffAxis.setMinimumSize(QtCore.QSize(0, 0))
+        self.textSquareTiltOffAxis.setMinimumSize(QtCore.QSize(140, 0))
         self.textSquareTiltOffAxis.setObjectName("textSquareTiltOffAxis")
         self.gridLayout_13.addWidget(self.textSquareTiltOffAxis, 1, 1, 1, 1)
         self.textSquareTiltHFD = QtWidgets.QLineEdit(self.tab_5)
-        self.textSquareTiltHFD.setMinimumSize(QtCore.QSize(0, 0))
+        self.textSquareTiltHFD.setMinimumSize(QtCore.QSize(140, 0))
         self.textSquareTiltHFD.setObjectName("textSquareTiltHFD")
         self.gridLayout_13.addWidget(self.textSquareTiltHFD, 0, 1, 1, 1)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -383,10 +384,6 @@ class Ui_ImageDialog(object):
         self.label_14 = QtWidgets.QLabel(self.tab_9)
         self.label_14.setObjectName("label_14")
         self.gridLayout_18.addWidget(self.label_14, 1, 2, 1, 1)
-        self.textTriangleTiltHFD = QtWidgets.QLineEdit(self.tab_9)
-        self.textTriangleTiltHFD.setMinimumSize(QtCore.QSize(0, 0))
-        self.textTriangleTiltHFD.setObjectName("textTriangleTiltHFD")
-        self.gridLayout_18.addWidget(self.textTriangleTiltHFD, 1, 1, 1, 1)
         self.label_21 = QtWidgets.QLabel(self.tab_9)
         self.label_21.setMinimumSize(QtCore.QSize(0, 0))
         self.label_21.setObjectName("label_21")
@@ -400,10 +397,6 @@ class Ui_ImageDialog(object):
         self.label_22.setMinimumSize(QtCore.QSize(0, 0))
         self.label_22.setObjectName("label_22")
         self.gridLayout_18.addWidget(self.label_22, 1, 0, 1, 1)
-        self.textTriangleTiltOffAxis = QtWidgets.QLineEdit(self.tab_9)
-        self.textTriangleTiltOffAxis.setMinimumSize(QtCore.QSize(0, 0))
-        self.textTriangleTiltOffAxis.setObjectName("textTriangleTiltOffAxis")
-        self.gridLayout_18.addWidget(self.textTriangleTiltOffAxis, 0, 1, 1, 1)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout_18.addItem(spacerItem3, 0, 6, 1, 1)
         self.offsetTiltAngle = QtWidgets.QDoubleSpinBox(self.tab_9)
@@ -426,6 +419,14 @@ class Ui_ImageDialog(object):
         self.triangleMedianHDF.setMaximumSize(QtCore.QSize(60, 16777215))
         self.triangleMedianHDF.setObjectName("triangleMedianHDF")
         self.gridLayout_18.addWidget(self.triangleMedianHDF, 0, 3, 1, 1)
+        self.textTriangleTiltOffAxis = QtWidgets.QLineEdit(self.tab_9)
+        self.textTriangleTiltOffAxis.setMinimumSize(QtCore.QSize(140, 0))
+        self.textTriangleTiltOffAxis.setObjectName("textTriangleTiltOffAxis")
+        self.gridLayout_18.addWidget(self.textTriangleTiltOffAxis, 1, 1, 1, 1)
+        self.textTriangleTiltHFD = QtWidgets.QLineEdit(self.tab_9)
+        self.textTriangleTiltHFD.setMinimumSize(QtCore.QSize(140, 0))
+        self.textTriangleTiltHFD.setObjectName("textTriangleTiltHFD")
+        self.gridLayout_18.addWidget(self.textTriangleTiltHFD, 0, 1, 1, 1)
         self.gridLayout_18.setColumnStretch(6, 1)
         self.gridLayout_17.addLayout(self.gridLayout_18, 1, 0, 1, 1)
         self.gridLayout_17.setRowStretch(0, 1)

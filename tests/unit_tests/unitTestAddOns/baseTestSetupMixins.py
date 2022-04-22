@@ -530,7 +530,6 @@ class App(QObject):
     start5s = pyqtSignal()
     start10s = pyqtSignal()
     hostChanged = pyqtSignal()
-    switchHemisphere = pyqtSignal(object)
     sendSatelliteData = pyqtSignal()
     updateDomeSettings = pyqtSignal()
     drawHorizonPoints = pyqtSignal()

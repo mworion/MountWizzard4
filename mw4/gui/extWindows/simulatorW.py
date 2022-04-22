@@ -151,33 +151,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.storeConfig()
-
-        self.app.update1s.disconnect(self.dome.updatePositions)
-        self.ui.checkDomeTransparent.clicked.disconnect(self.createScene)
-        self.ui.checkShowBuildPoints.clicked.disconnect(self.buildPointsCreate)
-        self.ui.checkShowNumbers.clicked.disconnect(self.buildPointsCreate)
-        self.ui.checkShowSlewPath.clicked.disconnect(self.buildPointsCreate)
-        self.app.updatePointMarker.disconnect(self.buildPointsCreate)
-        self.ui.checkShowHorizon.clicked.disconnect(self.createScene)
-        self.ui.checkShowPointer.clicked.disconnect(self.pointerCreate)
-        self.ui.checkShowLaser.clicked.disconnect(self.laserCreate)
-        self.ui.topView.clicked.disconnect(self.topView)
-        self.ui.topEastView.clicked.disconnect(self.topEastView)
-        self.ui.topWestView.clicked.disconnect(self.topWestView)
-        self.ui.eastView.clicked.disconnect(self.eastView)
-        self.ui.westView.clicked.disconnect(self.westView)
-        self.app.updateDomeSettings.disconnect(self.updateSettings)
-        self.app.updateDomeSettings.disconnect(self.telescope.updateSettings)
-        self.app.updateDomeSettings.disconnect(self.dome.updateSettings)
-        self.app.mount.signals.pointDone.disconnect(self.telescope.updatePositions)
-        self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
-        self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
-        self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
-        self.app.drawBuildPoints.disconnect(self.buildPointsCreate)
-        self.app.drawHorizonPoints.disconnect(self.horizonCreate)
-        self.app.switchHemisphere.disconnect(self.createScene)
-        self.camera.positionChanged.disconnect(self.limitPositionZ)
-        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -208,7 +181,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.drawBuildPoints.connect(self.buildPointsCreate)
         self.app.drawHorizonPoints.connect(self.horizonCreate)
-        self.app.switchHemisphere.connect(self.createScene)
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.colorChange.connect(self.colorChange)
         self.show()
@@ -388,7 +360,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         for name in self.world:
             tools.linkModel(self.world, name, rEntity)
 
-    def createScene(self, lat=0):
+    def createScene(self):
         """
         createScene initially builds all 3d models and collects them to a scene.
         please look closely which references are used-
@@ -416,6 +388,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
             self.ui.checkShowPointer.setEnabled(False)
             self.ui.checkShowPointer.setChecked(False)
 
+        lat = self.app.mount.obsSite.location.latitude.degrees
         self.createWorld(self.rootEntity)
         self.telescope.create(self.world['ref']['e'], True, lat)
         self.dome.create(self.world['ref']['e'], dome, isDomeTransparent)

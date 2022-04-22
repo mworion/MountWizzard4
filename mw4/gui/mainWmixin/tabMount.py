@@ -585,7 +585,6 @@ class Mount(object):
 
         value = convertLatToAngle(value)
         self.setLocationValues(lat=value)
-        self.app.switchHemisphere.emit(value.degrees)
         return True
 
     def setElevation(self):

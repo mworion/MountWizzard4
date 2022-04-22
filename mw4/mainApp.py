@@ -83,7 +83,6 @@ class MountWizzard4(QObject):
     remoteCommand = pyqtSignal(str)
     colorChange = pyqtSignal()
     hostChanged = pyqtSignal()
-    switchHemisphere = pyqtSignal(object)
 
     update0_1s = pyqtSignal()
     update1s = pyqtSignal()

@@ -20,8 +20,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: almanac moon phase drawing error
-- fix: ascom camera flush fits file fast enough
+- fix: mount orientation in southern hemisphere 
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.2',
+    version='2.2.3',
     packages=[
         'mw4',
         'mw4.base',

@@ -223,15 +223,15 @@ class MainWindow(
         if not packageConfig.isAnalyse:
             tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Analyse')
             tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
-            self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.toolsTabWidget.setTabVisible(tabIndex, False)
 
         tabWidget = self.ui.mainTabWidget.findChild(QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+        self.ui.mainTabWidget.setTabVisible(tabIndex, False)
 
         tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'Relay')
         tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
-        self.ui.toolsTabWidget.setTabEnabled(tabIndex, False)
+        self.ui.toolsTabWidget.setTabVisible(tabIndex, False)
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
@@ -598,10 +598,10 @@ class MainWindow(
         for key, tab in smartTabs.items():
             tabWidget = smartTabs[key]['tab'].findChild(QWidget, key)
             tabIndex = smartTabs[key]['tab'].indexOf(tabWidget)
-            tabStatus = smartTabs[key]['tab'].isTabEnabled(tabIndex)
+            tabStatus = smartTabs[key]['tab'].isTabVisible(tabIndex)
 
             stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
-            smartTabs[key]['tab'].setTabEnabled(tabIndex, stat)
+            smartTabs[key]['tab'].setTabVisible(tabIndex, stat)
             tabChanged = tabChanged or (tabStatus != stat)
 
         # redraw tabs only when a change occurred. this is necessary, because

@@ -324,12 +324,12 @@ class Styles:
             background-color: $M_BLUE$;
             image: url(:/icon/$checkmark$.svg);
         }
-        QGroupBox[running='true'] {
+        QGroupBox[running=true] {
             color: $M_WHITE$;
             border-color: $M_YELLOW$;
             background-color: $M_GREY1$;
         }
-        QGroupBox:title[running='true'] {
+        QGroupBox:title[running=true] {
             color: $M_WHITE$;
         }
         /* Checkboxes */
@@ -485,7 +485,7 @@ class Styles:
             font-weight: bold;
             font-size: 12px;
         }
-        QPushButton[alignLeft='true'] {
+        QPushButton[alignLeft=true] {
             text-align: left;
             padding-left: 3px;
             padding-right: 3px;
@@ -494,15 +494,15 @@ class Styles:
             background-color: $M_BLUE$;
             color: $M_BLACK$;
         }
-        QPushButton[running='true'] {
+        QPushButton[running=true] {
             background-color: $M_BLUE$;
             color: $M_BLACK$;
         }
-        QPushButton[pause='true'] {
+        QPushButton[pause=true] {
             background-color: $M_YELLOW$;
             color: $M_BLACK$;
         }
-        QPushButton[cancel='true'] {
+        QPushButton[cancel=true] {
             background-color: $M_RED$;
             color: $M_WHITE$;
         }
@@ -530,7 +530,7 @@ class Styles:
             background-color: $M_GREEN$;
             color: $M_BLACK$;
         }
-        QPushButton[stop='true'] {
+        QPushButton[stop=true] {
             background-color: $M_TRANS$;
             color: $M_TRANS$;
             border-color: $M_TRANS$;

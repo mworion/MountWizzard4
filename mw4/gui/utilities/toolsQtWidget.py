@@ -779,6 +779,9 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def makePointer():
+        """
+        :return:
+        """
         path = QPainterPath()
         path.moveTo(0, -1)
         path.lineTo(0, 1)
@@ -790,6 +793,9 @@ class MWidget(QWidget, Styles):
 
     @staticmethod
     def makeSat():
+        """
+        :return:
+        """
         path = QPainterPath()
         tr = QTransform()
         path.addRect(-0.35, -0.15, 0.1, 0.3)

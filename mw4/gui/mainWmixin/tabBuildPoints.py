@@ -585,8 +585,8 @@ class BuildPoints:
             self.app.data.deleteBelowHorizon()
         if self.ui.autoDeleteMeridian.isChecked():
             self.app.data.deleteCloseMeridian()
-        if self.ui.safetyMarginHorizon.isChecked():
-            value = self.ui.safetyMarginValueHorizon.value()
+        if self.ui.useSafetyMargin.isChecked():
+            value = self.ui.safetyMarginValue.value()
             self.app.data.deleteCloseHorizonLine(value)
         return True
 

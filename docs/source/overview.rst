@@ -9,6 +9,7 @@ communication.
 
 .. image:: overview.png
     :align: center
+    :scale: 71%
 
 The basic idea is that MW4 will try to generate "digital twin" for the mount. All
 parameter changes for the mount will be sent to it and changes of it's state are

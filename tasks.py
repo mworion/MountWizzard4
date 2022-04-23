@@ -15,11 +15,14 @@
 # Licence APL2.0
 #
 ###########################################################
+import copy
+
 from invoke import task
 from PIL import Image
 import glob
 import time
 import os
+import shutil
 
 rn = ''
 #
@@ -436,7 +439,7 @@ def test_macMonterey(c):
     printMW('test Monterey install finished\n')
 
 
-@task(pre=[version_doc])
+@task(pre=[version_doc, image_res])
 def make_pdf(c):
     drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
     printMW('Generate PDF for distro')
@@ -447,4 +450,5 @@ def make_pdf(c):
     with c.cd('docs'):
         runMW(c, 'make clean')
         runMW(c, 'make latexpdf')
+    shutil.copy('./docs/build/latex/mountwizzard4.pdf', 'mountwizzard4.pdf')
     printMW('Generation finished\n')

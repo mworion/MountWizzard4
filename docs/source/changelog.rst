@@ -14,16 +14,24 @@ Ideas for the future
 - split imaging tab into operating and statistics
 - satellite scheduler
 
-Beta version of MW4
-----------------------------
-2.3.0
-
 
 Released version of MW4
 -----------------------
 
 Version 2.2
 ^^^^^^^^^^^
+2.2.3
+
+- fix: mount orientation in southern hemisphere
+
+2.2.2
+
+- fix: almanac moon phase drawing error
+
+2.2.1
+
+- update: builtin data for finals200.all
+- fix: download iers data: fix file not found feedback
 
 2.2.0
 

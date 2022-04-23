@@ -106,8 +106,8 @@ CS Michel
     https://img.shields.io/pypi/pyversions/mountwizzard4.svg
 
 .. |DOCS| image::
-    https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
-    :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
+    https://readthedocs.org/projects/mountwizzard4/badge/?version=stable
+    :target: https://mountwizzard4.readthedocs.io/en/stable/?badge=stable
     :alt: Documentation Status
 
 .. |PYTEST macOS| image::

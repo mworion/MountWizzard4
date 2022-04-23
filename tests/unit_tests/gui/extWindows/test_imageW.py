@@ -219,7 +219,7 @@ def test_workerCalcTiltValuesTriangle(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
-    function.HFD = np.linspace(20, 30, 20)
+    function.HFR = np.linspace(20, 30, 20)
     val = function.workerCalcTiltValuesTriangle()
     assert val.shape == (72, )
 
@@ -228,7 +228,7 @@ def test_workerCalcTiltValuesSquare(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
-    function.HFD = np.linspace(20, 30, 20)
+    function.HFR = np.linspace(20, 30, 20)
     val = function.workerCalcTiltValuesSquare()
     assert val.shape == (3, 3)
 
@@ -236,7 +236,7 @@ def test_workerCalcTiltValuesSquare(function):
 def test_baseCalcTabInfo(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
-    function.HFD = np.linspace(20, 30, 20)
+    function.HFR = np.linspace(20, 30, 20)
     function.image = np.random.rand(100, 100) + 1
     suc = function.baseCalcTabInfo()
     assert suc
@@ -255,21 +255,21 @@ def test_showTabBackground(function):
     assert suc
 
 
-def test_workerShowTabHFD(function):
+def test_workerShowTabHFR(function):
     function.filterConst = 5
     function.xm = np.linspace(0, 100, 100)
     function.ym = np.linspace(0, 100, 100)
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
-    function.HFD = np.linspace(20, 30, 20)
-    img = function.workerShowTabHFD()
+    function.HFR = np.linspace(20, 30, 20)
+    img = function.workerShowTabHFR()
     assert img.shape[0] == 100
 
 
-def test_showTabHFD(function):
-    function.HFD = np.linspace(20, 30, 20)
+def test_showTabHFR(function):
+    function.HFR = np.linspace(20, 30, 20)
     img = np.random.rand(100, 100) + 1
-    suc = function.showTabHFD(img)
+    suc = function.showTabHFR(img)
     assert suc
 
 
@@ -280,20 +280,20 @@ def test_clearImageTab(function):
 
 
 def test_showTabTiltSquare(function):
-    function.HFD = np.linspace(20, 30, 20)
-    function.medianHFD = 1
-    function.innerHFD = 1
-    function.outerHFD = 1
+    function.HFR = np.linspace(20, 30, 20)
+    function.medianHFR = 1
+    function.innerHFR = 1
+    function.outerHFR = 1
     function.image = np.random.rand(100, 100) + 1
     suc = function.showTabTiltSquare(np.ones((3, 3)))
     assert suc
 
 
 def test_showTabTiltTriangle(function):
-    function.HFD = np.linspace(20, 30, 20)
-    function.innerHFD = 1
-    function.outerHFD = 1
-    function.medianHFD = 1
+    function.HFR = np.linspace(20, 30, 20)
+    function.innerHFR = 1
+    function.outerHFR = 1
+    function.medianHFR = 1
     function.image = np.random.rand(100, 100) + 1
     suc = function.showTabTiltTriangle(np.ones(72))
     assert suc
@@ -361,7 +361,7 @@ def test_showTabImages_1(function):
 
 
 def test_showTabImages_2(function):
-    function.HFD = np.linspace(20, 30, 20)
+    function.HFR = np.linspace(20, 30, 20)
     with mock.patch.object(function,
                            'showTabRaw'):
         with mock.patch.object(function,
@@ -390,7 +390,7 @@ def test_workerPreparePhotometry_1(function):
     suc = function.workerPreparePhotometry()
     assert suc
     assert function.bkg is not None
-    assert function.HFD is not None
+    assert function.HFR is not None
     assert function.objs is not None
 
 

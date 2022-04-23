@@ -722,7 +722,7 @@
        </widget>
        <widget class="QWidget" name="tab_7">
         <attribute name="title">
-         <string>HFD</string>
+         <string>HFR</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_11" rowstretch="1,0">
          <property name="leftMargin">
@@ -741,7 +741,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="ImageBar" name="hfd" native="true"/>
+          <widget class="ImageBar" name="hfr" native="true"/>
          </item>
          <item row="1" column="0">
           <layout class="QGridLayout" name="gridLayout_15" columnstretch="0,0,0,0,0,0,0,0,0,0">
@@ -758,7 +758,7 @@
             <number>0</number>
            </property>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="hfdPercentile">
+            <widget class="QLineEdit" name="hfrPercentile">
              <property name="maximumSize">
               <size>
                <width>30</width>
@@ -794,7 +794,7 @@
             </widget>
            </item>
            <item row="0" column="3">
-            <widget class="QLineEdit" name="medianHFD">
+            <widget class="QLineEdit" name="medianHFR">
              <property name="maximumSize">
               <size>
                <width>60</width>
@@ -812,7 +812,7 @@
               </size>
              </property>
              <property name="text">
-              <string>10% Percentile [HFD]</string>
+              <string>10% Percentile [HFR]</string>
              </property>
             </widget>
            </item>
@@ -835,7 +835,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Median [HFD]</string>
+              <string>Median [HFR]</string>
              </property>
             </widget>
            </item>
@@ -889,7 +889,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Off-Axis aberration [HFD]</string>
+              <string>Off-Axis aberration [HFR]</string>
              </property>
             </widget>
            </item>
@@ -911,7 +911,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="textSquareTiltHFD">
+            <widget class="QLineEdit" name="textSquareTiltHFR">
              <property name="minimumSize">
               <size>
                <width>140</width>
@@ -942,7 +942,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Tilt square [HFD]</string>
+              <string>Tilt square [HFR]</string>
              </property>
             </widget>
            </item>
@@ -965,12 +965,12 @@
            <item row="0" column="3">
             <widget class="QLabel" name="label_23">
              <property name="text">
-              <string>Median HFD</string>
+              <string>Median HFR</string>
              </property>
             </widget>
            </item>
            <item row="0" column="4">
-            <widget class="QLineEdit" name="squareMedianHDF">
+            <widget class="QLineEdit" name="squareMedianHFR">
              <property name="maximumSize">
               <size>
                <width>60</width>
@@ -1036,7 +1036,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Tilt triangle [HFD]</string>
+              <string>Tilt triangle [HFR]</string>
              </property>
             </widget>
            </item>
@@ -1065,7 +1065,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Off-Axis aberration [HFD]</string>
+              <string>Off-Axis aberration [HFR]</string>
              </property>
             </widget>
            </item>
@@ -1126,12 +1126,12 @@
            <item row="0" column="2">
             <widget class="QLabel" name="label_24">
              <property name="text">
-              <string>Median HFD</string>
+              <string>Median HFR</string>
              </property>
             </widget>
            </item>
            <item row="0" column="3">
-            <widget class="QLineEdit" name="triangleMedianHDF">
+            <widget class="QLineEdit" name="triangleMedianHFR">
              <property name="maximumSize">
               <size>
                <width>60</width>
@@ -1151,7 +1151,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="textTriangleTiltHFD">
+            <widget class="QLineEdit" name="textTriangleTiltHFR">
              <property name="minimumSize">
               <size>
                <width>140</width>

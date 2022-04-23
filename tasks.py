@@ -438,7 +438,8 @@ def test_macMonterey(c):
 
 @task(pre=[version_doc])
 def make_pdf(c):
+    drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
     printMW('Generate PDF for distro')
-    with c.cd('docs'):
-        runMW(c, 'make latexpdf')
+    with c.cd('docs/source'):
+        runMW(c, f'{drawio} -x -f -r png -o ./ ./ ')
     printMW('Generation finished\n')

@@ -81,16 +81,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.numberStack = 0
         self.objs = None
         self.bkg = None
-        self.HFD = None
+        self.HFR = None
         self.filterConst = None
         self.xm = None
         self.ym = None
         self.scale = 5
         self.aberrationSize = 250
         self.result = None
-        self.medianHFD = None
-        self.innerHFD = None
-        self.outerHFD = None
+        self.medianHFR = None
+        self.innerHFR = None
+        self.outerHFR = None
         self.pen = pg.mkPen(color=self.M_BLUE, width=3)
         self.font = QFont(self.window().font().family(), 16)
         self.font.setBold(True)
@@ -292,7 +292,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.imageSource.setColorMap(colorMap)
         self.ui.background.setColorMap(colorMap)
         self.ui.backgroundRMS.setColorMap(colorMap)
-        self.ui.hfd.setColorMap(colorMap)
+        self.ui.hfr.setColorMap(colorMap)
         self.ui.tiltSquare.setColorMap(colorMap)
         self.ui.tiltTriangle.setColorMap(colorMap)
         self.ui.roundness.setColorMap(colorMap)
@@ -328,7 +328,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.tiltTriangle.p[0].setAspectLocked(isLocked)
         self.ui.background.p[0].setAspectLocked(isLocked)
         self.ui.backgroundRMS.p[0].setAspectLocked(isLocked)
-        self.ui.hfd.p[0].setAspectLocked(isLocked)
+        self.ui.hfr.p[0].setAspectLocked(isLocked)
         self.ui.roundness.p[0].setAspectLocked(isLocked)
         return True
 
@@ -363,17 +363,17 @@ class ImageWindow(toolsQtWidget.MWidget):
         yRange = [0, stepY, 2 * stepY, 3 * stepY]
         x = self.objs['x']
         y = self.objs['y']
-        segHFD = np.zeros((3, 3))
+        segHFR = np.zeros((3, 3))
         for ix in range(3):
             for iy in range(3):
                 xMin = xRange[ix]
                 xMax = xRange[ix + 1]
                 yMin = yRange[iy]
                 yMax = yRange[iy + 1]
-                hfd = self.HFD[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
-                med_hfd = np.median(hfd)
-                segHFD[ix][iy] = med_hfd
-        return segHFD
+                hfr = self.HFR[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
+                med_hfr = np.median(hfr)
+                segHFR[ix][iy] = med_hfr
+        return segHFR
 
     def workerCalcTiltValuesTriangle(self):
         """
@@ -385,14 +385,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         radius = min(h / 2, w / 2)
         mask1 = np.sqrt(h * h + w * w) * 0.25 < radius
         mask2 = np.sqrt(h * h + w * w) > radius
-        segHFD = np.zeros(36)
+        segHFR = np.zeros(36)
         angles = np.mod(np.arctan2(y, x), 2*np.pi)
         rangeA = np.radians(range(0, 361, 10))
         for i in range(36):
             mask3 = rangeA[i] < angles
             mask4 = rangeA[i + 1] > angles
-            segHFD[i] = np.median(self.HFD[mask1 & mask2 & mask3 & mask4])
-        return np.concatenate([segHFD, segHFD])
+            segHFR[i] = np.median(self.HFR[mask1 & mask2 & mask3 & mask4])
+        return np.concatenate([segHFR, segHFR])
 
     def baseCalcTabInfo(self):
         """
@@ -405,12 +405,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.filterConst = int(w / self.scale / 2)
         x = self.objs['x'] - w / 2
         y = self.objs['y'] - h / 2
-        self.medianHFD = np.median(self.HFD)
+        self.medianHFR = np.median(self.HFR)
         radius = np.sqrt(x * x + y * y)
         maskOuter = np.sqrt(h * h / 4 + w * w / 4) * 0.75 < radius
         maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > radius
-        self.outerHFD = np.median(self.HFD[maskOuter])
-        self.innerHFD = np.median(self.HFD[maskInner])
+        self.outerHFR = np.median(self.HFR[maskOuter])
+        self.innerHFR = np.median(self.HFR[maskInner])
         return True
 
     def showTabRaw(self):
@@ -422,30 +422,30 @@ class ImageWindow(toolsQtWidget.MWidget):
         QApplication.processEvents()
         return True
 
-    def workerShowTabHFD(self):
+    def workerShowTabHFR(self):
         """
         :return:
         """
         img = griddata((self.objs['x'], self.objs['y']),
-                       self.HFD, (self.xm, self.ym),
-                       method='nearest', fill_value=np.min(self.HFD))
+                       self.HFR, (self.xm, self.ym),
+                       method='nearest', fill_value=np.min(self.HFR))
         img = uniform_filter(img, size=self.filterConst)
         return img
 
-    def showTabHFD(self, img):
+    def showTabHFR(self, img):
         """
         :param img:
         :return:
         """
         self.ui.tabImage.setTabEnabled(1, True)
-        self.ui.hfd.setImage(imageDisp=img)
-        self.ui.hfd.p[0].showAxes(False, showValues=False)
-        self.ui.hfd.p[0].setMouseEnabled(x=False, y=False)
-        hfdPercentile10 = np.percentile(self.HFD, 90)
-        self.ui.hfdPercentile.setText(f'{hfdPercentile10:1.1f}')
-        medianHFD = np.median(self.HFD)
-        self.ui.medianHFD.setText(f'{medianHFD:1.2f}')
-        self.ui.numberStars.setText(f'{len(self.HFD):1.0f}')
+        self.ui.hfr.setImage(imageDisp=img)
+        self.ui.hfr.p[0].showAxes(False, showValues=False)
+        self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
+        hfrPercentile10 = np.percentile(self.HFR, 90)
+        self.ui.hfrPercentile.setText(f'{hfrPercentile10:1.1f}')
+        medianHFR = np.median(self.HFR)
+        self.ui.medianHFR.setText(f'{medianHFR:1.2f}')
+        self.ui.numberStars.setText(f'{len(self.HFR):1.0f}')
         QApplication.processEvents()
         return True
 
@@ -461,9 +461,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         imageWidget.barItem.setVisible(False)
         return True
 
-    def showTabTiltSquare(self, segHFD):
+    def showTabTiltSquare(self, segHFR):
         """
-        :param segHFD:
+        :param segHFR:
         :return:
         """
         h, w = self.image.shape
@@ -471,7 +471,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.tiltSquare.setImage(self.image)
         for ix in range(3):
             for iy in range(3):
-                text = f'{segHFD[ix][iy]:1.2f}'
+                text = f'{segHFR[ix][iy]:1.2f}'
                 textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
                 textItem.setText(text)
                 textItem.setFont(self.font)
@@ -492,31 +492,31 @@ class ImageWindow(toolsQtWidget.MWidget):
             lineItem.setLine(0, posY, w, posY)
             self.ui.tiltSquare.p[0].addItem(lineItem)
 
-        best = np.min([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
-        worst = np.max([segHFD[0][0], segHFD[0][2], segHFD[2][0], segHFD[2][2]])
+        best = np.min([segHFR[0][0], segHFR[0][2], segHFR[2][0], segHFR[2][2]])
+        worst = np.max([segHFR[0][0], segHFR[0][2], segHFR[2][0], segHFR[2][2]])
         tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.medianHFD
+        tiltPercent = 100 * tiltDiff / self.medianHFR
 
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
                 break
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
-        self.ui.textSquareTiltHFD.setText(t)
+        self.ui.textSquareTiltHFR.setText(t)
 
-        offAxisDiff = self.outerHFD - segHFD[1][1]
-        offAxisPercent = 100 * offAxisDiff / self.medianHFD
+        offAxisDiff = self.outerHFR - segHFR[1][1]
+        offAxisPercent = 100 * offAxisDiff / self.medianHFR
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textSquareTiltOffAxis.setText(t)
-        self.ui.squareMedianHDF.setText(f'{self.medianHFD:1.2f}')
-        self.ui.squareNumberStars.setText(f'{len(self.HFD):1.0f}')
+        self.ui.squareMedianHFR.setText(f'{self.medianHFR:1.2f}')
+        self.ui.squareNumberStars.setText(f'{len(self.HFR):1.0f}')
 
         self.ui.tabImage.setTabEnabled(2, True)
         QApplication.processEvents()
         return True
 
-    def showTabTiltTriangle(self, segHFD):
+    def showTabTiltTriangle(self, segHFR):
         """
-        :param segHFD:
+        :param segHFR:
         :return:
         """
         h, w = self.image.shape
@@ -538,7 +538,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         offsetTiltAngle = self.ui.offsetTiltAngle.value()
 
-        text = f'{self.innerHFD:1.2f}'
+        text = f'{self.innerHFR:1.2f}'
         textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
         textItem.setText(text)
         textItem.setFont(self.font)
@@ -559,7 +559,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.tiltTriangle.p[0].addItem(lineItem)
             startIndexSeg = int((angle + offsetTiltAngle + 210) / 10)
             endIndexSeg = int((angle + offsetTiltAngle + 330) / 10)
-            segData[i] = np.mean(segHFD[startIndexSeg:endIndexSeg])
+            segData[i] = np.mean(segHFR[startIndexSeg:endIndexSeg])
             text = f'{segData[i]:1.2f}'
             textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
             textItem.setFont(self.font)
@@ -572,20 +572,20 @@ class ImageWindow(toolsQtWidget.MWidget):
         best = np.min(segData)
         worst = np.max(segData)
         tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.medianHFD
+        tiltPercent = 100 * tiltDiff / self.medianHFR
 
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
                 break
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
-        self.ui.textTriangleTiltHFD.setText(t)
+        self.ui.textTriangleTiltHFR.setText(t)
 
-        offAxisDiff = self.outerHFD - self.innerHFD
-        offAxisPercent = 100 * offAxisDiff / self.medianHFD
+        offAxisDiff = self.outerHFR - self.innerHFR
+        offAxisPercent = 100 * offAxisDiff / self.medianHFR
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textTriangleTiltOffAxis.setText(t)
-        self.ui.triangleMedianHDF.setText(f'{self.medianHFD:1.2f}')
-        self.ui.triangleNumberStars.setText(f'{len(self.HFD):1.0f}')
+        self.ui.triangleMedianHFR.setText(f'{self.medianHFR:1.2f}')
+        self.ui.triangleNumberStars.setText(f'{len(self.HFR):1.0f}')
 
         self.ui.tabImage.setTabEnabled(3, True)
         QApplication.processEvents()
@@ -698,13 +698,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.setBarColor()
         self.showTabRaw()
         self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
-        if self.HFD is None:
+        if self.HFR is None:
             return False
 
         self.baseCalcTabInfo()
 
-        worker = Worker(self.workerShowTabHFD)
-        worker.signals.result.connect(self.showTabHFD)
+        worker = Worker(self.workerShowTabHFR)
+        worker.signals.result.connect(self.showTabHFR)
         self.threadPool.start(worker)
 
         worker = Worker(self.workerShowTabRoundness)
@@ -767,9 +767,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms / 1.46)
         mask = (sn > 10) & (2 * radius < 20)
 
-        # to get HFD
+        # to get HFR
         self.objs = objs[mask]
-        self.HFD = 2 * radius[mask]
+        self.HFR = radius[mask]
         return True
 
     def clearGui(self):
@@ -777,8 +777,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.signals.showTitle.emit('')
-        self.ui.medianHFD.setText('')
-        self.ui.hfdPercentile.setText('')
+        self.ui.medianHFR.setText('')
+        self.ui.hfrPercentile.setText('')
         self.ui.numberStars.setText('')
         self.ui.aspectRatioPercentile.setText('')
         self.ui.image.setImage(None)
@@ -802,7 +802,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.clearGui()
             self.objs = None
             self.bkg = None
-            self.HFD = None
+            self.HFR = None
             self.showTabImages()
         return True
 

@@ -7,7 +7,8 @@ a serial line, MW4 does not. The mount computer drives the mount without any hel
 from outside, so if you don't request something from it, there is hardly any
 communication.
 
-.. figure:: overview.drawio
+.. image:: overview.drawio.png
+    :align: center
 
 The basic idea is that MW4 will try to generate "digital twin" for the mount. All
 parameter changes for the mount will be sent to it and changes of it's state are

@@ -24,7 +24,7 @@ difference is the way and the context you are working in. MW4 uses the batch mod
 build as there are advantages (not in the model quality) in the automatic handling
 of point data.
 
-.. image:: image/model_build.png
+.. image:: image/model_build.drawio.png
     :align: center
     :scale: 71%
 
@@ -56,7 +56,7 @@ Modeling automatics
 The automation process is explained by the next drawing. It is quite simple, but
 there are some important topic, which you should care about.
 
-.. drawio-image:: image/model_process.drawio
+.. image:: image/model_process.png
     :align: center
 
 MW4 tries to do as much steps at the same time as possible to reach the minimum

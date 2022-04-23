@@ -108,7 +108,6 @@ CS Michel
 .. |DOCS| image::
     https://readthedocs.org/projects/mountwizzard4/badge/?version=stable
     :target: https://mountwizzard4.readthedocs.io/en/stable/?badge=stable
-    :alt: Documentation Status
 
 .. |PYTEST macOS| image::
     https://github.com/mworion/MountWizzard4/workflows/unit_macOS/badge.svg?branch=master

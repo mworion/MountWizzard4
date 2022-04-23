@@ -452,3 +452,19 @@ def make_pdf(c):
         runMW(c, 'make latexpdf')
     shutil.copy('./docs/build/latex/mountwizzard4.pdf', 'mountwizzard4.pdf')
     printMW('Generation finished\n')
+
+
+@task(pre=[version_doc])
+def make_html(c):
+    drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
+    printMW('Generate HTML for distro')
+    for fullFilePath in glob.glob('./docs/**/**.drawio', recursive=True):
+        output = fullFilePath[:-6] + 'png'
+        command = f'{drawio} -x -f png -o {output} {fullFilePath}'
+        runMW(c, command)
+    with c.cd('docs'):
+        runMW(c, 'make clean')
+        runMW(c, 'make html')
+    with c.cd('docs/build/html'):
+        runMW(c, 'open ./contents.html')
+    printMW('Generation finished\n')

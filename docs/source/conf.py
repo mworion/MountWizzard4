@@ -36,13 +36,13 @@
 # -- Project information -----------------------------------------------------
 
 project = 'MountWizzard4'
-copyright = '2021, mworion'
-author = 'mworion'
+copyright = '2022, mworion'
+author = 'Michael Würtenberger'
 
 # The full version, including alpha/beta/rc tags
 version = '3.0.0b0'
 release = '3.0.0b0'
-master_doc = 'index'
+master_doc = 'contents'
 
 # -- General configuration ---------------------------------------------------
 
@@ -86,10 +86,15 @@ html_theme_options = {
     'fixed_sidebar': True,
     'page_width': '1400px',
     'sidebar_width': '300px',
-    'base_bg': '#2090C080',
+    'base_bg': '#FFFFFFFF',
     'base_text': '#FFFFFFFF',
     'body_bg': '#FFFFFFFF',
 }
 
 latex_logo = '_static/mw4.png'
 latex_show_urls = 'inline'
+latex_show_pagerefs = True
+latex_elements = {
+    'papersize': 'a4paper',
+}
+

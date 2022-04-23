@@ -220,8 +220,8 @@ def test_workerCalcTiltValuesTriangle(function):
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.HFR = np.linspace(20, 30, 20)
-    val = function.workerCalcTiltValuesTriangle()
-    assert val.shape == (72, )
+    suc = function.workerCalcTiltValuesTriangle()
+    assert suc
 
 
 def test_workerCalcTiltValuesSquare(function):
@@ -229,8 +229,8 @@ def test_workerCalcTiltValuesSquare(function):
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.HFR = np.linspace(20, 30, 20)
-    val = function.workerCalcTiltValuesSquare()
-    assert val.shape == (3, 3)
+    suc = function.workerCalcTiltValuesSquare()
+    assert suc
 
 
 def test_baseCalcTabInfo(function):
@@ -284,8 +284,9 @@ def test_showTabTiltSquare(function):
     function.medianHFR = 1
     function.innerHFR = 1
     function.outerHFR = 1
+    function.segSquareHFR = np.ones((3, 3))
     function.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltSquare(np.ones((3, 3)))
+    suc = function.showTabTiltSquare()
     assert suc
 
 
@@ -294,8 +295,9 @@ def test_showTabTiltTriangle(function):
     function.innerHFR = 1
     function.outerHFR = 1
     function.medianHFR = 1
+    function.segTriangleHFR = np.ones(72)
     function.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltTriangle(np.ones(72))
+    suc = function.showTabTiltTriangle()
     assert suc
 
 

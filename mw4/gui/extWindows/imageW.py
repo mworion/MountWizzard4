@@ -91,7 +91,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.medianHFR = None
         self.innerHFR = None
         self.outerHFR = None
+        self.segTriangleHFR = None
+        self.segSquareHFR = None
         self.pen = pg.mkPen(color=self.M_BLUE, width=3)
+        self.penPink = pg.mkPen(color=self.M_PINK + '80', width=5)
         self.font = QFont(self.window().font().family(), 16)
         self.font.setBold(True)
 
@@ -373,7 +376,8 @@ class ImageWindow(toolsQtWidget.MWidget):
                 hfr = self.HFR[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
                 med_hfr = np.median(hfr)
                 segHFR[ix][iy] = med_hfr
-        return segHFR
+        self.segSquareHFR = segHFR
+        return True
 
     def workerCalcTiltValuesTriangle(self):
         """
@@ -392,7 +396,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             mask3 = rangeA[i] < angles
             mask4 = rangeA[i + 1] > angles
             segHFR[i] = np.median(self.HFR[mask1 & mask2 & mask3 & mask4])
-        return np.concatenate([segHFR, segHFR])
+        self.segTriangleHFR = np.concatenate([segHFR, segHFR])
+        return True
 
     def baseCalcTabInfo(self):
         """
@@ -461,24 +466,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         imageWidget.barItem.setVisible(False)
         return True
 
-    def showTabTiltSquare(self, segHFR):
+    def showTabTiltSquare(self):
         """
-        :param segHFR:
         :return:
         """
+        segHFR = self.segSquareHFR
         h, w = self.image.shape
         self.clearImageTab(self.ui.tiltSquare)
         self.ui.tiltSquare.setImage(self.image)
-        for ix in range(3):
-            for iy in range(3):
-                text = f'{segHFR[ix][iy]:1.2f}'
-                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
-                textItem.setText(text)
-                textItem.setFont(self.font)
-                posX = ix * w / 3 + w / 6
-                posY = iy * h / 3 + h / 6
-                textItem.setPos(posX, posY)
-                self.ui.tiltSquare.p[0].addItem(textItem)
+
+        # draw lines on image
         for ix in range(1, 3):
             posX = ix * w / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
@@ -492,11 +489,42 @@ class ImageWindow(toolsQtWidget.MWidget):
             lineItem.setLine(0, posY, w, posY)
             self.ui.tiltSquare.p[0].addItem(lineItem)
 
-        best = np.min([segHFR[0][0], segHFR[0][2], segHFR[2][0], segHFR[2][2]])
-        worst = np.max([segHFR[0][0], segHFR[0][2], segHFR[2][0], segHFR[2][2]])
+        # write values in boxes
+        for ix in range(3):
+            for iy in range(3):
+                text = f'{segHFR[ix][iy]:1.2f}'
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
+                textItem.setText(text)
+                textItem.setFont(self.font)
+                posX = ix * w / 3 + w / 6
+                posY = iy * h / 3 + h / 6
+                textItem.setPos(posX, posY)
+                textItem.setZValue(10)
+                self.ui.tiltSquare.p[0].addItem(textItem)
+
+        # calc extreme HFR values
+        corners = np.array([segHFR[0][0], segHFR[2][0], segHFR[2][2], segHFR[0][2]])
+        vectors = np.array([[- w / 3, - h / 3], [w / 3, - h / 3],
+                            [w / 3, h / 3], [- w / 3, h / 3]])
+        best = np.min(corners)
+        worst = np.max(corners)
+
+        # calc vectors
+        points = []
+        for vector, corner in zip(vectors, corners):
+            points.append(vector * corner / worst + np.array([w / 2, h / 2]))
+
+        # draw vectors
+        links = [[0, 2], [1, 3], [0, 1], [1, 2], [2, 3], [3, 0]]
+        for link in links:
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(self.penPink)
+            lineItem.setLine(points[link[0]][0], points[link[0]][1],
+                             points[link[1]][0], points[link[1]][1])
+            self.ui.tiltSquare.p[0].addItem(lineItem)
+
         tiltDiff = worst - best
         tiltPercent = 100 * tiltDiff / self.medianHFR
-
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
                 break
@@ -514,11 +542,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         QApplication.processEvents()
         return True
 
-    def showTabTiltTriangle(self, segHFR):
+    def showTabTiltTriangle(self):
         """
-        :param segHFR:
         :return:
         """
+        segHFR = self.segTriangleHFR
         h, w = self.image.shape
         r = min(h, w) / 2
         cx = w / 2
@@ -542,9 +570,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
         textItem.setText(text)
         textItem.setFont(self.font)
+        textItem.setZValue(10)
         textItem.setPos(cx, cy)
         self.ui.tiltTriangle.p[0].addItem(textItem)
-        segData = [0, 0, 0]
+        segData = np.array([0.0, 0.0, 0.0])
+        vectors = np.array([[0, 0], [0, 0], [0, 0]])
 
         for i, angle in enumerate(range(0, 360, 120)):
             angleSep = np.radians(angle + offsetTiltAngle + 210)
@@ -563,9 +593,12 @@ class ImageWindow(toolsQtWidget.MWidget):
             text = f'{segData[i]:1.2f}'
             textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
             textItem.setFont(self.font)
+            textItem.setZValue(10)
             textItem.setText(text)
             posX = cx + r * 0.625 * np.cos(angleText)
             posY = cy + r * 0.625 * np.sin(angleText)
+            vectors[i][0] = r * 0.95 * np.cos(angleText)
+            vectors[i][1] = r * 0.95 * np.sin(angleText)
             textItem.setPos(posX, posY)
             self.ui.tiltTriangle.p[0].addItem(textItem)
 
@@ -573,6 +606,20 @@ class ImageWindow(toolsQtWidget.MWidget):
         worst = np.max(segData)
         tiltDiff = worst - best
         tiltPercent = 100 * tiltDiff / self.medianHFR
+
+        # calc vectors
+        points = [[cx, cy]]
+        for vector, corner in zip(vectors, segData):
+            points.append(vector * corner / worst + np.array([w / 2, h / 2]))
+
+        # draw vectors
+        links = [[0, 1], [0, 2], [0, 3], [1, 2], [2, 3], [3, 1]]
+        for link in links:
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(self.penPink)
+            lineItem.setLine(points[link[0]][0], points[link[0]][1],
+                             points[link[1]][0], points[link[1]][1])
+            self.ui.tiltTriangle.p[0].addItem(lineItem)
 
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
@@ -656,11 +703,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
+        # self.clearImageTab(self.ui.imageSource)
         self.ui.imageSource.setImage(imageDisp=self.image)
         for i in range(len(self.objs)):
-            self.ui.imageSource.addEllipse(self.objs['x'][i], self.objs['y'][i],
-                                           self.objs['a'][i], self.objs['b'][i],
-                                           self.objs['theta'][i])
+            self.ui.imageSource.addEllipse(
+                self.objs['x'][i], self.objs['y'][i],
+                self.objs['a'][i] * 6, self.objs['b'][i] * 6,
+                self.objs['theta'][i])
         self.ui.tabImage.setTabEnabled(6, True)
         QApplication.processEvents()
         return True
@@ -672,7 +721,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         back = self.bkg.back()
         maxB = np.max(back) / self.bkg.globalback
         minB = np.min(back) / self.bkg.globalback
-        img = self.bkg.back() / self.bkg.globalback
+        img = back / self.bkg.globalback
         img = uniform_filter(img, size=self.filterConst)
         self.ui.background.setImage(imageDisp=img)
         self.ui.background.barItem.setLevels((minB, maxB))
@@ -734,7 +783,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
         image_sub = self.image - self.bkg
 
-        objs = sep.extract(image_sub, 3.0, err=self.bkg.globalrms,
+        objs = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
                            filter_type='matched', minarea=11)
 
         # remove objects without need
@@ -765,7 +814,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             normflux=flux, subpix=5)
 
         sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms / 1.46)
-        mask = (sn > 10) & (2 * radius < 20)
+        mask = (sn > 10) & (radius < 10)
 
         # to get HFR
         self.objs = objs[mask]

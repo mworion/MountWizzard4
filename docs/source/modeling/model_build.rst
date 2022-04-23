@@ -24,7 +24,7 @@ difference is the way and the context you are working in. MW4 uses the batch mod
 build as there are advantages (not in the model quality) in the automatic handling
 of point data.
 
-.. image:: image/model_build.drawio.png
+.. image:: image/model_build.png
     :align: center
     :scale: 71%
 

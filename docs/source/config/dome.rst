@@ -92,7 +92,7 @@ still could view your target and no dome movement is necessary.
 
 Top view of your dome setup:
 
-.. image:: image/dome_math_1.drawio.svg
+.. image:: image/dome_math_1.png
     :align: center
 
 .. image:: image/dome_opening_hysteresis.png

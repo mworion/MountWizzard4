@@ -517,8 +517,20 @@ def test_drawHemisphereTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.showMountLimits.setChecked(True)
     function.ui.showHorizon.setChecked(True)
-    suc = function.drawHemisphereTab()
-    assert suc
+    with mock.patch.object(function,
+                           'drawCelestialEquator'):
+        with mock.patch.object(function,
+                               'drawTerrainMask'):
+            with mock.patch.object(function,
+                                   'drawMeridianLimits'):
+                with mock.patch.object(function,
+                                       'drawHorizonLimits'):
+                    with mock.patch.object(function,
+                                           'drawModelIsoCurve'):
+                        with mock.patch.object(function,
+                                               'drawHorizonOnHem'):
+                            suc = function.drawHemisphereTab()
+                            assert suc
 
 
 def test_slewSelectedTarget_1(function):

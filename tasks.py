@@ -440,6 +440,11 @@ def test_macMonterey(c):
 def make_pdf(c):
     drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
     printMW('Generate PDF for distro')
-    with c.cd('docs/source'):
-        runMW(c, f'{drawio} -x -f -r png -o ./ ./ ')
+    for fullFilePath in glob.glob('./docs/**/**.drawio', recursive=True):
+        output = fullFilePath[:-6] + 'png'
+        command = f'{drawio} -x -f png -o {output} {fullFilePath}'
+        runMW(c, command)
+    with c.cd('docs'):
+        runMW(c, 'make clean')
+        runMW(c, 'make latexpdf')
     printMW('Generation finished\n')

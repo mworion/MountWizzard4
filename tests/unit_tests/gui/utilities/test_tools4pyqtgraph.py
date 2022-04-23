@@ -876,7 +876,8 @@ def test_NormalScatter_plot4():
                  z=np.array([2, 3, 4]),
                  ang=np.array([2, 3, 4]),
                  tip='{data}'.format,
-                 limits=True, range={'xMin': 0, 'xMax': 1, 'yMin': 0, 'yMax': 1})
+                 limits=True, range={'xMin': 0, 'xMax': 1, 'yMin': 0, 'yMax': 1},
+                 isoLevels=1)
     assert suc
 
 

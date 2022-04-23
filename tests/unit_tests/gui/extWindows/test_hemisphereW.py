@@ -512,6 +512,7 @@ def test_drawModelIsoCurve_2(function):
 
 
 def test_drawHemisphereTab_1(function):
+    function.ui.showIsoModel.setChecked(True)
     function.ui.showCelestial.setChecked(True)
     function.ui.showTerrain.setChecked(True)
     function.ui.showMountLimits.setChecked(True)

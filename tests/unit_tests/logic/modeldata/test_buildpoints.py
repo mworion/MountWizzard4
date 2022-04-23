@@ -695,6 +695,38 @@ def test_delHorizonP5():
     assert not suc
 
 
+def test_loadModel_1():
+    val = app.loadModel('')
+    assert val is None
+
+
+def test_loadModel_2():
+    with open('tests/workDir/config/test.model', 'w') as outfile:
+        outfile.writelines('[test, ]],[]}')
+
+    val = app.loadModel('tests/workDir/config/test.model')
+    assert val is None
+
+
+def test_loadModel_3():
+    with open('tests/workDir/config/test.model', 'wb') as outfile:
+        outfile.write(binascii.unhexlify('9f'))
+
+    val = app.loadModel('tests/workDir/config/test.model')
+    assert val is None
+
+
+def test_loadModel_4():
+    values = [{'azimuth': 1, 'altitude': 1}, {'azimuth': 2, 'altitude': 2}]
+    with open('tests/workDir/config/test.model', 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+
+    val = app.loadModel('tests/workDir/config/test.model')
+    assert val == [(1, 1), (2, 2)]
+
+
 def test_loadJSON_1():
     val = app.loadJSON('')
     assert val is None
@@ -704,7 +736,7 @@ def test_loadJSON_2():
     with open('tests/workDir/config/test.bpts', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
-    val = app.loadJSON('test')
+    val = app.loadJSON('tests/workDir/config/test.bpts')
     assert val is None
 
 
@@ -712,7 +744,7 @@ def test_loadJSON_3():
     with open('tests/workDir/config/test.bpts', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
-    val = app.loadJSON('test')
+    val = app.loadJSON('tests/workDir/config/test.bpts')
     assert val is None
 
 
@@ -807,8 +839,20 @@ def test_loadBuildP_5():
     with open(fileName, 'w') as outfile:
         outfile.write('1, 1\n')
         outfile.write('2, 2\n')
-    suc = app.loadBuildP('tests/workDir/config/test.csv', keep=True)
-    assert not suc
+    suc = app.loadBuildP('tests/workDir/config/test.csv', ext='.csv', keep=True)
+    assert suc
+
+
+def test_loadBuildP_6():
+    # load file with path
+    app.buildPFile = ''
+    values = [{'azimuth': 1, 'altitude': 1}, {'azimuth': 2, 'altitude': 2}]
+    with open('tests/workDir/config/test.model', 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+    suc = app.loadBuildP('tests/workDir/config/test.model', ext='.model', keep=True)
+    assert suc
 
 
 def test_saveBuildP_11():

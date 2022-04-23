@@ -696,7 +696,7 @@ def test_delHorizonP5():
 
 
 def test_loadJSON_1():
-    val = app.loadJSON('', '')
+    val = app.loadJSON('')
     assert val is None
 
 
@@ -704,7 +704,7 @@ def test_loadJSON_2():
     with open('tests/workDir/config/test.bpts', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
-    val = app.loadJSON('test', '.bpts')
+    val = app.loadJSON('test')
     assert val is None
 
 
@@ -712,7 +712,7 @@ def test_loadJSON_3():
     with open('tests/workDir/config/test.bpts', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
-    val = app.loadJSON('test', '.bpts')
+    val = app.loadJSON('test')
     assert val is None
 
 
@@ -723,12 +723,12 @@ def test_loadJSON_4():
                   outfile,
                   indent=4)
 
-    val = app.loadJSON('test', '.bpts')
+    val = app.loadJSON('tests/workDir/config/test.bpts')
     assert val == [(1, 1), (2, 2)]
 
 
 def test_loadCSV_1():
-    val = app.loadCSV('', '.csv')
+    val = app.loadCSV('')
     assert val is None
 
 
@@ -736,7 +736,7 @@ def test_loadCSV_2():
     with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('[test, ]],[]}\n')
 
-    val = app.loadCSV('test', '.csv')
+    val = app.loadCSV('tests/workDir/config/test.csv')
     assert val is None
 
 
@@ -745,7 +745,7 @@ def test_loadCSV_3():
         outfile.writelines('1, 1\n')
         outfile.writelines('2, 2\n')
 
-    val = app.loadCSV('test', '.csv')
+    val = app.loadCSV('tests/workDir/config/test.csv')
     assert val == [(1, 1), (2, 2)]
 
 
@@ -754,7 +754,7 @@ def test_loadCSV_4():
         outfile.writelines('1; 1\n')
         outfile.writelines('2; 2\n')
 
-    val = app.loadCSV('test', '.csv')
+    val = app.loadCSV('tests/workDir/config/test.csv')
     assert val == [(1, 1), (2, 2)]
 
 
@@ -766,7 +766,7 @@ def test_loadBuildP_1():
 
 def test_loadBuildP_2():
     # path with not existent file given
-    suc = app.loadBuildP('test_file_not_there', '')
+    suc = app.loadBuildP('test_file_not_there')
     assert not suc
 
 
@@ -779,7 +779,7 @@ def test_loadBuildP_3():
         json.dump(values,
                   outfile,
                   indent=4)
-    suc = app.loadBuildP('test', '.bpts')
+    suc = app.loadBuildP('tests/workDir/config/test.bpts')
     assert suc
     assert app.buildP == [(1, 1, True), (2, 2, True)]
 
@@ -796,7 +796,7 @@ def test_loadBuildP_4():
     with mock.patch.object(app,
                            'checkFormat',
                            return_value=False):
-        suc = app.loadBuildP('test', '.bpts')
+        suc = app.loadBuildP('tests/workDir/config/test.bpts')
         assert not suc
 
 
@@ -807,9 +807,8 @@ def test_loadBuildP_5():
     with open(fileName, 'w') as outfile:
         outfile.write('1, 1\n')
         outfile.write('2, 2\n')
-    suc = app.loadBuildP('test', '.csv', keep=True)
-    assert suc
-    assert app.buildP == [(1, 1, True), (2, 2, True)]
+    suc = app.loadBuildP('tests/workDir/config/test.csv', keep=True)
+    assert not suc
 
 
 def test_saveBuildP_11():

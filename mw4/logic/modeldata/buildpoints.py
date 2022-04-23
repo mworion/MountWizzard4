@@ -351,7 +351,7 @@ class DataPoint(object):
     def isCloseMeridian(self, point):
         """
         isCloseMeridian check if a point is close to meridian slew / track
-        limits limit
+        limits
 
         :param point:
         :return: status
@@ -432,23 +432,41 @@ class DataPoint(object):
 
         return True
 
-    def loadJSON(self, fileName, ext):
+    def loadModel(self, fullFileName):
         """
-        :param fileName: name of file to be handled
-        :param ext: extension of file to be handled
+        :param fullFileName: name of file to be handled
         :return: value: loaded data
         """
-        fileName = self.configDir + '/' + fileName + ext
-
-        if not os.path.isfile(fileName):
+        if not os.path.isfile(fullFileName):
             return None
 
         try:
-            with open(fileName, 'r') as handle:
+            with open(fullFileName, 'r') as handle:
                 value = json.load(handle)
 
         except Exception as e:
-            self.log.info('Cannot BPTS load: {0}, error: {1}'.format(fileName, e))
+            self.log.info('Cannot Model load: {0}, error: {1}'.format(fullFileName, e))
+            value = None
+
+        else:
+            value = [(x['altitude'], x['azimuth']) for x in value]
+
+        return value
+
+    def loadJSON(self, fullFileName):
+        """
+        :param fullFileName: name of file to be handled
+        :return: value: loaded data
+        """
+        if not os.path.isfile(fullFileName):
+            return None
+
+        try:
+            with open(fullFileName, 'r') as handle:
+                value = json.load(handle)
+
+        except Exception as e:
+            self.log.info('Cannot BPTS load: {0}, error: {1}'.format(fullFileName, e))
             value = None
 
         else:
@@ -456,17 +474,15 @@ class DataPoint(object):
 
         return value
 
-    def loadCSV(self, fileName, ext):
+    def loadCSV(self, fullFileName):
         """
-        :param fileName: name of file to be handled
-        :param ext: extension of file to be handled
+        :param fullFileName: name of file to be handled
         :return: value: loaded data
         """
-        fileName = self.configDir + '/' + fileName + ext
-        if not os.path.isfile(fileName):
+        if not os.path.isfile(fullFileName):
             return None
 
-        with open(fileName, 'r') as handle:
+        with open(fullFileName, 'r') as handle:
             testLine = handle.readline()
 
         if ';' in testLine:
@@ -476,13 +492,13 @@ class DataPoint(object):
 
         try:
             value = []
-            with open(fileName, 'r', encoding='utf-8-sig') as csvFile:
+            with open(fullFileName, 'r', encoding='utf-8-sig') as csvFile:
                 reader = csv.reader(csvFile, delimiter=delimiter)
                 for row in reader:
                     value.append(tuple(float(val) for val in row))
 
         except Exception as e:
-            self.log.info('Cannot CSV load: {0}, error: {1}'.format(fileName, e))
+            self.log.info('Cannot CSV load: {0}, error: {1}'.format(fullFileName, e))
             return None
 
         else:
@@ -501,24 +517,26 @@ class DataPoint(object):
 
         return True
 
-    def loadBuildP(self, fileName=None, ext='.bpts', keep=False):
+    def loadBuildP(self, fullFileName=None, ext='.bpts', keep=False):
         """
         loadBuildP loads a modeldata pints file and stores the data in the
         buildP list. necessary conversion are made.
 
-        :param fileName: name of file to be handled
+        :param fullFileName: name of file to be handled
         :param ext: load extension type
         :param keep:
         :return: success
         """
-        if fileName is None:
+        if fullFileName is None:
             return False
 
         value = None
         if ext == '.csv':
-            value = self.loadCSV(fileName, ext)
+            value = self.loadCSV(fullFileName)
         elif ext == '.bpts':
-            value = self.loadJSON(fileName, ext)
+            value = self.loadJSON(fullFileName)
+        elif ext == '.model':
+            value = self.loadModel(fullFileName)
 
         if value is None:
             return False
@@ -536,7 +554,8 @@ class DataPoint(object):
             self._buildP = points
 
         # backup solution
-        if csv:
+        if ext in ['.csv', '.model']:
+            fileName = os.path.basename(fullFileName).split('.')[0]
             self.saveBuildP(fileName=fileName)
 
         return True
@@ -572,11 +591,12 @@ class DataPoint(object):
         if fileName is None:
             return False
 
+        fullFileName = self.configDir + '/' + fileName + ext
         value = None
         if ext == '.csv':
-            value = self.loadCSV(fileName, ext)
+            value = self.loadCSV(fullFileName)
         elif ext == '.hpts':
-            value = self.loadJSON(fileName, ext)
+            value = self.loadJSON(fullFileName)
 
         suc = self.checkFormat(value)
         if not suc:

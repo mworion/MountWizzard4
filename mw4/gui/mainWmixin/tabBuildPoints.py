@@ -486,7 +486,8 @@ class BuildPoints:
             return False
 
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.loadBuildP(fileName=fileName, keep=keep)
+        fullFileName = self.app.mwGlob['configDir'] + '/' + fileName + '.bpts'
+        suc = self.app.data.loadBuildP(fullFileName=fullFileName, keep=keep)
 
         if not suc:
             text = 'Build points file [{0}] could not be loaded'.format(fileName)
@@ -501,16 +502,16 @@ class BuildPoints:
         :return: success
         """
         folder = self.app.mwGlob['configDir']
-        fileTypes = 'Build Point Files (*.bpts);; CSV Files (*.csv)'
-        loadFilePath, fileName, ext = self.openFile(self,
-                                                    'Open build point file',
-                                                    folder,
-                                                    fileTypes)
-        if not loadFilePath:
+        fileTypes = 'Build Point Files (*.bpts)'
+        fileTypes += ';; CSV Files (*.csv)'
+        fileTypes += ';; Model Files (*.model)'
+        fullFileName, fileName, ext = self.openFile(
+            self, 'Open build point file', folder, fileTypes)
+        if not fullFileName:
             return False
 
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.loadBuildP(fileName=fileName, ext=ext, keep=keep)
+        suc = self.app.data.loadBuildP(fullFileName=fullFileName, ext=ext, keep=keep)
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit(f'Build file [{fileName}] loaded', 0)

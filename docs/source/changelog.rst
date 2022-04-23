@@ -14,6 +14,31 @@ Ideas for the future
 - split imaging tab into operating and statistics
 - satellite scheduler
 
+Beta version of MW4
+----------------------------
+3.0.0b0
+
+- add: all charts zoomable
+- add: measure: window has max 5 charts now (from 3)
+- add: measure: more values (time delta, focus, etc)
+- add: almanac now supports UTC / local time
+- add: almanac support set/rise times moon
+- add: analyse: charts could show horizon and values for each point
+- add: analyse: alt / az charts with iso error curves
+- add: sound for connection lost and sat start tracking
+- add: model points: multiple variants for edit and move points
+- add: model points: set dither on celestial paths
+- add: model points: generate from actual used mount model
+- add: model points: existing model files could be loaded
+- add: hemisphere: show actual model error in background
+- add: hemisphere: edit horizon model much more efficient
+- add: dome: control azimuth move CW / CCW for INDI
+- add: satellites: all time values could be UTC or local time now
+- improve: complete rework of charting: performance and functions
+- improve: cleanup of gui
+- improve: iers download messages
+- improve: optimized DSO path generation (always fit, less params)
+- remove: matplotlib usage and replace with pyqtgraph
 
 Released version of MW4
 -----------------------

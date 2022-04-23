@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -9612,7 +9612,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.mainTabWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
-        self.satTabWidget.setCurrentIndex(1)
+        self.satTabWidget.setCurrentIndex(0)
         self.toolsTabWidget.setCurrentIndex(0)
         self.settingsTabWidget.setCurrentIndex(0)
         self.tabDomeExplain.setCurrentIndex(9)
@@ -10336,7 +10336,7 @@ class Ui_MainWindow(object):
         self.groupBox_55.setTitle(_translate("MainWindow", "Build Points specials"))
         self.clearBuildP.setToolTip(_translate("MainWindow", "Delete all model points on coordinate window and for usage."))
         self.clearBuildP.setText(_translate("MainWindow", "Clear Points"))
-        self.keepGeneratedPoints.setToolTip(_translate("MainWindow", "<html><head/><body><p>If checked, MW4 tries to start build model point from the pierside where the mount is actually.</p></body></html>"))
+        self.keepGeneratedPoints.setToolTip(_translate("MainWindow", "<html><head/><body><p>If checked, MW4 will keep existing model points and does not delete them!</p></body></html>"))
         self.keepGeneratedPoints.setText(_translate("MainWindow", "Keep points from existing generation"))
         self.ditherBuildPoints.setToolTip(_translate("MainWindow", "<html><head/><body><p>If checked, MW4 adds some random (+-2 degress) dither to calculated build point positions to enforce leaving steady state celecstial paths.</p></body></html>"))
         self.ditherBuildPoints.setText(_translate("MainWindow", "Dither model point positions if possible"))
@@ -10492,7 +10492,7 @@ class Ui_MainWindow(object):
         self.progSatellitesFull.setToolTip(_translate("MainWindow", "<html><head/><body><p>Programs the actual selected satellite database to the mount computer.</p></body></html>"))
         self.progSatellitesFull.setText(_translate("MainWindow", "Complete"))
         self.satSetupGroup.setTitle(_translate("MainWindow", "Setup"))
-        self.satCyclicUpdates.setToolTip(_translate("MainWindow", "<html><head/><body><p>When checked MW4 will calculate the satellite track on it\'s own with more features</p></body></html>"))
+        self.satCyclicUpdates.setToolTip(_translate("MainWindow", "<html><head/><body><p>When checked MW4 will recalculate the satellite data and constraints every 10 minutes</p></body></html>"))
         self.satCyclicUpdates.setText(_translate("MainWindow", "Do updates every 10min"))
         self.switchToTrackingTab.setToolTip(_translate("MainWindow", "<html><head/><body><p>If enabled as selection of a satellite (double click on an entry) will automatically switch to the next (tracking) tab.</p></body></html>"))
         self.switchToTrackingTab.setText(_translate("MainWindow", "Select switch to tracking"))

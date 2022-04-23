@@ -7766,7 +7766,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 tries to start build model point from the pierside where the mount is actually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will keep existing model points and does not delete them!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Keep points from existing generation</string>
@@ -10220,7 +10220,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -10438,7 +10438,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will calculate the satellite track on it's own with more features&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will recalculate the satellite data and constraints every 10 minutes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Do updates every 10min</string>

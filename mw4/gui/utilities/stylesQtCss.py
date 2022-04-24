@@ -367,17 +367,16 @@ class Styles:
             background-color: $M_TRANS$;;
         }
         QRadioButton::indicator {
-            border-width: 1px;
+            border-width: 2px;
             border-color: $M_GREY$;
             background-color: $M_BACK$;
             border-style: outset;
-            border-radius: 2px;
+            border-radius: 7px;
             width: 13px;
             height: 13px;
         }
         QRadioButton::indicator:checked {
             background-color: $M_BLUE$;
-            image: url(:/icon/$checkmark$.svg);
         }
         /* Spin Boxes */
         QDoubleSpinBox {

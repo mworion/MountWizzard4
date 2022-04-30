@@ -25,7 +25,6 @@ import astropy.io.fits as fits
 # local imports
 from base.tpool import Worker
 from base.indiClass import IndiClass
-from base.transform import JNowToJ2000
 from logic.camera.cameraSupport import CameraSupport
 
 

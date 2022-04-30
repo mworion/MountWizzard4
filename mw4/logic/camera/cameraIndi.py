@@ -108,7 +108,7 @@ class CameraIndi(IndiClass, CameraSupport):
                 return False
             elif value <= THRESHOLD:
                 if not self.isDownloading:
-                    self.signals.integrated.emit()
+                    self.signals.exposed.emit()
                 self.isDownloading = True
                 self.signals.message.emit('download')
             else:

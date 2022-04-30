@@ -102,14 +102,12 @@ class CameraSupport:
         if self.abortExpose:
             return ''
 
-        self.signals.downloaded.emit()
         self.signals.message.emit('saving')
         hdu = fits.PrimaryHDU(data=data)
         obs = self.app.mount.obsSite
         hdu.header = self.writeHeaderInfo(hdu.header, obs, expTime,
                                           binning, focalLength)
         hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
-        sleepAndEvents(100)
         self.log.info(f'Saved Image: [{imagePath}]')
         return imagePath
 
@@ -122,7 +120,7 @@ class CameraSupport:
         if self.abortExpose:
             return np.array([], dtype=np.uint16)
 
-        self.signals.integrated.emit()
+        self.signals.exposed.emit()
         self.signals.message.emit('download')
         tmp = function(param)
         if tmp is None:
@@ -178,7 +176,7 @@ class CameraSupport:
             else:
                 timeLeft = 0
 
-        self.signals.integrated.emit()
+        self.signals.exposed.emit()
         return True
 
     def waitDownload(self):

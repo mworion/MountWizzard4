@@ -15,8 +15,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import copy
-
 from invoke import task
 from PIL import Image
 import glob

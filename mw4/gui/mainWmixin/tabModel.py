@@ -511,7 +511,7 @@ class Model:
         self.app.camera.signals.exposeReady.emit()
 
         if self.ui.progressiveTiming.isChecked():
-            self.performanceTimingSignal = self.app.camera.signals.integrated
+            self.performanceTimingSignal = self.app.camera.signals.exposed
         elif self.ui.normalTiming.isChecked():
             self.performanceTimingSignal = self.app.camera.signals.downloaded
         else:

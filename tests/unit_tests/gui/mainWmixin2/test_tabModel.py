@@ -660,7 +660,7 @@ def test_setupSignalsForModelRun_5(function):
 
 
 def test_restoreSignalsModelDefault(function):
-    function.performanceTimingSignal = function.app.camera.signals.integrated
+    function.performanceTimingSignal = function.app.camera.signals.exposed
     function.app.camera.signals.saved.connect(function.modelSolve)
     function.performanceTimingSignal.connect(function.modelSlew)
     function.app.astrometry.signals.done.connect(function.modelSolveDone)

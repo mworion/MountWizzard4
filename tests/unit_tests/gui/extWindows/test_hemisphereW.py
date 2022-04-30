@@ -626,13 +626,6 @@ def test_slewDirect_4(function):
 
 
 def test_slewStar_1(function):
-    function.app.mount.model.numberStars = None
-    suc = function.slewStar(QPointF(1, 1))
-    assert not suc
-
-
-def test_slewStar_2(function):
-    function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem()
     with mock.patch.object(function.alignmentStars,
                            'pointsAt',

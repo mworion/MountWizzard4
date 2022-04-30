@@ -67,8 +67,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.meridianTrack = None
         self.imageTerrain = None
         self.hemMouse = None
-        self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(
-            self.mouseMovedHemisphere)
 
     def initConfig(self):
         """
@@ -145,7 +143,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.app.colorChange.connect(self.colorChange)
         self.app.enableEditPoints.connect(self.enableOperationModeChange)
         self.app.mount.signals.alignDone.connect(self.drawHemisphereTab)
-
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.drawPointerHem)
         self.app.dome.signals.azimuth.connect(self.drawDome)
@@ -164,6 +161,9 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.showPolar.clicked.connect(self.drawHemisphereTab)
         self.ui.showTerrain.clicked.connect(self.drawHemisphereTab)
         self.ui.showIsoModel.clicked.connect(self.drawHemisphereTab)
+        self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(
+            self.mouseMovedHemisphere)
+
         self.drawHemisphereTab()
         self.show()
         return True
@@ -721,6 +721,10 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         :return: True for test purpose
         """
+        hasModel = bool(self.app.mount.model.numberStars)
+        self.ui.alignmentModeHem.setEnabled(hasModel)
+        self.ui.showIsoModel.setEnabled(hasModel)
+
         self.prepareHemisphere()
         if self.ui.showCelestial.isChecked():
             self.drawCelestialEquator()
@@ -805,9 +809,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         :param posView:
         :return:
         """
-        if not self.app.mount.model.numberStars:
-            self.app.message.emit('No model for alignment present!', 2)
-            return False
         spot = self.alignmentStars.pointsAt(posView)
         if len(spot) == 0:
             return False

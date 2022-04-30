@@ -74,8 +74,8 @@ class Model:
         self.ui.parkMountAfterModel.setChecked(config.get('parkMountAfterModel', False))
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
         self.ui.progressiveTiming.setChecked(config.get('progressiveTiming', False))
-        self.ui.normalTiming.setChecked(config.get('normalTiming', True))
-        self.ui.conservativeTiming.setChecked(config.get('conservativeTiming', False))
+        self.ui.normalTiming.setChecked(config.get('normalTiming', False))
+        self.ui.conservativeTiming.setChecked(config.get('conservativeTiming', True))
 
         return True
 

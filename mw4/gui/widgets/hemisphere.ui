@@ -201,7 +201,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with mouse double click and chose the type of alignment.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Align</string>
+           <string>Polar / Otho Align</string>
           </property>
          </widget>
         </item>

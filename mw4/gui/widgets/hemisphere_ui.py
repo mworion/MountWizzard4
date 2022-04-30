@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/hemisphere.ui'
+# Form implementation generated from reading ui file 'hemisphere.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -374,7 +374,7 @@ class Ui_HemisphereDialog(object):
         self.editModeHem.setToolTip(_translate("HemisphereDialog", "Enabling the edit mode for model build points."))
         self.editModeHem.setText(_translate("HemisphereDialog", "Edit Model"))
         self.alignmentModeHem.setToolTip(_translate("HemisphereDialog", "<html><head/><body><p>Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with mouse double click and chose the type of alignment.</p></body></html>"))
-        self.alignmentModeHem.setText(_translate("HemisphereDialog", "Align"))
+        self.alignmentModeHem.setText(_translate("HemisphereDialog", "Polar / Otho Align"))
         self.groupBox_3.setToolTip(_translate("HemisphereDialog", "Showing different elements on the hemisphere diagram."))
         self.groupBox_3.setTitle(_translate("HemisphereDialog", "Show Elements"))
         self.showCelestial.setToolTip(_translate("HemisphereDialog", "<html><head/><body><p>Show the celestial circles in the view</p></body></html>"))

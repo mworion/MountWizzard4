@@ -725,6 +725,9 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.alignmentModeHem.setEnabled(hasModel)
         self.ui.showIsoModel.setEnabled(hasModel)
 
+        isMount = bool(self.app.deviceStat['mount'])
+        self.ui.showMountLimits.setEnabled(isMount)
+
         self.prepareHemisphere()
         if self.ui.showCelestial.isChecked():
             self.drawCelestialEquator()

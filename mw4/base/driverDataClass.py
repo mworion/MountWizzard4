@@ -29,7 +29,7 @@ class Signals(QObject):
     deviceConnected = pyqtSignal(str)
     deviceDisconnected = pyqtSignal(str)
 
-    integrated = pyqtSignal()
+    exposed = pyqtSignal()
     downloaded = pyqtSignal()
     saved = pyqtSignal(object)
     exposeReady = pyqtSignal()

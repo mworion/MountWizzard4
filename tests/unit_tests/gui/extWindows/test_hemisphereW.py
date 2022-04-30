@@ -154,14 +154,22 @@ def test_enableOperationModeChange_1(function):
 
 def test_setOperationModeHem_1(function):
     function.ui.editModeHem.setChecked(True)
-    suc = function.setOperationModeHem()
-    assert suc
+    with mock.patch.object(function,
+                           'drawModelPoints'):
+        with mock.patch.object(function,
+                               'drawHemisphereTab'):
+            suc = function.setOperationModeHem()
+            assert suc
 
 
 def test_setOperationModeHem_2(function):
     function.ui.alignmentModeHem.setChecked(True)
-    suc = function.setOperationModeHem()
-    assert suc
+    with mock.patch.object(function,
+                           'drawModelPoints'):
+        with mock.patch.object(function,
+                               'drawHemisphereTab'):
+            suc = function.setOperationModeHem()
+            assert suc
 
 
 def test_calculateRelevance_1(function):
@@ -517,6 +525,7 @@ def test_drawHemisphereTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.showMountLimits.setChecked(True)
     function.ui.showHorizon.setChecked(True)
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function,
                            'drawCelestialEquator'):
         with mock.patch.object(function,

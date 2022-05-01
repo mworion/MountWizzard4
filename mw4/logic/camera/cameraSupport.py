@@ -74,10 +74,11 @@ class CameraSupport:
                        self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
 
         hasCoordinate = self.raJ2000 is not None and self.decJ2000 is not None
-        isMount = obs.location is not None
         if hasCoordinate:
             header.append(('RA', self.raJ2000._degrees, 'Float value in degree'))
             header.append(('DEC', self.decJ2000.degrees, 'Float value in degree'))
+
+        isMount = obs.location is not None
         if isMount:
             header.append(('TELESCOP', self.app.mount.firmware.product,
                            'Mount version from firmware'))
@@ -168,8 +169,8 @@ class CameraSupport:
         while 'integrating' in self.data.get('Device.Message'):
             if self.abortExpose:
                 break
-            text = f'expose {timeLeft:3.0f} s'
             sleepAndEvents(100)
+            text = f'expose {timeLeft:3.0f} s'
             self.signals.message.emit(text)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1

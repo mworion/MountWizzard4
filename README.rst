@@ -65,7 +65,7 @@ There is a documentation available for MW4 which could be searched for entries:
 https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf
 
 Changelog:
-https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/changelog.rst
+https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/source/changelog.rst
 
 And there are some videos available for explanation in Youtube channel:
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/

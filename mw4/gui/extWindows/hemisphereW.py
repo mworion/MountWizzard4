@@ -483,14 +483,14 @@ class HemisphereWindow(MWidget, EditHorizon):
 
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
-        isAlign = self.ui.alignmentModeHem.isChecked()
+        isAlignMode = self.ui.alignmentModeHem.isChecked()
         self.alignmentStars.setData(x=hip.az, y=hip.alt)
         for i, val in enumerate(zip(hip.alt, hip.az, hip.name)):
             alt, az, name = val
-            color = self.M_YELLOW if isAlign else self.M_YELLOW1
+            color = self.M_YELLOW if isAlignMode else self.M_YELLOW1
 
-            size = 10 if isAlign else 6
-            if isAlign:
+            size = 10 if isAlignMode else 6
+            if isAlignMode:
                 rel = self.calculateRelevance(alt=alt, az=az)
                 fontColor, fontSize = self.selectFontParam(rel)
             else:

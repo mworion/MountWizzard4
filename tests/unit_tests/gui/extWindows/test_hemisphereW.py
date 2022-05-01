@@ -371,6 +371,7 @@ def test_drawAlignmentStars_4(function):
     function.alignmentStarsText = []
     function.alignmentStarsText.append(pg.TextItem())
     function.ui.showAlignStar.setChecked(True)
+    function.ui.alignmentModeHem.setChecked(True)
     function.alignmentStars = pg.ScatterPlotItem()
     suc = function.drawAlignmentStars()
     assert suc

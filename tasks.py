@@ -437,7 +437,7 @@ def test_macMonterey(c):
     printMW('test Monterey install finished\n')
 
 
-@task(pre=[version_doc, image_res])
+@task(pre=[version_doc])
 def make_pdf(c):
     drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
     printMW('Generate PDF for distro')
@@ -446,9 +446,9 @@ def make_pdf(c):
         command = f'{drawio} -x -f png -o {output} {fullFilePath}'
         runMW(c, command)
     with c.cd('docs'):
-        runMW(c, 'make clean')
         runMW(c, 'make latexpdf')
-    shutil.copy('./docs/build/latex/mountwizzard4.pdf', 'mountwizzard4.pdf')
+    with c.cd('docs/build/latex'):
+        runMW(c, 'open ./mountwizzard4.pdf')
     printMW('Generation finished\n')
 
 
@@ -461,7 +461,6 @@ def make_html(c):
         command = f'{drawio} -x -f png -o {output} {fullFilePath}'
         runMW(c, command)
     with c.cd('docs'):
-        runMW(c, 'make clean')
         runMW(c, 'make html')
     with c.cd('docs/build/html'):
         runMW(c, 'open ./contents.html')

@@ -68,7 +68,7 @@ There is an online documentation available for MW4 which could be searched for
 entries:
 
 Web based:
-https://mountwizzard4.readthedocs.io/en/latest/
+https://github.com/mworion/MountWizzard4/discussions
 
 PDF format:
 https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/

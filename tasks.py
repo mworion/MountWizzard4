@@ -464,8 +464,10 @@ def make_html(c):
         runMW(c, 'make html')
     with c.cd('docs'):
         runMW(c, 'rm -rf *')
+        runMW(c, 'rm -rf .*')
     with c.cd('doc/build'):
         runMW(c, 'mv html/* ../../docs')
+        runMW(c, 'mv html/.* ../../docs')
     with c.cd('docs'):
         runMW(c, 'mv contents.html index.html')
         runMW(c, 'open ./index.html')

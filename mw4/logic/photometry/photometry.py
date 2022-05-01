@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import os
+import logging
 
 # external packages
 import numpy as np
@@ -49,6 +50,7 @@ class Photometry:
     """
     """
     __all__ = ['Photometry']
+    log = logging.getLogger(__name__)
 
     ABERRATION_SIZE = 250
     FILTER_SCALE = 5
@@ -172,7 +174,8 @@ class Photometry:
         """
         size = self.ABERRATION_SIZE
         if self.w < 3 * size or self.h < 3 * size:
-            return self.image
+            self.aberrationImage = self.image
+            return False
 
         dw = int((self.w - 3 * size) / 2)
         dh = int((self.h - 3 * size) / 2)

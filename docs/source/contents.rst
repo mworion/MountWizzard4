@@ -3,7 +3,7 @@ Welcome to MountWizzard4!
 MW4 is a general utility for 10micron users for improving the workflow for astronomy
 work. It runs on Windows11, Windows10 (Win7 should be fine, but it will be not
 tested), Mac OSX (beginning from 10.12 to 11.x) including M1 variants if Rosetta is
-used and Linux (Ubuntu from 16.04 to 22.04). If you have some knowledge around
+used and Linux (Ubuntu from 16.04 to 20.04). If you have some knowledge around
 Raspberry Pi's and other SOC, you might be able to install MW4 on a RPi3+, RPi4.
 
 Before starting
@@ -84,5 +84,6 @@ issues on GitHub.
     :maxdepth: 2
 
     features
+    install/contents
     changelog
     changelogScripts

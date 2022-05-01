@@ -42,7 +42,7 @@ author = 'Michael Würtenberger'
 # The full version, including alpha/beta/rc tags
 version = '3.0.0b0'
 release = '3.0.0b0'
-master_doc = 'contents'
+master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
 

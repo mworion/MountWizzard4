@@ -471,6 +471,5 @@ def make_html(c):
         runMW(c, 'mv html/.nojekyll ../../docs')
         runMW(c, 'mv html/.buildinfo ../../docs')
     with c.cd('docs'):
-        runMW(c, 'mv contents.html index.html')
         runMW(c, 'open ./index.html')
     printMW('Generation finished\n')

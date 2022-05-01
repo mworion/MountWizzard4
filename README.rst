@@ -39,7 +39,7 @@ problem using older versions. A HW pre2012 might also have some issues.
 
 Versions, downloads and docs:
 -----------------------------
-|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth| |DOCS|
+|PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
 
 Code quality:
 -------------
@@ -68,10 +68,10 @@ There is an online documentation available for MW4 which could be searched for
 entries:
 
 Web based:
-https://github.com/mworion/MountWizzard4/discussions
+https://github.com/mworion/MountWizzard4/docs/build/html/contents.html
 
 PDF format:
-https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/
+https://github.com/mworion/MountWizzard4/docs/build/latex/mountwizzard4.pdf
 
 Installing procedures:
 https://mountwizzard4.readthedocs.io/en/latest/install/index.html
@@ -104,10 +104,6 @@ CS Michel
 
 .. |PY_VERSIONS| image::
     https://img.shields.io/pypi/pyversions/mountwizzard4.svg
-
-.. |DOCS| image::
-    https://readthedocs.org/projects/mountwizzard4/badge/?version=stable
-    :target: https://mountwizzard4.readthedocs.io/en/stable/?badge=stable
 
 .. |PYTEST macOS| image::
     https://github.com/mworion/MountWizzard4/workflows/unit_macOS/badge.svg?branch=master

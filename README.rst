@@ -68,10 +68,10 @@ There is an online documentation available for MW4 which could be searched for
 entries:
 
 Web based:
-https://github.com/mworion/MountWizzard4/blob/master/docs/build/html/contents.html
+https://raw.githubusercontent.com/mworion/MountWizzard4/blob/master/docs/build/html/contents.html
 
 PDF format:
-https://github.com/mworion/MountWizzard4/blob/master/docs/build/latex/mountwizzard4.pdf
+https://raw.githubusercontent.com/mworion/MountWizzard4/blob/master/docs/build/latex/mountwizzard4.pdf
 
 Installing procedures:
 https://mountwizzard4.readthedocs.io/en/latest/install/index.html

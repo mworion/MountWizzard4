@@ -67,8 +67,9 @@ Documentation:
 There is an online documentation available for MW4 which could be searched for
 entries:
 
-Web based:
-https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/html/contents.html
+`Browser based: <https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/html/contents.html> `_
+
+`PDF Format: <https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/build/latex/mountwizzard4.pdf> `_
 
 PDF format:
 https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf

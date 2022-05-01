@@ -8,7 +8,7 @@ workflow for astronomy work and imaging runs on Windows (10 and 11), OSx (Mojave
 environments supporting python 3.7-3.9 and PyQt5 5.15.4 as a GUI framework.
 
 Please check these pages for some hints to your installation:
-https://github.com/mworion/MountWizzard4/blob/master/docs/build/html/install/contents.html
+https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/html/install/contents.html
 
 For being fully operational, MW4 needs either:
 
@@ -68,10 +68,10 @@ There is an online documentation available for MW4 which could be searched for
 entries:
 
 Web based:
-https://raw.githubusercontent.com/mworion/MountWizzard4/blob/master/docs/build/html/contents.html
+https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/html/contents.html
 
 PDF format:
-https://raw.githubusercontent.com/mworion/MountWizzard4/blob/master/docs/build/latex/mountwizzard4.pdf
+https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf
 
 Installing procedures:
 https://mountwizzard4.readthedocs.io/en/latest/install/index.html

@@ -7,9 +7,6 @@ workflow for astronomy work and imaging runs on Windows (10 and 11), OSx (Mojave
 (Astroberry and StellarMate). As a python application, it should run in all
 environments supporting python 3.7-3.9 and PyQt5 5.15.4 as a GUI framework.
 
-Please check these pages for some hints to your installation:
-https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/html/install/contents.html
-
 For being fully operational, MW4 needs either:
 
 -   INDI server(s) (see: https://indilib.org) where your devices are connected to.
@@ -67,12 +64,7 @@ Documentation:
 There is an online documentation available for MW4 which could be searched for
 entries:
 
-Browser based: https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/html/contents.html
-
 PDF Format: https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/build/latex/mountwizzard4.pdf
-
-PDF format:
-https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf
 
 Installing procedures:
 https://mountwizzard4.readthedocs.io/en/latest/install/index.html

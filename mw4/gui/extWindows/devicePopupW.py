@@ -161,10 +161,8 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
-            if self.ui.tab.tabText(index) in frameworkTabTextList:
-                self.ui.tab.setTabEnabled(index, True)
-            else:
-                self.ui.tab.setTabEnabled(index, False)
+            isVisible = self.ui.tab.tabText(index) in frameworkTabTextList
+            self.ui.tab.setTabVisible(index, isVisible)
         return True
 
     def populateTabs(self):

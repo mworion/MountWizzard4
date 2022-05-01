@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/measure.ui'
+# Form implementation generated from reading ui file 'measure.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -25,20 +25,23 @@ class Ui_MeasureDialog(object):
         MeasureDialog.setSizeIncrement(QtCore.QSize(10, 10))
         MeasureDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(10)
         MeasureDialog.setFont(font)
         self.verticalLayout = QtWidgets.QVBoxLayout(MeasureDialog)
-        self.verticalLayout.setContentsMargins(4, 4, 4, 4)
-        self.verticalLayout.setSpacing(4)
+        self.verticalLayout.setContentsMargins(5, 5, 5, 5)
+        self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(4, 6, 4, 6)
         self.horizontalLayout.setSpacing(4)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.measureGroup = QtWidgets.QGroupBox(MeasureDialog)
+        self.measureGroup.setProperty("large", True)
         self.measureGroup.setObjectName("measureGroup")
         self.gridLayout = QtWidgets.QGridLayout(self.measureGroup)
-        self.gridLayout.setContentsMargins(4, 6, 4, 4)
+        self.gridLayout.setContentsMargins(5, 10, 5, 5)
+        self.gridLayout.setSpacing(5)
         self.gridLayout.setObjectName("gridLayout")
         self.label_2 = QtWidgets.QLabel(self.measureGroup)
         self.label_2.setObjectName("label_2")

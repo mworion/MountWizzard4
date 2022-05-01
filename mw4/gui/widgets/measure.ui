@@ -42,6 +42,7 @@
   </property>
   <property name="font">
    <font>
+    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -50,19 +51,19 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <property name="spacing">
-    <number>4</number>
+    <number>5</number>
    </property>
    <property name="leftMargin">
-    <number>4</number>
+    <number>5</number>
    </property>
    <property name="topMargin">
-    <number>4</number>
+    <number>5</number>
    </property>
    <property name="rightMargin">
-    <number>4</number>
+    <number>5</number>
    </property>
    <property name="bottomMargin">
-    <number>4</number>
+    <number>5</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
@@ -86,18 +87,24 @@
        <property name="title">
         <string>Measurement values</string>
        </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
        <layout class="QGridLayout" name="gridLayout">
         <property name="leftMargin">
-         <number>4</number>
+         <number>5</number>
         </property>
         <property name="topMargin">
-         <number>6</number>
+         <number>10</number>
         </property>
         <property name="rightMargin">
-         <number>4</number>
+         <number>5</number>
         </property>
         <property name="bottomMargin">
-         <number>4</number>
+         <number>5</number>
+        </property>
+        <property name="spacing">
+         <number>5</number>
         </property>
         <item row="0" column="1">
          <widget class="QLabel" name="label_2">

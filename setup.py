@@ -40,6 +40,7 @@ releaseNotes = """
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
 - remove: matplotlib usage and replace with pyqtgraph
+- remove: stacking in imageW as it was never used
  """
 
 with open('notes.txt', 'w') as f:
@@ -71,6 +72,7 @@ setup(
         'mw4.logic.focuser',
         'mw4.logic.measure',
         'mw4.logic.modeldata',
+        'mw4.logic.photometry',
         'mw4.logic.powerswitch',
         'mw4.logic.remote',
         'mw4.logic.telescope',

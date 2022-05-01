@@ -20,22 +20,16 @@ import os
 
 # external packages
 import numpy as np
-import sep
 import pyqtgraph as pg
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QFont
-from astropy.io import fits
-from PIL import Image
-from scipy.interpolate import griddata
-from scipy.ndimage import uniform_filter
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
-from base.tpool import Worker
+from logic.photometry.photometry import Photometry
 
 
 class ImageWindowSignals(QObject):
@@ -43,7 +37,6 @@ class ImageWindowSignals(QObject):
     """
     __all__ = ['ImageWindowSignals']
     solveImage = pyqtSignal(object)
-    showTitle = pyqtSignal(object)
 
 
 class ImageWindow(toolsQtWidget.MWidget):
@@ -67,32 +60,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
 
+        self.imgP = None
         self.barItem = None
         self.imageItem = None
-
         self.imageFileName = ''
         self.imageFileNameOld = ''
         self.expTime = 1
         self.binning = 1
-        self.image = None
         self.folder = ''
-        self.header = None
-        self.imageStack = None
-        self.numberStack = 0
-        self.objs = None
-        self.bkg = None
-        self.HFR = None
-        self.filterConst = None
-        self.xm = None
-        self.ym = None
-        self.scale = 5
-        self.aberrationSize = 250
         self.result = None
-        self.medianHFR = None
-        self.innerHFR = None
-        self.outerHFR = None
-        self.segTriangleHFR = None
-        self.segSquareHFR = None
         self.pen = pg.mkPen(color=self.M_BLUE, width=3)
         self.penPink = pg.mkPen(color=self.M_PINK + '80', width=5)
         self.font = QFont(self.window().font().family(), 16)
@@ -129,7 +105,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.tabImage.setCurrentIndex(config.get('tabImage', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
-        self.ui.stackImages.setChecked(config.get('stackImages', False))
         self.ui.showCrosshair.setChecked(config.get('showCrosshair', False))
         self.ui.aspectLocked.setChecked(config.get('aspectLocked', False))
         self.ui.autoSolve.setChecked(config.get('autoSolve', False))
@@ -153,7 +128,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['color'] = self.ui.color.currentIndex()
         config['tabImage'] = self.ui.tabImage.currentIndex()
         config['imageFileName'] = self.imageFileName
-        config['stackImages'] = self.ui.stackImages.isChecked()
         config['showCrosshair'] = self.ui.showCrosshair.isChecked()
         config['aspectLocked'] = self.ui.aspectLocked.isChecked()
         config['autoSolve'] = self.ui.autoSolve.isChecked()
@@ -173,18 +147,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
-        self.ui.enablePhotometry.clicked.connect(self.preparePhotometry)
+        self.ui.enablePhotometry.clicked.connect(self.processPhotometry)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
-        self.ui.stackImages.clicked.connect(self.clearStack)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
         self.ui.offsetTiltAngle.valueChanged.connect(self.showTabTiltTriangle)
         self.signals.solveImage.connect(self.solveImage)
-        self.signals.showTitle.connect(self.showTitle)
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
@@ -256,15 +228,6 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         return True
 
-    def showTitle(self, text):
-        """
-        :param text:
-        :return:
-        """
-        fileName = os.path.basename(self.imageFileName)
-        self.setWindowTitle(f'Imaging:   {fileName}   {text}')
-        return True
-
     def selectImage(self):
         """
         :return: success
@@ -276,7 +239,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.app.message.emit('No image selected', 0)
             return False
 
-        self.signals.showTitle.emit('')
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image selected:      [{name}]', 0)
         self.folder = os.path.dirname(loadFilePath)
@@ -335,125 +297,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.roundness.p[0].setAspectLocked(isLocked)
         return True
 
-    def calcAberrationInspectView(self, img):
-        """
-        :param img:
-        :return:
-        """
-        size = self.aberrationSize
-        h, w = img.shape
-        if w < 3 * size or h < 3 * size:
-            return img
-
-        dw = int((w - 3 * size) / 2)
-        dh = int((h - 3 * size) / 2)
-
-        img = np.delete(img, np.s_[size:size + dh], axis=0)
-        img = np.delete(img, np.s_[size * 2:size * 2 + dh], axis=0)
-        img = np.delete(img, np.s_[size:size + dw], axis=1)
-        img = np.delete(img, np.s_[size * 2:size * 2 + dw], axis=1)
-        return img
-
-    def workerCalcTiltValuesSquare(self):
-        """
-        :return:
-        """
-        h, w = self.image.shape
-        stepY = int(h / 3)
-        stepX = int(w / 3)
-
-        xRange = [0, stepX, 2 * stepX, 3 * stepX]
-        yRange = [0, stepY, 2 * stepY, 3 * stepY]
-        x = self.objs['x']
-        y = self.objs['y']
-        segHFR = np.zeros((3, 3))
-        for ix in range(3):
-            for iy in range(3):
-                xMin = xRange[ix]
-                xMax = xRange[ix + 1]
-                yMin = yRange[iy]
-                yMax = yRange[iy + 1]
-                hfr = self.HFR[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
-                med_hfr = np.median(hfr)
-                segHFR[ix][iy] = med_hfr
-        self.segSquareHFR = segHFR
-        return True
-
-    def workerCalcTiltValuesTriangle(self):
-        """
-        :return:
-        """
-        h, w = self.image.shape
-        x = self.objs['x'] - w / 2
-        y = self.objs['y'] - h / 2
-        radius = min(h / 2, w / 2)
-        mask1 = np.sqrt(h * h + w * w) * 0.25 < radius
-        mask2 = np.sqrt(h * h + w * w) > radius
-        segHFR = np.zeros(36)
-        angles = np.mod(np.arctan2(y, x), 2*np.pi)
-        rangeA = np.radians(range(0, 361, 10))
-        for i in range(36):
-            mask3 = rangeA[i] < angles
-            mask4 = rangeA[i + 1] > angles
-            segHFR[i] = np.median(self.HFR[mask1 & mask2 & mask3 & mask4])
-        self.segTriangleHFR = np.concatenate([segHFR, segHFR])
-        return True
-
-    def baseCalcTabInfo(self):
-        """
-        :return:
-        """
-        h, w = self.image.shape
-        rangeX = np.linspace(0, w, int(w / self.scale))
-        rangeY = np.linspace(0, h, int(h / self.scale))
-        self.xm, self.ym = np.meshgrid(rangeX, rangeY)
-        self.filterConst = int(w / self.scale / 2)
-        x = self.objs['x'] - w / 2
-        y = self.objs['y'] - h / 2
-        self.medianHFR = np.median(self.HFR)
-        radius = np.sqrt(x * x + y * y)
-        maskOuter = np.sqrt(h * h / 4 + w * w / 4) * 0.75 < radius
-        maskInner = np.sqrt(h * h / 4 + w * w / 4) * 0.25 > radius
-        self.outerHFR = np.median(self.HFR[maskOuter])
-        self.innerHFR = np.median(self.HFR[maskInner])
-        return True
-
-    def showTabRaw(self):
-        """
-        :return:
-        """
-        self.ui.image.setImage(imageDisp=self.image)
-        self.setCrosshair()
-        QApplication.processEvents()
-        return True
-
-    def workerShowTabHFR(self):
-        """
-        :return:
-        """
-        img = griddata((self.objs['x'], self.objs['y']),
-                       self.HFR, (self.xm, self.ym),
-                       method='nearest', fill_value=np.min(self.HFR))
-        img = uniform_filter(img, size=self.filterConst)
-        return img
-
-    def showTabHFR(self, img):
-        """
-        :param img:
-        :return:
-        """
-        self.ui.tabImage.setTabEnabled(1, True)
-        self.ui.hfr.setImage(imageDisp=img)
-        self.ui.hfr.p[0].showAxes(False, showValues=False)
-        self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
-        hfrPercentile10 = np.percentile(self.HFR, 90)
-        self.ui.hfrPercentile.setText(f'{hfrPercentile10:1.1f}')
-        medianHFR = np.median(self.HFR)
-        self.ui.medianHFR.setText(f'{medianHFR:1.2f}')
-        self.ui.numberStars.setText(f'{len(self.HFR):1.0f}')
-        QApplication.processEvents()
-        return True
-
     @staticmethod
     def clearImageTab(imageWidget):
         """
@@ -470,24 +313,26 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        segHFR = self.segSquareHFR
-        h, w = self.image.shape
+        segHFR = self.imgP.hfrSegSquare
+        w = self.imgP.w
+        h = self.imgP.h
+        plotItem = self.ui.tiltSquare.p[0]
         self.clearImageTab(self.ui.tiltSquare)
-        self.ui.tiltSquare.setImage(self.image)
+        self.ui.tiltSquare.setImage(self.imgP.image)
 
         # draw lines on image
-        for ix in range(1, 3):
-            posX = ix * w / 3
+        for i in range(1, 3):
+            posX = i * w / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setPen(self.pen)
             lineItem.setLine(posX, 0, posX, h)
-            self.ui.tiltSquare.p[0].addItem(lineItem)
-        for iy in range(1, 3):
-            posY = iy * h / 3
+            plotItem.addItem(lineItem)
+
+            posY = i * h / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setPen(self.pen)
             lineItem.setLine(0, posY, w, posY)
-            self.ui.tiltSquare.p[0].addItem(lineItem)
+            plotItem.addItem(lineItem)
 
         # write values in boxes
         for ix in range(3):
@@ -500,7 +345,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 posY = iy * h / 3 + h / 6
                 textItem.setPos(posX, posY)
                 textItem.setZValue(10)
-                self.ui.tiltSquare.p[0].addItem(textItem)
+                plotItem.addItem(textItem)
 
         # calc extreme HFR values
         corners = np.array([segHFR[0][0], segHFR[2][0], segHFR[2][2], segHFR[0][2]])
@@ -521,60 +366,69 @@ class ImageWindow(toolsQtWidget.MWidget):
             lineItem.setPen(self.penPink)
             lineItem.setLine(points[link[0]][0], points[link[0]][1],
                              points[link[1]][0], points[link[1]][1])
-            self.ui.tiltSquare.p[0].addItem(lineItem)
+            plotItem.addItem(lineItem)
 
         tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.medianHFR
+        tiltPercent = 100 * tiltDiff / self.imgP.hfrMedian
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
                 break
+
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
         self.ui.textSquareTiltHFR.setText(t)
 
-        offAxisDiff = self.outerHFR - segHFR[1][1]
-        offAxisPercent = 100 * offAxisDiff / self.medianHFR
+        offAxisDiff = self.imgP.hfrOuter - segHFR[1][1]
+        offAxisPercent = 100 * offAxisDiff / self.imgP.hfrMedian
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textSquareTiltOffAxis.setText(t)
-        self.ui.squareMedianHFR.setText(f'{self.medianHFR:1.2f}')
-        self.ui.squareNumberStars.setText(f'{len(self.HFR):1.0f}')
+        self.ui.squareMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
+        self.ui.squareNumberStars.setText(f'{len(self.imgP.HFR):1.0f}')
 
         self.ui.tabImage.setTabEnabled(2, True)
-        QApplication.processEvents()
         return True
 
     def showTabTiltTriangle(self):
         """
         :return:
         """
-        segHFR = self.segTriangleHFR
-        h, w = self.image.shape
+        segHFR = self.imgP.hfrSegTriangle
+        w = self.imgP.w
+        h = self.imgP.h
         r = min(h, w) / 2
         cx = w / 2
         cy = h / 2
+        r25 = 0.25 * r
+        r62 = 0.625 * r
+        r95 = 0.95 * r
 
+        plotItem = self.ui.tiltTriangle.p[0]
         self.clearImageTab(self.ui.tiltTriangle)
-        self.ui.tiltTriangle.setImage(self.image)
+        self.ui.tiltTriangle.setImage(self.imgP.image)
+
+        # draw rings on image
         ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
         ellipseItem.setRect(cx - r, cy - r, 2 * r, 2 * r)
         ellipseItem.setPen(self.pen)
-        self.ui.tiltTriangle.p[0].addItem(ellipseItem)
-        r25 = 0.25 * r
+        plotItem.addItem(ellipseItem)
+
         ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
         ellipseItem.setRect(cx - r25, cy - r25, 2 * r25, 2 * r25)
         ellipseItem.setPen(self.pen)
-        self.ui.tiltTriangle.p[0].addItem(ellipseItem)
+        plotItem.addItem(ellipseItem)
 
-        offsetTiltAngle = self.ui.offsetTiltAngle.value()
-
-        text = f'{self.innerHFR:1.2f}'
+        # add inner value
+        text = f'{self.imgP.hfrInner:1.2f}'
         textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
         textItem.setText(text)
         textItem.setFont(self.font)
         textItem.setZValue(10)
         textItem.setPos(cx, cy)
-        self.ui.tiltTriangle.p[0].addItem(textItem)
+        plotItem.addItem(textItem)
+
+        # add ring values
         segData = np.array([0.0, 0.0, 0.0])
         vectors = np.array([[0, 0], [0, 0], [0, 0]])
+        offsetTiltAngle = self.ui.offsetTiltAngle.value()
 
         for i, angle in enumerate(range(0, 360, 120)):
             angleSep = np.radians(angle + offsetTiltAngle + 210)
@@ -586,7 +440,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setLine(posX1, posY1, posX2, posY2)
             lineItem.setPen(self.pen)
-            self.ui.tiltTriangle.p[0].addItem(lineItem)
+            plotItem.addItem(lineItem)
+
             startIndexSeg = int((angle + offsetTiltAngle + 210) / 10)
             endIndexSeg = int((angle + offsetTiltAngle + 330) / 10)
             segData[i] = np.mean(segHFR[startIndexSeg:endIndexSeg])
@@ -595,17 +450,17 @@ class ImageWindow(toolsQtWidget.MWidget):
             textItem.setFont(self.font)
             textItem.setZValue(10)
             textItem.setText(text)
-            posX = cx + r * 0.625 * np.cos(angleText)
-            posY = cy + r * 0.625 * np.sin(angleText)
-            vectors[i][0] = r * 0.95 * np.cos(angleText)
-            vectors[i][1] = r * 0.95 * np.sin(angleText)
+            posX = cx + r62 * np.cos(angleText)
+            posY = cy + r62 * np.sin(angleText)
+            vectors[i][0] = r95 * np.cos(angleText)
+            vectors[i][1] = r95 * np.sin(angleText)
             textItem.setPos(posX, posY)
-            self.ui.tiltTriangle.p[0].addItem(textItem)
+            plotItem.addItem(textItem)
 
         best = np.min(segData)
         worst = np.max(segData)
         tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.medianHFR
+        tiltPercent = 100 * tiltDiff / self.imgP.hfrMedian
 
         # calc vectors
         points = [[cx, cy]]
@@ -619,316 +474,24 @@ class ImageWindow(toolsQtWidget.MWidget):
             lineItem.setPen(self.penPink)
             lineItem.setLine(points[link[0]][0], points[link[0]][1],
                              points[link[1]][0], points[link[1]][1])
-            self.ui.tiltTriangle.p[0].addItem(lineItem)
+            plotItem.addItem(lineItem)
 
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
                 break
+
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
         self.ui.textTriangleTiltHFR.setText(t)
 
-        offAxisDiff = self.outerHFR - self.innerHFR
-        offAxisPercent = 100 * offAxisDiff / self.medianHFR
+        offAxisDiff = self.imgP.hfrOuter - self.imgP.hfrInner
+        offAxisPercent = 100 * offAxisDiff / self.imgP.hfrMedian
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textTriangleTiltOffAxis.setText(t)
-        self.ui.triangleMedianHFR.setText(f'{self.medianHFR:1.2f}')
-        self.ui.triangleNumberStars.setText(f'{len(self.HFR):1.0f}')
+        self.ui.triangleMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
+        self.ui.triangleNumberStars.setText(f'{len(self.imgP.HFR):1.0f}')
 
         self.ui.tabImage.setTabEnabled(3, True)
-        QApplication.processEvents()
         return True
-
-    def workerShowTabRoundness(self):
-        """
-        :return:
-        """
-        a = self.objs['a']
-        b = self.objs['b']
-        aspectRatio = np.maximum(a/b, b/a)
-        minB, maxB = np.percentile(aspectRatio, (50, 95))
-        img = griddata((self.objs['x'], self.objs['y']), aspectRatio, (self.xm,
-                                                                       self.ym),
-                       method='linear', fill_value=np.min(aspectRatio))
-        img = uniform_filter(img, size=self.filterConst)
-        return aspectRatio, img, minB, maxB
-
-    def showTabRoundness(self, result):
-        """
-        :param result:
-        :return:
-        """
-        aspectRatio, img, minB, maxB = result
-        self.ui.roundness.setImage(imageDisp=img)
-        self.ui.roundness.p[0].showAxes(False, showValues=False)
-        self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
-        self.ui.roundness.barItem.setLevels((minB, maxB))
-        aspectRatioPercentile10 = np.percentile(aspectRatio, 90)
-        self.ui.aspectRatioPercentile.setText(f'{aspectRatioPercentile10:1.1f}')
-
-        self.ui.tabImage.setTabEnabled(4, True)
-        QApplication.processEvents()
-        return True
-
-    def showTabAberrationInspect(self):
-        """
-        :return:
-        """
-        self.ui.aberration.barItem.setVisible(False)
-        abb = self.calcAberrationInspectView(self.image)
-        h, w = abb.shape
-        self.ui.aberration.p[0].clear()
-        self.ui.aberration.p[0].setAspectLocked(True)
-        self.ui.aberration.p[0].showAxes(False, showValues=False)
-        self.ui.aberration.p[0].setMouseEnabled(x=False, y=False)
-        self.ui.aberration.setImage(abb)
-        for ix in range(1, 3):
-            posX = ix * w / 3
-            lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(self.pen)
-            lineItem.setLine(posX, 0, posX, h)
-            self.ui.aberration.p[0].addItem(lineItem)
-        for iy in range(1, 3):
-            posY = iy * h / 3
-            lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(self.pen)
-            lineItem.setLine(0, posY, w, posY)
-            self.ui.aberration.p[0].addItem(lineItem)
-
-        self.ui.tabImage.setTabEnabled(5, True)
-        QApplication.processEvents()
-        self.ui.aberration.p[0].getViewBox().rightMouseRange()
-        return True
-
-    def showTabImageSources(self):
-        """
-        :return:
-        """
-        # self.clearImageTab(self.ui.imageSource)
-        self.ui.imageSource.setImage(imageDisp=self.image)
-        for i in range(len(self.objs)):
-            self.ui.imageSource.addEllipse(
-                self.objs['x'][i], self.objs['y'][i],
-                self.objs['a'][i] * 6, self.objs['b'][i] * 6,
-                self.objs['theta'][i])
-        self.ui.tabImage.setTabEnabled(6, True)
-        QApplication.processEvents()
-        return True
-
-    def showTabBackground(self):
-        """
-        :return:
-        """
-        back = self.bkg.back()
-        maxB = np.max(back) / self.bkg.globalback
-        minB = np.min(back) / self.bkg.globalback
-        img = back / self.bkg.globalback
-        img = uniform_filter(img, size=self.filterConst)
-        self.ui.background.setImage(imageDisp=img)
-        self.ui.background.barItem.setLevels((minB, maxB))
-        self.ui.tabImage.setTabEnabled(7, True)
-        QApplication.processEvents()
-        return True
-
-    def showTabBackgroundRMS(self):
-        """
-        :return:
-        """
-        img = self.bkg.rms()
-        img = uniform_filter(img, size=self.filterConst)
-        self.ui.backgroundRMS.setImage(imageDisp=img)
-        self.ui.tabImage.setTabEnabled(8, True)
-        QApplication.processEvents()
-        return True
-
-    def showTabImages(self):
-        """
-        :return:
-        """
-        self.setBarColor()
-        self.showTabRaw()
-        self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
-        if self.HFR is None:
-            return False
-
-        self.baseCalcTabInfo()
-
-        worker = Worker(self.workerShowTabHFR)
-        worker.signals.result.connect(self.showTabHFR)
-        self.threadPool.start(worker)
-
-        worker = Worker(self.workerShowTabRoundness)
-        worker.signals.result.connect(self.showTabRoundness)
-        self.threadPool.start(worker)
-
-        worker = Worker(self.workerCalcTiltValuesSquare)
-        worker.signals.result.connect(self.showTabTiltSquare)
-        self.threadPool.start(worker)
-
-        worker = Worker(self.workerCalcTiltValuesTriangle)
-        worker.signals.result.connect(self.showTabTiltTriangle)
-        self.threadPool.start(worker)
-
-        self.showTabBackground()
-        self.showTabAberrationInspect()
-        self.showTabImageSources()
-        self.showTabBackgroundRMS()
-
-        self.changeStyleDynamic(self.ui.tabImage, 'running', False)
-        return True
-
-    def workerPreparePhotometry(self):
-        """
-        :return:
-        """
-        self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
-        image_sub = self.image - self.bkg
-
-        objs = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
-                           filter_type='matched', minarea=11)
-
-        # remove objects without need
-        r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
-        mask = (r < 10) & (r > 0.8)
-        objs = objs[mask]
-
-        kronRad, krFlag = sep.kron_radius(
-            image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'], 6.0)
-
-        flux, fluxErr, flag = sep.sum_ellipse(
-            image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'],
-            2.5 * kronRad, subpix=1)
-
-        flag |= krFlag
-        r_min = 1.75
-
-        useCircle = kronRad * np.sqrt(objs['a'] * objs['b']) < r_min
-        cFlux, cFluxErr, cFlag = sep.sum_circle(
-            image_sub, objs['x'][useCircle], objs['y'][useCircle], r_min, subpix=1)
-
-        flux[useCircle] = cFlux
-        fluxErr[useCircle] = cFluxErr
-        flag[useCircle] = cFlag
-
-        radius, _ = sep.flux_radius(
-            image_sub, objs['x'], objs['y'], 6.0 * objs['a'], 0.5,
-            normflux=flux, subpix=5)
-
-        sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms / 1.46)
-        mask = (sn > 10) & (radius < 10)
-
-        # to get HFR
-        self.objs = objs[mask]
-        self.HFR = radius[mask]
-        return True
-
-    def clearGui(self):
-        """
-        :return:
-        """
-        self.signals.showTitle.emit('')
-        self.ui.medianHFR.setText('')
-        self.ui.hfrPercentile.setText('')
-        self.ui.numberStars.setText('')
-        self.ui.aspectRatioPercentile.setText('')
-        self.ui.image.setImage(None)
-        for i in range(1, self.ui.tabImage.count()):
-            self.ui.tabImage.setTabEnabled(i, False)
-        self.changeStyleDynamic(self.ui.tabImage, 'running', False)
-        return True
-
-    def preparePhotometry(self):
-        """
-        :return:
-        """
-        doPhotometry = self.ui.enablePhotometry.isChecked()
-        if doPhotometry:
-            self.ui.stackImages.setChecked(False)
-            self.changeStyleDynamic(self.ui.tabImage, 'running', True)
-            worker = Worker(self.workerPreparePhotometry)
-            worker.signals.finished.connect(self.showTabImages)
-            self.threadPool.start(worker)
-        else:
-            self.clearGui()
-            self.objs = None
-            self.bkg = None
-            self.HFR = None
-            self.showTabImages()
-        return True
-
-    def stackImages(self):
-        """
-        :return:
-        """
-        if not self.ui.stackImages.isChecked():
-            self.imageStack = None
-            return False
-
-        if np.shape(self.image) != np.shape(self.imageStack):
-            self.imageStack = None
-
-        if self.imageStack is None:
-            self.imageStack = self.image
-            self.numberStack = 1
-        else:
-            self.imageStack = np.add(self.imageStack, self.image)
-            self.numberStack += 1
-
-        self.image = self.imageStack / self.numberStack
-        self.signals.showTitle.emit(f'stacked: {self.numberStack:3.0f}')
-        return True
-
-    def clearStack(self):
-        """
-        :return:
-        """
-        if not self.ui.stackImages.isChecked():
-            self.imageStack = None
-            self.numberStack = 0
-            self.signals.showTitle.emit('')
-            return False
-        else:
-            self.ui.enablePhotometry.setChecked(False)
-        return True
-
-    def debayerImage(self, image, pattern):
-        """
-        :param: image:
-        :param: pattern:
-        :return:
-        """
-        w = image.shape[0]
-        h = image.shape[1]
-        if pattern == 'GBRG':
-            R = image[1::2, 0::2]
-            B = image[0::2, 1::2]
-            G0 = image[0::2, 0::2]
-            G1 = image[1::2, 1::2]
-
-        elif pattern == 'RGGB':
-            R = image[0::2, 0::2]
-            B = image[1::2, 1::2]
-            G0 = image[0::2, 1::2]
-            G1 = image[1::2, 0::2]
-
-        elif pattern == 'GRBG':
-            R = image[0::2, 1::2]
-            B = image[1::2, 0::2]
-            G0 = image[0::2, 0::2]
-            G1 = image[1::2, 1::2]
-
-        elif pattern == 'BGGR':
-            R = image[1::2, 1::2]
-            B = image[0::2, 0::2]
-            G0 = image[0::2, 1::2]
-            G1 = image[1::2, 0::2]
-
-        else:
-            self.log.info('Unknown debayer pattern, keep it')
-            return image
-
-        image = 0.2989 * R + 0.5870 * (G0 + G1) / 2 + 0.1140 * B
-        image = np.array(Image.fromarray(image).resize((h, w)))
-        return image
 
     def writeHeaderDataToGUI(self, header):
         """
@@ -949,40 +512,123 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
         return True
 
-    @staticmethod
-    def checkFormatImage(image):
-        """
-        :param image:
-        :return:
-        """
-        image = np.flipud(image)
-        image = image / np.max(image) * 65536.0
-        return image.astype('float32')
-
-    def workerLoadImage(self):
+    def showTabImage(self):
         """
         :return:
         """
-        with fits.open(self.imageFileName, mode='update') as fitsHandle:
-            self.image = fitsHandle[0].data
-            self.header = fitsHandle[0].header
+        self.ui.image.setImage(imageDisp=self.imgP.image)
+        self.setBarColor()
+        self.setCrosshair()
+        self.writeHeaderDataToGUI(self.imgP.header)
+        self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
+        return True
 
-        if self.image is None or len(self.image) == 0:
-            self.log.debug('No image data in FITS')
+    def showTabHFR(self):
+        """
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(1, True)
+        self.ui.hfr.setImage(imageDisp=self.imgP.hfrGrid)
+        self.ui.hfr.p[0].showAxes(False, showValues=False)
+        self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.hfrPercentile.setText(f'{self.imgP.hfrPercentile:1.1f}')
+        self.ui.medianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
+        self.ui.numberStars.setText(f'{len(self.imgP.HFR):1.0f}')
+        return True
+
+    def showTabRoundness(self):
+        """
+        :return:
+        """
+        self.ui.roundness.setImage(imageDisp=self.imgP.roundnessGrid)
+        self.ui.roundness.p[0].showAxes(False, showValues=False)
+        self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.roundness.barItem.setLevels(
+            (self.imgP.roundnessMin, self.imgP.roundnessMax))
+        self.ui.aspectRatioPercentile.setText(f'{self.imgP.roundnessPercentile:1.1f}')
+
+        self.ui.tabImage.setTabEnabled(4, True)
+        return True
+
+    def showTabAberrationInspect(self):
+        """
+        :return:
+        """
+        self.ui.aberration.barItem.setVisible(False)
+        self.ui.aberration.p[0].clear()
+        self.ui.aberration.p[0].setAspectLocked(True)
+        self.ui.aberration.p[0].showAxes(False, showValues=False)
+        self.ui.aberration.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.aberration.setImage(self.imgP.aberrationImage)
+        for i in range(1, 3):
+            posX = i * self.imgP.ABERRATION_SIZE
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(self.pen)
+            lineItem.setLine(posX, 0, posX, 3 * self.imgP.ABERRATION_SIZE)
+            self.ui.aberration.p[0].addItem(lineItem)
+
+            posY = i * self.imgP.ABERRATION_SIZE
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(self.pen)
+            lineItem.setLine(0, posY, 3 * self.imgP.ABERRATION_SIZE, posY)
+            self.ui.aberration.p[0].addItem(lineItem)
+
+        self.ui.tabImage.setTabEnabled(5, True)
+        self.ui.aberration.p[0].getViewBox().rightMouseRange()
+        return True
+
+    def showTabImageSources(self):
+        """
+        :return:
+        """
+        self.ui.imageSource.setImage(imageDisp=self.imgP.image)
+        objs = self.imgP.objs
+        for i in range(len(objs)):
+            self.ui.imageSource.addEllipse(
+                objs['x'][i], objs['y'][i],
+                objs['a'][i] * 6, objs['b'][i] * 6,
+                objs['theta'][i])
+        self.ui.tabImage.setTabEnabled(6, True)
+        return True
+
+    def showTabBackground(self):
+        """
+        :return:
+        """
+        self.ui.background.setImage(imageDisp=self.imgP.background)
+        self.ui.background.barItem.setLevels(
+            (self.imgP.backgroundMin, self.imgP.backgroundMax))
+        self.ui.tabImage.setTabEnabled(7, True)
+        return True
+
+    def showTabBackgroundRMS(self):
+        """
+        :return:
+        """
+        self.ui.backgroundRMS.setImage(imageDisp=self.imgP.backgroundRMS)
+        self.ui.tabImage.setTabEnabled(8, True)
+        return True
+
+    def clearGui(self):
+        """
+        :return:
+        """
+        self.ui.medianHFR.setText('')
+        self.ui.hfrPercentile.setText('')
+        self.ui.numberStars.setText('')
+        self.ui.aspectRatioPercentile.setText('')
+        for i in range(1, self.ui.tabImage.count()):
+            self.ui.tabImage.setTabEnabled(i, False)
+        return True
+
+    def processPhotometry(self):
+        """
+        :return:
+        """
+        if not self.ui.enablePhotometry.isChecked():
+            self.clearGui()
             return False
-        if self.header is None:
-            self.log.debug('No header data in FITS')
-            return False
-
-        self.image = self.checkFormatImage(self.image)
-        bayerPattern = self.header.get('BAYERPAT', '')
-        if bayerPattern:
-            self.image = self.debayerImage(self.image, bayerPattern)
-            self.log.debug(f'Image has bayer pattern: {bayerPattern}')
-
-        self.updateWindowsStats()
-        self.writeHeaderDataToGUI(self.header)
-        self.stackImages()
+        self.imgP.processPhotometry()
         return True
 
     def showImage(self, imagePath=''):
@@ -994,15 +640,22 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
         if not os.path.isfile(imagePath):
             return False
-
         if not self.deviceStat['exposeN']:
             self.clearGui()
 
         self.changeStyleDynamic(self.ui.headerGroup, 'running', True)
-        self.imageFileName = imagePath
-        worker = Worker(self.workerLoadImage)
-        worker.signals.finished.connect(self.preparePhotometry)
-        self.threadPool.start(worker)
+        self.setWindowTitle(f'Imaging:   {imagePath}')
+        self.imgP = Photometry(self, imagePath)
+        self.imgP.signals.image.connect(self.showTabImage)
+        self.imgP.signals.image.connect(self.processPhotometry)
+        self.imgP.signals.hfr.connect(self.showTabHFR)
+        self.imgP.signals.hfrSquare.connect(self.showTabTiltSquare)
+        self.imgP.signals.hfrTriangle.connect(self.showTabTiltTriangle)
+        self.imgP.signals.roundness.connect(self.showTabRoundness)
+        self.imgP.signals.aberration.connect(self.showTabAberrationInspect)
+        self.imgP.signals.aberration.connect(self.showTabImageSources)
+        self.imgP.signals.background.connect(self.showTabBackground)
+        self.imgP.signals.backgroundRMS.connect(self.showTabBackgroundRMS)
         return True
 
     def showCurrent(self):
@@ -1066,9 +719,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.expTime = self.app.camera.expTime
         self.binning = int(self.app.camera.binning)
-        self.imageStack = None
         self.deviceStat['expose'] = True
-        self.ui.stackImages.setChecked(False)
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.exposeRaw()
         return True
@@ -1093,7 +744,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.expTime = self.app.camera.expTimeN
         self.binning = int(self.app.camera.binningN)
-        self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.exposeRaw()
@@ -1104,11 +754,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.app.camera.abort()
-        # for disconnection we have to split which slots were connected to
-        # disable the right ones
         if self.deviceStat['expose']:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-
         if self.deviceStat['exposeN']:
             self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
 

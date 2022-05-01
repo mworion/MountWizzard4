@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Install Python &#8212; MountWizzard4 3.0.0b0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Install MW4" href="mw4.html" />
+    <link rel="prev" title="Install Process" href="contents.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../contents.html">
+    <img class="logo" src="../_static/mw4.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Feature Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Install Process</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="contents.html#an-example-setup">An example setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/contents.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelogScripts.html">Changelog for Scripts</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../contents.html">Documentation overview</a><ul>
+  <li><a href="contents.html">Install Process</a><ul>
+      <li>Previous: <a href="contents.html" title="previous chapter">Install Process</a></li>
+      <li>Next: <a href="mw4.html" title="next chapter">Install MW4</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="install-python">
+<h1>Install Python<a class="headerlink" href="#install-python" title="Permalink to this headline">¶</a></h1>
+<p>MW4 is a python3 application based on some python libraries and uses Qt as
+framework for GUI. Different to past versions of MW there will be no one box
+solution (MAC bundle, EXE File, etc.) available. As MW4 is python3 and comes with
+internal update functionality, it uses a standard python3 environment. Ideally it
+is recommended in a virtualenv.</p>
+<p>MW4 is tested on python 3.7, 3.8 and 3.9. The first step is to install the python3
+.8.x package if not already installed. For all platforms there is an installer
+available. Please follow the descriptions that comes with the installers. To give
+a short overview here are some quick installation hints for all platforms. The
+installers for Windows and OSx can be downloaded from python.org.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please do not use a newer version of python than 3.9.x! Some libraries bring
+precompiled binaries with them and they might not be available for a newer
+python version. A good overview what could run is in the readme on github.</p>
+</div>
+<p>If you already have python 3.7 / 3.8 / 3.9 installed, you can skip this section
+and go directly to the MW4 installation process. If you have to install python3.8
+this has to be done only once for as many MW4 installations you might want.</p>
+<p>There is a video on youtube with the install process python: <a class="reference external" href="https://youtu.be/xJxpx_SmrVc">https://youtu.be/xJxpx_SmrVc</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On windows there are some new features which supports comet,
+earth rotation and asteroids update for the mount. These functions are
+available from python 3.8.2 on. Earlier python versions have issues. If you
+would like to upgrade an older python installation, please see the comments
+below for windows. On other OS there is no need for doing that.</p>
+</div>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Windows makes a hard split between 32bit and 64bit versions. If your
+drivers and setup uses 64bit solutions, please install 64bit python!</p>
+</div>
+<p>Depending on your Windows version please download or directly run the web
+installer from:</p>
+<p><a class="reference external" href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></p>
+<p>and follow the installation procedure.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please take care that during the installation the checkbox “Add Python Path”
+is selected and to install for a single user if you want to use the scripts.</p>
+</div>
+<a class="reference internal image-reference" href="../_images/python_win_path.png"><img alt="../_images/python_win_path.png" class="align-center" src="../_images/python_win_path.png" style="width: 476.40999999999997px; height: 296.78px;" /></a>
+<p>Depending on your preference you could install python 3.9 for a single user or for
+all users. MW4 does not need admin rights to run, so please choose the variant for
+a single users if you want wo use the installation scripts. They depend on access
+rights as a normal user and you might run into troubles using different modes!</p>
+</div>
+<div class="section" id="mac-osx">
+<h2>Mac OSx<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h2>
+<p>Depending on your OSx version please download the installer for 3.9 from:</p>
+<p><a class="reference external" href="https://www.python.org/downloads/mac-osx/">https://www.python.org/downloads/mac-osx/</a></p>
+<p>and follow the installation procedure. Depending on your preference you could install
+python3 for a single user or for all users. MW4 does not need admin rights to run,
+so please feel free to choose the variant you would like to use.</p>
+</div>
+<div class="section" id="ubuntu">
+<h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h2>
+<p>Referring to Ubuntu 18.04 LTS as it comes with python3.6. This should work, but
+you could upgrade to python 3.9.x. This could be done by adding an appropriate
+repo, which enables this version.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If you update to a higher python version, please update to python 3.9.x if you
+want in a way, which fits best to your environment. There are many
+descriptions out, so please search for it in case you don’t know exactly.</p>
+</div>
+<p>An example is from: <a class="reference external" href="https://linuxize.com/post/how-to-install-python-3-7-on-ubuntu-18-04/">https://linuxize.com/post/how-to-install-python-3-7-on-ubuntu-18-04/</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span> <span class="n">ppa</span><span class="p">:</span><span class="n">deadsnakes</span><span class="o">/</span><span class="n">ppa</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">upgrade</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="o">.</span><span class="mi">8</span>
+</pre></div>
+</div>
+<p>Please check the right version and the availability of virtualenv in your setup. If
+virtualenv is not present in your setup, please install it prior to run the install
+scripts with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="o">-</span><span class="n">virtualenv</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-python-in-your-existing-environment">
+<h2>Updating python in your existing environment<a class="headerlink" href="#updating-python-in-your-existing-environment" title="Permalink to this headline">¶</a></h2>
+<p>This is a step which should be done if you are familiar with some pc experience.
+Hence the steps are not complicated, the setups of you environment might be
+somehow special and need a adjusted treatment. The following steps explain a
+standard procedure.</p>
+<div class="section" id="update-python-version-on-your-windows-computer">
+<h3>Update python version on your windows computer<a class="headerlink" href="#update-python-version-on-your-windows-computer" title="Permalink to this headline">¶</a></h3>
+<p>Please go to the python website an download the appropriate python version. On
+windows please check the selection of the 32bit or 64bit correctly. It should be
+the version you have already chosen.</p>
+<p>Start the python installer. If everything went right, it will show an update offer
+. If so, please chose that and you get the upgrade. If you would like to switch
+from 32bit to 64bit or vice versa, the updater only shows a new install. In this
+case please deinstall the old version manually. Than it’s like a new python
+installation, please see above.</p>
+<p>Having your python version updated on you computer, you have to update the new
+version to you work environment(s), too. There are two ways to do that. First you
+could use the install script provided and install MW in a new work dir. You could
+copy all you settings (except the ‘venv’ folder) to the new workdir. Another way
+is to open a command window, change to your work directory and run the command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">venv</span>
+</pre></div>
+</div>
+<p>This will upgrade your work environment to the python version of your computer (so
+the updated one)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before doing any changes or updates, please do a backup of your environment to
+be safe in case of errors in the update process. This could simply be done by
+making a copy of your work folder.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2022, mworion.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/install/python.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -26,12 +26,13 @@ from PyQt5.QtGui import QCloseEvent
 from astropy.io import fits
 from skyfield.api import Angle
 import numpy as np
+import sep
 
 # local import
+import gui.extWindows.imageW
 from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.imageW import ImageWindow
-from logic.photometry.photometry import Photometry
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -135,14 +136,8 @@ def test_updateWindowsStats_2(function):
     assert suc
 
 
-def test_updateWindowsStats_3(function):
-    function.deviceStat['solve'] = False
-    function.app.deviceStat['camera'] = True
-    function.app.deviceStat['astrometry'] = False
-    function.deviceStat['imaging'] = False
-    function.deviceStat['astrometry'] = False
-
-    suc = function.updateWindowsStats()
+def test_showTitle(function):
+    suc = function.showTitle('test')
     assert suc
 
 
@@ -204,9 +199,290 @@ def test_setAspectLocked(function):
     assert suc
 
 
-def test_clearImageTab(function):
-    suc = function.clearImageTab(function.ui.image)
+def test_calcAberrationInspectView_1(function):
+    imgIn = np.random.rand(1000, 1000) + 1
+    img = function.calcAberrationInspectView(imgIn)
+    h, w = img.shape
+    assert w == function.aberrationSize * 3
+    assert h == function.aberrationSize * 3
+
+
+def test_calcAberrationInspectView_2(function):
+    imgIn = np.random.rand(100, 100) + 1
+    img = function.calcAberrationInspectView(imgIn)
+    h, w = img.shape
+    assert w == imgIn.shape[0]
+    assert h == imgIn.shape[1]
+
+
+def test_workerCalcTiltValuesTriangle(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.image = np.random.rand(100, 100) + 1
+    function.HFR = np.linspace(20, 30, 20)
+    suc = function.workerCalcTiltValuesTriangle()
     assert suc
+
+
+def test_workerCalcTiltValuesSquare(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.image = np.random.rand(100, 100) + 1
+    function.HFR = np.linspace(20, 30, 20)
+    suc = function.workerCalcTiltValuesSquare()
+    assert suc
+
+
+def test_baseCalcTabInfo(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.HFR = np.linspace(20, 30, 20)
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.baseCalcTabInfo()
+    assert suc
+
+
+def test_showTabRaw(function):
+    suc = function.showTabRaw()
+    assert suc
+
+
+def test_showTabBackground(function):
+    img = np.random.rand(100, 100) + 1
+    function.filterConst = 5
+    function.bkg = sep.Background(img)
+    suc = function.showTabBackground()
+    assert suc
+
+
+def test_workerShowTabHFR(function):
+    function.filterConst = 5
+    function.xm = np.linspace(0, 100, 100)
+    function.ym = np.linspace(0, 100, 100)
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20)}
+    function.HFR = np.linspace(20, 30, 20)
+    img = function.workerShowTabHFR()
+    assert img.shape[0] == 100
+
+
+def test_showTabHFR(function):
+    function.HFR = np.linspace(20, 30, 20)
+    img = np.random.rand(100, 100) + 1
+    suc = function.showTabHFR(img)
+    assert suc
+
+
+def test_clearImageTab(function):
+    widget = function.ui.tiltSquare
+    suc = function.clearImageTab(widget)
+    assert suc
+
+
+def test_showTabTiltSquare(function):
+    function.HFR = np.linspace(20, 30, 20)
+    function.medianHFR = 1
+    function.innerHFR = 1
+    function.outerHFR = 1
+    function.segSquareHFR = np.ones((3, 3))
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.showTabTiltSquare()
+    assert suc
+
+
+def test_showTabTiltTriangle(function):
+    function.HFR = np.linspace(20, 30, 20)
+    function.innerHFR = 1
+    function.outerHFR = 1
+    function.medianHFR = 1
+    function.segTriangleHFR = np.ones(72)
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.showTabTiltTriangle()
+    assert suc
+
+
+def test_workerShowTabRoundness(function):
+    img = np.random.rand(100, 100) + 1
+    function.filterConst = 5
+    function.xm = np.linspace(0, 100, 100)
+    function.ym = np.linspace(0, 100, 100)
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20),
+                     'a': np.random.rand(20, 1) + 10,
+                     'b': np.random.rand(20, 1) + 10}
+    with mock.patch.object(gui.extWindows.imageW,
+                           'griddata',
+                           return_value=img):
+        with mock.patch.object(gui.extWindows.imageW,
+                               'uniform_filter',
+                               return_value=img):
+            val = function.workerShowTabRoundness()
+            assert len(val) == 4
+
+
+def test_showTabRoundness(function):
+    result = (np.random.rand(20, 1),
+              np.random.rand(100, 100) + 1,
+              1, 2)
+    suc = function.showTabRoundness(result)
+    assert suc
+
+
+def test_showTabAberrationInspect(function):
+    function.image = np.random.rand(100, 100) + 1
+    suc = function.showTabAberrationInspect()
+    assert suc
+
+
+def test_showTabImageSources(function):
+    function.objs = {'x': np.linspace(0, 50, 20),
+                     'y': np.linspace(50, 100, 20),
+                     'theta': np.random.rand(20, 1) + 10,
+                     'a': np.random.rand(20, 1) + 10,
+                     'b': np.random.rand(20, 1) + 10}
+    function.image = np.random.rand(100, 100) + 1
+    with mock.patch.object(function.ui.imageSource,
+                           'addEllipse'):
+        suc = function.showTabImageSources()
+        assert suc
+
+
+def test_showTabBackgroundRMS(function):
+    img = np.random.rand(100, 100) + 1
+    function.filterConst = 5
+    function.bkg = sep.Background(img)
+    suc = function.showTabBackgroundRMS()
+    assert suc
+
+
+def test_showTabImages_1(function):
+    with mock.patch.object(function,
+                           'showTabRaw'):
+        suc = function.showTabImages()
+        assert not suc
+
+
+def test_showTabImages_2(function):
+    function.HFR = np.linspace(20, 30, 20)
+    with mock.patch.object(function,
+                           'showTabRaw'):
+        with mock.patch.object(function,
+                               'baseCalcTabInfo'):
+            with mock.patch.object(function.threadPool,
+                                   'start'):
+                with mock.patch.object(function,
+                                       'showTabBackground'):
+                    with mock.patch.object(function,
+                                           'showTabAberrationInspect'):
+                        with mock.patch.object(function,
+                                               'showTabImageSources'):
+                            with mock.patch.object(function,
+                                                   'showTabBackgroundRMS'):
+                                suc = function.showTabImages()
+                                assert suc
+
+
+def test_workerPreparePhotometry_1(function):
+    function.image = np.random.rand(100, 100) + 1
+    function.image[50][50] = 100
+    function.image[51][50] = 50
+    function.image[50][51] = 50
+    function.image[50][49] = 50
+    function.image[49][50] = 50
+    suc = function.workerPreparePhotometry()
+    assert suc
+    assert function.bkg is not None
+    assert function.HFR is not None
+    assert function.objs is not None
+
+
+def test_preparePhotometry_1(function):
+    function.ui.enablePhotometry.setChecked(True)
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.preparePhotometry()
+        assert suc
+
+
+def test_preparePhotometry_2(function):
+    function.ui.enablePhotometry.setChecked(False)
+    with mock.patch.object(function,
+                           'showTabImages'):
+        suc = function.preparePhotometry()
+        assert suc
+
+
+def test_stackImages_1(function):
+    function.ui.stackImages.setChecked(False)
+    suc = function.stackImages()
+    assert not suc
+    assert function.imageStack is None
+
+
+def test_stackImages_2(function):
+    function.image = np.random.rand(100, 100)
+    function.imageStack = np.random.rand(50, 50)
+    function.header = fits.PrimaryHDU().header
+    function.ui.stackImages.setChecked(True)
+
+    suc = function.stackImages()
+    assert suc
+    assert function.imageStack.shape == function.image.shape
+    assert function.numberStack == 1
+
+
+def test_stackImages_3(function):
+    function.numberStack = 5
+    function.image = np.random.rand(100, 100)
+    function.imageStack = np.random.rand(100, 100)
+    function.header = fits.PrimaryHDU().header
+    function.ui.stackImages.setChecked(True)
+
+    suc = function.stackImages()
+    assert suc
+    assert function.numberStack == 6
+
+
+def test_clearStack_1(function):
+    function.ui.stackImages.setChecked(False)
+    suc = function.clearStack()
+    assert not suc
+
+
+def test_clearStack_2(function):
+    function.ui.stackImages.setChecked(True)
+    suc = function.clearStack()
+    assert suc
+
+
+def test_debayerImage_1(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'GBRG')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_2(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'RGGB')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_3(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'GRBG')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_4(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'BGGR')
+    assert img.shape == (100, 100)
+
+
+def test_debayerImage_5(function):
+    img = np.random.rand(100, 100)
+    img = function.debayerImage(img, 'test')
+    assert img.shape == (100, 100)
 
 
 def test_writeHeaderDataToGUI_1(function):
@@ -240,123 +516,84 @@ def test_writeHeaderDataToGUI_4(function):
     assert suc
 
 
-def test_showTabImage(function):
-    function.imgP = Photometry(function)
-    function.imgP.image = np.random.rand(100, 100) + 1
-    with mock.patch.object(function,
-                           'setBarColor'):
-        with mock.patch.object(function,
-                               'setCrosshair'):
-            with mock.patch.object(function,
-                                   'writeHeaderDataToGUI'):
-                suc = function.showTabImage()
-                assert suc
+def test_checkFormatImage(function):
+    img = np.random.rand(100, 100) + 1
+    img = function.checkFormatImage(img)
+    assert img.dtype == np.dtype('float32')
 
 
-def test_showTabHFR(function):
-    function.imgP = Photometry(function)
-    function.imgP.HFR = np.random.rand(100, 100) + 1
-    function.imgP.hfrPercentile = 0
-    function.imgP.hfrMedian = 0
-    suc = function.showTabHFR()
-    assert suc
+def test_workerLoadImage_1(function):
+    class Data:
+        data = np.random.rand(100, 100)
+        header = None
 
+    class FitsHandle:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
 
-def test_showTabTiltSquare(function):
-    function.imgP = Photometry(function)
-    function.imgP.HFR = np.linspace(20, 30, 20)
-    function.imgP.hfrMedian = 1
-    function.imgP.hfrInner = 1
-    function.imgP.hfrOuter = 1
-    function.imgP.w = 100
-    function.imgP.h = 100
-    function.imgP.hfrSegSquare = np.ones((3, 3))
-    function.imgP.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltSquare()
-    assert suc
+        @staticmethod
+        def __exit__(a, b, c):
+            return
 
-
-def test_showTabTiltTriangle(function):
-    function.imgP = Photometry(function)
-    function.imgP.HFR = np.linspace(20, 30, 20)
-    function.imgP.hfrMedian = 1
-    function.imgP.hfrInner = 1
-    function.imgP.hfrOuter = 1
-    function.imgP.w = 100
-    function.imgP.h = 100
-    function.imgP.hfrSegTriangle = np.ones(72)
-    function.image = np.random.rand(100, 100) + 1
-    suc = function.showTabTiltTriangle()
-    assert suc
-
-
-def test_showTabRoundness(function):
-    function.imgP = Photometry(function)
-    function.imgP.roundnessMin = 1
-    function.imgP.roundnessMax = 10
-    function.imgP.roundnessPercentile = 10
-    function.imgP.roundnessGrid = np.random.rand(100, 100) + 1
-    suc = function.showTabRoundness()
-    assert suc
-
-
-def test_showTabAberrationInspect(function):
-    function.imgP = Photometry(function)
-    function.imgP.image = np.random.rand(100, 100) + 1
-    function.imgP.roundnessPercentile = 1
-    suc = function.showTabAberrationInspect()
-    assert suc
-
-
-def test_showTabImageSources(function):
-    function.imgP = Photometry(function)
-    function.imgP.objs = {'x': np.linspace(0, 50, 20),
-                          'y': np.linspace(50, 100, 20),
-                          'theta': np.random.rand(20, 1) + 10,
-                          'a': np.random.rand(20, 1) + 10,
-                          'b': np.random.rand(20, 1) + 10}
-    function.imgP.image = np.random.rand(100, 100) + 1
-    with mock.patch.object(function.ui.imageSource,
-                           'addEllipse'):
-        suc = function.showTabImageSources()
-        assert suc
-
-
-def test_showTabBackground(function):
-    function.imgP = Photometry(function)
-    function.imgP.background = np.random.rand(100, 100) + 1
-    suc = function.showTabBackground()
-    assert suc
-
-
-def test_showTabBackgroundRMS(function):
-    function.imgP = Photometry(function)
-    function.imgP.backgroundRMS = np.random.rand(100, 100) + 1
-    suc = function.showTabBackgroundRMS()
-    assert suc
-
-
-def test_clearGui(function):
-    suc = function.clearGui()
-    assert suc
-
-
-def test_processPhotometry_1(function):
-    function.ui.enablePhotometry.setChecked(True)
-    function.imgP = Photometry(function)
-    with mock.patch.object(function.imgP,
-                           'processPhotometry'):
-        suc = function.processPhotometry()
-        assert suc
-
-
-def test_processPhotometry_2(function):
-    function.ui.enablePhotometry.setChecked(False)
-    function.imgP = Photometry(function)
-    with mock.patch.object(function,
-                           'clearGui'):
-        suc = function.processPhotometry()
+    function.imageFileName = 'tests/workDir/image/m51.fit'
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=FitsHandle()):
+        suc = function.workerLoadImage()
         assert not suc
+
+
+def test_workerLoadImage_2(function):
+    class Data:
+        data = None
+        header = 2
+
+    class FitsHandle:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
+
+        @staticmethod
+        def __exit__(a, b, c):
+            return
+
+    function.imageFileName = 'tests/workDir/image/m51.fit'
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=FitsHandle()):
+        suc = function.workerLoadImage()
+        assert not suc
+
+
+def test_workerLoadImage_3(function):
+    class Data:
+        data = np.random.rand(100, 100)
+        header = {'BAYERPAT': 1,
+                  'CTYPE1': 'DEF',
+                  'CTYPE2': 'DEF',
+                  }
+
+    class FitsHandle:
+        @staticmethod
+        def __enter__():
+            return [Data(), Data()]
+
+        @staticmethod
+        def __exit__(a, b, c):
+            return
+
+    function.imageFileName = 'tests/workDir/image/m51.fit'
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    with mock.patch.object(fits,
+                           'open',
+                           return_value=FitsHandle()):
+        with mock.patch.object(function,
+                               'stackImages'):
+            suc = function.workerLoadImage()
+            assert suc
 
 
 def test_showImage_1(function):
@@ -546,6 +783,7 @@ def test_solveDone_2(function, qtbot):
 
 def test_solveDone_3(function, qtbot):
     function.ui.embedData.setChecked(True)
+    function.ui.stackImages.setChecked(True)
     result = {
         'success': True,
         'raJ2000S': Angle(hours=10),

@@ -309,6 +309,49 @@ class ImageWindow(toolsQtWidget.MWidget):
         imageWidget.barItem.setVisible(False)
         return True
 
+    def writeHeaderDataToGUI(self, header):
+        """
+        :param header:
+        :return: True for test purpose
+        """
+        self.guiSetText(self.ui.object, 's', header.get('OBJECT', '').upper())
+        ra, dec = getCoordinates(header=header)
+        self.guiSetText(self.ui.ra, 'HSTR', ra)
+        self.guiSetText(self.ui.dec, 'DSTR', dec)
+        self.guiSetText(self.ui.scale, '5.3f', getScale(header=header))
+        self.guiSetText(self.ui.rotation, '6.3f', header.get('ANGLE'))
+        self.guiSetText(self.ui.ccdTemp, '4.1f', header.get('CCD-TEMP'))
+        self.guiSetText(self.ui.expTime, '5.1f', getExposure(header=header))
+        self.guiSetText(self.ui.filter, 's', header.get('FILTER'))
+        self.guiSetText(self.ui.binX, '1.0f', header.get('XBINNING'))
+        self.guiSetText(self.ui.binY, '1.0f', header.get('YBINNING'))
+        self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
+        return True
+
+    def showTabImage(self):
+        """
+        :return:
+        """
+        self.ui.image.setImage(imageDisp=self.imgP.image)
+        self.setBarColor()
+        self.setCrosshair()
+        self.writeHeaderDataToGUI(self.imgP.header)
+        self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
+        return True
+
+    def showTabHFR(self):
+        """
+        :return:
+        """
+        self.ui.tabImage.setTabEnabled(1, True)
+        self.ui.hfr.setImage(imageDisp=self.imgP.hfrGrid)
+        self.ui.hfr.p[0].showAxes(False, showValues=False)
+        self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.hfrPercentile.setText(f'{self.imgP.hfrPercentile:1.1f}')
+        self.ui.medianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
+        self.ui.numberStars.setText(f'{len(self.imgP.HFR):1.0f}')
+        return True
+
     def showTabTiltSquare(self):
         """
         :return:
@@ -491,49 +534,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.triangleNumberStars.setText(f'{len(self.imgP.HFR):1.0f}')
 
         self.ui.tabImage.setTabEnabled(3, True)
-        return True
-
-    def writeHeaderDataToGUI(self, header):
-        """
-        :param header:
-        :return: True for test purpose
-        """
-        self.guiSetText(self.ui.object, 's', header.get('OBJECT', '').upper())
-        ra, dec = getCoordinates(header=header)
-        self.guiSetText(self.ui.ra, 'HSTR', ra)
-        self.guiSetText(self.ui.dec, 'DSTR', dec)
-        self.guiSetText(self.ui.scale, '5.3f', getScale(header=header))
-        self.guiSetText(self.ui.rotation, '6.3f', header.get('ANGLE'))
-        self.guiSetText(self.ui.ccdTemp, '4.1f', header.get('CCD-TEMP'))
-        self.guiSetText(self.ui.expTime, '5.1f', getExposure(header=header))
-        self.guiSetText(self.ui.filter, 's', header.get('FILTER'))
-        self.guiSetText(self.ui.binX, '1.0f', header.get('XBINNING'))
-        self.guiSetText(self.ui.binY, '1.0f', header.get('YBINNING'))
-        self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
-        return True
-
-    def showTabImage(self):
-        """
-        :return:
-        """
-        self.ui.image.setImage(imageDisp=self.imgP.image)
-        self.setBarColor()
-        self.setCrosshair()
-        self.writeHeaderDataToGUI(self.imgP.header)
-        self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
-        return True
-
-    def showTabHFR(self):
-        """
-        :return:
-        """
-        self.ui.tabImage.setTabEnabled(1, True)
-        self.ui.hfr.setImage(imageDisp=self.imgP.hfrGrid)
-        self.ui.hfr.p[0].showAxes(False, showValues=False)
-        self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
-        self.ui.hfrPercentile.setText(f'{self.imgP.hfrPercentile:1.1f}')
-        self.ui.medianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
-        self.ui.numberStars.setText(f'{len(self.imgP.HFR):1.0f}')
         return True
 
     def showTabRoundness(self):

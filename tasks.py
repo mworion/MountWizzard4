@@ -462,8 +462,11 @@ def make_html(c):
         runMW(c, command)
     with c.cd('doc'):
         runMW(c, 'make html')
+    with c.cd('docs'):
+        runMW(c, 'rm -rf *')
     with c.cd('doc/build'):
         runMW(c, 'mv html/* ../../docs')
     with c.cd('docs'):
-        runMW(c, 'open ./contents.html')
+        runMW(c, 'mv contents.html index.html')
+        runMW(c, 'open ./index.html')
     printMW('Generation finished\n')

@@ -41,6 +41,7 @@ releaseNotes = """
 - improve: optimized DSO path generation (always fit, less params)
 - remove: matplotlib usage and replace with pyqtgraph
 - remove: stacking in imageW as it was never used
+- fix: device selection tab was not properly positioned in device popup
  """
 
 with open('notes.txt', 'w') as f:

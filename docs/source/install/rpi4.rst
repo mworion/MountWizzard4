@@ -1,5 +1,5 @@
-Installing MW4 on RaspberryPi 4
-===============================
+Install on RaspberryPi 4
+========================
 
 .. hint:: The simplest raspi installation for rpi3 works with astroberry
 

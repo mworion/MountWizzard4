@@ -1,5 +1,5 @@
-Python Installation
-===================
+Install Python
+==============
 MW4 is a python3 application based on some python libraries and uses Qt as
 framework for GUI. Different to past versions of MW there will be no one box
 solution (MAC bundle, EXE File, etc.) available. As MW4 is python3 and comes with

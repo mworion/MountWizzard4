@@ -1,5 +1,5 @@
-Installing MW4 on Astroberry RaspberryPi
-========================================
+Install on Astroberry RaspberryPi
+=================================
 
 I strongly recommend using the actual astroberry server https://www.astroberry.io
 if you would like to use KSTars/EKOS and MountWizzard4 on a Raspi (3 or 4).

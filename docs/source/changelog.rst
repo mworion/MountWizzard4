@@ -10,7 +10,6 @@ Ideas for the future
 - receive video indi for sat tracking and horizon setup
 - joystick support
 - data exchange to EKOS SQLite for Location and horizon through SQLite interface
-- SQR calculation
 - split imaging tab into operating and statistics
 - satellite scheduler
 
@@ -39,6 +38,8 @@ Beta version of MW4
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
 - remove: matplotlib usage and replace with pyqtgraph
+- remove: stacking in imageW as it was never used
+- fix: device selection tab was not properly positioned in device popup
 
 Released version of MW4
 -----------------------

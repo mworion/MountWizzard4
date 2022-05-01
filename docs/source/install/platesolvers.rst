@@ -1,5 +1,5 @@
-Installing Platesolvers
-=======================
+Install Platesolvers
+====================
 
 When starting with the use of MW4, you might need to install a plate solver.
 Actually MW4 supports only local plate solvers like ASTAP, Cloudmakers (on OSx)

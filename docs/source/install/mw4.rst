@@ -1,5 +1,5 @@
-Installing Procedure
-====================
+Install MW4
+===========
 
 When starting with the installation of MW4, python 3.7.x, 3.8.x or 3.9.x should be successful
 installed. To check, open a terminal (available on all platforms) and run the command
@@ -44,11 +44,11 @@ available from Github:
 .. note:: Please check also scripts for updates of the script as they improve
           over time!
 
-Windows10:
+Windows 10/11:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip
 
-MacOSx:
+MacOSx (please use Rosetta for M1 Macs):
 
 https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip
 
@@ -56,11 +56,15 @@ Ubuntu:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
 
-UbuntuMate ARM64:
+UbuntuMate ARM64 (64bit):
 
 https://github.com/mworion/MountWizzard4/blob/master/support/Mate_Scripts.zip
 
-UbuntuMate Astroberry / Stellarmate:
+StellarMate ARM64 (64bit):
+
+https://github.com/mworion/MountWizzard4/blob/master/support/StellarMate64_Scripts.zip
+
+UbuntuMate Astroberry ARM7 (32bit):
 
 https://github.com/mworion/MountWizzard4/blob/master/support/Astroberry_Scripts.zip
 

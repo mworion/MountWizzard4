@@ -1,5 +1,5 @@
-Installing MW4 on StellarMate1.7++ (64bit)
-==========================================
+Install on StellarMate1.7++ (64bit)
+===================================
 Another way of using MW4 on Raspi4 64 Bit is to download bullseye 64bit image or
 an Stellarmate1.7++ image. On the support page you will find the corresponding
 install and run script as ZIP archive. Please download them in your work folder.

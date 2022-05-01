@@ -85,5 +85,6 @@ issues on GitHub.
 
     features
     install/contents
+    architecture/contents
     changelog
     changelogScripts

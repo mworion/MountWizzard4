@@ -62,10 +62,12 @@ Commit status:
 Documentation:
 --------------
 There is a documentation available for MW4 which could be searched for entries:
-https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf
 
 Online:
 https://mworion.github.io/MountWizzard4/index.html
+
+PDF document:
+https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf
 
 Changelog:
 https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/source/changelog.rst

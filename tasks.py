@@ -132,7 +132,7 @@ def version_doc(c):
             _, number, _ = line.split("'")
 
     # reading configuration file
-    with open('./docs/source/conf.py', 'r') as conf:
+    with open('./doc/source/conf.py', 'r') as conf:
         text = conf.readlines()
     textNew = list()
 
@@ -147,7 +147,7 @@ def version_doc(c):
         textNew.append(line)
 
     # writing configuration file
-    with open('./docs/source/conf.py', 'w+') as conf:
+    with open('./doc/source/conf.py', 'w+') as conf:
         conf.writelines(textNew)
     printMW('changing the version number to setup.py finished\n')
 
@@ -441,13 +441,13 @@ def test_macMonterey(c):
 def make_pdf(c):
     drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
     printMW('Generate PDF for distro')
-    for fullFilePath in glob.glob('./docs/**/**.drawio', recursive=True):
+    for fullFilePath in glob.glob('./doc/**/**.drawio', recursive=True):
         output = fullFilePath[:-6] + 'png'
         command = f'{drawio} -x -f png -o {output} {fullFilePath}'
         runMW(c, command)
-    with c.cd('docs'):
+    with c.cd('doc'):
         runMW(c, 'make latexpdf')
-    with c.cd('docs/build/latex'):
+    with c.cd('doc/build/latex'):
         runMW(c, 'open ./mountwizzard4.pdf')
     printMW('Generation finished\n')
 
@@ -456,12 +456,12 @@ def make_pdf(c):
 def make_html(c):
     drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
     printMW('Generate HTML for distro')
-    for fullFilePath in glob.glob('./docs/**/**.drawio', recursive=True):
+    for fullFilePath in glob.glob('./doc/**/**.drawio', recursive=True):
         output = fullFilePath[:-6] + 'png'
         command = f'{drawio} -x -f png -o {output} {fullFilePath}'
         runMW(c, command)
-    with c.cd('docs'):
+    with c.cd('doc'):
         runMW(c, 'make html')
-    with c.cd('docs/build/html'):
+    with c.cd('doc/build/html'):
         runMW(c, 'open ./contents.html')
     printMW('Generation finished\n')

@@ -64,11 +64,8 @@ Documentation:
 There is a documentation available for MW4 which could be searched for entries:
 https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf
 
-Installing procedures:
-https://mountwizzard4.readthedocs.io/en/latest/install/index.html
-
 Changelog:
-https://mountwizzard4.readthedocs.io/en/latest/changelog.html
+https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/changelog.rst
 
 And there are some videos available for explanation in Youtube channel:
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/

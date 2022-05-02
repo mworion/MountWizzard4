@@ -20,7 +20,6 @@ from PIL import Image
 import glob
 import time
 import os
-import shutil
 
 rn = ''
 #

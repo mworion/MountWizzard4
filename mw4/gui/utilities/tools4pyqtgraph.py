@@ -213,11 +213,11 @@ class CustomViewBox(pg.ViewBox):
         if None in xRange or any(np.abs(xRange) > 1e300):
             self.enableAutoRange(x=True)
         else:
-            self.setXRange(xRange[0], xRange[1])
+            self.setXRange(xRange[0], xRange[1], update=True)
         if None in yRange or any(np.abs(xRange) > 1e300):
             self.enableAutoRange(y=True)
         else:
-            self.setYRange(yRange[0], yRange[1])
+            self.setYRange(yRange[0], yRange[1], update=True)
         return True
 
     def mouseDragEvent(self, ev):

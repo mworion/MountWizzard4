@@ -69,7 +69,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.binning = 1
         self.folder = ''
         self.result = None
-        self.pen = pg.mkPen(color=self.M_BLUE, width=3)
+        self.pen = pg.mkPen(color=self.M_BLUE, width=2)
         self.penPink = pg.mkPen(color=self.M_PINK + '80', width=5)
         self.font = QFont(self.window().font().family(), 16)
         self.font.setBold(True)

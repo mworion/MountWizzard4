@@ -33,6 +33,8 @@ Beta version of MW4
 - add: hemisphere: edit horizon model much more efficient
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
+- add: image: photometry functions (aberration, roundness, etc.)
+- add: image: solve and center to image
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui
 - improve: iers download messages

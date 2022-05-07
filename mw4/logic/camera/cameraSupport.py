@@ -44,6 +44,8 @@ class CameraSupport:
         :param focalLength:
         :return:
         """
+        timeJD = obs.timeJD
+
         header.append(('OBJECT', 'SKY_OBJECT', 'default name from MW4'))
         header.append(('FRAME', 'Light', 'Modeling works with light frames'))
         header.append(('EQUINOX', 2000, 'All data is stored in J2000'))
@@ -51,27 +53,31 @@ class CameraSupport:
         header.append(('PIXSIZE2', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning))
         header.append(('XPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning))
         header.append(('YPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning))
-
-        if focalLength:
-            factor = binning / focalLength * 206.265
-            header.append(('FOCALLEN', focalLength,
-                           'Data taken from driver or manual input'))
-        else:
-            factor = 1
-
-        header.append(('SCALE', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor))
         header.append(('XBINNING', binning, 'MW4 same binning x/y'))
         header.append(('YBINNING', binning, 'MW4 same binning x/y'))
         header.append(('EXPTIME', expTime))
         header.append(('OBSERVER', 'MW4'))
-        timeJD = obs.timeJD
         header.append(('DATE-OBS', timeJD.tt_strftime('%Y-%m-%dT%H:%M:%S'),
-                       'Time is UTC of mount'))
-        header.append(('MJD-OBS', timeJD.tt - 2400000.5, 'Time is UTC of mount'))
+                       'Time is UTC of mount at end of exposure'))
+        header.append(('MJD-OBS', timeJD.tt - 2400000.5,
+                       'Time is UTC of mount at end of exposure'))
         header.append(('CCD-TEMP',
                        self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
         header.append(('SQM',
                        self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
+        header.append(('FOCPOS',
+                       self.app.focuser.data.get(
+                           'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)))
+        header.append(('FOCTEMP',
+                       self.app.directWeather.data.get(
+                           'WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)))
+
+        if focalLength:
+            factor = binning / focalLength * 206.265
+            header.append(('FOCALLEN',
+                           focalLength, 'Data taken from driver or manual input'))
+            header.append(('SCALE',
+                           self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor))
 
         hasCoordinate = self.raJ2000 is not None and self.decJ2000 is not None
         if hasCoordinate:

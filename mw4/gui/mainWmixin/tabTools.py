@@ -23,9 +23,9 @@ from pathlib import Path
 import PyQt5
 from PyQt5.QtGui import QTextCursor
 from astropy.io import fits
-from base.transform import J2000ToJNow
 
 # local import
+from base.transform import J2000ToJNow
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText

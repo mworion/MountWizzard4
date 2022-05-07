@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/image.ui'
+# Form implementation generated from reading ui file 'image.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -48,10 +48,6 @@ class Ui_ImageDialog(object):
         self.exposeN.setMinimumSize(QtCore.QSize(110, 21))
         self.exposeN.setObjectName("exposeN")
         self.gridLayout_4.addWidget(self.exposeN, 1, 1, 1, 1)
-        self.autoSolve = QtWidgets.QCheckBox(self.groupBox_3)
-        self.autoSolve.setMinimumSize(QtCore.QSize(110, 21))
-        self.autoSolve.setObjectName("autoSolve")
-        self.gridLayout_4.addWidget(self.autoSolve, 3, 3, 1, 1)
         self.expose = QtWidgets.QPushButton(self.groupBox_3)
         self.expose.setEnabled(False)
         self.expose.setMinimumSize(QtCore.QSize(110, 21))
@@ -75,10 +71,19 @@ class Ui_ImageDialog(object):
         self.abortSolve.setMinimumSize(QtCore.QSize(110, 21))
         self.abortSolve.setObjectName("abortSolve")
         self.gridLayout_4.addWidget(self.abortSolve, 3, 1, 1, 1)
+        self.autoSolve = QtWidgets.QCheckBox(self.groupBox_3)
+        self.autoSolve.setMinimumSize(QtCore.QSize(110, 21))
+        self.autoSolve.setObjectName("autoSolve")
+        self.gridLayout_4.addWidget(self.autoSolve, 1, 3, 1, 1)
         self.embedData = QtWidgets.QCheckBox(self.groupBox_3)
         self.embedData.setMinimumSize(QtCore.QSize(110, 21))
         self.embedData.setObjectName("embedData")
-        self.gridLayout_4.addWidget(self.embedData, 3, 2, 1, 1)
+        self.gridLayout_4.addWidget(self.embedData, 3, 3, 1, 1)
+        self.solveCenter = QtWidgets.QPushButton(self.groupBox_3)
+        self.solveCenter.setEnabled(False)
+        self.solveCenter.setMinimumSize(QtCore.QSize(110, 21))
+        self.solveCenter.setObjectName("solveCenter")
+        self.gridLayout_4.addWidget(self.solveCenter, 3, 2, 1, 1)
         self.horizontalLayout_5.addWidget(self.groupBox_3)
         self.line_13 = QtWidgets.QFrame(ImageDialog)
         self.line_13.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -511,13 +516,14 @@ class Ui_ImageDialog(object):
         self.groupBox_3.setTitle(_translate("ImageDialog", "Expose settings"))
         self.solve.setText(_translate("ImageDialog", "Solve"))
         self.exposeN.setText(_translate("ImageDialog", "Expose N"))
-        self.autoSolve.setText(_translate("ImageDialog", "Auto Solve"))
         self.expose.setText(_translate("ImageDialog", "Expose 1"))
         self.load.setText(_translate("ImageDialog", "Load FITS"))
         self.enablePhotometry.setText(_translate("ImageDialog", "Photometry"))
         self.abortImage.setText(_translate("ImageDialog", "Exp. Abort"))
         self.abortSolve.setText(_translate("ImageDialog", "Solve Abort"))
+        self.autoSolve.setText(_translate("ImageDialog", "Auto Solve"))
         self.embedData.setText(_translate("ImageDialog", "Embed Data"))
+        self.solveCenter.setText(_translate("ImageDialog", "Solve & Center"))
         self.groupBox_2.setTitle(_translate("ImageDialog", "Image view"))
         self.color.setItemText(0, _translate("ImageDialog", "Grey"))
         self.color.setItemText(1, _translate("ImageDialog", "Rainbow"))

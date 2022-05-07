@@ -593,3 +593,158 @@ def test_solveCurrent(function, qtbot):
 def test_abortSolve_1(function):
     suc = function.abortSolve()
     assert not suc
+
+
+def test_slewSelectedTargetWithDome_1(function):
+    suc = function.slewSelectedTargetWithDome()
+    assert not suc
+
+
+def test_slewSelectedTargetWithDome_2(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    function.app.deviceStat['dome'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startSlewing',
+                           return_value=True):
+        suc = function.slewSelectedTargetWithDome()
+        assert suc
+
+
+def test_slewSelectedTargetWithDome_3(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    function.app.deviceStat['dome'] = False
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startSlewing',
+                           return_value=False):
+        suc = function.slewSelectedTargetWithDome()
+        assert not suc
+
+
+def test_slewSelectedTargetWithDome_4(function):
+    function.app.mount.obsSite.AltTarget = Angle(degrees=10)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=10)
+    function.app.deviceStat['dome'] = True
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startSlewing',
+                           return_value=False):
+        with mock.patch.object(function.app.dome,
+                               'slewDome',
+                               return_value=10):
+            suc = function.slewSelectedTargetWithDome()
+            assert not suc
+
+
+def test_moveRaDecAbsolute_1(function):
+    a = function.app.mount.obsSite.timeJD
+    function.app.mount.obsSite.timeJD = None
+    suc = function.moveRaDecAbsolute(Angle(degrees=10), Angle(degrees=10))
+    assert not suc
+    function.app.mount.obsSite.timeJD = a
+
+
+def test_moveRaDecAbsolute_2(function):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=False):
+            suc = function.moveRaDecAbsolute(Angle(degrees=10), Angle(degrees=10))
+            assert not suc
+
+
+def test_moveRaDecAbsolute_3(function):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=True):
+            suc = function.moveRaDecAbsolute(Angle(degrees=10), Angle(degrees=10))
+            assert suc
+
+
+def test_solveCenterDone_1(function):
+    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    suc = function.solveCenterDone()
+    assert not suc
+
+
+def test_solveCenterDone_2(function):
+    result = {
+        'success': False,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+    }
+
+    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    suc = function.solveCenterDone(result=result)
+    assert not suc
+
+
+def test_solveCenterDone_3(function):
+    function.ui.embedData.setChecked(True)
+    result = {
+        'success': True,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+    }
+    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    with mock.patch.object(function,
+                           'moveRaDecAbsolute',
+                           return_value=False):
+        suc = function.solveCenterDone(result=result)
+        assert not suc
+
+
+def test_solveCenterDone_4(function):
+    function.ui.embedData.setChecked(True)
+    result = {
+        'success': True,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+    }
+    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    with mock.patch.object(function,
+                           'moveRaDecAbsolute',
+                           return_value=True):
+        suc = function.solveCenterDone(result=result)
+        assert suc
+
+
+def test_solveCenter_1(function):
+    suc = function.solveCenter()
+    assert not suc
+
+
+def test_solveCenter_2(function):
+    function.imageFileName = 'test'
+    suc = function.solveCenter()
+    assert not suc
+
+
+def test_solveCenter_3(function):
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    function.imageFileName = 'tests/workDir/image/m51.fit'
+    with mock.patch.object(function.app.astrometry,
+                           'solveThreading'):
+        suc = function.solveCenter()
+        assert suc

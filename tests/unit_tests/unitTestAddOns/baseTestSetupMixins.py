@@ -459,6 +459,10 @@ class Camera:
     signals = CameraSignals()
 
 
+class Camera:
+    data = {}
+
+
 class Astrometry:
     class AstrometrySignals(QObject):
         done = pyqtSignal()
@@ -549,6 +553,7 @@ class App(QObject):
     relay = Relay()
     data = Data()
     camera = Camera()
+    focuser = Focuser()
     skymeter = Skymeter()
     automation = Automation()
     astrometry = Astrometry()

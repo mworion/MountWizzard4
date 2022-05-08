@@ -463,6 +463,10 @@ class Focuser:
     data = {}
 
 
+class DirectWeather:
+    data = {}
+
+
 class Astrometry:
     class AstrometrySignals(QObject):
         done = pyqtSignal()
@@ -554,6 +558,7 @@ class App(QObject):
     data = Data()
     camera = Camera()
     focuser = Focuser()
+    directWeather = DirectWeather()
     skymeter = Skymeter()
     automation = Automation()
     astrometry = Astrometry()

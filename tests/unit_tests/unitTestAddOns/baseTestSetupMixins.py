@@ -459,7 +459,7 @@ class Camera:
     signals = CameraSignals()
 
 
-class Camera:
+class Focuser:
     data = {}
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'image.ui'
+# Form implementation generated from reading ui file './mw4/gui/widgets/image.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -523,6 +523,7 @@ class Ui_ImageDialog(object):
         self.abortSolve.setText(_translate("ImageDialog", "Solve Abort"))
         self.autoSolve.setText(_translate("ImageDialog", "Auto Solve"))
         self.embedData.setText(_translate("ImageDialog", "Embed Data"))
+        self.solveCenter.setToolTip(_translate("ImageDialog", "<html><head/><body><p>Solves the actual image and centers to mount to this coordinates</p></body></html>"))
         self.solveCenter.setText(_translate("ImageDialog", "Solve & Center"))
         self.groupBox_2.setTitle(_translate("ImageDialog", "Image view"))
         self.color.setItemText(0, _translate("ImageDialog", "Grey"))

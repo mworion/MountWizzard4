@@ -45,44 +45,48 @@ def function():
     yield app
 
 
-def test_writeHeaderInfo_1(function):
+def test_writeHeaderBasic_1(function):
     header = fits.PrimaryHDU(data=np.array([])).header
-    obs = function.app.mount.obsSite
-    obs.raJNow = Angle(hours=0)
-    obs.decJNow = Angle(degrees=0)
-    header = function.writeHeaderInfo(header, obs, 1, 1, 0)
+    suc = function.writeHeaderBasic(header)
+    assert suc
     assert header['OBJECT'] == 'SKY_OBJECT'
 
 
-def test_writeHeaderInfo_2(function):
+def test_writeHeaderCamera_1(function):
+    header = fits.PrimaryHDU(data=np.array([])).header
+    suc = function.writeHeaderCamera(header, 1, 1)
+    assert suc
+    assert header['EXPTIME'] == 1
+
+
+def test_writeHeaderTime_1(function):
     header = fits.PrimaryHDU(data=np.array([])).header
     obs = function.app.mount.obsSite
-    obs.raJNow = Angle(hours=0)
-    obs.decJNow = Angle(degrees=0)
-    header = function.writeHeaderInfo(header, obs, 1, 1, 100)
-    assert header['OBJECT'] == 'SKY_OBJECT'
+    ts = obs.ts
+    obs.timeJD = ts.tt_jd(1000 + 2400000.5)
+    suc = function.writeHeaderTime(header, obs)
+    assert suc
+    assert header['DATE-OBS'] == '1861-08-13T00:00:00'
+    assert header['MJD-OBS'] == 1000
 
 
-def test_writeHeaderInfo_3(function):
+def test_writeHeaderOptical_1(function):
+    header = fits.PrimaryHDU(data=np.array([])).header
+    suc = function.writeHeaderOptical(header, 1, 100)
+    assert suc
+    assert header['FOCALLEN'] == 100
+
+
+def test_writeHeaderSite_1(function):
     header = fits.PrimaryHDU(data=np.array([])).header
     obs = function.app.mount.obsSite
-    obs.location = None
-    obs.raJNow = Angle(hours=0)
-    obs.decJNow = Angle(degrees=0)
-    header = function.writeHeaderInfo(header, obs, 1, 1, 100)
-    assert header['OBJECT'] == 'SKY_OBJECT'
-
-
-def test_writeHeaderInfo_4(function):
-    header = fits.PrimaryHDU(data=np.array([])).header
-    obs = function.app.mount.obsSite
-    obs.location = None
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
     function.raJ2000 = Angle(hours=0)
     function.decJ2000 = Angle(degrees=0)
-    header = function.writeHeaderInfo(header, obs, 1, 1, 100)
-    assert header['OBJECT'] == 'SKY_OBJECT'
+    suc = function.writeHeaderSite(header, obs)
+    assert suc
+    assert header['SITELAT'] == '+00:00:00'
 
 
 def test_saveFits_1(function):
@@ -97,11 +101,19 @@ def test_saveFits_2(function):
     hdu = fits.PrimaryHDU(data=np.array([]))
     function.abortExpose = False
     with mock.patch.object(function,
-                           'writeHeaderInfo'):
-        with mock.patch.object(fits.PrimaryHDU,
-                               'writeto'):
-            val = function.saveFits('', data, 1, 1, 1)
-            assert val == ''
+                           'writeHeaderBasic'):
+        with mock.patch.object(function,
+                               'writeHeaderCamera'):
+            with mock.patch.object(function,
+                                   'writeHeaderTime'):
+                with mock.patch.object(function,
+                                       'writeHeaderOptical'):
+                    with mock.patch.object(function,
+                                           'writeHeaderSite'):
+                        with mock.patch.object(fits.PrimaryHDU,
+                                               'writeto'):
+                            val = function.saveFits('', data, 1, 1, 1)
+                            assert val == ''
 
 
 def test_retrieveFits_1(function):

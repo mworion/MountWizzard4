@@ -26,7 +26,6 @@ from PyQt5.QtGui import QFont
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
-from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from base.transform import J2000ToJNow
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget

@@ -35,20 +35,25 @@ class CameraSupport:
     raJ2000 = None
     decJ2000 = None
 
-    def writeHeaderInfo(self, header, obs, expTime, binning, focalLength):
+    @staticmethod
+    def writeHeaderBasic(header):
         """
         :param header:
-        :param obs:
-        :param expTime:
-        :param binning:
-        :param focalLength:
         :return:
         """
-        timeJD = obs.timeJD
-
         header.append(('OBJECT', 'SKY_OBJECT', 'default name from MW4'))
         header.append(('FRAME', 'Light', 'Modeling works with light frames'))
         header.append(('EQUINOX', 2000, 'All data is stored in J2000'))
+        header.append(('OBSERVER', 'MW4'))
+        return True
+
+    def writeHeaderCamera(self, header, expTime, binning):
+        """
+        :param header:
+        :param expTime:
+        :param binning:
+        :return:
+        """
         header.append(('PIXSIZE1', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning))
         header.append(('PIXSIZE2', self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning))
         header.append(('XPIXSZ', self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning))
@@ -57,10 +62,6 @@ class CameraSupport:
         header.append(('YBINNING', binning, 'MW4 same binning x/y'))
         header.append(('EXPTIME', expTime))
         header.append(('OBSERVER', 'MW4'))
-        header.append(('DATE-OBS', timeJD.tt_strftime('%Y-%m-%dT%H:%M:%S'),
-                       'Time is UTC of mount at end of exposure'))
-        header.append(('MJD-OBS', timeJD.tt - 2400000.5,
-                       'Time is UTC of mount at end of exposure'))
         header.append(('CCD-TEMP',
                        self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
         header.append(('SQM',
@@ -71,14 +72,45 @@ class CameraSupport:
         header.append(('FOCTEMP',
                        self.app.directWeather.data.get(
                            'WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)))
+        return True
 
-        if focalLength:
-            factor = binning / focalLength * 206.265
-            header.append(('FOCALLEN',
-                           focalLength, 'Data taken from driver or manual input'))
-            header.append(('SCALE',
-                           self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor))
+    @staticmethod
+    def writeHeaderTime(header, obs):
+        """
+        :param header:
+        :param obs:
+        :return:
+        """
+        timeJD = obs.timeJD
+        header.append(('DATE-OBS', timeJD.tt_strftime('%Y-%m-%dT%H:%M:%S'),
+                       'Time is UTC of mount at end of exposure'))
+        header.append(('MJD-OBS', timeJD.tt - 2400000.5,
+                       'Time is UTC of mount at end of exposure'))
+        return True
 
+    def writeHeaderOptical(self, header, binning, focalLength):
+        """
+        :param header:
+        :param binning:
+        :param focalLength:
+        :return:
+        """
+        if not focalLength:
+            return False
+
+        factor = binning / focalLength * 206.265
+        header.append(('FOCALLEN',
+                       focalLength, 'Data taken from driver or manual input'))
+        header.append(('SCALE',
+                       self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor))
+        return True
+
+    def writeHeaderSite(self, header, obs):
+        """
+        :param header:
+        :param obs:
+        :return:
+        """
         hasCoordinate = self.raJ2000 is not None and self.decJ2000 is not None
         if hasCoordinate:
             header.append(('RA', self.raJ2000._degrees, 'Float value in degree'))
@@ -94,8 +126,7 @@ class CameraSupport:
             header.append(('SITELON', formatDstrToText(lon)))
             elev = obs.location.elevation.m
             header.append(('SITEELEV', elev))
-
-        return header
+        return True
 
     def saveFits(self, imagePath, data, expTime, binning, focalLength):
         """
@@ -112,8 +143,11 @@ class CameraSupport:
         self.signals.message.emit('saving')
         hdu = fits.PrimaryHDU(data=data)
         obs = self.app.mount.obsSite
-        hdu.header = self.writeHeaderInfo(hdu.header, obs, expTime,
-                                          binning, focalLength)
+        self.writeHeaderBasic(hdu.header)
+        self.writeHeaderCamera(hdu.header, expTime, binning)
+        self.writeHeaderTime(hdu.header, obs)
+        self.writeHeaderOptical(hdu.header, binning, focalLength)
+        self.writeHeaderSite(hdu.header, obs)
         hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
         self.log.info(f'Saved Image: [{imagePath}]')
         return imagePath

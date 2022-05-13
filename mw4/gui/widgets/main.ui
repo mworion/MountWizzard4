@@ -106,7 +106,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -16940,7 +16940,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>210</x>
           <y>45</y>
-          <width>41</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -16953,10 +16953,10 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Delay</string>
+         <string>Cycle Time</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="delayTimeFlexure">
+       <widget class="QDoubleSpinBox" name="flexureDelayTime">
         <property name="geometry">
          <rect>
           <x>280</x>
@@ -16995,7 +16995,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_111">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>20</y>
           <width>21</width>
           <height>21</height>
@@ -17043,7 +17043,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_112">
         <property name="geometry">
          <rect>
-          <x>165</x>
+          <x>160</x>
           <y>20</y>
           <width>21</width>
           <height>21</height>
@@ -17067,7 +17067,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="numberRunsTimeChange">
+       <widget class="QDoubleSpinBox" name="flexureCycles">
         <property name="geometry">
          <rect>
           <x>115</x>
@@ -17103,7 +17103,7 @@ Next point in time when satellite settles.</string>
          <double>30.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="altitudeTimeChange">
+       <widget class="QDoubleSpinBox" name="flexureAlt">
         <property name="geometry">
          <rect>
           <x>115</x>
@@ -17160,7 +17160,7 @@ Next point in time when satellite settles.</string>
          <string>Number Cycles</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="azimuthTimeChange">
+       <widget class="QDoubleSpinBox" name="flexureAz">
         <property name="geometry">
          <rect>
           <x>280</x>
@@ -17196,7 +17196,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_115">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>45</y>
           <width>21</width>
           <height>21</height>
@@ -17225,7 +17225,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>210</x>
           <y>20</y>
-          <width>51</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -17281,7 +17281,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>220</x>
           <y>45</y>
-          <width>51</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -17318,7 +17318,7 @@ Next point in time when satellite settles.</string>
          <string>Number Cycles</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="delayTimeHysterese">
+       <widget class="QDoubleSpinBox" name="hystereseDelayTime">
         <property name="geometry">
          <rect>
           <x>290</x>
@@ -17354,7 +17354,7 @@ Next point in time when satellite settles.</string>
          <double>30.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="altitudeHysterese2">
+       <widget class="QDoubleSpinBox" name="hystereseAlt2">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -17393,7 +17393,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_119">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>335</x>
           <y>45</y>
           <width>21</width>
           <height>21</height>
@@ -17417,7 +17417,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="altitudeHysterese1">
+       <widget class="QDoubleSpinBox" name="hystereseAlt1">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -17456,10 +17456,10 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_120">
         <property name="geometry">
          <rect>
-          <x>180</x>
+          <x>175</x>
           <y>20</y>
           <width>21</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -17501,7 +17501,7 @@ Next point in time when satellite settles.</string>
          <string>Point 1    Altitude</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="numberRunsHysterese">
+       <widget class="QDoubleSpinBox" name="hystereseCycles_2">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -17563,7 +17563,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>220</x>
           <y>70</y>
-          <width>41</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -17576,10 +17576,10 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Delay</string>
+         <string>Cycle Time</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="azimuthHysterese2">
+       <widget class="QDoubleSpinBox" name="hystereseAz2">
         <property name="geometry">
          <rect>
           <x>290</x>
@@ -17615,10 +17615,10 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_114">
         <property name="geometry">
          <rect>
-          <x>180</x>
-          <y>55</y>
+          <x>175</x>
+          <y>45</y>
           <width>21</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -17642,7 +17642,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_117">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>335</x>
           <y>70</y>
           <width>21</width>
           <height>21</height>
@@ -17671,7 +17671,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>220</x>
           <y>20</y>
-          <width>51</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -17687,7 +17687,7 @@ Next point in time when satellite settles.</string>
          <string>Azimuth</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="azimuthHysterese1">
+       <widget class="QDoubleSpinBox" name="hystereseAz1">
         <property name="geometry">
          <rect>
           <x>290</x>
@@ -17723,7 +17723,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_121">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>335</x>
           <y>20</y>
           <width>21</width>
           <height>21</height>
@@ -29713,17 +29713,17 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>relayButton6</tabstop>
   <tabstop>relayButton7</tabstop>
   <tabstop>cancelAnalyse</tabstop>
-  <tabstop>delayTimeFlexure</tabstop>
-  <tabstop>numberRunsTimeChange</tabstop>
-  <tabstop>altitudeTimeChange</tabstop>
-  <tabstop>azimuthTimeChange</tabstop>
+  <tabstop>flexureDelayTime</tabstop>
+  <tabstop>flexureCycles</tabstop>
+  <tabstop>flexureAlt</tabstop>
+  <tabstop>flexureAz</tabstop>
   <tabstop>runFlexure</tabstop>
-  <tabstop>delayTimeHysterese</tabstop>
-  <tabstop>altitudeHysterese2</tabstop>
-  <tabstop>altitudeHysterese1</tabstop>
-  <tabstop>numberRunsHysterese</tabstop>
-  <tabstop>azimuthHysterese2</tabstop>
-  <tabstop>azimuthHysterese1</tabstop>
+  <tabstop>hystereseDelayTime</tabstop>
+  <tabstop>hystereseAlt2</tabstop>
+  <tabstop>hystereseAlt1</tabstop>
+  <tabstop>hystereseCycles_2</tabstop>
+  <tabstop>hystereseAz2</tabstop>
+  <tabstop>hystereseAz1</tabstop>
   <tabstop>runHysteresis</tabstop>
   <tabstop>coverLightOn</tabstop>
   <tabstop>coverLightOff</tabstop>

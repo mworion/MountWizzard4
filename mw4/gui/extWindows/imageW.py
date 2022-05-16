@@ -752,7 +752,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
 
-        with fits.open(self.imageFileName, mode='update') as fitsHandle:
+        with fits.open(self.imageFileName) as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
 

@@ -48,6 +48,10 @@ Released version of MW4
 
 Version 2.2
 ^^^^^^^^^^^
+2.2.4
+
+- fix: remove race condition for image file causing ASTAP to fail
+
 2.2.3
 
 - fix: mount orientation in southern hemisphere

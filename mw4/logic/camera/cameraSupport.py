@@ -107,7 +107,9 @@ class CameraSupport:
         obs = self.app.mount.obsSite
         hdu.header = self.writeHeaderInfo(hdu.header, obs, expTime,
                                           binning, focalLength)
-        hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
+        hdu.writeto(imagePath, overwrite=True)
+        with fits.open(imagePath) as fitsHDU:
+            self.log.debug(f'Image {imagePath}: {fitsHDU.header}')
         self.log.info(f'Saved Image: [{imagePath}]')
         return imagePath
 

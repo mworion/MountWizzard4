@@ -175,7 +175,6 @@ class CameraSupport:
                 timeLeft -= 0.1
             else:
                 timeLeft = 0
-
         self.signals.exposed.emit()
         return True
 
@@ -188,7 +187,6 @@ class CameraSupport:
             if self.abortExpose:
                 break
             sleepAndEvents(100)
-
         self.signals.downloaded.emit()
         return True
 

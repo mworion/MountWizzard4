@@ -892,7 +892,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.app.camera.abort()
-        # for disconnection we have to split which slots were connected to
+        # for disconnection, we have to split which slots were connected to
         # disable the right ones
         if self.deviceStat['expose']:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)

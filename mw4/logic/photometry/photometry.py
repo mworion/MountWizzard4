@@ -347,7 +347,7 @@ class Photometry:
         :param imagePath:
         :return:
         """
-        with fits.open(imagePath, mode='update') as fitsHandle:
+        with fits.open(imagePath) as fitsHandle:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
 

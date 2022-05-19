@@ -33,26 +33,6 @@ class CoverIndi(IndiClass):
         super().__init__(app=app, threadPool=app.threadPool)
         self.data = data
 
-    def setUpdateConfig(self, deviceName):
-        """
-        _setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
-
-        :param deviceName:
-        :return: success
-        """
-        if deviceName != self.deviceName:
-            return False
-        if self.device is None:
-            return False
-
-        update = self.device.getNumber('PERIOD_MS')
-        update['PERIOD'] = self.updateRate
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='PERIOD_MS',
-                                        elements=update)
-        return suc
-
     def updateText(self, deviceName, propertyName):
         """
         :param deviceName:

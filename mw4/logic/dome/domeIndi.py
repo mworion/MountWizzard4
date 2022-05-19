@@ -37,27 +37,6 @@ class DomeIndi(IndiClass):
 
         self.app.update1s.connect(self.updateStatus)
 
-    def setUpdateConfig(self, deviceName):
-        """
-        setUpdateRate corrects the update rate of dome devices to get an
-        defined setting regardless, what is setup in server side.
-
-        :param deviceName:
-        :return: success
-        """
-        if deviceName != self.deviceName:
-            return False
-        if self.device is None:
-            return False
-
-        update = self.device.getNumber('POLLING_PERIOD')
-        update['PERIOD_MS'] = self.updateRate
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING_PERIOD',
-                                        elements=update,
-                                        )
-        return suc
-
     def updateStatus(self):
         """
         updateStatus emits the actual azimuth status every 3 second in case of

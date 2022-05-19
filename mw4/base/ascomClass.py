@@ -69,8 +69,8 @@ class AscomClass(DriverData):
         """
         :return: true for test purpose
         """
-        self.cyclePollData.start(self.CYCLE_POLL_DATA)
-        self.cyclePollStatus.start(self.CYCLE_POLL_STATUS)
+        self.cyclePollData.start(self.updateRate)
+        self.cyclePollStatus.start(self.updateRate)
         return True
 
     def stopTimer(self):

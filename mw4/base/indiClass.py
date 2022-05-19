@@ -337,7 +337,17 @@ class IndiClass:
         :param deviceName:
         :return: success
         """
-        pass
+        if deviceName != self.deviceName:
+            return False
+        if self.device is None:
+            return False
+
+        update = self.device.getNumber('PERIOD_MS')
+        update['PERIOD'] = self.updateRate
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='PERIOD_MS',
+                                        elements=update)
+        return suc
 
     def convertIndigoProperty(self, key):
         """

@@ -91,6 +91,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                 'port': self.ui.alpacaPort,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
+                'updateRate': self.ui.alpacaUpdateRate,
             },
             'ascom': {
                 'deviceName': self.ui.ascomDevice,

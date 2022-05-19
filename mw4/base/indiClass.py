@@ -34,7 +34,6 @@ class IndiClass:
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
-    UPDATE_RATE = 1000
 
     INDIGO = {
         # numbers
@@ -102,6 +101,7 @@ class IndiClass:
         self.app = app
         self.data = data
         self.client = Client(host=None, threadPool=threadPool)
+        self.updateRate = 1000
 
         if self.app is not None:
             # this is for direct use of indiClass in devicePopupW for
@@ -134,6 +134,7 @@ class IndiClass:
             'port': 7624,
             'loadConfig': False,
             'messages': False,
+            'updateRate': 1000,
         }
 
         self.timerRetry = QTimer()

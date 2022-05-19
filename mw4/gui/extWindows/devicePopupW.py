@@ -84,6 +84,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                 'deviceList': self.ui.indiDeviceList,
                 'messages': self.ui.indiMessages,
                 'loadConfig': self.ui.indiLoadConfig,
+                'updateRate': self.ui.indiUpdateRate,
             },
             'alpaca': {
                 'hostaddress': self.ui.alpacaHostAddress,

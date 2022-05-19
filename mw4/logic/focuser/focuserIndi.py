@@ -52,10 +52,10 @@ class FocuserIndi(IndiClass):
             return False
 
         update = self.device.getNumber('PERIOD_MS')
-        if update.get('PERIOD', 0) == self.UPDATE_RATE:
+        if update.get('PERIOD', 0) == self.updateRate:
             return True
 
-        update['PERIOD'] = self.UPDATE_RATE
+        update['PERIOD'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='PERIOD_MS',
                                         elements=update)

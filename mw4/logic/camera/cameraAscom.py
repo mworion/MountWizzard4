@@ -136,7 +136,6 @@ class CameraAscom(AscomClass, CameraSupport):
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()
         self.signals.message.emit('')
-
         return True
 
     def expose(self,

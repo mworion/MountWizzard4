@@ -99,8 +99,11 @@ class AscomClass(DriverData):
             self.log.debug(t)
             self.propertyExceptions.append(valueProp)
         else:
-            t = f'[{self.deviceName}] property [{valueProp}] has value: [{value}]'
-            self.log.trace(t)
+            if valueProp != 'imagearray':
+                t = f'[{self.deviceName}] property [{valueProp}] has value: [{value}]'
+                self.log.trace(t)
+            else:
+                self.log.trace(f'{self.deviceName}] property [{valueProp}]')
         finally:
             return value
 

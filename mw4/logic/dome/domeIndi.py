@@ -51,9 +51,6 @@ class DomeIndi(IndiClass):
             return False
 
         update = self.device.getNumber('POLLING_PERIOD')
-        if update.get('PERIOD_MS', 0) == self.updateRate:
-            return True
-
         update['PERIOD_MS'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='POLLING_PERIOD',

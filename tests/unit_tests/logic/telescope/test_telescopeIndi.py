@@ -66,19 +66,7 @@ def test_setUpdateConfig_3():
 def test_setUpdateConfig_4():
     app.deviceName = 'test'
     app.device = Device()
-    app.UPDATE_RATE = 1
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value={'PERIOD': 1}):
-        suc = app.setUpdateConfig('test')
-        assert suc
-
-
-def test_setUpdateConfig_5():
-    app.deviceName = 'test'
-    app.device = Device()
     app.client = Client()
-    app.UPDATE_RATE = 0
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
@@ -89,11 +77,10 @@ def test_setUpdateConfig_5():
             assert not suc
 
 
-def test_setUpdateConfig_6():
+def test_setUpdateConfig_5():
     app.deviceName = 'test'
     app.device = Device()
     app.client = Client()
-    app.UPDATE_RATE = 0
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):

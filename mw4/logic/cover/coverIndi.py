@@ -47,9 +47,6 @@ class CoverIndi(IndiClass):
             return False
 
         update = self.device.getNumber('PERIOD_MS')
-        if update.get('PERIOD', 0) == self.updateRate:
-            return True
-
         update['PERIOD'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='PERIOD_MS',

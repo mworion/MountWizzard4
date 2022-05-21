@@ -209,9 +209,7 @@ class AstrometryASTAP(object):
         suc, retValue = self.runASTAP(binPath=binPathASTAP,
                                       fitsPath=fitsPath,
                                       tempFile=tempFile,
-                                      options=options,
-                                      )
-
+                                      options=options)
         if not suc:
             text = self.returnCodes.get(retValue, 'Unknown code')
             self.result['message'] = f'ASTAP error: [{text}]'

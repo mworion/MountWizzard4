@@ -263,6 +263,8 @@ class AlpacaClass(DriverData):
         if valueProp != 'imagearray':
             t = f'[{self.deviceName}] [{uid:10d}], response: [{response}]'
             self.log.trace(t)
+        else:
+            self.log.trace(f'[{self.deviceName}] [{uid:10d}]')
 
         return response['Value']
 

@@ -223,6 +223,7 @@ class Astrometry:
         self.mutexSolve.unlock()
         self.signals.done.emit(solver.result)
         self.signals.message.emit('')
+        self.log.debug('Finished clear thread for solving')
         return True
 
     def solveThreading(self, fitsPath='', raHint=None, decHint=None,
@@ -254,6 +255,7 @@ class Astrometry:
             self.signals.done.emit(solver.result)
             return False
 
+        self.log.debug('Start thread for solving')
         self.signals.message.emit('solving')
         worker = tpool.Worker(solver.solve,
                               fitsPath=fitsPath,

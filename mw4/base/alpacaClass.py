@@ -35,8 +35,6 @@ class AlpacaClass(DriverData):
 
     log = logging.getLogger(__name__)
 
-    CYCLE_POLL_STATUS = 1000
-    CYCLE_POLL_DATA = 1000
     ALPACA_TIMEOUT = 3
 
     def __init__(self, app=None, data=None, threadPool=None):
@@ -44,6 +42,7 @@ class AlpacaClass(DriverData):
 
         self.app = app
         self.threadPool = threadPool
+        self.updateRate = 1000
 
         self.data = data
         self.propertyExceptions = []
@@ -65,6 +64,7 @@ class AlpacaClass(DriverData):
             'apiVersion': 1,
             'user': '',
             'password': '',
+            'updateRate': 1000,
         }
 
         self.deviceConnected = False
@@ -365,8 +365,8 @@ class AlpacaClass(DriverData):
         """
         :return: true for test purpose
         """
-        self.cycleData.start(self.CYCLE_POLL_DATA)
-        self.cycleDevice.start(self.CYCLE_POLL_STATUS)
+        self.cycleData.start(self.updateRate)
+        self.cycleDevice.start(self.updateRate)
         return True
 
     def stopTimer(self):

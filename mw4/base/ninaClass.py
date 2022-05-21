@@ -175,8 +175,8 @@ class NINAClass(DriverData, QObject):
         """
         :return: true for test purpose
         """
-        self.cycleData.start(self.CYCLE_POLL_DATA)
-        self.cycleDevice.start(self.CYCLE_POLL_STATUS)
+        self.cycleData.start(self.updateRate)
+        self.cycleDevice.start(self.updateRate)
         return True
 
     def stopTimer(self):

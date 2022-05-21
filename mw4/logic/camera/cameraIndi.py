@@ -77,10 +77,7 @@ class CameraIndi(IndiClass, CameraSupport):
                                 )
 
         update = self.device.getNumber('POLLING_PERIOD')
-        if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
-            return True
-
-        update['PERIOD_MS'] = self.UPDATE_RATE
+        update['PERIOD_MS'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='POLLING_PERIOD',
                                         elements=update,

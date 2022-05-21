@@ -44,10 +44,7 @@ class SkymeterIndi(IndiClass):
             return False
 
         update = self.device.getNumber('WEATHER_UPDATE')
-        if update.get('PERIOD', 0) == self.UPDATE_RATE:
-            return True
-
-        update['PERIOD'] = self.UPDATE_RATE
+        update['PERIOD'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='WEATHER_UPDATE',
                                         elements=update)

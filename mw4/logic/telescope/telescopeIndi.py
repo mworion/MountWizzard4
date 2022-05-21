@@ -32,23 +32,3 @@ class TelescopeIndi(IndiClass):
         self.signals = signals
         super().__init__(app=app, data=data, threadPool=app.threadPool)
         self.data = data
-
-    def setUpdateConfig(self, deviceName):
-        """
-        :param deviceName:
-        :return: success
-        """
-        if deviceName != self.deviceName:
-            return False
-        if self.device is None:
-            return False
-
-        update = self.device.getNumber('PERIOD_MS')
-        if update.get('PERIOD', 0) == self.UPDATE_RATE:
-            return True
-
-        update['PERIOD'] = self.UPDATE_RATE
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='PERIOD_MS',
-                                        elements=update)
-        return suc

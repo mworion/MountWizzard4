@@ -84,12 +84,14 @@ class DevicePopup(toolsQtWidget.MWidget):
                 'deviceList': self.ui.indiDeviceList,
                 'messages': self.ui.indiMessages,
                 'loadConfig': self.ui.indiLoadConfig,
+                'updateRate': self.ui.indiUpdateRate,
             },
             'alpaca': {
                 'hostaddress': self.ui.alpacaHostAddress,
                 'port': self.ui.alpacaPort,
                 'user': self.ui.alpacaUser,
                 'password': self.ui.alpacaPassword,
+                'updateRate': self.ui.alpacaUpdateRate,
             },
             'ascom': {
                 'deviceName': self.ui.ascomDevice,

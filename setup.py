@@ -21,6 +21,7 @@ import platform
 
 releaseNotes = """
 - fix: reduce load in debug trace mode
+- fix: model process stalls in some cases in normal mode
  """
 
 with open('notes.txt', 'w') as f:

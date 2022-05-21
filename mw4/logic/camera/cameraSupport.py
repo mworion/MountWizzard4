@@ -103,6 +103,7 @@ class CameraSupport:
             return ''
 
         self.signals.message.emit('saving')
+        self.signals.downloaded.emit()
         hdu = fits.PrimaryHDU(data=data)
         obs = self.app.mount.obsSite
         hdu.header = self.writeHeaderInfo(hdu.header, obs, expTime,

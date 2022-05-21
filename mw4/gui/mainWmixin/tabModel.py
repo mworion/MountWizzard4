@@ -252,6 +252,7 @@ class Model:
             self.retryQueue.put(mPoint)
 
         self.updateProgress(number=lenSequence, count=count)
+        self.log.debug(f'Processing {[count]} from {[lenSequence]}')
         if lenSequence == count:
             self.modelCycleThroughBuildPointsFinished()
 

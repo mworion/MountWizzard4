@@ -20,7 +20,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: remove race condition for large image file causing solve error in ASTAP
+- fix: reduce load in debug trace mode
  """
 
 with open('notes.txt', 'w') as f:
@@ -28,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.4',
+    version='2.2.5',
     packages=[
         'mw4',
         'mw4.base',

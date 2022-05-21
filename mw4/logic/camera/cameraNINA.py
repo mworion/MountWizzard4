@@ -209,7 +209,13 @@ class CameraNINA(NINAClass, CameraSupport):
         if not receipt:
             return False
 
-        self.waitCombinedNINA(expTime)
+        self.waitStart()
+        self.waitExposedApp(expTime)
+        self.signals.exposed.emit()
+        self.waitDownload()
+        self.signals.downloaded.emit()
+        self.waitSave()
+
         if self.abortExpose:
             imagePath = ''
 

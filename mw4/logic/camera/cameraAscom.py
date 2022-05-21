@@ -131,7 +131,9 @@ class CameraAscom(AscomClass, CameraSupport):
 
         self.client.StartExposure(expTime, True)
         self.waitExposed(self.getAscomProperty, 'ImageReady', expTime)
+        self.signals.exposed.emit()
         data = self.retrieveFits(self.getAscomProperty, 'ImageArray')
+        self.signals.downloaded.emit()
         imagePath = self.saveFits(imagePath, data, expTime, binning, focalLength)
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()

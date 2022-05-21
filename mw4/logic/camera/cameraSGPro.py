@@ -211,7 +211,14 @@ class CameraSGPro(SGProClass, CameraSupport):
         if not receipt:
             return False
 
-        self.waitCombinedSGPro(self.sgGetImagePath, receipt, expTime)
+        self.waitStart()
+        self.waitExposedApp(expTime)
+        self.signals.exposed.emit()
+        self.waitDownload()
+        self.signals.downloaded.emit()
+        self.waitSave()
+        self.waitFinish(self.sgGetImagePath, receipt)
+
         if not self.abortExpose:
             pre, ext = os.path.splitext(imagePath)
             os.rename(pre + '.fit', imagePath)

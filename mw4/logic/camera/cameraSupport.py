@@ -141,7 +141,6 @@ class CameraSupport:
             return ''
 
         self.signals.message.emit('saving')
-        self.signals.downloaded.emit()
         hdu = fits.PrimaryHDU(data=data)
         obs = self.app.mount.obsSite
         self.writeHeaderBasic(hdu.header)
@@ -162,7 +161,6 @@ class CameraSupport:
         if self.abortExpose:
             return np.array([], dtype=np.uint16)
 
-        self.signals.exposed.emit()
         self.signals.message.emit('download')
         tmp = function(param)
         if tmp is None:
@@ -202,7 +200,7 @@ class CameraSupport:
             sleepAndEvents(100)
         return True
 
-    def waitIntegrate(self, timeLeft):
+    def waitExposedApp(self, timeLeft):
         """
         :param timeLeft:
         :return:
@@ -217,7 +215,6 @@ class CameraSupport:
                 timeLeft -= 0.1
             else:
                 timeLeft = 0
-        self.signals.exposed.emit()
         return True
 
     def waitDownload(self):
@@ -229,7 +226,6 @@ class CameraSupport:
             if self.abortExpose:
                 break
             sleepAndEvents(100)
-        self.signals.downloaded.emit()
         return True
 
     def waitSave(self):
@@ -253,31 +249,4 @@ class CameraSupport:
             if self.abortExpose:
                 break
             sleepAndEvents(100)
-        return True
-
-    def waitCombinedSGPro(self, function, param, expTime):
-        """
-        :param function:
-        :param param:
-        :param expTime:
-        :return:
-        """
-        timeLeft = expTime
-        self.waitStart()
-        self.waitIntegrate(timeLeft)
-        self.waitDownload()
-        self.waitSave()
-        self.waitFinish(function, param)
-        return True
-
-    def waitCombinedNINA(self, expTime):
-        """
-        :param expTime:
-        :return:
-        """
-        timeLeft = expTime
-        self.waitStart()
-        self.waitIntegrate(timeLeft)
-        self.waitDownload()
-        self.waitSave()
         return True

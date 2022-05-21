@@ -242,32 +242,44 @@ def test_workerExpose_2():
 
 def test_workerExpose_3():
     app.deviceName = 'test'
+    app.abortExpose = False
     with mock.patch.object(app,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):
         with mock.patch.object(app,
-                               'waitCombinedNINA'):
-            app.abortExpose = False
-            with mock.patch.object(os.path,
-                                   'splitext',
-                                   return_value=('test', 'test')):
-                with mock.patch.object(os,
-                                       'rename'):
-                    suc = app.workerExpose()
-                    assert suc
+                               'waitStart'):
+            with mock.patch.object(app,
+                                   'waitExposedApp'):
+                with mock.patch.object(app,
+                                       'waitDownload'):
+                    with mock.patch.object(app,
+                                           'waitSave'):
+                        with mock.patch.object(os.path,
+                                               'splitext',
+                                               return_value=('test', 'test')):
+                            with mock.patch.object(os,
+                                                   'rename'):
+                                suc = app.workerExpose()
+                                assert suc
 
 
 def test_workerExpose_4():
     app.deviceName = 'test'
     app.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    app.abortExpose = True
     with mock.patch.object(app,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):
         with mock.patch.object(app,
-                               'waitCombinedNINA'):
-            app.abortExpose = True
-            suc = app.workerExpose()
-            assert suc
+                               'waitStart'):
+            with mock.patch.object(app,
+                                   'waitExposedApp'):
+                with mock.patch.object(app,
+                                       'waitDownload'):
+                    with mock.patch.object(app,
+                                           'waitSave'):
+                        suc = app.workerExpose()
+                        assert suc
 
 
 def test_expose_1():

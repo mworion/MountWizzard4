@@ -222,7 +222,7 @@ class IndiClass:
         """
         if deviceName == self.deviceName:
             self.device = self.client.getDevice(deviceName)
-            self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
+            self.app.messageN.emit(0, 'INDI', 'Device found', f'{deviceName}')
         else:
             self.log.info(f'INDI device snoop: [{deviceName}]')
         return True
@@ -236,7 +236,7 @@ class IndiClass:
         :return: true for test purpose
         """
         if deviceName == self.deviceName:
-            self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
+            self.app.messageN.emit(0, 'INDI', 'Device removed', f'{deviceName}')
             self.device = None
             self.data.clear()
             return True
@@ -492,12 +492,15 @@ class IndiClass:
         if self.messages:
             if text.startswith('[WARNING]'):
                 text = self.removePrefix(text, '[WARNING]')
-                self.app.message.emit(f'INDI {device:15s} {text}', 0)
+                self.app.messageN.emit(0, 'INDI', 'Device warning',
+                                       f'{device:15s} {text}')
             elif text.startswith('[ERROR]'):
                 text = self.removePrefix(text, '[ERROR]')
-                self.app.message.emit(f'INDI {device:15s} {text}', 2)
+                self.app.messageN.emit(2, 'INDI', 'Device error',
+                                       f'{device:15s} {text}')
             else:
-                self.app.message.emit(f'INDI {device:15s} {text}', 0)
+                self.app.messageN.emit(0, 'INDI', 'Device message',
+                                       f'{device:15s} {text}')
             return True
         return False
 

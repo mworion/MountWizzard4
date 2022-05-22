@@ -399,7 +399,9 @@ class SettDevice:
             driverClass.stopCommunication()
             driverClass.data.clear()
             driverClass.run[framework].deviceName = ''
-            self.app.message.emit(f'Disabled device:     [{driver}]', 0)
+            self.app.messageN.emit(0, 'Driver',
+                                   f'{framework.upper()} device disabled',
+                                   f'{driver}')
 
         self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
                                                          f'{self.M_GREY1};')
@@ -468,7 +470,9 @@ class SettDevice:
         if autoStart:
             driverClass.startCommunication(loadConfig=loadConfig)
 
-        self.app.message.emit(f'Enabled device:      [{driver}]', 0)
+        self.app.messageN.emit(0, 'Driver',
+                               f'{framework.upper()} device enabled',
+                               f'{driver}')
         return True
 
     def startDrivers(self):
@@ -590,7 +594,7 @@ class SettDevice:
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
                                                              f'{self.M_GREY1};')
-            self.app.message.emit(f'Disconnected server: [{driver}] ', 0)
+            self.app.messageN.emit(0, 'Driver', 'Server disconnected', f'{driver}')
         return True
 
     def deviceConnected(self, deviceName):
@@ -607,7 +611,7 @@ class SettDevice:
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_GREEN};')
             self.deviceStat[driver] = True
-            self.app.message.emit(f'Device connected:    [{driver}]', 0)
+            self.app.messageN.emit(0, 'Driver', 'Device connected', f'{driver}')
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -622,5 +626,5 @@ class SettDevice:
             self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
                                                              f'{self.M_GREY1};')
             self.deviceStat[driver] = False
-            self.app.message.emit(f'Disconnected device: [{driver}]', 0)
+            self.app.messageN.emit(0, 'Driver', 'Device disconnected', f'{driver}')
         return True

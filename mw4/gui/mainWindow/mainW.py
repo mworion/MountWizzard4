@@ -897,11 +897,10 @@ class MainWindow(
         if suc:
             self.app.config['profileName'] = name
             self.ui.profile.setText(name)
-            t = f'Profile              [{name}] loaded'
-            self.app.message.emit(t, 0)
+            self.app.messageN(0, 'System', 'Profile loaded', f'{name}')
         else:
-            t = f'Profile              [{name}] cannot no be loaded'
-            self.app.message.emit(t, 2)
+            self.app.messageN(2, 'System', 'Profile error',
+                              f'{name}] cannot no be loaded')
 
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
@@ -929,11 +928,10 @@ class MainWindow(
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            t = f'Profile              [{name}] saved'
-            self.app.message.emit(t, 0)
+            self.app.messageN(0, 'System', 'Profile saved', f'{name}')
         else:
-            t = f'Profile              [{name}] cannot no be saved'
-            self.app.message.emit(t, 2)
+            self.app.messageN(2, 'System', 'Profile error',
+                              f'{name}] cannot no be loasavedded')
         return True
 
     def saveProfile(self):

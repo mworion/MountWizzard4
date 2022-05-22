@@ -730,12 +730,13 @@ class MWidget(QWidget, Styles):
         :return:
         """
         if not self.app.automation:
-            self.app.message.emit('No automation enabled - upload not possible', 2)
+            self.app.messageN.emit(2, 'System', 'Automation',
+                                   'No automation enabled - upload not possible')
             return ''
 
         if not self.app.automation.installPath:
-            t = 'No 10micron updater available - upload not possible'
-            self.app.message.emit(t, 2)
+            self.app.messageN.emit(2, 'System', 'Automation',
+                                   'No 10micron updater available - upload not possible')
             return ''
 
         return self.app.automation.updaterApp

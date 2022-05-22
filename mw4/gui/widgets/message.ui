@@ -150,6 +150,9 @@
      <property name="lineWidth">
       <number>0</number>
      </property>
+     <property name="autoScrollMargin">
+      <number>0</number>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>

@@ -59,6 +59,7 @@ class Ui_MessageDialog(object):
         self.messageTable.setFont(font)
         self.messageTable.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.messageTable.setLineWidth(0)
+        self.messageTable.setAutoScrollMargin(0)
         self.messageTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.messageTable.setTabKeyNavigation(False)
         self.messageTable.setProperty("showDropIndicator", False)

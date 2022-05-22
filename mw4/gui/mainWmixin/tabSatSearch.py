@@ -587,7 +587,7 @@ class SatSearch(object):
         satTab.setColumnWidth(7, 45)
         satTab.setColumnWidth(8, 0)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        satTab.verticalHeader().setDefaultSectionSize(15)
+        satTab.verticalHeader().setDefaultSectionSize(16)
         return True
 
     def setupSatelliteNameList(self):

@@ -20,7 +20,7 @@ import time
 
 # external packages
 from PyQt5.QtGui import QColor, QFont
-from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView
+from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtCore import Qt
 
 # local import
@@ -101,7 +101,7 @@ class MessageWindow(toolsQtWidget.MWidget):
         mesTab.setColumnWidth(2, 150)
         mesTab.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
         mesTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        mesTab.verticalHeader().setDefaultSectionSize(15)
+        mesTab.verticalHeader().setDefaultSectionSize(16)
         return True
 
     def setupMessage(self):
@@ -167,22 +167,24 @@ class MessageWindow(toolsQtWidget.MWidget):
                 item.setFont(self.messFont[prio])
                 self.ui.messageTable.setItem(row, 0, item)
 
-                item = QTableWidgetItem(f'{source}')
-                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                item.setFont(self.messFont[prio])
-                item.setForeground(self.messColor[prio])
-                self.ui.messageTable.setItem(row, 1, item)
+            item = QTableWidgetItem(f'{source}')
+            item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            item.setFont(self.messFont[prio])
+            item.setForeground(self.messColor[prio])
+            self.ui.messageTable.setItem(row, 1, item)
 
-                item = QTableWidgetItem(f'{mType}')
-                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-                item.setFont(self.messFont[prio])
-                item.setForeground(self.messColor[prio])
-                self.ui.messageTable.setItem(row, 2, item)
+            item = QTableWidgetItem(f'{mType}')
+            item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            item.setFont(self.messFont[prio])
+            item.setForeground(self.messColor[prio])
+            self.ui.messageTable.setItem(row, 2, item)
 
             item = QTableWidgetItem(f'{message}')
             item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             item.setFont(self.messFont[prio])
             item.setForeground(self.messColor[prio])
             self.ui.messageTable.setItem(row, 3, item)
+
+            self.ui.messageTable.scrollToBottom()
 
         return True

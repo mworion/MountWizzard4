@@ -188,7 +188,7 @@ class AscomClass(DriverData):
             suc = False
 
         if not suc:
-            self.app.message.emit(f'ASCOM connect error: [{self.deviceName}]', 2)
+            self.app.messageN.emit(2, 'ASCOM ', 'Connect error', f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
             return False
@@ -200,7 +200,7 @@ class AscomClass(DriverData):
         if not self.deviceConnected:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
+            self.app.messageN.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
         return True
 
     def workerGetInitialConfig(self):
@@ -221,12 +221,12 @@ class AscomClass(DriverData):
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)
+            self.app.messageN.emit(0, 'ASCOM ', 'Device remove', f'{self.deviceName}')
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.message.emit(f'ASCOM device found:  [{self.deviceName}]', 0)
+            self.app.messageN.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
 
         return suc
 

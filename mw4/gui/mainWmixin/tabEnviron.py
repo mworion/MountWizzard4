@@ -263,7 +263,7 @@ class Environ(object):
                                                         pressure=press)
 
         if not suc:
-            self.app.message.emit('Cannot perform refraction update', 2)
+            self.app.messageN.emit(2, 'System', 'Environment', 'No refraction update')
             return False
 
         return True

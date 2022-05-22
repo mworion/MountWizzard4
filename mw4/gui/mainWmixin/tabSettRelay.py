@@ -171,6 +171,6 @@ class SettRelay(object):
                 continue
             suc = self.doRelayAction(i)
         if not suc:
-            self.app.message.emit('Relay action cannot be performed', 2)
+            self.app.messageN.emit(2, 'System', 'Relay', 'Action cannot be done')
             return False
         return True

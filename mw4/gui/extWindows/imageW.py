@@ -60,6 +60,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
+        self.messageN = app.messageN
 
         self.imgP = None
         self.barItem = None
@@ -239,11 +240,11 @@ class ImageWindow(toolsQtWidget.MWidget):
                             'FITS files (*.fit*)', enableDir=True)
         loadFilePath, name, ext = val
         if not name:
-            self.app.message.emit('No image selected', 0)
+            self.app.messageN.emit(2, 'Image', 'Error', 'No image selected')
             return False
 
         self.imageFileName = loadFilePath
-        self.app.message.emit(f'Image selected:      [{name}{ext}]', 0)
+        self.app.messageN.emit(0, 'Image', 'Image selected', f'{name}{ext}')
         self.folder = os.path.dirname(loadFilePath)
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
@@ -689,16 +690,17 @@ class ImageWindow(toolsQtWidget.MWidget):
                                      focalLength=focalLength
                                      )
         if not suc:
-            text = f'Cannot expose:       [{os.path.basename(imagePath)}]'
             self.abortImage()
-            self.app.message.emit(text, 2)
+            text = f'{os.path.basename(imagePath)}'
+            self.messageN.emit(2, 'Image', 'Expose error', text)
             return False
 
-        text = f'Exposing:            [{os.path.basename(imagePath)}]'
-        self.app.message.emit(text, 0)
+        text = f'{os.path.basename(imagePath)}'
+        self.messageN.emit(0, 'Image', 'Exposing', text)
+
         text = f'Duration:{self.expTime:3.0f}s  '
         text += f'Bin:{self.binning:1.0f}  Sub:{subFrame:3.0f}%'
-        self.app.message.emit(f'                     {text}', 0)
+        self.messageN.emit(0, '', '', f'{text}')
         return True
 
     def exposeImageDone(self, imagePath=''):
@@ -708,8 +710,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         self.deviceStat['expose'] = False
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-        text = f'Exposed:             [{os.path.basename(imagePath)}]'
-        self.app.message.emit(text, 0)
+        text = f'{os.path.basename(imagePath)}'
+        self.messageN.emit(0, 'Image', 'Exposed', text)
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -732,8 +734,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return: True for test purpose
         """
-        text = f'Exposed:             [{os.path.basename(imagePath)}]'
-        self.app.message.emit(text, 0)
+        text = f'{os.path.basename(imagePath)}'
+        self.messageN.emit(0, 'Image', 'Exposed n', text)
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -766,7 +768,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageFileName = self.imageFileNameOld
         self.deviceStat['expose'] = False
         self.deviceStat['exposeN'] = False
-        self.app.message.emit('Exposing aborted', 2)
+        self.messageN.emit(2, 'Image', 'Expose', 'Exposing aborted')
         return True
 
     def solveDone(self, result=None):
@@ -778,24 +780,24 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
         if not result:
-            self.app.message.emit('Solving error, result missing', 2)
+            self.messageN.emit(2, 'Image', 'Solving',
+                               'Solving error, result missing')
             return False
         if not result['success']:
-            text = f'Solving error:       {result.get("message")}'
-            self.app.message.emit(text, 2)
+            self.messageN.emit(2, 'Image', 'Solving error',
+                               f'{result.get("message")}')
             return False
 
-        text = 'Solved :             '
-        text += f'RA: {convertToHMS(result["raJ2000S"])} '
+        text = f'RA: {convertToHMS(result["raJ2000S"])} '
         text += f'({result["raJ2000S"].hours:4.3f}), '
         text += f'DEC: {convertToDMS(result["decJ2000S"])} '
         text += f'({result["decJ2000S"].degrees:4.3f}), '
-        self.app.message.emit(text, 0)
-        text = '                     '
-        text += f'Angle: {result["angleS"]:3.0f}, '
+        self.messageN.emit(0, 'Image', 'Solved', text)
+
+        text = f'Angle: {result["angleS"]:3.0f}, '
         text += f'Scale: {result["scaleS"]:4.3f}, '
         text += f'Error: {result["errorRMS_S"]:4.1f}'
-        self.app.message.emit(text, 0)
+        self.messageN.emit(0, '', '', text)
 
         if self.ui.embedData.isChecked():
             self.showCurrent()
@@ -816,8 +818,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.astrometry.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
         self.deviceStat['solve'] = True
-        text = f'Solving:             [{os.path.basename(imagePath)}]'
-        self.app.message.emit(text, 0)
+        self.messageN.emit(0, 'Image', 'Solving',
+                           f'{os.path.basename(imagePath)}')
         return True
 
     def solveCurrent(self):
@@ -850,17 +852,18 @@ class ImageWindow(toolsQtWidget.MWidget):
             delta = self.app.dome.slewDome(altitude=altitudeT,
                                            azimuth=azimuthT)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            text = f'Slewing dome:        {geoStat}'
+
+            text = f'{geoStat}'
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.app.message.emit(text, 0)
+            self.messageN.emit(0, 'Image', 'Slewing dome', text)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
-            t = f'Slewing mount to:    Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.app.message.emit(t, 0)
+            t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
+            self.messageN.emit(0, 'Image', 'Slewing mount', t)
         else:
-            t = f'Cannot slew to:      Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.app.message.emit(t, 2)
+            t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
+            self.messageN.emit(2, 'Image', 'Slewing error', t)
         return suc
 
     def moveRaDecAbsolute(self, ra, dec):
@@ -887,29 +890,31 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.deviceStat['solve'] = False
         self.app.astrometry.signals.done.disconnect(self.solveCenterDone)
 
-        if result is None:
-            self.app.message.emit('Solving error, result missing', 2)
+        if not result:
+            self.messageN.emit(2, 'Image', 'Solve center',
+                               'Solving error, result missing')
             return False
         if not result['success']:
-            text = f'Solving error:       {result.get("message")}'
-            self.app.message.emit(text, 2)
+            self.messageN.emit(2, 'Image', 'Solve center error',
+                               f'{result.get("message")}')
             return False
 
-        text = 'Solved :             '
-        text += f'RA: {convertToHMS(result["raJ2000S"])} '
+        text = f'RA: {convertToHMS(result["raJ2000S"])} '
         text += f'({result["raJ2000S"].hours:4.3f}), '
         text += f'DEC: {convertToDMS(result["decJ2000S"])} '
         text += f'({result["decJ2000S"].degrees:4.3f}), '
-        self.app.message.emit(text, 0)
-        text = '                     '
-        text += f'Angle: {result["angleS"]:3.0f}, '
+        self.messageN.emit(0, 'Image', 'Solved center', text)
+
+        text = f'Angle: {result["angleS"]:3.0f}, '
         text += f'Scale: {result["scaleS"]:4.3f}, '
         text += f'Error: {result["errorRMS_S"]:4.1f}'
-        self.app.message.emit(text, 0)
-        self.app.message.emit('Centering now', 0)
+        self.messageN.emit(0, '', '', text)
+
+        self.messageN.emit(0, 'Image', 'Solved center', 'Centering now')
         suc = self.moveRaDecAbsolute(result['raJ2000S'], result['decJ2000S'])
         if not suc:
-            self.app.message.emit('Centering aborted', 2)
+            self.messageN.emit(2, 'Image', 'Solved center error',
+                               'Centering aborted')
             return False
         return True
 
@@ -925,6 +930,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.astrometry.signals.done.connect(self.solveCenterDone)
         self.app.astrometry.solveThreading(fitsPath=self.imageFileName)
         self.deviceStat['solve'] = True
-        text = f'Solving:             [{os.path.basename(self.imageFileName)}]'
-        self.app.message.emit(text, 0)
+        self.messageN.emit(0, 'Image', 'Solving center',
+                           f'{os.path.basename(self.imageFileName)}')
         return True

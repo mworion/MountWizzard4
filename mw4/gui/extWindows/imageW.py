@@ -697,9 +697,11 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         text = f'{os.path.basename(imagePath)}'
         self.messageN.emit(0, 'Image', 'Exposing', text)
-
         text = f'Duration:{self.expTime:3.0f}s  '
-        text += f'Bin:{self.binning:1.0f}  Sub:{subFrame:3.0f}%'
+        self.messageN.emit(0, '', '', f'{text}')
+        text = f'Bin:{self.binning:1.0f}'
+        self.messageN.emit(0, '', '', f'{text}')
+        text = f'Sub:{subFrame:3.0f}%'
         self.messageN.emit(0, '', '', f'{text}')
         return True
 
@@ -790,13 +792,15 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
         text += f'({result["raJ2000S"].hours:4.3f}), '
-        text += f'DEC: {convertToDMS(result["decJ2000S"])} '
-        text += f'({result["decJ2000S"].degrees:4.3f}), '
         self.messageN.emit(0, 'Image', 'Solved', text)
-
+        text = f'DEC: {convertToDMS(result["decJ2000S"])} '
+        text += f'({result["decJ2000S"].degrees:4.3f}), '
+        self.messageN.emit(0, '', '', text)
         text = f'Angle: {result["angleS"]:3.0f}, '
-        text += f'Scale: {result["scaleS"]:4.3f}, '
-        text += f'Error: {result["errorRMS_S"]:4.1f}'
+        self.messageN.emit(0, '', '', text)
+        text = f'Scale: {result["scaleS"]:4.3f}, '
+        self.messageN.emit(0, '', '', text)
+        text = f'Error: {result["errorRMS_S"]:4.1f}'
         self.messageN.emit(0, '', '', text)
 
         if self.ui.embedData.isChecked():
@@ -901,13 +905,15 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
         text += f'({result["raJ2000S"].hours:4.3f}), '
-        text += f'DEC: {convertToDMS(result["decJ2000S"])} '
-        text += f'({result["decJ2000S"].degrees:4.3f}), '
         self.messageN.emit(0, 'Image', 'Solved center', text)
-
+        text = f'DEC: {convertToDMS(result["decJ2000S"])} '
+        text += f'({result["decJ2000S"].degrees:4.3f}), '
+        self.messageN.emit(0, '', '', text)
         text = f'Angle: {result["angleS"]:3.0f}, '
-        text += f'Scale: {result["scaleS"]:4.3f}, '
-        text += f'Error: {result["errorRMS_S"]:4.1f}'
+        self.messageN.emit(0, '', '', text)
+        text = f'Scale: {result["scaleS"]:4.3f}, '
+        self.messageN.emit(0, '', '', text)
+        text = f'Error: {result["errorRMS_S"]:4.1f}'
         self.messageN.emit(0, '', '', text)
 
         self.messageN.emit(0, 'Image', 'Solved center', 'Centering now')

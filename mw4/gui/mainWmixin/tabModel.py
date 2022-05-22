@@ -35,9 +35,6 @@ from logic.modeldata.modelHandling import writeRetrofitData
 class Model:
     """
     """
-    # define a max error which throws point out of queue in arcsec (this is
-    # 10 degrees)
-    MAX_ERROR_MODEL_POINT = 10 * 60 * 60
 
     def __init__(self):
         self.slewQueue = queue.Queue()
@@ -219,8 +216,7 @@ class Model:
         mPoint.update(result)
         isSuccess = mPoint['success']
 
-        isInRange = mPoint.get('errorRMS_S', 0) < self.MAX_ERROR_MODEL_POINT
-        if isSuccess and isInRange:
+        if isSuccess:
             raJNowS, decJNowS = J2000ToJNow(mPoint['raJ2000S'],
                                             mPoint['decJ2000S'],
                                             mPoint['julianDate'])

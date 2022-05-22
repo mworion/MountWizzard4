@@ -19,7 +19,9 @@
 import time
 
 # external packages
-from PyQt5.QtGui import QTextCursor, QColor, QFont
+from PyQt5.QtGui import QColor, QFont
+from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView
+from PyQt5.QtCore import Qt
 
 # local import
 from gui.utilities import toolsQtWidget
@@ -85,14 +87,21 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def showWindow(self):
+    def clearMessageTable(self):
         """
-        :return: true for test purpose
+        :return:
         """
-        self.ui.clear.clicked.connect(self.clearWindow)
-        self.app.update1s.connect(self.writeMessage)
-        self.app.colorChange.connect(self.colorChange)
-        self.show()
+        mesTab = self.ui.messageTable
+        mesTab.setRowCount(0)
+        mesTab.setColumnCount(4)
+        hl = [' Time', ' Source', ' Type', 'Message / Value']
+        mesTab.setHorizontalHeaderLabels(hl)
+        mesTab.setColumnWidth(0, 70)
+        mesTab.setColumnWidth(1, 70)
+        mesTab.setColumnWidth(2, 150)
+        mesTab.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
+        mesTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        mesTab.verticalHeader().setDefaultSectionSize(15)
         return True
 
     def setupMessage(self):
@@ -104,10 +113,11 @@ class MessageWindow(toolsQtWidget.MWidget):
                           QColor(self.M_YELLOW),
                           QColor(self.M_RED),
                           ]
-        self.messFont = [QFont.Normal,
-                         QFont.Bold,
-                         QFont.Normal,
-                         QFont.Normal,
+        fontFam = self.window().font().family()
+        self.messFont = [QFont(fontFam, weight=QFont.Normal),
+                         QFont(fontFam, weight=QFont.Bold),
+                         QFont(fontFam, weight=QFont.Normal),
+                         QFont(fontFam, weight=QFont.Normal),
                          ]
         return True
 
@@ -120,23 +130,16 @@ class MessageWindow(toolsQtWidget.MWidget):
         self.clearWindow()
         return True
 
-    def clearWindow(self):
+    def showWindow(self):
         """
         :return: true for test purpose
         """
-        self.ui.message.clear()
+        self.ui.clear.clicked.connect(self.clearMessageTable)
+        self.clearMessageTable()
+        self.app.update1s.connect(self.writeMessage)
+        self.app.colorChange.connect(self.colorChange)
+        self.show()
         return True
-
-    @staticmethod
-    def splitByN(seq, n):
-        """
-        A generator to divide a sequence into chunks of n units.
-        :param n:
-        :return:
-        """
-        while seq:
-            yield seq[:n]
-            seq = seq[n:]
 
     def writeMessage(self):
         """
@@ -151,24 +154,35 @@ class MessageWindow(toolsQtWidget.MWidget):
         :return: true for test purpose
         """
         while not self.app.messageQueue.empty():
-            message, mType = self.app.messageQueue.get()
+            prio, source, mType, message = self.app.messageQueue.get()
 
-            withoutPrefix = mType & 0x100
-            mType = mType % 256
+            row = self.ui.messageTable.rowCount()
+            self.ui.messageTable.insertRow(row)
+            timePrefix = time.strftime('%H:%M:%S', time.localtime())
 
-            if mType > len(self.messColor):
-                continue
+            if source:
+                item = QTableWidgetItem(f'{timePrefix}')
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                item.setForeground(self.messColor[prio])
+                item.setFont(self.messFont[prio])
+                self.ui.messageTable.setItem(row, 0, item)
 
-            if withoutPrefix:
-                prefix = ' ' * 9
-            else:
-                prefix = time.strftime('%H:%M:%S ', time.localtime())
+                item = QTableWidgetItem(f'{source}')
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                item.setFont(self.messFont[prio])
+                item.setForeground(self.messColor[prio])
+                self.ui.messageTable.setItem(row, 1, item)
 
-            self.ui.message.setTextColor(self.messColor[mType])
-            self.ui.message.setFontWeight(self.messFont[mType])
+                item = QTableWidgetItem(f'{mType}')
+                item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+                item.setFont(self.messFont[prio])
+                item.setForeground(self.messColor[prio])
+                self.ui.messageTable.setItem(row, 2, item)
 
-            for line in self.splitByN(message, 87):
-                self.ui.message.insertPlainText(prefix + line + '\n')
-            self.ui.message.moveCursor(QTextCursor.End)
+            item = QTableWidgetItem(f'{message}')
+            item.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            item.setFont(self.messFont[prio])
+            item.setForeground(self.messColor[prio])
+            self.ui.messageTable.setItem(row, 3, item)
 
         return True

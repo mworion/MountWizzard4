@@ -586,10 +586,8 @@ class SatSearch(object):
         satTab.setColumnWidth(6, 50)
         satTab.setColumnWidth(7, 45)
         satTab.setColumnWidth(8, 0)
-        satTab.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        satTab.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        satTab.verticalHeader().setDefaultSectionSize(15)
         return True
 
     def setupSatelliteNameList(self):
@@ -604,8 +602,8 @@ class SatSearch(object):
 
         for name in self.satellites:
             number = self.satellites[name].model.satnum
-            satTab.insertRow(satTab.rowCount())
-            row = satTab.rowCount() - 1
+            row = satTab.rowCount()
+            satTab.insertRow(row)
             entry = QTableWidgetItem(f'{number:5d}')
             entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             satTab.setItem(row, 0, entry)

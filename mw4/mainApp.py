@@ -67,7 +67,8 @@ class MountWizzard4(QObject):
     __version__ = version('mountwizzard4')
     log = logging.getLogger(__name__)
 
-    message = pyqtSignal(str, int)
+    message = pyqtSignal(object, object)
+    messageN = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
@@ -113,6 +114,7 @@ class MountWizzard4(QObject):
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
         self.message.connect(self.writeMessageQueue)
+        self.messageN.connect(self.writeMessageQueueN)
         self.config = {}
         self.loadConfig()
         self.deviceStat = {
@@ -134,10 +136,10 @@ class MountWizzard4(QObject):
             'measure': None,
         }
         profile = self.config.get('profileName', '-')
-        self.messageQueue.put(('MountWizzard4:       [...started...]', 1))
-        t = f'Workdir:             [{self.mwGlob["workDir"]}]'
-        self.messageQueue.put((t, 1))
-        self.messageQueue.put((f'Loaded profile:      [{profile}]', 1))
+        workDir = self.mwGlob['workDir']
+        self.messageQueue.put((1, 'System', 'Lifecycle', 'MountWizzard4 started...'))
+        self.messageQueue.put((1, 'System', 'Workdir', f'{workDir}'))
+        self.messageQueue.put((1, 'System', 'Profile', f'{profile}'))
 
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
@@ -187,7 +189,7 @@ class MountWizzard4(QObject):
             self.update3s.connect(self.quit)
 
         if len(sys.argv) > 1:
-            self.message.emit(sys.argv[1], 1)
+            self.messageQueue.put(1, 'System', 'Arguments', sys.argv[1])
 
     def checkAndSetAutomation(self):
         """
@@ -204,10 +206,11 @@ class MountWizzard4(QObject):
         if automation.updaterApp != '':
             path = automation.installPath
             app = automation.updaterApp
-            t = f'10micron updater:    [{path}{app}]'
-            self.message.emit(t, 1)
+            t = f'Path: {path}{app}]'
+            self.messageQueue.put(1, 'System', '10micron updater', t)
         else:
-            self.message.emit('No 10micron updater available !', 2)
+            self.messageQueue.put(2, 'System', '10micron updater',
+                                  'Not available !')
         return automation
 
     def initConfig(self):
@@ -296,7 +299,8 @@ class MountWizzard4(QObject):
         """
         self.aboutToQuit()
         self.deviceStat['mount'] = False
-        self.message.emit('MountWizzard4 manual stopped', 1)
+        self.messageQueue.put((1, 'System', 'Lifecycle',
+                              'MountWizzard4 manual stopped'))
         self.application.quit()
         return True
 
@@ -417,12 +421,27 @@ class MountWizzard4(QObject):
             return False
         return status
 
-    def writeMessageQueue(self, message, mType):
+    def writeMessageQueue(self, message, prio):
         """
         :param message:
-        :param mType:
+        :param prio:
         :return: True for test purpose
         """
-        self.log.ui(f'Message window: [{message}]')
-        self.messageQueue.put((message, mType))
+        prio = prio % 256
+        source = 'NO'
+        mType = 'old'
+        self.log.ui(f'Message window: [{source} - {mType} - {message}]')
+        self.messageQueue.put((prio, source, mType, message))
+        return True
+
+    def writeMessageQueueN(self, prio, source, mType, message):
+        """
+        :param prio:
+        :param source:
+        :param mType:
+        :param message:
+        :return: True for test purpose
+        """
+        self.log.ui(f'Message window: [{source} - {mType} - {message}]')
+        self.messageQueue.put((prio, source, mType, message))
         return True

@@ -945,10 +945,11 @@ class MainWindow(
         self.app.storeConfig()
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
-            self.app.message.emit('Actual profile saved', 0)
+            self.app.messageN.emit(0, 'System', 'Profile', 'Actual profile saved')
 
         else:
-            self.app.message.emit('Actual profile cannot not be saved', 2)
+            self.app.messageN.emit("", 'System', 'Profile',
+                                   'Actual profile cannot not be saved')
         return suc
 
     def remoteCommand(self, command):
@@ -960,11 +961,11 @@ class MainWindow(
         """
         if command == 'shutdown':
             self.quitSave()
-            self.app.message.emit('Shutdown MW remotely', 2)
+            self.app.messageN.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
         elif command == 'shutdown mount':
             self.mountShutdown()
-            self.app.message.emit('Shutdown mount remotely', 2)
+            self.app.messageN.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
         elif command == 'boot mount':
             self.mountBoot()
-            self.app.message.emit('Boot mount remotely', 2)
+            self.app.messageN.emit(2, 'System', 'Remote', 'Boot Mount remotely')
         return True

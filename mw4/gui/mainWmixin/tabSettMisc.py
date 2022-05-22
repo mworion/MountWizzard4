@@ -226,7 +226,8 @@ class SettMisc(object):
         availPackage, comment, _ = self.versionPackage(packageName)
 
         if availPackage is None:
-            self.app.message.emit('Failed get actual package from server', 2)
+            self.app.messageN.emit(2, 'System', 'Update',
+                                   'Failed get actual package from server')
             return False
 
         self.ui.versionAvailable.setText(availPackage)
@@ -236,16 +237,17 @@ class SettMisc(object):
             return True
 
         t = f'A new version ({availPackage}) of MountWizzard is available!'
-        self.app.message.emit(t, 1)
+        self.app.messageN.emit(1, 'System', 'Update', t)
 
         if not self.ui.versionReleaseNotes.isChecked():
             return True
         if not comment:
             return True
 
-        self.app.message.emit(f'Release notes for {availPackage}:', 1)
+        self.app.messageN.emit(1, 'System', 'Update',
+                               f'Release notes for {availPackage}:')
         for line in comment.split('\n'):
-            self.app.message.emit(line, 0x100)
+            self.app.messageN.emit(2, '', '', line)
         return True
 
     def isVenv(self):

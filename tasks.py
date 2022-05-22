@@ -27,10 +27,15 @@ rn = ''
 #
 
 client = {
-    'ubuntu': {
-        'user': 'mw@astro-ubuntu.fritz.box',
+    'ubuntu-20': {
+        'user': 'mw@astro-ubuntu-20.fritz.box',
         'work': '/home/mw/test',
-        'scp': 'mw@astro-ubuntu.fritz.box:/home/mw/test',
+        'scp': 'mw@astro-ubuntu-20.fritz.box:/home/mw/test',
+    },
+    'ubuntu-22': {
+        'user': 'mw@astro-ubuntu-22.fritz.box',
+        'work': '/home/mw/test',
+        'scp': 'mw@astro-ubuntu-22.fritz.box:/home/mw/test',
     },
     'ubuntuRig': {
         'user': 'mw@astro-comp.fritz.box',
@@ -377,11 +382,21 @@ def test_win11(c):
 
 
 @task(pre=[])
-def test_ubuntu(c):
+def test_ubuntu_20(c):
     printMW('test ubuntu install')
-    user = client['ubuntu']['user']
-    work = client['ubuntu']['work']
-    scp = client['ubuntu']['scp']
+    user = client['ubuntu-20']['user']
+    work = client['ubuntu-20']['work']
+    scp = client['ubuntu-20']['scp']
+    test_ubuntu_main(c, user, work, scp)
+    printMW('test ubuntu install finished\n')
+
+
+@task(pre=[])
+def test_ubuntu_22(c):
+    printMW('test ubuntu install')
+    user = client['ubuntu-22']['user']
+    work = client['ubuntu-22']['work']
+    scp = client['ubuntu-22']['scp']
     test_ubuntu_main(c, user, work, scp)
     printMW('test ubuntu install finished\n')
 
@@ -392,7 +407,7 @@ def test_comp(c):
     user = client['ubuntuRig']['user']
     work = client['ubuntuRig']['work']
     scp = client['ubuntuRig']['scp']
-    test_ubuntu(c, user, work, scp)
+    test_ubuntu_20(c, user, work, scp)
     printMW('test ubuntu rig install finished\n')
 
 

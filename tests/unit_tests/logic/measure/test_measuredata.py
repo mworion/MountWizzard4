@@ -65,6 +65,7 @@ def module_setup_teardown():
             'measure': None,
         }
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
 
     global app
     app = MeasureData(app=Test())

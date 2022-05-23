@@ -928,10 +928,10 @@ class MainWindow(
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            self.app.messageN(0, 'System', 'Profile saved', f'{name}')
+            self.app.messageN.emit(0, 'System', 'Profile saved', f'{name}')
         else:
-            self.app.messageN(2, 'System', 'Profile error',
-                              f'{name}] cannot no be loasavedded')
+            self.app.messageN.emit(2, 'System', 'Profile error',
+                                   f'{name}] cannot no be loasavedded')
         return True
 
     def saveProfile(self):
@@ -948,7 +948,7 @@ class MainWindow(
             self.app.messageN.emit(0, 'System', 'Profile', 'Actual profile saved')
 
         else:
-            self.app.messageN.emit("", 'System', 'Profile',
+            self.app.messageN.emit(2, 'System', 'Profile',
                                    'Actual profile cannot not be saved')
         return suc
 

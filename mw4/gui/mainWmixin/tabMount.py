@@ -250,16 +250,16 @@ class Mount(object):
         if obs.status == 0:
             suc = obs.stopTracking()
             if not suc:
-                self.app.message.emit('Cannot stop tracking', 2)
+                self.app.messageN(2, 'Mount', 'Command', 'Cannot stop tracking')
             else:
-                self.app.message.emit('Stopped tracking', 0)
+                self.app.messageN(0, 'Mount', 'Command', 'Stopped tracking')
 
         else:
             suc = obs.startTracking()
             if not suc:
-                self.app.message.emit('Cannot start tracking', 2)
+                self.app.messageN(2, 'Mount', 'Command', 'Cannot start tracking')
             else:
-                self.app.message.emit('Started tracking', 0)
+                self.app.messageN(0, 'Mount', 'Command', 'Started tracking')
 
         return True
 
@@ -274,15 +274,15 @@ class Mount(object):
         if obs.status == 5:
             suc = obs.unpark()
             if not suc:
-                self.app.message.emit('Cannot unpark mount', 2)
+                self.app.messageN(2, 'Mount', 'Command', 'Cannot unpark mount')
             else:
-                self.app.message.emit('Mount unparked', 0)
+                self.app.messageN(0, 'Mount', 'Command', 'Mount unparked')
         else:
             suc = obs.park()
             if not suc:
-                self.app.message.emit('Cannot park mount', 2)
+                self.app.messageN(2, 'Mount', 'Command', 'Cannot park mount')
             else:
-                self.app.message.emit('Mount parked', 0)
+                self.app.messageN(0, 'Mount', 'Command', 'Mount parked')
 
         return True
 
@@ -296,10 +296,10 @@ class Mount(object):
         sett = self.app.mount.setting
         suc = sett.setLunarTracking()
         if not suc:
-            self.app.message.emit('Cannot set tracking to Lunar', 2)
+            self.app.messageN(2, 'Mount', 'Command', 'Cannot set tracking to Lunar')
             return False
         else:
-            self.app.message.emit('Tracking set to Lunar', 0)
+            self.app.messageN(0, 'Mount', 'Command', 'Tracking set to Lunar')
             return True
 
     def setSiderealTracking(self):
@@ -312,9 +312,9 @@ class Mount(object):
         sett = self.app.mount.setting
         suc = sett.setSiderealTracking()
         if not suc:
-            self.app.message.emit('Cannot set tracking to Sidereal', 2)
+            self.app.messageN(2, 'Mount', 'Command', 'Cannot set tracking to Sidereal')
         else:
-            self.app.message.emit('Tracking set to Sidereal', 0)
+            self.app.messageN(0, 'Mount', 'Command', 'Tracking set to Sidereal')
         return suc
 
     def setSolarTracking(self):
@@ -327,11 +327,11 @@ class Mount(object):
         sett = self.app.mount.setting
         suc = sett.setSolarTracking()
         if not suc:
-            self.app.message.emit('Cannot set tracking to Solar', 2)
+            self.app.messageN(2, 'Mount', 'Command', 'Cannot set tracking to Solar')
             return False
         else:
-            self.app.message.emit('Tracking set to Solar', 0)
-            return True
+            self.app.messageN(0, 'Mount', 'Command', 'Tracking set to Solar')
+        return True
 
     def flipMount(self):
         """
@@ -343,10 +343,10 @@ class Mount(object):
         obs = self.app.mount.obsSite
         suc = obs.flip()
         if not suc:
-            self.app.message.emit('Cannot flip mount', 2)
+            self.app.messageN(2, 'Mount', 'Command', 'Cannot flip mount')
             return False
         else:
-            self.app.message.emit('Mount flipped', 0)
+            self.app.messageN(0, 'Mount', 'Command', 'Mount flipped')
             return True
 
     def stop(self):
@@ -359,10 +359,10 @@ class Mount(object):
         obs = self.app.mount.obsSite
         suc = obs.stop()
         if not suc:
-            self.app.message.emit('Cannot stop mount', 2)
+            self.app.messageN(2, 'Mount', 'Command', 'Cannot stop mount')
             return False
         else:
-            self.app.message.emit('Mount stopped', 0)
+            self.app.messageN(0, 'Mount', 'Command', 'Mount stopped')
             return True
 
     def virtualStop(self):
@@ -390,10 +390,12 @@ class Mount(object):
         if not ok:
             return False
         if sett.setMeridianLimitTrack(value):
-            self.app.message.emit(f'Meridian Lim Track: [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting',
+                              f'Meridian Lim Track: [{value}]')
             return True
         else:
-            self.app.message.emit('Meridian Limit Track cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting',
+                              'Meridian Limit Track cannot be set')
             return False
 
     def setMeridianLimitSlew(self):
@@ -414,10 +416,12 @@ class Mount(object):
         if not ok:
             return False
         if sett.setMeridianLimitSlew(value):
-            self.app.message.emit(f'Meridian Limit Slew: [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting',
+                              f'Meridian Lim Slew: [{value}]')
             return True
         else:
-            self.app.message.emit('Meridian Limit Slew cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting',
+                              'Meridian Limit Slew cannot be set')
             return False
 
     def setHorizonLimitHigh(self):
@@ -438,10 +442,12 @@ class Mount(object):
         if not ok:
             return False
         if sett.setHorizonLimitHigh(value):
-            self.app.message.emit(f'Horizon Limit High:  [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting',
+                              f'Horizon Limit High: [{value}]')
             return True
         else:
-            self.app.message.emit('Horizon Limit High cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting',
+                              'Horizon Limit High cannot be set')
             return False
 
     def setHorizonLimitLow(self):
@@ -462,10 +468,10 @@ class Mount(object):
         if not ok:
             return False
         if sett.setHorizonLimitLow(value):
-            self.app.message.emit(f'Horizon Limit Low:   [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting', f'Horizon Limit Low: [{value}]')
             return True
         else:
-            self.app.message.emit('Horizon Limit Low cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting', 'Horizon Limit Low cannot be set')
             return False
 
     def setSlewRate(self):
@@ -488,10 +494,10 @@ class Mount(object):
         if not ok:
             return False
         if sett.setSlewRate(value):
-            self.app.message.emit(f'Slew Rate:           [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting', f'Slew Rate: [{value}]')
             return True
         else:
-            self.app.message.emit('Slew Rate cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting', 'Slew Rate cannot be set')
             return False
 
     def setLocationValues(self, lat=None, lon=None, elev=None):
@@ -520,7 +526,7 @@ class Mount(object):
 
         t = f'Location set to:     [{lat.degrees:3.2f} deg, '
         t += f'{lon.degrees:3.2f} deg, {elev:4.1f} m]'
-        self.app.message.emit(t, 0)
+        self.app.messageN(0, 'Mount', 'Setting', t)
         return True
 
     def setLongitude(self):
@@ -604,9 +610,9 @@ class Mount(object):
             return False
         suc = sett.setUnattendedFlip(value == 'ON')
         if suc:
-            self.app.message.emit(f'Unattended flip      [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting', f'Unattended flip: [{value}]')
         else:
-            self.app.message.emit('Unattended flip cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting', 'Unattended flip cannot be set')
         return suc
 
     def setDualAxisTracking(self):
@@ -628,9 +634,9 @@ class Mount(object):
 
         suc = sett.setDualAxisTracking(value == 'ON')
         if suc:
-            self.app.message.emit(f'DualAxis tracking    [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting', f'DualAxis tracking: [{value}]')
         else:
-            self.app.message.emit('DualAxis tracking cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting', 'DualAxis tracking cannot be set')
         return suc
 
     def setWOL(self):
@@ -652,9 +658,9 @@ class Mount(object):
 
         suc = sett.setWOL(value == 'ON')
         if suc:
-            self.app.message.emit(f'Wake On Lan          [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting', f'Wake On Lan: [{value}]')
         else:
-            self.app.message.emit('Wake On Lan cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting', 'Wake On Lan cannot be set')
         return suc
 
     def setRefraction(self):
@@ -676,9 +682,9 @@ class Mount(object):
 
         suc = sett.setRefraction(value == 'ON')
         if suc:
-            self.app.message.emit(f'Refraction corr.     [{value}]', 0)
+            self.app.messageN(0, 'Mount', 'Setting', f'Refraction corr: [{value}]')
         else:
-            self.app.message.emit('Refraction correction cannot be set', 2)
+            self.app.messageN(2, 'Mount', 'Setting', 'Refraction correction cannot be set')
         return suc
 
     def showOffset(self):

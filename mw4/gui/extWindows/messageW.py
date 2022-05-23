@@ -127,7 +127,7 @@ class MessageWindow(toolsQtWidget.MWidget):
         """
         self.setStyleSheet(self.mw4Style)
         self.setupMessage()
-        self.clearWindow()
+        self.clearMessageTable()
         return True
 
     def showWindow(self):

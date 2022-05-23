@@ -99,13 +99,13 @@ def test_colorChange(function):
     with mock.patch.object(function,
                            'setupMessage'):
         with mock.patch.object(function,
-                               'clearWindow'):
+                               'clearMessageTable'):
             suc = function.colorChange()
             assert suc
 
 
-def test_clearWindow_1(function):
-    suc = function.clearWindow()
+def test_clearMessageTable_1(function):
+    suc = function.clearMessageTable()
     assert suc
 
 
@@ -115,24 +115,6 @@ def test_writeMessage_1(function):
 
 
 def test_writeMessage_2(function):
-    function.app.messageQueue.put(('test', 0))
-    suc = function.writeMessage()
-    assert suc
-
-
-def test_writeMessage_3(function):
-    function.app.messageQueue.put(('test', -1))
-    suc = function.writeMessage()
-    assert suc
-
-
-def test_writeMessage_4(function):
-    function.app.messageQueue.put(('test', 10))
-    suc = function.writeMessage()
-    assert suc
-
-
-def test_writeMessage_5(function):
-    function.app.messageQueue.put(('test', 0x100))
+    function.app.messageQueue.put((0, 'test', 'test', 'test'))
     suc = function.writeMessage()
     assert suc

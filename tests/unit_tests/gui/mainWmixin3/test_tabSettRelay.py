@@ -40,6 +40,8 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
+
         relay = KMRelay()
 
     widget = QWidget()

@@ -246,7 +246,7 @@ class MinorPlanetTime:
             self.app.messageN.emit(2, 'IERS', 'Program error',
                                    'Uploading error but files available')
         else:
-            self.app.messageN.emit(1, 'IERS', 'Program', 'Success uploaded')
+            self.app.messageN.emit(1, 'IERS', 'Program', 'Successful uploaded')
         return suc
 
     def startProgEarthRotationDataToMount(self):
@@ -309,7 +309,7 @@ class MinorPlanetTime:
             self.app.messageN.emit(2, 'MPC', 'Program error',
                                    'Uploading error but files available')
         else:
-            self.app.messageN.emit(1, 'MPC', 'Program', 'Success uploaded')
+            self.app.messageN.emit(1, 'MPC', 'Program', 'Successful uploaded')
         return suc
 
     def mpcFilter(self, mpcRaw):

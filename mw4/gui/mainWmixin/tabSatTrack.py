@@ -379,7 +379,8 @@ class SatTrack(object):
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f'{days:2.2f}')
-        self.app.message.emit(f'Actual satellite:    [{satName}]', 0)
+        self.app.messageN.emit(0, 'Satellite', 'Data',
+                               f'Actual satellite: [{satName}]')
 
         if days > 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
@@ -401,13 +402,14 @@ class SatTrack(object):
             return False
 
         satellite = self.app.mount.satellite
-        self.app.message.emit(f'Program to mount:    [{satName}]', 0)
+        self.app.messageN.emit(0, 'TLE', 'Program',
+                               f'Upload to mount:    [{satName}]')
         line1, line2 = export_tle(self.satellites[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,
                                line2=line2)
         if not suc:
-            self.app.message.emit('Error program TLE', 2)
+            self.app.messageN.emit(2, 'TLE', 'Program error', 'Uploading error')
             return False
         self.app.mount.getTLE()
         return True
@@ -567,7 +569,7 @@ class SatTrack(object):
         self.clearTrackingParameters()
         isSim = self.ui.trackingSim.isChecked()
         t = ('for simulation' if isSim else '')
-        self.app.message.emit('Programming satellite track data ' + t, 0)
+        self.app.messageN.emit(0, 'TLE', 'Program', f'Satellite track data {t}')
         start, end = self.selectStartEnd()
         if not start or not end:
             return False
@@ -615,7 +617,7 @@ class SatTrack(object):
             self.ui.satTrajectoryFlip.setText('NO')
 
         if params.message is not None:
-            self.app.message.emit(params.message, 0)
+            self.app.messageN.emit(0, 'TLE', 'Message', f'{params.message}')
 
         if params.jdStart is not None and self.satOrbits:
             self.ui.stopSatelliteTracking.setEnabled(True)
@@ -631,27 +633,28 @@ class SatTrack(object):
         :return: success
         """
         if not self.app.deviceStat['mount']:
-            self.app.message.emit('Mount is not online', 2)
+            self.app.messageN.emit(2, 'TLE', 'Program', 'Mount is not online')
             return False
 
         if self.app.mount.obsSite.status == 5:
             suc = self.app.mount.obsSite.unpark()
             if suc:
-                self.app.message.emit('Mount unparked', 0)
+                self.app.messageN.emit(0, 'TLE', 'Command', 'Mount unparked')
             else:
-                self.app.message.emit('Cannot unpark mount', 2)
+                self.app.messageN.emit(2, 'TLE', 'Command error',
+                                       'Cannot unpark mount')
 
         self.app.dome.avoidFirstOvershoot()
         suc, message = self.app.mount.satellite.slewTLE()
         if not suc:
-            self.app.message.emit(message, 2)
+            self.app.messageN.emit(2, 'TLE', 'Command error', f'{message}')
             return False
 
         self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', True)
-        self.app.message.emit(message, 0)
+        self.app.messageN.emit(0, 'TLE', 'Command ', f'{message}')
         suc = self.app.mount.satellite.clearTrackingOffsets()
         if suc:
-            self.app.message.emit('Cleared tracking offsets', 0)
+            self.app.messageN.emit(0, 'TLE', 'Command', 'Cleared tracking offsets')
 
         return True
 
@@ -660,17 +663,17 @@ class SatTrack(object):
         :return: success
         """
         if not self.app.deviceStat['mount']:
-            self.app.message.emit('Mount is not online', 2)
+            self.app.messageN.emit(2, 'TLE', 'Command', 'Mount is not online')
             return False
 
         suc = self.app.mount.obsSite.startTracking()
         if not suc:
-            self.app.message.emit('Cannot stop tracking', 2)
+            self.app.messageN.emit(2, 'TLE', 'Command', 'Cannot stop tracking')
             return False
 
         self.ui.startSatelliteTracking.setText('Start satellite tracking')
         self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
-        self.app.message.emit('Stopped tracking', 0)
+        self.app.messageN.emit(0, 'TLE', 'Command', 'Stopped tracking')
         return suc
 
     def toggleTrackingOffset(self, obs):
@@ -726,5 +729,5 @@ class SatTrack(object):
                                                           RA=valR,
                                                           DECcorr=valD)
         if not suc:
-            self.app.message.emit('Cannot change offset', 2)
+            self.app.messageN.emit(2, 'TLE', 'Command error', 'Cannot change offset')
         return suc

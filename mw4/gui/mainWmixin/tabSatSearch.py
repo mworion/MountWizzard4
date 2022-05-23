@@ -672,15 +672,17 @@ class SatSearch(object):
         """
         suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.installPath)
         if not suc:
-            self.app.message.emit('Data could not be exported - stopping', 2)
+            self.app.messageN.emit(2, 'TLE', 'Data error',
+                                   'Data could not be exported - stopping')
             return False
 
-        self.app.message.emit('Uploading TLE data to mount', 0)
+        self.app.messageN.emit(0, 'TLE', 'Program', 'Uploading to mount')
         suc = self.app.automation.uploadTLEData()
         if not suc:
-            self.app.message.emit('Uploading error, files available', 2)
+            self.app.messageN.emit(2, 'TLE', 'Program error',
+                                   'Uploading error but files available')
         else:
-            self.app.message.emit('Programming success', 1)
+            self.app.messageN.emit(1, 'TLE', 'Program', 'Successful uploaded')
         return suc
 
     def satelliteFilter(self, satellitesRaw):
@@ -719,8 +721,8 @@ class SatSearch(object):
         if not suc:
             return False
 
-        self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting TLE data', 0)
+        self.app.messageN.emit(1, 'TLE', 'Program', f'{source}')
+        self.app.messageN.emit(1, '', '', 'Exporting TLE data')
         return True
 
     def progSatellitesFiltered(self):

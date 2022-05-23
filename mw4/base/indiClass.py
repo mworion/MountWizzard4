@@ -494,6 +494,10 @@ class IndiClass:
                 text = self.removePrefix(text, '[WARNING]')
                 self.app.messageN.emit(0, 'INDI', 'Device warning',
                                        f'{device:15s} {text}')
+            elif text.startswith('[INFO]'):
+                text = self.removePrefix(text, '[INFO]')
+                self.app.messageN.emit(2, 'INDI', 'Device info',
+                                       f'{device:15s} {text}')
             elif text.startswith('[ERROR]'):
                 text = self.removePrefix(text, '[ERROR]')
                 self.app.messageN.emit(2, 'INDI', 'Device error',

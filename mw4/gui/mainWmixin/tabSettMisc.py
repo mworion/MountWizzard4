@@ -328,7 +328,7 @@ class SettMisc(object):
         :return: True for test purpose
         """
         if not (self.isVenv() or platform.machine() == 'armv7l'):
-            self.app.messageN(2, 'System', 'Update',
+            self.app.messageN.emit(2, 'System', 'Update',
                               'MW4 not running in an virtual environment')
             return False
 
@@ -339,11 +339,11 @@ class SettMisc(object):
         _, _, existPackage = self.versionPackage('MountWizzard4')
 
         if versionPackage not in existPackage:
-            self.app.messageN(2, 'System', 'Update',
+            self.app.messageN.emit(2, 'System', 'Update',
                               f'Version {versionPackage} does not exist')
             return False
 
-        self.app.messageN(1, 'System', 'Update',
+        self.app.messageN.emit(1, 'System', 'Update',
                           f'Installing [{versionPackage}] please wait')
         self.startUpdater(versionPackage)
         return True
@@ -460,11 +460,11 @@ class SettMisc(object):
         delta = int(delta)
         suc = self.app.mount.obsSite.adjustClock(delta)
         if not suc:
-            self.app.messageN(2, 'System', 'Clock',
+            self.app.messageN.emit(2, 'System', 'Clock',
                               'Cannot adjust mount clock')
             return False
 
-        self.app.messageN(0, 'System', 'Clock',
+        self.app.messageN.emit(0, 'System', 'Clock',
                           f'Correction: [{-delta} ms]')
         return True
 

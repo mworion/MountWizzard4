@@ -432,15 +432,15 @@ class Tools(object):
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
             text = f'{geoStat}'
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.messageN.emit(0, 'Tools', 'Slewing dome', text)
+            self.app.messageN.emit(0, 'Tools', 'Slewing dome', text)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
             t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.messageN.emit(0, 'Tools', 'Slewing mount', t)
+            self.app.messageN.emit(0, 'Tools', 'Slewing mount', t)
         else:
             t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.messageN.emit(2, 'Tools', 'Slewing error', t)
+            self.app.messageN.emit(2, 'Tools', 'Slewing error', t)
         return suc
 
     def slewTargetAltAz(self, alt, az):
@@ -453,7 +453,7 @@ class Tools(object):
                                                     az_degrees=az)
         if not suc:
             t = f'Cannot slew to Az:[{az:3.1f}], Alt:[{alt:3.1f}]'
-            self.messageN.emit(2, 'Tools', 'Slewing error', t)
+            self.app.messageN.emit(2, 'Tools', 'Slewing error', t)
             return False
 
         suc = self.slewSelectedTargetWithDome(slewType='keep')

@@ -257,53 +257,44 @@ def test_renameFile_6(function):
         assert suc
 
 
-def test_renameRunGUI_1(function, qtbot):
+def test_renameRunGUI_1(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     function.ui.renameDir.setText('')
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.renameRunGUI()
-        assert not suc
-    assert ['No valid input directory given', 2] == blocker.args
+    suc = function.renameRunGUI()
+    assert not suc
 
 
-def test_renameRunGUI_2(function, qtbot):
+def test_renameRunGUI_2(function):
     function.ui.renameDir.setText('tests/workDir/image')
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.renameRunGUI()
-        assert not suc
-    assert ['No files to rename', 0] == blocker.args
+    suc = function.renameRunGUI()
+    assert not suc
 
 
-def test_renameRunGUI_3(function, qtbot):
+def test_renameRunGUI_3(function):
     function.ui.checkIncludeSubdirs.setChecked(True)
     function.ui.renameDir.setText('tests/workDir/image')
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.renameRunGUI()
-        assert not suc
-    assert ['No files to rename', 0] == blocker.args
+    suc = function.renameRunGUI()
+    assert not suc
 
 
-def test_renameRunGUI_4(function, qtbot):
+def test_renameRunGUI_4(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     function.ui.renameDir.setText('tests/workDir/image')
     with mock.patch.object(function,
                            'renameFile',
                            return_value=True):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.renameRunGUI()
-            assert suc
-        assert ['1 images were renamed', 0] == blocker.args
+        suc = function.renameRunGUI()
+        assert suc
 
 
-def test_renameRunGUI_5(function, qtbot):
+def test_renameRunGUI_5(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     function.ui.renameDir.setText('tests/workDir/image')
     with mock.patch.object(function,
                            'renameFile',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.renameRunGUI()
-            assert suc
+        suc = function.renameRunGUI()
+        assert suc
 
 
 def test_chooseDir_1(function):

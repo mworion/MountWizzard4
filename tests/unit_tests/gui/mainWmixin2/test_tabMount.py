@@ -580,7 +580,7 @@ def test_changeTracking_ok5(function):
             assert suc
 
 
-def test_changePark_ok1(function, qtbot):
+def test_changePark_ok1(function):
     function.app.mount.obsSite.status = 5
     with mock.patch.object(function,
                            'checkMount',
@@ -588,13 +588,11 @@ def test_changePark_ok1(function, qtbot):
         with mock.patch.object(function.app.mount.obsSite,
                                'unpark',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.changePark()
-                assert suc
-            assert ['Cannot unpark mount', 2] == blocker.args
+            suc = function.changePark()
+            assert suc
 
 
-def test_changePark_ok2(function, qtbot):
+def test_changePark_ok2(function):
     function.app.mount.obsSite.status = 5
     with mock.patch.object(function,
                            'checkMount',
@@ -602,13 +600,11 @@ def test_changePark_ok2(function, qtbot):
         with mock.patch.object(function.app.mount.obsSite,
                                'unpark',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.changePark()
-                assert suc
-            assert ['Mount unparked', 0] == blocker.args
+            suc = function.changePark()
+            assert suc
 
 
-def test_changePark_ok3(function, qtbot):
+def test_changePark_ok3(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function,
                            'checkMount',
@@ -616,13 +612,11 @@ def test_changePark_ok3(function, qtbot):
         with mock.patch.object(function.app.mount.obsSite,
                                'park',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.changePark()
-                assert suc
-            assert ['Cannot park mount', 2] == blocker.args
+            suc = function.changePark()
+            assert suc
 
 
-def test_changePark_ok4(function, qtbot):
+def test_changePark_ok4(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function,
                            'checkMount',
@@ -630,10 +624,8 @@ def test_changePark_ok4(function, qtbot):
         with mock.patch.object(function.app.mount.obsSite,
                                'park',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.changePark()
-                assert suc
-            assert ['Mount parked', 0] == blocker.args
+            suc = function.changePark()
+            assert suc
 
 
 def test_changePark_notok(function, qtbot):
@@ -647,33 +639,29 @@ def test_changePark_notok(function, qtbot):
             assert not suc
 
 
-def test_setLunarTracking_1(function, qtbot):
+def test_setLunarTracking_1(function):
     with mock.patch.object(function,
                            'checkMount',
                            return_value=True):
         with mock.patch.object(function.app.mount.setting,
                                'setLunarTracking',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.setLunarTracking()
-                assert suc
-            assert ['Tracking set to Lunar', 0] == blocker.args
+            suc = function.setLunarTracking()
+            assert suc
 
 
-def test_setLunarTracking_2(function, qtbot):
+def test_setLunarTracking_2(function):
     with mock.patch.object(function,
                            'checkMount',
                            return_value=True):
         with mock.patch.object(function.app.mount.setting,
                                'setLunarTracking',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.setLunarTracking()
-                assert not suc
-            assert ['Cannot set tracking to Lunar', 2] == blocker.args
+            suc = function.setLunarTracking()
+            assert not suc
 
 
-def test_setLunarTracking_3(function, qtbot):
+def test_setLunarTracking_3(function):
     with mock.patch.object(function,
                            'checkMount',
                            return_value=False):
@@ -744,30 +732,26 @@ def test_setSolarTracking_3(function):
             assert suc
 
 
-def test_flipMount_1(function, qtbot):
+def test_flipMount_1(function):
     with mock.patch.object(function,
                            'checkMount',
                            return_value=True):
         with mock.patch.object(function.app.mount.obsSite,
                                'flip',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.flipMount()
-                assert not suc
-            assert ['Cannot flip mount', 2] == blocker.args
+            suc = function.flipMount()
+            assert not suc
 
 
-def test_flipMount_2(function, qtbot):
+def test_flipMount_2(function):
     with mock.patch.object(function,
                            'checkMount',
                            return_value=True):
         with mock.patch.object(function.app.mount.obsSite,
                                'flip',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.flipMount()
-                assert suc
-            assert ['Mount flipped', 0] == blocker.args
+            suc = function.flipMount()
+            assert suc
 
 
 def test_flipMount_3(function, qtbot):
@@ -781,30 +765,26 @@ def test_flipMount_3(function, qtbot):
             assert not suc
 
 
-def test_stop_1(function, qtbot):
+def test_stop_1(function):
     with mock.patch.object(function,
                            'checkMount',
                            return_value=True):
         with mock.patch.object(function.app.mount.obsSite,
                                'stop',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.stop()
-                assert suc
-            assert ['Mount stopped', 0] == blocker.args
+            suc = function.stop()
+            assert suc
 
 
-def test_stop_2(function, qtbot):
+def test_stop_2(function):
     with mock.patch.object(function,
                            'checkMount',
                            return_value=True):
         with mock.patch.object(function.app.mount.obsSite,
                                'stop',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.stop()
-                assert not suc
-            assert ['Cannot stop mount', 2] == blocker.args
+            suc = function.stop()
+            assert not suc
 
 
 def test_test_stop_3(function, qtbot):

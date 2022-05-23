@@ -168,7 +168,7 @@ class MinorPlanetTime:
         destUnzip = dest[:-3]
 
         if not os.path.isfile(destUnzip):
-            self.app.message.emit(f'No data file for:    [{source}]', 2)
+            self.app.messageN.emit(2, 'MPC', f'Data error', f'{source}')
             return False
 
         with open(destUnzip) as inFile:
@@ -178,7 +178,7 @@ class MinorPlanetTime:
             except Exception:
                 self.minorPlanets = {}
 
-            self.app.message.emit(f'Data loaded for:     [{source}]', 1)
+            self.app.messageN.emit(1, 'MPC', 'Data loaded', f'{source}')
 
         self.setupMinorPlanetNameList()
         return True
@@ -200,7 +200,7 @@ class MinorPlanetTime:
 
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:
-            self.app.message.emit(f'Download data for:   [{source}]', 1)
+            self.app.messageN.emit(1, 'MPC', f'Download', f'{source}')
             DownloadPopup(self, url=url, dest=dest, callBack=self.processSourceData)
         return True
 
@@ -221,8 +221,8 @@ class MinorPlanetTime:
         if not suc:
             return ''
 
-        self.app.message.emit('Program to mount:    [earth rotation data]', 1)
-        self.app.message.emit('Writing files: finals.data, tai-utc.dat', 0)
+        self.app.messageN.emit(1, 'IERS', 'Program', 'Earth rotation data')
+        self.app.messageN.emit(1, '', '', 'finals.data, tai-utc.dat')
         return updaterApp
 
     def progEarthRotationData(self):
@@ -236,17 +236,18 @@ class MinorPlanetTime:
         suc = self.databaseProcessing.writeEarthRotationData(self.installPath,
                                                              updaterApp)
         if not suc:
-            self.app.message.emit('Data could not be copied - stopping', 2)
+            self.app.messageN.emit(2, 'IERS', 'Data error',
+                                   'Data could not be exported - stopping')
             return False
 
-        self.app.message.emit('Uploading IERS data to mount', 0)
+        self.app.messageN.emit(0, 'IERS', 'Program', 'Uploading to mount')
         suc = self.app.automation.uploadEarthRotationData()
         if not suc:
-            self.app.message.emit('Uploading error but files available', 2)
-            return False
-
-        self.app.message.emit('Programming success', 1)
-        return True
+            self.app.messageN.emit(2, 'IERS', 'Program error',
+                                   'Uploading error but files available')
+        else:
+            self.app.messageN.emit(1, 'IERS', 'Program', 'Success uploaded')
+        return suc
 
     def startProgEarthRotationDataToMount(self):
         """
@@ -257,7 +258,7 @@ class MinorPlanetTime:
             source = 'finals.data'
             url = 'https://datacenter.iers.org/data/8/' + source
             dest = self.app.mwGlob['dataDir'] + '/' + source
-            self.app.message.emit(f'Download IERS data:  [{source}]', 1)
+            self.app.messageN.emit(1, 'IERS', 'Download', f'{source}')
             DownloadPopup(self, url=url, dest=dest, unzip=False,
                           callBack=self.progEarthRotationData)
         else:
@@ -275,13 +276,14 @@ class MinorPlanetTime:
         source = 'finals2000A.all'
         url = 'https://datacenter.iers.org/data/9/' + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
-        self.app.message.emit(f'Download IERS intern:[{source}]', 1)
+
+        self.app.messageN.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)
 
         source = 'finals.data'
         url = 'https://datacenter.iers.org/data/8/' + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
-        self.app.message.emit(f'Download IERS data:  [{source}]', 1)
+        self.app.messageN.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)
         return True
 
@@ -297,15 +299,17 @@ class MinorPlanetTime:
             suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.installPath)
 
         if not suc:
-            self.app.message.emit('Data could not be exported - stopping', 2)
+            self.app.messageN.emit(2, 'MPC', 'Data',
+                                   'Data could not be exported - stopping')
             return False
 
-        self.app.message.emit('Uploading MPC data to mount', 0)
+        self.app.messageN.emit(0, 'MPC', 'Program', 'Uploading to mount')
         suc = self.app.automation.uploadMPCData(comets=isComet)
         if not suc:
-            self.app.message.emit('Uploading error, files available', 2)
+            self.app.messageN.emit(2, 'MPC', 'Program error',
+                                   'Uploading error but files available')
         else:
-            self.app.message.emit('Programming success', 1)
+            self.app.messageN.emit(1, 'MPC', 'Program', 'Success uploaded')
         return suc
 
     def mpcFilter(self, mpcRaw):
@@ -347,8 +351,8 @@ class MinorPlanetTime:
         if not suc:
             return False
 
-        self.app.message.emit(f'Program database:    [{source}]', 1)
-        self.app.message.emit('Exporting MPC data', 0)
+        self.app.messageN.emit(1, 'MPC', 'Program', f'{source}')
+        self.app.messageN.emit(1, '', '', 'Exporting MPC data')
         return True
 
     def progMinorPlanetsSingle(self):

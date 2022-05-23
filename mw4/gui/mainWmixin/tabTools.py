@@ -307,7 +307,8 @@ class Tools(object):
         pathDir = self.ui.renameDir.text()
         includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
         if not os.path.isdir(pathDir):
-            self.app.message.emit('No valid input directory given', 2)
+            self.app.messageN.emit(2, 'Tools', 'Rename error',
+                                   'No valid input directory given')
             return False
 
         if includeSubdirs:
@@ -317,7 +318,8 @@ class Tools(object):
 
         numberFiles = self.getNumberFiles(pathDir, search=search)
         if not numberFiles:
-            self.app.message.emit('No files to rename', 0)
+            self.app.messageN.emit(2, 'Tools', 'Rename error',
+                                   'No files to rename')
             return False
 
         for i, fileName in enumerate(Path(pathDir).glob(search)):
@@ -325,9 +327,11 @@ class Tools(object):
             PyQt5.QtWidgets.QApplication.processEvents()
             suc = self.renameFile(fileName=fileName)
             if not suc:
-                self.app.message.emit(f'{fileName} could not be renamed', 2)
+                self.app.messageN.emit(2, 'Tools', 'Rename error',
+                                       f'{fileName} could not be renamed')
 
-        self.app.message.emit(f'{numberFiles:d} images were renamed', 0)
+        self.app.messageN.emit(0, 'Tools', 'Rename',
+                               f'{numberFiles:d} images were renamed')
 
         return True
 
@@ -426,18 +430,17 @@ class Tools(object):
             delta = self.app.dome.slewDome(altitude=altitudeT,
                                            azimuth=azimuthT)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            text = f'Slewing dome:        {geoStat}'
+            text = f'{geoStat}'
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.app.message.emit(text, 0)
+            self.messageN.emit(0, 'Tools', 'Slewing dome', text)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
-            t = f'Slewing mount to:    Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.app.message.emit(t, 0)
-
+            t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
+            self.messageN.emit(0, 'Tools', 'Slewing mount', t)
         else:
-            t = f'Cannot slew to:      Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.app.message.emit(t, 2)
+            t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
+            self.messageN.emit(2, 'Tools', 'Slewing error', t)
         return suc
 
     def slewTargetAltAz(self, alt, az):
@@ -449,8 +452,8 @@ class Tools(object):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
                                                     az_degrees=az)
         if not suc:
-            t = f'Cannot set target :  Az:[{az:3.1f}], Alt:[{alt:3.1f}]'
-            self.app.message.emit(t, 2)
+            t = f'Cannot slew to Az:[{az:3.1f}], Alt:[{alt:3.1f}]'
+            self.messageN.emit(2, 'Tools', 'Slewing error', t)
             return False
 
         suc = self.slewSelectedTargetWithDome(slewType='keep')

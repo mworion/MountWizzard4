@@ -762,19 +762,18 @@ class HemisphereWindow(MWidget, EditHorizon):
             self.app.dome.avoidFirstOvershoot()
             delta = self.app.dome.slewDome(altitude=altitudeT,
                                            azimuth=azimuthT)
-
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            t = f'Slewing dome:        [{geoStat}],'
-            t += f' AZ:[{azimuthT:3.1f}] delta: [{delta:3.1f}]'
-            self.app.message.emit(t, 0)
+            text = f'{geoStat}'
+            text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
+            self.messageN.emit(0, 'Hemisphere', 'Slewing dome', text)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
-            t = f'Slewing mount to     AZ:[{azimuthT:3.1f}], ALT:[{altitudeT:3.1f}]'
-            self.app.message.emit(t, 0)
+            t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
+            self.messageN.emit(0, 'Hemisphere', 'Slewing mount', t)
         else:
-            t = f'Cannot slew to       AZ:[{azimuthT:3.1f}], ALT:[{altitudeT:3.1f}]'
-            self.app.message.emit(t, 2)
+            t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
+            self.messageN.emit(2, 'Hemisphere', 'Slewing error', t)
 
         return suc
 
@@ -799,8 +798,8 @@ class HemisphereWindow(MWidget, EditHorizon):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
         if not suc:
-            t = f'Cannot slew to       AZ:[{azimuth:3.1f}], ALT:[{altitude:3.1f}]'
-            self.app.message.emit(t, 2)
+            t = f'Cannot slew to Az:[{azimuth:3.1f}], Alt:[{altitude:3.1f}]'
+            self.messageN.emit(2, 'Hemisphere', 'Slewing error', t)
             return False
 
         suc = self.slewSelectedTarget(slewType='keep')
@@ -843,10 +842,12 @@ class HemisphereWindow(MWidget, EditHorizon):
         suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
                                                     dec_degrees=dec)
         if not suc:
-            self.app.message.emit(f'Cannot slew to:      [{name}]', 2)
+            t = f'Cannot slew to [{name}]'
+            self.messageN.emit(2, 'Hemisphere', 'Slewing error', t)
             return False
 
-        self.app.message.emit(f'Align [{reply}] to:    [{name}]', 1)
+        t = f'Align [{reply}] to [{name}]'
+        self.messageN.emit(1, 'Hemisphere', 'Align', t)
         suc = self.slewSelectedTarget(slewType=alignType)
         return suc
 

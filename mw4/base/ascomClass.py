@@ -342,5 +342,5 @@ class AscomClass(DriverData):
             self.propertyExceptions = []
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.app.message.emit(f'ASCOM device remove: [{self.deviceName}]', 0)
+        self.app.messageN.emit(0, 'ALPACA', 'Device  remove', f'{self.deviceName}')
         return True

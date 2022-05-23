@@ -145,9 +145,11 @@ class EditHorizon:
         suc = self.app.data.loadHorizonP(fileName=fileName, ext=ext)
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
-            self.app.message.emit(f'Horizon mask [{fileName}] loaded', 0)
+            self.app.messageN.emit(0, 'Hemisphere', 'Horizon',
+                                   f'Mask [{fileName}] loaded')
         else:
-            self.app.message.emit(f'Horizon mask [{fileName}] cannot no be loaded', 2)
+            self.app.messageN.emit(2, 'Hemisphere', 'Horizon',
+                                   f'Mask [{fileName}] cannot no be loaded')
 
         self.app.redrawHemisphere.emit()
         self.drawHorizonTab()
@@ -159,14 +161,17 @@ class EditHorizon:
         """
         fileName = self.ui.horizonMaskFileName.text()
         if not fileName:
-            self.app.message.emit('Horizon mask file name not given', 2)
+            self.app.messageN.emit(2, 'Hemisphere', 'Horizon',
+                                   'Mask file name not given')
             return False
 
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
-            self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
+            self.app.messageN.emit(0, 'Hemisphere', 'Horizon',
+                                   f'Mask [{fileName}] saved')
         else:
-            self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
+            self.app.messageN.emit(2, 'Hemisphere', 'Horizon',
+                                   f'Mask [{fileName}] cannot no be saved')
         return True
 
     def saveHorizonMaskAs(self):
@@ -185,9 +190,11 @@ class EditHorizon:
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
-            self.app.message.emit(f'Horizon mask [{fileName}] saved', 0)
+            self.app.messageN.emit(0, 'Hemisphere', 'Horizon',
+                                   f'Mask [{fileName}] saved')
         else:
-            self.app.message.emit(f'Horizon mask [{fileName}] cannot no be saved', 2)
+            self.app.messageN.emit(2, 'Hemisphere', 'Horizon',
+                                   f'Mask [{fileName}] cannot no be saved')
         return True
 
     def setOperationModeHor(self):

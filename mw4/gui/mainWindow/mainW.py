@@ -897,10 +897,10 @@ class MainWindow(
         if suc:
             self.app.config['profileName'] = name
             self.ui.profile.setText(name)
-            self.app.messageN(0, 'System', 'Profile loaded', f'{name}')
+            self.app.messageN.emit(0, 'System', 'Profile loaded', f'{name}')
         else:
-            self.app.messageN(2, 'System', 'Profile error',
-                              f'{name}] cannot no be loaded')
+            self.app.messageN.emit(2, 'System', 'Profile error',
+                                   f'{name}] cannot no be loaded')
 
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo

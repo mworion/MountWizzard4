@@ -42,6 +42,7 @@ def module(qapp):
 def function(module):
     class Test(QObject):
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
 
     widget = QWidget()
     widget.app = Test()

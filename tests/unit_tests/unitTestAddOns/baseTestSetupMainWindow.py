@@ -328,6 +328,7 @@ class App(QObject):
     hostChanged = pyqtSignal()
     remoteCommand = pyqtSignal(object)
     message = pyqtSignal(str, int)
+    messageN = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     mount = Mount()
     dome = Dome()

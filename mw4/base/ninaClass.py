@@ -34,8 +34,6 @@ class NINAClass(DriverData, QObject):
     """
     log = logging.getLogger(__name__)
 
-    CYCLE_POLL_STATUS = 1000
-    CYCLE_POLL_DATA = 1000
     NINA_TIMEOUT = 1
     HOST_ADDR = '127.0.0.1'
     PORT = 59590
@@ -47,6 +45,7 @@ class NINAClass(DriverData, QObject):
         self.app = app
         self.threadPool = threadPool
         self.data = data
+        self.updateRate = 1000
         self._deviceName = ''
         self.defaultConfig = {
             'deviceList': ['N.I.N.A. controlled'],

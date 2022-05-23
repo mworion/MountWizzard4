@@ -45,6 +45,7 @@ setupLogging()
 def module_setup_teardown():
     class Test(QObject):
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
 
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,

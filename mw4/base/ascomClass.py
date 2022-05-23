@@ -36,8 +36,6 @@ class AscomClass(DriverData):
     """
 
     log = logging.getLogger(__name__)
-    CYCLE_POLL_STATUS = 3000
-    CYCLE_POLL_DATA = 3000
 
     def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
@@ -52,6 +50,7 @@ class AscomClass(DriverData):
         self.deviceName = ''
         self.deviceConnected = False
         self.serverConnected = False
+        self.updateRate = 3000
 
         self.defaultConfig = {
             'deviceName': '',

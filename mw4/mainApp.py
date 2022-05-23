@@ -205,7 +205,7 @@ class MountWizzard4(QObject):
         if automation.updaterApp != '':
             path = automation.installPath
             app = automation.updaterApp
-            t = f'Path: {path}{app}]'
+            t = f'{path}{app}'
             self.messageQueue.put(1, 'System', '10micron updater', t)
         else:
             self.messageQueue.put(2, 'System', '10micron updater',

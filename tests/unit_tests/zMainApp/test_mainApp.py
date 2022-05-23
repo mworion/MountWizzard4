@@ -33,7 +33,6 @@ from base.packageConfig import checkAutomation
 if checkAutomation():
     from logic.automation.automateWindows import AutomateWindows
 from mainApp import MountWizzard4
-import mainApp
 from base.loggerMW import setupLogging
 import resource.resources as res
 res.qInitResources()

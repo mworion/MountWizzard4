@@ -188,7 +188,7 @@ class MountWizzard4(QObject):
             self.update3s.connect(self.quit)
 
         if len(sys.argv) > 1:
-            self.messageQueue.put(1, 'System', 'Arguments', sys.argv[1])
+            self.messageQueue.put((1, 'System', 'Arguments', sys.argv[1]))
 
     def checkAndSetAutomation(self):
         """
@@ -206,10 +206,10 @@ class MountWizzard4(QObject):
             path = automation.installPath
             app = automation.updaterApp
             t = f'{path}{app}'
-            self.messageQueue.put(1, 'System', '10micron updater', t)
+            self.messageQueue.put((1, 'System', '10micron updater', t))
         else:
-            self.messageQueue.put(2, 'System', '10micron updater',
-                                  'Not available !')
+            self.messageQueue.put((2, 'System', '10micron updater',
+                                  'Not available !'))
         return automation
 
     def initConfig(self):

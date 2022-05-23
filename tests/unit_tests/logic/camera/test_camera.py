@@ -43,6 +43,8 @@ def function():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
+
         mount = Mount()
 
     app = Camera(app=Test())

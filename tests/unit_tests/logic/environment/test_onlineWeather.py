@@ -35,6 +35,7 @@ def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
         update10s = pyqtSignal()
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')

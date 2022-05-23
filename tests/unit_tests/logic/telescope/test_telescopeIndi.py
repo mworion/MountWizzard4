@@ -34,6 +34,8 @@ def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
+
     global app
     app = TelescopeIndi(app=Test(), signals=Signals(), data={})
 

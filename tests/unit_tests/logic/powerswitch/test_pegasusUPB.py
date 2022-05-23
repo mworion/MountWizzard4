@@ -33,6 +33,8 @@ def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
+
     global app
     app = PegasusUPB(app=Test())
 

@@ -21,7 +21,7 @@ import os
 import PyQt5
 from PyQt5.QtCore import Qt, QRect, QPoint, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QAbstractItemView
-from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView
+from PyQt5.QtWidgets import QTableWidgetItem
 import numpy as np
 from skyfield import almanac
 

@@ -242,6 +242,7 @@ class App(QObject):
     update1s = pyqtSignal()
     update3s = pyqtSignal()
     message = pyqtSignal(str, int)
+    messageN = pyqtSignal(object, object, object, object)
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
     updatePointMarker = pyqtSignal()

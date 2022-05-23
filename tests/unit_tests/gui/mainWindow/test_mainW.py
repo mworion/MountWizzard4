@@ -423,14 +423,12 @@ def test_smartTabGui_2():
     assert suc
 
 
-def test_mountBoot1(qtbot):
+def test_mountBoot1():
     with mock.patch.object(app.app.mount,
                            'bootMount',
                            return_value=True):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.mountBoot()
-            assert suc
-        assert ['Sent boot command to mount', 0] == blocker.args
+        suc = app.mountBoot()
+        assert suc
 
 
 def test_smartEnvironGui_1():
@@ -707,46 +705,38 @@ def test_checkExtension_2():
     assert val == 'tests/workDir/image/test.fit'
 
 
-def test_mountBoot2(qtbot):
+def test_mountBoot2():
     with mock.patch.object(app.app.mount,
                            'bootMount',
                            return_value=False):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.mountBoot()
-            assert not suc
-        assert ['Mount cannot be booted', 2] == blocker.args
+        suc = app.mountBoot()
+        assert not suc
 
 
-def test_mountShutdown1(qtbot):
+def test_mountShutdown1():
     with mock.patch.object(app.app.mount.obsSite,
                            'shutdown',
                            return_value=True):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.mountShutdown()
-            assert suc
-        assert ['Shutting mount down', 0] == blocker.args
+        suc = app.mountShutdown()
+        assert suc
 
 
-def test_mountShutdown2(qtbot):
+def test_mountShutdown2():
     with mock.patch.object(app.app.mount.obsSite,
                            'shutdown',
                            return_value=False):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.mountShutdown()
-            assert not suc
-        assert ['Mount cannot be shutdown', 2] == blocker.args
+        suc = app.mountShutdown()
+        assert not suc
 
 
-def test_saveProfile1(qtbot):
+def test_saveProfile1():
     with mock.patch.object(app.app,
                            'saveConfig',
                            return_value=True):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            app.saveProfile()
-        assert ['Actual profile saved', 0] == blocker.args
+        app.saveProfile()
 
 
-def test_loadProfile1(qtbot):
+def test_loadProfile1():
     with mock.patch.object(app,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
@@ -759,13 +749,11 @@ def test_loadProfile1(qtbot):
                                        'showExtendedWindows'):
                     with mock.patch.object(app,
                                            'initConfig'):
-                        with qtbot.waitSignal(app.app.message) as blocker:
-                            suc = app.loadProfile()
-                            assert suc
-                        assert ['Profile              [test] loaded', 0] == blocker.args
+                        suc = app.loadProfile()
+                        assert suc
 
 
-def test_loadProfile2(qtbot):
+def test_loadProfile2():
     with mock.patch.object(app,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
@@ -778,10 +766,8 @@ def test_loadProfile2(qtbot):
                                        'showExtendedWindows'):
                     with mock.patch.object(app,
                                            'initConfig'):
-                        with qtbot.waitSignal(app.app.message) as blocker:
-                            suc = app.loadProfile()
-                            assert suc
-                        assert ['Profile              [test] cannot no be loaded', 2] == blocker.args
+                        suc = app.loadProfile()
+                        assert suc
 
 
 def test_loadProfile3(qtbot):
@@ -792,33 +778,29 @@ def test_loadProfile3(qtbot):
         assert not suc
 
 
-def test_saveProfileAs1(qtbot):
+def test_saveProfileAs1():
     with mock.patch.object(app,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
         with mock.patch.object(app.app,
                                'saveConfig',
                                return_value=True):
-            with qtbot.waitSignal(app.app.message) as blocker:
-                suc = app.saveProfileAs()
-                assert suc
-            assert ['Profile              [test] saved', 0] == blocker.args
+            suc = app.saveProfileAs()
+            assert suc
 
 
-def test_saveProfileAs2(qtbot):
+def test_saveProfileAs2():
     with mock.patch.object(app,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
         with mock.patch.object(app.app,
                                'saveConfig',
                                return_value=False):
-            with qtbot.waitSignal(app.app.message) as blocker:
-                suc = app.saveProfileAs()
-                assert suc
-            assert ['Profile              [test] cannot no be saved', 2] == blocker.args
+            suc = app.saveProfileAs()
+            assert suc
 
 
-def test_saveProfileAs3(qtbot):
+def test_saveProfileAs3():
     with mock.patch.object(app,
                            'saveFile',
                            return_value=(None, None, 'cfg')):
@@ -826,13 +808,11 @@ def test_saveProfileAs3(qtbot):
         assert not suc
 
 
-def test_saveProfile2(qtbot):
+def test_saveProfile2():
     with mock.patch.object(app.app,
                            'saveConfig',
                            return_value=False):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            app.saveProfile()
-        assert ['Actual profile cannot not be saved', 2] == blocker.args
+        app.saveProfile()
 
 
 def test_remoteCommand_1():
@@ -840,28 +820,22 @@ def test_remoteCommand_1():
     assert suc
 
 
-def test_remoteCommand_2(qtbot):
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with mock.patch.object(app.app,
-                               'quitSave'):
-            suc = app.remoteCommand('shutdown')
-            assert suc
-            assert ['Actual profile cannot not be saved', 2] == blocker.args
+def test_remoteCommand_2():
+    with mock.patch.object(app.app,
+                           'quitSave'):
+        suc = app.remoteCommand('shutdown')
+        assert suc
 
 
-def test_remoteCommand_3(qtbot):
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with mock.patch.object(app,
-                               'mountShutdown'):
-            suc = app.remoteCommand('shutdown mount')
-            assert suc
-            assert ['Shutdown mount remotely', 2] == blocker.args
+def test_remoteCommand_3():
+    with mock.patch.object(app,
+                           'mountShutdown'):
+        suc = app.remoteCommand('shutdown mount')
+        assert suc
 
 
-def test_remoteCommand_4(qtbot):
-    with qtbot.waitSignal(app.app.message) as blocker:
-        with mock.patch.object(app,
-                               'mountBoot'):
-            suc = app.remoteCommand('boot mount')
-            assert suc
-            assert ['Boot mount remotely', 2] == blocker.args
+def test_remoteCommand_4():
+    with mock.patch.object(app,
+                           'mountBoot'):
+        suc = app.remoteCommand('boot mount')
+        assert suc

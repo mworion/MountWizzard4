@@ -154,27 +154,23 @@ def test_selectImage_1(function):
         assert not suc
 
 
-def test_selectImage_2(function, qtbot):
+def test_selectImage_2(function):
     function.ui.autoSolve.setChecked(False)
     with mock.patch.object(MWidget,
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            with qtbot.waitSignal(function.app.showImage):
-                suc = function.selectImage()
-                assert suc
+        suc = function.selectImage()
+        assert suc
         assert function.folder == 'c:/test'
 
 
-def test_selectImage_3(function, qtbot):
+def test_selectImage_3(function):
     function.ui.autoSolve.setChecked(True)
     with mock.patch.object(MWidget,
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            with qtbot.waitSignal(function.app.showImage):
-                suc = function.selectImage()
-                assert suc
+        suc = function.selectImage()
+        assert suc
         assert function.folder == 'c:/test'
 
 
@@ -384,48 +380,40 @@ def test_showCurrent_1(function):
     assert suc
 
 
-def test_exposeRaw_1(function, qtbot):
+def test_exposeRaw_1(function):
     function.app.camera.expTime = 3
     function.app.camera.binning = 3
     function.app.camera.subFrame = 100
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=True):
-        with qtbot.waitSignal(function.app.message):
-            suc = function.exposeRaw()
-            assert suc
+        suc = function.exposeRaw()
+        assert suc
 
 
-def test_exposeRaw_2(function, qtbot):
+def test_exposeRaw_2(function):
     function.app.camera.expTime = 3
     function.app.camera.binning = 3
     function.app.camera.subFrame = 100
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message):
-            suc = function.exposeRaw()
-            assert not suc
+        suc = function.exposeRaw()
+        assert not suc
 
 
-def test_exposeImageDone_1(function, qtbot):
+def test_exposeImageDone_1(function):
     function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        with qtbot.waitSignal(function.app.showImage):
-            suc = function.exposeImageDone()
-            assert suc
-    assert ['Exposed:             []', 0] == blocker.args
+    suc = function.exposeImageDone()
+    assert suc
 
 
-def test_exposeImageDone_2(function, qtbot):
+def test_exposeImageDone_2(function):
     function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        with qtbot.waitSignal(function.signals.solveImage):
-            suc = function.exposeImageDone()
-            assert suc
-    assert ['Exposed:             []', 0] == blocker.args
+    suc = function.exposeImageDone()
+    assert suc
 
 
 def test_exposeImage_1(function):
@@ -434,24 +422,18 @@ def test_exposeImage_1(function):
     assert suc
 
 
-def test_exposeImageNDone_1(function, qtbot):
+def test_exposeImageNDone_1(function):
     function.ui.autoSolve.setChecked(False)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        with qtbot.waitSignal(function.app.showImage):
-            suc = function.exposeImageNDone()
-            assert suc
-    assert ['Exposed:             []', 0] == blocker.args
+    suc = function.exposeImageNDone()
+    assert suc
 
 
-def test_exposeImageNDone_2(function, qtbot):
+def test_exposeImageNDone_2(function):
     function.ui.autoSolve.setChecked(True)
     function.app.camera.signals.saved.connect(function.exposeImageDone)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        with qtbot.waitSignal(function.signals.solveImage):
-            suc = function.exposeImageNDone()
-            assert suc
-    assert ['Exposed:             []', 0] == blocker.args
+    suc = function.exposeImageNDone()
+    assert suc
 
 
 def test_exposeImageN_1(function):
@@ -460,17 +442,15 @@ def test_exposeImageN_1(function):
     assert suc
 
 
-def test_abortImage_1(function, qtbot):
+def test_abortImage_1(function):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.abortImage()
-            assert suc
-        assert ['Exposing aborted', 2] == blocker.args
+        suc = function.abortImage()
+        assert suc
 
 
-def test_abortImage_2(function, qtbot):
+def test_abortImage_2(function):
     function.app.camera.signals.saved.connect(function.showImage)
     function.ui.exposeN.setEnabled(True)
     function.ui.expose.setEnabled(False)
@@ -478,13 +458,11 @@ def test_abortImage_2(function, qtbot):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.abortImage()
-            assert suc
-        assert ['Exposing aborted', 2] == blocker.args
+        suc = function.abortImage()
+        assert suc
 
 
-def test_abortImage_3(function, qtbot):
+def test_abortImage_3(function):
     function.deviceStat['expose'] = True
     function.deviceStat['exposeN'] = False
     function.app.camera.signals.saved.connect(function.showImage)
@@ -494,13 +472,11 @@ def test_abortImage_3(function, qtbot):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.abortImage()
-            assert suc
-        assert ['Exposing aborted', 2] == blocker.args
+        suc = function.abortImage()
+        assert suc
 
 
-def test_abortImage_4(function, qtbot):
+def test_abortImage_4(function):
     function.deviceStat['expose'] = False
     function.deviceStat['exposeN'] = True
     function.app.camera.signals.saved.connect(function.showImage)
@@ -510,21 +486,17 @@ def test_abortImage_4(function, qtbot):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.abortImage()
-            assert suc
-        assert ['Exposing aborted', 2] == blocker.args
+        suc = function.abortImage()
+        assert suc
 
 
-def test_solveDone_1(function, qtbot):
+def test_solveDone_1(function):
     function.app.astrometry.signals.done.connect(function.solveDone)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.solveDone()
-        assert not suc
-    assert ['Solving error, result missing', 2] == blocker.args
+    suc = function.solveDone()
+    assert not suc
 
 
-def test_solveDone_2(function, qtbot):
+def test_solveDone_2(function):
     result = {
         'success': False,
         'raJ2000S': Angle(hours=10),
@@ -538,13 +510,11 @@ def test_solveDone_2(function, qtbot):
     }
 
     function.app.astrometry.signals.done.connect(function.solveDone)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.solveDone(result=result)
-        assert not suc
-    assert ['Solving error:       test', 2] == blocker.args
+    suc = function.solveDone(result=result)
+    assert not suc
 
 
-def test_solveDone_3(function, qtbot):
+def test_solveDone_3(function):
     function.ui.embedData.setChecked(True)
     result = {
         'success': True,
@@ -559,23 +529,21 @@ def test_solveDone_3(function, qtbot):
     }
 
     function.app.astrometry.signals.done.connect(function.solveDone)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.solveDone(result=result)
-        assert suc
-    assert ['Solved :             RA: 10:00:00 (10.000), DEC: +20:00:00 (20.000), ', 0] == blocker.args
+    suc = function.solveDone(result=result)
+    assert suc
 
 
-def test_solveImage_1(function, qtbot):
+def test_solveImage_1(function):
     suc = function.solveImage()
     assert not suc
 
 
-def test_solveImage_2(function, qtbot):
+def test_solveImage_2(function):
     suc = function.solveImage(imagePath='testFile')
     assert not suc
 
 
-def test_solveImage_3(function, qtbot):
+def test_solveImage_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     file = 'tests/workDir/image/m51.fit'
     with mock.patch.object(function.app.astrometry,
@@ -584,10 +552,9 @@ def test_solveImage_3(function, qtbot):
         assert suc
 
 
-def test_solveCurrent(function, qtbot):
-    with qtbot.waitSignal(function.signals.solveImage):
-        suc = function.solveCurrent()
-        assert suc
+def test_solveCurrent(function):
+    suc = function.solveCurrent()
+    assert suc
 
 
 def test_abortSolve_1(function):

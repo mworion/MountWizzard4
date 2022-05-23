@@ -63,6 +63,7 @@ def function(module):
         update1s = pyqtSignal()
         update30m = pyqtSignal()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
@@ -357,7 +358,7 @@ def test_updateRefractionParameters_5(function, qtbot):
         assert not suc
 
 
-def test_updateRefractionParameters_6(function, qtbot):
+def test_updateRefractionParameters_6(function):
     def Sender():
         return function.ui.setRefractionManual
 

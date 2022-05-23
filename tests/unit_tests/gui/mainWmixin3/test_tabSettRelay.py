@@ -78,19 +78,17 @@ def test_setupRelayGui(qtbot):
         assert 2 == val
 
 
-def test_toggleRelay_1(qtbot):
+def test_toggleRelay_1():
     def Sender():
         return ui.relayButton0
     app.sender = Sender
 
     app.ui.relayDevice.setCurrentIndex(0)
-    with qtbot.waitSignal(app.app.message) as blocker:
-        suc = app.relayButtonPressed()
-        assert not suc
-    assert ['Relay action cannot be performed', 2] == blocker.args
+    suc = app.relayButtonPressed()
+    assert not suc
 
 
-def test_toggleRelay_2(qtbot):
+def test_toggleRelay_2():
     def Sender():
         return ui.relayButton0
     app.sender = Sender
@@ -98,13 +96,11 @@ def test_toggleRelay_2(qtbot):
     with mock.patch.object(app.app.relay,
                            'switch',
                            return_value=False):
-        with qtbot.waitSignal(app.app.message) as blocker:
-            suc = app.relayButtonPressed()
-            assert not suc
-        assert ['Relay action cannot be performed', 2] == blocker.args
+        suc = app.relayButtonPressed()
+        assert not suc
 
 
-def test_doRelayAction_1(qtbot):
+def test_doRelayAction_1():
     app.relayDropDowns[7].setCurrentIndex(0)
     with mock.patch.object(app.app.relay,
                            'switch',
@@ -113,7 +109,7 @@ def test_doRelayAction_1(qtbot):
         assert not suc
 
 
-def test_doRelayAction_2(qtbot):
+def test_doRelayAction_2():
     app.relayDropDowns[7].setCurrentIndex(0)
     with mock.patch.object(app.app.relay,
                            'switch',
@@ -122,13 +118,13 @@ def test_doRelayAction_2(qtbot):
         assert suc
 
 
-def test_doRelayAction_3(qtbot):
+def test_doRelayAction_3():
     app.relayDropDowns[7].setCurrentIndex(2)
     suc = app.doRelayAction(7)
     assert not suc
 
 
-def test_doRelayAction_4(qtbot):
+def test_doRelayAction_4():
     app.relayDropDowns[7].setCurrentIndex(1)
     with mock.patch.object(app.app.relay,
                            'pulse',
@@ -137,7 +133,7 @@ def test_doRelayAction_4(qtbot):
         assert not suc
 
 
-def test_doRelayAction_5(qtbot):
+def test_doRelayAction_5():
     app.relayDropDowns[7].setCurrentIndex(1)
     with mock.patch.object(app.app.relay,
                            'pulse',
@@ -146,7 +142,7 @@ def test_doRelayAction_5(qtbot):
         assert suc
 
 
-def test_relayButtonPressed_1(qtbot):
+def test_relayButtonPressed_1():
     def Sender():
         return ui.relayButton0
     app.sender = Sender
@@ -158,7 +154,7 @@ def test_relayButtonPressed_1(qtbot):
         assert not suc
 
 
-def test_relayButtonPressed_2(qtbot):
+def test_relayButtonPressed_2():
     def Sender():
         return ui.relayButton0
     app.sender = Sender

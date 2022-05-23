@@ -550,6 +550,7 @@ class App(QObject):
     colorChange = pyqtSignal()
     playSound = pyqtSignal(object)
     message = pyqtSignal(str, int)
+    messageN = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     mount = Mount()
     power = Power()

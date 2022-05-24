@@ -65,7 +65,6 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.data = data
         self.driver = driver
         self.deviceType = deviceType
-        self.message = app.message
         self.mes = app.mes
 
         self.ui = Ui_DevicePopup()

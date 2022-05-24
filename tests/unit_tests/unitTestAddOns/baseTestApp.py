@@ -404,9 +404,27 @@ class Automation:
         return
 
 
+class Cover:
+    class CoverSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = CoverSignals()
+    data = {}
+
+
 class Dome:
     class DomeSignals(QObject):
-        slewFinished = pyqtSignal()
+        class DomeSignals(QObject):
+            message = pyqtSignal(object)
+            azimuth = pyqtSignal()
+            slewFinished = pyqtSignal()
+            deviceDisconnected = pyqtSignal()
+            deviceConnected = pyqtSignal()
+            serverDisconnected = pyqtSignal()
 
     domeShutterWidth = 0.6
     offGEM = 0
@@ -416,6 +434,15 @@ class Dome:
     domeRadius = 1.0
     data = {}
     signals = DomeSignals()
+
+    @staticmethod
+    def slewDome(altitude=None,
+                 azimuth=None,
+                 piersideT=None,
+                 haT=None,
+                 decT=None,
+                 lat=None):
+        return
 
     @staticmethod
     def abortSlew():
@@ -447,7 +474,12 @@ class Dome:
 
 class Relay:
     class RelaySignals(QObject):
+        message = pyqtSignal(object)
         statusReady = pyqtSignal()
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
 
     signals = RelaySignals()
 
@@ -464,6 +496,14 @@ class Focuser:
 
 
 class DirectWeather:
+    class DirectWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = DirectWeatherSignals()
     data = {}
 
 
@@ -476,6 +516,13 @@ class Astrometry:
 
 class OnlineWeather:
     class OnlineWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        dataReceived = pyqtSignal()
+        connected = pyqtSignal()
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
         done = pyqtSignal()
 
     signals = OnlineWeatherSignals()
@@ -491,6 +538,10 @@ class Data:
 
     @staticmethod
     def saveHorizonP(fileName=''):
+        return
+
+    @staticmethod
+    def clear():
         return
 
     def isAboveHorizon(self, point):
@@ -527,6 +578,77 @@ class Data:
             return False
 
 
+class Filter:
+    class FilterSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = FilterSignals()
+    data = {}
+
+
+class Measure:
+    class MeasureSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = MeasureSignals()
+    data = {}
+
+
+class PowerWeather:
+    class PowerWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = PowerWeatherSignals()
+    data = {}
+
+
+class Remote:
+    class RemoteSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = RemoteSignals()
+
+
+class SensorWeather:
+    class SensorWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = SensorWeatherSignals()
+    data = {}
+
+
+class Telescope:
+    class TelescopeSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = TelescopeSignals()
+    data = {}
+
+
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
@@ -550,19 +672,30 @@ class App(QObject):
     colorChange = pyqtSignal()
     playSound = pyqtSignal(object)
     mes = pyqtSignal(object, object, object, object)
+    remoteCommand = pyqtSignal(object)
     messageQueue = Queue()
+
+    astrometry = Astrometry()
+    automation = Automation()
+    camera = Camera()
+    cover = Cover()
+
+    data = Data()
+    directWeather = DirectWeather()
+    filter = Filter()
+    focuser = Focuser()
+    measure = Measure()
     mount = Mount()
+    onlineWeather = OnlineWeather()
     power = Power()
+    powerWeather = PowerWeather()
     dome = Dome()
     relay = Relay()
-    data = Data()
-    camera = Camera()
-    focuser = Focuser()
-    directWeather = DirectWeather()
+    remote = Remote()
+    sensorWeather = SensorWeather()
     skymeter = Skymeter()
-    automation = Automation()
-    astrometry = Astrometry()
-    onlineWeather = OnlineWeather()
+    telescope = Telescope()
+
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/workDir/model',
               'imageDir': 'tests/workDir/image',
@@ -572,3 +705,4 @@ class App(QObject):
               }
     uiWindows = {}
     threadPool = QThreadPool()
+    __version__ = 'test'

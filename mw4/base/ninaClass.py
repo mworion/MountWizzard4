@@ -40,10 +40,11 @@ class NINAClass(DriverData, QObject):
     PROTOCOL = 'http'
     BASE_URL = f'{PROTOCOL}://{HOST_ADDR}:{PORT}'
 
-    def __init__(self, app=None, data=None, threadPool=None):
+    def __init__(self, app=None, data=None):
         super().__init__()
         self.app = app
-        self.threadPool = threadPool
+        self.threadPool = app.threadPool
+        self.mes = app.mes
         self.data = data
         self.updateRate = 1000
         self._deviceName = ''
@@ -165,7 +166,7 @@ class NINAClass(DriverData, QObject):
             t = f'[{self.deviceName}] connected'
             self.log.debug(t)
         else:
-            self.app.mes.emit(2, 'N.I.N.A.', 'Connect error',
+            self.mes.emit(2, 'N.I.N.A.', 'Connect error',
                                    f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
@@ -237,14 +238,14 @@ class NINAClass(DriverData, QObject):
             if self.deviceConnected:
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-                self.app.mes.emit(0, 'N.I.N.A.', 'Device remove',
+                self.mes.emit(0, 'N.I.N.A.', 'Device remove',
                                        f'{self.deviceName}')
         else:
             if not self.deviceConnected:
                 self.deviceConnected = True
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f'{self.deviceName}')
-                self.app.mes.emit(0, 'N.I.N.A.', 'Device found',
+                self.mes.emit(0, 'N.I.N.A.', 'Device found',
                                        f'{self.deviceName}')
         return True
 
@@ -282,7 +283,7 @@ class NINAClass(DriverData, QObject):
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.app.mes.emit(0, 'N.I.N.A.', 'Device remove',
+        self.mes.emit(0, 'N.I.N.A.', 'Device remove',
                                f'{self.deviceName}')
         return True
 

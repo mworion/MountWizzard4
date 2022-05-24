@@ -30,8 +30,7 @@ class CoverIndi(IndiClass):
 
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals
-        super().__init__(app=app, threadPool=app.threadPool)
-        self.data = data
+        super().__init__(app=app, data=data)
 
     def updateText(self, deviceName, propertyName):
         """

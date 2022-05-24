@@ -26,347 +26,341 @@ if not platform.system() == 'Windows':
 
 # external packages
 import PyQt5
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QThreadPool, QTimer
 import win32com.client
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.ascomClass import AscomClass
 import base.ascomClass
 from base.loggerMW import setupLogging
 from base.driverDataClass import Signals
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    class Test(QObject):
-        mes = pyqtSignal(object, object, object, object)
+def function():
 
-    global app
+    with mock.patch.object(QTimer,
+                           'start'):
+        func = AscomClass(app=App(), data={})
+        func.signals = Signals()
+        yield func
+
+
+def test_startTimer(function):
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = AscomClass(app=Test(), data={}, threadPool=QThreadPool())
-        app.signals = Signals()
-        yield
-        app.threadPool.waitForDone(1000)
-
-
-def test_startTimer():
-    with mock.patch.object(PyQt5.QtCore.QTimer,
-                           'start'):
-        suc = app.startTimer()
+        suc = function.startTimer()
         assert suc
 
 
-def test_stopTimer():
+def test_stopTimer(function):
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'stop'):
-        suc = app.stopTimer()
+        suc = function.stopTimer()
         assert suc
 
 
-def test_getAscomProperty_1():
-    app.propertyExceptions = ['connect']
-    val = app.getAscomProperty('Connect')
+def test_getAscomProperty_1(function):
+    function.propertyExceptions = ['connect']
+    val = function.getAscomProperty('Connect')
     assert val is None
 
 
-def test_getAscomProperty_2():
-    app.propertyExceptions = ['test']
+def test_getAscomProperty_2(function):
+    function.propertyExceptions = ['test']
     with mock.patch.object(builtins,
                            'eval',
                            side_effect=Exception):
-        val = app.getAscomProperty('Connect')
+        val = function.getAscomProperty('Connect')
         assert val is None
-        assert 'connect' in app.propertyExceptions
+        assert 'connect' in function.propertyExceptions
 
 
-def test_getAscomProperty_3():
+def test_getAscomProperty_3(function):
     class Client:
         connect = True
 
-    app.client = Client()
-    app.propertyExceptions = ['test']
-    val = app.getAscomProperty('Connect')
+    function.client = Client()
+    function.propertyExceptions = ['test']
+    val = function.getAscomProperty('Connect')
     assert val
 
 
-def test_setAscomProperty_1():
-    app.propertyExceptions = ['connect']
-    suc = app.setAscomProperty('Connect', True)
+def test_setAscomProperty_1(function):
+    function.propertyExceptions = ['connect']
+    suc = function.setAscomProperty('Connect', True)
     assert not suc
 
 
-def test_setAscomProperty_2():
-    app.propertyExceptions = ['test']
+def test_setAscomProperty_2(function):
+    function.propertyExceptions = ['test']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
-        suc = app.setAscomProperty('Connect', True)
+        suc = function.setAscomProperty('Connect', True)
         assert not suc
-        assert 'Connect' not in app.propertyExceptions
+        assert 'Connect' not in function.propertyExceptions
 
 
-def test_setAscomProperty_3():
-    app.propertyExceptions = ['test']
+def test_setAscomProperty_3(function):
+    function.propertyExceptions = ['test']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
-        suc = app.setAscomProperty('Names', True)
+        suc = function.setAscomProperty('Names', True)
         assert not suc
-        assert 'names' in app.propertyExceptions
+        assert 'names' in function.propertyExceptions
 
 
-def test_setAscomProperty_4():
+def test_setAscomProperty_4(function):
     class Client:
         Connect = False
 
-    app.client = Client()
-    app.propertyExceptions = ['test']
-    suc = app.setAscomProperty('Connect', True)
+    function.client = Client()
+    function.propertyExceptions = ['test']
+    suc = function.setAscomProperty('Connect', True)
     assert suc
-    assert app.client
+    assert function.client
 
 
-def test_callAscomMethod_1():
-    app.propertyExceptions = ['Connect']
-    suc = app.callAscomMethod('Connect', True)
+def test_callAscomMethod_1(function):
+    function.propertyExceptions = ['Connect']
+    suc = function.callAscomMethod('Connect', True)
     assert not suc
 
 
-def test_callAscomMethod_2():
-    app.propertyExceptions = ['Test']
+def test_callAscomMethod_2(function):
+    function.propertyExceptions = ['Test']
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
-        suc = app.callAscomMethod('Connect', True)
+        suc = function.callAscomMethod('Connect', True)
         assert not suc
-        assert 'Connect' in app.propertyExceptions
+        assert 'Connect' in function.propertyExceptions
 
 
-def test_callAscomMethod_3():
+def test_callAscomMethod_3(function):
     class Client:
         Connect = False
 
-    app.client = Client()
-    app.propertyExceptions = ['Test']
-    with mock.patch.object(app.client,
+    function.client = Client()
+    function.propertyExceptions = ['Test']
+    with mock.patch.object(function.client,
                            'Connect'):
-        suc = app.callAscomMethod('Connect', True)
+        suc = function.callAscomMethod('Connect', True)
         assert suc
-        assert app.client
+        assert function.client
 
 
-def test_callAscomMethod_4():
+def test_callAscomMethod_4(function):
     class Client:
         Connect = False
 
-    app.client = Client()
-    app.propertyExceptions = ['Test']
-    with mock.patch.object(app.client,
+    function.client = Client()
+    function.propertyExceptions = ['Test']
+    with mock.patch.object(function.client,
                            'Connect'):
-        suc = app.callAscomMethod('Connect', (True, 1))
+        suc = function.callAscomMethod('Connect', (True, 1))
         assert suc
-        assert app.client
+        assert function.client
 
 
-def test_getAndStoreAscomProperty():
-    with mock.patch.object(app,
+def test_getAndStoreAscomProperty(function):
+    with mock.patch.object(function,
                            'getAscomProperty'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            suc = app.getAndStoreAscomProperty(10, 'YES', 'NO')
+            suc = function.getAndStoreAscomProperty(10, 'YES', 'NO')
             assert suc
 
 
-def test_workerConnectDevice_1():
-    app.serverConnected = False
-    app.deviceConnected = False
+def test_workerConnectDevice_1(function):
+    function.serverConnected = False
+    function.deviceConnected = False
     with mock.patch.object(base.ascomClass,
                            'sleepAndEvents'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'setAscomProperty'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getAscomProperty',
                                    return_value=False):
-                suc = app.workerConnectDevice()
+                suc = function.workerConnectDevice()
                 assert not suc
-                assert not app.serverConnected
-                assert not app.deviceConnected
+                assert not function.serverConnected
+                assert not function.deviceConnected
 
 
-def test_workerConnectDevice_2():
-    app.serverConnected = False
-    app.deviceConnected = False
+def test_workerConnectDevice_2(function):
+    function.serverConnected = False
+    function.deviceConnected = False
     with mock.patch.object(base.ascomClass,
                            'sleepAndEvents'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'setAscomProperty'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getAscomProperty',
                                    return_value=True):
-                suc = app.workerConnectDevice()
+                suc = function.workerConnectDevice()
                 assert suc
-                assert app.serverConnected
-                assert app.deviceConnected
+                assert function.serverConnected
+                assert function.deviceConnected
 
 
-def test_workerGetInitialConfig_1():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_1(function):
+    with mock.patch.object(function,
                            'getAndStoreAscomProperty',
                            return_value='test'):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
 
 
-def test_pollStatus_1():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_pollStatus_1(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=False):
-        suc = app.workerPollStatus()
+        suc = function.workerPollStatus()
         assert not suc
-        assert not app.deviceConnected
+        assert not function.deviceConnected
 
 
-def test_pollStatus_2():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_pollStatus_2(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=True):
-        suc = app.workerPollStatus()
+        suc = function.workerPollStatus()
         assert suc
-        assert app.deviceConnected
+        assert function.deviceConnected
 
 
-def test_callerInitUnInit_1():
+def test_callerInitUnInit_1(function):
     def test():
         return 1
-    result = app.callerInitUnInit(test)
+    result = function.callerInitUnInit(test)
     assert result == 1
 
 
-def test_callMethodThreaded_1():
+def test_callMethodThreaded_1(function):
     def test():
         return
 
-    app.deviceConnected = False
-    suc = app.callMethodThreaded(test)
+    function.deviceConnected = False
+    suc = function.callMethodThreaded(test)
     assert not suc
 
 
-def test_callMethodThreaded_2():
+def test_callMethodThreaded_2(function):
     def test():
         return
 
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
+    function.deviceConnected = True
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.callMethodThreaded(test, cb_fin=test, cb_res=test)
+        suc = function.callMethodThreaded(test, cb_fin=test, cb_res=test)
         assert suc
 
 
-def test_callMethodThreaded_3():
+def test_callMethodThreaded_3(function):
     def test():
         return
 
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
+    function.deviceConnected = True
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.callMethodThreaded(test, 10, 20, cb_fin=test, cb_res=test)
+        suc = function.callMethodThreaded(test, 10, 20, cb_fin=test, cb_res=test)
         assert suc
 
 
-def test_callMethodThreaded_4():
+def test_callMethodThreaded_4(function):
     def test():
         return
 
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
+    function.deviceConnected = True
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.callMethodThreaded(test, 10, 20)
+        suc = function.callMethodThreaded(test, 10, 20)
         assert suc
 
 
-def test_processPolledData():
-    app.processPolledData()
+def test_processPolledData(function):
+    function.processPolledData()
 
 
-def test_workerPollData():
-    app.workerPollData()
+def test_workerPollData(function):
+    function.workerPollData()
 
 
-def test_pollData():
-    with mock.patch.object(app,
+def test_pollData(function):
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.pollData()
+        suc = function.pollData()
         assert suc
 
 
-def test_pollStatus():
-    with mock.patch.object(app,
+def test_pollStatus(function):
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.pollStatus()
+        suc = function.pollStatus()
         assert suc
 
 
-def test_getInitialConfig():
-    with mock.patch.object(app,
+def test_getInitialConfig(function):
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.getInitialConfig()
+        suc = function.getInitialConfig()
         assert suc
 
 
-def test_startCommunication_1():
-    app.deviceName = 'test'
-    with mock.patch.object(app.threadPool,
+def test_startCommunication_1(function):
+    function.deviceName = 'test'
+    with mock.patch.object(function.threadPool,
                            'start'):
         with mock.patch.object(win32com.client.dynamic,
                                'Dispatch'):
-            suc = app.startCommunication()
+            suc = function.startCommunication()
             assert suc
 
 
-def test_startCommunication_2():
-    app.deviceName = 'test'
+def test_startCommunication_2(function):
+    function.deviceName = 'test'
     with mock.patch.object(win32com.client.dynamic,
                            'Dispatch',
                            side_effect=Exception()):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert not suc
 
 
-def test_startCommunication_3():
-    suc = app.startCommunication()
+def test_startCommunication_3(function):
+    suc = function.startCommunication()
     assert not suc
 
 
-def test_stopCommunication_1():
-    app.deviceConnected = True
-    app.serverConnected = True
-    app.deviceName = 'test'
-    with mock.patch.object(app,
+def test_stopCommunication_1(function):
+    function.deviceConnected = True
+    function.serverConnected = True
+    function.deviceName = 'test'
+    with mock.patch.object(function,
                            'stopTimer'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'setAscomProperty'):
-            suc = app.stopCommunication()
+            suc = function.stopCommunication()
             assert suc
 
 
-def test_stopCommunication_2():
-    app.client = 1
-    app.deviceConnected = True
-    app.serverConnected = True
-    app.deviceName = 'test'
-    with mock.patch.object(app,
+def test_stopCommunication_2(function):
+    function.client = 1
+    function.deviceConnected = True
+    function.serverConnected = True
+    function.deviceName = 'test'
+    with mock.patch.object(function,
                            'stopTimer'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'setAscomProperty'):
-            suc = app.stopCommunication()
+            suc = function.stopCommunication()
             assert suc
-            assert not app.serverConnected
-            assert not app.deviceConnected
+            assert not function.serverConnected
+            assert not function.deviceConnected

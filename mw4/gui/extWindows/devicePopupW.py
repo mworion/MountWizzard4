@@ -295,7 +295,7 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: success
         """
-        indi = IndiClass()
+        indi = IndiClass(app=self.app)
         indi.hostaddress = self.ui.indiHostAddress.text()
         indi.port = self.ui.indiPort.text()
 
@@ -334,7 +334,7 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: success
         """
-        alpaca = AlpacaClass()
+        alpaca = AlpacaClass(app=self.app)
         alpaca.hostaddress = self.ui.alpacaHostAddress.text()
         alpaca.port = self.ui.alpacaPort.text()
         alpaca.apiVersion = 1
@@ -374,7 +374,7 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: success
         """
-        sgpro = SGProClass()
+        sgpro = SGProClass(app=self.app)
         sgpro.DEVICE_TYPE = 'Camera'
 
         self.changeStyleDynamic(self.ui.sgproDiscover, 'running', True)
@@ -412,7 +412,7 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: success
         """
-        nina = NINAClass()
+        nina = NINAClass(app=self.app)
         nina.DEVICE_TYPE = 'Camera'
 
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', True)

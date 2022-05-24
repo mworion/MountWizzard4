@@ -97,22 +97,20 @@ class IndiClass:
         'switch': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
     }
 
-    def __init__(self, app=None, data=None, threadPool=None):
+    def __init__(self, app=None, data=None):
         self.app = app
         self.data = data
-        self.client = Client(host=None, threadPool=threadPool)
+        self.threadPool = app.threadPool
+        self.mes = app.mes
+        self.client = Client(host=None, threadPool=app.threadPool)
         self.updateRate = 1000
 
-        if self.app is not None:
-            # this is for direct use of indiClass in devicePopupW for
-            # device discovery as we have in this case no app link, but we
-            # need the signaling work.
-            clientSig = self.client.signals
-            selfSig = self.signals
-            clientSig.deviceConnected.connect(selfSig.deviceConnected)
-            clientSig.deviceDisconnected.connect(selfSig.deviceDisconnected)
-            clientSig.serverConnected.connect(selfSig.serverConnected)
-            clientSig.serverDisconnected.connect(selfSig.serverDisconnected)
+        clientSig = self.client.signals
+        selfSig = self.signals
+        clientSig.deviceConnected.connect(selfSig.deviceConnected)
+        clientSig.deviceDisconnected.connect(selfSig.deviceDisconnected)
+        clientSig.serverConnected.connect(selfSig.serverConnected)
+        clientSig.serverDisconnected.connect(selfSig.serverDisconnected)
 
         self.deviceName = ''
         self.device = None
@@ -222,7 +220,7 @@ class IndiClass:
         """
         if deviceName == self.deviceName:
             self.device = self.client.getDevice(deviceName)
-            self.app.mes.emit(0, 'INDI', 'Device found', f'{deviceName}')
+            self.mes.emit(0, 'INDI', 'Device found', f'{deviceName}')
         else:
             self.log.info(f'INDI device snoop: [{deviceName}]')
         return True
@@ -236,7 +234,7 @@ class IndiClass:
         :return: true for test purpose
         """
         if deviceName == self.deviceName:
-            self.app.mes.emit(0, 'INDI', 'Device removed', f'{deviceName}')
+            self.mes.emit(0, 'INDI', 'Device removed', f'{deviceName}')
             self.device = None
             self.data.clear()
             return True
@@ -492,19 +490,15 @@ class IndiClass:
         if self.messages:
             if text.startswith('[WARNING]'):
                 text = self.removePrefix(text, '[WARNING]')
-                self.app.mes.emit(0, 'INDI', 'Device warning',
-                                       f'{device:15s} {text}')
+                self.mes.emit(0, 'INDI', 'Device warning', f'{device:15s} {text}')
             elif text.startswith('[INFO]'):
                 text = self.removePrefix(text, '[INFO]')
-                self.app.mes.emit(2, 'INDI', 'Device info',
-                                       f'{device:15s} {text}')
+                self.mes.emit(2, 'INDI', 'Device info', f'{device:15s} {text}')
             elif text.startswith('[ERROR]'):
                 text = self.removePrefix(text, '[ERROR]')
-                self.app.mes.emit(2, 'INDI', 'Device error',
-                                       f'{device:15s} {text}')
+                self.mes.emit(2, 'INDI', 'Device error', f'{device:15s} {text}')
             else:
-                self.app.mes.emit(0, 'INDI', 'Device message',
-                                       f'{device:15s} {text}')
+                self.mes.emit(0, 'INDI', 'Device message', f'{device:15s} {text}')
             return True
         return False
 

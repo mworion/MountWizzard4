@@ -21,40 +21,33 @@ from unittest import mock
 # external packages
 import PyQt5
 import pytest
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QTimer
 import requests
 
 # local import
 from base.sgproClass import SGProClass
 from base.loggerMW import setupLogging
 from base.driverDataClass import Signals
-
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    class Test(QObject):
-        mes = pyqtSignal(object, object, object, object)
-
-    global app
-    with mock.patch.object(PyQt5.QtCore.QTimer,
+def function():
+    with mock.patch.object(QTimer,
                            'start'):
-        app = SGProClass(app=Test(), data={}, threadPool=QThreadPool())
-        app.signals = Signals()
-        yield
-        app.threadPool.waitForDone(1000)
+        func = SGProClass(app=App(), data={})
+        func.signals = Signals()
+        yield func
 
 
-def test_properties_1():
-    app.deviceName = 'test'
-    app.deviceName = 'test:2'
+def test_properties_1(function):
+    function.deviceName = 'test'
+    function.deviceName = 'test:2'
 
 
-def test_requestProperty_1():
-    app.deviceName = 'test'
+def test_requestProperty_1(function):
+    function.deviceName = 'test'
 
     class Response:
         status_code = 200
@@ -66,12 +59,12 @@ def test_requestProperty_1():
     with mock.patch.object(requests,
                            'post',
                            return_value=Response()):
-        val = app.requestProperty('test', {'test': 1})
+        val = function.requestProperty('test', {'test': 1})
         assert val is 'test'
 
 
-def test_requestProperty_2():
-    app.deviceName = 'test'
+def test_requestProperty_2(function):
+    function.deviceName = 'test'
 
     class Response:
         status_code = 200
@@ -83,12 +76,12 @@ def test_requestProperty_2():
     with mock.patch.object(requests,
                            'get',
                            return_value=Response()):
-        val = app.requestProperty('test')
+        val = function.requestProperty('test')
         assert val is 'test'
 
 
-def test_requestProperty_3():
-    app.deviceName = 'test'
+def test_requestProperty_3(function):
+    function.deviceName = 'test'
 
     class Response:
         status_code = 200
@@ -101,12 +94,12 @@ def test_requestProperty_3():
                            'get',
                            side_effect=requests.exceptions.Timeout,
                            return_value=Response()):
-        val = app.requestProperty('test')
+        val = function.requestProperty('test')
         assert val is None
 
 
-def test_requestProperty_4():
-    app.deviceName = 'test'
+def test_requestProperty_4(function):
+    function.deviceName = 'test'
 
     class Response:
         status_code = 200
@@ -119,12 +112,12 @@ def test_requestProperty_4():
                            'get',
                            side_effect=requests.exceptions.ConnectionError,
                            return_value=Response()):
-        val = app.requestProperty('test')
+        val = function.requestProperty('test')
         assert val is None
 
 
-def test_requestProperty_5():
-    app.deviceName = 'test'
+def test_requestProperty_5(function):
+    function.deviceName = 'test'
 
     class Response:
         status_code = 200
@@ -137,12 +130,12 @@ def test_requestProperty_5():
                            'get',
                            side_effect=Exception,
                            return_value=Response()):
-        val = app.requestProperty('test')
+        val = function.requestProperty('test')
         assert val is None
 
 
-def test_requestProperty_6():
-    app.deviceName = 'test'
+def test_requestProperty_6(function):
+    function.deviceName = 'test'
 
     class Response:
         status_code = 400
@@ -154,264 +147,264 @@ def test_requestProperty_6():
     with mock.patch.object(requests,
                            'get',
                            return_value=Response()):
-        val = app.requestProperty('test')
+        val = function.requestProperty('test')
         assert val is None
 
 
-def test_sgConnectDevice_1():
-    app.deviceName = 'test test'
-    app.DEVICE_TYPE = 'Camera'
-    with mock.patch.object(app,
+def test_sgConnectDevice_1(function):
+    function.deviceName = 'test test'
+    function.DEVICE_TYPE = 'Camera'
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgConnectDevice()
+        suc = function.sgConnectDevice()
         assert not suc
 
 
-def test_sgConnectDevice_2():
-    app.deviceName = 'test test'
-    app.DEVICE_TYPE = 'Camera'
-    with mock.patch.object(app,
+def test_sgConnectDevice_2(function):
+    function.deviceName = 'test test'
+    function.DEVICE_TYPE = 'Camera'
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.sgConnectDevice()
+        suc = function.sgConnectDevice()
         assert suc
 
 
-def test_sgDisconnectDevice_1():
-    app.deviceName = 'test test'
-    app.DEVICE_TYPE = 'Camera'
-    with mock.patch.object(app,
+def test_sgDisconnectDevice_1(function):
+    function.deviceName = 'test test'
+    function.DEVICE_TYPE = 'Camera'
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgDisconnectDevice()
+        suc = function.sgDisconnectDevice()
         assert not suc
 
 
-def test_sgDisconnectDevice_2():
-    app.deviceName = 'test test'
-    app.DEVICE_TYPE = 'Camera'
-    with mock.patch.object(app,
+def test_sgDisconnectDevice_2(function):
+    function.deviceName = 'test test'
+    function.DEVICE_TYPE = 'Camera'
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.sgDisconnectDevice()
+        suc = function.sgDisconnectDevice()
         assert suc
 
 
-def test_sgEnumerateDevice_1():
-    app.deviceName = 'test test'
-    app.DEVICE_TYPE = 'Camera'
-    with mock.patch.object(app,
+def test_sgEnumerateDevice_1(function):
+    function.deviceName = 'test test'
+    function.DEVICE_TYPE = 'Camera'
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc = app.sgEnumerateDevice()
+        suc = function.sgEnumerateDevice()
         assert not suc
 
 
-def test_sgEnumerateDevice_2():
-    app.deviceName = 'test test'
-    app.DEVICE_TYPE = 'Camera'
-    with mock.patch.object(app,
+def test_sgEnumerateDevice_2(function):
+    function.deviceName = 'test test'
+    function.DEVICE_TYPE = 'Camera'
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Devices': True}):
-        suc = app.sgEnumerateDevice()
+        suc = function.sgEnumerateDevice()
         assert suc
 
 
-def test_workerConnectDevice_1():
-    app.deviceName = 'SGPro controlled'
-    suc = app.workerConnectDevice()
+def test_workerConnectDevice_1(function):
+    function.deviceName = 'SGPro controlled'
+    suc = function.workerConnectDevice()
     assert suc
 
 
-def test_workerConnectDevice_2():
-    app.serverConnected = False
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_workerConnectDevice_2(function):
+    function.serverConnected = False
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'sgConnectDevice',
                            return_value=True):
-        suc = app.workerConnectDevice()
+        suc = function.workerConnectDevice()
         assert suc
-        assert not app.serverConnected
-        assert not app.deviceConnected
+        assert not function.serverConnected
+        assert not function.deviceConnected
 
 
-def test_workerConnectDevice_3():
-    app.serverConnected = True
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_workerConnectDevice_3(function):
+    function.serverConnected = True
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'sgConnectDevice',
                            return_value=False):
-        suc = app.workerConnectDevice()
+        suc = function.workerConnectDevice()
         assert not suc
-        assert not app.serverConnected
-        assert not app.deviceConnected
+        assert not function.serverConnected
+        assert not function.deviceConnected
 
 
-def test_startTimer():
-    suc = app.startTimer()
+def test_startTimer(function):
+    suc = function.startTimer()
     assert suc
 
 
-def test_stopTimer():
+def test_stopTimer(function):
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'stop'):
-        suc = app.stopTimer()
+        suc = function.stopTimer()
         assert suc
 
 
-def test_processPolledData():
-    app.processPolledData()
+def test_processPolledData(function):
+    function.processPolledData()
 
 
-def test_workerPollData():
-    app.workerPollData()
+def test_workerPollData(function):
+    function.workerPollData()
 
 
-def test_pollData_1():
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
+def test_pollData_1(function):
+    function.deviceConnected = True
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.pollData()
+        suc = function.pollData()
         assert suc
 
 
-def test_pollData_2():
-    app.deviceConnected = False
-    with mock.patch.object(app.threadPool,
+def test_pollData_2(function):
+    function.deviceConnected = False
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.pollData()
+        suc = function.pollData()
         assert not suc
 
 
-def test_workerGetInitialConfig_1():
-    app.workerGetInitialConfig()
+def test_workerGetInitialConfig_1(function):
+    function.workerGetInitialConfig()
 
 
-def test_getInitialConfig_1():
-    with mock.patch.object(app.threadPool,
+def test_getInitialConfig_1(function):
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.getInitialConfig()
+        suc = function.getInitialConfig()
         assert suc
 
 
-def test_workerPollStatus_1():
-    app.DEVICE_TYPE = 'Camera'
-    with mock.patch.object(app,
+def test_workerPollStatus_1(function):
+    function.DEVICE_TYPE = 'Camera'
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            suc = app.workerPollStatus()
+            suc = function.workerPollStatus()
             assert not suc
 
 
-def test_workerPollStatus_2():
-    app.DEVICE_TYPE = 'Camera'
+def test_workerPollStatus_2(function):
+    function.DEVICE_TYPE = 'Camera'
 
-    app.deviceConnected = True
-    with mock.patch.object(app,
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'State': 'DISCONNECTED',
                                          'Message': 'test'}):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getInitialConfig'):
-                suc = app.workerPollStatus()
+                suc = function.workerPollStatus()
                 assert suc
-                assert not app.deviceConnected
+                assert not function.deviceConnected
 
 
-def test_workerPollStatus_3():
-    app.DEVICE_TYPE = 'Camera'
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_workerPollStatus_3(function):
+    function.DEVICE_TYPE = 'Camera'
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'State': 'DISCONNECTED',
                                          'Message': 'test'}):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getInitialConfig'):
-                suc = app.workerPollStatus()
+                suc = function.workerPollStatus()
                 assert suc
-                assert not app.deviceConnected
+                assert not function.deviceConnected
 
 
-def test_workerPollStatus_4():
-    app.DEVICE_TYPE = 'Camera'
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_workerPollStatus_4(function):
+    function.DEVICE_TYPE = 'Camera'
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'State': 'test',
                                          'Message': 'test'}):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getInitialConfig'):
-                suc = app.workerPollStatus()
+                suc = function.workerPollStatus()
                 assert suc
-                assert app.deviceConnected
+                assert function.deviceConnected
 
 
-def test_workerPollStatus_5():
-    app.DEVICE_TYPE = 'Camera'
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_workerPollStatus_5(function):
+    function.DEVICE_TYPE = 'Camera'
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'State': 'test',
                                          'Message': 'test'}):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getInitialConfig'):
-                suc = app.workerPollStatus()
+                suc = function.workerPollStatus()
                 assert suc
-                assert app.deviceConnected
+                assert function.deviceConnected
 
 
-def test_pollStatus_1():
-    with mock.patch.object(app.threadPool,
+def test_pollStatus_1(function):
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.pollStatus()
+        suc = function.pollStatus()
         assert suc
 
 
-def test_startCommunication_1():
-    app.serverConnected = False
-    with mock.patch.object(app.threadPool,
+def test_startCommunication_1(function):
+    function.serverConnected = False
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
-        assert app.serverConnected
+        assert function.serverConnected
 
 
-def test_stopCommunication_1():
-    app.deviceConnected = True
-    app.serverConnected = True
-    app.deviceName = 'test'
-    with mock.patch.object(app,
+def test_stopCommunication_1(function):
+    function.deviceConnected = True
+    function.serverConnected = True
+    function.deviceName = 'test'
+    with mock.patch.object(function,
                            'stopTimer'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'sgDisconnectDevice'):
-            suc = app.stopCommunication()
+            suc = function.stopCommunication()
             assert suc
-            assert not app.serverConnected
-            assert not app.deviceConnected
+            assert not function.serverConnected
+            assert not function.deviceConnected
 
 
-def test_discoverDevices_1():
-    with mock.patch.object(app,
+def test_discoverDevices_1(function):
+    with mock.patch.object(function,
                            'sgEnumerateDevice',
                            return_value=[]):
-        val = app.discoverDevices()
+        val = function.discoverDevices()
         assert val == []
 
 
-def test_discoverDevices_2():
-    with mock.patch.object(app,
+def test_discoverDevices_2(function):
+    with mock.patch.object(function,
                            'sgEnumerateDevice',
                            return_value=['test']):
-        val = app.discoverDevices()
+        val = function.discoverDevices()
         assert val == ['test']

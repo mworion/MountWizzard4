@@ -31,10 +31,8 @@ class DomeIndi(IndiClass):
 
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
-        self.data = data
+        super().__init__(app=app, data=data)
         self.lastAzimuth = None
-
         self.app.update1s.connect(self.updateStatus)
 
     def updateStatus(self):

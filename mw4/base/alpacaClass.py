@@ -37,14 +37,14 @@ class AlpacaClass(DriverData):
 
     ALPACA_TIMEOUT = 3
 
-    def __init__(self, app=None, data=None, threadPool=None):
+    def __init__(self, app=None, data=None):
         super().__init__()
 
         self.app = app
-        self.threadPool = threadPool
-        self.updateRate = 1000
-
         self.data = data
+        self.threadPool = app.threadPool
+        self.mes = app.mes
+        self.updateRate = 1000
         self.propertyExceptions = []
 
         self._host = ('localhost', 11111)
@@ -345,7 +345,7 @@ class AlpacaClass(DriverData):
                 sleepAndEvents(250)
 
         if not suc:
-            self.app.mes.emit(2, 'ALPACA', 'Connect error', f'{self.deviceName}')
+            self.mes.emit(2, 'ALPACA', 'Connect error', f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
             return False
@@ -357,7 +357,7 @@ class AlpacaClass(DriverData):
         if not self.deviceConnected:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.mes.emit(0, 'ALPACA', 'Device found', f'{self.deviceName}')
+            self.mes.emit(0, 'ALPACA', 'Device found', f'{self.deviceName}')
 
         return True
 
@@ -394,12 +394,12 @@ class AlpacaClass(DriverData):
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-            self.app.mes.emit(0, 'ALPACA', 'Device remove', f'{self.deviceName}')
+            self.mes.emit(0, 'ALPACA', 'Device remove', f'{self.deviceName}')
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.app.mes.emit(0, 'ALPACA', 'Device found', f'{self.deviceName}')
+            self.mes.emit(0, 'ALPACA', 'Device found', f'{self.deviceName}')
 
         return suc
 
@@ -463,7 +463,7 @@ class AlpacaClass(DriverData):
         self.propertyExceptions = []
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.app.mes.emit(0, 'ALPACA', 'Device  remove', f'{self.deviceName}')
+        self.mes.emit(0, 'ALPACA', 'Device  remove', f'{self.deviceName}')
         return True
 
     def discoverDevices(self, deviceType=''):
@@ -475,5 +475,4 @@ class AlpacaClass(DriverData):
 
         temp = [x for x in devices if x['DeviceType'].lower() == deviceType]
         discoverList = [f'{x["DeviceName"]}:{deviceType}:{x["DeviceNumber"]}' for x in temp]
-
         return discoverList

@@ -29,7 +29,7 @@ class TelescopeAlpaca(AlpacaClass):
     __all__ = ['TelescopeAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
+        super().__init__(app=app, data=data)
 
         self.signals = signals
         self.data = data

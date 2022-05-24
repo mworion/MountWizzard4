@@ -31,10 +31,8 @@ class CameraAscom(AscomClass, CameraSupport):
     __all__ = ['CameraAscom']
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
-
+        super().__init__(app=app, data=data)
         self.signals = signals
-        self.data = data
         self.abortExpose = False
 
     def workerGetInitialConfig(self):

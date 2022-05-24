@@ -29,7 +29,7 @@ class CoverAlpaca(AlpacaClass):
     __all__ = ['CoverAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
+        super().__init__(app=app, data=data)
 
         self.alpacaSignals = signals
         self.data = data

@@ -32,7 +32,7 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
     __all__ = ['CameraAlpaca']
 
     def __init__(self, app=None, signals=None, data=None, parent=None):
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
+        super().__init__(app=app, data=data)
         self.signals = signals
         self.data = data
         self.abortExpose = False

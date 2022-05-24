@@ -29,10 +29,8 @@ class WeatherUPBAscom(AscomClass):
     __all__ = ['WeatherUPBAscom']
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
-
+        super().__init__(app=app, data=data)
         self.signals = signals
-        self.data = data
 
     def workerPollData(self):
         """

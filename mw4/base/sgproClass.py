@@ -40,10 +40,11 @@ class SGProClass(DriverData, QObject):
     PROTOCOL = 'http'
     BASE_URL = f'{PROTOCOL}://{HOST_ADDR}:{PORT}'
 
-    def __init__(self, app=None, data=None, threadPool=None):
+    def __init__(self, app=None, data=None):
         super().__init__()
         self.app = app
-        self.threadPool = threadPool
+        self.threadPool = app.threadPool
+        self.mes = app.mes
         self.data = data
         self.updateRate = 1000
         self._deviceName = ''
@@ -165,7 +166,7 @@ class SGProClass(DriverData, QObject):
             t = f'[{self.deviceName}] connected'
             self.log.debug(t)
         else:
-            self.app.mes.emit(2, 'SGPRO', 'Connect error',
+            self.mes.emit(2, 'SGPRO', 'Connect error',
                                    f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
@@ -232,7 +233,7 @@ class SGProClass(DriverData, QObject):
             if self.deviceConnected:
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-                self.app.mes.emit(0, 'SGPRO', 'Device remove',
+                self.mes.emit(0, 'SGPRO', 'Device remove',
                                        f'{self.deviceName}')
 
         else:
@@ -240,7 +241,7 @@ class SGProClass(DriverData, QObject):
                 self.deviceConnected = True
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f'{self.deviceName}')
-                self.app.mes.emit(0, 'SGPRO', 'Device found',
+                self.mes.emit(0, 'SGPRO', 'Device found',
                                        f'{self.deviceName}')
 
         return True
@@ -279,7 +280,7 @@ class SGProClass(DriverData, QObject):
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.app.mes.emit(0, 'SGPRO', 'Device remove',
+        self.mes.emit(0, 'SGPRO', 'Device remove',
                                f'{self.deviceName}')
         return True
 

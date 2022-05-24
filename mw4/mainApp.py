@@ -67,8 +67,7 @@ class MountWizzard4(QObject):
     __version__ = version('mountwizzard4')
     log = logging.getLogger(__name__)
 
-    message = pyqtSignal(object, object)
-    messageN = pyqtSignal(object, object, object, object)
+    mes = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
@@ -113,8 +112,7 @@ class MountWizzard4(QObject):
         self.mainW = None
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
-        self.message.connect(self.writeMessageQueue)
-        self.messageN.connect(self.writeMessageQueueN)
+        self.mes.connect(self.writeMessageQueueN)
         self.config = {}
         self.loadConfig()
         self.deviceStat = {
@@ -419,19 +417,6 @@ class MountWizzard4(QObject):
             self.playSound.emit('ConnectionLost')
             return False
         return status
-
-    def writeMessageQueue(self, message, prio):
-        """
-        :param message:
-        :param prio:
-        :return: True for test purpose
-        """
-        prio = prio % 256
-        source = 'NO'
-        mType = 'old'
-        self.log.ui(f'Message window: [{source} - {mType} - {message}]')
-        self.messageQueue.put((prio, source, mType, message))
-        return True
 
     def writeMessageQueueN(self, prio, source, mType, message):
         """

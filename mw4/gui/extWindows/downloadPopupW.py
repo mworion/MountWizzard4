@@ -142,12 +142,12 @@ class DownloadPopup(toolsQtWidget.MWidget):
             if not suc:
                 raise FileNotFoundError
         except TimeoutError:
-            self.parentWidget.app.messageN.emit(2, 'Download', 'Timeout', f'{url}')
+            self.parentWidget.app.mes.emit(2, 'Download', 'Timeout', f'{url}')
             self.signalProgressBarColor.emit('red')
             sleepAndEvents(1000)
             return False
         except Exception as e:
-            self.parentWidget.app.messageN.emit(2, 'Download', 'Error', f'{url}')
+            self.parentWidget.app.mes.emit(2, 'Download', 'Error', f'{url}')
             self.log.warning(f'General error [{url}], {e}')
             self.signalProgressBarColor.emit('red')
             sleepAndEvents(1000)
@@ -163,7 +163,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         try:
             self.unzipFile(dest)
         except Exception as e:
-            self.parentWidget.app.messageN.emit(2, 'Download', 'Unzip', f'{url}')
+            self.parentWidget.app.mes.emit(2, 'Download', 'Unzip', f'{url}')
             self.log.warning(f'Error in unzip [{url}], {e}')
             return False
         return True

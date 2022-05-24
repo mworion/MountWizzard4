@@ -555,7 +555,7 @@ class SettImaging(object):
         """
         suc = self.app.cover.closeCover()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Cover close could not be executed')
         return suc
 
@@ -565,7 +565,7 @@ class SettImaging(object):
         """
         suc = self.app.cover.openCover()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Cover open could not be executed')
         return suc
 
@@ -575,7 +575,7 @@ class SettImaging(object):
         """
         suc = self.app.cover.haltCover()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Cover stop could not be executed')
         return suc
 
@@ -588,7 +588,7 @@ class SettImaging(object):
         newPos = pos - step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Focuser move in could not be executed')
         return suc
 
@@ -601,7 +601,7 @@ class SettImaging(object):
         newPos = pos + step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Focuser move out could not be executed')
         return suc
 
@@ -611,7 +611,7 @@ class SettImaging(object):
         """
         suc = self.app.focuser.halt()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Focuser halt could not be executed')
         return suc
 
@@ -621,7 +621,7 @@ class SettImaging(object):
         """
         suc = self.app.cover.lightOn()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Light could not be switched on')
         return suc
 
@@ -631,7 +631,7 @@ class SettImaging(object):
         """
         suc = self.app.cover.lightOff()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Light could not be switched off')
         return suc
 
@@ -659,7 +659,7 @@ class SettImaging(object):
         self.ui.coverLightIntensity.setText(f'{value}')
         suc = self.app.cover.lightIntensity(value)
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Light intensity could not be set')
         return suc
 
@@ -689,7 +689,7 @@ class SettImaging(object):
         """
         suc = self.app.dome.slewCW()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Dome could not be slewed CW')
         return suc
 
@@ -699,6 +699,6 @@ class SettImaging(object):
         """
         suc = self.app.dome.slewCCW()
         if not suc:
-            self.app.messageN.emit(2, 'Setting', 'Imaging',
+            self.app.mes.emit(2, 'Setting', 'Imaging',
                                    'Dome could not be slewed CCW')
         return suc

@@ -299,7 +299,7 @@ class Astrometry:
         name = self.run[self.framework].deviceName
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
-            self.app.messageN.emit(0, 'System', 'Platesolver found', f'{name}')
+            self.app.mes.emit(0, 'System', 'Platesolver found', f'{name}')
 
         self.log.debug(f'Framework: [{self.framework}], {sucApp}, {sucIndex}')
         return True
@@ -311,5 +311,5 @@ class Astrometry:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.app.messageN.emit(0, 'System', 'Platesolver remove', f'{name}')
+        self.app.mes.emit(0, 'System', 'Platesolver remove', f'{name}')
         return True

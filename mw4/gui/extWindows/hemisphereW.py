@@ -765,15 +765,15 @@ class HemisphereWindow(MWidget, EditHorizon):
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
             text = f'{geoStat}'
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.app.messageN.emit(0, 'Hemisphere', 'Slewing dome', text)
+            self.app.mes.emit(0, 'Hemisphere', 'Slewing dome', text)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
             t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.app.messageN.emit(0, 'Hemisphere', 'Slewing mount', t)
+            self.app.mes.emit(0, 'Hemisphere', 'Slewing mount', t)
         else:
             t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.app.messageN.emit(2, 'Hemisphere', 'Slewing error', t)
+            self.app.mes.emit(2, 'Hemisphere', 'Slewing error', t)
 
         return suc
 
@@ -799,7 +799,7 @@ class HemisphereWindow(MWidget, EditHorizon):
                                                     az_degrees=azimuth)
         if not suc:
             t = f'Cannot slew to Az:[{azimuth:3.1f}], Alt:[{altitude:3.1f}]'
-            self.app.messageN.emit(2, 'Hemisphere', 'Slewing error', t)
+            self.app.mes.emit(2, 'Hemisphere', 'Slewing error', t)
             return False
 
         suc = self.slewSelectedTarget(slewType='keep')
@@ -843,11 +843,11 @@ class HemisphereWindow(MWidget, EditHorizon):
                                                     dec_degrees=dec)
         if not suc:
             t = f'Cannot slew to [{name}]'
-            self.app.messageN.emit(2, 'Hemisphere', 'Slewing error', t)
+            self.app.mes.emit(2, 'Hemisphere', 'Slewing error', t)
             return False
 
         t = f'Align [{reply}] to [{name}]'
-        self.app.messageN.emit(1, 'Hemisphere', 'Align', t)
+        self.app.mes.emit(1, 'Hemisphere', 'Align', t)
         suc = self.slewSelectedTarget(slewType=alignType)
         return suc
 

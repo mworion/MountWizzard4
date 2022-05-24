@@ -86,8 +86,7 @@ def function(module):
         enableEditPoints = pyqtSignal(object)
         updatePointMarker = pyqtSignal()
         __version__ = 'test'
-        message = pyqtSignal(str, int)
-        messageN = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,

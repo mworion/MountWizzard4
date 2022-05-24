@@ -77,7 +77,7 @@ class MeasureData:
         suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
         if suc:
             self.signals.deviceConnected.emit(name)
-            self.app.messageN.emit(0, 'System', 'Measure device found', f'{name}')
+            self.app.mes.emit(0, 'System', 'Measure device found', f'{name}')
 
         return suc
 
@@ -92,7 +92,7 @@ class MeasureData:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.app.messageN.emit(0, 'System', 'Measure device removed', f'{name}')
+        self.app.mes.emit(0, 'System', 'Measure device removed', f'{name}')
         return suc
 
     def setEmptyData(self):

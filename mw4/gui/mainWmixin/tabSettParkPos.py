@@ -112,7 +112,7 @@ class SettParkPos(object):
         self.app.mount.signals.slewFinished.disconnect(self.parkAtPos)
         suc = self.app.mount.obsSite.parkOnActualPosition()
         if not suc:
-            self.app.messageN.emit(2, 'Mount', 'Command',
+            self.app.mes.emit(2, 'Mount', 'Command',
                                    'Cannot park at current position')
         return suc
 
@@ -135,17 +135,17 @@ class SettParkPos(object):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
                                                     az_degrees=azValue)
         if not suc:
-            self.app.messageN.emit(2, 'Mount', 'Command error',
+            self.app.mes.emit(2, 'Mount', 'Command error',
                                    f'Cannot slew to [{posTextValue}]')
             return False
 
         suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
         if not suc:
-            self.app.messageN.emit(2, 'Mount', 'Command error',
+            self.app.mes.emit(2, 'Mount', 'Command error',
                                    f'Cannot slew to [{posTextValue}]')
             return False
 
-        self.app.messageN.emit(0, 'Mount', 'Command', f'Slew to [{posTextValue}]')
+        self.app.mes.emit(0, 'Mount', 'Command', f'Slew to [{posTextValue}]')
         if not self.ui.parkMountAfterSlew.isChecked():
             return True
 

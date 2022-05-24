@@ -66,7 +66,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.driver = driver
         self.deviceType = deviceType
         self.message = app.message
-        self.messageN = app.messageN
+        self.mes = app.mes
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
@@ -305,11 +305,11 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.indiDiscover, 'running', False)
 
         if not deviceNames:
-            self.messageN.emit(2, 'INDI', 'Device', 'No devices found')
+            self.mes.emit(2, 'INDI', 'Device', 'No devices found')
             return False
 
         for deviceName in deviceNames:
-            self.messageN.emit(0, 'INDI', 'Device discovered', f'{deviceName}')
+            self.mes.emit(0, 'INDI', 'Device discovered', f'{deviceName}')
 
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
         return True
@@ -345,11 +345,11 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.alpacaDiscover, 'running', False)
 
         if not deviceNames:
-            self.messageN.emit(2, 'ALPACA', 'Device', 'No devices found')
+            self.mes.emit(2, 'ALPACA', 'Device', 'No devices found')
             return False
 
         for deviceName in deviceNames:
-            self.messageN.emit(0, 'ALPACA', 'Device discovered', f'{deviceName}')
+            self.mes.emit(0, 'ALPACA', 'Device discovered', f'{deviceName}')
 
         self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
         return True
@@ -381,13 +381,13 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.sgproDiscover, 'running', True)
         deviceNames = sgpro.discoverDevices()
         if not deviceNames:
-            self.messageN.emit(2, 'SGPRO', 'Device', 'No devices found')
+            self.mes.emit(2, 'SGPRO', 'Device', 'No devices found')
 
         deviceNames.insert(0, 'SGPro controlled')
         self.changeStyleDynamic(self.ui.sgproDiscover, 'running', False)
 
         for deviceName in deviceNames:
-            self.messageN.emit(0, 'SGPRO', 'Device discovered', f'{deviceName}')
+            self.mes.emit(0, 'SGPRO', 'Device discovered', f'{deviceName}')
 
         self.updateSGProDeviceNameList(deviceNames=deviceNames)
         return True
@@ -419,13 +419,13 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', True)
         deviceNames = nina.discoverDevices()
         if not deviceNames:
-            self.messageN.emit(2, 'N.I.N.A.', 'Device', 'No devices found')
+            self.mes.emit(2, 'N.I.N.A.', 'Device', 'No devices found')
 
         deviceNames.insert(0, 'N.I.N.A. controlled')
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', False)
 
         for deviceName in deviceNames:
-            self.messageN.emit(0, 'N.I.N.A.', 'Device discovered', f'{deviceName}')
+            self.mes.emit(0, 'N.I.N.A.', 'Device discovered', f'{deviceName}')
 
         self.updateNINADeviceNameList(deviceNames=deviceNames)
         return True

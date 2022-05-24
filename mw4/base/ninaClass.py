@@ -165,7 +165,7 @@ class NINAClass(DriverData, QObject):
             t = f'[{self.deviceName}] connected'
             self.log.debug(t)
         else:
-            self.app.messageN.emit(2, 'N.I.N.A.', 'Connect error',
+            self.app.mes.emit(2, 'N.I.N.A.', 'Connect error',
                                    f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
@@ -237,14 +237,14 @@ class NINAClass(DriverData, QObject):
             if self.deviceConnected:
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-                self.app.messageN.emit(0, 'N.I.N.A.', 'Device remove',
+                self.app.mes.emit(0, 'N.I.N.A.', 'Device remove',
                                        f'{self.deviceName}')
         else:
             if not self.deviceConnected:
                 self.deviceConnected = True
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f'{self.deviceName}')
-                self.app.messageN.emit(0, 'N.I.N.A.', 'Device found',
+                self.app.mes.emit(0, 'N.I.N.A.', 'Device found',
                                        f'{self.deviceName}')
         return True
 
@@ -282,7 +282,7 @@ class NINAClass(DriverData, QObject):
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.app.messageN.emit(0, 'N.I.N.A.', 'Device remove',
+        self.app.mes.emit(0, 'N.I.N.A.', 'Device remove',
                                f'{self.deviceName}')
         return True
 

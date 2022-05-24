@@ -897,9 +897,9 @@ class MainWindow(
         if suc:
             self.app.config['profileName'] = name
             self.ui.profile.setText(name)
-            self.app.messageN.emit(0, 'System', 'Profile loaded', f'{name}')
+            self.app.mes.emit(0, 'System', 'Profile loaded', f'{name}')
         else:
-            self.app.messageN.emit(2, 'System', 'Profile error',
+            self.app.mes.emit(2, 'System', 'Profile error',
                                    f'{name}] cannot no be loaded')
 
         topo = self.app.initConfig()
@@ -928,9 +928,9 @@ class MainWindow(
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            self.app.messageN.emit(0, 'System', 'Profile saved', f'{name}')
+            self.app.mes.emit(0, 'System', 'Profile saved', f'{name}')
         else:
-            self.app.messageN.emit(2, 'System', 'Profile error',
+            self.app.mes.emit(2, 'System', 'Profile error',
                                    f'{name}] cannot no be loasavedded')
         return True
 
@@ -945,10 +945,10 @@ class MainWindow(
         self.app.storeConfig()
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
-            self.app.messageN.emit(0, 'System', 'Profile', 'Actual profile saved')
+            self.app.mes.emit(0, 'System', 'Profile', 'Actual profile saved')
 
         else:
-            self.app.messageN.emit(2, 'System', 'Profile',
+            self.app.mes.emit(2, 'System', 'Profile',
                                    'Actual profile cannot not be saved')
         return suc
 
@@ -961,11 +961,11 @@ class MainWindow(
         """
         if command == 'shutdown':
             self.quitSave()
-            self.app.messageN.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
+            self.app.mes.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
         elif command == 'shutdown mount':
             self.mountShutdown()
-            self.app.messageN.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
+            self.app.mes.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
         elif command == 'boot mount':
             self.mountBoot()
-            self.app.messageN.emit(2, 'System', 'Remote', 'Boot Mount remotely')
+            self.app.mes.emit(2, 'System', 'Remote', 'Boot Mount remotely')
         return True

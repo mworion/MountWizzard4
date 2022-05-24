@@ -36,8 +36,7 @@ host_ip = 'astro-mount.fritz.box'
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     class Test(QObject):
-        message = pyqtSignal(str, int)
-        messageN = pyqtSignal(object, object, object, object)
+                mes = pyqtSignal(object, object, object, object)
 
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,

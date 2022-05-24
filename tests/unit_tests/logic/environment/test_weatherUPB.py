@@ -29,8 +29,7 @@ from logic.environment.weatherUPB import WeatherUPB
 def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
-        message = pyqtSignal(str, int)
-        messageN = pyqtSignal(object, object, object, object)
+                mes = pyqtSignal(object, object, object, object)
 
     global app
     app = WeatherUPB(app=Test())

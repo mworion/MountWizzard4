@@ -140,8 +140,7 @@ def function_setup_teardown(qtbot):
         threadPool = QThreadPool()
         colorChange = pyqtSignal()
         hostChanged = pyqtSignal()
-        message = pyqtSignal(str, int)
-        messageN = pyqtSignal(object, object, object, object)
+                mes = pyqtSignal(object, object, object, object)
 
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')

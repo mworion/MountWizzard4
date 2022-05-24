@@ -45,7 +45,7 @@ def app():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(object, object)
-        messageN = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
         mwGlob = {'tempDir': 'tests/workDir/temp'}
 
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')

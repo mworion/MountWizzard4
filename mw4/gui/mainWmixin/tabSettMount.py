@@ -81,10 +81,10 @@ class SettMount(object):
         bPort = (int(bPort) if bPort else 0)
         suc = self.app.mount.bootMount(bAddress=bAddress, bPort=bPort)
         if suc:
-            self.app.messageN.emit(0, 'Mount', 'Command',
+            self.app.mes.emit(0, 'Mount', 'Command',
                                   'Sent boot command to mount')
         else:
-            self.app.messageN.emit(2, 'Mount', 'Command', 'Mount cannot be booted')
+            self.app.mes.emit(2, 'Mount', 'Command', 'Mount cannot be booted')
         return suc
 
     def mountShutdown(self):
@@ -93,9 +93,9 @@ class SettMount(object):
         """
         suc = self.app.mount.shutdown()
         if suc:
-            self.app.messageN.emit(0, 'Mount', 'Command', 'Shutting mount down')
+            self.app.mes.emit(0, 'Mount', 'Command', 'Shutting mount down')
         else:
-            self.app.messageN.emit(2, 'Mount', 'Command', 'Mount cannot be shutdown')
+            self.app.mes.emit(2, 'Mount', 'Command', 'Mount cannot be shutdown')
         return suc
 
     def checkFormatMAC(self, value):
@@ -139,11 +139,11 @@ class SettMount(object):
         MAC = self.checkFormatMAC(MAC)
         if MAC is not None:
             wakeonlan.send_magic_packet(MAC)
-            self.app.messageN.emit(0, 'Rack', 'Command',
+            self.app.mes.emit(0, 'Rack', 'Command',
                                    'Sent boot command to rack computer')
             return True
         else:
-            self.app.messageN.emit(2, 'Rack', 'Command',
+            self.app.mes.emit(2, 'Rack', 'Command',
                                    'Rack computer cannot be booted')
             return False
 

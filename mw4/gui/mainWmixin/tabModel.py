@@ -230,20 +230,20 @@ class Model:
 
             text = f'RA: {convertToHMS(mPoint["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
-            self.app.messageN.emit(0, 'Image', 'Solving', text)
+            self.app.mes.emit(0, 'Image', 'Solving', text)
             text = f'DEC: {convertToDMS(mPoint["decJ2000S"])} '
             text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
             text = f'Angle: {mPoint["angleS"]:3.0f}, '
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
             text = f'Scale: {mPoint["scaleS"]:4.3f}, '
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
             text = f'Error: {mPoint["errorRMS_S"]:4.1f}'
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
 
         else:
             text = f'Solving failed for image-{count:03d}'
-            self.app.messageN.emit(2, 'Model', 'Solving error', text)
+            self.app.mes.emit(2, 'Model', 'Solving error', text)
             self.retryQueue.put(mPoint)
 
         self.updateProgress(number=lenSequence, count=count)
@@ -289,7 +289,7 @@ class Model:
                                            updateFits=False)
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
-        self.app.messageN.emit(0, 'Model', 'Solving', text)
+        self.app.mes.emit(0, 'Model', 'Solving', text)
         self.ui.mSolve.setText(f'{mPoint["countSequence"]:2d}')
 
         return True
@@ -349,7 +349,7 @@ class Model:
 
         text = f'Exposing image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
-        self.app.messageN.emit(0, 'Model', 'Imaging', text)
+        self.app.mes.emit(0, 'Model', 'Imaging', text)
         self.ui.mImage.setText(f'{mPoint["countSequence"]:2d}')
 
         return True
@@ -386,7 +386,7 @@ class Model:
 
             text = f'{geoStat}'
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.app.messageN.emit(0, 'Model', 'Slewing dome', text)
+            self.app.mes.emit(0, 'Model', 'Slewing dome', text)
 
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
@@ -395,7 +395,7 @@ class Model:
         text = f'Point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
         text += f'azimuth: {mPoint["azimuth"]:3.0f}'
-        self.app.messageN.emit(0, 'Model', 'Slewing mount', text)
+        self.app.mes.emit(0, 'Model', 'Slewing mount', text)
 
         self.ui.mPoints.setText(f'{mPoint["lenSequence"]:2d}')
         self.ui.mSlew.setText(f'{mPoint["countSequence"]:2d}')
@@ -496,7 +496,7 @@ class Model:
         if hasDome and hasAzimuth:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         elif hasDome and not hasAzimuth:
-            self.app.messageN.emit(2, 'Model', 'Run',
+            self.app.mes.emit(2, 'Model', 'Run',
                                    'Dome without azimuth value used')
 
         t = f'Modeling config dome:[{hasDome}], hasAzimuth:[{hasAzimuth}]'
@@ -556,7 +556,7 @@ class Model:
         self.restoreSignalsModelDefault()
         self.clearQueues()
         self.restoreModelDefaultContextAndGuiStatus()
-        self.app.messageN.emit(2, 'Model', 'Run', 'Modeling cancelled')
+        self.app.mes.emit(2, 'Model', 'Run', 'Modeling cancelled')
         return True
 
     def retrofitModel(self):
@@ -627,7 +627,7 @@ class Model:
         """
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
-        self.app.messageN.emit(0, 'Model', 'Run',
+        self.app.mes.emit(0, 'Model', 'Run',
                                f'Writing model [{self.modelName}]')
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
@@ -727,38 +727,38 @@ class Model:
         """
         suc = self.collectingModelRunOutput()
         if not suc:
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    f'{self.modelName} Not enough valid model points available')
             return False
 
-        self.app.messageN.emit(0, 'Model', 'Run',
+        self.app.mes.emit(0, 'Model', 'Run',
                                'Programming model to mount')
         suc = self.programModelToMount(self.model)
         if suc:
-            self.app.messageN.emit(0, 'Model', 'Run',
+            self.app.mes.emit(0, 'Model', 'Run',
                                    'Model programmed with success')
         else:
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    'Model programming error')
 
         if not self.ui.keepImages.isChecked():
-            self.app.messageN.emit(0, 'Model', 'Run',
+            self.app.mes.emit(0, 'Model', 'Run',
                                    'Deleting model images')
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
-        self.app.messageN.emit(1, 'Model', 'Run',
+        self.app.mes.emit(1, 'Model', 'Run',
                                f'Modeling finished [{self.modelName}]')
         self.playSound('ModelingFinished')
         self.renewHemisphereView()
         if self.ui.parkMountAfterModel.isChecked():
-            self.app.messageN.emit(0, 'Model', 'Run',
+            self.app.mes.emit(0, 'Model', 'Run',
                                    'Parking mount after model run')
             suc = self.app.mount.obsSite.park()
 
             if not suc:
-                self.app.messageN.emit(2, 'Model', 'Run error', 'Cannot park mount')
+                self.app.mes.emit(2, 'Model', 'Run error', 'Cannot park mount')
             else:
-                self.app.messageN.emit(0, 'Model', 'Run', 'Mount parked')
+                self.app.mes.emit(0, 'Model', 'Run', 'Mount parked')
 
         return True
 
@@ -781,13 +781,13 @@ class Model:
             self.processModelData()
             return True
 
-        self.app.messageN.emit(1, 'Model', 'Run',
+        self.app.mes.emit(1, 'Model', 'Run',
                                'Starting retry failed points')
 
         maxRetries = self.ui.numberBuildRetries.value()
         retryNumber = maxRetries - self.modelBuildRetryCounter + 1
 
-        self.app.messageN.emit(1, '', '', f'Retry run number: {retryNumber}')
+        self.app.mes.emit(1, '', '', f'Retry run number: {retryNumber}')
         numberPointsRetry = self.retryQueue.qsize()
         countPointsRetry = 0
 
@@ -815,28 +815,28 @@ class Model:
         """
         if len(self.app.data.buildP) < 2:
             t = 'No modeling start because less than 3 points'
-            self.app.messageN.emit(2, 'Model', 'Run error', t)
+            self.app.mes.emit(2, 'Model', 'Run error', t)
             return False
 
         if len(self.app.data.buildP) > 99:
             t = 'No modeling start because more than 99 points'
-            self.app.messageN.emit(2, 'Model', 'Run error', t)
+            self.app.mes.emit(2, 'Model', 'Run error', t)
             return False
 
         excludeDonePoints = self.ui.excludeDonePoints.isChecked()
         if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludeDonePoints:
             t = 'No modeling start because less than 3 points left over'
-            self.app.messageN.emit(2, 'Model', 'Run error', t)
+            self.app.mes.emit(2, 'Model', 'Run error', t)
             return False
 
         if self.ui.astrometryDevice.currentText().startswith('No device'):
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    'No plate solver selected')
             return False
 
         sucApp, sucIndex = self.app.astrometry.checkAvailability()
         if not (sucApp and sucIndex):
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    'No valid configuration for plate solver')
             return False
 
@@ -848,15 +848,15 @@ class Model:
         """
         suc = self.app.mount.model.clearAlign()
         if not suc:
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    'Actual model cannot be cleared')
-            self.app.messageN.emit(2, '', '', 'Model build cancelled')
+            self.app.mes.emit(2, '', '', 'Model build cancelled')
             return False
         else:
-            self.app.messageN.emit(0, 'Model', 'Run',
+            self.app.mes.emit(0, 'Model', 'Run',
                                    'Actual model clearing, waiting 1s')
             sleepAndEvents(1000)
-            self.app.messageN.emit(0, '', '',  'Actual model cleared')
+            self.app.mes.emit(0, '', '',  'Actual model cleared')
             self.refreshModel()
 
         suc = self.app.mount.model.deleteName('backup')
@@ -866,7 +866,7 @@ class Model:
         suc = self.app.mount.model.storeName('backup')
         if not suc:
             t = 'Cannot save backup model on mount, proceeding with model run'
-            self.app.messageN.emit(2, 'Model', 'Run error', t)
+            self.app.mes.emit(2, 'Model', 'Run error', t)
 
         return True
 
@@ -959,12 +959,12 @@ class Model:
         self.setupModelFilenamesAndDirectories()
         modelPoints = self.setupModelPointsAndContextData()
         if not modelPoints:
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    'Modeling cancelled, no valid points')
             return False
 
         self.setupModelRunContextAndGuiStatus()
-        self.app.messageN.emit(1, 'Model', 'Run',
+        self.app.mes.emit(1, 'Model', 'Run',
                                f'Modeling start [{self.modelName}]')
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
@@ -990,30 +990,30 @@ class Model:
         if not self.clearAlignAndBackup():
             return False
 
-        self.app.messageN.emit(1, 'Model', 'Run',
+        self.app.mes.emit(1, 'Model', 'Run',
                                'Programing models')
         modelJSON = list()
         for index, file in enumerate(loadFilePath):
-            self.app.messageN.emit(0, '', '',
+            self.app.mes.emit(0, '', '',
                                    f'Loading model [{os.path.basename(file)}]')
             with open(file, 'r') as infile:
                 model = json.load(infile)
                 modelJSON += model
 
         if len(modelJSON) > 99:
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    'Model(s) exceed(s) limit of 99 points')
             return False
 
-        self.app.messageN.emit(0, 'Model', 'Run',
+        self.app.mes.emit(0, 'Model', 'Run',
                                f'Programming {index + 1} model(s) to mount')
         suc = self.programModelToMount(modelJSON)
 
         if suc:
-            self.app.messageN.emit(0, 'Model', 'Run',
+            self.app.mes.emit(0, 'Model', 'Run',
                                    'Model programmed with success')
         else:
-            self.app.messageN.emit(2, 'Model', 'Run error',
+            self.app.mes.emit(2, 'Model', 'Run error',
                                    'Model programming error')
 
         return suc
@@ -1037,26 +1037,26 @@ class Model:
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
         if not result:
-            self.app.messageN.emit(2, 'Model', 'Solving error',
+            self.app.mes.emit(2, 'Model', 'Solving error',
                                    'Solving error, result missing')
             return False
 
         if result['success']:
             text = f'RA: {convertToHMS(result["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
-            self.app.messageN.emit(0, 'Model', 'Solved ', text)
+            self.app.mes.emit(0, 'Model', 'Solved ', text)
             text = f'DEC: {convertToDMS(result["decJ2000S"])} '
             text += f'({result["decJ2000S"].degrees:4.3f}), '
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
             text = f'Angle: {result["angleS"]:3.0f}, '
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
             text = f'Scale: {result["scaleS"]:4.3f}, '
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
             text = f'Error: {result["errorRMS_S"]:4.1f}'
-            self.app.messageN.emit(0, '', '', text)
+            self.app.mes.emit(0, '', '', text)
 
         else:
-            self.app.messageN.emit(2, 'Model', 'Solve error',
+            self.app.mes.emit(2, 'Model', 'Solve error',
                                f'{result.get("message")}')
             return False
 
@@ -1071,10 +1071,10 @@ class Model:
         suc = obs.syncPositionToTarget()
         if suc:
             t = 'Successfully synced model in mount to coordinates'
-            self.app.messageN.emit(1, 'Model', 'Run', t)
+            self.app.mes.emit(1, 'Model', 'Run', t)
         else:
             t = 'No sync, match failed because coordinates to far off for model'
-            self.app.messageN.emit(2, 'Model', 'Run error', t)
+            self.app.mes.emit(2, 'Model', 'Run error', t)
         return suc
 
     def solveImage(self, imagePath=''):
@@ -1090,7 +1090,7 @@ class Model:
         self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.astrometry.solveThreading(fitsPath=imagePath)
         t = f'Solving:             [{os.path.basename(imagePath)}]'
-        self.app.messageN.emit(0, 'Model', 'Solving', t)
+        self.app.mes.emit(0, 'Model', 'Solving', t)
         return True
 
     def exposeRaw(self, expTime, binning, subFrame, fastReadout, focalLength):
@@ -1114,13 +1114,13 @@ class Model:
                                focalLength=focalLength
                                )
         text = f'{os.path.basename(imagePath)}'
-        self.app.messageN.emit(0, 'Model', 'Exposing', text)
+        self.app.mes.emit(0, 'Model', 'Exposing', text)
         text = f'Duration:{expTime:3.0f}s  '
-        self.app.messageN.emit(0, '', '', f'{text}')
+        self.app.mes.emit(0, '', '', f'{text}')
         text = f'Bin:{binning:1.0f}'
-        self.app.messageN.emit(0, '', '', f'{text}')
+        self.app.mes.emit(0, '', '', f'{text}')
         text = f'Sub:{subFrame:3.0f}%'
-        self.app.messageN.emit(0, '', '', f'{text}')
+        self.app.mes.emit(0, '', '', f'{text}')
         return True
 
     def exposeImageDone(self, imagePath=''):
@@ -1130,7 +1130,7 @@ class Model:
         """
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         text = f'{os.path.basename(imagePath)}'
-        self.app.messageN.emit(0, 'Model', 'Exposed', text)
+        self.app.mes.emit(0, 'Model', 'Exposed', text)
         self.solveImage(imagePath)
         return True
 
@@ -1151,11 +1151,11 @@ class Model:
         """
         :return:
         """
-        self.app.messageN.emit(1, 'Model', 'Sync',
+        self.app.mes.emit(1, 'Model', 'Sync',
                                'Starting plate solve and sync model in mount')
         sucApp, sucIndex = self.app.astrometry.checkAvailability()
         if not (sucApp and sucIndex):
-            self.app.messageN.emit(2, 'Model', 'Sync error',
+            self.app.mes.emit(2, 'Model', 'Sync error',
                                    'No valid configuration for plate solver')
             return False
 

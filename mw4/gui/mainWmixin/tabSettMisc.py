@@ -226,7 +226,7 @@ class SettMisc(object):
         availPackage, comment, _ = self.versionPackage(packageName)
 
         if availPackage is None:
-            self.app.messageN.emit(2, 'System', 'Update',
+            self.app.mes.emit(2, 'System', 'Update',
                                    'Failed get actual package from server')
             return False
 
@@ -237,17 +237,17 @@ class SettMisc(object):
             return True
 
         t = f'A new version ({availPackage}) of MountWizzard is available!'
-        self.app.messageN.emit(1, 'System', 'Update', t)
+        self.app.mes.emit(1, 'System', 'Update', t)
 
         if not self.ui.versionReleaseNotes.isChecked():
             return True
         if not comment:
             return True
 
-        self.app.messageN.emit(1, 'System', 'Update',
+        self.app.mes.emit(1, 'System', 'Update',
                                f'Release notes for {availPackage}:')
         for line in comment.split('\n'):
-            self.app.messageN.emit(2, '', '', line)
+            self.app.mes.emit(2, '', '', line)
         return True
 
     def isVenv(self):
@@ -328,7 +328,7 @@ class SettMisc(object):
         :return: True for test purpose
         """
         if not (self.isVenv() or platform.machine() == 'armv7l'):
-            self.app.messageN.emit(2, 'System', 'Update',
+            self.app.mes.emit(2, 'System', 'Update',
                               'MW4 not running in an virtual environment')
             return False
 
@@ -339,11 +339,11 @@ class SettMisc(object):
         _, _, existPackage = self.versionPackage('MountWizzard4')
 
         if versionPackage not in existPackage:
-            self.app.messageN.emit(2, 'System', 'Update',
+            self.app.mes.emit(2, 'System', 'Update',
                               f'Version {versionPackage} does not exist')
             return False
 
-        self.app.messageN.emit(1, 'System', 'Update',
+        self.app.mes.emit(1, 'System', 'Update',
                           f'Installing [{versionPackage}] please wait')
         self.startUpdater(versionPackage)
         return True
@@ -460,11 +460,11 @@ class SettMisc(object):
         delta = int(delta)
         suc = self.app.mount.obsSite.adjustClock(delta)
         if not suc:
-            self.app.messageN.emit(2, 'System', 'Clock',
+            self.app.mes.emit(2, 'System', 'Clock',
                               'Cannot adjust mount clock')
             return False
 
-        self.app.messageN.emit(0, 'System', 'Clock',
+        self.app.mes.emit(0, 'System', 'Clock',
                           f'Correction: [{-delta} ms]')
         return True
 

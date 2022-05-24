@@ -64,8 +64,7 @@ def module_setup_teardown():
             'relay': None,
             'measure': None,
         }
-        message = pyqtSignal(str, int)
-        messageN = pyqtSignal(object, object, object, object)
+                mes = pyqtSignal(object, object, object, object)
 
     global app
     app = MeasureData(app=Test())

@@ -244,7 +244,7 @@ class SettDome(object):
         """
         suc = self.app.dome.abortSlew()
         if not suc:
-            self.app.messageN.emit(2, 'Dome', 'Command',
+            self.app.mes.emit(2, 'Dome', 'Command',
                               'Dome slew abort could not be executed')
         return suc
 
@@ -254,7 +254,7 @@ class SettDome(object):
         """
         suc = self.app.dome.openShutter()
         if not suc:
-            self.app.messageN.emit(2, 'Dome', 'Command',
+            self.app.mes.emit(2, 'Dome', 'Command',
                               'Dome open shutter could not be executed')
         return suc
 
@@ -264,6 +264,6 @@ class SettDome(object):
         """
         suc = self.app.dome.closeShutter()
         if not suc:
-            self.app.messageN.emit(2, 'Dome', 'Command',
+            self.app.mes.emit(2, 'Dome', 'Command',
                               'Dome close shutter could not be executed')
         return suc

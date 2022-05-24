@@ -41,7 +41,7 @@ def module(qapp):
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
     class Test(QObject):
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
     widget = QWidget()
     widget.app = Test()

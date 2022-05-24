@@ -112,7 +112,7 @@ class MountWizzard4(QObject):
         self.mainW = None
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
-        self.mes.connect(self.writeMessageQueueN)
+        self.mes.connect(self.writeMessageQueue)
         self.config = {}
         self.loadConfig()
         self.deviceStat = {
@@ -418,7 +418,7 @@ class MountWizzard4(QObject):
             return False
         return status
 
-    def writeMessageQueueN(self, prio, source, mType, message):
+    def writeMessageQueue(self, prio, source, mType, message):
         """
         :param prio:
         :param source:

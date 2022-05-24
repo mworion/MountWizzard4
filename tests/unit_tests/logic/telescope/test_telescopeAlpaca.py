@@ -33,7 +33,7 @@ from base.driverDataClass import Signals
 def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,

@@ -327,7 +327,7 @@ class App(QObject):
     colorChange = pyqtSignal()
     hostChanged = pyqtSignal()
     remoteCommand = pyqtSignal(object)
-        mes = pyqtSignal(object, object, object, object)
+    mes = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     mount = Mount()
     dome = Dome()

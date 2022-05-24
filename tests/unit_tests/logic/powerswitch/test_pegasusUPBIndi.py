@@ -34,7 +34,7 @@ from base.indiClass import IndiClass
 def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
     global app
     app = PegasusUPBIndi(app=Test(), signals=Signals(), data={})

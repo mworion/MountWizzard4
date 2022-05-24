@@ -32,7 +32,7 @@ from logic.telescope.telescope import Telescope
 def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
     global app
     app = Telescope(app=Test())

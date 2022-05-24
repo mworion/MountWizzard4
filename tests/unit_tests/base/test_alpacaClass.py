@@ -40,7 +40,7 @@ setupLogging()
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     class Test(QObject):
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,

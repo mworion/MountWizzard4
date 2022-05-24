@@ -50,7 +50,7 @@ def function(module):
         redrawHemisphere = pyqtSignal()
         drawBuildPoints = pyqtSignal()
         buildPointsChanged = pyqtSignal()
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
         sendBuildPoints = pyqtSignal(object)
         threadPool = QThreadPool()
         mwGlob = {'configDir': 'tests/workDir/config'}

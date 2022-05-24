@@ -396,5 +396,5 @@ def test_loadMountData_4(app):
 
 
 def test_writeMessageQueue(app):
-    suc = app.writeMessageQueue('test', 1)
+    suc = app.writeMessageQueue(1, 'test', 'test', 'test')
     assert suc

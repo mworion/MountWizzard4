@@ -42,7 +42,7 @@ def function():
 
     class Test(QObject):
         threadPool = QThreadPool()
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
         mount = Mount()
 

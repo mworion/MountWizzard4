@@ -30,7 +30,7 @@ from logic.filter.filter import Filter
 def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
     global app
     app = Filter(app=Test())

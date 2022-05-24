@@ -61,7 +61,7 @@ def function(module):
         update1s = pyqtSignal()
         colorChange = pyqtSignal()
         showAnalyse = pyqtSignal(object)
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
         mwGlob = {'imageDir': 'tests/workDir/image',
                   'modelDir': 'tests/workDir/model'}
 

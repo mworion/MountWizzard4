@@ -32,7 +32,7 @@ from base.driverDataClass import Signals
 def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
-                mes = pyqtSignal(object, object, object, object)
+        mes = pyqtSignal(object, object, object, object)
 
     global app
     app = FocuserIndi(app=Test(), signals=Signals(), data={})

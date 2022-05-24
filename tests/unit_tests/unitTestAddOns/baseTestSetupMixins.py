@@ -549,7 +549,7 @@ class App(QObject):
     redrawHorizon = pyqtSignal()
     colorChange = pyqtSignal()
     playSound = pyqtSignal(object)
-        mes = pyqtSignal(object, object, object, object)
+    mes = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     mount = Mount()
     power = Power()

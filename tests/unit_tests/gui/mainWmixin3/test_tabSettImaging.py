@@ -55,6 +55,7 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
         camera = Camera(app=Test1())
         focuser = Focuser(app=Test1())
         filter = Filter(app=Test1())

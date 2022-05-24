@@ -555,7 +555,8 @@ class SettImaging(object):
         """
         suc = self.app.cover.closeCover()
         if not suc:
-            self.app.message.emit('Cover close could not be executed', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Cover close could not be executed')
         return suc
 
     def setCoverUnpark(self):
@@ -564,7 +565,8 @@ class SettImaging(object):
         """
         suc = self.app.cover.openCover()
         if not suc:
-            self.app.message.emit('Cover open could not be executed', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Cover open could not be executed')
         return suc
 
     def setCoverHalt(self):
@@ -573,7 +575,8 @@ class SettImaging(object):
         """
         suc = self.app.cover.haltCover()
         if not suc:
-            self.app.message.emit('Cover stop could not be executed', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Cover stop could not be executed')
         return suc
 
     def moveFocuserIn(self):
@@ -585,7 +588,8 @@ class SettImaging(object):
         newPos = pos - step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.app.message.emit('Focuser move in could not be executed', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Focuser move in could not be executed')
         return suc
 
     def moveFocuserOut(self):
@@ -597,7 +601,8 @@ class SettImaging(object):
         newPos = pos + step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.app.message.emit('Focuser move out could not be executed', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Focuser move out could not be executed')
         return suc
 
     def haltFocuser(self):
@@ -606,7 +611,8 @@ class SettImaging(object):
         """
         suc = self.app.focuser.halt()
         if not suc:
-            self.app.message.emit('Light could not be switched on', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Focuser halt could not be executed')
         return suc
 
     def switchLightOn(self):
@@ -615,7 +621,8 @@ class SettImaging(object):
         """
         suc = self.app.cover.lightOn()
         if not suc:
-            self.app.message.emit('Light could not be switched on', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Light could not be switched on')
         return suc
 
     def switchLightOff(self):
@@ -624,7 +631,8 @@ class SettImaging(object):
         """
         suc = self.app.cover.lightOff()
         if not suc:
-            self.app.message.emit('Light could not be switched off', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Light could not be switched off')
         return suc
 
     def setLightIntensity(self):
@@ -651,8 +659,8 @@ class SettImaging(object):
         self.ui.coverLightIntensity.setText(f'{value}')
         suc = self.app.cover.lightIntensity(value)
         if not suc:
-            self.app.message.emit('Light intensity could not be set', 2)
-
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Light intensity could not be set')
         return suc
 
     def updateDomeGui(self):
@@ -681,7 +689,8 @@ class SettImaging(object):
         """
         suc = self.app.dome.slewCW()
         if not suc:
-            self.app.message.emit('Dome could not be slewed', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Dome could not be slewed CW')
         return suc
 
     def domeSlewCCW(self):
@@ -690,5 +699,6 @@ class SettImaging(object):
         """
         suc = self.app.dome.slewCCW()
         if not suc:
-            self.app.message.emit('Dome could not be slewed', 2)
+            self.app.messageN.emit(2, 'Setting', 'Imaging',
+                                   'Dome could not be slewed CCW')
         return suc

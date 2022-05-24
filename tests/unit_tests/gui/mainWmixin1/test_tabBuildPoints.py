@@ -51,6 +51,7 @@ def function(module):
         drawBuildPoints = pyqtSignal()
         buildPointsChanged = pyqtSignal()
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
         sendBuildPoints = pyqtSignal(object)
         threadPool = QThreadPool()
         mwGlob = {'configDir': 'tests/workDir/config'}
@@ -186,14 +187,12 @@ def test_genBuildMax_1(function):
     assert not suc
 
 
-def test_genBuildMax_2(function, qtbot):
+def test_genBuildMax_2(function):
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildMax()
-            assert not suc
-        assert ['Build points [max] cannot be generated', 2] == blocker.args
+        suc = function.genBuildMax()
+        assert not suc
 
 
 def test_genBuildMax_3(function):
@@ -210,14 +209,12 @@ def test_genBuildMed_1(function):
     assert not suc
 
 
-def test_genBuildMed_2(function, qtbot):
+def test_genBuildMed_2(function):
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildMed()
-            assert not suc
-        assert ['Build points [med] cannot be generated', 2] == blocker.args
+        suc = function.genBuildMed()
+        assert not suc
 
 
 def test_genBuildMed_3(function):
@@ -234,14 +231,12 @@ def test_genBuildNorm_1(function):
     assert not suc
 
 
-def test_genBuildNorm_2(function, qtbot):
+def test_genBuildNorm_2(function):
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildNorm()
-            assert not suc
-        assert ['Build points [norm] cannot be generated', 2] == blocker.args
+        suc = function.genBuildNorm()
+        assert not suc
 
 
 def test_genBuildNorm_3(function):
@@ -253,30 +248,24 @@ def test_genBuildNorm_3(function):
         assert suc
 
 
-def test_genBuildMin_1(function, qtbot):
+def test_genBuildMin_1(function):
     function.ui.autoDeleteHorizon.setChecked(True)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.genBuildMin()
-        assert not suc
-        assert ['Build points [min] cannot be generated', 2] == blocker.args
+    suc = function.genBuildMin()
+    assert not suc
 
 
-def test_genBuildMin_1b(function, qtbot):
+def test_genBuildMin_1b(function):
     function.ui.autoDeleteHorizon.setChecked(False)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.genBuildMin()
-        assert not suc
-        assert ['Build points [min] cannot be generated', 2] == blocker.args
+    suc = function.genBuildMin()
+    assert not suc
 
 
-def test_genBuildMin_2(function, qtbot):
+def test_genBuildMin_2(function):
     with mock.patch.object(function.app.data,
                            'genGreaterCircle',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildMin()
-            assert not suc
-        assert ['Build points [min] cannot be generated', 2] == blocker.args
+        suc = function.genBuildMin()
+        assert not suc
 
 
 def test_genBuildMin_3(function):
@@ -288,14 +277,12 @@ def test_genBuildMin_3(function):
         assert suc
 
 
-def test_genBuildDSO_1(function, qtbot):
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.genBuildDSO()
-        assert not suc
-    assert ['DSO Path cannot be generated', 2] == blocker.args
+def test_genBuildDSO_1(function):
+    suc = function.genBuildDSO()
+    assert not suc
 
 
-def test_genBuildDSO_2(function, qtbot):
+def test_genBuildDSO_2(function):
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
@@ -304,10 +291,8 @@ def test_genBuildDSO_2(function, qtbot):
     with mock.patch.object(function.app.data,
                            'generateDSOPath',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildDSO()
-            assert not suc
-        assert ['DSO Path cannot be generated', 2] == blocker.args
+        suc = function.genBuildDSO()
+        assert not suc
 
 
 def test_genBuildDSO_3(function):
@@ -365,71 +350,59 @@ def test_genBuildDSO_6(function):
             assert suc
 
 
-def test_genBuildGoldenSpiral_1(function, qtbot):
-    with qtbot.assertNotEmitted(function.app.message):
+def test_genBuildGoldenSpiral_1(function):
+    suc = function.genBuildSpiralMax()
+    assert suc
+
+
+def test_genBuildGoldenSpiral_1a(function):
+    suc = function.genBuildSpiralMed()
+    assert suc
+
+
+def test_genBuildGoldenSpiral_1b(function):
+    suc = function.genBuildSpiralNorm()
+    assert suc
+
+
+def test_genBuildGoldenSpiral_1c(function):
+    suc = function.genBuildSpiralMin()
+    assert suc
+
+
+def test_genBuildGoldenSpiral_2(function):
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
         suc = function.genBuildSpiralMax()
-        assert suc
+        assert not suc
 
 
-def test_genBuildGoldenSpiral_1a(function, qtbot):
-    with qtbot.assertNotEmitted(function.app.message):
+def test_genBuildGoldenSpiral_2a(function):
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
         suc = function.genBuildSpiralMed()
-        assert suc
+        assert not suc
 
 
-def test_genBuildGoldenSpiral_1b(function, qtbot):
-    with qtbot.assertNotEmitted(function.app.message):
+def test_genBuildGoldenSpiral_2b(function):
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
         suc = function.genBuildSpiralNorm()
-        assert suc
+        assert not suc
 
 
-def test_genBuildGoldenSpiral_1c(function, qtbot):
-    with qtbot.assertNotEmitted(function.app.message):
+def test_genBuildGoldenSpiral_2c(function):
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
         suc = function.genBuildSpiralMin()
-        assert suc
+        assert not suc
 
 
-def test_genBuildGoldenSpiral_2(function, qtbot):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildSpiralMax()
-            assert not suc
-        assert ['Golden spiral cannot be generated', 2] == blocker.args
-
-
-def test_genBuildGoldenSpiral_2a(function, qtbot):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildSpiralMed()
-            assert not suc
-        assert ['Golden spiral cannot be generated', 2] == blocker.args
-
-
-def test_genBuildGoldenSpiral_2b(function, qtbot):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildSpiralNorm()
-            assert not suc
-        assert ['Golden spiral cannot be generated', 2] == blocker.args
-
-
-def test_genBuildGoldenSpiral_2c(function, qtbot):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildSpiralMin()
-            assert not suc
-        assert ['Golden spiral cannot be generated', 2] == blocker.args
-
-
-def test_genModel_1(function, qtbot):
+def test_genModel_1(function):
     class Star:
         alt = Angle(degrees=10)
         az = Angle(degrees=10)
@@ -441,17 +414,15 @@ def test_genModel_1(function, qtbot):
         assert suc
 
 
-def test_loadBuildFile_1(function, qtbot):
+def test_loadBuildFile_1(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('build', 'test', 'bpts')):
         with mock.patch.object(function.app.data,
                                'loadBuildP',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.loadBuildFile()
-                assert suc
-            assert ['Build file [test] loaded', 0] == blocker.args
+            suc = function.loadBuildFile()
+            assert suc
 
 
 def test_loadBuildFile_2(function):
@@ -462,20 +433,18 @@ def test_loadBuildFile_2(function):
         assert not suc
 
 
-def test_loadBuildFile_3(function, qtbot):
+def test_loadBuildFile_3(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('build', 'test', 'bpts')):
         with mock.patch.object(function.app.data,
                                'loadBuildP',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.loadBuildFile()
-                assert suc
-            assert ['Build file [test] cannot no be loaded', 2] == blocker.args
+            suc = function.loadBuildFile()
+            assert suc
 
 
-def test_saveBuildFile_1(function, qtbot):
+def test_saveBuildFile_1(function):
     function.ui.buildPFileName.setText('test')
     with mock.patch.object(function,
                            'saveFile',
@@ -483,21 +452,17 @@ def test_saveBuildFile_1(function, qtbot):
         with mock.patch.object(function.app.data,
                                'saveBuildP',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.saveBuildFile()
-                assert suc
-            assert ['Build file [test] saved', 0] == blocker.args
+            suc = function.saveBuildFile()
+            assert suc
 
 
-def test_saveBuildFile_2(function, qtbot):
+def test_saveBuildFile_2(function):
     function.ui.buildPFileName.setText('')
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.saveBuildFile()
-        assert not suc
-    assert ['Build points file name not given', 2] == blocker.args
+    suc = function.saveBuildFile()
+    assert not suc
 
 
-def test_saveBuildFile_3(function, qtbot):
+def test_saveBuildFile_3(function):
     function.ui.buildPFileName.setText('test')
     with mock.patch.object(function,
                            'saveFile',
@@ -505,23 +470,19 @@ def test_saveBuildFile_3(function, qtbot):
         with mock.patch.object(function.app.data,
                                'saveBuildP',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.saveBuildFile()
-                assert suc
-            assert ['Build file [test] cannot no be saved', 2] == blocker.args
+            suc = function.saveBuildFile()
+            assert suc
 
 
-def test_saveBuildFileAs_1(function, qtbot):
+def test_saveBuildFileAs_1(function):
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('build', 'test', 'bpts')):
         with mock.patch.object(function.app.data,
                                'saveBuildP',
                                return_value=True):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.saveBuildFileAs()
-                assert suc
-            assert ['Build file [test] saved', 0] == blocker.args
+            suc = function.saveBuildFileAs()
+            assert suc
 
 
 def test_saveBuildFileAs_2(function):
@@ -532,38 +493,32 @@ def test_saveBuildFileAs_2(function):
         assert not suc
 
 
-def test_saveBuildFileAs_3(function, qtbot):
+def test_saveBuildFileAs_3(function):
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('build', 'test', 'bpts')):
         with mock.patch.object(function.app.data,
                                'saveBuildP',
                                return_value=False):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.saveBuildFileAs()
-                assert suc
-            assert ['Build file [test] cannot no be saved', 2] == blocker.args
+            suc = function.saveBuildFileAs()
+            assert suc
 
 
-def test_genBuildFile_1(function, qtbot):
+def test_genBuildFile_1(function):
     function.ui.buildPFileName.setText('')
     function.ui.autoDeleteHorizon.setChecked(True)
-    with qtbot.waitSignal(function.app.message) as blocker:
-        suc = function.genBuildFile()
-        assert not suc
-    assert ['Build points file name not given', 2] == blocker.args
+    suc = function.genBuildFile()
+    assert not suc
 
 
-def test_genBuildFile_2(function, qtbot):
+def test_genBuildFile_2(function):
     function.ui.buildPFileName.setText('test')
     function.ui.autoDeleteHorizon.setChecked(True)
     with mock.patch.object(function.app.data,
                            'loadBuildP',
                            return_value=False):
-        with qtbot.waitSignal(function.app.message) as blocker:
-            suc = function.genBuildFile()
-            assert not suc
-        assert ['Build points file [test] could not be loaded', 2] == blocker.args
+        suc = function.genBuildFile()
+        assert not suc
 
 
 def test_genBuildFile_3(function):

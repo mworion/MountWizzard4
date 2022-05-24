@@ -544,7 +544,8 @@ class BuildPoints:
         """
         fileName = self.ui.buildPFileName.text()
         if not fileName:
-            self.app.message.emit('Build points file name not given', 2)
+            self.app.messageN.emit(0, 'Model', 'Buildpoints',
+                                   'Build points file name not given')
             return False
 
         suc = self.app.data.saveBuildP(fileName=fileName)
@@ -559,7 +560,8 @@ class BuildPoints:
 
     def saveBuildFileAs(self):
         """
-        saveBuildFileAs calls a file selector box and selects the filename to be save
+        saveBuildFileAs calls a file selector box and selects the filename to be
+        save.
 
         :return: success
         """

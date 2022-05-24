@@ -856,7 +856,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             delta = self.app.dome.slewDome(altitude=altitudeT,
                                            azimuth=azimuthT)
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
-
             text = f'{geoStat}'
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
             self.messageN.emit(0, 'Image', 'Slewing dome', text)
@@ -895,7 +894,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.astrometry.signals.done.disconnect(self.solveCenterDone)
 
         if not result:
-            self.messageN.emit(2, 'Image', 'Solve center',
+            self.messageN.emit(2, 'Image', 'Solve center error',
                                'Solving error, result missing')
             return False
         if not result['success']:

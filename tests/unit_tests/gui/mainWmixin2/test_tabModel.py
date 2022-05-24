@@ -87,6 +87,7 @@ def function(module):
         updatePointMarker = pyqtSignal()
         __version__ = 'test'
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
@@ -684,17 +685,15 @@ def test_pauseBuild_2(function):
     assert function.ui.pauseModel.property('pause')
 
 
-def test_cancelBuild(function, qtbot):
+def test_cancelBuild(function):
     suc = function.setupSignalsForModelRun()
     assert suc
     with mock.patch.object(function.app.camera,
                            'abort'):
         with mock.patch.object(function.app.astrometry,
                                'abort'):
-            with qtbot.waitSignal(function.app.message) as blocker:
-                suc = function.cancelBuild()
-                assert suc
-                assert blocker.args == ['Modeling cancelled', 2]
+            suc = function.cancelBuild()
+            assert suc
 
 
 def writeRFD(a, b):
@@ -1075,7 +1074,7 @@ def test_modelCycleThroughBuildPointsFinished_2(function):
             assert suc
 
 
-def test_modelCycleThroughBuildPointsFinished_3(function, qtbot):
+def test_modelCycleThroughBuildPointsFinished_3(function):
     inputData = {
         'lenSequence': 0,
         'countSequence': 1,

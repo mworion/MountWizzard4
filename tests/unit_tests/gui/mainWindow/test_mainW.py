@@ -22,819 +22,744 @@ import glob
 import os
 import shutil
 import logging
+import builtins
 
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QPushButton, QWidget
-from PyQt5.QtCore import QTimer
-from mountcontrol.qtmount import Mount
 from skyfield.api import wgs84
-from skyfield.api import load
 
 # local import
+import gui.utilities.toolsQtWidget
 from gui.mainWindow.mainW import MainWindow
 from gui.extWindows.imageW import ImageWindow
-from logic.environment.sensorWeather import SensorWeather
-from logic.environment.directWeather import DirectWeather
-from logic.environment.onlineWeather import OnlineWeather
-from logic.environment.weatherUPB import WeatherUPB
-from logic.environment.skymeter import Skymeter
-from logic.powerswitch.kmRelay import KMRelay
-from logic.powerswitch.pegasusUPB import PegasusUPB
-from logic.dome.dome import Dome
-from logic.camera.camera import Camera
-from logic.filter.filter import Filter
-from logic.focuser.focuser import Focuser
-from logic.cover.cover import Cover
-from logic.modeldata.buildpoints import DataPoint
-from logic.remote.remote import Remote
-from logic.measure.measure import MeasureData
-from logic.telescope.telescope import Telescope
-from logic.astrometry.astrometry import Astrometry
 from base.loggerMW import addLoggingLevel
 from base import packageConfig
 from resource import resources
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 resources.qInitResources()
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown():
-    global eph
-    eph = load('tests/testData/de421_23.bsp')
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function_setup_teardown(qtbot):
-    global app
-
-    class Automation:
-        automateFast = False
-        automateSlow = False
-        installPath = ''
-
-    class Test1(QObject):
-        threadPool = QThreadPool()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        update10s = pyqtSignal()
-        update30s = pyqtSignal()
-        update10m = pyqtSignal()
-        update1s = pyqtSignal()
-        update1h = pyqtSignal()
-        start1s = pyqtSignal()
-        start3s = pyqtSignal()
-        start5s = pyqtSignal()
-        colorChange = pyqtSignal()
-        hostChanged = pyqtSignal()
-        mwGlob = {'imageDir': 'tests/workDir/image',
-                  'dataDir': 'tests/workDir/data',
-                  'modelDir': 'tests/workDir/model',
-                  'tempDir': 'tests/workDir/temp',
-                  'configDir': 'tests/workDir/config'}
-
-    @staticmethod
-    def testShowWindows():
-        return
-
-    @staticmethod
-    def testSave(name=None):
-        return
-
-    @staticmethod
-    def testStore():
-        return
-
-    @staticmethod
-    def testQuit():
-        return
-
-    @staticmethod
-    def testInitConfig():
-        return
-
-    class Test(QObject):
-        __version__ = 'test'
-        config = {'mainW': {},
-                  'showImageW': True}
-        update1s = pyqtSignal()
-        update1h = pyqtSignal()
-        redrawSimulator = pyqtSignal()
-        drawHorizonPoints = pyqtSignal()
-        drawBuildPoints = pyqtSignal()
-        playSound = pyqtSignal(object)
-        buildPointsChanged = pyqtSignal()
-        updateDomeSettings = pyqtSignal()
-        showImage = pyqtSignal(str)
-        update3s = pyqtSignal()
-        update30m = pyqtSignal()
-        update10m = pyqtSignal()
-        update30s = pyqtSignal()
-        start1s = pyqtSignal()
-        start3s = pyqtSignal()
-        start5s = pyqtSignal()
-        sendSatelliteData = pyqtSignal()
-        remoteCommand = pyqtSignal(str)
-        threadPool = QThreadPool()
-        colorChange = pyqtSignal()
-        hostChanged = pyqtSignal()
-        mes = pyqtSignal(object, object, object, object)
-
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        camera = Camera(app=Test1())
-        filter = Filter(app=Test1())
-        focuser = Focuser(app=Test1())
-        sensorWeather = SensorWeather(app=Test1())
-        onlineWeather = OnlineWeather(app=Test1())
-        directWeather = DirectWeather(app=Test1())
-        powerWeather = WeatherUPB(app=Test1())
-        skymeter = Skymeter(app=Test1())
-        dome = Dome(app=Test1())
-        cover = Cover(app=Test1())
-        telescope = Telescope(app=Test1())
-        relay = KMRelay()
-        remote = Remote()
-        data = DataPoint(app=Test1())
-        ephemeris = eph
-        measure = MeasureData(app=Test1())
-        power = PegasusUPB(app=Test1())
-        automation = Automation()
-        astrometry = Astrometry(app=Test1())
-        timer0_1s = QTimer()
-
-        uiWindows = {'showImageW': {'classObj': None}}
-        mwGlob = {'imageDir': 'tests/workDir/image',
-                  'dataDir': 'tests/workDir/data',
-                  'modelDir': 'tests/workDir/model',
-                  'configDir': 'tests/workDir/config'}
-        deviceStat = {'camera': True,
-                      'astrometry': True,
-                      'mount': True}
-        quit = testQuit
-        quitSave = testQuit
-        loadConfig = testQuit
-        saveConfig = testSave
-        storeConfig = testStore
-        showWindows = testShowWindows
-        initConfig = testInitConfig
+def function(qtbot):
 
     shutil.copy('tests/testData/visual.txt', 'tests/workDir/data/visual.txt')
-
     with mock.patch.object(MainWindow,
                            'show'):
         with mock.patch.object(ImageWindow,
                                'show'):
             packageConfig.isAvailable = True
-            app = MainWindow(app=Test())
-            app.log = logging.getLogger()
+            func = MainWindow(app=App())
+            func.log = logging.getLogger()
             addLoggingLevel('TRACE', 5)
             addLoggingLevel('UI', 35)
-            yield
+            yield func
 
     files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    with mock.patch.object(app,
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    with mock.patch.object(function,
                            'mwSuper'):
-        suc = app.initConfig()
+        suc = function.initConfig()
         assert suc
 
 
-def test_initConfig_2():
-    del app.app.config['mainW']
-    with mock.patch.object(app,
+def test_initConfig_2(function):
+    del function.app.config['mainW']
+    with mock.patch.object(function,
                            'mwSuper'):
-        suc = app.initConfig()
+        suc = function.initConfig()
         assert suc
 
 
-def test_initConfig_3():
-    app.app.config['mainW'] = {}
-    app.app.config['mainW']['winPosX'] = 100
-    app.app.config['mainW']['winPosY'] = 100
-    with mock.patch.object(app,
+def test_initConfig_3(function):
+    function.app.config['mainW'] = {}
+    function.app.config['mainW']['winPosX'] = 100
+    function.app.config['mainW']['winPosY'] = 100
+    with mock.patch.object(function,
                            'mwSuper'):
-        suc = app.initConfig()
+        suc = function.initConfig()
         assert suc
 
 
-def test_initConfig_4():
-    app.app.config['mainW'] = {}
-    app.app.config['mainW']['winPosX'] = 10000
-    app.app.config['mainW']['winPosY'] = 10000
-    with mock.patch.object(app,
+def test_initConfig_4(function):
+    function.app.config['mainW'] = {}
+    function.app.config['mainW']['winPosX'] = 10000
+    function.app.config['mainW']['winPosY'] = 10000
+    with mock.patch.object(function,
                            'mwSuper'):
-        suc = app.initConfig()
+        suc = function.initConfig()
         assert suc
 
 
-def test_storeConfigExtendedWindows_1():
-    suc = app.storeConfigExtendedWindows()
+def test_storeConfigExtendedWindows_1(function):
+    suc = function.storeConfigExtendedWindows()
     assert suc
 
 
-def test_storeConfig_1():
-    with mock.patch.object(app,
+def test_storeConfig_1(function):
+    with mock.patch.object(function,
                            'mwSuper'):
-        suc = app.storeConfig()
+        suc = function.storeConfig()
         assert suc
 
 
-def test_storeConfig_2():
-    del app.app.config['mainW']
-    with mock.patch.object(app,
+def test_storeConfig_2(function):
+    del function.app.config['mainW']
+    with mock.patch.object(function,
                            'mwSuper'):
-        suc = app.storeConfig()
+        suc = function.storeConfig()
         assert suc
 
 
-def test_closeEvent_1(qtbot):
-    app.closeEvent(QCloseEvent())
+def test_closeEvent_1(function):
+    with mock.patch.object(builtins,
+                           'super'):
+        with mock.patch.object(function,
+                               'closeExtendedWindows'):
+            with mock.patch.object(function,
+                                   'stopDrivers'):
+                with mock.patch.object(function.threadPool,
+                                       'waitForDone'):
+                    function.closeEvent(QCloseEvent())
 
 
-def test_quitSave_1(qtbot):
-    app.ui.profile.setText('test')
-    suc = app.quitSave()
-    assert suc
+def test_quitSave_1(function):
+    function.ui.profile.setText('test')
+    with mock.patch.object(function,
+                           'saveProfile'):
+        with mock.patch.object(function.app,
+                               'saveConfig'):
+            with mock.patch.object(function,
+                                   'close'):
+                suc = function.quitSave()
+                assert suc
 
 
-def test_setupIcons():
-    suc = app.setupIcons()
+def test_setupIcons(function):
+    suc = function.setupIcons()
     assert suc
 
 
 @patch('base.packageConfig.isAvailable', True)
-def test_updateMountConnStat_1():
-    suc = app.updateMountConnStat(True)
+def test_updateMountConnStat_1(function):
+    suc = function.updateMountConnStat(True)
     assert suc
-    assert app.deviceStat['mount']
-    assert app.ui.mountConnected.text() == 'Mount 3D'
+    assert function.deviceStat['mount']
+    assert function.ui.mountConnected.text() == 'Mount 3D'
 
 
 @patch('base.packageConfig.isAvailable', False)
-def test_updateMountConnStat_2():
-    suc = app.updateMountConnStat(True)
+def test_updateMountConnStat_2(function):
+    suc = function.updateMountConnStat(True)
     assert suc
-    assert app.deviceStat['mount']
-    assert app.ui.mountConnected.text() == 'Mount'
+    assert function.deviceStat['mount']
+    assert function.ui.mountConnected.text() == 'Mount'
 
 
 @patch('base.packageConfig.isAvailable', True)
-def test_updateMountConnStat_3():
-    app.uiWindows = {'showSimulatorW': {
-        'button': app.ui.mountConnected,
+def test_updateMountConnStat_3(function):
+    function.uiWindows = {'showSimulatorW': {
+        'button': function.ui.mountConnected,
         'classObj': QWidget(),
         'name': 'SimulatorDialog',
         'class': None,
         }
     }
-    suc = app.updateMountConnStat(False)
-    assert app.ui.mountConnected.text() == 'Mount'
-    assert not app.deviceStat['mount']
+    suc = function.updateMountConnStat(False)
+    assert function.ui.mountConnected.text() == 'Mount'
+    assert not function.deviceStat['mount']
     assert suc
 
 
-def test_updateMountWeatherStat_1():
+def test_updateMountWeatherStat_1(function):
     class S:
         weatherPressure = None
         weatherTemperature = None
         weatherStatus = None
 
-    suc = app.updateMountWeatherStat(S())
+    suc = function.updateMountWeatherStat(S())
     assert suc
-    assert app.deviceStat['directWeather'] is None
+    assert function.deviceStat['directWeather'] is None
 
 
-def test_updateMountWeatherStat_2():
+def test_updateMountWeatherStat_2(function):
     class S:
         weatherPressure = 1000
         weatherTemperature = 10
         weatherStatus = None
 
-    suc = app.updateMountWeatherStat(S())
+    suc = function.updateMountWeatherStat(S())
     assert suc
-    assert not app.deviceStat['directWeather']
+    assert not function.deviceStat['directWeather']
 
 
-def test_updateMountWeatherStat_3():
+def test_updateMountWeatherStat_3(function):
     class S:
         weatherPressure = 1000
         weatherTemperature = 10
         weatherStatus = True
 
-    suc = app.updateMountWeatherStat(S())
+    suc = function.updateMountWeatherStat(S())
     assert suc
-    assert app.deviceStat['directWeather']
+    assert function.deviceStat['directWeather']
 
 
-def test_smartFunctionGui_1():
-    app.deviceStat['mount'] = True
-    app.deviceStat['camera'] = True
-    app.deviceStat['astrometry'] = True
-    app.app.data.buildP = [(0, 0)]
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_1(function):
+    function.deviceStat['mount'] = True
+    function.deviceStat['camera'] = True
+    function.deviceStat['astrometry'] = True
+    function.app.data.buildP = [(0, 0)]
+    suc = function.smartFunctionGui()
     assert suc
-    assert app.ui.runModel.isEnabled()
-    assert app.ui.plateSolveSync.isEnabled()
+    assert function.ui.runModel.isEnabled()
+    assert function.ui.plateSolveSync.isEnabled()
 
 
-def test_smartFunctionGui_2():
-    app.deviceStat['mount'] = True
-    app.deviceStat['camera'] = False
-    app.deviceStat['astrometry'] = True
-    app.app.data.buildP = [(0, 0)]
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_2(function):
+    function.deviceStat['mount'] = True
+    function.deviceStat['camera'] = False
+    function.deviceStat['astrometry'] = True
+    function.app.data.buildP = [(0, 0)]
+    suc = function.smartFunctionGui()
     assert suc
-    assert not app.ui.runModel.isEnabled()
-    assert not app.ui.plateSolveSync.isEnabled()
+    assert not function.ui.runModel.isEnabled()
+    assert not function.ui.plateSolveSync.isEnabled()
 
 
-def test_smartFunctionGui_3():
-    app.deviceStat['mount'] = True
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_3(function):
+    function.deviceStat['mount'] = True
+    suc = function.smartFunctionGui()
     assert suc
-    assert app.ui.batchModel.isEnabled()
+    assert function.ui.batchModel.isEnabled()
 
 
-def test_smartFunctionGui_4():
-    app.deviceStat['mount'] = False
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_4(function):
+    function.deviceStat['mount'] = False
+    suc = function.smartFunctionGui()
     assert suc
-    assert not app.ui.batchModel.isEnabled()
+    assert not function.ui.batchModel.isEnabled()
 
 
-def test_smartFunctionGui_5():
-    app.deviceStat['environOverall'] = None
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_5(function):
+    function.deviceStat['environOverall'] = None
+    suc = function.smartFunctionGui()
     assert suc
-    assert not app.ui.refractionGroup.isEnabled()
-    assert not app.ui.setRefractionManual.isEnabled()
+    assert not function.ui.refractionGroup.isEnabled()
+    assert not function.ui.setRefractionManual.isEnabled()
 
 
-def test_smartFunctionGui_6():
-    app.deviceStat['environOverall'] = True
-    app.deviceStat['mount'] = True
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_6(function):
+    function.deviceStat['environOverall'] = True
+    function.deviceStat['mount'] = True
+    suc = function.smartFunctionGui()
     assert suc
-    assert app.ui.refractionGroup.isEnabled()
-    assert app.ui.setRefractionManual.isEnabled()
+    assert function.ui.refractionGroup.isEnabled()
+    assert function.ui.setRefractionManual.isEnabled()
 
 
-def test_smartFunctionGui_7():
-    app.deviceStat['environOverall'] = True
-    app.deviceStat['mount'] = False
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_7(function):
+    function.deviceStat['environOverall'] = True
+    function.deviceStat['mount'] = False
+    suc = function.smartFunctionGui()
     assert suc
-    assert not app.ui.refractionGroup.isEnabled()
-    assert not app.ui.setRefractionManual.isEnabled()
+    assert not function.ui.refractionGroup.isEnabled()
+    assert not function.ui.setRefractionManual.isEnabled()
 
 
-def test_smartFunctionGui_8():
-    app.deviceStat['dome'] = False
-    suc = app.smartFunctionGui()
-    assert suc
-
-
-def test_smartFunctionGui_9():
-    app.deviceStat['dome'] = True
-    suc = app.smartFunctionGui()
+def test_smartFunctionGui_8(function):
+    function.deviceStat['dome'] = False
+    suc = function.smartFunctionGui()
     assert suc
 
 
-def test_smartTabGui_1():
-    suc = app.smartTabGui()
+def test_smartFunctionGui_9(function):
+    function.deviceStat['dome'] = True
+    suc = function.smartFunctionGui()
     assert suc
 
 
-def test_smartTabGui_2():
-    app.deviceStat['power'] = True
-    suc = app.smartTabGui()
+def test_smartTabGui_1(function):
+    suc = function.smartTabGui()
     assert suc
 
 
-def test_mountBoot1():
-    with mock.patch.object(app.app.mount,
+def test_smartTabGui_2(function):
+    function.deviceStat['power'] = True
+    suc = function.smartTabGui()
+    assert suc
+
+
+def test_mountBoot1(function):
+    with mock.patch.object(function.app.mount,
                            'bootMount',
                            return_value=True):
-        suc = app.mountBoot()
+        suc = function.mountBoot()
         assert suc
 
 
-def test_smartEnvironGui_1():
-    app.deviceStat['directWeather'] = False
-    app.deviceStat['sensorWeather'] = False
-    app.deviceStat['onlineWeather'] = False
-    app.deviceStat['skymeter'] = False
-    app.deviceStat['powerWeather'] = False
-    suc = app.smartEnvironGui()
+def test_smartEnvironGui_1(function):
+    function.deviceStat['directWeather'] = False
+    function.deviceStat['sensorWeather'] = False
+    function.deviceStat['onlineWeather'] = False
+    function.deviceStat['skymeter'] = False
+    function.deviceStat['powerWeather'] = False
+    suc = function.smartEnvironGui()
     assert suc
-    assert not app.ui.directWeatherGroup.isEnabled()
-    assert not app.ui.sensorWeatherGroup.isEnabled()
-    assert not app.ui.onlineWeatherGroup.isEnabled()
-    assert not app.ui.skymeterGroup.isEnabled()
-    assert not app.ui.powerGroup.isEnabled()
+    assert not function.ui.directWeatherGroup.isEnabled()
+    assert not function.ui.sensorWeatherGroup.isEnabled()
+    assert not function.ui.onlineWeatherGroup.isEnabled()
+    assert not function.ui.skymeterGroup.isEnabled()
+    assert not function.ui.powerGroup.isEnabled()
 
 
-def test_smartEnvironGui_2():
-    app.deviceStat['directWeather'] = True
-    app.deviceStat['sensorWeather'] = True
-    app.deviceStat['onlineWeather'] = True
-    app.deviceStat['skymeter'] = True
-    app.deviceStat['powerWeather'] = True
-    suc = app.smartEnvironGui()
+def test_smartEnvironGui_2(function):
+    function.deviceStat['directWeather'] = True
+    function.deviceStat['sensorWeather'] = True
+    function.deviceStat['onlineWeather'] = True
+    function.deviceStat['skymeter'] = True
+    function.deviceStat['powerWeather'] = True
+    suc = function.smartEnvironGui()
     assert suc
-    assert app.ui.directWeatherGroup.isEnabled()
-    assert app.ui.sensorWeatherGroup.isEnabled()
-    assert app.ui.onlineWeatherGroup.isEnabled()
-    assert app.ui.skymeterGroup.isEnabled()
-    assert app.ui.powerGroup.isEnabled()
+    assert function.ui.directWeatherGroup.isEnabled()
+    assert function.ui.sensorWeatherGroup.isEnabled()
+    assert function.ui.onlineWeatherGroup.isEnabled()
+    assert function.ui.skymeterGroup.isEnabled()
+    assert function.ui.powerGroup.isEnabled()
 
 
-def test_smartEnvironGui_3():
-    app.deviceStat['directWeather'] = None
-    app.deviceStat['sensorWeather'] = None
-    app.deviceStat['onlineWeather'] = None
-    app.deviceStat['skymeter'] = None
-    app.deviceStat['powerWeather'] = False
-    suc = app.smartEnvironGui()
+def test_smartEnvironGui_3(function):
+    function.deviceStat['directWeather'] = None
+    function.deviceStat['sensorWeather'] = None
+    function.deviceStat['onlineWeather'] = None
+    function.deviceStat['skymeter'] = None
+    function.deviceStat['powerWeather'] = False
+    suc = function.smartEnvironGui()
     assert suc
-    assert not app.ui.directWeatherGroup.isEnabled()
-    assert not app.ui.sensorWeatherGroup.isEnabled()
-    assert not app.ui.onlineWeatherGroup.isEnabled()
-    assert not app.ui.skymeterGroup.isEnabled()
-    assert not app.ui.powerGroup.isEnabled()
+    assert not function.ui.directWeatherGroup.isEnabled()
+    assert not function.ui.sensorWeatherGroup.isEnabled()
+    assert not function.ui.onlineWeatherGroup.isEnabled()
+    assert not function.ui.skymeterGroup.isEnabled()
+    assert not function.ui.powerGroup.isEnabled()
 
 
-def test_updateWindowsStats_1():
-    app.app.uiWindows = {'showMessageW': {'classObj': 1,
+def test_updateWindowsStats_1(function):
+    function.uiWindows = {'showMessageW': {'classObj': 1,
                                           'button': QPushButton()}}
-    suc = app.updateWindowsStats()
+    suc = function.updateWindowsStats()
     assert suc
 
 
-def test_updateWindowsStats_2():
-    app.app.uiWindows = {'showMessageW': {'classObj': None,
+def test_updateWindowsStats_2(function):
+    function.uiWindows = {'showMessageW': {'classObj': None,
                                           'button': QPushButton()}}
-    suc = app.updateWindowsStats()
+    suc = function.updateWindowsStats()
     assert suc
 
 
-def test_updateDeviceStats_1():
-    app.deviceStat = {'online': True}
-    app.refractionSource = 'online'
-    suc = app.updateDeviceStats()
+def test_updateDeviceStats_1(function):
+    function.deviceStat = {'online': True}
+    function.refractionSource = 'online'
+    suc = function.updateDeviceStats()
     assert suc
-    assert app.deviceStat['environOverall']
+    assert function.deviceStat['environOverall']
 
 
-def test_updateDeviceStats_2():
-    app.deviceStat = {'test': True}
-    app.refractionSource = 'online'
-    suc = app.updateDeviceStats()
+def test_updateDeviceStats_2(function):
+    function.deviceStat = {'test': True}
+    function.refractionSource = 'online'
+    suc = function.updateDeviceStats()
     assert suc
-    assert app.deviceStat['environOverall'] is None
+    assert function.deviceStat['environOverall'] is None
 
 
-def test_updateDeviceStats_3():
-    app.deviceStat = {'online': True}
-    app.refractionSource = 'online'
-    suc = app.updateDeviceStats()
-    assert suc
-
-
-def test_updateDeviceStats_4():
-    app.deviceStat = {}
-    app.refractionSource = 'online'
-    suc = app.updateDeviceStats()
+def test_updateDeviceStats_3(function):
+    function.deviceStat = {'online': True}
+    function.refractionSource = 'online'
+    suc = function.updateDeviceStats()
     assert suc
 
 
-def test_updateDeviceStats_5():
-    app.deviceStat = {'online': False}
-    app.refractionSource = 'online'
-    suc = app.updateDeviceStats()
+def test_updateDeviceStats_4(function):
+    function.deviceStat = {}
+    function.refractionSource = 'online'
+    suc = function.updateDeviceStats()
     assert suc
 
 
-def test_updateTime_1():
-    app.ui.isOnline.setChecked(True)
-    suc = app.updateTime()
+def test_updateDeviceStats_5(function):
+    function.deviceStat = {'online': False}
+    function.refractionSource = 'online'
+    suc = function.updateDeviceStats()
     assert suc
 
 
-def test_updateTime_2():
-    app.ui.isOnline.setChecked(False)
-    suc = app.updateTime()
+def test_updateTime_1(function):
+    function.ui.isOnline.setChecked(True)
+    suc = function.updateTime()
     assert suc
 
 
-def test_updateAstrometryStatus():
-    suc = app.updateAstrometryStatus('test')
+def test_updateTime_2(function):
+    function.ui.isOnline.setChecked(False)
+    suc = function.updateTime()
     assert suc
-    assert app.ui.astrometryText.text() == 'test'
 
 
-def test_updateDomeStatus():
-    suc = app.updateDomeStatus('test')
+def test_updateAstrometryStatus(function):
+    suc = function.updateAstrometryStatus('test')
     assert suc
-    assert app.ui.domeText.text() == 'test'
+    assert function.ui.astrometryText.text() == 'test'
 
 
-def test_updateCameraStatus():
-    suc = app.updateCameraStatus('test')
+def test_updateDomeStatus(function):
+    suc = function.updateDomeStatus('test')
     assert suc
-    assert app.ui.cameraText.text() == 'test'
+    assert function.ui.domeText.text() == 'test'
 
 
-def test_updateStatusGUI_1():
+def test_updateCameraStatus(function):
+    suc = function.updateCameraStatus('test')
+    assert suc
+    assert function.ui.cameraText.text() == 'test'
+
+
+def test_updateStatusGUI_1(function):
     class OB:
         @staticmethod
         def statusText():
             return None
 
-    app.app.mount.obsSite.status = 0
-    suc = app.updateStatusGUI(OB)
+    function.app.mount.obsSite.status = 0
+    suc = function.updateStatusGUI(OB)
     assert suc
 
 
-def test_updateStatusGUI_2():
+def test_updateStatusGUI_2(function):
     class OB:
         @staticmethod
         def statusText():
             return 'test'
 
-    app.app.mount.obsSite.status = 0
-    suc = app.updateStatusGUI(OB)
+    function.app.mount.obsSite.status = 0
+    suc = function.updateStatusGUI(OB)
     assert suc
-    assert app.ui.statusText.text() == 'test'
+    assert function.ui.statusText.text() == 'test'
 
 
-def test_updateStatusGUI_3():
+def test_updateStatusGUI_3(function):
     class OB:
         @staticmethod
         def statusText():
             return None
 
-    app.app.mount.obsSite.status = 5
-    suc = app.updateStatusGUI(OB)
+    function.app.mount.obsSite.status = 5
+    suc = function.updateStatusGUI(OB)
     assert suc
 
 
-def test_updateStatusGUI_4():
+def test_updateStatusGUI_4(function):
     class OB:
         @staticmethod
         def statusText():
             return None
 
-    app.app.mount.obsSite.status = 1
-    suc = app.updateStatusGUI(OB)
+    function.app.mount.obsSite.status = 1
+    suc = function.updateStatusGUI(OB)
     assert suc
 
 
-def test_updateStatusGUI_5():
+def test_updateStatusGUI_5(function):
     class OB:
         @staticmethod
         def statusText():
             return None
 
-    app.app.mount.obsSite.status = 10
-    app.satStatus = False
-    suc = app.updateStatusGUI(OB)
+    function.app.mount.obsSite.status = 10
+    function.satStatus = False
+    suc = function.updateStatusGUI(OB)
     assert suc
 
 
-def test_deleteWindowResource_1():
-    suc = app.deleteWindowResource()
+def test_deleteWindowResource_1(function):
+    suc = function.deleteWindowResource()
     assert not suc
 
 
-def test_deleteWindowResource_2():
-    suc = app.deleteWindowResource(widget=app.ui.openImageW)
+def test_deleteWindowResource_2(function):
+    suc = function.deleteWindowResource(widget=function.ui.openImageW)
     assert suc
 
 
-def test_deleteWindowResource_3():
+def test_deleteWindowResource_3(function):
     class Test:
         @staticmethod
         def objectName():
             return 'ImageDialog'
 
-    suc = app.deleteWindowResource(widget=Test())
+    suc = function.deleteWindowResource(widget=Test())
     assert suc
 
 
-def test_setColorSet():
-    suc = app.setColorSet()
+def test_setColorSet(function):
+    suc = function.setColorSet()
     assert suc
 
 
-def test_refreshColorSet():
-    with mock.patch.object(app,
+def test_refreshColorSet(function):
+    with mock.patch.object(function,
                            'setupIcons'):
-        suc = app.refreshColorSet()
-        assert suc
+        with mock.patch.object(function,
+                               'setColorSet'):
+            with mock.patch.object(function,
+                                   'setStyleSheet'):
+                suc = function.refreshColorSet()
+                assert suc
 
 
-def test_buildWindow_1():
+def test_buildWindow_1(function):
     class Test(QObject):
         destroyed = pyqtSignal()
 
-    app.uiWindows['showImageW']['classObj'] = Test()
+        @staticmethod
+        def initConfig():
+            return
 
-    suc = app.buildWindow('showImageW')
+        @staticmethod
+        def showWindow():
+            return
+
+    function.uiWindows['showImageW']['class'] = Test
+    suc = function.buildWindow('showImageW')
     assert suc
 
 
-def test_toggleWindow_1():
-    suc = app.toggleWindow()
+def test_toggleWindow_1(function):
+    suc = function.toggleWindow()
     assert suc
 
 
-def test_toggleWindow_2():
+def test_toggleWindow_2(function):
     def Sender():
-        return app.ui.openImageW
+        return function.ui.openImageW
 
-    app.sender = Sender
-    app.uiWindows['showImageW']['classObj'] = None
+    function.sender = Sender
+    function.uiWindows['showImageW']['classObj'] = None
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'buildWindow'):
-        suc = app.toggleWindow()
+        suc = function.toggleWindow()
         assert suc
 
 
-def test_toggleWindow_3():
-    def Sender():
-        return app.ui.openImageW
+def test_toggleWindow_3(function):
+    class Test(QObject):
+        destroyed = pyqtSignal()
 
-    app.sender = Sender
-    suc = app.toggleWindow()
+        @staticmethod
+        def close():
+            return
+
+    def Sender():
+        return function.ui.openImageW
+
+    function.sender = Sender
+    function.uiWindows['showImageW']['classObj'] = Test()
+    suc = function.toggleWindow()
     assert suc
 
 
-def test_showExtendedWindows_1():
-    with mock.patch.object(app,
+def test_showExtendedWindows_1(function):
+    with mock.patch.object(function,
                            'buildWindow'):
-        suc = app.showExtendedWindows()
+        suc = function.showExtendedWindows()
         assert suc
 
 
-def test_closeExtendedWindows_1():
-    suc = app.closeExtendedWindows()
-    assert suc
+def test_closeExtendedWindows_1(function):
+    with mock.patch.object(gui.utilities.toolsQtWidget,
+                           'sleepAndEvents'):
+        suc = function.closeExtendedWindows()
+        assert suc
 
 
-def test_checkExtension_1():
-    val = app.checkExtension('tests/workDir/image/test.fit', 'fit')
+def test_checkExtension_1(function):
+    val = function.checkExtension('tests/workDir/image/test.fit', 'fit')
     assert val == 'tests/workDir/image/test.fit'
 
 
-def test_checkExtension_2():
-    val = app.checkExtension('tests/workDir/image/test', '.fit')
+def test_checkExtension_2(function):
+    val = function.checkExtension('tests/workDir/image/test', '.fit')
     assert val == 'tests/workDir/image/test.fit'
 
 
-def test_mountBoot2():
-    with mock.patch.object(app.app.mount,
+def test_mountBoot1(function):
+    with mock.patch.object(function.app.mount,
                            'bootMount',
                            return_value=False):
-        suc = app.mountBoot()
+        suc = function.mountBoot()
         assert not suc
 
 
-def test_mountShutdown1():
-    with mock.patch.object(app.app.mount.obsSite,
+def test_mountShutdown1(function):
+    with mock.patch.object(function.app.mount,
                            'shutdown',
                            return_value=True):
-        suc = app.mountShutdown()
+        suc = function.mountShutdown()
         assert suc
 
 
-def test_mountShutdown2():
-    with mock.patch.object(app.app.mount.obsSite,
+def test_mountShutdown2(function):
+    with mock.patch.object(function.app.mount,
                            'shutdown',
                            return_value=False):
-        suc = app.mountShutdown()
+        suc = function.mountShutdown()
         assert not suc
 
 
-def test_saveProfile1():
-    with mock.patch.object(app.app,
-                           'saveConfig',
-                           return_value=True):
-        app.saveProfile()
+def test_saveProfile1(function):
+    with mock.patch.object(function,
+                           'storeConfig'):
+        with mock.patch.object(function.app,
+                               'storeConfig'):
+            with mock.patch.object(function.app,
+                                   'saveConfig',
+                                   return_value=True):
+                suc = function.saveProfile()
+                assert suc
 
 
-def test_loadProfile1():
-    with mock.patch.object(app,
+def test_saveProfile2(function):
+    with mock.patch.object(function,
+                           'storeConfig'):
+        with mock.patch.object(function.app,
+                               'storeConfig'):
+            with mock.patch.object(function.app,
+                                   'saveConfig',
+                                   return_value=False):
+                suc = function.saveProfile()
+                assert not suc
+
+
+def test_loadProfile1(function):
+    loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
+    with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(app.app,
+        with mock.patch.object(function.app,
                                'loadConfig',
                                return_value=True):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'closeExtendedWindows'):
-                with mock.patch.object(app,
+                with mock.patch.object(function,
                                        'showExtendedWindows'):
-                    with mock.patch.object(app,
+                    with mock.patch.object(function,
                                            'initConfig'):
-                        suc = app.loadProfile()
-                        assert suc
+                        with mock.patch.object(function.app,
+                                               'initConfig',
+                                               return_value=loc):
+                            with mock.patch.object(function,
+                                                   'stopDrivers'):
+                                suc = function.loadProfile()
+                                assert suc
 
 
-def test_loadProfile2():
-    with mock.patch.object(app,
+def test_loadProfile2(function):
+    loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
+    with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(app.app,
+        with mock.patch.object(function.app,
                                'loadConfig',
                                return_value=False):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'closeExtendedWindows'):
-                with mock.patch.object(app,
+                with mock.patch.object(function,
                                        'showExtendedWindows'):
-                    with mock.patch.object(app,
+                    with mock.patch.object(function,
                                            'initConfig'):
-                        suc = app.loadProfile()
-                        assert suc
+                        with mock.patch.object(function.app,
+                                               'initConfig',
+                                               return_value=loc):
+                            with mock.patch.object(function,
+                                                   'stopDrivers'):
+                                suc = function.loadProfile()
+                                assert suc
 
 
-def test_loadProfile3(qtbot):
-    with mock.patch.object(app,
+def test_loadProfile3(function):
+    with mock.patch.object(function,
                            'openFile',
                            return_value=(None, None, 'cfg')):
-        suc = app.loadProfile()
+        suc = function.loadProfile()
         assert not suc
 
 
-def test_saveProfileAs1():
-    with mock.patch.object(app,
+def test_saveProfileAs1(function):
+    with mock.patch.object(function,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(app.app,
+        with mock.patch.object(function.app,
                                'saveConfig',
                                return_value=True):
-            suc = app.saveProfileAs()
-            assert suc
+            with mock.patch.object(function.app,
+                                   'storeConfig'):
+                with mock.patch.object(function,
+                                       'storeConfig'):
+                    suc = function.saveProfileAs()
+                    assert suc
 
 
-def test_saveProfileAs2():
-    with mock.patch.object(app,
+def test_saveProfileAs2(function):
+    with mock.patch.object(function,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(app.app,
+        with mock.patch.object(function.app,
                                'saveConfig',
                                return_value=False):
-            suc = app.saveProfileAs()
-            assert suc
+            with mock.patch.object(function.app,
+                                   'storeConfig'):
+                with mock.patch.object(function,
+                                       'storeConfig'):
+                    suc = function.saveProfileAs()
+                    assert suc
 
 
-def test_saveProfileAs3():
-    with mock.patch.object(app,
+def test_saveProfileAs3(function):
+    with mock.patch.object(function,
                            'saveFile',
                            return_value=(None, None, 'cfg')):
-        suc = app.saveProfileAs()
+        suc = function.saveProfileAs()
         assert not suc
 
 
-def test_saveProfile2():
-    with mock.patch.object(app.app,
-                           'saveConfig',
-                           return_value=False):
-        app.saveProfile()
-
-
-def test_remoteCommand_1():
-    suc = app.remoteCommand('')
+def test_remoteCommand_1(function):
+    suc = function.remoteCommand('')
     assert suc
 
 
-def test_remoteCommand_2():
-    with mock.patch.object(app.app,
+def test_remoteCommand_2(function):
+    with mock.patch.object(function,
                            'quitSave'):
-        suc = app.remoteCommand('shutdown')
+        suc = function.remoteCommand('shutdown')
         assert suc
 
 
-def test_remoteCommand_3():
-    with mock.patch.object(app,
+def test_remoteCommand_3(function):
+    with mock.patch.object(function,
                            'mountShutdown'):
-        suc = app.remoteCommand('shutdown mount')
+        suc = function.remoteCommand('shutdown mount')
         assert suc
 
 
-def test_remoteCommand_4():
-    with mock.patch.object(app,
+def test_remoteCommand_4(function):
+    with mock.patch.object(function,
                            'mountBoot'):
-        suc = app.remoteCommand('boot mount')
+        suc = function.remoteCommand('boot mount')
         assert suc

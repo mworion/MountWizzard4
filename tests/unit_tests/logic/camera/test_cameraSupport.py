@@ -21,15 +21,14 @@ import unittest.mock as mock
 
 # external packages
 from astropy.io import fits
-from skyfield.api import wgs84, Angle
+from skyfield.api import Angle
 import numpy as np
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
 from logic.camera.cameraSupport import CameraSupport
 import logic.camera.cameraSupport
 from base.driverDataClass import Signals
-from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope='function')

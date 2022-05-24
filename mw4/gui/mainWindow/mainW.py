@@ -900,7 +900,7 @@ class MainWindow(
             self.app.mes.emit(0, 'System', 'Profile loaded', f'{name}')
         else:
             self.app.mes.emit(2, 'System', 'Profile error',
-                                   f'{name}] cannot no be loaded')
+                              f'{name}] cannot no be loaded')
 
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
@@ -931,7 +931,7 @@ class MainWindow(
             self.app.mes.emit(0, 'System', 'Profile saved', f'{name}')
         else:
             self.app.mes.emit(2, 'System', 'Profile error',
-                                   f'{name}] cannot no be loasavedded')
+                              f'{name}] cannot no be loasavedded')
         return True
 
     def saveProfile(self):
@@ -949,7 +949,7 @@ class MainWindow(
 
         else:
             self.app.mes.emit(2, 'System', 'Profile',
-                                   'Actual profile cannot not be saved')
+                              'Actual profile cannot not be saved')
         return suc
 
     def remoteCommand(self, command):

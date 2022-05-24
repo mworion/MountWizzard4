@@ -19,10 +19,9 @@
 from queue import Queue
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool
+from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84, load, Loader, Angle
 import numpy as np
-import astropy
 
 # local import
 
@@ -30,17 +29,33 @@ import astropy
 class Skymeter:
     class SkymeterSignals(QObject):
         version = pyqtSignal()
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
 
     signals = SkymeterSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Power:
     class PowerSignals(QObject):
         version = pyqtSignal()
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
 
     signals = PowerSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
     @staticmethod
     def sendDew(port=None, value=None):
@@ -110,6 +125,9 @@ class Mount(QObject):
         @staticmethod
         def clearTrackingOffsets():
             return
+
+    class MountModel:
+        starList = []
 
     class MountFirmware:
         product = 'test'
@@ -236,7 +254,9 @@ class Mount(QObject):
         firmwareDone = pyqtSignal()
         calcTLEdone = pyqtSignal()
         getTLEdone = pyqtSignal()
+        alignDone = pyqtSignal()
         alert = pyqtSignal()
+        namesDone = pyqtSignal()
         slewFinished = pyqtSignal()
         calcTrajectoryDone = pyqtSignal()
         trajectoryProgress = pyqtSignal()
@@ -355,10 +375,17 @@ class Mount(QObject):
     firmware = MountFirmware()
     setting = MountSetting()
     satellite = MountSatellite()
+    model = MountModel()
 
-    bootMount = None
-    shutdown = None
     host = None
+
+    @staticmethod
+    def bootMount():
+        return True
+
+    @staticmethod
+    def shutdown():
+        return True
 
     @staticmethod
     def getLocation():
@@ -414,17 +441,19 @@ class Cover:
 
     signals = CoverSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Dome:
     class DomeSignals(QObject):
-        class DomeSignals(QObject):
-            message = pyqtSignal(object)
-            azimuth = pyqtSignal()
-            slewFinished = pyqtSignal()
-            deviceDisconnected = pyqtSignal()
-            deviceConnected = pyqtSignal()
-            serverDisconnected = pyqtSignal()
+        message = pyqtSignal(object)
+        azimuth = pyqtSignal()
+        slewFinished = pyqtSignal()
+        deviceDisconnected = pyqtSignal()
+        deviceConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal()
 
     domeShutterWidth = 0.6
     offGEM = 0
@@ -433,7 +462,10 @@ class Dome:
     offEast = 0
     domeRadius = 1.0
     data = {}
+    framework = None
     signals = DomeSignals()
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
     @staticmethod
     def slewDome(altitude=None,
@@ -482,17 +514,60 @@ class Relay:
         deviceDisconnected = pyqtSignal(object)
 
     signals = RelaySignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Camera:
     class CameraSignals(QObject):
         saved = pyqtSignal()
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    @staticmethod
+    def expose(imagePath=None,
+               expTime=None,
+               binning=None,
+               subFrame=None,
+               fastReadout=None,
+               focalLength=None):
+        return
+
+    @staticmethod
+    def abort():
+        return
 
     signals = CameraSignals()
+    expTime = 0
+    expTimeN = 0
+    binning = 1
+    binningN = 1
+    subFrame = 100
+    fastDownload = False
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Focuser:
+    class FocuserSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = FocuserSignals()
+    framework = None
     data = {}
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class DirectWeather:
@@ -505,13 +580,24 @@ class DirectWeather:
 
     signals = DirectWeatherSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Astrometry:
     class AstrometrySignals(QObject):
         done = pyqtSignal()
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
 
     signals = AstrometrySignals()
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class OnlineWeather:
@@ -526,6 +612,9 @@ class OnlineWeather:
         done = pyqtSignal()
 
     signals = OnlineWeatherSignals()
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Data:
@@ -588,6 +677,9 @@ class Filter:
 
     signals = FilterSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Measure:
@@ -600,6 +692,9 @@ class Measure:
 
     signals = MeasureSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class PowerWeather:
@@ -612,6 +707,9 @@ class PowerWeather:
 
     signals = PowerWeatherSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Remote:
@@ -623,6 +721,9 @@ class Remote:
         deviceDisconnected = pyqtSignal(object)
 
     signals = RemoteSignals()
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class SensorWeather:
@@ -635,6 +736,9 @@ class SensorWeather:
 
     signals = SensorWeatherSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class Telescope:
@@ -647,12 +751,16 @@ class Telescope:
 
     signals = TelescopeSignals()
     data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
 
 
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
     update10s = pyqtSignal()
+    timer0_1s = QTimer()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
     update30s = pyqtSignal()
@@ -670,6 +778,7 @@ class App(QObject):
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
     colorChange = pyqtSignal()
+    buildPointsChanged = pyqtSignal()
     playSound = pyqtSignal(object)
     mes = pyqtSignal(object, object, object, object)
     remoteCommand = pyqtSignal(object)
@@ -706,3 +815,23 @@ class App(QObject):
     uiWindows = {}
     threadPool = QThreadPool()
     __version__ = 'test'
+
+    @staticmethod
+    def loadConfig():
+        return
+
+    @staticmethod
+    def saveConfig():
+        return
+
+    @staticmethod
+    def storeConfig():
+        return
+
+    @staticmethod
+    def initConfig():
+        return
+
+    @staticmethod
+    def quit():
+        return

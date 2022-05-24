@@ -263,7 +263,7 @@ class ManageModel(object):
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
         self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
-        self.app.message.emit('Model names refreshed', 0)
+        self.app.messageN.emit(0, 'Model', 'Manage', 'Model names refreshed')
         return True
 
     def refreshName(self):
@@ -294,23 +294,26 @@ class ManageModel(object):
         :return: success
         """
         if self.ui.nameList.currentItem() is None:
-            self.app.message.emit('No model name selected', 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   'No model name selected')
             return False
         modelName = self.ui.nameList.currentItem().text()
         suc = self.app.mount.model.loadName(modelName)
         if not suc:
-            self.app.message.emit(f'Model load failed:   [{modelName}]', 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   f'Model load failed: [{modelName}]')
             return False
         else:
-            self.app.message.emit(f'Model loaded:        [{modelName}]', 0)
+            self.app.messageN.emit(0, 'Model', 'Manage',
+                                   f'Model loaded: [{modelName}]')
             self.refreshModel()
             return True
 
     def saveName(self):
         """
-        saveName take the given name and saves the actual alignment model to the model
-        database in the mount computer. after that it refreshes the list of the alignment
-        model names in mountwizzard.
+        saveName take the given name and saves the actual alignment model to the
+        model database in the mount computer. after that it refreshes the list of
+        the alignment model names in mountwizzard.
 
         :return: success
         """
@@ -322,17 +325,20 @@ class ManageModel(object):
                                     '',
                                     )
         if modelName is None or not modelName:
-            self.app.message.emit('No model name given', 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   'No model name given')
             return False
         if not ok:
             return False
 
         suc = self.app.mount.model.storeName(modelName)
         if not suc:
-            self.app.message.emit('Model [{0}] cannot be saved'.format(modelName), 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   f'Model cannot be saved [{modelName}]')
             return False
         else:
-            self.app.message.emit('Model [{0}] saved'.format(modelName), 0)
+            self.app.messageN.emit(0, 'Model', 'Manage',
+                                   f'Model saved: [{modelName}]')
             self.refreshName()
             return True
 
@@ -345,7 +351,8 @@ class ManageModel(object):
         :return: success
         """
         if self.ui.nameList.currentItem() is None:
-            self.app.message.emit('No model name selected', 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   'No model name selected')
             return False
 
         modelName = self.ui.nameList.currentItem().text()
@@ -361,10 +368,12 @@ class ManageModel(object):
 
         suc = self.app.mount.model.deleteName(modelName)
         if not suc:
-            self.app.message.emit('Model [{0}] cannot be deleted'.format(modelName), 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   f'Model cannot be deleted [{modelName}]')
             return False
         else:
-            self.app.message.emit('Model [{0}] deleted'.format(modelName), 0)
+            self.app.messageN.emit(0, 'Model', 'Manage',
+                                   f'Model deleted: [{modelName}]')
             self.refreshName()
             return True
 
@@ -406,12 +415,12 @@ class ManageModel(object):
         self.ui.cancelOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
-        self.app.message.emit('Align model data refreshed', 0)
-
+        self.app.messageN.emit(0, 'Model', 'Manage', 'Align model data refreshed')
         foundModel, pointsIn, pointsOut = self.findFittingModel()
 
         if foundModel:
-            self.app.message.emit(f'Found stored model:  [{foundModel}]', 0)
+            self.app.messageN.emit(0, 'Model', 'Manage',
+                                   f'Found stored model:  [{foundModel}]')
             self.ui.originalModel.setText(foundModel)
             self.writeBuildModelOptimized(foundModel, pointsIn, pointsOut)
 
@@ -425,11 +434,11 @@ class ManageModel(object):
 
     def refreshModel(self):
         """
-        refreshModel disables interfering functions in gui and start reloading the
-        alignment model from the mount computer. it connects a link to clearRefreshModel
-        which enables the former disabled gui buttons and removes the link to the method.
-        after it triggers the refresh of names, it finished, because behaviour is event
-        driven
+        refreshModel disables interfering functions in gui and start reloading
+        the alignment model from the mount computer. it connects a link to
+        clearRefreshModel which enables the former disabled gui buttons and
+        removes the link to the method. after it triggers the refresh of names,
+        it finished, because behaviour is event driven
 
         :return: True for test purpose
         """
@@ -460,11 +469,13 @@ class ManageModel(object):
 
         suc = self.app.mount.model.clearAlign()
         if not suc:
-            self.app.message.emit('Actual model cannot be cleared', 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   'Actual model cannot be cleared')
             return False
 
         else:
-            self.app.message.emit('Actual model cleared', 0)
+            self.app.messageN.emit(0, 'Model', 'Manage',
+                                   'Actual model cleared')
             self.refreshModel()
             return True
 
@@ -481,13 +492,14 @@ class ManageModel(object):
         error = wStar.errorRMS
         suc = model.deletePoint(wStar.number)
         if not suc:
-            self.app.message.emit('Worst point cannot be deleted', 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   'Worst point cannot be deleted')
             return False
 
         else:
             text = f'Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}'
             text += ' arcsec deleted.'
-            self.app.message.emit(text, 0)
+            self.app.messageN.emit(0, 'Model', 'Manage error', text)
             self.refreshModel()
 
         return True
@@ -510,12 +522,12 @@ class ManageModel(object):
             suc = mount.model.deletePoint(wStar.number)
             if not suc:
                 self.runningOptimize = False
-                self.app.message.emit(f'Star [{wStar.number + 1:3.0f}] cannot be deleted', 2)
+                self.app.messageN.emit(2, 'Model', 'Manage error',
+                                       f'Star [{wStar.number + 1:3.0f}] cannot be deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}: '
                 text += f'RMS of {wStar.errorRMS:5.1f} arcsec deleted.'
-                self.app.message.emit(text, 0)
-
+                self.app.messageN.emit(0, 'Model', 'Manage', text)
             mount.getAlign()
 
         else:
@@ -540,12 +552,12 @@ class ManageModel(object):
             suc = mount.model.deletePoint(wStar.number)
             if not suc:
                 self.runningOptimize = False
-                self.app.message.emit(f'Point {wStar.number + 1:3.0f} cannot be deleted', 2)
-
+                self.app.messageN.emit(2, 'Model', 'Manage error',
+                                       f'Point [{wStar.number + 1:3.0f}] cannot be deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}'
                 text += ' arcsec deleted.'
-                self.app.message.emit(text, 0)
+                self.app.messageN.emit(0, 'Model', 'Manage', text)
 
             mount.getAlign()
 
@@ -557,7 +569,7 @@ class ManageModel(object):
         """
         :return: true for test purpose
         """
-        self.app.message.emit('Start optimizing model', 2)
+        self.app.messageN.emit(1, 'Model', 'Manage', 'Start optimizing model')
         self.runningOptimize = True
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
@@ -587,7 +599,7 @@ class ManageModel(object):
         self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
         self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', False)
-        self.app.message.emit('Optimizing done', 2)
+        self.app.messageN.emit(0, 'Model', 'Manage', 'Optimizing done')
 
         return True
 
@@ -661,11 +673,12 @@ class ManageModel(object):
 
         suc = self.app.mount.model.deletePoint(index)
         if not suc:
-            self.app.message.emit(f'Point {index + 1:3.0f} cannot be deleted', 2)
+            self.app.messageN.emit(2, 'Model', 'Manage error',
+                                   f'Point {index + 1:3.0f} cannot be deleted')
             return False
 
         text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'
         text += ' arcsec deleted.'
-        self.app.message.emit(text, 0)
+        self.app.messageN.emit(0, 'Model', 'Manage', 'Optimizing done')
         self.refreshModel()
         return True

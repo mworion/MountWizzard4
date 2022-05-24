@@ -62,6 +62,7 @@ def function(module):
         colorChange = pyqtSignal()
         showAnalyse = pyqtSignal(object)
         message = pyqtSignal(str, int)
+        messageN = pyqtSignal(object, object, object, object)
         mwGlob = {'imageDir': 'tests/workDir/image',
                   'modelDir': 'tests/workDir/model'}
 

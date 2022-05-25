@@ -35,7 +35,7 @@ if not platform.system() == 'Windows':
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         Azimuth = 100
         Name = 'test'
@@ -58,150 +58,149 @@ def module_setup_teardown():
         @staticmethod
         def SlewToAltitude(altitude):
             return True
-    global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = DomeAscom(app=App(), signals=Signals(), data={})
-        app.client = Test1()
-        app.clientProps = []
-        yield
+        func = DomeAscom(app=App(), signals=Signals(), data={})
+        func.client = Test1()
+        func.clientProps = []
+        yield func
 
 
-def test_workerGetInitialConfig_1():
+def test_workerGetInitialConfig_1(function):
     with mock.patch.object(AscomClass,
                            'getAndStoreAscomProperty',
                            return_value=True):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'getAndStoreAscomProperty'):
-            suc = app.workerGetInitialConfig()
+            suc = function.workerGetInitialConfig()
             assert suc
 
 
-def test_processPolledData_1():
-    suc = app.processPolledData()
+def test_processPolledData_1(function):
+    suc = function.processPolledData()
     assert suc
 
 
-def test_workerPollData_1():
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=0):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getAndStoreAscomProperty'):
-                suc = app.workerPollData()
+                suc = function.workerPollData()
                 assert suc
 
 
-def test_workerPollData_2():
-    with mock.patch.object(app,
+def test_workerPollData_2(function):
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=1):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getAndStoreAscomProperty'):
-                suc = app.workerPollData()
+                suc = function.workerPollData()
                 assert suc
 
 
-def test_workerPollData_3():
-    with mock.patch.object(app,
+def test_workerPollData_3(function):
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=2):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'getAndStoreAscomProperty'):
-                suc = app.workerPollData()
+                suc = function.workerPollData()
                 assert suc
 
 
-def test_slewToAltAz_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_slewToAltAz_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.slewToAltAz()
+        suc = function.slewToAltAz()
         assert not suc
 
 
-def test_slewToAltAz_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_slewToAltAz_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.slewToAltAz()
+        suc = function.slewToAltAz()
         assert suc
 
 
-def test_openShutter_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_openShutter_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.openShutter()
+        suc = function.openShutter()
         assert not suc
 
 
-def test_openShutter_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_openShutter_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.openShutter()
+        suc = function.openShutter()
         assert suc
 
 
-def test_closeShutter_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_closeShutter_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.closeShutter()
+        suc = function.closeShutter()
         assert not suc
 
 
-def test_closeShutter_2():
-    app.data['CanSetShutter'] = True
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_closeShutter_2(function):
+    function.data['CanSetShutter'] = True
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.closeShutter()
+        suc = function.closeShutter()
         assert suc
 
 
-def test_slewCW_1():
-    app.deviceConnected = False
-    suc = app.slewCW()
+def test_slewCW_1(function):
+    function.deviceConnected = False
+    suc = function.slewCW()
     assert not suc
 
 
-def test_slewCW_2():
-    app.deviceConnected = True
-    suc = app.slewCW()
+def test_slewCW_2(function):
+    function.deviceConnected = True
+    suc = function.slewCW()
     assert suc
 
 
-def test_slewCCW_1():
-    app.deviceConnected = False
-    suc = app.slewCCW()
+def test_slewCCW_1(function):
+    function.deviceConnected = False
+    suc = function.slewCCW()
     assert not suc
 
 
-def test_slewCCW_2():
-    app.deviceConnected = True
-    suc = app.slewCCW()
+def test_slewCCW_2(function):
+    function.deviceConnected = True
+    suc = function.slewCCW()
     assert suc
 
 
-def test_abortSlew_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_abortSlew_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.abortSlew()
+        suc = function.abortSlew()
         assert not suc
 
 
-def test_abortSlew_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_abortSlew_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'callMethodThreaded'):
-        suc = app.abortSlew()
+        suc = function.abortSlew()
         assert suc

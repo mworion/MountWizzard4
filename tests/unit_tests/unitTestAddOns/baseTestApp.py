@@ -411,6 +411,14 @@ class Mount(QObject):
     def stopClockTimer():
         return
 
+    @staticmethod
+    def calcTransformationMatricesTarget():
+        return
+
+    @staticmethod
+    def calcTransformationMatricesActual():
+        return
+
 
 class Automation:
     installPath = None

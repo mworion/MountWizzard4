@@ -29,193 +29,192 @@ from logic.dome.dome import Dome
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = Dome(app=App())
-    yield
+def function():
+    func = Dome(app=App())
+    yield func
 
 
-def test_properties_1():
-    app.settlingTime = 1
-    assert app.settlingTime == 1
+def test_properties_1(function):
+    function.settlingTime = 1
+    assert function.settlingTime == 1
 
 
-def test_startCommunication_1():
-    app.domeStarted = False
-    app.framework = ''
-    suc = app.startCommunication()
+def test_startCommunication_1(function):
+    function.domeStarted = False
+    function.framework = ''
+    suc = function.startCommunication()
     assert not suc
-    assert not app.domeStarted
+    assert not function.domeStarted
 
 
-def test_startCommunication_2():
-    app.framework = 'indi'
-    app.domeStarted = False
-    with mock.patch.object(app.run['indi'],
+def test_startCommunication_2(function):
+    function.framework = 'indi'
+    function.domeStarted = False
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=False):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert not suc
-        assert app.domeStarted
+        assert function.domeStarted
 
 
-def test_startCommunication_3():
-    app.framework = 'indi'
-    app.domeStarted = False
-    with mock.patch.object(app.run['indi'],
+def test_startCommunication_3(function):
+    function.framework = 'indi'
+    function.domeStarted = False
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=True):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
-        assert app.domeStarted
+        assert function.domeStarted
 
 
-def test_stopCommunication_1():
-    app.framework = ''
-    suc = app.stopCommunication()
+def test_stopCommunication_1(function):
+    function.framework = ''
+    suc = function.stopCommunication()
     assert not suc
 
 
-def test_stopCommunication_2():
-    app.framework = 'indi'
-    app.domeStarted = True
-    app.app.update1s.connect(app.checkSlewingDome)
-    with mock.patch.object(app.run['indi'],
+def test_stopCommunication_2(function):
+    function.framework = 'indi'
+    function.domeStarted = True
+    function.app.update1s.connect(function.checkSlewingDome)
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=True):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc
-        assert not app.domeStarted
+        assert not function.domeStarted
 
 
-def test_stopCommunication_3():
-    app.framework = 'indi'
-    app.domeStarted = True
-    app.app.update1s.connect(app.checkSlewingDome)
-    with mock.patch.object(app.run['indi'],
+def test_stopCommunication_3(function):
+    function.framework = 'indi'
+    function.domeStarted = True
+    function.app.update1s.connect(function.checkSlewingDome)
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=False):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc
-        assert not app.domeStarted
+        assert not function.domeStarted
 
 
-def test_waitSettlingAndEmit():
-    suc = app.waitSettlingAndEmit()
+def test_waitSettlingAndEmit(function):
+    suc = function.waitSettlingAndEmit()
     assert suc
 
 
-def test_checkSlewingDome_1():
-    app.data['Slewing'] = False
-    with mock.patch.object(app.settlingWait,
+def test_checkSlewingDome_1(function):
+    function.data['Slewing'] = False
+    with mock.patch.object(function.settlingWait,
                            'start'):
-        suc = app.checkSlewingDome()
+        suc = function.checkSlewingDome()
         assert suc
 
 
-def test_checkSlewingDome_2():
-    app.isSlewing = True
-    app.data['Slewing'] = False
-    with mock.patch.object(app.settlingWait,
+def test_checkSlewingDome_2(function):
+    function.isSlewing = True
+    function.data['Slewing'] = False
+    with mock.patch.object(function.settlingWait,
                            'start'):
-        suc = app.checkSlewingDome()
+        suc = function.checkSlewingDome()
         assert suc
 
 
-def test_checkSlewingDome_3():
-    app.data['Slewing'] = True
-    with mock.patch.object(app.settlingWait,
+def test_checkSlewingDome_3(function):
+    function.data['Slewing'] = True
+    with mock.patch.object(function.settlingWait,
                            'start'):
-        suc = app.checkSlewingDome()
+        suc = function.checkSlewingDome()
         assert suc
 
 
-def test_checkSlewingDome_4():
-    app.counterStartSlewing = 0
-    app.isSlewing = False
-    app.data['Slewing'] = False
-    with mock.patch.object(app.settlingWait,
+def test_checkSlewingDome_4(function):
+    function.counterStartSlewing = 0
+    function.isSlewing = False
+    function.data['Slewing'] = False
+    with mock.patch.object(function.settlingWait,
                            'start'):
-        suc = app.checkSlewingDome()
+        suc = function.checkSlewingDome()
         assert suc
 
 
-def test_checkTargetConditions_1():
-    app.overshoot = None
-    app.openingHysteresis = None
-    app.clearanceZenith = None
-    app.radius = None
-    app.clearOpening = None
-    suc = app.checkTargetConditions()
+def test_checkTargetConditions_1(function):
+    function.overshoot = None
+    function.openingHysteresis = None
+    function.clearanceZenith = None
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
     assert not suc
 
 
-def test_checkTargetConditions_2():
-    app.overshoot = None
-    app.openingHysteresis = 0.1
-    app.clearanceZenith = None
-    app.radius = None
-    app.clearOpening = None
-    suc = app.checkTargetConditions()
+def test_checkTargetConditions_2(function):
+    function.overshoot = None
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = None
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
     assert not suc
 
 
-def test_checkTargetConditions_3():
-    app.overshoot = None
-    app.openingHysteresis = 0.1
-    app.clearanceZenith = 0.2
-    app.radius = None
-    app.clearOpening = None
-    suc = app.checkTargetConditions()
+def test_checkTargetConditions_3(function):
+    function.overshoot = None
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
     assert not suc
 
 
-def test_checkTargetConditions_4():
-    app.overshoot = 0
-    app.openingHysteresis = 0.1
-    app.clearanceZenith = 0.2
-    app.radius = None
-    app.clearOpening = None
-    suc = app.checkTargetConditions()
+def test_checkTargetConditions_4(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
     assert not suc
 
 
-def test_checkTargetConditions_5():
-    app.overshoot = 0
-    app.openingHysteresis = 0.1
-    app.clearanceZenith = 0.2
-    app.radius = 1.5
-    app.clearOpening = None
-    suc = app.checkTargetConditions()
+def test_checkTargetConditions_5(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 1.5
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
     assert not suc
 
 
-def test_checkTargetConditions_6():
-    app.overshoot = 0
-    app.openingHysteresis = 0.5
-    app.clearanceZenith = 0.2
-    app.radius = 1.5
-    app.clearOpening = 0.8
-    suc = app.checkTargetConditions()
+def test_checkTargetConditions_6(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.5
+    function.clearanceZenith = 0.2
+    function.radius = 1.5
+    function.clearOpening = 0.8
+    suc = function.checkTargetConditions()
     assert not suc
 
 
-def test_checkTargetConditions_7():
-    app.overshoot = 0
-    app.openingHysteresis = 0.1
-    app.clearanceZenith = 0.2
-    app.radius = 1.5
-    app.clearOpening = 0.8
-    suc = app.checkTargetConditions()
+def test_checkTargetConditions_7(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 1.5
+    function.clearOpening = 0.8
+    suc = function.checkTargetConditions()
     assert suc
 
 
-def test_calcTargetRectanglePoints_1():
-    app.openingHysteresis = 0.1
-    app.clearanceZenith = 0.2
-    app.radius = 10
-    app.clearOpening = 1.2
-    a, b, c = app.calcTargetRectanglePoints(0)
+def test_calcTargetRectanglePoints_1(function):
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 10
+    function.clearOpening = 1.2
+    a, b, c = function.calcTargetRectanglePoints(0)
     assert a[0] == -0.1
     assert a[1] == 0.5
     assert b[0] == 10
@@ -224,12 +223,12 @@ def test_calcTargetRectanglePoints_1():
     assert c[1] == -0.5
 
 
-def test_calcTargetRectanglePoints_2():
-    app.openingHysteresis = 0.1
-    app.clearanceZenith = 0.2
-    app.radius = 10
-    app.clearOpening = 1.2
-    a, b, c = app.calcTargetRectanglePoints(90)
+def test_calcTargetRectanglePoints_2(function):
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 10
+    function.clearOpening = 1.2
+    a, b, c = function.calcTargetRectanglePoints(90)
     assert round(a[0], 5) == 0.5
     assert round(a[1], 5) == 0.1
     assert round(b[0], 5) == 0.5
@@ -238,419 +237,419 @@ def test_calcTargetRectanglePoints_2():
     assert round(c[1], 5) == -10
 
 
-def test_targetInDomeShutter_1():
+def test_targetInDomeShutter_1(function):
     A = np.array([0, 0])
     B = np.array([0, 3])
     C = np.array([4, 3])
     M = np.array([2, 1])
-    suc = app.targetInDomeShutter(A, B, C, M)
+    suc = function.targetInDomeShutter(A, B, C, M)
     assert suc
 
 
-def test_targetInDomeShutter_2():
+def test_targetInDomeShutter_2(function):
     A = np.array([0, 0])
     B = np.array([0, 3])
     C = np.array([4, 3])
     M = np.array([5, 4])
-    suc = app.targetInDomeShutter(A, B, C, M)
+    suc = function.targetInDomeShutter(A, B, C, M)
     assert not suc
 
 
-def test_targetInDomeShutter_3():
+def test_targetInDomeShutter_3(function):
     A = np.array([0, 0])
     B = np.array([0, 3])
     C = np.array([4, 3])
     M = np.array([2, 3])
-    suc = app.targetInDomeShutter(A, B, C, M)
+    suc = function.targetInDomeShutter(A, B, C, M)
     assert suc
 
 
-def test_targetInDomeShutter_4():
+def test_targetInDomeShutter_4(function):
     A = np.array([2, 0])
     B = np.array([0, 2])
     C = np.array([3, 5])
     M = np.array([0, 0])
-    suc = app.targetInDomeShutter(A, B, C, M)
+    suc = function.targetInDomeShutter(A, B, C, M)
     assert not suc
 
 
-def test_targetInDomeShutter_5():
+def test_targetInDomeShutter_5(function):
     A = np.array([2, 0])
     B = np.array([0, 2])
     C = np.array([3, 5])
     M = np.array([2, 2])
-    suc = app.targetInDomeShutter(A, B, C, M)
+    suc = function.targetInDomeShutter(A, B, C, M)
     assert suc
 
 
-def test_checkSlewNeeded_1():
-    with mock.patch.object(app,
+def test_checkSlewNeeded_1(function):
+    with mock.patch.object(function,
                            'checkTargetConditions',
                            return_value=False):
-        suc = app.checkSlewNeeded(0, 0)
+        suc = function.checkSlewNeeded(0, 0)
         assert suc
 
 
-def test_checkSlewNeeded_2():
-    with mock.patch.object(app,
+def test_checkSlewNeeded_2(function):
+    with mock.patch.object(function,
                            'checkTargetConditions',
                            return_value=True):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'calcTargetRectanglePoints',
                                return_value=(0, 1, 2)):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'targetInDomeShutter',
                                    return_value=False):
-                suc = app.checkSlewNeeded(0, 0)
+                suc = function.checkSlewNeeded(0, 0)
                 assert suc
 
 
-def test_checkSlewNeeded_3():
-    with mock.patch.object(app,
+def test_checkSlewNeeded_3(function):
+    with mock.patch.object(function,
                            'checkTargetConditions',
                            return_value=True):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'calcTargetRectanglePoints',
                                return_value=(0, 1, 2)):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'targetInDomeShutter',
                                    return_value=True):
-                suc = app.checkSlewNeeded(0, 0)
+                suc = function.checkSlewNeeded(0, 0)
                 assert not suc
 
 
-def test_checkSlewNeeded_4():
-    app.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
-    app.openingHysteresis = 0.0
-    app.clearanceZenith = 0.3
-    app.radius = 1.5
-    app.clearOpening = 0.8
-    with mock.patch.object(app,
+def test_checkSlewNeeded_4(function):
+    function.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = 0
+    function.openingHysteresis = 0.0
+    function.clearanceZenith = 0.3
+    function.radius = 1.5
+    function.clearOpening = 0.8
+    with mock.patch.object(function,
                            'checkTargetConditions',
                            return_value=True):
-        suc = app.checkSlewNeeded(0, 0)
+        suc = function.checkSlewNeeded(0, 0)
         assert not suc
 
 
-def test_calcSlewTarget_1():
+def test_calcSlewTarget_1(function):
     def func():
         return None, Angle(degrees=10), [5, 10, 0], None, None
 
     azimuth = 20
     altitude = 20
-    app.useGeometry = False
-    alt, az, x, y = app.calcSlewTarget(azimuth, altitude, func)
+    function.useGeometry = False
+    alt, az, x, y = function.calcSlewTarget(azimuth, altitude, func)
     assert alt == 20
     assert az == 20
     assert x is None
     assert y is None
 
 
-def test_calcSlewTarget_2():
+def test_calcSlewTarget_2(function):
     def func():
         return None, Angle(degrees=10), [5, 10, 0], None, None
 
     azimuth = 20
     altitude = 20
-    app.useGeometry = True
+    function.useGeometry = True
 
-    alt, az, x, y = app.calcSlewTarget(azimuth, altitude, func)
+    alt, az, x, y = function.calcSlewTarget(azimuth, altitude, func)
     assert alt == 20
     assert az == 20
     assert x == 5
     assert y == 10
 
 
-def test_calcSlewTarget_3():
+def test_calcSlewTarget_3(function):
     def func():
         return Angle(degrees=10), Angle(degrees=10), [5, 10, 0], None, None
 
     azimuth = 20
     altitude = 20
-    app.useGeometry = True
+    function.useGeometry = True
 
-    alt, az, x, y = app.calcSlewTarget(azimuth, altitude, func)
+    alt, az, x, y = function.calcSlewTarget(azimuth, altitude, func)
     assert alt == 10
     assert az == 10
     assert x == 5
     assert y == 10
 
 
-def test_calcOvershoot_1():
-    app.overshoot = False
-    val = app.calcOvershoot(100)
+def test_calcOvershoot_1(function):
+    function.overshoot = False
+    val = function.calcOvershoot(100)
     assert val == 100
-    assert app.lastFinalAz is None
+    assert function.lastFinalAz is None
 
 
-def test_calcOvershoot_2():
-    app.overshoot = True
-    app.avoidFirstSlewOvershoot = True
-    val = app.calcOvershoot(100)
+def test_calcOvershoot_2(function):
+    function.overshoot = True
+    function.avoidFirstSlewOvershoot = True
+    val = function.calcOvershoot(100)
     assert val == 100
-    assert not app.avoidFirstSlewOvershoot
-    assert app.lastFinalAz is None
+    assert not function.avoidFirstSlewOvershoot
+    assert function.lastFinalAz is None
 
 
-def test_calcOvershoot_3():
-    app.clearOpening = 0.8
-    app.openingHysteresis = 0.2
-    app.radius = 1.5
-    app.avoidFirstSlewOvershoot = False
-    app.overshoot = True
-    app.app.mount.obsSite.AzDirection = None
-    val = app.calcOvershoot(100)
+def test_calcOvershoot_3(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.overshoot = True
+    function.app.mount.obsSite.AzDirection = None
+    val = function.calcOvershoot(100)
     assert val == 100
 
 
-def test_calcOvershoot_4():
-    app.clearOpening = 0.8
-    app.openingHysteresis = 0.2
-    app.radius = 1.5
-    app.avoidFirstSlewOvershoot = False
-    app.overshoot = True
-    app.lastFinalAz = None
-    app.app.mount.obsSite.AzDirection = 1
-    val = app.calcOvershoot(100)
+def test_calcOvershoot_4(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.overshoot = True
+    function.lastFinalAz = None
+    function.app.mount.obsSite.AzDirection = 1
+    val = function.calcOvershoot(100)
     assert round(val, 3) == 107.595
 
 
-def test_calcOvershoot_5():
-    app.clearOpening = 0.8
-    app.openingHysteresis = 0.2
-    app.radius = 1.5
-    app.avoidFirstSlewOvershoot = False
-    app.overshoot = True
-    app.lastFinalAz = 10
-    app.app.mount.obsSite.AzDirection = 1
-    val = app.calcOvershoot(100)
+def test_calcOvershoot_5(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.overshoot = True
+    function.lastFinalAz = 10
+    function.app.mount.obsSite.AzDirection = 1
+    val = function.calcOvershoot(100)
     assert round(val, 3) == 107.595
 
 
-def test_calcOvershoot_6():
-    app.clearOpening = 0.8
-    app.openingHysteresis = 0.2
-    app.radius = 1.5
-    app.avoidFirstSlewOvershoot = False
-    app.app.mount.obsSite.AzDirection = 1
-    app.overshoot = True
-    app.lastFinalAz = 10
-    val = app.calcOvershoot(30)
+def test_calcOvershoot_6(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.app.mount.obsSite.AzDirection = 1
+    function.overshoot = True
+    function.lastFinalAz = 10
+    val = function.calcOvershoot(30)
     assert round(val, 3) == 37.595
 
 
-def test_calcOvershoot_7():
-    app.clearOpening = 0.8
-    app.openingHysteresis = 0.2
-    app.radius = 1.5
-    app.avoidFirstSlewOvershoot = False
-    app.app.mount.obsSite.AzDirection = -1
-    app.overshoot = True
-    app.lastFinalAz = 10
-    val = app.calcOvershoot(30)
+def test_calcOvershoot_7(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.app.mount.obsSite.AzDirection = -1
+    function.overshoot = True
+    function.lastFinalAz = 10
+    val = function.calcOvershoot(30)
     assert round(val, 3) == 22.405
 
 
-def test_calcOvershoot_8():
-    app.clearOpening = 0.8
-    app.openingHysteresis = 0.2
-    app.radius = 1.5
-    app.avoidFirstSlewOvershoot = False
-    app.app.mount.obsSite.AzDirection = -1
-    app.overshoot = True
-    app.lastFinalAz = 10
-    val = app.calcOvershoot(15)
+def test_calcOvershoot_8(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.app.mount.obsSite.AzDirection = -1
+    function.overshoot = True
+    function.lastFinalAz = 10
+    val = function.calcOvershoot(15)
     assert round(val, 3) == 10
 
 
-def test_slewDome_1():
-    app.data = {}
-    suc = app.slewDome()
+def test_slewDome_1(function):
+    function.data = {}
+    suc = function.slewDome()
     assert not suc
 
 
-def test_slewDome_2():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
+def test_slewDome_2(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
     val = (10, 10, None, None)
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'calcSlewTarget',
                            return_value=val):
-        with mock.patch.object(app.run['indi'],
+        with mock.patch.object(function.run['indi'],
                                'slewToAltAz',
                                return_value=val):
-            delta = app.slewDome(0, 0, False)
+            delta = function.slewDome(0, 0, False)
             assert delta == -10
 
 
-def test_slewDome_3():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    app.useDynamicFollowing = True
+def test_slewDome_3(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    function.useDynamicFollowing = True
     val = (10, 10, 0, 0)
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'calcSlewTarget',
                            return_value=val):
-        with mock.patch.object(app.run['indi'],
+        with mock.patch.object(function.run['indi'],
                                'slewToAltAz',
                                return_value=val):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'checkSlewNeeded',
                                    return_value=False):
-                delta = app.slewDome(0, 0, False)
+                delta = function.slewDome(0, 0, False)
                 assert delta == -10
 
 
-def test_slewDome_4():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    app.useDynamicFollowing = True
+def test_slewDome_4(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    function.useDynamicFollowing = True
     val = (10, 10, 0, 0)
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'calcSlewTarget',
                            return_value=val):
-        with mock.patch.object(app.run['indi'],
+        with mock.patch.object(function.run['indi'],
                                'slewToAltAz',
                                return_value=val):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'checkSlewNeeded',
                                    return_value=False):
-                delta = app.slewDome(0, 0, True)
+                delta = function.slewDome(0, 0, True)
                 assert delta == -10
 
 
-def test_avoidFirstOvershoot():
-    app.avoidFirstSlewOvershoot = False
-    suc = app.avoidFirstOvershoot()
+def test_avoidFirstOvershoot(function):
+    function.avoidFirstSlewOvershoot = False
+    suc = function.avoidFirstOvershoot()
     assert suc
-    assert app.avoidFirstSlewOvershoot
+    assert function.avoidFirstSlewOvershoot
 
 
-def test_openShutter_1():
-    app.data = {}
-    suc = app.openShutter()
+def test_openShutter_1(function):
+    function.data = {}
+    suc = function.openShutter()
     assert not suc
 
 
-def test_openShutter_2():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_openShutter_2(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'openShutter',
                            return_value=False):
-        suc = app.openShutter()
+        suc = function.openShutter()
         assert not suc
 
 
-def test_openShutter_3():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_openShutter_3(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'openShutter',
                            return_value=True):
-        suc = app.openShutter()
+        suc = function.openShutter()
         assert suc
 
 
-def test_closeShutter_1():
-    app.data = {}
-    suc = app.closeShutter()
+def test_closeShutter_1(function):
+    function.data = {}
+    suc = function.closeShutter()
     assert not suc
 
 
-def test_closeShutter_2():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_closeShutter_2(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'closeShutter',
                            return_value=False):
-        suc = app.closeShutter()
+        suc = function.closeShutter()
         assert not suc
 
 
-def test_closeShutter_3():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_closeShutter_3(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'closeShutter',
                            return_value=True):
-        suc = app.closeShutter()
+        suc = function.closeShutter()
         assert suc
 
 
-def test_slewCW_1():
-    app.data = {}
-    suc = app.slewCW()
+def test_slewCW_1(function):
+    function.data = {}
+    suc = function.slewCW()
     assert not suc
 
 
-def test_slewCW_2():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_slewCW_2(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'slewCW',
                            return_value=False):
-        suc = app.slewCW()
+        suc = function.slewCW()
         assert not suc
 
 
-def test_slewCW_3():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_slewCW_3(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'slewCW',
                            return_value=True):
-        suc = app.slewCW()
+        suc = function.slewCW()
         assert suc
 
 
-def test_slewCCW_1():
-    app.data = {}
-    suc = app.slewCCW()
+def test_slewCCW_1(function):
+    function.data = {}
+    suc = function.slewCCW()
     assert not suc
 
 
-def test_slewCCW_2():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_slewCCW_2(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'slewCCW',
                            return_value=False):
-        suc = app.slewCCW()
+        suc = function.slewCCW()
         assert not suc
 
 
-def test_slewCCW_3():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_slewCCW_3(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'slewCCW',
                            return_value=True):
-        suc = app.slewCCW()
+        suc = function.slewCCW()
         assert suc
 
 
-def test_abortSlew_1():
-    app.data = {}
-    suc = app.abortSlew()
+def test_abortSlew_1(function):
+    function.data = {}
+    suc = function.abortSlew()
     assert not suc
 
 
-def test_abortSlew_2():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_abortSlew_2(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'abortSlew',
                            return_value=False):
-        suc = app.abortSlew()
+        suc = function.abortSlew()
         assert not suc
 
 
-def test_abortSlew_3():
-    app.data = {'AZ': 1}
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_abortSlew_3(function):
+    function.data = {'AZ': 1}
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'abortSlew',
                            return_value=True):
-        suc = app.abortSlew()
+        suc = function.abortSlew()
         assert suc

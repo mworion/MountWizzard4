@@ -810,6 +810,7 @@ class App(QObject):
               'imageDir': 'tests/workDir/image',
               'dataDir': 'tests/workDir/data',
               'workDir': 'tests/workDir/data',
+              'tempDir': 'tests/workDir/temp',
               'configDir': 'tests/workDir/config',
               }
     uiWindows = {}

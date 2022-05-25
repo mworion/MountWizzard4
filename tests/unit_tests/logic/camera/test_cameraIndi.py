@@ -21,11 +21,11 @@ import unittest.mock as mock
 import zlib
 # external packages
 from astropy.io import fits
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
 from skyfield.api import Angle, load
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.cameraIndi import CameraIndi
 from base.driverDataClass import Signals
 from base.indiClass import IndiClass
@@ -33,23 +33,8 @@ from base.indiClass import IndiClass
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test2:
-        raJNow = Angle(hours=0)
-        decJNow = Angle(degrees=0)
-        timeJD = load.timescale().tt_jd(23456789.5)
-
-    class Test1:
-        obsSite = Test2()
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
-        deviceStat = {'mount': True}
-        mount = Test1()
-
     global app
-    app = CameraIndi(app=Test(), signals=Signals(), data={})
+    app = CameraIndi(app=App(), signals=Signals(), data={})
 
     yield
 

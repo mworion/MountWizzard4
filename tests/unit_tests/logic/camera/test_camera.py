@@ -26,29 +26,14 @@ from PyQt5.QtCore import pyqtSignal
 from skyfield.api import Angle, load
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.camera import Camera
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    class Obssite:
-        raJNow = Angle(hours=12)
-        decJNow = Angle(degrees=90)
-        timeJD = load.timescale().tt_jd(2451544.5)
-
-    class Mount:
-        obsSite = Obssite()
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
-        mount = Mount()
-
-    app = Camera(app=Test())
+    app = Camera(app=App())
     yield app
-    app.threadPool.waitForDone(1000)
 
 
 def test_properties(function):

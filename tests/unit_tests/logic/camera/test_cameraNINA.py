@@ -21,11 +21,9 @@ import unittest.mock as mock
 import os
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-from skyfield.api import Angle, wgs84
 
 # local import
-from mountcontrol.mount import Mount
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.cameraNINA import CameraNINA
 from base.driverDataClass import Signals
 from base.loggerMW import setupLogging
@@ -34,24 +32,8 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class TestApp:
-        threadPool = QThreadPool()
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                              longitude_degrees=0,
-                                              elevation_m=0)
-        mount.obsSite.raJNow = Angle(hours=12)
-        mount.obsSite.decJNow = Angle(degrees=45)
-        deviceStat = {'mount': True}
-
     global app
-    app = CameraNINA(app=Test(), signals=Signals(), data={})
+    app = CameraNINA(app=App(), signals=Signals(), data={})
     yield
 
 

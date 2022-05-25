@@ -24,15 +24,11 @@ if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
-from astropy.io import fits
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-from skyfield.api import Angle, wgs84
 import ctypes
 
 
 # local import
-from mountcontrol.mount import Mount
-from logic.environment.skymeter import Skymeter
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.camera.cameraAscom import CameraAscom
 from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
@@ -78,26 +74,8 @@ def module_setup_teardown():
         def StopExposure():
             return True
 
-    class TestApp:
-        threadPool = QThreadPool()
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
-                                              longitude_degrees=0,
-                                              elevation_m=0)
-
-        mount.obsSite.raJNow = Angle(hours=12)
-        mount.obsSite.decJNow = Angle(degrees=45)
-        deviceStat = {'mount': True}
-        skymeter = Skymeter(app=TestApp())
-
     global app
-    app = CameraAscom(app=Test(), signals=Signals(), data={})
+    app = CameraAscom(app=App(), signals=Signals(), data={})
     app.client = Test1()
     app.clientProps = []
     yield

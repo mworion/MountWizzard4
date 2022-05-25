@@ -26,10 +26,10 @@ import platform
 import builtins
 
 # external packages
-from PyQt5.QtCore import QThreadPool
 from skyfield.api import Angle
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.astrometry.astrometry import Astrometry
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
 
@@ -46,11 +46,7 @@ def module_setup_teardown():
 
 @pytest.fixture(autouse=True, scope='function')
 def app():
-    class Test:
-        threadPool = QThreadPool()
-        mwGlob = {'tempDir': 'tests/workDir/temp'}
-
-    parent = Astrometry(app=Test())
+    parent = Astrometry(app=App())
     app = AstrometryASTAP(parent=parent)
 
     for file in os.listdir('tests/workDir/temp'):

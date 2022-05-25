@@ -24,17 +24,15 @@ import glob
 
 # external packages
 from astropy.io import fits
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-
     yield
-
     files = glob.glob('tests/workDir/image/*.fit*')
     for f in files:
         os.remove(f)
@@ -42,18 +40,11 @@ def module_setup_teardown():
 
 @pytest.fixture(autouse=True, scope='function')
 def app():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        message = pyqtSignal(object, object)
-        mes = pyqtSignal(object, object, object, object)
-        mwGlob = {'tempDir': 'tests/workDir/temp'}
-
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     shutil.copy('tests/testData/astrometry.cfg', 'tests/workDir/temp/astrometry.cfg')
-    app = Astrometry(app=Test())
+    app = Astrometry(app=App())
 
     yield app
-    app.threadPool.waitForDone(3000)
 
 
 def test_properties_1(app):

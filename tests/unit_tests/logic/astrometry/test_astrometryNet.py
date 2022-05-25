@@ -28,6 +28,7 @@ from PyQt5.QtCore import QThreadPool
 from astropy.io import fits
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.astrometry.astrometry import Astrometry
 from logic.astrometry.astrometryNET import AstrometryNET
 
@@ -44,11 +45,7 @@ def module_setup_teardown():
 
 @pytest.fixture(autouse=True, scope='function')
 def app():
-    class Test:
-        threadPool = QThreadPool()
-        mwGlob = {'tempDir': 'tests/workDir/temp'}
-
-    parent = Astrometry(app=Test())
+    parent = Astrometry(app=App())
     app = AstrometryNET(parent=parent)
 
     for file in os.listdir('tests/workDir/temp'):

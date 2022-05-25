@@ -96,9 +96,9 @@ class MessageWindow(toolsQtWidget.MWidget):
         mesTab.setColumnCount(4)
         hl = [' Time', ' Source', ' Type', 'Message / Value']
         mesTab.setHorizontalHeaderLabels(hl)
-        mesTab.setColumnWidth(0, 70)
-        mesTab.setColumnWidth(1, 80)
-        mesTab.setColumnWidth(2, 150)
+        mesTab.setColumnWidth(0, 65)
+        mesTab.setColumnWidth(1, 65)
+        mesTab.setColumnWidth(2, 135)
         mesTab.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
         mesTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         mesTab.verticalHeader().setDefaultSectionSize(16)

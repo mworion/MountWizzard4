@@ -792,6 +792,7 @@ class App(QObject):
     drawHorizonPoints = pyqtSignal()
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
+    showAnalyse = pyqtSignal()
     colorChange = pyqtSignal()
     buildPointsChanged = pyqtSignal()
     playSound = pyqtSignal(object)

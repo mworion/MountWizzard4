@@ -23,7 +23,7 @@ from PyQt5.QtCore import QTimer
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from indibase.qtIndiBase import Client
-
+from base.driverDataClass import Signals
 
 class IndiClass:
     """
@@ -96,6 +96,7 @@ class IndiClass:
         'covercalibrator': (1 << 9) | (1 << 10),
         'switch': (1 << 7) | (1 << 3) | (1 << 15) | (1 << 18),
     }
+    signals = Signals()
 
     def __init__(self, app=None, data=None):
         self.app = app
@@ -493,7 +494,7 @@ class IndiClass:
                 self.mes.emit(0, 'INDI', 'Device warning', f'{device:15s} {text}')
             elif text.startswith('[INFO]'):
                 text = self.removePrefix(text, '[INFO]')
-                self.mes.emit(2, 'INDI', 'Device info', f'{device:15s} {text}')
+                self.mes.emit(0, 'INDI', 'Device info', f'{device:15s} {text}')
             elif text.startswith('[ERROR]'):
                 text = self.removePrefix(text, '[ERROR]')
                 self.mes.emit(2, 'INDI', 'Device error', f'{device:15s} {text}')

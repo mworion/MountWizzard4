@@ -65,6 +65,7 @@ class Astrometry:
 
     def __init__(self, app):
         self.app = app
+        self.mes = app.mes
         self.tempDir = app.mwGlob['tempDir']
         self.threadPool = app.threadPool
         self.signals = AstrometrySignals()
@@ -299,7 +300,7 @@ class Astrometry:
         name = self.run[self.framework].deviceName
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
-            self.app.mes.emit(0, 'System', 'Platesolver found', f'{name}')
+            self.mes.emit(0, 'System', 'Platesolver found', f'{name}')
 
         self.log.debug(f'Framework: [{self.framework}], {sucApp}, {sucIndex}')
         return True
@@ -311,5 +312,5 @@ class Astrometry:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.app.mes.emit(0, 'System', 'Platesolver remove', f'{name}')
+        self.mes.emit(0, 'System', 'Platesolver remove', f'{name}')
         return True

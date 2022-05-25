@@ -31,16 +31,11 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.analyseW import AnalyseWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
-    window = AnalyseWindow(app=App())
-    yield window
+    func = AnalyseWindow(app=App())
+    yield func
 
 
 def test_initConfig_1(function):

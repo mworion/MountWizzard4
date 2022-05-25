@@ -30,121 +30,120 @@ from base.driverDataClass import Signals
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    function
-    app = FocuserIndi(app=App(), signals=Signals(), data={})
-    yield
+    func = FocuserIndi(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_setUpdateConfig_1():
-    app.deviceName = ''
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_1(function):
+    function.deviceName = ''
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_2():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_2(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.setUpdateConfig('test')
+        suc = function.setUpdateConfig('test')
         assert not suc
 
 
-def test_setUpdateConfig_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=False):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert not suc
 
 
-def test_setUpdateConfig_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert suc
 
 
-def test_move_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.move()
+def test_move_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.move()
     assert not suc
 
 
-def test_move_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_move_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.move()
+        suc = function.move()
         assert not suc
 
 
-def test_move_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_move_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'ABS_FOCUS_POSITION': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.move()
+            suc = function.move()
             assert suc
 
 
-def test_halt_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.halt()
+def test_halt_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.halt()
     assert not suc
 
 
-def test_halt_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_halt_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.halt()
+        suc = function.halt()
         assert not suc
 
 
-def test_halt_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_halt_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'ABS_FOCUS_POSITION': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.halt()
+            suc = function.halt()
             assert suc

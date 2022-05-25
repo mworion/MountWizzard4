@@ -85,7 +85,7 @@ def test_writeHeaderSite_1(function):
     function.decJ2000 = Angle(degrees=0)
     suc = function.writeHeaderSite(header, obs)
     assert suc
-    assert header['SITELAT'] == '+00:00:00'
+    assert header['SITELAT'] == '+20:00:00'
 
 
 def test_saveFits_1(function):

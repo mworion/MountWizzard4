@@ -29,57 +29,56 @@ from base.driverDataClass import Signals
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
+    func = FocuserAlpaca(app=App(), signals=Signals(), data={})
+    yield func
 
-    app = FocuserAlpaca(app=App(), signals=Signals(), data={})
-    yield
 
-
-def test_workerPollData_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=1):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert not suc
 
 
-def test_workerPollData_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_workerPollData_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=1):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc
-        assert app.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
+        assert function.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1
 
 
-def test_move_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_move_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'setAlpacaProperty'):
-        suc = app.move(position=0)
+        suc = function.move(position=0)
         assert not suc
 
 
-def test_move_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_move_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'setAlpacaProperty'):
-        suc = app.move(position=0)
+        suc = function.move(position=0)
         assert suc
 
 
-def test_halt_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_halt_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'getAlpacaProperty'):
-        suc = app.halt()
+        suc = function.halt()
         assert not suc
 
 
-def test_halt_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_halt_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAlpacaProperty'):
-        suc = app.halt()
+        suc = function.halt()
         assert suc

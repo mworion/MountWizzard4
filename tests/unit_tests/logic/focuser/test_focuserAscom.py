@@ -47,38 +47,38 @@ def function():
         DriverVersion = '1'
         DriverInfo = 'test1'
 
-    app = FocuserAscom(app=App(), signals=Signals(), data={})
-    app.clientProps = []
-    app.client = Test1()
-    yield
+    func = FocuserAscom(app=App(), signals=Signals(), data={})
+    func.clientProps = []
+    func.client = Test1()
+    yield func
 
 
-def test_workerPollData_1():
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    with mock.patch.object(function,
                            'getAndStoreAscomProperty'):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc
 
 
-def test_move_1():
-    app.deviceConnected = True
-    suc = app.move(3)
+def test_move_1(function):
+    function.deviceConnected = True
+    suc = function.move(3)
     assert suc
 
 
-def test_move_2():
-    app.deviceConnected = False
-    suc = app.move(3)
+def test_move_2(function):
+    function.deviceConnected = False
+    suc = function.move(3)
     assert not suc
 
 
-def test_halt_1():
-    app.deviceConnected = True
-    suc = app.halt()
+def test_halt_1(function):
+    function.deviceConnected = True
+    suc = function.halt()
     assert suc
 
 
-def test_halt_2():
-    app.deviceConnected = False
-    suc = app.halt()
+def test_halt_2(function):
+    function.deviceConnected = False
+    suc = function.halt()
     assert not suc

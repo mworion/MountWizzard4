@@ -33,7 +33,6 @@ from PIL import Image
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
-import gui
 
 
 @pytest.fixture(scope='module')
@@ -44,9 +43,8 @@ def module(qapp):
 @pytest.fixture(scope='function')
 def function(module):
 
-    window = HemisphereWindow(app=App())
-    yield window
-    del window
+    func = HemisphereWindow(app=App())
+    yield func
 
 
 def test_initConfig_1(function):
@@ -333,7 +331,7 @@ def test_staticHorizonLimits_1(function):
 
 
 def test_staticHorizonLimits_2(function):
-    function.app.mount.setting.horizonLimitHigh = 10
+    function.app.mount.setting.horizonLimitHigh = 90
     function.app.mount.setting.horizonLimitLow = 10
     suc = function.drawHorizonLimits()
     assert suc
@@ -449,6 +447,8 @@ def test_setupPointerHem(function):
 
 
 def test_drawPointerHem_1(function):
+    function.app.mount.obsSite.Az = None
+    function.app.mount.obsSite.Alt = None
     function.setupPointerHem()
     suc = function.drawPointerHem()
     assert not suc
@@ -548,44 +548,24 @@ def test_slewSelectedTarget_1(function):
     function.app.mount.obsSite.AltTarget = Angle(degrees=0)
     function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
+                           'startSlewing',
                            return_value=False):
-        with mock.patch.object(function.app.dome,
-                               'slewDome',
-                               return_value=0):
-            suc = function.slewSelectedTarget('test')
-            assert not suc
+        suc = function.slewSelectedTarget('test')
+        assert not suc
 
 
 def test_slewSelectedTarget_2(function):
-    function.app.deviceStat['dome'] = False
-    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
-    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(function.app.dome,
-                               'slewDome',
-                               return_value=5):
-            suc = function.slewSelectedTarget('test')
-            assert not suc
-
-
-def test_slewSelectedTarget_3(function):
     function.app.deviceStat['dome'] = True
     function.app.mount.obsSite.AltTarget = Angle(degrees=0)
     function.app.mount.obsSite.AzTarget = Angle(degrees=0)
     with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
+                           'startSlewing',
                            return_value=True):
         with mock.patch.object(function.app.dome,
                                'slewDome',
                                return_value=5):
-            with mock.patch.object(function.app.mount.obsSite,
-                                   'startSlewing',
-                                   return_value=True):
-                suc = function.slewSelectedTarget('test')
-                assert suc
+            suc = function.slewSelectedTarget('test')
+            assert suc
 
 
 def test_slewDirect_1(function):

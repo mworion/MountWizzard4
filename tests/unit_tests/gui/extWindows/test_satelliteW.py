@@ -32,18 +32,10 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.satelliteW import SatelliteWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
-def ts(qapp):
-    ts = load.timescale(builtin=True)
-    yield ts
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(ts):
-
-    window = SatelliteWindow(app=App())
-    window.app.mount.obsSite.ts = ts
-    yield window
+def function(qapp):
+    func = SatelliteWindow(app=App())
+    yield func
 
 
 def test_initConfig_1(function):

@@ -31,17 +31,12 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.keypadW import KeypadWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
-    window = KeypadWindow(app=App())
-    with mock.patch.object(window,
+def function(qapp):
+    func = KeypadWindow(app=App())
+    with mock.patch.object(func,
                            'show'):
-        yield window
+        yield func
 
 
 def test_initConfig_1(function):

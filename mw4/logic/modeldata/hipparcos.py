@@ -43,10 +43,7 @@ class Hipparcos(object):
 
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 app=None,
-                 ):
-
+    def __init__(self, app=None):
         self.app = app
         self.lat = app.mount.obsSite.location.latitude.degrees
         self.name = list()

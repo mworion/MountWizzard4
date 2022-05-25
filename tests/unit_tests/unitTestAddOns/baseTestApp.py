@@ -128,6 +128,7 @@ class Mount(QObject):
 
     class MountModel:
         starList = []
+        numberStars = 0
 
     class MountFirmware:
         product = 'test'
@@ -250,6 +251,10 @@ class Mount(QObject):
         def setSiderealTracking():
             return True
 
+        @staticmethod
+        def setWebInterface():
+            return True
+
     class MountSignals(QObject):
         locationDone = pyqtSignal()
         settingDone = pyqtSignal()
@@ -349,7 +354,7 @@ class Mount(QObject):
             return True
 
         @staticmethod
-        def startSlewing():
+        def startSlewing(slewType=None):
             return True
 
         @staticmethod
@@ -613,6 +618,14 @@ class Astrometry:
     defaultConfig = {'framework': '',
                      'frameworks': {}}
 
+    @staticmethod
+    def solveThreading():
+        return
+
+    @staticmethod
+    def abort():
+        return
+
 
 class OnlineWeather:
     class OnlineWeatherSignals(QObject):
@@ -646,6 +659,14 @@ class Data:
 
     @staticmethod
     def clear():
+        return
+
+    @staticmethod
+    def clearBuildP():
+        return
+
+    @staticmethod
+    def generateCelestialEquator():
         return
 
     def isAboveHorizon(self, point):
@@ -708,6 +729,7 @@ class Measure:
     signals = MeasureSignals()
     data = {}
     framework = None
+    devices = {}
     defaultConfig = {'framework': '',
                      'frameworks': {}}
 
@@ -767,8 +789,24 @@ class Telescope:
     signals = TelescopeSignals()
     data = {}
     framework = None
+    focalLength = 100
+    aperture = 100
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+
+
+class Hipparcos:
+    name = ['test']
+    az = [10]
+    alt = [10]
+
+    @staticmethod
+    def calculateAlignStarPositionsAltAz():
+        return
+
+    @staticmethod
+    def getAlignStarRaDecFromName():
+        return
 
 
 class App(QObject):
@@ -790,9 +828,13 @@ class App(QObject):
     sendSatelliteData = pyqtSignal()
     updateDomeSettings = pyqtSignal()
     drawHorizonPoints = pyqtSignal()
+    drawBuildPoints = pyqtSignal()
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
-    showAnalyse = pyqtSignal()
+    showAnalyse = pyqtSignal(object)
+    showImage = pyqtSignal(object)
+    updatePointMarker = pyqtSignal()
+    enableEditPoints = pyqtSignal()
     colorChange = pyqtSignal()
     buildPointsChanged = pyqtSignal()
     playSound = pyqtSignal(object)
@@ -820,6 +862,7 @@ class App(QObject):
     sensorWeather = SensorWeather()
     skymeter = Skymeter()
     telescope = Telescope()
+    hipparcos = Hipparcos()
 
     ephemeris = load('tests/testData/de421_23.bsp')
     mwGlob = {'modelDir': 'tests/workDir/model',

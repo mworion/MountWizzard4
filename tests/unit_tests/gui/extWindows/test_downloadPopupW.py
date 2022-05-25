@@ -20,31 +20,23 @@ import unittest.mock as mock
 import pytest
 import os
 import shutil
-import time
 import builtins
 
 # external packages
-from PyQt5.QtCore import QThreadPool, pyqtSignal, QObject
+from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QWidget
 import requests
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui.extWindows.downloadPopupW
 from gui.extWindows.downloadPopupW import DownloadPopup
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
-    class Test(QObject):
-        mes = pyqtSignal(object, object, object, object)
-
+def function(qapp):
     widget = QWidget()
-    widget.app = Test()
+    widget.app = App()
     widget.threadPool = QThreadPool()
     with mock.patch.object(DownloadPopup,
                            'show'):

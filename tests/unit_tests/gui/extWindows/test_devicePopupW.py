@@ -39,13 +39,8 @@ from base.ninaClass import NINAClass
 from base.loggerMW import addLoggingLevel
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
     data = {
         'framework': 'indi',

@@ -31,18 +31,10 @@ from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.simulator import tools
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module, qtbot):
-
-    window = SimulatorWindow(app=App())
-    yield window
-
-    window.deleteLater()
+def function(qapp):
+    func = SimulatorWindow(app=App())
+    yield func
 
 
 def test_initConfig_1(function):
@@ -262,7 +254,10 @@ def test_createScene_2(function):
     function.ui.checkShowPointer.setChecked(True)
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
-    suc = function.createScene()
+    with mock.patch.object(function.app.mount,
+                           'calcTransformationMatricesActual',
+                           return_value=(1, 1, [1, 1, 1], 1, 1)):
+        suc = function.createScene()
     assert suc
 
 
@@ -274,8 +269,11 @@ def test_createScene_3(function):
     function.ui.checkShowPointer.setChecked(True)
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
-    suc = function.createScene()
-    assert suc
+    with mock.patch.object(function.app.mount,
+                           'calcTransformationMatricesActual',
+                           return_value=(1, 1, [1, 1, 1], 1, 1)):
+        suc = function.createScene()
+        assert suc
 
 
 def test_updateSettings_1(function):

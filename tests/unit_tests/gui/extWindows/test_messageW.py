@@ -28,16 +28,10 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
-
-    window = MessageWindow(app=App())
-    yield window
+def function(qapp):
+    func = MessageWindow(app=App())
+    yield func
 
 
 def test_initConfig_1(function):

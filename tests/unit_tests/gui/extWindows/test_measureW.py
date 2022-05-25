@@ -30,24 +30,19 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.measureW import MeasureWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
-    window = MeasureWindow(app=App())
+    func = MeasureWindow(app=App())
 
     value = np.datetime64('2014-12-12 20:20:20')
-    window.app.measure.devices['sensorWeather'] = ''
-    window.app.measure.devices['onlineWeather'] = ''
-    window.app.measure.devices['directWeather'] = ''
-    window.app.measure.devices['power'] = ''
-    window.app.measure.devices['skymeter'] = ''
-    window.app.measure.devices['camera'] = ''
-    window.app.measure.data = {
+    func.app.measure.devices['sensorWeather'] = ''
+    func.app.measure.devices['onlineWeather'] = ''
+    func.app.measure.devices['directWeather'] = ''
+    func.app.measure.devices['power'] = ''
+    func.app.measure.devices['skymeter'] = ''
+    func.app.measure.devices['camera'] = ''
+    func.app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
         'sensorWeatherTemp': np.array([1, 1, 1, 1, 1]),
         'sensorWeatherHum': np.array([1, 1, 1, 1, 1]),
@@ -79,13 +74,12 @@ def function(module):
         'powDew': np.array([1, 1, 1, 1, 1]),
         'cameraTemp': np.array([1, 1, 1, 1, 1]),
     }
-    window.app.measure.data['time'] = np.append(window.app.measure.data['time'], value)
-    window.app.measure.data['time'] = np.append(window.app.measure.data['time'], value)
-    window.app.measure.data['time'] = np.append(window.app.measure.data['time'], value)
-    window.app.measure.data['time'] = np.append(window.app.measure.data['time'], value)
-    window.app.measure.data['time'] = np.append(window.app.measure.data['time'], value)
-
-    yield window
+    func.app.measure.data['time'] = np.append(func.app.measure.data['time'], value)
+    func.app.measure.data['time'] = np.append(func.app.measure.data['time'], value)
+    func.app.measure.data['time'] = np.append(func.app.measure.data['time'], value)
+    func.app.measure.data['time'] = np.append(func.app.measure.data['time'], value)
+    func.app.measure.data['time'] = np.append(func.app.measure.data['time'], value)
+    yield func
 
 
 def test_initConfig_1(function):

@@ -34,17 +34,11 @@ from gui.extWindows.imageW import ImageWindow
 from logic.photometry.photometry import Photometry
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
-    window = ImageWindow(app=App())
-    yield window
-    window.app.threadPool.waitForDone(3000)
+    func = ImageWindow(app=App())
+    yield func
 
 
 def test_initConfig_1(function):
@@ -563,8 +557,9 @@ def test_abortSolve_1(function):
 
 
 def test_slewSelectedTargetWithDome_1(function):
+    function.app.deviceStat['dome'] = False
     suc = function.slewSelectedTargetWithDome()
-    assert not suc
+    assert suc
 
 
 def test_slewSelectedTargetWithDome_2(function):

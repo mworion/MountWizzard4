@@ -31,133 +31,132 @@ setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = CameraNINA(app=App(), signals=Signals(), data={})
-    yield
+def function():
+    func = CameraNINA(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_getCameraTemp_1():
-    with mock.patch.object(app,
+def test_getCameraTemp_1(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc, val = app.getCameraTemp()
+        suc, val = function.getCameraTemp()
         assert not suc
         assert val == {}
 
 
-def test_getCameraTemp_2():
-    with mock.patch.object(app,
+def test_getCameraTemp_2(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc, val = app.getCameraTemp()
+        suc, val = function.getCameraTemp()
         assert suc
         assert val == {'Success': True}
 
 
-def test_setCameraTemp_1():
-    with mock.patch.object(app,
+def test_setCameraTemp_1(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc = app.setCameraTemp(temperature=10)
+        suc = function.setCameraTemp(temperature=10)
         assert not suc
 
 
-def test_setCameraTemp_2():
-    with mock.patch.object(app,
+def test_setCameraTemp_2(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.setCameraTemp(temperature=10)
+        suc = function.setCameraTemp(temperature=10)
         assert suc
 
 
-def test_captureImage_1():
-    with mock.patch.object(app,
+def test_captureImage_1(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc, val = app.captureImage(0)
+        suc, val = function.captureImage(0)
         assert not suc
         assert val == {}
 
 
-def test_captureImage_2():
-    with mock.patch.object(app,
+def test_captureImage_2(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc, val = app.captureImage(0)
+        suc, val = function.captureImage(0)
         assert suc
         assert val == {'Success': True}
 
 
-def test_abortImage_1():
-    with mock.patch.object(app,
+def test_abortImage_1(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc = app.abortImage()
+        suc = function.abortImage()
         assert not suc
 
 
-def test_abortImage_2():
-    with mock.patch.object(app,
+def test_abortImage_2(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.abortImage()
+        suc = function.abortImage()
         assert suc
 
 
-def test_getImagePath_1():
-    with mock.patch.object(app,
+def test_getImagePath_1(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc = app.getImagePath(receipt='1')
+        suc = function.getImagePath(receipt='1')
         assert not suc
 
 
-def test_getImagePath_2():
-    with mock.patch.object(app,
+def test_getImagePath_2(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc = app.getImagePath(receipt='1')
+        suc = function.getImagePath(receipt='1')
         assert suc
 
 
-def test_getCameraProps_1():
-    with mock.patch.object(app,
+def test_getCameraProps_1(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value=None):
-        suc, val = app.getCameraProps()
+        suc, val = function.getCameraProps()
         assert not suc
         assert val == {}
 
 
-def test_getCameraProps_2():
-    with mock.patch.object(app,
+def test_getCameraProps_2(function):
+    with mock.patch.object(function,
                            'requestProperty',
                            return_value={'Success': True}):
-        suc, val = app.getCameraProps()
+        suc, val = function.getCameraProps()
         assert suc
         assert val == {'Success': True}
 
 
-def test_workerGetInitialConfig_1():
-    app.deviceName = 'controlled'
-    suc = app.workerGetInitialConfig()
+def test_workerGetInitialConfig_1(function):
+    function.deviceName = 'controlled'
+    suc = function.workerGetInitialConfig()
     assert not suc
 
 
-def test_workerGetInitialConfig_2():
-    app.deviceName = 'test'
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_2(function):
+    function.deviceName = 'test'
+    with mock.patch.object(function,
                            'storePropertyToData'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'getCameraProps',
                                return_value=(False, {})):
-            suc = app.workerGetInitialConfig()
+            suc = function.workerGetInitialConfig()
             assert not suc
 
 
-def test_workerGetInitialConfig_3():
-    app.deviceName = 'test'
+def test_workerGetInitialConfig_3(function):
+    function.deviceName = 'test'
     val = {
         'Message': 'test',
         'SupportsSubframe': True,
@@ -166,184 +165,184 @@ def test_workerGetInitialConfig_3():
         'GainValues': ['1'],
         'IsoValues': ['1'],
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'storePropertyToData'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'getCameraProps',
                                return_value=(True, val)):
-            suc = app.workerGetInitialConfig()
+            suc = function.workerGetInitialConfig()
             assert suc
 
 
-def test_workerPollData_1():
-    app.deviceName = 'controlled'
-    suc = app.workerPollData()
+def test_workerPollData_1(function):
+    function.deviceName = 'controlled'
+    suc = function.workerPollData()
     assert not suc
 
 
-def test_workerPollData_2():
-    app.deviceName = 'test'
-    app.data['CAN_FAST'] = True
-    with mock.patch.object(app,
+def test_workerPollData_2(function):
+    function.deviceName = 'test'
+    function.data['CAN_FAST'] = True
+    with mock.patch.object(function,
                            'getCameraTemp',
                            return_value=(False, None)):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert not suc
 
 
-def test_workerPollData_3():
-    app.deviceName = 'test'
-    app.data['CAN_FAST'] = True
-    with mock.patch.object(app,
+def test_workerPollData_3(function):
+    function.deviceName = 'test'
+    function.data['CAN_FAST'] = True
+    with mock.patch.object(function,
                            'getCameraTemp',
                            return_value=(True, {'Temperature': 10})):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc
 
 
-def test_sendDownloadMode_1():
-    suc = app.sendDownloadMode()
+def test_sendDownloadMode_1(function):
+    suc = function.sendDownloadMode()
     assert suc
 
 
-def test_workerExpose_1():
-    with mock.patch.object(app,
+def test_workerExpose_1(function):
+    with mock.patch.object(function,
                            'captureImage',
                            return_value=(False, None)):
-        suc = app.workerExpose()
+        suc = function.workerExpose()
         assert not suc
 
 
-def test_workerExpose_2():
-    app.deviceName = 'test'
-    with mock.patch.object(app,
+def test_workerExpose_2(function):
+    function.deviceName = 'test'
+    with mock.patch.object(function,
                            'captureImage',
                            return_value=(True, {})):
-        suc = app.workerExpose()
+        suc = function.workerExpose()
         assert not suc
 
 
-def test_workerExpose_3():
-    app.deviceName = 'test'
-    app.abortExpose = False
-    with mock.patch.object(app,
+def test_workerExpose_3(function):
+    function.deviceName = 'test'
+    function.abortExpose = False
+    with mock.patch.object(function,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'waitStart'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'waitExposedApp'):
-                with mock.patch.object(app,
+                with mock.patch.object(function,
                                        'waitDownload'):
-                    with mock.patch.object(app,
+                    with mock.patch.object(function,
                                            'waitSave'):
                         with mock.patch.object(os.path,
                                                'splitext',
                                                return_value=('test', 'test')):
                             with mock.patch.object(os,
                                                    'rename'):
-                                suc = app.workerExpose()
+                                suc = function.workerExpose()
                                 assert suc
 
 
-def test_workerExpose_4():
-    app.deviceName = 'test'
-    app.data['READOUT_QUALITY.QUALITY_LOW'] = True
-    app.abortExpose = True
-    with mock.patch.object(app,
+def test_workerExpose_4(function):
+    function.deviceName = 'test'
+    function.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    function.abortExpose = True
+    with mock.patch.object(function,
                            'captureImage',
                            return_value=(True, {'Receipt': '123'})):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'waitStart'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'waitExposedApp'):
-                with mock.patch.object(app,
+                with mock.patch.object(function,
                                        'waitDownload'):
-                    with mock.patch.object(app,
+                    with mock.patch.object(function,
                                            'waitSave'):
-                        suc = app.workerExpose()
+                        suc = function.workerExpose()
                         assert suc
 
 
-def test_expose_1():
-    app.deviceConnected = False
-    suc = app.expose()
+def test_expose_1(function):
+    function.deviceConnected = False
+    suc = function.expose()
     assert not suc
 
 
-def test_expose_2():
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
+def test_expose_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.expose()
+        suc = function.expose()
         assert suc
 
 
-def test_abort_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_abort_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'abortImage'):
-        suc = app.abort()
+        suc = function.abort()
         assert not suc
 
 
-def test_abort_2():
-    app.deviceConnected = True
-    app.abortExpose = False
-    with mock.patch.object(app,
+def test_abort_2(function):
+    function.deviceConnected = True
+    function.abortExpose = False
+    with mock.patch.object(function,
                            'abortImage'):
-        suc = app.abort()
+        suc = function.abort()
         assert suc
-        assert app.abortExpose
+        assert function.abortExpose
 
 
-def test_sendCoolerSwitch_1():
-    app.deviceConnected = False
-    suc = app.sendCoolerSwitch()
+def test_sendCoolerSwitch_1(function):
+    function.deviceConnected = False
+    suc = function.sendCoolerSwitch()
     assert not suc
 
 
-def test_sendCoolerSwitch_2():
-    app.deviceConnected = True
-    suc = app.sendCoolerSwitch(coolerOn=True)
+def test_sendCoolerSwitch_2(function):
+    function.deviceConnected = True
+    suc = function.sendCoolerSwitch(coolerOn=True)
     assert suc
 
 
-def test_sendCoolerTemp_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_sendCoolerTemp_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'setCameraTemp'):
-        suc = app.sendCoolerTemp()
+        suc = function.sendCoolerTemp()
         assert not suc
 
 
-def test_sendCoolerTemp_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_sendCoolerTemp_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'setCameraTemp'):
-        suc = app.sendCoolerTemp(temperature=-10)
+        suc = function.sendCoolerTemp(temperature=-10)
         assert suc
 
 
-def test_sendOffset_1():
-    app.deviceConnected = False
-    suc = app.sendOffset()
+def test_sendOffset_1(function):
+    function.deviceConnected = False
+    suc = function.sendOffset()
     assert not suc
 
 
-def test_sendOffset_2():
-    app.deviceConnected = True
-    suc = app.sendOffset(offset=50)
+def test_sendOffset_2(function):
+    function.deviceConnected = True
+    suc = function.sendOffset(offset=50)
     assert suc
 
 
-def test_sendGain_1():
-    app.deviceConnected = False
-    suc = app.sendGain()
+def test_sendGain_1(function):
+    function.deviceConnected = False
+    suc = function.sendGain()
     assert not suc
 
 
-def test_sendGain_2():
-    app.deviceConnected = True
-    suc = app.sendGain(gain=50)
+def test_sendGain_2(function):
+    function.deviceConnected = True
+    suc = function.sendGain(gain=50)
     assert suc

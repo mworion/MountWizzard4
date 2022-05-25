@@ -30,13 +30,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
     for file in ['CDFLeapSeconds.txt', 'finals.data', 'tai-utc.dat']:
         path = 'tests/workDir/data/' + file
         if os.path.isfile(path):

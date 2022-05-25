@@ -30,63 +30,57 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.astrometry.astrometry import Astrometry
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown():
-    yield
+@pytest.fixture(autouse=True, scope='function')
+def function():
     files = glob.glob('tests/workDir/image/*.fit*')
     for f in files:
         os.remove(f)
-
-
-@pytest.fixture(autouse=True, scope='function')
-def app():
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     shutil.copy('tests/testData/astrometry.cfg', 'tests/workDir/temp/astrometry.cfg')
-    app = Astrometry(app=App())
-
-    yield app
-
-
-def test_properties_1(app):
-    app.framework = 'test'
-
-    app.host = ('localhost', 7624)
-    app.apiKey = 'test'
-    app.indexPath = 'test'
-    app.deviceName = 'test'
-    app.timeout = 30
-    app.searchRadius = 20
-    assert app.host == ('localhost', 7624)
-    assert app.apiKey == 'test'
-    assert app.indexPath == 'test'
-    assert app.deviceName == 'test'
-    assert app.timeout == 30
-    assert app.searchRadius == 20
+    func = Astrometry(app=App())
+    yield func
 
 
-def test_properties_2(app):
-    app.framework = 'astap'
+def test_properties_1(function):
+    function.framework = 'test'
 
-    app.host = ('localhost', 7624)
-    app.apiKey = 'test'
-    app.indexPath = 'test'
-    app.deviceName = 'test'
-    app.timeout = 30
-    app.searchRadius = 20
-    assert app.host == ('localhost', 7624)
-    assert app.apiKey == 'test'
-    assert app.indexPath == 'test'
-    assert app.deviceName == 'test'
-    assert app.timeout == 30
-    assert app.searchRadius == 20
-
-
-def test_init_1(app):
-    assert 'astrometry' in app.run
-    assert 'astap' in app.run
+    function.host = ('localhost', 7624)
+    function.apiKey = 'test'
+    function.indexPath = 'test'
+    function.deviceName = 'test'
+    function.timeout = 30
+    function.searchRadius = 20
+    assert function.host == ('localhost', 7624)
+    assert function.apiKey == 'test'
+    assert function.indexPath == 'test'
+    assert function.deviceName == 'test'
+    assert function.timeout == 30
+    assert function.searchRadius == 20
 
 
-def test_readFitsData_1(app):
+def test_properties_2(function):
+    function.framework = 'astap'
+
+    function.host = ('localhost', 7624)
+    function.apiKey = 'test'
+    function.indexPath = 'test'
+    function.deviceName = 'test'
+    function.timeout = 30
+    function.searchRadius = 20
+    assert function.host == ('localhost', 7624)
+    assert function.apiKey == 'test'
+    assert function.indexPath == 'test'
+    assert function.deviceName == 'test'
+    assert function.timeout == 30
+    assert function.searchRadius == 20
+
+
+def test_init_1(function):
+    assert 'astrometry' in function.run
+    assert 'astap' in function.run
+
+
+def test_readFitsData_1(function):
     file = 'tests/workDir/image/test1.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
@@ -94,13 +88,13 @@ def test_readFitsData_1(app):
     header['RA'] = 8.0
     header['DEC'] = 45.0
     hdu.writeto(file)
-    ra, dec, sc = app.readFitsData(file)
+    ra, dec, sc = function.readFitsData(file)
     assert ra
     assert dec
     assert sc is None
 
 
-def test_calcAngleScaleFromWCS_1(app):
+def test_calcAngleScaleFromWCS_1(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -111,21 +105,21 @@ def test_calcAngleScaleFromWCS_1(app):
         CD12 = scaleX * np.sin(phi)
         header.set('CD1_1', CD11)
         header.set('CD1_2', CD12)
-        angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
+        angle, scale, flip = function.calcAngleScaleFromWCS(wcsHeader=header)
         assert np.round(scale, 0) == scaleX * 3600
         assert np.round(angle, 3) == np.round(angleX, 3)
 
 
-def test_calcAngleScaleFromWCS_2(app):
+def test_calcAngleScaleFromWCS_2(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
-    angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
+    angle, scale, flip = function.calcAngleScaleFromWCS(wcsHeader=header)
     assert angle == 0
     assert scale == 0
 
 
-def test_getSolutionFromWCS_1(app):
+def test_getSolutionFromWCS_1(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -133,7 +127,7 @@ def test_getSolutionFromWCS_1(app):
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+    solve, header = function.getSolutionFromWCS(fitsHeader=header,
                                            wcsHeader=header)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
@@ -145,7 +139,7 @@ def test_getSolutionFromWCS_1(app):
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_getSolutionFromWCS_2(app):
+def test_getSolutionFromWCS_2(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -153,7 +147,7 @@ def test_getSolutionFromWCS_2(app):
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+    solve, header = function.getSolutionFromWCS(fitsHeader=header,
                                            wcsHeader=header,
                                            updateFits=True)
     assert solve['raJ2000S'].hours == 12
@@ -166,7 +160,7 @@ def test_getSolutionFromWCS_2(app):
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_getSolutionFromWCS_3(app):
+def test_getSolutionFromWCS_3(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -176,7 +170,7 @@ def test_getSolutionFromWCS_3(app):
     header.set('DEC', 60.0)
     header.set('CTYPE1', 'TAN')
     header.set('CTYPE2', 'TAN')
-    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+    solve, header = function.getSolutionFromWCS(fitsHeader=header,
                                            wcsHeader=header,
                                            updateFits=True)
     assert solve['raJ2000S'].hours == 12
@@ -189,7 +183,7 @@ def test_getSolutionFromWCS_3(app):
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_getSolutionFromWCS_4(app):
+def test_getSolutionFromWCS_4(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -199,7 +193,7 @@ def test_getSolutionFromWCS_4(app):
     header.set('DEC', 60.0)
     header.set('CTYPE1', 'TAN-SIP')
     header.set('CTYPE2', 'TAN-SIP')
-    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+    solve, header = function.getSolutionFromWCS(fitsHeader=header,
                                            wcsHeader=header,
                                            updateFits=True)
     assert solve['raJ2000S'].hours == 12
@@ -212,7 +206,7 @@ def test_getSolutionFromWCS_4(app):
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_getSolutionFromWCS_5(app):
+def test_getSolutionFromWCS_5(function):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -226,7 +220,7 @@ def test_getSolutionFromWCS_5(app):
     header.set('BP_', 60.0)
     header.set('CTYPE1', 'TAN')
     header.set('CTYPE2', 'TAN')
-    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+    solve, header = function.getSolutionFromWCS(fitsHeader=header,
                                            wcsHeader=header,
                                            updateFits=True)
     assert solve['raJ2000S'].hours == 12
@@ -238,90 +232,90 @@ def test_getSolutionFromWCS_5(app):
     assert header['RA'] == header['CRVAL1']
 
 
-def test_solveClear_1(app):
-    app.framework = 'Test'
-    suc = app.solveClear()
+def test_solveClear_1(function):
+    function.framework = 'Test'
+    suc = function.solveClear()
     assert not suc
 
 
-def test_solveClear_2(app):
-    app.framework = 'astap'
-    app.mutexSolve.lock()
-    suc = app.solveClear()
+def test_solveClear_2(function):
+    function.framework = 'astap'
+    function.mutexSolve.lock()
+    suc = function.solveClear()
     assert suc
 
 
-def test_solveThreading_1(app):
-    app.framework = 'Test'
-    suc = app.solveThreading()
+def test_solveThreading_1(function):
+    function.framework = 'Test'
+    suc = function.solveThreading()
     assert not suc
 
 
-def test_solveThreading_2(app):
-    app.framework = 'astap'
-    suc = app.solveThreading()
+def test_solveThreading_2(function):
+    function.framework = 'astap'
+    suc = function.solveThreading()
     assert not suc
 
 
-def test_solveThreading_3(app):
-    app.framework = 'astap'
+def test_solveThreading_3(function):
+    function.framework = 'astap'
     file = 'tests/workDir/image/m51.fit'
-    app.mutexSolve.lock()
-    suc = app.solveThreading(fitsPath=file)
+    function.mutexSolve.lock()
+    suc = function.solveThreading(fitsPath=file)
     assert not suc
-    app.mutexSolve.unlock()
+    function.mutexSolve.unlock()
 
 
-def test_solveThreading_4(app):
-    app.framework = 'astap'
+def test_solveThreading_4(function):
+    function.framework = 'astap'
     file = 'tests/workDir/image/m51.fit'
-    with mock.patch.object(app.threadPool,
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.solveThreading(fitsPath=file)
-        app.mutexSolve.unlock()
+        suc = function.solveThreading(fitsPath=file)
+        function.mutexSolve.unlock()
         assert suc
 
 
-def test_abort_1(app):
-    app.framework = 'test'
-    suc = app.abort()
+def test_abort_1(function):
+    function.framework = 'test'
+    suc = function.abort()
     assert not suc
 
 
-def test_abort_2(app):
-    app.framework = 'astap'
-    with mock.patch.object(app.run['astap'],
+def test_abort_2(function):
+    function.framework = 'astap'
+    with mock.patch.object(function.run['astap'],
                            'abort',
                            return_value=True):
-        suc = app.abort()
+        suc = function.abort()
         assert suc
 
 
-def test_checkAvailability_1(app):
-    app.framework = 'test'
-    val = app.checkAvailability()
+def test_checkAvailability_1(function):
+    function.framework = 'test'
+    val = function.checkAvailability()
     assert val == (False, False)
 
 
-def test_checkAvailability_2(app):
-    app.framework = 'astap'
-    with mock.patch.object(app.run['astap'],
+def test_checkAvailability_2(function):
+    function.framework = 'astap'
+    with mock.patch.object(function.run['astap'],
                            'checkAvailability',
                            return_value=(True, True)):
-        val = app.checkAvailability()
+        val = function.checkAvailability()
         assert val == (True, True)
 
 
-def test_startCommunication(app):
-    app.framework = 'astap'
-    with mock.patch.object(app,
+def test_startCommunication(function):
+    function.framework = 'astap'
+    with mock.patch.object(function,
                            'checkAvailability',
                            return_value=(True, True)):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopCommunication(app):
-    app.framework = 'astrometry'
-    suc = app.stopCommunication()
+def test_stopCommunication(function):
+    function.framework = 'astrometry'
+    suc = function.stopCommunication()
     assert suc

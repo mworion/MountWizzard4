@@ -33,7 +33,7 @@ if not platform.system() == 'Windows':
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         Name = 'test'
         DriverVersion = '1'
@@ -64,128 +64,127 @@ def module_setup_teardown():
         def Brightness(a):
             return True
 
-    global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = CoverAscom(app=App(), signals=Signals(), data={})
-        app.client = Test1()
-        app.clientProps = []
-        yield
+        func = CoverAscom(app=App(), signals=Signals(), data={})
+        func.client = Test1()
+        func.clientProps = []
+        yield func
 
 
-def test_workerPollData_1():
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=1):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'storePropertyToData'):
-            suc = app.workerPollData()
+            suc = function.workerPollData()
             assert suc
 
 
-def test_closeCover_1():
-    app.deviceConnected = False
-    suc = app.closeCover()
+def test_closeCover_1(function):
+    function.deviceConnected = False
+    suc = function.closeCover()
     assert not suc
 
 
-def test_closeCover_2():
-    app.deviceConnected = True
-    suc = app.closeCover()
+def test_closeCover_2(function):
+    function.deviceConnected = True
+    suc = function.closeCover()
     assert suc
 
 
-def test_closeCover_3():
-    app.deviceConnected = True
-    suc = app.closeCover()
+def test_closeCover_3(function):
+    function.deviceConnected = True
+    suc = function.closeCover()
     assert suc
 
 
-def test_openCover_1():
-    app.deviceConnected = False
-    suc = app.openCover()
+def test_openCover_1(function):
+    function.deviceConnected = False
+    suc = function.openCover()
     assert not suc
 
 
-def test_openCover_2():
-    app.deviceConnected = True
-    suc = app.openCover()
+def test_openCover_2(function):
+    function.deviceConnected = True
+    suc = function.openCover()
     assert suc
 
 
-def test_openCover_3():
-    app.deviceConnected = True
-    suc = app.openCover()
+def test_openCover_3(function):
+    function.deviceConnected = True
+    suc = function.openCover()
     assert suc
 
 
-def test_haltCover_1():
-    app.deviceConnected = False
-    suc = app.haltCover()
+def test_haltCover_1(function):
+    function.deviceConnected = False
+    suc = function.haltCover()
     assert not suc
 
 
-def test_haltCover_2():
-    app.deviceConnected = True
-    suc = app.haltCover()
+def test_haltCover_2(function):
+    function.deviceConnected = True
+    suc = function.haltCover()
     assert suc
 
 
-def test_haltCover_3():
-    app.deviceConnected = True
-    suc = app.haltCover()
+def test_haltCover_3(function):
+    function.deviceConnected = True
+    suc = function.haltCover()
     assert suc
 
 
-def test_lightOn_1():
-    app.deviceConnected = False
-    suc = app.lightOn()
+def test_lightOn_1(function):
+    function.deviceConnected = False
+    suc = function.lightOn()
     assert not suc
 
 
-def test_lightOn_2():
-    app.deviceConnected = True
-    suc = app.lightOn()
+def test_lightOn_2(function):
+    function.deviceConnected = True
+    suc = function.lightOn()
     assert suc
 
 
-def test_lightOn_3():
-    app.deviceConnected = True
-    suc = app.lightOn()
+def test_lightOn_3(function):
+    function.deviceConnected = True
+    suc = function.lightOn()
     assert suc
 
 
-def test_lightOff_1():
-    app.deviceConnected = False
-    suc = app.lightOff()
+def test_lightOff_1(function):
+    function.deviceConnected = False
+    suc = function.lightOff()
     assert not suc
 
 
-def test_lightOff_2():
-    app.deviceConnected = True
-    suc = app.lightOff()
+def test_lightOff_2(function):
+    function.deviceConnected = True
+    suc = function.lightOff()
     assert suc
 
 
-def test_lightOff_3():
-    app.deviceConnected = True
-    suc = app.lightOff()
+def test_lightOff_3(function):
+    function.deviceConnected = True
+    suc = function.lightOff()
     assert suc
 
 
-def test_lightIntensity_1():
-    app.deviceConnected = False
-    suc = app.lightIntensity(0)
+def test_lightIntensity_1(function):
+    function.deviceConnected = False
+    suc = function.lightIntensity(0)
     assert not suc
 
 
-def test_lightIntensity_2():
-    app.deviceConnected = True
-    suc = app.lightIntensity(0)
+def test_lightIntensity_2(function):
+    function.deviceConnected = True
+    suc = function.lightIntensity(0)
     assert suc
 
 
-def test_lightIntensity_3():
-    app.deviceConnected = True
-    suc = app.lightIntensity(0)
+def test_lightIntensity_3(function):
+    function.deviceConnected = True
+    suc = function.lightIntensity(0)
     assert suc

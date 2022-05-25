@@ -26,190 +26,189 @@ from logic.cover.cover import Cover
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = Cover(app=App())
-    yield
+def function():
+    func = Cover(app=App())
+    yield func
 
 
-def test_properties():
-    app.framework = 'indi'
-    app.host = ('localhost', 7624)
-    assert app.host == ('localhost', 7624)
+def test_properties(function):
+    function.framework = 'indi'
+    function.host = ('localhost', 7624)
+    assert function.host == ('localhost', 7624)
 
-    app.deviceName = 'test'
-    assert app.deviceName == 'test'
+    function.deviceName = 'test'
+    assert function.deviceName == 'test'
 
 
-def test_startCommunication_1():
-    app.framework = ''
-    suc = app.startCommunication()
+def test_startCommunication_1(function):
+    function.framework = ''
+    suc = function.startCommunication()
     assert not suc
 
 
-def test_startCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_startCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=True):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopCommunication_1():
-    app.framework = ''
-    suc = app.stopCommunication()
+def test_stopCommunication_1(function):
+    function.framework = ''
+    suc = function.stopCommunication()
     assert not suc
 
 
-def test_stopCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_stopCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'stopCommunication',
                            return_value=True):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc
 
 
-def test_closeCover_1():
-    app.framework = ''
-    suc = app.closeCover()
+def test_closeCover_1(function):
+    function.framework = ''
+    suc = function.closeCover()
     assert not suc
 
 
-def test_closeCover_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_closeCover_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'closeCover',
                            return_value=False):
-        suc = app.closeCover()
+        suc = function.closeCover()
         assert not suc
 
 
-def test_closeCover_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_closeCover_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'closeCover',
                            return_value=True):
-        suc = app.closeCover()
+        suc = function.closeCover()
         assert suc
 
 
-def test_openCover_1():
-    app.framework = ''
-    suc = app.openCover()
+def test_openCover_1(function):
+    function.framework = ''
+    suc = function.openCover()
     assert not suc
 
 
-def test_openCover_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_openCover_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'openCover',
                            return_value=False):
-        suc = app.openCover()
+        suc = function.openCover()
         assert not suc
 
 
-def test_openCover_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_openCover_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'openCover',
                            return_value=True):
-        suc = app.openCover()
+        suc = function.openCover()
         assert suc
 
 
-def test_haltCover_1():
-    app.framework = ''
-    suc = app.haltCover()
+def test_haltCover_1(function):
+    function.framework = ''
+    suc = function.haltCover()
     assert not suc
 
 
-def test_haltCover_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_haltCover_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'haltCover',
                            return_value=False):
-        suc = app.haltCover()
+        suc = function.haltCover()
         assert not suc
 
 
-def test_haltCover_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_haltCover_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'haltCover',
                            return_value=True):
-        suc = app.haltCover()
+        suc = function.haltCover()
         assert suc
 
 
-def test_lightOn_1():
-    app.framework = ''
-    suc = app.lightOn()
+def test_lightOn_1(function):
+    function.framework = ''
+    suc = function.lightOn()
     assert not suc
 
 
-def test_lightOn_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_lightOn_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'lightOn',
                            return_value=False):
-        suc = app.lightOn()
+        suc = function.lightOn()
         assert not suc
 
 
-def test_lightOn_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_lightOn_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'lightOn',
                            return_value=True):
-        suc = app.lightOn()
+        suc = function.lightOn()
         assert suc
 
 
-def test_lightOff_1():
-    app.framework = ''
-    suc = app.lightOff()
+def test_lightOff_1(function):
+    function.framework = ''
+    suc = function.lightOff()
     assert not suc
 
 
-def test_lightOff_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_lightOff_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'lightOff',
                            return_value=False):
-        suc = app.lightOff()
+        suc = function.lightOff()
         assert not suc
 
 
-def test_lightOff_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_lightOff_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'lightOff',
                            return_value=True):
-        suc = app.lightOff()
+        suc = function.lightOff()
         assert suc
 
 
-def test_lightIntensity_1():
-    app.framework = ''
-    suc = app.lightIntensity(0)
+def test_lightIntensity_1(function):
+    function.framework = ''
+    suc = function.lightIntensity(0)
     assert not suc
 
 
-def test_lightIntensity_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_lightIntensity_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'lightIntensity',
                            return_value=False):
-        suc = app.lightIntensity(0)
+        suc = function.lightIntensity(0)
         assert not suc
 
 
-def test_lightIntensity_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_lightIntensity_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'lightIntensity',
                            return_value=True):
-        suc = app.lightIntensity(0)
+        suc = function.lightIntensity(0)
         assert suc

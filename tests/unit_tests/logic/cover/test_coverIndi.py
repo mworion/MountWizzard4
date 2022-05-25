@@ -28,409 +28,407 @@ from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = CoverIndi(app=App(), signals=Signals(), data={})
-
-    yield
+def function():
+    func = CoverIndi(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_setUpdateConfig_1():
-    app.deviceName = ''
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_1(function):
+    function.deviceName = ''
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_2():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_2(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.setUpdateConfig('test')
+        suc = function.setUpdateConfig('test')
         assert not suc
 
 
-def test_setUpdateConfig_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=False):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert not suc
 
 
-def test_setUpdateConfig_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert suc
 
 
-def test_updateText_1():
-    app.device = None
-    suc = app.updateText('test', 'test')
+def test_updateText_1(function):
+    function.device = None
+    suc = function.updateText('test', 'test')
     assert not suc
 
 
-def test_updateText_2():
-    app.device = Device()
-    app.deviceName = 'test'
-    with mock.patch.object(app.device,
+def test_updateText_2(function):
+    function.device = Device()
+    function.deviceName = 'test'
+    with mock.patch.object(function.device,
                            'getText',
                            return_value={'Cover': 'OPEN'}):
-        suc = app.updateText('test', 'CAP_PARK')
+        suc = function.updateText('test', 'CAP_PARK')
         assert suc
 
 
-def test_updateText_3():
-    app.device = Device()
-    app.deviceName = 'test'
-    with mock.patch.object(app.device,
+def test_updateText_3(function):
+    function.device = Device()
+    function.deviceName = 'test'
+    with mock.patch.object(function.device,
                            'getText',
                            return_value={'Cover': 'CLOSED'}):
-        suc = app.updateText('test', 'CAP_PARK')
+        suc = function.updateText('test', 'CAP_PARK')
         assert suc
 
 
-def test_updateText_4():
-    app.device = Device()
-    app.deviceName = 'test'
-    with mock.patch.object(app.device,
+def test_updateText_4(function):
+    function.device = Device()
+    function.deviceName = 'test'
+    with mock.patch.object(function.device,
                            'getText',
                            return_value={'Cover': 'test'}):
-        suc = app.updateText('test', 'CAP_PARK')
+        suc = function.updateText('test', 'CAP_PARK')
         assert suc
 
 
-def test_closeCover_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.closeCover()
+def test_closeCover_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.closeCover()
     assert not suc
 
 
-def test_closeCover_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_closeCover_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.closeCover()
+        suc = function.closeCover()
         assert not suc
 
 
-def test_closeCover_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_closeCover_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PARK': 'On',
                                          'UNPARK': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.closeCover()
+            suc = function.closeCover()
             assert not suc
 
 
-def test_closeCover_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_closeCover_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PARK': 'On',
                                          '': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.closeCover()
+            suc = function.closeCover()
             assert not suc
 
 
-def test_closeCover_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_closeCover_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PARK': 'Off',
                                          'UNPARK': 'On'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.closeCover()
+            suc = function.closeCover()
             assert suc
 
 
-def test_openCover_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.openCover()
+def test_openCover_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.openCover()
     assert not suc
 
 
-def test_openCover_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_openCover_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.openCover()
+        suc = function.openCover()
         assert not suc
 
 
-def test_openCover_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_openCover_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PARK': 'On',
                                          'UNPARK': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.openCover()
+            suc = function.openCover()
             assert not suc
 
 
-def test_openCover_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_openCover_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PARK': 'On',
                                          '': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.openCover()
+            suc = function.openCover()
             assert not suc
 
 
-def test_openCover_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_openCover_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PARK': 'Off',
                                          'UNPARK': 'On'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.openCover()
+            suc = function.openCover()
             assert suc
 
 
-def test_haltCover_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.haltCover()
+def test_haltCover_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.haltCover()
     assert not suc
 
 
-def test_lightOn_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.lightOn()
+def test_lightOn_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.lightOn()
     assert not suc
 
 
-def test_lightOn_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_lightOn_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.lightOn()
+        suc = function.lightOn()
         assert not suc
 
 
-def test_lightOn_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightOn_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'FLAT_LIGHT_ON': 'On',
                                          'FLAT_LIGHT_OFF': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.lightOn()
+            suc = function.lightOn()
             assert not suc
 
 
-def test_lightOn_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightOn_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'FLAT_LIGHT_ON': 'On',
                                          '': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.lightOn()
+            suc = function.lightOn()
             assert not suc
 
 
-def test_lightOn_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightOn_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'FLAT_LIGHT_ON': 'Off',
                                          'FLAT_LIGHT_OFF': 'On'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.lightOn()
+            suc = function.lightOn()
             assert suc
 
 
-def test_lightOff_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.lightOff()
+def test_lightOff_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.lightOff()
     assert not suc
 
 
-def test_lightOff_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_lightOff_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.lightOff()
+        suc = function.lightOff()
         assert not suc
 
 
-def test_lightOff_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightOff_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'FLAT_LIGHT_ON': 'Off',
                                          'FLAT_LIGHT_OFF': 'On'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.lightOff()
+            suc = function.lightOff()
             assert not suc
 
 
-def test_lightOff_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightOff_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'FLAT_LIGHT_OFF': 'On',
                                          '': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = app.lightOff()
+            suc = function.lightOff()
             assert not suc
 
 
-def test_lightOff_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightOff_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'FLAT_LIGHT_ON': 'On',
                                          'FLAT_LIGHT_OFF': 'Off'}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.lightOff()
+            suc = function.lightOff()
             assert suc
 
 
-def test_lightIntensity_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.lightIntensity(1)
+def test_lightIntensity_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.lightIntensity(1)
     assert not suc
 
 
-def test_lightIntensity_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_lightIntensity_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.lightIntensity(1)
+        suc = function.lightIntensity(1)
         assert not suc
 
 
-def test_lightIntensity_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightIntensity_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'FLAT_LIGHT_INTENSITY_VALUE': 128}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=False):
-            suc = app.lightIntensity(1)
+            suc = function.lightIntensity(1)
             assert not suc
 
 
-def test_lightIntensity_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    app.UPDATE_RATE = 0
-    with mock.patch.object(app.device,
+def test_lightIntensity_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    function.UPDATE_RATE = 0
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'FLAT_LIGHT_INTENSITY_VALUE': 128}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.lightIntensity(1)
+            suc = function.lightIntensity(1)
             assert suc

@@ -33,15 +33,15 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    app = CameraSupport()
-    app.data = {'CCD_INFO.CCD_PIXEL_SIZE_X': 1,
+    func = CameraSupport()
+    func.data = {'CCD_INFO.CCD_PIXEL_SIZE_X': 1,
                 'CCD_INFO.CCD_PIXEL_SIZE_Y': 1,
                 'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE': 0,
                 }
-    app.abortExpose = False
-    app.app = App()
-    app.signals = Signals()
-    yield app
+    func.abortExpose = False
+    func.app = App()
+    func.signals = Signals()
+    yield func
 
 
 def test_writeHeaderBasic_1(function):

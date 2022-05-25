@@ -32,164 +32,162 @@ from base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = CameraIndi(app=App(), signals=Signals(), data={})
-
-    yield
+def function():
+    func = CameraIndi(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_setUpdateConfig_1():
-    app.deviceName = ''
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_1(function):
+    function.deviceName = ''
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_2():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_2(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.setUpdateConfig('test')
+        suc = function.setUpdateConfig('test')
         assert not suc
 
 
-def test_setUpdateConfig_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD_MS': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=False):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert not suc
 
 
-def test_setUpdateConfig_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD_MS': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert suc
 
 
-def test_setExposureState_1():
-    app.device = Device()
-    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Busy'})
-    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 0.0000001}
-    app.isDownloading = False
-    suc = app.setExposureState()
+def test_setExposureState_1(function):
+    function.device = Device()
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'Busy'})
+    function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 0.0000001}
+    function.isDownloading = False
+    suc = function.setExposureState()
     assert suc
-    assert app.isDownloading
+    assert function.isDownloading
 
 
-def test_setExposureState_2():
-    app.device = Device()
-    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Busy'})
-    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 0.0000001}
-    app.isDownloading = True
-    suc = app.setExposureState()
+def test_setExposureState_2(function):
+    function.device = Device()
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'Busy'})
+    function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 0.0000001}
+    function.isDownloading = True
+    suc = function.setExposureState()
     assert suc
-    assert app.isDownloading
+    assert function.isDownloading
 
 
-def test_setExposureState_3():
-    app.device = Device()
-    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Busy'})
-    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 1}
-    app.isDownloading = True
-    suc = app.setExposureState()
+def test_setExposureState_3(function):
+    function.device = Device()
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'Busy'})
+    function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': 1}
+    function.isDownloading = True
+    suc = function.setExposureState()
     assert suc
-    assert app.isDownloading
+    assert function.isDownloading
 
 
-def test_setExposureState_4():
-    app.device = Device()
-    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Busy'})
-    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
-    app.isDownloading = True
-    suc = app.setExposureState()
+def test_setExposureState_4(function):
+    function.device = Device()
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'Busy'})
+    function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
+    function.isDownloading = True
+    suc = function.setExposureState()
     assert not suc
-    assert app.isDownloading
+    assert function.isDownloading
 
 
-def test_setExposureState_5():
-    app.device = Device()
-    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Ok'})
-    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
-    app.isDownloading = True
-    suc = app.setExposureState()
+def test_setExposureState_5(function):
+    function.device = Device()
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'Ok'})
+    function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
+    function.isDownloading = True
+    suc = function.setExposureState()
     assert suc
-    assert not app.isDownloading
+    assert not function.isDownloading
 
 
-def test_setExposureState_6():
-    app.device = Device()
-    setattr(app.device, 'CCD_EXPOSURE', {'state': 'test'})
-    app.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
-    app.isDownloading = True
-    suc = app.setExposureState()
+def test_setExposureState_6(function):
+    function.device = Device()
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'test'})
+    function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
+    function.isDownloading = True
+    suc = function.setExposureState()
     assert suc
-    assert app.isDownloading
+    assert function.isDownloading
 
 
-def test_sendDownloadMode_1():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendDownloadMode_1(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.sendDownloadMode()
+        suc = function.sendDownloadMode()
         assert not suc
 
 
-def test_updateNumber_1():
-    suc = app.updateNumber('test', 'test')
+def test_updateNumber_1(function):
+    suc = function.updateNumber('test', 'test')
     assert not suc
 
 
-def test_updateNumber_2():
-    app.device = Device()
-    setattr(app.device, 'CCD_EXPOSURE', {'state': 'Busy'})
+def test_updateNumber_2(function):
+    function.device = Device()
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'Busy'})
 
-    app.data = {'AUTO_DEW.DEW_C': 1,
+    function.data = {'AUTO_DEW.DEW_C': 1,
                 'VERSION.UPB': 1}
     with mock.patch.object(IndiClass,
                            'updateNumber',
                            return_value=True):
-        suc = app.updateNumber('test', 'CCD_EXPOSURE')
+        suc = function.updateNumber('test', 'CCD_EXPOSURE')
         assert suc
 
 
-def test_updateNumber_3():
-    app.data = {'AUTO_DEW.DEW_C': 1,
+def test_updateNumber_3(function):
+    function.data = {'AUTO_DEW.DEW_C': 1,
                 'VERSION.UPB': 1}
     with mock.patch.object(IndiClass,
                            'updateNumber',
                            return_value=True):
-        suc = app.updateNumber('test', 'CCD_TEMPERATURE')
+        suc = function.updateNumber('test', 'CCD_TEMPERATURE')
         assert suc
 
 
-def test_updateNumber_4():
-    app.device = Device()
+def test_updateNumber_4(function):
+    function.device = Device()
     data = {
         'elementList': {
             'GAIN': {
@@ -198,18 +196,18 @@ def test_updateNumber_4():
             }
         }
     }
-    setattr(app.device, 'CCD_GAIN', data)
+    setattr(function.device, 'CCD_GAIN', data)
     with mock.patch.object(IndiClass,
                            'updateNumber',
                            return_value=True):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'setExposureState'):
-            suc = app.updateNumber('test', 'CCD_GAIN')
+            suc = function.updateNumber('test', 'CCD_GAIN')
         assert suc
 
 
-def test_updateNumber_5():
-    app.device = Device()
+def test_updateNumber_5(function):
+    function.device = Device()
     data = {
         'elementList': {
             'OFFSET': {
@@ -218,61 +216,61 @@ def test_updateNumber_5():
             }
         }
     }
-    setattr(app.device, 'CCD_OFFSET', data)
+    setattr(function.device, 'CCD_OFFSET', data)
     with mock.patch.object(IndiClass,
                            'updateNumber',
                            return_value=True):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'setExposureState'):
-            suc = app.updateNumber('test', 'CCD_OFFSET')
+            suc = function.updateNumber('test', 'CCD_OFFSET')
         assert suc
 
 
-def test_updateHeaderInfo_1():
+def test_updateHeaderInfo_1(function):
     header = {}
-    app.app.mount.obsSite.raJNow = None
-    app.app.mount.obsSite.decJNow = None
-    app.app.mount.obsSite.timeJD = None
-    h = app.updateHeaderInfo(header)
+    function.app.mount.obsSite.raJNow = None
+    function.app.mount.obsSite.decJNow = None
+    function.app.mount.obsSite.timeJD = None
+    h = function.updateHeaderInfo(header)
     assert 'RA' not in h
     assert 'DEC' not in h
 
 
-def test_updateHeaderInfo_2():
+def test_updateHeaderInfo_2(function):
     header = {'RA': 90,
               'DEC': 90}
-    app.raJ2000 = Angle(hours=12)
-    app.decJ2000 = Angle(degrees=90)
-    app.app.mount.obsSite.raJNow = None
-    app.app.mount.obsSite.decJNow = None
-    app.app.mount.obsSite.timeJD = None
-    h = app.updateHeaderInfo(header)
+    function.raJ2000 = Angle(hours=12)
+    function.decJ2000 = Angle(degrees=90)
+    function.app.mount.obsSite.raJNow = None
+    function.app.mount.obsSite.decJNow = None
+    function.app.mount.obsSite.timeJD = None
+    h = function.updateHeaderInfo(header)
     assert 'RA' in h
     assert 'DEC' in h
 
 
-def test_updateHeaderInfo_3():
+def test_updateHeaderInfo_3(function):
     header = {}
     tsTest = load.timescale().tt_jd(2451544.5)
-    app.app.mount.obsSite.raJNow = Angle(hours=12)
-    app.app.mount.obsSite.decJNow = Angle(degrees=180)
-    app.app.mount.obsSite.timeJD = tsTest
-    app.raJ2000 = Angle(hours=12)
-    app.decJ2000 = Angle(degrees=90)
-    h = app.updateHeaderInfo(header)
+    function.app.mount.obsSite.raJNow = Angle(hours=12)
+    function.app.mount.obsSite.decJNow = Angle(degrees=180)
+    function.app.mount.obsSite.timeJD = tsTest
+    function.raJ2000 = Angle(hours=12)
+    function.decJ2000 = Angle(degrees=90)
+    h = function.updateHeaderInfo(header)
     assert 'RA' in h
     assert 'DEC' in h
     assert h['RA'] != 0
     assert h['DEC'] != 0
 
 
-def test_workerSaveBlobSignalsFinished():
-    suc = app.workerSaveBlobSignalsFinished()
+def test_workerSaveBlobSignalsFinished(function):
+    suc = function.workerSaveBlobSignalsFinished()
     assert suc
 
 
-def test_workerSaveBLOB_1():
-    app.imagePath = 'tests/workDir/image/test.fit'
+def test_workerSaveBLOB_1(function):
+    function.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': '1',
@@ -281,12 +279,12 @@ def test_workerSaveBLOB_1():
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = app.workerSaveBLOB(data)
+        suc = function.workerSaveBLOB(data)
         assert suc
 
 
-def test_workerSaveBLOB_2():
-    app.imagePath = 'tests/workDir/image/test.fit'
+def test_workerSaveBLOB_2(function):
+    function.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': zlib.compress(b'1'),
@@ -295,12 +293,12 @@ def test_workerSaveBLOB_2():
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = app.workerSaveBLOB(data)
+        suc = function.workerSaveBLOB(data)
         assert suc
 
 
-def test_workerSaveBLOB_3():
-    app.imagePath = 'tests/workDir/image/test.fit'
+def test_workerSaveBLOB_3(function):
+    function.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': '1',
@@ -309,12 +307,12 @@ def test_workerSaveBLOB_3():
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = app.workerSaveBLOB(data)
+        suc = function.workerSaveBLOB(data)
         assert suc
 
 
-def test_workerSaveBLOB_4():
-    app.imagePath = 'tests/workDir/image/test.fit'
+def test_workerSaveBLOB_4(function):
+    function.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     data = {'value': '1',
@@ -323,108 +321,108 @@ def test_workerSaveBLOB_4():
     with mock.patch.object(fits.HDUList,
                            'fromstring',
                            return_value=hdu):
-        suc = app.workerSaveBLOB(data)
+        suc = function.workerSaveBLOB(data)
         assert suc
 
 
-def test_updateBLOB_1():
-    app.device = Device()
+def test_updateBLOB_1(function):
+    function.device = Device()
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=False):
-        suc = app.updateBLOB('test', 'test')
+        suc = function.updateBLOB('test', 'test')
         assert not suc
 
 
-def test_updateBLOB_2():
-    app.device = Device()
+def test_updateBLOB_2(function):
+    function.device = Device()
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        with mock.patch.object(app.device,
+        with mock.patch.object(function.device,
                                'getBlob',
                                return_value={}):
-            suc = app.updateBLOB('test', 'test')
+            suc = function.updateBLOB('test', 'test')
             assert not suc
 
 
-def test_updateBLOB_3():
-    app.device = Device()
+def test_updateBLOB_3(function):
+    function.device = Device()
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        with mock.patch.object(app.device,
+        with mock.patch.object(function.device,
                                'getBlob',
                                return_value={'value': 1}):
-            suc = app.updateBLOB('test', 'test')
+            suc = function.updateBLOB('test', 'test')
             assert not suc
 
 
-def test_updateBLOB_4():
-    app.device = Device()
+def test_updateBLOB_4(function):
+    function.device = Device()
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        with mock.patch.object(app.device,
+        with mock.patch.object(function.device,
                                'getBlob',
                                return_value={'value': 1,
                                              'name': 'test'}):
-            suc = app.updateBLOB('test', 'test')
+            suc = function.updateBLOB('test', 'test')
             assert not suc
 
 
-def test_updateBLOB_5():
-    app.device = Device()
+def test_updateBLOB_5(function):
+    function.device = Device()
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        with mock.patch.object(app.device,
+        with mock.patch.object(function.device,
                                'getBlob',
                                return_value={'value': 1,
                                              'name': 'CCD2',
                                              'format': 'test'}):
-            suc = app.updateBLOB('test', 'test')
+            suc = function.updateBLOB('test', 'test')
             assert not suc
 
 
-def test_updateBLOB_6():
-    app.device = Device()
+def test_updateBLOB_6(function):
+    function.device = Device()
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        with mock.patch.object(app.device,
+        with mock.patch.object(function.device,
                                'getBlob',
                                return_value={'value': 1,
                                              'name': 'CCD1',
                                              'format': 'test'}):
-            suc = app.updateBLOB('test', 'test')
+            suc = function.updateBLOB('test', 'test')
             assert not suc
 
 
-def test_updateBLOB_7():
-    app.device = Device()
-    app.imagePath = 'tests/dummy/test.txt'
+def test_updateBLOB_7(function):
+    function.device = Device()
+    function.imagePath = 'tests/dummy/test.txt'
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        with mock.patch.object(app.device,
+        with mock.patch.object(function.device,
                                'getBlob',
                                return_value={'value': 1,
                                              'name': 'CCD1',
                                              'format': 'test'}):
-            suc = app.updateBLOB('test', 'test')
+            suc = function.updateBLOB('test', 'test')
             assert not suc
 
 
-def test_updateBLOB_8():
-    app.device = Device()
-    app.imagePath = 'tests/workDir/image/test.fit'
+def test_updateBLOB_8(function):
+    function.device = Device()
+    function.imagePath = 'tests/workDir/image/test.fit'
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     with mock.patch.object(IndiClass,
                            'updateBLOB',
                            return_value=True):
-        with mock.patch.object(app.device,
+        with mock.patch.object(function.device,
                                'getBlob',
                                return_value={'value': 1,
                                              'name': 'CCD1',
@@ -432,198 +430,198 @@ def test_updateBLOB_8():
             with mock.patch.object(fits.HDUList,
                                    'fromstring',
                                    return_value=hdu):
-                suc = app.updateBLOB('test', 'test')
+                suc = function.updateBLOB('test', 'test')
                 assert suc
 
 
-def test_expose_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.expose()
+def test_expose_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.expose()
     assert not suc
 
 
-def test_expose_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app,
+def test_expose_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function,
                            'sendDownloadMode',
                            return_value=False):
-        suc = app.expose()
+        suc = function.expose()
         assert not suc
 
 
-def test_expose_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_expose_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=False):
-            suc = app.expose()
+            suc = function.expose()
             assert not suc
 
 
-def test_expose_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_expose_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.expose()
+            suc = function.expose()
             assert suc
 
 
-def test_abort_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.abort()
+def test_abort_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.abort()
     assert not suc
 
 
-def test_abort_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_abort_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.abort()
+        suc = function.abort()
         assert not suc
 
 
-def test_abort_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_abort_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'ABORT': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.abort()
+            suc = function.abort()
             assert suc
 
 
-def test_sendCoolerSwitch_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.sendCoolerSwitch()
+def test_sendCoolerSwitch_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.sendCoolerSwitch()
     assert not suc
 
 
-def test_sendCoolerSwitch_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendCoolerSwitch_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'Test': 1}):
-        suc = app.sendCoolerSwitch()
+        suc = function.sendCoolerSwitch()
         assert not suc
 
 
-def test_sendCoolerSwitch_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendCoolerSwitch_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'COOLER_ON': True}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = app.sendCoolerSwitch(True)
+            suc = function.sendCoolerSwitch(True)
             assert suc
 
 
-def test_sendCoolerTemp_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.sendCoolerTemp()
+def test_sendCoolerTemp_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.sendCoolerTemp()
     assert not suc
 
 
-def test_sendCoolerTemp_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendCoolerTemp_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.sendCoolerTemp()
+        suc = function.sendCoolerTemp()
         assert not suc
 
 
-def test_sendCoolerTemp_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendCoolerTemp_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'CCD_TEMPERATURE_VALUE': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.sendCoolerTemp()
+            suc = function.sendCoolerTemp()
             assert suc
 
 
-def test_sendOffset_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.sendOffset()
+def test_sendOffset_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.sendOffset()
     assert not suc
 
 
-def test_sendOffset_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendOffset_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.sendOffset()
+        suc = function.sendOffset()
         assert not suc
 
 
-def test_sendOffset_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendOffset_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'OFFSET': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.sendOffset()
+            suc = function.sendOffset()
             assert suc
 
 
-def test_sendGain_1():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.sendGain()
+def test_sendGain_1(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.sendGain()
     assert not suc
 
 
-def test_sendGain_2():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendGain_2(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.sendGain()
+        suc = function.sendGain()
         assert not suc
 
 
-def test_sendGain_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendGain_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'GAIN': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.sendGain()
+            suc = function.sendGain()
             assert suc

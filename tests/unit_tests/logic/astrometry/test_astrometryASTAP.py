@@ -34,64 +34,56 @@ from logic.astrometry.astrometry import Astrometry
 from logic.astrometry.astrometryASTAP import AstrometryASTAP
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown():
-
-    yield
-
+@pytest.fixture(autouse=True, scope='function')
+def function():
     files = glob.glob('tests/workDir/image/*.fit*')
     for f in files:
         os.remove(f)
-
-
-@pytest.fixture(autouse=True, scope='function')
-def app():
-    parent = Astrometry(app=App())
-    app = AstrometryASTAP(parent=parent)
-
     for file in os.listdir('tests/workDir/temp'):
         fileP = os.path.join('tests/workDir/temp', file)
         if 'temp' not in file:
             continue
         os.remove(fileP)
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    
+    parent = Astrometry(app=App())
+    func = AstrometryASTAP(parent=parent)
+    yield func
 
-    yield app
 
-
-def test_setDefaultPath_1(app):
+def test_setDefaultPath_1(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
-        suc = app.setDefaultPath()
+        suc = function.setDefaultPath()
         assert suc
-        assert app.appPath == '/Applications/ASTAP.app/Contents/MacOS'
+        assert function.appPath == '/Applications/ASTAP.app/Contents/MacOS'
 
 
-def test_setDefaultPath_2(app):
+def test_setDefaultPath_2(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Linux'):
-        suc = app.setDefaultPath()
+        suc = function.setDefaultPath()
         assert suc
-        assert app.appPath == '/opt/astap'
+        assert function.appPath == '/opt/astap'
 
 
-def test_setDefaultPath_3(app):
+def test_setDefaultPath_3(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
-        suc = app.setDefaultPath()
+        suc = function.setDefaultPath()
         assert suc
-        assert app.appPath == 'C:\\Program Files\\astap'
+        assert function.appPath == 'C:\\Program Files\\astap'
 
 
-def test_runASTAP_1(app):
-    suc, ret = app.runASTAP()
+def test_runASTAP_1(function):
+    suc, ret = function.runASTAP()
     assert not suc
 
 
-def test_runASTAP_2(app):
+def test_runASTAP_2(function):
     class Test1:
         @staticmethod
         def decode():
@@ -109,12 +101,12 @@ def test_runASTAP_2(app):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc, ret = app.runASTAP()
+        suc, ret = function.runASTAP()
         assert ret == 1
         assert suc
 
 
-def test_runASTAP_3(app):
+def test_runASTAP_3(function):
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=None):
@@ -122,103 +114,103 @@ def test_runASTAP_3(app):
                                'communicate',
                                return_value=('', ''),
                                side_effect=Exception()):
-            suc, ret = app.runASTAP()
+            suc, ret = function.runASTAP()
             assert not suc
 
 
-def test_runASTAP_4(app):
+def test_runASTAP_4(function):
     with mock.patch.object(subprocess.Popen,
                            'communicate',
                            return_value=('', ''),
                            side_effect=subprocess.TimeoutExpired('run', 1)):
-        suc, ret = app.runASTAP(binPath='clear')
+        suc, ret = function.runASTAP(binPath='clear')
         assert not suc
 
 
-def test_getWCSHeader_1(app):
-    val = app.getWCSHeader()
+def test_getWCSHeader_1(function):
+    val = function.getWCSHeader()
     assert val is None
 
 
-def test_getWCSHeader_2(app):
+def test_getWCSHeader_2(function):
     shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
     with open('tests/workDir/temp/temp.wcs') as wcsTextFile:
-        val = app.getWCSHeader(wcsTextFile=wcsTextFile)
+        val = function.getWCSHeader(wcsTextFile=wcsTextFile)
     assert val
 
 
-def test_solve_1(app):
-    suc = app.solve()
+def test_solve_1(function):
+    suc = function.solve()
     assert not suc
 
 
-def test_solve_2(app):
-    suc = app.solve()
+def test_solve_2(function):
+    suc = function.solve()
     assert not suc
 
 
-def test_solve_3(app):
-    with mock.patch.object(app,
+def test_solve_3(function):
+    with mock.patch.object(function,
                            'runASTAP',
                            return_value=(False, 1)):
-        suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
+        suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
         assert not suc
 
 
-def test_solve_4(app):
-    with mock.patch.object(app,
+def test_solve_4(function):
+    with mock.patch.object(function,
                            'runASTAP',
                            return_value=(True, 0)):
-        suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
+        suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
         assert not suc
 
 
-def test_solve_5(app):
-    with mock.patch.object(app,
+def test_solve_5(function):
+    with mock.patch.object(function,
                            'runASTAP',
                            return_value=(True, 0)):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
             shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
-            suc = app.solve(fitsPath='tests/workDir/image/m51.fit')
+            suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
             assert suc
 
 
-def test_solve_6(app):
+def test_solve_6(function):
     raHint = Angle(hours=10)
     decHint = Angle(degrees=10)
-    app.searchRadius = 180
-    with mock.patch.object(app,
+    function.searchRadius = 180
+    with mock.patch.object(function,
                            'runASTAP',
                            return_value=(True, 0)):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
             shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
-            suc = app.solve(fitsPath='tests/workDir/image/m51.fit',
-                            raHint=raHint, decHint=decHint)
+            suc = function.solve(fitsPath='tests/workDir/image/m51.fit',
+                                 raHint=raHint, decHint=decHint)
             assert suc
 
 
-def test_abort_1(app):
-    app.process = None
-    suc = app.abort()
+def test_abort_1(function):
+    function.process = None
+    suc = function.abort()
     assert not suc
 
 
-def test_abort_2(app):
+def test_abort_2(function):
     class Test:
         @staticmethod
         def kill():
             return True
-    app.framework = 'ASTAP'
-    app.process = Test()
-    suc = app.abort()
+    function.framework = 'ASTAP'
+    function.process = Test()
+    suc = function.abort()
     assert suc
 
 
-def test_checkAvailability_1(app):
+def test_checkAvailability_1(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
@@ -231,11 +223,11 @@ def test_checkAvailability_1(app):
                 with mock.patch.object(platform,
                                        'system',
                                        return_value='Darwin'):
-                    suc = app.checkAvailability()
+                    suc = function.checkAvailability()
                     assert suc == (True, True)
 
 
-def test_checkAvailability_2(app):
+def test_checkAvailability_2(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
@@ -248,11 +240,11 @@ def test_checkAvailability_2(app):
                 with mock.patch.object(platform,
                                        'system',
                                        return_value='Linux'):
-                    suc = app.checkAvailability()
+                    suc = function.checkAvailability()
                     assert suc == (True, True)
 
 
-def test_checkAvailability_3(app):
+def test_checkAvailability_3(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
@@ -265,11 +257,11 @@ def test_checkAvailability_3(app):
                 with mock.patch.object(platform,
                                        'system',
                                        return_value='Windows'):
-                    suc = app.checkAvailability()
+                    suc = function.checkAvailability()
                     assert suc == (True, True)
 
 
-def test_checkAvailability_4(app):
+def test_checkAvailability_4(function):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
@@ -282,5 +274,5 @@ def test_checkAvailability_4(app):
                 with mock.patch.object(platform,
                                        'system',
                                        return_value='Linux'):
-                    suc = app.checkAvailability()
+                    suc = function.checkAvailability()
                     assert suc == (False, False)

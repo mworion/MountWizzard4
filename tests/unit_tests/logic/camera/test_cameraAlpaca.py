@@ -31,223 +31,222 @@ setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = CameraAlpaca(app=App(), signals=Signals(), data={})
-    yield
+def function():
+    func = CameraAlpaca(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_workerGetInitialConfig_1():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_1(function):
+    with mock.patch.object(function,
                            'getAndStoreAlpacaProperty'):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
 
 
-def test_workerPollData_1():
-    app.data['CAN_FAST'] = True
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    function.data['CAN_FAST'] = True
+    with mock.patch.object(function,
                            'getAndStoreAlpacaProperty'):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc
 
 
-def test_pollData_1():
-    app.deviceConnected = False
-    with mock.patch.object(app.threadPool,
+def test_pollData_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.pollData()
+        suc = function.pollData()
         assert not suc
 
 
-def test_pollData_2():
-    app.deviceConnected = True
-    with mock.patch.object(app.threadPool,
+def test_pollData_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.pollData()
+        suc = function.pollData()
         assert suc
 
 
-def test_sendDownloadMode_1():
-    app.data['CAN_FAST'] = True
-    with mock.patch.object(app,
+def test_sendDownloadMode_1(function):
+    function.data['CAN_FAST'] = True
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=False):
-        suc = app.sendDownloadMode()
+        suc = function.sendDownloadMode()
         assert suc
 
 
-def test_sendDownloadMode_2():
-    app.data['CAN_FAST'] = True
-    with mock.patch.object(app,
+def test_sendDownloadMode_2(function):
+    function.data['CAN_FAST'] = True
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendDownloadMode(fastReadout=True)
+        suc = function.sendDownloadMode(fastReadout=True)
         assert suc
 
 
-def test_sendDownloadMode_3():
-    app.data['CAN_FAST'] = False
-    with mock.patch.object(app,
+def test_sendDownloadMode_3(function):
+    function.data['CAN_FAST'] = False
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendDownloadMode()
+        suc = function.sendDownloadMode()
         assert not suc
 
 
-def test_workerExpose_1():
-    with mock.patch.object(app,
+def test_workerExpose_1(function):
+    with mock.patch.object(function,
                            'sendDownloadMode'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'setAlpacaProperty'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'waitExposed'):
-                with mock.patch.object(app,
+                with mock.patch.object(function,
                                        'retrieveFits'):
-                    with mock.patch.object(app,
+                    with mock.patch.object(function,
                                            'saveFits'):
-                        suc = app.workerExpose()
+                        suc = function.workerExpose()
                         assert suc
 
 
-def test_expose_1():
-    with mock.patch.object(app.threadPool,
+def test_expose_1(function):
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.expose()
+        suc = function.expose()
         assert suc
 
 
-def test_expose_2():
-    app.deviceConnected = True
-    app.data['CCD_BINNING.HOR_BIN_MAX'] = 3
-    app.data['CCD_BINNING.VERT_BIN_MAX'] = 3
+def test_expose_2(function):
+    function.deviceConnected = True
+    function.data['CCD_BINNING.HOR_BIN_MAX'] = 3
+    function.data['CCD_BINNING.VERT_BIN_MAX'] = 3
 
-    with mock.patch.object(app.threadPool,
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.expose()
+        suc = function.expose()
         assert suc
 
 
-def test_expose_3():
-    app.deviceConnected = True
-    app.data['CCD_BINNING.HOR_BIN_MAX'] = 3
-    app.data['CCD_BINNING.VERT_BIN_MAX'] = 3
+def test_expose_3(function):
+    function.deviceConnected = True
+    function.data['CCD_BINNING.HOR_BIN_MAX'] = 3
+    function.data['CCD_BINNING.VERT_BIN_MAX'] = 3
 
-    with mock.patch.object(app.threadPool,
+    with mock.patch.object(function.threadPool,
                            'start'):
-        suc = app.expose(expTime=1,
+        suc = function.expose(expTime=1,
                          binning=4)
         assert suc
 
 
-def test_abort_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_abort_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=True):
-        suc = app.abort()
+        suc = function.abort()
         assert not suc
 
 
-def test_abort_2():
-    app.deviceConnected = True
-    app.data['CAN_ABORT'] = False
-    with mock.patch.object(app,
+def test_abort_2(function):
+    function.deviceConnected = True
+    function.data['CAN_ABORT'] = False
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=True):
-        suc = app.abort()
+        suc = function.abort()
         assert not suc
 
 
-def test_abort_3():
-    app.deviceConnected = True
-    app.data['CAN_ABORT'] = True
-    with mock.patch.object(app,
+def test_abort_3(function):
+    function.deviceConnected = True
+    function.data['CAN_ABORT'] = True
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=True):
-        suc = app.abort()
+        suc = function.abort()
         assert suc
 
 
-def test_sendCoolerSwitch_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_sendCoolerSwitch_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendCoolerSwitch()
+        suc = function.sendCoolerSwitch()
         assert not suc
 
 
-def test_sendCoolerSwitch_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_sendCoolerSwitch_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendCoolerSwitch(coolerOn=True)
+        suc = function.sendCoolerSwitch(coolerOn=True)
         assert suc
 
 
-def test_sendCoolerTemp_1():
-    app.deviceConnected = False
-    app.data['CAN_SET_CCD_TEMPERATURE'] = True
-    with mock.patch.object(app,
+def test_sendCoolerTemp_1(function):
+    function.deviceConnected = False
+    function.data['CAN_SET_CCD_TEMPERATURE'] = True
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendCoolerTemp()
+        suc = function.sendCoolerTemp()
         assert not suc
 
 
-def test_sendCoolerTemp_2():
-    app.deviceConnected = True
-    app.data['CAN_SET_CCD_TEMPERATURE'] = False
-    with mock.patch.object(app,
+def test_sendCoolerTemp_2(function):
+    function.deviceConnected = True
+    function.data['CAN_SET_CCD_TEMPERATURE'] = False
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendCoolerTemp(temperature=-10)
+        suc = function.sendCoolerTemp(temperature=-10)
         assert not suc
 
 
-def test_sendCoolerTemp_3():
-    app.deviceConnected = True
-    app.data['CAN_SET_CCD_TEMPERATURE'] = True
-    with mock.patch.object(app,
+def test_sendCoolerTemp_3(function):
+    function.deviceConnected = True
+    function.data['CAN_SET_CCD_TEMPERATURE'] = True
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendCoolerTemp(temperature=-10)
+        suc = function.sendCoolerTemp(temperature=-10)
         assert suc
 
 
-def test_sendOffset_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_sendOffset_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendOffset()
+        suc = function.sendOffset()
         assert not suc
 
 
-def test_sendOffset_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_sendOffset_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendOffset(offset=50)
+        suc = function.sendOffset(offset=50)
         assert suc
 
 
-def test_sendGain_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_sendGain_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendGain()
+        suc = function.sendGain()
         assert not suc
 
 
-def test_sendGain_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_sendGain_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'setAlpacaProperty',
                            return_value=True):
-        suc = app.sendGain(gain=50)
+        suc = function.sendGain(gain=50)
         assert suc

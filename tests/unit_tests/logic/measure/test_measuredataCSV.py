@@ -29,7 +29,7 @@ from logic.measure.measureCSV import MeasureDataCSV
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         @staticmethod
         def setEmptyData():
@@ -39,69 +39,68 @@ def module_setup_teardown():
         def measureTask():
             return True
 
-    global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = MeasureDataCSV(app=App(), parent=Test1())
-        yield
+        func = MeasureDataCSV(app=App(), parent=Test1())
+        yield func
 
 
-def test_startCommunication():
-    with mock.patch.object(app.timerTask,
+def test_startCommunication(function):
+    with mock.patch.object(function.timerTask,
                            'start'):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopCommunication():
-    with mock.patch.object(app.timerTask,
+def test_stopCommunication(function):
+    with mock.patch.object(function.timerTask,
                            'stop'):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc
 
 
-def test_openCSV_1():
-    suc = app.openCSV()
+def test_openCSV_1(function):
+    suc = function.openCSV()
     assert suc
 
 
-def test_writeCSV_1():
-    suc = app.writeCSV()
+def test_writeCSV_1(function):
+    suc = function.writeCSV()
     assert not suc
 
 
-def test_writeCSV_2():
-    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
-    suc = app.writeCSV()
+def test_writeCSV_2(function):
+    function.csvFile = open('tests/workDir/temp/test.csv', 'w')
+    suc = function.writeCSV()
     assert not suc
 
 
-def test_writeCSV_3():
-    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
-    app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
-    app.data = {'test': [1, 2]}
-    suc = app.writeCSV()
+def test_writeCSV_3(function):
+    function.csvFile = open('tests/workDir/temp/test.csv', 'w')
+    function.csvWriter = csv.DictWriter(function.csvFile, ['test'])
+    function.data = {'test': [1, 2]}
+    suc = function.writeCSV()
     assert suc
 
 
-def test_closeCSV_1():
-    suc = app.closeCSV()
+def test_closeCSV_1(function):
+    suc = function.closeCSV()
     assert not suc
 
 
-def test_closeCSV_2():
-    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
-    suc = app.closeCSV()
+def test_closeCSV_2(function):
+    function.csvFile = open('tests/workDir/temp/test.csv', 'w')
+    suc = function.closeCSV()
     assert not suc
 
 
-def test_closeCSV_3():
-    app.csvFile = open('tests/workDir/temp/test.csv', 'w')
-    app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
-    suc = app.closeCSV()
+def test_closeCSV_3(function):
+    function.csvFile = open('tests/workDir/temp/test.csv', 'w')
+    function.csvWriter = csv.DictWriter(function.csvFile, ['test'])
+    suc = function.closeCSV()
     assert suc
 
 
-def test_measureTask():
-    suc = app.measureTask()
+def test_measureTask(function):
+    suc = function.measureTask()
     assert suc

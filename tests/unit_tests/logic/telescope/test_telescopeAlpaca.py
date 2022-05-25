@@ -30,24 +30,24 @@ from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
+def function():
+
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TelescopeAlpaca(app=App(), signals=Signals(), data={})
-        yield
+        func = TelescopeAlpaca(app=App(), signals=Signals(), data={})
+        yield func
 
 
-def test_workerGetInitialConfig_1():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_1(function):
+    with mock.patch.object(function,
                            'getAndStoreAlpacaProperty'):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
 
 
-def test_workerGetInitialConfig_2():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_2(function):
+    with mock.patch.object(function,
                            'getAndStoreAlpacaProperty',
                            return_value=100):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc

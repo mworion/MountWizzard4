@@ -32,7 +32,7 @@ if not platform.system() == 'Windows':
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         Name = 'test'
         DriverVersion = '1'
@@ -46,172 +46,171 @@ def module_setup_teardown():
         def getswitchvalue(a):
             return 0
 
-    global app
-    app = PegasusUPBAscom(app=App(), signals=Signals(), data={})
-    app.clientProps = []
-    app.client = Test1()
-    yield
+    func = PegasusUPBAscom(app=App(), signals=Signals(), data={})
+    func.clientProps = []
+    func.client = Test1()
+    yield func
 
 
-def test_workerPollData_1():
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=15):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc
 
 
-def test_workerPollData_2():
-    with mock.patch.object(app,
+def test_workerPollData_2(function):
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=21):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc
 
 
-def test_togglePowerPort_1():
-    app.deviceConnected = False
-    suc = app.togglePowerPort()
+def test_togglePowerPort_1(function):
+    function.deviceConnected = False
+    suc = function.togglePowerPort()
     assert not suc
 
 
-def test_togglePowerPort_2():
-    app.deviceConnected = True
-    suc = app.togglePowerPort()
+def test_togglePowerPort_2(function):
+    function.deviceConnected = True
+    suc = function.togglePowerPort()
     assert not suc
 
 
-def test_togglePowerPort_3():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_togglePowerPort_3(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'callAscomMethod'):
-        suc = app.togglePowerPort('1')
+        suc = function.togglePowerPort('1')
         assert suc
 
 
-def test_togglePowerPortBoot_1():
-    app.deviceConnected = False
-    suc = app.togglePowerPortBoot()
+def test_togglePowerPortBoot_1(function):
+    function.deviceConnected = False
+    suc = function.togglePowerPortBoot()
     assert not suc
 
 
-def test_togglePowerPortBoot_2():
-    app.deviceConnected = True
-    suc = app.togglePowerPortBoot()
+def test_togglePowerPortBoot_2(function):
+    function.deviceConnected = True
+    suc = function.togglePowerPortBoot()
     assert suc
 
 
-def test_toggleHubUSB_1():
-    app.deviceConnected = False
-    suc = app.toggleHubUSB()
+def test_toggleHubUSB_1(function):
+    function.deviceConnected = False
+    suc = function.toggleHubUSB()
     assert not suc
 
 
-def test_toggleHubUSB_2():
-    app.deviceConnected = True
-    suc = app.toggleHubUSB()
+def test_toggleHubUSB_2(function):
+    function.deviceConnected = True
+    suc = function.toggleHubUSB()
     assert suc
 
 
-def test_togglePortUSB_1():
-    app.deviceConnected = False
-    suc = app.togglePortUSB()
+def test_togglePortUSB_1(function):
+    function.deviceConnected = False
+    suc = function.togglePortUSB()
     assert not suc
 
 
-def test_togglePortUSB_2():
-    app.deviceConnected = True
-    suc = app.togglePortUSB()
+def test_togglePortUSB_2(function):
+    function.deviceConnected = True
+    suc = function.togglePortUSB()
     assert not suc
 
 
-def test_togglePortUSB_3():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_togglePortUSB_3(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=21):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'callAscomMethod'):
-            suc = app.togglePortUSB('1')
+            suc = function.togglePortUSB('1')
             assert suc
 
 
-def test_toggleAutoDew_1():
-    app.deviceConnected = False
-    suc = app.toggleAutoDew()
+def test_toggleAutoDew_1(function):
+    function.deviceConnected = False
+    suc = function.toggleAutoDew()
     assert not suc
 
 
-def test_toggleAutoDew_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_toggleAutoDew_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=21):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'callAscomMethod'):
-            suc = app.toggleAutoDew()
+            suc = function.toggleAutoDew()
             assert suc
 
 
-def test_toggleAutoDew_3():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_toggleAutoDew_3(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=15):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'callAscomMethod'):
-            suc = app.toggleAutoDew()
+            suc = function.toggleAutoDew()
             assert suc
 
 
-def test_sendDew_1():
-    app.deviceConnected = False
-    suc = app.sendDew()
+def test_sendDew_1(function):
+    function.deviceConnected = False
+    suc = function.sendDew()
     assert not suc
 
 
-def test_sendDew_2():
-    app.deviceConnected = True
-    suc = app.sendDew()
+def test_sendDew_2(function):
+    function.deviceConnected = True
+    suc = function.sendDew()
     assert not suc
 
 
-def test_sendDew_3():
-    app.deviceConnected = True
-    suc = app.sendDew('1')
+def test_sendDew_3(function):
+    function.deviceConnected = True
+    suc = function.sendDew('1')
     assert not suc
 
 
-def test_sendDew_4():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_sendDew_4(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=21):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'callAscomMethod'):
-            suc = app.sendDew('1', 10)
+            suc = function.sendDew('1', 10)
             assert suc
 
 
-def test_sendAdjustableOutput_1():
-    app.deviceConnected = False
-    suc = app.sendAdjustableOutput()
+def test_sendAdjustableOutput_1(function):
+    function.deviceConnected = False
+    suc = function.sendAdjustableOutput()
     assert not suc
 
 
-def test_sendAdjustableOutput_2():
-    app.deviceConnected = True
-    suc = app.sendAdjustableOutput(4)
+def test_sendAdjustableOutput_2(function):
+    function.deviceConnected = True
+    suc = function.sendAdjustableOutput(4)
     assert suc
 
 
-def test_reboot_1():
-    app.deviceConnected = False
-    suc = app.reboot()
+def test_reboot_1(function):
+    function.deviceConnected = False
+    suc = function.reboot()
     assert not suc
 
 
-def test_reboot_2():
-    app.deviceConnected = True
-    suc = app.reboot()
+def test_reboot_2(function):
+    function.deviceConnected = True
+    suc = function.reboot()
     assert suc

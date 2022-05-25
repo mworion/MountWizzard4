@@ -26,49 +26,45 @@ from logic.environment.skymeter import Skymeter
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = Skymeter(app=App())
-
-    yield
-
-    app.threadPool.waitForDone(1000)
+def function():
+    func = Skymeter(app=App())
+    yield func
 
 
-def test_properties():
-    app.framework = 'indi'
-    app.host = ('localhost', 7624)
-    assert app.host == ('localhost', 7624)
+def test_properties(function):
+    function.framework = 'indi'
+    function.host = ('localhost', 7624)
+    assert function.host == ('localhost', 7624)
 
-    app.deviceName = 'test'
-    assert app.deviceName == 'test'
+    function.deviceName = 'test'
+    assert function.deviceName == 'test'
 
 
-def test_startCommunication_1():
-    app.framework = ''
-    suc = app.startCommunication()
+def test_startCommunication_1(function):
+    function.framework = ''
+    suc = function.startCommunication()
     assert not suc
 
 
-def test_startCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_startCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=True):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopCommunication_1():
-    app.framework = ''
-    suc = app.stopCommunication()
+def test_stopCommunication_1(function):
+    function.framework = ''
+    suc = function.stopCommunication()
     assert not suc
 
 
-def test_stopCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_stopCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'stopCommunication',
                            return_value=True):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc

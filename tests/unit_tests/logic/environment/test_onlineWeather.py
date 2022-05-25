@@ -29,9 +29,7 @@ setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-
+def function():
     class Test1:
         status_code = 200
 
@@ -42,83 +40,82 @@ def module_setup_teardown():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test1()):
-        app = OnlineWeather(app=App())
+        func = OnlineWeather(app=App())
+        yield func
 
-    yield
 
-
-def test_properties():
-    with mock.patch.object(app,
+def test_properties(function):
+    with mock.patch.object(function,
                            'updateOpenWeatherMapData'):
-        app.keyAPI = 'test'
-        assert app.keyAPI == 'test'
-        app.online = True
-        assert app.online
+        function.keyAPI = 'test'
+        assert function.keyAPI == 'test'
+        function.online = True
+        assert function.online
 
 
-def test_startCommunication_1():
-    app.running = False
-    with mock.patch.object(app,
+def test_startCommunication_1(function):
+    function.running = False
+    with mock.patch.object(function,
                            'updateOpenWeatherMapData'):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert not suc
-        assert not app.running
+        assert not function.running
 
 
-def test_startCommunication_2():
-    app.running = False
-    app.apiKey = 'test'
-    with mock.patch.object(app,
+def test_startCommunication_2(function):
+    function.running = False
+    function.apiKey = 'test'
+    with mock.patch.object(function,
                            'updateOpenWeatherMapData'):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
-        assert app.running
+        assert function.running
 
 
-def test_stopCommunication_1():
-    app.running = True
-    suc = app.stopCommunication()
+def test_stopCommunication_1(function):
+    function.running = True
+    suc = function.stopCommunication()
     assert suc
-    assert not app.running
+    assert not function.running
 
 
-def test_getDewPoint_1():
-    val = app.getDewPoint(-100, 10)
+def test_getDewPoint_1(function):
+    val = function.getDewPoint(-100, 10)
     assert not val
 
 
-def test_getDewPoint_2():
-    val = app.getDewPoint(100, 10)
+def test_getDewPoint_2(function):
+    val = function.getDewPoint(100, 10)
     assert not val
 
 
-def test_getDewPoint_3():
-    val = app.getDewPoint(10, -10)
+def test_getDewPoint_3(function):
+    val = function.getDewPoint(10, -10)
     assert not val
 
 
-def test_getDewPoint_4():
-    val = app.getDewPoint(10, 110)
+def test_getDewPoint_4(function):
+    val = function.getDewPoint(10, 110)
     assert not val
 
 
-def test_getDewPoint_5():
-    val = app.getDewPoint(10, 10)
+def test_getDewPoint_5(function):
+    val = function.getDewPoint(10, 10)
     assert val == -20.216642415771897
 
 
-def test_updateOpenWeatherMapDataWorker_1():
-    suc = app.updateOpenWeatherMapDataWorker()
+def test_updateOpenWeatherMapDataWorker_1(function):
+    suc = function.updateOpenWeatherMapDataWorker()
     assert not suc
 
 
-def test_updateOpenWeatherMapDataWorker_2():
+def test_updateOpenWeatherMapDataWorker_2(function):
     data = {'test': {}}
-    suc = app.updateOpenWeatherMapDataWorker(data=data)
+    suc = function.updateOpenWeatherMapDataWorker(data=data)
     assert not suc
 
 
-def test_updateOpenWeatherMapDataWorker_3():
+def test_updateOpenWeatherMapDataWorker_3(function):
     entry = {'main': {'temp': 290,
                       'grnd_level': 1000,
                       'humidity': 50},
@@ -128,54 +125,54 @@ def test_updateOpenWeatherMapDataWorker_3():
              'rain': {'3h': 10}
              }
     data = {'list': [entry]}
-    suc = app.updateOpenWeatherMapDataWorker(data=data)
+    suc = function.updateOpenWeatherMapDataWorker(data=data)
     assert suc
 
 
-def test_updateOpenWeatherMapDataWorker_4():
+def test_updateOpenWeatherMapDataWorker_4(function):
     data = {'list': []}
-    suc = app.updateOpenWeatherMapDataWorker(data=data)
+    suc = function.updateOpenWeatherMapDataWorker(data=data)
     assert not suc
 
 
-def test_getOpenWeatherMapDataWorker_1():
-    val = app.getOpenWeatherMapDataWorker()
+def test_getOpenWeatherMapDataWorker_1(function):
+    val = function.getOpenWeatherMapDataWorker()
     assert val is None
 
 
-def test_getOpenWeatherMapDataWorker_2():
+def test_getOpenWeatherMapDataWorker_2(function):
     class Test:
         status_code = 300
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = app.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.getOpenWeatherMapDataWorker('http://localhost')
         assert val is None
 
 
-def test_getOpenWeatherMapDataWorker_3():
+def test_getOpenWeatherMapDataWorker_3(function):
     class Test:
         status_code = 300
     with mock.patch.object(requests,
                            'get',
                            side_effect=Exception(),
                            return_value=Test()):
-        val = app.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.getOpenWeatherMapDataWorker('http://localhost')
         assert val is None
 
 
-def test_getOpenWeatherMapDataWorker_4():
+def test_getOpenWeatherMapDataWorker_4(function):
     class Test:
         status_code = 300
     with mock.patch.object(requests,
                            'get',
                            side_effect=TimeoutError(),
                            return_value=Test()):
-        val = app.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.getOpenWeatherMapDataWorker('http://localhost')
         assert val is None
 
 
-def test_getOpenWeatherMapDataWorker_5():
+def test_getOpenWeatherMapDataWorker_5(function):
     class Test:
         status_code = 200
 
@@ -186,33 +183,33 @@ def test_getOpenWeatherMapDataWorker_5():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = app.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.getOpenWeatherMapDataWorker('http://localhost')
         assert val == 'test'
 
 
-def test_updateOpenWeatherMapData_1():
-    suc = app.updateOpenWeatherMapData()
+def test_updateOpenWeatherMapData_1(function):
+    suc = function.updateOpenWeatherMapData()
     assert not suc
 
 
-def test_updateOpenWeatherMapData_2():
-    app.online = True
-    suc = app.updateOpenWeatherMapData()
+def test_updateOpenWeatherMapData_2(function):
+    function.online = True
+    suc = function.updateOpenWeatherMapData()
     assert not suc
 
 
-def test_updateOpenWeatherMapData_3():
-    app.online = True
-    app.running = True
-    suc = app.updateOpenWeatherMapData()
+def test_updateOpenWeatherMapData_3(function):
+    function.online = True
+    function.running = True
+    suc = function.updateOpenWeatherMapData()
     assert suc
 
 
-def test_updateOpenWeatherMapData_4():
-    app.online = False
-    app.running = True
-    with mock.patch.object(app,
+def test_updateOpenWeatherMapData_4(function):
+    function.online = False
+    function.running = True
+    with mock.patch.object(function,
                            'stopCommunication'):
-        suc = app.updateOpenWeatherMapData()
+        suc = function.updateOpenWeatherMapData()
         assert not suc
 

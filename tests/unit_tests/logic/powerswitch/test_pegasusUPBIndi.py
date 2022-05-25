@@ -30,375 +30,374 @@ from base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = PegasusUPBIndi(app=App(), signals=Signals(), data={})
-    yield
+def function():
+    func = PegasusUPBIndi(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_setUpdateConfig_1():
-    app.deviceName = ''
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_1(function):
+    function.deviceName = ''
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_2():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_2(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.setUpdateConfig('test')
+        suc = function.setUpdateConfig('test')
         assert not suc
 
 
-def test_setUpdateConfig_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=False):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert not suc
 
 
-def test_setUpdateConfig_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert suc
 
 
-def test_updateText_1():
-    suc = app.updateText('test', 'test')
+def test_updateText_1(function):
+    suc = function.updateText('test', 'test')
     assert not suc
 
 
-def test_updateText_2():
-    app.data = {'AUTO_DEW.DEW_C': 1,
-                'VERSION.UPB': 1}
+def test_updateText_2(function):
+    function.data = {'AUTO_DEW.DEW_C': 1,
+                     'VERSION.UPB': 1}
     with mock.patch.object(IndiClass,
                            'updateText',
                            return_value=True):
-        suc = app.updateText('test', 'test')
+        suc = function.updateText('test', 'test')
         assert not suc
 
 
-def test_updateText_3():
-    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPB',
-                'FIRMWARE_INFO.VERSION': '1.4'}
+def test_updateText_3(function):
+    function.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPB',
+                     'FIRMWARE_INFO.VERSION': '1.4'}
 
     with mock.patch.object(IndiClass,
                            'updateText',
                            return_value=True):
-        suc = app.updateText('test', 'DRIVER_INFO')
+        suc = function.updateText('test', 'DRIVER_INFO')
         assert suc
 
 
-def test_updateText_4():
-    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPBv2',
-                'FIRMWARE_INFO.VERSION': '1.5'}
+def test_updateText_4(function):
+    function.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPBv2',
+                     'FIRMWARE_INFO.VERSION': '1.5'}
 
     with mock.patch.object(IndiClass,
                            'updateText',
                            return_value=True):
-        suc = app.updateText('test', 'DRIVER_INFO')
+        suc = function.updateText('test', 'DRIVER_INFO')
         assert suc
 
 
-def test_updateText_5():
-    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPBv2',
-                'FIRMWARE_INFO.VERSION': '1.4'}
+def test_updateText_5(function):
+    function.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPBv2',
+                     'FIRMWARE_INFO.VERSION': '1.4'}
     with mock.patch.object(IndiClass,
                            'updateText',
                            return_value=True):
-        suc = app.updateText('test', 'DRIVER_INFO')
+        suc = function.updateText('test', 'DRIVER_INFO')
         assert suc
 
 
-def test_updateText_6():
-    app.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPB',
-                'FIRMWARE_INFO.VERSION': '1.5'}
+def test_updateText_6(function):
+    function.data = {'DRIVER_INFO.DEVICE_MODEL': 'UPB',
+                     'FIRMWARE_INFO.VERSION': '1.5'}
     with mock.patch.object(IndiClass,
                            'updateText',
                            return_value=True):
-        suc = app.updateText('test', 'DRIVER_INFO')
+        suc = function.updateText('test', 'DRIVER_INFO')
         assert suc
 
 
-def test_updateNumber_1():
-    suc = app.updateNumber('test', 'test')
+def test_updateNumber_1(function):
+    suc = function.updateNumber('test', 'test')
     assert not suc
 
 
-def test_updateNumber_2():
-    app.data = {'AUTO_DEW.DEW_C': 1,
-                'VERSION.UPB': 1}
+def test_updateNumber_2(function):
+    function.data = {'AUTO_DEW.DEW_C': 1,
+                     'VERSION.UPB': 1}
     with mock.patch.object(IndiClass,
                            'updateNumber',
                            return_value=True):
-        suc = app.updateNumber('test', 'test')
+        suc = function.updateNumber('test', 'test')
         assert suc
 
 
-def test_updateSwitch_1():
-    suc = app.updateSwitch('test', 'test')
+def test_updateSwitch_1(function):
+    suc = function.updateSwitch('test', 'test')
     assert not suc
 
 
-def test_updateSwitch_2():
-    app.data = {'AUTO_DEW.AUTO_DEW_ENABLED': 1,
-                'VERSION.UPB': 2}
+def test_updateSwitch_2(function):
+    function.data = {'AUTO_DEW.AUTO_DEW_ENABLED': 1,
+                     'VERSION.UPB': 2}
     with mock.patch.object(IndiClass,
                            'updateSwitch',
                            return_value=True):
-        suc = app.updateSwitch('test', 'test')
+        suc = function.updateSwitch('test', 'test')
         assert suc
 
 
-def test_togglePowerPort_1():
-    suc = app.togglePowerPort()
+def test_togglePowerPort_1(function):
+    suc = function.togglePowerPort()
     assert not suc
 
 
-def test_togglePowerPort_2():
-    suc = app.togglePowerPort(port=1)
+def test_togglePowerPort_2(function):
+    suc = function.togglePowerPort(port=1)
     assert not suc
 
 
-def test_togglePowerPort_3():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_togglePowerPort_3(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'POWER_CONTROL_0': 'On'}):
-        suc = app.togglePowerPort(port=1)
+        suc = function.togglePowerPort(port=1)
         assert not suc
 
 
-def test_togglePowerPort_4():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_togglePowerPort_4(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'POWER_CONTROL_1': 'On'}):
-        suc = app.togglePowerPort(port=1)
+        suc = function.togglePowerPort(port=1)
         assert not suc
 
 
-def test_togglePowerPort_5():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_togglePowerPort_5(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'OUTLET_1': 'On'}):
-        suc = app.togglePowerPort(port=1)
+        suc = function.togglePowerPort(port=1)
         assert not suc
 
 
-def test_togglePowerPort_6():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_togglePowerPort_6(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'OUTLET_1': 'Off'}):
-        suc = app.togglePowerPort(port=1)
+        suc = function.togglePowerPort(port=1)
         assert not suc
 
 
-def test_togglePowerPortBoot_1():
-    suc = app.togglePowerPortBoot()
+def test_togglePowerPortBoot_1(function):
+    suc = function.togglePowerPortBoot()
     assert not suc
 
 
-def test_togglePowerPortBoot_2():
-    suc = app.togglePowerPortBoot(port=1)
+def test_togglePowerPortBoot_2(function):
+    suc = function.togglePowerPortBoot(port=1)
     assert not suc
 
 
-def test_togglePowerPortBoot_3():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_togglePowerPortBoot_3(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'POWER_PORT_0': 'On'}):
-        suc = app.togglePowerPortBoot(port=1)
+        suc = function.togglePowerPortBoot(port=1)
         assert not suc
 
 
-def test_togglePowerPortBoot_4():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_togglePowerPortBoot_4(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'POWER_PORT_1': 'On'}):
-        suc = app.togglePowerPortBoot(port=1)
+        suc = function.togglePowerPortBoot(port=1)
         assert not suc
 
 
-def test_togglePowerPortBoot_5():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_togglePowerPortBoot_5(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'POWER_PORT_1': 'On'}):
-        suc = app.togglePowerPortBoot(port=1)
+        suc = function.togglePowerPortBoot(port=1)
         assert not suc
 
 
-def test_togglePowerPortBoot_6():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_togglePowerPortBoot_6(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'POWER_PORT_1': 'Off'}):
-        suc = app.togglePowerPortBoot(port=1)
+        suc = function.togglePowerPortBoot(port=1)
         assert not suc
 
 
-def test_togglePowerPortBoot_7():
-    app.device = Device()
-    app.isINDIGO = False
-    with mock.patch.object(app.device,
+def test_togglePowerPortBoot_7(function):
+    function.device = Device()
+    function.isINDIGO = False
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'POWER_PORT_1': 'Off'}):
-        suc = app.togglePowerPortBoot(port=1)
+        suc = function.togglePowerPortBoot(port=1)
         assert not suc
 
 
-def test_toggleHubUSB_1():
-    suc = app.toggleHubUSB()
+def test_toggleHubUSB_1(function):
+    suc = function.toggleHubUSB()
     assert not suc
 
 
-def test_toggleHubUSB_2():
-    suc = app.toggleHubUSB()
+def test_toggleHubUSB_2(function):
+    suc = function.toggleHubUSB()
     assert not suc
 
 
-def test_toggleHubUSB_3():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_toggleHubUSB_3(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'test': 'On'}):
-        suc = app.toggleHubUSB()
+        suc = function.toggleHubUSB()
         assert not suc
 
 
-def test_toggleHubUSB_4():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_toggleHubUSB_4(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'On',
                                          'INDI_DISABLED': 'Off'}):
-        suc = app.toggleHubUSB()
+        suc = function.toggleHubUSB()
         assert not suc
 
 
-def test_toggleHubUSB_5():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_toggleHubUSB_5(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'On',
                                          'INDI_DISABLED': 'Off'}):
-        suc = app.toggleHubUSB()
+        suc = function.toggleHubUSB()
         assert not suc
 
 
-def test_toggleHubUSB_6():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_toggleHubUSB_6(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'Off',
                                          'INDI_DISABLED': 'On'}):
-        suc = app.toggleHubUSB()
+        suc = function.toggleHubUSB()
         assert not suc
 
 
-def test_togglePortUSB_1():
-    suc = app.togglePortUSB()
+def test_togglePortUSB_1(function):
+    suc = function.togglePortUSB()
     assert not suc
 
 
-def test_togglePortUSB_2():
-    suc = app.togglePortUSB(port='1')
+def test_togglePortUSB_2(function):
+    suc = function.togglePortUSB(port='1')
     assert not suc
 
 
-def test_togglePortUSB_3():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_togglePortUSB_3(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PORT_1': 'On'}):
-        suc = app.togglePortUSB(port='1')
+        suc = function.togglePortUSB(port='1')
         assert not suc
 
 
-def test_togglePortUSB_4():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_togglePortUSB_4(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PORT_1': 'On'}):
-        suc = app.togglePortUSB(port='0')
+        suc = function.togglePortUSB(port='0')
         assert not suc
 
 
-def test_togglePortUSB_5():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_togglePortUSB_5(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PORT_1': 'On'}):
-        suc = app.togglePortUSB(port='0')
+        suc = function.togglePortUSB(port='0')
         assert not suc
 
 
-def test_togglePortUSB_6():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_togglePortUSB_6(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'PORT_0': 'Off'}):
-        suc = app.togglePortUSB(port='0')
+        suc = function.togglePortUSB(port='0')
         assert not suc
 
 
-def test_toggleAutoDew_1():
-    suc = app.toggleAutoDew()
+def test_toggleAutoDew_1(function):
+    suc = function.toggleAutoDew()
     assert not suc
 
 
-def test_toggleAutoDew_2():
-    app.device = Device()
-    app.modelVersion = 1
-    suc = app.toggleAutoDew()
+def test_toggleAutoDew_2(function):
+    function.device = Device()
+    function.modelVersion = 1
+    suc = function.toggleAutoDew()
     assert not suc
 
 
-def test_toggleAutoDew_2b():
-    app.device = Device()
-    app.modelVersion = 0
-    suc = app.toggleAutoDew()
+def test_toggleAutoDew_2b(function):
+    function.device = Device()
+    function.modelVersion = 0
+    suc = function.toggleAutoDew()
     assert not suc
 
 
-def test_toggleAutoDew_3():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_toggleAutoDew_3(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'On',
                                          'INDI_DISABLED': 'On',
@@ -406,13 +405,13 @@ def test_toggleAutoDew_3():
                                          'DEW_B': 'On',
                                          'DEW_C': 'On',
                                          }):
-        suc = app.toggleAutoDew()
+        suc = function.toggleAutoDew()
         assert not suc
 
 
-def test_toggleAutoDew_4():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_toggleAutoDew_4(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'On',
                                          'INDI_DISABLED': 'On',
@@ -420,14 +419,14 @@ def test_toggleAutoDew_4():
                                          'DEW_B': 'On',
                                          'DEW_C': 'On',
                                          }):
-        suc = app.toggleAutoDew()
+        suc = function.toggleAutoDew()
         assert not suc
 
 
-def test_toggleAutoDew_5():
-    app.device = Device()
-    app.modelVersion = 1
-    with mock.patch.object(app.device,
+def test_toggleAutoDew_5(function):
+    function.device = Device()
+    function.modelVersion = 1
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'On',
                                          'INDI_DISABLED': 'On',
@@ -435,14 +434,14 @@ def test_toggleAutoDew_5():
                                          'DEW_B': 'On',
                                          'DEW_C': 'On',
                                          }):
-        suc = app.toggleAutoDew()
+        suc = function.toggleAutoDew()
         assert not suc
 
 
-def test_toggleAutoDew_6():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_toggleAutoDew_6(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'MANUAL': 'On',
                                          'AUTOMATIC': 'Off',
@@ -450,14 +449,14 @@ def test_toggleAutoDew_6():
                                          'DEW_B': 'On',
                                          'DEW_C': 'On',
                                          }):
-        suc = app.toggleAutoDew()
+        suc = function.toggleAutoDew()
         assert not suc
 
 
-def test_toggleAutoDew_7():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_toggleAutoDew_7(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'MANUAL': 'Off',
                                          'AUTOMATIC': 'Off',
@@ -465,14 +464,14 @@ def test_toggleAutoDew_7():
                                          'DEW_B': 'On',
                                          'DEW_C': 'On',
                                          }):
-        suc = app.toggleAutoDew()
+        suc = function.toggleAutoDew()
         assert not suc
 
 
-def test_toggleAutoDew_8():
-    app.device = Device()
-    app.modelVersion = 1
-    with mock.patch.object(app.device,
+def test_toggleAutoDew_8(function):
+    function.device = Device()
+    function.modelVersion = 1
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'Off',
                                          'INDI_DISABLED': 'On',
@@ -480,14 +479,14 @@ def test_toggleAutoDew_8():
                                          'DEW_B': 'On',
                                          'DEW_C': 'On',
                                          }):
-        suc = app.toggleAutoDew()
+        suc = function.toggleAutoDew()
         assert not suc
 
 
-def test_toggleAutoDew_9():
-    app.device = Device()
-    app.modelVersion = 2
-    with mock.patch.object(app.device,
+def test_toggleAutoDew_9(function):
+    function.device = Device()
+    function.modelVersion = 2
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'INDI_ENABLED': 'On',
                                          'INDI_DISABLED': 'On',
@@ -495,99 +494,100 @@ def test_toggleAutoDew_9():
                                          'DEW_B': 'On',
                                          'DEW_C': 'On',
                                          }):
-        suc = app.toggleAutoDew()
+        suc = function.toggleAutoDew()
         assert not suc
 
 
-def test_sendDew_1():
-    suc = app.sendDew()
+def test_sendDew_1(function):
+    suc = function.sendDew()
     assert not suc
 
 
-def test_sendDew_2():
-    suc = app.sendDew(port=1)
+def test_sendDew_2(function):
+    suc = function.sendDew(port=1)
     assert not suc
 
 
-def test_sendDew_3():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendDew_3(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'DEW_1': 50}):
-        suc = app.sendDew(port=1)
+        suc = function.sendDew(port=1)
         assert not suc
 
 
-def test_sendDew_4():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendDew_4(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'DEW_1': 50}):
-        suc = app.sendDew(port='A')
+        suc = function.sendDew(port='A')
         assert not suc
 
 
-def test_sendDew_5():
-    app.device = Device()
-    app.isINDIGO = 'On'
-    with mock.patch.object(app.device,
+def test_sendDew_5(function):
+    function.device = Device()
+    function.isINDIGO = 'On'
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'OUTLET_1': 50}):
-        suc = app.sendDew(port='A')
+        suc = function.sendDew(port='A')
         assert not suc
 
 
-def test_sendAdjustableOutput_1():
-    suc = app.sendAdjustableOutput()
+def test_sendAdjustableOutput_1(function):
+    suc = function.sendAdjustableOutput()
     assert not suc
 
 
-def test_sendAdjustableOutput_2():
-    suc = app.sendAdjustableOutput()
+def test_sendAdjustableOutput_2(function):
+    suc = function.sendAdjustableOutput()
     assert not suc
 
 
-def test_sendAdjustableOutput_3():
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_sendAdjustableOutput_3(function):
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'ADJUSTABLE_VOLTAGE': 12}):
-        suc = app.sendAdjustableOutput()
-
-
-def test_sendAdjustableOutput_4():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value={'ADJUSTABLE_VOLTAGE': 12}):
-        suc = app.sendAdjustableOutput()
+        suc = function.sendAdjustableOutput()
         assert not suc
 
 
-def test_reboot_1():
-    suc = app.reboot()
+def test_sendAdjustableOutput_4(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
+                           'getNumber',
+                           return_value={'ADJUSTABLE_VOLTAGE': 12}):
+        suc = function.sendAdjustableOutput()
+        assert not suc
+
+
+def test_reboot_1(function):
+    suc = function.reboot()
     assert not suc
 
 
-def test_reboot_2():
-    app.device = Device()
-    suc = app.reboot()
+def test_reboot_2(function):
+    function.device = Device()
+    suc = function.reboot()
     assert not suc
 
 
-def test_reboot_3():
-    app.device = Device()
-    app.isINDIGO = True
-    suc = app.reboot()
+def test_reboot_3(function):
+    function.device = Device()
+    function.isINDIGO = True
+    suc = function.reboot()
     assert not suc
 
 
-def test_reboot_4():
-    app.device = Device()
-    app.isINDIGO = True
-    with mock.patch.object(app.device,
+def test_reboot_4(function):
+    function.device = Device()
+    function.isINDIGO = True
+    with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'REBOOT': 'On'}):
-        suc = app.reboot()
+        suc = function.reboot()
         assert not suc

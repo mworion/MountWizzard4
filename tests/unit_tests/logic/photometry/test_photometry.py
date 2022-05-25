@@ -32,17 +32,11 @@ from logic.photometry.photometry import Photometry
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
-    window = Photometry(App())
-    yield window
-    window.threadPool.waitForDone(3000)
+    func = Photometry(App())
+    yield func
 
 
 def test_signals(function):

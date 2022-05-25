@@ -20,7 +20,6 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
@@ -30,81 +29,80 @@ from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = SensorWeatherIndi(app=App(), signals=Signals(), data={})
-    yield
+def function():
+    func = SensorWeatherIndi(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_setUpdateConfig_1():
-    app.deviceName = ''
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_1(function):
+    function.deviceName = ''
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_2():
-    app.deviceName = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+def test_setUpdateConfig_2(function):
+    function.deviceName = 'test'
+    function.device = None
+    suc = function.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateConfig_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
-        suc = app.setUpdateConfig('test')
+        suc = function.setUpdateConfig('test')
         assert not suc
 
 
-def test_setUpdateConfig_4():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_4(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=False):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert not suc
 
 
-def test_setUpdateConfig_5():
-    app.deviceName = 'test'
-    app.device = Device()
-    app.client = Client()
-    with mock.patch.object(app.device,
+def test_setUpdateConfig_5(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    function.client = Client()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD': 1}):
-        with mock.patch.object(app.client,
+        with mock.patch.object(function.client,
                                'sendNewNumber',
                                return_value=True):
-            suc = app.setUpdateConfig('test')
+            suc = function.setUpdateConfig('test')
             assert suc
 
 
-def test_updateNumber_1():
-    app.deviceName = ''
-    suc = app.updateNumber('test', 'test')
+def test_updateNumber_1(function):
+    function.deviceName = ''
+    suc = function.updateNumber('test', 'test')
     assert not suc
 
 
-def test_updateNumber_2():
-    app.deviceName = ''
-    app.device = Device()
-    suc = app.updateNumber('test', 'test')
+def test_updateNumber_2(function):
+    function.deviceName = ''
+    function.device = Device()
+    suc = function.updateNumber('test', 'test')
     assert not suc
 
 
-def test_updateNumber_3():
-    app.deviceName = 'test'
-    app.device = Device()
-    with mock.patch.object(app.device,
+def test_updateNumber_3(function):
+    function.deviceName = 'test'
+    function.device = Device()
+    with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'WEATHER_BAROMETER': 1}):
-        suc = app.updateNumber('test', 'WEATHER_BAROMETER')
+        suc = function.updateNumber('test', 'WEATHER_BAROMETER')
         assert suc

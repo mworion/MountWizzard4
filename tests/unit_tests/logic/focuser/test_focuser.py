@@ -28,8 +28,8 @@ from logic.focuser.focuser import Focuser
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
+def function():
+
     app = Focuser(app=App())
     yield
 

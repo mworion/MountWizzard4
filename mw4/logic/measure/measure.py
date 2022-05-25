@@ -47,6 +47,8 @@ class MeasureData:
         self.shorteningStart = True
         self.raRef = None
         self.decRef = None
+        self.angularPosRaRef = None
+        self.angularPosDecRef = None
         self.devices = {}
         self.deviceName = ''
 

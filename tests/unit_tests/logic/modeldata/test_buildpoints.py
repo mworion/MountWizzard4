@@ -35,9 +35,7 @@ from base import transform
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-
+def function():
     config = 'tests/workDir/config'
     testdir = os.listdir(config)
     for item in testdir:
@@ -46,11 +44,11 @@ def module_setup_teardown():
         if item.endswith('.hpts'):
             os.remove(os.path.join(config, item))
 
-    app = DataPoint(app=App())
-    yield
+    func = DataPoint(app=App())
+    yield func
 
 
-def test_topoToAltAz1():
+def test_topoToAltAz1(function):
     ha = 12
     dec = 0
     alt, az = HaDecToAltAz(ha, dec, 0)
@@ -59,7 +57,7 @@ def test_topoToAltAz1():
     assert az is not None
 
 
-def test_topoToAltAz2():
+def test_topoToAltAz2(function):
     ha = -12
     dec = 0
     alt, az = HaDecToAltAz(ha, dec, 0)
@@ -68,139 +66,139 @@ def test_topoToAltAz2():
     assert az is not None
 
 
-def test_genHaDecParams1():
+def test_genHaDecParams1(function):
     selection = 'min'
-    length = len(app.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC_N[selection][j]
-        assert b == app.STEP_N[selection][j]
-        assert c == app.START[selection][i]
-        assert d == app.STOP[selection][i]
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
 
 
-def test_genHaDecParams2():
+def test_genHaDecParams2(function):
     selection = 'norm'
-    length = len(app.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC_N[selection][j]
-        assert b == app.STEP_N[selection][j]
-        assert c == app.START[selection][i]
-        assert d == app.STOP[selection][i]
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
 
 
-def test_genHaDecParams3():
+def test_genHaDecParams3(function):
     selection = 'med'
-    length = len(app.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC_N[selection][j]
-        assert b == app.STEP_N[selection][j]
-        assert c == app.START[selection][i]
-        assert d == app.STOP[selection][i]
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
 
 
-def test_genHaDecParams4():
+def test_genHaDecParams4(function):
     selection = 'max'
-    length = len(app.DEC_N[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, 50)):
+    length = len(function.DEC_N[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, 50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC_N[selection][j]
-        assert b == app.STEP_N[selection][j]
-        assert c == app.START[selection][i]
-        assert d == app.STOP[selection][i]
+        assert a == function.DEC_N[selection][j]
+        assert b == function.STEP_N[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
 
 
-def test_genHaDecParams5():
+def test_genHaDecParams5(function):
     selection = 'test'
     val = True
-    for i, (_, _, _, _) in enumerate(app.genHaDecParams(selection, 50)):
+    for i, (_, _, _, _) in enumerate(function.genHaDecParams(selection, 50)):
         val = False
     assert val
 
 
-def test_genHaDecParams6():
+def test_genHaDecParams6(function):
     selection = 'max'
-    length = len(app.DEC_S[selection])
-    for i, (a, b, c, d) in enumerate(app.genHaDecParams(selection, -50)):
+    length = len(function.DEC_S[selection])
+    for i, (a, b, c, d) in enumerate(function.genHaDecParams(selection, -50)):
         if i > length - 1:
             j = 2 * length - i - 1
         else:
             j = i
-        assert a == app.DEC_S[selection][j]
-        assert b == app.STEP_S[selection][j]
-        assert c == app.START[selection][i]
-        assert d == app.STOP[selection][i]
+        assert a == function.DEC_S[selection][j]
+        assert b == function.STEP_S[selection][j]
+        assert c == function.START[selection][i]
+        assert d == function.STOP[selection][i]
 
 
-def test_horizonP1():
-    app.genGreaterCircle('max')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == 110
-    app.genGreaterCircle('med')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == 82
-    app.genGreaterCircle('norm')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == 76
-    app.genGreaterCircle('min')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == 51
+def test_horizonP1(function):
+    function.genGreaterCircle('max')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 110
+    function.genGreaterCircle('med')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 82
+    function.genGreaterCircle('norm')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 76
+    function.genGreaterCircle('min')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 51
 
 
-def test_horizonP2():
-    app.horizonP = '456'
-    assert len(app.horizonP) == 0
+def test_horizonP2(function):
+    function.horizonP = '456'
+    assert len(function.horizonP) == 0
 
 
-def test_horizonP3():
-    app.horizonP = [(1, 1), (1, 1), 'test']
-    assert len(app.horizonP) == 0
+def test_horizonP3(function):
+    function.horizonP = [(1, 1), (1, 1), 'test']
+    assert len(function.horizonP) == 0
 
 
-def test_buildP1():
-    app.buildP = ()
-    app.genGreaterCircle('max')
-    assert len(app.buildP) == 110
-    app.genGreaterCircle('med')
-    assert len(app.buildP) == 82
-    app.genGreaterCircle('norm')
-    assert len(app.buildP) == 76
-    app.genGreaterCircle('min')
-    assert len(app.buildP) == 51
+def test_buildP1(function):
+    function.buildP = ()
+    function.genGreaterCircle('max')
+    assert len(function.buildP) == 110
+    function.genGreaterCircle('med')
+    assert len(function.buildP) == 82
+    function.genGreaterCircle('norm')
+    assert len(function.buildP) == 76
+    function.genGreaterCircle('min')
+    assert len(function.buildP) == 51
 
 
-def test_buildP2():
-    app.buildP = ()
-    app.buildP = '456'
-    assert len(app.buildP) == 0
+def test_buildP2(function):
+    function.buildP = ()
+    function.buildP = '456'
+    assert len(function.buildP) == 0
 
 
-def test_buildP3():
-    app.buildP = ()
-    app.buildP = [(1, 1), (1, 1), 'test']
-    assert len(app.buildP) == 0
+def test_buildP3(function):
+    function.buildP = ()
+    function.buildP = [(1, 1), (1, 1), 'test']
+    assert len(function.buildP) == 0
 
 
-def test_genGreaterCircle1():
-    app.lat = 48
+def test_genGreaterCircle1(function):
+    function.lat = 48
     selection = 'min'
-    app.genGreaterCircle(selection)
+    function.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az, status) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -209,12 +207,12 @@ def test_genGreaterCircle1():
     assert i == 50
 
 
-def test_genGreaterCircle2():
-    app.lat = 48
+def test_genGreaterCircle2(function):
+    function.lat = 48
     selection = 'norm'
-    app.genGreaterCircle(selection)
+    function.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az, status) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -223,12 +221,12 @@ def test_genGreaterCircle2():
     assert i == 75
 
 
-def test_genGreaterCircle3():
-    app.lat = 48
+def test_genGreaterCircle3(function):
+    function.lat = 48
     selection = 'med'
-    app.genGreaterCircle(selection)
+    function.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az, status) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -237,12 +235,12 @@ def test_genGreaterCircle3():
     assert i == 81
 
 
-def test_genGreaterCircle4():
-    app.lat = 48
+def test_genGreaterCircle4(function):
+    function.lat = 48
     selection = 'max'
-    app.genGreaterCircle(selection)
+    function.genGreaterCircle(selection)
     i = 0
-    for i, (alt, az, status) in enumerate(app.buildP):
+    for i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -251,635 +249,637 @@ def test_genGreaterCircle4():
     assert i == 109
 
 
-def test_genGreaterCircle5():
-    app.lat = 48
-    app.app.mount.obsSite.location = None
+def test_genGreaterCircle5(function):
+    function.lat = 48
+    temp = function.app.mount.obsSite.location
+    function.app.mount.obsSite.location = None
     selection = 'max'
-    suc = app.genGreaterCircle(selection)
+    suc = function.genGreaterCircle(selection)
     assert not suc
+    function.app.mount.obsSite.location = temp
 
 
-def test_checkFormat_1():
+def test_checkFormat_1(function):
     a = [[1, 1], [1, 1]]
-    suc = app.checkFormat(a)
+    suc = function.checkFormat(a)
     assert not suc
 
 
-def test_checkFormat_2():
+def test_checkFormat_2(function):
     a = [[1, 1], [1]]
-    suc = app.checkFormat(a)
+    suc = function.checkFormat(a)
     assert not suc
 
 
-def test_checkFormat_3():
+def test_checkFormat_3(function):
     a = [[1, 1], (1, 1)]
-    suc = app.checkFormat(a)
+    suc = function.checkFormat(a)
     assert not suc
 
 
-def test_checkFormat_4():
+def test_checkFormat_4(function):
     a = 'test'
-    suc = app.checkFormat(a)
+    suc = function.checkFormat(a)
     assert not suc
 
 
-def test_checkFormat_5():
+def test_checkFormat_5(function):
     a = [(1, 1), (1, 1)]
-    suc = app.checkFormat(a)
+    suc = function.checkFormat(a)
     assert suc
 
 
-def test_checkFormat_6():
+def test_checkFormat_6(function):
     a = [(1, 1), (1, 1, 1)]
-    suc = app.checkFormat(a)
+    suc = function.checkFormat(a)
     assert not suc
 
 
-def test_clearBuildP():
-    app.buildP = ()
-    app.genGreaterCircle('max')
-    assert len(app.buildP) == 110
-    app.clearBuildP()
-    assert len(app.buildP) == 0
+def test_clearBuildP(function):
+    function.buildP = ()
+    function.genGreaterCircle('max')
+    assert len(function.buildP) == 110
+    function.clearBuildP()
+    assert len(function.buildP) == 0
 
 
-def test_setStatusBuildP_1():
-    app.buildP = ()
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    suc = app.setStatusBuildP(-1, True)
+def test_setStatusBuildP_1(function):
+    function.buildP = ()
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(-1, True)
     assert not suc
 
 
-def test_setStatusBuildP_2():
-    app.buildP = ()
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    suc = app.setStatusBuildP(3, True)
+def test_setStatusBuildP_2(function):
+    function.buildP = ()
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(3, True)
     assert not suc
 
 
-def test_setStatusBuildP_3():
-    app.buildP = ()
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    suc = app.setStatusBuildP(1, True)
+def test_setStatusBuildP_3(function):
+    function.buildP = ()
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(1, True)
     assert suc
-    assert app.buildP[1][2]
+    assert function.buildP[1][2]
 
 
-def test_setStatusBuildP_4():
-    app.buildP = ()
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    app.addBuildP((10, 10, True))
-    suc = app.setStatusBuildP(1, False)
+def test_setStatusBuildP_4(function):
+    function.buildP = ()
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    function.addBuildP((10, 10, True))
+    suc = function.setStatusBuildP(1, False)
     assert suc
-    assert not app.buildP[1][2]
+    assert not function.buildP[1][2]
 
 
-def test_addBuildP1():
-    app.buildP = ()
-    suc = app.addBuildP((10, 10, True))
+def test_addBuildP1(function):
+    function.buildP = ()
+    suc = function.addBuildP((10, 10, True))
     assert suc
-    assert 1 == len(app.buildP)
-    suc = app.addBuildP((10, 10, True))
+    assert 1 == len(function.buildP)
+    suc = function.addBuildP((10, 10, True))
     assert suc
-    assert 2 == len(app.buildP)
-    suc = app.addBuildP((10, 10, True))
+    assert 2 == len(function.buildP)
+    suc = function.addBuildP((10, 10, True))
     assert suc
-    assert 3 == len(app.buildP)
+    assert 3 == len(function.buildP)
 
 
-def test_addBuildP2():
-    app.buildP = ()
-    suc = app.addBuildP(10)
+def test_addBuildP2(function):
+    function.buildP = ()
+    suc = function.addBuildP(10)
     assert not suc
-    assert 0 == len(app.buildP)
+    assert 0 == len(function.buildP)
 
 
-def test_addBuildP3():
-    app.buildP = ()
-    suc = app.addBuildP((10, 10, 10, True))
+def test_addBuildP3(function):
+    function.buildP = ()
+    suc = function.addBuildP((10, 10, 10, True))
     assert not suc
-    assert 0 == len(app.buildP)
+    assert 0 == len(function.buildP)
 
 
-def test_addBuildP4():
-    app.buildP = [(10, 10, True), (10, 10, True)]
-    suc = app.addBuildP((10, 10, True), position=1)
+def test_addBuildP4(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    suc = function.addBuildP((10, 10, True), position=1)
     assert suc
-    assert len(app.buildP) == 3
+    assert len(function.buildP) == 3
 
 
-def test_addBuildP5():
-    app.buildP = [(10, 10, True), (10, 10, True)]
-    suc = app.addBuildP((10, 10, True), position=20)
+def test_addBuildP5(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    suc = function.addBuildP((10, 10, True), position=20)
     assert suc
-    assert len(app.buildP) == 3
+    assert len(function.buildP) == 3
 
 
-def test_addBuildP6():
-    app.buildP = [(10, 10, True), (10, 10, True)]
-    suc = app.addBuildP((10, 10, True), position=-5)
+def test_addBuildP6(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    suc = function.addBuildP((10, 10, True), position=-5)
     assert suc
-    assert len(app.buildP) == 3
+    assert len(function.buildP) == 3
 
 
-def test_addBuildP7():
-    app.buildP = [(10, 10, True), (10, 10, True)]
-    suc = app.addBuildP(position=-5)
-    assert not suc
-
-
-def test_addBuildP8():
-    app.buildP = [(10, 10, True), (10, 10, True)]
-    app.app.mount.setting.horizonLimitHigh = 80
-    app.app.mount.setting.horizonLimitLow = 5
-    suc = app.addBuildP((10, 10, True), position='a')
+def test_addBuildP7(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    suc = function.addBuildP(position=-5)
     assert not suc
 
 
-def test_addBuildP9():
-    app.buildP = [(10, 10, True), (10, 10, True)]
-    app.app.mount.setting.horizonLimitHigh = 80
-    app.app.mount.setting.horizonLimitLow = 5
-    suc = app.addBuildP((90, 10, True), position=20)
+def test_addBuildP8(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
+    suc = function.addBuildP((10, 10, True), position='a')
     assert not suc
 
 
-def test_addBuildP10():
-    app.buildP = [(10, 10, True), (10, 10, True)]
-    app.app.mount.setting.horizonLimitHigh = 80
-    app.app.mount.setting.horizonLimitLow = 5
-    suc = app.addBuildP((0, 10, True), position=20)
+def test_addBuildP9(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
+    suc = function.addBuildP((90, 10, True), position=20)
     assert not suc
 
 
-def test_delBuildP1():
-    app.buildP = []
-    app.genGreaterCircle('max')
-    assert len(app.buildP) == 110
-    suc = app.delBuildP(5)
+def test_addBuildP10(function):
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
+    suc = function.addBuildP((0, 10, True), position=20)
+    assert not suc
+
+
+def test_delBuildP1(function):
+    function.buildP = []
+    function.genGreaterCircle('max')
+    assert len(function.buildP) == 108
+    suc = function.delBuildP(5)
     assert suc
-    assert len(app.buildP) == 109
-    suc = app.delBuildP(0)
+    assert len(function.buildP) == 107
+    suc = function.delBuildP(0)
     assert suc
-    assert len(app.buildP) == 108
-    suc = app.delBuildP(99)
+    assert len(function.buildP) == 106
+    suc = function.delBuildP(99)
     assert suc
-    assert len(app.buildP) == 107
+    assert len(function.buildP) == 105
 
 
-def test_delBuildP2():
-    app.buildP = []
-    app.genGreaterCircle('max')
-    assert len(app.buildP) == 110
-    suc = app.delBuildP(-5)
+def test_delBuildP2(function):
+    function.buildP = []
+    function.genGreaterCircle('max')
+    assert len(function.buildP) == 108
+    suc = function.delBuildP(-5)
     assert not suc
-    assert len(app.buildP) == 110
+    assert len(function.buildP) == 108
 
 
-def test_delBuildP3():
-    app.buildP = []
-    app.genGreaterCircle('max')
-    assert len(app.buildP) == 110
-    suc = app.delBuildP(170)
+def test_delBuildP3(function):
+    function.buildP = []
+    function.genGreaterCircle('max')
+    assert len(function.buildP) == 108
+    suc = function.delBuildP(170)
     assert not suc
-    assert len(app.buildP) == 110
+    assert len(function.buildP) == 108
 
 
-def test_delBuildP4():
-    app.buildP = []
-    app.genGreaterCircle('max')
-    assert len(app.buildP) == 110
-    suc = app.delBuildP('1')
+def test_delBuildP4(function):
+    function.buildP = []
+    function.genGreaterCircle('max')
+    assert len(function.buildP) == 108
+    suc = function.delBuildP('1')
     assert not suc
-    assert len(app.buildP) == 110
+    assert len(function.buildP) == 108
 
 
-def test_clearHorizonP():
-    app.genGreaterCircle('max')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == 110
-    app.clearHorizonP()
-    assert len(app.horizonP) == 0
+def test_clearHorizonP(function):
+    function.genGreaterCircle('max')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 108
+    function.clearHorizonP()
+    assert len(function.horizonP) == 0
 
 
-def test_isCloseHorizonLine_1():
+def test_isCloseHorizonLine_1(function):
     point = (45, 45)
     margin = 5
     azI = range(0, 361, 1)
     altI = np.interp(azI, [0, 90, 180, 360], [42, 42, 42, 42])
     horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
-    suc = app.isCloseHorizonLine(point, margin, horizonI)
+    suc = function.isCloseHorizonLine(point, margin, horizonI)
     assert suc
 
 
-def test_isCloseHorizonLine_2():
+def test_isCloseHorizonLine_2(function):
     point = (45, 45)
     margin = 1
     azI = range(0, 361, 1)
     altI = np.interp(azI, [0, 90, 180, 360], [42, 42, 42, 42])
     horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
-    suc = app.isCloseHorizonLine(point, margin, horizonI)
+    suc = function.isCloseHorizonLine(point, margin, horizonI)
     assert not suc
 
 
-def test_isAboveHorizon_1():
-    app.clearHorizonP()
-    suc = app.isAboveHorizon((10, 50))
+def test_isAboveHorizon_1(function):
+    function.clearHorizonP()
+    suc = function.isAboveHorizon((10, 50))
     assert suc
-    suc = app.isAboveHorizon((10, 370))
+    suc = function.isAboveHorizon((10, 370))
     assert suc
-    suc = app.isAboveHorizon((10, -50))
+    suc = function.isAboveHorizon((10, -50))
     assert suc
-    suc = app.isAboveHorizon((-10, 50))
+    suc = function.isAboveHorizon((-10, 50))
     assert not suc
 
 
-def test_isAboveHorizon_2():
-    app.horizonP = [(1, 2), (2, 3)]
-    suc = app.isAboveHorizon((10, 50))
+def test_isAboveHorizon_2(function):
+    function.horizonP = [(1, 2), (2, 3)]
+    suc = function.isAboveHorizon((10, 50))
     assert suc
 
 
-def test_isCloseMeridian_1():
-    suc = app.isCloseMeridian((90, 45))
+def test_isCloseMeridian_1(function):
+    suc = function.isCloseMeridian((90, 45))
     assert not suc
 
 
-def test_isCloseMeridian_2():
-    app.app.mount.setting.meridianLimitSlew = 5
-    app.app.mount.setting.meridianLimitTrack = 5
-    suc = app.isCloseMeridian((90, 45))
+def test_isCloseMeridian_2(function):
+    function.app.mount.setting.meridianLimitSlew = 5
+    function.app.mount.setting.meridianLimitTrack = 5
+    suc = function.isCloseMeridian((90, 45))
     assert not suc
 
 
-def test_isCloseMeridian_3():
-    app.app.mount.setting.meridianLimitSlew = 5
-    app.app.mount.setting.meridianLimitTrack = 5
-    suc = app.isCloseMeridian((45, 180))
+def test_isCloseMeridian_3(function):
+    function.app.mount.setting.meridianLimitSlew = 5
+    function.app.mount.setting.meridianLimitTrack = 5
+    suc = function.isCloseMeridian((45, 180))
     assert suc
 
 
-def test_deleteBelowHorizon1():
-    app.clearHorizonP()
-    app.buildP = [(10, 10, True), (-5, 40, True), (40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 2
+def test_deleteBelowHorizon1(function):
+    function.clearHorizonP()
+    function.buildP = [(10, 10, True), (-5, 40, True), (40, 60, True)]
+    function.deleteBelowHorizon()
+    assert len(function.buildP) == 2
 
 
-def test_deleteBelowHorizon2():
-    app.clearHorizonP()
-    app.buildP = [(10, 10, True), (5, 40, True), (-40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 2
+def test_deleteBelowHorizon2(function):
+    function.clearHorizonP()
+    function.buildP = [(10, 10, True), (5, 40, True), (-40, 60, True)]
+    function.deleteBelowHorizon()
+    assert len(function.buildP) == 2
 
 
-def test_deleteBelowHorizon3():
-    app.clearHorizonP()
-    app.buildP = [(-10, 10, True), (5, 40, True), (40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 2
+def test_deleteBelowHorizon3(function):
+    function.clearHorizonP()
+    function.buildP = [(-10, 10, True), (5, 40, True), (40, 60, True)]
+    function.deleteBelowHorizon()
+    assert len(function.buildP) == 2
 
 
-def test_deleteBelowHorizon4():
-    app.clearHorizonP()
-    app.buildP = [(-10, 10, True), (-5, 40, True), (-40, 60, True)]
-    app.deleteBelowHorizon()
-    assert len(app.buildP) == 0
+def test_deleteBelowHorizon4(function):
+    function.clearHorizonP()
+    function.buildP = [(-10, 10, True), (-5, 40, True), (-40, 60, True)]
+    function.deleteBelowHorizon()
+    assert len(function.buildP) == 0
 
 
-def test_deleteCloseMeridian_1():
-    suc = app.deleteCloseMeridian()
+def test_deleteCloseMeridian_1(function):
+    suc = function.deleteCloseMeridian()
     assert suc
 
 
-def test_deleteCloseHorizonLine_1():
-    suc = app.deleteCloseHorizonLine(0)
+def test_deleteCloseHorizonLine_1(function):
+    suc = function.deleteCloseHorizonLine(0)
     assert not suc
 
 
-def test_deleteCloseHorizonLine_2():
-    app.horizonP = [(0, 10), (180, 40), (360, 60)]
-    suc = app.deleteCloseHorizonLine(0)
+def test_deleteCloseHorizonLine_2(function):
+    function.horizonP = [(0, 10), (180, 40), (360, 60)]
+    suc = function.deleteCloseHorizonLine(0)
     assert suc
 
 
-def test_addHorizonP1():
-    app.horizonP = []
-    suc = app.addHorizonP((10, 10))
+def test_addHorizonP1(function):
+    function.horizonP = []
+    suc = function.addHorizonP((10, 10))
     assert suc
-    assert len(app._horizonP) == 1
+    assert len(function._horizonP) == 1
 
-    suc = app.addHorizonP((10, 10))
+    suc = function.addHorizonP((10, 10))
     assert suc
-    assert len(app._horizonP) == 2
+    assert len(function._horizonP) == 2
 
-    suc = app.addHorizonP((10, 10))
+    suc = function.addHorizonP((10, 10))
     assert suc
-    assert len(app._horizonP) == 3
+    assert len(function._horizonP) == 3
 
 
-def test_addHorizonP2():
-    app.horizonP = []
-    suc = app.addHorizonP(10)
+def test_addHorizonP2(function):
+    function.horizonP = []
+    suc = function.addHorizonP(10)
     assert not suc
-    assert len(app.horizonP) == 0
+    assert len(function.horizonP) == 0
 
 
-def test_addHorizonP3():
-    app.horizonP = []
-    suc = app.addHorizonP((10, 10, 10))
+def test_addHorizonP3(function):
+    function.horizonP = []
+    suc = function.addHorizonP((10, 10, 10))
     assert not suc
-    assert len(app.horizonP) == 0
+    assert len(function.horizonP) == 0
 
 
-def test_addHorizonP4():
-    app.horizonP = [(10, 10), (10, 10)]
-    suc = app.addHorizonP((10, 10), position=1)
+def test_addHorizonP4(function):
+    function.horizonP = [(10, 10), (10, 10)]
+    suc = function.addHorizonP((10, 10), position=1)
     assert suc
-    assert len(app.horizonP) == 3
+    assert len(function.horizonP) == 3
 
 
-def test_addHorizonP5():
-    app.horizonP = [(10, 10), (10, 10)]
-    suc = app.addHorizonP((10, 10), position=20)
+def test_addHorizonP5(function):
+    function.horizonP = [(10, 10), (10, 10)]
+    suc = function.addHorizonP((10, 10), position=20)
     assert suc
-    assert len(app.horizonP) == 3
+    assert len(function.horizonP) == 3
 
 
-def test_addHorizonP6():
-    app.horizonP = [(10, 10), (10, 10)]
-    suc = app.addHorizonP((10, 10), position=-5)
+def test_addHorizonP6(function):
+    function.horizonP = [(10, 10), (10, 10)]
+    suc = function.addHorizonP((10, 10), position=-5)
     assert suc
-    assert len(app.horizonP) == 3
+    assert len(function.horizonP) == 3
 
 
-def test_addHorizonP7():
-    app.horizonP = [(10, 10), (10, 10)]
-    suc = app.addHorizonP(position=-5)
-    assert not suc
-
-
-def test_addHorizonP8():
-    app.horizonP = [(10, 10), (10, 10)]
-    suc = app.addHorizonP((10, 10), position='a')
+def test_addHorizonP7(function):
+    function.horizonP = [(10, 10), (10, 10)]
+    suc = function.addHorizonP(position=-5)
     assert not suc
 
 
-def test_delHorizonP1():
-    app.genGreaterCircle('max')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == 110
-    suc = app.delHorizonP(5)
-    assert suc
-    assert len(app.horizonP) == 109
-    suc = app.delHorizonP(1)
-    assert suc
-    assert len(app.horizonP) == 108
-    suc = app.delHorizonP(10)
-    assert suc
-    assert len(app.horizonP) == 107
-
-
-def test_delHorizonP2():
-    app.genGreaterCircle('max')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == 110
-
-    suc = app.delHorizonP(-5)
-    assert not suc
-    assert len(app.horizonP) == len(app.buildP)
-
-
-def test_delHorizonP3():
-    app.genGreaterCircle('max')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == len(app.buildP)
-
-    suc = app.delHorizonP(170)
-    assert not suc
-    assert len(app.horizonP) == len(app.buildP)
-
-
-def test_delHorizonP4():
-    app.genGreaterCircle('max')
-    app.horizonP = app.buildP
-    assert len(app.horizonP) == len(app.buildP)
-
-    suc = app.delHorizonP('1')
-    assert not suc
-    assert len(app.horizonP) == len(app.buildP)
-
-
-def test_delHorizonP5():
-    app.horizonP = [(1, 1), (3, 3), (10, 10)]
-    suc = app.delHorizonP(position=0)
-    assert suc
-
-    suc = app.delHorizonP(154)
+def test_addHorizonP8(function):
+    function.horizonP = [(10, 10), (10, 10)]
+    suc = function.addHorizonP((10, 10), position='a')
     assert not suc
 
 
-def test_loadModel_1():
-    val = app.loadModel('')
+def test_delHorizonP1(function):
+    function.genGreaterCircle('max')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 108
+    suc = function.delHorizonP(5)
+    assert suc
+    assert len(function.horizonP) == 107
+    suc = function.delHorizonP(1)
+    assert suc
+    assert len(function.horizonP) == 106
+    suc = function.delHorizonP(10)
+    assert suc
+    assert len(function.horizonP) == 105
+
+
+def test_delHorizonP2(function):
+    function.genGreaterCircle('max')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == 108
+
+    suc = function.delHorizonP(-5)
+    assert not suc
+    assert len(function.horizonP) == len(function.buildP)
+
+
+def test_delHorizonP3(function):
+    function.genGreaterCircle('max')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == len(function.buildP)
+
+    suc = function.delHorizonP(170)
+    assert not suc
+    assert len(function.horizonP) == len(function.buildP)
+
+
+def test_delHorizonP4(function):
+    function.genGreaterCircle('max')
+    function.horizonP = function.buildP
+    assert len(function.horizonP) == len(function.buildP)
+
+    suc = function.delHorizonP('1')
+    assert not suc
+    assert len(function.horizonP) == len(function.buildP)
+
+
+def test_delHorizonP5(function):
+    function.horizonP = [(1, 1), (3, 3), (10, 10)]
+    suc = function.delHorizonP(position=0)
+    assert suc
+
+    suc = function.delHorizonP(154)
+    assert not suc
+
+
+def test_loadModel_1(function):
+    val = function.loadModel('')
     assert val is None
 
 
-def test_loadModel_2():
+def test_loadModel_2(function):
     with open('tests/workDir/config/test.model', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
-    val = app.loadModel('tests/workDir/config/test.model')
+    val = function.loadModel('tests/workDir/config/test.model')
     assert val is None
 
 
-def test_loadModel_3():
+def test_loadModel_3(function):
     with open('tests/workDir/config/test.model', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
-    val = app.loadModel('tests/workDir/config/test.model')
+    val = function.loadModel('tests/workDir/config/test.model')
     assert val is None
 
 
-def test_loadModel_4():
+def test_loadModel_4(function):
     values = [{'azimuth': 1, 'altitude': 1}, {'azimuth': 2, 'altitude': 2}]
     with open('tests/workDir/config/test.model', 'w') as outfile:
         json.dump(values,
                   outfile,
                   indent=4)
 
-    val = app.loadModel('tests/workDir/config/test.model')
+    val = function.loadModel('tests/workDir/config/test.model')
     assert val == [(1, 1), (2, 2)]
 
 
-def test_loadJSON_1():
-    val = app.loadJSON('')
+def test_loadJSON_1(function):
+    val = function.loadJSON('')
     assert val is None
 
 
-def test_loadJSON_2():
+def test_loadJSON_2(function):
     with open('tests/workDir/config/test.bpts', 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
 
-    val = app.loadJSON('tests/workDir/config/test.bpts')
+    val = function.loadJSON('tests/workDir/config/test.bpts')
     assert val is None
 
 
-def test_loadJSON_3():
+def test_loadJSON_3(function):
     with open('tests/workDir/config/test.bpts', 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
 
-    val = app.loadJSON('tests/workDir/config/test.bpts')
+    val = function.loadJSON('tests/workDir/config/test.bpts')
     assert val is None
 
 
-def test_loadJSON_4():
+def test_loadJSON_4(function):
     values = [(1, 1), (2, 2)]
     with open('tests/workDir/config/test.bpts', 'w') as outfile:
         json.dump(values,
                   outfile,
                   indent=4)
 
-    val = app.loadJSON('tests/workDir/config/test.bpts')
+    val = function.loadJSON('tests/workDir/config/test.bpts')
     assert val == [(1, 1), (2, 2)]
 
 
-def test_loadCSV_1():
-    val = app.loadCSV('')
+def test_loadCSV_1(function):
+    val = function.loadCSV('')
     assert val is None
 
 
-def test_loadCSV_2():
+def test_loadCSV_2(function):
     with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('[test, ]],[]}\n')
 
-    val = app.loadCSV('tests/workDir/config/test.csv')
+    val = function.loadCSV('tests/workDir/config/test.csv')
     assert val is None
 
 
-def test_loadCSV_3():
+def test_loadCSV_3(function):
     with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('1, 1\n')
         outfile.writelines('2, 2\n')
 
-    val = app.loadCSV('tests/workDir/config/test.csv')
+    val = function.loadCSV('tests/workDir/config/test.csv')
     assert val == [(1, 1), (2, 2)]
 
 
-def test_loadCSV_4():
+def test_loadCSV_4(function):
     with open('tests/workDir/config/test.csv', 'w') as outfile:
         outfile.writelines('1; 1\n')
         outfile.writelines('2; 2\n')
 
-    val = app.loadCSV('tests/workDir/config/test.csv')
+    val = function.loadCSV('tests/workDir/config/test.csv')
     assert val == [(1, 1), (2, 2)]
 
 
-def test_loadBuildP_1():
+def test_loadBuildP_1(function):
     # wrong fileName given
-    suc = app.loadBuildP()
+    suc = function.loadBuildP()
     assert not suc
 
 
-def test_loadBuildP_2():
+def test_loadBuildP_2(function):
     # path with not existent file given
-    suc = app.loadBuildP('test_file_not_there')
+    suc = function.loadBuildP('test_file_not_there')
     assert not suc
 
 
-def test_loadBuildP_3():
+def test_loadBuildP_3(function):
     # load file with path
-    app.buildPFile = ''
+    function.buildPFile = ''
     fileName = 'tests/workDir/config/test.bpts'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
         json.dump(values,
                   outfile,
                   indent=4)
-    suc = app.loadBuildP('tests/workDir/config/test.bpts')
+    suc = function.loadBuildP('tests/workDir/config/test.bpts')
     assert suc
-    assert app.buildP == [(1, 1, True), (2, 2, True)]
+    assert function.buildP == [(1, 1, True), (2, 2, True)]
 
 
-def test_loadBuildP_4():
+def test_loadBuildP_4(function):
     # load file without path
     fileName = 'tests/workDir/config/test.bpts'
-    app.buildPFile = 'test'
+    function.buildPFile = 'test'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
         json.dump(values,
                   outfile,
                   indent=4)
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'checkFormat',
                            return_value=False):
-        suc = app.loadBuildP('tests/workDir/config/test.bpts')
+        suc = function.loadBuildP('tests/workDir/config/test.bpts')
         assert not suc
 
 
-def test_loadBuildP_5():
+def test_loadBuildP_5(function):
     # load file with path
-    app.buildPFile = ''
+    function.buildPFile = ''
     fileName = 'tests/workDir/config/test.csv'
     with open(fileName, 'w') as outfile:
         outfile.write('1, 1\n')
         outfile.write('2, 2\n')
-    suc = app.loadBuildP('tests/workDir/config/test.csv', ext='.csv', keep=True)
+    suc = function.loadBuildP('tests/workDir/config/test.csv', ext='.csv', keep=True)
     assert suc
 
 
-def test_loadBuildP_6():
+def test_loadBuildP_6(function):
     # load file with path
-    app.buildPFile = ''
+    function.buildPFile = ''
     values = [{'azimuth': 1, 'altitude': 1}, {'azimuth': 2, 'altitude': 2}]
     with open('tests/workDir/config/test.model', 'w') as outfile:
         json.dump(values,
                   outfile,
                   indent=4)
-    suc = app.loadBuildP('tests/workDir/config/test.model', ext='.model', keep=True)
+    suc = function.loadBuildP('tests/workDir/config/test.model', ext='.model', keep=True)
     assert suc
 
 
-def test_saveBuildP_11():
-    app.genGreaterCircle('min')
-    suc = app.saveBuildP()
+def test_saveBuildP_11(function):
+    function.genGreaterCircle('min')
+    suc = function.saveBuildP()
     assert not suc
 
 
-def test_saveBuildP_12():
+def test_saveBuildP_12(function):
     fileName = 'tests/workDir/config/save_test.bpts'
-    app.genGreaterCircle('min')
-    suc = app.saveBuildP('save_test')
+    function.genGreaterCircle('min')
+    suc = function.saveBuildP('save_test')
     assert suc
     assert os.path.isfile(fileName)
 
 
-def test_loadHorizonP_1():
+def test_loadHorizonP_1(function):
     # no fileName given
-    suc = app.loadHorizonP()
+    suc = function.loadHorizonP()
     assert not suc
 
 
-def test_loadHorizonP_2():
+def test_loadHorizonP_2(function):
     # wrong fileName given
-    suc = app.loadHorizonP('format_not_ok')
+    suc = function.loadHorizonP('format_not_ok')
     assert not suc
 
 
-def test_loadHorizonP_3():
+def test_loadHorizonP_3(function):
     # path with not existent file given
     fileName = 'tests/workDir/config/test_load_horizon.hpts'
-    suc = app.loadHorizonP(fileName, '.hpts')
+    suc = function.loadHorizonP(fileName, '.hpts')
     assert not suc
 
 
-def test_loadHorizonP_4():
+def test_loadHorizonP_4(function):
     # load file with path
     fileName = 'tests/workDir/config/test_horizon_2.hpts'
     values = [(1, 1), (2, 2)]
@@ -887,60 +887,60 @@ def test_loadHorizonP_4():
         json.dump(values,
                   outfile,
                   indent=4)
-    suc = app.loadHorizonP('test_horizon_2', '.hpts')
+    suc = function.loadHorizonP('test_horizon_2', '.hpts')
     assert suc
-    assert app.horizonP == values
+    assert function.horizonP == values
 
 
-def test_loadHorizonP_5():
+def test_loadHorizonP_5(function):
     # load with wrong content
-    app.horizonPFile = ''
+    function.horizonPFile = ''
     fileName = 'tests/workDir/config/test_horizon_2.hpts'
     with open(fileName, 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
-    suc = app.loadHorizonP('test_horizon_2', '.hpts')
+    suc = function.loadHorizonP('test_horizon_2', '.hpts')
     assert not suc
-    assert app.horizonP == []
+    assert function.horizonP == []
 
 
-def test_loadHorizonP_6():
+def test_loadHorizonP_6(function):
     # load with wrong content 2
-    app.horizonPFile = ''
+    function.horizonPFile = ''
     fileName = 'tests/workDir/config/test_horizon_2.hpts'
     with open(fileName, 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
-    suc = app.loadHorizonP('test_horizon_2', '.hpts')
+    suc = function.loadHorizonP('test_horizon_2', '.hpts')
     assert not suc
-    assert app.horizonP == []
+    assert function.horizonP == []
 
 
-def test_loadHorizonP_7():
+def test_loadHorizonP_7(function):
     # load file with path
     fileName = 'tests/workDir/config/test_horizon_2.csv'
     values = [(1.0, 1.0), (2.0, 2.0)]
     with open(fileName, 'w') as outfile:
         outfile.write('1,1\n2,2\n')
 
-    suc = app.loadHorizonP('test_horizon_2', '.csv')
+    suc = function.loadHorizonP('test_horizon_2', '.csv')
     assert suc
-    assert app.horizonP == values
+    assert function.horizonP == values
 
 
-def test_saveHorizonP_10():
-    app._horizonP = [(0, 1), (0, 2)]
-    suc = app.saveHorizonP(fileName='test_save_horizon')
+def test_saveHorizonP_10(function):
+    function._horizonP = [(0, 1), (0, 2)]
+    suc = function.saveHorizonP(fileName='test_save_horizon')
     assert suc
 
 
-def test_saveHorizonP_11():
-    app._horizonP = [(0, 1), (0, 2)]
-    suc = app.saveHorizonP()
+def test_saveHorizonP_11(function):
+    function._horizonP = [(0, 1), (0, 2)]
+    suc = function.saveHorizonP()
     assert not suc
 
 
-def test_saveHorizonP_12():
-    app._horizonP = [(0, 1), (0, 2)]
-    suc = app.saveHorizonP(fileName='test_horizon_1')
+def test_saveHorizonP_12(function):
+    function._horizonP = [(0, 1), (0, 2)]
+    suc = function.saveHorizonP(fileName='test_horizon_1')
     assert suc
     fileName = 'tests/workDir/config/' + 'test_horizon_1' + '.hpts'
     with open(fileName, 'r') as infile:
@@ -949,292 +949,294 @@ def test_saveHorizonP_12():
         assert value[-1] == [0, 2]
 
 
-def test_genGrid1():
-    suc = app.genGrid(minAlt=10,
-                      maxAlt=80,
-                      numbRows=4,
-                      numbCols=4)
+def test_genGrid1(function):
+    suc = function.genGrid(minAlt=10,
+                           maxAlt=80,
+                           numbRows=4,
+                           numbCols=4)
     assert suc
 
 
-def test_genGrid2():
-    suc = app.genGrid(minAlt=0,
-                      maxAlt=80,
-                      numbRows=4,
-                      numbCols=4)
+def test_genGrid2(function):
+    suc = function.genGrid(minAlt=0,
+                           maxAlt=80,
+                           numbRows=4,
+                           numbCols=4)
     assert not suc
 
 
-def test_genGrid3():
-    suc = app.genGrid(minAlt=10,
-                      maxAlt=90,
-                      numbRows=4,
-                      numbCols=4)
+def test_genGrid3(function):
+    suc = function.genGrid(minAlt=10,
+                           maxAlt=90,
+                           numbRows=4,
+                           numbCols=4)
     assert not suc
 
 
-def test_genGrid4():
-    suc = app.genGrid(minAlt=50,
-                      maxAlt=40,
-                      numbRows=4,
-                      numbCols=3)
+def test_genGrid4(function):
+    suc = function.genGrid(minAlt=50,
+                           maxAlt=40,
+                           numbRows=4,
+                           numbCols=3)
     assert not suc
 
 
-def test_genGrid5():
-    suc = app.genGrid(minAlt=10,
-                      maxAlt=40,
-                      numbRows=4,
-                      numbCols=4)
+def test_genGrid5(function):
+    suc = function.genGrid(minAlt=10,
+                           maxAlt=40,
+                           numbRows=4,
+                           numbCols=4)
     assert suc
 
 
-def test_genGrid6():
-    suc = app.genGrid(minAlt=10,
-                      maxAlt=90,
-                      numbRows=4,
-                      numbCols=3)
+def test_genGrid6(function):
+    suc = function.genGrid(minAlt=10,
+                           maxAlt=90,
+                           numbRows=4,
+                           numbCols=3)
     assert not suc
 
 
-def test_genGrid7():
-    suc = app.genGrid(minAlt=10,
-                      maxAlt=80,
-                      numbRows=4,
-                      numbCols=3)
+def test_genGrid7(function):
+    suc = function.genGrid(minAlt=10,
+                           maxAlt=80,
+                           numbRows=4,
+                           numbCols=3)
     assert not suc
 
 
-def test_genGridData1():
-    app.genGrid(minAlt=10,
-                maxAlt=40,
-                numbRows=4,
-                numbCols=4)
-    assert 16 == len(app.buildP)
+def test_genGridData1(function):
+    function.genGrid(minAlt=10,
+                     maxAlt=40,
+                     numbRows=4,
+                     numbCols=4)
+    assert 16 == len(function.buildP)
 
 
-def test_genGridData2():
-    app.genGrid(minAlt=5,
-                maxAlt=85,
-                numbRows=4,
-                numbCols=4)
-    assert 16 == len(app.buildP)
+def test_genGridData2(function):
+    function.genGrid(minAlt=5,
+                     maxAlt=85,
+                     numbRows=4,
+                     numbCols=4)
+    assert 12 == len(function.buildP)
 
 
-def test_genGridData3():
-    app.genGrid(minAlt=5,
-                maxAlt=85,
-                numbRows=8,
-                numbCols=8)
-    assert 64 == len(app.buildP)
+def test_genGridData3(function):
+    function.genGrid(minAlt=5,
+                     maxAlt=85,
+                     numbRows=8,
+                     numbCols=8)
+    assert 56 == len(function.buildP)
 
 
-def test_genGridData4():
-    app.genGrid(minAlt=10,
-                maxAlt=40,
-                numbRows=6,
-                numbCols=6)
-    assert 36 == len(app.buildP)
+def test_genGridData4(function):
+    function.genGrid(minAlt=10,
+                     maxAlt=40,
+                     numbRows=6,
+                     numbCols=6)
+    assert 36 == len(function.buildP)
 
 
-def test_genGridData5():
-    app.genGrid(minAlt=10,
-                maxAlt=40,
-                numbRows=6,
-                numbCols=12)
-    assert 72 == len(app.buildP)
+def test_genGridData5(function):
+    function.genGrid(minAlt=10,
+                     maxAlt=40,
+                     numbRows=6,
+                     numbCols=12)
+    assert 72 == len(function.buildP)
 
 
-def test_genGridData6():
-    app.genGrid(minAlt=10,
-                maxAlt=40,
-                numbRows=1,
-                numbCols=12)
-    assert 0 == len(app.buildP)
+def test_genGridData6(function):
+    function.genGrid(minAlt=10,
+                     maxAlt=40,
+                     numbRows=1,
+                     numbCols=12)
+    assert 0 == len(function.buildP)
 
 
-def test_genGridData7():
-    app.genGrid(minAlt=10,
-                maxAlt=40,
-                numbRows=5,
-                numbCols=1)
-    assert 0 == len(app.buildP)
+def test_genGridData7(function):
+    function.genGrid(minAlt=10,
+                     maxAlt=40,
+                     numbRows=5,
+                     numbCols=1)
+    assert 0 == len(function.buildP)
 
 
-def test_genGridData8():
-    app.genGrid(minAlt=10,
-                maxAlt=40,
-                numbRows=10,
-                numbCols=12)
-    assert 0 == len(app.buildP)
+def test_genGridData8(function):
+    function.genGrid(minAlt=10,
+                     maxAlt=40,
+                     numbRows=10,
+                     numbCols=12)
+    assert 0 == len(function.buildP)
 
 
-def test_genGridData9():
-    app.genGrid(minAlt=10,
-                maxAlt=40,
-                numbRows=6,
-                numbCols=20)
-    assert 0 == len(app.buildP)
+def test_genGridData9(function):
+    function.genGrid(minAlt=10,
+                     maxAlt=40,
+                     numbRows=6,
+                     numbCols=20)
+    assert 0 == len(function.buildP)
 
 
-def test_genAlign1():
-    suc = app.genAlign(altBase=30,
-                       azBase=30,
-                       numberBase=5,
-                       )
+def test_genAlign1(function):
+    suc = function.genAlign(altBase=30,
+                            azBase=30,
+                            numberBase=5,
+                            )
     assert suc
-    assert 5 == len(app.buildP)
+    assert 5 == len(function.buildP)
 
 
-def test_genAlign2():
-    suc = app.genAlign(altBase=0,
-                       azBase=30,
-                       numberBase=5,
-                       )
+def test_genAlign2(function):
+    suc = function.genAlign(altBase=0,
+                            azBase=30,
+                            numberBase=5,
+                            )
     assert not suc
-    assert 0 == len(app.buildP)
+    assert 0 == len(function.buildP)
 
 
-def test_genAlign3():
-    suc = app.genAlign(altBase=30,
-                       azBase=-10,
-                       numberBase=5,
-                       )
+def test_genAlign3(function):
+    suc = function.genAlign(altBase=30,
+                            azBase=-10,
+                            numberBase=5,
+                            )
     assert not suc
-    assert 0 == len(app.buildP)
+    assert 0 == len(function.buildP)
 
 
-def test_genAlign4():
-    suc = app.genAlign(altBase=30,
-                       azBase=30,
-                       numberBase=2,
-                       )
+def test_genAlign4(function):
+    suc = function.genAlign(altBase=30,
+                            azBase=30,
+                            numberBase=2,
+                            )
     assert not suc
-    assert 0 == len(app.buildP)
+    assert 0 == len(function.buildP)
 
 
-def test_genAlign5():
-    suc = app.genAlign(altBase=30,
-                       azBase=30,
-                       numberBase=30,
-                       )
+def test_genAlign5(function):
+    suc = function.genAlign(altBase=30,
+                            azBase=30,
+                            numberBase=30,
+                            )
     assert not suc
-    assert 0 == len(app.buildP)
+    assert 0 == len(function.buildP)
 
 
-def test_sort_1():
+def test_sort_1(function):
     values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    suc = app.sort(values, eastwest=True)
+    suc = function.sort(values, eastwest=True)
     assert suc
-    assert app.buildP == result
+    assert function.buildP == result
 
 
-def test_sort_2():
+def test_sort_2(function):
     values = [(10, 10, True), (20, 20, True), (30, 90, True), (40, 190, True), (50, 290, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    suc = app.sort(values, highlow=True)
+    suc = function.sort(values, highlow=True)
     assert suc
-    assert app.buildP == result
+    assert function.buildP == result
 
 
-def test_sort_3():
+def test_sort_3(function):
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    suc = app.sort(values, eastwest=True)
+    suc = function.sort(values, eastwest=True)
     assert suc
-    assert app.buildP == result
+    assert function.buildP == result
 
 
-def test_sort_4():
+def test_sort_4(function):
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    suc = app.sort(values, highlow=True)
+    suc = function.sort(values, highlow=True)
     assert suc
-    assert app.buildP == result
+    assert function.buildP == result
 
 
-def test_sort_5():
+def test_sort_5(function):
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(50, 290, True), (40, 190, True), (30, 90, True), (20, 20, True), (10, 10, True)]
-    suc = app.sort(values, highlow=True, pierside='E')
+    suc = function.sort(values, highlow=True, pierside='E')
     assert suc
-    assert app.buildP == result
+    assert function.buildP == result
 
 
-def test_sort_6():
+def test_sort_6(function):
     values = [(30, 90, True), (50, 290, True), (20, 20, True), (10, 10, True), (40, 190, True)]
     result = [(30, 90, True), (20, 20, True), (10, 10, True), (50, 290, True), (40, 190, True)]
-    suc = app.sort(values, highlow=True, pierside='W')
+    suc = function.sort(values, highlow=True, pierside='W')
     assert suc
-    assert app.buildP == result
+    assert function.buildP == result
 
 
-def test_sort_7():
+def test_sort_7(function):
     values = [(30, 90, True, 3), (20, 20, True, 2), (50, 290, True, 1)]
     result = [(30, 90, True, 3), (20, 20, True, 2), (50, 290, True, 1)]
-    suc = app.sort(values, sortDomeAz=True)
+    suc = function.sort(values, sortDomeAz=True)
     assert suc
-    assert app.buildP == result
+    assert function.buildP == result
 
 
-def test_generateCelestialEquator_1():
-    value = app.generateCelestialEquator()
+def test_generateCelestialEquator_1(function):
+    value = function.generateCelestialEquator()
     assert len(value) == 1728
 
 
-def test_generateCelestialEquator_2():
-    app.app.mount.obsSite.location = None
-    value = app.generateCelestialEquator()
+def test_generateCelestialEquator_2(function):
+    temp = function.app.mount.obsSite.location
+    function.app.mount.obsSite.location = None
+    value = function.generateCelestialEquator()
     assert value == []
+    function.app.mount.obsSite.location = temp
 
 
-def test_generateDSOPath_1():
+def test_generateDSOPath_1(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    suc = app.generateDSOPath(ha=ra,
-                              dec=dec,
-                              numberPoints=0,
-                              )
+    suc = function.generateDSOPath(ha=ra,
+                                   dec=dec,
+                                   numberPoints=0,
+                                   )
     assert not suc
 
 
-def test_generateDSOPath_2():
+def test_generateDSOPath_2(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    suc = app.generateDSOPath(ha=ra,
-                              dec=dec,
-                              numberPoints=1,
-                              )
+    suc = function.generateDSOPath(ha=ra,
+                                   dec=dec,
+                                   numberPoints=1,
+                                   )
     assert not suc
 
 
-def test_generateDSOPath_3():
+def test_generateDSOPath_3(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    suc = app.generateDSOPath(ha=ra,
-                              dec=dec,
-                              numberPoints=1,
-                              )
+    suc = function.generateDSOPath(ha=ra,
+                                   dec=dec,
+                                   numberPoints=1,
+                                   )
     assert not suc
 
 
-def test_generateDSOPath_4():
+def test_generateDSOPath_4(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
     with mock.patch.object(transform,
                            'J2000ToAltAz',
                            return_value=(Angle(degrees=10), Angle(degrees=10))):
-        suc = app.generateDSOPath(ha=ra,
-                                  dec=dec,
-                                  numberPoints=1,
-                                  timeJD=app.app.mount.obsSite.timeJD,
-                                  location=app.app.mount.obsSite.location,
-                                  )
+        suc = function.generateDSOPath(ha=ra,
+                                       dec=dec,
+                                       numberPoints=1,
+                                       timeJD=function.app.mount.obsSite.timeJD,
+                                       location=function.app.mount.obsSite.location,
+                                       )
         assert suc
 
 
-def test_generateDSOPath_5():
+def test_generateDSOPath_5(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
     with mock.patch.object(transform,
@@ -1243,27 +1245,27 @@ def test_generateDSOPath_5():
         with mock.patch.object(skyfield.almanac,
                                'find_discrete',
                                return_value=([], [])):
-            suc = app.generateDSOPath(ha=ra,
-                                      dec=dec,
-                                      numberPoints=1,
-                                      timeJD=app.app.mount.obsSite.timeJD,
-                                      location=app.app.mount.obsSite.location,
-                                      )
+            suc = function.generateDSOPath(ha=ra,
+                                           dec=dec,
+                                           numberPoints=1,
+                                           timeJD=function.app.mount.obsSite.timeJD,
+                                           location=function.app.mount.obsSite.location,
+                                           )
             assert suc
 
 
-def test_generateGoldenSpiral_1():
-    suc = app.generateGoldenSpiral(0)
+def test_generateGoldenSpiral_1(function):
+    suc = function.generateGoldenSpiral(0)
     assert not suc
 
 
-def test_generateGoldenSpiral_2():
-    suc = app.generateGoldenSpiral(200)
+def test_generateGoldenSpiral_2(function):
+    suc = function.generateGoldenSpiral(200)
     assert suc
 
 
-def test_ditherPoints():
-    app.buildP = [(10, 10, True)]
-    app.ditherPoints()
-    assert app.buildP[0][0] != 10
-    assert app.buildP[0][1] != 10
+def test_ditherPoints(function):
+    function.buildP = [(10, 10, True)]
+    function.ditherPoints()
+    assert function.buildP[0][0] != 10
+    assert function.buildP[0][1] != 10

@@ -26,37 +26,36 @@ from logic.environment.weatherUPB import WeatherUPB
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = WeatherUPB(app=App())
-    yield
+def function():
+    func = WeatherUPB(app=App())
+    yield func
 
 
-def test_startCommunication_1():
-    app.framework = ''
-    suc = app.startCommunication()
+def test_startCommunication_1(function):
+    function.framework = ''
+    suc = function.startCommunication()
     assert not suc
 
 
-def test_startCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_startCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=True):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopCommunication_1():
-    app.framework = ''
-    suc = app.stopCommunication()
+def test_stopCommunication_1(function):
+    function.framework = ''
+    suc = function.stopCommunication()
     assert not suc
 
 
-def test_stopCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_stopCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'stopCommunication',
                            return_value=True):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc

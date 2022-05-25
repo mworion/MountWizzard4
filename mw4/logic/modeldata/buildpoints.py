@@ -689,7 +689,6 @@ class DataPoint(object):
                 # only values with above horizon = 0
                 if 5 <= alt <= 85 and 2 < az < 358:
                     self.addBuildP((alt, az, True))
-
         return True
 
     @staticmethod

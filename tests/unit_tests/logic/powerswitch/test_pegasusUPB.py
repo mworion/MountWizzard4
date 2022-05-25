@@ -27,166 +27,165 @@ from logic.powerswitch.pegasusUPB import PegasusUPB
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = PegasusUPB(app=App())
-    yield
+def function():
+    func = PegasusUPB(app=App())
+    yield func
 
 
-def test_properties():
-    app.framework = 'indi'
-    app.host = ('localhost', 7624)
-    assert app.host == ('localhost', 7624)
+def test_properties(function):
+    function.framework = 'indi'
+    function.host = ('localhost', 7624)
+    assert function.host == ('localhost', 7624)
 
-    app.deviceName = 'test'
-    assert app.deviceName == 'test'
+    function.deviceName = 'test'
+    assert function.deviceName == 'test'
 
 
-def test_startCommunication_1():
-    app.framework = ''
-    suc = app.startCommunication()
+def test_startCommunication_1(function):
+    function.framework = ''
+    suc = function.startCommunication()
     assert not suc
 
 
-def test_startCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_startCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'startCommunication',
                            return_value=True):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopCommunication_1():
-    app.framework = ''
-    suc = app.stopCommunication()
+def test_stopCommunication_1(function):
+    function.framework = ''
+    suc = function.stopCommunication()
     assert not suc
 
 
-def test_stopCommunication_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_stopCommunication_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'stopCommunication',
                            return_value=True):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc
 
 
-def test_togglePowerPort_1():
-    app.framework = ''
-    suc = app.togglePowerPort()
+def test_togglePowerPort_1(function):
+    function.framework = ''
+    suc = function.togglePowerPort()
     assert not suc
 
 
-def test_togglePowerPort_2():
-    app.framework = 'indi'
-    suc = app.togglePowerPort()
+def test_togglePowerPort_2(function):
+    function.framework = 'indi'
+    suc = function.togglePowerPort()
     assert not suc
 
 
-def test_togglePowerPortBoot_1():
-    app.framework = ''
-    suc = app.togglePowerPortBoot()
+def test_togglePowerPortBoot_1(function):
+    function.framework = ''
+    suc = function.togglePowerPortBoot()
     assert not suc
 
 
-def test_togglePowerPortBoot_2():
-    app.framework = 'indi'
-    suc = app.togglePowerPortBoot()
+def test_togglePowerPortBoot_2(function):
+    function.framework = 'indi'
+    suc = function.togglePowerPortBoot()
     assert not suc
 
 
-def test_toggleHubUSB_1():
-    app.framework = ''
-    suc = app.toggleHubUSB()
+def test_toggleHubUSB_1(function):
+    function.framework = ''
+    suc = function.toggleHubUSB()
     assert not suc
 
 
-def test_toggleHubUSB_2():
-    app.framework = 'indi'
-    suc = app.toggleHubUSB()
+def test_toggleHubUSB_2(function):
+    function.framework = 'indi'
+    suc = function.toggleHubUSB()
     assert not suc
 
 
-def test_togglePortUSB_1():
-    app.framework = ''
-    suc = app.togglePortUSB()
+def test_togglePortUSB_1(function):
+    function.framework = ''
+    suc = function.togglePortUSB()
     assert not suc
 
 
-def test_togglePortUSB_2():
-    app.framework = 'indi'
-    suc = app.togglePortUSB()
+def test_togglePortUSB_2(function):
+    function.framework = 'indi'
+    suc = function.togglePortUSB()
     assert not suc
 
 
-def test_toggleAutoDew_1():
-    app.framework = ''
-    suc = app.toggleAutoDew()
+def test_toggleAutoDew_1(function):
+    function.framework = ''
+    suc = function.toggleAutoDew()
     assert not suc
 
 
-def test_toggleAutoDew_2():
-    app.framework = 'indi'
-    suc = app.toggleAutoDew()
+def test_toggleAutoDew_2(function):
+    function.framework = 'indi'
+    suc = function.toggleAutoDew()
     assert not suc
 
 
-def test_sendDew_1():
-    app.framework = ''
-    suc = app.sendDew()
+def test_sendDew_1(function):
+    function.framework = ''
+    suc = function.sendDew()
     assert not suc
 
 
-def test_sendDew_2():
-    app.framework = 'indi'
-    suc = app.sendDew()
+def test_sendDew_2(function):
+    function.framework = 'indi'
+    suc = function.sendDew()
     assert not suc
 
 
-def test_sendAdjustableOutput_1():
-    app.framework = ''
-    suc = app.sendAdjustableOutput()
+def test_sendAdjustableOutput_1(function):
+    function.framework = ''
+    suc = function.sendAdjustableOutput()
     assert not suc
 
 
-def test_sendAdjustableOutput_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_sendAdjustableOutput_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'sendAdjustableOutput',
                            return_value=False):
-        suc = app.sendAdjustableOutput()
+        suc = function.sendAdjustableOutput()
         assert not suc
 
 
-def test_sendAdjustableOutput_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_sendAdjustableOutput_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'sendAdjustableOutput',
                            return_value=True):
-        suc = app.sendAdjustableOutput()
+        suc = function.sendAdjustableOutput()
         assert suc
 
 
-def test_reboot_1():
-    app.framework = ''
-    suc = app.reboot()
+def test_reboot_1(function):
+    function.framework = ''
+    suc = function.reboot()
     assert not suc
 
 
-def test_reboot_2():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_reboot_2(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'reboot',
                            return_value=False):
-        suc = app.reboot()
+        suc = function.reboot()
         assert not suc
 
 
-def test_reboot_3():
-    app.framework = 'indi'
-    with mock.patch.object(app.run['indi'],
+def test_reboot_3(function):
+    function.framework = 'indi'
+    with mock.patch.object(function.run['indi'],
                            'reboot',
                            return_value=True):
-        suc = app.reboot()
+        suc = function.reboot()
         assert suc

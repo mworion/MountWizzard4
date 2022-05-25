@@ -28,85 +28,84 @@ from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = FilterAlpaca(app=App(), signals=Signals(), data={})
-    yield
+def function():
+    func = FilterAlpaca(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_workerGetInitialConfig_1():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_1(function):
+    with mock.patch.object(function,
                            'getAlpacaProperty'):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
 
 
-def test_workerGetInitialConfig_2():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_2(function):
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=None):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert not suc
 
 
-def test_workerGetInitialConfig_3():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_3(function):
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=['test', 'test1']):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
-        assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
-        assert app.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
+        assert function.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
+        assert function.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
 
 
-def test_workerGetInitialConfig_4():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_4(function):
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=['test', None]):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
-        assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
+        assert function.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
 
 
-def test_workerPollData_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=-1):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert not suc
 
 
-def test_workerPollData_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_workerPollData_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=-1):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert not suc
 
 
-def test_workerPollData_3():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_workerPollData_3(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAlpacaProperty',
                            return_value=1):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc
-        assert app.data['FILTER_SLOT.FILTER_SLOT_VALUE'] == 1
+        assert function.data['FILTER_SLOT.FILTER_SLOT_VALUE'] == 1
 
 
-def test_sendFilterNumber_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_sendFilterNumber_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'setAlpacaProperty'):
-        suc = app.sendFilterNumber()
+        suc = function.sendFilterNumber()
         assert not suc
 
 
-def test_sendFilterNumber_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_sendFilterNumber_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'setAlpacaProperty'):
-        suc = app.sendFilterNumber()
+        suc = function.sendFilterNumber()
         assert suc

@@ -27,23 +27,22 @@ from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    app = SkymeterAlpaca(app=App(), signals=Signals(), data={})
-    yield
+def function():
+    func = SkymeterAlpaca(app=App(), signals=Signals(), data={})
+    yield func
 
 
-def test_workerPollData_1():
-    app.deviceConnected = False
-    with mock.patch.object(app,
+def test_workerPollData_1(function):
+    function.deviceConnected = False
+    with mock.patch.object(function,
                            'getAndStoreAlpacaProperty'):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert not suc
 
 
-def test_workerPollData_2():
-    app.deviceConnected = True
-    with mock.patch.object(app,
+def test_workerPollData_2(function):
+    function.deviceConnected = True
+    with mock.patch.object(function,
                            'getAndStoreAlpacaProperty'):
-        suc = app.workerPollData()
+        suc = function.workerPollData()
         assert suc

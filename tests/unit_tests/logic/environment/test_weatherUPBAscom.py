@@ -31,7 +31,7 @@ if not platform.system() == 'Windows':
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         Name = 'test'
         DriverVersion = '1'
@@ -41,14 +41,12 @@ def module_setup_teardown():
         pressure = 950
         dewpoint = 5.5
 
-    global app
-
-    app = WeatherUPBAscom(app=App(), signals=Signals(), data={})
-    app.client = Test1()
-    app.clientProps = []
-    yield
+    func = WeatherUPBAscom(app=App(), signals=Signals(), data={})
+    func.client = Test1()
+    func.clientProps = []
+    yield func
 
 
-def test_workerPollData_1():
-    suc = app.workerPollData()
+def test_workerPollData_1(function):
+    suc = function.workerPollData()
     assert suc

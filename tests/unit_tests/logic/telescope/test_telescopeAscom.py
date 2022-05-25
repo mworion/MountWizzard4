@@ -35,7 +35,7 @@ if not platform.system() == 'Windows':
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         ApertureDiameter = 100
         FocalLength = 570
@@ -43,29 +43,29 @@ def module_setup_teardown():
         Name = 'test'
         DriverVersion = '1'
         DriverInfo = 'test1'
-    global app
+
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TelescopeAscom(app=App(), signals=Signals(), data={})
-        app.client = Test1()
-        app.clientProps = []
-        yield
+        func = TelescopeAscom(app=App(), signals=Signals(), data={})
+        func.client = Test1()
+        func.clientProps = []
+        yield func
 
 
-def test_workerGetInitialConfig_1():
+def test_workerGetInitialConfig_1(function):
     with mock.patch.object(AscomClass,
                            'workerGetInitialConfig',
                            return_value=True):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
 
 
-def test_workerGetInitialConfig_2():
-    with mock.patch.object(app,
+def test_workerGetInitialConfig_2(function):
+    with mock.patch.object(function,
                            'getAscomProperty',
                            return_value=0.57):
-        suc = app.workerGetInitialConfig()
+        suc = function.workerGetInitialConfig()
         assert suc
-        assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 570.0
-        assert app.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570.0
+        assert function.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 570.0
+        assert function.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] == 570.0
 

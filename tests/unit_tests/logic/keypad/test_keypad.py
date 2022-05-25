@@ -40,8 +40,8 @@ def function():
         cursorPos = pyqtSignal(object, object)
         clearCursor = pyqtSignal()
 
-    window = KeyPad(signals=Signals())
-    yield window
+    func = KeyPad(signals=Signals())
+    yield func
 
 
 def test_expand7to8_1(function):

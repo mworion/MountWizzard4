@@ -28,8 +28,8 @@ from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
+def function():
+
     app = FocuserAlpaca(app=App(), signals=Signals(), data={})
     yield
 

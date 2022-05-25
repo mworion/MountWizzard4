@@ -148,9 +148,9 @@ class Mount(QObject):
         offGemPlate = 0
 
     class MountSetting:
-        meridianLimitSlew = 0
-        meridianLimitTrack = 0
-        horizonLimitHigh = 0
+        meridianLimitSlew = 3
+        meridianLimitTrack = 4
+        horizonLimitHigh = 90
         horizonLimitLow = 0
         timeToFlip = 0
         statusUnattendedFlip = False
@@ -165,6 +165,10 @@ class Mount(QObject):
         webInterfaceStat = True
         UTCExpire = None
         gpsSynced = True
+        weatherTemperature = 0.0
+        weatherPressure = 1000.0
+        weatherDewPoint = 0.0
+        weatherHumidity = 50
 
         @staticmethod
         def timeToMeridian():
@@ -262,27 +266,24 @@ class Mount(QObject):
         trajectoryProgress = pyqtSignal()
 
     class MountObsSite:
-
-        class Location:
-            latitude = None
-            longitude = None
-            elevation = None
-
-        Alt = None
-        Az = None
-        haJNowTarget = None
-        decJNowTarget = None
+        Alt = Angle(degrees=0)
+        Az = Angle(degrees=0)
+        haJNowTarget = Angle(hours=0)
+        decJNowTarget = Angle(degrees=0)
         piersideTarget = None
-        angularPosRA = None
-        angularPosDEC = None
-        raJNow = None
-        decJNow = None
-        haJNow = None
-        AzTarget = None
-        AltTarget = None
+        angularPosRA = Angle(degrees=0)
+        angularPosDEC = Angle(degrees=0)
+        errorAngularPosRA = Angle(degrees=0)
+        errorAngularPosDEC = Angle(degrees=0)
+        raJNow = Angle(hours=0)
+        decJNow = Angle(degrees=0)
+        haJNow = Angle(hours=0)
+        AzTarget = Angle(degrees=0)
+        AltTarget = Angle(degrees=0)
         pierside = None
         timeSidereal = Angle(hours=12)
-        location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+        location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10,
+                                elevation_m=500)
         ts = load.timescale(builtin=True)
         timeJD = ts.now()
         timeDiff = 0
@@ -526,6 +527,11 @@ class Relay:
     framework = None
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+    timerTask = QTimer()
+
+    @staticmethod
+    def getRelay():
+        return
 
 
 class Camera:
@@ -623,6 +629,7 @@ class OnlineWeather:
     framework = None
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+    data = {}
 
 
 class Data:
@@ -818,6 +825,7 @@ class App(QObject):
               'imageDir': 'tests/workDir/image',
               'dataDir': 'tests/workDir/data',
               'workDir': 'tests/workDir/data',
+              'measureDir': 'tests/workDir/measure',
               'tempDir': 'tests/workDir/temp',
               'configDir': 'tests/workDir/config',
               }

@@ -32,7 +32,7 @@ if not platform.system() == 'Windows':
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         @staticmethod
         def move(a):
@@ -46,7 +46,7 @@ def module_setup_teardown():
         Name = 'test'
         DriverVersion = '1'
         DriverInfo = 'test1'
-    global app
+
     app = FocuserAscom(app=App(), signals=Signals(), data={})
     app.clientProps = []
     app.client = Test1()

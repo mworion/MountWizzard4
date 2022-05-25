@@ -31,43 +31,42 @@ setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
+def function():
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = KMRelay()
-        yield
+        func = KMRelay()
+        yield func
 
 
-def test_startCommunication_1():
-    app.host = None
-    with mock.patch.object(app.timerTask,
+def test_startCommunication_1(function):
+    function.host = None
+    with mock.patch.object(function.timerTask,
                            'start'):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert not suc
 
 
-def test_startCommunications_2():
-    app.hostaddress = 'localhost'
-    with mock.patch.object(app.timerTask,
+def test_startCommunications_2(function):
+    function.hostaddress = 'localhost'
+    with mock.patch.object(function.timerTask,
                            'start'):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopTimers_1():
-    with mock.patch.object(app.timerTask,
+def test_stopTimers_1(function):
+    with mock.patch.object(function.timerTask,
                            'stop',):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc
 
 
-def test_debugOutput_1():
-    suc = app.debugOutput()
+def test_debugOutput_1(function):
+    suc = function.debugOutput()
     assert not suc
 
 
-def test_debugOutput_2():
+def test_debugOutput_2(function):
     class Test:
         reason = 'reason'
         status_code = 200
@@ -75,144 +74,144 @@ def test_debugOutput_2():
         text = 'test'
         url = 'test'
 
-    suc = app.debugOutput(Test())
+    suc = function.debugOutput(Test())
     assert suc
 
 
-def test_getRelay_1():
-    app.hostaddress = None
-    suc = app.getRelay()
+def test_getRelay_1(function):
+    function.hostaddress = None
+    suc = function.getRelay()
     assert suc is None
 
 
-def test_getRelay_2():
-    app.hostaddress = 'localhost'
-    app.mutexPoll.lock()
-    suc = app.getRelay()
+def test_getRelay_2(function):
+    function.hostaddress = 'localhost'
+    function.mutexPoll.lock()
+    suc = function.getRelay()
     assert suc is None
-    app.mutexPoll.unlock()
+    function.mutexPoll.unlock()
 
 
-def test_getRelay_3():
-    app.hostaddress = 'localhost'
+def test_getRelay_3(function):
+    function.hostaddress = 'localhost'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
                            side_effect=requests.exceptions.Timeout):
-        suc = app.getRelay()
+        suc = function.getRelay()
         assert suc is None
 
 
-def test_getRelay_4():
-    app.hostaddress = 'localhost'
+def test_getRelay_4(function):
+    function.hostaddress = 'localhost'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
                            side_effect=requests.exceptions.ConnectionError):
-        suc = app.getRelay()
+        suc = function.getRelay()
         assert suc is None
 
 
-def test_getRelay_5():
-    app.hostaddress = 'localhost'
+def test_getRelay_5(function):
+    function.hostaddress = 'localhost'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
                            side_effect=Exception()):
-        suc = app.getRelay(debug=True)
+        suc = function.getRelay(debug=True)
         assert suc is None
 
 
-def test_checkConnected_1():
+def test_checkConnected_1(function):
     class Test:
         reason = 'NotOk'
 
-    app.deviceConnected = True
-    suc = app.checkConnected(None)
+    function.deviceConnected = True
+    suc = function.checkConnected(None)
     assert not suc
-    assert not app.deviceConnected
+    assert not function.deviceConnected
 
 
-def test_checkConnected_2():
+def test_checkConnected_2(function):
     class Test:
         reason = 'OK'
 
-    app.deviceConnected = False
-    suc = app.checkConnected(Test())
+    function.deviceConnected = False
+    suc = function.checkConnected(Test())
     assert suc
-    assert app.deviceConnected
+    assert function.deviceConnected
 
 
-def test_checkConnected_3():
+def test_checkConnected_3(function):
     class Test:
         reason = 'NotOk'
 
-    app.deviceConnected = False
-    suc = app.checkConnected(None)
+    function.deviceConnected = False
+    suc = function.checkConnected(None)
     assert not suc
-    assert not app.deviceConnected
+    assert not function.deviceConnected
 
 
-def test_checkConnected_4():
+def test_checkConnected_4(function):
     class Test:
         reason = 'OK'
 
-    app.deviceConnected = True
-    suc = app.checkConnected(Test())
+    function.deviceConnected = True
+    suc = function.checkConnected(Test())
     assert suc
-    assert app.deviceConnected
+    assert function.deviceConnected
 
 
-def test_cyclePolling_1():
-    app.user = 'test'
-    app.password = 'test'
-    app.hostaddress = 'localhost'
-    with mock.patch.object(app,
+def test_cyclePolling_1(function):
+    function.user = 'test'
+    function.password = 'test'
+    function.hostaddress = 'localhost'
+    with mock.patch.object(function,
                            'getRelay'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'checkConnected',
                                return_value=False):
-            suc = app.cyclePolling()
+            suc = function.cyclePolling()
             assert not suc
 
 
-def test_cyclePolling_2():
+def test_cyclePolling_2(function):
     class Test:
         reason = 'NotOk'
         text = 'test'
 
-    app.user = 'test'
-    app.password = 'test'
-    app.hostaddress = 'localhost'
-    with mock.patch.object(app,
+    function.user = 'test'
+    function.password = 'test'
+    function.hostaddress = 'localhost'
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=Test()):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'checkConnected',
                                return_value=True):
-            suc = app.cyclePolling()
+            suc = function.cyclePolling()
             assert suc
 
 
-def test_cyclePolling_3():
+def test_cyclePolling_3(function):
     class Test:
         reason = 'OK'
         text = 'test'
 
-    app.user = 'test'
-    app.password = 'test'
-    app.hostaddress = 'localhost'
-    with mock.patch.object(app,
+    function.user = 'test'
+    function.password = 'test'
+    function.hostaddress = 'localhost'
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=Test()):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'checkConnected',
                                return_value=True):
-            suc = app.cyclePolling()
+            suc = function.cyclePolling()
             assert suc
 
 
-def test_status1(qtbot):
+def test_status1(function):
     returnValue = """<response>
                      <relay0>0</relay0>
                      <relay1>0</relay1>
@@ -232,19 +231,18 @@ def test_status1(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
 
         for i in range(0, 8):
-            app.set(i, 0)
+            function.set(i, 0)
 
-        with qtbot.waitSignal(app.signals.statusReady):
-            app.cyclePolling()
-        assert [0, 0, 0, 0, 0, 0, 0, 0] == app.status
+        function.cyclePolling()
+        assert [0, 0, 0, 0, 0, 0, 0, 0] == function.status
 
 
-def test_status2(qtbot):
+def test_status2(function):
     returnValue = """<response>
                      <relay0>1</relay0>
                      <relay1>1</relay1>
@@ -264,19 +262,18 @@ def test_status2(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
 
         for i in range(0, 8):
-            app.set(i, 1)
+            function.set(i, 1)
 
-        with qtbot.waitSignal(app.signals.statusReady):
-            app.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == app.status
+        function.cyclePolling()
+        assert [1, 1, 1, 1, 1, 1, 1, 1] == function.status
 
 
-def test_status3(qtbot):
+def test_status3(function):
     returnValue = """<response>
                      <relay0>1</relay0>
                      <relay1>1</relay1>
@@ -296,19 +293,18 @@ def test_status3(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
 
         for i in range(0, 8):
-            app.switch(i)
+            function.switch(i)
 
-        with qtbot.waitSignal(app.signals.statusReady):
-            app.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == app.status
+        function.cyclePolling()
+        assert [1, 1, 1, 1, 1, 1, 1, 1] == function.status
 
 
-def test_status4(qtbot):
+def test_status4(function):
     returnValue = """<response>
                      <relay0>0</relay0>
                      <relay1>0</relay1>
@@ -328,165 +324,164 @@ def test_status4(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
         with mock.patch.object(time,
                                'sleep'):
             for i in range(0, 8):
-                app.pulse(i)
+                function.pulse(i)
 
-            with qtbot.waitSignal(app.signals.statusReady):
-                app.cyclePolling()
-            assert [0, 0, 0, 0, 0, 0, 0, 0] == app.status
+            function.cyclePolling()
+            assert [0, 0, 0, 0, 0, 0, 0, 0] == function.status
 
 
-def test_getRelay_1(qtbot):
-    app.mutexPoll.lock()
-    suc = app.getRelay()
-    app.mutexPoll.unlock()
+def test_getRelay_1(function):
+    function.mutexPoll.lock()
+    suc = function.getRelay()
+    function.mutexPoll.unlock()
     assert not suc
 
 
-def test_getRelay_2(qtbot):
-    app.hostaddress = None
-    suc = app.getRelay()
+def test_getRelay_2(function):
+    function.hostaddress = None
+    suc = function.getRelay()
     assert not suc
 
 
-def test_getByte_1():
+def test_getByte_1(function):
     relay = 7
     state = True
-    app.status = [False] * 8
+    function.status = [False] * 8
 
-    value = app.getByte(relayNumber=relay, state=state)
+    value = function.getByte(relayNumber=relay, state=state)
     assert value == 0x80
 
 
-def test_getByte_2():
+def test_getByte_2(function):
     relay = 7
     state = False
-    app.status = [True] * 8
+    function.status = [True] * 8
 
-    value = app.getByte(relayNumber=relay, state=state)
+    value = function.getByte(relayNumber=relay, state=state)
     assert value == 0x7F
 
 
-def test_pulse_1(qtbot):
+def test_pulse_1(function):
     ret = None
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
         with mock.patch.object(time,
                                'sleep'):
-            suc = app.pulse(7)
+            suc = function.pulse(7)
             assert not suc
 
 
-def test_pulse_2(qtbot):
+def test_pulse_2(function):
     class Test:
         pass
     ret = Test()
     ret.reason = 'False'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
         with mock.patch.object(time,
                                'sleep'):
-            suc = app.pulse(7)
+            suc = function.pulse(7)
             assert not suc
 
 
-def test_pulse_3(qtbot):
+def test_pulse_3(function):
     class Test:
         pass
     ret = Test()
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
         with mock.patch.object(time,
                                'sleep'):
-            suc = app.pulse(7)
+            suc = function.pulse(7)
             assert suc
 
 
-def test_switch_1(qtbot):
+def test_switch_1(function):
     ret = None
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
-        suc = app.switch(7)
+        suc = function.switch(7)
         assert not suc
 
 
-def test_switch_2(qtbot):
+def test_switch_2(function):
     class Test:
         pass
     ret = Test()
     ret.reason = 'False'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
-        suc = app.switch(7)
+        suc = function.switch(7)
         assert not suc
 
 
-def test_switch_3(qtbot):
+def test_switch_3(function):
     class Test:
         pass
     ret = Test()
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
-        suc = app.switch(7)
+        suc = function.switch(7)
         assert suc
 
 
-def test_set_1(qtbot):
+def test_set_1(function):
     ret = None
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
-        suc = app.set(7, True)
+        suc = function.set(7, True)
         assert not suc
 
 
-def test_set_2(qtbot):
+def test_set_2(function):
     class Test:
         pass
     ret = Test()
     ret.reason = 'False'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
-        suc = app.set(7, True)
+        suc = function.set(7, True)
         assert not suc
 
 
-def test_set_3(qtbot):
+def test_set_3(function):
     class Test:
         pass
     ret = Test()
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'getRelay',
                            return_value=ret):
-        suc = app.set(7, False)
+        suc = function.set(7, False)
         assert suc

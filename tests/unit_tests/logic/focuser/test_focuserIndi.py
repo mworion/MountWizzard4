@@ -29,8 +29,8 @@ from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
+def function():
+    function
     app = FocuserIndi(app=App(), signals=Signals(), data={})
     yield
 

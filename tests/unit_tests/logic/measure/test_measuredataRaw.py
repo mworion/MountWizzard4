@@ -27,7 +27,7 @@ from logic.measure.measureRaw import MeasureDataRaw
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def function():
     class Test1:
         @staticmethod
         def setEmptyData():
@@ -37,27 +37,26 @@ def module_setup_teardown():
         def measureTask():
             return True
 
-    global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = MeasureDataRaw(parent=Test1())
-        yield
+        func = MeasureDataRaw(parent=Test1())
+        yield func
 
 
-def test_startCommunication():
-    with mock.patch.object(app.timerTask,
+def test_startCommunication(function):
+    with mock.patch.object(function.timerTask,
                            'start'):
-        suc = app.startCommunication()
+        suc = function.startCommunication()
         assert suc
 
 
-def test_stopCommunication():
-    with mock.patch.object(app.timerTask,
+def test_stopCommunication(function):
+    with mock.patch.object(function.timerTask,
                            'stop'):
-        suc = app.stopCommunication()
+        suc = function.stopCommunication()
         assert suc
 
 
-def test_measureTask():
-    suc = app.measureTask()
+def test_measureTask(function):
+    suc = function.measureTask()
     assert suc

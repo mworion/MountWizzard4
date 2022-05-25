@@ -23,7 +23,7 @@ import pytest
 import wakeonlan
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSettMount import SettMount

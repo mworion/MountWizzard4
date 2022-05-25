@@ -31,7 +31,7 @@ from sgp4.exporter import export_tle
 import numpy as np
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSatSearch import SatSearch

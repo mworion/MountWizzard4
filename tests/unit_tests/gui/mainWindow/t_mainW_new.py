@@ -25,7 +25,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QPushButton
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestSetupMainWindow import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWindow.mainW import MainWindow
 
 

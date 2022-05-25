@@ -29,7 +29,7 @@ if platform.system() == 'Windows':
 
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
 from base.indiClass import IndiClass

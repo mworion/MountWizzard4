@@ -27,7 +27,7 @@ from skyfield.api import load
 import pyqtgraph as pg
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.satelliteW import SatelliteWindow
 

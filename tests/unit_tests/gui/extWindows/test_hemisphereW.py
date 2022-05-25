@@ -30,7 +30,7 @@ import pyqtgraph as pg
 from PIL import Image
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.hemisphereW import HemisphereWindow
 import gui

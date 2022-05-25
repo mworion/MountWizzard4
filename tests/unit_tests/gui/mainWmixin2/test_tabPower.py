@@ -20,7 +20,7 @@ from unittest import mock
 from PyQt5.QtWidgets import QInputDialog
 
 # local import
-from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabPower import Power

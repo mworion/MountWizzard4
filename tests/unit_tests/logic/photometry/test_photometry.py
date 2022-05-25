@@ -29,7 +29,7 @@ import sep
 import logic.photometry.photometry
 from logic.photometry.photometry import PhotometrySignals
 from logic.photometry.photometry import Photometry
-from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope='module')

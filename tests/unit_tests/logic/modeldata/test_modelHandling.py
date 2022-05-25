@@ -25,7 +25,7 @@ from mountcontrol.model import Model
 
 # local import
 from logic.modeldata.modelHandling import writeRetrofitData
-from tests.unit_tests.unitTestAddOns.baseTestSetupExtWindows import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope='function')

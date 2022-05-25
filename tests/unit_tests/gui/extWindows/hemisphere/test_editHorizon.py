@@ -25,7 +25,7 @@ from skyfield.api import Angle
 
 # local import
 from gui.extWindows.hemisphereW import HemisphereWindow
-from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope='module')

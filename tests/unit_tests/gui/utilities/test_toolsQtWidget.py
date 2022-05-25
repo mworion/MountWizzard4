@@ -34,7 +34,7 @@ from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from gui.utilities.toolsQtWidget import FileSortProxyModel
 from gui.utilities.toolsQtWidget import QMultiWait, QCustomTableWidgetItem
 from gui.widgets.main_ui import Ui_MainWindow
-from tests.unit_tests.unitTestAddOns.baseTestSetupMixins import App
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope='module')

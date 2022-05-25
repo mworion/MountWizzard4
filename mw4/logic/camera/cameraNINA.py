@@ -33,9 +33,10 @@ class CameraNINA(NINAClass, CameraSupport):
     __all__ = ['CameraNINA']
 
     def __init__(self, app=None, signals=None, data=None, parent=None):
-        super().__init__(app=app, data=data, threadPool=app.threadPool)
+        super().__init__(app=app, data=data)
         self.signals = signals
         self.data = data
+        self.threadPool = app.threadPool
         self.abortExpose = False
         self.parent = parent
 

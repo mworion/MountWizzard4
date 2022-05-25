@@ -18,26 +18,20 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.telescope.telescopeIndi import TelescopeIndi
 from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = TelescopeIndi(app=Test(), signals=Signals(), data={})
-
+    app = TelescopeIndi(app=App(), signals=Signals(), data={})
     yield
 
 

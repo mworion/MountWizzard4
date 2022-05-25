@@ -21,9 +21,10 @@ import unittest.mock as mock
 
 # external packages
 import PyQt5
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
+from PyQt5.QtCore import QThreadPool
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.domeAlpaca import DomeAlpaca
 from base.driverDataClass import Signals
 from base.alpacaClass import AlpacaClass
@@ -31,14 +32,10 @@ from base.alpacaClass import AlpacaClass
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = DomeAlpaca(app=Test(), signals=Signals(), data={})
+        app = DomeAlpaca(app=App(), signals=Signals(), data={})
         yield
 
 

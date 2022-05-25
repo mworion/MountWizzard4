@@ -20,9 +20,9 @@ import pytest
 import platform
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.skymeterAscom import SkymeterAscom
 from base.driverDataClass import Signals
 
@@ -40,13 +40,9 @@ def module_setup_teardown():
         temperature = 10
         skyquality = 21.00
 
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
 
-    app = SkymeterAscom(app=Test(), signals=Signals(), data={})
+    app = SkymeterAscom(app=App(), signals=Signals(), data={})
     app.client = Test1()
     app.clientProps = []
     yield

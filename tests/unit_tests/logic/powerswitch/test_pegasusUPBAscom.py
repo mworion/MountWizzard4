@@ -21,9 +21,9 @@ import platform
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from base.driverDataClass import Signals
 
@@ -46,13 +46,8 @@ def module_setup_teardown():
         def getswitchvalue(a):
             return 0
 
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-
-    app = PegasusUPBAscom(app=Test(), signals=Signals(), data={})
+    app = PegasusUPBAscom(app=App(), signals=Signals(), data={})
     app.clientProps = []
     app.client = Test1()
     yield

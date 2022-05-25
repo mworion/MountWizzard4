@@ -21,9 +21,10 @@ import platform
 
 # external packages
 import PyQt5
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
+from PyQt5.QtCore import QThreadPool
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.cover.coverAscom import CoverAscom
 from base.driverDataClass import Signals
 
@@ -63,14 +64,10 @@ def module_setup_teardown():
         def Brightness(a):
             return True
 
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = CoverAscom(app=Test(), signals=Signals(), data={})
+        app = CoverAscom(app=App(), signals=Signals(), data={})
         app.client = Test1()
         app.clientProps = []
         yield

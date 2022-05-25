@@ -19,20 +19,16 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.skymeter import Skymeter
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = Skymeter(app=Test())
+    app = Skymeter(app=App())
 
     yield
 

@@ -23,11 +23,10 @@ import json
 import shutil
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject
-from skyfield.api import load
 from skyfield.api import EarthSatellite
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
@@ -38,26 +37,12 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
-
-    class MountObsSite:
-        ts = load.timescale(builtin=True)
-
-    class Mount:
-        obsSite = MountObsSite()
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mount = Mount()
-        mwGlob = {'tempDir': 'tests/workDir/temp',
-                  'dataDir': 'tests/workDir/data',
-                  }
-
     for file in ['CDFLeapSeconds.txt', 'finals.data', 'tai-utc.dat']:
         path = 'tests/workDir/data/' + file
         if os.path.isfile(path):
             os.remove(path)
 
-    window = DataWriter(app=Test())
+    window = DataWriter(app=App())
     yield window
 
 

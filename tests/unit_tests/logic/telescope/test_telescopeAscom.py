@@ -23,10 +23,9 @@ import platform
 # external packages
 import PyQt5
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.telescope.telescopeAscom import TelescopeAscom
 from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
@@ -44,15 +43,10 @@ def module_setup_teardown():
         Name = 'test'
         DriverVersion = '1'
         DriverInfo = 'test1'
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TelescopeAscom(app=Test(), signals=Signals(), data={})
+        app = TelescopeAscom(app=App(), signals=Signals(), data={})
         app.client = Test1()
         app.clientProps = []
         yield

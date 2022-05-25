@@ -22,9 +22,10 @@ import platform
 
 # external packages
 import PyQt5
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
+from PyQt5.QtCore import QThreadPool
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.domeAscom import DomeAscom
 from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
@@ -57,15 +58,10 @@ def module_setup_teardown():
         @staticmethod
         def SlewToAltitude(altitude):
             return True
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = DomeAscom(app=Test(), signals=Signals(), data={})
+        app = DomeAscom(app=App(), signals=Signals(), data={})
         app.client = Test1()
         app.clientProps = []
         yield

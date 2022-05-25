@@ -25,6 +25,7 @@ from PyQt5.QtCore import QThreadPool, QObject
 from skyfield.api import load
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
@@ -40,26 +41,12 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
-
-    class MountObsSite:
-        ts = load.timescale(builtin=True)
-
-    class Mount:
-        obsSite = MountObsSite()
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mount = Mount()
-        mwGlob = {'tempDir': 'tests/workDir/temp',
-                  'dataDir': 'tests/workDir/data',
-                  }
-
     for file in ['tai-utc.dat', 'finals2000A.all']:
         path = 'tests/workDir/data/' + file
         if os.path.isfile(path):
             os.remove(path)
 
-    window = AutomateWindows(app=Test())
+    window = AutomateWindows(app=App())
     yield window
 
 

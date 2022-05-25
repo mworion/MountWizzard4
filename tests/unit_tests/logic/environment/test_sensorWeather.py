@@ -19,23 +19,17 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.sensorWeather import SensorWeather
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
     global app
-    app = SensorWeather(app=Test())
-
+    app = SensorWeather(app=App())
     yield
-
-    app.threadPool.waitForDone(1000)
 
 
 def test_properties():

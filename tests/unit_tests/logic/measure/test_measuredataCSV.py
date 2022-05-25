@@ -21,10 +21,10 @@ import unittest.mock as mock
 import csv
 
 # external packages
-from mountcontrol.mount import Mount
 import PyQt5
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.measure.measureCSV import MeasureDataCSV
 
 
@@ -39,15 +39,10 @@ def module_setup_teardown():
         def measureTask():
             return True
 
-    class Test:
-        mwGlob = {'measureDir': 'tests/workDir/measure'}
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = MeasureDataCSV(app=Test(), parent=Test1())
+        app = MeasureDataCSV(app=App(), parent=Test1())
         yield
 
 

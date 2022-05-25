@@ -21,9 +21,9 @@ import unittest.mock as mock
 import platform
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.filter.filterAscom import FilterAscom
 from base.driverDataClass import Signals
 from base.ascomClass import AscomClass
@@ -41,12 +41,8 @@ def module_setup_teardown():
         DriverVersion = '1'
         DriverInfo = 'test1'
 
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = FilterAscom(app=Test(), signals=Signals(), data={})
+    app = FilterAscom(app=App(), signals=Signals(), data={})
     app.clientProps = []
     app.client = Test1()
     yield

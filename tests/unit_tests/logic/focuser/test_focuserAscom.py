@@ -21,12 +21,11 @@ import unittest.mock as mock
 import platform
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.focuser.focuserAscom import FocuserAscom
 from base.driverDataClass import Signals
-from base.ascomClass import AscomClass
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -47,16 +46,10 @@ def module_setup_teardown():
         Name = 'test'
         DriverVersion = '1'
         DriverInfo = 'test1'
-
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = FocuserAscom(app=Test(), signals=Signals(), data={})
+    app = FocuserAscom(app=App(), signals=Signals(), data={})
     app.clientProps = []
     app.client = Test1()
-
     yield
 
 

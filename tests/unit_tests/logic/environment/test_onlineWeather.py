@@ -19,12 +19,10 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 import requests
-from skyfield.api import wgs84
-from mountcontrol.mount import Mount
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.onlineWeather import OnlineWeather
 from base.loggerMW import setupLogging
 setupLogging()
@@ -32,16 +30,6 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-        update10s = pyqtSignal()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                       longitude_degrees=10,
-                                       elevation_m=500)
-
     global app
 
     class Test1:
@@ -54,11 +42,9 @@ def module_setup_teardown():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test1()):
-        app = OnlineWeather(app=Test())
+        app = OnlineWeather(app=App())
 
     yield
-
-    app.threadPool.waitForDone(1000)
 
 
 def test_properties():

@@ -28,7 +28,6 @@ from logic.measure.measureRaw import MeasureDataRaw
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-
     class Test1:
         @staticmethod
         def setEmptyData():

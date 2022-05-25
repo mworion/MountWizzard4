@@ -20,23 +20,18 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 from indibase.indiBase import Device, Client
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.focuser.focuserIndi import FocuserIndi
 from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = FocuserIndi(app=Test(), signals=Signals(), data={})
-
+    app = FocuserIndi(app=App(), signals=Signals(), data={})
     yield
 
 

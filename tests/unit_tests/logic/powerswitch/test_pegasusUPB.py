@@ -20,26 +20,17 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.powerswitch.pegasusUPB import PegasusUPB
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = PegasusUPB(app=Test())
-
+    app = PegasusUPB(app=App())
     yield
-
-    app.threadPool.waitForDone(1000)
 
 
 def test_properties():

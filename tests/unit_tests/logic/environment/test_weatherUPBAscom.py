@@ -20,9 +20,9 @@ import pytest
 import platform
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.weatherUPBAscom import WeatherUPBAscom
 from base.driverDataClass import Signals
 
@@ -41,13 +41,9 @@ def module_setup_teardown():
         pressure = 950
         dewpoint = 5.5
 
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
 
-    app = WeatherUPBAscom(app=Test(), signals=Signals(), data={})
+    app = WeatherUPBAscom(app=App(), signals=Signals(), data={})
     app.client = Test1()
     app.clientProps = []
     yield

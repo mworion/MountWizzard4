@@ -20,30 +20,19 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
-from mountcontrol.mount import Mount
 from skyfield.api import Angle
 import numpy as np
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.dome.dome import Dome
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
-        update1s = pyqtSignal()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
     global app
-    app = Dome(app=Test())
-
+    app = Dome(app=App())
     yield
-
-    app.threadPool.waitForDone(1000)
 
 
 def test_properties_1():

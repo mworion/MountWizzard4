@@ -18,29 +18,23 @@
 import pytest
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.environment.directWeather import DirectWeather
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
-    global app
-    app = DirectWeather(app=Test())
-
-    yield
+def function():
+    func = DirectWeather(app=App())
+    yield func
 
 
-def test_startCommunication_1():
-    suc = app.startCommunication()
+def test_startCommunication_1(function):
+    suc = function.startCommunication()
     assert suc
 
 
-def test_stopCommunication_1():
-    suc = app.stopCommunication()
+def test_stopCommunication_1(function):
+    suc = function.stopCommunication()
     assert suc

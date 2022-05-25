@@ -20,22 +20,17 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject, pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.focuser.focuserAlpaca import FocuserAlpaca
 from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = FocuserAlpaca(app=Test(), signals=Signals(), data={})
-
+    app = FocuserAlpaca(app=App(), signals=Signals(), data={})
     yield
 
 

@@ -20,54 +20,16 @@ import unittest.mock as mock
 
 # external packages
 import numpy as np
-from mountcontrol.mount import Mount
-from PyQt5.QtCore import pyqtSignal, QObject
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.measure.measure import MeasureData
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test1:
-        data = {}
-
-    class Test(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.errorAngularPosRA = 1
-        mount.obsSite.errorAngularPosDEC = 1
-        sensorWeather = Test1()
-        onlineWeather = Test1()
-        skymeter = Test1()
-        filter = Test1()
-        focuser = Test1()
-        power = Test1()
-        camera = Test1()
-        mwGlob = {'dataDir': 'tests/workDir/data'}
-        deviceStat = {
-            'dome': None,
-            'mount': None,
-            'camera': None,
-            'filter': None,
-            'focuser': None,
-            'astrometry': None,
-            'environOverall': None,
-            'sensorWeather': None,
-            'directWeather': None,
-            'onlineWeather': None,
-            'skymeter': None,
-            'cover': None,
-            'telescope': None,
-            'power': None,
-            'remote': None,
-            'relay': None,
-            'measure': None,
-        }
-        mes = pyqtSignal(object, object, object, object)
-
     global app
-    app = MeasureData(app=Test())
+    app = MeasureData(app=App())
     yield
 
 

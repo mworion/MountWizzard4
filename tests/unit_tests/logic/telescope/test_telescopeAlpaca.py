@@ -18,28 +18,23 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+
 # external packages
 import PyQt5
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.telescope.telescopeAlpaca import TelescopeAlpaca
 from base.driverDataClass import Signals
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        threadPool = QThreadPool()
-        mes = pyqtSignal(object, object, object, object)
-
     global app
     with mock.patch.object(PyQt5.QtCore.QTimer,
                            'start'):
-        app = TelescopeAlpaca(app=Test(), signals=Signals(), data={})
-
+        app = TelescopeAlpaca(app=App(), signals=Signals(), data={})
         yield
 
 

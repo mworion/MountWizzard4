@@ -214,6 +214,17 @@ def test_unlinkWrap(function):
         a = slc
 
 
+def test_prepareEarth(function):
+    suc = function.prepareEarth(pg.PlotItem())
+    assert suc
+
+
+def test_drawShoreLine(function):
+    function.world = {'1': {'xDeg': [0], 'yDeg': [0]}}
+    suc = function.drawShoreLine(pg.PlotItem())
+    assert suc
+
+
 def test_drawEarth_0(function):
     suc = function.drawEarth()
     assert not suc

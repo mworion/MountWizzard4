@@ -557,6 +557,8 @@ def test_abortSolve_1(function):
 
 
 def test_slewSelectedTargetWithDome_1(function):
+    function.app.mount.obsSite.AltTarget = None
+    function.app.mount.obsSite.AzTarget = None
     function.app.deviceStat['dome'] = False
     suc = function.slewSelectedTargetWithDome()
     assert suc

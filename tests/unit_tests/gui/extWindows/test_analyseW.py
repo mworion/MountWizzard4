@@ -33,7 +33,6 @@ from gui.extWindows.analyseW import AnalyseWindow
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-
     func = AnalyseWindow(app=App())
     yield func
 

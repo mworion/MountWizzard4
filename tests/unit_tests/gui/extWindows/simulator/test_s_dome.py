@@ -19,90 +19,60 @@ import pytest
 
 # external packages
 from PyQt5.Qt3DCore import QEntity, QTransform
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QDoubleSpinBox
-from mountcontrol.mount import Mount
-from skyfield.api import wgs84
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.simulator.dome import SimulatorDome
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-
-    class Test3:
-        data = None
-        clearOpening = 0
-
-    class Test2:
-        domeRadius = QDoubleSpinBox()
-        domeRadius.setValue(1)
-        clearOpening = QDoubleSpinBox()
-        clearOpening.setValue(40)
-
-    class Test1:
-        ui = Test2()
-
-    class Test(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        mwGlob = {'modelDir': 'tests/workDir/model',
-                  'imageDir': 'tests/workDir/image'}
-        uiWindows = {'showImageW': {'classObj': None}}
-        mainW = Test1()
-        dome = Test3()
-
-    app = SimulatorDome(app=Test())
-    yield
+def function():
+    func = SimulatorDome(app=App())
+    yield func
 
 
-def test_create_1(qtbot):
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+def test_create_1(function):
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
-    app.modelRoot = QEntity()
-    suc = app.create(QEntity(), False, False)
+    function.modelRoot = QEntity()
+    suc = function.create(QEntity(), False, False)
     assert not suc
 
 
-def test_create_2(qtbot):
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+def test_create_2(function):
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
-    app.modelRoot = QEntity()
-    app.model = {'test': {'e': QEntity()}}
-    suc = app.create(QEntity(), False, False)
+    function.modelRoot = QEntity()
+    function.model = {'test': {'e': QEntity()}}
+    suc = function.create(QEntity(), False, False)
     assert not suc
 
 
-def test_create_3(qtbot):
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+def test_create_3(function):
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
-    app.modelRoot = QEntity()
-    app.model = {'test': {'e': QEntity()}}
-    suc = app.create(app.modelRoot, True, False)
+    function.modelRoot = QEntity()
+    function.model = {'test': {'e': QEntity()}}
+    suc = function.create(function.modelRoot, True, False)
     assert suc
 
 
-def test_create_4(qtbot):
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+def test_create_4(function):
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
-    app.modelRoot = QEntity()
-    app.model = {'test': {'e': QEntity()}}
-    suc = app.create(app.modelRoot, True, True)
+    function.modelRoot = QEntity()
+    function.model = {'test': {'e': QEntity()}}
+    suc = function.create(function.modelRoot, True, True)
     assert suc
 
 
-def test_updateSettings_1(qtbot):
-    suc = app.updateSettings()
+def test_updateSettings_1(function):
+    suc = function.updateSettings()
     assert not suc
 
 
-def test_updateSettings_2(qtbot):
-    app.model = {
+def test_updateSettings_2(function):
+    function.model = {
         'domeWall': {
             'e': QEntity(),
             't': QTransform()
@@ -117,17 +87,17 @@ def test_updateSettings_2(qtbot):
         },
     }
 
-    suc = app.updateSettings()
+    suc = function.updateSettings()
     assert suc
 
 
-def test_updatePositions_1(qtbot):
-    suc = app.updatePositions()
+def test_updatePositions_1(function):
+    suc = function.updatePositions()
     assert not suc
 
 
-def test_updatePositions_2(qtbot):
-    app.model = {
+def test_updatePositions_2(function):
+    function.model = {
         'domeSphere': {
             'e': QEntity(),
             't': QTransform()
@@ -150,15 +120,15 @@ def test_updatePositions_2(qtbot):
         },
     }
 
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                          'DOME_SHUTTER.SHUTTER_OPEN': True}
 
-    suc = app.updatePositions()
+    suc = function.updatePositions()
     assert suc
 
 
-def test_updatePositions_4(qtbot):
-    app.model = {
+def test_updatePositions_4(function):
+    function.model = {
         'domeSphere': {
             'e': QEntity(),
             't': QTransform()
@@ -181,8 +151,8 @@ def test_updatePositions_4(qtbot):
         },
     }
 
-    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                          'DOME_SHUTTER.SHUTTER_OPEN': False}
 
-    suc = app.updatePositions()
+    suc = function.updatePositions()
     assert suc

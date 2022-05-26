@@ -26,6 +26,207 @@ import numpy as np
 # local import
 
 
+class Astrometry:
+    class AstrometrySignals(QObject):
+        done = pyqtSignal()
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = AstrometrySignals()
+    framework = None
+    run = {}
+    deviceName = ''
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+    @staticmethod
+    def solveThreading():
+        return
+
+    @staticmethod
+    def abort():
+        return
+
+    @staticmethod
+    def checkAvailability():
+        return True, True
+
+
+class Camera:
+    class CameraSignals(QObject):
+        saved = pyqtSignal()
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+        exposeReady = pyqtSignal()
+        exposed = pyqtSignal()
+        downloaded = pyqtSignal()
+
+    @staticmethod
+    def expose(imagePath=None,
+               expTime=None,
+               binning=None,
+               subFrame=None,
+               fastReadout=None,
+               focalLength=None):
+        return
+
+    @staticmethod
+    def abort():
+        return
+
+    @staticmethod
+    def sendCoolerTemp(temperature=None):
+        return
+
+    @staticmethod
+    def sendOffset(offset=None):
+        return
+
+    @staticmethod
+    def sendGain(gain=None):
+        return
+
+    @staticmethod
+    def sendDownloadMode(fastReadout=None):
+        return
+
+    @staticmethod
+    def sendCoolerSwitch(coolerOn=None):
+        return
+
+    @staticmethod
+    def stopCommunication():
+        return
+
+    @staticmethod
+    def startCommunication(loadConfig=None):
+        return
+
+    signals = CameraSignals()
+    expTime = 0
+    expTimeN = 0
+    binning = 1
+    binningN = 1
+    subFrame = 100
+    fastDownload = False
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+
+class Cover:
+    class CoverSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = CoverSignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+    @staticmethod
+    def closeCover():
+        return
+
+    @staticmethod
+    def openCover():
+        return
+
+    @staticmethod
+    def haltCover():
+        return
+
+    @staticmethod
+    def lightOn():
+        return
+
+    @staticmethod
+    def lightOff():
+        return
+
+    @staticmethod
+    def lightIntensity():
+        return
+
+
+class Dome:
+    class DomeSignals(QObject):
+        message = pyqtSignal(object)
+        azimuth = pyqtSignal()
+        slewFinished = pyqtSignal()
+        deviceDisconnected = pyqtSignal()
+        deviceConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal()
+
+    domeShutterWidth = 0.6
+    offGEM = 0
+    offLAT = 0
+    offNorth = 0
+    offEast = 0
+    domeRadius = 1.0
+    clearOpening = 1
+    data = {}
+    framework = None
+    signals = DomeSignals()
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+    @staticmethod
+    def slewDome(altitude=None,
+                 azimuth=None,
+                 piersideT=None,
+                 haT=None,
+                 decT=None,
+                 lat=None):
+        return
+
+    @staticmethod
+    def abortSlew():
+        return
+
+    @staticmethod
+    def openShutter():
+        return
+
+    @staticmethod
+    def closeShutter():
+        return
+
+    @staticmethod
+    def slewDome(azimuth=0,
+                 altitude=0,
+                 follow=False):
+        return
+
+    @staticmethod
+    def followDome(azimuth=0,
+                   altitude=0):
+        return
+
+    @staticmethod
+    def avoidFirstOvershoot():
+        return
+
+    @staticmethod
+    def slewCW():
+        return
+
+    @staticmethod
+    def slewCCW():
+        return
+
+
 class Skymeter:
     class SkymeterSignals(QObject):
         version = pyqtSignal()
@@ -40,6 +241,209 @@ class Skymeter:
     framework = None
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+
+
+class DirectWeather:
+    class DirectWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = DirectWeatherSignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+
+class OnlineWeather:
+    class OnlineWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        dataReceived = pyqtSignal()
+        connected = pyqtSignal()
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+        done = pyqtSignal()
+
+    signals = OnlineWeatherSignals()
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+    data = {}
+
+
+class SensorWeather:
+    class SensorWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = SensorWeatherSignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+
+class PowerWeather:
+    class PowerWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = PowerWeatherSignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+
+class Filter:
+    class FilterSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = FilterSignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+    @staticmethod
+    def sendFilterNumber(filterNumber=None):
+        return
+
+    @staticmethod
+    def sendFilterName(filterName=None):
+        return
+
+
+class Focuser:
+    class FocuserSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = FocuserSignals()
+    framework = None
+    data = {}
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+    @staticmethod
+    def move():
+        return
+
+    @staticmethod
+    def halt():
+        return
+
+
+class Measure:
+    class MeasureSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = MeasureSignals()
+    data = {}
+    framework = None
+    devices = {}
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+
+class Relay:
+    class RelaySignals(QObject):
+        message = pyqtSignal(object)
+        statusReady = pyqtSignal()
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = RelaySignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+    timerTask = QTimer()
+
+    @staticmethod
+    def getRelay():
+        return
+
+
+class Remote:
+    class RemoteSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = RemoteSignals()
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+
+class Telescope:
+    class TelescopeSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    class Test:
+        deviceName = ''
+
+    signals = TelescopeSignals()
+    data = {}
+    framework = None
+    run = {'indi': Test()}
+    focalLength = 100
+    aperture = 100
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+    @staticmethod
+    def stopCommunication():
+        return
+
+    @staticmethod
+    def startCommunication(loadConfig=None):
+        return
+
+
+class Hipparcos:
+    name = ['test']
+    az = [10]
+    alt = [10]
+
+    @staticmethod
+    def calculateAlignStarPositionsAltAz():
+        return
+
+    @staticmethod
+    def getAlignStarRaDecFromName():
+        return
 
 
 class Power:
@@ -88,6 +492,131 @@ class Power:
     @staticmethod
     def sendAdjustableOutput(value=None):
         return True
+
+
+class Data:
+    buildP = []
+    horizonP = []
+
+    @staticmethod
+    def loadHorizonP(fileName=''):
+        return
+
+    @staticmethod
+    def saveHorizonP(fileName=''):
+        return
+
+    @staticmethod
+    def clear():
+        return
+
+    @staticmethod
+    def clearBuildP():
+        return
+
+    @staticmethod
+    def deleteCloseMeridian():
+        return
+
+    @staticmethod
+    def addBuildP():
+        return
+
+    @staticmethod
+    def saveBuildP():
+        return
+
+    @staticmethod
+    def loadBuildP():
+        return
+
+    @staticmethod
+    def genGrid(minAlt=None,
+                maxAlt=None,
+                numbRows=None,
+                numbCols=None,
+                keep=None):
+        return
+
+    @staticmethod
+    def genAlign(altBase=None,
+                 azBase=None,
+                 numberBase=None,
+                 keep=None):
+        return
+
+    @staticmethod
+    def genGreaterCircle(selection=None,
+                         keep=None):
+        return
+
+    @staticmethod
+    def generateDSOPath(ha=None,
+                        dec=None,
+                        timeJD=None,
+                        location=None,
+                        numberPoints=None,
+                        keep=None):
+        return
+
+    @staticmethod
+    def generateGoldenSpiral(numberPoints=None,
+                             keep=None):
+        return
+
+    @staticmethod
+    def generateCelestialEquator():
+        return
+
+    @staticmethod
+    def setStatusBuildP(a, b):
+        return
+
+    @staticmethod
+    def deleteBelowHorizon():
+        return
+
+    @staticmethod
+    def ditherPoints():
+        return
+
+    @staticmethod
+    def sort():
+        return
+
+    def isAboveHorizon(self, point):
+        """
+        isAboveHorizon calculates for a given point the relationship to the actual horizon
+        and determines if this point is above the horizon line. for that there will be a
+        linear interpolation for the horizon line points.
+
+        :param point:
+        :return:
+        """
+        if point[1] > 360:
+            point = (point[0], 360)
+
+        if point[1] < 0:
+            point = (point[0], 0)
+
+        x = range(0, 361)
+
+        if self.horizonP:
+            xRef = [i[1] for i in self.horizonP]
+            yRef = [i[0] for i in self.horizonP]
+
+        else:
+            xRef = [0]
+            yRef = [0]
+
+        y = np.interp(x, xRef, yRef)
+
+        if point[0] > y[int(point[1])]:
+            return True
+
+        else:
+            return False
+
 
 
 class Mount(QObject):
@@ -172,6 +701,7 @@ class Mount(QObject):
         offVert = 0
         domeRadius = 0
         offGemPlate = 0
+        domeRadius = 100
 
     class MountSetting:
         meridianLimitSlew = 3
@@ -488,533 +1018,6 @@ class Automation:
 
     @staticmethod
     def uploadEarthRotationData():
-        return
-
-
-class Cover:
-    class CoverSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = CoverSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-    @staticmethod
-    def closeCover():
-        return
-
-    @staticmethod
-    def openCover():
-        return
-
-    @staticmethod
-    def haltCover():
-        return
-
-    @staticmethod
-    def lightOn():
-        return
-
-    @staticmethod
-    def lightOff():
-        return
-
-    @staticmethod
-    def lightIntensity():
-        return
-
-
-class Dome:
-    class DomeSignals(QObject):
-        message = pyqtSignal(object)
-        azimuth = pyqtSignal()
-        slewFinished = pyqtSignal()
-        deviceDisconnected = pyqtSignal()
-        deviceConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal()
-
-    domeShutterWidth = 0.6
-    offGEM = 0
-    offLAT = 0
-    offNorth = 0
-    offEast = 0
-    domeRadius = 1.0
-    data = {}
-    framework = None
-    signals = DomeSignals()
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-    @staticmethod
-    def slewDome(altitude=None,
-                 azimuth=None,
-                 piersideT=None,
-                 haT=None,
-                 decT=None,
-                 lat=None):
-        return
-
-    @staticmethod
-    def abortSlew():
-        return
-
-    @staticmethod
-    def openShutter():
-        return
-
-    @staticmethod
-    def closeShutter():
-        return
-
-    @staticmethod
-    def slewDome(azimuth=0,
-                 altitude=0,
-                 follow=False):
-        return
-
-    @staticmethod
-    def followDome(azimuth=0,
-                   altitude=0):
-        return
-
-    @staticmethod
-    def avoidFirstOvershoot():
-        return
-
-    @staticmethod
-    def slewCW():
-        return
-
-    @staticmethod
-    def slewCCW():
-        return
-
-
-class Relay:
-    class RelaySignals(QObject):
-        message = pyqtSignal(object)
-        statusReady = pyqtSignal()
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = RelaySignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-    timerTask = QTimer()
-
-    @staticmethod
-    def getRelay():
-        return
-
-
-class Camera:
-    class CameraSignals(QObject):
-        saved = pyqtSignal()
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-        exposeReady = pyqtSignal()
-        exposed = pyqtSignal()
-        downloaded = pyqtSignal()
-
-    @staticmethod
-    def expose(imagePath=None,
-               expTime=None,
-               binning=None,
-               subFrame=None,
-               fastReadout=None,
-               focalLength=None):
-        return
-
-    @staticmethod
-    def abort():
-        return
-
-    @staticmethod
-    def sendCoolerTemp(temperature=None):
-        return
-
-    @staticmethod
-    def sendOffset(offset=None):
-        return
-
-    @staticmethod
-    def sendGain(gain=None):
-        return
-
-    @staticmethod
-    def sendDownloadMode(fastReadout=None):
-        return
-
-    @staticmethod
-    def sendCoolerSwitch(coolerOn=None):
-        return
-
-    @staticmethod
-    def stopCommunication():
-        return
-
-    @staticmethod
-    def startCommunication(loadConfig=None):
-        return
-
-    signals = CameraSignals()
-    expTime = 0
-    expTimeN = 0
-    binning = 1
-    binningN = 1
-    subFrame = 100
-    fastDownload = False
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class Focuser:
-    class FocuserSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = FocuserSignals()
-    framework = None
-    data = {}
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-    @staticmethod
-    def move():
-        return
-
-    @staticmethod
-    def halt():
-        return
-
-
-class DirectWeather:
-    class DirectWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = DirectWeatherSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class Astrometry:
-    class AstrometrySignals(QObject):
-        done = pyqtSignal()
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = AstrometrySignals()
-    framework = None
-    run = {}
-    deviceName = ''
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-    @staticmethod
-    def solveThreading():
-        return
-
-    @staticmethod
-    def abort():
-        return
-
-    @staticmethod
-    def checkAvailability():
-        return True, True
-
-
-class OnlineWeather:
-    class OnlineWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        dataReceived = pyqtSignal()
-        connected = pyqtSignal()
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-        done = pyqtSignal()
-
-    signals = OnlineWeatherSignals()
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-    data = {}
-
-
-class Data:
-    buildP = []
-    horizonP = []
-
-    @staticmethod
-    def loadHorizonP(fileName=''):
-        return
-
-    @staticmethod
-    def saveHorizonP(fileName=''):
-        return
-
-    @staticmethod
-    def clear():
-        return
-
-    @staticmethod
-    def clearBuildP():
-        return
-
-    @staticmethod
-    def deleteCloseMeridian():
-        return
-
-    @staticmethod
-    def addBuildP():
-        return
-
-    @staticmethod
-    def saveBuildP():
-        return
-
-    @staticmethod
-    def loadBuildP():
-        return
-
-    @staticmethod
-    def genGrid(minAlt=None,
-                maxAlt=None,
-                numbRows=None,
-                numbCols=None,
-                keep=None):
-        return
-
-    @staticmethod
-    def genAlign(altBase=None,
-                 azBase=None,
-                 numberBase=None,
-                 keep=None):
-        return
-
-    @staticmethod
-    def genGreaterCircle(selection=None,
-                         keep=None):
-        return
-
-    @staticmethod
-    def generateDSOPath(ha=None,
-                        dec=None,
-                        timeJD=None,
-                        location=None,
-                        numberPoints=None,
-                        keep=None):
-        return
-
-    @staticmethod
-    def generateGoldenSpiral(numberPoints=None,
-                             keep=None):
-        return
-
-    @staticmethod
-    def generateCelestialEquator():
-        return
-
-    @staticmethod
-    def setStatusBuildP(a, b):
-        return
-
-    @staticmethod
-    def deleteBelowHorizon():
-        return
-
-    @staticmethod
-    def ditherPoints():
-        return
-
-    @staticmethod
-    def sort():
-        return
-
-    def isAboveHorizon(self, point):
-        """
-        isAboveHorizon calculates for a given point the relationship to the actual horizon
-        and determines if this point is above the horizon line. for that there will be a
-        linear interpolation for the horizon line points.
-
-        :param point:
-        :return:
-        """
-        if point[1] > 360:
-            point = (point[0], 360)
-
-        if point[1] < 0:
-            point = (point[0], 0)
-
-        x = range(0, 361)
-
-        if self.horizonP:
-            xRef = [i[1] for i in self.horizonP]
-            yRef = [i[0] for i in self.horizonP]
-
-        else:
-            xRef = [0]
-            yRef = [0]
-
-        y = np.interp(x, xRef, yRef)
-
-        if point[0] > y[int(point[1])]:
-            return True
-
-        else:
-            return False
-
-
-class Filter:
-    class FilterSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = FilterSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-    @staticmethod
-    def sendFilterNumber(filterNumber=None):
-        return
-
-    @staticmethod
-    def sendFilterName(filterName=None):
-        return
-
-
-class Measure:
-    class MeasureSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = MeasureSignals()
-    data = {}
-    framework = None
-    devices = {}
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class PowerWeather:
-    class PowerWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = PowerWeatherSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class Remote:
-    class RemoteSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = RemoteSignals()
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class SensorWeather:
-    class SensorWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = SensorWeatherSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class Telescope:
-    class TelescopeSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    class Test:
-        deviceName = ''
-
-    signals = TelescopeSignals()
-    data = {}
-    framework = None
-    run = {'indi': Test()}
-    focalLength = 100
-    aperture = 100
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-    @staticmethod
-    def stopCommunication():
-        return
-
-    @staticmethod
-    def startCommunication(loadConfig=None):
-        return
-
-
-class Hipparcos:
-    name = ['test']
-    az = [10]
-    alt = [10]
-
-    @staticmethod
-    def calculateAlignStarPositionsAltAz():
-        return
-
-    @staticmethod
-    def getAlignStarRaDecFromName():
         return
 
 

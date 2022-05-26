@@ -561,7 +561,7 @@ def test_slewSelectedTargetWithDome_1(function):
     function.app.mount.obsSite.AzTarget = None
     function.app.deviceStat['dome'] = False
     suc = function.slewSelectedTargetWithDome()
-    assert suc
+    assert not suc
 
 
 def test_slewSelectedTargetWithDome_2(function):

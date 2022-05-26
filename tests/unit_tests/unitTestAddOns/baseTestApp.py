@@ -26,6 +26,25 @@ import numpy as np
 # local import
 
 
+class Automation:
+    installPath = None
+    updaterApp = None
+    automateFast = False
+    automateSlow = False
+
+    @staticmethod
+    def uploadTLEData():
+        return
+
+    @staticmethod
+    def uploadMPCData(comets=False):
+        return
+
+    @staticmethod
+    def uploadEarthRotationData():
+        return
+
+
 class Astrometry:
     class AstrometrySignals(QObject):
         done = pyqtSignal()
@@ -577,6 +596,10 @@ class Data:
         return
 
     @staticmethod
+    def deleteCloseHorizonLine():
+        return
+
+    @staticmethod
     def ditherPoints():
         return
 
@@ -999,25 +1022,6 @@ class Mount(QObject):
 
     @staticmethod
     def syncPositionToTarget():
-        return
-
-
-class Automation:
-    installPath = None
-    updaterApp = None
-    automateFast = False
-    automateSlow = False
-
-    @staticmethod
-    def uploadTLEData():
-        return
-
-    @staticmethod
-    def uploadMPCData(comets=False):
-        return
-
-    @staticmethod
-    def uploadEarthRotationData():
         return
 
 

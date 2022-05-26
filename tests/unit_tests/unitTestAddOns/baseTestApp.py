@@ -596,7 +596,7 @@ class Data:
         return
 
     @staticmethod
-    def deleteCloseHorizonLine():
+    def deleteCloseHorizonLine(a):
         return
 
     @staticmethod

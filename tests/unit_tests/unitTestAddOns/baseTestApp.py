@@ -641,7 +641,6 @@ class Data:
             return False
 
 
-
 class Mount(QObject):
     class MountSatellite:
         class Name:

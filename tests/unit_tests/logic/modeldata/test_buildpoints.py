@@ -1227,10 +1227,11 @@ def test_generateDSOPath_3(function):
                            'clearBuildP'):
         suc = function.generateDSOPath(ha=ra,
                                        dec=dec,
-                                       numberPoints=1,
+                                       timeJD=function.app.mount.obsSite.timeJD,
                                        location=loc,
+                                       numberPoints=1,
                                        keep=False)
-        assert not suc
+        assert suc
 
 
 def test_generateDSOPath_4(function):
@@ -1241,9 +1242,9 @@ def test_generateDSOPath_4(function):
                            return_value=([], [])):
         suc = function.generateDSOPath(ha=ra,
                                        dec=dec,
-                                       numberPoints=1,
                                        timeJD=function.app.mount.obsSite.timeJD,
                                        location=function.app.mount.obsSite.location,
+                                       numberPoints=1,
                                        keep=True)
         assert suc
 

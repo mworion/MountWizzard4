@@ -261,10 +261,9 @@ def test_updateHeaderInfo_2(function):
 
 def test_updateHeaderInfo_3(function):
     header = {}
-    tsTest = load.timescale().tt_jd(2451544.5)
     function.app.mount.obsSite.raJNow = Angle(hours=12)
     function.app.mount.obsSite.decJNow = Angle(degrees=180)
-    function.app.mount.obsSite.timeJD = tsTest
+    function.app.mount.obsSite.timeJD = load.timescale().tt_jd(2451544.5)
     function.raJ2000 = Angle(hours=12)
     function.decJ2000 = Angle(degrees=90)
     h = function.updateHeaderInfo(header)

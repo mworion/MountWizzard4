@@ -694,7 +694,6 @@ def test_moveRaDecAbsolute_5(function):
 def test_moveRaDecAbsolute_6(function):
     function.ui.moveCoordinateRa.setText('12H')
     function.ui.moveCoordinateDec.setText('30 30')
-    function.app.mount.obsSite.timeJD
     with mock.patch.object(function.app.mount.obsSite,
                            'timeJD',
                            return_value=None):

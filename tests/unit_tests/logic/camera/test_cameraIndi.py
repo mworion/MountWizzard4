@@ -264,8 +264,8 @@ def test_updateHeaderInfo_3(function):
     assert h['DEC'] != 0
 
 
-def test_workerSaveBlobSignalsFinished(function):
-    suc = function.workerSaveBlobSignalsFinished()
+def test_saveBlobSignalsFinished(function):
+    suc = function.saveBlobSignalsFinished()
     assert suc
 
 

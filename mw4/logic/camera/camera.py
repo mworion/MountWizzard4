@@ -203,7 +203,6 @@ class Camera:
         """
         if self.framework not in self.run.keys():
             return False
-
         suc = self.run[self.framework].abort()
         self.signals.message.emit('')
         return suc
@@ -225,7 +224,6 @@ class Camera:
         """
         if self.framework not in self.run.keys():
             return False
-
         suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
         return suc
 
@@ -236,7 +234,6 @@ class Camera:
         """
         if self.framework not in self.run.keys():
             return False
-
         suc = self.run[self.framework].sendOffset(offset=offset)
         return suc
 
@@ -247,6 +244,5 @@ class Camera:
         """
         if self.framework not in self.run.keys():
             return False
-
         suc = self.run[self.framework].sendGain(gain=gain)
         return suc

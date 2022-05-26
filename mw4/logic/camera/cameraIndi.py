@@ -112,6 +112,14 @@ class CameraIndi(IndiClass, CameraSupport):
             self.signals.downloaded.emit()
             self.signals.message.emit('')
             self.isDownloading = False
+        elif self.device.CCD_EXPOSURE['state'] in ['Alert']:
+            self.isDownloading = False
+            self.signals.exposed.emit()
+            self.signals.exposeReady.emit()
+            self.signals.downloaded.emit()
+            self.signals.saved.emit('')
+            self.abort()
+            self.log.warning('INDI camera state alert')
         else:
             t = f'[{self.deviceName}] state: [{self.device.CCD_EXPOSURE["state"]}]'
             self.log.warning(t)
@@ -170,7 +178,7 @@ class CameraIndi(IndiClass, CameraSupport):
         header['DEC'] = self.decJ2000.degrees
         return header
 
-    def workerSaveBlobSignalsFinished(self):
+    def saveBlobSignalsFinished(self):
         """
         :return:
         """
@@ -230,7 +238,7 @@ class CameraIndi(IndiClass, CameraSupport):
 
         self.signals.message.emit('Saving')
         worker = Worker(self.workerSaveBLOB, data)
-        worker.signals.finished.connect(self.workerSaveBlobSignalsFinished)
+        worker.signals.finished.connect(self.saveBlobSignalsFinished)
         self.threadPool.start(worker)
         return True
 
@@ -250,8 +258,7 @@ class CameraIndi(IndiClass, CameraSupport):
 
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='READOUT_QUALITY',
-                                        elements=quality,
-                                        )
+                                        elements=quality)
         return suc
 
     def expose(self,
@@ -298,8 +305,7 @@ class CameraIndi(IndiClass, CameraSupport):
         indiCmd['VER_BIN'] = binning
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_BINNING',
-                                        elements=indiCmd,
-                                        )
+                                        elements=indiCmd)
         if not suc:
             self.log.debug('Binning could not be set')
 
@@ -310,8 +316,7 @@ class CameraIndi(IndiClass, CameraSupport):
         indiCmd['HEIGHT'] = height
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_FRAME',
-                                        elements=indiCmd,
-                                        )
+                                        elements=indiCmd)
         if not suc:
             self.log.debug('Frame could not be set')
 
@@ -319,8 +324,7 @@ class CameraIndi(IndiClass, CameraSupport):
         indiCmd['CCD_EXPOSURE_VALUE'] = expTime
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_EXPOSURE',
-                                        elements=indiCmd,
-                                        )
+                                        elements=indiCmd)
         return suc
 
     def abort(self):
@@ -339,8 +343,7 @@ class CameraIndi(IndiClass, CameraSupport):
         indiCmd['ABORT'] = 'On'
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='CCD_ABORT_EXPOSURE',
-                                        elements=indiCmd,
-                                        )
+                                        elements=indiCmd)
         return suc
 
     def sendCoolerSwitch(self, coolerOn=False):
@@ -362,8 +365,7 @@ class CameraIndi(IndiClass, CameraSupport):
 
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='CCD_COOLER',
-                                        elements=cooler,
-                                        )
+                                        elements=cooler)
         return suc
 
     def sendCoolerTemp(self, temperature=0):
@@ -381,8 +383,7 @@ class CameraIndi(IndiClass, CameraSupport):
         element['CCD_TEMPERATURE_VALUE'] = temperature
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_TEMPERATURE',
-                                        elements=element,
-                                        )
+                                        elements=element)
         return suc
 
     def sendOffset(self, offset=0):
@@ -400,8 +401,7 @@ class CameraIndi(IndiClass, CameraSupport):
         element['OFFSET'] = offset
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_OFFSET',
-                                        elements=element,
-                                        )
+                                        elements=element)
         return suc
 
     def sendGain(self, gain=0):
@@ -419,6 +419,5 @@ class CameraIndi(IndiClass, CameraSupport):
         element['GAIN'] = gain
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='CCD_GAIN',
-                                        elements=element,
-                                        )
+                                        elements=element)
         return suc

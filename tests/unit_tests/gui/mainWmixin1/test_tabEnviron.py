@@ -22,63 +22,24 @@ from pathlib import Path
 # external packages
 from PyQt5.QtGui import QImage
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
 import requests
-from skyfield.api import wgs84
-from skyfield.api import Loader
 import numpy as np
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabEnviron import Environ
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from logic.environment.sensorWeather import SensorWeather
-from logic.environment.onlineWeather import OnlineWeather
-from logic.environment.weatherUPB import WeatherUPB
-from logic.environment.skymeter import Skymeter
 from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
-
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        update10s = pyqtSignal()
-        threadPool = QThreadPool()
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        update30m = pyqtSignal()
-        mes = pyqtSignal(object, object, object, object)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        loader = Loader('tests/testData', verbose=False)
-        planets = loader('de421_23.bsp')
-        sensorWeather = SensorWeather(app=Test1())
-        onlineWeather = OnlineWeather(app=Test1())
-        powerWeather = WeatherUPB(app=Test1())
-        skymeter = Skymeter(app=Test1())
-
+def function(qapp):
     class Mixin(MWidget, Environ):
         def __init__(self):
             super().__init__()
-            self.app = Test()
+            self.app = App()
             self.deviceStat = {}
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
@@ -145,29 +106,41 @@ def test_updateRefractionUpdateType_5(function):
 
 def test_setRefractionUpdateType_1(function):
     function.refractionSource = 'onlineWeather'
-    suc = function.setRefractionUpdateType()
-    assert not suc
+    with mock.patch.object(function.app.mount.setting,
+                           'setDirectWeatherUpdateType',
+                           return_value=True):
+        suc = function.setRefractionUpdateType()
+        assert suc
 
 
 def test_setRefractionUpdateType_2(function):
     function.refractionSource = 'directWeather'
     function.ui.checkRefracNone.setChecked(True)
-    suc = function.setRefractionUpdateType()
-    assert not suc
+    with mock.patch.object(function.app.mount.setting,
+                           'setDirectWeatherUpdateType',
+                           return_value=True):
+        suc = function.setRefractionUpdateType()
+        assert suc
 
 
 def test_setRefractionUpdateType_3(function):
     function.refractionSource = 'directWeather'
     function.ui.checkRefracNoTrack.setChecked(True)
-    suc = function.setRefractionUpdateType()
-    assert not suc
+    with mock.patch.object(function.app.mount.setting,
+                           'setDirectWeatherUpdateType',
+                           return_value=True):
+        suc = function.setRefractionUpdateType()
+        assert suc
 
 
 def test_setRefractionUpdateType_4(function):
     function.refractionSource = 'directWeather'
     function.ui.checkRefracCont.setChecked(True)
-    suc = function.setRefractionUpdateType()
-    assert not suc
+    with mock.patch.object(function.app.mount.setting,
+                           'setDirectWeatherUpdateType',
+                           return_value=True):
+        suc = function.setRefractionUpdateType()
+        assert suc
 
 
 def test_setRefractionSourceGui_1(function):
@@ -353,8 +326,11 @@ def test_updateRefractionParameters_5(function, qtbot):
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        suc = function.updateRefractionParameters()
-        assert not suc
+        with mock.patch.object(function.app.mount.setting,
+                               'setRefractionParam',
+                               return_value=False):
+            suc = function.updateRefractionParameters()
+            assert not suc
 
 
 def test_updateRefractionParameters_6(function):

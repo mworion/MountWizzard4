@@ -117,9 +117,9 @@ class Mount(QObject):
 
         @staticmethod
         def setTrackingOffsets(Time=None,
-                              RA=None,
-                              DEC=None,
-                              DECcorr=None):
+                               RA=None,
+                               DEC=None,
+                               DECcorr=None):
             return
 
         @staticmethod
@@ -128,7 +128,32 @@ class Mount(QObject):
 
     class MountModel:
         starList = []
-        numberStars = 0
+        numberStars = 1
+        errorRMS = 1
+        terms = 1
+        positionAngle = Angle(degrees=0)
+        polarError = Angle(degrees=0)
+        orthoError = Angle(degrees=0)
+        azimuthError = Angle(degrees=0)
+        altitudeError = Angle(degrees=0)
+        altitudeTurns = 0
+        azimuthTurns = 0
+
+        @staticmethod
+        def programAlign():
+            return
+
+        @staticmethod
+        def clearAlign():
+            return
+
+        @staticmethod
+        def deleteName():
+            return
+
+        @staticmethod
+        def storeName(a):
+            return
 
     class MountFirmware:
         product = 'test'
@@ -255,6 +280,15 @@ class Mount(QObject):
         def setWebInterface():
             return True
 
+        @staticmethod
+        def setDirectWeatherUpdateType(a):
+            return True
+
+        @staticmethod
+        def setRefractionParam(temperature=None,
+                               pressure=None):
+            return True
+
     class MountSignals(QObject):
         locationDone = pyqtSignal()
         settingDone = pyqtSignal()
@@ -285,12 +319,12 @@ class Mount(QObject):
         haJNow = Angle(hours=0)
         AzTarget = Angle(degrees=0)
         AltTarget = Angle(degrees=0)
-        pierside = None
+        pierside = 'E'
         timeSidereal = Angle(hours=12)
         location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10,
                                 elevation_m=500)
         ts = load.timescale(builtin=True)
-        timeJD = ts.now()
+        timeJD = ts.tt_jd(2459580.5)
         timeDiff = 0
         loader = Loader('tests/workDir', verbose=False)
         status = 0
@@ -375,6 +409,10 @@ class Mount(QObject):
         def setLocation(loc):
             return True
 
+        @staticmethod
+        def syncPositionToTarget():
+            return True
+
     signals = MountSignals()
     obsSite = MountObsSite()
     geometry = MountGeometry()
@@ -423,6 +461,10 @@ class Mount(QObject):
 
     @staticmethod
     def calcTransformationMatricesActual():
+        return
+
+    @staticmethod
+    def syncPositionToTarget():
         return
 
 
@@ -547,6 +589,9 @@ class Camera:
         serverDisconnected = pyqtSignal(object)
         deviceConnected = pyqtSignal(object)
         deviceDisconnected = pyqtSignal(object)
+        exposeReady = pyqtSignal()
+        exposed = pyqtSignal()
+        downloaded = pyqtSignal()
 
     @staticmethod
     def expose(imagePath=None,
@@ -615,6 +660,7 @@ class Astrometry:
 
     signals = AstrometrySignals()
     framework = None
+    run = {}
     defaultConfig = {'framework': '',
                      'frameworks': {}}
 
@@ -625,6 +671,10 @@ class Astrometry:
     @staticmethod
     def abort():
         return
+
+    @staticmethod
+    def checkAvailability():
+        return True, True
 
 
 class OnlineWeather:
@@ -667,6 +717,10 @@ class Data:
 
     @staticmethod
     def generateCelestialEquator():
+        return
+
+    @staticmethod
+    def setStatusBuildP(a, b):
         return
 
     def isAboveHorizon(self, point):
@@ -834,7 +888,7 @@ class App(QObject):
     showAnalyse = pyqtSignal(object)
     showImage = pyqtSignal(object)
     updatePointMarker = pyqtSignal()
-    enableEditPoints = pyqtSignal()
+    enableEditPoints = pyqtSignal(object)
     colorChange = pyqtSignal()
     buildPointsChanged = pyqtSignal()
     playSound = pyqtSignal(object)

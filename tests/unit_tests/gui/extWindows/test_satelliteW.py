@@ -18,12 +18,12 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import pickle
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
-from skyfield.api import load
 import pyqtgraph as pg
 
 # local import
@@ -34,8 +34,10 @@ from gui.extWindows.satelliteW import SatelliteWindow
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-    func = SatelliteWindow(app=App())
-    yield func
+    with mock.patch.object(pickle,
+                           'load'):
+        func = SatelliteWindow(app=App())
+        yield func
 
 
 def test_initConfig_1(function):
@@ -225,11 +227,12 @@ def test_drawEarth_1(function):
     assert not suc
 
 
-def test_drawEarth_2(function, ts):
+def test_drawEarth_2(function):
     tle = ["CALSPHERE 1",
            "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
            "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    ts = function.app.mount.obsSite.ts
     tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
@@ -257,11 +260,12 @@ def test_drawEarth_2(function, ts):
     assert suc
 
 
-def test_drawEarth_3(function, ts):
+def test_drawEarth_3(function):
     tle = ["CALSPHERE 1",
            "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
            "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    ts = function.app.mount.obsSite.ts
     tt = 2459610
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
@@ -293,12 +297,13 @@ def test_drawHorizonView_1(function):
     assert not suc
 
 
-def test_drawHorizonView_2(function, ts):
+def test_drawHorizonView_2(function):
     tle = ["CALSPHERE 1",
            "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
            "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = 2459610
+    ts = function.app.mount.obsSite.ts
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -325,12 +330,13 @@ def test_drawHorizonView_2(function, ts):
     assert suc
 
 
-def test_drawHorizonView_3(function, ts):
+def test_drawHorizonView_3(function):
     tle = ["CALSPHERE 1",
            "1 00900U 64063C   22026.93541167  .00000330  00000+0  34283-3 0  9994",
            "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231"]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = 2459610
+    ts = function.app.mount.obsSite.ts
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -365,12 +371,13 @@ def test_drawSatellite_1(function):
             assert suc
 
 
-def test_drawSatellite_2(function, ts):
+def test_drawSatellite_2(function):
     tle = ["ISS (ZARYA)",
            "1 25544U 98067A   21103.51063550  .00000247  00000-0  12689-4 0  9995",
            "2 25544  51.6440 302.6231 0002845 223.0251 174.3348 15.48881931278570"]
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = 2459610
+    ts = function.app.mount.obsSite.ts
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)
@@ -399,13 +406,14 @@ def test_drawSatellite_2(function, ts):
             assert suc
 
 
-def test_drawSatellite_3(function, ts):
+def test_drawSatellite_3(function):
     tle = ["METEOSAT-10 (MSG-3)",
            "1 38552U 12035B   22026.87212005  .00000071  00000+0  00000+0 0  9997",
            "2 38552   1.3428  31.3751 0000057 333.5373  84.7153  1.00279964 34791"]
 
     satellite = EarthSatellite(*tle[1:3], name=tle[0])
     tt = 2459610
+    ts = function.app.mount.obsSite.ts
     t0 = ts.tt_jd(tt + 0)
     t1 = ts.tt_jd(tt + 0.1)
     t2 = ts.tt_jd(tt + 0.2)

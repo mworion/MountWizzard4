@@ -25,86 +25,27 @@ import shutil
 import glob
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QCheckBox
-from mountcontrol.qtmount import Mount
 import skyfield.api
 from skyfield.api import Angle
-from skyfield.api import wgs84
 from mountcontrol.modelStar import ModelStar
+from PyQt5.QtWidgets import QCheckBox
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabModel import Model
 import gui.mainWmixin.tabModel
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
-from logic.camera.camera import Camera
-from logic.dome.dome import Dome
-from logic.astrometry.astrometry import Astrometry
-from logic.modeldata.buildpoints import DataPoint
+from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
-    class Test3:
-        autoSolve = QCheckBox()
-        stackImages = QCheckBox()
-
-    class Test2:
-        deviceStat = {}
-        ui = Test3()
-
-        @staticmethod
-        def abortImage():
-            pass
-
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        update1s = pyqtSignal()
-        update10s = pyqtSignal()
-        threadPool = QThreadPool()
-        mwGlob = {'modelDir': 'tests/workDir/model',
-                  'imageDir': 'tests/workDir/image',
-                  'configDir': 'tests/workDir/config',
-                  'tempDir': 'tests/workDir/temp'}
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        showImage = pyqtSignal(str)
-        enableEditPoints = pyqtSignal(object)
-        updatePointMarker = pyqtSignal()
-        __version__ = 'test'
-        mes = pyqtSignal(object, object, object, object)
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        data = DataPoint(app=Test1())
-        camera = Camera(app=Test1())
-        astrometry = Astrometry(app=Test1())
-        dome = Dome(app=Test1())
-        mwGlob = {'modelDir': 'tests/workDir/model',
-                  'configDir': 'tests/workDir/config',
-                  'imageDir': 'tests/workDir/image'}
-        uiWindows = {'showImageW': {'classObj': Test2()}}
-
+def function(qapp):
     class Mixin(MWidget, Model):
         def __init__(self):
             super().__init__()
-            self.app = Test()
+            self.app = App()
             self.deviceStat = {}
             self.refreshName = None
             self.refreshModel = None
@@ -135,160 +76,55 @@ def test_storeConfig_1(function):
 
 
 def test_updateAlignGui_numberStars(function):
-    value = '50'
-    function.app.mount.model.numberStars = value
     function.updateAlignGUI(function.app.mount.model)
-    assert '50' == function.ui.numberStars.text()
-    assert '50' == function.ui.numberStars1.text()
-    value = None
-    function.app.mount.model.numberStars = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.numberStars.text()
-    assert '-' == function.ui.numberStars1.text()
+    assert ' 1' == function.ui.numberStars.text()
+    assert ' 1' == function.ui.numberStars1.text()
 
 
 def test_updateAlignGui_altitudeError_1(function):
-    value = '50'
-    function.app.mount.model.altitudeError = value
     function.updateAlignGUI(function.app.mount.model)
-    assert ' 50.0' == function.ui.altitudeError.text()
-
-
-def test_updateAlignGui_altitudeError_2(function):
-    value = None
-    function.app.mount.model.altitudeError = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.altitudeError.text()
+    assert '  0.0' == function.ui.altitudeError.text()
 
 
 def test_updateAlignGui_errorRMS_1(function):
-    value = '50'
-    function.app.mount.model.errorRMS = value
     function.updateAlignGUI(function.app.mount.model)
-    assert ' 50.0' == function.ui.errorRMS.text()
-    assert ' 50.0' == function.ui.errorRMS1.text()
-
-
-def test_updateAlignGui_errorRMS_2(function):
-    value = None
-    function.app.mount.model.errorRMS = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.errorRMS.text()
-    assert '-' == function.ui.errorRMS1.text()
+    assert '  1.0' == function.ui.errorRMS.text()
+    assert '  1.0' == function.ui.errorRMS1.text()
 
 
 def test_updateAlignGui_azimuthError_1(function):
-    value = '50'
-    function.app.mount.model.azimuthError = value
     function.updateAlignGUI(function.app.mount.model)
-    assert ' 50.0' == function.ui.azimuthError.text()
-
-
-def test_updateAlignGui_azimuthError_2(function):
-    value = None
-    function.app.mount.model.azimuthError = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.azimuthError.text()
+    assert '  0.0' == function.ui.azimuthError.text()
 
 
 def test_updateAlignGui_terms_1(function):
-    value = '50'
-    function.app.mount.model.terms = value
     function.updateAlignGUI(function.app.mount.model)
-    assert '50' == function.ui.terms.text()
-
-
-def test_updateAlignGui_terms_2(function):
-    value = None
-    function.app.mount.model.terms = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.terms.text()
+    assert ' 1' == function.ui.terms.text()
 
 
 def test_updateAlignGui_orthoError_1(function):
-    value = '50'
-    function.app.mount.model.orthoError = value
     function.updateAlignGUI(function.app.mount.model)
-    assert '180000' == function.ui.orthoError.text()
-
-
-def test_updateAlignGui_orthoError_2(function):
-    value = None
-    function.app.mount.model.orthoError = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.orthoError.text()
+    assert '    0' == function.ui.orthoError.text()
 
 
 def test_updateAlignGui_positionAngle_1(function):
-    value = '50'
-    function.app.mount.model.positionAngle = value
     function.updateAlignGUI(function.app.mount.model)
-    assert ' 50.0' == function.ui.positionAngle.text()
-
-
-def test_updateAlignGui_positionAngle_2(function):
-    value = None
-    function.app.mount.model.positionAngle = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.positionAngle.text()
+    assert '  0.0' == function.ui.positionAngle.text()
 
 
 def test_updateAlignGui_polarError_1(function):
-    value = '50'
-    function.app.mount.model.polarError = value
     function.updateAlignGUI(function.app.mount.model)
-    assert '180000' == function.ui.polarError.text()
-
-
-def test_updateAlignGui_polarError_2(function):
-    value = None
-    function.app.mount.model.polarError = value
-    function.updateAlignGUI(function.app.mount.model)
-    assert '-' == function.ui.polarError.text()
+    assert '    0' == function.ui.polarError.text()
 
 
 def test_updateTurnKnobsGUI_altitudeTurns_1(function):
-    value = 1.5
-    function.app.mount.model.altitudeTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.5 revs down' == function.ui.altitudeTurns.text()
-    value = None
-    function.app.mount.model.altitudeTurns = value
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '-' == function.ui.altitudeTurns.text()
-
-
-def test_updateTurnKnobsGUI_altitudeTurns_2(function):
-    value = -1.5
-    function.app.mount.model.altitudeTurns = value
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.5 revs up' == function.ui.altitudeTurns.text()
-    value = None
-    function.app.mount.model.altitudeTurns = value
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '-' == function.ui.altitudeTurns.text()
+    assert '0.0 revs up' == function.ui.altitudeTurns.text()
 
 
 def test_updateTurnKnobsGUI_azimuthTurns_1(function):
-    value = 1.5
-    function.app.mount.model.azimuthTurns = value
     function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.5 revs left' == function.ui.azimuthTurns.text()
-    value = None
-    function.app.mount.model.azimuthTurns = value
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '-' == function.ui.azimuthTurns.text()
-
-
-def test_updateTurnKnobsGUI_azimuthTurns_2(function):
-    value = -1.5
-    function.app.mount.model.azimuthTurns = value
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '1.5 revs right' == function.ui.azimuthTurns.text()
-    value = None
-    function.app.mount.model.azimuthTurns = value
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '-' == function.ui.azimuthTurns.text()
+    assert '0.0 revs right' == function.ui.azimuthTurns.text()
 
 
 def test_updateProgress_1(function):
@@ -531,8 +367,9 @@ def test_modelSlew_2(function):
               }
 
     function.slewQueue.put(mPoint)
-    with mock.patch.object(function.app.camera,
-                           'expose'):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
+                           return_value=False):
         suc = function.modelSlew()
         assert not suc
 
@@ -550,16 +387,14 @@ def test_modelSlew_3(function):
               'altitude': 0,
               }
     function.slewQueue.put(mPoint)
-    with mock.patch.object(function.app.camera,
-                           'expose'):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetAltAz',
+                           return_value=True):
         with mock.patch.object(function.app.dome,
                                'slewDome',
                                return_value=0):
-            with mock.patch.object(function.app.mount.obsSite,
-                                   'setTargetAltAz',
-                                   return_value=True):
-                suc = function.modelSlew()
-                assert suc
+            suc = function.modelSlew()
+            assert suc
 
 
 def test_modelSlew_4(function):
@@ -576,16 +411,14 @@ def test_modelSlew_4(function):
               }
     function.slewQueue.put(mPoint)
     function.ui.useDomeGeometry.setChecked(True)
-    with mock.patch.object(function.app.camera,
-                           'expose'):
-        with mock.patch.object(function.app.dome,
-                               'slewDome',
-                               return_value=0):
-            with mock.patch.object(function.app.mount.obsSite,
-                                   'setTargetAltAz',
-                                   return_value=True):
-                suc = function.modelSlew()
-                assert suc
+    with mock.patch.object(function.app.dome,
+                           'slewDome',
+                           return_value=0):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetAltAz',
+                               return_value=True):
+            suc = function.modelSlew()
+            assert suc
 
 
 def test_clearQueues(function):
@@ -594,28 +427,54 @@ def test_clearQueues(function):
 
 
 def test_setupModelRunContextAndGuiStatus_1(function):
-    function.app.uiWindows['showImageW']['classObj']=None
+    function.app.uiWindows = {'showImageW': {'classObj': None}}
     suc = function.setupModelRunContextAndGuiStatus()
     assert not suc
 
 
 def test_setupModelRunContextAndGuiStatus_2(function):
-    function.app.uiWindows['showImageW']['classObj'].deviceStat['expose'] = False
-    function.app.uiWindows['showImageW']['classObj'].deviceStat['exposeN'] = False
+    class Test1:
+        autoSolve = QCheckBox()
+        stackImages = QCheckBox()
+
+    class Test:
+        deviceStat = {'expose': False,
+                      'exposeN': False}
+        ui = Test1()
+    function.app.uiWindows = {'showImageW': {'classObj': Test()}}
     suc = function.setupModelRunContextAndGuiStatus()
     assert not suc
 
 
 def test_setupModelRunContextAndGuiStatus_3(function):
-    function.app.uiWindows['showImageW']['classObj'].deviceStat['expose'] = True
-    function.app.uiWindows['showImageW']['classObj'].deviceStat['exposeN'] = False
+    class Test1:
+        autoSolve = QCheckBox()
+        stackImages = QCheckBox()
+
+    class Test:
+        deviceStat = {'expose': True,
+                      'exposeN': False}
+        ui = Test1()
+    function.app.uiWindows = {'showImageW': {'classObj': Test()}}
     suc = function.setupModelRunContextAndGuiStatus()
     assert not suc
 
 
 def test_setupModelRunContextAndGuiStatus_4(function):
-    function.app.uiWindows['showImageW']['classObj'].deviceStat['expose'] = True
-    function.app.uiWindows['showImageW']['classObj'].deviceStat['exposeN'] = True
+    class Test1:
+        autoSolve = QCheckBox()
+        stackImages = QCheckBox()
+
+    class Test:
+        deviceStat = {'expose': True,
+                      'exposeN': True}
+        ui = Test1()
+
+        @staticmethod
+        def abortImage():
+            return
+
+    function.app.uiWindows = {'showImageW': {'classObj': Test()}}
     suc = function.setupModelRunContextAndGuiStatus()
     assert suc
 
@@ -1091,6 +950,7 @@ def test_modelCycleThroughBuildPointsFinished_3(function):
 
 
 def test_checkModelRunConditions_1(function):
+    function.app.data.buildP = [(0, 0, True)]
     suc = function.checkModelRunConditions()
     assert not suc
 
@@ -1189,13 +1049,24 @@ def test_clearAlignAndBackup_4(function):
 
 
 def test_setupModelPointsAndContextData_1(function):
+    class Test:
+        timeout = 1
+        searchRadius = 1
+
     function.app.astrometry.framework = 'astap'
+    function.app.astrometry.run = {'astap': Test()}
+    function.app.data.buildP = []
     val = function.setupModelPointsAndContextData()
     assert val == []
 
 
 def test_setupModelPointsAndContextData_2(function):
+    class Test:
+        timeout = 1
+        searchRadius = 1
+
     function.app.astrometry.framework = 'astap'
+    function.app.astrometry.run = {'astap': Test()}
     function.app.data.buildP = [(0, 0, True), (10, 10, True), (20, 20, True)]
     val = function.setupModelPointsAndContextData()
     assert len(val) == 3
@@ -1207,7 +1078,12 @@ def test_setupModelPointsAndContextData_2(function):
 
 
 def test_setupModelPointsAndContextData_3(function):
+    class Test:
+        timeout = 1
+        searchRadius = 1
+
     function.app.astrometry.framework = 'astap'
+    function.app.astrometry.run = {'astap': Test()}
     function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
     function.ui.excludeDonePoints.setChecked(True)
     val = function.setupModelPointsAndContextData()

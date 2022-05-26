@@ -31,13 +31,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
     class Mixin(MWidget, Mount):
         def __init__(self):
@@ -93,29 +88,14 @@ def test_updatePointGui_az(function):
 
 
 def test_updatePointGui_ra(function):
-    value = Angle(hours=45)
-    function.app.mount.obsSite.raJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '45:00:00' == function.ui.RA.text()
-    value = None
-    function.app.mount.obsSite.raJNow = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.RA.text()
+    assert '23:58:53' == function.ui.RA.text()
 
 
 def test_updatePointGui_dec_1(function):
     function.ui.checkJ2000.setChecked(False)
-    value = Angle(degrees=45)
-    function.app.mount.obsSite.decJNow = value
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '+45:00:00' == function.ui.DEC.text()
-
-
-def test_updatePointGui_dec_2(function):
-    value = None
-    function.app.mount.obsSite.decJNow = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.DEC.text()
+    assert '-00:07:13' == function.ui.DEC.text()
 
 
 def test_updatePointGui_pierside(function):
@@ -123,10 +103,6 @@ def test_updatePointGui_pierside(function):
     function.app.mount.obsSite.pierside = value
     function.updatePointGUI(function.app.mount.obsSite)
     assert 'WEST' == function.ui.pierside.text()
-    value = None
-    function.app.mount.obsSite.pierside = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.pierside.text()
 
 
 def test_updatePointGui_ha_1(function):
@@ -1411,7 +1387,7 @@ def test_showOffset_1(function):
     assert suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount'
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount'
             '.obsSite.timeDiff', 0.003)
 def test_showOffset_2(function):
     function.ui.clockSync.setChecked(True)
@@ -1420,7 +1396,7 @@ def test_showOffset_2(function):
     assert suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount'
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount'
             '.obsSite.timeDiff', 0.3)
 def test_showOffset_3(function):
     function.ui.clockSync.setChecked(True)
@@ -1430,7 +1406,7 @@ def test_showOffset_3(function):
     assert suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount.obsSite'
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite'
             '.timeDiff', 0.6)
 def test_showOffset_4(function):
     function.ui.clockSync.setChecked(True)

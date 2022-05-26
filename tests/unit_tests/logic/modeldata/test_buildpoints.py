@@ -1223,11 +1223,12 @@ def test_generateDSOPath_3(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
     loc = function.app.mount.obsSite.location
+    timeJD = function.app.mount.obsSite.ts.tt_jd(2459580.5)
     with mock.patch.object(function,
                            'clearBuildP'):
         suc = function.generateDSOPath(ha=ra,
                                        dec=dec,
-                                       timeJD=function.app.mount.obsSite.timeJD,
+                                       timeJD=timeJD,
                                        location=loc,
                                        numberPoints=1,
                                        keep=False)

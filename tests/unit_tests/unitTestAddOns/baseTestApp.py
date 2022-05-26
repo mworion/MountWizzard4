@@ -460,6 +460,10 @@ class Mount(QObject):
         return
 
     @staticmethod
+    def calcMountAltAzToDomeAltAz():
+        return
+
+    @staticmethod
     def calcTransformationMatricesActual():
         return 1, 1, 1, [0, 0, 0], [0, 0, 0]
 
@@ -785,11 +789,73 @@ class Data:
         return
 
     @staticmethod
+    def deleteCloseMeridian():
+        return
+
+    @staticmethod
+    def addBuildP():
+        return
+
+    @staticmethod
+    def saveBuildP():
+        return
+
+    @staticmethod
+    def loadBuildP():
+        return
+
+    @staticmethod
+    def genGrid(minAlt=None,
+                maxAlt=None,
+                numbRows=None,
+                numbCols=None,
+                keep=None):
+        return
+
+    @staticmethod
+    def genAlign(altBase=None,
+                 azBase=None,
+                 numberBase=None,
+                 keep=None):
+        return
+
+    @staticmethod
+    def genGreaterCircle(selection=None,
+                         keep=None):
+        return
+
+    @staticmethod
+    def generateDSOPath(ha=None,
+                        dec=None,
+                        timeJD=None,
+                        location=None,
+                        numberPoints=None,
+                        keep=None):
+        return
+
+    @staticmethod
+    def generateGoldenSpiral(numberPoints=None,
+                             keep=None):
+        return
+
+    @staticmethod
     def generateCelestialEquator():
         return
 
     @staticmethod
     def setStatusBuildP(a, b):
+        return
+
+    @staticmethod
+    def deleteBelowHorizon():
+        return
+
+    @staticmethod
+    def ditherPoints():
+        return
+
+    @staticmethod
+    def sort():
         return
 
     def isAboveHorizon(self, point):

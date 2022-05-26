@@ -17,50 +17,24 @@
 # standard libraries
 import pytest
 from unittest import mock
-from pathlib import Path
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal, QThreadPool
-from mountcontrol.qtmount import Mount
-from skyfield.api import wgs84, Angle
+from skyfield.api import Angle
 from astroquery.simbad import Simbad
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabBuildPoints import BuildPoints
-from logic.modeldata.buildpoints import DataPoint
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-    class Test1(QObject):
-        mwGlob = {'configDir': 'tests/workDir/config'}
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        redrawHemisphere = pyqtSignal()
-        drawBuildPoints = pyqtSignal()
-        buildPointsChanged = pyqtSignal()
-        mes = pyqtSignal(object, object, object, object)
-        sendBuildPoints = pyqtSignal(object)
-        threadPool = QThreadPool()
-        mwGlob = {'configDir': 'tests/workDir/config'}
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        data = DataPoint(app=Test1())
-        uiWindows = {'showHemisphereW': {'classObj': None}}
-
     class Mixin(MWidget, BuildPoints):
         def __init__(self):
             super().__init__()
-            self.app = Test()
+            self.app = App()
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
@@ -85,8 +59,11 @@ def test_genBuildGrid_1(function):
     function.ui.numberGridPointsCol.setValue(10)
     function.ui.altitudeMin.setValue(10)
     function.ui.altitudeMax.setValue(60)
-    suc = function.genBuildGrid()
-    assert suc
+    with mock.patch.object(function.app.data,
+                           'genGrid',
+                           return_value=True):
+        suc = function.genBuildGrid()
+        assert suc
 
 
 def test_genBuildGrid_2(function):
@@ -94,8 +71,11 @@ def test_genBuildGrid_2(function):
     function.ui.numberGridPointsCol.setValue(9)
     function.ui.altitudeMin.setValue(10)
     function.ui.altitudeMax.setValue(60)
-    suc = function.genBuildGrid()
-    assert suc
+    with mock.patch.object(function.app.data,
+                           'genGrid',
+                           return_value=True):
+        suc = function.genBuildGrid()
+        assert suc
 
 
 def test_genBuildGrid_3(function):
@@ -345,23 +325,35 @@ def test_genBuildDSO_6(function):
 
 
 def test_genBuildGoldenSpiral_1(function):
-    suc = function.genBuildSpiralMax()
-    assert suc
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=True):
+        suc = function.genBuildSpiralMax()
+        assert suc
 
 
 def test_genBuildGoldenSpiral_1a(function):
-    suc = function.genBuildSpiralMed()
-    assert suc
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=True):
+        suc = function.genBuildSpiralMed()
+        assert suc
 
 
 def test_genBuildGoldenSpiral_1b(function):
-    suc = function.genBuildSpiralNorm()
-    assert suc
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=True):
+        suc = function.genBuildSpiralNorm()
+        assert suc
 
 
 def test_genBuildGoldenSpiral_1c(function):
-    suc = function.genBuildSpiralMin()
-    assert suc
+    with mock.patch.object(function.app.data,
+                           'generateGoldenSpiral',
+                           return_value=True):
+        suc = function.genBuildSpiralMin()
+        assert suc
 
 
 def test_genBuildGoldenSpiral_2(function):
@@ -536,6 +528,7 @@ def test_genBuildFile_4(function):
 
 
 def test_clearBuildP_1(function):
+    function.app.uiWindows = {'showHemisphereW': {'classObj': None}}
     suc = function.clearBuildP()
     assert not suc
 
@@ -546,7 +539,7 @@ def test_clearBuildP_2(function):
         def clearHemisphere():
             return
 
-    function.app.uiWindows['showHemisphereW']['classObj'] = Test()
+    function.app.uiWindows = {'showHemisphereW': {'classObj': Test()}}
     suc = function.clearBuildP()
     assert suc
 

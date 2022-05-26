@@ -24,8 +24,9 @@ import pyqtgraph as pg
 from skyfield.api import Angle
 
 # local import
-from gui.extWindows.hemisphereW import HemisphereWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.extWindows.hemisphereW import HemisphereWindow
+from gui.utilities.tools4pyqtgraph import CustomViewBox
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -196,6 +197,8 @@ def test_clearHorizonMask(function):
 
 
 def test_addActualPosition_1(function):
+    function.app.mount.obsSite.Alt = None
+    function.app.mount.obsSite.Az = None
     suc = function.addActualPosition()
     assert not suc
 
@@ -203,11 +206,13 @@ def test_addActualPosition_1(function):
 def test_addActualPosition_2(function):
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=20)
-    pd = pg.PlotDataItem(x=[10, 11], y=[10, 100], symbol='o')
-    vb = function.ui.horizon.p[0].getViewBox()
-    vb.plotDataItem = pd
-    suc = function.addActualPosition()
-    assert suc
+    with mock.patch.object(CustomViewBox,
+                           'getNearestPointIndex',
+                           return_value=1):
+        with mock.patch.object(CustomViewBox,
+                               'addUpdate'):
+            suc = function.addActualPosition()
+            assert suc
 
 
 def test_prepareHorizonView(function):

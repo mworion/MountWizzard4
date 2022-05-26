@@ -89,6 +89,16 @@ def test_getAscomProperty_3(function):
     assert val
 
 
+def test_getAscomProperty_4(function):
+    class Client:
+        connect = True
+
+    function.client = Client()
+    function.propertyExceptions = ['test']
+    val = function.getAscomProperty('imagearray')
+    assert val
+
+
 def test_setAscomProperty_1(function):
     function.propertyExceptions = ['connect']
     suc = function.setAscomProperty('Connect', True)

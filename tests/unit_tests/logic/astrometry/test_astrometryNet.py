@@ -261,7 +261,7 @@ def test_solve_6(function):
 
 def test_solve_7(function):
     function.indexPath = 'tests/workDir/temp'
-    function.appPath = 'Astrometry.function'
+    function.appPath = 'Astrometry.app'
     with mock.patch.object(function,
                            'runImage2xy',
                            return_value=True):

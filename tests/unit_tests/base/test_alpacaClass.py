@@ -313,6 +313,25 @@ def test_getAlpacaProperty_9(function):
         assert val == 'test'
 
 
+def test_getAlpacaProperty_10(function):
+    class Test:
+        status_code = 200
+        text = 'test'
+
+        @staticmethod
+        def json():
+            return {'ErrorNumber': 0,
+                    'ErrorMessage': 'msg',
+                    'Value': 'imagearray'}
+
+    function.deviceName = 'test'
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        val = function.getAlpacaProperty('imagearray')
+        assert val == 'imagearray'
+
+
 def test_setAlpacaProperty_1(function):
     val = function.setAlpacaProperty('')
     assert val is None

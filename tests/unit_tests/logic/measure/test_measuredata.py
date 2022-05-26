@@ -73,8 +73,8 @@ def test_setEmptyData(function):
 def test_calculateReference_1(function):
     function.raRef = 0
     function.decRef = 0
-    function.app.mount.obsSite.raJNow = Angle(hours=0)
-    function.app.mount.obsSite.decJNow = Angle(degrees=0)
+    function.app.mount.obsSite.raJNow = None
+    function.app.mount.obsSite.decJNow = None
     function.data['status'] = np.array([])
     ra, dec, raA, decA = function.calculateReference()
     assert ra == 0
@@ -222,6 +222,10 @@ def test_checkSize_2(function):
 
 
 def test_getDirectWeather(function):
+    function.app.mount.setting.weatherTemperature = None
+    function.app.mount.setting.weatherPressure = None
+    function.app.mount.setting.weatherDewPoint = None
+    function.app.mount.setting.weatherHumidity = None
     val = function.getDirectWeather()
     assert len(val) == 4
 

@@ -35,9 +35,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function():
     func = CameraSupport()
     func.data = {'CCD_INFO.CCD_PIXEL_SIZE_X': 1,
-                'CCD_INFO.CCD_PIXEL_SIZE_Y': 1,
-                'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE': 0,
-                }
+                 'CCD_INFO.CCD_PIXEL_SIZE_Y': 1,
+                 'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE': 0}
     func.abortExpose = False
     func.app = App()
     func.signals = Signals()
@@ -74,6 +73,12 @@ def test_writeHeaderOptical_1(function):
     suc = function.writeHeaderOptical(header, 1, 100)
     assert suc
     assert header['FOCALLEN'] == 100
+
+
+def test_writeHeaderOptical_2(function):
+    header = fits.PrimaryHDU(data=np.array([])).header
+    suc = function.writeHeaderOptical(header, 1, None)
+    assert not suc
 
 
 def test_writeHeaderSite_1(function):

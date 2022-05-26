@@ -444,6 +444,12 @@ def test_updateMessage_5(function):
     assert suc
 
 
+def test_updateMessage_6(function):
+    function.messages = True
+    suc = function.updateMessage('test', '[INFO] should not be shown')
+    assert suc
+
+
 def test_addDiscoveredDevice_1(function):
     device = Device()
     function.indiClass = S(app=App())

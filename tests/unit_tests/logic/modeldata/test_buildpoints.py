@@ -355,10 +355,15 @@ def test_addBuildP1(function):
 
 
 def test_addBuildP2(function):
+    function.app.mount.setting.horizonLimitLow = None
+    function.app.mount.setting.horizonLimitHigh = None
     function.buildP = ()
     suc = function.addBuildP(10)
     assert not suc
     assert 0 == len(function.buildP)
+    function.app.mount.setting.horizonLimitLow = 0
+    function.app.mount.setting.horizonLimitHigh = 90
+
 
 
 def test_addBuildP3(function):
@@ -508,8 +513,10 @@ def test_isAboveHorizon_2(function):
 
 
 def test_isCloseMeridian_1(function):
+    function.app.mount.setting.meridianLimitSlew = None
     suc = function.isCloseMeridian((90, 45))
     assert not suc
+    function.app.mount.setting.meridianLimitSlew = 3
 
 
 def test_isCloseMeridian_2(function):
@@ -1215,11 +1222,14 @@ def test_generateDSOPath_2(function):
 def test_generateDSOPath_3(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    suc = function.generateDSOPath(ha=ra,
-                                   dec=dec,
-                                   numberPoints=1)
+    loc = function.app.mount.obsSite.location
     with mock.patch.object(function,
                            'clearBuildP'):
+        suc = function.generateDSOPath(ha=ra,
+                                       dec=dec,
+                                       numberPoints=1,
+                                       location=loc,
+                                       keep=False)
         assert not suc
 
 

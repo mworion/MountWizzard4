@@ -38,13 +38,8 @@ import gui.mainWmixin.tabTools
 import mountcontrol
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
     class Mixin(MWidget, Tools):
         def __init__(self):
@@ -428,8 +423,9 @@ def test_setSlewSpeed_2(function):
 
 
 def test_slewSelectedTargetWithDome_1(function):
+    function.app.deviceStat['dome'] = None
     suc = function.slewSelectedTargetWithDome()
-    assert not suc
+    assert suc
 
 
 def test_slewSelectedTargetWithDome_2(function):

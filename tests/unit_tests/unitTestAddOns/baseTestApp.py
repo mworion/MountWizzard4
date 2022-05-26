@@ -461,7 +461,7 @@ class Mount(QObject):
 
     @staticmethod
     def calcTransformationMatricesActual():
-        return
+        return 1, 1, 1, [0, 0, 0], [0, 0, 0]
 
     @staticmethod
     def syncPositionToTarget():
@@ -500,6 +500,30 @@ class Cover:
     framework = None
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+
+    @staticmethod
+    def closeCover():
+        return
+
+    @staticmethod
+    def openCover():
+        return
+
+    @staticmethod
+    def haltCover():
+        return
+
+    @staticmethod
+    def lightOn():
+        return
+
+    @staticmethod
+    def lightOff():
+        return
+
+    @staticmethod
+    def lightIntensity():
+        return
 
 
 class Dome:
@@ -559,6 +583,14 @@ class Dome:
     def avoidFirstOvershoot():
         return
 
+    @staticmethod
+    def slewCW():
+        return
+
+    @staticmethod
+    def slewCCW():
+        return
+
 
 class Relay:
     class RelaySignals(QObject):
@@ -606,6 +638,34 @@ class Camera:
     def abort():
         return
 
+    @staticmethod
+    def sendCoolerTemp(temperature=None):
+        return
+
+    @staticmethod
+    def sendOffset(offset=None):
+        return
+
+    @staticmethod
+    def sendGain(gain=None):
+        return
+
+    @staticmethod
+    def sendDownloadMode(fastReadout=None):
+        return
+
+    @staticmethod
+    def sendCoolerSwitch(coolerOn=None):
+        return
+
+    @staticmethod
+    def stopCommunication():
+        return
+
+    @staticmethod
+    def startCommunication(loadConfig=None):
+        return
+
     signals = CameraSignals()
     expTime = 0
     expTimeN = 0
@@ -632,6 +692,14 @@ class Focuser:
     data = {}
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+
+    @staticmethod
+    def move():
+        return
+
+    @staticmethod
+    def halt():
+        return
 
 
 class DirectWeather:
@@ -661,6 +729,7 @@ class Astrometry:
     signals = AstrometrySignals()
     framework = None
     run = {}
+    deviceName = ''
     defaultConfig = {'framework': '',
                      'frameworks': {}}
 
@@ -771,6 +840,14 @@ class Filter:
     defaultConfig = {'framework': '',
                      'frameworks': {}}
 
+    @staticmethod
+    def sendFilterNumber(filterNumber=None):
+        return
+
+    @staticmethod
+    def sendFilterName(filterName=None):
+        return
+
 
 class Measure:
     class MeasureSignals(QObject):
@@ -840,13 +917,25 @@ class Telescope:
         deviceConnected = pyqtSignal(object)
         deviceDisconnected = pyqtSignal(object)
 
+    class Test:
+        deviceName = ''
+
     signals = TelescopeSignals()
     data = {}
     framework = None
+    run = {'indi': Test()}
     focalLength = 100
     aperture = 100
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+
+    @staticmethod
+    def stopCommunication():
+        return
+
+    @staticmethod
+    def startCommunication(loadConfig=None):
+        return
 
 
 class Hipparcos:

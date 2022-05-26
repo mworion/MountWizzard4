@@ -17,119 +17,46 @@
 # standard libraries
 import pytest
 from unittest import mock
-import logging
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget, QPushButton
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
-from skyfield.api import wgs84
+from PyQt5.QtWidgets import QPushButton
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabSettDevice import SettDevice
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
-from logic.environment.sensorWeather import SensorWeather
-from logic.environment.onlineWeather import OnlineWeather
-from logic.environment.directWeather import DirectWeather
-from logic.environment.weatherUPB import WeatherUPB
-from logic.environment.skymeter import Skymeter
-from logic.cover.cover import Cover
-from logic.filter.filter import Filter
-from logic.camera.camera import Camera
-from logic.focuser.focuser import Focuser
-from logic.dome.dome import Dome
-from logic.powerswitch.pegasusUPB import PegasusUPB
-from logic.telescope.telescope import Telescope
-from logic.astrometry.astrometry import Astrometry
-from logic.powerswitch.kmRelay import KMRelay
-from logic.measure.measure import MeasureData
-from logic.remote.remote import Remote
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
+def function(qapp):
 
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        update1s = pyqtSignal()
-        update10s = pyqtSignal()
-        threadPool = QThreadPool()
-        mwGlob = {'modelDir': 'tests/workDir/model',
-                  'imageDir': 'tests/workDir/image',
-                  'tempDir': 'tests/workDir/temp'}
+    class Mixin(MWidget, SettDevice):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.deviceStat = {}
+            self.threadPool = self.app.threadPool
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            SettDevice.__init__(self)
 
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        mes = pyqtSignal(object, object, object, object)
-
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        sensorWeather = SensorWeather(app=Test1())
-        onlineWeather = OnlineWeather(app=Test1())
-        directWeather = DirectWeather(app=Test1())
-        powerWeather = WeatherUPB(app=Test1())
-        skymeter = Skymeter(app=Test1())
-        cover = Cover(app=Test1())
-        filter = Filter(app=Test1())
-        camera = Camera(app=Test1())
-        focuser = Focuser(app=Test1())
-        dome = Dome(app=Test1())
-        power = PegasusUPB(app=Test1())
-        astrometry = Astrometry(app=Test1())
-        relay = KMRelay()
-        measure = MeasureData(app=Test1())
-        remote = Remote(app=Test1())
-        telescope = Telescope(app=Test1())
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = SettDevice(app=Test(), ui=ui,
-                     clickable=MWidget().clickable)
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    app.findIndexValue = MWidget().findIndexValue
-    app.pos = MWidget().pos
-    app.height = MWidget().height
-    app.width = MWidget().width
-    app.M_GREY1 = MWidget().M_GREY1
-    app.M_GREEN = MWidget().M_GREEN
-    app.returnDriver = MWidget().returnDriver
-    app.deviceStat = dict()
-    app.log = logging.getLogger(__name__)
-    app.threadPool = QThreadPool()
-    app.config = dict()
-    app.BACK_NORM = '#000000'
-    app.BACK_GREEN = '#000000'
-    app.driversData = {'camera': {}}
-    yield
-    app.threadPool.waitForDone(1000)
+    func = Mixin()
+    yield func
 
 
-def test_checkStructureDriversData_1():
+def test_checkStructureDriversData_1(function):
     config = {
         'driversData': {
             'cover': {}
         }
     }
     with mock.patch('deepdiff.DeepDiff', return_value={}):
-        suc = app.checkStructureDriversData('cover', config)
+        suc = function.checkStructureDriversData('cover', config)
         assert not suc
 
 
-def test_checkStructureDriversData_2():
+def test_checkStructureDriversData_2(function):
     class Test:
         defaultConfig = {}
 
@@ -138,78 +65,78 @@ def test_checkStructureDriversData_2():
             'cover': {}
         }
     }
-    app.drivers = {
+    function.drivers = {
         'cover': {
             'class': Test()
         }
     }
     with mock.patch('deepdiff.DeepDiff',
                     return_value={'dictionary_item_added'}):
-        suc = app.checkStructureDriversData('cover', config)
+        suc = function.checkStructureDriversData('cover', config)
         assert suc
 
 
-def test_initConfig_1():
-    app.config['mainW'] = {}
-    with mock.patch.object(app,
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    with mock.patch.object(function,
                            'setupDeviceGui'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDrivers'):
-            suc = app.initConfig()
+            suc = function.initConfig()
             assert suc
 
 
-def test_initConfig_2():
-    app.drivers = {'cover': {}}
-    app.app.config['mainW'] = {
+def test_initConfig_2(function):
+    function.drivers = {'cover': {}}
+    function.app.config['mainW'] = {
         'driversData': {
             'cover': {}
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'setupDeviceGui'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDrivers'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'checkStructureDriversData'):
-                with mock.patch.object(app,
+                with mock.patch.object(function,
                                        'setDefaultData'):
-                    suc = app.initConfig()
+                    suc = function.initConfig()
                     assert suc
 
 
-def test_initConfig_3():
-    app.drivers = {'cover': {}}
-    app.app.config['mainW'] = {
+def test_initConfig_3(function):
+    function.drivers = {'cover': {}}
+    function.app.config['mainW'] = {
         'driversData': {
             'camera': {}
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'setupDeviceGui'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDrivers'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'checkStructureDriversData'):
-                with mock.patch.object(app,
+                with mock.patch.object(function,
                                        'setDefaultData'):
-                    suc = app.initConfig()
+                    suc = function.initConfig()
                     assert suc
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    suc = function.storeConfig()
     assert suc
 
 
-def test_storeConfig_2():
-    app.driversData['dome'] = {}
-    suc = app.storeConfig()
+def test_storeConfig_2(function):
+    function.driversData['dome'] = {}
+    suc = function.storeConfig()
     assert suc
 
 
-def test_setupDeviceGui_1():
-    app.driversData = {
+def test_setupDeviceGui_1(function):
+    function.driversData = {
         'telescope': {
             'framework': 'astap',
             'frameworks': {
@@ -222,12 +149,12 @@ def test_setupDeviceGui_1():
             }
         }
     }
-    suc = app.setupDeviceGui()
+    suc = function.setupDeviceGui()
     assert suc
 
 
-def test_setupDeviceGui_2():
-    app.driversData = {
+def test_setupDeviceGui_2(function):
+    function.driversData = {
         'test': {
             'framework': 'astap',
             'frameworks': {
@@ -240,11 +167,11 @@ def test_setupDeviceGui_2():
             }
         }
     }
-    suc = app.setupDeviceGui()
+    suc = function.setupDeviceGui()
     assert suc
 
 
-def test_processPopupResults_1():
+def test_processPopupResults_1(function):
     class UI:
         ok = QPushButton()
 
@@ -252,7 +179,7 @@ def test_processPopupResults_1():
         returnValues = {'driver': ''}
         ui = UI()
 
-    app.driversData = {
+    function.driversData = {
         'telescope': {
             'framework': 'astap',
             'frameworks': {
@@ -265,13 +192,13 @@ def test_processPopupResults_1():
             }
         }
     }
-    app.popupUi = Test()
-    app.popupUi.ui.ok.clicked.connect(app.processPopupResults)
-    suc = app.processPopupResults()
+    function.popupUi = Test()
+    function.popupUi.ui.ok.clicked.connect(function.processPopupResults)
+    suc = function.processPopupResults()
     assert not suc
 
 
-def test_processPopupResults_2():
+def test_processPopupResults_2(function):
     class UI:
         ok = QPushButton()
 
@@ -282,7 +209,7 @@ def test_processPopupResults_2():
         }
         ui = UI()
 
-    app.driversData = {
+    function.driversData = {
         'telescope': {
             'framework': 'astap',
             'frameworks': {
@@ -295,15 +222,15 @@ def test_processPopupResults_2():
             }
         }
     }
-    app.popupUi = Test()
-    app.popupUi.ui.ok.clicked.connect(app.processPopupResults)
-    with mock.patch.object(app,
+    function.popupUi = Test()
+    function.popupUi.ui.ok.clicked.connect(function.processPopupResults)
+    with mock.patch.object(function,
                            'copyConfig'):
-        suc = app.processPopupResults()
+        suc = function.processPopupResults()
         assert not suc
 
 
-def test_processPopupResults_3():
+def test_processPopupResults_3(function):
     class UI:
         ok = QPushButton()
 
@@ -311,7 +238,7 @@ def test_processPopupResults_3():
         returnValues = {'driver': 'telescope'}
         ui = UI()
 
-    app.driversData = {
+    function.driversData = {
         'telescope': {
             'framework': 'astap',
             'frameworks': {
@@ -324,18 +251,18 @@ def test_processPopupResults_3():
             }
         }
     }
-    app.popupUi = Test()
-    app.popupUi.ui.ok.clicked.connect(app.processPopupResults)
-    with mock.patch.object(app,
+    function.popupUi = Test()
+    function.popupUi.ui.ok.clicked.connect(function.processPopupResults)
+    with mock.patch.object(function,
                            'stopDriver'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDriver'):
-            suc = app.processPopupResults()
+            suc = function.processPopupResults()
             assert suc
 
 
-def test_copyConfig_1():
-    app.driversData = {
+def test_copyConfig_1(function):
+    function.driversData = {
         'telescope': {
             'framework': 'astap',
             'frameworks': {
@@ -348,18 +275,18 @@ def test_copyConfig_1():
             }
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'stopDriver'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDriver'):
-            suc = app.copyConfig('telescope', 'telescope')
+            suc = function.copyConfig('telescope', 'telescope')
             assert suc
 
 
-def test_copyConfig_2():
-    app.drivers['telescope']['class'].framework = 'indi'
-    app.drivers['cover']['class'].framework = 'indi'
-    app.driversData = {
+def test_copyConfig_2(function):
+    function.drivers['telescope']['class'].framework = 'indi'
+    function.drivers['cover']['class'].framework = 'indi'
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
             'frameworks': {
@@ -380,18 +307,18 @@ def test_copyConfig_2():
         }
 
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'stopDriver'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDriver'):
-            suc = app.copyConfig('telescope', 'indi')
+            suc = function.copyConfig('telescope', 'indi')
             assert suc
 
 
-def test_copyConfig_3():
-    app.drivers['telescope']['class'].framework = 'indi'
-    app.drivers['cover']['class'].framework = 'indi'
-    app.driversData = {
+def test_copyConfig_3(function):
+    function.drivers['telescope']['class'].framework = 'indi'
+    function.drivers['cover']['class'].framework = 'indi'
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
             'frameworks': {
@@ -412,18 +339,18 @@ def test_copyConfig_3():
         }
 
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'stopDriver'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDriver'):
-            suc = app.copyConfig('telescope', 'test')
+            suc = function.copyConfig('telescope', 'test')
             assert suc
 
 
-def test_copyConfig_4():
-    app.drivers['telescope']['class'].framework = 'indi'
-    app.drivers['cover']['class'].framework = 'indi'
-    app.driversData = {
+def test_copyConfig_4(function):
+    function.drivers['telescope']['class'].framework = 'indi'
+    function.drivers['cover']['class'].framework = 'indi'
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
             'frameworks': {
@@ -446,16 +373,16 @@ def test_copyConfig_4():
         }
 
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'stopDriver'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'startDriver'):
-            suc = app.copyConfig('telescope', 'indi')
+            suc = function.copyConfig('telescope', 'indi')
             assert suc
-            assert app.driversData['cover']['frameworks']['indi']['test'] == 1
+            assert function.driversData['cover']['frameworks']['indi']['test'] == 1
 
 
-def test_callPopup_1():
+def test_callPopup_1(function):
     class Pop:
         class OK:
             class Clicked:
@@ -467,67 +394,68 @@ def test_callPopup_1():
             ok = Clicked()
         ui = OK()
 
-    app.driversData = {
+    function.driversData = {
         'cover': {
         }
     }
-    app.drivers = {
+    function.drivers = {
         'cover': {
             'deviceType': 'cover'
         }
     }
     with mock.patch('gui.mainWmixin.tabSettDevice.DevicePopup',
                     return_value=Pop()):
-        suc = app.callPopup('cover')
+        suc = function.callPopup('cover')
         assert suc
 
 
-def test_dispatchPopup():
+def test_dispatchPopup(function):
     def sender():
         return 'test'
 
-    app.sender = sender
+    function.sender = sender
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'callPopup'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'returnDriver',
                                return_values='test'):
-            suc = app.dispatchPopup()
+            suc = function.dispatchPopup()
             assert suc
 
 
-def test_stopDriver_1():
-    suc = app.stopDriver('')
+def test_stopDriver_1(function):
+    suc = function.stopDriver('')
     assert not suc
 
 
-def test_stopDriver_2():
-    suc = app.stopDriver('telescope')
+def test_stopDriver_2(function):
+    function.drivers['telescope']['class'].framework = None
+    suc = function.stopDriver('telescope')
     assert not suc
 
 
-def test_stopDriver_3():
-    app.drivers['telescope']['class'].framework = 'indi'
-    app.drivers['telescope']['class'].run['indi'].deviceName = 'indi'
-    suc = app.stopDriver('telescope')
+def test_stopDriver_3(function):
+    function.drivers['telescope']['class'].framework = 'indi'
+    function.drivers['telescope']['class'].run['indi'].deviceName = 'indi'
+    suc = function.stopDriver('telescope')
     assert suc
 
 
-def test_stopDrivers():
-    with mock.patch.object(app,
+def test_stopDrivers(function):
+    with mock.patch.object(function,
                            'stopDriver'):
-        suc = app.stopDrivers()
+        suc = function.stopDrivers()
         assert suc
 
 
-def test_configDriver_1():
-    suc = app.configDriver('')
+def test_configDriver_1(function):
+    suc = function.configDriver('')
     assert not suc
 
 
-def test_configDriver_2():
-    app.driversData = {
+def test_configDriver_2(function):
+    function.driversData = {
         'telescope': {
             'framework': '',
             'frameworks': {
@@ -538,12 +466,12 @@ def test_configDriver_2():
             }
         }
     }
-    suc = app.configDriver('telescope')
+    suc = function.configDriver('telescope')
     assert not suc
 
 
-def test_configDriver_3():
-    app.driversData = {
+def test_configDriver_3(function):
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
             'frameworks': {
@@ -554,17 +482,17 @@ def test_configDriver_3():
             }
         }
     }
-    suc = app.configDriver('telescope')
+    suc = function.configDriver('telescope')
     assert suc
 
 
-def test_startDriver_1():
-    suc = app.startDriver()
+def test_startDriver_1(function):
+    suc = function.startDriver()
     assert not suc
 
 
-def test_startDriver_2():
-    app.driversData = {
+def test_startDriver_2(function):
+    function.driversData = {
         'telescope': {
             'framework': '',
             'frameworks': {
@@ -575,12 +503,12 @@ def test_startDriver_2():
             }
         }
     }
-    suc = app.startDriver('telescope')
+    suc = function.startDriver('telescope')
     assert not suc
 
 
-def test_startDriver_3():
-    app.driversData = {
+def test_startDriver_3(function):
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
             'frameworks': {
@@ -591,14 +519,14 @@ def test_startDriver_3():
             }
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'configDriver'):
-        suc = app.startDriver('telescope', False)
+        suc = function.startDriver('telescope', False)
         assert suc
 
 
-def test_startDriver_3():
-    app.driversData = {
+def test_startDriver_3(function):
+    function.driversData = {
         'telescope': {
             'framework': 'internal',
             'frameworks': {
@@ -607,14 +535,14 @@ def test_startDriver_3():
             }
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'configDriver'):
-        suc = app.startDriver('telescope')
+        suc = function.startDriver('telescope')
         assert suc
 
 
-def test_startDriver_4():
-    app.driversData = {
+def test_startDriver_4(function):
+    function.driversData = {
         'camera': {
             'framework': 'sgpro',
             'frameworks': {
@@ -624,14 +552,14 @@ def test_startDriver_4():
             }
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'configDriver'):
-        suc = app.startDriver('camera')
+        suc = function.startDriver('camera')
         assert suc
 
 
-def test_startDriver_5():
-    app.driversData = {
+def test_startDriver_5(function):
+    function.driversData = {
         'camera': {
             'framework': 'sgpro',
             'frameworks': {
@@ -641,14 +569,14 @@ def test_startDriver_5():
             }
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'configDriver'):
-        suc = app.startDriver('camera')
+        suc = function.startDriver('camera')
         assert suc
 
 
-def test_startDrivers_1():
-    app.driversData = {
+def test_startDrivers_1(function):
+    function.driversData = {
         'telescope': {
             'framework': '',
             'frameworks': {
@@ -659,206 +587,205 @@ def test_startDrivers_1():
             }
         }
     }
-    suc = app.startDrivers()
+    suc = function.startDrivers()
     assert suc
 
 
-def test_startDrivers_2():
-    app.ui.checkASCOMAutoConnect.setChecked(False)
-    app.driversData = {
+def test_startDrivers_2(function):
+    function.ui.checkASCOMAutoConnect.setChecked(False)
+    function.driversData = {
         'telescope': {
             'framework': 'ascom',
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'startDriver') as testMock:
-        suc = app.startDrivers()
+        suc = function.startDrivers()
         assert suc
         assert testMock.call_args.kwargs.get('driver') == 'telescope'
         assert not testMock.call_args.kwargs.get('autoStart')
 
 
-def test_startDrivers_3():
-    app.ui.checkASCOMAutoConnect.setChecked(True)
-    app.driversData = {
+def test_startDrivers_3(function):
+    function.ui.checkASCOMAutoConnect.setChecked(True)
+    function.driversData = {
         'telescope': {
             'framework': 'ascom',
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'startDriver') as testMock:
-        suc = app.startDrivers()
+        suc = function.startDrivers()
         assert suc
         assert testMock.call_args.kwargs.get('driver') == 'telescope'
         assert testMock.call_args.kwargs.get('autoStart')
 
 
-def test_startDrivers_4():
-    app.ui.checkASCOMAutoConnect.setChecked(False)
-    app.driversData = {
+def test_startDrivers_4(function):
+    function.ui.checkASCOMAutoConnect.setChecked(False)
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'startDriver') as testMock:
-        suc = app.startDrivers()
+        suc = function.startDrivers()
         assert suc
         assert testMock.call_args.kwargs.get('driver') == 'telescope'
         assert testMock.call_args.kwargs.get('autoStart')
 
 
-def test_manualStopAllAscomDrivers_1():
-    app.driversData = {
+def test_manualStopAllAscomDrivers_1(function):
+    function.driversData = {
         'telescope': {
             'framework': 'ascom',
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'stopDriver'):
-        suc = app.manualStopAllAscomDrivers()
+        suc = function.manualStopAllAscomDrivers()
         assert suc
 
 
-def test_manualStartAllAscomDrivers_1():
-    app.driversData = {
+def test_manualStartAllAscomDrivers_1(function):
+    function.driversData = {
         'telescope': {
             'framework': 'ascom',
         }
     }
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'startDriver'):
-        suc = app.manualStartAllAscomDrivers()
+        suc = function.manualStartAllAscomDrivers()
         assert suc
 
 
-def test_dispatchDriverDropdown_1():
+def test_dispatchDriverDropdown_1(function):
     class Sender:
         @staticmethod
         def currentText():
             return 'device disabled'
 
-    app.sender = Sender
-    app.driversData = {
+    function.sender = Sender
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
         }
     }
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'returnDriver',
                            return_value='telescope'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'stopDriver'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'startDriver'):
-                suc = app.dispatchDriverDropdown()
+                suc = function.dispatchDriverDropdown()
                 assert suc
 
 
-def test_dispatchDriverDropdown_2():
+def test_dispatchDriverDropdown_2(function):
     class Sender:
         @staticmethod
         def currentText():
             return 'astap - astap'
 
-    app.sender = Sender
-    app.driversData = {
+    function.sender = Sender
+    function.driversData = {
         'telescope': {
             'framework': 'indi',
         }
     }
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'returnDriver',
                            return_value='telescope'):
-        with mock.patch.object(app,
+        with mock.patch.object(function,
                                'stopDriver'):
-            with mock.patch.object(app,
+            with mock.patch.object(function,
                                    'startDriver'):
-                suc = app.dispatchDriverDropdown()
+                suc = function.dispatchDriverDropdown()
                 assert suc
 
 
-def test_scanValid_1():
-    suc = app.scanValid()
+def test_scanValid_1(function):
+    suc = function.scanValid()
     assert not suc
 
 
-def test_scanValid_2():
-    suc = app.scanValid('telescope')
+def test_scanValid_2(function):
+    suc = function.scanValid('telescope')
     assert not suc
 
 
-def test_scanValid_3():
+def test_scanValid_3(function):
     def sender():
-        return app.drivers['telescope']['class'].signals
+        return function.drivers['telescope']['class'].signals
 
-    app.sender = sender
-    suc = app.scanValid('telescope', 'test')
+    function.sender = sender
+    suc = function.scanValid('telescope', 'test')
     assert suc
 
 
-def test_scanValid_4():
+def test_scanValid_4(function):
     def sender():
-        return app.drivers['telescope']['class'].signals
+        return function.drivers['telescope']['class'].signals
 
-    app.sender = sender
-    suc = app.scanValid('onlineWeather', 'test')
+    function.sender = sender
+    suc = function.scanValid('onlineWeather', 'test')
     assert not suc
 
 
-def test_scanValid_5():
-    delattr(app.drivers['onlineWeather']['class'], 'signals')
-    app.drivers['onlineWeather']['class'].framework = 'onlineWeather'
-    suc = app.scanValid('onlineWeather', 'test')
+def test_scanValid_5(function):
+    function.drivers['onlineWeather']['class'].framework = 'onlineWeather'
+    suc = function.scanValid('onlineWeather', 'test')
     assert not suc
 
 
-def test_serverDisconnected_1():
+def test_serverDisconnected_1(function):
     def Sender():
-        return app.drivers['filter']['class'].signals
-    app.sender = Sender
+        return function.drivers['filter']['class'].signals
+    function.sender = Sender
 
-    suc = app.serverDisconnected({})
+    suc = function.serverDisconnected({})
     assert not suc
 
 
-def test_serverDisconnected_2():
+def test_serverDisconnected_2(function):
     def Sender():
-        return app.drivers['filter']['class'].signals
-    app.sender = Sender
-    app.BACK_NORM = '#000000'
+        return function.drivers['filter']['class'].signals
+    function.sender = Sender
+    function.BACK_NORM = '#000000'
 
-    suc = app.serverDisconnected({'dome': 1})
+    suc = function.serverDisconnected({'dome': 1})
     assert suc
 
 
-def test_deviceConnected_1():
-    app.BACK_GREEN = '#000000'
-    suc = app.deviceConnected('')
+def test_deviceConnected_1(function):
+    function.BACK_GREEN = '#000000'
+    suc = function.deviceConnected('')
     assert not suc
 
 
-def test_deviceConnected_2():
+def test_deviceConnected_2(function):
     def Sender():
-        return app.drivers['filter']['class'].signals
-    app.sender = Sender
+        return function.drivers['filter']['class'].signals
+    function.sender = Sender
 
-    app.BACK_GREEN = '#000000'
-    suc = app.deviceConnected('dome')
+    function.BACK_GREEN = '#000000'
+    suc = function.deviceConnected('dome')
     assert suc
 
 
-def test_deviceDisconnected_1():
-    suc = app.deviceDisconnected('')
+def test_deviceDisconnected_1(function):
+    suc = function.deviceDisconnected('')
     assert suc
 
 
-def test_deviceDisconnected_2():
+def test_deviceDisconnected_2(function):
     def Sender():
-        return app.drivers['filter']['class'].signals
-    app.sender = Sender
+        return function.drivers['filter']['class'].signals
+    function.sender = Sender
 
-    suc = app.deviceDisconnected('dome')
+    suc = function.deviceDisconnected('dome')
     assert suc

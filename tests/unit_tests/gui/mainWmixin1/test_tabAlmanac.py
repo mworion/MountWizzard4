@@ -20,7 +20,6 @@ import threading
 from unittest import mock
 
 # external packages
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QPixmap
 from skyfield.api import wgs84
 import numpy as np
@@ -32,13 +31,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabAlmanac import Almanac
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
     class Mixin(MWidget, Almanac):
         def __init__(self):
@@ -49,8 +43,8 @@ def function(module):
             self.ui.setupUi(self)
             Almanac.__init__(self)
 
-    window = Mixin()
-    yield window
+    func = Mixin()
+    yield func
 
 
 def test_initConfig_1(function):

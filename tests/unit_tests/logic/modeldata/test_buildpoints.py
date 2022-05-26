@@ -1196,19 +1196,20 @@ def test_generateDSOPath_1(function):
     dec = skyfield.api.Angle(degrees=0)
     suc = function.generateDSOPath(ha=ra,
                                    dec=dec,
-                                   numberPoints=0,
-                                   )
+                                   numberPoints=0)
     assert not suc
 
 
 def test_generateDSOPath_2(function):
+    temp = function.app.mount.obsSite.location
+    function.app.mount.obsSite.location = None
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
     suc = function.generateDSOPath(ha=ra,
                                    dec=dec,
-                                   numberPoints=1,
-                                   )
+                                   numberPoints=1)
     assert not suc
+    function.app.mount.obsSite.location = temp
 
 
 def test_generateDSOPath_3(function):
@@ -1216,41 +1217,44 @@ def test_generateDSOPath_3(function):
     dec = skyfield.api.Angle(degrees=0)
     suc = function.generateDSOPath(ha=ra,
                                    dec=dec,
-                                   numberPoints=1,
-                                   )
-    assert not suc
+                                   numberPoints=1)
+    with mock.patch.object(function,
+                           'clearBuildP'):
+        assert not suc
 
 
 def test_generateDSOPath_4(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    with mock.patch.object(transform,
-                           'J2000ToAltAz',
-                           return_value=(Angle(degrees=10), Angle(degrees=10))):
+    with mock.patch.object(skyfield.almanac,
+                           'find_discrete',
+                           return_value=([], [])):
         suc = function.generateDSOPath(ha=ra,
                                        dec=dec,
                                        numberPoints=1,
                                        timeJD=function.app.mount.obsSite.timeJD,
                                        location=function.app.mount.obsSite.location,
-                                       )
+                                       keep=True)
         assert suc
 
 
 def test_generateDSOPath_5(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
-    with mock.patch.object(transform,
-                           'J2000ToAltAz',
-                           return_value=(Angle(degrees=10), Angle(degrees=10))):
-        with mock.patch.object(skyfield.almanac,
-                               'find_discrete',
-                               return_value=([], [])):
+    ts = function.app.mount.obsSite.ts
+    ti = ts.tt_jd(2459580.5)
+    with mock.patch.object(skyfield.almanac,
+                           'find_discrete',
+                           return_value=([ti, ti], [1, 0])):
+        with mock.patch.object(function,
+                               'calcPath',
+                               return_value=[(0, 0), (0, 0), (0, 0)]):
             suc = function.generateDSOPath(ha=ra,
                                            dec=dec,
                                            numberPoints=1,
                                            timeJD=function.app.mount.obsSite.timeJD,
                                            location=function.app.mount.obsSite.location,
-                                           )
+                                           keep=True)
             assert suc
 
 

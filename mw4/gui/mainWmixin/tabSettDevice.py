@@ -64,11 +64,6 @@ class SettDevice:
     """
 
     def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
         self.popupUi = None
         self.drivers = {
             'dome': {

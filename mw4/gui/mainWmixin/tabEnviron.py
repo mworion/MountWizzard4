@@ -30,7 +30,7 @@ from qimage2ndarray import rgb_view, array2qimage
 from base.tpool import Worker
 
 
-class Environ(object):
+class Environ:
     """
     """
 

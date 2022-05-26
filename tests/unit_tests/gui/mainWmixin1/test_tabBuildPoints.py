@@ -33,13 +33,8 @@ from gui.mainWmixin.tabBuildPoints import BuildPoints
 from logic.modeldata.buildpoints import DataPoint
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
     class Test1(QObject):
         mwGlob = {'configDir': 'tests/workDir/config'}
         mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,

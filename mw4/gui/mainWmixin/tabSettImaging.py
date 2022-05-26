@@ -17,22 +17,17 @@
 # standard libraries
 
 # external packages
-import PyQt5
+from PyQt5.QtWidgets import QInputDialog
 import numpy as np
 
 # local import
 
 
-class SettImaging(object):
+class SettImaging:
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
@@ -327,7 +322,7 @@ class SettImaging(object):
         if actValue is None:
             return False
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set cooler temperature',
                                'Value (-30..+20):',
@@ -346,7 +341,7 @@ class SettImaging(object):
         if actValue is None:
             return False
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         offsetList = self.app.camera.data.get('CCD_OFFSET.OFFSET_LIST')
         offsetMin = self.app.camera.data.get('CCD_OFFSET.OFFSET_MIN')
         offsetMax = self.app.camera.data.get('CCD_OFFSET.OFFSET_MAX')
@@ -385,7 +380,7 @@ class SettImaging(object):
         if actValue is None:
             return False
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
         gainMin = self.app.camera.data.get('CCD_GAIN.GAIN_MIN')
         gainMax = self.app.camera.data.get('CCD_GAIN.GAIN_MAX')
@@ -405,10 +400,7 @@ class SettImaging(object):
                                    actValue, gainMin, gainMax,
                                    int((gainMax - gainMin) / 20))
         else:
-            value, ok = dlg.getInt(self,
-                                   'Set offset',
-                                   'Values:',
-                                   actValue)
+            value, ok = dlg.getInt(self, 'Set offset', 'Values:', actValue)
 
         if not ok:
             return False
@@ -435,16 +427,10 @@ class SettImaging(object):
             start = 1
             end = numberFilter
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(self,
-                               'Set filter number',
-                               f'Value ({start}..{end}):',
-                               actValue,
-                               start,
-                               end,
-                               1,
-                               )
-
+                               'Set filter number', f'Value ({start}..{end}):',
+                               actValue, start, end, 1)
         if not ok:
             return False
 
@@ -462,13 +448,10 @@ class SettImaging(object):
 
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getItem(self,
-                                'Set filter',
-                                'Filter Name: ',
-                                availNames,
-                                actValue - 1,
-                                )
+                                'Set filter', 'Filter Name: ',
+                                availNames, actValue - 1)
         self.log.debug(f'FilterSelected: [{value}], FilterList: [{availNames}]')
         if not ok:
             return False
@@ -632,7 +615,7 @@ class SettImaging(object):
         suc = self.app.cover.lightOff()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Light could not be switched off')
+                              'Light could not be switched off')
         return suc
 
     def setLightIntensity(self):
@@ -644,15 +627,10 @@ class SettImaging(object):
         if actValue is None:
             return False
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(self,
-                               'Set light intensity',
-                               'Value (0..255):',
-                               float(actValue),
-                               0,
-                               255,
-                               1,
-                               )
+                               'Set light intensity', 'Value (0..255):',
+                               float(actValue), 0, 255, 1)
         if not ok:
             return False
 
@@ -660,7 +638,7 @@ class SettImaging(object):
         suc = self.app.cover.lightIntensity(value)
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Light intensity could not be set')
+                              'Light intensity could not be set')
         return suc
 
     def updateDomeGui(self):

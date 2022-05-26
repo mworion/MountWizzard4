@@ -37,13 +37,8 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
     class Mixin(MWidget, SettMisc):
         def __init__(self):
@@ -471,7 +466,7 @@ def test_syncClock_3(function):
     assert not suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount.obsSite.timeDiff', 0.005)
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', 0.005)
 def test_syncClock_4(function):
     function.ui.syncTimePC2Mount.setChecked(True)
     function.ui.syncNotTracking.setChecked(False)
@@ -481,7 +476,7 @@ def test_syncClock_4(function):
     assert not suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount.obsSite.timeDiff', 1)
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', 1)
 def test_syncClock_5(function):
     function.ui.syncTimePC2Mount.setChecked(True)
     function.ui.syncNotTracking.setChecked(False)
@@ -494,7 +489,7 @@ def test_syncClock_5(function):
         assert not suc
 
 
-@mock.patch('tests.unit_tests.unitTestAddOns.baseTestSetupMixins.App.mount.obsSite.timeDiff', -1)
+@mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', -1)
 def test_syncClock_6(function):
     function.ui.syncTimePC2Mount.setChecked(True)
     function.ui.syncNotTracking.setChecked(False)

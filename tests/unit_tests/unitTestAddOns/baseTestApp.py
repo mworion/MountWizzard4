@@ -995,7 +995,7 @@ class Mount(QObject):
 
     @staticmethod
     def calcTransformationMatricesActual():
-        return 1, 1, 1, [0, 0, 0], [0, 0, 0]
+        return 1, 1, [0, 0, 0], [0, 0, 0], [0, 0, 0]
 
     @staticmethod
     def syncPositionToTarget():

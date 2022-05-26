@@ -254,10 +254,7 @@ def test_createScene_2(function):
     function.ui.checkShowPointer.setChecked(True)
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.mount,
-                           'calcTransformationMatricesActual',
-                           return_value=(1, 1, [1, 1, 1], 1, 1)):
-        suc = function.createScene()
+    suc = function.createScene()
     assert suc
 
 
@@ -269,11 +266,8 @@ def test_createScene_3(function):
     function.ui.checkShowPointer.setChecked(True)
     function.ui.checkShowHorizon.setChecked(True)
     function.ui.checkShowBuildPoints.setChecked(True)
-    with mock.patch.object(function.app.mount,
-                           'calcTransformationMatricesActual',
-                           return_value=(1, 1, [1, 1, 1], 1, 1)):
-        suc = function.createScene()
-        assert suc
+    suc = function.createScene()
+    assert suc
 
 
 def test_updateSettings_1(function):

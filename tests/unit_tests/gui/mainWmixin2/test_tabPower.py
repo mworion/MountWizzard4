@@ -26,13 +26,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabPower import Power
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
     class Mixin(MWidget, Power):
         def __init__(self):

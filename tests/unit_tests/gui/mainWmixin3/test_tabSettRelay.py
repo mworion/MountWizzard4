@@ -18,148 +18,134 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from gui.mainWmixin.tabSettRelay import SettRelay
 
 # local import
-from logic.powerswitch.kmRelay import KMRelay
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.mainWmixin.tabSettRelay import SettRelay
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, app
+def function(qapp):
+    class Mixin(MWidget, SettRelay):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.deviceStat = self.app.deviceStat
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            SettRelay.__init__(self)
 
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        mes = pyqtSignal(object, object, object, object)
-
-        relay = KMRelay()
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = SettRelay(app=Test(), ui=ui,
-                    clickable=MWidget().clickable)
-
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-
-    app.deleteLater = MWidget().deleteLater
-    yield
+    window = Mixin()
+    yield window
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_storeConfig_1():
-    app.ui.relayDevice.setCurrentIndex(0)
-    app.storeConfig()
+def test_storeConfig_1(function):
+    function.ui.relayDevice.setCurrentIndex(0)
+    function.storeConfig()
 
 
-def test_setupRelayGui(qtbot):
-    assert 8 == len(app.relayDropDowns)
-    assert 8 == len(app.relayButtonTexts)
-    assert 8 == len(app.relayButtons)
-    for dropDown in app.relayDropDowns:
+def test_setupRelayGui(function):
+    assert 8 == len(function.relayDropDowns)
+    assert 8 == len(function.relayButtonTexts)
+    assert 8 == len(function.relayButtons)
+    for dropDown in function.relayDropDowns:
         val = dropDown.count()
         assert 2 == val
 
 
-def test_toggleRelay_1():
+def test_toggleRelay_1(function):
     def Sender():
-        return ui.relayButton0
-    app.sender = Sender
+        return function.ui.relayButton0
+    function.sender = Sender
 
-    app.ui.relayDevice.setCurrentIndex(0)
-    suc = app.relayButtonPressed()
+    function.ui.relayDevice.setCurrentIndex(0)
+    suc = function.relayButtonPressed()
     assert not suc
 
 
-def test_toggleRelay_2():
+def test_toggleRelay_2(function):
     def Sender():
-        return ui.relayButton0
-    app.sender = Sender
-    app.ui.relayDevice.setCurrentIndex(1)
-    with mock.patch.object(app.app.relay,
+        return function.ui.relayButton0
+    function.sender = Sender
+    function.ui.relayDevice.setCurrentIndex(1)
+    with mock.patch.object(function.app.relay,
                            'switch',
                            return_value=False):
-        suc = app.relayButtonPressed()
+        suc = function.relayButtonPressed()
         assert not suc
 
 
-def test_doRelayAction_1():
-    app.relayDropDowns[7].setCurrentIndex(0)
-    with mock.patch.object(app.app.relay,
+def test_doRelayAction_1(function):
+    function.relayDropDowns[7].setCurrentIndex(0)
+    with mock.patch.object(function.app.relay,
                            'switch',
                            return_value=False):
-        suc = app.doRelayAction(7)
+        suc = function.doRelayAction(7)
         assert not suc
 
 
-def test_doRelayAction_2():
-    app.relayDropDowns[7].setCurrentIndex(0)
-    with mock.patch.object(app.app.relay,
+def test_doRelayAction_2(function):
+    function.relayDropDowns[7].setCurrentIndex(0)
+    with mock.patch.object(function.app.relay,
                            'switch',
                            return_value=True):
-        suc = app.doRelayAction(7)
+        suc = function.doRelayAction(7)
         assert suc
 
 
-def test_doRelayAction_3():
-    app.relayDropDowns[7].setCurrentIndex(2)
-    suc = app.doRelayAction(7)
+def test_doRelayAction_3(function):
+    function.relayDropDowns[7].setCurrentIndex(2)
+    suc = function.doRelayAction(7)
     assert not suc
 
 
-def test_doRelayAction_4():
-    app.relayDropDowns[7].setCurrentIndex(1)
-    with mock.patch.object(app.app.relay,
+def test_doRelayAction_4(function):
+    function.relayDropDowns[7].setCurrentIndex(1)
+    with mock.patch.object(function.app.relay,
                            'pulse',
                            return_value=False):
-        suc = app.doRelayAction(7)
+        suc = function.doRelayAction(7)
         assert not suc
 
 
-def test_doRelayAction_5():
-    app.relayDropDowns[7].setCurrentIndex(1)
-    with mock.patch.object(app.app.relay,
+def test_doRelayAction_5(function):
+    function.relayDropDowns[7].setCurrentIndex(1)
+    with mock.patch.object(function.app.relay,
                            'pulse',
                            return_value=True):
-        suc = app.doRelayAction(7)
+        suc = function.doRelayAction(7)
         assert suc
 
 
-def test_relayButtonPressed_1():
+def test_relayButtonPressed_1(function):
     def Sender():
-        return ui.relayButton0
-    app.sender = Sender
+        return function.ui.relayButton0
+    function.sender = Sender
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'doRelayAction',
                            return_value=False):
-        suc = app.relayButtonPressed()
+        suc = function.relayButtonPressed()
         assert not suc
 
 
-def test_relayButtonPressed_2():
+def test_relayButtonPressed_2(function):
     def Sender():
-        return ui.relayButton0
-    app.sender = Sender
+        return function.ui.relayButton0
+    function.sender = Sender
 
-    with mock.patch.object(app,
+    with mock.patch.object(function,
                            'doRelayAction',
                            return_value=True):
-        suc = app.relayButtonPressed()
+        suc = function.relayButtonPressed()
         assert suc

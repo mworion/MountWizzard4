@@ -28,9 +28,9 @@ import requests
 import importlib_metadata
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabSettMisc import SettMisc
 import gui.mainWmixin.tabSettMisc
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
@@ -39,7 +39,6 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-
     class Mixin(MWidget, SettMisc):
         def __init__(self):
             super().__init__()
@@ -50,8 +49,8 @@ def function(qapp):
             self.ui.setupUi(self)
             SettMisc.__init__(self)
 
-    window = Mixin()
-    yield window
+    func = Mixin()
+    yield func
 
 
 def test_initConfig_1(function):

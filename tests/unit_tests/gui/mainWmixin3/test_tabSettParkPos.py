@@ -18,211 +18,179 @@
 # standard libraries
 import pytest
 from unittest import mock
+
 import logging
-# external packages
-from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
-from skyfield.api import wgs84
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabSettParkPos import SettParkPos
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
-    global ui, widget, Test, Test1, app
+def function(qapp):
+    class Mixin(MWidget, SettParkPos):
+        def __init__(self):
+            super().__init__()
+            self.app = App()
+            self.deviceStat = self.app.deviceStat
+            self.threadPool = self.app.threadPool
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            SettParkPos.__init__(self)
 
-    class Test1(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        update1s = pyqtSignal()
-        threadPool = QThreadPool()
-
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        update1s = pyqtSignal()
-        update30m = pyqtSignal()
-        mes = pyqtSignal(object, object, object, object)
-
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
-    app = SettParkPos(app=Test(), ui=ui,
-                      clickable=MWidget().clickable)
-    app.changeStyleDynamic = MWidget().changeStyleDynamic
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    app.deviceStat = dict()
-    app.log = logging.getLogger(__name__)
-    app.threadPool = QThreadPool()
-    yield
-    app.threadPool.waitForDone(1000)
+    func = Mixin()
+    yield func
 
 
-def test_initConfig_1():
-    app.app.config['mainW'] = {}
-    suc = app.initConfig()
+def test_initConfig_1(function):
+    function.app.config['mainW'] = {}
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_2():
-    suc = app.initConfig()
+def test_initConfig_2(function):
+    suc = function.initConfig()
     assert suc
 
 
-def test_initConfig_3():
-    config = app.app.config['mainW']
+def test_initConfig_3(function):
+    config = function.app.config['mainW']
     for i in range(0, 10):
         config[f'posText{i:1d}'] = str(i)
         config[f'posAlt{i:1d}'] = i
         config[f'posAz{i:1d}'] = i
-    app.initConfig()
-    assert app.ui.posText0.text() == '0'
-    assert app.ui.posAlt0.value() == 0
-    assert app.ui.posAz0.value() == 0
-    assert app.ui.posText4.text() == '4'
-    assert app.ui.posAlt4.value() == 4
-    assert app.ui.posAz4.value() == 4
-    assert app.ui.posText7.text() == '7'
-    assert app.ui.posAlt7.value() == 7
-    assert app.ui.posAz7.value() == 7
+    function.initConfig()
+    assert function.ui.posText0.text() == '0'
+    assert function.ui.posAlt0.value() == 0
+    assert function.ui.posAz0.value() == 0
+    assert function.ui.posText4.text() == '4'
+    assert function.ui.posAlt4.value() == 4
+    assert function.ui.posAz4.value() == 4
+    assert function.ui.posText7.text() == '7'
+    assert function.ui.posAlt7.value() == 7
+    assert function.ui.posAz7.value() == 7
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
+def test_storeConfig_1(function):
+    suc = function.storeConfig()
     assert suc
 
 
-def test_setupParkPosGui(qtbot):
-    assert 10 == len(app.posButtons)
-    assert 10 == len(app.posTexts)
-    assert 10 == len(app.posAlt)
-    assert 10 == len(app.posAz)
-    assert 10 == len(app.posSaveButtons)
+def test_setupParkPosGui(function):
+    assert 10 == len(function.posButtons)
+    assert 10 == len(function.posTexts)
+    assert 10 == len(function.posAlt)
+    assert 10 == len(function.posAz)
+    assert 10 == len(function.posSaveButtons)
 
 
-def test_parkAtPos_1(qtbot):
-    app.app.mount.signals.slewFinished.connect(app.parkAtPos)
-    with mock.patch.object(app.app.mount.obsSite,
+def test_parkAtPos_1(function):
+    function.app.mount.signals.slewFinished.connect(function.parkAtPos)
+    with mock.patch.object(function.app.mount.obsSite,
                            'parkOnActualPosition',
                            return_value=False):
-        suc = app.parkAtPos()
+        suc = function.parkAtPos()
         assert not suc
 
 
-def test_parkAtPos_2(qtbot):
-    app.app.mount.signals.slewFinished.connect(app.parkAtPos)
-    with mock.patch.object(app.app.mount.obsSite,
+def test_parkAtPos_2(function):
+    function.app.mount.signals.slewFinished.connect(function.parkAtPos)
+    with mock.patch.object(function.app.mount.obsSite,
                            'parkOnActualPosition',
                            return_value=True):
-        suc = app.parkAtPos()
+        suc = function.parkAtPos()
         assert suc
 
 
-def test_slewParkPos_1(qtbot):
+def test_slewParkPos_1(function):
     def Sender():
         return QWidget()
-    app.sender = Sender
-    suc = app.slewToParkPos()
+    function.sender = Sender
+    suc = function.slewToParkPos()
     assert not suc
 
 
-def test_slewParkPos_2(qtbot):
+def test_slewParkPos_2(function):
     def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    with mock.patch.object(app.app.mount.obsSite,
+        return function.ui.posButton0
+    function.sender = Sender
+    with mock.patch.object(function.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=False):
-        suc = app.slewToParkPos()
+        suc = function.slewToParkPos()
         assert not suc
 
 
-def test_slewParkPos_3(qtbot):
+def test_slewParkPos_3(function):
     def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    with mock.patch.object(app.app.mount.obsSite,
+        return function.ui.posButton0
+    function.sender = Sender
+    with mock.patch.object(function.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
+        with mock.patch.object(function.app.mount.obsSite,
                                'startSlewing',
                                return_value=False):
-            suc = app.slewToParkPos()
+            suc = function.slewToParkPos()
             assert not suc
 
 
-def test_slewParkPos_4(qtbot):
+def test_slewParkPos_4(function):
     def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    app.ui.parkMountAfterSlew.setChecked(True)
-    with mock.patch.object(app.app.mount.obsSite,
+        return function.ui.posButton0
+    function.sender = Sender
+    function.ui.parkMountAfterSlew.setChecked(True)
+    with mock.patch.object(function.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
+        with mock.patch.object(function.app.mount.obsSite,
                                'startSlewing',
                                return_value=True):
-            suc = app.slewToParkPos()
+            suc = function.slewToParkPos()
             assert not suc
 
 
-def test_slewParkPos_5(qtbot):
+def test_slewParkPos_5(function):
     def Sender():
-        return ui.posButton0
-    app.sender = Sender
-    app.ui.parkMountAfterSlew.setChecked(False)
-    with mock.patch.object(app.app.mount.obsSite,
+        return function.ui.posButton0
+    function.sender = Sender
+    function.ui.parkMountAfterSlew.setChecked(False)
+    with mock.patch.object(function.app.mount.obsSite,
                            'setTargetAltAz',
                            return_value=True):
-        with mock.patch.object(app.app.mount.obsSite,
+        with mock.patch.object(function.app.mount.obsSite,
                                'startSlewing',
                                return_value=True):
-            suc = app.slewToParkPos()
+            suc = function.slewToParkPos()
             assert suc
 
 
-def test_saveActualPosition_1():
-    suc = app.saveActualPosition()
+def test_saveActualPosition_1(function):
+    suc = function.saveActualPosition()
     assert not suc
 
 
-def test_saveActualPosition_2():
-    app.app.mount.obsSite.Alt = 40
-    suc = app.saveActualPosition()
+def test_saveActualPosition_2(function):
+    suc = function.saveActualPosition()
     assert not suc
 
 
-def test_saveActualPosition_3():
+def test_saveActualPosition_3(function):
     def Sender():
         return QWidget()
 
-    app.sender = Sender
-    app.app.mount.obsSite.Alt = 40
-    app.app.mount.obsSite.Az = 40
-    suc = app.saveActualPosition()
+    function.sender = Sender
+    suc = function.saveActualPosition()
     assert not suc
 
 
-def test_saveActualPosition_4():
+def test_saveActualPosition_4(function):
     def Sender():
-        return ui.posSave0
+        return function.ui.posSave0
 
-    app.app.mount.obsSite.Alt = 40
-    app.app.mount.obsSite.Az = 40
-    app.sender = Sender
-    suc = app.saveActualPosition()
+    function.sender = Sender
+    suc = function.saveActualPosition()
     assert suc

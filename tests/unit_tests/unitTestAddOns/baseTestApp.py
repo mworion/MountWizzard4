@@ -407,6 +407,14 @@ class Relay:
     def getRelay():
         return
 
+    @staticmethod
+    def pulse():
+        return
+
+    @staticmethod
+    def switch(a):
+        return
+
 
 class Remote:
     class RemoteSignals(QObject):
@@ -679,6 +687,7 @@ class Mount(QObject):
 
     class MountModel:
         starList = []
+        nameList = []
         numberStars = 1
         errorRMS = 1
         terms = 1
@@ -704,6 +713,22 @@ class Mount(QObject):
 
         @staticmethod
         def storeName(a):
+            return
+
+        @staticmethod
+        def loadName(a):
+            return
+
+        @staticmethod
+        def parseStars(a, b):
+            return
+
+        @staticmethod
+        def addStar(a):
+            return
+
+        @staticmethod
+        def deletePoint(a):
             return
 
     class MountFirmware:
@@ -965,6 +990,10 @@ class Mount(QObject):
         def syncPositionToTarget():
             return True
 
+        @staticmethod
+        def parkOnActualPosition():
+            return True
+
     signals = MountSignals()
     obsSite = MountObsSite()
     geometry = MountGeometry()
@@ -1021,6 +1050,14 @@ class Mount(QObject):
 
     @staticmethod
     def syncPositionToTarget():
+        return
+
+    @staticmethod
+    def getAlign():
+        return
+
+    @staticmethod
+    def getNames():
         return
 
 

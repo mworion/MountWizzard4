@@ -38,13 +38,8 @@ from gui.mainWmixin.tabSatSearch import SatSearch
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
+def function(qapp):
 
     class Mixin(MWidget, SatTrack, SatSearch):
         def __init__(self):

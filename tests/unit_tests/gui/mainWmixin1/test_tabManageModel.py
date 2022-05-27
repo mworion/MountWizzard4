@@ -24,15 +24,12 @@ import os
 
 # external packages
 import PyQt5
-from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget, QMessageBox
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from mountcontrol.qtmount import Mount
-from skyfield.api import wgs84, Star, Angle
+from skyfield.api import Star, Angle
 from mountcontrol.modelStar import ModelStar
 
 # local import
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabManageModel import ManageModel
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
@@ -51,24 +48,10 @@ def module(qapp):
 
 @pytest.fixture(autouse=True, scope='function')
 def function(module):
-    class Test(QObject):
-        config = {'mainW': {}}
-        threadPool = QThreadPool()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0,
-                                              elevation_m=0)
-        update1s = pyqtSignal()
-        colorChange = pyqtSignal()
-        showAnalyse = pyqtSignal(object)
-        mes = pyqtSignal(object, object, object, object)
-        mwGlob = {'imageDir': 'tests/workDir/image',
-                  'modelDir': 'tests/workDir/model'}
-
     class Mixin(MWidget, ManageModel):
         def __init__(self):
             super().__init__()
-            self.app = Test()
+            self.app = App()
             self.widget1 = QWidget()
             self.widget2 = QWidget()
             self.widget3 = QWidget()
@@ -111,10 +94,6 @@ def test_setNameList(function):
     function.app.mount.model.nameList = value
     function.setNameList(function.app.mount.model)
     assert 4 == function.ui.nameList.count()
-    value = None
-    function.app.mount.model.nameList = value
-    function.setNameList(function.app.mount.model)
-    assert 0 == function.ui.nameList.count()
 
 
 def test_findKeysFromSourceInDest_1(function):
@@ -232,109 +211,73 @@ def test_findFittingModel_4(function):
 
 
 def test_showModelPosition_1(function):
-    function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    function.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
-                                         '21:06:10.79,+45*20:52.8,  12.1,329',
-                                         '23:13:58.02,+38*48:18.8,  31.0,162',
-                                         '17:43:41.26,+59*15:30.7,   8.4,005',
-                                         ],
-                                        4)
+    function.app.mount.model.starList = list()
     suc = function.showModelPosition()
-    assert suc
+    assert not suc
 
 
 def test_showModelPosition_2(function):
-    function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    function.app.mount.model._starList = list()
-    suc = function.showModelPosition()
-    assert not suc
-
-
-def test_showModelPosition_3(function):
-    function.app.mount.obsSite.location = []
-    function.app.mount.model._starList = list()
-    suc = function.showModelPosition()
-    assert not suc
-
-
-def test_showModelPosition_4(function):
-    function.app.mount.model._starList = list()
-    suc = function.showModelPosition()
-    assert not suc
-
-
-def test_showModelPosition_5(function):
-    function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    function.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
-                                         '21:06:10.79,+45*20:52.8,  12.1,329',
-                                         '23:13:58.02,+38*48:18.8,  31.0,162',
-                                         '17:43:41.26,+59*15:30.7,   8.4,005',
-                                         ],
-                                        4)
+    star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
+                     number=1, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star, star, star]
     suc = function.showModelPosition()
     assert suc
 
 
 def test_showErrorAscending_1(function):
-    function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    function.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
-                                         '21:06:10.79,+45*20:52.8,  12.1,329',
-                                         '23:13:58.02,+38*48:18.8,  31.0,162',
-                                         '17:43:41.26,+59*15:30.7,   8.4,005',
-                                         ],
-                                        4)
+    star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
+                     number=1, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star, star, star]
     suc = function.showErrorAscending()
     assert suc
 
 
 def test_showErrorAscending_2(function):
-    function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    function.app.mount.model._starList = list()
+    function.app.mount.model.starList = list()
     suc = function.showErrorAscending()
     assert not suc
 
 
 def test_showErrorAscending_3(function):
-    function.app.mount.obsSite.location = []
-    function.app.mount.model._starList = list()
+    temp = function.app.mount.obsSite.location
+    function.app.mount.obsSite.location = None
+    function.app.mount.model.starList = list()
     suc = function.showErrorAscending()
     assert not suc
+    function.app.mount.obsSite.location = temp
 
 
 def test_showErrorAscending_4(function):
-    function.app.mount.model._starList = list()
+    function.app.mount.model.starList = list()
     suc = function.showErrorAscending()
     assert not suc
 
 
 def test_showErrorDistribution_1(function):
-    function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    function.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
-                                         '21:06:10.79,+45*20:52.8,  12.1,329',
-                                         '23:13:58.02,+38*48:18.8,  31.0,162',
-                                         '17:43:41.26,+59*15:30.7,   8.4,005',
-                                         ],
-                                        4)
+    star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
+                     number=1, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star, star, star]
     suc = function.showErrorDistribution()
     assert suc
 
 
 def test_showErrorDistribution_2(function):
-    function.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    function.app.mount.model._starList = list()
+    function.app.mount.model.starList = list()
     suc = function.showErrorDistribution()
     assert not suc
 
 
 def test_showErrorDistribution_3(function):
-    function.app.mount.obsSite.location = []
-    function.app.mount.model._starList = list()
+    temp = function.app.mount.obsSite.location
+    function.app.mount.obsSite.location = None
+    function.app.mount.model.starList = list()
     suc = function.showErrorDistribution()
     assert not suc
+    function.app.mount.obsSite.location = temp
 
 
 def test_showErrorDistribution_4(function):
-    function.app.mount.model._starList = list()
+    function.app.mount.model.starList = list()
     suc = function.showErrorDistribution()
     assert not suc
 
@@ -579,16 +522,17 @@ def test_clearModel_3(function):
 
 
 def test_deleteWorstPoint_1(function):
-    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
+                     number=1, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star, star, star]
     suc = function.deleteWorstPoint()
     assert not suc
 
 
 def test_deleteWorstPoint_2(function):
-    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
-    function.app.mount.model.numberStars = 2
+    star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
+                     number=1, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star, star, star]
     with mock.patch.object(function.app.mount.model,
                            'deletePoint',
                            return_value=True):
@@ -599,9 +543,9 @@ def test_deleteWorstPoint_2(function):
 
 
 def test_deleteWorstPoint_3(function):
-    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
-    function.app.mount.model.numberStars = 2
+    star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
+                     number=1, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star, star, star]
     with mock.patch.object(function.app.mount.model,
                            'deletePoint',
                            return_value=False):

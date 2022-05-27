@@ -33,7 +33,6 @@ from gui.mainWmixin.tabMount import Mount
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-
     class Mixin(MWidget, Mount):
         def __init__(self):
             super().__init__()

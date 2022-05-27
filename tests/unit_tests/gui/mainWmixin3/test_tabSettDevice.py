@@ -30,7 +30,6 @@ from gui.utilities.toolsQtWidget import MWidget
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-
     class Mixin(MWidget, SettDevice):
         def __init__(self):
             super().__init__()

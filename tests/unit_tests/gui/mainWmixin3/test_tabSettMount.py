@@ -29,14 +29,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSettMount import SettMount
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
 @pytest.fixture(autouse=True, scope='function')
-def function(module):
-
+def function(qapp):
     class Mixin(MWidget, SettMount):
         def __init__(self):
             super().__init__()

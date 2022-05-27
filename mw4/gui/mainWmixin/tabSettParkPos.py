@@ -27,12 +27,7 @@ class SettParkPos(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
-        if app:
-            self.app = app
-            self.ui = ui
-            self.clickable = clickable
-
+    def __init__(self):
         self.posButtons = list()
         self.posTexts = list()
         self.posAlt = list()

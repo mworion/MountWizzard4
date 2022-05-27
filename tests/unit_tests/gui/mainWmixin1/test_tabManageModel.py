@@ -100,6 +100,7 @@ def test_setNameList(function):
     assert 4 == function.ui.nameList.count()
     function.app.mount.model.nameList = []
 
+
 def test_findKeysFromSourceInDest_1(function):
     val1, val2 = function.findKeysFromSourceInDest({}, {})
     assert val1 == []
@@ -138,6 +139,7 @@ def test_compareModel_2(function):
 
 
 def test_findFittingModel_1(function):
+    function.app.mount.model.starList = list()
     name, pointsIn, pointsOut = function.findFittingModel()
 
     assert name == ''

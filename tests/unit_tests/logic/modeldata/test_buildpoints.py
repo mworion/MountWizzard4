@@ -355,15 +355,12 @@ def test_addBuildP1(function):
 
 
 def test_addBuildP2(function):
-    function.app.mount.setting.horizonLimitLow = None
-    function.app.mount.setting.horizonLimitHigh = None
     function.buildP = ()
     suc = function.addBuildP(10)
     assert not suc
     assert 0 == len(function.buildP)
     function.app.mount.setting.horizonLimitLow = 0
     function.app.mount.setting.horizonLimitHigh = 90
-
 
 
 def test_addBuildP3(function):
@@ -422,6 +419,17 @@ def test_addBuildP10(function):
     function.app.mount.setting.horizonLimitLow = 5
     suc = function.addBuildP((0, 10, True), position=20)
     assert not suc
+
+
+def test_addBuildP11(function):
+    function.app.mount.setting.horizonLimitLow = None
+    function.app.mount.setting.horizonLimitHigh = None
+    function.buildP = [(10, 10, True), (10, 10, True)]
+    suc = function.addBuildP((10, 10, True), position=-5)
+    assert suc
+    assert len(function.buildP) == 3
+    function.app.mount.setting.horizonLimitLow = 5
+    function.app.mount.setting.horizonLimitHigh = 80
 
 
 def test_delBuildP1(function):

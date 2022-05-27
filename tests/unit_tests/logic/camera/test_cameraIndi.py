@@ -150,12 +150,12 @@ def test_setExposureState_6(function):
 
 def test_setExposureState_7(function):
     function.device = Device()
-    setattr(function.device, 'CCD_EXPOSURE', {'state': 'alert'})
+    setattr(function.device, 'CCD_EXPOSURE', {'state': 'Alert'})
     function.data = {'CCD_EXPOSURE.CCD_EXPOSURE_VALUE': None}
     function.isDownloading = True
     suc = function.setExposureState()
     assert suc
-    assert function.isDownloading
+    assert not function.isDownloading
 
 
 def test_sendDownloadMode_1(function):

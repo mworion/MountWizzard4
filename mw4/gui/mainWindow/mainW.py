@@ -524,8 +524,7 @@ class MainWindow(
         :return: true for test purpose
         """
         isModelingReady = all(
-            self.deviceStat[x] for x in ['mount', 'camera', 'astrometry']
-        )
+            self.deviceStat[x] for x in ['mount', 'camera', 'astrometry'])
         isPause = self.ui.pauseModel.property('pause')
 
         if isModelingReady and self.app.data.buildP and not isPause:
@@ -645,8 +644,8 @@ class MainWindow(
         """
         :return: True for test purpose
         """
-        for win in self.app.uiWindows:
-            winObj = self.app.uiWindows[win]
+        for win in self.uiWindows:
+            winObj = self.uiWindows[win]
 
             if winObj['classObj']:
                 self.changeStyleDynamic(winObj['button'], 'running', True)
@@ -834,19 +833,11 @@ class MainWindow(
             self.buildWindow(window)
         return True
 
-    def closeExtendedWindows(self):
+    def waitClosedExtendedWindows(self):
         """
-        closeExtendedWindows closes all open extended windows by calling
-        close and waits until the window class is deleted.
-
-        :return: true for test purpose
+        waits until the window class is deleted
+        :return:
         """
-        for window in self.uiWindows:
-            if not self.uiWindows[window]['classObj']:
-                continue
-
-            self.uiWindows[window]['classObj'].close()
-
         waitDeleted = True
         while waitDeleted:
             for window in self.uiWindows:
@@ -855,6 +846,21 @@ class MainWindow(
 
                 waitDeleted = False
             sleepAndEvents(100)
+        return True
+
+    def closeExtendedWindows(self):
+        """
+        closeExtendedWindows closes all open extended windows by calling
+        close.
+
+        :return: true for test purpose
+        """
+        for window in self.uiWindows:
+            if not self.uiWindows[window]['classObj']:
+                continue
+
+            self.uiWindows[window]['classObj'].close()
+        self.waitClosedExtendedWindows()
         return True
 
     @staticmethod

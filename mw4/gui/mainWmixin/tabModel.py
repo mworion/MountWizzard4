@@ -126,7 +126,6 @@ class Model:
                 text = '{0:3.1f} revs left'.format(abs(model.azimuthTurns))
             else:
                 text = '{0:3.1f} revs right'.format(abs(model.azimuthTurns))
-
         else:
             text = '-'
 
@@ -136,7 +135,6 @@ class Model:
                 text = '{0:3.1f} revs down'.format(abs(model.altitudeTurns))
             else:
                 text = '{0:3.1f} revs up'.format(abs(model.altitudeTurns))
-
         else:
             text = '-'
 
@@ -497,7 +495,7 @@ class Model:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         elif hasDome and not hasAzimuth:
             self.app.mes.emit(2, 'Model', 'Run',
-                                   'Dome without azimuth value used')
+                              'Dome without azimuth value used')
 
         t = f'Modeling config dome:[{hasDome}], hasAzimuth:[{hasAzimuth}]'
         self.log.debug(t)

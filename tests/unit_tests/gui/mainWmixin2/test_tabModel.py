@@ -117,14 +117,34 @@ def test_updateAlignGui_polarError_1(function):
     assert '    0' == function.ui.polarError.text()
 
 
-def test_updateTurnKnobsGUI_altitudeTurns_1(function):
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '0.0 revs up' == function.ui.altitudeTurns.text()
+def test_updateTurnKnobsGUI_1(function):
+    class Test:
+        azimuthTurns = None
+        altitudeTurns = None
+
+    function.updateTurnKnobsGUI(Test())
+    assert '-' == function.ui.altitudeTurns.text()
+    assert '-' == function.ui.azimuthTurns.text()
 
 
-def test_updateTurnKnobsGUI_azimuthTurns_1(function):
-    function.updateTurnKnobsGUI(function.app.mount.model)
-    assert '0.0 revs right' == function.ui.azimuthTurns.text()
+def test_updateTurnKnobsGUI_2(function):
+    class Test:
+        azimuthTurns = -1
+        altitudeTurns = -1
+
+    function.updateTurnKnobsGUI(Test())
+    assert '1.0 revs up' == function.ui.altitudeTurns.text()
+    assert '1.0 revs right' == function.ui.azimuthTurns.text()
+
+
+def test_updateTurnKnobsGUI_3(function):
+    class Test:
+        azimuthTurns = 1
+        altitudeTurns = 1
+
+    function.updateTurnKnobsGUI(Test())
+    assert '1.0 revs down' == function.ui.altitudeTurns.text()
+    assert '1.0 revs left' == function.ui.azimuthTurns.text()
 
 
 def test_updateProgress_1(function):
@@ -499,6 +519,7 @@ def test_setupSignalsForModelRun_2(function):
 
 def test_setupSignalsForModelRun_3(function):
     function.deviceStat['dome'] = True
+    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': None}
     function.ui.progressiveTiming.setChecked(True)
     suc = function.setupSignalsForModelRun()
     assert suc

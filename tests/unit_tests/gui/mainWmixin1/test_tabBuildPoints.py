@@ -252,6 +252,8 @@ def test_genBuildMin_3(function):
 
 
 def test_genBuildDSO_1(function):
+    function.app.mount.obsSite.raJNow = None
+    function.app.mount.obsSite.decJNow = None
     suc = function.genBuildDSO()
     assert not suc
 

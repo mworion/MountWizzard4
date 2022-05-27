@@ -272,14 +272,14 @@ def test_movingAverageRefractionParameters_2(function):
     assert v2 == 1000.0
 
 
-def test_updateRefractionParameters_1(function, qtbot):
+def test_updateRefractionParameters_1(function):
     function.refractionSource = 'directWeather'
 
     suc = function.updateRefractionParameters()
     assert not suc
 
 
-def test_updateRefractionParameters_2(function, qtbot):
+def test_updateRefractionParameters_2(function):
     function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = False
 
@@ -287,10 +287,9 @@ def test_updateRefractionParameters_2(function, qtbot):
     assert not suc
 
 
-def test_updateRefractionParameters_3(function, qtbot):
+def test_updateRefractionParameters_3(function):
     function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
-
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
                            return_value=(None, None)):
@@ -298,7 +297,7 @@ def test_updateRefractionParameters_3(function, qtbot):
         assert not suc
 
 
-def test_updateRefractionParameters_4(function, qtbot):
+def test_updateRefractionParameters_4(function):
     def Sender():
         return function.ui.isOnline
 
@@ -313,7 +312,7 @@ def test_updateRefractionParameters_4(function, qtbot):
         assert not suc
 
 
-def test_updateRefractionParameters_5(function, qtbot):
+def test_updateRefractionParameters_5(function):
     def Sender():
         return function.ui.isOnline
 
@@ -322,15 +321,12 @@ def test_updateRefractionParameters_5(function, qtbot):
     function.deviceStat['mount'] = True
     function.ui.checkRefracNone.setChecked(False)
     function.ui.checkRefracNoTrack.setChecked(True)
-    function.app.mount.obsSite.status = '0'
+    function.app.mount.obsSite.status = 0
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        with mock.patch.object(function.app.mount.setting,
-                               'setRefractionParam',
-                               return_value=False):
-            suc = function.updateRefractionParameters()
-            assert not suc
+        suc = function.updateRefractionParameters()
+        assert not suc
 
 
 def test_updateRefractionParameters_6(function):
@@ -340,6 +336,7 @@ def test_updateRefractionParameters_6(function):
     function.sender = Sender
     function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
+    function.ui.checkRefracNoTrack.setChecked(True)
 
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',

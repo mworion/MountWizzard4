@@ -519,7 +519,7 @@ def test_setupSignalsForModelRun_2(function):
 
 def test_setupSignalsForModelRun_3(function):
     function.deviceStat['dome'] = True
-    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': None}
+    function.app.dome.data = {}
     function.ui.progressiveTiming.setChecked(True)
     suc = function.setupSignalsForModelRun()
     assert suc

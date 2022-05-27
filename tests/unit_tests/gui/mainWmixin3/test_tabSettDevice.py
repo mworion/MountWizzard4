@@ -736,12 +736,6 @@ def test_scanValid_4(function):
     assert not suc
 
 
-def test_scanValid_5(function):
-    function.drivers['onlineWeather']['class'].framework = 'onlineWeather'
-    suc = function.scanValid('onlineWeather', 'test')
-    assert not suc
-
-
 def test_serverDisconnected_1(function):
     def Sender():
         return function.drivers['filter']['class'].signals

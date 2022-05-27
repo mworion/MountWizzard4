@@ -98,6 +98,15 @@ def test_updatePointGui_dec_1(function):
     assert '-00:07:13' == function.ui.DEC.text()
 
 
+def test_updatePointGui_dec_2(function):
+    temp = function.app.mount.obsSite.raJNow
+    function.app.mount.obsSite.raJNow = None
+    function.ui.checkJ2000.setChecked(False)
+    function.updatePointGUI(function.app.mount.obsSite)
+    assert '+00:00:00' == function.ui.DEC.text()
+    function.app.mount.obsSite.raJNow = temp
+
+
 def test_updatePointGui_pierside(function):
     value = 'W'
     function.app.mount.obsSite.pierside = value

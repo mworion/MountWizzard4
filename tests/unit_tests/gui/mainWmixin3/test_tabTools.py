@@ -411,21 +411,21 @@ def test_setSlewSpeed_2(function):
     def Sender():
         return function.ui.slewSpeedMax
 
-    function.sender = Sender
-
     def test():
         return
 
     function.slewSpeeds = {function.ui.slewSpeedMax: test}
+    function.sender = Sender
 
     suc = function.setSlewSpeed()
     assert suc
 
 
-def test_slewSelectedTargetWithDome_1(function):
+def test_slewSelectedTargetWithDome_0(function):
+    function.app.mount.obsSite.AltTarget = None
     function.app.deviceStat['dome'] = None
     suc = function.slewSelectedTargetWithDome()
-    assert suc
+    assert not suc
 
 
 def test_slewSelectedTargetWithDome_2(function):

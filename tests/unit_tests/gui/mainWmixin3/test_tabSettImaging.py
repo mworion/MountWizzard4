@@ -324,7 +324,7 @@ def test_setFilterNumber_2(function):
 
 
 def test_setFilterNumber_3(function):
-    function.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 10
+    function.app.filter.data = {'FILTER_SLOT.FILTER_SLOT_VALUE': 10}
     with mock.patch.object(QMessageBox,
                            'critical'):
         with mock.patch.object(QInputDialog,
@@ -365,9 +365,9 @@ def test_setFilterName_3(function):
 
 
 def test_setFilterName_4(function):
-    function.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 1
-    function.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_1'] = 'test1'
-    function.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_2'] = 'test2'
+    function.app.filter.data = {'FILTER_SLOT.FILTER_SLOT_VALUE': 1,
+                                'FILTER_NAME.FILTER_SLOT_NAME_1': 'test1',
+                                'FILTER_NAME.FILTER_SLOT_NAME_2': 'test2'}
     with mock.patch.object(QMessageBox,
                            'critical'):
         with mock.patch.object(QInputDialog,

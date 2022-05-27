@@ -67,8 +67,12 @@ def test_initConfig_1(function):
     function.app.config['mainW'] = {}
     with mock.patch.object(function,
                            'showModelPosition'):
-        function.initConfig()
-        assert function.ui.targetRMS.value() == 10
+        with mock.patch.object(function,
+                               'showErrorAscending'):
+            with mock.patch.object(function,
+                                   'showErrorDistribution'):
+                function.initConfig()
+                assert function.ui.targetRMS.value() == 10
 
 
 def test_storeConfig_1(function):
@@ -94,7 +98,7 @@ def test_setNameList(function):
     function.app.mount.model.nameList = value
     function.setNameList(function.app.mount.model)
     assert 4 == function.ui.nameList.count()
-
+    function.app.mount.model.nameList = []
 
 def test_findKeysFromSourceInDest_1(function):
     val1, val2 = function.findKeysFromSourceInDest({}, {})

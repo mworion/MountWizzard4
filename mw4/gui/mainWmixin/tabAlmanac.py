@@ -73,7 +73,7 @@ class Almanac:
         self.setColors()
         self.app.start1s.connect(self.showTwilightDataList)
         self.app.start5s.connect(self.showTwilightDataPlot)
-        self.app.update1s.connect(self.showMoonPhase)
+        self.app.update1h.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.colorChangeAlmanac)
         self.ui.almanacDark.clicked.connect(self.showMoonPhase)
         self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataList)

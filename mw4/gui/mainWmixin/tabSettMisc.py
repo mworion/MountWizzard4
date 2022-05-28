@@ -21,6 +21,7 @@ import sys
 import platform
 
 # external packages
+import numpy as np
 from pkg_resources import working_set
 from distutils.version import StrictVersion
 import PyQt5
@@ -30,10 +31,13 @@ import requests
 import importlib_metadata
 from astropy.utils import iers
 from astropy.utils import data
+import hid
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
 from base.packageConfig import checkAutomation
+from gui.utilities.toolsQtWidget import sleepAndEvents
+from base.tpool import Worker
 
 
 class SettMisc(object):
@@ -43,6 +47,7 @@ class SettMisc(object):
     def __init__(self):
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
+        self.gameControllerList = dict()
         self.process = None
 
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
@@ -61,6 +66,7 @@ class SettMisc(object):
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update30s.connect(self.syncClock)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
+        self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
 
         if pConf.isAvailable:
             self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -70,6 +76,7 @@ class SettMisc(object):
             self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
             self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
+        self.populateGameControllerList()
 
     def initConfig(self):
         """
@@ -89,18 +96,27 @@ class SettMisc(object):
         self.ui.clockSync.setChecked(config.get('clockSync', False))
         self.ui.unitTimeUTC.setChecked(config.get('unitTimeUTC', True))
         self.ui.unitTimeLocal.setChecked(config.get('unitTimeLocal', False))
-        self.ui.activateVirtualStop.setChecked(config.get('activateVirtualStop', False))
-        self.ui.versionReleaseNotes.setChecked(config.get('versionReleaseNotes', True))
-        self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
-        self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
+        self.ui.activateVirtualStop.setChecked(
+            config.get('activateVirtualStop', False))
+        self.ui.versionReleaseNotes.setChecked(
+            config.get('versionReleaseNotes', True))
+        self.ui.soundMountSlewFinished.setCurrentIndex(
+            config.get('soundMountSlewFinished', 0))
+        self.ui.soundDomeSlewFinished.setCurrentIndex(
+            config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
-        self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
+        self.ui.soundModelingFinished.setCurrentIndex(
+            config.get('soundModelingFinished', 0))
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
-        self.ui.soundConnectionLost.setCurrentIndex(config.get('soundConnectionLost',
-                                                               0))
+        self.ui.soundConnectionLost.setCurrentIndex(
+            config.get('soundConnectionLost', 0))
         self.ui.soundSatStartTracking.setCurrentIndex(config.get(
             'soundSatStartTracking', 0))
+        self.ui.gameControllerGroup.setChecked(
+            config.get('gameControllerGroup', False))
+        self.ui.gameControllerList.setCurrentIndex(config.get(
+            'gameControllerList', 0))
 
         isWindows = platform.system() == 'Windows'
         self.ui.automateGroup.setVisible(isWindows)
@@ -139,6 +155,69 @@ class SettMisc(object):
         config['soundImageSolved'] = self.ui.soundImageSolved.currentIndex()
         config['soundConnectionLost'] = self.ui.soundConnectionLost.currentIndex()
         config['soundSatStartTracking'] = self.ui.soundSatStartTracking.currentIndex()
+        config['gameControllerGroup'] = self.ui.gameControllerGroup.isChecked()
+        config['gameControllerList'] = self.ui.gameControllerList.currentIndex()
+        return True
+
+    def sendGameControllerSignals(self, act, old):
+        """
+        :param act:
+        :param old:
+        :return:
+        """
+        print(act, old)
+
+    def workerGameController(self):
+        """
+        :return:
+        """
+        gamepad = hid.device()
+        name = self.ui.gameControllerList.currentText()
+        vendorId = self.gameControllerList[name]['vendorId']
+        productId = self.gameControllerList[name]['productId']
+        gamepad.open(vendorId, productId)
+        gamepad.set_nonblocking(True)
+        reportOld = np.zeros(7, dtype=np.int8)
+        while self.gamePadRunning:
+            sleepAndEvents(20)
+            r = gamepad.read(64)
+            if not len(r):
+                continue
+            report = np.array([r[1], r[2], r[3], r[5], r[7], r[9], r[11]])
+            if any(report - reportOld != 0):
+                self.sendGameControllerSignals(report, reportOld)
+                reportOld = report
+
+    def startGameController(self):
+        """
+        :return:
+        """
+        worker = Worker(self.workerGameController)
+        self.threadPool.start(worker)
+        return True
+
+    def populateGameControllerList(self):
+        """
+        :return:
+        """
+        if not self.ui.gameControllerGroup.isChecked():
+            self.gamePadRunning = False
+            return False
+        self.ui.gameControllerList.clear()
+        self.gameControllerList.clear()
+        for device in hid.enumerate():
+            name = device['product_string']
+            if 'Controller' not in name:
+                continue
+            self.gameControllerList[name] = {'vendorId': device['vendor_id'],
+                                             'productId': device['product_id']}
+            self.ui.gameControllerList.addItem(name)
+
+        if len(self.gameControllerList) == 0:
+            return False
+
+        self.gamePadRunning = True
+        self.startGameController()
         return True
 
     def setWeatherOnline(self):

@@ -170,7 +170,7 @@ class Tools(object):
             ui.clicked.connect(self.moveClassic)
 
         for ui in self.setupMoveAltAz:
-            ui.clicked.connect(self.moveAltAz)
+            ui.clicked.connect(self.moveAltAzUI)
 
         self.ui.moveStepSizeAltAz.clear()
         for text in self.setupStepsizes:
@@ -469,24 +469,30 @@ class Tools(object):
             self.changeStyleDynamic(ui, 'running', False)
         return True
 
-    def moveAltAz(self):
+    def moveAltAzUI(self):
         """
         :return:
         """
-        ui = self.sender()
-        if ui not in self.setupMoveAltAz:
+        if not self.deviceStat.get('mount'):
             return False
+        ui = self.sender()
+        self.changeStyleDynamic(ui, 'running', True)
+        directions = self.setupMoveAltAz[ui]
+        self.moveAltAz(directions)
 
+    def moveAltAz(self, directions):
+        """
+        :param directions:
+        :return:
+        """
         alt = self.app.mount.obsSite.Alt
         az = self.app.mount.obsSite.Az
 
         if alt is None or az is None:
             return False
 
-        self.changeStyleDynamic(ui, 'running', True)
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]
-        directions = self.setupMoveAltAz[ui]
 
         if self.targetAlt is None or self.targetAz is None:
             targetAlt = self.targetAlt = alt.degrees + directions[0] * step

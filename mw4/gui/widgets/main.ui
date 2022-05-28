@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -17464,7 +17464,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -26218,8 +26218,8 @@ Slew</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>255</y>
+         <x>400</x>
+         <y>335</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -26871,6 +26871,62 @@ Slew</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="gameControllerGroup">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>260</y>
+         <width>366</width>
+         <height>126</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>Game controller support</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QComboBox" name="gameControllerList">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>35</y>
+          <width>181</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the prediction time of the twilight almanac. Shorter time improves redering speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>No controller available</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_171">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>35</y>
+          <width>161</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Select game controller</string>
         </property>
        </widget>
       </widget>

@@ -722,7 +722,6 @@ class MainWindow(
         self.ui.statusOnline.setTitle(t)
 
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
-        tzT = tzT.replace('Summer Time', 'DST')
         t = f'Timezone: {tzT}'
         self.ui.statusTime.setTitle(t)
         return True

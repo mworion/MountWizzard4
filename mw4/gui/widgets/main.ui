@@ -45,7 +45,6 @@
    <font>
     <family>Arial</family>
     <pointsize>8</pointsize>
-    <weight>50</weight>
     <bold>false</bold>
    </font>
   </property>
@@ -89,7 +88,6 @@
     <font>
      <family>Arial</family>
      <pointsize>10</pointsize>
-     <weight>50</weight>
      <bold>false</bold>
     </font>
    </property>
@@ -152,7 +150,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -176,7 +173,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -200,7 +196,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -224,7 +219,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -248,7 +242,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -272,7 +265,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -312,7 +304,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -336,7 +327,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -394,7 +384,6 @@
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -430,7 +419,6 @@
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -461,7 +449,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -506,7 +493,6 @@
        <font>
         <family>Arial</family>
         <pointsize>8</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -548,7 +534,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -617,7 +602,6 @@
        <font>
         <family>Arial</family>
         <pointsize>8</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -656,7 +640,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -701,7 +684,6 @@
        <font>
         <family>Arial</family>
         <pointsize>8</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -740,7 +722,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -764,7 +745,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -791,7 +771,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -839,7 +818,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -887,7 +865,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -935,7 +912,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -980,7 +956,6 @@
        <font>
         <family>Arial</family>
         <pointsize>20</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1020,7 +995,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1041,7 +1015,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1062,7 +1035,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1086,7 +1058,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1131,7 +1102,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1155,7 +1125,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1203,7 +1172,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1224,7 +1192,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1248,7 +1215,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1302,7 +1268,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1347,7 +1312,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1395,7 +1359,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1446,7 +1409,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1467,7 +1429,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1494,7 +1455,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1518,7 +1478,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1566,7 +1525,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1614,7 +1572,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1656,7 +1613,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1680,7 +1636,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1728,7 +1683,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1755,7 +1709,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1776,7 +1729,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1806,7 +1758,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1848,7 +1799,6 @@
        <font>
         <family>Arial</family>
         <pointsize>9</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1869,7 +1819,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1893,7 +1842,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1947,7 +1895,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -1992,7 +1939,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2019,7 +1965,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2043,7 +1988,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2094,7 +2038,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2118,7 +2061,6 @@
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2167,7 +2109,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2194,7 +2135,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2239,7 +2179,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2260,7 +2199,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2287,7 +2225,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2311,7 +2248,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2362,7 +2298,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2383,7 +2318,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2404,7 +2338,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2431,7 +2364,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2452,7 +2384,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2473,7 +2404,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2494,7 +2424,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2521,7 +2450,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2548,7 +2476,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2569,7 +2496,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>9</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2590,7 +2516,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2614,7 +2539,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2644,7 +2568,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2689,7 +2612,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2749,7 +2671,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2797,7 +2718,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2827,7 +2747,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2872,7 +2791,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2896,7 +2814,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2941,7 +2858,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2962,7 +2878,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2986,7 +2901,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -3073,7 +2987,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3094,7 +3007,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3115,7 +3027,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3136,7 +3047,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3181,7 +3091,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3229,7 +3138,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3269,7 +3177,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3314,7 +3221,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3362,7 +3268,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3410,7 +3315,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3458,7 +3362,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3506,7 +3409,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3554,7 +3456,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3602,7 +3503,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3650,7 +3550,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3698,7 +3597,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3738,7 +3636,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3759,7 +3656,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3780,7 +3676,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3801,7 +3696,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3822,7 +3716,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3849,7 +3742,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3870,7 +3762,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3891,7 +3782,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3918,7 +3808,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -3960,7 +3849,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -3990,7 +3878,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4020,7 +3907,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4045,7 +3931,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -4099,7 +3984,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4147,7 +4031,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4195,7 +4078,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4243,7 +4125,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4291,7 +4172,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4339,7 +4219,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4387,7 +4266,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4435,7 +4313,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4483,7 +4360,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4556,7 +4432,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4604,7 +4479,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4652,7 +4526,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4700,7 +4573,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4748,7 +4620,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4796,7 +4667,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4844,7 +4714,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4892,7 +4761,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4940,7 +4808,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -4992,7 +4859,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -5007,7 +4873,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -5028,7 +4893,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -5049,7 +4913,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -5094,7 +4957,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5142,7 +5004,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5190,7 +5051,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5238,7 +5098,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5286,7 +5145,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5334,7 +5192,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5382,7 +5239,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5430,7 +5286,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5478,7 +5333,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5531,7 +5385,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -5587,7 +5440,6 @@ to mount</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5635,7 +5487,6 @@ to mount</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5683,7 +5534,6 @@ to mount</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -5731,7 +5581,6 @@ to mount</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -6068,7 +5917,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6123,7 +5971,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6171,7 +6018,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6216,7 +6062,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6262,7 +6107,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6307,7 +6151,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6337,7 +6180,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6382,7 +6224,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6409,7 +6250,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6436,7 +6276,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6463,7 +6302,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6516,7 +6354,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6589,7 +6426,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6628,7 +6464,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6658,7 +6493,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6685,7 +6519,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6712,7 +6545,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6755,7 +6587,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6776,7 +6607,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6818,7 +6648,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6839,7 +6668,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6860,7 +6688,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6887,7 +6714,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6929,7 +6755,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6956,7 +6781,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -6998,7 +6822,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7035,7 +6858,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7174,7 +6996,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7195,7 +7016,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7250,7 +7070,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7292,7 +7111,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7334,7 +7152,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7355,7 +7172,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7376,7 +7192,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7397,7 +7212,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7538,7 +7352,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7562,7 +7375,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7586,7 +7398,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7613,7 +7424,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7637,7 +7447,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7664,7 +7473,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7710,7 +7518,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7737,7 +7544,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7761,7 +7567,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7800,7 +7605,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7935,7 +7739,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7959,7 +7762,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -7983,7 +7785,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8035,7 +7836,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8102,7 +7902,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8129,7 +7928,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8156,7 +7954,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8177,7 +7974,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8201,7 +7997,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8243,7 +8038,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8267,7 +8061,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8312,7 +8105,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8354,7 +8146,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8375,7 +8166,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8405,7 +8195,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8447,7 +8236,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8471,7 +8259,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8492,7 +8279,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8513,7 +8299,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8537,7 +8322,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8582,7 +8366,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8624,7 +8407,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8654,7 +8436,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8699,7 +8480,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8741,7 +8521,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8879,7 +8658,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8921,7 +8699,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -8961,7 +8738,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9003,7 +8779,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9027,7 +8802,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9069,7 +8843,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9090,7 +8863,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9114,7 +8886,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9159,7 +8930,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9201,7 +8971,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9225,7 +8994,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9298,7 +9066,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9322,7 +9089,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9364,7 +9130,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9404,7 +9169,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9434,7 +9198,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9483,7 +9246,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9519,7 +9281,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9540,7 +9301,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9561,7 +9321,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9665,7 +9424,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9714,7 +9472,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9756,7 +9513,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9780,7 +9536,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9884,7 +9639,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9953,7 +9707,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -9989,7 +9742,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -10031,7 +9783,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -10229,7 +9980,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -10271,7 +10021,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -10354,7 +10103,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -10491,7 +10239,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
         </font>
        </property>
@@ -10745,7 +10492,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -10781,7 +10527,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -10894,7 +10639,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -10933,7 +10677,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -10972,7 +10715,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -10993,7 +10735,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11014,7 +10755,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11035,7 +10775,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11080,7 +10819,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11122,7 +10860,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11146,7 +10883,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11188,7 +10924,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11209,7 +10944,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11230,7 +10964,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11251,7 +10984,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11275,7 +11007,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11320,7 +11051,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11365,7 +11095,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11410,7 +11139,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11455,7 +11183,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11500,7 +11227,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11545,7 +11271,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11590,7 +11315,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11635,7 +11359,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11680,7 +11403,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11725,7 +11447,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11770,7 +11491,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11815,7 +11535,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11857,7 +11576,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11878,7 +11596,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11899,7 +11616,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11936,7 +11652,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -11963,7 +11678,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12003,7 +11717,6 @@ Next point in time when satellite rises over horizon.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12027,7 +11740,6 @@ Next point in time when satellite rises over horizon.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12070,7 +11782,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12110,7 +11821,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12131,7 +11841,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12174,7 +11883,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12236,7 +11944,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12351,7 +12058,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12372,7 +12078,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12393,7 +12098,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12417,7 +12121,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12456,7 +12159,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12477,7 +12179,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12501,7 +12202,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12543,7 +12243,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12585,7 +12284,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -12856,7 +12554,6 @@ Next point in time when satellite settles.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -12892,7 +12589,6 @@ Next point in time when satellite settles.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -12948,7 +12644,6 @@ Next point in time when satellite settles.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -13958,7 +13653,6 @@ Next point in time when satellite settles.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -14099,7 +13793,6 @@ Next point in time when satellite settles.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -14240,7 +13933,6 @@ Next point in time when satellite settles.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -14460,7 +14152,6 @@ Next point in time when satellite settles.</string>
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -14583,7 +14274,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14613,7 +14303,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14643,7 +14332,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14673,7 +14361,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14703,7 +14390,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14733,7 +14419,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14763,7 +14448,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14793,7 +14477,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14823,7 +14506,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14853,7 +14535,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14946,7 +14627,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -14976,7 +14656,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15006,7 +14685,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15036,7 +14714,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15211,7 +14888,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15241,7 +14917,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15271,7 +14946,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15301,7 +14975,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15331,7 +15004,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15380,7 +15052,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15454,7 +15125,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15484,7 +15154,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15514,7 +15183,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15544,7 +15212,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15574,7 +15241,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15604,7 +15270,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15634,7 +15299,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -15689,7 +15353,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -15734,7 +15397,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -15758,7 +15420,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -15886,7 +15547,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -15925,7 +15585,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -15973,7 +15632,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -16038,7 +15696,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -16080,7 +15737,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -16677,7 +16333,6 @@ Next point in time when satellite settles.</string>
              <font>
               <family>Arial</family>
               <pointsize>10</pointsize>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -16948,7 +16603,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -16969,7 +16623,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17005,7 +16658,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17032,7 +16684,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17053,7 +16704,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17080,7 +16730,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17116,7 +16765,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17152,7 +16800,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17173,7 +16820,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17206,7 +16852,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17233,7 +16878,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17289,7 +16933,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17310,7 +16953,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17331,7 +16973,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17367,7 +17008,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17403,7 +17043,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17430,7 +17069,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17466,7 +17104,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17493,7 +17130,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17514,7 +17150,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17550,7 +17185,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17571,7 +17205,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17592,7 +17225,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17625,7 +17257,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17652,7 +17283,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17679,7 +17309,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17700,7 +17329,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17733,7 +17361,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17818,7 +17445,6 @@ Next point in time when satellite settles.</string>
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -17922,7 +17548,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17949,7 +17574,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -17992,7 +17616,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18035,7 +17658,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18078,7 +17700,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18172,7 +17793,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18250,7 +17870,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18277,7 +17896,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18336,7 +17954,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18379,7 +17996,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18422,7 +18038,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18561,7 +18176,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18604,7 +18218,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18631,7 +18244,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18674,7 +18286,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18736,7 +18347,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18906,7 +18516,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -18979,7 +18588,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19000,7 +18608,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19021,7 +18628,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19060,7 +18666,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19081,7 +18686,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19120,7 +18724,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19150,7 +18753,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19171,7 +18773,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19210,7 +18811,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19231,7 +18831,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19270,7 +18869,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19312,7 +18910,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19360,7 +18957,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19384,7 +18980,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19426,7 +19021,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19450,7 +19044,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19498,7 +19091,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19556,7 +19148,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19577,7 +19168,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19601,7 +19191,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19659,7 +19248,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19699,7 +19287,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19736,7 +19323,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19757,7 +19343,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19778,7 +19363,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19802,7 +19386,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19850,7 +19433,6 @@ Next point in time when satellite settles.</string>
           <font>
            <family>Arial</family>
            <pointsize>10</pointsize>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -19872,7 +19454,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -19921,7 +19502,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20031,7 +19611,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20055,7 +19634,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20122,7 +19700,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20146,7 +19723,6 @@ Next point in time when satellite settles.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20198,7 +19774,6 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20222,7 +19797,6 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20290,7 +19864,6 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20327,7 +19900,6 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20351,7 +19923,6 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20402,7 +19973,6 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20511,7 +20081,6 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20624,7 +20193,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20669,7 +20237,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20690,7 +20257,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20754,7 +20320,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20778,7 +20343,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20820,7 +20384,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20841,7 +20404,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20865,7 +20427,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20910,7 +20471,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20955,7 +20515,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -20997,7 +20556,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21018,7 +20576,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21039,7 +20596,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21060,7 +20616,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21084,7 +20639,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21129,7 +20683,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21171,7 +20724,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21192,7 +20744,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21213,7 +20764,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21237,7 +20787,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21282,7 +20831,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21324,7 +20872,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21348,7 +20895,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21390,7 +20936,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21411,7 +20956,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21435,7 +20979,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21493,7 +21036,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21517,7 +21059,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21559,7 +21100,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21580,7 +21120,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21604,7 +21143,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21649,7 +21187,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21691,7 +21228,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21712,7 +21248,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21782,7 +21317,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21827,7 +21361,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21848,7 +21381,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21878,7 +21410,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21923,7 +21454,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21950,7 +21480,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21977,7 +21506,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -21998,7 +21526,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22019,7 +21546,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22046,7 +21572,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22097,7 +21622,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22180,7 +21704,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22258,7 +21781,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22279,7 +21801,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22300,7 +21821,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22358,7 +21878,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22403,7 +21922,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22424,7 +21942,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22445,7 +21962,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22469,7 +21985,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22517,7 +22032,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22562,7 +22076,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22586,7 +22099,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22631,7 +22143,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22655,7 +22166,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22716,7 +22226,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22737,7 +22246,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22758,7 +22266,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22792,7 +22299,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22813,7 +22319,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22852,7 +22357,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22891,7 +22395,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22964,7 +22467,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -22985,7 +22487,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23006,7 +22507,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23027,7 +22527,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23048,7 +22547,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23069,7 +22567,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23090,7 +22587,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23120,7 +22616,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23141,7 +22636,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23162,7 +22656,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23183,7 +22676,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23327,7 +22819,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23379,7 +22870,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23400,7 +22890,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23421,7 +22910,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23442,7 +22930,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23510,7 +22997,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23531,7 +23017,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23561,7 +23046,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23607,7 +23091,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23637,7 +23120,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23658,7 +23140,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23679,7 +23160,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23700,7 +23180,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23762,7 +23241,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23801,7 +23279,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -23822,7 +23299,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24235,7 +23711,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24262,7 +23737,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24289,7 +23763,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24316,7 +23789,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24343,7 +23815,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24382,7 +23853,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24406,7 +23876,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24427,7 +23896,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24466,7 +23934,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24493,7 +23960,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24529,7 +23995,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24556,7 +24021,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24583,7 +24047,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24622,7 +24085,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24643,7 +24105,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24682,7 +24143,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24706,7 +24166,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24733,7 +24192,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24757,7 +24215,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24784,7 +24241,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24811,7 +24267,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24838,7 +24293,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24862,7 +24316,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24889,7 +24342,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24928,7 +24380,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24949,7 +24400,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -24976,7 +24426,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25003,7 +24452,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25042,7 +24490,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25066,7 +24513,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25093,7 +24539,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25117,7 +24562,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25141,7 +24585,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25162,7 +24605,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25189,7 +24631,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25228,7 +24669,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25380,7 +24820,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25404,7 +24843,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25428,7 +24866,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25467,7 +24904,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25506,7 +24942,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25533,7 +24968,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25576,7 +25010,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -25603,7 +25036,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26162,7 +25594,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26186,7 +25617,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26225,7 +25655,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26264,7 +25693,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26333,7 +25761,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26357,7 +25784,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26381,7 +25807,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26405,7 +25830,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26444,7 +25868,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26483,7 +25906,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26522,7 +25944,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26546,7 +25967,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26567,7 +25987,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26611,7 +26030,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26642,7 +26060,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26666,7 +26083,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26687,7 +26103,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26726,7 +26141,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26772,7 +26186,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26846,7 +26259,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26873,7 +26285,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26900,7 +26311,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26956,7 +26366,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -26990,7 +26399,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27011,7 +26419,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27045,7 +26452,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27079,7 +26485,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27113,7 +26518,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27147,7 +26551,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27168,7 +26571,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27231,7 +26633,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27378,7 +26779,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27434,7 +26834,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27461,7 +26860,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27531,7 +26929,6 @@ Slew</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27620,7 +27017,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27647,7 +27043,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27677,7 +27072,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27722,7 +27116,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27764,7 +27157,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27835,7 +27227,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27868,7 +27259,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27901,7 +27291,6 @@ Updater</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -27945,10 +27334,10 @@ Updater</string>
         </property>
         <property name="html">
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial','Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;astropy, deepdiff, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -27980,7 +27369,6 @@ p, li { white-space: pre-wrap; }
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -28007,7 +27395,6 @@ p, li { white-space: pre-wrap; }
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -28034,7 +27421,6 @@ p, li { white-space: pre-wrap; }
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
-          <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
@@ -28121,7 +27507,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>8</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28181,7 +27566,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>8</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28241,7 +27625,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28286,7 +27669,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28328,7 +27710,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28376,7 +27757,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28418,7 +27798,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28463,7 +27842,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28511,7 +27889,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28556,7 +27933,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>8</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28616,7 +27992,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28664,7 +28039,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28709,7 +28083,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28757,7 +28130,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>8</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28814,7 +28186,6 @@ p, li { white-space: pre-wrap; }
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28897,7 +28268,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -28957,7 +28327,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <font>
       <family>Arial</family>
       <pointsize>28</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -29009,53 +28378,11 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </size>
    </property>
    <property name="title">
-    <string>Main</string>
+    <string>Profile</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
-   <widget class="QPushButton" name="mountOn">
-    <property name="geometry">
-     <rect>
-      <x>6</x>
-      <y>75</y>
-      <width>90</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>90</width>
-      <height>25</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>16777215</width>
-      <height>25</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
-    </property>
-    <property name="text">
-     <string>Mount On</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="saveConfig">
     <property name="geometry">
      <rect>
@@ -29087,7 +28414,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -29132,7 +28458,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -29177,7 +28502,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -29222,7 +28546,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -29236,82 +28559,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <string>Save as</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="mountOff">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>75</y>
-      <width>90</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>90</width>
-      <height>25</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>16777215</width>
-      <height>25</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>10</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>Shuts the mount down.</string>
-    </property>
-    <property name="text">
-     <string>Mount Off</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="statusOnline_2">
-   <property name="geometry">
-    <rect>
-     <x>455</x>
-     <y>75</y>
-     <width>140</width>
-     <height>36</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>140</width>
-     <height>0</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>140</width>
-     <height>16777215</height>
-    </size>
-   </property>
-   <property name="title">
-    <string>Profile</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
    <widget class="QLineEdit" name="profile">
     <property name="enabled">
      <bool>true</bool>
@@ -29319,9 +28566,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <property name="geometry">
      <rect>
       <x>5</x>
-      <y>13</y>
-      <width>131</width>
-      <height>21</height>
+      <y>75</y>
+      <width>186</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -29333,7 +28580,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <property name="minimumSize">
      <size>
       <width>80</width>
-      <height>21</height>
+      <height>25</height>
      </size>
     </property>
     <property name="maximumSize">
@@ -29346,7 +28593,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <font>
       <family>Arial</family>
       <pointsize>10</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -29392,12 +28638,95 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="mountOn">
+   <property name="geometry">
+    <rect>
+     <x>455</x>
+     <y>80</y>
+     <width>66</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+   </property>
+   <property name="text">
+    <string>On</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="mountOff">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>80</y>
+     <width>66</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Shuts the mount down.</string>
+   </property>
+   <property name="text">
+    <string>Off</string>
+   </property>
+  </widget>
   <zorder>virtualStop</zorder>
   <zorder>mainTabWidget</zorder>
   <zorder>statusOnline</zorder>
   <zorder>statusTime</zorder>
   <zorder>main</zorder>
-  <zorder>statusOnline_2</zorder>
+  <zorder>mountOn</zorder>
+  <zorder>mountOff</zorder>
  </widget>
  <customwidgets>
   <customwidget>

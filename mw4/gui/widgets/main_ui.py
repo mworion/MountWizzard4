@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -7158,7 +7158,7 @@ class Ui_MainWindow(object):
         self.GroupMountSettleTime.setProperty("large", True)
         self.GroupMountSettleTime.setObjectName("GroupMountSettleTime")
         self.label_40 = QtWidgets.QLabel(self.GroupMountSettleTime)
-        self.label_40.setGeometry(QtCore.QRect(10, 20, 101, 21))
+        self.label_40.setGeometry(QtCore.QRect(10, 20, 276, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -7166,7 +7166,7 @@ class Ui_MainWindow(object):
         self.label_40.setFont(font)
         self.label_40.setObjectName("label_40")
         self.label_295 = QtWidgets.QLabel(self.GroupMountSettleTime)
-        self.label_295.setGeometry(QtCore.QRect(160, 20, 16, 21))
+        self.label_295.setGeometry(QtCore.QRect(340, 20, 16, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -7174,7 +7174,7 @@ class Ui_MainWindow(object):
         self.label_295.setFont(font)
         self.label_295.setObjectName("label_295")
         self.settleTimeMount = QtWidgets.QDoubleSpinBox(self.GroupMountSettleTime)
-        self.settleTimeMount.setGeometry(QtCore.QRect(115, 20, 41, 21))
+        self.settleTimeMount.setGeometry(QtCore.QRect(295, 20, 41, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -7686,7 +7686,7 @@ class Ui_MainWindow(object):
         self.GroupDomeSettleTime.setProperty("large", True)
         self.GroupDomeSettleTime.setObjectName("GroupDomeSettleTime")
         self.settleTimeDome = QtWidgets.QDoubleSpinBox(self.GroupDomeSettleTime)
-        self.settleTimeDome.setGeometry(QtCore.QRect(125, 20, 41, 21))
+        self.settleTimeDome.setGeometry(QtCore.QRect(295, 20, 41, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -7700,7 +7700,7 @@ class Ui_MainWindow(object):
         self.settleTimeDome.setProperty("value", 0.0)
         self.settleTimeDome.setObjectName("settleTimeDome")
         self.label_100 = QtWidgets.QLabel(self.GroupDomeSettleTime)
-        self.label_100.setGeometry(QtCore.QRect(10, 20, 111, 21))
+        self.label_100.setGeometry(QtCore.QRect(10, 20, 281, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -7708,7 +7708,7 @@ class Ui_MainWindow(object):
         self.label_100.setFont(font)
         self.label_100.setObjectName("label_100")
         self.label_314 = QtWidgets.QLabel(self.GroupDomeSettleTime)
-        self.label_314.setGeometry(QtCore.QRect(170, 20, 16, 21))
+        self.label_314.setGeometry(QtCore.QRect(340, 20, 16, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -9573,7 +9573,7 @@ class Ui_MainWindow(object):
         self.mountOff.raise_()
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(10)
+        self.mainTabWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
         self.toolsTabWidget.setCurrentIndex(0)
@@ -11087,8 +11087,8 @@ class Ui_MainWindow(object):
         self.label_259.setText(_translate("MainWindow", "MAC Address"))
         self.bootRackComp.setText(_translate("MainWindow", "Boot / WOL"))
         self.rackCompMAC.setText(_translate("MainWindow", "00:00:00:00:00:00"))
-        self.GroupMountSettleTime.setTitle(_translate("MainWindow", "Settle Times"))
-        self.label_40.setText(_translate("MainWindow", "Mount settle time"))
+        self.GroupMountSettleTime.setTitle(_translate("MainWindow", "Settle time"))
+        self.label_40.setText(_translate("MainWindow", "Waiting time after mount finished slew"))
         self.label_295.setText(_translate("MainWindow", "s"))
         self.settleTimeMount.setToolTip(_translate("MainWindow", "Sets the time to wait after mount stop before imaging"))
         self.FirmwareGroup.setTitle(_translate("MainWindow", "Firmware data"))
@@ -11145,9 +11145,9 @@ class Ui_MainWindow(object):
         self.label_139.setText(_translate("MainWindow", "Clear opening"))
         self.label_145.setText(_translate("MainWindow", "m"))
         self.domeOpeningHysteresis.setToolTip(_translate("MainWindow", "<html><head/><body><p>From a top view: This is the safety marging from the bounding box of the dome opening to the actual viewing direction of the telescope to avoid obstuction of the view.</p></body></html>"))
-        self.GroupDomeSettleTime.setTitle(_translate("MainWindow", "Settle Times"))
+        self.GroupDomeSettleTime.setTitle(_translate("MainWindow", "Settle time"))
         self.settleTimeDome.setToolTip(_translate("MainWindow", "Sets the time to wait after mount stop before imaging"))
-        self.label_100.setText(_translate("MainWindow", "Dome settle time"))
+        self.label_100.setText(_translate("MainWindow", "Waiting time after dome finished slew"))
         self.label_314.setText(_translate("MainWindow", "s"))
         self.picDome1.setText(_translate("MainWindow", "TextLabel"))
         self.tabDomeExplain.setTabText(self.tabDomeExplain.indexOf(self.tab_9), _translate("MainWindow", "1"))

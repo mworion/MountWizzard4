@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -21763,7 +21763,7 @@ Slew</string>
         </rect>
        </property>
        <property name="title">
-        <string>Settle Times</string>
+        <string>Settle time</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -21773,7 +21773,7 @@ Slew</string>
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>101</width>
+          <width>276</width>
           <height>21</height>
          </rect>
         </property>
@@ -21785,13 +21785,13 @@ Slew</string>
          </font>
         </property>
         <property name="text">
-         <string>Mount settle time</string>
+         <string>Waiting time after mount finished slew</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_295">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>340</x>
           <y>20</y>
           <width>16</width>
           <height>21</height>
@@ -21811,7 +21811,7 @@ Slew</string>
        <widget class="QDoubleSpinBox" name="settleTimeMount">
         <property name="geometry">
          <rect>
-          <x>115</x>
+          <x>295</x>
           <y>20</y>
           <width>41</width>
           <height>21</height>
@@ -23223,7 +23223,7 @@ Slew</string>
         </rect>
        </property>
        <property name="title">
-        <string>Settle Times</string>
+        <string>Settle time</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -23231,7 +23231,7 @@ Slew</string>
        <widget class="QDoubleSpinBox" name="settleTimeDome">
         <property name="geometry">
          <rect>
-          <x>125</x>
+          <x>295</x>
           <y>20</y>
           <width>41</width>
           <height>21</height>
@@ -23271,7 +23271,7 @@ Slew</string>
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>111</width>
+          <width>281</width>
           <height>21</height>
          </rect>
         </property>
@@ -23283,13 +23283,13 @@ Slew</string>
          </font>
         </property>
         <property name="text">
-         <string>Dome settle time</string>
+         <string>Waiting time after dome finished slew</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_314">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>340</x>
           <y>20</y>
           <width>16</width>
           <height>21</height>

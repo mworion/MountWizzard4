@@ -232,7 +232,7 @@ def test_calcSatSunPhase_1(function):
     ephemeris = function.app.ephemeris
     tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
     val = function.calcSatSunPhase(sat, loc, ephemeris, tEv)
-    assert round(val.degrees, 5) == 129.84279
+    assert round(val.degrees, 3) == 129.843
 
 
 def test_calcAppMag_1(function):

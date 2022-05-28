@@ -676,6 +676,10 @@ class MainWindow(
                 self.changeStyleDynamic(ui, 'color', 'green')
             else:
                 self.changeStyleDynamic(ui, 'color', 'red')
+
+        isMount = self.deviceStat.get('mount', False)
+        self.changeStyleDynamic(self.ui.mountOn, 'running', isMount)
+        self.changeStyleDynamic(self.ui.mountOff, 'running', not isMount)
         return True
 
     def updateAstrometryStatus(self, text):

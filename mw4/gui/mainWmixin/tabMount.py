@@ -67,6 +67,10 @@ class Mount(object):
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
         self.ui.virtualStop.raise_()
         self.ui.virtualStop.clicked.connect(self.virtualStop)
+        self.app.gamePMH.connect(self.changeParkGameController)
+        self.app.gameABXY.connect(self.stopGameController)
+        self.app.gameABXY.connect(self.changeTrackingGameController)
+        self.app.gameABXY.connect(self.flipMountGameController)
 
     def initConfig(self):
         """
@@ -239,6 +243,15 @@ class Mount(object):
         else:
             return True
 
+    def changeTrackingGameController(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if value == 0b00000100:
+            self.changeTracking()
+        return True
+
     def changeTracking(self):
         """
         :return:
@@ -261,6 +274,14 @@ class Mount(object):
             else:
                 self.app.mes.emit(0, 'Mount', 'Command', 'Started tracking')
 
+        return True
+
+    def changeParkGameController(self, value):
+        """
+        :return:
+        """
+        if value == 0b00010000:
+            self.changePark()
         return True
 
     def changePark(self):
@@ -297,10 +318,9 @@ class Mount(object):
         suc = sett.setLunarTracking()
         if not suc:
             self.app.mes.emit(2, 'Mount', 'Command', 'Cannot set tracking to Lunar')
-            return False
         else:
             self.app.mes.emit(0, 'Mount', 'Command', 'Tracking set to Lunar')
-            return True
+        return suc
 
     def setSiderealTracking(self):
         """
@@ -328,9 +348,17 @@ class Mount(object):
         suc = sett.setSolarTracking()
         if not suc:
             self.app.mes.emit(2, 'Mount', 'Command', 'Cannot set tracking to Solar')
-            return False
         else:
             self.app.mes.emit(0, 'Mount', 'Command', 'Tracking set to Solar')
+        return suc
+
+    def flipMountGameController(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if value == 0b00000010:
+            self.flipMount()
         return True
 
     def flipMount(self):
@@ -344,10 +372,25 @@ class Mount(object):
         suc = obs.flip()
         if not suc:
             self.app.mes.emit(2, 'Mount', 'Command', 'Cannot flip mount')
-            return False
         else:
             self.app.mes.emit(0, 'Mount', 'Command', 'Mount flipped')
-            return True
+        return suc
+
+    def stopGameController(self, value):
+        """
+        :param value:
+        :return:
+        """
+        if value == 0b00001000:
+            self.stop()
+        return True
+
+    def virtualStop(self):
+        """
+        :return:
+        """
+        if self.ui.activateVirtualStop.isChecked():
+            self.stop()
 
     def stop(self):
         """
@@ -360,17 +403,9 @@ class Mount(object):
         suc = obs.stop()
         if not suc:
             self.app.mes.emit(2, 'Mount', 'Command', 'Cannot stop mount')
-            return False
         else:
             self.app.mes.emit(0, 'Mount', 'Command', 'Mount stopped')
-            return True
-
-    def virtualStop(self):
-        """
-        :return:
-        """
-        if self.ui.activateVirtualStop.isChecked():
-            self.stop()
+        return suc
 
     def setMeridianLimitTrack(self):
         """

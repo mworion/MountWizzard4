@@ -106,6 +106,8 @@ class Tools(object):
         self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
         self.ui.commandInput.returnPressed.connect(self.commandRaw)
         self.app.mount.signals.slewFinished.connect(self.moveAltAzDefault)
+        self.app.gameDirection.connect(self.moveAltAzGameController)
+        self.app.game_sR.connect(self.moveClassicGameController)
 
     def initConfig(self):
         """
@@ -167,7 +169,7 @@ class Tools(object):
                 selectorUI.addItem(headerEntry)
 
         for ui in self.setupMoveClassic:
-            ui.clicked.connect(self.moveClassic)
+            ui.clicked.connect(self.moveClassicUI)
 
         for ui in self.setupMoveAltAz:
             ui.clicked.connect(self.moveAltAzUI)
@@ -196,7 +198,8 @@ class Tools(object):
         number = sum(1 for _ in Path(pathDir).glob(search))
         return number
 
-    def convertHeaderEntry(self, entry='', fitsKey=''):
+    @staticmethod
+    def convertHeaderEntry(entry='', fitsKey=''):
         """
         convertHeaderEntry takes the fitsHeader entry and reformat it to a
         reasonable string.
@@ -308,7 +311,7 @@ class Tools(object):
         includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
         if not os.path.isdir(pathDir):
             self.app.mes.emit(2, 'Tools', 'Rename error',
-                                   'No valid input directory given')
+                              'No valid input directory given')
             return False
 
         if includeSubdirs:
@@ -319,7 +322,7 @@ class Tools(object):
         numberFiles = self.getNumberFiles(pathDir, search=search)
         if not numberFiles:
             self.app.mes.emit(2, 'Tools', 'Rename error',
-                                   'No files to rename')
+                              'No files to rename')
             return False
 
         for i, fileName in enumerate(Path(pathDir).glob(search)):
@@ -328,10 +331,10 @@ class Tools(object):
             suc = self.renameFile(fileName=fileName)
             if not suc:
                 self.app.mes.emit(2, 'Tools', 'Rename error',
-                                       f'{fileName} could not be renamed')
+                                  f'{fileName} could not be renamed')
 
         self.app.mes.emit(0, 'Tools', 'Rename',
-                               f'{numberFiles:d} images were renamed')
+                          f'{numberFiles:d} images were renamed')
 
         return True
 
@@ -375,28 +378,63 @@ class Tools(object):
         self.stopMoveAll()
         return True
 
-    def moveClassic(self):
+    def moveClassicGameController(self, decVal, raVal):
+        """
+        :return:
+        """
+        dirRa = 0
+        dirDec = 0
+        if raVal < 64:
+            dirRa = 1
+        elif raVal > 192:
+            dirRa = -1
+        if decVal < 64:
+            dirDec = -1
+        elif decVal > 192:
+            dirDec = 1
+
+        direction = [dirRa, dirDec]
+        if direction == [0, 0]:
+            self.stopMoveAll()
+        else:
+            self.moveClassic(direction)
+        return True
+
+    def moveClassicUI(self):
         """
         :return:
         """
         ui = self.sender()
-        if ui not in self.setupMoveClassic:
-            return False
+        direction = self.setupMoveClassic[ui]
+        self.moveClassic(direction)
+        return True
 
-        for uiR in self.setupMoveClassic:
+    def moveClassic(self, direction):
+        """
+        :return:
+        """
+        uiList = self.setupMoveClassic
+        for uiR in uiList:
             self.changeStyleDynamic(uiR, 'running', False)
 
-        self.changeStyleDynamic(ui, 'running', True)
-        directions = self.setupMoveClassic[ui]
+        key = next(key for key, value in uiList.items() if value == direction)
+        self.changeStyleDynamic(key, 'running', True)
 
-        if directions[0] == 1:
+        if direction[0] == 1:
             self.app.mount.obsSite.moveNorth()
-        elif directions[0] == -1:
+        elif direction[0] == -1:
             self.app.mount.obsSite.moveSouth()
-        if directions[1] == 1:
+        elif direction[0] == 0:
+            self.app.mount.obsSite.stopMoveNorth()
+            self.app.mount.obsSite.stopMoveSouth()
+
+        if direction[1] == 1:
             self.app.mount.obsSite.moveEast()
-        elif directions[1] == -1:
+        elif direction[1] == -1:
             self.app.mount.obsSite.moveWest()
+        elif direction[1] == 0:
+            self.app.mount.obsSite.stopMoveEast()
+            self.app.mount.obsSite.stopMoveWest()
 
         self.moveDuration()
         return True
@@ -476,30 +514,50 @@ class Tools(object):
         if not self.deviceStat.get('mount'):
             return False
         ui = self.sender()
-        self.changeStyleDynamic(ui, 'running', True)
         directions = self.setupMoveAltAz[ui]
         self.moveAltAz(directions)
 
-    def moveAltAz(self, directions):
+    def moveAltAzGameController(self, value):
         """
-        :param directions:
+        :param value:
+        :return:
+        """
+        if value == 0b00000000:
+            direction = [1, 0]
+        elif value == 0b00000010:
+            direction = [0, 1]
+        elif value == 0b00000100:
+            direction = [-1, 0]
+        elif value == 0b00000110:
+            direction = [0, -1]
+        else:
+            return False
+        self.moveAltAz(direction)
+        return True
+
+    def moveAltAz(self, direction):
+        """
+        :param direction:
         :return:
         """
         alt = self.app.mount.obsSite.Alt
         az = self.app.mount.obsSite.Az
-
         if alt is None or az is None:
             return False
+
+        uiList = self.setupMoveAltAz
+        key = next(key for key, value in uiList.items() if value == direction)
+        self.changeStyleDynamic(key, 'running', True)
 
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]
 
         if self.targetAlt is None or self.targetAz is None:
-            targetAlt = self.targetAlt = alt.degrees + directions[0] * step
-            targetAz = self.targetAz = az.degrees + directions[1] * step
+            targetAlt = self.targetAlt = alt.degrees + direction[0] * step
+            targetAz = self.targetAz = az.degrees + direction[1] * step
         else:
-            targetAlt = self.targetAlt = self.targetAlt + directions[0] * step
-            targetAz = self.targetAz = self.targetAz + directions[1] * step
+            targetAlt = self.targetAlt = self.targetAlt + direction[0] * step
+            targetAz = self.targetAz = self.targetAz + direction[1] * step
 
         targetAz = targetAz % 360
         suc = self.slewTargetAltAz(targetAlt, targetAz)

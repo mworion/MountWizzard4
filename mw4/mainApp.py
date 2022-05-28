@@ -84,6 +84,11 @@ class MountWizzard4(QObject):
     remoteCommand = pyqtSignal(str)
     colorChange = pyqtSignal()
     hostChanged = pyqtSignal()
+    gameABXY = pyqtSignal(object)
+    gamePMH = pyqtSignal(object)
+    gameDirection = pyqtSignal(object)
+    game_sL = pyqtSignal(object, object)
+    game_sR = pyqtSignal(object, object)
 
     update0_1s = pyqtSignal()
     update1s = pyqtSignal()

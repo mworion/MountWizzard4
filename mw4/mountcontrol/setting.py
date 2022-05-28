@@ -421,7 +421,7 @@ class Setting(object):
         :return: success
         """
         conn = Connection(self.host)
-        commandString = ':RS#'
+        commandString = ':RC3#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         return suc
 
@@ -435,7 +435,7 @@ class Setting(object):
         :return: success
         """
         conn = Connection(self.host)
-        commandString = ':RC2#:RC#'
+        commandString = ':RC2#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         return suc
 
@@ -450,7 +450,7 @@ class Setting(object):
         """
         conn = Connection(self.host)
         centerSpeed = 255
-        commandString = f':Rc{centerSpeed:02.0f}#:RC#'
+        commandString = f':Rc{centerSpeed:02.0f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         return suc
 
@@ -465,7 +465,7 @@ class Setting(object):
         """
         conn = Connection(self.host)
         centerSpeed = 128
-        commandString = f':Rc{centerSpeed:02.0f}#:RC#'
+        commandString = f':Rc{centerSpeed:02.0f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         return suc
 

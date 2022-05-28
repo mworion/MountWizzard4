@@ -165,7 +165,31 @@ class SettMisc(object):
         :param old:
         :return:
         """
-        print(act, old)
+        if act[0] != old[0]:
+            self.app.gameABXY.emit(act[0])
+        if act[1] != old[1]:
+            self.app.gamePMH.emit(act[1])
+        if act[2] != old[2]:
+            self.app.gameDirection.emit(act[2])
+        if act[3] != old[3] or act[4] != old[4]:
+            self.app.game_sL.emit(act[3], act[4])
+        if act[5] != old[5] or act[6] != old[6]:
+            self.app.game_sR.emit(act[5], act[6])
+        return True
+
+    @staticmethod
+    def readGameControllerLast(gamepad):
+        """
+        :param gamepad:
+        :return:
+        """
+        result = []
+        while True:
+            data = gamepad.read(64)
+            if not len(data):
+                break
+            result = data
+        return result
 
     def workerGameController(self):
         """
@@ -179,8 +203,8 @@ class SettMisc(object):
         gamepad.set_nonblocking(True)
         reportOld = np.zeros(7, dtype=np.int8)
         while self.gamePadRunning:
-            sleepAndEvents(20)
-            r = gamepad.read(64)
+            sleepAndEvents(100)
+            r = self.readGameControllerLast(gamepad)
             if not len(r):
                 continue
             report = np.array([r[1], r[2], r[3], r[5], r[7], r[9], r[11]])

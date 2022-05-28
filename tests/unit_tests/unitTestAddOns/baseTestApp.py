@@ -1092,6 +1092,11 @@ class App(QObject):
     playSound = pyqtSignal(object)
     mes = pyqtSignal(object, object, object, object)
     remoteCommand = pyqtSignal(object)
+    gameABXY = pyqtSignal(object)
+    gamePMH = pyqtSignal(object)
+    gameDirection = pyqtSignal(object)
+    game_sL = pyqtSignal(object, object)
+    game_sR = pyqtSignal(object, object)
     messageQueue = Queue()
 
     astrometry = Astrometry()

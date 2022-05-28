@@ -1269,23 +1269,23 @@ class ObsSite(object):
 
         return True
 
-    def stopMoveNorth(self):
-        """
-        :return:    success
-        """
-        conn = Connection(self.host)
-        suc, response, numberOfChunks = conn.communicate(':Qn#')
-        if not suc:
-            return False
-
-        return True
-
     def stopMoveAll(self):
         """
         :return:    success
         """
         conn = Connection(self.host)
         suc, response, numberOfChunks = conn.communicate(':Q#')
+        if not suc:
+            return False
+
+        return True
+
+    def stopMoveNorth(self):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        suc, response, numberOfChunks = conn.communicate(':Qn#')
         if not suc:
             return False
 
@@ -1319,7 +1319,7 @@ class ObsSite(object):
         :return:    success
         """
         conn = Connection(self.host)
-        suc, response, numberOfChunks = conn.communicate(':Ww#')
+        suc, response, numberOfChunks = conn.communicate(':Qw#')
         if not suc:
             return False
 

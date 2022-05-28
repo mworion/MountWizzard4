@@ -553,14 +553,12 @@ class ManageModel(object):
             if not suc:
                 self.runningOptimize = False
                 self.app.mes.emit(2, 'Model', 'Manage error',
-                                       f'Point [{wStar.number + 1:3.0f}] cannot be deleted')
+                                  f'Point [{wStar.number + 1:3.0f}] cannot be deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}'
                 text += ' arcsec deleted.'
                 self.app.mes.emit(0, 'Model', 'Manage', text)
-
             mount.getAlign()
-
         else:
             self.finishOptimize()
         return True

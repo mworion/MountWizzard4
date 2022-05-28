@@ -76,16 +76,8 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    with mock.patch.object(function,
-                           'showModelPosition'):
-        with mock.patch.object(function,
-                               'showErrorAscending'):
-            with mock.patch.object(function,
-                                   'showErrorDistribution'):
-                function.ui.targetRMS.setValue(33)
-                function.storeConfig()
-                conf = function.app.config['mainW']
-                assert 33 == conf['targetRMS']
+    suc = function.storeConfig()
+    assert suc
 
 
 def test_colorChangeManageModel(function):
@@ -642,10 +634,15 @@ def test_runSingleRMS_2(function):
     function.runningOptimize = True
     function.ui.optimizeOverall.setChecked(False)
     function.ui.optimizeSingle.setChecked(True)
-    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    star1 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=5, errorAngle=90,
+                      number=1, obsSite=function.app.mount.obsSite)
+    star2 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=4, errorAngle=90,
+                      number=2, obsSite=function.app.mount.obsSite)
+    star3 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=3, errorAngle=90,
+                      number=3, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star1, star2, star3]
     function.app.mount.model.errorRMS = 100
-    function.app.mount.model.numberStars = 2
+    function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
     with mock.patch.object(function.app.mount.model,
@@ -662,10 +659,15 @@ def test_runSingleRMS_3(function):
     function.runningOptimize = True
     function.ui.optimizeOverall.setChecked(False)
     function.ui.optimizeSingle.setChecked(True)
-    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    star1 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=5, errorAngle=90,
+                      number=1, obsSite=function.app.mount.obsSite)
+    star2 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=4, errorAngle=90,
+                      number=2, obsSite=function.app.mount.obsSite)
+    star3 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=3, errorAngle=90,
+                      number=3, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star1, star2, star3]
     function.app.mount.model.errorRMS = 100
-    function.app.mount.model.numberStars = 2
+    function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
     with mock.patch.object(function.app.mount.model,
@@ -685,8 +687,10 @@ def test_runSingleRMS_4(function):
     function.app.mount.model.errorRMS = 100
     function.runningTargetRMS = False
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
-    suc = function.runSingleRMS()
-    assert suc
+    with mock.patch.object(function,
+                           'finishOptimize'):
+        suc = function.runSingleRMS()
+        assert suc
 
 
 def test_runOptimize_1(function):

@@ -172,7 +172,7 @@ class Almanac:
                 rect = pg.QtWidgets.QGraphicsRectItem(
                     xD[i], yH[i] - 12, 1, 24 - (yH[i] - 12))
             else:
-                rect = pg.QtGui.QGraphicsRectItem(
+                rect = pg.QtWidgets.QGraphicsRectItem(
                     xD[i], 12 + yH[i], 1, 24 - (12 + yH[i]))
             rect.setPen(penBar[i])
             rect.setBrush(brushBar[i])

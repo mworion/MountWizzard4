@@ -493,7 +493,7 @@ class ManageModel(object):
         suc = model.deletePoint(wStar.number)
         if not suc:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   'Worst point cannot be deleted')
+                              'Worst point cannot be deleted')
             return False
 
         else:

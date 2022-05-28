@@ -529,6 +529,7 @@ def test_deleteWorstPoint_1(function):
     star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
                      number=1, obsSite=function.app.mount.obsSite)
     function.app.mount.model.starList = [star, star, star]
+    function.app.mount.model.numberStars = 0
     suc = function.deleteWorstPoint()
     assert not suc
 
@@ -537,6 +538,7 @@ def test_deleteWorstPoint_2(function):
     star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
                      number=1, obsSite=function.app.mount.obsSite)
     function.app.mount.model.starList = [star, star, star]
+    function.app.mount.model.numberStars = 3
     with mock.patch.object(function.app.mount.model,
                            'deletePoint',
                            return_value=True):
@@ -550,6 +552,7 @@ def test_deleteWorstPoint_3(function):
     star = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0, errorAngle=0,
                      number=1, obsSite=function.app.mount.obsSite)
     function.app.mount.model.starList = [star, star, star]
+    function.app.mount.model.numberStars = 3
     with mock.patch.object(function.app.mount.model,
                            'deletePoint',
                            return_value=False):
@@ -573,10 +576,16 @@ def test_runTargetRMS_2(function):
     function.runningOptimize = True
     function.ui.optimizeOverall.setChecked(True)
     function.ui.optimizeSingle.setChecked(False)
-    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    star1 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=5, errorAngle=90,
+                      number=1, obsSite=function.app.mount.obsSite)
+    star2 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=4, errorAngle=90,
+                      number=2, obsSite=function.app.mount.obsSite)
+    star3 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=3, errorAngle=90,
+                      number=3, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star1, star2, star3]
+
     function.app.mount.model.errorRMS = 100
-    function.app.mount.model.numberStars = 2
+    function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.alignDone.connect(function.runTargetRMS)
     with mock.patch.object(function.app.mount.model,
@@ -592,10 +601,16 @@ def test_runTargetRMS_3(function):
     function.runningOptimize = True
     function.ui.optimizeOverall.setChecked(True)
     function.ui.optimizeSingle.setChecked(False)
-    function.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    function.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    star1 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=5, errorAngle=90,
+                      number=1, obsSite=function.app.mount.obsSite)
+    star2 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=4, errorAngle=90,
+                      number=2, obsSite=function.app.mount.obsSite)
+    star3 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=3, errorAngle=90,
+                      number=3, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star1, star2, star3]
+
     function.app.mount.model.errorRMS = 100
-    function.app.mount.model.numberStars = 2
+    function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.alignDone.connect(function.runTargetRMS)
     with mock.patch.object(function.app.mount.model,
@@ -612,6 +627,7 @@ def test_runTargetRMS_4(function):
     function.ui.optimizeOverall.setChecked(True)
     function.ui.optimizeSingle.setChecked(False)
     function.app.mount.model.errorRMS = 100
+    function.app.mount.model.numberStars = None
     function.runningTargetRMS = False
     function.app.mount.signals.alignDone.connect(function.runTargetRMS)
     suc = function.runTargetRMS()
@@ -623,6 +639,9 @@ def test_runSingleRMS_1(function):
     function.runningOptimize = True
     function.ui.optimizeOverall.setChecked(False)
     function.ui.optimizeSingle.setChecked(True)
+    star1 = ModelStar(Star(ra_hours=0, dec_degrees=0), errorRMS=0.1, errorAngle=90,
+                      number=1, obsSite=function.app.mount.obsSite)
+    function.app.mount.model.starList = [star1]
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
     function.app.mount.model.errorRMS = 0.1
     suc = function.runSingleRMS()
@@ -685,6 +704,7 @@ def test_runSingleRMS_4(function):
     function.ui.optimizeOverall.setChecked(False)
     function.ui.optimizeSingle.setChecked(True)
     function.app.mount.model.errorRMS = 100
+    function.app.mount.model.numberStars = None
     function.runningTargetRMS = False
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
     with mock.patch.object(function,

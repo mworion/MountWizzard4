@@ -47,7 +47,10 @@ class AstrometryASTAP(object):
                    2: 'Not enough stars detected',
                    3: 'Error reading image file',
                    32: 'No Star database found',
-                   33: 'Error reading star database'}
+                   33: 'Error reading star database',
+                   -1: 'Solving timed out',
+                   -2: 'Exception during solving',
+                   }
 
     log = logging.getLogger(__name__)
 
@@ -121,11 +124,11 @@ class AstrometryASTAP(object):
 
         except subprocess.TimeoutExpired:
             self.log.error('Timeout happened')
-            return False, 0
+            return False, -1
 
         except Exception as e:
             self.log.critical(f'error: {e} happened')
-            return False, 0
+            return False, -2
 
         else:
             delta = time.time() - timeStart

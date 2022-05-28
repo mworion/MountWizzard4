@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: game controller interface for mount and dome
 - add: all charts could be zoomed and panned
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)

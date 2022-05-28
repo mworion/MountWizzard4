@@ -77,9 +77,11 @@ def test_initConfig_1(function):
 
 def test_storeConfig_1(function):
     function.ui.targetRMS.setValue(33)
-    function.storeConfig()
-    conf = function.app.config['mainW']
-    assert 33 == conf['targetRMS']
+    with mock.patch.object(function,
+                           'showModelPosition'):
+        function.storeConfig()
+        conf = function.app.config['mainW']
+        assert 33 == conf['targetRMS']
 
 
 def test_colorChangeManageModel(function):

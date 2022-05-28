@@ -159,7 +159,7 @@ def version_doc(c):
 @task
 def update_builtins(c):
     printMW('updating builtins')
-    runMW(c, 'cp ./data/de421_23.bsp ./mw4/resource/data/de421_23.bsp')
+    runMW(c, 'cp ./data/de440_mw4.bsp ./mw4/resource/data/de440_mw4.bsp')
     runMW(c, 'cp ./data/visual.txt ./mw4/resource/data/visual.txt')
     runMW(c, 'cp ./data/finals2000A.all ./mw4/resource/data/finals2000A.all')
     runMW(c, 'cp ./data/finals.data ./mw4/resource/data/finals.data')

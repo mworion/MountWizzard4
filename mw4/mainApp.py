@@ -150,7 +150,7 @@ class MountWizzard4(QObject):
         topo = self.initConfig()
         self.mount.obsSite.location = topo
         self.mount.signals.mountUp.connect(self.loadMountData)
-        self.ephemeris = self.mount.obsSite.loader('de421_23.bsp')
+        self.ephemeris = self.mount.obsSite.loader('de440_mw4.bsp')
         self.relay = KMRelay()
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)

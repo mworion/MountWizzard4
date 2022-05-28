@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: all charts zoomable
+- add: all charts could be zoomed and panned
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: almanac now supports UTC / local time
@@ -41,6 +41,7 @@ releaseNotes = """
 - improve: cleanup of gui
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
+- improve: moved to actual jpl kernel de440.bsp for ephemeris calcs
 - remove: matplotlib usage and replace with pyqtgraph
 - remove: stacking in imageW as it was never used
 - fix: device selection tab was not properly positioned in device popup

@@ -350,7 +350,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         return False
 
     files = {
-        'de421_23.bsp': 0,
+        'de440_mw4.bsp': 0,
         'visual.txt': 0,
         'CDFLeapSeconds.txt': 0,
         'tai-utc.dat': 0,

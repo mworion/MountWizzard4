@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'message.ui'
+# Form implementation generated from reading ui file './mw4/gui/widgets/message.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #

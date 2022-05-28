@@ -35,9 +35,9 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def app(qapp):
-    if not os.path.isfile('tests/workDir/data/de421_23.bsp'):
-        shutil.copy(r'tests/testData/de421_23.bsp',
-                    r'tests/workDir/data/de421_23.bsp')
+    if not os.path.isfile('tests/workDir/data/de440_mw4.bsp'):
+        shutil.copy(r'tests/testData/de440_mw4.bsp',
+                    r'tests/workDir/data/de440_mw4.bsp')
 
 
 def test_start_parameters_1(qapp):

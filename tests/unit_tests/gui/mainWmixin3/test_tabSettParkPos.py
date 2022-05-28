@@ -169,13 +169,21 @@ def test_slewParkPos_5(function):
 
 
 def test_saveActualPosition_1(function):
+    temp = function.app.mount.obsSite.Alt
+    function.app.mount.obsSite.Alt = None
+
     suc = function.saveActualPosition()
     assert not suc
+    function.app.mount.obsSite.Alt = temp
 
 
 def test_saveActualPosition_2(function):
+    temp = function.app.mount.obsSite.Az
+    function.app.mount.obsSite.Az = None
+
     suc = function.saveActualPosition()
     assert not suc
+    function.app.mount.obsSite.Az = temp
 
 
 def test_saveActualPosition_3(function):

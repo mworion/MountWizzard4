@@ -9573,10 +9573,10 @@ class Ui_MainWindow(object):
         self.mountOff.raise_()
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(9)
+        self.mainTabWidget.setCurrentIndex(10)
         self.tabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
-        self.toolsTabWidget.setCurrentIndex(3)
+        self.toolsTabWidget.setCurrentIndex(0)
         self.settingsTabWidget.setCurrentIndex(0)
         self.tabDomeExplain.setCurrentIndex(9)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

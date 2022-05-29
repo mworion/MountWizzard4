@@ -129,6 +129,110 @@ def test_workerGameController_1(function):
     assert not suc
 
 
+def test_convertData_1(function):
+    val = function.convertData('test', [])
+    assert val[0] == 0
+    assert val[1] == 0
+    assert val[2] == 0
+    assert val[3] == 0
+    assert val[4] == 0
+    assert val[5] == 0
+    assert val[6] == 0
+
+
+def test_convertData_2(function):
+    iR = [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
+    name = 'Pro Controller'
+    val = function.convertData(name, iR)
+    assert val[0] == 1
+    assert val[1] == 2
+    assert val[2] == 3
+    assert val[3] == 5
+    assert val[4] == 7
+    assert val[5] == 9
+    assert val[6] == 11
+
+
+def test_convertData_3(function):
+    iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0]
+    name = 'Controller (XBOX 360 For Windows)'
+    val = function.convertData(name, iR)
+    assert val[0] == 10
+    assert val[1] == 0
+    assert val[2] == 0b1111
+    assert val[3] == 1
+    assert val[4] == 3
+    assert val[5] == 5
+    assert val[6] == 7
+
+
+def test_convertData_4(function):
+    iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b11100]
+    name = 'Controller (XBOX 360 For Windows)'
+    val = function.convertData(name, iR)
+    assert val[0] == 10
+    assert val[1] == 0
+    assert val[2] == 0b110
+    assert val[3] == 1
+    assert val[4] == 3
+    assert val[5] == 5
+    assert val[6] == 7
+
+
+def test_convertData_5(function):
+    iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b10100]
+    name = 'Controller (XBOX 360 For Windows)'
+    val = function.convertData(name, iR)
+    assert val[0] == 10
+    assert val[1] == 0
+    assert val[2] == 0b100
+    assert val[3] == 1
+    assert val[4] == 3
+    assert val[5] == 5
+    assert val[6] == 7
+
+
+def test_convertData_6(function):
+    iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b1100]
+    name = 'Controller (XBOX 360 For Windows)'
+    val = function.convertData(name, iR)
+    assert val[0] == 10
+    assert val[1] == 0
+    assert val[2] == 0b10
+    assert val[3] == 1
+    assert val[4] == 3
+    assert val[5] == 5
+    assert val[6] == 7
+
+
+def test_convertData_7(function):
+    iR = [0, 1, 0, 3, 0, 5, 0, 7, 0, 0, 10, 0b100]
+    name = 'Controller (XBOX 360 For Windows)'
+    val = function.convertData(name, iR)
+    assert val[0] == 10
+    assert val[1] == 0
+    assert val[2] == 0b0
+    assert val[3] == 1
+    assert val[4] == 3
+    assert val[5] == 5
+    assert val[6] == 7
+
+
+def test_isNewerData_1(function):
+    suc = function.isNewerData([], [])
+    assert not suc
+
+
+def test_isNewerData_2(function):
+    suc = function.isNewerData([2], [2])
+    assert not suc
+
+
+def test_isNewerData_3(function):
+    suc = function.isNewerData([2], [0])
+    assert suc
+
+
 def test_workerGameController_2(function):
     class Gamepad:
         @staticmethod

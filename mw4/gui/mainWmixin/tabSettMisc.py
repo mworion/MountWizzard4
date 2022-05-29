@@ -213,6 +213,7 @@ class SettMisc(object):
         productId = gameController['productId']
 
         self.log.debug(f'GameController: [{name} {vendorId}:{productId}]')
+        self.app.mes.emit(1, 'System', 'GameController', f'Starting {[name]}')
         gamepad.open(vendorId, productId)
         gamepad.set_nonblocking(True)
 
@@ -254,6 +255,10 @@ class SettMisc(object):
         """
         :return:
         """
+        status = self.gameControllerRunning
+        self.changeStyleDynamic(self.ui.statusText, 'running', status)
+        self.changeStyleDynamic(self.ui.domeText, 'running', status)
+
         if not self.ui.gameControllerGroup.isChecked():
             self.gameControllerRunning = False
             return False
@@ -269,6 +274,7 @@ class SettMisc(object):
             self.gameControllerList[name] = {'vendorId': device['vendor_id'],
                                              'productId': device['product_id']}
             self.ui.gameControllerList.addItem(name)
+            self.app.mes.emit(0, 'System', 'GameController', f'Found {[name]}')
 
         if len(self.gameControllerList) == 0:
             return False

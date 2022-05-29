@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -26887,7 +26887,7 @@ Slew</string>
         </rect>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If a compatible game controller is selected, you could use it for several function. Please take care !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
         <string>Game controller support</string>
@@ -26901,14 +26901,14 @@ Slew</string>
        <widget class="QComboBox" name="gameControllerList">
         <property name="geometry">
          <rect>
-          <x>180</x>
+          <x>175</x>
           <y>35</y>
           <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the prediction time of the twilight almanac. Shorter time improves redering speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the game controller to be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">
@@ -27646,6 +27646,9 @@ p, li { white-space: pre-wrap; }
     <property name="readOnly">
      <bool>true</bool>
     </property>
+    <property name="running" stdset="0">
+     <bool>false</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="environConnected">
     <property name="enabled">
@@ -28209,6 +28212,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="readOnly">
      <bool>true</bool>
+    </property>
+    <property name="running" stdset="0">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="openKeypadW">

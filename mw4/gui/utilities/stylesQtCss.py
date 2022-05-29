@@ -238,25 +238,15 @@ class Styles:
         QLineEdit[char='red'] {
             color: $M_RED$;
         }
-        QLineEdit[color='red'] {
-            border-width: 2px;
-            border-style: outset;
-            border-color: $M_RED$;
-        }
-        QLineEdit[color='yellow'] {
-            border-width: 2px;
-            border-style: outset;
-            border-color: $M_YELLOW$;
-        }
-        QLineEdit[color='green'] {
-            border-width: 2px;
-            border-style: outset;
-            border-color: $M_GREEN$;
-        }
         QLineEdit[status='on'] {
             color: $M_BLACK$;
             border-width: 2px;
             background-color: $M_BLUE$;
+        }
+        QLineEdit[running=true] {
+            border-width: 1px;
+            border-style: outset;
+            border-color: $M_BLUE1$;
         }
         QLabel[color='green'] {
             color: $M_GREEN$;

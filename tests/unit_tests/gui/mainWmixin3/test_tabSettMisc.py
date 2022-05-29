@@ -26,6 +26,7 @@ import os
 from PyQt5.QtMultimedia import QSound
 import requests
 import importlib_metadata
+import hid
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -79,6 +80,7 @@ def test_readGameController_1(function):
         def read(a):
             return [0] * 12
 
+    function.gameControllerRunning = True
     with mock.patch.object(Gamepad,
                            'read',
                            side_effect=Exception):
@@ -92,6 +94,7 @@ def test_readGameController_2(function):
         def read(a):
             return []
 
+    function.gameControllerRunning = False
     val = function.readGameController(Gamepad())
     assert len(val) == 0
 
@@ -107,6 +110,186 @@ def test_readGameController_3(function):
     val = function.readGameController(Gamepad())
     assert len(val) == 12
 
+
+def test_readGameController_4(function):
+    class Gamepad:
+        @staticmethod
+        def read(a):
+            function.gameControllerRunning = False
+            return []
+
+    function.gameControllerRunning = True
+    val = function.readGameController(Gamepad())
+    assert len(val) == 0
+
+
+def test_workerGameController_1(function):
+    function.gameControllerRunning = False
+    suc = function.workerGameController()
+    assert not suc
+
+
+def test_workerGameController_2(function):
+    class Gamepad:
+        @staticmethod
+        def read(a):
+            return [0] * 12
+
+        @staticmethod
+        def open(a, b):
+            return
+
+        @staticmethod
+        def set_nonblocking(a):
+            return
+
+    function.gameControllerRunning = False
+    function.ui.gameControllerList.clear()
+    function.ui.gameControllerList.addItem('test')
+    function.ui.gameControllerList.setCurrentIndex(0)
+    function.gameControllerList['test'] = {'vendorId': 1, 'productId': 1}
+    with mock.patch.object(hid,
+                           'device',
+                           return_value=Gamepad()):
+        suc = function.workerGameController()
+        assert suc
+
+
+def test_workerGameController_3(function):
+    class Gamepad:
+        @staticmethod
+        def read(a):
+            return [0] * 12
+
+        @staticmethod
+        def open(a, b):
+            return
+
+        @staticmethod
+        def set_nonblocking(a):
+            return
+
+    def gc(a):
+        function.gameControllerRunning = False
+        return []
+
+    function.gameControllerRunning = True
+    temp = function.readGameController
+    function.readGameController = gc
+    function.ui.gameControllerList.clear()
+    function.ui.gameControllerList.addItem('test')
+    function.ui.gameControllerList.setCurrentIndex(0)
+    function.gameControllerList['test'] = {'vendorId': 1, 'productId': 1}
+    with mock.patch.object(hid,
+                           'device',
+                           return_value=Gamepad()):
+        with mock.patch.object(gui.mainWmixin.tabSettMisc,
+                               'sleepAndEvents'):
+            suc = function.workerGameController()
+            assert suc
+    function.readGameController = temp
+
+
+def test_workerGameController_4(function):
+    class Gamepad:
+        @staticmethod
+        def read(a):
+            return [0] * 12
+
+        @staticmethod
+        def open(a, b):
+            return
+
+        @staticmethod
+        def set_nonblocking(a):
+            return
+
+    def gc(a):
+        function.gameControllerRunning = False
+        return [1] * 12
+
+    function.gameControllerRunning = True
+    temp = function.readGameController
+    function.readGameController = gc
+    function.ui.gameControllerList.clear()
+    function.ui.gameControllerList.addItem('test')
+    function.ui.gameControllerList.setCurrentIndex(0)
+    function.gameControllerList['test'] = {'vendorId': 1, 'productId': 1}
+    with mock.patch.object(hid,
+                           'device',
+                           return_value=Gamepad()):
+        with mock.patch.object(gui.mainWmixin.tabSettMisc,
+                               'sleepAndEvents'):
+            with mock.patch.object(function,
+                                   'sendGameControllerSignals'):
+                suc = function.workerGameController()
+                assert suc
+    function.readGameController = temp
+
+
+def test_startGameController(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.startGameController()
+        assert suc
+
+
+def test_isValidGameControllers_1(function):
+    suc = function.isValidGameControllers('test')
+    assert not suc
+
+
+def test_isValidGameControllers_2(function):
+    suc = function.isValidGameControllers('Game')
+    assert suc
+
+
+def test_populateGameControllerList_1(function):
+    function.ui.gameControllerGroup.setChecked(False)
+    suc = function.populateGameControllerList()
+    assert not suc
+
+
+def test_populateGameControllerList_2(function):
+    function.ui.gameControllerGroup.setChecked(True)
+    function.gameControllerRunning = True
+    suc = function.populateGameControllerList()
+    assert not suc
+
+
+def test_populateGameControllerList_3(function):
+    function.ui.gameControllerGroup.setChecked(True)
+    function.gameControllerRunning = False
+    device = [{'product_string': 'test',
+               'vendor_id': 1,
+               'product_id': 1}]
+    with mock.patch.object(hid,
+                           'enumerate',
+                           return_value=device):
+        with mock.patch.object(function,
+                               'isValidGameControllers',
+                               return_value=False):
+            suc = function.populateGameControllerList()
+            assert not suc
+
+
+def test_populateGameControllerList_4(function):
+    function.ui.gameControllerGroup.setChecked(True)
+    function.gameControllerRunning = False
+    device = [{'product_string': 'test',
+               'vendor_id': 1,
+               'product_id': 1}]
+    with mock.patch.object(hid,
+                           'enumerate',
+                           return_value=device):
+        with mock.patch.object(function,
+                               'isValidGameControllers',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'startGameController'):
+                suc = function.populateGameControllerList()
+                assert suc
+                assert function.gameControllerRunning
 
 
 def test_setWeatherOnline_1(function):

@@ -194,7 +194,7 @@ class SettMisc(object):
                 self.log.debug(f'GameController error {e}')
                 return []
 
-            if not len(data):
+            if len(data) == 0:
                 break
             result = data
         return result
@@ -205,11 +205,17 @@ class SettMisc(object):
         """
         gamepad = hid.device()
         name = self.ui.gameControllerList.currentText()
-        vendorId = self.gameControllerList[name]['vendorId']
-        productId = self.gameControllerList[name]['productId']
+        gameController = self.gameControllerList.get(name)
+        if gameController is None:
+            return False
+
+        vendorId = gameController['vendorId']
+        productId = gameController['productId']
+
         self.log.debug(f'GameController: [{name} {vendorId}:{productId}]')
         gamepad.open(vendorId, productId)
         gamepad.set_nonblocking(True)
+
         reportOld = np.zeros(7, dtype=np.int8)
         while self.gameControllerRunning:
             sleepAndEvents(100)
@@ -220,6 +226,7 @@ class SettMisc(object):
             if any(report - reportOld != 0):
                 self.sendGameControllerSignals(report, reportOld)
                 reportOld = report
+        return True
 
     def startGameController(self):
         """

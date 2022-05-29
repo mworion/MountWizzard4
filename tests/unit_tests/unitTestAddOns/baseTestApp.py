@@ -953,7 +953,15 @@ class Mount(QObject):
             return True
 
         @staticmethod
+        def stopMoveNorth():
+            return True
+
+        @staticmethod
         def moveEast():
+            return True
+
+        @staticmethod
+        def stopMoveEast():
             return True
 
         @staticmethod
@@ -961,7 +969,15 @@ class Mount(QObject):
             return True
 
         @staticmethod
+        def stopMoveWest():
+            return True
+
+        @staticmethod
         def moveSouth():
+            return True
+
+        @staticmethod
+        def stopMoveSouth():
             return True
 
         @staticmethod

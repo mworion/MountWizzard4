@@ -356,36 +356,65 @@ def test_moveDuration_5(function):
         assert not suc
 
 
-def test_moveClassic_1(function):
-    def Sender():
-        return 0
-
-    function.sender = Sender
+def test_moveClassicGameController_1(function):
     with mock.patch.object(function,
-                           'moveDuration'):
-        suc = function.moveClassic()
-        assert not suc
+                           'stopMoveAll'):
+        suc = function.moveClassicGameController(128, 128)
+        assert suc
 
 
-def test_moveClassic_2(function):
+def test_moveClassicGameController_2(function):
+    with mock.patch.object(function,
+                           'moveClassic'):
+        suc = function.moveClassicGameController(0, 0)
+        assert suc
+
+
+def test_moveClassicGameController_3(function):
+    with mock.patch.object(function,
+                           'moveClassic'):
+        suc = function.moveClassicGameController(255, 255)
+        assert suc
+
+
+def test_moveClassicUI_1(function):
     def Sender():
         return function.ui.moveNorthEast
 
+    function.deviceStat['mount'] = False
     function.sender = Sender
+    suc = function.moveClassicUI()
+    assert not suc
+
+
+def test_moveClassicUI_2(function):
+    def Sender():
+        return function.ui.moveNorthEast
+
+    function.deviceStat['mount'] = True
+    function.sender = Sender
+    suc = function.moveClassicUI()
+    assert suc
+
+
+def test_moveClassic_1(function):
     with mock.patch.object(function,
                            'moveDuration'):
-        suc = function.moveClassic()
+        suc = function.moveClassic([1, 1])
+        assert suc
+
+
+def test_moveClassic_2(function):
+    with mock.patch.object(function,
+                           'moveDuration'):
+        suc = function.moveClassic([-1, -1])
         assert suc
 
 
 def test_moveClassic_3(function):
-    def Sender():
-        return function.ui.moveSouthWest
-
-    function.sender = Sender
     with mock.patch.object(function,
                            'moveDuration'):
-        suc = function.moveClassic()
+        suc = function.moveClassic([0, 0])
         assert suc
 
 
@@ -502,32 +531,79 @@ def test_moveAltAzDefault(function):
     assert suc
 
 
-def test_moveAltAz_1(function):
-    def Sender():
-        return 0
-
-    function.sender = Sender
-    suc = function.moveAltAz()
-    assert not suc
-
-
-def test_moveAltAz_2(function):
+def test_moveAltAzUI_1(function):
     def Sender():
         return function.ui.moveNorthEastAltAz
 
     function.sender = Sender
+    function.deviceStat['mount'] = False
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzUI()
+        assert not suc
+
+
+def test_moveAltAzUI_2(function):
+    def Sender():
+        return function.ui.moveNorthEastAltAz
+
+    function.sender = Sender
+    function.deviceStat['mount'] = True
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzUI()
+        assert not suc
+
+
+def test_moveAltAzGameController_1(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(0)
+        assert suc
+
+
+def test_moveAltAzGameController_2(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(2)
+        assert suc
+
+
+def test_moveAltAzGameController_3(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(4)
+        assert suc
+
+
+def test_moveAltAzGameController_4(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(6)
+        assert suc
+
+
+def test_moveAltAzGameController_5(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(99)
+        assert not suc
+
+
+def test_moveAltAz_1(function):
+    function.targetAlt = None
+    function.targetAz = None
     function.app.mount.obsSite.Alt = None
     function.app.mount.obsSite.Az = Angle(degrees=10)
 
-    suc = function.moveAltAz()
-    assert not suc
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAz([1, 1])
+        assert not suc
 
 
-def test_moveAltAz_3(function):
-    def Sender():
-        return function.ui.moveNorthEastAltAz
-
-    function.sender = Sender
+def test_moveAltAz_2(function):
     function.targetAlt = None
     function.targetAz = None
     function.app.mount.obsSite.Alt = Angle(degrees=10)
@@ -536,15 +612,11 @@ def test_moveAltAz_3(function):
     with mock.patch.object(function,
                            'slewTargetAltAz',
                            return_value=False):
-        suc = function.moveAltAz()
+        suc = function.moveAltAz([1, 1])
         assert not suc
 
 
-def test_moveAltAz_4(function):
-    def Sender():
-        return function.ui.moveNorthEastAltAz
-
-    function.sender = Sender
+def test_moveAltAz_3(function):
     function.targetAlt = 10
     function.targetAz = 10
     function.app.mount.obsSite.Alt = Angle(degrees=10)
@@ -553,7 +625,7 @@ def test_moveAltAz_4(function):
     with mock.patch.object(function,
                            'slewTargetAltAz',
                            return_value=True):
-        suc = function.moveAltAz()
+        suc = function.moveAltAz([1, 1])
         assert suc
 
 

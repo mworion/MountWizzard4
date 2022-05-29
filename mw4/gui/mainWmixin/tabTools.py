@@ -76,6 +76,7 @@ class Tools(object):
                                  self.ui.moveSouthWest: [-1, -1],
                                  self.ui.moveWest: [0, -1],
                                  self.ui.moveNorthWest: [1, -1],
+                                 self.ui.stopMoveAll: [0, 0],
                                  }
         self.setupMoveAltAz = {self.ui.moveNorthAltAz: [1, 0],
                                self.ui.moveNorthEastAltAz: [1, 1],
@@ -404,6 +405,9 @@ class Tools(object):
         """
         :return:
         """
+        if not self.deviceStat.get('mount'):
+            return False
+
         ui = self.sender()
         direction = self.setupMoveClassic[ui]
         self.moveClassic(direction)
@@ -513,6 +517,7 @@ class Tools(object):
         """
         if not self.deviceStat.get('mount'):
             return False
+
         ui = self.sender()
         directions = self.setupMoveAltAz[ui]
         self.moveAltAz(directions)

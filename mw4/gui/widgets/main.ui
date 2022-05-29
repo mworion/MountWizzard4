@@ -17464,7 +17464,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -21289,7 +21289,7 @@ Slew</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>171</height>
+         <height>191</height>
         </rect>
        </property>
        <property name="title">
@@ -21675,6 +21675,35 @@ Slew</string>
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
+       <widget class="QCheckBox" name="automaticWOL">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>165</y>
+          <width>211</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will use the driver settings for the actual telescope.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Send WOL upon MW4 start </string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupRigComputer">
        <property name="geometry">
@@ -21757,7 +21786,7 @@ Slew</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>215</y>
+         <y>220</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -27393,7 +27422,7 @@ Updater</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>

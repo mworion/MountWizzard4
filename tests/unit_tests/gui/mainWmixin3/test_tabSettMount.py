@@ -44,9 +44,11 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
+    function.app.config['mainW'] = {'automaticWOL': True}
+    with mock.patch.object(function,
+                           'mountBoot'):
+        suc = function.initConfig()
+        assert suc
 
 
 def test_mountBoot_1(function):

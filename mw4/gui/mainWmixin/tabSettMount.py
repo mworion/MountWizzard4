@@ -55,6 +55,10 @@ class SettMount(object):
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
         self.ui.automaticTelescope.setChecked(config.get('automaticTelescope', False))
+        self.ui.automaticWOL.setChecked(config.get('automaticWOL', False))
+
+        if self.ui.automaticWOL.isChecked():
+            self.mountBoot()
         return True
 
     def storeConfig(self):
@@ -70,6 +74,7 @@ class SettMount(object):
         config['settleTimeMount'] = self.ui.settleTimeMount.value()
         config['port3492'] = self.ui.port3492.isChecked()
         config['automaticTelescope'] = self.ui.automaticTelescope.isChecked()
+        config['automaticWOL'] = self.ui.automaticWOL.isChecked()
         return True
 
     def mountBoot(self):
@@ -82,7 +87,7 @@ class SettMount(object):
         suc = self.app.mount.bootMount(bAddress=bAddress, bPort=bPort)
         if suc:
             self.app.mes.emit(0, 'Mount', 'Command',
-                                  'Sent boot command to mount')
+                              'Sent boot command to mount')
         else:
             self.app.mes.emit(2, 'Mount', 'Command', 'Mount cannot be booted')
         return suc
@@ -140,11 +145,11 @@ class SettMount(object):
         if MAC is not None:
             wakeonlan.send_magic_packet(MAC)
             self.app.mes.emit(0, 'Rack', 'Command',
-                                   'Sent boot command to rack computer')
+                              'Sent boot command to rack computer')
             return True
         else:
             self.app.mes.emit(2, 'Rack', 'Command',
-                                   'Rack computer cannot be booted')
+                              'Rack computer cannot be booted')
             return False
 
     def mountHost(self):

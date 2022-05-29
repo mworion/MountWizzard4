@@ -278,8 +278,7 @@ class SettMisc(object):
         self.threadPool.start(worker)
         return True
 
-    @staticmethod
-    def isValidGameControllers(name):
+    def isValidGameControllers(self, name):
         """
         :param name:
         :return:
@@ -289,6 +288,7 @@ class SettMisc(object):
             if check in name:
                 break
         else:
+            self.log.debug(f'Removed Game Controller: {[name]}')
             return False
         return True
 

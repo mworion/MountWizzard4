@@ -407,7 +407,7 @@ def test_comp(c):
     user = client['ubuntuRig']['user']
     work = client['ubuntuRig']['work']
     scp = client['ubuntuRig']['scp']
-    test_ubuntu_20(c, user, work, scp)
+    test_ubuntu_main(c, user, work, scp)
     printMW('test ubuntu rig install finished\n')
 
 

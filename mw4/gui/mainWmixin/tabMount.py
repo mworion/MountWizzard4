@@ -67,7 +67,7 @@ class Mount(object):
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
         self.ui.virtualStop.raise_()
         self.ui.virtualStop.clicked.connect(self.virtualStop)
-        self.app.gamePMH.connect(self.changeParkGameController)
+        self.app.gameABXY.connect(self.changeParkGameController)
         self.app.gameABXY.connect(self.stopGameController)
         self.app.gameABXY.connect(self.changeTrackingGameController)
         self.app.gameABXY.connect(self.flipMountGameController)
@@ -280,7 +280,7 @@ class Mount(object):
         """
         :return:
         """
-        if value == 0b00010000:
+        if value == 0b00000001:
             self.changePark()
         return True
 

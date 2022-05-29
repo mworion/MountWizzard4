@@ -213,6 +213,7 @@ class SettMisc(object):
             oR = [iR[1], iR[2], iR[3], iR[5], iR[7], iR[9], iR[11]]
         elif name == 'Controller (XBOX 360 For Windows)':
             oR = [iR[10], 0, 0, iR[1], iR[3], iR[5], iR[7]]
+        print(iR, oR)
         return oR
 
     @staticmethod

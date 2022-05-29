@@ -246,6 +246,7 @@ def test_isValidGameControllers_2(function):
 
 def test_populateGameControllerList_1(function):
     function.ui.gameControllerGroup.setChecked(False)
+    function.gameControllerRunning = True
     suc = function.populateGameControllerList()
     assert not suc
 

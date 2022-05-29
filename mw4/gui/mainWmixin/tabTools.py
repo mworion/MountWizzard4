@@ -240,7 +240,7 @@ class Tools(object):
         it automatically selects only the first on for conversion.
 
         :param fitsHeader:
-        :param selection: str entry from the drop down selector
+        :param selection: str entry from the drop-down selector
         :return: nameChunk: part of the entry
         """
         if fitsHeader is None:
@@ -260,8 +260,8 @@ class Tools(object):
 
     def renameFile(self, fileName=''):
         """
-        renameFile opens the given FITS file and retrieves it's header. if valid it
-        runs through selectors of the drop down lists and checks all header keys to
+        renameFile opens the given FITS file and retrieves its header. if valid it
+        runs through selectors of the drop-down lists and checks all header keys to
         get the new filename build. afterwards it renames the given file.
 
         :param fileName: fits file to be renamed

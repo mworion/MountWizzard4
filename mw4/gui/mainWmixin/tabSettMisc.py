@@ -212,7 +212,17 @@ class SettMisc(object):
         if name == 'Pro Controller':
             oR = [iR[1], iR[2], iR[3], iR[5], iR[7], iR[9], iR[11]]
         elif name == 'Controller (XBOX 360 For Windows)':
-            oR = [iR[10], 0, 0, iR[1], iR[3], iR[5], iR[7]]
+            if iR[11] == 0b00011100:
+                val = 0b00000110
+            elif iR[11] == 0b00010100:
+                val = 0b00000100
+            elif iR[11] == 0b00001100:
+                val = 0b00000010
+            elif iR[11] == 0b00000100:
+                val = 0b00000000
+            else:
+                val = 0b00001111
+            oR = [iR[10], 0, val, iR[1], iR[3], iR[5], iR[7]]
         return oR
 
     @staticmethod

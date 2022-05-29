@@ -41,6 +41,9 @@ class SettImaging:
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.domeSlewCW.clicked.connect(self.domeSlewCW)
         self.ui.domeSlewCCW.clicked.connect(self.domeSlewCCW)
+        self.ui.domeAbortSlew.clicked.connect(self.domeAbortSlew)
+        self.ui.domeOpenShutter.clicked.connect(self.domeOpenShutter)
+        self.ui.domeCloseShutter.clicked.connect(self.domeCloseShutter)
         self.ui.coverHalt.clicked.connect(self.setCoverHalt)
         self.ui.coverLightOn.clicked.connect(self.switchLightOn)
         self.ui.coverLightOff.clicked.connect(self.switchLightOff)
@@ -56,9 +59,11 @@ class SettImaging:
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
+        self.app.game_sL.connect(self.domeMoveGameController)
         self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateCoverLightGui)
         self.app.update1s.connect(self.updateDomeGui)
+        self.app.update1s.connect(self.updateShutterStatGui)
         self.app.update1s.connect(self.updateParameters)
 
     def initConfig(self):
@@ -539,7 +544,7 @@ class SettImaging:
         suc = self.app.cover.closeCover()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Cover close could not be executed')
+                              'Cover close could not be executed')
         return suc
 
     def setCoverUnpark(self):
@@ -549,7 +554,7 @@ class SettImaging:
         suc = self.app.cover.openCover()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Cover open could not be executed')
+                              'Cover open could not be executed')
         return suc
 
     def setCoverHalt(self):
@@ -559,7 +564,7 @@ class SettImaging:
         suc = self.app.cover.haltCover()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Cover stop could not be executed')
+                              'Cover stop could not be executed')
         return suc
 
     def moveFocuserIn(self):
@@ -572,7 +577,7 @@ class SettImaging:
         suc = self.app.focuser.move(position=newPos)
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Focuser move in could not be executed')
+                              'Focuser move in could not be executed')
         return suc
 
     def moveFocuserOut(self):
@@ -585,7 +590,7 @@ class SettImaging:
         suc = self.app.focuser.move(position=newPos)
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Focuser move out could not be executed')
+                              'Focuser move out could not be executed')
         return suc
 
     def haltFocuser(self):
@@ -595,7 +600,7 @@ class SettImaging:
         suc = self.app.focuser.halt()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Focuser halt could not be executed')
+                              'Focuser halt could not be executed')
         return suc
 
     def switchLightOn(self):
@@ -605,7 +610,7 @@ class SettImaging:
         suc = self.app.cover.lightOn()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Light could not be switched on')
+                              'Light could not be switched on')
         return suc
 
     def switchLightOff(self):
@@ -661,6 +666,26 @@ class SettImaging:
         self.guiSetText(self.ui.domeAzimuth, '3.0f', value)
         return True
 
+    def updateShutterStatGui(self):
+        """
+        :return: True for test purpose
+        """
+        value = self.app.dome.data.get('DOME_SHUTTER.SHUTTER_OPEN', None)
+        if value is True:
+            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', True)
+            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', False)
+        elif value is False:
+            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', False)
+            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', False)
+            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', False)
+
+        value = self.app.dome.data.get('Status.Shutter', None)
+        if value:
+            self.ui.domeShutterStatusText.setText(value)
+        return True
+
     def domeSlewCW(self):
         """
         :return:
@@ -668,7 +693,7 @@ class SettImaging:
         suc = self.app.dome.slewCW()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Dome could not be slewed CW')
+                              'Dome could not be slewed CW')
         return suc
 
     def domeSlewCCW(self):
@@ -678,5 +703,54 @@ class SettImaging:
         suc = self.app.dome.slewCCW()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
-                                   'Dome could not be slewed CCW')
+                              'Dome could not be slewed CCW')
         return suc
+
+    def domeAbortSlew(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.abortSlew()
+        if not suc:
+            self.app.mes.emit(2, 'Dome', 'Command',
+                              'Dome slew abort could not be executed')
+        return suc
+
+    def domeOpenShutter(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.openShutter()
+        if not suc:
+            self.app.mes.emit(2, 'Dome', 'Command',
+                              'Dome open shutter could not be executed')
+        return suc
+
+    def domeCloseShutter(self):
+        """
+        :return:
+        """
+        suc = self.app.dome.closeShutter()
+        if not suc:
+            self.app.mes.emit(2, 'Dome', 'Command',
+                              'Dome close shutter could not be executed')
+        return suc
+
+    def domeMoveGameController(self, turnVal, openVal):
+        """
+        :param turnVal:
+        :param openVal:
+        :return:
+        """
+        if turnVal < 64:
+            self.domeSlewCCW()
+        elif turnVal > 192:
+            self.domeSlewCW()
+        else:
+            self.domeAbortSlew()
+
+        if openVal < 64:
+            self.domeOpenShutter()
+        elif openVal > 192:
+            self.domeCloseShutter()
+        return True

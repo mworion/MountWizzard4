@@ -49,6 +49,7 @@ class SettMisc(object):
         self.guiAudioList = dict()
         self.gameControllerList = dict()
         self.process = None
+        self.gameControllerRunning = False
 
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -65,6 +66,7 @@ class SettMisc(object):
         self.ui.installVersion.clicked.connect(self.installVersion)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update30s.connect(self.syncClock)
+        self.app.update3s.connect(self.populateGameControllerList)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
 
@@ -175,17 +177,23 @@ class SettMisc(object):
             self.app.game_sL.emit(act[3], act[4])
         if act[5] != old[5] or act[6] != old[6]:
             self.app.game_sR.emit(act[5], act[6])
+        self.log.trace(f'GameController: {[act]}, {[old]}')
         return True
 
-    @staticmethod
-    def readGameControllerLast(gamepad):
+    def readGameControllerLast(self, gamepad):
         """
         :param gamepad:
         :return:
         """
         result = []
         while True:
-            data = gamepad.read(64)
+            try:
+                data = gamepad.read(64)
+            except Exception as e:
+                self.gameControllerRunning = False
+                self.log.debug(f'GameController error {e}')
+                return []
+
             if not len(data):
                 break
             result = data
@@ -199,10 +207,11 @@ class SettMisc(object):
         name = self.ui.gameControllerList.currentText()
         vendorId = self.gameControllerList[name]['vendorId']
         productId = self.gameControllerList[name]['productId']
+        self.log.debug(f'GameController: [{name} {vendorId}:{productId}]')
         gamepad.open(vendorId, productId)
         gamepad.set_nonblocking(True)
         reportOld = np.zeros(7, dtype=np.int8)
-        while self.gamePadRunning:
+        while self.gameControllerRunning:
             sleepAndEvents(100)
             r = self.readGameControllerLast(gamepad)
             if not len(r):
@@ -220,18 +229,35 @@ class SettMisc(object):
         self.threadPool.start(worker)
         return True
 
+    @staticmethod
+    def isValidGameControllers(name):
+        """
+        :param name:
+        :return:
+        """
+        validStrings = ['Controller', 'Game']
+        for check in validStrings:
+            if check in name:
+                break
+        else:
+            return False
+        return True
+
     def populateGameControllerList(self):
         """
         :return:
         """
         if not self.ui.gameControllerGroup.isChecked():
-            self.gamePadRunning = False
+            self.gameControllerRunning = False
             return False
+        if self.gameControllerRunning:
+            return False
+
         self.ui.gameControllerList.clear()
         self.gameControllerList.clear()
         for device in hid.enumerate():
             name = device['product_string']
-            if 'Controller' not in name:
+            if not self.isValidGameControllers(name):
                 continue
             self.gameControllerList[name] = {'vendorId': device['vendor_id'],
                                              'productId': device['product_id']}
@@ -240,7 +266,7 @@ class SettMisc(object):
         if len(self.gameControllerList) == 0:
             return False
 
-        self.gamePadRunning = True
+        self.gameControllerRunning = True
         self.startGameController()
         return True
 

@@ -105,7 +105,6 @@ class MainWindow(
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.satStatus = False
-        self.gamePadRunning = False
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
         self.uiWindows['showMessageW'] = {

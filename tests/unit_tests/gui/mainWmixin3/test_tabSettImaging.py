@@ -651,3 +651,100 @@ def test_domeSlewCCW_2(function):
                            return_value=True):
         suc = function.domeSlewCCW()
         assert suc
+
+
+def test_updateShutterStatGui_1(function):
+    function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = True
+    function.app.dome.data['Status.Shutter'] = 'test'
+    suc = function.updateShutterStatGui()
+    assert suc
+    assert function.ui.domeShutterStatusText.text() == 'test'
+
+
+def test_updateShutterStatGui_2(function):
+    function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = False
+    function.app.dome.data['Status.Shutter'] = 'test'
+    suc = function.updateShutterStatGui()
+    assert suc
+    assert function.ui.domeShutterStatusText.text() == 'test'
+
+
+def test_updateShutterStatGui_3(function):
+    function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
+    function.app.dome.data['Status.Shutter'] = 'test'
+    suc = function.updateShutterStatGui()
+    assert suc
+    assert function.ui.domeShutterStatusText.text() == 'test'
+
+
+def test_domeAbortSlew_1(function):
+    with mock.patch.object(function.app.dome,
+                           'abortSlew',
+                           return_value=False):
+        suc = function.domeAbortSlew()
+        assert not suc
+
+
+def test_domeAbortSlew_2(function):
+    with mock.patch.object(function.app.dome,
+                           'abortSlew',
+                           return_value=True):
+        suc = function.domeAbortSlew()
+        assert suc
+
+
+def test_domeOpenShutter_1(function):
+    with mock.patch.object(function.app.dome,
+                           'openShutter',
+                           return_value=False):
+        suc = function.domeOpenShutter()
+        assert not suc
+
+
+def test_domeOpenShutter_2(function):
+    with mock.patch.object(function.app.dome,
+                           'openShutter',
+                           return_value=True):
+        suc = function.domeOpenShutter()
+        assert suc
+
+
+def test_domeCloseShutter_1(function):
+    with mock.patch.object(function.app.dome,
+                           'closeShutter',
+                           return_value=False):
+        suc = function.domeCloseShutter()
+        assert not suc
+
+
+def test_domeCloseShutter_2(function):
+    with mock.patch.object(function.app.dome,
+                           'closeShutter',
+                           return_value=True):
+        suc = function.domeCloseShutter()
+        assert suc
+
+
+def test_domeMoveGameController_1(function):
+    with mock.patch.object(function,
+                           'domeAbortSlew'):
+        suc = function.domeMoveGameController(128, 128)
+        assert suc
+
+
+def test_domeMoveGameController_2(function):
+    with mock.patch.object(function,
+                           'domeSlewCCW'):
+        with mock.patch.object(function,
+                               'domeOpenShutter'):
+            suc = function.domeMoveGameController(0, 0)
+            assert suc
+
+
+def test_domeMoveGameController_3(function):
+    with mock.patch.object(function,
+                           'domeSlewCW'):
+        with mock.patch.object(function,
+                               'domeCloseShutter'):
+            suc = function.domeMoveGameController(255, 255)
+            assert suc

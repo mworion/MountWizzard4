@@ -54,10 +54,6 @@ class SettDome(object):
         self.ui.domeClearOpening.valueChanged.connect(self.tab8)
         self.ui.domeOpeningHysteresis.valueChanged.connect(self.tab9)
         self.ui.domeClearanceZenith.valueChanged.connect(self.tab10)
-        self.app.update1s.connect(self.updateShutterStatGui)
-        self.ui.domeAbortSlew.clicked.connect(self.domeAbortSlew)
-        self.ui.domeOpenShutter.clicked.connect(self.domeOpenShutter)
-        self.ui.domeCloseShutter.clicked.connect(self.domeCloseShutter)
 
     def tab1(self):
         self.ui.tabDomeExplain.setCurrentIndex(0)
@@ -217,53 +213,3 @@ class SettDome(object):
         """
         self.app.dome.settlingTime = self.ui.settleTimeDome.value()
         return True
-
-    def updateShutterStatGui(self):
-        """
-        :return: True for test purpose
-        """
-        value = self.app.dome.data.get('DOME_SHUTTER.SHUTTER_OPEN', None)
-        if value is True:
-            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', True)
-            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', False)
-        elif value is False:
-            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', False)
-            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.domeOpenShutter, 'running', False)
-            self.changeStyleDynamic(self.ui.domeCloseShutter, 'running', False)
-
-        value = self.app.dome.data.get('Status.Shutter', None)
-        if value:
-            self.ui.domeShutterStatusText.setText(value)
-        return True
-
-    def domeAbortSlew(self):
-        """
-        :return:
-        """
-        suc = self.app.dome.abortSlew()
-        if not suc:
-            self.app.mes.emit(2, 'Dome', 'Command',
-                              'Dome slew abort could not be executed')
-        return suc
-
-    def domeOpenShutter(self):
-        """
-        :return:
-        """
-        suc = self.app.dome.openShutter()
-        if not suc:
-            self.app.mes.emit(2, 'Dome', 'Command',
-                              'Dome open shutter could not be executed')
-        return suc
-
-    def domeCloseShutter(self):
-        """
-        :return:
-        """
-        suc = self.app.dome.closeShutter()
-        if not suc:
-            self.app.mes.emit(2, 'Dome', 'Command',
-                              'Dome close shutter could not be executed')
-        return suc

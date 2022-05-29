@@ -508,6 +508,13 @@ def test_checkMount_2(function):
         assert suc
 
 
+def test_changeTrackingGameController_1(function):
+    with mock.patch.object(function,
+                           'changeTracking'):
+        suc = function.changeTrackingGameController(4)
+        assert suc
+
+
 def test_changeTracking_ok1(function, qtbot):
     with mock.patch.object(function,
                            'checkMount',
@@ -562,6 +569,13 @@ def test_changeTracking_ok5(function):
                                return_value=False):
             suc = function.changeTracking()
             assert suc
+
+
+def test_changeParkGameController_1(function):
+    with mock.patch.object(function,
+                           'changePark'):
+        suc = function.changeParkGameController(16)
+        assert suc
 
 
 def test_changePark_ok1(function):
@@ -716,6 +730,13 @@ def test_setSolarTracking_3(function):
             assert suc
 
 
+def test_flipMountGameController_1(function):
+    with mock.patch.object(function,
+                           'flipMount'):
+        suc = function.flipMountGameController(2)
+        assert suc
+
+
 def test_flipMount_1(function):
     with mock.patch.object(function,
                            'checkMount',
@@ -747,6 +768,13 @@ def test_flipMount_3(function, qtbot):
                                return_value=True):
             suc = function.flipMount()
             assert not suc
+
+
+def test_stopGameController_1(function):
+    with mock.patch.object(function,
+                           'flipMount'):
+        suc = function.stopGameController(8)
+        assert suc
 
 
 def test_stop_1(function):

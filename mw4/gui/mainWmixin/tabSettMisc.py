@@ -78,7 +78,6 @@ class SettMisc(object):
             self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
             self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
-        self.populateGameControllerList()
 
     def initConfig(self):
         """
@@ -122,6 +121,7 @@ class SettMisc(object):
 
         isWindows = platform.system() == 'Windows'
         self.ui.automateGroup.setVisible(isWindows)
+        self.populateGameControllerList()
         self.setAutomationSpeed()
         self.toggleClockSync()
         self.setWeatherOnline()
@@ -180,13 +180,13 @@ class SettMisc(object):
         self.log.trace(f'GameController: {[act]}, {[old]}')
         return True
 
-    def readGameControllerLast(self, gamepad):
+    def readGameController(self, gamepad):
         """
         :param gamepad:
         :return:
         """
         result = []
-        while True:
+        while self.gameControllerRunning:
             try:
                 data = gamepad.read(64)
             except Exception as e:
@@ -213,7 +213,7 @@ class SettMisc(object):
         reportOld = np.zeros(7, dtype=np.int8)
         while self.gameControllerRunning:
             sleepAndEvents(100)
-            r = self.readGameControllerLast(gamepad)
+            r = self.readGameController(gamepad)
             if not len(r):
                 continue
             report = np.array([r[1], r[2], r[3], r[5], r[7], r[9], r[11]])
@@ -356,7 +356,7 @@ class SettMisc(object):
 
         if availPackage is None:
             self.app.mes.emit(2, 'System', 'Update',
-                                   'Failed get actual package from server')
+                              'Failed get actual package from server')
             return False
 
         self.ui.versionAvailable.setText(availPackage)
@@ -374,7 +374,7 @@ class SettMisc(object):
             return True
 
         self.app.mes.emit(1, 'System', 'Update',
-                               f'Release notes for {availPackage}:')
+                          f'Release notes for {availPackage}:')
         for line in comment.split('\n'):
             self.app.mes.emit(2, '', '', line)
         return True

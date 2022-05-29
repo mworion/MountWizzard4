@@ -55,13 +55,58 @@ def function(qapp):
 
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(function,
+                           'populateGameControllerList'):
+        suc = function.initConfig()
+        assert suc
 
 
 def test_storeConfig_1(function):
     suc = function.storeConfig()
     assert suc
+
+
+def test_sendGameControllerSignals_1(function):
+    act = [0, 0, 0, 0, 0, 0, 0]
+    old = [1, 1, 1, 1, 1, 1, 1]
+    suc = function.sendGameControllerSignals(act, old)
+    assert suc
+
+
+def test_readGameController_1(function):
+    class Gamepad:
+        @staticmethod
+        def read(a):
+            return [0] * 12
+
+    with mock.patch.object(Gamepad,
+                           'read',
+                           side_effect=Exception):
+        val = function.readGameController(Gamepad())
+        assert len(val) == 0
+
+
+def test_readGameController_2(function):
+    class Gamepad:
+        @staticmethod
+        def read(a):
+            return []
+
+    val = function.readGameController(Gamepad())
+    assert len(val) == 0
+
+
+def test_readGameController_3(function):
+    class Gamepad:
+        @staticmethod
+        def read(a):
+            function.gameControllerRunning = False
+            return [0] * 12
+
+    function.gameControllerRunning = True
+    val = function.readGameController(Gamepad())
+    assert len(val) == 12
+
 
 
 def test_setWeatherOnline_1(function):

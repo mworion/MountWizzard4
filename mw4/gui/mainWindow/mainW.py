@@ -105,6 +105,7 @@ class MainWindow(
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.satStatus = False
+        self.gameControllerRunning = False
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
         self.uiWindows['showMessageW'] = {
@@ -267,7 +268,7 @@ class MainWindow(
         """
         :return:    nothing
         """
-        self.gamePadRunning = False
+        self.gameControllerRunning = False
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()

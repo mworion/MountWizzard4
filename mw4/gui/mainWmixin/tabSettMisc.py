@@ -40,6 +40,7 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 
 
+# noinspection PyAttributeOutsideInit
 class SettMisc(object):
     """
     """
@@ -49,7 +50,6 @@ class SettMisc(object):
         self.guiAudioList = dict()
         self.gameControllerList = dict()
         self.process = None
-        self.gameControllerRunning = False
 
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -199,11 +199,43 @@ class SettMisc(object):
             result = data
         return result
 
+    @staticmethod
+    def convertData(name, iR):
+        """
+        :param name: 
+        :param iR:
+        :return: 
+        """
+        oR = [0, 0, 0, 0, 0, 0, 0]
+        if len(iR) == 0:
+            return oR
+        if name == 'Pro Controller':
+            oR = [iR[1], iR[2], iR[3], iR[5], iR[7], iR[9], iR[11]]
+        elif name == 'Controller (XBOX 360 For Windows)':
+            oR = [iR[10], 0, 0, iR[1], iR[3], iR[5], iR[7]]
+        return oR
+
+    @staticmethod
+    def isNewerData(act, old):
+        """
+        :param act:
+        :param old:
+        :return:
+        """
+        if len(act) == 0:
+            return False
+        for i, data in enumerate(act):
+            if data != old[i]:
+                break
+        else:
+            return False
+        return True
+
     def workerGameController(self):
         """
         :return:
         """
-        gamepad = hid.device()
+        gameControllerDevice = hid.device()
         name = self.ui.gameControllerList.currentText()
         gameController = self.gameControllerList.get(name)
         if gameController is None:
@@ -214,19 +246,18 @@ class SettMisc(object):
 
         self.log.debug(f'GameController: [{name} {vendorId}:{productId}]')
         self.app.mes.emit(1, 'System', 'GameController', f'Starting {[name]}')
-        gamepad.open(vendorId, productId)
-        gamepad.set_nonblocking(True)
+        gameControllerDevice.open(vendorId, productId)
+        gameControllerDevice.set_nonblocking(True)
 
-        reportOld = np.zeros(7, dtype=np.int8)
+        reportOld = [0] * 16
         while self.gameControllerRunning:
             sleepAndEvents(100)
-            r = self.readGameController(gamepad)
-            if not len(r):
+            report = self.readGameController(gameControllerDevice)
+            if not self.isNewerData(report, reportOld):
                 continue
-            report = np.array([r[1], r[2], r[3], r[5], r[7], r[9], r[11]])
-            if any(report - reportOld != 0):
-                self.sendGameControllerSignals(report, reportOld)
-                reportOld = report
+            report = self.convertData(name, report)
+            self.sendGameControllerSignals(report, reportOld)
+            reportOld = report
         return True
 
     def startGameController(self):

@@ -400,12 +400,12 @@ class SettImaging:
             gainMin = int(gainMin)
             gainMax = int(gainMax)
             value, ok = dlg.getInt(self,
-                                   'Set offset',
+                                   'Set gain',
                                    f'Values ({gainMin:4}..{gainMax:4}):',
                                    actValue, gainMin, gainMax,
                                    int((gainMax - gainMin) / 20))
         else:
-            value, ok = dlg.getInt(self, 'Set offset', 'Values:', actValue)
+            value, ok = dlg.getInt(self, 'Set gain', 'Values:', actValue)
 
         if not ok:
             return False

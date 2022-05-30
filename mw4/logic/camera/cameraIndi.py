@@ -91,7 +91,7 @@ class CameraIndi(IndiClass, CameraSupport):
         """
         setExposureState rebuilds the state information integrated and download
         as it is not explicit defined in the INDI spec. So downloaded is reached
-        when that INDI state for CCD_EXPOSURE goes to IDLE or OK -> Jasem  Mutlaq.
+        when that INDI state for CCD_EXPOSURE goes to IDLE or OK -> Jasem Mutlaq.
         Another definition is done by myself, when INDI state for CCD_EXPOSURE is
         BUSY and the CCD_EXPOSURE_VALUE is not 0, then we should be on integration
         side, else the download should be started. The whole stuff is made,
@@ -131,13 +131,15 @@ class CameraIndi(IndiClass, CameraSupport):
         """
         if propertyName == 'CCD_GAIN':
             elements = self.device.CCD_GAIN['elementList']['GAIN']
-            self.data['CCD_GAIN.GAIN_MIN'] = elements.get('min', 0)
-            self.data['CCD_GAIN.GAIN_MAX'] = elements.get('max', 0)
+            if 'min' in elements and 'max' in elements:
+                self.data['CCD_GAIN.GAIN_MIN'] = elements.get('min', 0)
+                self.data['CCD_GAIN.GAIN_MAX'] = elements.get('max', 0)
 
         if propertyName == 'CCD_OFFSET':
             elements = self.device.CCD_OFFSET['elementList']['OFFSET']
-            self.data['CCD_OFFSET.OFFSET_MIN'] = elements.get('min', 0)
-            self.data['CCD_OFFSET.OFFSET_MAX'] = elements.get('max', 0)
+            if 'min' in elements and 'max' in elements:
+                self.data['CCD_OFFSET.OFFSET_MIN'] = elements.get('min', 0)
+                self.data['CCD_OFFSET.OFFSET_MAX'] = elements.get('max', 0)
 
         if not super().updateNumber(deviceName, propertyName):
             return False

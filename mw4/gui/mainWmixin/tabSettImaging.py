@@ -399,13 +399,13 @@ class SettImaging(object):
             gainMin = int(gainMin)
             gainMax = int(gainMax)
             value, ok = dlg.getInt(self,
-                                   'Set offset',
+                                   'Set Gain',
                                    f'Values ({gainMin:4}..{gainMax:4}):',
                                    actValue, gainMin, gainMax,
                                    int((gainMax - gainMin) / 20))
         else:
             value, ok = dlg.getInt(self,
-                                   'Set offset',
+                                   'Set Gain',
                                    'Values:',
                                    actValue)
 

@@ -40,7 +40,7 @@ client = {
     'ubuntuRig': {
         'user': 'mw@astro-comp.fritz.box',
         'work': '/home/mw/test',
-        'scp': 'mw@astro-ubuntu.fritz.box:/home/mw/test',
+        'scp': 'mw@astro-comp.fritz.box:/home/mw/test',
     },
     'win10-32-old': {
         'user': 'mw@astro-win10-32-old.fritz.box',

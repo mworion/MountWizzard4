@@ -370,7 +370,6 @@ class SettImaging:
                                    'Set offset',
                                    'Values:',
                                    actValue)
-
         if not ok:
             return False
 

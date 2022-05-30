@@ -20,8 +20,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: reduce load in debug trace mode
-- fix: model process stalls in some cases in normal mode
+- fix: text labels
+- fix: getting min / max values from indi devices
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.5',
+    version='2.2.6',
     packages=[
         'mw4',
         'mw4.base',

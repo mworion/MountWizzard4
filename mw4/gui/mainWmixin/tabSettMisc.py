@@ -296,10 +296,6 @@ class SettMisc(object):
         """
         :return:
         """
-        status = self.gameControllerRunning
-        self.changeStyleDynamic(self.ui.statusText, 'running', status)
-        self.changeStyleDynamic(self.ui.domeText, 'running', status)
-
         if not self.ui.gameControllerGroup.isChecked():
             self.gameControllerRunning = False
             return False

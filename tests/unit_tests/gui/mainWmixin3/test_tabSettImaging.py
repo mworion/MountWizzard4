@@ -621,38 +621,6 @@ def test_updateDomeGui_2(function):
     assert suc
 
 
-def test_domeSlewCW_1(function):
-    with mock.patch.object(function.app.dome,
-                           'slewCW',
-                           return_value=False):
-        suc = function.domeSlewCW()
-        assert not suc
-
-
-def test_domeSlewCW_2(function):
-    with mock.patch.object(function.app.dome,
-                           'slewCW',
-                           return_value=True):
-        suc = function.domeSlewCW()
-        assert suc
-
-
-def test_domeSlewCCW_1(function):
-    with mock.patch.object(function.app.dome,
-                           'slewCCW',
-                           return_value=False):
-        suc = function.domeSlewCCW()
-        assert not suc
-
-
-def test_domeSlewCCW_2(function):
-    with mock.patch.object(function.app.dome,
-                           'slewCCW',
-                           return_value=True):
-        suc = function.domeSlewCCW()
-        assert suc
-
-
 def test_updateShutterStatGui_1(function):
     function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = True
     function.app.dome.data['Status.Shutter'] = 'test'
@@ -677,7 +645,62 @@ def test_updateShutterStatGui_3(function):
     assert function.ui.domeShutterStatusText.text() == 'test'
 
 
+def test_domeSlewCW_0(function):
+    function.deviceStat['dome'] = False
+    suc = function.domeSlewCW()
+    assert not suc
+
+
+def test_domeSlewCW_1(function):
+    function.deviceStat['dome'] = True
+    with mock.patch.object(function.app.dome,
+                           'slewCW',
+                           return_value=False):
+        suc = function.domeSlewCW()
+        assert not suc
+
+
+def test_domeSlewCW_2(function):
+    function.deviceStat['dome'] = True
+    with mock.patch.object(function.app.dome,
+                           'slewCW',
+                           return_value=True):
+        suc = function.domeSlewCW()
+        assert suc
+
+
+def test_domeSlewCCW_0(function):
+    function.deviceStat['dome'] = False
+    suc = function.domeSlewCCW()
+    assert not suc
+
+
+def test_domeSlewCCW_1(function):
+    function.deviceStat['dome'] = True
+    with mock.patch.object(function.app.dome,
+                           'slewCCW',
+                           return_value=False):
+        suc = function.domeSlewCCW()
+        assert not suc
+
+
+def test_domeSlewCCW_2(function):
+    function.deviceStat['dome'] = True
+    with mock.patch.object(function.app.dome,
+                           'slewCCW',
+                           return_value=True):
+        suc = function.domeSlewCCW()
+        assert suc
+
+
+def test_domeAbortSlew_0(function):
+    function.deviceStat['dome'] = False
+    suc = function.domeAbortSlew()
+    assert not suc
+
+
 def test_domeAbortSlew_1(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'abortSlew',
                            return_value=False):
@@ -686,6 +709,7 @@ def test_domeAbortSlew_1(function):
 
 
 def test_domeAbortSlew_2(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'abortSlew',
                            return_value=True):
@@ -693,7 +717,14 @@ def test_domeAbortSlew_2(function):
         assert suc
 
 
+def test_domeOpenShutter_0(function):
+    function.deviceStat['dome'] = False
+    suc = function.domeOpenShutter()
+    assert not suc
+
+
 def test_domeOpenShutter_1(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'openShutter',
                            return_value=False):
@@ -702,6 +733,7 @@ def test_domeOpenShutter_1(function):
 
 
 def test_domeOpenShutter_2(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'openShutter',
                            return_value=True):
@@ -709,7 +741,14 @@ def test_domeOpenShutter_2(function):
         assert suc
 
 
+def test_domeCloseShutter_0(function):
+    function.deviceStat['dome'] = False
+    suc = function.domeCloseShutter()
+    assert not suc
+
+
 def test_domeCloseShutter_1(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'closeShutter',
                            return_value=False):
@@ -718,6 +757,7 @@ def test_domeCloseShutter_1(function):
 
 
 def test_domeCloseShutter_2(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'closeShutter',
                            return_value=True):
@@ -725,7 +765,14 @@ def test_domeCloseShutter_2(function):
         assert suc
 
 
+def test_domeMoveGameController_0(function):
+    function.deviceStat['dome'] = False
+    suc = function.domeMoveGameController(128, 128)
+    assert not suc
+
+
 def test_domeMoveGameController_1(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function,
                            'domeAbortSlew'):
         suc = function.domeMoveGameController(128, 128)
@@ -733,6 +780,7 @@ def test_domeMoveGameController_1(function):
 
 
 def test_domeMoveGameController_2(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function,
                            'domeSlewCCW'):
         with mock.patch.object(function,
@@ -742,6 +790,7 @@ def test_domeMoveGameController_2(function):
 
 
 def test_domeMoveGameController_3(function):
+    function.deviceStat['dome'] = True
     with mock.patch.object(function,
                            'domeSlewCW'):
         with mock.patch.object(function,

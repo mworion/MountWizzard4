@@ -466,7 +466,6 @@ class MainWindow(
 
         # misc setting
         self.wIcon(self.ui.installVersion, 'world')
-
         return True
 
     def updateMountConnStat(self, status):
@@ -484,15 +483,12 @@ class MainWindow(
         if status and hasSim:
             self.ui.mountConnected.setEnabled(status)
             self.ui.mountConnected.setText('Mount 3D')
-
         elif status:
             self.ui.mountConnected.setText('Mount')
-
         elif not status and hasSim:
             self.ui.mountConnected.setText('Mount')
             if self.uiWindows['showSimulatorW']['classObj']:
                 self.uiWindows['showSimulatorW']['classObj'].close()
-
         return True
 
     def updateMountWeatherStat(self, setting):
@@ -505,11 +501,9 @@ class MainWindow(
         """
         if setting.weatherTemperature is None and setting.weatherPressure is None:
             self.deviceStat['directWeather'] = None
-
         else:
             if setting.weatherStatus is None:
                 self.deviceStat['directWeather'] = False
-
             else:
                 self.deviceStat['directWeather'] = True
         return True
@@ -537,7 +531,6 @@ class MainWindow(
 
         elif isModelingReady and not isPause:
             self.ui.plateSolveSync.setEnabled(True)
-
         else:
             self.ui.runModel.setEnabled(False)
             self.ui.plateSolveSync.setEnabled(False)
@@ -546,7 +539,6 @@ class MainWindow(
 
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
-
         else:
             self.ui.batchModel.setEnabled(False)
 
@@ -555,11 +547,9 @@ class MainWindow(
         if stat is None:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
-
         elif stat and self.deviceStat.get('mount', None):
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)
-
         else:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
@@ -725,6 +715,10 @@ class MainWindow(
 
         activeCount = self.threadPool.activeThreadCount()
         t = f'{mode}  -  Active Threads: {activeCount:2d} / 30'
+
+        gcStatus = self.gameControllerRunning
+        gcText = '  -  Game Controller active' if gcStatus else ''
+        t += f'{gcText}'
         self.ui.statusOnline.setTitle(t)
 
         tzT = time.tzname[1] if time.daylight else time.tzname[0]

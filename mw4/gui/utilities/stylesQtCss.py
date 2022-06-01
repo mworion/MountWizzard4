@@ -243,11 +243,6 @@ class Styles:
             border-width: 2px;
             background-color: $M_BLUE$;
         }
-        QLineEdit[running=true] {
-            border-width: 1px;
-            border-style: outset;
-            border-color: $M_BLUE1$;
-        }
         QLabel[color='green'] {
             color: $M_GREEN$;
         }

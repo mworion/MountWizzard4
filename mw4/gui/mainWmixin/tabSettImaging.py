@@ -689,6 +689,9 @@ class SettImaging:
         """
         :return:
         """
+        if not self.deviceStat['dome']:
+            return False
+
         suc = self.app.dome.slewCW()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
@@ -699,6 +702,9 @@ class SettImaging:
         """
         :return:
         """
+        if not self.deviceStat['dome']:
+            return False
+
         suc = self.app.dome.slewCCW()
         if not suc:
             self.app.mes.emit(2, 'Setting', 'Imaging',
@@ -709,6 +715,9 @@ class SettImaging:
         """
         :return:
         """
+        if not self.deviceStat['dome']:
+            return False
+
         suc = self.app.dome.abortSlew()
         if not suc:
             self.app.mes.emit(2, 'Dome', 'Command',
@@ -719,6 +728,9 @@ class SettImaging:
         """
         :return:
         """
+        if not self.deviceStat['dome']:
+            return False
+
         suc = self.app.dome.openShutter()
         if not suc:
             self.app.mes.emit(2, 'Dome', 'Command',
@@ -729,6 +741,9 @@ class SettImaging:
         """
         :return:
         """
+        if not self.deviceStat['dome']:
+            return False
+
         suc = self.app.dome.closeShutter()
         if not suc:
             self.app.mes.emit(2, 'Dome', 'Command',
@@ -741,6 +756,9 @@ class SettImaging:
         :param openVal:
         :return:
         """
+        if not self.deviceStat['dome']:
+            return False
+
         if turnVal < 64:
             self.domeSlewCCW()
         elif turnVal > 192:

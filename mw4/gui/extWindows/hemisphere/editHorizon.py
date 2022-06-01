@@ -44,6 +44,7 @@ class EditHorizon:
         self.ui.addPositionToHorizon.clicked.connect(self.addActualPosition)
         self.app.mount.signals.pointDone.connect(self.drawPointerHor)
         self.ui.showTerrain.clicked.connect(self.drawHorizonTab)
+        self.ui.showTerrain.clicked.connect(self.drawHemisphereTab)
 
         self.setIcons()
 
@@ -135,10 +136,8 @@ class EditHorizon:
         """
         folder = self.app.mwGlob['configDir']
         fileTypes = 'Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)'
-        loadFilePath, fileName, ext = self.openFile(self,
-                                                    'Open horizon mask file',
-                                                    folder,
-                                                    fileTypes)
+        loadFilePath, fileName, ext = self.openFile(self, 'Open horizon mask file',
+                                                    folder, fileTypes)
         if not loadFilePath:
             return False
 
@@ -146,10 +145,10 @@ class EditHorizon:
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
             self.app.mes.emit(0, 'Hemisphere', 'Horizon',
-                                   f'Mask [{fileName}] loaded')
+                              f'Mask [{fileName}] loaded')
         else:
             self.app.mes.emit(2, 'Hemisphere', 'Horizon',
-                                   f'Mask [{fileName}] cannot no be loaded')
+                              f'Mask [{fileName}] cannot no be loaded')
 
         self.app.redrawHemisphere.emit()
         self.drawHorizonTab()
@@ -162,16 +161,16 @@ class EditHorizon:
         fileName = self.ui.horizonMaskFileName.text()
         if not fileName:
             self.app.mes.emit(2, 'Hemisphere', 'Horizon',
-                                   'Mask file name not given')
+                              'Mask file name not given')
             return False
 
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
             self.app.mes.emit(0, 'Hemisphere', 'Horizon',
-                                   f'Mask [{fileName}] saved')
+                              f'Mask [{fileName}] saved')
         else:
             self.app.mes.emit(2, 'Hemisphere', 'Horizon',
-                                   f'Mask [{fileName}] cannot no be saved')
+                              f'Mask [{fileName}] cannot no be saved')
         return True
 
     def saveHorizonMaskAs(self):
@@ -191,10 +190,10 @@ class EditHorizon:
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
             self.app.mes.emit(0, 'Hemisphere', 'Horizon',
-                                   f'Mask [{fileName}] saved')
+                              f'Mask [{fileName}] saved')
         else:
             self.app.mes.emit(2, 'Hemisphere', 'Horizon',
-                                   f'Mask [{fileName}] cannot no be saved')
+                              f'Mask [{fileName}] cannot no be saved')
         return True
 
     def setOperationModeHor(self):

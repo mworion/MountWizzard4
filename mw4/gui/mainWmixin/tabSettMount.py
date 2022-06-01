@@ -38,6 +38,8 @@ class SettMount(object):
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.ui.settleTimeMount.valueChanged.connect(self.setMountSettlingTime)
+        self.app.update30s.connect(self.syncClock)
+        self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
 
     def initConfig(self):
         """
@@ -56,6 +58,9 @@ class SettMount(object):
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
         self.ui.automaticTelescope.setChecked(config.get('automaticTelescope', False))
         self.ui.automaticWOL.setChecked(config.get('automaticWOL', False))
+        self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
+        self.ui.clockSync.setChecked(config.get('clockSync', False))
+        self.toggleClockSync()
 
         if self.ui.automaticWOL.isChecked():
             self.mountBoot()
@@ -75,6 +80,9 @@ class SettMount(object):
         config['port3492'] = self.ui.port3492.isChecked()
         config['automaticTelescope'] = self.ui.automaticTelescope.isChecked()
         config['automaticWOL'] = self.ui.automaticWOL.isChecked()
+        config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
+        config['clockSync'] = self.ui.clockSync.isChecked()
+
         return True
 
     def mountBoot(self):
@@ -204,4 +212,55 @@ class SettMount(object):
         self.guiSetText(self.ui.fwdate, 's', fw.date)
         self.guiSetText(self.ui.fwtime, 's', fw.time)
         self.guiSetText(self.ui.hardware, 's', fw.hardware)
+        return True
+
+    def toggleClockSync(self):
+        """
+        :return:
+        """
+        enableSync = self.ui.clockSync.isChecked()
+        self.ui.syncTimePC2Mount.setEnabled(enableSync)
+        self.ui.syncNotTracking.setEnabled(enableSync)
+        self.ui.clockOffset.setEnabled(enableSync)
+        self.ui.clockOffsetMS.setEnabled(enableSync)
+        self.ui.timeDeltaPC2Mount.setEnabled(enableSync)
+        if enableSync:
+            self.app.mount.startClockTimer()
+        else:
+            self.app.mount.stopClockTimer()
+        return True
+
+    def syncClock(self):
+        """
+        :return:
+        """
+        doSync = self.ui.syncTimePC2Mount.isChecked()
+        if not doSync:
+            return False
+        if not self.deviceStat['mount']:
+            return False
+
+        doSyncNotTrack = self.ui.syncNotTracking.isChecked()
+        mountTracks = self.app.mount.obsSite.status in [0, 10]
+        if doSyncNotTrack and mountTracks:
+            return False
+
+        delta = self.app.mount.obsSite.timeDiff * 1000
+        if abs(delta) < 10:
+            return False
+
+        if delta > 999:
+            delta = 999
+        if delta < -999:
+            delta = -999
+
+        delta = int(delta)
+        suc = self.app.mount.obsSite.adjustClock(delta)
+        if not suc:
+            self.app.mes.emit(2, 'System', 'Clock',
+                              'Cannot adjust mount clock')
+            return False
+
+        self.app.mes.emit(0, 'System', 'Clock',
+                          f'Correction: [{-delta} ms]')
         return True

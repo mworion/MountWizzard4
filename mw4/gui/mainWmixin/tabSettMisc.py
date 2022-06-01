@@ -65,9 +65,7 @@ class SettMisc(object):
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
-        self.app.update30s.connect(self.syncClock)
         self.app.update3s.connect(self.populateGameControllerList)
-        self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
 
         if pConf.isAvailable:
@@ -93,8 +91,6 @@ class SettMisc(object):
         self.ui.automateNormal.setChecked(config.get('automateSlow', True))
         self.ui.automateSlow.setChecked(config.get('automateSlow', True))
         self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
-        self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
-        self.ui.clockSync.setChecked(config.get('clockSync', False))
         self.ui.unitTimeUTC.setChecked(config.get('unitTimeUTC', True))
         self.ui.unitTimeLocal.setChecked(config.get('unitTimeLocal', False))
         self.ui.activateVirtualStop.setChecked(
@@ -123,7 +119,6 @@ class SettMisc(object):
         self.ui.automateGroup.setVisible(isWindows)
         self.populateGameControllerList()
         self.setAutomationSpeed()
-        self.toggleClockSync()
         self.setWeatherOnline()
         self.setupIERS()
         self.showUpdates()
@@ -143,8 +138,6 @@ class SettMisc(object):
         config['automateSlow'] = self.ui.automateSlow.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
-        config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
-        config['clockSync'] = self.ui.clockSync.isChecked()
         config['unitTimeUTC'] = self.ui.unitTimeUTC.isChecked()
         config['unitTimeLocal'] = self.ui.unitTimeLocal.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
@@ -595,57 +588,6 @@ class SettMisc(object):
 
         else:
             return False
-
-    def toggleClockSync(self):
-        """
-        :return:
-        """
-        enableSync = self.ui.clockSync.isChecked()
-        self.ui.syncTimePC2Mount.setEnabled(enableSync)
-        self.ui.syncNotTracking.setEnabled(enableSync)
-        self.ui.clockOffset.setEnabled(enableSync)
-        self.ui.clockOffsetMS.setEnabled(enableSync)
-        self.ui.timeDeltaPC2Mount.setEnabled(enableSync)
-        if enableSync:
-            self.app.mount.startClockTimer()
-        else:
-            self.app.mount.stopClockTimer()
-        return True
-
-    def syncClock(self):
-        """
-        :return:
-        """
-        doSync = self.ui.syncTimePC2Mount.isChecked()
-        if not doSync:
-            return False
-        if not self.deviceStat['mount']:
-            return False
-
-        doSyncNotTrack = self.ui.syncNotTracking.isChecked()
-        mountTracks = self.app.mount.obsSite.status in [0, 10]
-        if doSyncNotTrack and mountTracks:
-            return False
-
-        delta = self.app.mount.obsSite.timeDiff * 1000
-        if abs(delta) < 10:
-            return False
-
-        if delta > 999:
-            delta = 999
-        if delta < -999:
-            delta = -999
-
-        delta = int(delta)
-        suc = self.app.mount.obsSite.adjustClock(delta)
-        if not suc:
-            self.app.mes.emit(2, 'System', 'Clock',
-                              'Cannot adjust mount clock')
-            return False
-
-        self.app.mes.emit(0, 'System', 'Clock',
-                          f'Correction: [{-delta} ms]')
-        return True
 
     def setVirtualStop(self):
         """

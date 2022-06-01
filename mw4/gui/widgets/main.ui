@@ -985,7 +985,7 @@
      <widget class="QLabel" name="label_148">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>150</y>
         <width>116</width>
         <height>21</height>
@@ -1005,7 +1005,7 @@
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>525</x>
         <y>200</y>
         <width>101</width>
         <height>21</height>
@@ -1025,7 +1025,7 @@
      <widget class="QLabel" name="label_34">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>525</x>
         <y>75</y>
         <width>131</width>
         <height>21</height>
@@ -1048,7 +1048,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>155</x>
+        <x>165</x>
         <y>150</y>
         <width>51</width>
         <height>21</height>
@@ -1115,7 +1115,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>155</x>
+        <x>165</x>
         <y>175</y>
         <width>51</width>
         <height>21</height>
@@ -1162,7 +1162,7 @@
      <widget class="QLabel" name="label_74">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>100</y>
         <width>116</width>
         <height>21</height>
@@ -1182,7 +1182,7 @@
      <widget class="QLabel" name="label_65">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>525</x>
         <y>100</y>
         <width>131</width>
         <height>21</height>
@@ -1205,7 +1205,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>155</x>
+        <x>165</x>
         <y>200</y>
         <width>51</width>
         <height>21</height>
@@ -1258,7 +1258,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>155</x>
+        <x>165</x>
         <y>100</y>
         <width>51</width>
         <height>21</height>
@@ -1302,7 +1302,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>155</x>
+        <x>165</x>
         <y>125</y>
         <width>51</width>
         <height>21</height>
@@ -1399,7 +1399,7 @@
      <widget class="QLabel" name="label_55">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>75</y>
         <width>101</width>
         <height>21</height>
@@ -1419,7 +1419,7 @@
      <widget class="QLabel" name="label_61">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>460</x>
         <y>25</y>
         <width>31</width>
         <height>21</height>
@@ -1468,9 +1468,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>125</x>
+        <x>140</x>
         <y>50</y>
-        <width>81</width>
+        <width>76</width>
         <height>21</height>
        </rect>
       </property>
@@ -1562,7 +1562,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>50</y>
         <width>51</width>
         <height>21</height>
@@ -1603,7 +1603,7 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>525</x>
         <y>50</y>
         <width>121</width>
         <height>21</height>
@@ -1626,7 +1626,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>75</y>
         <width>51</width>
         <height>21</height>
@@ -1699,7 +1699,7 @@
      <widget class="QLabel" name="label_64">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>220</x>
         <y>125</y>
         <width>31</width>
         <height>21</height>
@@ -1748,9 +1748,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>135</x>
+        <x>140</x>
         <y>25</y>
-        <width>71</width>
+        <width>76</width>
         <height>21</height>
        </rect>
       </property>
@@ -1789,7 +1789,7 @@
      <widget class="QLabel" name="label_130">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>220</x>
         <y>25</y>
         <width>46</width>
         <height>21</height>
@@ -1929,7 +1929,7 @@
      <widget class="QLabel" name="label_91">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>460</x>
         <y>50</y>
         <width>31</width>
         <height>21</height>
@@ -1955,7 +1955,7 @@
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>525</x>
         <y>150</y>
         <width>101</width>
         <height>21</height>
@@ -2051,7 +2051,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>100</y>
         <width>51</width>
         <height>21</height>
@@ -2099,7 +2099,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_52">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>50</y>
         <width>91</width>
         <height>20</height>
@@ -2125,7 +2125,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>150</y>
         <width>51</width>
         <height>21</height>
@@ -2169,7 +2169,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_151">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>125</y>
         <width>116</width>
         <height>21</height>
@@ -2215,7 +2215,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_133">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>220</x>
         <y>200</y>
         <width>16</width>
         <height>21</height>
@@ -2288,7 +2288,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>525</x>
         <y>25</y>
         <width>121</width>
         <height>21</height>
@@ -2374,7 +2374,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_81">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>220</x>
         <y>150</y>
         <width>31</width>
         <height>21</height>
@@ -2466,7 +2466,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>525</x>
         <y>175</y>
         <width>101</width>
         <height>21</height>
@@ -2486,7 +2486,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_222">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>220</x>
         <y>50</y>
         <width>46</width>
         <height>21</height>
@@ -2506,7 +2506,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_90">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>25</y>
         <width>101</width>
         <height>20</height>
@@ -2558,7 +2558,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>25</y>
         <width>51</width>
         <height>21</height>
@@ -2661,7 +2661,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>125</y>
         <width>51</width>
         <height>21</height>
@@ -2708,7 +2708,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_mountMAC_2">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>175</y>
         <width>106</width>
         <height>21</height>
@@ -2731,7 +2731,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>175</y>
         <width>51</width>
         <height>21</height>
@@ -2781,7 +2781,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="label_mountMAC_4">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>290</x>
         <y>200</y>
         <width>106</width>
         <height>21</height>
@@ -2804,7 +2804,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>410</x>
         <y>200</y>
         <width>51</width>
         <height>21</height>
@@ -2848,7 +2848,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      <widget class="QLabel" name="clockOffsetMS">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>220</x>
         <y>75</y>
         <width>21</width>
         <height>21</height>
@@ -2891,7 +2891,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="geometry">
        <rect>
-        <x>155</x>
+        <x>165</x>
         <y>75</y>
         <width>51</width>
         <height>21</height>
@@ -22441,6 +22441,118 @@ Slew</string>
         </property>
        </widget>
       </widget>
+      <widget class="QGroupBox" name="GroupClockSync">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>220</y>
+         <width>366</width>
+         <height>66</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Clock sync from computer to mount</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QCheckBox" name="syncTimePC2Mount">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>20</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Sync clock continously</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="syncNotTracking">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>40</y>
+          <width>176</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Do not sync while tracking</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="clockSync">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable clock sync</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
      </widget>
      <widget class="QWidget" name="Dome">
       <attribute name="title">
@@ -27281,118 +27393,6 @@ Updater</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="GroupClockSync">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>250</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Clock sync from computer to mount</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QCheckBox" name="syncTimePC2Mount">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>20</y>
-          <width>171</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Sync clock continously</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="syncNotTracking">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>40</y>
-          <width>176</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Do not sync while tracking</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="clockSync">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Enable clock sync</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="CopyrightGroup_2">
        <property name="geometry">
         <rect>
@@ -28909,9 +28909,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>versionRelease</tabstop>
   <tabstop>versionReleaseNotes</tabstop>
   <tabstop>versionBeta</tabstop>
-  <tabstop>clockSync</tabstop>
-  <tabstop>syncTimePC2Mount</tabstop>
-  <tabstop>syncNotTracking</tabstop>
   <tabstop>optimizeSingle</tabstop>
   <tabstop>openAnalyseW</tabstop>
   <tabstop>showOriginalModelAnalyse</tabstop>

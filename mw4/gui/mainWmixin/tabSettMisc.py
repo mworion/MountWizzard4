@@ -21,7 +21,6 @@ import sys
 import platform
 
 # external packages
-import numpy as np
 from pkg_resources import working_set
 from distutils.version import StrictVersion
 import PyQt5

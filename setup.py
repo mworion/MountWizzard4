@@ -43,6 +43,7 @@ releaseNotes = """
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
 - improve: moved to actual jpl kernel de440.bsp for ephemeris calcs
+- imporove: simplify and rearrange GUI
 - remove: matplotlib usage and replace with pyqtgraph
 - remove: stacking in imageW as it was never used
 - fix: device selection tab was not properly positioned in device popup
@@ -85,30 +86,30 @@ setup(
         'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.7.0, <3.10',
+    python_requires='>=3.7.0, <3.11',
     install_requires=[
-        'numpy==1.22.3',
+        'numpy==1.22.4',
         'pillow==9.1.0',
         'pyqtgraph==0.12.4',
         'pyerfa==2.0.0.1',
         'python-dateutil==2.8.2',
-        'astropy==5.0.4',
+        'astropy==5.1',
         'astroquery==0.4.6',
-        'scipy==1.8.0',
-        'sep==1.2.0',
+        'scipy==1.8.1',
+        'sep==1.2.1',
         'requests==2.27.1',
         'requests_toolbelt==0.9.1',
         'skyfield==1.42',
         'sgp4==2.21',
         'qimage2ndarray==1.9.0',
-        'importlib_metadata==4.11.3',
-        'deepdiff==5.8.0',
+        'importlib_metadata==4.11.4',
+        'deepdiff==5.8.1',
         'wakeonlan==2.1.0',
         'pybase64==1.2.1',
         'websocket-client==1.3.2',
         'hidapi==0.11.2',
     ]
-    + (['pywin32==303'] if platform.system() == "Windows" else [])
+    + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',

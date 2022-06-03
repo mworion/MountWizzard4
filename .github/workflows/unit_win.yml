@@ -26,7 +26,7 @@ jobs:
     #
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
           
@@ -39,7 +39,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -54,7 +54,7 @@ jobs:
         run: mv .coverage c1a.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c1a.dat
@@ -65,7 +65,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -80,7 +80,7 @@ jobs:
         run: mv .coverage c1b.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c1b.dat
@@ -91,7 +91,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -106,7 +106,7 @@ jobs:
         run: mv .coverage c1c.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c1c.dat
@@ -117,7 +117,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -133,7 +133,7 @@ jobs:
         run: mv .coverage c2a.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c2a.dat
@@ -144,7 +144,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -160,7 +160,7 @@ jobs:
         run: mv .coverage c2b.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c2b.dat
@@ -171,7 +171,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -186,7 +186,7 @@ jobs:
         run: mv .coverage c3a.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c3a.dat
@@ -197,7 +197,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -212,7 +212,7 @@ jobs:
         run: mv .coverage c3b.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c3b.dat
@@ -223,7 +223,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -238,7 +238,7 @@ jobs:
         run: mv .coverage c3c.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c3c.dat
@@ -249,7 +249,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -264,7 +264,7 @@ jobs:
         run: mv .coverage c4.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c4.dat
@@ -275,7 +275,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -290,7 +290,7 @@ jobs:
         run: mv .coverage c5.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c5.dat
@@ -301,7 +301,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{env.branch}}
   
@@ -316,7 +316,7 @@ jobs:
         run: mv .coverage c6.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: ./c6.dat
@@ -332,12 +332,12 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         ref: ${{env.branch}}
     
     - name: collecting_data
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: coverage
         path: .
@@ -350,7 +350,7 @@ jobs:
         python -m coverage xml
 
     - name: upload
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: coverage.xml

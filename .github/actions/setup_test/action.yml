@@ -27,7 +27,7 @@ runs:
       shell: bash
     
     - name: install #3
-      run: python -m pip install pytest==4.6.11
+      run: python -m pip install pytest
       shell: bash
     
     - name: install #4

@@ -252,7 +252,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         :return: calculated color
         """
         cMap = pg.ColorMap([0, 0.6, 1.0], [self.M_RED, self.M_YELLOW, self.M_GREEN])
-        color = cMap[relevance]
+        color = cMap[float(relevance)]
         size = 8 + int(relevance * 5)
         return color, size
 

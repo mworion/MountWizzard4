@@ -111,10 +111,10 @@ setup(
     ]
     + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt5==5.15.4'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.15.4'] if platform.machine() not in ['armv7l',
+    + (['PyQt5==5.15.6'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==5.15.5'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
-    keywords=['5.15.4'],
+    keywords=['5.15.6'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

@@ -108,6 +108,7 @@ setup(
         'pybase64==1.2.1',
         'websocket-client==1.3.2',
         'hidapi==0.11.2',
+        'range-dict-key',
     ]
     + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])

@@ -25,6 +25,7 @@ import pyqtgraph as pg
 from skyfield import almanac
 from skyfield.trigonometry import position_angle_of
 import numpy as np
+from range_key_dict import RangeKeyDict
 
 # local import
 from base.tpool import Worker
@@ -33,35 +34,17 @@ from base.tpool import Worker
 class Almanac:
     """
     """
-    phasesText = {
-        'New moon': {
-            'range': (0, 1),
-        },
-        'Waxing crescent': {
-            'range': (1, 23),
-        },
-        'First quarter': {
-            'range': (23, 27),
-        },
-        'Waxing gibbous': {
-            'range': (27, 48),
-        },
-        'Full moon': {
-            'range': (48, 52),
-        },
-        'Waning gibbous': {
-            'range': (52, 73),
-        },
-        'Third quarter': {
-            'range': (73, 77),
-        },
-        'Waning crescent': {
-            'range': (77, 99),
-        },
-        'New moon ': {
-            'range': (99, 100),
-        },
-    }
+    phasesText = RangeKeyDict({
+        (0, 1): 'New moon',
+        (1, 23): 'Waxing crescent',
+        (23, 27): 'First quarter',
+        (27, 48): 'Waxing gibbous',
+        (48, 52): 'Full moon',
+        (52, 73): 'Waning gibbous',
+        (73, 77): 'Third quarter',
+        (77, 99): 'Waning crescent',
+        (99, 100): 'New moon '
+    })
 
     def __init__(self):
         self.civil = None
@@ -287,7 +270,7 @@ class Almanac:
 
         mpIllumination = almanac.fraction_illuminated(ephemeris, 'moon', now)
         mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
-        mpPercent = mpDegree / 360
+        mpPercent = mpDegree / 360 * 100
         retVal = [mpIllumination, mpDegree, mpPercent]
 
         locObserver = (loc + earth).at(timeJD)
@@ -398,7 +381,7 @@ class Almanac:
 
         mpIllumination, mpDegree, mpPercent, moonAngle = calcMoon[0:4]
         self.ui.moonPhaseIllumination.setText(f'{mpIllumination * 100:3.1f}')
-        self.ui.moonPhasePercent.setText(f'{100* mpPercent:3.0f}')
+        self.ui.moonPhasePercent.setText(f'{mpPercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{mpDegree:3.0f}')
 
         moonTimes, moonEvents = calcMoon[4:6]
@@ -414,10 +397,7 @@ class Almanac:
         title = 'Moon ' + self.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
 
-        for phase in self.phasesText:
-            if int(mpPercent * 100) not in range(*self.phasesText[phase]['range']):
-                continue
-            self.ui.moonPhaseText.setText(phase)
+        self.ui.moonPhaseText.setText(self.phasesText[mpPercent])
 
         nodeTimes, nodeEvents = calcMoon[6:8]
         text = ''

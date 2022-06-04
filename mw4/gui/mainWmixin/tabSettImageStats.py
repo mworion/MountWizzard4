@@ -15,10 +15,11 @@
 #
 ###########################################################
 # standard libraries
+import webbrowser
 
 # external packages
-from PyQt5.QtWidgets import QInputDialog
 import numpy as np
+from range_key_dict import RangeKeyDict
 
 # local import
 
@@ -26,11 +27,48 @@ import numpy as np
 class SettImageStats:
     """
     """
-    WATNEY = []
+    WATNEY = RangeKeyDict({
+        (0, 0.2): 'Passes 14 (watneyqdb-14-20)',
+        (0.2, 0.3): 'Passes 12-13 (watneyqdb-12-13)',
+        (0.3, 0.5): 'Passes 10-11 (watneyqdb-10-11)',
+        (0.5, 0.8): 'Passes 8-9 (watneyqdb-08-09)',
+        (0.8, 360): 'Passes 0-7 (watneyqdb-00-07)',
+    })
+    ASTAP = RangeKeyDict({
+        (0, 1): 'H18 (exp. 10s - 20s)',
+        (1, 10): 'H18 or H17 (exp. 3s - 10s)',
+        (10, 20): 'V17 (exp. 1s - 3s)',
+        (20, 360): 'W08 (epx. 1s - 3s)',
+    })
+    ASTROMETRY = RangeKeyDict({
+        (0.033, 0.047): 'index-4200-*.fits',
+        (0.047, 0.067): 'index-4201-*.fits',
+        (0.067, 0.093): 'index-4202-*.fits',
+        (0.093, 0.13): 'index-4203-*.fits',
+        (0.13, 0.183): 'index-4204-*.fits',
+        (0.183, 0.27): 'index-4205-*.fits',
+        (0.27, 0.37): 'index-4206-*.fits',
+        (0.37, 0.5): 'index-4207-*.fits',
+        (0.5, 0.7): 'index-4208.fits',
+        (0.7, 1.0): 'index-4209.fits',
+        (1.0, 1.4): 'index-4210.fits',
+        (1.4, 2.0): 'index-4211.fits',
+        (2.0, 2.8): 'index-4212.fits',
+        (2.8, 4): 'index-4213.fits',
+        (4.0, 5.7): 'index-4214.fits',
+        (5.7, 8.0): 'index-4215.fits',
+        (8.0, 11.3): 'index-4216.fits',
+        (11.3, 16.7): 'index-4217.fits',
+        (16.7, 23.3): 'index-4218.fits',
+        (23.3, 360): 'index-4219.fits',
+    })
 
     def __init__(self):
         self.ui.aperture.valueChanged.connect(self.updateImageStats)
         self.ui.focalLength.valueChanged.connect(self.updateImageStats)
+        self.ui.openWatneyCatalog.clicked.connect(self.openWatneyCatalog)
+        self.ui.openASTAPCatalog.clicked.connect(self.openASTAPCatalog)
+        self.ui.openAstrometryCatalog.clicked.connect(self.openAstrometryCatalog)
         self.app.update1s.connect(self.updateImageStats)
 
     def updateImageStats(self):
@@ -73,9 +111,11 @@ class SettImageStats:
         if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
             FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
+            FOV = np.sqrt(FOVX * FOVX + FOVY * FOVY)
         else:
             FOVX = None
             FOVY = None
+            FOV = None
 
         self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
@@ -93,4 +133,45 @@ class SettImageStats:
         self.guiSetText(self.ui.focalLengthStats, '3.0f', focalLength)
         self.guiSetText(self.ui.apertureStats, '3.0f', aperture)
 
+        if FOV is None:
+            return False
+
+        watneyText = self.WATNEY[FOV]
+        self.guiSetText(self.ui.watneyIndex, 's', watneyText)
+
+        astapText = self.ASTAP[FOV]
+        self.guiSetText(self.ui.astapIndex, 's', astapText)
+
+        astrometryText = self.ASTROMETRY[FOV]
+        self.guiSetText(self.ui.astrometryIndex, 's', astrometryText)
+
         return True
+
+    def openWatneyCatalog(self):
+        """
+        :return:
+        """
+        url = 'https://github.com/Jusas/WatneyAstrometry/releases/tag/watneyqdb3'
+        if not webbrowser.open(url, new=0):
+            self.app.mes('System', 'ImageStats', 'Browser failed', 2)
+        return True
+
+    def openASTAPCatalog(self):
+        """
+        :return:
+        """
+        url = 'https://www.hnsky.org/astap.htm'
+        if not webbrowser.open(url, new=0):
+            self.app.mes('System', 'ImageStats', 'Browser failed', 2)
+        return True
+
+    def openAstrometryCatalog(self):
+        """
+        :return:
+        """
+        url = 'http://data.astrometry.net/4200/'
+        if not webbrowser.open(url, new=0):
+            self.app.mes('System', 'ImageStats', 'Browser failed', 2)
+        return True
+
+

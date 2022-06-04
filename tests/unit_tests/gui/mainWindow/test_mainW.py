@@ -443,8 +443,8 @@ def test_updateTime_2(function):
     assert suc
 
 
-def test_updateAstrometryStatus(function):
-    suc = function.updateAstrometryStatus('test')
+def test_updatePlateSolveStatus(function):
+    suc = function.updatePlateSolveStatus('test')
     assert suc
     assert function.ui.plateSolveText.text() == 'test'
 

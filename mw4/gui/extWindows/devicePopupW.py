@@ -434,7 +434,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.updateNINADeviceNameList(deviceNames=deviceNames)
         return True
 
-    def checkplateSolveAvailability(self, framework):
+    def checkPlateSolveAvailability(self, framework):
         """
         checkAvailability looks the presence of the binaries and indexes up and
         reports the result back to the gui.
@@ -462,8 +462,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         folder = self.ui.astrometryAppPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Astrometry App Path',
-                                               folder,
-                                               )
+                                               folder)
         if not name:
             return False
 
@@ -474,7 +473,7 @@ class DevicePopup(toolsQtWidget.MWidget):
             else:
                 saveFilePath += '/Contents/MacOS/astrometry/bin'
 
-        if self.checkAstrometryAvailability('astrometry'):
+        if self.checkPlateSolveAvailability('astrometry'):
             self.ui.astrometryAppPath.setText(saveFilePath)
         return True
 
@@ -485,8 +484,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         folder = self.ui.astrometryIndexPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Astrometry Index Path',
-                                               folder,
-                                               )
+                                               folder)
         if not name:
             return False
 
@@ -501,8 +499,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         folder = self.ui.astapAppPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select ASTAP App Path',
-                                               folder,
-                                               )
+                                               folder)
         if not name:
             return False
 
@@ -520,8 +517,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         folder = self.ui.astapIndexPath.text()
         saveFilePath, name, ext = self.openDir(self,
                                                'Select ASTAP Index Path',
-                                               folder,
-                                               )
+                                               folder)
         if not name:
             return False
 

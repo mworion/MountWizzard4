@@ -27,7 +27,7 @@ import numpy as np
 from mountcontrol.convert import convertToAngle
 from base.fitsHeader import getCoordinates, getScale
 from base import tpool
-from logic.plateSolve.astrometryNET import AstrometryNET
+from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.astap import ASTAP
 
 
@@ -75,7 +75,7 @@ class PlateSolve:
                               'frameworks': {}}
         self.framework = ''
         self.run = {
-            'astrometry': AstrometryNET(self),
+            'astrometry': Astrometry(self),
             'astap': ASTAP(self),
         }
         for fw in self.run:
@@ -300,7 +300,7 @@ class PlateSolve:
         name = self.run[self.framework].deviceName
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
-            self.mes.emit(0, 'System', 'Platesolver found', f'{name}')
+            self.mes.emit(0, 'System', 'Plate Solver found', f'{name}')
 
         self.log.debug(f'Framework: [{self.framework}], {sucApp}, {sucIndex}')
         return True
@@ -312,5 +312,5 @@ class PlateSolve:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.mes.emit(0, 'System', 'Platesolver remove', f'{name}')
+        self.mes.emit(0, 'System', 'Plate Solver remove', f'{name}')
         return True

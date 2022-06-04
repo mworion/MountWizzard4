@@ -28005,7 +28005,7 @@ p, li { white-space: pre-wrap; }
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
-   <widget class="QLineEdit" name="solverText">
+   <widget class="QLineEdit" name="plateSolveText">
     <property name="enabled">
      <bool>true</bool>
     </property>

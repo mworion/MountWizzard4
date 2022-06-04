@@ -30,7 +30,7 @@ from astropy.io import fits
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.plateSolve.astrometry import Astrometry
-from logic.plateSolve.astrometryNET import AstrometryNET
+from logic.plateSolve.plateSolve import PlateSolve
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -44,8 +44,8 @@ def function():
             continue
         os.remove(fileP)
 
-    parent = Astrometry(app=App())
-    func = AstrometryNET(parent=parent)
+    parent = PlateSolve(app=App())
+    func = Astrometry(parent=parent)
     yield func
 
 

@@ -30,19 +30,19 @@ from astropy.io import fits
 from mountcontrol import convert
 
 
-class AstrometryNET(object):
+class Astrometry(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> astrometry = AstrometryNET(app=app,
+        >>> astrometry = Astrometry(app=app,
         >>>                         )
 
     """
 
-    __all__ = ['AstrometryNET',
+    __all__ = ['Astrometry',
                ]
 
     log = logging.getLogger(__name__)

@@ -1104,7 +1104,7 @@ def test_setupModelPointsAndContextData_3(function):
         searchRadius = 1
 
     function.app.plateSolve.framework = 'astap'
-    function.app.astrometry.run = {'astap': Test()}
+    function.app.plateSolve.run = {'astap': Test()}
     function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
     function.ui.excludeDonePoints.setChecked(True)
     val = function.setupModelPointsAndContextData()
@@ -1282,7 +1282,7 @@ def test_syncMountAndClearUp(function):
 
 
 def test_solveDone_1(function):
-    function.app.astrometry.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.done.connect(function.solveDone)
     suc = function.solveDone()
     assert not suc
 
@@ -1300,7 +1300,7 @@ def test_solveDone_2(function):
         'message': 'test',
     }
 
-    function.app.astrometry.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.done.connect(function.solveDone)
     suc = function.solveDone(result=result)
     assert not suc
 
@@ -1319,7 +1319,7 @@ def test_solveDone_3(function):
         'solvedPath': 'test'
     }
 
-    function.app.astrometry.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.done.connect(function.solveDone)
     with mock.patch.object(function.app.mount.obsSite,
                            'syncPositionToTarget',
                            return_value=True):
@@ -1341,7 +1341,7 @@ def test_solveDone_4(function):
         'solvedPath': 'test'
     }
 
-    function.app.astrometry.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.done.connect(function.solveDone)
     with mock.patch.object(function.app.mount.obsSite,
                            'syncPositionToTarget',
                            return_value=False):
@@ -1362,7 +1362,7 @@ def test_solveImage_2(function):
 def test_solveImage_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     file = 'tests/workDir/image/m51.fit'
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'solveThreading'):
         suc = function.solveImage(imagePath=file)
         assert suc
@@ -1391,7 +1391,7 @@ def test_exposeImage_1(function):
 
 
 def test_plateSolveSync_1(function):
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'checkAvailability',
                            return_value=(False, False)):
         suc = function.plateSolveSync()
@@ -1399,7 +1399,7 @@ def test_plateSolveSync_1(function):
 
 
 def test_plateSolveSync_2(function):
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'checkAvailability',
                            return_value=(True, True)):
         with mock.patch.object(function,

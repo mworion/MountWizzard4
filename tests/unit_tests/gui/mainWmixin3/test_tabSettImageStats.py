@@ -17,6 +17,8 @@
 ###########################################################
 # standard libraries
 import pytest
+from unittest import mock
+import webbrowser
 
 # external packages
 
@@ -45,14 +47,16 @@ def function(qapp):
 
 def test_updateImageStats_1(function):
     suc = function.updateImageStats()
-    assert suc
+    assert not suc
 
 
 def test_updateImageStats_2(function):
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
-    function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
-    function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
+    function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 100
+    function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 100
+    function.ui.focalLength.setValue(100)
+    function.ui.aperture.setValue(100)
     suc = function.updateImageStats()
     assert suc
 
@@ -60,9 +64,33 @@ def test_updateImageStats_2(function):
 def test_updateImageStats_3(function):
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
-    function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
-    function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
-    function.ui.aperture.setValue(0)
-    function.ui.focalLength.setValue(0)
+    function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 100
+    function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 100
+    function.ui.aperture.setValue(100)
+    function.ui.focalLength.setValue(100)
     suc = function.updateImageStats()
     assert suc
+
+
+def test_openWatneyCatalog(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openWatneyCatalog()
+        assert suc
+
+
+def test_openASTAPCatalog(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openASTAPCatalog()
+        assert suc
+
+
+def test_openAstrometryCatalog(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openAstrometryCatalog()
+        assert suc

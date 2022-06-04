@@ -345,7 +345,7 @@ def test_selectAstrometryIndexPath_2(function):
         def checkAvailability():
             return True, True
 
-    function.app.astrometry.run = {'astrometry': Test()}
+    function.app.plateSolve.run = {'astrometry': Test()}
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
@@ -409,7 +409,7 @@ def test_selectAstapIndexPath_2(function):
         def selectAstapIndexPath():
             return True
 
-    function.app.astrometry.run = {'astap': Test()}
+    function.app.plateSolve.run = {'astap': Test()}
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):

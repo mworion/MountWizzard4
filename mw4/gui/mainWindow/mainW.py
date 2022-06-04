@@ -54,6 +54,7 @@ from gui.mainWmixin.tabPower import Power
 from gui.mainWmixin.tabSettDevice import SettDevice
 from gui.mainWmixin.tabSettMount import SettMount
 from gui.mainWmixin.tabSettImaging import SettImaging
+from gui.mainWmixin.tabSettImageStats import SettImageStats
 from gui.mainWmixin.tabSettDome import SettDome
 from gui.mainWmixin.tabSettParkPos import SettParkPos
 from gui.mainWmixin.tabSettRelay import SettRelay
@@ -78,6 +79,7 @@ class MainWindow(
     SettDevice,
     SettMount,
     SettImaging,
+    SettImageStats,
     SettDome,
     SettParkPos,
     SettRelay,

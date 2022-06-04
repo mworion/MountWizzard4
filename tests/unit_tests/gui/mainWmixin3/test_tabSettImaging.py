@@ -101,26 +101,23 @@ def test_updateFocuser(function):
     assert suc
 
 
-def test_updateParameters_1(function):
-    suc = function.updateParameters()
+def test_updateImagingParam_1(function):
+    suc = function.updateImagingParam()
     assert suc
 
 
-def test_updateParameters_2(function):
+def test_updateImagingParam_2(function):
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
     function.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
 
-    function.ui.automaticTelescope.setChecked(True)
-    with mock.patch.object(function,
-                           'updateTelescopeParametersToGui'):
-        suc = function.updateParameters()
-        assert suc
+    suc = function.updateImagingParam()
+    assert suc
 
 
-def test_updateParameters_3(function):
+def test_updateImagingParam_3(function):
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
@@ -129,17 +126,7 @@ def test_updateParameters_3(function):
     function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
-    with mock.patch.object(function,
-                           'updateTelescopeParametersToGui'):
-        suc = function.updateParameters()
-        assert suc
-
-
-def test_updateTelescopeParametersToGui_1(function):
-    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
-    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
-
-    suc = function.updateTelescopeParametersToGui()
+    suc = function.updateImagingParam()
     assert suc
 
 

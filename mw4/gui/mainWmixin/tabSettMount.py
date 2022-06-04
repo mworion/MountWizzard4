@@ -40,6 +40,8 @@ class SettMount(object):
         self.ui.settleTimeMount.valueChanged.connect(self.setMountSettlingTime)
         self.app.update30s.connect(self.syncClock)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
+        self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
+        self.app.update3s.connect(self.updateTelescopeParametersToGui)
 
     def initConfig(self):
         """
@@ -263,4 +265,28 @@ class SettMount(object):
 
         self.app.mes.emit(0, 'System', 'Clock',
                           f'Correction: [{-delta} ms]')
+        return True
+
+    def updateTelescopeParametersToGui(self):
+        """
+        updateTelescopeParametersToGui takes the information gathered from the
+        driver and programs them into gui for later use.
+
+        :return: true for test purpose
+        """
+        if not self.ui.automaticTelescope.isChecked():
+            return False
+
+        value = self.app.telescope.data.get(
+            'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
+        if value is not None:
+            value = float(value)
+            self.ui.focalLength.setValue(value)
+
+        value = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE',
+                                            0)
+        if value is not None:
+            value = float(value)
+            self.ui.aperture.setValue(value)
+
         return True

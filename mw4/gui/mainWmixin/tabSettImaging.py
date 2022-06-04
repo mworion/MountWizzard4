@@ -48,14 +48,13 @@ class SettImaging:
         self.ui.coverLightOn.clicked.connect(self.switchLightOn)
         self.ui.coverLightOff.clicked.connect(self.switchLightOff)
         self.clickable(self.ui.coverLightIntensity).connect(self.setLightIntensity)
-        self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
-        self.ui.aperture.valueChanged.connect(self.updateParameters)
-        self.ui.focalLength.valueChanged.connect(self.updateParameters)
-        self.ui.expTime.valueChanged.connect(self.updateParameters)
-        self.ui.binning.valueChanged.connect(self.updateParameters)
-        self.ui.expTimeN.valueChanged.connect(self.updateParameters)
-        self.ui.binningN.valueChanged.connect(self.updateParameters)
-        self.ui.subFrame.valueChanged.connect(self.updateParameters)
+        self.ui.aperture.valueChanged.connect(self.updateImagingParam)
+        self.ui.focalLength.valueChanged.connect(self.updateImagingParam)
+        self.ui.expTime.valueChanged.connect(self.updateImagingParam)
+        self.ui.binning.valueChanged.connect(self.updateImagingParam)
+        self.ui.expTimeN.valueChanged.connect(self.updateImagingParam)
+        self.ui.binningN.valueChanged.connect(self.updateImagingParam)
+        self.ui.subFrame.valueChanged.connect(self.updateImagingParam)
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
@@ -64,7 +63,7 @@ class SettImaging:
         self.app.update1s.connect(self.updateCoverLightGui)
         self.app.update1s.connect(self.updateDomeGui)
         self.app.update1s.connect(self.updateShutterStatGui)
-        self.app.update1s.connect(self.updateParameters)
+        self.app.update1s.connect(self.updateImagingParam)
 
     def initConfig(self):
         """
@@ -201,17 +200,14 @@ class SettImaging:
         self.guiSetText(self.ui.focuserPosition, '6.0f', focus)
         return True
 
-    def updateParameters(self):
+    def updateImagingParam(self):
         """
-        updateParameters reads the data from the classes and writes them to the gui.
+        updateImagingParam reads the data from the classes and writes them to the gui.
         if a parameter is not set (no key entry) or None, the gui will show a '-'
 
         :return: true for test purpose
         """
         self.checkEnableCameraUI()
-        if self.ui.automaticTelescope.isChecked():
-            self.updateTelescopeParametersToGui()
-
         self.updateGainOffset()
         self.updateCooler()
         self.updateFilter()
@@ -219,13 +215,8 @@ class SettImaging:
 
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
-        pixelSizeX = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
-        pixelSizeY = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
-        pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X', 0)
-        pixelY = self.app.camera.data.get('CCD_INFO.CCD_MAX_Y', 0)
         maxBinX = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
         maxBinY = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
-        rotation = self.app.camera.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
         humidityCCD = self.app.camera.data.get('CCD_HUMIDITY.HUMIDITY')
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
 
@@ -243,48 +234,7 @@ class SettImaging:
         self.app.telescope.focalLength = focalLength
         self.app.telescope.aperture = aperture
 
-        if focalLength and pixelSizeX and pixelSizeY:
-            resolutionX = pixelSizeX / focalLength * 206.265
-            resolutionY = pixelSizeY / focalLength * 206.265
-        else:
-            resolutionX = None
-            resolutionY = None
-
-        if aperture:
-            speed = focalLength / aperture
-        else:
-            speed = None
-
-        if aperture:
-            dawes = 116 / aperture
-            rayleigh = 138 / aperture
-            magLimit = 7.7 + (5 * np.log10(aperture / 10))
-        else:
-            dawes = None
-            rayleigh = None
-            magLimit = None
-
-        if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
-            FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
-            FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
-        else:
-            FOVX = None
-            FOVY = None
-
-        self.guiSetText(self.ui.speed, '2.1f', speed)
-        self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
-        self.guiSetText(self.ui.pixelSizeY, '2.2f', pixelSizeY)
-        self.guiSetText(self.ui.pixelX, '5.0f', pixelX)
-        self.guiSetText(self.ui.pixelY, '5.0f', pixelY)
-        self.guiSetText(self.ui.rotation, '3.1f', rotation)
         self.guiSetText(self.ui.humidityCCD, '3.1f', humidityCCD)
-        self.guiSetText(self.ui.resolutionX, '2.2f', resolutionX)
-        self.guiSetText(self.ui.resolutionY, '2.2f', resolutionY)
-        self.guiSetText(self.ui.dawes, '2.2f', dawes)
-        self.guiSetText(self.ui.rayleigh, '2.2f', rayleigh)
-        self.guiSetText(self.ui.magLimit, '2.2f', magLimit)
-        self.guiSetText(self.ui.FOVX, '2.2f', FOVX)
-        self.guiSetText(self.ui.FOVY, '2.2f', FOVY)
 
         if downloadFast:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', True)
@@ -292,25 +242,6 @@ class SettImaging:
         else:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
-
-        return True
-
-    def updateTelescopeParametersToGui(self):
-        """
-        updateTelescopeParametersToGui takes the information gathered from the
-        driver and programs them into gui for later use.
-
-        :return: true for test purpose
-        """
-        value = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
-        if value is not None:
-            value = float(value)
-            self.ui.focalLength.setValue(value)
-
-        value = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0)
-        if value is not None:
-            value = float(value)
-            self.ui.aperture.setValue(value)
 
         return True
 

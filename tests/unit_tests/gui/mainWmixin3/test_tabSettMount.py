@@ -337,3 +337,20 @@ def test_syncClock_6(function):
         suc = function.syncClock()
         assert suc
 
+
+def test_updateTelescopeParametersToGui_1(function):
+    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
+    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
+
+    function.ui.automaticTelescope.setChecked(True)
+    suc = function.updateTelescopeParametersToGui()
+    assert suc
+
+
+def test_updateTelescopeParametersToGui_2(function):
+    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
+    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
+
+    function.ui.automaticTelescope.setChecked(False)
+    suc = function.updateTelescopeParametersToGui()
+    assert not suc

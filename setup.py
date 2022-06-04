@@ -38,12 +38,15 @@ releaseNotes = """
 - add: satellites: all time values could be UTC or local time now
 - add: image: photometry functions (aberration, roundness, etc.)
 - add: image: solve and center to image
+- add: polling timing for drivers could be set
+- add: calcs for plate solvers (index files etc.)
+- add: integrate meteoblue.com seeing conditions
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
 - improve: moved to actual jpl kernel de440.bsp for ephemeris calcs
-- imporove: simplify and rearrange GUI
+- improve: simplify and rearrange GUI
 - remove: matplotlib usage and replace with pyqtgraph
 - remove: stacking in imageW as it was never used
 - fix: device selection tab was not properly positioned in device popup
@@ -108,7 +111,7 @@ setup(
         'pybase64==1.2.1',
         'websocket-client==1.3.2',
         'hidapi==0.11.2',
-        'range-dict-key',
+        'range-key-dict==1.1.0',
     ]
     + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])

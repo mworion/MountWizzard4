@@ -25,6 +25,7 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 from indibase.qtIndiBase import Client
 from base.driverDataClass import Signals
 
+
 class IndiClass:
     """
     """

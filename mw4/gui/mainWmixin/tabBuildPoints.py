@@ -498,7 +498,7 @@ class BuildPoints:
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.app.mes.emit(2, 'Model', 'Buildpoints',
-                                   'Build points file name not given')
+                              'Build points file name not given')
             return False
 
         keep = self.ui.keepGeneratedPoints.isChecked()
@@ -531,10 +531,10 @@ class BuildPoints:
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.mes.emit(0, 'Model', 'Buildpoints',
-                                   f'Build file [{fileName}] loaded')
+                              f'Build file [{fileName}] loaded')
         else:
             self.app.mes.emit(2, 'Model', 'Buildpoints',
-                                   f'Build file [{fileName}] cannot be loaded')
+                              f'Build file [{fileName}] cannot be loaded')
         self.genBuildFile()
         return True
 
@@ -545,16 +545,16 @@ class BuildPoints:
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.app.mes.emit(0, 'Model', 'Buildpoints',
-                                   'Build points file name not given')
+                              'Build points file name not given')
             return False
 
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
             self.app.mes.emit(0, 'Model', 'Buildpoints',
-                                   f'Build file [{fileName}] saved')
+                              f'Build file [{fileName}] saved')
         else:
             self.app.mes.emit(2, 'Model', 'Buildpoints',
-                                   f'Build file [{fileName}] cannot be saved')
+                              f'Build file [{fileName}] cannot be saved')
 
         return True
 
@@ -578,10 +578,10 @@ class BuildPoints:
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.mes.emit(0, 'Model', 'Buildpoints',
-                                   f'Build file [{fileName}] saved')
+                              f'Build file [{fileName}] saved')
         else:
             self.app.mes.emit(2, 'Model', 'Buildpoints',
-                                   f'Build file [{fileName}] cannot be saved')
+                              f'Build file [{fileName}] cannot be saved')
 
         return True
 
@@ -773,7 +773,7 @@ class BuildPoints:
 
         if not result:
             self.app.mes.emit(2, 'Model', 'Buildpoints',
-                                   f'No response from SIMBAD for {ident}')
+                              f'No response from SIMBAD for {ident}')
             self.ui.generateRa.setText('')
             self.ui.generateDec.setText('')
             self.simbadRa = None

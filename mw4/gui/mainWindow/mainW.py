@@ -163,7 +163,7 @@ class MainWindow(
             'dome': self.ui.domeConnected,
             'camera': self.ui.cameraConnected,
             'environOverall': self.ui.environConnected,
-            'astrometry': self.ui.astrometryConnected,
+            'plateSolve': self.ui.plateSolveConnected,
             'mount': self.ui.mountConnected,
         }
         self.mwSuper('__init__')
@@ -171,7 +171,7 @@ class MainWindow(
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.settingDone.connect(self.updateMountWeatherStat)
         self.app.remoteCommand.connect(self.remoteCommand)
-        self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
+        self.app.plateSolve.signals.message.connect(self.updatePlateSolveStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
         self.app.camera.signals.message.connect(self.updateCameraStatus)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
@@ -522,7 +522,7 @@ class MainWindow(
         :return: true for test purpose
         """
         isModelingReady = all(
-            self.deviceStat[x] for x in ['mount', 'camera', 'astrometry'])
+            self.deviceStat[x] for x in ['mount', 'camera', 'plateSolve'])
         isPause = self.ui.pauseModel.property('pause')
 
         if isModelingReady and self.app.data.buildP and not isPause:
@@ -676,12 +676,12 @@ class MainWindow(
         self.changeStyleDynamic(self.ui.mountOff, 'running', not isMount)
         return True
 
-    def updateAstrometryStatus(self, text):
+    def updatePlateSolveStatus(self, text):
         """
         :param text:
         :return: true for test purpose
         """
-        self.ui.astrometryText.setText(text)
+        self.ui.plateSolveText.setText(text)
         return True
 
     def updateDomeStatus(self, text):

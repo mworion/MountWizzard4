@@ -380,7 +380,7 @@ class SatTrack(object):
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f'{days:2.2f}')
         self.app.mes.emit(0, 'Satellite', 'Data',
-                               f'Actual satellite: [{satName}]')
+                          f'Actual satellite: [{satName}]')
 
         if days > 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
@@ -403,7 +403,7 @@ class SatTrack(object):
 
         satellite = self.app.mount.satellite
         self.app.mes.emit(0, 'TLE', 'Program',
-                               f'Upload to mount:    [{satName}]')
+                          f'Upload to mount:    [{satName}]')
         line1, line2 = export_tle(self.satellites[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,
@@ -642,7 +642,7 @@ class SatTrack(object):
                 self.app.mes.emit(0, 'TLE', 'Command', 'Mount unparked')
             else:
                 self.app.mes.emit(2, 'TLE', 'Command error',
-                                       'Cannot unpark mount')
+                                  'Cannot unpark mount')
 
         self.app.dome.avoidFirstOvershoot()
         suc, message = self.app.mount.satellite.slewTLE()

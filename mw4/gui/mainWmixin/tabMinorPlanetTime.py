@@ -168,7 +168,7 @@ class MinorPlanetTime:
         destUnzip = dest[:-3]
 
         if not os.path.isfile(destUnzip):
-            self.app.mes.emit(2, 'MPC', f'Data error', f'{source}')
+            self.app.mes.emit(2, 'MPC', 'Data error', f'{source}')
             return False
 
         with open(destUnzip) as inFile:
@@ -200,7 +200,7 @@ class MinorPlanetTime:
 
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:
-            self.app.mes.emit(1, 'MPC', f'Download', f'{source}')
+            self.app.mes.emit(1, 'MPC', 'Download', f'{source}')
             DownloadPopup(self, url=url, dest=dest, callBack=self.processSourceData)
         return True
 
@@ -237,14 +237,14 @@ class MinorPlanetTime:
                                                              updaterApp)
         if not suc:
             self.app.mes.emit(2, 'IERS', 'Data error',
-                                   'Data could not be exported - stopping')
+                              'Data could not be exported - stopping')
             return False
 
         self.app.mes.emit(0, 'IERS', 'Program', 'Uploading to mount')
         suc = self.app.automation.uploadEarthRotationData()
         if not suc:
             self.app.mes.emit(2, 'IERS', 'Program error',
-                                   'Uploading error but files available')
+                              'Uploading error but files available')
         else:
             self.app.mes.emit(1, 'IERS', 'Program', 'Successful uploaded')
         return suc
@@ -300,14 +300,14 @@ class MinorPlanetTime:
 
         if not suc:
             self.app.mes.emit(2, 'MPC', 'Data',
-                                   'Data could not be exported - stopping')
+                              'Data could not be exported - stopping')
             return False
 
         self.app.mes.emit(0, 'MPC', 'Program', 'Uploading to mount')
         suc = self.app.automation.uploadMPCData(comets=isComet)
         if not suc:
             self.app.mes.emit(2, 'MPC', 'Program error',
-                                   'Uploading error but files available')
+                              'Uploading error but files available')
         else:
             self.app.mes.emit(1, 'MPC', 'Program', 'Successful uploaded')
         return suc

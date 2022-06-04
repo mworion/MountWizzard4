@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -17464,7 +17464,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -17961,7 +17961,7 @@ Next point in time when satellite settles.</string>
          <string>PlateSolver</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="astrometryDevice">
+       <widget class="QComboBox" name="plateSolveDevice">
         <property name="geometry">
          <rect>
           <x>85</x>
@@ -18125,7 +18125,7 @@ Next point in time when satellite settles.</string>
          <string>Set</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="astrometrySetup">
+       <widget class="QPushButton" name="plateSolveSetup">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -28005,7 +28005,7 @@ p, li { white-space: pre-wrap; }
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
-   <widget class="QLineEdit" name="astrometryText">
+   <widget class="QLineEdit" name="solverText">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -28390,7 +28390,7 @@ p, li { white-space: pre-wrap; }
      <string>Measure</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="astrometryConnected">
+   <widget class="QPushButton" name="plateSolveConnected">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -29293,8 +29293,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>filterSetup</tabstop>
   <tabstop>focuserDevice</tabstop>
   <tabstop>focuserSetup</tabstop>
-  <tabstop>astrometryDevice</tabstop>
-  <tabstop>astrometrySetup</tabstop>
+  <tabstop>plateSolveDevice</tabstop>
+  <tabstop>plateSolveSetup</tabstop>
   <tabstop>domeDevice</tabstop>
   <tabstop>domeSetup</tabstop>
   <tabstop>sensorWeatherDevice</tabstop>
@@ -29413,7 +29413,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>moveCoordinateDec</tabstop>
   <tabstop>moveRaDecAbsolute</tabstop>
   <tabstop>cameraConnected</tabstop>
-  <tabstop>astrometryConnected</tabstop>
+  <tabstop>plateSolveConnected</tabstop>
   <tabstop>loadFrom</tabstop>
   <tabstop>saveConfig</tabstop>
   <tabstop>mountOn</tabstop>

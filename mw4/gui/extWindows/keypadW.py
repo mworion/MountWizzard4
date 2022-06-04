@@ -153,7 +153,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
             suc = self.app.mount.setting.setWebInterface(True)
             if not suc:
                 self.app.mes.emit(2, 'System', 'Mount',
-                                       'Could not enable webinterface')
+                                  'Could not enable webinterface')
         self.app.colorChange.connect(self.colorChange)
         self.app.hostChanged.connect(self.hostChanged)
         self.signals.textRow.connect(self.writeTextRow)

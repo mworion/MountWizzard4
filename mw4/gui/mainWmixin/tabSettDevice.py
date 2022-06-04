@@ -144,11 +144,11 @@ class SettDevice:
                 'class': self.app.relay,
                 'deviceType': None,
             },
-            'astrometry': {
-                'uiDropDown': self.ui.astrometryDevice,
-                'uiSetup': self.ui.astrometrySetup,
-                'class': self.app.astrometry,
-                'deviceType': 'astrometry',
+            'plateSolve': {
+                'uiDropDown': self.ui.plateSolveDevice,
+                'uiSetup': self.ui.plateSolveSetup,
+                'class': self.app.plateSolve,
+                'deviceType': 'plateSolve',
             },
             'remote': {
                 'uiDropDown': self.ui.remoteDevice,

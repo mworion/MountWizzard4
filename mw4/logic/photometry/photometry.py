@@ -110,7 +110,7 @@ class Photometry:
         """
         a = self.objs['a']
         b = self.objs['b']
-        aspectRatio = np.maximum(a/b, b/a)
+        aspectRatio = np.maximum(a / b, b / a)
         minB, maxB = np.percentile(aspectRatio, (50, 95))
         img = griddata((self.objs['x'], self.objs['y']), aspectRatio, (self.xm,
                                                                        self.ym),
@@ -158,7 +158,7 @@ class Photometry:
         mask1 = np.sqrt(self.h * self.h + self.w * self.w) * 0.25 < radius
         mask2 = np.sqrt(self.h * self.h + self.w * self.w) > radius
         segHFR = np.zeros(36)
-        angles = np.mod(np.arctan2(y, x), 2*np.pi)
+        angles = np.mod(np.arctan2(y, x), 2 * np.pi)
         rangeA = np.radians(range(0, 361, 10))
         for i in range(36):
             mask3 = rangeA[i] < angles

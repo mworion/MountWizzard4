@@ -295,17 +295,17 @@ class ManageModel(object):
         """
         if self.ui.nameList.currentItem() is None:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   'No model name selected')
+                              'No model name selected')
             return False
         modelName = self.ui.nameList.currentItem().text()
         suc = self.app.mount.model.loadName(modelName)
         if not suc:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   f'Model load failed: [{modelName}]')
+                              f'Model load failed: [{modelName}]')
             return False
         else:
             self.app.mes.emit(0, 'Model', 'Manage',
-                                   f'Model loaded: [{modelName}]')
+                              f'Model loaded: [{modelName}]')
             self.refreshModel()
             return True
 
@@ -319,14 +319,11 @@ class ManageModel(object):
         """
         dlg = QInputDialog()
         modelName, ok = dlg.getText(self,
-                                    'Save model',
-                                    'New model name',
-                                    QLineEdit.Normal,
-                                    '',
-                                    )
+                                    'Save model', 'New model name',
+                                    QLineEdit.Normal, '')
         if modelName is None or not modelName:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   'No model name given')
+                              'No model name given')
             return False
         if not ok:
             return False
@@ -334,25 +331,25 @@ class ManageModel(object):
         suc = self.app.mount.model.storeName(modelName)
         if not suc:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   f'Model cannot be saved [{modelName}]')
+                              f'Model cannot be saved [{modelName}]')
             return False
         else:
             self.app.mes.emit(0, 'Model', 'Manage',
-                                   f'Model saved: [{modelName}]')
+                              f'Model saved: [{modelName}]')
             self.refreshName()
             return True
 
     def deleteName(self):
         """
-        deleteName take the given name and deletes it from the model database in the
-        mount computer. after that it refreshes the list of the alignment model names in
-        mountwizzard.
+        deleteName take the given name and deletes it from the model database in
+        the mount computer. after that it refreshes the list of the alignment
+        model names in mountwizzard.
 
         :return: success
         """
         if self.ui.nameList.currentItem() is None:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   'No model name selected')
+                              'No model name selected')
             return False
 
         modelName = self.ui.nameList.currentItem().text()
@@ -360,20 +357,18 @@ class ManageModel(object):
         reply = msg.question(self,
                              'Delete model',
                              f'Delete model [{modelName}] from database?',
-                             msg.Yes | msg.No,
-                             msg.No,
-                             )
+                             msg.Yes | msg.No, msg.No)
         if reply != msg.Yes:
             return False
 
         suc = self.app.mount.model.deleteName(modelName)
         if not suc:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   f'Model cannot be deleted [{modelName}]')
+                              f'Model cannot be deleted [{modelName}]')
             return False
         else:
             self.app.mes.emit(0, 'Model', 'Manage',
-                                   f'Model deleted: [{modelName}]')
+                              f'Model deleted: [{modelName}]')
             self.refreshName()
             return True
 
@@ -420,7 +415,7 @@ class ManageModel(object):
 
         if foundModel:
             self.app.mes.emit(0, 'Model', 'Manage',
-                                   f'Found stored model:  [{foundModel}]')
+                              f'Found stored model:  [{foundModel}]')
             self.ui.originalModel.setText(foundModel)
             self.writeBuildModelOptimized(foundModel, pointsIn, pointsOut)
 
@@ -459,23 +454,20 @@ class ManageModel(object):
         """
         msg = QMessageBox
         reply = msg.question(self,
-                             'Clear model',
-                             'Clear actual alignment model?',
-                             msg.Yes | msg.No,
-                             msg.No,
-                             )
+                             'Clear model', 'Clear actual alignment model?',
+                             msg.Yes | msg.No, msg.No)
         if reply == msg.No:
             return False
 
         suc = self.app.mount.model.clearAlign()
         if not suc:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   'Actual model cannot be cleared')
+                              'Actual model cannot be cleared')
             return False
 
         else:
             self.app.mes.emit(0, 'Model', 'Manage',
-                                   'Actual model cleared')
+                              'Actual model cleared')
             self.refreshModel()
             return True
 
@@ -523,7 +515,8 @@ class ManageModel(object):
             if not suc:
                 self.runningOptimize = False
                 self.app.mes.emit(2, 'Model', 'Manage error',
-                                       f'Star [{wStar.number + 1:3.0f}] cannot be deleted')
+                                  f'Star [{wStar.number + 1:3.0f}] cannot be '
+                                  f'deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}: '
                 text += f'RMS of {wStar.errorRMS:5.1f} arcsec deleted.'
@@ -641,7 +634,8 @@ class ManageModel(object):
         :return: OK
         """
         msg = QMessageBox
-        reply = msg.question(self, 'Deleting point', question, msg.Yes | msg.No, msg.No)
+        reply = msg.question(self, 'Deleting point', question,
+                             msg.Yes | msg.No, msg.No)
         if reply != msg.Yes:
             return False
         else:
@@ -672,7 +666,7 @@ class ManageModel(object):
         suc = self.app.mount.model.deletePoint(index)
         if not suc:
             self.app.mes.emit(2, 'Model', 'Manage error',
-                                   f'Point {index + 1:3.0f} cannot be deleted')
+                              f'Point {index + 1:3.0f} cannot be deleted')
             return False
 
         text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'

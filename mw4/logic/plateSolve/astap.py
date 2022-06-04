@@ -28,18 +28,18 @@ from astropy.io import fits
 # local imports
 
 
-class AstrometryASTAP(object):
+class ASTAP(object):
     """
-    the class Astrometry inherits all information and handling of astrometry.net handling
+    the class PlateSolve inherits all information and handling of astrometry.net handling
 
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> a = AstrometryASTAP()
+        >>> a = ASTAP()
 
     """
 
-    __all__ = ['AstrometryASTAP',
+    __all__ = ['ASTAP',
                ]
 
     returnCodes = {0: 'No errors',

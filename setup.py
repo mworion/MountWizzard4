@@ -67,7 +67,7 @@ setup(
         'mw4.gui.mainWindow',
         'mw4.gui.utilities',
         'mw4.gui.widgets',
-        'mw4.logic.astrometry',
+        'mw4.logic.plateSolve',
         'mw4.logic.automation',
         'mw4.logic.camera',
         'mw4.logic.cover',

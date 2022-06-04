@@ -226,7 +226,7 @@ def test_updateMountWeatherStat_3(function):
 def test_smartFunctionGui_0(function):
     function.deviceStat['mount'] = True
     function.deviceStat['camera'] = True
-    function.deviceStat['astrometry'] = True
+    function.deviceStat['plateSolve'] = True
     function.app.data.buildP = []
     function.ui.pauseModel.setProperty('pause', False)
     suc = function.smartFunctionGui()
@@ -237,7 +237,7 @@ def test_smartFunctionGui_0(function):
 def test_smartFunctionGui_1(function):
     function.deviceStat['mount'] = True
     function.deviceStat['camera'] = True
-    function.deviceStat['astrometry'] = True
+    function.deviceStat['plateSolve'] = True
     function.app.data.buildP = [(0, 0)]
     suc = function.smartFunctionGui()
     assert suc
@@ -248,7 +248,7 @@ def test_smartFunctionGui_1(function):
 def test_smartFunctionGui_2(function):
     function.deviceStat['mount'] = True
     function.deviceStat['camera'] = False
-    function.deviceStat['astrometry'] = True
+    function.deviceStat['plateSolve'] = True
     function.app.data.buildP = [(0, 0)]
     suc = function.smartFunctionGui()
     assert suc
@@ -446,7 +446,7 @@ def test_updateTime_2(function):
 def test_updateAstrometryStatus(function):
     suc = function.updateAstrometryStatus('test')
     assert suc
-    assert function.ui.astrometryText.text() == 'test'
+    assert function.ui.plateSolveText.text() == 'test'
 
 
 def test_updateDomeStatus(function):

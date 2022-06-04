@@ -174,7 +174,7 @@ class Model:
 
     def modelSolveDone(self, result):
         """
-        modelSolveDone is called when a point is solved by astrometry. if called
+        modelSolveDone is called when a point is solved by plateSolve. if called
         it takes the model point out of the queue and adds the solving data for
         later model build. as the solving takes place in J2000 epoch, but we need
         fpr die model build JNow epoch, the transformation is done as well.
@@ -199,7 +199,7 @@ class Model:
             self.log.error(t)
             return False
 
-        self.log.debug('Processing astrometry result')
+        self.log.debug('Processing plate solving result')
         mPoint = self.resultQueue.get()
         self.log.debug(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
@@ -281,7 +281,7 @@ class Model:
         self.app.showImage.emit(mPoint["imagePath"])
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-        self.app.astrometry.solveThreading(fitsPath=mPoint['imagePath'],
+        self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'],
                                            raHint=mPoint['raJNowM'],
                                            decHint=mPoint['decJNowM'],
                                            updateFits=False)
@@ -502,7 +502,7 @@ class Model:
 
         self.collector.ready.connect(self.modelImage)
         self.app.camera.signals.saved.connect(self.modelSolve)
-        self.app.astrometry.signals.done.connect(self.modelSolveDone)
+        self.app.plateSolve.signals.done.connect(self.modelSolveDone)
         self.app.camera.signals.exposeReady.emit()
 
         if self.ui.progressiveTiming.isChecked():
@@ -524,7 +524,7 @@ class Model:
         """
         self.performanceTimingSignal.disconnect(self.modelSlew)
         self.app.camera.signals.saved.disconnect(self.modelSolve)
-        self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
+        self.app.plateSolve.signals.done.disconnect(self.modelSolveDone)
         self.collector.ready.disconnect(self.modelImage)
         self.collector.clear()
         return True
@@ -550,7 +550,7 @@ class Model:
         :return: true for test purpose
         """
         self.app.camera.abort()
-        self.app.astrometry.abort()
+        self.app.plateSolve.abort()
         self.restoreSignalsModelDefault()
         self.clearQueues()
         self.restoreModelDefaultContextAndGuiStatus()
@@ -626,7 +626,7 @@ class Model:
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
         self.app.mes.emit(0, 'Model', 'Run',
-                               f'Writing model [{self.modelName}]')
+                          f'Writing model [{self.modelName}]')
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
@@ -726,31 +726,31 @@ class Model:
         suc = self.collectingModelRunOutput()
         if not suc:
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   f'{self.modelName} Not enough valid model points available')
+                              f'{self.modelName} Not enough valid model points')
             return False
 
         self.app.mes.emit(0, 'Model', 'Run',
-                               'Programming model to mount')
+                          'Programming model to mount')
         suc = self.programModelToMount(self.model)
         if suc:
             self.app.mes.emit(0, 'Model', 'Run',
-                                   'Model programmed with success')
+                              'Model programmed with success')
         else:
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   'Model programming error')
+                              'Model programming error')
 
         if not self.ui.keepImages.isChecked():
             self.app.mes.emit(0, 'Model', 'Run',
-                                   'Deleting model images')
+                              'Deleting model images')
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
         self.app.mes.emit(1, 'Model', 'Run',
-                               f'Modeling finished [{self.modelName}]')
+                          f'Modeling finished [{self.modelName}]')
         self.playSound('ModelingFinished')
         self.renewHemisphereView()
         if self.ui.parkMountAfterModel.isChecked():
             self.app.mes.emit(0, 'Model', 'Run',
-                                   'Parking mount after model run')
+                              'Parking mount after model run')
             suc = self.app.mount.obsSite.park()
 
             if not suc:
@@ -780,7 +780,7 @@ class Model:
             return True
 
         self.app.mes.emit(1, 'Model', 'Run',
-                               'Starting retry failed points')
+                          'Starting retry failed points')
 
         maxRetries = self.ui.numberBuildRetries.value()
         retryNumber = maxRetries - self.modelBuildRetryCounter + 1
@@ -827,15 +827,15 @@ class Model:
             self.app.mes.emit(2, 'Model', 'Run error', t)
             return False
 
-        if self.ui.astrometryDevice.currentText().startswith('No device'):
+        if self.ui.plateSolveDevice.currentText().startswith('No device'):
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   'No plate solver selected')
+                              'No plate solver selected')
             return False
 
-        sucApp, sucIndex = self.app.astrometry.checkAvailability()
+        sucApp, sucIndex = self.app.plateSolve.checkAvailability()
         if not (sucApp and sucIndex):
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   'No valid configuration for plate solver')
+                              'No valid configuration for plate solver')
             return False
 
         return True
@@ -847,14 +847,14 @@ class Model:
         suc = self.app.mount.model.clearAlign()
         if not suc:
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   'Actual model cannot be cleared')
+                              'Actual model cannot be cleared')
             self.app.mes.emit(2, '', '', 'Model build cancelled')
             return False
         else:
             self.app.mes.emit(0, 'Model', 'Run',
-                                   'Actual model clearing, waiting 1s')
+                              'Actual model clearing, waiting 1s')
             sleepAndEvents(1000)
-            self.app.mes.emit(0, '', '',  'Actual model cleared')
+            self.app.mes.emit(0, '', '', 'Actual model cleared')
             self.refreshModel()
 
         suc = self.app.mount.model.deleteName('backup')
@@ -872,16 +872,16 @@ class Model:
         """
         :return:
         """
-        astrometryApp = self.ui.astrometryDevice.currentText()
+        plateSolveApp = self.ui.plateSolveDevice.currentText()
         exposureTime = self.ui.expTime.value()
         binning = int(self.ui.binning.value())
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.fastDownload.isChecked()
         focalLength = self.ui.focalLength.value()
         lenSequence = len(self.app.data.buildP)
-        framework = self.app.astrometry.framework
-        solveTimeout = self.app.astrometry.run[framework].timeout
-        searchRadius = self.app.astrometry.run[framework].searchRadius
+        framework = self.app.plateSolve.framework
+        solveTimeout = self.app.plateSolve.run[framework].timeout
+        searchRadius = self.app.plateSolve.run[framework].searchRadius
         modelPoints = list()
         for index, point in enumerate(self.app.data.buildP):
             if self.ui.excludeDonePoints.isChecked() and not point[2]:
@@ -899,7 +899,7 @@ class Model:
             m['pointNumber'] = index + 1
             m['modelName'] = self.modelName
             m['imagePath'] = imagePath
-            m['astrometryApp'] = astrometryApp
+            m['plateSolveApp'] = plateSolveApp
             m['solveTimeout'] = solveTimeout
             m['searchRadius'] = searchRadius
             m['focalLength'] = focalLength
@@ -958,12 +958,12 @@ class Model:
         modelPoints = self.setupModelPointsAndContextData()
         if not modelPoints:
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   'Modeling cancelled, no valid points')
+                              'Modeling cancelled, no valid points')
             return False
 
         self.setupModelRunContextAndGuiStatus()
         self.app.mes.emit(1, 'Model', 'Run',
-                               f'Modeling start [{self.modelName}]')
+                          f'Modeling start [{self.modelName}]')
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
         return True
@@ -989,30 +989,30 @@ class Model:
             return False
 
         self.app.mes.emit(1, 'Model', 'Run',
-                               'Programing models')
+                          'Programing models')
         modelJSON = list()
         for index, file in enumerate(loadFilePath):
             self.app.mes.emit(0, '', '',
-                                   f'Loading model [{os.path.basename(file)}]')
+                              f'Loading model [{os.path.basename(file)}]')
             with open(file, 'r') as infile:
                 model = json.load(infile)
                 modelJSON += model
 
         if len(modelJSON) > 99:
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   'Model(s) exceed(s) limit of 99 points')
+                              'Model(s) exceed(s) limit of 99 points')
             return False
 
         self.app.mes.emit(0, 'Model', 'Run',
-                               f'Programming {index + 1} model(s) to mount')
+                          f'Programming {index + 1} model(s) to mount')
         suc = self.programModelToMount(modelJSON)
 
         if suc:
             self.app.mes.emit(0, 'Model', 'Run',
-                                   'Model programmed with success')
+                              'Model programmed with success')
         else:
             self.app.mes.emit(2, 'Model', 'Run error',
-                                   'Model programming error')
+                              'Model programming error')
 
         return suc
 
@@ -1032,11 +1032,11 @@ class Model:
         :param result: result (named tuple)
         :return: success
         """
-        self.app.astrometry.signals.done.disconnect(self.solveDone)
+        self.app.plateSolve.signals.done.disconnect(self.solveDone)
 
         if not result:
             self.app.mes.emit(2, 'Model', 'Solving error',
-                                   'Solving error, result missing')
+                              'Solving error, result missing')
             return False
 
         if result['success']:
@@ -1055,7 +1055,7 @@ class Model:
 
         else:
             self.app.mes.emit(2, 'Model', 'Solve error',
-                               f'{result.get("message")}')
+                              f'{result.get("message")}')
             return False
 
         self.app.showImage.emit(result['solvedPath'])
@@ -1085,8 +1085,8 @@ class Model:
         if not os.path.isfile(imagePath):
             return False
 
-        self.app.astrometry.signals.done.connect(self.solveDone)
-        self.app.astrometry.solveThreading(fitsPath=imagePath)
+        self.app.plateSolve.signals.done.connect(self.solveDone)
+        self.app.plateSolve.solveThreading(fitsPath=imagePath)
         t = f'Solving:             [{os.path.basename(imagePath)}]'
         self.app.mes.emit(0, 'Model', 'Solving', t)
         return True
@@ -1150,11 +1150,11 @@ class Model:
         :return:
         """
         self.app.mes.emit(1, 'Model', 'Sync',
-                               'Starting plate solve and sync model in mount')
-        sucApp, sucIndex = self.app.astrometry.checkAvailability()
+                          'Starting plate solve and sync model in mount')
+        sucApp, sucIndex = self.app.plateSolve.checkAvailability()
         if not (sucApp and sucIndex):
             self.app.mes.emit(2, 'Model', 'Sync error',
-                                   'No valid configuration for plate solver')
+                              'No valid configuration for plate solver')
             return False
 
         self.ui.runModel.setEnabled(False)

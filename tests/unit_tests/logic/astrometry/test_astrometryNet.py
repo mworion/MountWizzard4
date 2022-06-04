@@ -29,8 +29,8 @@ from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.astrometry.astrometry import Astrometry
-from logic.astrometry.astrometryNET import AstrometryNET
+from logic.plateSolve.astrometry import Astrometry
+from logic.plateSolve.astrometryNET import AstrometryNET
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -27,7 +27,7 @@ from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.astrometry.astrometry import Astrometry
+from logic.plateSolve.astrometry import AstrometryNet
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -37,7 +37,7 @@ def function():
         os.remove(f)
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     shutil.copy('tests/testData/astrometry.cfg', 'tests/workDir/temp/astrometry.cfg')
-    func = Astrometry(app=App())
+    func = PlateSolve(app=App())
     yield func
 
 

@@ -30,8 +30,8 @@ from skyfield.api import Angle
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from logic.astrometry.astrometry import Astrometry
-from logic.astrometry.astrometryASTAP import AstrometryASTAP
+from logic.plateSolve.plateSolve import PlateSolve
+from logic.plateSolve.ASTAP import ASTAP
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -46,8 +46,8 @@ def function():
         os.remove(fileP)
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     
-    parent = Astrometry(app=App())
-    func = AstrometryASTAP(parent=parent)
+    parent = PlateSolve(app=App())
+    func = ASTAP(parent=parent)
     yield func
 
 

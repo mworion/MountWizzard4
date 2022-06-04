@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -187,7 +187,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -276,7 +275,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -327,7 +325,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -556,7 +553,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -743,7 +739,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1047,7 +1042,7 @@
    </widget>
    <widget class="QWidget" name="astrometry">
     <attribute name="title">
-     <string>astrometry</string>
+     <string>ASTROMETRY.NET</string>
     </attribute>
     <widget class="QLabel" name="label_mountIP_14">
      <property name="geometry">
@@ -1090,7 +1085,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1189,7 +1183,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1210,7 +1203,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1249,7 +1241,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1288,7 +1279,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1309,7 +1299,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1330,7 +1319,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1379,7 +1367,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1473,7 +1460,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1512,7 +1498,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1551,7 +1536,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1572,7 +1556,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1593,7 +1576,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1614,7 +1596,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1644,7 +1625,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1698,7 +1678,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1877,7 +1856,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -1928,7 +1906,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -2025,7 +2002,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -2076,7 +2052,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -2127,7 +2102,6 @@
       <font>
        <family>Arial</family>
        <pointsize>10</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>

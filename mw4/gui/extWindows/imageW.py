@@ -211,11 +211,11 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
 
-        isAstrometry = bool(self.app.deviceStat.get('astrometry', False))
+        isPlateSolve = bool(self.app.deviceStat.get('plateSolve', False))
         isMount = bool(self.app.deviceStat.get('mount', False))
         isImage = self.imageFileName != ''
-        self.ui.solve.setEnabled(isAstrometry and isImage)
-        self.ui.solveCenter.setEnabled(isAstrometry and isMount and isImage)
+        self.ui.solve.setEnabled(isPlateSolve and isImage)
+        self.ui.solveCenter.setEnabled(isPlateSolve and isMount and isImage)
 
         if self.deviceStat.get('expose', False):
             self.changeStyleDynamic(self.ui.expose, 'running', True)
@@ -779,15 +779,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: success
         """
         self.deviceStat['solve'] = False
-        self.app.astrometry.signals.done.disconnect(self.solveDone)
+        self.app.plateSolve.signals.done.disconnect(self.solveDone)
 
         if not result:
             self.mes.emit(2, 'Image', 'Solving',
-                               'Solving error, result missing')
+                          'Solving error, result missing')
             return False
         if not result['success']:
             self.mes.emit(2, 'Image', 'Solving error',
-                               f'{result.get("message")}')
+                          f'{result.get("message")}')
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
@@ -818,12 +818,12 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         updateFits = self.ui.embedData.isChecked()
-        self.app.astrometry.signals.done.connect(self.solveDone)
-        self.app.astrometry.solveThreading(fitsPath=imagePath,
+        self.app.plateSolve.signals.done.connect(self.solveDone)
+        self.app.plateSolve.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
         self.deviceStat['solve'] = True
         self.mes.emit(0, 'Image', 'Solving',
-                           f'{os.path.basename(imagePath)}')
+                      f'{os.path.basename(imagePath)}')
         return True
 
     def solveCurrent(self):
@@ -837,7 +837,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return: success
         """
-        suc = self.app.astrometry.abort()
+        suc = self.app.plateSolve.abort()
         return suc
 
     def slewSelectedTargetWithDome(self, slewType='normal'):
@@ -891,15 +891,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.deviceStat['solve'] = False
-        self.app.astrometry.signals.done.disconnect(self.solveCenterDone)
+        self.app.plateSolve.signals.done.disconnect(self.solveCenterDone)
 
         if not result:
             self.mes.emit(2, 'Image', 'Solve center error',
-                               'Solving error, result missing')
+                          'Solving error, result missing')
             return False
         if not result['success']:
             self.mes.emit(2, 'Image', 'Solve center error',
-                               f'{result.get("message")}')
+                          f'{result.get("message")}')
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
@@ -919,7 +919,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         suc = self.moveRaDecAbsolute(result['raJ2000S'], result['decJ2000S'])
         if not suc:
             self.mes.emit(2, 'Image', 'Solved center error',
-                               'Centering aborted')
+                          'Centering aborted')
             return False
         return True
 
@@ -932,9 +932,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not os.path.isfile(self.imageFileName):
             return False
 
-        self.app.astrometry.signals.done.connect(self.solveCenterDone)
-        self.app.astrometry.solveThreading(fitsPath=self.imageFileName)
+        self.app.plateSolve.signals.done.connect(self.solveCenterDone)
+        self.app.plateSolve.solveThreading(fitsPath=self.imageFileName)
         self.deviceStat['solve'] = True
         self.mes.emit(0, 'Image', 'Solving center',
-                           f'{os.path.basename(self.imageFileName)}')
+                      f'{os.path.basename(self.imageFileName)}')
         return True

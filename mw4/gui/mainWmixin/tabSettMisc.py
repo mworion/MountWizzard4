@@ -72,7 +72,7 @@ class SettMisc(object):
             self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
             self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
             self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
-            self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
+            self.app.plateSolve.signals.done.connect(lambda: self.playSound('ImageSolved'))
             self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
 
@@ -194,9 +194,9 @@ class SettMisc(object):
     @staticmethod
     def convertData(name, iR):
         """
-        :param name: 
+        :param name:
         :param iR:
-        :return: 
+        :return:
         """
         oR = [0, 0, 0, 0, 0, 0, 0]
         if len(iR) == 0:
@@ -226,8 +226,8 @@ class SettMisc(object):
         """
         if len(act) == 0:
             return False
-        for i, data in enumerate(act):
-            if data != old[i]:
+        for i, dataVal in enumerate(act):
+            if dataVal != old[i]:
                 break
         else:
             return False

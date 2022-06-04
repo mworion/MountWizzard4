@@ -92,7 +92,7 @@ class Mount(mountcontrol.mount.Mount):
     SOCKET_TIMEOUT = 3.5
 
     def __init__(self, host=None, MAC=None,
-                 threadPool=None, pathToData=None,verbose=None):
+                 threadPool=None, pathToData=None, verbose=None):
 
         super().__init__(host=host, MAC=MAC,
                          pathToData=pathToData, verbose=verbose)

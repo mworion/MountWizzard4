@@ -167,7 +167,7 @@ class NINAClass(DriverData, QObject):
             self.log.debug(t)
         else:
             self.mes.emit(2, 'N.I.N.A.', 'Connect error',
-                                   f'{self.deviceName}')
+                          f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
         return suc
@@ -239,14 +239,14 @@ class NINAClass(DriverData, QObject):
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')
                 self.mes.emit(0, 'N.I.N.A.', 'Device remove',
-                                       f'{self.deviceName}')
+                              f'{self.deviceName}')
         else:
             if not self.deviceConnected:
                 self.deviceConnected = True
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f'{self.deviceName}')
                 self.mes.emit(0, 'N.I.N.A.', 'Device found',
-                                       f'{self.deviceName}')
+                              f'{self.deviceName}')
         return True
 
     def pollStatus(self):
@@ -284,7 +284,7 @@ class NINAClass(DriverData, QObject):
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.mes.emit(0, 'N.I.N.A.', 'Device remove',
-                               f'{self.deviceName}')
+                      f'{self.deviceName}')
         return True
 
     def discoverDevices(self):

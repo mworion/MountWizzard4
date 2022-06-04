@@ -108,9 +108,9 @@ def test_updateWindowsStats_1(function):
     function.deviceStat['exposeN'] = False
     function.deviceStat['solve'] = True
     function.app.deviceStat['camera'] = False
-    function.app.deviceStat['astrometry'] = True
+    function.app.deviceStat['plateSolve'] = True
     function.deviceStat['imaging'] = True
-    function.deviceStat['astrometry'] = True
+    function.deviceStat['plateSolve'] = True
 
     suc = function.updateWindowsStats()
     assert suc
@@ -121,9 +121,9 @@ def test_updateWindowsStats_2(function):
     function.deviceStat['exposeN'] = True
     function.deviceStat['solve'] = False
     function.app.deviceStat['camera'] = True
-    function.app.deviceStat['astrometry'] = False
+    function.app.deviceStat['plateSolve'] = False
     function.deviceStat['imaging'] = False
-    function.deviceStat['astrometry'] = False
+    function.deviceStat['plateSolve'] = False
 
     suc = function.updateWindowsStats()
     assert suc
@@ -132,9 +132,9 @@ def test_updateWindowsStats_2(function):
 def test_updateWindowsStats_3(function):
     function.deviceStat['solve'] = False
     function.app.deviceStat['camera'] = True
-    function.app.deviceStat['astrometry'] = False
+    function.app.deviceStat['plateSolve'] = False
     function.deviceStat['imaging'] = False
-    function.deviceStat['astrometry'] = False
+    function.deviceStat['plateSolve'] = False
 
     suc = function.updateWindowsStats()
     assert suc
@@ -485,7 +485,7 @@ def test_abortImage_4(function):
 
 
 def test_solveDone_1(function):
-    function.app.astrometry.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.done.connect(function.solveDone)
     suc = function.solveDone()
     assert not suc
 
@@ -503,7 +503,7 @@ def test_solveDone_2(function):
         'message': 'test',
     }
 
-    function.app.astrometry.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.done.connect(function.solveDone)
     suc = function.solveDone(result=result)
     assert not suc
 
@@ -522,7 +522,7 @@ def test_solveDone_3(function):
         'message': 'test',
     }
 
-    function.app.astrometry.signals.done.connect(function.solveDone)
+    function.app.plateSolve.signals.done.connect(function.solveDone)
     suc = function.solveDone(result=result)
     assert suc
 
@@ -540,7 +540,7 @@ def test_solveImage_2(function):
 def test_solveImage_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     file = 'tests/workDir/image/m51.fit'
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'solveThreading'):
         suc = function.solveImage(imagePath=file)
         assert suc
@@ -629,7 +629,7 @@ def test_moveRaDecAbsolute_3(function):
 
 
 def test_solveCenterDone_1(function):
-    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
     suc = function.solveCenterDone()
     assert not suc
 
@@ -647,7 +647,7 @@ def test_solveCenterDone_2(function):
         'message': 'test',
     }
 
-    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
     suc = function.solveCenterDone(result=result)
     assert not suc
 
@@ -665,7 +665,7 @@ def test_solveCenterDone_3(function):
         'imagePath': 'test',
         'message': 'test',
     }
-    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
     with mock.patch.object(function,
                            'moveRaDecAbsolute',
                            return_value=False):
@@ -686,7 +686,7 @@ def test_solveCenterDone_4(function):
         'imagePath': 'test',
         'message': 'test',
     }
-    function.app.astrometry.signals.done.connect(function.solveCenterDone)
+    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
     with mock.patch.object(function,
                            'moveRaDecAbsolute',
                            return_value=True):
@@ -708,7 +708,7 @@ def test_solveCenter_2(function):
 def test_solveCenter_3(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     function.imageFileName = 'tests/workDir/image/m51.fit'
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'solveThreading'):
         suc = function.solveCenter()
         assert suc

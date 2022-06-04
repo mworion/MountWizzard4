@@ -27,15 +27,15 @@ import numpy as np
 from mountcontrol.convert import convertToAngle
 from base.fitsHeader import getCoordinates, getScale
 from base import tpool
-from logic.astrometry.astrometryNET import AstrometryNET
-from logic.astrometry.astrometryASTAP import AstrometryASTAP
+from logic.plateSolve.astrometryNET import AstrometryNET
+from logic.plateSolve.astap import ASTAP
 
 
-class AstrometrySignals(PyQt5.QtCore.QObject):
+class PlateSolveSignals(PyQt5.QtCore.QObject):
     """
     """
 
-    __all__ = ['AstrometrySignals']
+    __all__ = ['PlateSolveSignals']
 
     done = PyQt5.QtCore.pyqtSignal(object)
     result = PyQt5.QtCore.pyqtSignal(object)
@@ -47,18 +47,18 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
 
 
-class Astrometry:
+class PlateSolve:
     """
-    the class Astrometry inherits all information and handling of astrometry.net
+    the class PlateSolve inherits all information and handling of astrometry.net
     handling
 
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> astrometry = Astrometry(app=None)
+        >>> plateSolve = PlateSolveSignals(app=None)
     """
 
-    __all__ = ['Astrometry',
+    __all__ = ['PlateSolve',
                ]
 
     log = logging.getLogger(__name__)
@@ -68,7 +68,7 @@ class Astrometry:
         self.mes = app.mes
         self.tempDir = app.mwGlob['tempDir']
         self.threadPool = app.threadPool
-        self.signals = AstrometrySignals()
+        self.signals = PlateSolveSignals()
 
         self.data = {}
         self.defaultConfig = {'framework': '',
@@ -76,7 +76,7 @@ class Astrometry:
         self.framework = ''
         self.run = {
             'astrometry': AstrometryNET(self),
-            'astap': AstrometryASTAP(self),
+            'astap': ASTAP(self),
         }
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)

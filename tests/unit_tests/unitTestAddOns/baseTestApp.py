@@ -45,8 +45,8 @@ class Automation:
         return
 
 
-class Astrometry:
-    class AstrometrySignals(QObject):
+class PlateSolve:
+    class PlateSolveSignals(QObject):
         done = pyqtSignal()
         message = pyqtSignal(object)
         serverConnected = pyqtSignal()
@@ -54,7 +54,7 @@ class Astrometry:
         deviceConnected = pyqtSignal(object)
         deviceDisconnected = pyqtSignal(object)
 
-    signals = AstrometrySignals()
+    signals = PlateSolveSignals()
     framework = None
     run = {}
     deviceName = ''
@@ -1115,7 +1115,7 @@ class App(QObject):
     game_sR = pyqtSignal(object, object)
     messageQueue = Queue()
 
-    astrometry = Astrometry()
+    plateSolve = PlateSolve()
     automation = Automation()
     camera = Camera()
     cover = Cover()

@@ -47,7 +47,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         'alpaca': 'ALPACA',
         'sgpro': 'SGPro',
         'nina': 'N.I.N.A.',
-        'astrometry': 'astrometry',
+        'astrometry': 'ASTROMETRY.NET',
         'astap': 'ASTAP',
         'onlineWeather': 'Online Weather',
         'relay': 'Relay',
@@ -157,7 +157,12 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not framework:
             framework = firstFramework
 
-        frameworkTabTextList = [self.framework2tabs[x] for x in self.data['frameworks']]
+        frameworkTabTextList = []
+        for x in self.data['frameworks']:
+            if x not in self.framework2tabs:
+                continue
+            frameworkTabTextList.append(self.framework2tabs[x])
+
         tabWidget = self.ui.tab.findChild(QWidget, framework)
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
@@ -429,14 +434,14 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.updateNINADeviceNameList(deviceNames=deviceNames)
         return True
 
-    def checkAstrometryAvailability(self, framework):
+    def checkplateSolveAvailability(self, framework):
         """
         checkAvailability looks the presence of the binaries and indexes up and
         reports the result back to the gui.
 
         :return: success
         """
-        sucApp, sucIndex = self.app.astrometry.run[framework].checkAvailability()
+        sucApp, sucIndex = self.app.plateSolve.run[framework].checkAvailability()
         if framework == 'astap':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
@@ -485,7 +490,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkAstrometryAvailability('astrometry'):
+        if self.checkPlateSolveAvailability('astrometry'):
             self.ui.astrometryIndexPath.setText(saveFilePath)
         return True
 
@@ -504,7 +509,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if platform.system() == 'Darwin' and ext == '.app':
             saveFilePath += '/Contents/MacOS'
 
-        if self.checkAstrometryAvailability('astap'):
+        if self.checkPlateSolveAvailability('astap'):
             self.ui.astapAppPath.setText(saveFilePath)
         return True
 
@@ -520,7 +525,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkAstrometryAvailability('astap'):
+        if self.checkPlateSolveAvailability('astap'):
             self.ui.astapIndexPath.setText(saveFilePath)
         return True
 

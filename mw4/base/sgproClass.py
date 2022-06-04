@@ -167,7 +167,7 @@ class SGProClass(DriverData, QObject):
             self.log.debug(t)
         else:
             self.mes.emit(2, 'SGPRO', 'Connect error',
-                                   f'{self.deviceName}')
+                          f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
         return suc
@@ -234,7 +234,7 @@ class SGProClass(DriverData, QObject):
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')
                 self.mes.emit(0, 'SGPRO', 'Device remove',
-                                       f'{self.deviceName}')
+                              f'{self.deviceName}')
 
         else:
             if not self.deviceConnected:
@@ -242,7 +242,7 @@ class SGProClass(DriverData, QObject):
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f'{self.deviceName}')
                 self.mes.emit(0, 'SGPRO', 'Device found',
-                                       f'{self.deviceName}')
+                              f'{self.deviceName}')
 
         return True
 
@@ -281,7 +281,7 @@ class SGProClass(DriverData, QObject):
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
         self.mes.emit(0, 'SGPRO', 'Device remove',
-                               f'{self.deviceName}')
+                      f'{self.deviceName}')
         return True
 
     def discoverDevices(self):

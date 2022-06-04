@@ -18,7 +18,6 @@
 
 # external packages
 from PyQt5.QtWidgets import QInputDialog
-import numpy as np
 
 # local import
 

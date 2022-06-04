@@ -325,7 +325,7 @@ def test_modelSolve_2(function):
               'decJNowM': 10,
               }
     function.solveQueue.put(mPoint)
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'solveThreading'):
         suc = function.modelSolve()
         assert suc
@@ -543,7 +543,7 @@ def test_restoreSignalsModelDefault(function):
     function.performanceTimingSignal = function.app.camera.signals.exposed
     function.app.camera.signals.saved.connect(function.modelSolve)
     function.performanceTimingSignal.connect(function.modelSlew)
-    function.app.astrometry.signals.done.connect(function.modelSolveDone)
+    function.app.plateSolve.signals.done.connect(function.modelSolveDone)
     function.collector.ready.connect(function.modelImage)
 
     suc = function.restoreSignalsModelDefault()
@@ -569,7 +569,7 @@ def test_cancelBuild(function):
     assert suc
     with mock.patch.object(function.app.camera,
                            'abort'):
-        with mock.patch.object(function.app.astrometry,
+        with mock.patch.object(function.app.plateSolve,
                                'abort'):
             suc = function.cancelBuild()
             assert suc
@@ -991,7 +991,7 @@ def test_checkModelRunConditions_3(function):
 
 def test_checkModelRunConditions_4(function):
     function.app.data.buildP = [(0, 0, True)] * 5
-    with mock.patch.object(function.ui.astrometryDevice,
+    with mock.patch.object(function.ui.plateSolveDevice,
                            'currentText',
                            return_value='No device'):
         suc = function.checkModelRunConditions()
@@ -1000,7 +1000,7 @@ def test_checkModelRunConditions_4(function):
 
 def test_checkModelRunConditions_5(function):
     function.app.data.buildP = [(0, 0, True)] * 5
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'checkAvailability',
                            return_value=(False, False)):
         suc = function.checkModelRunConditions()
@@ -1009,7 +1009,7 @@ def test_checkModelRunConditions_5(function):
 
 def test_checkModelRunConditions_6(function):
     function.app.data.buildP = [(0, 0, True)] * 5
-    with mock.patch.object(function.app.astrometry,
+    with mock.patch.object(function.app.plateSolve,
                            'checkAvailability',
                            return_value=(True, True)):
         suc = function.checkModelRunConditions()
@@ -1074,8 +1074,8 @@ def test_setupModelPointsAndContextData_1(function):
         timeout = 1
         searchRadius = 1
 
-    function.app.astrometry.framework = 'astap'
-    function.app.astrometry.run = {'astap': Test()}
+    function.app.plateSolve.framework = 'astap'
+    function.app.plateSolve.run = {'astap': Test()}
     function.app.data.buildP = []
     val = function.setupModelPointsAndContextData()
     assert val == []
@@ -1086,8 +1086,8 @@ def test_setupModelPointsAndContextData_2(function):
         timeout = 1
         searchRadius = 1
 
-    function.app.astrometry.framework = 'astap'
-    function.app.astrometry.run = {'astap': Test()}
+    function.app.plateSolve.framework = 'astap'
+    function.app.plateSolve.run = {'astap': Test()}
     function.app.data.buildP = [(0, 0, True), (10, 10, True), (20, 20, True)]
     val = function.setupModelPointsAndContextData()
     assert len(val) == 3
@@ -1103,7 +1103,7 @@ def test_setupModelPointsAndContextData_3(function):
         timeout = 1
         searchRadius = 1
 
-    function.app.astrometry.framework = 'astap'
+    function.app.plateSolve.framework = 'astap'
     function.app.astrometry.run = {'astap': Test()}
     function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
     function.ui.excludeDonePoints.setChecked(True)

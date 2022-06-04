@@ -52,7 +52,7 @@ from logic.telescope.telescope import Telescope
 from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
-from logic.astrometry.astrometry import Astrometry
+from logic.plateSolve.plateSolve import PlateSolve
 
 
 class MountWizzard4(QObject):
@@ -124,7 +124,7 @@ class MountWizzard4(QObject):
             'dome': None,
             'mount': None,
             'camera': None,
-            'astrometry': None,
+            'plateSolve': None,
             'environOverall': None,
             'sensorWeather': None,
             'directWeather': None,
@@ -174,7 +174,7 @@ class MountWizzard4(QObject):
         self.hipparcos = Hipparcos(self)
         self.measure = MeasureData(self)
         self.remote = Remote(self)
-        self.astrometry = Astrometry(self)
+        self.plateSolve = PlateSolve(self)
         self.automation = self.checkAndSetAutomation()
 
         self.uiWindows = {}

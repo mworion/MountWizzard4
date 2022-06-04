@@ -80,7 +80,6 @@ class SettImageStats:
         """
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
-        
         pixelSizeX = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
         pixelSizeY = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
         pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X', 0)
@@ -153,7 +152,7 @@ class SettImageStats:
         """
         url = 'https://github.com/Jusas/WatneyAstrometry/releases/tag/watneyqdb3'
         if not webbrowser.open(url, new=0):
-            self.app.mes('System', 'ImageStats', 'Browser failed', 2)
+            self.app.mes(2, 'System', 'ImageStats', 'Browser failed')
         return True
 
     def openASTAPCatalog(self):
@@ -162,7 +161,7 @@ class SettImageStats:
         """
         url = 'https://www.hnsky.org/astap.htm'
         if not webbrowser.open(url, new=0):
-            self.app.mes('System', 'ImageStats', 'Browser failed', 2)
+            self.app.mes(2, 'System', 'ImageStats', 'Browser failed')
         return True
 
     def openAstrometryCatalog(self):
@@ -171,7 +170,5 @@ class SettImageStats:
         """
         url = 'http://data.astrometry.net/4200/'
         if not webbrowser.open(url, new=0):
-            self.app.mes('System', 'ImageStats', 'Browser failed', 2)
+            self.app.mes(2, 'System', 'ImageStats', 'Browser failed')
         return True
-
-

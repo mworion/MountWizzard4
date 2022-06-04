@@ -17,7 +17,8 @@ Beta version of MW4
 ----------------------------
 3.0.0b0
 
-- add: all charts zoomable
+- add: game controller interface for mount and dome
+- add: all charts could be zoomed and panned
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: almanac now supports UTC / local time
@@ -35,10 +36,16 @@ Beta version of MW4
 - add: satellites: all time values could be UTC or local time now
 - add: image: photometry functions (aberration, roundness, etc.)
 - add: image: solve and center to image
+- add: polling timing for drivers could be set
+- add: calcs for plate solvers (index files etc.)
+- add: integrate meteoblue.com seeing conditions
+- add: local install of documentation in PDF format
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
+- improve: moved to actual jpl kernel de440.bsp for ephemeris calcs
+- improve: simplify and rearrange GUI
 - remove: matplotlib usage and replace with pyqtgraph
 - remove: stacking in imageW as it was never used
 - fix: device selection tab was not properly positioned in device popup
@@ -262,35 +269,3 @@ Version 1.1
 - auto restart MW4 after update
 - adding OBJCTRA / OBJCTDEC keywords when reading FITs
 - upgrade various libraries
-
-Version 1.0
-^^^^^^^^^^^
-1.0.7
-
-- bugfix cooler
-
-1.0.6
-
-- checking if camera has cooler
-- fixing retry model points
-
-1.0.5
-
-- bugfix check for H18 database
-
-1.0.4
-- adding check for ASTAP H17, H18, G17, G18 database
-- increasing the solve limit from 9999 arcsec to 36000 arcsec
-
-1.0.3
-- bugfix binning setting on large sensors
-
-1.0.2
-- bugfix: polar alignment command error
-
-1.0.1
-- bugfix: fields index and app in device popup for astrometry and astap were wrong
-
-1.0.0
-
-- first official release

@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -17464,7 +17464,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>7</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -27593,7 +27593,7 @@ Slew</string>
          <x>5</x>
          <y>90</y>
          <width>366</width>
-         <height>141</height>
+         <height>146</height>
         </rect>
        </property>
        <property name="title">
@@ -27652,7 +27652,7 @@ Updater</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>110</y>
+          <y>115</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -27837,6 +27837,19 @@ Updater</string>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="openPDF">
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>115</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Show documetation</string>
         </property>
        </widget>
       </widget>

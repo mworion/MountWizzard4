@@ -357,6 +357,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'tai-utc.dat': 0,
         'finals2000A.all': 0,
         'finals.data': 0,
+        'mountwizzard4.pdf': 0,
     }
 
     content = QFile(':/data/content.txt')

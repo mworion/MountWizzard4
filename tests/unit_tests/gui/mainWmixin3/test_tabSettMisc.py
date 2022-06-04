@@ -21,6 +21,7 @@ from unittest import mock
 import logging
 import platform
 import os
+import webbrowser
 
 # external packages
 from PyQt5.QtMultimedia import QSound
@@ -784,4 +785,12 @@ def test_setAutomationSpeed_2(function):
                            'checkAutomation',
                            return_value=True):
         suc = function.setAutomationSpeed()
+        assert suc
+
+
+def test_openPDF(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openPDF()
         assert suc

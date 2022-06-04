@@ -41,6 +41,7 @@ releaseNotes = """
 - add: polling timing for drivers could be set
 - add: calcs for plate solvers (index files etc.)
 - add: integrate meteoblue.com seeing conditions
+- add: local install of documentation in PDF format
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui
 - improve: iers download messages

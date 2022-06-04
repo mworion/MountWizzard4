@@ -31,6 +31,7 @@ import importlib_metadata
 from astropy.utils import iers
 from astropy.utils import data
 import hid
+import webbrowser
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
@@ -66,6 +67,7 @@ class SettMisc(object):
         self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update3s.connect(self.populateGameControllerList)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
+        self.ui.openPDF.clicked.connect(self.openPDF)
 
         if pConf.isAvailable:
             self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -605,4 +607,15 @@ class SettMisc(object):
 
         self.app.automation.automateFast = self.ui.automateFast.isChecked()
         self.app.automation.automateSlow = self.ui.automateSlow.isChecked()
+        return True
+
+    def openPDF(self):
+        """
+        :return:
+        """
+        fileName = './data/mountwizzard4.pdf'
+        filePath = os.path.abspath(fileName)
+        url = f'file://{filePath}'
+        if not webbrowser.open(url, new=0):
+            self.app.mes(2, 'System', 'Setting Misc', 'Browser failed')
         return True

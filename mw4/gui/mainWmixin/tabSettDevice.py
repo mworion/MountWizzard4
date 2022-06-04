@@ -63,7 +63,7 @@ class SettDevice:
         start new driver
     """
 
-    def __init__(self, app=None, ui=None, clickable=None):
+    def __init__(self):
         self.popupUi = None
         self.drivers = {
             'dome': {

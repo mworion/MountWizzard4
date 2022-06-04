@@ -9753,11 +9753,11 @@ class Ui_MainWindow(object):
         self.mountOff.raise_()
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(10)
+        self.mainTabWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
         self.toolsTabWidget.setCurrentIndex(0)
-        self.settingsTabWidget.setCurrentIndex(7)
+        self.settingsTabWidget.setCurrentIndex(0)
         self.tabDomeExplain.setCurrentIndex(9)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cameraDevice, self.cameraSetup)
@@ -11544,7 +11544,8 @@ class Ui_MainWindow(object):
         self.versionActual.setText(_translate("MainWindow", "-"))
         self.versionReleaseNotes.setToolTip(_translate("MainWindow", "Show only beta versions of MountWizzard4"))
         self.versionReleaseNotes.setText(_translate("MainWindow", "Show release notes"))
-        self.openPDF.setText(_translate("MainWindow", "Show documetation"))
+        self.openPDF.setToolTip(_translate("MainWindow", "<html><head/><body><p>Opens the actual PDF documentation for MW4</p></body></html>"))
+        self.openPDF.setText(_translate("MainWindow", "Show documentation"))
         self.CopyrightGroup_2.setTitle(_translate("MainWindow", "MountWizzard4 (C) 2019-2022 MWORION"))
         self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"

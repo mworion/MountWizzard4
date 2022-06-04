@@ -40,12 +40,14 @@ Beta version of MW4
 - add: calcs for plate solvers (index files etc.)
 - add: integrate meteoblue.com seeing conditions
 - add: local install of documentation in PDF format
+- add: support for python 3.10
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui
 - improve: iers download messages
 - improve: optimized DSO path generation (always fit, less params)
 - improve: moved to actual jpl kernel de440.bsp for ephemeris calcs
 - improve: simplify and rearrange GUI
+- improve: use latest PyQt5 version for python 3.10
 - remove: matplotlib usage and replace with pyqtgraph
 - remove: stacking in imageW as it was never used
 - fix: device selection tab was not properly positioned in device popup

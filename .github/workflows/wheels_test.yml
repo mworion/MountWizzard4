@@ -25,7 +25,7 @@ jobs:
             distro: ubuntu20.04
 
     steps:
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v3
       - uses: uraimo/run-on-arch-action@v2.1.1
         name: build_artifact
         id: build
@@ -47,32 +47,11 @@ jobs:
           run: |
             ls -la /root/wheels/*.*
             
-            if [ -f "/root/wheels/astropy-4.3.1-cp39-cp39-linux_aarch64.whl" ]
-            then
-              echo "astropy==4.3.1 existing"
-            else
-              echo "astropy==4.3.1 build"
-            fi
-            
-            if [ -f "/root/wheels/pyerfa-2.0.0-cp39-cp39m-linux_aarch64.whl" ]
-            then
-              echo "pyerfa==2.0.0 existing"
-            else
-              echo "pyerfa==2.0.0 build"
-            fi
-            
-            if [ -f "/root/wheels/sep-1.2.0-cp39-cp39-linux_aarch64.whl" ]
-            then
-              echo "sep==1.2.0 existing"
-            else
-              echo "sep==1.2.0 build"
-            fi
-            
             if [ -f "/root/wheels/sgp4-2.20-cp39-cp39-linux_aarch64.whl" ]
             then
-              echo "sgp4==2.20 existing"
+              echo "sgp4==2.21 existing"
             else
-              echo "sgp4==2.20 build"
+              echo "sgp4==2.21 build"
             fi
             
             if [ -f "/root/wheels/PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl" ]
@@ -82,9 +61,9 @@ jobs:
               echo "pyqt5_sip==12.8.1 build"
             fi
             
-            if [ -f "/root/wheels/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
+            if [ -f "/root/wheels/PyQt5-5.15.6-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
             then
-              echo "pyqt5==5.15.4 existing"
+              echo "pyqt5==5.15.6 existing"
             else
-              echo "pyqt5==5.15.4 build"
+              echo "pyqt5==5.15.6 build"
             fi

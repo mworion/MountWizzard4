@@ -27,7 +27,7 @@ jobs:
   build_widgets_resource:
     runs-on: 'ubuntu-latest'
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Cache node modules
       uses: actions/cache@v2
@@ -41,7 +41,7 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
           
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v3
       with:
         python-version: '3.9'
 
@@ -68,7 +68,7 @@ jobs:
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
 
     - name: upload_package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: dist
         path: dist
@@ -83,7 +83,7 @@ jobs:
         python-version: [3.9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
   
       - name: setup_python_windows ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -93,7 +93,7 @@ jobs:
       - name: show_python_version
         run: python -c 'import platform; print(platform.architecture()[0])'
   
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
@@ -105,7 +105,7 @@ jobs:
           target: dist/
 
       - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1
+        uses: suisei-cn/actions-download-file@v2
         with:
           url: ${{ env.gh }}Windows/MW4_Run.bat
           target: dist/
@@ -139,11 +139,11 @@ jobs:
       - uses: actions/checkout@v2
   
       - name: setup_python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
   
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
@@ -197,13 +197,13 @@ jobs:
         python-version: [3.9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: setup_python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
   
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
@@ -235,4 +235,3 @@ jobs:
           ./MW4_Run.command
           ls -la
           cat run.log
-

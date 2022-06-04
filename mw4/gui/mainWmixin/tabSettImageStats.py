@@ -26,6 +26,7 @@ import numpy as np
 class SettImageStats:
     """
     """
+    WATNEY = []
 
     def __init__(self):
         self.ui.aperture.valueChanged.connect(self.updateImageStats)
@@ -89,5 +90,7 @@ class SettImageStats:
         self.guiSetText(self.ui.magLimit, '2.2f', magLimit)
         self.guiSetText(self.ui.FOVX, '2.2f', FOVX)
         self.guiSetText(self.ui.FOVY, '2.2f', FOVY)
+        self.guiSetText(self.ui.focalLengthStats, '3.0f', focalLength)
+        self.guiSetText(self.ui.apertureStats, '3.0f', aperture)
 
         return True

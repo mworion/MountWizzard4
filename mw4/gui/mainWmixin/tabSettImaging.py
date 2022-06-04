@@ -110,10 +110,7 @@ class SettImaging:
         humidityCCD = self.app.camera.data.get('CCD_HUMIDITY.HUMIDITY')
         coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON')
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW')
-        pixelSizeX = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_X')
-        pixelSizeY = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y')
         pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X')
-        pixelY = self.app.camera.data.get('CCD_INFO.CCD_MAX_Y')
 
         enable = coolerTemp is not None
         self.ui.coolerTemp.setEnabled(enable)
@@ -131,14 +128,7 @@ class SettImaging:
         enable = downloadFast is not None
         self.ui.downloadFast.setEnabled(enable)
         self.ui.downloadSlow.setEnabled(enable)
-        enable = pixelSizeX is not None
-        self.ui.pixelSizeX.setEnabled(enable)
-        enable = pixelSizeY is not None
-        self.ui.pixelSizeY.setEnabled(enable)
         enable = pixelX is not None
-        self.ui.pixelX.setEnabled(enable)
-        enable = pixelY is not None
-        self.ui.pixelY.setEnabled(enable)
         self.ui.subFrame.setEnabled(enable)
         return True
 

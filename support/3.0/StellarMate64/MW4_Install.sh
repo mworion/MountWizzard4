@@ -145,9 +145,9 @@ elif [ "${P_VER:0:10}" == "python3.10" ]; then
   PY="${PY310}"
 fi
 
-pip install "${PRE}"/sgp4-2.20"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/PyQt5_sip-12.8.1"${PY}"linux"${POST}" >> install.log 2>&1
-pip install "${PRE}"/PyQt5-5.15.6-cp36.cp37.cp38.cp39-abi3-manylinux2014"${POST}" >> install.log 2>&1
+pip install "${PRE}"/sgp4-2.21"${PY}"linux"${POST}" >> install.log 2>&1
+pip install "${PRE}"/PyQt5_sip-12.10.1"${PY}"linux"${POST}" >> install.log 2>&1
+pip install "${PRE}"/PyQt5-5.15.6-cp37-abi3-manylinux1"${POST}" >> install.log 2>&1
 
 echo
 echo --------------------------------------------------------

@@ -56,6 +56,8 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
+            apt-get install -y apt-utils
+            apt-get install -y --fix-missing
   
           # Produce a binary artifact and place it in the mounted volume
           run: |

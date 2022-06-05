@@ -71,3 +71,12 @@ class VideoWindow2(VideoWindow):
         config['width'] = self.width()
         config['streamURL'] = self.ui.streamURL.text()
         return True
+
+    def closeEvent(self, closeEvent):
+        """
+        :param closeEvent:
+        :return:
+        """
+        self.pixmapReady.disconnect(self.receivedImage)
+        self.storeConfig()
+        super().closeEvent(closeEvent)

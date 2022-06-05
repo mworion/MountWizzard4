@@ -17,17 +17,20 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 
 # external packages
+from PyQt5.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.videoW2 import VideoWindow2
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-    func = VideoWindow(app=App())
+    func = VideoWindow2(app=App())
     yield func
 
 
@@ -75,3 +78,12 @@ def test_storeConfig_2(function):
 
     suc = function.storeConfig()
     assert suc
+
+
+def test_closeEvent_1(function):
+    with mock.patch.object(function,
+                           'stopVideoStream'):
+        with mock.patch.object(MWidget,
+                               'closeEvent'):
+            function.showWindow()
+            function.closeEvent(QCloseEvent)

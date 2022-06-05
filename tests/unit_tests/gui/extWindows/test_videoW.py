@@ -36,7 +36,7 @@ def function(qapp):
 
 def test_closeEvent_1(function):
     with mock.patch.object(function,
-                           'show'):
+                           'stopVideoStream'):
         with mock.patch.object(MWidget,
                                'closeEvent'):
             function.showWindow()
@@ -44,12 +44,8 @@ def test_closeEvent_1(function):
 
 
 def test_colorChange(function):
-    with mock.patch.object(function,
-                           'setupMessage'):
-        with mock.patch.object(function,
-                               'clearMessageTable'):
-            suc = function.colorChange()
-            assert suc
+    suc = function.colorChange()
+    assert suc
 
 
 def test_showWindow_1(function):

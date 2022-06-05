@@ -19,6 +19,7 @@
 import time
 
 # external packages
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QSizePolicy
 import cv2
@@ -37,6 +38,7 @@ class VideoWindow(toolsQtWidget.MWidget):
     """
 
     __all__ = ['VideoWindow']
+    pixmapReady = pyqtSignal(object)
 
     def __init__(self, app):
         super().__init__()
@@ -52,9 +54,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.pixmapReady.disconnect(self.receivedImage)
         self.stopVideoStream()
-        self.storeConfig()
         super().closeEvent(closeEvent)
 
     def colorChange(self):

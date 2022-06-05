@@ -51,7 +51,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.runningCounter = 0
         self.imageSkipFactor = 100
         self.targetFrameRate = 1
-        self.smoothSkipFactor = np.zeros(50)
+        self.smoothSkipRatio = np.zeros(50)
 
     def closeEvent(self, closeEvent):
         """
@@ -99,11 +99,11 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         if self.runningCounter < 50:
             deltaT = (time.time() - start)
-            actualSkipFactor = int(1 / (self.targetFrameRate * deltaT))
-            self.smoothSkipFactor[self.runningCounter] = actualSkipFactor
+            actualSkipRatio = self.targetFrameRate * deltaT
+            self.smoothSkipRatio[self.runningCounter] = actualSkipRatio
 
         elif self.runningCounter == 50:
-            factor = np.maximum(int(np.mean(self.smoothSkipFactor[25:])), 1)
+            factor = int(1 / np.maximum(int(np.mean(self.smoothSkipRatio[25:])), 1))
             self.imageSkipFactor = factor
 
         self.runningCounter += 1

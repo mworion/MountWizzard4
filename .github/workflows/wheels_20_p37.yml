@@ -78,7 +78,7 @@ jobs:
             
             ls /root/wheels/*.*
 
-            if [ ! -f "/root/wheels/sgp4-2.21-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" ]
+            if [ ! -f "/root/wheels/sgp4-2.21-cp37-cp37-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" ]
             then
               pip wheel sgp4==2.21 -w "/root/wheels"
             fi

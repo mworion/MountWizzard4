@@ -86,11 +86,6 @@ jobs:
             then
               pip wheel pyqt5_sip==12.8.1 -w "/root/wheels"
             fi
-            
-            if [ ! -f "/root/wheels/PyQt5-5.15.6-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl" ]
-            then
-              pip wheel pyqt5==5.15.6 -w "/root/wheels"
-            fi
 
       - name: Update changes in GitHub repository
         continue-on-error: true

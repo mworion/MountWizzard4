@@ -84,7 +84,7 @@ issues on GitHub.
     :maxdepth: 2
 
     features
-    install/index
     architecture/index
+    install/index
     changelog
     changelogScripts

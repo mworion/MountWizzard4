@@ -1,16 +1,18 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Welcome to MountWizzard4! &#8212; MountWizzard4 3.0.0b0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,8 +47,8 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Feature Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install/index.html">Install Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Install Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelogScripts.html">Changelog for Scripts</a></li>
 </ul>
@@ -68,7 +70,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -85,15 +87,15 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-mountwizzard4">
-<h1>Welcome to MountWizzard4!<a class="headerlink" href="#welcome-to-mountwizzard4" title="Permalink to this headline">¶</a></h1>
+  <section id="welcome-to-mountwizzard4">
+<h1>Welcome to MountWizzard4!<a class="headerlink" href="#welcome-to-mountwizzard4" title="Permalink to this heading">¶</a></h1>
 <p>MW4 is a general utility for 10micron users for improving the workflow for astronomy
 work. It runs on Windows11, Windows10 (Win7 should be fine, but it will be not
 tested), Mac OSX (beginning from 10.12 to 11.x) including M1 variants if Rosetta is
 used and Linux (Ubuntu from 16.04 to 20.04). If you have some knowledge around
 Raspberry Pi’s and other SOC, you might be able to install MW4 on a RPi3+, RPi4.</p>
-<div class="section" id="before-starting">
-<h2>Before starting<a class="headerlink" href="#before-starting" title="Permalink to this headline">¶</a></h2>
+<section id="before-starting">
+<h2>Before starting<a class="headerlink" href="#before-starting" title="Permalink to this heading">¶</a></h2>
 <p>First let us have a look to the basic architecture: MW4 is an application
 installed on your external computer which is connected to the mount computer via
 an IP connection. The best choice is to use a wired connection. As the 10micron
@@ -104,17 +106,17 @@ for the user by using the command protocol provided by 10micron.</p>
 <p>The basic idea is that MW4 will try to generate “digital twin” for the mount. All
 parameter changes for the mount will be sent to it and changes of it’s state are
 polled to make status visible in MW4. Therefore regular polling of data is needed.</p>
-</div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>Beside this documentation there is a youtube channel available with descriptions,
 previews, explanations:</p>
 <p><a class="reference external" href="https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA">https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA</a></p>
 <p>For full operation MW4 supports several frameworks: INDI / INDIGO, ASCOM, Alpaca
 and in addition Sequence Generator Pro and N.I.N.A. as camera device.</p>
-</div>
-<div class="section" id="known-limitations">
-<h2>Known limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="known-limitations">
+<h2>Known limitations<a class="headerlink" href="#known-limitations" title="Permalink to this heading">¶</a></h2>
 <p>MW4 does only support python 3.7 - 3.9 right now. The reason for that is the
 lack of precompiled packages. Some features are limited to windows as they need
 the original 10micron updater program for execution.</p>
@@ -122,9 +124,9 @@ the original 10micron updater program for execution.</p>
 need to choose the ASCOM setup (drivers etc.) and the python install accordingly.</p>
 <p>If you are using the 10micron updater features on windows, MW4 remote controls the
 updater application. Please do not interrupt this automation.</p>
-</div>
-<div class="section" id="reporting-issues">
-<h2>Reporting issues<a class="headerlink" href="#reporting-issues" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="reporting-issues">
+<h2>Reporting issues<a class="headerlink" href="#reporting-issues" title="Permalink to this heading">¶</a></h2>
 <p>To have an eye on your setup here are some topics which you could check:</p>
 <ul class="simple">
 <li><p>Mount connection available and stable. Wifi might have performance problems.
@@ -155,13 +157,13 @@ issues on GitHub.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Feature Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install/index.html">Install Process</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install/index.html#an-example-setup">An example setup</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Architectural topics and math</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="architecture/a_time.html">Handling time</a></li>
 <li class="toctree-l2"><a class="reference internal" href="architecture/calculations.html">Precision of internal calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Install Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install/index.html#an-example-setup">An example setup</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
@@ -177,8 +179,8 @@ issues on GitHub.</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -191,7 +193,7 @@ issues on GitHub.</p>
       &copy;2022, mworion.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -53,9 +53,9 @@ jobs:
           # builds don't have to re-install them. The image layer is cached
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
+            # apt-get update -y
+            # apt-get upgrade -y
           install: |
-            apt-get update -y
-            apt-get upgrade -y
             apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
             apt-get install -y software-properties-common
             add-apt-repository ppa:deadsnakes/ppa

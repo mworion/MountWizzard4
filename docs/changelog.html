@@ -1,21 +1,23 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Changelog &#8212; MountWizzard4 3.0.0b0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Changelog for Scripts" href="changelogScripts.html" />
-    <link rel="prev" title="Precision of internal calculations" href="architecture/calculations.html" />
+    <link rel="prev" title="Install Platesolvers" href="install/platesolvers.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -46,8 +48,8 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="features.html">Feature Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install/index.html">Install Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Install Process</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#ideas-for-the-future">Ideas for the future</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#beta-version-of-mw4">Beta version of MW4</a></li>
@@ -61,7 +63,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="architecture/calculations.html" title="previous chapter">Precision of internal calculations</a></li>
+      <li>Previous: <a href="install/platesolvers.html" title="previous chapter">Install Platesolvers</a></li>
       <li>Next: <a href="changelogScripts.html" title="next chapter">Changelog for Scripts</a></li>
   </ul></li>
 </ul>
@@ -75,7 +77,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -92,12 +94,12 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">¶</a></h1>
 <p>The changelog contains the user related function or environment updates. For a
 detailed changes list, please refer to the commit list on GitHub.</p>
-<div class="section" id="ideas-for-the-future">
-<h2>Ideas for the future<a class="headerlink" href="#ideas-for-the-future" title="Permalink to this headline">¶</a></h2>
+<section id="ideas-for-the-future">
+<h2>Ideas for the future<a class="headerlink" href="#ideas-for-the-future" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>implementing Baader dome control e.g. 10micron dome interface</p></li>
 <li><p>split profiles in base and add-on</p></li>
@@ -107,12 +109,13 @@ detailed changes list, please refer to the commit list on GitHub.</p>
 <li><p>split imaging tab into operating and statistics</p></li>
 <li><p>satellite scheduler</p></li>
 </ul>
-</div>
-<div class="section" id="beta-version-of-mw4">
-<h2>Beta version of MW4<a class="headerlink" href="#beta-version-of-mw4" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="beta-version-of-mw4">
+<h2>Beta version of MW4<a class="headerlink" href="#beta-version-of-mw4" title="Permalink to this heading">¶</a></h2>
 <p>3.0.0b0</p>
 <ul class="simple">
-<li><p>add: all charts zoomable</p></li>
+<li><p>add: game controller interface for mount and dome</p></li>
+<li><p>add: all charts could be zoomed and panned</p></li>
 <li><p>add: measure: window has max 5 charts now (from 3)</p></li>
 <li><p>add: measure: more values (time delta, focus, etc)</p></li>
 <li><p>add: almanac now supports UTC / local time</p></li>
@@ -128,19 +131,33 @@ detailed changes list, please refer to the commit list on GitHub.</p>
 <li><p>add: hemisphere: edit horizon model much more efficient</p></li>
 <li><p>add: dome: control azimuth move CW / CCW for INDI</p></li>
 <li><p>add: satellites: all time values could be UTC or local time now</p></li>
+<li><p>add: image: photometry functions (aberration, roundness, etc.)</p></li>
+<li><p>add: image: solve and center to image</p></li>
+<li><p>add: polling timing for drivers could be set</p></li>
+<li><p>add: calcs for plate solvers (index files etc.)</p></li>
+<li><p>add: integrate meteoblue.com seeing conditions</p></li>
+<li><p>add: local install of documentation in PDF format</p></li>
+<li><p>add: support for python 3.10</p></li>
 <li><p>improve: complete rework of charting: performance and functions</p></li>
 <li><p>improve: cleanup of gui</p></li>
 <li><p>improve: iers download messages</p></li>
 <li><p>improve: optimized DSO path generation (always fit, less params)</p></li>
+<li><p>improve: moved to actual jpl kernel de440.bsp for ephemeris calcs</p></li>
+<li><p>improve: simplify and rearrange GUI</p></li>
+<li><p>improve: use latest PyQt5 version for python 3.10</p></li>
 <li><p>remove: matplotlib usage and replace with pyqtgraph</p></li>
 <li><p>remove: stacking in imageW as it was never used</p></li>
 <li><p>fix: device selection tab was not properly positioned in device popup</p></li>
 </ul>
-</div>
-<div class="section" id="released-version-of-mw4">
-<h2>Released version of MW4<a class="headerlink" href="#released-version-of-mw4" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="version-2-2">
-<h3>Version 2.2<a class="headerlink" href="#version-2-2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="released-version-of-mw4">
+<h2>Released version of MW4<a class="headerlink" href="#released-version-of-mw4" title="Permalink to this heading">¶</a></h2>
+<section id="version-2-2">
+<h3>Version 2.2<a class="headerlink" href="#version-2-2" title="Permalink to this heading">¶</a></h3>
+<p>2.2.4</p>
+<ul class="simple">
+<li><p>fix: remove race condition for image file causing ASTAP to fail</p></li>
+</ul>
 <p>2.2.3</p>
 <ul class="simple">
 <li><p>fix: mount orientation in southern hemisphere</p></li>
@@ -193,9 +210,9 @@ detailed changes list, please refer to the commit list on GitHub.</p>
 <li><p>upgrade websocket-client library to 1.2.3</p></li>
 <li><p>fix: simulator in southern hemisphere</p></li>
 </ul>
-</div>
-<div class="section" id="version-2-1">
-<h3>Version 2.1<a class="headerlink" href="#version-2-1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="version-2-1">
+<h3>Version 2.1<a class="headerlink" href="#version-2-1" title="Permalink to this heading">¶</a></h3>
 <p>2.1.7</p>
 <ul class="simple">
 <li><p>add: 12 build point option for model generation</p></li>
@@ -260,9 +277,9 @@ detailed changes list, please refer to the commit list on GitHub.</p>
 <li><p>remove: push time from mount to computer: in reliable and unstable</p></li>
 <li><p>fix: segfault in qt5lib on ubuntu</p></li>
 </ul>
-</div>
-<div class="section" id="version-2-0">
-<h3>Version 2.0<a class="headerlink" href="#version-2-0" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="version-2-0">
+<h3>Version 2.0<a class="headerlink" href="#version-2-0" title="Permalink to this heading">¶</a></h3>
 <p>2.0.6</p>
 <ul class="simple">
 <li><p>fixes</p></li>
@@ -331,9 +348,9 @@ detailed changes list, please refer to the commit list on GitHub.</p>
 <li><p>fix using builtins for skyfield and rotation update</p></li>
 <li><p>fix plate solve sync function</p></li>
 </ul>
-</div>
-<div class="section" id="version-1-1">
-<h3>Version 1.1<a class="headerlink" href="#version-1-1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="version-1-1">
+<h3>Version 1.1<a class="headerlink" href="#version-1-1" title="Permalink to this heading">¶</a></h3>
 <p>1.1.1</p>
 <ul class="simple">
 <li><p>adding fix for INDI cameras sending two times BUSY, EXP=0</p></li>
@@ -352,38 +369,9 @@ detailed changes list, please refer to the commit list on GitHub.</p>
 <li><p>adding OBJCTRA / OBJCTDEC keywords when reading FITs</p></li>
 <li><p>upgrade various libraries</p></li>
 </ul>
-</div>
-<div class="section" id="version-1-0">
-<h3>Version 1.0<a class="headerlink" href="#version-1-0" title="Permalink to this headline">¶</a></h3>
-<p>1.0.7</p>
-<ul class="simple">
-<li><p>bugfix cooler</p></li>
-</ul>
-<p>1.0.6</p>
-<ul class="simple">
-<li><p>checking if camera has cooler</p></li>
-<li><p>fixing retry model points</p></li>
-</ul>
-<p>1.0.5</p>
-<ul class="simple">
-<li><p>bugfix check for H18 database</p></li>
-</ul>
-<p>1.0.4
-- adding check for ASTAP H17, H18, G17, G18 database
-- increasing the solve limit from 9999 arcsec to 36000 arcsec</p>
-<p>1.0.3
-- bugfix binning setting on large sensors</p>
-<p>1.0.2
-- bugfix: polar alignment command error</p>
-<p>1.0.1
-- bugfix: fields index and app in device popup for astrometry and astap were wrong</p>
-<p>1.0.0</p>
-<ul class="simple">
-<li><p>first official release</p></li>
-</ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>
@@ -396,7 +384,7 @@ detailed changes list, please refer to the commit list on GitHub.</p>
       &copy;2022, mworion.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

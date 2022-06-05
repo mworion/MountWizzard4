@@ -1,16 +1,18 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Install Python &#8212; MountWizzard4 3.0.0b0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -46,11 +48,11 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features.html">Feature Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Install Process</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#an-example-setup">An example setup</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelogScripts.html">Changelog for Scripts</a></li>
 </ul>
@@ -75,7 +77,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -92,8 +94,8 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="install-python">
-<h1>Install Python<a class="headerlink" href="#install-python" title="Permalink to this headline">¶</a></h1>
+  <section id="install-python">
+<h1>Install Python<a class="headerlink" href="#install-python" title="Permalink to this heading">¶</a></h1>
 <p>MW4 is a python3 application based on some python libraries and uses Qt as
 framework for GUI. Different to past versions of MW there will be no one box
 solution (MAC bundle, EXE File, etc.) available. As MW4 is python3 and comes with
@@ -122,8 +124,8 @@ available from python 3.8.2 on. Earlier python versions have issues. If you
 would like to upgrade an older python installation, please see the comments
 below for windows. On other OS there is no need for doing that.</p>
 </div>
-<div class="section" id="windows">
-<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<section id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this heading">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Windows makes a hard split between 32bit and 64bit versions. If your
@@ -143,17 +145,17 @@ is selected and to install for a single user if you want to use the scripts.</p>
 all users. MW4 does not need admin rights to run, so please choose the variant for
 a single users if you want wo use the installation scripts. They depend on access
 rights as a normal user and you might run into troubles using different modes!</p>
-</div>
-<div class="section" id="mac-osx">
-<h2>Mac OSx<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="mac-osx">
+<h2>Mac OSx<a class="headerlink" href="#mac-osx" title="Permalink to this heading">¶</a></h2>
 <p>Depending on your OSx version please download the installer for 3.9 from:</p>
 <p><a class="reference external" href="https://www.python.org/downloads/mac-osx/">https://www.python.org/downloads/mac-osx/</a></p>
 <p>and follow the installation procedure. Depending on your preference you could install
 python3 for a single user or for all users. MW4 does not need admin rights to run,
 so please feel free to choose the variant you would like to use.</p>
-</div>
-<div class="section" id="ubuntu">
-<h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="ubuntu">
+<h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this heading">¶</a></h2>
 <p>Referring to Ubuntu 18.04 LTS as it comes with python3.6. This should work, but
 you could upgrade to python 3.9.x. This could be done by adding an appropriate
 repo, which enables this version.</p>
@@ -167,7 +169,7 @@ descriptions out, so please search for it in case you don’t know exactly.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span> <span class="n">ppa</span><span class="p">:</span><span class="n">deadsnakes</span><span class="o">/</span><span class="n">ppa</span>
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">upgrade</span>
-<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="o">.</span><span class="mi">8</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="mf">.8</span>
 </pre></div>
 </div>
 <p>Please check the right version and the availability of virtualenv in your setup. If
@@ -176,15 +178,15 @@ scripts with:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="o">-</span><span class="n">virtualenv</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="updating-python-in-your-existing-environment">
-<h2>Updating python in your existing environment<a class="headerlink" href="#updating-python-in-your-existing-environment" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="updating-python-in-your-existing-environment">
+<h2>Updating python in your existing environment<a class="headerlink" href="#updating-python-in-your-existing-environment" title="Permalink to this heading">¶</a></h2>
 <p>This is a step which should be done if you are familiar with some pc experience.
 Hence the steps are not complicated, the setups of you environment might be
 somehow special and need a adjusted treatment. The following steps explain a
 standard procedure.</p>
-<div class="section" id="update-python-version-on-your-windows-computer">
-<h3>Update python version on your windows computer<a class="headerlink" href="#update-python-version-on-your-windows-computer" title="Permalink to this headline">¶</a></h3>
+<section id="update-python-version-on-your-windows-computer">
+<h3>Update python version on your windows computer<a class="headerlink" href="#update-python-version-on-your-windows-computer" title="Permalink to this heading">¶</a></h3>
 <p>Please go to the python website an download the appropriate python version. On
 windows please check the selection of the 32bit or 64bit correctly. It should be
 the version you have already chosen.</p>
@@ -209,9 +211,9 @@ the updated one)</p>
 be safe in case of errors in the update process. This could simply be done by
 making a copy of your work folder.</p>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>
@@ -224,7 +226,7 @@ making a copy of your work folder.</p>
       &copy;2022, mworion.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -115,7 +115,7 @@ def test_workerVideoStream_1(function):
                                'sendImage'):
             with mock.patch.object(function,
                                    'calcSkipFactor'):
-                suc = function.workerVideo()
+                suc = function.workerVideo('test')
                 assert suc
 
 
@@ -142,12 +142,12 @@ def test_workerVideoStream_2(function):
                                'sendImage'):
             with mock.patch.object(function,
                                    'calcSkipFactor'):
-                suc = function.workerVideo()
+                suc = function.workerVideo('test')
                 assert suc
 
 
 def test_startVideoStream_1(function):
-    function.ui.streamURL.setText('')
+    function.ui.videoURL.setText('')
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.startVideo()
@@ -155,7 +155,7 @@ def test_startVideoStream_1(function):
 
 
 def test_startVideoStream_2(function):
-    function.ui.streamURL.setText('test')
+    function.ui.videoURL.setText('test')
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.startVideo()

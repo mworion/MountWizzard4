@@ -22156,7 +22156,7 @@ Slew</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>15</y>
+         <y>325</y>
          <width>366</width>
          <height>61</height>
         </rect>
@@ -22233,7 +22233,7 @@ Slew</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>220</y>
+         <y>335</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -22326,8 +22326,8 @@ Slew</string>
       <widget class="QGroupBox" name="FirmwareGroup">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>285</y>
+         <x>400</x>
+         <y>15</y>
          <width>366</width>
          <height>101</height>
         </rect>
@@ -22678,7 +22678,7 @@ Slew</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>110</y>
+         <y>170</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -22891,8 +22891,8 @@ Slew</string>
       <widget class="QGroupBox" name="GroupClockSync">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>220</y>
+         <x>5</x>
+         <y>240</y>
          <width>366</width>
          <height>66</height>
         </rect>
@@ -27580,7 +27580,7 @@ Slew</string>
          <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
         </property>
         <property name="text">
-         <string>online and update data files if necessary</string>
+         <string>Enable download data and program files</string>
         </property>
         <property name="checked">
          <bool>false</bool>

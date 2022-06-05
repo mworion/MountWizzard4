@@ -83,7 +83,7 @@ jobs:
             
             if [ ! -f "/root/wheels/PyQt5_sip-12.10.1-cp37-cp37m-linux_aarch64.whl" ]
             then
-              pip wheel pyqt5_sip==12.8.1 -w "/root/wheels"
+              pip wheel pyqt5_sip==12.10.1 -w "/root/wheels"
             fi
             
             if [ ! -f "/root/wheels/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl" ]

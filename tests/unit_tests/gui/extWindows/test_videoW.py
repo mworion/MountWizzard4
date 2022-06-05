@@ -18,9 +18,12 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import time
 
 # external packages
 from PyQt5.QtGui import QCloseEvent, QPixmap
+import numpy as np
+import cv2
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -55,10 +58,92 @@ def test_showWindow_1(function):
         assert suc
 
 
+def test_sendImage(function):
+    class Test:
+        @staticmethod
+        def retrieve():
+            return (True, np.ones((10, 10, 1)))
+
+    function.capture = Test()
+
+    with mock.patch.object(cv2,
+                           'cvtColor',
+                           return_value=np.ones((10, 10, 1))):
+        suc = function.sendImage()
+        assert suc
+
+
+def test_calcSkipFactor_1(function):
+    function.runningCounter = 10
+    with mock.patch.object(time,
+                           'time',
+                           return_value=3):
+        suc = function.calcSkipFactor(1)
+        assert suc
+        assert function.runningCounter == 11
+
+
+def test_calcSkipFactor_2(function):
+    function.runningCounter = 50
+    with mock.patch.object(time,
+                           'time',
+                           return_value=3):
+        suc = function.calcSkipFactor(1)
+        assert suc
+        assert function.runningCounter == 51
+
+
 def test_workerVideoStream_1(function):
-    function.running = False
-    suc = function.workerVideoStream()
-    assert suc
+    class Test:
+        @staticmethod
+        def isOpened():
+            return True
+
+        @staticmethod
+        def grab():
+            return False
+
+        @staticmethod
+        def release():
+            return
+
+    function.running = True
+    with mock.patch.object(cv2,
+                           'VideoCapture',
+                           return_value=Test()):
+        with mock.patch.object(function,
+                               'sendImage'):
+            with mock.patch.object(function,
+                                   'calcSkipFactor'):
+                suc = function.workerVideoStream()
+                assert suc
+
+
+def test_workerVideoStream_2(function):
+    class Test:
+        @staticmethod
+        def isOpened():
+            return True
+
+        @staticmethod
+        def grab():
+            function.running = False
+            return True
+
+        @staticmethod
+        def release():
+            return
+
+    function.running = True
+    with mock.patch.object(cv2,
+                           'VideoCapture',
+                           return_value=Test()):
+        with mock.patch.object(function,
+                               'sendImage'):
+            with mock.patch.object(function,
+                                   'calcSkipFactor'):
+                suc = function.workerVideoStream()
+                assert suc
 
 
 def test_startVideoStream_1(function):

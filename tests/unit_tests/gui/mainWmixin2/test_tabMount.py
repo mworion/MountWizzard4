@@ -574,7 +574,7 @@ def test_changeTracking_ok5(function):
 def test_changeParkGameController_1(function):
     with mock.patch.object(function,
                            'changePark'):
-        suc = function.changeParkGameController(16)
+        suc = function.changeParkGameController(1)
         assert suc
 
 

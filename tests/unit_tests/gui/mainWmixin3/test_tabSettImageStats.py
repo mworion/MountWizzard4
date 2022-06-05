@@ -55,10 +55,10 @@ def test_updateImageStats_2(function):
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 100
     function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 100
-    function.ui.focalLength.setValue(100)
-    function.ui.aperture.setValue(100)
+    function.ui.focalLength.setValue(0)
+    function.ui.aperture.setValue(0)
     suc = function.updateImageStats()
-    assert suc
+    assert not suc
 
 
 def test_updateImageStats_3(function):

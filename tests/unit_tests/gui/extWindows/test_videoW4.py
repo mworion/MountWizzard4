@@ -25,12 +25,12 @@ from PyQt5.QtGui import QCloseEvent
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.videoW1 import VideoWindow1
+from gui.extWindows.videoW4 import VideoWindow4
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-    func = VideoWindow1(app=App())
+    func = VideoWindow4(app=App())
     yield func
 
 

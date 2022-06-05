@@ -48,6 +48,10 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.running = False
         self.capture = None
+        self.runningCounter = 0
+        self.imageSkipFactor = 100
+        self.targetFrameRate = 1
+        self.smoothSkipFactor = np.zeros(50)
 
     def closeEvent(self, closeEvent):
         """
@@ -76,33 +80,51 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.show()
         return True
 
+    def sendImage(self):
+        """
+        :return:
+        """
+        _, frame = self.capture.retrieve()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        image = qimage2ndarray.array2qimage(frame)
+        self.pixmapReady.emit(QPixmap.fromImage(image))
+        return True
+
+    def calcSkipFactor(self, start):
+        """
+        :param start:
+        :return:
+        """
+        if self.runningCounter < 50:
+            deltaT = (time.time() - start)
+            actualSkipFactor = int(1 / (self.targetFrameRate * deltaT))
+            self.smoothSkipFactor[self.runningCounter] = actualSkipFactor
+
+        elif self.runningCounter == 50:
+            factor = np.maximum(int(np.mean(self.smoothSkipFactor[25:])), 1)
+            self.imageSkipFactor = factor
+
+        self.runningCounter += 1
+        return True
+
     def workerVideoStream(self):
         """
         :return:
         """
-        adr = 'rtsp://192.168.2.208:554/ch01/0'
         streamURL = self.ui.streamURL.text()
         self.capture = cv2.VideoCapture(streamURL)
-        runningCounter = 0
-        imageSkipFactor = 100
-        targetFrameRate = 1
-        smoothSkipFactor = np.zeros(50)
+
         while self.running and self.capture.isOpened():
             start = time.time()
             suc = self.capture.grab()
             if not suc:
                 break
-            if runningCounter % imageSkipFactor == 0:
-                _, frame = self.capture.retrieve()
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                image = qimage2ndarray.array2qimage(frame)
-                self.pixmapReady.emit(QPixmap.fromImage(image))
-            if runningCounter < 50:
-                deltaT = (time.time() - start)
-                smoothSkipFactor[runningCounter] = int(1 / (targetFrameRate * deltaT))
-            elif runningCounter == 50:
-                imageSkipFactor = np.maximum(int(np.mean(smoothSkipFactor[25:])), 1)
-            runningCounter += 1
+
+            if self.runningCounter % self.imageSkipFactor == 0:
+                self.sendImage()
+
+            self.calcSkipFactor(start)
+
         self.capture.release()
         return True
 

@@ -788,9 +788,17 @@ def test_setAutomationSpeed_2(function):
         assert suc
 
 
-def test_openPDF(function):
+def test_openPDF_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
+        suc = function.openPDF()
+        assert suc
+
+
+def test_openPDF_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
         suc = function.openPDF()
         assert suc

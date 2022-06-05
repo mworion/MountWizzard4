@@ -121,6 +121,19 @@ def test_selectTabs_2(function):
     assert suc
 
 
+def test_selectTabs_3(function):
+    function.data = {
+        'framework': 'test',
+        'frameworks': {
+            'test': {
+                'test': 1,
+            }
+        }
+    }
+    suc = function.selectTabs()
+    assert suc
+
+
 def test_populateTabs_1(function):
     function.data = {
         'framework': 'astap',

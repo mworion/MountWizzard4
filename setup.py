@@ -50,6 +50,7 @@ releaseNotes = """
 - improve: moved to actual jpl kernel de440.bsp for ephemeris calcs
 - improve: simplify and rearrange GUI
 - improve: use latest PyQt5 version for python 3.10
+- improve: adjust image sizes to be able to make mosaic
 - remove: matplotlib usage and replace with pyqtgraph
 - remove: stacking in imageW as it was never used
 - fix: device selection tab was not properly positioned in device popup

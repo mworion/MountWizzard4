@@ -16,7 +16,7 @@ class Ui_ImageDialog(object):
         ImageDialog.setObjectName("ImageDialog")
         ImageDialog.resize(800, 600)
         ImageDialog.setMinimumSize(QtCore.QSize(800, 600))
-        ImageDialog.setMaximumSize(QtCore.QSize(1600, 1200))
+        ImageDialog.setMaximumSize(QtCore.QSize(1600, 1230))
         ImageDialog.setSizeIncrement(QtCore.QSize(10, 10))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -513,7 +513,7 @@ class Ui_ImageDialog(object):
     def retranslateUi(self, ImageDialog):
         _translate = QtCore.QCoreApplication.translate
         ImageDialog.setWindowTitle(_translate("ImageDialog", "Imaging"))
-        self.groupBox_3.setTitle(_translate("ImageDialog", "Expose settings"))
+        self.groupBox_3.setTitle(_translate("ImageDialog", "Image actions"))
         self.solve.setText(_translate("ImageDialog", "Solve"))
         self.exposeN.setText(_translate("ImageDialog", "Expose N"))
         self.expose.setText(_translate("ImageDialog", "Expose 1"))

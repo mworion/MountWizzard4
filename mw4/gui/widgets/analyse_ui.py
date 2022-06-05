@@ -21,7 +21,7 @@ class Ui_AnalyseDialog(object):
         sizePolicy.setHeightForWidth(AnalyseDialog.sizePolicy().hasHeightForWidth())
         AnalyseDialog.setSizePolicy(sizePolicy)
         AnalyseDialog.setMinimumSize(QtCore.QSize(800, 600))
-        AnalyseDialog.setMaximumSize(QtCore.QSize(1600, 1200))
+        AnalyseDialog.setMaximumSize(QtCore.QSize(1600, 1230))
         AnalyseDialog.setSizeIncrement(QtCore.QSize(10, 10))
         AnalyseDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()

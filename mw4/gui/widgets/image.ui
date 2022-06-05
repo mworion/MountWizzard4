@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>1600</width>
-    <height>1200</height>
+    <height>1230</height>
    </size>
   </property>
   <property name="sizeIncrement">
@@ -73,7 +73,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_3">
        <property name="title">
-        <string>Expose settings</string>
+        <string>Image actions</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>

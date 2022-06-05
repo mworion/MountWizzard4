@@ -21,7 +21,7 @@ class Ui_HemisphereDialog(object):
         sizePolicy.setHeightForWidth(HemisphereDialog.sizePolicy().hasHeightForWidth())
         HemisphereDialog.setSizePolicy(sizePolicy)
         HemisphereDialog.setMinimumSize(QtCore.QSize(800, 600))
-        HemisphereDialog.setMaximumSize(QtCore.QSize(1600, 1200))
+        HemisphereDialog.setMaximumSize(QtCore.QSize(1600, 1230))
         HemisphereDialog.setSizeIncrement(QtCore.QSize(10, 10))
         HemisphereDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()

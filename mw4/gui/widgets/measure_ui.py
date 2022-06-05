@@ -21,7 +21,7 @@ class Ui_MeasureDialog(object):
         sizePolicy.setHeightForWidth(MeasureDialog.sizePolicy().hasHeightForWidth())
         MeasureDialog.setSizePolicy(sizePolicy)
         MeasureDialog.setMinimumSize(QtCore.QSize(800, 600))
-        MeasureDialog.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        MeasureDialog.setMaximumSize(QtCore.QSize(1600, 1230))
         MeasureDialog.setSizeIncrement(QtCore.QSize(10, 10))
         MeasureDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()

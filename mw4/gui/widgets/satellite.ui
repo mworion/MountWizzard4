@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>800</width>
-    <height>350</height>
+    <height>285</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>1600</width>
-    <height>1200</height>
+    <height>1230</height>
    </size>
   </property>
   <property name="sizeIncrement">
@@ -42,6 +42,7 @@
   </property>
   <property name="font">
    <font>
+    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -93,6 +94,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -121,6 +123,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -158,6 +161,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -196,6 +200,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -224,6 +229,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -255,6 +261,7 @@
         <widget class="QLabel" name="label_205">
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -293,6 +300,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -321,6 +329,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -358,6 +367,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -396,6 +406,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -424,6 +435,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>
@@ -461,6 +473,7 @@
          </property>
          <property name="font">
           <font>
+           <family>Arial</family>
            <pointsize>10</pointsize>
            <bold>false</bold>
           </font>

@@ -186,7 +186,8 @@ def build_widgets(c):
     widgetDir = './mw4/gui/widgets/'
     widgets = [
         'analyse', 'devicePopup', 'downloadPopup', 'hemisphere', 'image',
-        'keypad', 'main', 'measure', 'message', 'satellite', 'simulator'
+        'keypad', 'main', 'measure', 'message', 'satellite', 'simulator',
+        'video',
     ]
     for widget in widgets:
         name = widgetDir + widget
@@ -209,7 +210,6 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/gui/mainWmixin3')
     runMW(c, 'pytest tests/unit_tests/gui/utilities')
     runMW(c, 'pytest tests/unit_tests/indibase')
-    runMW(c, 'pytest tests/unit_tests/logic/plateSolve')
     runMW(c, 'pytest tests/unit_tests/logic/automation')
     runMW(c, 'pytest tests/unit_tests/logic/camera')
     runMW(c, 'pytest tests/unit_tests/logic/cover')
@@ -221,6 +221,7 @@ def test_mw(c):
     runMW(c, 'pytest tests/unit_tests/logic/keypad')
     runMW(c, 'pytest tests/unit_tests/logic/measure')
     runMW(c, 'pytest tests/unit_tests/logic/modeldata')
+    runMW(c, 'pytest tests/unit_tests/logic/plateSolve')
     runMW(c, 'pytest tests/unit_tests/logic/powerswitch')
     runMW(c, 'pytest tests/unit_tests/logic/remote')
     runMW(c, 'pytest tests/unit_tests/logic/telescope')

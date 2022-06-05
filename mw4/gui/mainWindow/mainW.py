@@ -38,6 +38,10 @@ from gui.extWindows.measureW import MeasureWindow
 from gui.extWindows.imageW import ImageWindow
 from gui.extWindows.satelliteW import SatelliteWindow
 from gui.extWindows.analyseW import AnalyseWindow
+from gui.extWindows.videoW1 import VideoWindow1
+from gui.extWindows.videoW2 import VideoWindow2
+from gui.extWindows.videoW3 import VideoWindow3
+from gui.extWindows.videoW4 import VideoWindow4
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
 from gui.mainWmixin.tabEnviron import Environ
@@ -145,6 +149,30 @@ class MainWindow(
             'classObj': None,
             'name': 'AnalyseDialog',
             'class': AnalyseWindow,
+        }
+        self.uiWindows['showVideoW1'] = {
+            'button': self.ui.openV1,
+            'classObj': None,
+            'name': 'Video1',
+            'class': VideoWindow1,
+        }
+        self.uiWindows['showVideoW2'] = {
+            'button': self.ui.openV2,
+            'classObj': None,
+            'name': 'Video2',
+            'class': VideoWindow2,
+        }
+        self.uiWindows['showVideoW3'] = {
+            'button': self.ui.openV3,
+            'classObj': None,
+            'name': 'Video3',
+            'class': VideoWindow3,
+        }
+        self.uiWindows['showVideoW4'] = {
+            'button': self.ui.openV4,
+            'classObj': None,
+            'name': 'Video4',
+            'class': VideoWindow4,
         }
         if packageConfig.isAvailable:
             self.uiWindows['showSimulatorW'] = {

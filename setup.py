@@ -43,6 +43,7 @@ releaseNotes = """
 - add: integrate meteoblue.com seeing conditions
 - add: local install of documentation in PDF format
 - add: support for python 3.10
+- add: support for up to 4 external RTSP streams or local cameras 
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui
 - improve: iers download messages
@@ -116,6 +117,7 @@ setup(
         'websocket-client==1.3.2',
         'hidapi==0.11.2',
         'range-key-dict==1.1.0',
+        'opencv-python==4.5.5.64',
     ]
     + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])

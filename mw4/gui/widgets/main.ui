@@ -28005,13 +28005,13 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>5</x>
      <y>5</y>
-     <width>445</width>
+     <width>431</width>
      <height>106</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>445</width>
+     <width>425</width>
      <height>105</height>
     </size>
    </property>
@@ -28027,9 +28027,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="geometry">
      <rect>
-      <x>355</x>
+      <x>345</x>
       <y>15</y>
-      <width>86</width>
+      <width>81</width>
       <height>25</height>
      </rect>
     </property>
@@ -28194,7 +28194,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>175</x>
       <y>45</y>
-      <width>86</width>
+      <width>81</width>
       <height>25</height>
      </rect>
     </property>
@@ -28235,7 +28235,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>220</x>
       <y>75</y>
-      <width>71</width>
+      <width>66</width>
       <height>25</height>
      </rect>
     </property>
@@ -28280,9 +28280,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="geometry">
      <rect>
-      <x>265</x>
+      <x>260</x>
       <y>45</y>
-      <width>86</width>
+      <width>81</width>
       <height>25</height>
      </rect>
     </property>
@@ -28321,9 +28321,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="openSatelliteW">
     <property name="geometry">
      <rect>
-      <x>295</x>
+      <x>290</x>
       <y>75</y>
-      <width>71</width>
+      <width>66</width>
       <height>25</height>
      </rect>
     </property>
@@ -28365,7 +28365,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="openMeasureW">
     <property name="geometry">
      <rect>
-      <x>75</x>
+      <x>80</x>
       <y>75</y>
       <width>66</width>
       <height>25</height>
@@ -28412,9 +28412,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="geometry">
      <rect>
-      <x>355</x>
+      <x>345</x>
       <y>45</y>
-      <width>86</width>
+      <width>81</width>
       <height>25</height>
      </rect>
     </property>
@@ -28456,9 +28456,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="geometry">
      <rect>
-      <x>265</x>
+      <x>260</x>
       <y>15</y>
-      <width>86</width>
+      <width>81</width>
       <height>25</height>
      </rect>
     </property>
@@ -28562,9 +28562,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="openHemisphereW">
     <property name="geometry">
      <rect>
-      <x>145</x>
+      <x>150</x>
       <y>75</y>
-      <width>71</width>
+      <width>66</width>
       <height>25</height>
      </rect>
     </property>
@@ -28608,7 +28608,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>5</x>
       <y>75</y>
-      <width>66</width>
+      <width>71</width>
       <height>25</height>
      </rect>
     </property>
@@ -28655,7 +28655,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>175</x>
       <y>15</y>
-      <width>86</width>
+      <width>81</width>
       <height>25</height>
      </rect>
     </property>
@@ -28712,9 +28712,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="openKeypadW">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>360</x>
       <y>75</y>
-      <width>71</width>
+      <width>66</width>
       <height>25</height>
      </rect>
     </property>
@@ -28758,9 +28758,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <widget class="QGroupBox" name="statusTime">
    <property name="geometry">
     <rect>
-     <x>455</x>
+     <x>490</x>
      <y>5</y>
-     <width>140</width>
+     <width>136</width>
      <height>68</height>
     </rect>
    </property>
@@ -28772,7 +28772,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    </property>
    <property name="minimumSize">
     <size>
-     <width>140</width>
+     <width>130</width>
      <height>0</height>
     </size>
    </property>
@@ -28796,7 +28796,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <rect>
       <x>5</x>
       <y>45</y>
-      <width>131</width>
+      <width>126</width>
       <height>21</height>
      </rect>
     </property>
@@ -28855,7 +28855,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <rect>
       <x>5</x>
       <y>15</y>
-      <width>131</width>
+      <width>126</width>
       <height>31</height>
      </rect>
     </property>
@@ -28919,15 +28919,15 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <widget class="QGroupBox" name="main">
    <property name="geometry">
     <rect>
-     <x>600</x>
+     <x>630</x>
      <y>5</y>
-     <width>195</width>
+     <width>166</width>
      <height>106</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>195</width>
+     <width>165</width>
      <height>105</height>
     </size>
    </property>
@@ -28940,9 +28940,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    <widget class="QPushButton" name="saveConfig">
     <property name="geometry">
      <rect>
-      <x>6</x>
+      <x>5</x>
       <y>45</y>
-      <width>90</width>
+      <width>76</width>
       <height>25</height>
      </rect>
     </property>
@@ -28954,8 +28954,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="minimumSize">
      <size>
-      <width>90</width>
-      <height>25</height>
+      <width>0</width>
+      <height>0</height>
      </size>
     </property>
     <property name="maximumSize">
@@ -28984,9 +28984,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    <widget class="QPushButton" name="loadFrom">
     <property name="geometry">
      <rect>
-      <x>6</x>
+      <x>5</x>
       <y>15</y>
-      <width>90</width>
+      <width>76</width>
       <height>25</height>
      </rect>
     </property>
@@ -28998,8 +28998,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="minimumSize">
      <size>
-      <width>90</width>
-      <height>25</height>
+      <width>0</width>
+      <height>0</height>
      </size>
     </property>
     <property name="maximumSize">
@@ -29028,9 +29028,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    <widget class="QPushButton" name="saveConfigQuit">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>85</x>
       <y>15</y>
-      <width>90</width>
+      <width>76</width>
       <height>25</height>
      </rect>
     </property>
@@ -29042,8 +29042,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="minimumSize">
      <size>
-      <width>90</width>
-      <height>25</height>
+      <width>0</width>
+      <height>0</height>
      </size>
     </property>
     <property name="maximumSize">
@@ -29066,15 +29066,15 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <string notr="true"/>
     </property>
     <property name="text">
-     <string>Save/Quit</string>
+     <string>Save/Q</string>
     </property>
    </widget>
    <widget class="QPushButton" name="saveConfigAs">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>85</x>
       <y>45</y>
-      <width>90</width>
+      <width>76</width>
       <height>25</height>
      </rect>
     </property>
@@ -29086,8 +29086,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
     <property name="minimumSize">
      <size>
-      <width>90</width>
-      <height>25</height>
+      <width>0</width>
+      <height>0</height>
      </size>
     </property>
     <property name="maximumSize">
@@ -29121,7 +29121,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <rect>
       <x>5</x>
       <y>75</y>
-      <width>186</width>
+      <width>156</width>
       <height>25</height>
      </rect>
     </property>
@@ -29176,9 +29176,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <widget class="QPushButton" name="virtualStop">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>495</x>
      <y>10</y>
-     <width>131</width>
+     <width>126</width>
      <height>56</height>
     </rect>
    </property>
@@ -29195,8 +29195,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <widget class="QPushButton" name="mountOn">
    <property name="geometry">
     <rect>
-     <x>455</x>
-     <y>80</y>
+     <x>490</x>
+     <y>85</y>
      <width>66</width>
      <height>26</height>
     </rect>
@@ -29236,8 +29236,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <widget class="QPushButton" name="mountOff">
    <property name="geometry">
     <rect>
-     <x>530</x>
-     <y>80</y>
+     <x>560</x>
+     <y>85</y>
      <width>66</width>
      <height>26</height>
     </rect>
@@ -29274,6 +29274,186 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <string>Off</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="openV2">
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>40</y>
+     <width>36</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>V2</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="openV1">
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>15</y>
+     <width>36</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>V1</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="openV3">
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>65</y>
+     <width>36</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>V3</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="openV4">
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>90</y>
+     <width>36</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>V4</string>
+   </property>
+  </widget>
   <zorder>virtualStop</zorder>
   <zorder>mainTabWidget</zorder>
   <zorder>statusOnline</zorder>
@@ -29281,6 +29461,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <zorder>main</zorder>
   <zorder>mountOn</zorder>
   <zorder>mountOff</zorder>
+  <zorder>openV2</zorder>
+  <zorder>openV1</zorder>
+  <zorder>openV3</zorder>
+  <zorder>openV4</zorder>
  </widget>
  <customwidgets>
   <customwidget>

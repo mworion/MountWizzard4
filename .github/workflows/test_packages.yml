@@ -105,7 +105,7 @@ jobs:
           target: dist/
 
       - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v2
+        uses: suisei-cn/actions-download-file@v1
         with:
           url: ${{ env.gh }}Windows/MW4_Run.bat
           target: dist/

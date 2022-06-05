@@ -617,5 +617,5 @@ class SettMisc(object):
         filePath = os.path.abspath(fileName)
         url = f'file://{filePath}'
         if not webbrowser.open(url, new=0):
-            self.app.mes(2, 'System', 'Setting Misc', 'Browser failed')
+            self.app.mes.emit(2, 'System', 'Setting Misc', 'Browser failed')
         return True

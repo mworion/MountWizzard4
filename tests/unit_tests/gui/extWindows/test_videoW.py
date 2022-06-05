@@ -39,7 +39,7 @@ def function(qapp):
 
 def test_closeEvent_1(function):
     with mock.patch.object(function,
-                           'stopVideoStream'):
+                           'stopVideo'):
         with mock.patch.object(MWidget,
                                'closeEvent'):
             function.showWindow()
@@ -115,7 +115,7 @@ def test_workerVideoStream_1(function):
                                'sendImage'):
             with mock.patch.object(function,
                                    'calcSkipFactor'):
-                suc = function.workerVideoStream()
+                suc = function.workerVideo()
                 assert suc
 
 
@@ -142,7 +142,7 @@ def test_workerVideoStream_2(function):
                                'sendImage'):
             with mock.patch.object(function,
                                    'calcSkipFactor'):
-                suc = function.workerVideoStream()
+                suc = function.workerVideo()
                 assert suc
 
 
@@ -150,7 +150,7 @@ def test_startVideoStream_1(function):
     function.ui.streamURL.setText('')
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.startVideoStream()
+        suc = function.startVideo()
         assert not suc
 
 
@@ -158,12 +158,12 @@ def test_startVideoStream_2(function):
     function.ui.streamURL.setText('test')
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.startVideoStream()
+        suc = function.startVideo()
         assert suc
 
 
 def test_stopVideoStream_1(function):
-    suc = function.stopVideoStream()
+    suc = function.stopVideo()
     assert suc
 
 

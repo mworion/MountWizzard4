@@ -58,7 +58,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.stopVideoStream()
+        self.stopVideo()
         super().closeEvent(closeEvent)
 
     def colorChange(self):
@@ -73,10 +73,12 @@ class VideoWindow(toolsQtWidget.MWidget):
         :return: true for test purpose
         """
         self.pixmapReady.connect(self.receivedImage)
-        self.ui.streamStart.clicked.connect(self.startVideoStream)
-        self.ui.streamStop.clicked.connect(self.stopVideoStream)
+        self.ui.videoStart.clicked.connect(self.startVideo)
+        self.ui.videoStop.clicked.connect(self.stopVideo)
+        self.ui.videoSource.currentIndexChanged.connect(self.stopVideo)
+        self.ui.frameRate.currentIndexChanged.connect(self.stopVideo)
         self.app.colorChange.connect(self.colorChange)
-        self.changeStyleDynamic(self.ui.streamStop, 'running', True)
+        self.changeStyleDynamic(self.ui.videoStop, 'running', True)
         self.show()
         return True
 
@@ -107,13 +109,12 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.runningCounter += 1
         return True
 
-    def workerVideoStream(self):
+    def workerVideo(self, source):
         """
+        :param source:
         :return:
         """
-        streamURL = self.ui.streamURL.text()
-        self.capture = cv2.VideoCapture(streamURL)
-
+        self.capture = cv2.VideoCapture(source)
         while self.running and self.capture.isOpened():
             start = time.time()
             suc = self.capture.grab()
@@ -128,26 +129,33 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.capture.release()
         return True
 
-    def startVideoStream(self):
+    def startVideo(self):
         """
         :return:
         """
-        if not self.ui.streamURL.text():
+        url = self.ui.videoURL.text()
+        sources = [url, 0, 1, 2, 3]
+        frameRates = [5, 2, 1, 0.5, 0.25]
+
+        sourceIndex = self.ui.videoSource.currentIndex()
+        frameRateIndex = self.ui.frameRate.currentIndex()
+        self.targetFrameRate = frameRates[frameRateIndex]
+        if not self.ui.videoURL.text() and sourceIndex == 0:
             return False
 
-        self.changeStyleDynamic(self.ui.streamStart, 'running', True)
-        self.changeStyleDynamic(self.ui.streamStop, 'running', False)
+        self.changeStyleDynamic(self.ui.videoStart, 'running', True)
+        self.changeStyleDynamic(self.ui.videoStop, 'running', False)
         self.running = True
-        worker = Worker(self.workerVideoStream)
+        worker = Worker(self.workerVideo, sources[sourceIndex])
         self.threadPool.start(worker)
         return True
 
-    def stopVideoStream(self):
+    def stopVideo(self):
         """
         :return:
         """
-        self.changeStyleDynamic(self.ui.streamStart, 'running', False)
-        self.changeStyleDynamic(self.ui.streamStop, 'running', True)
+        self.changeStyleDynamic(self.ui.videoStart, 'running', False)
+        self.changeStyleDynamic(self.ui.videoStop, 'running', True)
         self.running = False
         return True
 

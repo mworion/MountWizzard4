@@ -79,37 +79,30 @@
      <property name="bottomMargin">
       <number>4</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="videoStart">
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>60</width>
          <height>21</height>
         </size>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="text">
-        <string>URL</string>
+        <string>Start</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="streamStop">
+      <widget class="QPushButton" name="videoStop">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>60</width>
          <height>21</height>
         </size>
        </property>
@@ -127,30 +120,53 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="streamStart">
+     <item row="0" column="6">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="2" colspan="3">
+      <widget class="QLineEdit" name="videoURL">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>250</width>
          <height>21</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>100</width>
+         <width>16777215</width>
          <height>25</height>
         </size>
        </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>21</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Start</string>
+        <string>URL</string>
        </property>
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QComboBox" name="streamSource">
+      <widget class="QComboBox" name="videoSource">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>130</width>
          <height>21</height>
         </size>
        </property>
@@ -175,22 +191,51 @@
          <string>Camera 2</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Camera 3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Camera 4</string>
+        </property>
+       </item>
       </widget>
      </item>
-     <item row="1" column="2" colspan="3">
-      <widget class="QLineEdit" name="streamURL">
+     <item row="0" column="5">
+      <widget class="QComboBox" name="frameRate">
        <property name="minimumSize">
         <size>
-         <width>250</width>
-         <height>21</height>
+         <width>100</width>
+         <height>0</height>
         </size>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>25</height>
-        </size>
-       </property>
+       <item>
+        <property name="text">
+         <string>5.0 fps</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2.0 fps</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1.0 fps</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0.5 fps</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0.25 fps</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>

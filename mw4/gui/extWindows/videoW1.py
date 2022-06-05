@@ -56,7 +56,9 @@ class VideoWindow1(VideoWindow):
             y = 0
         if x != 0 and y != 0:
             self.move(x, y)
-        self.ui.streamURL.setText(config.get('streamURL', ''))
+        self.ui.videoURL.setText(config.get('videoURL', ''))
+        self.ui.videoSource.setCurrentIndex(config.get('videoSource', 0))
+        self.ui.frameRate.setCurrentIndex(config.get('frameRate', 2))
         return True
 
     def storeConfig(self):
@@ -70,7 +72,9 @@ class VideoWindow1(VideoWindow):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        config['streamURL'] = self.ui.streamURL.text()
+        config['videoURL'] = self.ui.videoURL.text()
+        config['videoSource'] = self.ui.videoSource.currentIndex()
+        config['frameRate'] = self.ui.frameRate.currentIndex()
         return True
 
     def closeEvent(self, closeEvent):

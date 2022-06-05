@@ -82,7 +82,7 @@ def test_storeConfig_2(function):
 
 def test_closeEvent_1(function):
     with mock.patch.object(function,
-                           'stopVideoStream'):
+                           'stopVideo'):
         with mock.patch.object(MWidget,
                                'closeEvent'):
             function.showWindow()

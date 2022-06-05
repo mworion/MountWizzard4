@@ -53,12 +53,13 @@ jobs:
           # builds don't have to re-install them. The image layer is cached
           # publicly in your project's package repository, so it is vital that
           # no secrets are present in the container state or logs.
-            # apt-get update -y
-            # apt-get upgrade -y
           install: |
+            apt-get update -y
+            apt-get upgrade -y
             apt-get install -y wget gcc build-essential zlib1g-dev libjpeg-dev
             apt-get install -y software-properties-common
             add-apt-repository ppa:deadsnakes/ppa
+            apt-get install -y --fix-missing
             apt-get update -y
             
           # Produce a binary artifact and place it in the mounted volume
@@ -70,8 +71,8 @@ jobs:
             
             python --version
             python -m pip install pip --upgrade
-            pip install setuptools --upgrade
-            pip install wheel
+            python -m pip install setuptools --upgrade
+            python -m pip install wheel
             
             ls /root/wheels/*.*
             if [ ! -f "/root/wheels/sgp4-2.21-cp37-cp37m-linux_aarch64.whl" ]

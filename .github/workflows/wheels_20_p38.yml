@@ -73,14 +73,14 @@ jobs:
             
             ls /root/wheels/*.*
             
-            if [ ! -f "/root/wheels/sgp4-2.21-cp38-cp38-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheels/sgp4-2.21-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64" ]
             then
               pip wheel sgp4==2.21 -w "/root/wheels"
             fi
             
-            if [ ! -f "/root/wheels/PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheelsPyQt5_sip-12.10.1-cp38-cp38-linux_aarch64" ]
             then
-              pip wheel pyqt5_sip==12.8.1 -w "/root/wheels"
+              pip wheel pyqt5_sip==12.10.1 -w "/root/wheels"
             fi
 
       - name: Update changes in GitHub repository

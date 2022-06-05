@@ -63,7 +63,7 @@ class VideoWindow3(VideoWindow):
         """
         :return: True for test purpose
         """
-        if 'videoW1' not in self.app.config:
+        if 'videoW3' not in self.app.config:
             self.app.config['videoW3'] = {}
         config = self.app.config['videoW3']
         config['winPosX'] = max(self.pos().x(), 0)

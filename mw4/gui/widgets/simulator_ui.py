@@ -21,7 +21,7 @@ class Ui_SimulatorDialog(object):
         sizePolicy.setHeightForWidth(SimulatorDialog.sizePolicy().hasHeightForWidth())
         SimulatorDialog.setSizePolicy(sizePolicy)
         SimulatorDialog.setMinimumSize(QtCore.QSize(800, 600))
-        SimulatorDialog.setMaximumSize(QtCore.QSize(1600, 1200))
+        SimulatorDialog.setMaximumSize(QtCore.QSize(1600, 1230))
         SimulatorDialog.setSizeIncrement(QtCore.QSize(10, 10))
         SimulatorDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()

@@ -51,6 +51,14 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.createMutex = QMutex()
 
+        self.dome = SimulatorDome(self.app)
+        self.telescope = SimulatorTelescope(self.app)
+        self.horizon = SimulatorHorizon(self.app)
+        self.buildPoints = SimulatorBuildPoints(self.app)
+        self.pointer = SimulatorPointer(self.app)
+        self.laser = SimulatorLaser(self.app)
+        self.world = None
+
         self.view = Qt3DWindow()
         container = QWidget.createWindowContainer(self.view)
         self.ui.simulator.addWidget(container)
@@ -75,14 +83,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.pL0ETransform.setTranslation(QVector3D(5, 20, 5))
         self.pL0E.addComponent(self.pL0)
         self.pL0E.addComponent(self.pL0ETransform)
-
-        self.dome = SimulatorDome(self.app)
-        self.telescope = SimulatorTelescope(self.app)
-        self.horizon = SimulatorHorizon(self.app)
-        self.buildPoints = SimulatorBuildPoints(self.app)
-        self.pointer = SimulatorPointer(self.app)
-        self.laser = SimulatorLaser(self.app)
-        self.world = None
 
     def initConfig(self):
         """
@@ -311,7 +311,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
         'ref' is the fusion360 coordinate system, please be aware that rotations
         around the z axis for azimuth is clockwise and not counterclockwise as a
-        right handed coordinate system would propose.
+        right-handed coordinate system would propose.
 
         for the sake of simplifying there is another reference, which only has
         the corrections in coordinates and not for scaling, this is called 'ref1000'

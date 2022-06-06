@@ -217,6 +217,7 @@ class SettMisc(object):
             else:
                 val = 0b00001111
             oR = [iR[10], 0, val, iR[1], iR[3], iR[5], iR[7]]
+        self.log.info()
         return oR
 
     @staticmethod
@@ -618,4 +619,6 @@ class SettMisc(object):
         url = f'file://{filePath}'
         if not webbrowser.open(url, new=0):
             self.app.mes.emit(2, 'System', 'Setting Misc', 'Browser failed')
+        else:
+            self.app.mes.emit(0, 'System', 'Setting Misc', 'Doc opened')
         return True

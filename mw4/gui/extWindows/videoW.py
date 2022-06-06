@@ -105,6 +105,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         elif self.runningCounter == 50:
             factor = int(1 / np.maximum(int(np.mean(self.smoothSkipRatio[25:])), 1))
             self.imageSkipFactor = factor
+            self.log.info()
 
         self.runningCounter += 1
         return True
@@ -115,6 +116,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.capture = cv2.VideoCapture(source)
+        self.log.debug()
         while self.running and self.capture.isOpened():
             start = time.time()
             suc = self.capture.grab()
@@ -140,6 +142,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         sourceIndex = self.ui.videoSource.currentIndex()
         frameRateIndex = self.ui.frameRate.currentIndex()
         self.targetFrameRate = frameRates[frameRateIndex]
+        self.log.info()
         if not self.ui.videoURL.text() and sourceIndex == 0:
             return False
 
@@ -169,5 +172,5 @@ class VideoWindow(toolsQtWidget.MWidget):
 
         pixmap = pixmap.scaled(self.ui.video.width(), self.ui.video.height())
         self.ui.video.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.ui.video.setPixmap(pixmap)
+        self.ui.video.setPixmap(pixmap) 
         return True

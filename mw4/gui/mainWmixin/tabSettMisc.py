@@ -193,8 +193,7 @@ class SettMisc(object):
             result = data
         return result
 
-    @staticmethod
-    def convertData(name, iR):
+    def convertData(self, name, iR):
         """
         :param name:
         :param iR:
@@ -217,7 +216,7 @@ class SettMisc(object):
             else:
                 val = 0b00001111
             oR = [iR[10], 0, val, iR[1], iR[3], iR[5], iR[7]]
-        self.log.info()
+        self.log.info(f'Controller: [{name}], values: [{oR}]')
         return oR
 
     @staticmethod

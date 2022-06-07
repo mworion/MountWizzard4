@@ -43,7 +43,7 @@ releaseNotes = """
 - add: integrate meteoblue.com seeing conditions
 - add: local install of documentation in PDF format
 - add: support for python 3.10
-- add: support for up to 4 external RTSP streams or local cameras 
+- add: support for up to 4 external RTSP streams or local cameras
 - improve: complete rework of charting: performance and functions
 - improve: cleanup of gui
 - improve: iers download messages
@@ -52,7 +52,8 @@ releaseNotes = """
 - improve: simplify and rearrange GUI
 - improve: use latest PyQt5 version for python 3.10
 - improve: adjust image sizes to be able to make mosaic
-- remove: matplotlib usage and replace with pyqtgraph
+- remove: matplotlib package and replace with more performant pyqtgraph
+- remove: PIL package and replace with more powerful cv2
 - remove: stacking in imageW as it was never used
 - fix: device selection tab was not properly positioned in device popup
  """

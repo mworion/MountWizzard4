@@ -22,6 +22,7 @@ from PyQt5.QtCore import QPointF
 import numpy as np
 import pyqtgraph as pg
 from PIL import Image
+import cv2
 
 # local import
 
@@ -78,15 +79,15 @@ class EditHorizon:
             self.imageTerrain = None
             return False
 
-        img = Image.open(terrainFile).convert('LA')
-        (w, h) = img.size
-        img = img.crop((0, 0, w, h / 2))
-        img = img.resize((1440, 360))
-        img = img.transpose(Image.FLIP_TOP_BOTTOM)
-
-        self.imageTerrain = Image.new('L', (2880, 480), 128)
-        self.imageTerrain.paste(img, (0, 60))
-        self.imageTerrain.paste(img, (1440, 60))
+        img = cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE)
+        h, w = img.shape
+        h2 = int(h / 2)
+        img = img[0:h2, 0:w]
+        img = cv2.resize(img, (1440, 360))
+        img = cv2.flip(img, 0)
+        self.imageTerrain = np.ones((480, 2880)) * 128
+        self.imageTerrain[60:420, 0:1440] = img
+        self.imageTerrain[60:420, 1440:2880] = img
         return True
 
     def storeConfig(self):

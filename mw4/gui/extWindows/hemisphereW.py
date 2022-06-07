@@ -20,7 +20,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np
-from PIL import Image
+import cv2
 import pyqtgraph as pg
 
 # local import
@@ -387,13 +387,12 @@ class HemisphereWindow(MWidget, EditHorizon):
         shiftAz = self.ui.azimuthShift.value()
         shiftAlt = self.ui.altitudeShift.value()
         alpha = self.ui.terrainAlpha.value()
-        imgF = self.imageTerrain.crop((4 * shiftAz, 60 + shiftAlt * 2,
-                                       1440 + 4 * shiftAz, 420 + shiftAlt * 2))
-        imgF = imgF.resize((360, 90), Image.ANTIALIAS)
-        (w, h) = imgF.size
-        img = list(imgF.getdata())
-        img = np.array(img).reshape((h, w))
-
+        x1 = int(4 * shiftAz)
+        x2 = int(1440 + 4 * shiftAz)
+        y1 = int(60 + shiftAlt * 2)
+        y2 = int(420 + shiftAlt * 2)
+        img = self.imageTerrain[y1:y2, x1:x2]
+        img = cv2.resize(img, (360, 90))
         imgItem = pg.ImageItem(img)
         cMap = pg.colormap.get('CET-L2')
         imgItem.setColorMap(cMap)

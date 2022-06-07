@@ -60,7 +60,6 @@ class Environ:
         self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
-        self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.onlineWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.sensorWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.directWeatherGroup.clicked.connect(self.selectRefractionSource)
@@ -73,7 +72,6 @@ class Environ:
         self.app.update1s.connect(self.updateSkymeterGui)
         self.app.update1s.connect(self.updatePowerWeatherGui)
         self.app.update1s.connect(self.updateSensorWeatherGui)
-        self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
         """
@@ -366,138 +364,6 @@ class Environ:
 
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
         self.guiSetText(self.ui.powerDewPoint, '4.1f', value)
-        return True
-
-    def getWebDataWorker(self, url=''):
-        """
-        :param url:
-        :return: data
-        """
-        if not url:
-            return None
-
-        try:
-            data = requests.get(url, timeout=30)
-        except Exception as e:
-            self.log.critical(f'URL: [{url}] general exception: [{e}]')
-            return None
-
-        if data.status_code != 200:
-            self.log.warning(f'URL: [{url}] status nok')
-            return None
-
-        self.log.trace(f'URL: [{url}] status: [{data.status_code}]')
-        return data
-
-    def processClearOutsideImage(self, image=None):
-        """
-        processClearOutsideImage takes the image, split it and puts the image
-        to the Gui. for the transformation qimage2ndarray is used because of
-        the speed for the calculations. dim is a factor which reduces the
-        lightness of the overall image
-
-        :param image:
-        :return: success
-        """
-        back = self.hex2rgb(self.M_BACK)
-        m = np.mean(back)
-        dim = max((m / 256), 0.66)
-
-        image.convertToFormat(QImage.Format_RGB32)
-        imageBase = image.copy(94, 84, 585, 141)
-
-        # transformation are done in numpy, because it's much faster
-        width = imageBase.width()
-        height = imageBase.height()
-        imgArr = rgb_view(imageBase)
-        imgArr = imgArr.reshape(width * height, 3)
-
-        # transforming back
-        imgArr = imgArr.reshape(height, width, 3)
-
-        # Compressing the image as the widget content is a png
-        # removing some rows
-        m = np.isin(imgArr, [[255, 0, 0]])
-        toDelete = []
-        maxRow = 1
-        line = maxRow
-        for i in range(0, len(m[:, 1])):
-            if not line and m[i, :].all() and i > 15:
-                toDelete.append(i)
-            elif line:
-                line -= 1
-            elif not m[i][:].all():
-                line = maxRow
-        imgArr = np.delete(imgArr, toDelete, axis=0)
-
-        # re transfer to QImage from numpy array
-        imageBase = array2qimage(dim * imgArr)
-        pixmapBase = QPixmap().fromImage(imageBase)
-        return pixmapBase
-
-    def updateClearOutsideImage(self, data=None):
-        """
-        updateClearOutsideImage takes the returned data from a web fetch and
-        makes an image out of it
-
-        :param data:
-        :return: success
-        """
-        if data is None:
-            return False
-
-        image = PyQt5.QtGui.QImage()
-        if not hasattr(data, 'content'):
-            return False
-        if not isinstance(data.content, bytes):
-            return False
-
-        image.loadFromData(data.content)
-        pixmapBase = self.processClearOutsideImage(image=image)
-        self.ui.picClearOutside.setPixmap(pixmapBase)
-        return True
-
-    def getClearOutside(self, url=''):
-        """
-        getClearOutside initiates the worker thread to get the web data fetched
-
-        :param url:
-        :return:
-        """
-        worker = Worker(self.getWebDataWorker, url)
-        worker.signals.result.connect(self.updateClearOutsideImage)
-        self.threadPool.start(worker)
-
-    def updateClearOutside(self):
-        """
-        updateClearOutside downloads the actual clear outside image and displays
-        it in environment tab. it checks first if online is set, otherwise not
-        download will take place. it will be updated every 30 minutes.
-
-        confirmation for using the service :
-
-        Grant replied Aug 5, 10:01am
-        Hi Michael,
-        No problem at all embedding the forecast as shown in your image :-)
-        We appreciate the support.
-        Kindest Regards,
-        Grant
-
-        :return: success
-        """
-        if not self.ui.isOnline.isChecked():
-            pixmap = PyQt5.QtGui.QPixmap(':/pics/offlineMode.png')
-            self.ui.picClearOutside.setPixmap(pixmap)
-            return False
-
-        # prepare coordinates for website
-        loc = self.app.mount.obsSite.location
-        lat = loc.latitude.degrees
-        lon = loc.longitude.degrees
-
-        webSite = 'http://clearoutside.com/forecast_image_medium/'
-        url = f'{webSite}{lat:4.2f}/{lon:4.2f}/forecast.png'
-        self.getClearOutside(url=url)
         return True
 
     def clearOnlineWeatherGui(self):

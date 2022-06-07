@@ -647,10 +647,8 @@ class MainWindow(
             'skymeter': self.ui.skymeterGroup,
             'powerWeather': self.ui.powerGroup,
         }
-
         for key, group in environ.items():
             stat = self.deviceStat.get(key, None)
-
             if stat is None:
                 group.setFixedWidth(0)
                 group.setEnabled(False)

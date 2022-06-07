@@ -17,15 +17,13 @@ Beta version of MW4
 ----------------------------
 3.0.0b0
 
-- add: game controller interface for mount and dome
-- add: all charts could be zoomed and panned
-- add: measure: window has max 5 charts now (from 3)
-- add: measure: more values (time delta, focus, etc)
-- add: almanac now supports UTC / local time
-- add: almanac support set/rise times moon
+- add: GUI: all charts could be zoomed and panned
+- add: almanac: now supports UTC / local time
+- add: almanac: support set/rise times moon
+- add: environment: integrate meteoblue.com seeing conditions
 - add: analyse: charts could show horizon and values for each point
 - add: analyse: alt / az charts with iso error curves
-- add: sound for connection lost and sat start tracking
+- add: audio: sound for connection lost and sat start tracking
 - add: model points: multiple variants for edit and move points
 - add: model points: set dither on celestial paths
 - add: model points: generate from actual used mount model
@@ -34,23 +32,28 @@ Beta version of MW4
 - add: hemisphere: edit horizon model much more efficient
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
+- add: measure: window has max 5 charts now (from 3)
+- add: measure: more values (time delta, focus, etc)
 - add: image: photometry functions (aberration, roundness, etc.)
 - add: image: solve and center to image
-- add: polling timing for drivers could be set
-- add: calcs for plate solvers (index files etc.)
-- add: integrate meteoblue.com seeing conditions
-- add: local install of documentation in PDF format
-- add: support for python 3.10
-- improve: complete rework of charting: performance and functions
-- improve: cleanup of gui
-- improve: iers download messages
-- improve: optimized DSO path generation (always fit, less params)
-- improve: moved to actual jpl kernel de440.bsp for ephemeris calcs
-- improve: simplify and rearrange GUI
-- improve: use latest PyQt5 version for python 3.10
-- remove: matplotlib usage and replace with pyqtgraph
-- remove: stacking in imageW as it was never used
-- fix: device selection tab was not properly positioned in device popup
+- add: imaging: separate page for imaging stats now
+- add: imaging: calcs for plate solvers (index files etc.)
+- add: drivers: polling timing for drivers could be set
+- add: drivers: game controller interface for mount and dome
+- add: system: support for python 3.10
+- add: system: support for up to 4 external RTSP streams or local cameras
+- add: help: local install of documentation in PDF format
+- improve: GUI: complete rework of charting: performance and functions
+- improve: GUI: cleanup of gui
+- improve: GUI: iers download messages
+- improve: model points: optimized DSO path generation (always fit, less params)
+- improve: system: use latest PyQt5 version for python 3.10
+- improve: system: adjust window sizes to be able to make mosaic layout on desktop
+- improve: system: moved to actual jpl kernel de440.bsp for ephemeris calcs
+- remove: system: matplotlib package and replace with more performant pyqtgraph
+- remove: system: PIL package and replace with more powerful cv2
+- remove: imageW: stacking in imageW as it was never used
+- fix: drivers: device selection tab was not properly positioned in device popup
 
 Released version of MW4
 -----------------------

@@ -27,7 +27,6 @@ from PyQt5.QtGui import QCloseEvent
 from skyfield.api import Angle, wgs84
 import numpy as np
 import pyqtgraph as pg
-from PIL import Image
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -303,8 +302,7 @@ def test_drawTerrainMask_1(function):
 
 def test_drawTerrainMask_2(function):
     pd = pg.PlotItem()
-    function.imageTerrain = Image.fromarray(np.array([[1, 2], [1, 2]],
-                                                     dtype=np.uint8))
+    function.imageTerrain = np.ones((100, 100), dtype=np.uint8)
     suc = function.drawTerrainMask(pd)
     assert suc
 

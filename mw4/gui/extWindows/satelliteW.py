@@ -235,7 +235,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
             x = np.array(shape['xDeg'])
             y = np.array(shape['yDeg'])
             path = pg.arrayToQPath(x, y)
-            poly = pg.QtGui.QGraphicsPathItem(path)
+            poly = pg.QtWidgets.QGraphicsPathItem(path)
             poly.setPen(self.ui.satEarth.penHorizon)
             poly.setBrush(self.ui.satEarth.brushHorizon)
             plotItem.addItem(poly)

@@ -21,10 +21,10 @@ import logging
 
 # external packages
 import numpy as np
+import cv2
 import sep
 from PyQt5.QtCore import pyqtSignal, QObject
 from astropy.io import fits
-from PIL import Image
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 
@@ -331,7 +331,7 @@ class Photometry:
             return False
 
         self.image = 0.2989 * R + 0.5870 * (G0 + G1) / 2 + 0.1140 * B
-        self.image = np.array(Image.fromarray(self.image).resize((self.h, self.w)))
+        self.image = cv2.resize(self.image, (self.w, self.h))
         return True
 
     def cleanImageFormat(self):

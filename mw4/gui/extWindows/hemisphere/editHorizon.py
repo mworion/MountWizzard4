@@ -20,9 +20,8 @@ import os
 # external packages
 from PyQt5.QtCore import QPointF
 import numpy as np
-import pyqtgraph as pg
-from PIL import Image
 import cv2
+import pyqtgraph as pg
 
 # local import
 

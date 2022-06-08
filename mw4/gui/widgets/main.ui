@@ -2938,44 +2938,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
     <attribute name="title">
      <string>Environ</string>
     </attribute>
-    <widget class="QGroupBox" name="refractionGroup_2">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>270</y>
-       <width>776</width>
-       <height>156</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>110</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="title">
-      <string>Seeing predition - www.meteoblue.com</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Summary:</string>
-      </property>
-     </widget>
-    </widget>
     <widget class="QGroupBox" name="environmentGroup">
      <property name="geometry">
       <rect>
@@ -6380,6 +6342,29 @@ to mount</string>
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QLabel" name="meteoblueIcon">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>285</y>
+       <width>37</width>
+       <height>128</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tableSeeing">
+     <property name="geometry">
+      <rect>
+       <x>55</x>
+       <y>265</y>
+       <width>726</width>
+       <height>166</height>
+      </rect>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Almanac">

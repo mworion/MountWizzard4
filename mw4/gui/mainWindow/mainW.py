@@ -22,6 +22,7 @@ import time
 
 # external packages
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QTransform
 from PyQt5.QtWidgets import QWidget
 
 # local import
@@ -496,6 +497,12 @@ class MainWindow(
 
         # misc setting
         self.wIcon(self.ui.installVersion, 'world')
+
+        # environment
+        pixmap = self.svg2pixmap(':/icon/meteoblue.svg', '#124673')
+        pixmap = pixmap.transformed(QTransform().rotate(-90))
+        pixmap = pixmap.scaled(37, 128)
+        self.ui.meteoblueIcon.setPixmap(pixmap)
         return True
 
     def updateMountConnStat(self, status):

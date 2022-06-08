@@ -16,18 +16,15 @@
 #
 ###########################################################
 # standard libraries
+import json
 
 # external packages
-from PyQt5.QtGui import QImage, QPixmap
-import PyQt5.QtCore
-import PyQt5.QtGui
-import PyQt5.QtWidgets
-import requests
 import numpy as np
-from qimage2ndarray import rgb_view, array2qimage
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QTableWidgetItem
 
 # local import
-from base.tpool import Worker
 
 
 class Environ:
@@ -72,6 +69,7 @@ class Environ:
         self.app.update1s.connect(self.updateSkymeterGui)
         self.app.update1s.connect(self.updatePowerWeatherGui)
         self.app.update1s.connect(self.updateSensorWeatherGui)
+        self.app.colorChange.connect(self.updateSeeingEntries)
 
     def initConfig(self):
         """
@@ -83,6 +81,7 @@ class Environ:
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
+        self.prepareSeeingTable()
         return True
 
     def storeConfig(self):
@@ -152,7 +151,7 @@ class Environ:
     def selectRefractionSource(self):
         """
         selectRefractionSource receives all button presses on groups and checks
-        which of the groups was clicked on. whit that information is detects the
+        which of the groups was clicked on. with that information is detects the
         index in the list of groups.
 
         :return: success
@@ -277,8 +276,6 @@ class Environ:
         self.ui.sensorWeatherHumidity.setText('-')
         self.ui.sensorWeatherCloudCover.setText('-')
         self.ui.sensorWeatherRainVol.setText('-')
-        self.ui.sensorWeatherWindSpeed.setText('-')
-        self.ui.sensorWeatherWindDir.setText('-')
         self.ui.sensorWeatherSQR.setText('-')
         return True
 
@@ -307,12 +304,6 @@ class Environ:
 
         value = self.app.sensorWeather.data.get('rain', None)
         self.guiSetText(self.ui.sensorWeatherRainVol, '5.2f', value)
-
-        value = self.app.sensorWeather.data.get('windDir', None)
-        self.guiSetText(self.ui.sensorWeatherWindDir, '3.0f', value)
-
-        value = self.app.sensorWeather.data.get('windSpeed', None)
-        self.guiSetText(self.ui.sensorWeatherWindSpeed, '3.0f', value)
 
         value = self.app.sensorWeather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', None)
         self.guiSetText(self.ui.sensorWeatherSQR, '4.2f', value)
@@ -375,8 +366,6 @@ class Environ:
         self.ui.onlineWeatherHumidity.setText('-')
         self.ui.onlineWeatherDewPoint.setText('-')
         self.ui.onlineWeatherCloudCover.setText('-')
-        self.ui.onlineWeatherWindSpeed.setText('-')
-        self.ui.onlineWeatherWindDir.setText('-')
         self.ui.onlineWeatherRainVol.setText('-')
         return True
 
@@ -402,12 +391,6 @@ class Environ:
 
         value = self.app.onlineWeather.data.get('cloudCover', None)
         self.guiSetText(self.ui.onlineWeatherCloudCover, '3.0f', value)
-
-        value = self.app.onlineWeather.data.get('windSpeed', None)
-        self.guiSetText(self.ui.onlineWeatherWindSpeed, '3.0f', value)
-
-        value = self.app.onlineWeather.data.get('windDir', None)
-        self.guiSetText(self.ui.onlineWeatherWindDir, '3.0f', value)
 
         value = self.app.onlineWeather.data.get('rain', None)
         self.guiSetText(self.ui.onlineWeatherRainVol, '5.2f', value)
@@ -448,4 +431,66 @@ class Environ:
 
         value = setting.weatherDewPoint
         self.guiSetText(self.ui.directWeatherDewPoint, '4.1f', value)
+        return True
+
+    def updateSeeingEntries(self):
+        """
+        :return:
+        """
+        filePath = self.app.mwGlob['dataDir'] + '/meteoblue.data'
+        with open(filePath) as f:
+            data = json.load(f)
+        data = data['hourly']
+        fields = ['date', 'hour', 'high_clouds', 'mid_clouds', 'low_clouds',
+                  'seeing_arcsec', 'seeing1', 'seeing2', 'temperature',
+                  'relative_humidity']
+
+        seeTab = self.ui.tableSeeing
+        colMain = self.cs['M_BLUE'][0]
+        colBlack = self.cs['M_BLACK'][0]
+        colWhite = self.cs['M_WHITE'][0]
+        for i in range(0, 72):
+            for j, field in enumerate(fields):
+                t = f'{data[field][i]}'
+                item = QTableWidgetItem()
+                item.setTextAlignment(Qt.AlignHCenter)
+                item.setForeground(QColor(self.M_BLUE))
+                if j == 0:
+                    val = t.split('-')
+                    t = f'{val[2]}/{val[1]}'
+                elif j in [2, 3, 4]:
+                    col = self.calcHexColor(colMain, data[field][i] / 100)
+                    item.setBackground(QColor(col))
+                    item.setForeground(QColor(colWhite))
+                elif j in [6, 7]:
+                    col = self.calcHexColor(data['seeing1_color'][i], 0.8)
+                    item.setBackground(QColor(col))
+                    item.setForeground(QColor(colBlack))
+
+                item.setText(t)
+                seeTab.setItem(j, i, item)
+
+    def prepareSeeingTable(self):
+        """
+        :return:
+        """
+        vl = ['Date',
+              'Hour',
+              'Low clouds',
+              'Mid clouds',
+              'High clouds',
+              'Seeing [arcsec]',
+              'Seeing index 1',
+              'Seeing index 2',
+              'Ground Temp [°C]',
+              'Humid [%]',
+              ]
+
+        seeTab = self.ui.tableSeeing
+        seeTab.setRowCount(10)
+        seeTab.setColumnCount(72)
+        seeTab.setVerticalHeaderLabels(vl)
+        seeTab.verticalHeader().setDefaultSectionSize(18)
+        self.updateSeeingEntries()
+        seeTab.resizeColumnsToContents()
         return True

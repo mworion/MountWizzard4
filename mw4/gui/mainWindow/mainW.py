@@ -501,7 +501,7 @@ class MainWindow(
         # environment
         pixmap = self.svg2pixmap(':/icon/meteoblue.svg', '#124673')
         pixmap = pixmap.transformed(QTransform().rotate(-90))
-        pixmap = pixmap.scaled(37, 128)
+        pixmap = pixmap.scaled(37, 128, 1)
         self.ui.meteoblueIcon.setPixmap(pixmap)
         return True
 
@@ -656,6 +656,7 @@ class MainWindow(
         }
         for key, group in environ.items():
             stat = self.deviceStat.get(key, None)
+            stat = True
             if stat is None:
                 group.setFixedWidth(0)
                 group.setEnabled(False)

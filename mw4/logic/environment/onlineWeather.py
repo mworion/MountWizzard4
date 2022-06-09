@@ -27,19 +27,7 @@ import requests
 
 # local imports
 from base.tpool import Worker
-
-
-class WeatherSignals(PyQt5.QtCore.QObject):
-    """
-    """
-
-    __all__ = ['WeatherSignals']
-    dataReceived = PyQt5.QtCore.pyqtSignal(object)
-
-    serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+from base.driverDataClass import Signals
 
 
 class OnlineWeather(PyQt5.QtCore.QObject):
@@ -54,7 +42,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = WeatherSignals()
+        self.signals = Signals()
         self.location = app.mount.obsSite.location
 
         # minimum set for driver package built in
@@ -89,7 +77,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
     def online(self, value):
         self._online = value
         if value:
-            self.pollOpenWeatherMapData()
+            self.startCommunication()
 
     def startCommunication(self, loadConfig=False):
         """
@@ -138,11 +126,11 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             data = json.load(f)
 
         if 'list' not in data:
-            self.signals.dataReceived.emit(None)
+            self.data.clear()
             return False
 
         if len(data['list']) == 0:
-            self.signals.dataReceived.emit(None)
+            self.data.clear()
             return False
 
         val = data['list'][0]
@@ -163,8 +151,6 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         if 'rain' in val:
             self.data['rain'] = val['rain']['3h']
-
-        self.signals.dataReceived.emit(self.data)
         return True
 
     def workerGetOpenWeatherMapData(self, url):
@@ -223,7 +209,6 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         :return: success
         """
         if not self.online and self.running:
-            self.signals.dataReceived.emit(None)
             self.stopCommunication()
             return False
         if not self.running:
@@ -231,7 +216,8 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         if not self.apiKey:
             return False
         if not self.loadingFileNeeded('openweathermap.data', 1):
-            return False
+            self.processOpenWeatherMapData()
+            return True
 
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees

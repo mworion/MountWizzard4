@@ -41,17 +41,13 @@ class Environ:
         self.filteredTemperature = None
         self.filteredPressure = None
 
-        # environment functions
         signals = self.app.sensorWeather.signals
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
-        # skymeter functions
         signals = self.app.skymeter.signals
         signals.deviceDisconnected.connect(self.clearSkymeterGui)
-        # power weather functions
         signals = self.app.powerWeather.signals
         signals.deviceDisconnected.connect(self.clearPowerWeatherGui)
-        # weather functions
-        self.app.onlineWeather.signals.dataReceived.connect(self.updateOnlineWeatherGui)
+
         # weather functions
         self.app.mount.signals.settingDone.connect(self.updateDirectWeatherGui)
         self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
@@ -69,6 +65,7 @@ class Environ:
         self.app.update1s.connect(self.updateSkymeterGui)
         self.app.update1s.connect(self.updatePowerWeatherGui)
         self.app.update1s.connect(self.updateSensorWeatherGui)
+        self.app.update1s.connect(self.updateOnlineWeatherGui)
         self.app.colorChange.connect(self.updateSeeingEntries)
 
     def initConfig(self):
@@ -357,26 +354,10 @@ class Environ:
         self.guiSetText(self.ui.powerDewPoint, '4.1f', value)
         return True
 
-    def clearOnlineWeatherGui(self):
-        """
-        :return: true for test purpose
-        """
-        self.ui.onlineWeatherTemp.setText('-')
-        self.ui.onlineWeatherPress.setText('-')
-        self.ui.onlineWeatherHumidity.setText('-')
-        self.ui.onlineWeatherDewPoint.setText('-')
-        self.ui.onlineWeatherCloudCover.setText('-')
-        self.ui.onlineWeatherRainVol.setText('-')
-        return True
-
-    def updateOnlineWeatherGui(self, data=None):
+    def updateOnlineWeatherGui(self):
         """
         :return: success
         """
-        if not data:
-            self.clearOnlineWeatherGui()
-            return False
-
         value = self.app.onlineWeather.data.get('temperature', None)
         self.guiSetText(self.ui.onlineWeatherTemp, '4.1f', value)
 

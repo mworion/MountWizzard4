@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -5822,7 +5822,7 @@ to mount</string>
      <widget class="QLabel" name="meteoblueIcon">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>50</y>
         <width>37</width>
         <height>128</height>
@@ -5835,9 +5835,9 @@ to mount</string>
      <widget class="QTableWidget" name="tableSeeing">
       <property name="geometry">
        <rect>
-        <x>60</x>
+        <x>50</x>
         <y>20</y>
-        <width>706</width>
+        <width>716</width>
         <height>186</height>
        </rect>
       </property>
@@ -18292,9 +18292,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>215</y>
+         <y>190</y>
          <width>366</width>
-         <height>171</height>
+         <height>196</height>
         </rect>
        </property>
        <property name="title">
@@ -18417,7 +18417,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>140</y>
+          <y>170</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -18443,7 +18443,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>86</x>
-          <y>140</y>
+          <y>170</y>
           <width>221</width>
           <height>21</height>
          </rect>
@@ -18587,6 +18587,67 @@ Next point in time when satellite settles.</string>
           <width>0</width>
           <height>0</height>
          </size>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="seeingWeatherDevice">
+        <property name="geometry">
+         <rect>
+          <x>86</x>
+          <y>140</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="env_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>140</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Seeing</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="seeingWeatherSetup">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>140</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the online weather device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
         </property>
        </widget>
       </widget>

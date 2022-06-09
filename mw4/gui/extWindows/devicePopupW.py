@@ -49,7 +49,8 @@ class DevicePopup(toolsQtWidget.MWidget):
         'nina': 'N.I.N.A.',
         'astrometry': 'ASTROMETRY.NET',
         'astap': 'ASTAP',
-        'onlineWeather': 'Online Weather',
+        'weather': 'Online Weather',
+        'seeing': 'Seeing Weather',
         'relay': 'Relay',
     }
 
@@ -116,9 +117,13 @@ class DevicePopup(toolsQtWidget.MWidget):
                 'appPath': self.ui.astapAppPath,
                 'indexPath': self.ui.astapIndexPath,
             },
-            'onlineWeather': {
+            'weather': {
                 'apiKey': self.ui.onlineWeatherApiKey,
                 'hostaddress': self.ui.onlineWeatherHostAddress,
+            },
+            'seeing': {
+                'apiKey': self.ui.seeingWeatherApiKey,
+                'hostaddress': self.ui.seeingWeatherHostAddress,
             },
             'relay': {
                 'hostaddress': self.ui.relayHostAddress,

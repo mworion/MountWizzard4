@@ -325,6 +325,17 @@ class SettMisc(object):
         weather.online = self.ui.isOnline.isChecked()
         return True
 
+    def setSeeingOnline(self):
+        """
+        :return: success
+        """
+        seeing = self.app.seeingWeather
+        if not seeing:
+            return False
+
+        seeing.online = self.ui.isOnline.isChecked()
+        return True
+
     def setupIERS(self):
         """
         setupIERS enables or disables the update of astropy necessary files

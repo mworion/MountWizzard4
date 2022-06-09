@@ -45,6 +45,7 @@ from logic.focuser.focuser import Focuser
 from logic.environment.sensorWeather import SensorWeather
 from logic.environment.skymeter import Skymeter
 from logic.environment.onlineWeather import OnlineWeather
+from logic.environment.seeingWeather import SeeingWeather
 from logic.environment.directWeather import DirectWeather
 from logic.environment.weatherUPB import WeatherUPB
 from logic.cover.cover import Cover
@@ -129,6 +130,7 @@ class MountWizzard4(QObject):
             'sensorWeather': None,
             'directWeather': None,
             'onlineWeather': None,
+            'seeingWeather': None,
             'powerWeather': None,
             'skymeter': None,
             'cover': None,
@@ -159,6 +161,7 @@ class MountWizzard4(QObject):
         self.relay = KMRelay()
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
+        self.seeingWeather = SeeingWeather(self)
         self.directWeather = DirectWeather(self)
         self.powerWeather = WeatherUPB(self)
         self.cover = Cover(self)

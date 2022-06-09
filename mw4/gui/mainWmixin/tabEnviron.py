@@ -47,6 +47,12 @@ class Environ:
         signals.deviceDisconnected.connect(self.clearSkymeterGui)
         signals = self.app.powerWeather.signals
         signals.deviceDisconnected.connect(self.clearPowerWeatherGui)
+        signals = self.app.seeingWeather.signals
+        signals.deviceDisconnected.connect(self.clearSeeingEntries)
+        signals = self.app.seeingWeather.signals
+        signals.deviceConnected.connect(self.prepareSeeingTable)
+        signals = self.app.onlineWeather.signals
+        signals.deviceDisconnected.connect(self.updateSensorWeatherGui)
 
         # weather functions
         self.app.mount.signals.settingDone.connect(self.updateDirectWeatherGui)
@@ -66,6 +72,7 @@ class Environ:
         self.app.update1s.connect(self.updatePowerWeatherGui)
         self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update1s.connect(self.updateOnlineWeatherGui)
+        self.app.update30m.connect(self.updateSeeingEntries)
         self.app.colorChange.connect(self.updateSeeingEntries)
 
     def initConfig(self):
@@ -414,22 +421,30 @@ class Environ:
         self.guiSetText(self.ui.directWeatherDewPoint, '4.1f', value)
         return True
 
+    def clearSeeingEntries(self):
+        """
+        :return:
+        """
+        self.ui.tableSeeing.clear()
+        return True
+
     def updateSeeingEntries(self):
         """
         :return:
         """
-        filePath = self.app.mwGlob['dataDir'] + '/meteoblue.data'
-        with open(filePath) as f:
-            data = json.load(f)
-        data = data['hourly']
+        if 'hourly' not in self.app.seeingWeather.data:
+            return False
+
+        data = self.app.seeingWeather.data['hourly']
         fields = ['date', 'hour', 'high_clouds', 'mid_clouds', 'low_clouds',
                   'seeing_arcsec', 'seeing1', 'seeing2', 'temperature',
                   'relative_humidity']
 
-        seeTab = self.ui.tableSeeing
         colMain = self.cs['M_BLUE'][0]
         colBlack = self.cs['M_BLACK'][0]
         colWhite = self.cs['M_WHITE'][0]
+        seeTab = self.ui.tableSeeing
+
         for i in range(0, 72):
             for j, field in enumerate(fields):
                 t = f'{data[field][i]}'
@@ -457,14 +472,14 @@ class Environ:
         """
         vl = ['Date',
               'Hour',
-              'Low clouds',
-              'Mid clouds',
-              'High clouds',
+              'Low clouds  [%]',
+              'Mid clouds  [%]',
+              'High clouds [%]',
               'Seeing [arcsec]',
               'Seeing index 1',
               'Seeing index 2',
               'Ground Temp [°C]',
-              'Humid [%]',
+              'Humidity [%]',
               ]
 
         seeTab = self.ui.tableSeeing

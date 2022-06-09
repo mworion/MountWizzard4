@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -1954,6 +1954,152 @@
      </property>
      <property name="text">
       <string>API Key</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="seeing">
+    <attribute name="title">
+     <string>Seeing Weather</string>
+    </attribute>
+    <widget class="QLabel" name="label_mountIP_38">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>70</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>API Key</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="seeingWeatherHostAddress">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>105</x>
+       <y>40</y>
+       <width>241</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>api.openweathermap.org</string>
+     </property>
+     <property name="maxLength">
+      <number>50</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_mountIP_39">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>40</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Host Address</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="seeingWeatherApiKey">
+     <property name="geometry">
+      <rect>
+       <x>105</x>
+       <y>70</y>
+       <width>241</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;api key for open weather service&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="maxLength">
+      <number>50</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>

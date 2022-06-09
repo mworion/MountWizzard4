@@ -120,6 +120,11 @@ class OnlineWeather():
         """
         :return: success
         """
+        dataFile = self.app.mwGlob['dataDir'] + '/openweathermap.data'
+        if not os.path.isfile(dataFile):
+            self.log.info(f'{dataFile} not available')
+            return False
+
         with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'r') as f:
             data = json.load(f)
 
@@ -170,6 +175,7 @@ class OnlineWeather():
 
         with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'w+') as f:
             json.dump(data.json(), f, indent=4)
+            self.log.trace(data.json())
         return True
 
     def getOpenWeatherMapData(self, url=''):

@@ -99,7 +99,12 @@ class SeeingWeather():
         """
         :return: success
         """
-        with open(self.app.mwGlob['dataDir'] + '/meteoblue.data', 'r') as f:
+        dataFile = self.app.mwGlob['dataDir'] + '/meteoblue.data'
+        if not os.path.isfile(dataFile):
+            self.log.info(f'{dataFile} not available')
+            return False
+
+        with open(dataFile, 'r') as f:
             self.data = json.load(f)
         return True
 
@@ -122,6 +127,7 @@ class SeeingWeather():
 
         with open(self.app.mwGlob['dataDir'] + '/meteoblue.data', 'w+') as f:
             json.dump(data.json(), f, indent=4)
+            self.log.trace(data.json())
         return True
 
     def getSeeingData(self, url=''):

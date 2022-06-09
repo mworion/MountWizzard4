@@ -58,6 +58,7 @@ class SettMisc(object):
         self.ui.automateFast.clicked.connect(self.setAutomationSpeed)
         self.ui.automateNormal.clicked.connect(self.setAutomationSpeed)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
+        self.ui.isOnline.clicked.connect(self.setSeeingOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
@@ -121,6 +122,7 @@ class SettMisc(object):
         self.populateGameControllerList()
         self.setAutomationSpeed()
         self.setWeatherOnline()
+        self.setSeeingOnline()
         self.setupIERS()
         self.showUpdates()
 

@@ -1141,7 +1141,7 @@ class App(QObject):
     mwGlob = {'modelDir': 'tests/workDir/model',
               'imageDir': 'tests/workDir/image',
               'dataDir': 'tests/workDir/data',
-              'workDir': 'tests/workDir/data',
+              'workDir': 'tests/workDir',
               'measureDir': 'tests/workDir/measure',
               'tempDir': 'tests/workDir/temp',
               'configDir': 'tests/workDir/config',

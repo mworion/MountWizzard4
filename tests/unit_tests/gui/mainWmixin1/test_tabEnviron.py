@@ -17,12 +17,9 @@
 # standard libraries
 import pytest
 from unittest import mock
-from pathlib import Path
+import shutil
 
 # external packages
-from PyQt5.QtGui import QImage
-from PyQt5.QtGui import QPixmap
-import requests
 import numpy as np
 
 # local import
@@ -36,6 +33,11 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
+    shutil.copy('tests/testData/meteoblue.data',
+                'tests/workDir/data/meteoblue.data')
+    shutil.copy('tests/testData/openweathermap.data',
+                'tests/workDir/data/openweathermap.data')
+
     class Mixin(MWidget, Environ):
         def __init__(self):
             super().__init__()
@@ -450,31 +452,8 @@ def test_updatePowerWeatherGui_3(function):
     assert function.ui.powerDewPoint.text() == '10.5'
 
 
-def test_clearOnlineWeatherGui_1(function):
-    function.clearOnlineWeatherGui()
-    assert function.ui.onlineWeatherTemp.text() == '-'
-    assert function.ui.onlineWeatherPress.text() == '-'
-    assert function.ui.onlineWeatherHumidity.text() == '-'
-    assert function.ui.onlineWeatherCloudCover.text() == '-'
-    assert function.ui.onlineWeatherWindSpeed.text() == '-'
-    assert function.ui.onlineWeatherWindDir.text() == '-'
-    assert function.ui.onlineWeatherRainVol.text() == '-'
-
-
 def test_updateOnlineWeatherGui_1(function):
     suc = function.updateOnlineWeatherGui()
-    assert not suc
-
-
-def test_updateOnlineWeatherGui_2(function):
-    suc = function.updateOnlineWeatherGui(data={'temperature': 10,
-                                                'pressure': 1000,
-                                                'humidity': 50,
-                                                'dewPoint': 10,
-                                                'cloudCover': 50,
-                                                'windSpeed': 10,
-                                                'windDir': 120,
-                                                'rain': 5})
     assert suc
 
 

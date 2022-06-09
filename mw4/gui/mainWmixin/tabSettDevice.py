@@ -398,8 +398,8 @@ class SettDevice:
                               f'{framework.upper()} disabled',
                               f'{driver}')
 
-        self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
-                                                         f'{self.M_GREY1};')
+        style = f'background-color: {self.M_GREY1};'
+        self.drivers[driver]['uiDropDown'].setStyleSheet(style)
         self.deviceStat[driver] = None
 
         return True
@@ -433,14 +433,14 @@ class SettDevice:
 
     def startDriver(self, driver=None, autoStart=True):
         """
-        startDriver checks if a framework has been set and starts the driver with its
-        startCommunication method. Normally the driver would report it's connection,
-        but for internal driver this has to be done separately.
+        startDriver checks if a framework has been set and starts the driver with
+        its startCommunication method. Normally the driver would report it's
+        connection, but for internal driver this has to be done separately.
 
-        as the configuration is stored in the config, start also stores the selected
-        framework in the framework attribute of the driver's class. this is needed as
-        when stopping the driver the config dict already has the new framework set
-        and we have to remember it.
+        as the configuration is stored in the config, start also stores the
+        selected framework in the framework attribute of the driver's class. this
+        is needed as when stopping the driver the config dict already has the new
+        framework set and we have to remember it.
 
         :param driver:
         :param autoStart:
@@ -459,7 +459,8 @@ class SettDevice:
         driverClass.framework = framework
         isInternal = framework == 'internal'
         if isInternal:
-            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_GREEN};')
+            style = f'background-color: {self.M_GREEN};'
+            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
 
         self.configDriver(driver=driver)
         if autoStart:
@@ -564,6 +565,13 @@ class SettDevice:
         if hasattr(self.drivers[driver]['class'], 'signals'):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
+        else:
+            driverClass = self.drivers[driver]['class']
+            if not driverClass.framework:
+                return False
+            if driverClass.run[driverClass.framework].deviceName != deviceName:
+                return False
+
         return True
 
     def serverDisconnected(self, deviceList):
@@ -580,8 +588,8 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
-                                                             f'{self.M_GREY1};')
+            style = f'background-color: {self.M_GREY1};'
+            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
             self.app.mes.emit(0, 'Driver', 'Server disconnected', f'{driver}')
         return True
 
@@ -597,7 +605,8 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: {self.M_GREEN};')
+            style = f'background-color: {self.M_GREEN};'
+            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
             self.deviceStat[driver] = True
             self.app.mes.emit(0, 'Driver', 'Device connected', f'{driver}')
         return True
@@ -611,8 +620,8 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            self.drivers[driver]['uiDropDown'].setStyleSheet(f'background-color: '
-                                                             f'{self.M_GREY1};')
+            style = f'background-color: {self.M_GREY1};'
+            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
             self.deviceStat[driver] = False
             self.app.mes.emit(0, 'Driver', 'Device disconnected', f'{driver}')
         return True

@@ -16,8 +16,11 @@
 ###########################################################
 # standard libraries
 import logging
+import json
 
 # external packages
+import os.path
+
 import PyQt5.QtCore
 import numpy as np
 import requests
@@ -76,7 +79,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         self.hostaddress = ''
         self.apiKey = ''
         self._online = False
-        self.app.update10s.connect(self.updateOpenWeatherMapData)
+        self.app.update10s.connect(self.pollOpenWeatherMapData)
 
     @property
     def online(self):
@@ -86,18 +89,15 @@ class OnlineWeather(PyQt5.QtCore.QObject):
     def online(self, value):
         self._online = value
         if value:
-            self.updateOpenWeatherMapData()
+            self.pollOpenWeatherMapData()
 
     def startCommunication(self, loadConfig=False):
         """
         :param loadConfig:
         :return: success of reconnecting to server
         """
-        if not self.apiKey:
-            return False
-
         self.running = True
-        self.updateOpenWeatherMapData()
+        self.pollOpenWeatherMapData()
         self.signals.deviceConnected.emit('OnlineWeather')
         return True
 
@@ -130,14 +130,12 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         dewPoint = (B * alpha) / (A - alpha)
         return dewPoint
 
-    def updateOpenWeatherMapDataWorker(self, data=None):
+    def processOpenWeatherMapData(self):
         """
-        :param data:
         :return: success
         """
-        if data is None:
-            self.signals.dataReceived.emit(None)
-            return False
+        with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'r') as f:
+            data = json.load(f)
 
         if 'list' not in data:
             self.signals.dataReceived.emit(None)
@@ -169,39 +167,54 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         self.signals.dataReceived.emit(self.data)
         return True
 
-    def getOpenWeatherMapDataWorker(self, url=''):
+    def workerGetOpenWeatherMapData(self, url):
         """
         :param url:
         :return: data
         """
-        if not url:
-            return None
-
         try:
             data = requests.get(url, timeout=30)
         except TimeoutError:
             self.log.warning(f'[{url}] not reachable')
-            return None
+            return False
         except Exception as e:
             self.log.critical(f'[{url}] general exception: [{e}]')
-            return None
+            return False
         if data.status_code != 200:
             self.log.warning(f'[{url}] status is not 200')
-            return None
+            return False
 
-        return data.json()
+        with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'w+') as f:
+            json.dump(data.json(), f, indent=4)
+        return True
 
     def getOpenWeatherMapData(self, url=''):
         """
         :param url:
         :return: true for test purpose
         """
-        worker = Worker(self.getOpenWeatherMapDataWorker, url)
-        worker.signals.result.connect(self.updateOpenWeatherMapDataWorker)
+        worker = Worker(self.workerGetOpenWeatherMapData, url)
+        worker.signals.result.connect(self.processOpenWeatherMapData)
         self.threadPool.start(worker)
         return True
 
-    def updateOpenWeatherMapData(self):
+    def loadingFileNeeded(self, fileName, hours):
+        """
+        :param fileName:
+        :param hours:
+        :return:
+        """
+        filePath = self.app.mwGlob['dataDir'] + '/' + fileName
+        if not os.path.isfile(filePath):
+            return True
+
+        ageData = self.app.mount.obsSite.loader.days_old(fileName)
+        if ageData < hours / 24:
+            return False
+        else:
+            return True
+
+    def pollOpenWeatherMapData(self):
         """
         updateOpenWeatherMap downloads the actual OpenWeatherMap image and
         displays it in environment tab. it checks first if online is set,
@@ -214,6 +227,10 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             self.stopCommunication()
             return False
         if not self.running:
+            return False
+        if not self.apiKey:
+            return False
+        if not self.loadingFileNeeded('openweathermap.data', 1):
             return False
 
         lat = self.location.latitude.degrees

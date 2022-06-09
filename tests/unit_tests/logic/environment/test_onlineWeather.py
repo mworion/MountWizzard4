@@ -46,7 +46,7 @@ def function():
 
 def test_properties(function):
     with mock.patch.object(function,
-                           'updateOpenWeatherMapData'):
+                           'pollOpenWeatherMapData'):
         function.keyAPI = 'test'
         assert function.keyAPI == 'test'
         function.online = True
@@ -56,7 +56,7 @@ def test_properties(function):
 def test_startCommunication_1(function):
     function.running = False
     with mock.patch.object(function,
-                           'updateOpenWeatherMapData'):
+                           'pollOpenWeatherMapData'):
         suc = function.startCommunication()
         assert not suc
         assert not function.running
@@ -66,7 +66,7 @@ def test_startCommunication_2(function):
     function.running = False
     function.apiKey = 'test'
     with mock.patch.object(function,
-                           'updateOpenWeatherMapData'):
+                           'pollOpenWeatherMapData'):
         suc = function.startCommunication()
         assert suc
         assert function.running
@@ -105,13 +105,13 @@ def test_getDewPoint_5(function):
 
 
 def test_updateOpenWeatherMapDataWorker_1(function):
-    suc = function.updateOpenWeatherMapDataWorker()
+    suc = function.processOpenWeatherMapData()
     assert not suc
 
 
 def test_updateOpenWeatherMapDataWorker_2(function):
     data = {'test': {}}
-    suc = function.updateOpenWeatherMapDataWorker(data=data)
+    suc = function.processOpenWeatherMapData(data=data)
     assert not suc
 
 
@@ -125,18 +125,18 @@ def test_updateOpenWeatherMapDataWorker_3(function):
              'rain': {'3h': 10}
              }
     data = {'list': [entry]}
-    suc = function.updateOpenWeatherMapDataWorker(data=data)
+    suc = function.processOpenWeatherMapData(data=data)
     assert suc
 
 
 def test_updateOpenWeatherMapDataWorker_4(function):
     data = {'list': []}
-    suc = function.updateOpenWeatherMapDataWorker(data=data)
+    suc = function.processOpenWeatherMapData(data=data)
     assert not suc
 
 
 def test_getOpenWeatherMapDataWorker_1(function):
-    val = function.getOpenWeatherMapDataWorker()
+    val = function.workerGetOpenWeatherMapData()
     assert val is None
 
 
@@ -146,7 +146,7 @@ def test_getOpenWeatherMapDataWorker_2(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.workerGetOpenWeatherMapData('http://localhost')
         assert val is None
 
 
@@ -157,7 +157,7 @@ def test_getOpenWeatherMapDataWorker_3(function):
                            'get',
                            side_effect=Exception(),
                            return_value=Test()):
-        val = function.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.workerGetOpenWeatherMapData('http://localhost')
         assert val is None
 
 
@@ -168,7 +168,7 @@ def test_getOpenWeatherMapDataWorker_4(function):
                            'get',
                            side_effect=TimeoutError(),
                            return_value=Test()):
-        val = function.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.workerGetOpenWeatherMapData('http://localhost')
         assert val is None
 
 
@@ -183,25 +183,25 @@ def test_getOpenWeatherMapDataWorker_5(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.getOpenWeatherMapDataWorker('http://localhost')
+        val = function.workerGetOpenWeatherMapData('http://localhost')
         assert val == 'test'
 
 
 def test_updateOpenWeatherMapData_1(function):
-    suc = function.updateOpenWeatherMapData()
+    suc = function.pollOpenWeatherMapData()
     assert not suc
 
 
 def test_updateOpenWeatherMapData_2(function):
     function.online = True
-    suc = function.updateOpenWeatherMapData()
+    suc = function.pollOpenWeatherMapData()
     assert not suc
 
 
 def test_updateOpenWeatherMapData_3(function):
     function.online = True
     function.running = True
-    suc = function.updateOpenWeatherMapData()
+    suc = function.pollOpenWeatherMapData()
     assert suc
 
 
@@ -210,6 +210,6 @@ def test_updateOpenWeatherMapData_4(function):
     function.running = True
     with mock.patch.object(function,
                            'stopCommunication'):
-        suc = function.updateOpenWeatherMapData()
+        suc = function.pollOpenWeatherMapData()
         assert not suc
 

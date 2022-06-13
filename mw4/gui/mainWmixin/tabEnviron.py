@@ -16,7 +16,6 @@
 #
 ###########################################################
 # standard libraries
-import os
 import webbrowser
 
 # external packages
@@ -66,6 +65,9 @@ class Environ:
         self.ui.checkRefracNone.clicked.connect(self.setRefractionUpdateType)
         self.ui.checkRefracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.checkRefracNoTrack.clicked.connect(self.setRefractionUpdateType)
+        self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
+        self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
+        self.clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
@@ -86,7 +88,6 @@ class Environ:
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
-        self.prepareSeeingTable()
         return True
 
     def storeConfig(self):
@@ -429,6 +430,19 @@ class Environ:
         self.ui.tableSeeing.clear()
         return True
 
+    def addSkyfieldTimeObject(self, data):
+        """
+        :param data:
+        :return:
+        """
+        ts = self.app.mount.obsSite.ts
+        data['time'] = []
+
+        for date, hour in zip(data['date'], data['hour']):
+            y, m, d = date.split('-')
+            data['time'].append(ts.utc(int(y), int(m), int(d), hour, 0, 0))
+        return True
+
     def updateSeeingEntries(self):
         """
         :return:
@@ -436,36 +450,46 @@ class Environ:
         if 'hourly' not in self.app.seeingWeather.data:
             return False
 
-        data = self.app.seeingWeather.data['hourly']
-        fields = ['date', 'hour', 'high_clouds', 'mid_clouds', 'low_clouds',
+        self.ui.seeingGroup.setTitle('Seeing data ' + self.timeZoneString())
+        ts = self.app.mount.obsSite.ts
+        fields = ['time', 'time', 'high_clouds', 'mid_clouds', 'low_clouds',
                   'seeing_arcsec', 'seeing1', 'seeing2', 'temperature',
                   'relative_humidity']
-
-        colMain = self.cs['M_BLUE'][0]
-        colBlack = self.cs['M_BLACK'][0]
-        colWhite = self.cs['M_WHITE'][0]
+        colorMain = self.cs['M_BLUE'][0]
+        colorBlack = self.cs['M_BLACK'][0]
+        colorWhite = self.cs['M_WHITE'][0]
         seeTab = self.ui.tableSeeing
+        data = self.app.seeingWeather.data['hourly']
+        self.addSkyfieldTimeObject(data)
 
-        for i in range(0, 72):
+        for i in range(0, 96):
+            isActual = abs(data['time'][i] - ts.now()) < 1 / 48
             for j, field in enumerate(fields):
                 t = f'{data[field][i]}'
                 item = QTableWidgetItem()
                 item.setTextAlignment(Qt.AlignHCenter)
                 item.setForeground(QColor(self.M_BLUE))
                 if j == 0:
-                    val = t.split('-')
-                    t = f'{val[2]}/{val[1]}'
+                    t = self.convertTime(data[field][i], '%d/%m')
+                elif j == 1:
+                    t = self.convertTime(data[field][i], '%H')
                 elif j in [2, 3, 4]:
-                    col = self.calcHexColor(colMain, data[field][i] / 100)
-                    item.setBackground(QColor(col))
-                    item.setForeground(QColor(colWhite))
+                    color = self.calcHexColor(colorMain, data[field][i] / 100)
+                    item.setBackground(QColor(color))
+                    item.setForeground(QColor(colorWhite))
                 elif j in [6, 7]:
-                    col = self.calcHexColor(data['seeing1_color'][i], 0.8)
-                    item.setBackground(QColor(col))
-                    item.setForeground(QColor(colBlack))
+                    color = self.calcHexColor(data['seeing1_color'][i], 0.8)
+                    item.setBackground(QColor(color))
+                    item.setForeground(QColor(colorBlack))
 
+                if isActual:
+                    item.setForeground(QColor(self.M_PINK))
+                    columnCenter = i
                 item.setText(t)
                 seeTab.setItem(j, i, item)
+
+        seeTab.selectColumn(columnCenter + 10)
+        return True
 
     def prepareSeeingTable(self):
         """
@@ -485,7 +509,7 @@ class Environ:
 
         seeTab = self.ui.tableSeeing
         seeTab.setRowCount(10)
-        seeTab.setColumnCount(72)
+        seeTab.setColumnCount(96)
         seeTab.setVerticalHeaderLabels(vl)
         seeTab.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()

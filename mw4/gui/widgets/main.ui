@@ -5804,7 +5804,7 @@ to mount</string>
       </item>
      </layout>
     </widget>
-    <widget class="QGroupBox" name="meteoblueGroup">
+    <widget class="QGroupBox" name="seeingGroup">
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -5814,7 +5814,7 @@ to mount</string>
       </rect>
      </property>
      <property name="title">
-      <string>meteoblue data (time is local)</string>
+      <string>Seeing data</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -27613,7 +27613,7 @@ Slew</string>
          </rect>
         </property>
         <property name="text">
-         <string>Sat and Almanac</string>
+         <string>Sat, Environ and Almanac</string>
         </property>
        </widget>
        <widget class="QRadioButton" name="unitTimeUTC">

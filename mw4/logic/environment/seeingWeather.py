@@ -20,11 +20,18 @@ import json
 import os
 
 # external packages
+from PyQt5.QtCore import pyqtSignal
 import requests
 
 # local imports
 from base.tpool import Worker
 from base.driverDataClass import Signals
+
+
+class SeeingWeatherSignals(Signals):
+    """
+    """
+    update = pyqtSignal()
 
 
 class SeeingWeather():
@@ -39,7 +46,7 @@ class SeeingWeather():
 
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = Signals()
+        self.signals = SeeingWeatherSignals()
         self.location = app.mount.obsSite.location
 
         # minimum set for driver package built in
@@ -106,6 +113,7 @@ class SeeingWeather():
 
         with open(dataFile, 'r') as f:
             self.data = json.load(f)
+        self.signals.update.emit()
         return True
 
     def workerGetSeeingData(self, url):
@@ -125,9 +133,11 @@ class SeeingWeather():
             self.log.warning(f'[{url}] status is not 200')
             return False
 
+        data = data.json()
+        self.log.trace(data)
+
         with open(self.app.mwGlob['dataDir'] + '/meteoblue.data', 'w+') as f:
-            json.dump(data.json(), f, indent=4)
-            self.log.trace(data.json())
+            json.dump(data, f, indent=4)
         return True
 
     def getSeeingData(self, url=''):
@@ -171,7 +181,7 @@ class SeeingWeather():
             return False
         if not self.apiKey:
             return False
-        if not self.loadingFileNeeded('meteoblue.data', 1):
+        if not self.loadingFileNeeded('meteoblue.data', 0.5):
             self.processSeeingData()
             return True
 
@@ -179,7 +189,7 @@ class SeeingWeather():
         lon = self.location.longitude.degrees
 
         webSite = f'http://{self.hostaddress}/feed/seeing_json'
-        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&apikey={self.apiKey}'
+        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&apikey={self.apiKey}&tz=utc'
         self.getSeeingData(url=url)
         self.log.debug(f'{url}')
         return True

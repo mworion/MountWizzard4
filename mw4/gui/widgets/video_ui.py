@@ -68,7 +68,7 @@ class Ui_VideoDialog(object):
         self.videoSource.addItem("")
         self.gridLayout.addWidget(self.videoSource, 0, 4, 1, 1)
         self.frameRate = QtWidgets.QComboBox(VideoDialog)
-        self.frameRate.setMinimumSize(QtCore.QSize(100, 0))
+        self.frameRate.setMinimumSize(QtCore.QSize(80, 0))
         self.frameRate.setObjectName("frameRate")
         self.frameRate.addItem("")
         self.frameRate.addItem("")
@@ -108,7 +108,7 @@ class Ui_VideoDialog(object):
         self.frameRate.setItemText(1, _translate("VideoDialog", "2.0 fps"))
         self.frameRate.setItemText(2, _translate("VideoDialog", "1.0 fps"))
         self.frameRate.setItemText(3, _translate("VideoDialog", "0.5 fps"))
-        self.frameRate.setItemText(4, _translate("VideoDialog", "0.25 fps"))
+        self.frameRate.setItemText(4, _translate("VideoDialog", "0.2 fps"))
 
 
 if __name__ == "__main__":

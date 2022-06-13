@@ -207,7 +207,7 @@
       <widget class="QComboBox" name="frameRate">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>80</width>
          <height>0</height>
         </size>
        </property>
@@ -233,7 +233,7 @@
        </item>
        <item>
         <property name="text">
-         <string>0.25 fps</string>
+         <string>0.2 fps</string>
         </property>
        </item>
       </widget>

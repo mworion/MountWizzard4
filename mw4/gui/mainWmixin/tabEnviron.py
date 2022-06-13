@@ -16,7 +16,8 @@
 #
 ###########################################################
 # standard libraries
-import json
+import os
+import webbrowser
 
 # external packages
 import numpy as np
@@ -489,4 +490,15 @@ class Environ:
         seeTab.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()
         seeTab.resizeColumnsToContents()
+        return True
+
+    def openMeteoblue(self):
+        """
+        :return:
+        """
+        url = f'https://www.meteoblue.com/de/wetter/outdoorsports/seeing'
+        if not webbrowser.open(url, new=0):
+            self.app.mes.emit(2, 'System', 'Environment', 'Browser failed')
+        else:
+            self.app.mes.emit(0, 'System', 'Environment', 'Meteoblue opened')
         return True

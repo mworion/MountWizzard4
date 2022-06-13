@@ -16,14 +16,12 @@
 #
 ###########################################################
 # standard libraries
-import time
 
 # external packages
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QSizePolicy
 import cv2
-import numpy as np
 import qimage2ndarray
 
 # local import
@@ -49,9 +47,6 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.running = False
         self.capture = None
         self.runningCounter = 0
-        self.imageSkipFactor = 100
-        self.targetFrameRate = 1
-        self.smoothSkipRatio = np.zeros(50)
 
     def closeEvent(self, closeEvent):
         """
@@ -78,6 +73,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.videoSource.currentIndexChanged.connect(self.stopVideo)
         self.ui.frameRate.currentIndexChanged.connect(self.stopVideo)
         self.app.colorChange.connect(self.colorChange)
+        self.app.update0_1s.connect(self.count)
         self.changeStyleDynamic(self.ui.videoStop, 'running', True)
         self.show()
         return True
@@ -89,43 +85,33 @@ class VideoWindow(toolsQtWidget.MWidget):
         _, frame = self.capture.retrieve()
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image = qimage2ndarray.array2qimage(frame)
+        if not self.running:
+            return False
         self.pixmapReady.emit(QPixmap.fromImage(image))
         return True
 
-    def calcSkipFactor(self, start):
+    def count(self):
         """
-        :param start:
         :return:
         """
-        if self.runningCounter < 50:
-            deltaT = (time.time() - start)
-            actualSkipRatio = self.targetFrameRate * deltaT
-            self.smoothSkipRatio[self.runningCounter] = actualSkipRatio
-
-        elif self.runningCounter == 50:
-            factor = int(1 / np.maximum(int(np.mean(self.smoothSkipRatio[25:])), 1))
-            self.imageSkipFactor = factor
-            self.log.info(f'Image Skip Factor: [{self.imageSkipFactor}]')
-
         self.runningCounter += 1
         return True
 
-    def workerVideo(self, source):
+    def workerVideo(self, source, frameRate):
         """
         :param source:
+        :param frameRate:
         :return:
         """
         self.capture = cv2.VideoCapture(source)
         self.log.debug(f'Video open : [{self.capture.isOpened()}]')
-
+        self.runningCounter = 0
         while self.running and self.capture.isOpened():
-            start = time.time()
             suc = self.capture.grab()
             if not suc:
                 break
-            if self.runningCounter % self.imageSkipFactor == 0:
+            if self.runningCounter % frameRate == 0:
                 self.sendImage()
-            self.calcSkipFactor(start)
 
         self.capture.release()
         return True
@@ -136,11 +122,11 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         url = self.ui.videoURL.text()
         sources = [url, 0, 1, 2, 3]
-        frameRates = [5, 2, 1, 0.5, 0.25]
+        frameCounter = [2, 5, 10, 20, 50]
 
         sourceIndex = self.ui.videoSource.currentIndex()
         frameRateIndex = self.ui.frameRate.currentIndex()
-        self.targetFrameRate = frameRates[frameRateIndex]
+        frameRate = frameCounter[frameRateIndex]
         if not self.ui.videoURL.text() and sourceIndex == 0:
             return False
 
@@ -149,7 +135,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.videoStart, 'running', True)
         self.changeStyleDynamic(self.ui.videoStop, 'running', False)
         self.running = True
-        worker = Worker(self.workerVideo, source)
+        worker = Worker(self.workerVideo, source, frameRate)
         self.threadPool.start(worker)
         return True
 

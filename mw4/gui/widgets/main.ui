@@ -5814,7 +5814,7 @@ to mount</string>
       </rect>
      </property>
      <property name="title">
-      <string>meteoblue data</string>
+      <string>meteoblue data (time is local)</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>

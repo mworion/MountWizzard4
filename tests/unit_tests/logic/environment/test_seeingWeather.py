@@ -19,6 +19,7 @@ import pytest
 import unittest.mock as mock
 import os
 import json
+import shutil
 
 # external packages
 import requests
@@ -38,6 +39,9 @@ def function():
         @staticmethod
         def json():
             return 'test'
+
+    shutil.copy('tests/testData/meteoblue.data',
+                'tests/workDir/data/meteoblue.data')
 
     with mock.patch.object(requests,
                            'get',

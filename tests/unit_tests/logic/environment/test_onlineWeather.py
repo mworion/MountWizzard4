@@ -19,6 +19,7 @@ import pytest
 import unittest.mock as mock
 import os
 import json
+import shutil
 
 # external packages
 import requests
@@ -39,6 +40,8 @@ def function():
         def json():
             return 'test'
 
+    shutil.copy('tests/testData/openweathermap.data',
+                'tests/workDir/data/openweathermap.data')
     with mock.patch.object(requests,
                            'get',
                            return_value=Test1()):
@@ -113,6 +116,15 @@ def test_processOpenWeatherMapData_2(function):
 
 
 def test_processOpenWeatherMapData_3(function):
+    data = {'list': []}
+    with mock.patch.object(json,
+                           'load',
+                           return_value=data):
+        suc = function.processOpenWeatherMapData()
+        assert not suc
+
+
+def test_processOpenWeatherMapData_4(function):
     entry = {'main': {'temp': 290,
                       'grnd_level': 1000,
                       'humidity': 50},
@@ -127,15 +139,6 @@ def test_processOpenWeatherMapData_3(function):
                            return_value=data):
         suc = function.processOpenWeatherMapData()
         assert suc
-
-
-def test_processOpenWeatherMapData_4(function):
-    data = {'list': []}
-    with mock.patch.object(json,
-                           'load',
-                           return_value=data):
-        suc = function.processOpenWeatherMapData()
-        assert not suc
 
 
 def test_workerGetOpenWeatherMapData_1(function):

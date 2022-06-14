@@ -17,6 +17,8 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import os
+import json
 
 # external packages
 import requests
@@ -53,18 +55,8 @@ def test_properties(function):
         assert function.online
 
 
-def test_startCommunication_1(function):
+def test_startCommunication_(function):
     function.running = False
-    with mock.patch.object(function,
-                           'pollOpenWeatherMapData'):
-        suc = function.startCommunication()
-        assert not suc
-        assert not function.running
-
-
-def test_startCommunication_2(function):
-    function.running = False
-    function.apiKey = 'test'
     with mock.patch.object(function,
                            'pollOpenWeatherMapData'):
         suc = function.startCommunication()
@@ -104,18 +96,23 @@ def test_getDewPoint_5(function):
     assert val == -20.216642415771897
 
 
-def test_updateOpenWeatherMapDataWorker_1(function):
-    suc = function.processOpenWeatherMapData()
-    assert not suc
+def test_processOpenWeatherMapData_1(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        suc = function.processOpenWeatherMapData()
+        assert not suc
 
 
-def test_updateOpenWeatherMapDataWorker_2(function):
-    data = {'test': {}}
-    suc = function.processOpenWeatherMapData(data=data)
-    assert not suc
+def test_processOpenWeatherMapData_2(function):
+    with mock.patch.object(json,
+                           'load',
+                           return_value={}):
+        suc = function.processOpenWeatherMapData()
+        assert not suc
 
 
-def test_updateOpenWeatherMapDataWorker_3(function):
+def test_processOpenWeatherMapData_3(function):
     entry = {'main': {'temp': 290,
                       'grnd_level': 1000,
                       'humidity': 50},
@@ -125,54 +122,55 @@ def test_updateOpenWeatherMapDataWorker_3(function):
              'rain': {'3h': 10}
              }
     data = {'list': [entry]}
-    suc = function.processOpenWeatherMapData(data=data)
-    assert suc
+    with mock.patch.object(json,
+                           'load',
+                           return_value=data):
+        suc = function.processOpenWeatherMapData()
+        assert suc
 
 
-def test_updateOpenWeatherMapDataWorker_4(function):
+def test_processOpenWeatherMapData_4(function):
     data = {'list': []}
-    suc = function.processOpenWeatherMapData(data=data)
-    assert not suc
+    with mock.patch.object(json,
+                           'load',
+                           return_value=data):
+        suc = function.processOpenWeatherMapData()
+        assert not suc
 
 
-def test_getOpenWeatherMapDataWorker_1(function):
-    val = function.workerGetOpenWeatherMapData()
-    assert val is None
-
-
-def test_getOpenWeatherMapDataWorker_2(function):
+def test_workerGetOpenWeatherMapData_1(function):
     class Test:
         status_code = 300
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.workerGetOpenWeatherMapData('http://localhost')
-        assert val is None
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
+        assert not suc
 
 
-def test_getOpenWeatherMapDataWorker_3(function):
+def test_workerGetOpenWeatherMapData_3(function):
     class Test:
         status_code = 300
     with mock.patch.object(requests,
                            'get',
                            side_effect=Exception(),
                            return_value=Test()):
-        val = function.workerGetOpenWeatherMapData('http://localhost')
-        assert val is None
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
+        assert not suc
 
 
-def test_getOpenWeatherMapDataWorker_4(function):
+def test_workerGetOpenWeatherMapData_4(function):
     class Test:
         status_code = 300
     with mock.patch.object(requests,
                            'get',
                            side_effect=TimeoutError(),
                            return_value=Test()):
-        val = function.workerGetOpenWeatherMapData('http://localhost')
-        assert val is None
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
+        assert not suc
 
 
-def test_getOpenWeatherMapDataWorker_5(function):
+def test_workerGetOpenWeatherMapData_5(function):
     class Test:
         status_code = 200
 
@@ -183,33 +181,93 @@ def test_getOpenWeatherMapDataWorker_5(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        val = function.workerGetOpenWeatherMapData('http://localhost')
-        assert val == 'test'
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
+        assert suc
 
 
-def test_updateOpenWeatherMapData_1(function):
-    suc = function.pollOpenWeatherMapData()
-    assert not suc
+def test_getOpenWeatherMapData(function):
+    with mock.patch.object(function.threadPool,
+                           'start'):
+        suc = function.getOpenWeatherMapData('test')
+        assert suc
 
 
-def test_updateOpenWeatherMapData_2(function):
-    function.online = True
-    suc = function.pollOpenWeatherMapData()
-    assert not suc
+def test_loadingFileNeeded_1(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        suc = function.loadingFileNeeded('test', 1)
+        assert suc
 
 
-def test_updateOpenWeatherMapData_3(function):
-    function.online = True
-    function.running = True
-    suc = function.pollOpenWeatherMapData()
-    assert suc
+def test_loadingFileNeeded_2(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite.loader,
+                               'days_old',
+                               return_value=1):
+            suc = function.loadingFileNeeded('test', 1)
+            assert suc
 
 
-def test_updateOpenWeatherMapData_4(function):
+def test_loadingFileNeeded_3(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite.loader,
+                               'days_old',
+                               return_value=1):
+            suc = function.loadingFileNeeded('test', 25)
+            assert not suc
+
+
+def test_pollOpenWeatherMapData_1(function):
     function.online = False
     function.running = True
+    function.apiKey = ''
     with mock.patch.object(function,
                            'stopCommunication'):
         suc = function.pollOpenWeatherMapData()
         assert not suc
+
+
+def test_pollOpenWeatherMapData_2(function):
+    function.online = True
+    function.running = False
+    function.apiKey = ''
+    suc = function.pollOpenWeatherMapData()
+    assert not suc
+
+
+def test_pollOpenWeatherMapData_3(function):
+    function.online = True
+    function.running = True
+    function.apiKey = ''
+    suc = function.pollOpenWeatherMapData()
+    assert not suc
+
+
+def test_pollOpenWeatherMapData_4(function):
+    function.online = True
+    function.running = True
+    function.apiKey = 'test'
+    with mock.patch.object(function,
+                           'loadingFileNeeded',
+                           return_value=False):
+        suc = function.pollOpenWeatherMapData()
+        assert suc
+
+
+def test_pollOpenWeatherMapData_5(function):
+    function.online = True
+    function.running = True
+    function.apiKey = 'test'
+    with mock.patch.object(function,
+                           'loadingFileNeeded',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'getOpenWeatherMapData'):
+            suc = function.pollOpenWeatherMapData()
+            assert suc
 

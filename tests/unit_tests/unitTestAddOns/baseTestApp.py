@@ -279,16 +279,27 @@ class DirectWeather:
 
 class OnlineWeather:
     class OnlineWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        dataReceived = pyqtSignal()
-        connected = pyqtSignal()
         serverConnected = pyqtSignal()
         serverDisconnected = pyqtSignal(object)
         deviceConnected = pyqtSignal(object)
         deviceDisconnected = pyqtSignal(object)
-        done = pyqtSignal()
 
     signals = OnlineWeatherSignals()
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+    data = {}
+
+
+class SeeingWeather:
+    class SeeingWeatherSignals(QObject):
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+        update = pyqtSignal()
+
+    signals = SeeingWeatherSignals()
     framework = None
     defaultConfig = {'framework': '',
                      'frameworks': {}}
@@ -1127,6 +1138,7 @@ class App(QObject):
     measure = Measure()
     mount = Mount()
     onlineWeather = OnlineWeather()
+    seeingWeather = SeeingWeather()
     power = Power()
     powerWeather = PowerWeather()
     dome = Dome()

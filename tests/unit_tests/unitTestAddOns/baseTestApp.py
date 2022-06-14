@@ -1093,6 +1093,7 @@ class App(QObject):
     deviceStat = {}
     update10s = pyqtSignal()
     timer0_1s = QTimer()
+    update0_1s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
     update30s = pyqtSignal()

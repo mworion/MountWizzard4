@@ -656,7 +656,6 @@ class MainWindow(
         }
         for key, group in environ.items():
             stat = self.deviceStat.get(key, None)
-            stat = True
             if stat is None:
                 group.setFixedWidth(0)
                 group.setEnabled(False)

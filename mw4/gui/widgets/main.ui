@@ -5908,6 +5908,22 @@ to mount</string>
        <bool>false</bool>
       </attribute>
      </widget>
+     <widget class="QLabel" name="label_b">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>190</y>
+        <width>43</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="a" stdset="0">
+       <string>64746d26f023</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="Almanac">

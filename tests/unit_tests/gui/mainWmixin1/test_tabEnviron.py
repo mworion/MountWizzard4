@@ -554,9 +554,9 @@ def test_updateSeeingEntries_3(function):
             'seeing2_color': ['#404040'] * 96,
             'temperature': [1] * 96,
             'relative_humidity': [1] * 96,
-            'badlayer_top': [1] * 96,
-            'badlayer_bottom': [1] * 96,
-            'badlayer_gradient': [1] * 96,
+            'badlayer_top': ['1'] * 96,
+            'badlayer_bottom': ['1'] * 96,
+            'badlayer_gradient': ['1'] * 96,
             'jetstream': [1] * 96,
         }
     }

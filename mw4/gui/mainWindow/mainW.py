@@ -322,6 +322,7 @@ class MainWindow(
         :return:    True if success for test
         """
         # main window
+        self.app.seeingWeather.b = self.ui.label_b.property('a')
         self.wIcon(self.ui.saveConfigAs, 'save')
         self.wIcon(self.ui.loadFrom, 'load')
         self.wIcon(self.ui.saveConfig, 'save')

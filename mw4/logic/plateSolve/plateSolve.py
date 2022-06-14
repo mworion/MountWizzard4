@@ -231,7 +231,7 @@ class PlateSolve:
         return True
 
     def solveThreading(self, fitsPath='', raHint=None, decHint=None,
-                       scaleHint=None, updateFits=False):
+                       scaleHint=None, fovHint=None, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a
         threadpool environment of Qt. Otherwise, the HMI would be stuck all the
@@ -242,6 +242,7 @@ class PlateSolve:
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
+        :param fovHint:  degrees FOV to look for solve in J2000
         :param updateFits: flag, if the results should be written to the
                            original file
         :return: success
@@ -266,6 +267,7 @@ class PlateSolve:
                               raHint=raHint,
                               decHint=decHint,
                               scaleHint=scaleHint,
+                              fovHint=fovHint,
                               updateFits=updateFits,
                               )
         worker.signals.finished.connect(self.solveClear)

@@ -90,22 +90,17 @@ class Watney(object):
         """
         cfgFile = self.tempDir + '/watney-solve-config.yml'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write(f'quadDbPath: {self.indexPath} n')
+            outFile.write(f"quadDbPath: '{self.indexPath}'\n")
         return True
 
-    def runWatney(self, binPath='', tempFile='', fitsPath='', options=''):
+    def runWatney(self, runnable):
         """
         runASTAP solves finally the xy star list and writes the WCS data in a fits
         file format
 
-        :param binPath:   full path to cli executable
-        :param tempFile:  full path to star file
-        :param fitsPath: full path to fits file in temp dir
-        :param options: additional solver options e.g. ra and dec hint
+        :param runnable: additional solver options e.g. ra and dec hint
         :return: success
         """
-        runnable = [binPath, '-f', fitsPath, '-o', tempFile]
-        runnable += options
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
@@ -125,7 +120,6 @@ class Watney(object):
             delta = time.time() - timeStart
             self.log.debug(f'Watney took {delta}s return code: '
                            + f'{self.process.returncode}'
-                           + f' [{fitsPath}]'
                            + ' stderr: '
                            + stderr.decode().replace('\n', ' ')
                            + ' stdout: '
@@ -135,75 +129,80 @@ class Watney(object):
         return True, int(self.process.returncode)
 
     @staticmethod
-    def getWCSHeader(wcsTextFile=None):
+    def getWCSHeader(wcsHDU=None):
         """
-        getWCSHeader reads the text file give by astap line by line and returns
-        the values as part of a header part of a fits HDU header back.
+        getWCSHeader returns the header part of a fits HDU
 
-        :param wcsTextFile: fits file with wcs data
+        :param wcsHDU: fits file with wcs data
         :return: wcsHeader
         """
-        if not wcsTextFile:
+        if wcsHDU is None:
             return None
 
-        tempString = ''
-        for line in wcsTextFile:
-            if line.startswith('END'):
-                continue
-            if line.startswith('COMMENT'):
-                continue
-            tempString += line
-
-        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
-                                                        sep='\n')
+        wcsHeader = wcsHDU[0].header
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              updateFits=False):
+              fovHint=None, updateFits=False):
         """
-        Solve uses the astap solver capabilities. The intention is to use an
-        offline solving capability, so we need a installed instance. As we go
-        multi-platform, and we need to focus on MW function, we use the astap
-        package which could be downloaded for all platforms. Many thanks
-        providing such a nice package.
-
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
+        :param fovHint:  degrees FOV to look for solve in J2000
         :param updateFits:  if true update Fits image file with wcsHeader data
 
         :return: success
         """
         self.process = None
         self.result = {'success': False}
+        isBlind = self.searchRadius == 180
+        outFile = self.tempDir + '/solve.json'
+        wcsPath = self.tempDir + '/temp.wcs'
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'Image missing'
             self.log.debug('Image missing for solving')
             return False
 
-        tempFile = self.tempDir + '/temp'
-        wcsPath = self.tempDir + '/temp.wcs'
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        binPathWatney = self.appPath + '/watney-solve'
-        options = ['-r', f'{self.searchRadius:1.1f}',
-                   '-t', '0.005',
-                   '-z', '0']
+        runnable = [self.appPath + '/watney-solve']
 
-        if raHint is not None and decHint is not None:
-            options += ['-ra', f'{raHint.hours}',
-                        '-spd', f'{decHint.degrees + 90}']
+        if isBlind:
+            runnable += ['blind']
+        else:
+            runnable += ['nearby']
 
-        if self.searchRadius == 180:
-            options += ['-fov', '0']
+        runnable += ['-i', fitsPath,
+                     '-o', outFile,
+                     '-w', wcsPath,
+                     '--use-config', self.tempDir + '/watney-solve-config.yml',
+                     '--extended', 'True']
 
-        suc, retValue = self.runWatney(binPath=binPathWatney,
-                                       fitsPath=fitsPath,
-                                       tempFile=tempFile,
-                                       options=options)
+        if fovHint is not None:
+            rMin = max(fovHint / 4, 0.15)
+            rMax = min(fovHint * 4, 16)
+        else:
+            rMin = 0.15
+            rMax = 16
+
+        if isBlind:
+            runnable += ['--min-radius', f'{rMin}',
+                         '--max-radius', f'{rMax}']
+        else:
+            runnable += ['-s', f'{self.searchRadius:1.1f}']
+
+        if raHint is not None and decHint is not None and not isBlind:
+            runnable += ['-m',
+                         '-r', f'{raHint.hours}',
+                         '-d', f'{decHint.degrees}',
+                         '-f', f'{fovHint}']
+        elif not isBlind:
+            runnable += ['-h']
+
+        suc, retValue = self.runWatney(runnable=runnable)
         if not suc:
             text = self.returnCodes.get(retValue, 'Unknown code')
             self.result['message'] = f'Watney error: [{text}]'
@@ -215,8 +214,8 @@ class Watney(object):
             self.log.debug(f'Solve files for [{wcsPath}] missing')
             return False
 
-        with open(wcsPath) as wcsTextFile:
-            wcsHeader = self.getWCSHeader(wcsTextFile=wcsTextFile)
+        with fits.open(wcsPath) as wcsHDU:
+            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,

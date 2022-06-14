@@ -30,6 +30,7 @@ releaseNotes = """
 - add: model points: set dither on celestial paths
 - add: model points: generate from actual used mount model
 - add: model points: existing model files could be loaded
+- add: plate solve: new watney astrometry solver for all platforms
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
 - add: dome: control azimuth move CW / CCW for INDI

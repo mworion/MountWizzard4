@@ -159,18 +159,13 @@ class ASTAP(object):
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              updateFits=False):
+              fovHint=None, updateFits=False):
         """
-        Solve uses the astap solver capabilities. The intention is to use an
-        offline solving capability, so we need a installed instance. As we go
-        multi-platform and we need to focus on MW function, we use the astap
-        package which could be downloaded for all platforms. Many thanks
-        providing such a nice package.
-
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
+        :param fovHint:  degrees FOV to look for solve in J2000
         :param updateFits:  if true update Fits image file with wcsHeader data
 
         :return: success

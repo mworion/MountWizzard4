@@ -284,6 +284,8 @@ class Model:
         self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'],
                                            raHint=mPoint['raJNowM'],
                                            decHint=mPoint['decJNowM'],
+                                           scaleHint=self.scaleHint,
+                                           fovHint=self.fovHint,
                                            updateFits=False)
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'

@@ -223,7 +223,7 @@ class Astrometry(object):
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              updateFits=False):
+              fovHint=None, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to
         use an offline solving capability, so we need a installed instance. As we
@@ -243,8 +243,8 @@ class Astrometry(object):
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
+        :param fovHint:  degrees FOV to look for solve in J2000
         :param updateFits:  if true update Fits image file with wcsHeader data
-
         :return: success
         """
         self.process = None

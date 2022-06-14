@@ -70,6 +70,8 @@ class SettImageStats:
         self.ui.openASTAPCatalog.clicked.connect(self.openASTAPCatalog)
         self.ui.openAstrometryCatalog.clicked.connect(self.openAstrometryCatalog)
         self.app.update1s.connect(self.updateImageStats)
+        self.fovHint = None
+        self.scaleHint = None
 
     def updateImageStats(self):
         """
@@ -89,9 +91,11 @@ class SettImageStats:
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
+            self.scaleHint = np.sqrt(resolutionX * resolutionX + resolutionY * resolutionY)
         else:
             resolutionX = None
             resolutionY = None
+            self.scaleHint = None
 
         if aperture:
             speed = focalLength / aperture
@@ -110,11 +114,11 @@ class SettImageStats:
         if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
             FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
-            FOV = np.sqrt(FOVX * FOVX + FOVY * FOVY)
+            self.fovHint = np.sqrt(FOVX * FOVX + FOVY * FOVY)
         else:
             FOVX = None
             FOVY = None
-            FOV = None
+            self.fovHint = None
 
         self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
@@ -132,16 +136,16 @@ class SettImageStats:
         self.guiSetText(self.ui.focalLengthStats, '3.0f', focalLength)
         self.guiSetText(self.ui.apertureStats, '3.0f', aperture)
 
-        if FOV is None:
+        if self.fovHint is None:
             return False
 
-        watneyText = self.WATNEY[FOV]
+        watneyText = self.WATNEY[self.fovHint]
         self.guiSetText(self.ui.watneyIndex, 's', watneyText)
 
-        astapText = self.ASTAP[FOV]
+        astapText = self.ASTAP[self.fovHint]
         self.guiSetText(self.ui.astapIndex, 's', astapText)
 
-        astrometryText = self.ASTROMETRY[FOV]
+        astrometryText = self.ASTROMETRY[self.fovHint]
         self.guiSetText(self.ui.astrometryIndex, 's', astrometryText)
 
         return True

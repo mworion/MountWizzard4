@@ -1811,7 +1811,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="Watney">
+   <widget class="QWidget" name="watney">
     <attribute name="title">
      <string>Watney</string>
     </attribute>

@@ -295,6 +295,20 @@ def test_abort_2(function):
     assert suc
 
 
+def test_checkAvailability_0(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value=True):
+            with mock.patch.object(platform,
+                                   'system',
+                                   return_value='Darwin'):
+                suc = function.checkAvailability('test', 'test')
+                assert suc == (True, True)
+
+
 def test_checkAvailability_1(function):
     with mock.patch.object(os.path,
                            'isfile',

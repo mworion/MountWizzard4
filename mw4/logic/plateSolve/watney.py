@@ -33,17 +33,6 @@ class Watney(object):
     """
 
     __all__ = ['Watney']
-
-    returnCodes = {0: 'No errors',
-                   1: 'No solution',
-                   2: 'Not enough stars detected',
-                   3: 'Error reading image file',
-                   32: 'No Star database found',
-                   33: 'Error reading star database',
-                   -1: 'Solving timed out',
-                   -2: 'Exception during solving',
-                   }
-
     log = logging.getLogger(__name__)
 
     def __init__(self, parent):
@@ -56,14 +45,11 @@ class Watney(object):
 
         self.result = {'success': False}
         self.process = None
-        self.deviceName = 'ASTAP'
+        self.deviceName = 'Watney'
         self.indexPath = ''
         self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
-
-        self.setDefaultPath()
-
         self.defaultConfig = {
             'watney': {
                 'deviceName': 'Watney',
@@ -74,6 +60,7 @@ class Watney(object):
                 'indexPath': self.indexPath,
             }
         }
+        self.setDefaultPath()
 
     def setDefaultPath(self):
         """

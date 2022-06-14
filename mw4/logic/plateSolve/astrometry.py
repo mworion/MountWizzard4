@@ -53,9 +53,6 @@ class Astrometry(object):
         self.timeout = 30
         self.searchRadius = 20
         self.deviceName = 'ASTROMETRY.NET'
-
-        self.setDefaultPath()
-
         self.defaultConfig = {
             'astrometry': {
                 'deviceName': 'ASTROMETRY.NET',
@@ -66,13 +63,12 @@ class Astrometry(object):
                 'indexPath': self.indexPath,
             }
         }
+        self.setDefaultPath()
 
     def setDefaultPath(self):
         """
-
         :return: true for test purpose
         """
-
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME', '')
             self.appPath = '/Applications/KStars.app/Contents/MacOS/astrometry/bin'

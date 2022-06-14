@@ -60,9 +60,6 @@ class ASTAP(object):
         self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
-
-        self.setDefaultPath()
-
         self.defaultConfig = {
             'astap': {
                 'deviceName': 'ASTAP',
@@ -73,13 +70,12 @@ class ASTAP(object):
                 'indexPath': self.indexPath,
             }
         }
+        self.setDefaultPath()
 
     def setDefaultPath(self):
         """
-
         :return: true for test purpose
         """
-
         if platform.system() == 'Darwin':
             self.appPath = '/Applications/ASTAP.app/Contents/MacOS'
             self.indexPath = '/usr/local/opt/astap'

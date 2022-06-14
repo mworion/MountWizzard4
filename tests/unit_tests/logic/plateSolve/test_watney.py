@@ -31,7 +31,7 @@ from skyfield.api import Angle
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.plateSolve.plateSolve import PlateSolve
-from logic.plateSolve.astap import ASTAP
+from logic.plateSolve.watney import Watney
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -47,7 +47,7 @@ def function():
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     
     parent = PlateSolve(app=App())
-    func = ASTAP(parent=parent)
+    func = Watney(parent=parent)
     yield func
 
 
@@ -208,23 +208,6 @@ def test_abort_2(function):
     function.process = Test()
     suc = function.abort()
     assert suc
-
-
-def test_checkAvailability_0(function):
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=True):
-        with mock.patch.object(glob,
-                               'glob',
-                               return_value='.290'):
-            with mock.patch.object(builtins,
-                                   'any',
-                                   return_value=True):
-                with mock.patch.object(platform,
-                                       'system',
-                                       return_value='Darwin'):
-                    suc = function.checkAvailability('test', 'test')
-                    assert suc == (True, True)
 
 
 def test_checkAvailability_1(function):

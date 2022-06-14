@@ -529,6 +529,10 @@ def test_updateSeeingEntries_2(function):
             'seeing2_color': ['#404040'] * 96,
             'temperature': [1] * 96,
             'relative_humidity': [1] * 96,
+            'badlayer_top': ['1'] * 96,
+            'badlayer_bottom': ['1'] * 96,
+            'badlayer_gradient': ['1'] * 96,
+            'jetstream': [1] * 96,
         }
     }
     t = function.app.mount.obsSite.ts.utc(2022, 1, 1, 10, 0, 0)

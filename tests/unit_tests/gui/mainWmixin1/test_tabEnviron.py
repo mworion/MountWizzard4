@@ -18,6 +18,7 @@
 import pytest
 from unittest import mock
 import shutil
+import webbrowser
 
 # external packages
 import numpy as np
@@ -484,3 +485,105 @@ def test_updateDirectWeatherGui_3(function):
     function.deviceStat['directWeather'] = True
     suc = function.updateDirectWeatherGui(setting=Test())
     assert suc
+
+
+def test_clearSeeingEntries(function):
+    suc = function.clearSeeingEntries()
+    assert suc
+
+
+def test_addSkyfieldTimeObject(function):
+    data = {
+        'hour': [10, 11],
+        'date': ['2022-01-01', '2022-01-01']
+    }
+
+    suc = function.addSkyfieldTimeObject(data)
+    assert suc
+    assert 'time' in data
+
+
+def test_updateSeeingEntries_1(function):
+    function.app.seeingWeather.data = {
+        'test': {
+            'hour': [10, 11],
+            'date': ['2022-01-01', '2022-01-01']
+        }
+    }
+    suc = function.updateSeeingEntries()
+    assert not suc
+
+
+def test_updateSeeingEntries_2(function):
+    function.app.seeingWeather.data = {
+        'hourly': {
+            'hour': [10] * 96,
+            'date': ['2022-01-01'] * 96,
+            'high_clouds': [1] * 96,
+            'mid_clouds': [1] * 96,
+            'low_clouds': [1] * 96,
+            'seeing_arcsec': [1] * 96,
+            'seeing1': [1] * 96,
+            'seeing1_color': ['#404040'] * 96,
+            'seeing2': [1] * 96,
+            'seeing2_color': ['#404040'] * 96,
+            'temperature': [1] * 96,
+            'relative_humidity': [1] * 96,
+        }
+    }
+    t = function.app.mount.obsSite.ts.utc(2022, 1, 1, 10, 0, 0)
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=t):
+        suc = function.updateSeeingEntries()
+        assert suc
+
+
+def test_updateSeeingEntries_3(function):
+    function.app.seeingWeather.data = {
+        'hourly': {
+            'hour': [10] * 96,
+            'date': ['2022-01-01'] * 96,
+            'high_clouds': [1] * 96,
+            'mid_clouds': [1] * 96,
+            'low_clouds': [1] * 96,
+            'seeing_arcsec': [1] * 96,
+            'seeing1': [1] * 96,
+            'seeing1_color': ['#404040'] * 96,
+            'seeing2': [1] * 96,
+            'seeing2_color': ['#404040'] * 96,
+            'temperature': [1] * 96,
+            'relative_humidity': [1] * 96,
+            'badlayer_top': [1] * 96,
+            'badlayer_bottom': [1] * 96,
+            'badlayer_gradient': [1] * 96,
+            'jetstream': [1] * 96,
+        }
+    }
+    t = function.app.mount.obsSite.ts.utc(2023, 1, 1, 10, 0, 0)
+    with mock.patch.object(function.app.mount.obsSite.ts,
+                           'now',
+                           return_value=t):
+        suc = function.updateSeeingEntries()
+        assert suc
+
+
+def test_prepareSeeingTable(function):
+    suc = function.prepareSeeingTable()
+    assert suc
+
+
+def test_openMeteoblue_1(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openMeteoblue()
+        assert suc
+
+
+def test_openMeteoblue_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openMeteoblue()
+        assert suc

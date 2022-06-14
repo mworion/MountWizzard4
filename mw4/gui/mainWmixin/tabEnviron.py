@@ -454,7 +454,8 @@ class Environ:
         ts = self.app.mount.obsSite.ts
         fields = ['time', 'time', 'high_clouds', 'mid_clouds', 'low_clouds',
                   'seeing_arcsec', 'seeing1', 'seeing2', 'temperature',
-                  'relative_humidity']
+                  'relative_humidity', 'badlayer_top', 'badlayer_bottom',
+                  'badlayer_gradient', 'jetstream']
         colorMain = self.cs['M_BLUE'][0]
         colorBlack = self.cs['M_BLACK'][0]
         colorWhite = self.cs['M_WHITE'][0]
@@ -464,11 +465,13 @@ class Environ:
 
         for i in range(0, 96):
             isActual = abs(data['time'][i] - ts.now()) < 1 / 48
+
             for j, field in enumerate(fields):
                 t = f'{data[field][i]}'
                 item = QTableWidgetItem()
                 item.setTextAlignment(Qt.AlignHCenter)
                 item.setForeground(QColor(self.M_BLUE))
+
                 if j == 0:
                     t = self.convertTime(data[field][i], '%d/%m')
                 elif j == 1:
@@ -477,14 +480,24 @@ class Environ:
                     color = self.calcHexColor(colorMain, data[field][i] / 100)
                     item.setBackground(QColor(color))
                     item.setForeground(QColor(colorWhite))
-                elif j in [6, 7]:
+                elif j in [6]:
                     color = self.calcHexColor(data['seeing1_color'][i], 0.8)
                     item.setBackground(QColor(color))
                     item.setForeground(QColor(colorBlack))
+                elif j in [7]:
+                    color = self.calcHexColor(data['seeing2_color'][i], 0.8)
+                    item.setBackground(QColor(color))
+                    item.setForeground(QColor(colorBlack))
+                elif j in [10, 11]:
+                    val = float('0' + data[field][i]) / 1000
+                    t = f'{val:1.1f}'
 
                 if isActual:
                     item.setForeground(QColor(self.M_PINK))
                     columnCenter = i
+                else:
+                    columnCenter = 1
+
                 item.setText(t)
                 seeTab.setItem(j, i, item)
 
@@ -505,10 +518,14 @@ class Environ:
               'Seeing index 2',
               'Ground Temp [°C]',
               'Humidity [%]',
+              'Bad Layers Bot [km]',
+              'Bad Layers Top [km]',
+              'Bad Layers [K/100m]',
+              'Jet stream [m/s]',
               ]
 
         seeTab = self.ui.tableSeeing
-        seeTab.setRowCount(10)
+        seeTab.setRowCount(14)
         seeTab.setColumnCount(96)
         seeTab.setVerticalHeaderLabels(vl)
         seeTab.verticalHeader().setDefaultSectionSize(18)

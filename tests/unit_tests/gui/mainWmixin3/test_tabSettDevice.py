@@ -730,8 +730,29 @@ def test_scanValid_4(function):
     def sender():
         return function.drivers['telescope']['class'].signals
 
+    class Test:
+        framework = ''
+
     function.sender = sender
-    suc = function.scanValid('onlineWeather', 'test')
+    function.drivers['test'] = {'class': Test()}
+    suc = function.scanValid('test', 'test')
+    assert not suc
+
+
+def test_scanValid_5(function):
+    def sender():
+        return function.drivers['telescope']['class'].signals
+
+    class Test1:
+        deviceName = 'asdfg'
+
+    class Test:
+        framework = 'test'
+        run = {'test': Test1()}
+
+    function.sender = sender
+    function.drivers['test'] = {'class': Test()}
+    suc = function.scanValid('test', 'test')
     assert not suc
 
 

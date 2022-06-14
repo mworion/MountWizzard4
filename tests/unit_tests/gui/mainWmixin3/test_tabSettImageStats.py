@@ -72,7 +72,7 @@ def test_updateImageStats_3(function):
     assert suc
 
 
-def test_openWatneyCatalog(function):
+def test_openWatneyCatalog_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
@@ -80,7 +80,15 @@ def test_openWatneyCatalog(function):
         assert suc
 
 
-def test_openASTAPCatalog(function):
+def test_openWatneyCatalog_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openWatneyCatalog()
+        assert suc
+
+
+def test_openASTAPCatalog_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
@@ -88,9 +96,25 @@ def test_openASTAPCatalog(function):
         assert suc
 
 
-def test_openAstrometryCatalog(function):
+def test_openASTAPCatalog_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openASTAPCatalog()
+        assert suc
+
+
+def test_openAstrometryCatalog_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
+        suc = function.openAstrometryCatalog()
+        assert suc
+
+
+def test_openAstrometryCatalog_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
         suc = function.openAstrometryCatalog()
         assert suc

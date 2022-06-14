@@ -409,6 +409,17 @@ def test_setWeatherOnline_2(function):
     assert suc
 
 
+def test_setSeeingOnline_1(function):
+    function.app.seeingWeather = None
+    suc = function.setSeeingOnline()
+    assert not suc
+
+
+def test_setSeeingOnline_2(function):
+    suc = function.setSeeingOnline()
+    assert suc
+
+
 def test_setupIERS_1(function):
     function.ui.isOnline.setChecked(False)
     suc = function.setupIERS()

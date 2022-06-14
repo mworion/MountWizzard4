@@ -92,6 +92,7 @@ def test_getAscomProperty_3(function):
 def test_getAscomProperty_4(function):
     class Client:
         connect = True
+        imagearray = None
 
     function.client = Client()
     function.propertyExceptions = ['test']

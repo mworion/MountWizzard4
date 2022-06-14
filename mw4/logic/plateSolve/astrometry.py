@@ -32,18 +32,9 @@ from mountcontrol import convert
 
 class Astrometry(object):
     """
-    the class Astrometry inherits all information and handling of astrometry.net handling
-
-    Keyword definitions could be found under
-        https://fits.gsfc.nasa.gov/fits_dictionary.html
-
-        >>> astrometry = Astrometry(app=app,
-        >>>                         )
-
     """
 
-    __all__ = ['Astrometry',
-               ]
+    __all__ = ['Astrometry']
 
     log = logging.getLogger(__name__)
 
@@ -94,13 +85,24 @@ class Astrometry(object):
         elif platform.system() == 'Windows':
             self.appPath = ''
             self.indexPath = ''
+        self.saveConfigFile()
+        return True
 
+    def saveConfigFile(self):
+        """
+        :return:
+        """
+        cfgFile = self.tempDir + '/astrometry.cfg'
+        with open(cfgFile, 'w+') as outFile:
+            outFile.write('cpulimit 300\n')
+            outFile.write(f'add_path {self.indexPath}\n')
+            outFile.write('autoindex\n')
         return True
 
     def runImage2xy(self, binPath='', tempPath='', fitsPath=''):
         """
-        runImage2xy extracts a list of stars out of the fits image. there is a timeout of
-        3 seconds set to get the process finished
+        runImage2xy extracts a list of stars out of the fits image. there is a
+        timeout of 3 seconds set to get the process finished
 
         :param binPath:   full path to image2xy executable
         :param tempPath:  full path to star file
@@ -144,12 +146,13 @@ class Astrometry(object):
         success = (self.process.returncode == 0)
         return success
 
-    def runSolveField(self, binPath='', configPath='', tempPath='', options='', fitsPath=''):
+    def runSolveField(self, binPath='', configPath='', tempPath='', options='',
+                      fitsPath=''):
         """
-        runSolveField solves finally the xy star list and writes the WCS data in a fits
-        file format
+        runSolveField solves finally the xy star list and writes the WCS data
+        in a fits file format
 
-        :param binPath:   full path to image2xy executable
+        :param binPath:   full path to solve-field executable
         :param configPath: full path to astrometry.cfg file
         :param tempPath:  full path to star file
         :param options: additional solver options e.g. ra and dec hint
@@ -262,12 +265,6 @@ class Astrometry(object):
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        cfgFile = self.tempDir + '/astrometry.cfg'
-        with open(cfgFile, 'w+') as outFile:
-            outFile.write('cpulimit 300\n')
-            outFile.write(f'add_path {self.indexPath}\n')
-            outFile.write('autoindex\n')
-
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                tempPath=tempPath,
                                fitsPath=fitsPath,
@@ -362,10 +359,17 @@ class Astrometry(object):
         else:
             return False
 
-    def checkAvailability(self):
+    def checkAvailability(self, appPath=None, indexPath=None):
         """
         :return: working environment found
         """
+        if appPath is not None:
+            self.appPath = appPath
+        if indexPath is not None:
+            self.indexPath = indexPath
+
+        self.saveConfigFile()
+
         if platform.system() == 'Darwin':
             program = self.appPath + '/solve-field'
             index = self.indexPath + '/*.fits'

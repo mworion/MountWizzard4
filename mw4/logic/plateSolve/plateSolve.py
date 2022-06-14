@@ -29,6 +29,7 @@ from base.fitsHeader import getCoordinates, getScale
 from base import tpool
 from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.astap import ASTAP
+from logic.plateSolve.watney import Watney
 
 
 class PlateSolveSignals(PyQt5.QtCore.QObject):
@@ -67,6 +68,7 @@ class PlateSolve:
         self.app = app
         self.mes = app.mes
         self.tempDir = app.mwGlob['tempDir']
+        self.workDir = app.mwGlob['workDir']
         self.threadPool = app.threadPool
         self.signals = PlateSolveSignals()
 
@@ -77,6 +79,7 @@ class PlateSolve:
         self.run = {
             'astrometry': Astrometry(self),
             'astap': ASTAP(self),
+            'watney': Watney(self),
         }
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
@@ -132,7 +135,7 @@ class PlateSolve:
         getSolutionFromWCS reads the wcs fits file and uses the data in the
         header containing the wcs data and returns the basic data needed.
         in addition it embeds it to the given fits file with image. it removes
-        all entries starting with some keywords given in selection. we starting
+        all entries starting with some keywords given in selection. we're starting
         with HISTORY
 
         CRVAL1 and CRVAL2 give the center coordinate as right ascension and

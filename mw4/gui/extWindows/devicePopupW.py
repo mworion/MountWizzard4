@@ -49,6 +49,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         'nina': 'N.I.N.A.',
         'astrometry': 'ASTROMETRY.NET',
         'astap': 'ASTAP',
+        'watney': 'Watney',
         'weather': 'Online Weather',
         'seeing': 'Seeing Weather',
         'relay': 'Relay',
@@ -117,6 +118,13 @@ class DevicePopup(toolsQtWidget.MWidget):
                 'appPath': self.ui.astapAppPath,
                 'indexPath': self.ui.astapIndexPath,
             },
+            'watney': {
+                'deviceList': self.ui.watneyDeviceList,
+                'searchRadius': self.ui.watneySearchRadius,
+                'timeout': self.ui.watneyTimeout,
+                'appPath': self.ui.watneyAppPath,
+                'indexPath': self.ui.watneyIndexPath,
+            },
             'weather': {
                 'apiKey': self.ui.onlineWeatherApiKey,
                 'hostaddress': self.ui.onlineWeatherHostAddress,
@@ -142,6 +150,8 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.selectAstrometryAppPath.clicked.connect(self.selectAstrometryAppPath)
         self.ui.selectAstapIndexPath.clicked.connect(self.selectAstapIndexPath)
         self.ui.selectAstapAppPath.clicked.connect(self.selectAstapAppPath)
+        self.ui.selectWatneyIndexPath.clicked.connect(self.selectWatneyIndexPath)
+        self.ui.selectWatneyAppPath.clicked.connect(self.selectWatneyAppPath)
         self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
 
         self.initConfig()
@@ -439,21 +449,28 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.updateNINADeviceNameList(deviceNames=deviceNames)
         return True
 
-    def checkPlateSolveAvailability(self, framework):
+    def checkPlateSolveAvailability(self, framework, appPath, indexPath):
         """
         checkAvailability looks the presence of the binaries and indexes up and
         reports the result back to the gui.
 
         :return: success
         """
-        sucApp, sucIndex = self.app.plateSolve.run[framework].checkAvailability()
+        sucApp, sucIndex = self.app.plateSolve.run[framework].checkAvailability(
+            appPath=appPath, indexPath=indexPath)
         if framework == 'astap':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)
             color = 'green' if sucIndex else 'red'
             self.changeStyleDynamic(self.ui.astapIndexPath, 'color', color)
 
-        else:
+        elif framework == 'watney':
+            color = 'green' if sucApp else 'red'
+            self.changeStyleDynamic(self.ui.watneyAppPath, 'color', color)
+            color = 'green' if sucIndex else 'red'
+            self.changeStyleDynamic(self.ui.watneyIndexPath, 'color', color)
+
+        elif framework == 'astrometry':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astrometryAppPath, 'color', color)
             color = 'green' if sucIndex else 'red'
@@ -478,7 +495,9 @@ class DevicePopup(toolsQtWidget.MWidget):
             else:
                 saveFilePath += '/Contents/MacOS/astrometry/bin'
 
-        if self.checkPlateSolveAvailability('astrometry'):
+        if self.checkPlateSolveAvailability('astrometry',
+                                            saveFilePath,
+                                            self.ui.astrometryIndexPath.text()):
             self.ui.astrometryAppPath.setText(saveFilePath)
         return True
 
@@ -493,7 +512,9 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkPlateSolveAvailability('astrometry'):
+        if self.checkPlateSolveAvailability('astrometry',
+                                            self.ui.astrometryAppPath.text(),
+                                            saveFilePath):
             self.ui.astrometryIndexPath.setText(saveFilePath)
         return True
 
@@ -511,7 +532,9 @@ class DevicePopup(toolsQtWidget.MWidget):
         if platform.system() == 'Darwin' and ext == '.app':
             saveFilePath += '/Contents/MacOS'
 
-        if self.checkPlateSolveAvailability('astap'):
+        if self.checkPlateSolveAvailability('astap',
+                                            saveFilePath,
+                                            self.ui.astapIndexPath.text()):
             self.ui.astapAppPath.setText(saveFilePath)
         return True
 
@@ -526,8 +549,44 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkPlateSolveAvailability('astap'):
+        if self.checkPlateSolveAvailability('astap',
+                                            self.ui.astapAppPath.text(),
+                                            saveFilePath):
             self.ui.astapIndexPath.setText(saveFilePath)
+        return True
+
+    def selectWatneyAppPath(self):
+        """
+        :return:
+        """
+        folder = self.ui.watneyAppPath.text()
+        saveFilePath, name, ext = self.openDir(self,
+                                               'Select Watney App Path',
+                                               folder)
+        if not name:
+            return False
+
+        if self.checkPlateSolveAvailability('watney',
+                                            saveFilePath,
+                                            self.ui.watneyIndexPath.text()):
+            self.ui.watneyAppPath.setText(saveFilePath)
+        return True
+
+    def selectWatneyIndexPath(self):
+        """
+        :return:
+        """
+        folder = self.ui.watneyIndexPath.text()
+        saveFilePath, name, ext = self.openDir(self,
+                                               'Select Watney Index Path',
+                                               folder)
+        if not name:
+            return False
+
+        if self.checkPlateSolveAvailability('watney',
+                                            self.ui.watneyAppPath.text(),
+                                            saveFilePath):
+            self.ui.watneyIndexPath.setText(saveFilePath)
         return True
 
     def selectAscomDriver(self):

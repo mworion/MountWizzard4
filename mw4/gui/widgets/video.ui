@@ -149,19 +149,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>21</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>URL</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="4">
       <widget class="QComboBox" name="videoSource">
        <property name="minimumSize">
@@ -236,6 +223,19 @@
          <string>0.2 fps</string>
         </property>
        </item>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>21</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>URL / Device</string>
+       </property>
       </widget>
      </item>
     </layout>

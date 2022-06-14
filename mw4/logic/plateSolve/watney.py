@@ -28,11 +28,11 @@ from astropy.io import fits
 # local imports
 
 
-class ASTAP(object):
+class Watney(object):
     """
     """
 
-    __all__ = ['ASTAP']
+    __all__ = ['Watney']
 
     returnCodes = {0: 'No errors',
                    1: 'No solution',
@@ -50,6 +50,7 @@ class ASTAP(object):
         self.parent = parent
         self.data = parent.data
         self.tempDir = parent.tempDir
+        self.workDir = parent.workDir
         self.readFitsData = parent.readFitsData
         self.getSolutionFromWCS = parent.getSolutionFromWCS
 
@@ -64,9 +65,9 @@ class ASTAP(object):
         self.setDefaultPath()
 
         self.defaultConfig = {
-            'astap': {
-                'deviceName': 'ASTAP',
-                'deviceList': ['ASTAP'],
+            'watney': {
+                'deviceName': 'Watney',
+                'deviceList': ['Watney'],
                 'searchRadius': 10,
                 'timeout': 30,
                 'appPath': self.appPath,
@@ -76,30 +77,28 @@ class ASTAP(object):
 
     def setDefaultPath(self):
         """
-
         :return: true for test purpose
         """
-
-        if platform.system() == 'Darwin':
-            self.appPath = '/Applications/ASTAP.app/Contents/MacOS'
-            self.indexPath = '/usr/local/opt/astap'
-
-        elif platform.system() == 'Linux':
-            self.appPath = '/opt/astap'
-            self.indexPath = '/opt/astap'
-
-        elif platform.system() == 'Windows':
-            self.appPath = 'C:\\Program Files\\astap'
-            self.indexPath = 'C:\\Program Files\\astap'
-
+        self.appPath = self.workDir + '/watney'
+        self.indexPath = self.workDir + '/watney_index'
+        self.saveConfigFile()
         return True
 
-    def runASTAP(self, binPath='', tempFile='', fitsPath='', options=''):
+    def saveConfigFile(self):
         """
-        runASTAP solves finally the xy star list and writes the WCS data in
-        a fits file format
+        :return:
+        """
+        cfgFile = self.tempDir + '/watney-solve-config.yml'
+        with open(cfgFile, 'w+') as outFile:
+            outFile.write(f'quadDbPath: {self.indexPath} n')
+        return True
 
-        :param binPath:   full path to astap executable
+    def runWatney(self, binPath='', tempFile='', fitsPath='', options=''):
+        """
+        runASTAP solves finally the xy star list and writes the WCS data in a fits
+        file format
+
+        :param binPath:   full path to cli executable
         :param tempFile:  full path to star file
         :param fitsPath: full path to fits file in temp dir
         :param options: additional solver options e.g. ra and dec hint
@@ -124,7 +123,7 @@ class ASTAP(object):
 
         else:
             delta = time.time() - timeStart
-            self.log.debug(f'ASTAP took {delta}s return code: '
+            self.log.debug(f'Watney took {delta}s return code: '
                            + f'{self.process.returncode}'
                            + f' [{fitsPath}]'
                            + ' stderr: '
@@ -155,7 +154,8 @@ class ASTAP(object):
                 continue
             tempString += line
 
-        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString, sep='\n')
+        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
+                                                        sep='\n')
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
@@ -163,7 +163,7 @@ class ASTAP(object):
         """
         Solve uses the astap solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go
-        multi-platform and we need to focus on MW function, we use the astap
+        multi-platform, and we need to focus on MW function, we use the astap
         package which could be downloaded for all platforms. Many thanks
         providing such a nice package.
 
@@ -188,7 +188,7 @@ class ASTAP(object):
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        binPathASTAP = self.appPath + '/astap'
+        binPathWatney = self.appPath + '/watney-solve'
         options = ['-r', f'{self.searchRadius:1.1f}',
                    '-t', '0.005',
                    '-z', '0']
@@ -200,14 +200,14 @@ class ASTAP(object):
         if self.searchRadius == 180:
             options += ['-fov', '0']
 
-        suc, retValue = self.runASTAP(binPath=binPathASTAP,
-                                      fitsPath=fitsPath,
-                                      tempFile=tempFile,
-                                      options=options)
+        suc, retValue = self.runWatney(binPath=binPathWatney,
+                                       fitsPath=fitsPath,
+                                       tempFile=tempFile,
+                                       options=options)
         if not suc:
             text = self.returnCodes.get(retValue, 'Unknown code')
-            self.result['message'] = f'ASTAP error: [{text}]'
-            self.log.warning(f'ASTAP error [{text}] in [{fitsPath}]')
+            self.result['message'] = f'Watney error: [{text}]'
+            self.log.warning(f'Watney error [{text}] in [{fitsPath}]')
             return False
 
         if not os.path.isfile(wcsPath):
@@ -256,16 +256,8 @@ class ASTAP(object):
         if indexPath is not None:
             self.indexPath = indexPath
 
-        g17 = '/g17*.290'
-        g18 = '/g18*.290'
-        h17 = '/h17*.1476'
-        h18 = '/h18*.1476'
-        if platform.system() == 'Darwin':
-            program = self.appPath + '/astap'
-        elif platform.system() == 'Linux':
-            program = self.appPath + '/astap'
-        elif platform.system() == 'Windows':
-            program = self.appPath + '/astap.exe'
+        self.saveConfigFile()
+        program = self.appPath + '/watney-solve'
 
         if not os.path.isfile(program):
             self.log.info(f'[{program}] not found')
@@ -273,16 +265,9 @@ class ASTAP(object):
         else:
             sucProgram = True
 
-        isG17 = sum('.290' in s for s in glob.glob(self.indexPath + g17)) == 290
-        isG18 = sum('.290' in s for s in glob.glob(self.indexPath + g18)) == 290
-        isH17 = sum('.1476' in s for s in glob.glob(self.indexPath + h17)) == 1476
-        isH18 = sum('.1476' in s for s in glob.glob(self.indexPath + h18)) == 1476
-        if not any((isG17, isG18, isH17, isH18)):
+        sucInd = sum('.qdb' in s for s in glob.glob(self.indexPath + '/*.*')) == 407
+        if not sucInd:
             self.log.info('No index files found')
-            sucIndex = False
-        else:
-            sucIndex = True
 
-        self.log.info(f'ASTAP OK, app: [{program}], index: [{self.indexPath}]')
-        self.log.info(f'Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
-        return sucProgram, sucIndex
+        self.log.info(f'Watney OK, app: [{program}], index: [{self.indexPath}]')
+        return sucProgram, sucInd

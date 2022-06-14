@@ -53,10 +53,6 @@ class Ui_VideoDialog(object):
         self.videoURL.setMaximumSize(QtCore.QSize(16777215, 25))
         self.videoURL.setObjectName("videoURL")
         self.gridLayout.addWidget(self.videoURL, 1, 2, 1, 3)
-        self.label = QtWidgets.QLabel(VideoDialog)
-        self.label.setMinimumSize(QtCore.QSize(0, 21))
-        self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 1, 1, 1, 1)
         self.videoSource = QtWidgets.QComboBox(VideoDialog)
         self.videoSource.setMinimumSize(QtCore.QSize(130, 21))
         self.videoSource.setMaximumSize(QtCore.QSize(16777215, 25))
@@ -76,6 +72,10 @@ class Ui_VideoDialog(object):
         self.frameRate.addItem("")
         self.frameRate.addItem("")
         self.gridLayout.addWidget(self.frameRate, 0, 5, 1, 1)
+        self.label = QtWidgets.QLabel(VideoDialog)
+        self.label.setMinimumSize(QtCore.QSize(0, 21))
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 1, 5, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.line = QtWidgets.QFrame(VideoDialog)
         self.line.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -98,7 +98,6 @@ class Ui_VideoDialog(object):
         VideoDialog.setWindowTitle(_translate("VideoDialog", "Video Streams"))
         self.videoStart.setText(_translate("VideoDialog", "Start"))
         self.videoStop.setText(_translate("VideoDialog", "Stop"))
-        self.label.setText(_translate("VideoDialog", "URL"))
         self.videoSource.setItemText(0, _translate("VideoDialog", "RTSP Stream"))
         self.videoSource.setItemText(1, _translate("VideoDialog", "Camera 1"))
         self.videoSource.setItemText(2, _translate("VideoDialog", "Camera 2"))
@@ -109,6 +108,7 @@ class Ui_VideoDialog(object):
         self.frameRate.setItemText(2, _translate("VideoDialog", "1.0 fps"))
         self.frameRate.setItemText(3, _translate("VideoDialog", "0.5 fps"))
         self.frameRate.setItemText(4, _translate("VideoDialog", "0.2 fps"))
+        self.label.setText(_translate("VideoDialog", "URL / Device"))
 
 
 if __name__ == "__main__":

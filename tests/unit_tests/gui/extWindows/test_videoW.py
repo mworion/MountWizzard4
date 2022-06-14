@@ -58,14 +58,29 @@ def test_showWindow_1(function):
         assert suc
 
 
-def test_sendImage(function):
+def test_sendImage_1(function):
     class Test:
         @staticmethod
         def retrieve():
             return (True, np.ones((10, 10, 1)))
 
     function.capture = Test()
+    function.running = False
+    with mock.patch.object(cv2,
+                           'cvtColor',
+                           return_value=np.ones((10, 10, 1))):
+        suc = function.sendImage()
+        assert not suc
 
+
+def test_sendImage_2(function):
+    class Test:
+        @staticmethod
+        def retrieve():
+            return (True, np.ones((10, 10, 1)))
+
+    function.capture = Test()
+    function.running = True
     with mock.patch.object(cv2,
                            'cvtColor',
                            return_value=np.ones((10, 10, 1))):
@@ -73,24 +88,11 @@ def test_sendImage(function):
         assert suc
 
 
-def test_calcSkipFactor_1(function):
-    function.runningCounter = 10
-    with mock.patch.object(time,
-                           'time',
-                           return_value=3):
-        suc = function.calcSkipFactor(1)
-        assert suc
-        assert function.runningCounter == 11
-
-
-def test_calcSkipFactor_2(function):
-    function.runningCounter = 50
-    with mock.patch.object(time,
-                           'time',
-                           return_value=3):
-        suc = function.calcSkipFactor(1)
-        assert suc
-        assert function.runningCounter == 51
+def test_count(function):
+    function.runningCounter = 0
+    suc = function.count()
+    assert suc
+    assert function.runningCounter == 1
 
 
 def test_workerVideoStream_1(function):
@@ -113,10 +115,8 @@ def test_workerVideoStream_1(function):
                            return_value=Test()):
         with mock.patch.object(function,
                                'sendImage'):
-            with mock.patch.object(function,
-                                   'calcSkipFactor'):
-                suc = function.workerVideo('test')
-                assert suc
+            suc = function.workerVideo('test', 1)
+            assert suc
 
 
 def test_workerVideoStream_2(function):
@@ -140,10 +140,8 @@ def test_workerVideoStream_2(function):
                            return_value=Test()):
         with mock.patch.object(function,
                                'sendImage'):
-            with mock.patch.object(function,
-                                   'calcSkipFactor'):
-                suc = function.workerVideo('test')
-                assert suc
+            suc = function.workerVideo('test', 1)
+            assert suc
 
 
 def test_startVideoStream_1(function):

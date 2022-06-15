@@ -21,6 +21,7 @@ import os
 import glob
 import time
 import platform
+import json
 
 # external packages
 from astropy.io import fits
@@ -118,17 +119,16 @@ class Watney(object):
         return True, int(self.process.returncode)
 
     @staticmethod
-    def getWCSHeader(wcsHDU=None):
+    def getWCSData(data):
         """
-        getWCSHeader returns the header part of a fits HDU
-
-        :param wcsHDU: fits file with wcs data
+        :param data: fits file with wcs data
         :return: wcsHeader
         """
-        if wcsHDU is None:
-            return None
-
-        wcsHeader = wcsHDU[0].header
+        wcsHeader = {}
+        for key in data.keys():
+            if key.startswith('fits'):
+                fitsKey = key.lstrip('fits_').upper()
+                wcsHeader[fitsKey] = data[key]
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
@@ -146,7 +146,7 @@ class Watney(object):
         self.process = None
         self.result = {'success': False}
         isBlind = self.searchRadius == 180
-        outFile = self.tempDir + '/solve.json'
+        jsonPath = self.tempDir + '/solve.json'
         wcsPath = self.tempDir + '/temp.wcs'
 
         if not os.path.isfile(fitsPath):
@@ -156,6 +156,8 @@ class Watney(object):
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
+        if os.path.isfile(jsonPath):
+            os.remove(jsonPath)
 
         runnable = [self.appPath + '/watney-solve']
 
@@ -165,7 +167,7 @@ class Watney(object):
             runnable += ['nearby']
 
         runnable += ['-i', fitsPath,
-                     '-o', outFile,
+                     '-o', jsonPath,
                      '-w', wcsPath,
                      '--use-config', self.tempDir + '/watney-solve-config.yml',
                      '--extended', 'True']
@@ -198,13 +200,14 @@ class Watney(object):
             self.log.warning(f'Watney error [{text}] in [{fitsPath}]')
             return False
 
-        if not os.path.isfile(wcsPath):
+        if not os.path.isfile(jsonPath):
             self.result['message'] = 'Solve failed'
-            self.log.debug(f'Solve files for [{wcsPath}] missing')
+            self.log.debug(f'Solve files for [{jsonPath}] missing')
             return False
 
-        with fits.open(wcsPath) as wcsHDU:
-            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
+        with open(jsonPath) as f:
+            data = json.load(f)
+            wcsHeader = self.getWCSData(data)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,

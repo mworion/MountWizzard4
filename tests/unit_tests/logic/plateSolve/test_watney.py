@@ -111,16 +111,18 @@ def test_runWatney_3(function):
         assert not suc
 
 
-def test_getWCSHeader_1(function):
-    val = function.getWCSHeader()
-    assert val is None
-
-
-def test_getWCSHeader_2(function):
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    val = function.getWCSHeader(wcsHDU=hdu)
-    assert val
+def test_getWCSData_1(function):
+    data = {
+        "searchRunRadius": 0.790937066078186,
+        "quadMatches": 33,
+        "fieldWidth": 1.2449544705433195,
+        "fieldHeight": 0.9965515124301897,
+        "fits_cd1_1": 2,
+        "fits_cd1_2": 1,
+    }
+    val = function.getWCSData(data)
+    assert val['CD1_1'] == 2
+    assert val['CD1_2'] == 1
 
 
 def test_solve_1(function):
@@ -153,6 +155,7 @@ def test_solve_4(function):
                                'remove',
                                return_value=True):
             shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
+            shutil.copy('tests/testData/solve.json', 'tests/workDir/temp/solve.json')
             suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
             assert suc
 
@@ -169,6 +172,7 @@ def test_solve_5(function):
                                'remove',
                                return_value=True):
             shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
+            shutil.copy('tests/testData/solve.json', 'tests/workDir/temp/solve.json')
             suc = function.solve(fitsPath='tests/workDir/image/m51.fit',
                                  raHint=raHint, decHint=decHint, fovHint=fovHint)
             assert suc

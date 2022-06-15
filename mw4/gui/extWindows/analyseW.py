@@ -82,8 +82,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         if 'analyseW' not in self.app.config:
             self.app.config['analyseW'] = {}
         config = self.app.config['analyseW']
-        height = config.get('height', 800)
-        width = config.get('width', 1200)
+        height = config.get('height', 600)
+        width = config.get('width', 800)
         self.resize(width, height)
         x = config.get('winPosX', 0)
         y = config.get('winPosY', 0)

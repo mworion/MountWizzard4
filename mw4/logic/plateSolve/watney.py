@@ -53,6 +53,7 @@ class Watney(object):
         self.appPath = ''
         self.timeout = 30
         self.searchRadius = 20
+        self.setDefaultPath()
         self.defaultConfig = {
             'watney': {
                 'deviceName': 'Watney',
@@ -63,7 +64,6 @@ class Watney(object):
                 'indexPath': self.indexPath,
             }
         }
-        self.setDefaultPath()
 
     def setDefaultPath(self):
         """

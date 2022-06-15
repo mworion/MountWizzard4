@@ -53,6 +53,7 @@ class Astrometry(object):
         self.timeout = 30
         self.searchRadius = 20
         self.deviceName = 'ASTROMETRY.NET'
+        self.setDefaultPath()
         self.defaultConfig = {
             'astrometry': {
                 'deviceName': 'ASTROMETRY.NET',
@@ -63,7 +64,6 @@ class Astrometry(object):
                 'indexPath': self.indexPath,
             }
         }
-        self.setDefaultPath()
 
     def setDefaultPath(self):
         """

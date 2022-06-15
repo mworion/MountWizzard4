@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -1323,7 +1323,7 @@
       </font>
      </property>
      <property name="text">
-      <string>deg FOV</string>
+      <string>deg</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_mountIP_17">
@@ -2014,7 +2014,7 @@
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>185</y>
+       <y>180</y>
        <width>21</width>
        <height>21</height>
       </rect>

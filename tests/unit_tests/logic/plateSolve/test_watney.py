@@ -59,7 +59,7 @@ def test_setDefaultPath_1(function):
         suc = function.setDefaultPath()
         assert suc
         assert function.appPath == function.parent.app.mwGlob['workDir'] + \
-               '/watney'
+               '/watney-cli'
 
 
 def test_saveConfigFile(function):
@@ -212,5 +212,42 @@ def test_checkAvailability_2(function):
             with mock.patch.object(builtins,
                                    'sum',
                                    return_value=407):
-                suc = function.checkAvailability(appPath='test', indexPath='test')
-                assert suc == (False, True)
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Darwin'):
+                    suc = function.checkAvailability(appPath='test', indexPath='test')
+                    assert suc == (False, True)
+
+
+def test_checkAvailability_3(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'sum',
+                                   return_value=407):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Windows'):
+                    suc = function.checkAvailability(appPath='test', indexPath='test')
+                    assert suc == (False, True)
+
+
+def test_checkAvailability_4(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'sum',
+                                   return_value=407):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Linux'):
+                    suc = function.checkAvailability(appPath='test', indexPath='test')
+                    assert suc == (False, True)

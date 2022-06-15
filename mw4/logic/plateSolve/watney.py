@@ -20,6 +20,7 @@ import subprocess
 import os
 import glob
 import time
+import platform
 
 # external packages
 from astropy.io import fits
@@ -69,8 +70,8 @@ class Watney(object):
         """
         :return: true for test purpose
         """
-        self.appPath = self.workDir + '/watney'
-        self.indexPath = self.workDir + '/watney_index'
+        self.appPath = self.workDir + '/watney-cli'
+        self.indexPath = self.workDir + '/watney-index'
         self.saveConfigFile()
         return True
 
@@ -244,7 +245,13 @@ class Watney(object):
             self.indexPath = indexPath
 
         self.saveConfigFile()
-        program = self.appPath + '/watney-solve'
+
+        if platform.system() == 'Darwin':
+            program = self.appPath + '/watney-solve'
+        elif platform.system() == 'Linux':
+            program = self.appPath + '/watney-solve'
+        elif platform.system() == 'Windows':
+            program = self.appPath + '/watney-solve.exe'
 
         if not os.path.isfile(program):
             self.log.info(f'[{program}] not found')

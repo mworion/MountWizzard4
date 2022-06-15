@@ -483,6 +483,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         :return:
         """
         folder = self.ui.astrometryAppPath.text()
+        folder = folder if folder else '/'
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Astrometry App Path',
                                                folder)
@@ -507,6 +508,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         :return:
         """
         folder = self.ui.astrometryIndexPath.text()
+        folder = folder if folder else '/'
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Astrometry Index Path',
                                                folder)
@@ -524,6 +526,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         :return:
         """
         folder = self.ui.astapAppPath.text()
+        folder = folder if folder else '/'
         saveFilePath, name, ext = self.openDir(self,
                                                'Select ASTAP App Path',
                                                folder)
@@ -544,6 +547,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         :return:
         """
         folder = self.ui.astapIndexPath.text()
+        folder = folder if folder else '/'
         saveFilePath, name, ext = self.openDir(self,
                                                'Select ASTAP Index Path',
                                                folder)
@@ -561,6 +565,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         :return:
         """
         folder = self.ui.watneyAppPath.text()
+        folder = folder if folder else '/'
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Watney App Path',
                                                folder)
@@ -578,6 +583,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         :return:
         """
         folder = self.ui.watneyIndexPath.text()
+        folder = folder if folder else '/'
         saveFilePath, name, ext = self.openDir(self,
                                                'Select Watney Index Path',
                                                folder)

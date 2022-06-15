@@ -44,14 +44,11 @@ def function(qapp):
 
     data = {
         'framework': 'indi',
-        'frameworks':
-            {
-                'indi': {
-                    'deviceName': 'test',
-                    'deviceList': ['1', '2'],
-
-                }
-            }
+        'frameworks': {
+            'indi': {
+                'deviceName': 'test',
+                'deviceList': ['1', '2']}
+            },
     }
     widget = QWidget()
     with mock.patch.object(DevicePopup,
@@ -63,12 +60,20 @@ def function(qapp):
                              deviceType='telescope')
         window.log = logging.getLogger()
         addLoggingLevel('TRACE', 5)
-    yield window
+        yield window
 
 
 def test_initConfig_1(function):
     suc = function.initConfig()
     assert suc
+
+
+def test_initConfig_2(function):
+    function.data['framework'] = 'astap'
+    with mock.patch.object(function,
+                           'updatePlateSolverStatus'):
+        suc = function.initConfig()
+        assert suc
 
 
 def test_initConfig_2(function):
@@ -375,6 +380,13 @@ def test_checkPlateSolveAvailability_3(function):
     function.app.plateSolve.run['astrometry'] = Avail()
     suc = function.checkPlateSolveAvailability('astrometry', 'test', 'test')
     assert suc
+
+
+def test_updatePlateSolverStatus(function):
+    with mock.patch.object(function,
+                           'checkPlateSolveAvailability'):
+        suc = function.updatePlateSolverStatus()
+        assert suc
 
 
 def test_selectAstrometryIndexPath_1(function):

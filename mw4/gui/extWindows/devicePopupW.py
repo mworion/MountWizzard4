@@ -153,7 +153,6 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.ui.selectWatneyIndexPath.clicked.connect(self.selectWatneyIndexPath)
         self.ui.selectWatneyAppPath.clicked.connect(self.selectWatneyAppPath)
         self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
-
         self.initConfig()
         self.show()
 
@@ -226,8 +225,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         self.setWindowTitle(f'Setup driver for {self.deviceType}')
-        self.selectTabs()
         self.populateTabs()
+        self.selectTabs()
+        if self.data.get('framework') in ['astrometry', 'watney', 'astap']:
+            self.updatePlateSolverStatus()
         return True
 
     def readTabs(self):
@@ -478,6 +479,21 @@ class DevicePopup(toolsQtWidget.MWidget):
             self.changeStyleDynamic(self.ui.astrometryIndexPath, 'color', color)
         return True
 
+    def updatePlateSolverStatus(self):
+        """
+        :return:
+        """
+        self.checkPlateSolveAvailability('astrometry',
+                                         self.ui.astrometryAppPath.text(),
+                                         self.ui.astrometryIndexPath.text())
+        self.checkPlateSolveAvailability('watney',
+                                         self.ui.watneyAppPath.text(),
+                                         self.ui.watneyIndexPath.text())
+        self.checkPlateSolveAvailability('astap',
+                                         self.ui.astapAppPath.text(),
+                                         self.ui.astapIndexPath.text())
+        return True
+
     def selectAstrometryAppPath(self):
         """
         :return:
@@ -497,10 +513,10 @@ class DevicePopup(toolsQtWidget.MWidget):
             else:
                 saveFilePath += '/Contents/MacOS/astrometry/bin'
 
-        if self.checkPlateSolveAvailability('astrometry',
-                                            saveFilePath,
-                                            self.ui.astrometryIndexPath.text()):
-            self.ui.astrometryAppPath.setText(saveFilePath)
+        self.checkPlateSolveAvailability('astrometry',
+                                         saveFilePath,
+                                         self.ui.astrometryIndexPath.text())
+        self.ui.astrometryAppPath.setText(saveFilePath)
         return True
 
     def selectAstrometryIndexPath(self):
@@ -515,10 +531,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkPlateSolveAvailability('astrometry',
-                                            self.ui.astrometryAppPath.text(),
-                                            saveFilePath):
-            self.ui.astrometryIndexPath.setText(saveFilePath)
+        self.checkPlateSolveAvailability('astrometry',
+                                         self.ui.astrometryAppPath.text(),
+                                         saveFilePath)
+        self.ui.astrometryIndexPath.setText(saveFilePath)
         return True
 
     def selectAstapAppPath(self):
@@ -536,10 +552,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         if platform.system() == 'Darwin' and ext == '.app':
             saveFilePath += '/Contents/MacOS'
 
-        if self.checkPlateSolveAvailability('astap',
-                                            saveFilePath,
-                                            self.ui.astapIndexPath.text()):
-            self.ui.astapAppPath.setText(saveFilePath)
+        self.checkPlateSolveAvailability('astap',
+                                         saveFilePath,
+                                         self.ui.astapIndexPath.text())
+        self.ui.astapAppPath.setText(saveFilePath)
         return True
 
     def selectAstapIndexPath(self):
@@ -554,10 +570,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkPlateSolveAvailability('astap',
-                                            self.ui.astapAppPath.text(),
-                                            saveFilePath):
-            self.ui.astapIndexPath.setText(saveFilePath)
+        self.checkPlateSolveAvailability('astap',
+                                         self.ui.astapAppPath.text(),
+                                         saveFilePath)
+        self.ui.astapIndexPath.setText(saveFilePath)
         return True
 
     def selectWatneyAppPath(self):
@@ -572,10 +588,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkPlateSolveAvailability('watney',
-                                            saveFilePath,
-                                            self.ui.watneyIndexPath.text()):
-            self.ui.watneyAppPath.setText(saveFilePath)
+        self.checkPlateSolveAvailability('watney',
+                                         saveFilePath,
+                                         self.ui.watneyIndexPath.text())
+        self.ui.watneyAppPath.setText(saveFilePath)
         return True
 
     def selectWatneyIndexPath(self):
@@ -590,10 +606,10 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not name:
             return False
 
-        if self.checkPlateSolveAvailability('watney',
-                                            self.ui.watneyAppPath.text(),
-                                            saveFilePath):
-            self.ui.watneyIndexPath.setText(saveFilePath)
+        self.checkPlateSolveAvailability('watney',
+                                         self.ui.watneyAppPath.text(),
+                                         saveFilePath)
+        self.ui.watneyIndexPath.setText(saveFilePath)
         return True
 
     def selectAscomDriver(self):

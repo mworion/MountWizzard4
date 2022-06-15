@@ -62,10 +62,11 @@ class OnlineWeather():
             }
         }
         self.running = False
+        self.enabled = False
         self.hostaddress = ''
         self.apiKey = ''
         self._online = False
-        self.app.update10s.connect(self.pollOpenWeatherMapData)
+        self.app.update10m.connect(self.pollOpenWeatherMapData)
 
     @property
     def online(self):
@@ -74,23 +75,22 @@ class OnlineWeather():
     @online.setter
     def online(self, value):
         self._online = value
-        if value:
-            self.startCommunication()
+        self.pollOpenWeatherMapData()
 
     def startCommunication(self, loadConfig=False):
         """
         :param loadConfig:
         :return: success of reconnecting to server
         """
-        self.running = True
+        self.enabled = True
         self.pollOpenWeatherMapData()
-        self.signals.deviceConnected.emit('OnlineWeather')
         return True
 
     def stopCommunication(self):
         """
         :return: success of reconnecting to server
         """
+        self.enabled = False
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit('OnlineWeather')
@@ -212,13 +212,19 @@ class OnlineWeather():
 
         :return: success
         """
-        if not self.online and self.running:
-            self.stopCommunication()
-            return False
-        if not self.running:
+        if not self.enabled:
             return False
         if not self.apiKey:
             return False
+
+        if not self.online and self.running:
+            self.signals.deviceDisconnected.emit('OnlineWeather')
+            self.running = False
+            return False
+        elif self.online and not self.running:
+            self.signals.deviceConnected.emit('OnlineWeather')
+            self.running = True
+
         if not self.loadingFileNeeded('openweathermap.data', 1):
             self.processOpenWeatherMapData()
             return True

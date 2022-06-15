@@ -60,19 +60,21 @@ def test_properties(function):
 
 
 def test_startCommunication_(function):
-    function.running = False
+    function.enabled = False
     with mock.patch.object(function,
                            'pollSeeingData'):
         suc = function.startCommunication()
         assert suc
-        assert function.running
+        assert function.enabled
 
 
 def test_stopCommunication_1(function):
     function.running = True
+    function.enabled = True
     suc = function.stopCommunication()
     assert suc
     assert not function.running
+    assert not function.enabled
 
 
 def test_processSeeingData_1(function):
@@ -176,17 +178,17 @@ def test_loadingFileNeeded_3(function):
 
 
 def test_pollSeeingData_1(function):
+    function.enabled = False
+    function.running = False
     function.online = False
-    function.running = True
     function.apiKey = ''
-    with mock.patch.object(function,
-                           'stopCommunication'):
-        suc = function.pollSeeingData()
-        assert not suc
+    suc = function.pollSeeingData()
+    assert not suc
 
 
 def test_pollSeeingData_2(function):
-    function.online = True
+    function.enabled = True
+    function.online = False
     function.running = False
     function.apiKey = ''
     suc = function.pollSeeingData()
@@ -194,16 +196,19 @@ def test_pollSeeingData_2(function):
 
 
 def test_pollSeeingData_3(function):
-    function.online = True
+    function.enabled = True
+    function.online = False
     function.running = True
-    function.apiKey = ''
+    function.apiKey = 'test'
     suc = function.pollSeeingData()
     assert not suc
+    assert not function.running
 
 
 def test_pollSeeingData_4(function):
+    function.enabled = True
     function.online = True
-    function.running = True
+    function.running = False
     function.apiKey = 'test'
     with mock.patch.object(function,
                            'loadingFileNeeded',
@@ -213,6 +218,7 @@ def test_pollSeeingData_4(function):
 
 
 def test_pollSeeingData_5(function):
+    function.enabled = True
     function.online = True
     function.running = True
     function.apiKey = 'test'

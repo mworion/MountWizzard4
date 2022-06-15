@@ -69,10 +69,11 @@ class SeeingWeather():
             }
         }
         self.running = False
+        self.enabled = False
         self.hostaddress = ''
         self.apiKey = ''
         self._online = False
-        self.app.update10s.connect(self.pollSeeingData)
+        self.app.update10m.connect(self.pollSeeingData)
 
     @property
     def online(self):
@@ -81,23 +82,22 @@ class SeeingWeather():
     @online.setter
     def online(self, value):
         self._online = value
-        if value:
-            self.startCommunication()
+        self.pollSeeingData()
 
     def startCommunication(self, loadConfig=False):
         """
         :param loadConfig:
         :return: success of reconnecting to server
         """
-        self.running = True
+        self.enabled = True
         self.pollSeeingData()
-        self.signals.deviceConnected.emit('SeeingWeather')
         return True
 
     def stopCommunication(self):
         """
         :return: success of reconnecting to server
         """
+        self.enabled = False
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit('SeeingWeather')
@@ -175,13 +175,19 @@ class SeeingWeather():
 
         :return: success
         """
-        if not self.online and self.running:
-            self.stopCommunication()
-            return False
-        if not self.running:
+        if not self.enabled:
             return False
         if not self.apiKey:
             return False
+
+        if not self.online and self.running:
+            self.signals.deviceDisconnected.emit('SeeingWeather')
+            self.running = False
+            return False
+        elif self.online and not self.running:
+            self.signals.deviceConnected.emit('SeeingWeather')
+            self.running = True
+
         if not self.loadingFileNeeded('meteoblue.data', 0.5):
             self.processSeeingData()
             return True

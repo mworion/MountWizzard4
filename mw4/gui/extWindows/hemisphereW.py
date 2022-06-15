@@ -165,6 +165,7 @@ class HemisphereWindow(MWidget, EditHorizon):
             self.mouseMovedHemisphere)
 
         self.drawHemisphereTab()
+        self.drawHorizonTab()
         self.show()
         return True
 
@@ -384,7 +385,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         if self.imageTerrain is None:
             return False
 
-        shiftAz = self.ui.azimuthShift.value()
+        shiftAz = (self.ui.azimuthShift.value() + 360) % 360
         shiftAlt = self.ui.altitudeShift.value()
         alpha = self.ui.terrainAlpha.value()
         x1 = int(4 * shiftAz)

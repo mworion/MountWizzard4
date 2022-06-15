@@ -44,7 +44,6 @@ class EditHorizon:
         self.ui.addPositionToHorizon.clicked.connect(self.addActualPosition)
         self.app.mount.signals.pointDone.connect(self.drawPointerHor)
         self.ui.showTerrain.clicked.connect(self.drawHorizonTab)
-        self.ui.showTerrain.clicked.connect(self.drawHemisphereTab)
 
         self.setIcons()
 

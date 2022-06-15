@@ -775,7 +775,7 @@
            <widget class="QDoubleSpinBox" name="azimuthShift">
             <property name="minimumSize">
              <size>
-              <width>40</width>
+              <width>50</width>
               <height>21</height>
              </size>
             </property>
@@ -788,8 +788,11 @@
             <property name="decimals">
              <number>0</number>
             </property>
+            <property name="minimum">
+             <double>-180.000000000000000</double>
+            </property>
             <property name="maximum">
-             <double>359.000000000000000</double>
+             <double>180.000000000000000</double>
             </property>
             <property name="singleStep">
              <double>5.000000000000000</double>

@@ -99,7 +99,7 @@ setup(
     python_requires='>=3.7.0, <3.11',
     install_requires=[
         'numpy==1.22.4',
-        'opencv-python==4.5.5.64',
+        'opencv-python-headless==4.6.0.66',
         'scipy==1.8.1',
         'astropy==5.1',
         'pyerfa==2.0.0.1',

@@ -267,7 +267,7 @@ def test_windows(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support/2.0/Windows'):
+    with c.cd('support/3.0/Windows'):
         printMW('...copy install script to test dir')
         runMW(c, f'scp -r MW4_InstallTest.bat {scp}')
         runMW(c, f'scp -r MW4_Install.bat {scp}')
@@ -292,7 +292,7 @@ def test_ubuntu_main(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support/2.0/Ubuntu'):
+    with c.cd('support/3.0/Ubuntu'):
         printMW('...copy install script to test dir')
         runMW(c, f'scp -r MW4_InstallTest.sh {scp}')
         runMW(c, f'scp -r MW4_Install.sh {scp}')
@@ -319,7 +319,7 @@ def test_mac(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support/2.0/MacOSx'):
+    with c.cd('support/3.0/MacOSx'):
         printMW('...copy install script to test dir')
         runMW(c, f'scp -r MW4_InstallTest.command {scp}')
         runMW(c, f'scp -r MW4_Install.command {scp}')

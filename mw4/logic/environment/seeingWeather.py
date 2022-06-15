@@ -63,7 +63,7 @@ class SeeingWeather():
             'frameworks': {
                 'seeing': {
                     'deviceName': 'meteoblue',
-                    'apiKey': '',
+                    'apiKey': 'free',
                     'hostaddress': 'my.meteoblue.com',
                 }
             }

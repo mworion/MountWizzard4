@@ -362,8 +362,11 @@ def test_selectAstrometryIndexPath_2(function):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
-        suc = function.selectAstrometryIndexPath()
-        assert suc
+        with mock.patch.object(function,
+                               'checkPlateSolveAvailability',
+                               return_value=True):
+            suc = function.selectAstrometryIndexPath()
+            assert suc
 
 
 def test_selectAstrometryAppPath_1(function):
@@ -378,8 +381,11 @@ def test_selectAstrometryAppPath_2(function):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
-        suc = function.selectAstrometryAppPath()
-        assert suc
+        with mock.patch.object(function,
+                               'checkPlateSolveAvailability',
+                               return_value=True):
+            suc = function.selectAstrometryAppPath()
+            assert suc
 
 
 def test_selectAstrometryAppPath_3(function):
@@ -389,8 +395,11 @@ def test_selectAstrometryAppPath_3(function):
         with mock.patch.object(platform,
                                'system',
                                return_value=('Darwin')):
-            suc = function.selectAstrometryAppPath()
-            assert suc
+            with mock.patch.object(function,
+                                   'checkPlateSolveAvailability',
+                                   return_value=True):
+                suc = function.selectAstrometryAppPath()
+                assert suc
 
 
 def test_selectAstrometryAppPath_4(function):
@@ -400,8 +409,11 @@ def test_selectAstrometryAppPath_4(function):
         with mock.patch.object(platform,
                                'system',
                                return_value=('Darwin')):
-            suc = function.selectAstrometryAppPath()
-            assert suc
+            with mock.patch.object(function,
+                                   'checkPlateSolveAvailability',
+                                   return_value=True):
+                suc = function.selectAstrometryAppPath()
+                assert suc
 
 
 def test_selectAstapIndexPath_1(function):
@@ -426,8 +438,11 @@ def test_selectAstapIndexPath_2(function):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
-        suc = function.selectAstapIndexPath()
-        assert suc
+        with mock.patch.object(function,
+                               'checkPlateSolveAvailability',
+                               return_value=True):
+            suc = function.selectAstapIndexPath()
+            assert suc
 
 
 def test_selectAstapAppPath_1(function):
@@ -442,8 +457,11 @@ def test_selectAstapAppPath_2(function):
     with mock.patch.object(MWidget,
                            'openDir',
                            return_value=('test', 'test', 'test')):
-        suc = function.selectAstapAppPath()
-        assert suc
+        with mock.patch.object(function,
+                               'checkPlateSolveAvailability',
+                               return_value=True):
+            suc = function.selectAstapAppPath()
+            assert suc
 
 
 def test_selectAstapAppPath_3(function):
@@ -453,8 +471,11 @@ def test_selectAstapAppPath_3(function):
         with mock.patch.object(platform,
                                'system',
                                return_value=('Darwin')):
-            suc = function.selectAstapAppPath()
-            assert suc
+            with mock.patch.object(function,
+                                   'checkPlateSolveAvailability',
+                                   return_value=True):
+                suc = function.selectAstapAppPath()
+                assert suc
 
 
 def test_selectAscomDriver_1(function):

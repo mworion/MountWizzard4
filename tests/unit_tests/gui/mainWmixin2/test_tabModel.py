@@ -49,6 +49,8 @@ def function(qapp):
             self.deviceStat = {}
             self.refreshName = None
             self.refreshModel = None
+            self.scaleHint = None
+            self.fovHint = None
             self.playSound = None
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)

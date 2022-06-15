@@ -494,6 +494,8 @@ class Environ:
 
                 if isActual:
                     item.setForeground(QColor(self.M_PINK))
+                    val = data['seeing_arcsec'][i]
+                    self.ui.limitForecast.setText(f'{val}')
                     columnCenter = i
                 else:
                     columnCenter = 1

@@ -20,7 +20,6 @@ import subprocess
 import os
 import glob
 import time
-import platform
 
 # external packages
 from astropy.io import fits

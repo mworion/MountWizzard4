@@ -541,7 +541,7 @@ class Environ:
         """
         :return:
         """
-        url = f'https://www.meteoblue.com/de/wetter/outdoorsports/seeing'
+        url = 'https://www.meteoblue.com/de/wetter/outdoorsports/seeing'
         if not webbrowser.open(url, new=0):
             self.app.mes.emit(2, 'System', 'Environment', 'Browser failed')
         else:

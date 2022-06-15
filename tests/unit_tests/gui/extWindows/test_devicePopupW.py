@@ -344,6 +344,39 @@ def test_discoverNINADevices_2(function):
         assert suc
 
 
+def test_checkPlateSolveAvailability_1(function):
+    class Avail:
+        @staticmethod
+        def checkAvailability(appPath=0, indexPath=0):
+            return True, True
+
+    function.app.plateSolve.run['astap'] = Avail()
+    suc = function.checkPlateSolveAvailability('astap', 'test', 'test')
+    assert suc
+
+
+def test_checkPlateSolveAvailability_2(function):
+    class Avail:
+        @staticmethod
+        def checkAvailability(appPath=0, indexPath=0):
+            return True, True
+
+    function.app.plateSolve.run['watney'] = Avail()
+    suc = function.checkPlateSolveAvailability('watney', 'test', 'test')
+    assert suc
+
+
+def test_checkPlateSolveAvailability_3(function):
+    class Avail:
+        @staticmethod
+        def checkAvailability(appPath=0, indexPath=0):
+            return True, True
+
+    function.app.plateSolve.run['astrometry'] = Avail()
+    suc = function.checkPlateSolveAvailability('astrometry', 'test', 'test')
+    assert suc
+
+
 def test_selectAstrometryIndexPath_1(function):
     with mock.patch.object(MWidget,
                            'openDir',
@@ -475,6 +508,68 @@ def test_selectAstapAppPath_3(function):
                                    'checkPlateSolveAvailability',
                                    return_value=True):
                 suc = function.selectAstapAppPath()
+                assert suc
+
+
+def test_selectWatneyIndexPath_1(function):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('', '', '')):
+        suc = function.selectWatneyIndexPath()
+        assert not suc
+
+
+def test_selectWatneyIndexPath_2(function):
+    class Test:
+        @staticmethod
+        def checkAvailability():
+            return True, True
+
+        @staticmethod
+        def selectWatneyIndexPath():
+            return True
+
+    function.app.plateSolve.run = {'astap': Test()}
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', 'test')):
+        with mock.patch.object(function,
+                               'checkPlateSolveAvailability',
+                               return_value=True):
+            suc = function.selectWatneyIndexPath()
+            assert suc
+
+
+def test_selectWatneyAppPath_1(function):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('', '', '')):
+        suc = function.selectWatneyAppPath()
+        assert not suc
+
+
+def test_selectWatneyAppPath_2(function):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', 'test')):
+        with mock.patch.object(function,
+                               'checkPlateSolveAvailability',
+                               return_value=True):
+            suc = function.selectWatneyAppPath()
+            assert suc
+
+
+def test_selectWatneyAppPath_3(function):
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', '.app')):
+        with mock.patch.object(platform,
+                               'system',
+                               return_value=('Darwin')):
+            with mock.patch.object(function,
+                                   'checkPlateSolveAvailability',
+                                   return_value=True):
+                suc = function.selectWatneyAppPath()
                 assert suc
 
 

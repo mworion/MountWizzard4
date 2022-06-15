@@ -458,6 +458,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         """
         sucApp, sucIndex = self.app.plateSolve.run[framework].checkAvailability(
             appPath=appPath, indexPath=indexPath)
+
         if framework == 'astap':
             color = 'green' if sucApp else 'red'
             self.changeStyleDynamic(self.ui.astapAppPath, 'color', color)

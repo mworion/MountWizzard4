@@ -516,6 +516,9 @@ def test_updateSeeingEntries_1(function):
 
 def test_updateSeeingEntries_2(function):
     function.app.seeingWeather.data = {
+        'meta': {
+            'last_model_update': '2022-01-01',
+        },
         'hourly': {
             'hour': [10] * 96,
             'date': ['2022-01-01'] * 96,
@@ -545,6 +548,9 @@ def test_updateSeeingEntries_2(function):
 
 def test_updateSeeingEntries_3(function):
     function.app.seeingWeather.data = {
+        'meta': {
+            'last_model_update': '2022-01-01',
+        },
         'hourly': {
             'hour': [10] * 96,
             'date': ['2022-01-01'] * 96,

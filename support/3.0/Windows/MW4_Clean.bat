@@ -1,7 +1,7 @@
 @echo off
 rem
-rem updater for Win10
-rem (c) 2021 mworion
+rem clean script for Win10
+rem (c) 2022 mworion
 rem
 
 echo.
@@ -38,6 +38,6 @@ pip freeze > clean.txt & pip uninstall -r clean.txt -y > clean.log 2>&1
 
 echo.
 echo ----------------------------------------
-echo updated mountwizzard4 successfully
-echo for details see update.log
+echo cleaned python system successfully
+echo for details see clean.log
 echo ----------------------------------------

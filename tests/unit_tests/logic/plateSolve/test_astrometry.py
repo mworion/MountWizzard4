@@ -76,6 +76,11 @@ def test_setDefaultPath_3(function):
         assert function.appPath == ''
 
 
+def test_saveConfigFile(function):
+    suc = function.saveConfigFile()
+    assert suc
+
+
 def test_runImage2xy_1(function):
     suc = function.runImage2xy()
     assert not suc

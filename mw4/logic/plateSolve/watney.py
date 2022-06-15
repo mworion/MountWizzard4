@@ -35,6 +35,10 @@ class Watney(object):
     __all__ = ['Watney']
     log = logging.getLogger(__name__)
 
+    returnCodes = {0: 'No errors',
+                   1: 'No solution',
+                   }
+
     def __init__(self, parent):
         self.parent = parent
         self.data = parent.data
@@ -110,9 +114,7 @@ class Watney(object):
                            + ' stderr: '
                            + stderr.decode().replace('\n', ' ')
                            + ' stdout: '
-                           + stdout.decode().replace('\n', ' ')
-                           )
-
+                           + stdout.decode().replace('\n', ' '))
         return True, int(self.process.returncode)
 
     @staticmethod

@@ -139,11 +139,6 @@ def test_getWCSHeader_2(function):
     assert val
 
 
-def test_solve_1(function):
-    suc = function.solve()
-    assert not suc
-
-
 def test_solve_2(function):
     suc = function.solve()
     assert not suc

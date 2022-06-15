@@ -162,6 +162,7 @@ class MWidget(QWidget, Styles):
         newFlag = newFlag | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint
         self.setWindowFlags(self.windowFlags() | newFlag)
         self.setWindowIcon(QIcon(':/icon/mw4.png'))
+        self.setFocusPolicy(Qt.NoFocus)
 
     @staticmethod
     def findIndexValue(ui, searchString, relaxed=False):

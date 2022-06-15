@@ -496,6 +496,8 @@ class Environ:
                     item.setForeground(QColor(self.M_PINK))
                     val = data['seeing_arcsec'][i]
                     self.ui.limitForecast.setText(f'{val}')
+                    val = self.app.seeingWeather.data['meta']['last_model_update']
+                    self.ui.limitForecastDate.setText(f'{val}')
                     columnCenter = i
                 else:
                     columnCenter = 1
@@ -520,8 +522,8 @@ class Environ:
               'Seeing index 2',
               'Ground Temp [°C]',
               'Humidity [%]',
-              'Bad Layers Bot [km]',
               'Bad Layers Top [km]',
+              'Bad Layers Bot [km]',
               'Bad Layers [K/100m]',
               'Jet stream [m/s]',
               ]

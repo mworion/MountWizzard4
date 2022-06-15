@@ -18789,7 +18789,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>281</height>
+         <height>376</height>
         </rect>
        </property>
        <property name="title">
@@ -18938,7 +18938,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>255</y>
+          <y>345</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -19103,9 +19103,9 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>4</x>
-          <y>80</y>
+          <y>100</y>
           <width>356</width>
-          <height>156</height>
+          <height>141</height>
          </rect>
         </property>
         <property name="title">
@@ -19668,7 +19668,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>230</y>
+          <y>320</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -19695,7 +19695,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>305</y>
+         <y>85</y>
          <width>366</width>
          <height>81</height>
         </rect>
@@ -19898,8 +19898,8 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupFilterWheel">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>335</y>
+         <x>400</x>
+         <y>10</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -20063,7 +20063,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>150</y>
+         <y>195</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -20258,7 +20258,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>10</y>
+         <y>305</y>
          <width>366</width>
          <height>81</height>
         </rect>
@@ -21671,7 +21671,7 @@ Slew</string>
          <rect>
           <x>165</x>
           <y>100</y>
-          <width>41</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -21728,6 +21728,70 @@ Slew</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="limitForecastDate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>245</x>
+          <y>100</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_415">
+        <property name="geometry">
+         <rect>
+          <x>215</x>
+          <y>100</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>from</string>
         </property>
        </widget>
       </widget>

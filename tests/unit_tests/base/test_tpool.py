@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
 
 # local import
@@ -33,6 +34,15 @@ def test_WorkerSignals():
     assert a.finished
     assert a.error
     assert a.result
+
+
+def test_clearPrintErrorStack(qtbot):
+    def testFunc():
+        raise Exception
+        return 'test'
+
+    a = tpool.Worker(testFunc)
+    a.run()
 
 
 def test_Worker_1():

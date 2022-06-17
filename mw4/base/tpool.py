@@ -99,7 +99,7 @@ class Worker(QRunnable):
                 tb = tb.tb_next
                 eStr += self.clearPrintErrorStack(tb)
 
-            eStr += f'msg: [{exc_value}]'
+            eStr += f' - excType: [{exc_type}], excValue: [{exc_value}]'
             self.log.critical(eStr)
             self.signals.error.emit(eStr)
 

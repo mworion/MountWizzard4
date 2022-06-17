@@ -144,7 +144,8 @@ class Watney(object):
         :return: success
         """
         self.process = None
-        self.result = {'success': False}
+        self.result = {'success': False,
+                       'message': 'Internal error'}
         isBlind = self.searchRadius == 180
         jsonPath = self.tempDir + '/solve.json'
         wcsPath = self.tempDir + '/temp.wcs'

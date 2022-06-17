@@ -53,6 +53,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         super().__init__()
 
         self.app = app
+        self.msg = app.msg
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
         self.mwSuper('__init__')

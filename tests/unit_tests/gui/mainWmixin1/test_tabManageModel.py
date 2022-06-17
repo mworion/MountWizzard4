@@ -52,6 +52,7 @@ def function(module):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.msg = self.app.msg
             self.widget1 = QWidget()
             self.widget2 = QWidget()
             self.widget3 = QWidget()

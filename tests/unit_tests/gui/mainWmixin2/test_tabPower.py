@@ -33,6 +33,7 @@ def function(qapp):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.msg = self.app.msg
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
             Power.__init__(self)

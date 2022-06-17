@@ -40,6 +40,7 @@ def function(qapp):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.msg = self.app.msg
             self.databaseProcessing = DataWriter(self.app)
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()

@@ -35,6 +35,7 @@ def function(qapp):
         def __init__(self):
             super().__init__()
             self.app = App()
+            self.msg = self.app.msg
             self.deviceStat = self.app.deviceStat
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()

@@ -147,10 +147,6 @@ class ASTAP(object):
         for line in wcsTextFile:
             if line.startswith('END'):
                 continue
-            if line.startswith('COMMENT'):
-                continue
-            if line.startswith('CONTINUE'):
-                continue
             tempString += line
 
         wcsHeader = fits.PrimaryHDU().header.fromstring(tempString, sep='\n')

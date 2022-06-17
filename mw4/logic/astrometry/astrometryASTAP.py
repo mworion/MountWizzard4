@@ -158,6 +158,8 @@ class AstrometryASTAP(object):
                 continue
             if line.startswith('COMMENT'):
                 continue
+            if line.startswith('CONTINUEa'):
+                continue
             tempString += line
 
         wcsHeader = fits.PrimaryHDU().header.fromstring(tempString, sep='\n')

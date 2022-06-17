@@ -197,7 +197,7 @@ class Model:
             t += f'Images left: [{self.imageQueue.qsize()}] '
             t += f'Solves left: [{self.solveQueue.qsize()}] '
             self.log.error(t)
-            self.msg.emit(2, 'Cancel build because of error')
+            self.msg.emit(2, 'Model', 'Build error', 'Out of sync exception')
             self.cancelBuild()
             return False
 

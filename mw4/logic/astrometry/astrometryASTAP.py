@@ -158,7 +158,7 @@ class AstrometryASTAP(object):
                 continue
             if line.startswith('COMMENT'):
                 continue
-            if line.startswith('CONTINUEa'):
+            if line.startswith('CONTINUE'):
                 continue
             tempString += line
 

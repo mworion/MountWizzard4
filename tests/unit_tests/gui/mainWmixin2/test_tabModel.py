@@ -212,8 +212,10 @@ def test_modelSolveDone_0(function, qtbot):
               'message': 'test',
               }
 
-    suc = function.modelSolveDone(result)
-    assert not suc
+    with mock.patch.object(function,
+                           'cancelBuild'):
+        suc = function.modelSolveDone(result)
+        assert not suc
 
 
 def test_modelSolveDone_1(function):

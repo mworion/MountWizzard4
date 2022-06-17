@@ -197,7 +197,7 @@ class Model:
             t += f'Images left: [{self.imageQueue.qsize()}] '
             t += f'Solves left: [{self.solveQueue.qsize()}] '
             self.log.error(t)
-            self.app.message.emit(2, 'Cancel build because of error')
+            self.app.mes.emit(2, 'Cancel build because of error')
             self.cancelBuild()
             return False
 

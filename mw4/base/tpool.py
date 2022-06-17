@@ -65,6 +65,18 @@ class Worker(QRunnable):
         # we get trouble when having multiple threads running
         self.signals = WorkerSignals()
 
+    def clearPrintErrorStack(self, tb):
+        """
+        :param tb:
+        :return:
+        """
+        # getting data out for processing
+        file = os.path.basename(tb.tb_frame.f_code.co_filename)
+        line = tb.tb_frame.f_lineno
+        fnName = self.fn.__name__
+        eStr = f'fn: [{fnName}], file: [{file}], line: {line} '
+        return eStr
+
     @pyqtSlot()
     def run(self):
         """
@@ -82,15 +94,11 @@ class Worker(QRunnable):
             tb = exc_traceback
 
             # moving toward the end of the trace
+            eStr = self.clearPrintErrorStack(tb)
             while tb.tb_next is not None:
                 tb = tb.tb_next
+                eStr += self.clearPrintErrorStack(tb)
 
-            # getting data out for processing
-            file = os.path.basename(tb.tb_frame.f_code.co_filename)
-            line = tb.tb_frame.f_lineno
-            fnName = self.fn.__name__
-
-            eStr = f'fn: [{fnName}], file: [{file}], line: {line} '
             eStr += f'msg: [{exc_value}]'
             self.log.critical(eStr)
             self.signals.error.emit(eStr)

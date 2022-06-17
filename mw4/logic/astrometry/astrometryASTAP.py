@@ -160,8 +160,7 @@ class AstrometryASTAP(object):
                 continue
             tempString += line
 
-        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
-                                                        sep='\n')
+        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString, sep='\n')
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,

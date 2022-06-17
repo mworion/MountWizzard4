@@ -40,6 +40,7 @@ class MeasureData:
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.msg = app.msg
         self.signals = Signals()
         self.mutexMeasure = QMutex()
 
@@ -79,7 +80,7 @@ class MeasureData:
         suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
         if suc:
             self.signals.deviceConnected.emit(name)
-            self.app.mes.emit(0, 'System', 'Measure device found', f'{name}')
+            self.msg.emit(0, 'System', 'Measure device found', f'{name}')
 
         return suc
 
@@ -94,7 +95,7 @@ class MeasureData:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.app.mes.emit(0, 'System', 'Measure device removed', f'{name}')
+        self.msg.emit(0, 'System', 'Measure device removed', f'{name}')
         return suc
 
     def setEmptyData(self):

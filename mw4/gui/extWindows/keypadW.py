@@ -55,6 +55,7 @@ class KeypadWindow(toolsQtWidget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.msg = app.msg
         self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self)
@@ -149,11 +150,11 @@ class KeypadWindow(toolsQtWidget.MWidget):
         :return:
         """
         if not self.app.mount.setting.webInterfaceStat:
-            self.app.mes.emit(0, 'System', 'Mount', 'Enable webinterface')
+            self.msg.emit(0, 'System', 'Mount', 'Enable webinterface')
             suc = self.app.mount.setting.setWebInterface(True)
             if not suc:
-                self.app.mes.emit(2, 'System', 'Mount',
-                                  'Could not enable webinterface')
+                self.msg.emit(2, 'System', 'Mount',
+                              'Could not enable webinterface')
         self.app.colorChange.connect(self.colorChange)
         self.app.hostChanged.connect(self.hostChanged)
         self.signals.textRow.connect(self.writeTextRow)

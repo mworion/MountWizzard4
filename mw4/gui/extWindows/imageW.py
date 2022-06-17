@@ -56,11 +56,11 @@ class ImageWindow(toolsQtWidget.MWidget):
         super().__init__()
 
         self.app = app
+        self.msg = app.msg
         self.threadPool = app.threadPool
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
-        self.mes = app.mes
 
         self.imgP = None
         self.barItem = None
@@ -240,11 +240,11 @@ class ImageWindow(toolsQtWidget.MWidget):
                             'FITS files (*.fit*)', enableDir=True)
         loadFilePath, name, ext = val
         if not name:
-            self.app.mes.emit(2, 'Image', 'Error', 'No image selected')
+            self.msg.emit(2, 'Image', 'Error', 'No image selected')
             return False
 
         self.imageFileName = loadFilePath
-        self.app.mes.emit(0, 'Image', 'Image selected', f'{name}{ext}')
+        self.msg.emit(0, 'Image', 'Image selected', f'{name}{ext}')
         self.folder = os.path.dirname(loadFilePath)
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
@@ -692,17 +692,17 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not suc:
             self.abortImage()
             text = f'{os.path.basename(imagePath)}'
-            self.mes.emit(2, 'Image', 'Expose error', text)
+            self.msg.emit(2, 'Image', 'Expose error', text)
             return False
 
         text = f'{os.path.basename(imagePath)}'
-        self.mes.emit(0, 'Image', 'Exposing', text)
+        self.msg.emit(0, 'Image', 'Exposing', text)
         text = f'Duration:{self.expTime:3.0f}s  '
-        self.mes.emit(0, '', '', f'{text}')
+        self.msg.emit(0, '', '', f'{text}')
         text = f'Bin:{self.binning:1.0f}'
-        self.mes.emit(0, '', '', f'{text}')
+        self.msg.emit(0, '', '', f'{text}')
         text = f'Sub:{subFrame:3.0f}%'
-        self.mes.emit(0, '', '', f'{text}')
+        self.msg.emit(0, '', '', f'{text}')
         return True
 
     def exposeImageDone(self, imagePath=''):
@@ -713,7 +713,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.deviceStat['expose'] = False
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         text = f'{os.path.basename(imagePath)}'
-        self.mes.emit(0, 'Image', 'Exposed', text)
+        self.msg.emit(0, 'Image', 'Exposed', text)
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -737,7 +737,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: True for test purpose
         """
         text = f'{os.path.basename(imagePath)}'
-        self.mes.emit(0, 'Image', 'Exposed n', text)
+        self.msg.emit(0, 'Image', 'Exposed n', text)
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -770,7 +770,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageFileName = self.imageFileNameOld
         self.deviceStat['expose'] = False
         self.deviceStat['exposeN'] = False
-        self.mes.emit(2, 'Image', 'Expose', 'Exposing aborted')
+        self.msg.emit(2, 'Image', 'Expose', 'Exposing aborted')
         return True
 
     def solveDone(self, result=None):
@@ -782,26 +782,26 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.plateSolve.signals.done.disconnect(self.solveDone)
 
         if not result:
-            self.mes.emit(2, 'Image', 'Solving',
+            self.msg.emit(2, 'Image', 'Solving',
                           'Solving error, result missing')
             return False
         if not result['success']:
-            self.mes.emit(2, 'Image', 'Solving error',
+            self.msg.emit(2, 'Image', 'Solving error',
                           f'{result.get("message")}')
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
         text += f'({result["raJ2000S"].hours:4.3f}), '
-        self.mes.emit(0, 'Image', 'Solved', text)
+        self.msg.emit(0, 'Image', 'Solved', text)
         text = f'DEC: {convertToDMS(result["decJ2000S"])} '
         text += f'({result["decJ2000S"].degrees:4.3f}), '
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
         text = f'Angle: {result["angleS"]:3.0f}, '
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
         text = f'Scale: {result["scaleS"]:4.3f}, '
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
         text = f'Error: {result["errorRMS_S"]:4.1f}'
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
 
         if self.ui.embedData.isChecked():
             self.showCurrent()
@@ -822,7 +822,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.plateSolve.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
         self.deviceStat['solve'] = True
-        self.mes.emit(0, 'Image', 'Solving',
+        self.msg.emit(0, 'Image', 'Solving',
                       f'{os.path.basename(imagePath)}')
         return True
 
@@ -858,15 +858,15 @@ class ImageWindow(toolsQtWidget.MWidget):
             geoStat = 'Geometry corrected' if delta else 'Equal mount'
             text = f'{geoStat}'
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.mes.emit(0, 'Image', 'Slewing dome', text)
+            self.msg.emit(0, 'Image', 'Slewing dome', text)
 
         suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
         if suc:
             t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.mes.emit(0, 'Image', 'Slewing mount', t)
+            self.msg.emit(0, 'Image', 'Slewing mount', t)
         else:
             t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.mes.emit(2, 'Image', 'Slewing error', t)
+            self.msg.emit(2, 'Image', 'Slewing error', t)
         return suc
 
     def moveRaDecAbsolute(self, ra, dec):
@@ -894,31 +894,31 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.plateSolve.signals.done.disconnect(self.solveCenterDone)
 
         if not result:
-            self.mes.emit(2, 'Image', 'Solve center error',
+            self.msg.emit(2, 'Image', 'Solve center error',
                           'Solving error, result missing')
             return False
         if not result['success']:
-            self.mes.emit(2, 'Image', 'Solve center error',
+            self.msg.emit(2, 'Image', 'Solve center error',
                           f'{result.get("message")}')
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
         text += f'({result["raJ2000S"].hours:4.3f}), '
-        self.mes.emit(0, 'Image', 'Solved center', text)
+        self.msg.emit(0, 'Image', 'Solved center', text)
         text = f'DEC: {convertToDMS(result["decJ2000S"])} '
         text += f'({result["decJ2000S"].degrees:4.3f}), '
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
         text = f'Angle: {result["angleS"]:3.0f}, '
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
         text = f'Scale: {result["scaleS"]:4.3f}, '
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
         text = f'Error: {result["errorRMS_S"]:4.1f}'
-        self.mes.emit(0, '', '', text)
+        self.msg.emit(0, '', '', text)
 
-        self.mes.emit(0, 'Image', 'Solved center', 'Centering now')
+        self.msg.emit(0, 'Image', 'Solved center', 'Centering now')
         suc = self.moveRaDecAbsolute(result['raJ2000S'], result['decJ2000S'])
         if not suc:
-            self.mes.emit(2, 'Image', 'Solved center error',
+            self.msg.emit(2, 'Image', 'Solved center error',
                           'Centering aborted')
             return False
         return True
@@ -935,6 +935,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.plateSolve.signals.done.connect(self.solveCenterDone)
         self.app.plateSolve.solveThreading(fitsPath=self.imageFileName)
         self.deviceStat['solve'] = True
-        self.mes.emit(0, 'Image', 'Solving center',
+        self.msg.emit(0, 'Image', 'Solving center',
                       f'{os.path.basename(self.imageFileName)}')
         return True

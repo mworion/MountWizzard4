@@ -156,7 +156,7 @@ class SettImageStats:
         """
         url = 'https://github.com/Jusas/WatneyAstrometry/releases/tag/watneyqdb3'
         if not webbrowser.open(url, new=0):
-            self.app.mes.emit(2, 'System', 'ImageStats', 'Browser failed')
+            self.msg.emit(2, 'System', 'ImageStats', 'Browser failed')
         return True
 
     def openASTAPCatalog(self):
@@ -165,7 +165,7 @@ class SettImageStats:
         """
         url = 'https://www.hnsky.org/astap.htm'
         if not webbrowser.open(url, new=0):
-            self.app.mes.emit(2, 'System', 'ImageStats', 'Browser failed')
+            self.msg.emit(2, 'System', 'ImageStats', 'Browser failed')
         return True
 
     def openAstrometryCatalog(self):
@@ -174,5 +174,5 @@ class SettImageStats:
         """
         url = 'http://data.astrometry.net/4200/'
         if not webbrowser.open(url, new=0):
-            self.app.mes.emit(2, 'System', 'ImageStats', 'Browser failed')
+            self.msg.emit(2, 'System', 'ImageStats', 'Browser failed')
         return True

@@ -251,7 +251,7 @@ class SettMisc(object):
         productId = gameController['productId']
 
         self.log.debug(f'GameController: [{name} {vendorId}:{productId}]')
-        self.app.mes.emit(1, 'System', 'GameController', f'Starting {[name]}')
+        self.msg.emit(1, 'System', 'GameController', f'Starting {[name]}')
         gameControllerDevice.open(vendorId, productId)
         gameControllerDevice.set_nonblocking(True)
 
@@ -307,7 +307,7 @@ class SettMisc(object):
             self.gameControllerList[name] = {'vendorId': device['vendor_id'],
                                              'productId': device['product_id']}
             self.ui.gameControllerList.addItem(name)
-            self.app.mes.emit(0, 'System', 'GameController', f'Found {[name]}')
+            self.msg.emit(0, 'System', 'GameController', f'Found {[name]}')
 
         if len(self.gameControllerList) == 0:
             return False
@@ -412,7 +412,7 @@ class SettMisc(object):
         availPackage, comment, _ = self.versionPackage(packageName)
 
         if availPackage is None:
-            self.app.mes.emit(2, 'System', 'Update',
+            self.msg.emit(2, 'System', 'Update',
                               'Failed get actual package from server')
             return False
 
@@ -423,17 +423,17 @@ class SettMisc(object):
             return True
 
         t = f'A new version ({availPackage}) of MountWizzard is available!'
-        self.app.mes.emit(1, 'System', 'Update', t)
+        self.msg.emit(1, 'System', 'Update', t)
 
         if not self.ui.versionReleaseNotes.isChecked():
             return True
         if not comment:
             return True
 
-        self.app.mes.emit(1, 'System', 'Update',
+        self.msg.emit(1, 'System', 'Update',
                           f'Release notes for {availPackage}:')
         for line in comment.split('\n'):
-            self.app.mes.emit(2, '', '', line)
+            self.msg.emit(2, '', '', line)
         return True
 
     def isVenv(self):
@@ -514,7 +514,7 @@ class SettMisc(object):
         :return: True for test purpose
         """
         if not (self.isVenv() or platform.machine() == 'armv7l'):
-            self.app.mes.emit(2, 'System', 'Update',
+            self.msg.emit(2, 'System', 'Update',
                               'MW4 not running in an virtual environment')
             return False
 
@@ -525,11 +525,11 @@ class SettMisc(object):
         _, _, existPackage = self.versionPackage('MountWizzard4')
 
         if versionPackage not in existPackage:
-            self.app.mes.emit(2, 'System', 'Update',
+            self.msg.emit(2, 'System', 'Update',
                               f'Version {versionPackage} does not exist')
             return False
 
-        self.app.mes.emit(1, 'System', 'Update',
+        self.msg.emit(1, 'System', 'Update',
                           f'Installing [{versionPackage}] please wait')
         self.startUpdater(versionPackage)
         return True
@@ -630,7 +630,7 @@ class SettMisc(object):
         filePath = os.path.abspath(fileName)
         url = f'file://{filePath}'
         if not webbrowser.open(url, new=0):
-            self.app.mes.emit(2, 'System', 'Setting Misc', 'Browser failed')
+            self.msg.emit(2, 'System', 'Setting Misc', 'Browser failed')
         else:
-            self.app.mes.emit(0, 'System', 'Setting Misc', 'Doc opened')
+            self.msg.emit(0, 'System', 'Setting Misc', 'Doc opened')
         return True

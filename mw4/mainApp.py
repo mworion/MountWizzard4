@@ -68,7 +68,7 @@ class MountWizzard4(QObject):
     __version__ = version('mountwizzard4')
     log = logging.getLogger(__name__)
 
-    mes = pyqtSignal(object, object, object, object)
+    msg = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     redrawHemisphere = pyqtSignal()
     redrawHorizon = pyqtSignal()
@@ -118,7 +118,7 @@ class MountWizzard4(QObject):
         self.mainW = None
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
-        self.mes.connect(self.writeMessageQueue)
+        self.msg.connect(self.writeMessageQueue)
         self.config = {}
         self.loadConfig()
         self.deviceStat = {

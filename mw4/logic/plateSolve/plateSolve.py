@@ -66,7 +66,7 @@ class PlateSolve:
 
     def __init__(self, app):
         self.app = app
-        self.mes = app.mes
+        self.msg = app.msg
         self.tempDir = app.mwGlob['tempDir']
         self.workDir = app.mwGlob['workDir']
         self.threadPool = app.threadPool
@@ -305,7 +305,7 @@ class PlateSolve:
         name = self.run[self.framework].deviceName
         if sucApp and sucIndex:
             self.signals.deviceConnected.emit(name)
-            self.mes.emit(0, 'System', 'Plate Solver found', f'{name}')
+            self.msg.emit(0, 'System', 'Plate Solver found', f'{name}')
 
         self.log.debug(f'Framework: [{self.framework}], {sucApp}, {sucIndex}')
         return True
@@ -317,5 +317,5 @@ class PlateSolve:
         name = self.run[self.framework].deviceName
         self.signals.serverDisconnected.emit({name: 0})
         self.signals.deviceDisconnected.emit(name)
-        self.mes.emit(0, 'System', 'Plate Solver remove', f'{name}')
+        self.msg.emit(0, 'System', 'Plate Solver remove', f'{name}')
         return True

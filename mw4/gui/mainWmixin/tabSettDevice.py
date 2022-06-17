@@ -400,7 +400,7 @@ class SettDevice:
             driverClass.stopCommunication()
             driverClass.data.clear()
             driverClass.run[framework].deviceName = ''
-            self.app.mes.emit(0, 'Driver',
+            self.msg.emit(0, 'Driver',
                               f'{framework.upper()} disabled',
                               f'{driver}')
 
@@ -472,7 +472,7 @@ class SettDevice:
         if autoStart:
             driverClass.startCommunication(loadConfig=loadConfig)
 
-        self.app.mes.emit(0, 'Driver',
+        self.msg.emit(0, 'Driver',
                           f'{framework.upper()} enabled',
                           f'{driver}')
         return True
@@ -596,7 +596,7 @@ class SettDevice:
 
             style = f'background-color: {self.M_GREY1};'
             self.drivers[driver]['uiDropDown'].setStyleSheet(style)
-            self.app.mes.emit(0, 'Driver', 'Server disconnected', f'{driver}')
+            self.msg.emit(0, 'Driver', 'Server disconnected', f'{driver}')
         return True
 
     def deviceConnected(self, deviceName):
@@ -614,7 +614,7 @@ class SettDevice:
             style = f'background-color: {self.M_GREEN};'
             self.drivers[driver]['uiDropDown'].setStyleSheet(style)
             self.deviceStat[driver] = True
-            self.app.mes.emit(0, 'Driver', 'Device connected', f'{driver}')
+            self.msg.emit(0, 'Driver', 'Device connected', f'{driver}')
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -629,5 +629,5 @@ class SettDevice:
             style = f'background-color: {self.M_GREY1};'
             self.drivers[driver]['uiDropDown'].setStyleSheet(style)
             self.deviceStat[driver] = False
-            self.app.mes.emit(0, 'Driver', 'Device disconnected', f'{driver}')
+            self.msg.emit(0, 'Driver', 'Device disconnected', f'{driver}')
         return True

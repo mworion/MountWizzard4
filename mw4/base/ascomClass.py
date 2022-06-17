@@ -43,7 +43,7 @@ class AscomClass(DriverData):
         self.app = app
         self.data = data
         self.threadPool = app.threadPool
-        self.mes = app.mes
+        self.msg = app.msg
         self.updateRate = 3000
         self.tM = QMutex()
 
@@ -188,7 +188,7 @@ class AscomClass(DriverData):
             suc = False
 
         if not suc:
-            self.mes.emit(2, 'ASCOM ', 'Connect error', f'{self.deviceName}')
+            self.msg.emit(2, 'ASCOM ', 'Connect error', f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
             return False
@@ -200,7 +200,7 @@ class AscomClass(DriverData):
         if not self.deviceConnected:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.mes.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
+            self.msg.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
         return True
 
     def workerGetInitialConfig(self):
@@ -221,12 +221,12 @@ class AscomClass(DriverData):
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-            self.mes.emit(0, 'ASCOM ', 'Device remove', f'{self.deviceName}')
+            self.msg.emit(0, 'ASCOM ', 'Device remove', f'{self.deviceName}')
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f'{self.deviceName}')
-            self.mes.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
+            self.msg.emit(0, 'ASCOM ', 'Device found', f'{self.deviceName}')
 
         return suc
 
@@ -343,5 +343,5 @@ class AscomClass(DriverData):
             self.propertyExceptions = []
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.mes.emit(0, 'ALPACA', 'Device  remove', f'{self.deviceName}')
+        self.msg.emit(0, 'ALPACA', 'Device  remove', f'{self.deviceName}')
         return True

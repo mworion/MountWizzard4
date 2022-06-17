@@ -143,10 +143,10 @@ class EditHorizon:
         suc = self.app.data.loadHorizonP(fileName=fileName, ext=ext)
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
-            self.app.mes.emit(0, 'Hemisphere', 'Horizon',
+            self.msg.emit(0, 'Hemisphere', 'Horizon',
                               f'Mask [{fileName}] loaded')
         else:
-            self.app.mes.emit(2, 'Hemisphere', 'Horizon',
+            self.msg.emit(2, 'Hemisphere', 'Horizon',
                               f'Mask [{fileName}] cannot no be loaded')
 
         self.app.redrawHemisphere.emit()
@@ -159,16 +159,16 @@ class EditHorizon:
         """
         fileName = self.ui.horizonMaskFileName.text()
         if not fileName:
-            self.app.mes.emit(2, 'Hemisphere', 'Horizon',
+            self.msg.emit(2, 'Hemisphere', 'Horizon',
                               'Mask file name not given')
             return False
 
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
-            self.app.mes.emit(0, 'Hemisphere', 'Horizon',
+            self.msg.emit(0, 'Hemisphere', 'Horizon',
                               f'Mask [{fileName}] saved')
         else:
-            self.app.mes.emit(2, 'Hemisphere', 'Horizon',
+            self.msg.emit(2, 'Hemisphere', 'Horizon',
                               f'Mask [{fileName}] cannot no be saved')
         return True
 
@@ -188,10 +188,10 @@ class EditHorizon:
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
-            self.app.mes.emit(0, 'Hemisphere', 'Horizon',
+            self.msg.emit(0, 'Hemisphere', 'Horizon',
                               f'Mask [{fileName}] saved')
         else:
-            self.app.mes.emit(2, 'Hemisphere', 'Horizon',
+            self.msg.emit(2, 'Hemisphere', 'Horizon',
                               f'Mask [{fileName}] cannot no be saved')
         return True
 

@@ -462,7 +462,7 @@ class SettImaging:
         """
         suc = self.app.cover.closeCover()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Cover close could not be executed')
         return suc
 
@@ -472,7 +472,7 @@ class SettImaging:
         """
         suc = self.app.cover.openCover()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Cover open could not be executed')
         return suc
 
@@ -482,7 +482,7 @@ class SettImaging:
         """
         suc = self.app.cover.haltCover()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Cover stop could not be executed')
         return suc
 
@@ -495,7 +495,7 @@ class SettImaging:
         newPos = pos - step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Focuser move in could not be executed')
         return suc
 
@@ -508,7 +508,7 @@ class SettImaging:
         newPos = pos + step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Focuser move out could not be executed')
         return suc
 
@@ -518,7 +518,7 @@ class SettImaging:
         """
         suc = self.app.focuser.halt()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Focuser halt could not be executed')
         return suc
 
@@ -528,7 +528,7 @@ class SettImaging:
         """
         suc = self.app.cover.lightOn()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Light could not be switched on')
         return suc
 
@@ -538,7 +538,7 @@ class SettImaging:
         """
         suc = self.app.cover.lightOff()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Light could not be switched off')
         return suc
 
@@ -561,7 +561,7 @@ class SettImaging:
         self.ui.coverLightIntensity.setText(f'{value}')
         suc = self.app.cover.lightIntensity(value)
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Light intensity could not be set')
         return suc
 
@@ -614,7 +614,7 @@ class SettImaging:
 
         suc = self.app.dome.slewCW()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Dome could not be slewed CW')
         return suc
 
@@ -627,7 +627,7 @@ class SettImaging:
 
         suc = self.app.dome.slewCCW()
         if not suc:
-            self.app.mes.emit(2, 'Setting', 'Imaging',
+            self.msg.emit(2, 'Setting', 'Imaging',
                               'Dome could not be slewed CCW')
         return suc
 
@@ -640,7 +640,7 @@ class SettImaging:
 
         suc = self.app.dome.abortSlew()
         if not suc:
-            self.app.mes.emit(2, 'Dome', 'Command',
+            self.msg.emit(2, 'Dome', 'Command',
                               'Dome slew abort could not be executed')
         return suc
 
@@ -653,7 +653,7 @@ class SettImaging:
 
         suc = self.app.dome.openShutter()
         if not suc:
-            self.app.mes.emit(2, 'Dome', 'Command',
+            self.msg.emit(2, 'Dome', 'Command',
                               'Dome open shutter could not be executed')
         return suc
 
@@ -666,7 +666,7 @@ class SettImaging:
 
         suc = self.app.dome.closeShutter()
         if not suc:
-            self.app.mes.emit(2, 'Dome', 'Command',
+            self.msg.emit(2, 'Dome', 'Command',
                               'Dome close shutter could not be executed')
         return suc
 

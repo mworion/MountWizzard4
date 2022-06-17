@@ -266,7 +266,7 @@ class Environ:
                                                         pressure=press)
 
         if not suc:
-            self.app.mes.emit(2, 'System', 'Environment', 'No refraction update')
+            self.msg.emit(2, 'System', 'Environment', 'No refraction update')
             return False
 
         return True
@@ -543,7 +543,7 @@ class Environ:
         """
         url = 'https://www.meteoblue.com/de/wetter/outdoorsports/seeing'
         if not webbrowser.open(url, new=0):
-            self.app.mes.emit(2, 'System', 'Environment', 'Browser failed')
+            self.msg.emit(2, 'System', 'Environment', 'Browser failed')
         else:
-            self.app.mes.emit(0, 'System', 'Environment', 'Meteoblue opened')
+            self.msg.emit(0, 'System', 'Environment', 'Meteoblue opened')
         return True

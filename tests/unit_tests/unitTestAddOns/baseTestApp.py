@@ -1118,7 +1118,7 @@ class App(QObject):
     colorChange = pyqtSignal()
     buildPointsChanged = pyqtSignal()
     playSound = pyqtSignal(object)
-    mes = pyqtSignal(object, object, object, object)
+    msg = pyqtSignal(object, object, object, object)
     remoteCommand = pyqtSignal(object)
     gameABXY = pyqtSignal(object)
     gamePMH = pyqtSignal(object)

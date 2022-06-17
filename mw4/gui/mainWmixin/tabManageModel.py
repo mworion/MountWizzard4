@@ -263,7 +263,7 @@ class ManageModel(object):
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
         self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
-        self.app.mes.emit(0, 'Model', 'Manage', 'Model names refreshed')
+        self.msg.emit(0, 'Model', 'Manage', 'Model names refreshed')
         return True
 
     def refreshName(self):
@@ -294,17 +294,17 @@ class ManageModel(object):
         :return: success
         """
         if self.ui.nameList.currentItem() is None:
-            self.app.mes.emit(2, 'Model', 'Manage error',
-                              'No model name selected')
+            self.msg.emit(2, 'Model', 'Manage error',
+                          'No model name selected')
             return False
         modelName = self.ui.nameList.currentItem().text()
         suc = self.app.mount.model.loadName(modelName)
         if not suc:
-            self.app.mes.emit(2, 'Model', 'Manage error',
-                              f'Model load failed: [{modelName}]')
+            self.msg.emit(2, 'Model', 'Manage error',
+                          f'Model load failed: [{modelName}]')
             return False
         else:
-            self.app.mes.emit(0, 'Model', 'Manage',
+            self.msg.emit(0, 'Model', 'Manage',
                               f'Model loaded: [{modelName}]')
             self.refreshModel()
             return True
@@ -322,7 +322,7 @@ class ManageModel(object):
                                     'Save model', 'New model name',
                                     QLineEdit.Normal, '')
         if modelName is None or not modelName:
-            self.app.mes.emit(2, 'Model', 'Manage error',
+            self.msg.emit(2, 'Model', 'Manage error',
                               'No model name given')
             return False
         if not ok:
@@ -330,11 +330,11 @@ class ManageModel(object):
 
         suc = self.app.mount.model.storeName(modelName)
         if not suc:
-            self.app.mes.emit(2, 'Model', 'Manage error',
+            self.msg.emit(2, 'Model', 'Manage error',
                               f'Model cannot be saved [{modelName}]')
             return False
         else:
-            self.app.mes.emit(0, 'Model', 'Manage',
+            self.msg.emit(0, 'Model', 'Manage',
                               f'Model saved: [{modelName}]')
             self.refreshName()
             return True
@@ -348,7 +348,7 @@ class ManageModel(object):
         :return: success
         """
         if self.ui.nameList.currentItem() is None:
-            self.app.mes.emit(2, 'Model', 'Manage error',
+            self.msg.emit(2, 'Model', 'Manage error',
                               'No model name selected')
             return False
 
@@ -363,11 +363,11 @@ class ManageModel(object):
 
         suc = self.app.mount.model.deleteName(modelName)
         if not suc:
-            self.app.mes.emit(2, 'Model', 'Manage error',
+            self.msg.emit(2, 'Model', 'Manage error',
                               f'Model cannot be deleted [{modelName}]')
             return False
         else:
-            self.app.mes.emit(0, 'Model', 'Manage',
+            self.msg.emit(0, 'Model', 'Manage',
                               f'Model deleted: [{modelName}]')
             self.refreshName()
             return True
@@ -410,11 +410,11 @@ class ManageModel(object):
         self.ui.cancelOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
-        self.app.mes.emit(0, 'Model', 'Manage', 'Align model data refreshed')
+        self.msg.emit(0, 'Model', 'Manage', 'Align model data refreshed')
         foundModel, pointsIn, pointsOut = self.findFittingModel()
 
         if foundModel:
-            self.app.mes.emit(0, 'Model', 'Manage',
+            self.msg.emit(0, 'Model', 'Manage',
                               f'Found stored model:  [{foundModel}]')
             self.ui.originalModel.setText(foundModel)
             self.writeBuildModelOptimized(foundModel, pointsIn, pointsOut)
@@ -461,12 +461,12 @@ class ManageModel(object):
 
         suc = self.app.mount.model.clearAlign()
         if not suc:
-            self.app.mes.emit(2, 'Model', 'Manage error',
+            self.msg.emit(2, 'Model', 'Manage error',
                               'Actual model cannot be cleared')
             return False
 
         else:
-            self.app.mes.emit(0, 'Model', 'Manage',
+            self.msg.emit(0, 'Model', 'Manage',
                               'Actual model cleared')
             self.refreshModel()
             return True
@@ -484,14 +484,14 @@ class ManageModel(object):
         error = wStar.errorRMS
         suc = model.deletePoint(wStar.number)
         if not suc:
-            self.app.mes.emit(2, 'Model', 'Manage error',
+            self.msg.emit(2, 'Model', 'Manage error',
                               'Worst point cannot be deleted')
             return False
 
         else:
             text = f'Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}'
             text += ' arcsec deleted.'
-            self.app.mes.emit(0, 'Model', 'Manage error', text)
+            self.msg.emit(0, 'Model', 'Manage error', text)
             self.refreshModel()
 
         return True
@@ -514,13 +514,13 @@ class ManageModel(object):
             suc = mount.model.deletePoint(wStar.number)
             if not suc:
                 self.runningOptimize = False
-                self.app.mes.emit(2, 'Model', 'Manage error',
+                self.msg.emit(2, 'Model', 'Manage error',
                                   f'Star [{wStar.number + 1:3.0f}] cannot be '
                                   f'deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}: '
                 text += f'RMS of {wStar.errorRMS:5.1f} arcsec deleted.'
-                self.app.mes.emit(0, 'Model', 'Manage', text)
+                self.msg.emit(0, 'Model', 'Manage', text)
             mount.getAlign()
 
         else:
@@ -545,12 +545,12 @@ class ManageModel(object):
             suc = mount.model.deletePoint(wStar.number)
             if not suc:
                 self.runningOptimize = False
-                self.app.mes.emit(2, 'Model', 'Manage error',
+                self.msg.emit(2, 'Model', 'Manage error',
                                   f'Point [{wStar.number + 1:3.0f}] cannot be deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}'
                 text += ' arcsec deleted.'
-                self.app.mes.emit(0, 'Model', 'Manage', text)
+                self.msg.emit(0, 'Model', 'Manage', text)
             mount.getAlign()
         else:
             self.finishOptimize()
@@ -560,7 +560,7 @@ class ManageModel(object):
         """
         :return: true for test purpose
         """
-        self.app.mes.emit(1, 'Model', 'Manage', 'Start optimizing model')
+        self.msg.emit(1, 'Model', 'Manage', 'Start optimizing model')
         self.runningOptimize = True
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
@@ -590,7 +590,7 @@ class ManageModel(object):
         self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
         self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', False)
-        self.app.mes.emit(0, 'Model', 'Manage', 'Optimizing done')
+        self.msg.emit(0, 'Model', 'Manage', 'Optimizing done')
 
         return True
 
@@ -665,12 +665,12 @@ class ManageModel(object):
 
         suc = self.app.mount.model.deletePoint(index)
         if not suc:
-            self.app.mes.emit(2, 'Model', 'Manage error',
+            self.msg.emit(2, 'Model', 'Manage error',
                               f'Point {index + 1:3.0f} cannot be deleted')
             return False
 
         text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'
         text += ' arcsec deleted.'
-        self.app.mes.emit(0, 'Model', 'Manage', 'Optimizing done')
+        self.msg.emit(0, 'Model', 'Manage', 'Optimizing done')
         self.refreshModel()
         return True

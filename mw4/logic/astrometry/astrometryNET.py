@@ -245,7 +245,8 @@ class AstrometryNET(object):
         :return: success
         """
         self.process = None
-        self.result = {'success': False}
+        self.result = {'success': False,
+                       'message': 'Internal error'}
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'image missing'

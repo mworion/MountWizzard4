@@ -316,8 +316,10 @@ def test_modelSolve_1(function):
               'countSequence': 2,
               'pointNumber': 1}
     function.slewQueue.put(mPoint)
-    suc = function.modelSolve()
-    assert not suc
+    with mock.patch.object(function,
+                           'cancelBuild'):
+        suc = function.modelSolve()
+        assert not suc
 
 
 def test_modelSolve_2(function):
@@ -345,8 +347,10 @@ def test_modelImage_1(function):
               }
     function.slewQueue.put(mPoint)
     function.imageQueue.queue.clear()
-    suc = function.modelImage()
-    assert not suc
+    with mock.patch.object(function,
+                           'cancelBuild'):
+        suc = function.modelImage()
+        assert not suc
 
 
 def test_modelImage_2(function):

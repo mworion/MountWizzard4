@@ -44,6 +44,7 @@ class Astrometry(object):
         self.tempDir = parent.tempDir
         self.readFitsData = parent.readFitsData
         self.getSolutionFromWCS = parent.getSolutionFromWCS
+        self.getWCSHeader = parent.getWCSHeader
 
         self.result = {'success': False}
         self.process = None
@@ -203,20 +204,6 @@ class Astrometry(object):
         success = (self.process.returncode == 0)
 
         return success
-
-    @staticmethod
-    def getWCSHeader(wcsHDU=None):
-        """
-        getWCSHeader returns the header part of a fits HDU
-
-        :param wcsHDU: fits file with wcs data
-        :return: wcsHeader
-        """
-        if wcsHDU is None:
-            return None
-
-        wcsHeader = wcsHDU[0].header
-        return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
               fovHint=None, updateFits=False):

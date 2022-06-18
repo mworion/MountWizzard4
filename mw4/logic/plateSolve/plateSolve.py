@@ -212,6 +212,20 @@ class PlateSolve:
 
         return solve, fitsHeader
 
+    @staticmethod
+    def getWCSHeader(wcsHDU=None):
+        """
+        getWCSHeader returns the header part of a fits HDU
+
+        :param wcsHDU: fits file with wcs data
+        :return: wcsHeader
+        """
+        if wcsHDU is None:
+            return None
+
+        wcsHeader = wcsHDU[0].header
+        return wcsHeader
+
     def solveClear(self):
         """
         the cyclic or long-lasting tasks for solving the image should not run

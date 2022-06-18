@@ -47,6 +47,7 @@ class Watney(object):
         self.workDir = parent.workDir
         self.readFitsData = parent.readFitsData
         self.getSolutionFromWCS = parent.getSolutionFromWCS
+        self.getWCSHeader = parent.getWCSHeader
 
         self.result = {'success': False}
         self.process = None
@@ -118,19 +119,6 @@ class Watney(object):
                            + stdout.decode().replace('\n', ' '))
         return True, int(self.process.returncode)
 
-    @staticmethod
-    def getWCSData(data):
-        """
-        :param data: fits file with wcs data
-        :return: wcsHeader
-        """
-        wcsHeader = {}
-        for key in data.keys():
-            if key.startswith('fits'):
-                fitsKey = key.lstrip('fits_').upper()
-                wcsHeader[fitsKey] = data[key]
-        return wcsHeader
-
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
               fovHint=None, updateFits=False):
         """
@@ -201,14 +189,13 @@ class Watney(object):
             self.log.warning(f'Watney error [{text}] in [{fitsPath}]')
             return False
 
-        if not os.path.isfile(jsonPath):
+        if not os.path.isfile(wcsPath):
             self.result['message'] = 'Solve failed'
-            self.log.debug(f'Solve files for [{jsonPath}] missing')
+            self.log.debug(f'Solve files for [{wcsPath}] missing')
             return False
 
-        with open(jsonPath) as f:
-            data = json.load(f)
-            wcsHeader = self.getWCSData(data)
+        with fits.open(wcsPath) as wcsHDU:
+            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,

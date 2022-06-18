@@ -177,18 +177,6 @@ def test_runSolveField_4(function):
         assert not suc
 
 
-def test_getWCSHeader_1(function):
-    val = function.getWCSHeader()
-    assert val is None
-
-
-def test_getWCSHeader_2(function):
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    val = function.getWCSHeader(wcsHDU=hdu)
-    assert val
-
-
 def test_solve_1(function):
     suc = function.solve()
     assert not suc
@@ -241,7 +229,7 @@ def test_solve_5(function):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
+                shutil.copy('tests/testData/temp.wcs', 'tests/workDir/temp/temp.wcs')
                 shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
                 suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
                 assert not suc
@@ -276,7 +264,7 @@ def test_solve_7(function):
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
+                shutil.copy('tests/testData/temp.wcs', 'tests/workDir/temp/temp.wcs')
                 shutil.copy('tests/testData/tempNET.solved', 'tests/workDir/temp/temp.solved')
                 shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
                 suc = function.solve(fitsPath='tests/workDir/image/m51.fit')

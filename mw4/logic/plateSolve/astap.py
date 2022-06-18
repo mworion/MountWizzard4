@@ -52,6 +52,7 @@ class ASTAP(object):
         self.tempDir = parent.tempDir
         self.readFitsData = parent.readFitsData
         self.getSolutionFromWCS = parent.getSolutionFromWCS
+        self.getWCSHeader = parent.getWCSHeader
 
         self.result = {'success': False}
         self.process = None
@@ -101,7 +102,7 @@ class ASTAP(object):
         :param options: additional solver options e.g. ra and dec hint
         :return: success
         """
-        runnable = [binPath, '-f', fitsPath, '-o', tempFile]
+        runnable = [binPath, '-f', fitsPath, '-o', tempFile, '-wcs']
         runnable += options
         timeStart = time.time()
         try:
@@ -130,31 +131,6 @@ class ASTAP(object):
                            )
 
         return True, int(self.process.returncode)
-
-    @staticmethod
-    def getWCSHeader(wcsTextFile=None):
-        """
-        getWCSHeader reads the text file give by astap line by line and returns
-        the values as part of a header part of a fits HDU header back.
-
-        :param wcsTextFile: fits file with wcs data
-        :return: wcsHeader
-        """
-        if not wcsTextFile:
-            return None
-
-        tempString = ''
-        for line in wcsTextFile:
-            if line.startswith('END'):
-                continue
-            if line.startswith('COMMENT'):
-                continue
-            if line.startswith('CONTINUE'):
-                continue
-            tempString += line
-
-        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString, sep='\n')
-        return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
               fovHint=None, updateFits=False):
@@ -209,8 +185,8 @@ class ASTAP(object):
             self.log.debug(f'Solve files for [{wcsPath}] missing')
             return False
 
-        with open(wcsPath) as wcsTextFile:
-            wcsHeader = self.getWCSHeader(wcsTextFile=wcsTextFile)
+        with fits.open(wcsPath) as wcsHDU:
+            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,

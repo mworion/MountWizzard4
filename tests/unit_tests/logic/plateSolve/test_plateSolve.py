@@ -128,7 +128,7 @@ def test_getSolutionFromWCS_1(function):
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
     solve, header = function.getSolutionFromWCS(fitsHeader=header,
-                                           wcsHeader=header)
+                                                wcsHeader=header)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
@@ -148,8 +148,8 @@ def test_getSolutionFromWCS_2(function):
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
     solve, header = function.getSolutionFromWCS(fitsHeader=header,
-                                           wcsHeader=header,
-                                           updateFits=True)
+                                                wcsHeader=header,
+                                                updateFits=True)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
@@ -171,8 +171,8 @@ def test_getSolutionFromWCS_3(function):
     header.set('CTYPE1', 'TAN')
     header.set('CTYPE2', 'TAN')
     solve, header = function.getSolutionFromWCS(fitsHeader=header,
-                                           wcsHeader=header,
-                                           updateFits=True)
+                                                wcsHeader=header,
+                                                updateFits=True)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
@@ -194,8 +194,8 @@ def test_getSolutionFromWCS_4(function):
     header.set('CTYPE1', 'TAN-SIP')
     header.set('CTYPE2', 'TAN-SIP')
     solve, header = function.getSolutionFromWCS(fitsHeader=header,
-                                           wcsHeader=header,
-                                           updateFits=True)
+                                                wcsHeader=header,
+                                                updateFits=True)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
@@ -221,8 +221,8 @@ def test_getSolutionFromWCS_5(function):
     header.set('CTYPE1', 'TAN')
     header.set('CTYPE2', 'TAN')
     solve, header = function.getSolutionFromWCS(fitsHeader=header,
-                                           wcsHeader=header,
-                                           updateFits=True)
+                                                wcsHeader=header,
+                                                updateFits=True)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
@@ -230,6 +230,18 @@ def test_getSolutionFromWCS_5(function):
     assert not solve['mirroredS']
 
     assert header['RA'] == header['CRVAL1']
+
+
+def test_getWCSHeader_1(function):
+    val = function.getWCSHeader()
+    assert val is None
+
+
+def test_getWCSHeader_2(function):
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    val = function.getWCSHeader(wcsHDU=hdu)
+    assert val
 
 
 def test_solveClear_1(function):

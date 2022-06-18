@@ -127,18 +127,6 @@ def test_runASTAP_4(function):
         assert not suc
 
 
-def test_getWCSHeader_1(function):
-    val = function.getWCSHeader()
-    assert val is None
-
-
-def test_getWCSHeader_2(function):
-    shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
-    with open('tests/workDir/temp/temp.wcs') as wcsTextFile:
-        val = function.getWCSHeader(wcsTextFile=wcsTextFile)
-    assert val
-
-
 def test_solve_2(function):
     suc = function.solve()
     assert not suc
@@ -167,7 +155,7 @@ def test_solve_5(function):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
-            shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
+            shutil.copy('tests/testData/temp.wcs', 'tests/workDir/temp/temp.wcs')
             suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
             assert suc
 
@@ -182,7 +170,7 @@ def test_solve_6(function):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
-            shutil.copy('tests/testData/tempASTAP.wcs', 'tests/workDir/temp/temp.wcs')
+            shutil.copy('tests/testData/temp.wcs', 'tests/workDir/temp/temp.wcs')
             suc = function.solve(fitsPath='tests/workDir/image/m51.fit',
                                  raHint=raHint, decHint=decHint)
             assert suc

@@ -111,20 +111,6 @@ def test_runWatney_3(function):
         assert not suc
 
 
-def test_getWCSData_1(function):
-    data = {
-        "searchRunRadius": 0.790937066078186,
-        "quadMatches": 33,
-        "fieldWidth": 1.2449544705433195,
-        "fieldHeight": 0.9965515124301897,
-        "fits_cd1_1": 2,
-        "fits_cd1_2": 1,
-    }
-    val = function.getWCSData(data)
-    assert val['CD1_1'] == 2
-    assert val['CD1_2'] == 1
-
-
 def test_solve_1(function):
     suc = function.solve()
     assert not suc
@@ -154,8 +140,7 @@ def test_solve_4(function):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
-            shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
-            shutil.copy('tests/testData/solve.json', 'tests/workDir/temp/solve.json')
+            shutil.copy('tests/testData/temp.wcs', 'tests/workDir/temp/temp.wcs')
             suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
             assert suc
 
@@ -171,8 +156,7 @@ def test_solve_5(function):
         with mock.patch.object(os,
                                'remove',
                                return_value=True):
-            shutil.copy('tests/testData/tempNET.wcs', 'tests/workDir/temp/temp.wcs')
-            shutil.copy('tests/testData/solve.json', 'tests/workDir/temp/solve.json')
+            shutil.copy('tests/testData/temp.wcs', 'tests/workDir/temp/temp.wcs')
             suc = function.solve(fitsPath='tests/workDir/image/m51.fit',
                                  raHint=raHint, decHint=decHint, fovHint=fovHint)
             assert suc

@@ -209,7 +209,7 @@ class BuildPoints:
                                      keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Could not generate 3 align stars')
+                          'Could not generate 3 align stars')
             return False
 
         self.processPoints()
@@ -251,7 +251,7 @@ class BuildPoints:
                                      keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Could not generate 9 align stars')
+                          'Could not generate 9 align stars')
             return False
 
         self.processPoints()
@@ -291,7 +291,7 @@ class BuildPoints:
         suc = self.app.data.genGreaterCircle(selection='max', keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Build points [max] cannot be generated')
+                          'Build points [max] cannot be generated')
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -333,7 +333,7 @@ class BuildPoints:
         suc = self.app.data.genGreaterCircle(selection='norm', keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Build points [norm] cannot be generated')
+                          'Build points [norm] cannot be generated')
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -354,7 +354,7 @@ class BuildPoints:
         suc = self.app.data.genGreaterCircle(selection='min', keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Build points [min] cannot be generated')
+                          'Build points [min] cannot be generated')
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -377,7 +377,7 @@ class BuildPoints:
 
         if ha is None or dec is None or location is None or lst is None:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'DSO Path cannot be generated')
+                          'DSO Path cannot be generated')
             return False
 
         if self.simbadRa and self.simbadDec:
@@ -396,7 +396,7 @@ class BuildPoints:
         if not suc:
             self.ui.numberDSOPoints.setEnabled(True)
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'DSO Path cannot be generated')
+                          'DSO Path cannot be generated')
             return False
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -420,7 +420,7 @@ class BuildPoints:
         suc = self.app.data.generateGoldenSpiral(numberPoints=350, keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Golden spiral [max] cannot be generated')
+                          'Golden spiral [max] cannot be generated')
             return False
 
         self.processPoints()
@@ -435,7 +435,7 @@ class BuildPoints:
         suc = self.app.data.generateGoldenSpiral(numberPoints=250, keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Golden spiral [med] cannot be generated')
+                          'Golden spiral [med] cannot be generated')
             return False
 
         self.processPoints()
@@ -450,7 +450,7 @@ class BuildPoints:
         suc = self.app.data.generateGoldenSpiral(numberPoints=150, keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Golden spiral [norm] cannot be generated')
+                          'Golden spiral [norm] cannot be generated')
             return False
 
         self.processPoints()
@@ -465,7 +465,7 @@ class BuildPoints:
         suc = self.app.data.generateGoldenSpiral(numberPoints=75, keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Golden spiral [min] cannot be generated')
+                          'Golden spiral [min] cannot be generated')
             return False
 
         self.processPoints()
@@ -498,7 +498,7 @@ class BuildPoints:
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              'Build points file name not given')
+                          'Build points file name not given')
             return False
 
         keep = self.ui.keepGeneratedPoints.isChecked()
@@ -531,10 +531,10 @@ class BuildPoints:
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.msg.emit(0, 'Model', 'Buildpoints',
-                              f'Build file [{fileName}] loaded')
+                          f'Build file [{fileName}] loaded')
         else:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              f'Build file [{fileName}] cannot be loaded')
+                          f'Build file [{fileName}] cannot be loaded')
         self.genBuildFile()
         return True
 
@@ -545,16 +545,16 @@ class BuildPoints:
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.msg.emit(0, 'Model', 'Buildpoints',
-                              'Build points file name not given')
+                          'Build points file name not given')
             return False
 
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
             self.msg.emit(0, 'Model', 'Buildpoints',
-                              f'Build file [{fileName}] saved')
+                          f'Build file [{fileName}] saved')
         else:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              f'Build file [{fileName}] cannot be saved')
+                          f'Build file [{fileName}] cannot be saved')
 
         return True
 
@@ -578,10 +578,10 @@ class BuildPoints:
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.msg.emit(0, 'Model', 'Buildpoints',
-                              f'Build file [{fileName}] saved')
+                          f'Build file [{fileName}] saved')
         else:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              f'Build file [{fileName}] cannot be saved')
+                          f'Build file [{fileName}] cannot be saved')
 
         return True
 
@@ -773,7 +773,7 @@ class BuildPoints:
 
         if not result:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                              f'No response from SIMBAD for {ident}')
+                          f'No response from SIMBAD for {ident}')
             self.ui.generateRa.setText('')
             self.ui.generateDec.setText('')
             self.simbadRa = None

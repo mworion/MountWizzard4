@@ -463,7 +463,7 @@ class SettImaging:
         suc = self.app.cover.closeCover()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Cover close could not be executed')
+                          'Cover close could not be executed')
         return suc
 
     def setCoverUnpark(self):
@@ -473,7 +473,7 @@ class SettImaging:
         suc = self.app.cover.openCover()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Cover open could not be executed')
+                          'Cover open could not be executed')
         return suc
 
     def setCoverHalt(self):
@@ -483,7 +483,7 @@ class SettImaging:
         suc = self.app.cover.haltCover()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Cover stop could not be executed')
+                          'Cover stop could not be executed')
         return suc
 
     def moveFocuserIn(self):
@@ -496,7 +496,7 @@ class SettImaging:
         suc = self.app.focuser.move(position=newPos)
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Focuser move in could not be executed')
+                          'Focuser move in could not be executed')
         return suc
 
     def moveFocuserOut(self):
@@ -509,7 +509,7 @@ class SettImaging:
         suc = self.app.focuser.move(position=newPos)
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Focuser move out could not be executed')
+                          'Focuser move out could not be executed')
         return suc
 
     def haltFocuser(self):
@@ -519,7 +519,7 @@ class SettImaging:
         suc = self.app.focuser.halt()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Focuser halt could not be executed')
+                          'Focuser halt could not be executed')
         return suc
 
     def switchLightOn(self):
@@ -529,7 +529,7 @@ class SettImaging:
         suc = self.app.cover.lightOn()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Light could not be switched on')
+                          'Light could not be switched on')
         return suc
 
     def switchLightOff(self):
@@ -539,7 +539,7 @@ class SettImaging:
         suc = self.app.cover.lightOff()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Light could not be switched off')
+                          'Light could not be switched off')
         return suc
 
     def setLightIntensity(self):
@@ -562,7 +562,7 @@ class SettImaging:
         suc = self.app.cover.lightIntensity(value)
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Light intensity could not be set')
+                          'Light intensity could not be set')
         return suc
 
     def updateDomeGui(self):
@@ -615,7 +615,7 @@ class SettImaging:
         suc = self.app.dome.slewCW()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Dome could not be slewed CW')
+                          'Dome could not be slewed CW')
         return suc
 
     def domeSlewCCW(self):
@@ -628,7 +628,7 @@ class SettImaging:
         suc = self.app.dome.slewCCW()
         if not suc:
             self.msg.emit(2, 'Setting', 'Imaging',
-                              'Dome could not be slewed CCW')
+                          'Dome could not be slewed CCW')
         return suc
 
     def domeAbortSlew(self):
@@ -641,7 +641,7 @@ class SettImaging:
         suc = self.app.dome.abortSlew()
         if not suc:
             self.msg.emit(2, 'Dome', 'Command',
-                              'Dome slew abort could not be executed')
+                          'Dome slew abort could not be executed')
         return suc
 
     def domeOpenShutter(self):
@@ -654,7 +654,7 @@ class SettImaging:
         suc = self.app.dome.openShutter()
         if not suc:
             self.msg.emit(2, 'Dome', 'Command',
-                              'Dome open shutter could not be executed')
+                          'Dome open shutter could not be executed')
         return suc
 
     def domeCloseShutter(self):
@@ -667,7 +667,7 @@ class SettImaging:
         suc = self.app.dome.closeShutter()
         if not suc:
             self.msg.emit(2, 'Dome', 'Command',
-                              'Dome close shutter could not be executed')
+                          'Dome close shutter could not be executed')
         return suc
 
     def domeMoveGameController(self, turnVal, openVal):

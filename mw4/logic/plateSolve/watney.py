@@ -21,7 +21,6 @@ import os
 import glob
 import time
 import platform
-import json
 
 # external packages
 from astropy.io import fits

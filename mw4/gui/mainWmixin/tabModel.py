@@ -503,7 +503,7 @@ class Model:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         elif hasDome and not hasAzimuth:
             self.msg.emit(2, 'Model', 'Run',
-                              'Dome without azimuth value used')
+                          'Dome without azimuth value used')
 
         t = f'Modeling config dome:[{hasDome}], hasAzimuth:[{hasAzimuth}]'
         self.log.debug(t)
@@ -634,7 +634,7 @@ class Model:
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
         self.msg.emit(0, 'Model', 'Run',
-                          f'Writing model [{self.modelName}]')
+                      f'Writing model [{self.modelName}]')
         saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
@@ -734,31 +734,31 @@ class Model:
         suc = self.collectingModelRunOutput()
         if not suc:
             self.msg.emit(2, 'Model', 'Run error',
-                              f'{self.modelName} Not enough valid model points')
+                          f'{self.modelName} Not enough valid model points')
             return False
 
         self.msg.emit(0, 'Model', 'Run',
-                          'Programming model to mount')
+                      'Programming model to mount')
         suc = self.programModelToMount(self.model)
         if suc:
             self.msg.emit(0, 'Model', 'Run',
-                              'Model programmed with success')
+                          'Model programmed with success')
         else:
             self.msg.emit(2, 'Model', 'Run error',
-                              'Model programming error')
+                          'Model programming error')
 
         if not self.ui.keepImages.isChecked():
             self.msg.emit(0, 'Model', 'Run',
-                              'Deleting model images')
+                          'Deleting model images')
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
         self.msg.emit(1, 'Model', 'Run',
-                          f'Modeling finished [{self.modelName}]')
+                      f'Modeling finished [{self.modelName}]')
         self.playSound('ModelingFinished')
         self.renewHemisphereView()
         if self.ui.parkMountAfterModel.isChecked():
             self.msg.emit(0, 'Model', 'Run',
-                              'Parking mount after model run')
+                          'Parking mount after model run')
             suc = self.app.mount.obsSite.park()
 
             if not suc:
@@ -788,7 +788,7 @@ class Model:
             return True
 
         self.msg.emit(1, 'Model', 'Run',
-                          'Starting retry failed points')
+                      'Starting retry failed points')
 
         maxRetries = self.ui.numberBuildRetries.value()
         retryNumber = maxRetries - self.modelBuildRetryCounter + 1
@@ -837,13 +837,13 @@ class Model:
 
         if self.ui.plateSolveDevice.currentText().startswith('No device'):
             self.msg.emit(2, 'Model', 'Run error',
-                              'No plate solver selected')
+                          'No plate solver selected')
             return False
 
         sucApp, sucIndex = self.app.plateSolve.checkAvailability()
         if not (sucApp and sucIndex):
             self.msg.emit(2, 'Model', 'Run error',
-                              'No valid configuration for plate solver')
+                          'No valid configuration for plate solver')
             return False
 
         return True
@@ -855,12 +855,12 @@ class Model:
         suc = self.app.mount.model.clearAlign()
         if not suc:
             self.msg.emit(2, 'Model', 'Run error',
-                              'Actual model cannot be cleared')
+                          'Actual model cannot be cleared')
             self.msg.emit(2, '', '', 'Model build cancelled')
             return False
         else:
             self.msg.emit(0, 'Model', 'Run',
-                              'Actual model clearing, waiting 1s')
+                          'Actual model clearing, waiting 1s')
             sleepAndEvents(1000)
             self.msg.emit(0, '', '', 'Actual model cleared')
             self.refreshModel()
@@ -966,12 +966,12 @@ class Model:
         modelPoints = self.setupModelPointsAndContextData()
         if not modelPoints:
             self.msg.emit(2, 'Model', 'Run error',
-                              'Modeling cancelled, no valid points')
+                          'Modeling cancelled, no valid points')
             return False
 
         self.setupModelRunContextAndGuiStatus()
         self.msg.emit(1, 'Model', 'Run',
-                          f'Modeling start [{self.modelName}]')
+                      f'Modeling start [{self.modelName}]')
         self.modelBuildRetryCounter = self.ui.numberBuildRetries.value()
         self.modelCycleThroughBuildPoints(modelPoints=modelPoints)
         return True
@@ -997,7 +997,7 @@ class Model:
             return False
 
         self.msg.emit(1, 'Model', 'Run',
-                          'Programing models')
+                      'Programing models')
         modelJSON = list()
         for index, file in enumerate(loadFilePath):
             self.msg.emit(0, '', '',
@@ -1008,19 +1008,19 @@ class Model:
 
         if len(modelJSON) > 99:
             self.msg.emit(2, 'Model', 'Run error',
-                              'Model(s) exceed(s) limit of 99 points')
+                          'Model(s) exceed(s) limit of 99 points')
             return False
 
         self.msg.emit(0, 'Model', 'Run',
-                          f'Programming {index + 1} model(s) to mount')
+                      f'Programming {index + 1} model(s) to mount')
         suc = self.programModelToMount(modelJSON)
 
         if suc:
             self.msg.emit(0, 'Model', 'Run',
-                              'Model programmed with success')
+                          'Model programmed with success')
         else:
             self.msg.emit(2, 'Model', 'Run error',
-                              'Model programming error')
+                          'Model programming error')
 
         return suc
 
@@ -1044,7 +1044,7 @@ class Model:
 
         if not result:
             self.msg.emit(2, 'Model', 'Solving error',
-                              'Solving error, result missing')
+                          'Solving error, result missing')
             return False
 
         if result['success']:
@@ -1063,7 +1063,7 @@ class Model:
 
         else:
             self.msg.emit(2, 'Model', 'Solve error',
-                              f'{result.get("message")}')
+                          f'{result.get("message")}')
             return False
 
         self.app.showImage.emit(result['solvedPath'])

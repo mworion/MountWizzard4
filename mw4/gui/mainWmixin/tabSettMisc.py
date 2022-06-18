@@ -413,7 +413,7 @@ class SettMisc(object):
 
         if availPackage is None:
             self.msg.emit(2, 'System', 'Update',
-                              'Failed get actual package from server')
+                          'Failed get actual package from server')
             return False
 
         self.ui.versionAvailable.setText(availPackage)
@@ -431,7 +431,7 @@ class SettMisc(object):
             return True
 
         self.msg.emit(1, 'System', 'Update',
-                          f'Release notes for {availPackage}:')
+                      f'Release notes for {availPackage}:')
         for line in comment.split('\n'):
             self.msg.emit(2, '', '', line)
         return True
@@ -515,7 +515,7 @@ class SettMisc(object):
         """
         if not (self.isVenv() or platform.machine() == 'armv7l'):
             self.msg.emit(2, 'System', 'Update',
-                              'MW4 not running in an virtual environment')
+                          'MW4 not running in an virtual environment')
             return False
 
         packages = sorted([f'{i.key}=={i.version}' for i in working_set])
@@ -526,11 +526,11 @@ class SettMisc(object):
 
         if versionPackage not in existPackage:
             self.msg.emit(2, 'System', 'Update',
-                              f'Version {versionPackage} does not exist')
+                          f'Version {versionPackage} does not exist')
             return False
 
         self.msg.emit(1, 'System', 'Update',
-                          f'Installing [{versionPackage}] please wait')
+                      f'Installing [{versionPackage}] please wait')
         self.startUpdater(versionPackage)
         return True
 

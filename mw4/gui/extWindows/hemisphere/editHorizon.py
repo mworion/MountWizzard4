@@ -49,9 +49,9 @@ class EditHorizon:
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
+        initConfig read the key out of the configuration dict and stores it to
+        the gui elements. if some initialisations have to be proceeded with the
+        loaded persistent data, they will be launched as well in this method.
 
         :return: True for test purpose
         """
@@ -144,10 +144,10 @@ class EditHorizon:
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
             self.msg.emit(0, 'Hemisphere', 'Horizon',
-                              f'Mask [{fileName}] loaded')
+                          f'Mask [{fileName}] loaded')
         else:
             self.msg.emit(2, 'Hemisphere', 'Horizon',
-                              f'Mask [{fileName}] cannot no be loaded')
+                          f'Mask [{fileName}] cannot no be loaded')
 
         self.app.redrawHemisphere.emit()
         self.drawHorizonTab()
@@ -160,16 +160,16 @@ class EditHorizon:
         fileName = self.ui.horizonMaskFileName.text()
         if not fileName:
             self.msg.emit(2, 'Hemisphere', 'Horizon',
-                              'Mask file name not given')
+                          'Mask file name not given')
             return False
 
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
             self.msg.emit(0, 'Hemisphere', 'Horizon',
-                              f'Mask [{fileName}] saved')
+                          f'Mask [{fileName}] saved')
         else:
             self.msg.emit(2, 'Hemisphere', 'Horizon',
-                              f'Mask [{fileName}] cannot no be saved')
+                          f'Mask [{fileName}] cannot no be saved')
         return True
 
     def saveHorizonMaskAs(self):
@@ -177,11 +177,8 @@ class EditHorizon:
         :return: success
         """
         folder = self.app.mwGlob['configDir']
-        saveFilePath, fileName, ext = self.saveFile(self,
-                                                    'Save horizon mask file',
-                                                    folder,
-                                                    'Horizon mask files (*.hpts)',
-                                                    )
+        saveFilePath, fileName, ext = self.saveFile(
+            self, 'Save horizon mask file', folder, 'Horizon mask files (*.hpts)')
         if not saveFilePath:
             return False
 
@@ -189,10 +186,10 @@ class EditHorizon:
         if suc:
             self.ui.horizonMaskFileName.setText(fileName)
             self.msg.emit(0, 'Hemisphere', 'Horizon',
-                              f'Mask [{fileName}] saved')
+                          f'Mask [{fileName}] saved')
         else:
             self.msg.emit(2, 'Hemisphere', 'Horizon',
-                              f'Mask [{fileName}] cannot no be saved')
+                          f'Mask [{fileName}] cannot no be saved')
         return True
 
     def setOperationModeHor(self):

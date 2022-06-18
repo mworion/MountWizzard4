@@ -673,14 +673,14 @@ class SatSearch(object):
         suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.installPath)
         if not suc:
             self.msg.emit(2, 'TLE', 'Data error',
-                              'Data could not be exported - stopping')
+                          'Data could not be exported - stopping')
             return False
 
         self.msg.emit(0, 'TLE', 'Program', 'Uploading to mount')
         suc = self.app.automation.uploadTLEData()
         if not suc:
             self.msg.emit(2, 'TLE', 'Program error',
-                              'Uploading error but files available')
+                          'Uploading error but files available')
         else:
             self.msg.emit(1, 'TLE', 'Program', 'Successful uploaded')
         return suc

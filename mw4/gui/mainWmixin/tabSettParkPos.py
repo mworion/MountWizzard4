@@ -108,7 +108,7 @@ class SettParkPos(object):
         suc = self.app.mount.obsSite.parkOnActualPosition()
         if not suc:
             self.msg.emit(2, 'Mount', 'Command',
-                              'Cannot park at current position')
+                          'Cannot park at current position')
         return suc
 
     def slewToParkPos(self):
@@ -131,13 +131,13 @@ class SettParkPos(object):
                                                     az_degrees=azValue)
         if not suc:
             self.msg.emit(2, 'Mount', 'Command error',
-                              f'Cannot slew to [{posTextValue}]')
+                          f'Cannot slew to [{posTextValue}]')
             return False
 
         suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
         if not suc:
             self.msg.emit(2, 'Mount', 'Command error',
-                              f'Cannot slew to [{posTextValue}]')
+                          f'Cannot slew to [{posTextValue}]')
             return False
 
         self.msg.emit(0, 'Mount', 'Command', f'Slew to [{posTextValue}]')

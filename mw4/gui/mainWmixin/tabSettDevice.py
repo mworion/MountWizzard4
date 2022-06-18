@@ -401,8 +401,8 @@ class SettDevice:
             driverClass.data.clear()
             driverClass.run[framework].deviceName = ''
             self.msg.emit(0, 'Driver',
-                              f'{framework.upper()} disabled',
-                              f'{driver}')
+                          f'{framework.upper()} disabled',
+                          f'{driver}')
 
         style = f'background-color: {self.M_GREY1};'
         self.drivers[driver]['uiDropDown'].setStyleSheet(style)
@@ -473,8 +473,8 @@ class SettDevice:
             driverClass.startCommunication(loadConfig=loadConfig)
 
         self.msg.emit(0, 'Driver',
-                          f'{framework.upper()} enabled',
-                          f'{driver}')
+                      f'{framework.upper()} enabled',
+                      f'{driver}')
         return True
 
     def startDrivers(self):

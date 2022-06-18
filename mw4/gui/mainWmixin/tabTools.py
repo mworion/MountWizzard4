@@ -312,7 +312,7 @@ class Tools(object):
         includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
         if not os.path.isdir(pathDir):
             self.msg.emit(2, 'Tools', 'Rename error',
-                              'No valid input directory given')
+                          'No valid input directory given')
             return False
 
         if includeSubdirs:
@@ -323,7 +323,7 @@ class Tools(object):
         numberFiles = self.getNumberFiles(pathDir, search=search)
         if not numberFiles:
             self.msg.emit(2, 'Tools', 'Rename error',
-                              'No files to rename')
+                          'No files to rename')
             return False
 
         for i, fileName in enumerate(Path(pathDir).glob(search)):
@@ -332,10 +332,10 @@ class Tools(object):
             suc = self.renameFile(fileName=fileName)
             if not suc:
                 self.msg.emit(2, 'Tools', 'Rename error',
-                                  f'{fileName} could not be renamed')
+                              f'{fileName} could not be renamed')
 
         self.msg.emit(0, 'Tools', 'Rename',
-                          f'{numberFiles:d} images were renamed')
+                      f'{numberFiles:d} images were renamed')
 
         return True
 

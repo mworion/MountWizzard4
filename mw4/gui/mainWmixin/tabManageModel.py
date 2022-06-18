@@ -305,7 +305,7 @@ class ManageModel(object):
             return False
         else:
             self.msg.emit(0, 'Model', 'Manage',
-                              f'Model loaded: [{modelName}]')
+                          f'Model loaded: [{modelName}]')
             self.refreshModel()
             return True
 
@@ -323,7 +323,7 @@ class ManageModel(object):
                                     QLineEdit.Normal, '')
         if modelName is None or not modelName:
             self.msg.emit(2, 'Model', 'Manage error',
-                              'No model name given')
+                          'No model name given')
             return False
         if not ok:
             return False
@@ -331,11 +331,11 @@ class ManageModel(object):
         suc = self.app.mount.model.storeName(modelName)
         if not suc:
             self.msg.emit(2, 'Model', 'Manage error',
-                              f'Model cannot be saved [{modelName}]')
+                          f'Model cannot be saved [{modelName}]')
             return False
         else:
             self.msg.emit(0, 'Model', 'Manage',
-                              f'Model saved: [{modelName}]')
+                          f'Model saved: [{modelName}]')
             self.refreshName()
             return True
 
@@ -349,7 +349,7 @@ class ManageModel(object):
         """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, 'Model', 'Manage error',
-                              'No model name selected')
+                          'No model name selected')
             return False
 
         modelName = self.ui.nameList.currentItem().text()
@@ -364,11 +364,11 @@ class ManageModel(object):
         suc = self.app.mount.model.deleteName(modelName)
         if not suc:
             self.msg.emit(2, 'Model', 'Manage error',
-                              f'Model cannot be deleted [{modelName}]')
+                          f'Model cannot be deleted [{modelName}]')
             return False
         else:
             self.msg.emit(0, 'Model', 'Manage',
-                              f'Model deleted: [{modelName}]')
+                          f'Model deleted: [{modelName}]')
             self.refreshName()
             return True
 
@@ -415,7 +415,7 @@ class ManageModel(object):
 
         if foundModel:
             self.msg.emit(0, 'Model', 'Manage',
-                              f'Found stored model:  [{foundModel}]')
+                          f'Found stored model:  [{foundModel}]')
             self.ui.originalModel.setText(foundModel)
             self.writeBuildModelOptimized(foundModel, pointsIn, pointsOut)
 
@@ -462,12 +462,12 @@ class ManageModel(object):
         suc = self.app.mount.model.clearAlign()
         if not suc:
             self.msg.emit(2, 'Model', 'Manage error',
-                              'Actual model cannot be cleared')
+                          'Actual model cannot be cleared')
             return False
 
         else:
             self.msg.emit(0, 'Model', 'Manage',
-                              'Actual model cleared')
+                          'Actual model cleared')
             self.refreshModel()
             return True
 
@@ -485,7 +485,7 @@ class ManageModel(object):
         suc = model.deletePoint(wStar.number)
         if not suc:
             self.msg.emit(2, 'Model', 'Manage error',
-                              'Worst point cannot be deleted')
+                          'Worst point cannot be deleted')
             return False
 
         else:
@@ -515,7 +515,7 @@ class ManageModel(object):
             if not suc:
                 self.runningOptimize = False
                 self.msg.emit(2, 'Model', 'Manage error',
-                                  f'Star [{wStar.number + 1:3.0f}] cannot be '
+                              f'Star [{wStar.number + 1:3.0f}] cannot be '
                                   f'deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}: '
@@ -546,7 +546,7 @@ class ManageModel(object):
             if not suc:
                 self.runningOptimize = False
                 self.msg.emit(2, 'Model', 'Manage error',
-                                  f'Point [{wStar.number + 1:3.0f}] cannot be deleted')
+                              f'Point [{wStar.number + 1:3.0f}] cannot be deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}'
                 text += ' arcsec deleted.'
@@ -666,7 +666,7 @@ class ManageModel(object):
         suc = self.app.mount.model.deletePoint(index)
         if not suc:
             self.msg.emit(2, 'Model', 'Manage error',
-                              f'Point {index + 1:3.0f} cannot be deleted')
+                          f'Point {index + 1:3.0f} cannot be deleted')
             return False
 
         text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'

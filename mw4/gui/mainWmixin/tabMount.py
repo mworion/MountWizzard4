@@ -417,20 +417,18 @@ class Mount(object):
         sett = self.app.mount.setting
         actValue = sett.meridianLimitTrack
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set Meridian Limit Track',
-                               'Value (1-30):',
-                               actValue, 1, 30, 1)
+        value, ok = dlg.getInt(
+            self, 'Set Meridian Limit Track', 'Value (1-30):', actValue, 1, 30, 1)
 
         if not ok:
             return False
         if sett.setMeridianLimitTrack(value):
             self.msg.emit(0, 'Mount', 'Setting',
-                              f'Meridian Lim Track: [{value}]')
+                          f'Meridian Lim Track: [{value}]')
             return True
         else:
             self.msg.emit(2, 'Mount', 'Setting',
-                              'Meridian Limit Track cannot be set')
+                          'Meridian Limit Track cannot be set')
             return False
 
     def setMeridianLimitSlew(self):
@@ -443,20 +441,18 @@ class Mount(object):
         sett = self.app.mount.setting
         actValue = sett.meridianLimitSlew
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set Meridian Limit Slew',
-                               'Value (0-30):',
-                               actValue, 0, 30, 1)
+        value, ok = dlg.getInt(
+            self, 'Set Meridian Limit Slew', 'Value (0-30):', actValue, 0, 30, 1)
 
         if not ok:
             return False
         if sett.setMeridianLimitSlew(value):
             self.msg.emit(0, 'Mount', 'Setting',
-                              f'Meridian Lim Slew: [{value}]')
+                          f'Meridian Lim Slew: [{value}]')
             return True
         else:
             self.msg.emit(2, 'Mount', 'Setting',
-                              'Meridian Limit Slew cannot be set')
+                          'Meridian Limit Slew cannot be set')
             return False
 
     def setHorizonLimitHigh(self):
@@ -469,20 +465,18 @@ class Mount(object):
         sett = self.app.mount.setting
         actValue = sett.horizonLimitHigh
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set Horizon Limit High',
-                               'Value (0-90):',
-                               actValue, 0, 90, 1)
+        value, ok = dlg.getInt(
+            self, 'Set Horizon Limit High', 'Value (0-90):', actValue, 0, 90, 1)
 
         if not ok:
             return False
         if sett.setHorizonLimitHigh(value):
             self.msg.emit(0, 'Mount', 'Setting',
-                              f'Horizon Limit High: [{value}]')
+                          f'Horizon Limit High: [{value}]')
             return True
         else:
             self.msg.emit(2, 'Mount', 'Setting',
-                              'Horizon Limit High cannot be set')
+                          'Horizon Limit High cannot be set')
             return False
 
     def setHorizonLimitLow(self):
@@ -495,10 +489,8 @@ class Mount(object):
         sett = self.app.mount.setting
         actValue = sett.horizonLimitLow
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set Horizon Limit Low',
-                               'Value (-5 - 90):',
-                               actValue, -5, 90, 1,)
+        value, ok = dlg.getInt(
+            self, 'Set Horizon Limit Low', 'Value (-5 - 90):', actValue, -5, 90, 1,)
 
         if not ok:
             return False
@@ -521,10 +513,9 @@ class Mount(object):
         minRate = sett.slewRateMin
         maxRate = sett.slewRateMax
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set Slew Rate',
-                               f'Value ({minRate}-{maxRate}):',
-                               actValue, minRate, maxRate, 1)
+        value, ok = dlg.getInt(
+            self, 'Set Slew Rate', f'Value ({minRate}-{maxRate}):',
+            actValue, minRate, maxRate, 1)
 
         if not ok:
             return False
@@ -616,11 +607,9 @@ class Mount(object):
             return False
 
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getDouble(self,
-                                  'Set Site Elevation',
-                                  'Format: d.d',
-                                  obs.location.elevation.m,
-                                  0, 8000, 1)
+        value, ok = dlg.getDouble(
+            self, 'Set Site Elevation', 'Format: d.d',
+            obs.location.elevation.m, 0, 8000, 1)
         if not ok:
             return False
 
@@ -636,11 +625,9 @@ class Mount(object):
 
         sett = self.app.mount.setting
         dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getItem(self,
-                                'Set Unattended Flip',
-                                'Value: On / Off',
-                                ['ON', 'OFF'],
-                                0, False)
+        value, ok = dlg.getItem(
+            self, 'Set Unattended Flip', 'Value: On / Off',
+            ['ON', 'OFF'], 0, False)
         if not ok:
             return False
         suc = sett.setUnattendedFlip(value == 'ON')
@@ -717,9 +704,11 @@ class Mount(object):
 
         suc = sett.setRefraction(value == 'ON')
         if suc:
-            self.msg.emit(0, 'Mount', 'Setting', f'Refraction corr: [{value}]')
+            self.msg.emit(0, 'Mount', 'Setting',
+                          f'Refraction corr: [{value}]')
         else:
-            self.msg.emit(2, 'Mount', 'Setting', 'Refraction correction cannot be set')
+            self.msg.emit(2, 'Mount', 'Setting',
+                          'Refraction correction cannot be set')
         return suc
 
     def showOffset(self):

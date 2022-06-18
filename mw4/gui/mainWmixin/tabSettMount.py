@@ -97,7 +97,7 @@ class SettMount(object):
         suc = self.app.mount.bootMount(bAddress=bAddress, bPort=bPort)
         if suc:
             self.msg.emit(0, 'Mount', 'Command',
-                              'Sent boot command to mount')
+                          'Sent boot command to mount')
         else:
             self.msg.emit(2, 'Mount', 'Command', 'Mount cannot be booted')
         return suc
@@ -155,11 +155,11 @@ class SettMount(object):
         if MAC is not None:
             wakeonlan.send_magic_packet(MAC)
             self.msg.emit(0, 'Rack', 'Command',
-                              'Sent boot command to rack computer')
+                          'Sent boot command to rack computer')
             return True
         else:
             self.msg.emit(2, 'Rack', 'Command',
-                              'Rack computer cannot be booted')
+                          'Rack computer cannot be booted')
             return False
 
     def mountHost(self):
@@ -260,11 +260,11 @@ class SettMount(object):
         suc = self.app.mount.obsSite.adjustClock(delta)
         if not suc:
             self.msg.emit(2, 'System', 'Clock',
-                              'Cannot adjust mount clock')
+                          'Cannot adjust mount clock')
             return False
 
         self.msg.emit(0, 'System', 'Clock',
-                          f'Correction: [{-delta} ms]')
+                      f'Correction: [{-delta} ms]')
         return True
 
     def updateTelescopeParametersToGui(self):

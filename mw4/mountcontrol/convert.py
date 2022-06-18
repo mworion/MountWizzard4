@@ -362,6 +362,8 @@ def convertRaToAngle(value):
     """
     if value is None:
         return None
+    if isinstance(value, (float, int)):
+        value = str(value)
 
     value = value.strip()
     p1 = re.compile(r'([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
@@ -409,6 +411,8 @@ def convertDecToAngle(value):
     """
     if value is None:
         return None
+    if isinstance(value, (float, int)):
+        value = str(value)
 
     value = value.strip()
     p1 = re.compile(r'([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')

@@ -50,7 +50,7 @@ def getCoordinates(header={}):
     if hasDecimal:
         ra = convertToAngle(header['RA'], isHours=True)
         dec = convertToAngle(header['DEC'], isHours=False)
-    elif hasDecimal:
+    elif hasSexagesimal:
         ra = convertRaToAngle(header['OBJCTRA'])
         dec = convertDecToAngle(header['OBJCTDEC'])
     else:

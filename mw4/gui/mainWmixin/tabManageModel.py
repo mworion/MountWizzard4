@@ -516,7 +516,7 @@ class ManageModel(object):
                 self.runningOptimize = False
                 self.msg.emit(2, 'Model', 'Manage error',
                               f'Star [{wStar.number + 1:3.0f}] cannot be '
-                                  f'deleted')
+                              f'deleted')
             else:
                 text = f'Point: {wStar.number + 1:3.0f}: '
                 text += f'RMS of {wStar.errorRMS:5.1f} arcsec deleted.'

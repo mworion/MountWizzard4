@@ -1001,7 +1001,7 @@ class Model:
         modelJSON = list()
         for index, file in enumerate(loadFilePath):
             self.msg.emit(0, '', '',
-                              f'Loading model [{os.path.basename(file)}]')
+                          f'Loading model [{os.path.basename(file)}]')
             with open(file, 'r') as infile:
                 model = json.load(infile)
                 modelJSON += model

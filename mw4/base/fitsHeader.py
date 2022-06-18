@@ -38,26 +38,26 @@ def getCoordinates(header={}):
     :return:
     """
     if 'RA' in header and 'DEC' in header:
-        hasCFloat = True
+        hasDecimal = True
     else:
-        hasCFloat = False
+        hasDecimal = False
 
     if 'OBJCTRA' in header and 'OBJCTDEC' in header:
-        hasCDeg = True
+        hasSexagesimal = True
     else:
-        hasCDeg = False
+        hasSexagesimal = False
 
-    if hasCFloat:
+    if hasDecimal:
         ra = convertToAngle(header['RA'], isHours=True)
         dec = convertToAngle(header['DEC'], isHours=False)
-    elif hasCDeg:
+    elif hasDecimal:
         ra = convertRaToAngle(header['OBJCTRA'])
         dec = convertDecToAngle(header['OBJCTDEC'])
     else:
         ra = Angle(hours=0)
         dec = Angle(degrees=0)
 
-    log.debug(f'HasFloat: [{hasCFloat}], HasDeg: [{hasCDeg}], Header:[{header}]')
+    log.debug(f'HasFloat: [{hasDecimal}], HasDeg: [{hasSexagesimal}], Header:[{header}]')
     log.debug(f'Ra:[{ra}][{ra.hours}], Dec: [{dec}][{dec.degrees}]')
 
     return ra, dec

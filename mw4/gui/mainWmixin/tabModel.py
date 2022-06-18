@@ -1091,7 +1091,7 @@ class Model:
 
         self.app.plateSolve.signals.done.connect(self.solveDone)
         self.app.plateSolve.solveThreading(fitsPath=imagePath)
-        t = f'Solving:             [{os.path.basename(imagePath)}]'
+        t = f'[{os.path.basename(imagePath)}]'
         self.msg.emit(0, 'Model', 'Solving', t)
         return True
 
@@ -1154,11 +1154,11 @@ class Model:
         :return:
         """
         self.msg.emit(1, 'Model', 'Sync',
-                          'Starting plate solve and sync model in mount')
+                      'Starting plate solve and sync model in mount')
         sucApp, sucIndex = self.app.plateSolve.checkAvailability()
         if not (sucApp and sucIndex):
             self.msg.emit(2, 'Model', 'Sync error',
-                              'No valid configuration for plate solver')
+                          'No valid configuration for plate solver')
             return False
 
         self.ui.runModel.setEnabled(False)

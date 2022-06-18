@@ -244,8 +244,8 @@ class TestConfigData(unittest.TestCase):
 
     def test_topoToAltAz_ok6(self):
         alt, az = topoToAltAz(23, 0, 0)
-        self.assertEqual(75, alt)
-        self.assertEqual(90, az)
+        self.assertAlmostEqual(75, alt, 5)
+        self.assertAlmostEqual(90, az, 5)
 
     def test_sexagesimalizeToInt_1(self):
         output = sexagesimalizeToInt(45/60 + 59.99999/3600)
@@ -480,6 +480,7 @@ def test_convertRaToAngle_1():
         ['+12.5', 12.5],
         ['12,5', 12.5],
         ['-12.5', None],
+        [12.5, 12.5],
         ['-190.5', None],
         ['190.5', None],
         ['12H 30 30', 187.624999],
@@ -512,6 +513,7 @@ def test_convertDecToAngle_1():
     values = [
         ['+12.5', 12.5],
         ['12,5', 12.5],
+        [12.5, 12.5],
         ['-12.5', -12.5],
         ['-90.5', None],
         ['90.5', None],

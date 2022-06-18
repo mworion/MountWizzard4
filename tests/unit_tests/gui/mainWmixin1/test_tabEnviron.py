@@ -163,8 +163,12 @@ def test_selectRefractionSource_1(function):
         return function.ui.powerPort1
 
     function.sender = Sender
-    suc = function.selectRefractionSource()
-    assert suc
+    with mock.patch.object(function,
+                           'setRefractionSourceGui'):
+        with mock.patch.object(function,
+                               'setRefractionUpdateType'):
+            suc = function.selectRefractionSource()
+            assert suc
 
 
 def test_selectRefractionSource_2(function):
@@ -174,8 +178,12 @@ def test_selectRefractionSource_2(function):
     function.ui.onlineWeatherGroup.setChecked(False)
     function.refractionSource = 'onlineWeather'
     function.sender = Sender
-    suc = function.selectRefractionSource()
-    assert suc
+    with mock.patch.object(function,
+                           'setRefractionSourceGui'):
+        with mock.patch.object(function,
+                               'setRefractionUpdateType'):
+            suc = function.selectRefractionSource()
+            assert suc
 
 
 def test_selectRefractionSource_3(function):
@@ -185,8 +193,12 @@ def test_selectRefractionSource_3(function):
     function.refractionSource = 'directWeather'
     function.ui.onlineWeatherGroup.setChecked(True)
     function.sender = Sender
-    suc = function.selectRefractionSource()
-    assert suc
+    with mock.patch.object(function,
+                           'setRefractionSourceGui'):
+        with mock.patch.object(function,
+                               'setRefractionUpdateType'):
+            suc = function.selectRefractionSource()
+            assert suc
 
 
 def test_updateFilterRefractionParameters_1(function):

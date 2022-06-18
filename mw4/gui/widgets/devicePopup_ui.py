@@ -965,7 +965,7 @@ class Ui_DevicePopup(object):
         self.iconPixmap.setObjectName("iconPixmap")
 
         self.retranslateUi(DevicePopup)
-        self.tab.setCurrentIndex(5)
+        self.tab.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(DevicePopup)
         DevicePopup.setTabOrder(self.alpacaHostAddress, self.alpacaPort)
         DevicePopup.setTabOrder(self.alpacaPort, self.alpacaDeviceList)
@@ -1075,7 +1075,7 @@ class Ui_DevicePopup(object):
         self.astrometryAppPath.setText(_translate("DevicePopup", "/usr/"))
         self.selectAstrometryAppPath.setToolTip(_translate("DevicePopup", "Select the directory of the astrometry.net index files"))
         self.selectAstrometryAppPath.setText(_translate("DevicePopup", "Select"))
-        self.tab.setTabText(self.tab.indexOf(self.astrometry), _translate("DevicePopup", "ASTROMETRY.NET"))
+        self.tab.setTabText(self.tab.indexOf(self.astrometry), _translate("DevicePopup", "Astrometry"))
         self.label_mountIP_16.setText(_translate("DevicePopup", "Device Name"))
         self.astapTimeout.setToolTip(_translate("DevicePopup", "Set the timeout for the plate solver."))
         self.astapSearchRadius.setToolTip(_translate("DevicePopup", "Set the search radius for the plate solver. "))

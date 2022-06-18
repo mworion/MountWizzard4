@@ -38,22 +38,7 @@ class DevicePopup(toolsQtWidget.MWidget):
     """
     """
 
-    __all__ = ['DevicePopup',
-               ]
-
-    framework2tabs = {
-        'indi': 'INDI / INDIGO',
-        'ascom': 'ASCOM',
-        'alpaca': 'ALPACA',
-        'sgpro': 'SGPro',
-        'nina': 'N.I.N.A.',
-        'astrometry': 'ASTROMETRY.NET',
-        'astap': 'ASTAP',
-        'watney': 'Watney',
-        'weather': 'Online Weather',
-        'seeing': 'Seeing Weather',
-        'relay': 'Relay',
-    }
+    __all__ = ['DevicePopup']
 
     def __init__(self,
                  parentWidget,
@@ -159,8 +144,6 @@ class DevicePopup(toolsQtWidget.MWidget):
     def selectTabs(self):
         """
         show only the tabs needed for available frameworks and properties to be
-        entered as there might be differences in tab text and framework name
-        internally there is a translation table (self.framework2tabs) in between.
         - it selects the tab for the actual framework
         - it hides all tabs, which are not relevant for the available frameworks
 
@@ -171,18 +154,12 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not framework:
             framework = firstFramework
 
-        frameworkTabTextList = []
-        for x in self.data['frameworks']:
-            if x not in self.framework2tabs:
-                continue
-            frameworkTabTextList.append(self.framework2tabs[x])
-
         tabWidget = self.ui.tab.findChild(QWidget, framework)
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
-            isVisible = self.ui.tab.tabText(index) in frameworkTabTextList
+            isVisible = self.ui.tab.widget(index).objectName() in self.data['frameworks']
             self.ui.tab.setTabVisible(index, isVisible)
         return True
 
@@ -274,10 +251,9 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-        reversedDict = dict([(value, key) for key, value in self.framework2tabs.items()])
         index = self.ui.tab.currentIndex()
-        currentSelectionText = self.ui.tab.tabText(index)
-        self.data['framework'] = reversedDict[currentSelectionText]
+        framework = self.ui.tab.widget(index).objectName()
+        self.data['framework'] = framework
         return True
 
     def storeConfig(self):

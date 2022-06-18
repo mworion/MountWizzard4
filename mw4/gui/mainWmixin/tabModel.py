@@ -276,6 +276,8 @@ class Model:
             t = f'Slews left: [{self.slewQueue.qsize()}] '
             t += f'Images left: [{self.imageQueue.qsize()}] '
             self.log.error(f'Empty solve queue: {t}')
+            self.msg.emit(2, 'Model', 'Build error', 'Out of sync exception')
+            self.cancelBuild()
             return False
 
         self.log.debug('Solving started')
@@ -320,6 +322,8 @@ class Model:
         if noImagesLeft and slewsLeft:
             t = f'Slews left: [{self.slewQueue.qsize()}] '
             self.log.error(f'Empty image queue: {t}')
+            self.msg.emit(2, 'Model', 'Build error', 'Out of sync exception')
+            self.cancelBuild()
             return False
 
         while self.ui.pauseModel.property('pause'):

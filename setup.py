@@ -20,8 +20,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: text labels
-- fix: getting min / max values from indi devices
+- fix: updates for supporting newer ASTAP versions
+- fix: model run will cancel if solving fails
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.6',
+    version='2.2.7',
     packages=[
         'mw4',
         'mw4.base',

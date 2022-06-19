@@ -179,6 +179,22 @@ def test_workerCalcPhotometry_1(function):
         assert function.objs is not None
 
 
+def test_workerCalcPhotometry_2(function):
+    function.image = np.random.rand(100, 100) + 1
+    function.image[50][50] = 100
+    function.image[51][50] = 50
+    function.image[50][51] = 50
+    function.image[50][49] = 50
+    function.image[49][50] = 50
+    with mock.patch.object(sep,
+                           'extract',
+                           side_effect=Exception):
+        suc = function.workerCalcPhotometry()
+        assert not suc
+        assert function.HFR is None
+        assert function.objs is None
+
+
 def test_processPhotometry(function):
     with mock.patch.object(function.threadPool,
                            'start'):

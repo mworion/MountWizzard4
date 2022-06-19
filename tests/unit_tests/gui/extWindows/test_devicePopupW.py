@@ -71,12 +71,16 @@ def test_initConfig_1(function):
 def test_initConfig_2(function):
     function.data['framework'] = 'astap'
     with mock.patch.object(function,
-                           'updatePlateSolverStatus'):
-        suc = function.initConfig()
-        assert suc
+                           'populateTabs'):
+        with mock.patch.object(function,
+                               'selectTabs'):
+            with mock.patch.object(function,
+                                   'updatePlateSolverStatus'):
+                suc = function.initConfig()
+                assert suc
 
 
-def test_initConfig_2(function):
+def test_initConfig_3(function):
     function.data = {
         'framework': 'indi',
         'frameworks':

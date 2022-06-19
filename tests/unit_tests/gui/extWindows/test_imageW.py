@@ -244,6 +244,7 @@ def test_showTabImage(function):
 
 
 def test_showTabHFR(function):
+    function.ui.isoLayer.setChecked(True)
     function.imgP = Photometry(function)
     function.imgP.HFR = np.random.rand(100, 100) + 1
     function.imgP.hfrPercentile = 0
@@ -281,12 +282,15 @@ def test_showTabTiltTriangle(function):
 
 
 def test_showTabRoundness(function):
+    function.ui.isoLayer.setChecked(True)
     function.imgP = Photometry(function)
     function.imgP.roundnessMin = 1
     function.imgP.roundnessMax = 10
     function.imgP.roundnessPercentile = 10
     function.imgP.roundnessGrid = np.random.rand(100, 100) + 1
-    suc = function.showTabRoundness()
+    with mock.patch.object(function.ui.roundness,
+                           'addIsoBasic'):
+        suc = function.showTabRoundness()
     assert suc
 
 

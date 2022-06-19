@@ -244,7 +244,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Solves the actual image and centers to mount to this coordinates&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Solve &amp; Center</string>
+           <string>Solve 'n' Center</string>
           </property>
          </widget>
         </item>
@@ -1198,7 +1198,7 @@
        </widget>
        <widget class="QWidget" name="tab_4">
         <attribute name="title">
-         <string>Aspect Ratio</string>
+         <string>Roundness</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_8" rowstretch="1,0">
          <property name="leftMargin">

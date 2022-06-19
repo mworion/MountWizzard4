@@ -253,7 +253,7 @@ class Photometry:
         """
         :return:
         """
-        sep.set_extract_pixstack(1000000)
+        sep.set_extract_pixstack(3000000)
         self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
         image_sub = self.image - self.bkg
 

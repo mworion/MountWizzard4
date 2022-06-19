@@ -97,6 +97,27 @@ class Photometry:
 
         self.processImage(imagePath)
 
+    def baseCalcs(self):
+        """
+        :return:
+        """
+        self.h, self.w = self.image.shape
+        self.filterConstW = int(self.w / (self.FILTER_SCALE * 4))
+        self.filterConstH = int(self.h / (self.FILTER_SCALE * 4))
+        rangeX = np.linspace(0, self.w, int(self.w / self.FILTER_SCALE))
+        rangeY = np.linspace(0, self.h, int(self.h / self.FILTER_SCALE))
+        self.xm, self.ym = np.meshgrid(rangeX, rangeY)
+        x = self.objs['x'] - self.w / 2
+        y = self.objs['y'] - self.h / 2
+        radius = np.sqrt(x * x + y * y)
+        maskOuter = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.75 < radius
+        maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
+        self.hfrOuter = np.median(self.HFR[maskOuter])
+        self.hfrInner = np.median(self.HFR[maskInner])
+        self.hfrPercentile = np.percentile(self.HFR, 90)
+        self.hfrMedian = np.median(self.HFR)
+        return True
+
     def workerGetHFR(self):
         """
         :return:
@@ -105,8 +126,7 @@ class Photometry:
                        self.HFR, (self.xm, self.ym),
                        method='nearest', fill_value=np.min(self.HFR))
         self.hfrGrid = uniform_filter(img, size=[self.filterConstH,
-                                      self.filterConstW],
-                                      mode='nearest')
+                                      self.filterConstW])
         minB, maxB = np.percentile(self.hfrGrid, (50, 95))
         self.hfrMin = minB
         self.hfrMax = maxB
@@ -125,8 +145,7 @@ class Photometry:
                                                                        self.ym),
                        method='linear', fill_value=np.min(aspectRatio))
         self.roundnessGrid = uniform_filter(img, size=[self.filterConstH,
-                                            self.filterConstW],
-                                            mode='nearest')
+                                            self.filterConstW])
         self.roundnessPercentile = np.percentile(aspectRatio, 90)
         self.roundnessMin = minB
         self.roundnessMax = maxB
@@ -207,8 +226,7 @@ class Photometry:
         minB = np.min(back) / self.bkg.globalback
         img = back / self.bkg.globalback
         self.background = uniform_filter(img, size=[self.filterConstH,
-                                         self.filterConstW],
-                                         mode='nearest')
+                                         self.filterConstW])
         self.backgroundMin = minB
         self.backgroundMax = maxB
         self.signals.background.emit()
@@ -220,30 +238,8 @@ class Photometry:
         """
         img = self.bkg.rms()
         self.backgroundRMS = uniform_filter(img, size=[self.filterConstH,
-                                            self.filterConstW],
-                                            mode='nearest')
+                                            self.filterConstW])
         self.signals.backgroundRMS.emit()
-        return True
-
-    def baseCalcs(self):
-        """
-        :return:
-        """
-        self.h, self.w = self.image.shape
-        self.filterConstW = int(self.w / (self.FILTER_SCALE))
-        self.filterConstH = int(self.h / (self.FILTER_SCALE))
-        rangeX = np.linspace(0, self.w, int(self.w / self.FILTER_SCALE))
-        rangeY = np.linspace(0, self.h, int(self.h / self.FILTER_SCALE))
-        self.xm, self.ym = np.meshgrid(rangeX, rangeY)
-        x = self.objs['x'] - self.w / 2
-        y = self.objs['y'] - self.h / 2
-        radius = np.sqrt(x * x + y * y)
-        maskOuter = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.75 < radius
-        maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
-        self.hfrOuter = np.median(self.HFR[maskOuter])
-        self.hfrInner = np.median(self.HFR[maskInner])
-        self.hfrPercentile = np.percentile(self.HFR, 90)
-        self.hfrMedian = np.median(self.HFR)
         return True
 
     def runCalcs(self):

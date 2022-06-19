@@ -249,8 +249,10 @@ def test_showTabHFR(function):
     function.imgP.HFR = np.random.rand(100, 100) + 1
     function.imgP.hfrPercentile = 0
     function.imgP.hfrMedian = 0
-    suc = function.showTabHFR()
-    assert suc
+    with mock.patch.object(function.ui.hfr,
+                           'addIsoBasic'):
+        suc = function.showTabHFR()
+        assert suc
 
 
 def test_showTabTiltSquare(function):

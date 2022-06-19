@@ -123,8 +123,14 @@
      <property name="toolTip">
       <string>Port of ALPACA server</string>
      </property>
+     <property name="inputMask">
+      <string>00000</string>
+     </property>
      <property name="text">
-      <string>11111</string>
+      <string>1</string>
+     </property>
+     <property name="frame">
+      <bool>true</bool>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -898,8 +904,11 @@
      <property name="toolTip">
       <string>Port of INDI server</string>
      </property>
+     <property name="inputMask">
+      <string>00000</string>
+     </property>
      <property name="text">
-      <string>7624</string>
+      <string>7</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

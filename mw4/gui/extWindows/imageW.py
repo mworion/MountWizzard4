@@ -640,6 +640,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.clearGui()
             return False
         self.imgP.processPhotometry()
+        if self.imgP.objs is None:
+            self.msg.emit(2, 'Image', 'Photometry error', 'Too low pixel stack')
         return True
 
     def showImage(self, imagePath=''):

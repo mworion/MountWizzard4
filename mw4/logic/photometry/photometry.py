@@ -247,11 +247,18 @@ class Photometry:
         """
         :return:
         """
+        sep.set_extract_pixstack(1000000)
         self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
         image_sub = self.image - self.bkg
 
-        objs = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
-                           filter_type='matched', minarea=11)
+        try:
+            objs = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
+                               filter_type='matched', minarea=11)
+        except Exception as e:
+            self.log.error('Pixel buffer full')
+            self.objs = None
+            self.HFR = None
+            return False
 
         # remove objects without need
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])

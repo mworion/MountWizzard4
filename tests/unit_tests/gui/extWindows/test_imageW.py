@@ -331,6 +331,20 @@ def test_clearGui(function):
     assert suc
 
 
+def test_resultPhotometry_1(function):
+    function.imgP = Photometry(function)
+    function.imgP.objs = None
+    suc = function.resultPhotometry()
+    assert suc
+
+
+def test_resultPhotometry_2(function):
+    function.imgP = Photometry(function)
+    function.imgP.objs = 1
+    suc = function.resultPhotometry()
+    assert suc
+
+
 def test_processPhotometry_1(function):
     function.ui.enablePhotometry.setChecked(True)
     function.imgP = Photometry(function)

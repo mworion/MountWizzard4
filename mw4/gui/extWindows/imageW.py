@@ -632,6 +632,14 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.tabImage.setTabEnabled(i, False)
         return True
 
+    def resultPhotometry(self):
+        """
+        :return:
+        """
+        if self.imgP.objs is None:
+            self.msg.emit(2, 'Image', 'Photometry error', 'Too low pixel stack')
+        return True
+
     def processPhotometry(self):
         """
         :return:
@@ -640,8 +648,6 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.clearGui()
             return False
         self.imgP.processPhotometry()
-        if self.imgP.objs is None:
-            self.msg.emit(2, 'Image', 'Photometry error', 'Too low pixel stack')
         return True
 
     def showImage(self, imagePath=''):
@@ -661,6 +667,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imgP = Photometry(self, imagePath)
         self.imgP.signals.image.connect(self.showTabImage)
         self.imgP.signals.image.connect(self.processPhotometry)
+        self.imgP.signals.sepFinished.connect(self.resultPhotometry)
         self.imgP.signals.hfr.connect(self.showTabHFR)
         self.imgP.signals.hfrSquare.connect(self.showTabTiltSquare)
         self.imgP.signals.hfrTriangle.connect(self.showTabTiltTriangle)

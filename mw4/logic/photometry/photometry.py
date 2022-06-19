@@ -44,6 +44,7 @@ class PhotometrySignals(QObject):
     roundness = pyqtSignal()
     background = pyqtSignal()
     backgroundRMS = pyqtSignal()
+    sepFinished = pyqtSignal()
 
 
 class Photometry:
@@ -255,7 +256,7 @@ class Photometry:
             objs = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
                                filter_type='matched', minarea=11)
         except Exception as e:
-            self.log.error('Pixel buffer full')
+            self.log.error(e)
             self.objs = None
             self.HFR = None
             return False
@@ -301,6 +302,7 @@ class Photometry:
         :return:
         """
         worker = Worker(self.workerCalcPhotometry)
+        worker.signals.finished.connect(lambda:  self.signals.sepFinished.emit())
         self.threadPool.start(worker)
         return True
 

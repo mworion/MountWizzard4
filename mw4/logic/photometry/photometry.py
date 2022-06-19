@@ -71,7 +71,8 @@ class Photometry:
         self.ym = None
         self.h = None
         self.w = None
-        self.filterConst = None
+        self.filterConstW = None
+        self.filterConstH = None
 
         self.roundnessGrid = None
         self.roundnessMin = None
@@ -103,7 +104,9 @@ class Photometry:
         img = griddata((self.objs['x'], self.objs['y']),
                        self.HFR, (self.xm, self.ym),
                        method='nearest', fill_value=np.min(self.HFR))
-        self.hfrGrid = uniform_filter(img, size=self.filterConst)
+        self.hfrGrid = uniform_filter(img, size=[self.filterConstH,
+                                      self.filterConstW],
+                                      mode='nearest')
         minB, maxB = np.percentile(self.hfrGrid, (50, 95))
         self.hfrMin = minB
         self.hfrMax = maxB
@@ -121,9 +124,10 @@ class Photometry:
         img = griddata((self.objs['x'], self.objs['y']), aspectRatio, (self.xm,
                                                                        self.ym),
                        method='linear', fill_value=np.min(aspectRatio))
-        img = uniform_filter(img, size=self.filterConst)
+        self.roundnessGrid = uniform_filter(img, size=[self.filterConstH,
+                                            self.filterConstW],
+                                            mode='nearest')
         self.roundnessPercentile = np.percentile(aspectRatio, 90)
-        self.roundnessGrid = uniform_filter(img, size=self.filterConst)
         self.roundnessMin = minB
         self.roundnessMax = maxB
         self.signals.roundness.emit()
@@ -202,7 +206,9 @@ class Photometry:
         maxB = np.max(back) / self.bkg.globalback
         minB = np.min(back) / self.bkg.globalback
         img = back / self.bkg.globalback
-        self.background = uniform_filter(img, size=self.filterConst)
+        self.background = uniform_filter(img, size=[self.filterConstH,
+                                         self.filterConstW],
+                                         mode='nearest')
         self.backgroundMin = minB
         self.backgroundMax = maxB
         self.signals.background.emit()
@@ -213,7 +219,9 @@ class Photometry:
         :return:
         """
         img = self.bkg.rms()
-        self.backgroundRMS = uniform_filter(img, size=self.filterConst)
+        self.backgroundRMS = uniform_filter(img, size=[self.filterConstH,
+                                            self.filterConstW],
+                                            mode='nearest')
         self.signals.backgroundRMS.emit()
         return True
 
@@ -221,6 +229,9 @@ class Photometry:
         """
         :return:
         """
+        self.h, self.w = self.image.shape
+        self.filterConstW = int(self.w / (self.FILTER_SCALE))
+        self.filterConstH = int(self.h / (self.FILTER_SCALE))
         rangeX = np.linspace(0, self.w, int(self.w / self.FILTER_SCALE))
         rangeY = np.linspace(0, self.h, int(self.h / self.FILTER_SCALE))
         self.xm, self.ym = np.meshgrid(rangeX, rangeY)
@@ -377,9 +388,6 @@ class Photometry:
         if bayerPattern:
             self.debayerImage(bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
-
-        self.h, self.w = self.image.shape
-        self.filterConst = int(self.w / (self.FILTER_SCALE * 4))
 
         self.signals.image.emit()
         return True

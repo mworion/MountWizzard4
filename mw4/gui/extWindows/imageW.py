@@ -243,7 +243,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                             'FITS files (*.fit*)', enableDir=True)
         loadFilePath, name, ext = val
         if not name:
-            self.msg.emit(2, 'Image', 'Error', 'No image selected')
+            self.msg.emit(0, 'Image', 'Loading', 'No image selected')
             return False
 
         self.imageFileName = loadFilePath

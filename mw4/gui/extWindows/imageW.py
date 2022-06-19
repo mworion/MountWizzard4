@@ -638,6 +638,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         if self.imgP.objs is None:
             self.msg.emit(2, 'Image', 'Photometry error', 'Too low pixel stack')
+        else:
+            self.msg.emit(0, 'Image', 'Photometry', 'SEP done')
         return True
 
     def processPhotometry(self):

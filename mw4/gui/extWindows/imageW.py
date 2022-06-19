@@ -395,9 +395,15 @@ class ImageWindow(toolsQtWidget.MWidget):
                 plotItem.addItem(textItem)
 
         # calc extreme HFR values
-        corners = np.array([segHFR[0][0], segHFR[2][0], segHFR[2][2], segHFR[0][2]])
-        vectors = np.array([[- w / 3, - h / 3], [w / 3, - h / 3],
-                            [w / 3, h / 3], [- w / 3, h / 3]])
+        # arrays upper left to lower right
+        w3 = w / 3
+        h3 = h / 3
+        corners = np.array([segHFR[0][2], segHFR[1][2], segHFR[2][2],
+                            segHFR[0][1], segHFR[2][1],
+                            segHFR[0][0], segHFR[1][0], segHFR[2][0]])
+        vectors = np.array([[- w3, h3], [0, h3], [w3, h3],
+                            [- w3, 0], [w3, 0],
+                            [- w3, - h3], [0, - h3], [w3, - h3]])
         best = np.min(corners)
         worst = np.max(corners)
 
@@ -407,7 +413,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             points.append(vector * corner / worst + np.array([w / 2, h / 2]))
 
         # draw vectors
-        links = [[0, 2], [1, 3], [0, 1], [1, 2], [2, 3], [3, 0]]
+        links = [[0, 1], [1, 2], [2, 4], [4, 7], [7, 6], [6, 5], [5, 3], [3, 0],
+                 [0, 7], [2, 5]]
         for link in links:
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setPen(self.penPink)

@@ -102,8 +102,8 @@ class Photometry:
         :return:
         """
         self.h, self.w = self.image.shape
-        self.filterConstW = int(self.w / (self.FILTER_SCALE * 4))
-        self.filterConstH = int(self.h / (self.FILTER_SCALE * 4))
+        self.filterConstW = int(self.w / (self.FILTER_SCALE * 3))
+        self.filterConstH = int(self.h / (self.FILTER_SCALE * 3))
         rangeX = np.linspace(0, self.w, int(self.w / self.FILTER_SCALE))
         rangeY = np.linspace(0, self.h, int(self.h / self.FILTER_SCALE))
         self.xm, self.ym = np.meshgrid(rangeX, rangeY)

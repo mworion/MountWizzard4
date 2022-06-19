@@ -1525,7 +1525,7 @@ Model</string>
        </font>
       </property>
       <property name="text">
-       <string>ISO curves</string>
+       <string>2D contour</string>
       </property>
      </widget>
     </widget>

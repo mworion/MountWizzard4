@@ -54,7 +54,7 @@ class Photometry:
     log = logging.getLogger(__name__)
 
     ABERRATION_SIZE = 250
-    FILTER_SCALE = 5
+    FILTER_SCALE = 10
 
     def __init__(self, parent, imagePath=''):
         self.threadPool = parent.threadPool
@@ -84,6 +84,8 @@ class Photometry:
         self.backgroundRMS = None
 
         self.HFR = None
+        self.hfrMin = None
+        self.hfrMax = None
         self.hfrPercentile = None
         self.hfrMedian = None
         self.hfrGrid = None
@@ -102,6 +104,9 @@ class Photometry:
                        self.HFR, (self.xm, self.ym),
                        method='nearest', fill_value=np.min(self.HFR))
         self.hfrGrid = uniform_filter(img, size=self.filterConst)
+        minB, maxB = np.percentile(self.hfrGrid, (50, 95))
+        self.hfrMin = minB
+        self.hfrMax = maxB
         self.signals.hfr.emit()
         return True
 
@@ -374,7 +379,7 @@ class Photometry:
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
         self.h, self.w = self.image.shape
-        self.filterConst = int(self.w / self.FILTER_SCALE / 2)
+        self.filterConst = int(self.w / (self.FILTER_SCALE * 4))
 
         self.signals.image.emit()
         return True

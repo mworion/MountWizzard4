@@ -814,7 +814,7 @@ class Ui_AnalyseDialog(object):
         self.goodPoints.setToolTip(_translate("AnalyseDialog", "Name of Model Points file, where the data is stored. "))
         self.totalPoints.setToolTip(_translate("AnalyseDialog", "Name of Model Points file, where the data is stored. "))
         self.label_22.setText(_translate("AnalyseDialog", "/"))
-        self.showISO.setText(_translate("AnalyseDialog", "ISO curves"))
+        self.showISO.setText(_translate("AnalyseDialog", "2D contour"))
         self.groupBox.setTitle(_translate("AnalyseDialog", "Overview"))
         self.groupBox_14.setTitle(_translate("AnalyseDialog", "Model point errors over polar"))
         self.groupBox_15.setTitle(_translate("AnalyseDialog", "Model point errors in ascending order"))

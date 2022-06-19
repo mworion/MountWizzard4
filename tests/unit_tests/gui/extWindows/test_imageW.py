@@ -363,6 +363,15 @@ def test_processPhotometry_2(function):
         assert not suc
 
 
+def test_processPhotometryGUI(function):
+    with mock.patch.object(function,
+                           'clearGui'):
+        with mock.patch.object(function,
+                               'processPhotometry'):
+            suc = function.processPhotometryGUI()
+            assert suc
+
+
 def test_showImage_1(function):
     suc = function.showImage()
     assert not suc

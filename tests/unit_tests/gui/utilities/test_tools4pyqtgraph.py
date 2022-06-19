@@ -814,6 +814,15 @@ def test_PlotBase_drawHorizon_4():
         assert suc
 
 
+def test_addIsoBasic_1():
+    p = PlotBase()
+    az = np.random.uniform(low=10, high=350, size=(50,))
+    alt = np.random.uniform(low=15, high=85, size=(50,))
+    err = np.random.uniform(low=5, high=15, size=(50,))
+    suc = p.addIsoBasic(p.p[0], err)
+    assert suc
+
+
 def test_addIsoItem_1():
     p = PlotBase()
     az = np.random.uniform(low=10, high=350, size=(50,))

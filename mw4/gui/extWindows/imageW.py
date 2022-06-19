@@ -110,6 +110,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.autoSolve.setChecked(config.get('autoSolve', False))
         self.ui.embedData.setChecked(config.get('embedData', False))
         self.ui.enablePhotometry.setChecked(config.get('enablePhotometry', False))
+        self.ui.isoLayer.setChecked(config.get('isoLayer', False))
         self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
         self.setCrosshair()
         return True
@@ -133,6 +134,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['autoSolve'] = self.ui.autoSolve.isChecked()
         config['embedData'] = self.ui.embedData.isChecked()
         config['enablePhotometry'] = self.ui.enablePhotometry.isChecked()
+        config['isoLayer'] = self.ui.isoLayer.isChecked()
         config['offsetTiltAngle'] = self.ui.offsetTiltAngle.value()
         return True
 
@@ -148,7 +150,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
-        self.ui.enablePhotometry.clicked.connect(self.processPhotometry)
+        self.ui.enablePhotometry.clicked.connect(self.processPhotometryGUI)
+        self.ui.isoLayer.clicked.connect(self.processPhotometryGUI)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.solveCenter.clicked.connect(self.solveCenter)
@@ -347,13 +350,18 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.tabImage.setTabEnabled(1, True)
         self.ui.hfr.setImage(imageDisp=self.imgP.hfrGrid)
         self.ui.hfr.p[0].showAxes(False, showValues=False)
         self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
+        self.ui.hfr.barItem.setLevels(
+            (self.imgP.hfrMin, self.imgP.hfrMax))
+
         self.ui.hfrPercentile.setText(f'{self.imgP.hfrPercentile:1.1f}')
         self.ui.medianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
         self.ui.numberStars.setText(f'{len(self.imgP.HFR):1.0f}')
+        if self.ui.isoLayer.isChecked():
+            self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.imgP.hfrGrid, levels=20)
+        self.ui.tabImage.setTabEnabled(1, True)
         return True
 
     def showTabTiltSquare(self):
@@ -366,6 +374,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         plotItem = self.ui.tiltSquare.p[0]
         self.clearImageTab(self.ui.tiltSquare)
         self.ui.tiltSquare.setImage(self.imgP.image)
+        self.ui.tiltSquare.barItem.setLevels(self.ui.image.barItem.levels())
 
         # draw lines on image
         for i in range(1, 3):
@@ -437,7 +446,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.textSquareTiltOffAxis.setText(t)
         self.ui.squareMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
         self.ui.squareNumberStars.setText(f'{len(self.imgP.HFR):1.0f}')
-
         self.ui.tabImage.setTabEnabled(2, True)
         return True
 
@@ -458,17 +466,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         plotItem = self.ui.tiltTriangle.p[0]
         self.clearImageTab(self.ui.tiltTriangle)
         self.ui.tiltTriangle.setImage(self.imgP.image)
+        self.ui.tiltTriangle.barItem.setLevels(self.ui.image.barItem.levels())
 
         # draw rings on image
-        ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
-        ellipseItem.setRect(cx - r, cy - r, 2 * r, 2 * r)
-        ellipseItem.setPen(self.pen)
-        plotItem.addItem(ellipseItem)
-
-        ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
-        ellipseItem.setRect(cx - r25, cy - r25, 2 * r25, 2 * r25)
-        ellipseItem.setPen(self.pen)
-        plotItem.addItem(ellipseItem)
+        for rad in [r, r25]:
+            ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
+            ellipseItem.setRect(cx - rad, cy - rad, 2 * rad, 2 * rad)
+            ellipseItem.setPen(self.pen)
+            plotItem.addItem(ellipseItem)
 
         # add inner value
         text = f'{self.imgP.hfrInner:1.2f}'
@@ -543,7 +548,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.textTriangleTiltOffAxis.setText(t)
         self.ui.triangleMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
         self.ui.triangleNumberStars.setText(f'{len(self.imgP.HFR):1.0f}')
-
         self.ui.tabImage.setTabEnabled(3, True)
         return True
 
@@ -557,7 +561,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.roundness.barItem.setLevels(
             (self.imgP.roundnessMin, self.imgP.roundnessMax))
         self.ui.aspectRatioPercentile.setText(f'{self.imgP.roundnessPercentile:1.1f}')
-
+        if self.ui.isoLayer.isChecked():
+            self.ui.roundness.addIsoBasic(self.ui.roundness.p[0],
+                                          self.imgP.roundnessGrid, levels=20)
         self.ui.tabImage.setTabEnabled(4, True)
         return True
 
@@ -650,6 +656,14 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.clearGui()
             return False
         self.imgP.processPhotometry()
+        return True
+
+    def processPhotometryGUI(self):
+        """
+        :return:
+        """
+        self.clearGui()
+        self.processPhotometry()
         return True
 
     def showImage(self, imagePath=''):

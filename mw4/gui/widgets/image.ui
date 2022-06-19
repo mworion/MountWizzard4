@@ -291,6 +291,22 @@
         <property name="verticalSpacing">
          <number>5</number>
         </property>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="showCrosshair">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing a red cross hair in the center of the image.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Show crosshair  </string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0" colspan="2">
          <widget class="QComboBox" name="color">
           <property name="minimumSize">
@@ -326,26 +342,17 @@
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="showCrosshair">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing a red cross hair in the center of the image.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Show crosshair  </string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="QCheckBox" name="aspectLocked">
           <property name="text">
            <string>Aspect locked</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="isoLayer">
+          <property name="text">
+           <string>2D contour</string>
           </property>
          </widget>
         </item>

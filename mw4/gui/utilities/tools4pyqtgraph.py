@@ -454,6 +454,29 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.addItem(horItem)
         return True
 
+    def addIsoBasic(self, plotItem, zm, levels=10):
+        """
+        :param plotItem:
+        :param zm:
+        :param levels:
+        :return:
+        """
+        minE = np.min(zm)
+        maxE = np.max(zm)
+
+        for level in np.linspace(minE, maxE, levels):
+            colorInx = (level - minE) / (maxE - minE)
+            colorVal = self.cMapGYR.mapToQColor(colorInx)
+            colorVal.setAlpha(128)
+
+            pd = pg.IsocurveItem()
+            pd.setData(zm, level)
+            pd.setPen(pg.mkPen(color=colorVal))
+            pd.setZValue(10)
+            pg.nameStr = 'iso'
+            plotItem.addItem(pd)
+        return True
+
     def addIsoItem(self, x, y, z, plotItem=None, rangeX=None,
                    rangeY=None, levels=20):
         """
@@ -477,20 +500,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         zm = griddata((x, y), z, (xm, ym), method='linear',
                       fill_value=np.min(z))
         zm = uniform_filter(zm, size=10)
-        minE = np.min(zm)
-        maxE = np.max(zm)
-
-        for level in np.linspace(minE, maxE, levels):
-            colorInx = (level - minE) / (maxE - minE)
-            colorVal = self.cMapGYR.mapToQColor(colorInx)
-            colorVal.setAlpha(128)
-
-            pd = pg.IsocurveItem()
-            pd.setData(zm, level)
-            pd.setPen(pg.mkPen(color=colorVal))
-            pd.setZValue(-10)
-            pg.nameStr = 'iso'
-            plotItem.addItem(pd)
+        self.addIsoBasic(plotItem, zm, levels)
         return True
 
     def addIsoItemHorizon(self, x, y, z, plotItem=None, levels=20):

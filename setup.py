@@ -109,23 +109,23 @@ setup(
         'qimage2ndarray==1.9.0',
         'skyfield==1.42',
         'sgp4==2.21',
-        'requests==2.27.1',
+        'requests==2.28.0',
         'requests_toolbelt==0.9.1',
         'importlib_metadata==4.11.4',
         'python-dateutil==2.8.2',
         'deepdiff==5.8.1',
         'wakeonlan==2.1.0',
-        'pybase64==1.2.1',
-        'websocket-client==1.3.2',
-        'hidapi==0.11.2',
+        'pybase64==1.2.2',
+        'websocket-client==1.3.3',
+        'hidapi==0.12.0.post2',
         'range-key-dict==1.1.0',
     ]
     + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt5==5.15.6'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt5==5.15.7'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.5'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
-    keywords=['5.15.6'],
+    keywords=['5.15.7'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

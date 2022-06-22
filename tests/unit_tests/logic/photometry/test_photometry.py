@@ -50,7 +50,7 @@ def test_workerGetHFR(function):
     function.ym = np.linspace(0, 100, 100)
     function.objs = {'x': np.linspace(0, 100, 20),
                      'y': np.linspace(0, 100, 20)}
-    function.HFR = np.linspace(20, 30, 20)
+    function.HFR = np.ones((20, 30))
     suc = function.workerGetHFR()
     assert suc
     assert function.hfrGrid.shape[0] == 100
@@ -67,7 +67,7 @@ def test_workerGetRoundness(function):
                      'b': np.random.rand(20, 1) + 1}
     with mock.patch.object(logic.photometry.photometry,
                            'griddata',
-                           return_value=np.linspace(0, 100, 20)):
+                           return_value=np.ones((20, 100))):
         suc = function.workerGetRoundness()
         assert suc
         assert len(function.roundnessGrid) == 20

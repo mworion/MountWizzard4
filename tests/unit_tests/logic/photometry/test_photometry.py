@@ -44,19 +44,21 @@ def test_signals(function):
 
 
 def test_workerGetHFR(function):
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.xm = np.linspace(0, 100, 100)
     function.ym = np.linspace(0, 100, 100)
     function.objs = {'x': np.linspace(0, 100, 20),
                      'y': np.linspace(0, 100, 20)}
-    function.HFR = np.linspace(20, 30, 20)
+    function.HFR = np.ones((20, 30))
     suc = function.workerGetHFR()
     assert suc
     assert function.hfrGrid.shape[0] == 100
 
 
 def test_workerGetRoundness(function):
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.xm = np.linspace(0, 100, 100)
     function.ym = np.linspace(0, 100, 100)
     function.objs = {'x': np.linspace(0, 100, 20),
@@ -65,7 +67,7 @@ def test_workerGetRoundness(function):
                      'b': np.random.rand(20, 1) + 1}
     with mock.patch.object(logic.photometry.photometry,
                            'griddata',
-                           return_value=np.linspace(0, 100, 20)):
+                           return_value=np.ones((20, 100))):
         suc = function.workerGetRoundness()
         assert suc
         assert len(function.roundnessGrid) == 20
@@ -117,7 +119,8 @@ def test_calcAberrationInspectView_2(function):
 
 def test_showTabBackground(function):
     img = np.random.rand(100, 100) + 1
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.bkg = sep.Background(img)
     suc = function.calcBackground()
     assert suc
@@ -125,7 +128,8 @@ def test_showTabBackground(function):
 
 def test_showTabBackgroundRMS(function):
     img = np.random.rand(100, 100) + 1
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.bkg = sep.Background(img)
     suc = function.calcBackgroundRMS()
     assert suc

@@ -44,7 +44,8 @@ def test_signals(function):
 
 
 def test_workerGetHFR(function):
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.xm = np.linspace(0, 100, 100)
     function.ym = np.linspace(0, 100, 100)
     function.objs = {'x': np.linspace(0, 100, 20),
@@ -56,7 +57,8 @@ def test_workerGetHFR(function):
 
 
 def test_workerGetRoundness(function):
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.xm = np.linspace(0, 100, 100)
     function.ym = np.linspace(0, 100, 100)
     function.objs = {'x': np.linspace(0, 100, 20),
@@ -117,7 +119,8 @@ def test_calcAberrationInspectView_2(function):
 
 def test_showTabBackground(function):
     img = np.random.rand(100, 100) + 1
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.bkg = sep.Background(img)
     suc = function.calcBackground()
     assert suc
@@ -125,7 +128,8 @@ def test_showTabBackground(function):
 
 def test_showTabBackgroundRMS(function):
     img = np.random.rand(100, 100) + 1
-    function.filterConst = 5
+    function.filterConstH = 5
+    function.filterConstW = 5
     function.bkg = sep.Background(img)
     suc = function.calcBackgroundRMS()
     assert suc

@@ -73,8 +73,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.result = None
         self.pen = pg.mkPen(color=self.M_BLUE, width=2)
         self.penPink = pg.mkPen(color=self.M_PINK + '80', width=5)
-        self.font = QFont(self.window().font().family(), 16)
-        self.font.setBold(True)
+        self.fontText = QFont(self.window().font().family(), 16)
+        self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
+        self.fontText.setBold(True)
 
         self.deviceStat = {
             'expose': False,
@@ -111,6 +112,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.embedData.setChecked(config.get('embedData', False))
         self.ui.enablePhotometry.setChecked(config.get('enablePhotometry', False))
         self.ui.isoLayer.setChecked(config.get('isoLayer', False))
+        self.ui.showValues.setChecked(config.get('showValues', False))
         self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
         self.setCrosshair()
         return True
@@ -135,6 +137,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['embedData'] = self.ui.embedData.isChecked()
         config['enablePhotometry'] = self.ui.enablePhotometry.isChecked()
         config['isoLayer'] = self.ui.isoLayer.isChecked()
+        config['showValues'] = self.ui.showValues.isChecked()
         config['offsetTiltAngle'] = self.ui.offsetTiltAngle.value()
         return True
 
@@ -152,6 +155,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
         self.ui.enablePhotometry.clicked.connect(self.processPhotometryGUI)
         self.ui.isoLayer.clicked.connect(self.processPhotometryGUI)
+        self.ui.showValues.clicked.connect(self.processPhotometryGUI)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.solveCenter.clicked.connect(self.solveCenter)
@@ -362,6 +366,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.ui.isoLayer.isChecked():
             self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.imgP.hfrGrid, levels=20)
         self.ui.tabImage.setTabEnabled(1, True)
+
         return True
 
     def showTabTiltSquare(self):
@@ -396,7 +401,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 text = f'{segHFR[ix][iy]:1.2f}'
                 textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
                 textItem.setText(text)
-                textItem.setFont(self.font)
+                textItem.setFont(self.fontText)
                 posX = ix * w / 3 + w / 6
                 posY = iy * h / 3 + h / 6
                 textItem.setPos(posX, posY)
@@ -479,7 +484,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         text = f'{self.imgP.hfrInner:1.2f}'
         textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
         textItem.setText(text)
-        textItem.setFont(self.font)
+        textItem.setFont(self.fontText)
         textItem.setZValue(10)
         textItem.setPos(cx, cy)
         plotItem.addItem(textItem)
@@ -506,7 +511,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             segData[i] = np.mean(segHFR[startIndexSeg:endIndexSeg])
             text = f'{segData[i]:1.2f}'
             textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
-            textItem.setFont(self.font)
+            textItem.setFont(self.fontText)
             textItem.setZValue(10)
             textItem.setText(text)
             posX = cx + r62 * np.cos(angleText)
@@ -603,8 +608,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         for i in range(len(objs)):
             self.ui.imageSource.addEllipse(
                 objs['x'][i], objs['y'][i],
-                objs['a'][i] * 6, objs['b'][i] * 6,
+                objs['a'][i] * 4, objs['b'][i] * 4,
                 objs['theta'][i])
+            if self.ui.showValues.isChecked():
+                t = f'{self.imgP.HFR[i]:2.1f}'
+                item = pg.TextItem(text=t, color=self.M_BLUE, anchor=(1, 1))
+                item.setPos(objs['x'][i], objs['y'][i])
+                item.setFont(self.fontAnno)
+                self.ui.imageSource.p[0].addItem(item)
         self.ui.tabImage.setTabEnabled(6, True)
         return True
 

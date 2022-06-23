@@ -65,6 +65,7 @@ class Photometry:
         self.aberrationImage = None
 
         self.objs = None
+        self.objsAll = None
         self.bkg = None
 
         self.xm = None
@@ -260,8 +261,7 @@ class Photometry:
         """
         :return:
         """
-        sep.set_extract_pixstack(3000000)
-        self.bkg = sep.Background(self.image, fthresh=np.median(self.image))
+        self.bkg = sep.Background(self.image, bw=32, bh=32)
         image_sub = self.image - self.bkg
 
         try:
@@ -270,8 +270,11 @@ class Photometry:
         except Exception as e:
             self.log.error(e)
             self.objs = None
+            self.objsAll = None
             self.HFR = None
             return False
+
+        self.objsAll = objs
 
         # remove objects without need
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])

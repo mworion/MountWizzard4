@@ -261,11 +261,11 @@ class Photometry:
         """
         :return:
         """
-        self.bkg = sep.Background(self.image, bw=32, bh=32)
+        self.bkg = sep.Background(self.image, bw=64, bh=64)
         image_sub = self.image - self.bkg
 
         try:
-            objs = sep.extract(image_sub, 2.5, err=self.bkg.globalrms,
+            objs = sep.extract(image_sub, 2.5, err=self.bkg.rms(),
                                filter_type='matched', minarea=11)
         except Exception as e:
             self.log.error(e)
@@ -276,20 +276,23 @@ class Photometry:
 
         self.objsAll = objs
 
-        # remove objects without need
+        # limiting the resulting object by some constraints
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
         mask = (r < 10) & (r > 0.8)
         objs = objs[mask]
+
+        # equivalent to FLUX_AUTO of sextractor
+        PHOT_AUTOPARAMS = [2.5, 1.5]
 
         kronRad, krFlag = sep.kron_radius(
             image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'], 6.0)
 
         flux, fluxErr, flag = sep.sum_ellipse(
             image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'],
-            2.5 * kronRad, subpix=1)
+            PHOT_AUTOPARAMS[0] * kronRad, subpix=1)
 
         flag |= krFlag
-        r_min = 1.75
+        r_min = PHOT_AUTOPARAMS[1] / 2
 
         useCircle = kronRad * np.sqrt(objs['a'] * objs['b']) < r_min
         cFlux, cFluxErr, cFlag = sep.sum_circle(
@@ -299,10 +302,16 @@ class Photometry:
         fluxErr[useCircle] = cFluxErr
         flag[useCircle] = cFlag
 
+        # equivalent of FLUX_RADIUS
+        PHOT_FLUXFRAC = 0.5
+
         radius, _ = sep.flux_radius(
-            image_sub, objs['x'], objs['y'], 6.0 * objs['a'], 0.5,
+            image_sub, objs['x'], objs['y'], 6.0 * objs['a'], PHOT_FLUXFRAC,
             normflux=flux, subpix=5)
 
+        # limiting the resulting object by some more constraints
+        # s/n = mean / standard deviation
+        # https://www1.phys.vt.edu/~jhs/phys3154/snr20040108.pdf
         sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms / 1.46)
         mask = (sn > 10) & (radius < 10)
 

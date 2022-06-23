@@ -261,7 +261,7 @@ class Photometry:
         """
         :return:
         """
-        self.bkg = sep.Background(self.image, bw=64, bh=64)
+        self.bkg = sep.Background(self.image, bw=32, bh=32)
         image_sub = self.image - self.bkg
 
         try:
@@ -280,9 +280,10 @@ class Photometry:
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
         mask = (r < 10) & (r > 0.8)
         objs = objs[mask]
+        r = r[mask]
 
         # equivalent to FLUX_AUTO of sextractor
-        PHOT_AUTOPARAMS = [2.5, 1.5]
+        PHOT_AUTOPARAMS = [2.0, 3.0]
 
         kronRad, krFlag = sep.kron_radius(
             image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'], 6.0)
@@ -310,10 +311,9 @@ class Photometry:
             normflux=flux, subpix=5)
 
         # limiting the resulting object by some more constraints
-        # s/n = mean / standard deviation
-        # https://www1.phys.vt.edu/~jhs/phys3154/snr20040108.pdf
-        sn = flux / np.sqrt(flux + 99 * 99 * 3.1415926 * self.bkg.globalrms / 1.46)
-        mask = (sn > 10) & (radius < 10)
+        back = self.bkg.globalback
+        sn = flux / np.sqrt(flux + back * r * r * np.pi)
+        mask = (sn > 30)
 
         # to get HFR
         self.objs = objs[mask]

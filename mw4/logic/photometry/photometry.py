@@ -278,9 +278,8 @@ class Photometry:
 
         # limiting the resulting object by some constraints
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
-        mask = (r < 10) & (r > 0.8)
+        mask = (r < 10) & (r > 1.25)
         objs = objs[mask]
-        r = r[mask]
 
         # equivalent to FLUX_AUTO of sextractor
         PHOT_AUTOPARAMS = [2.0, 3.0]
@@ -304,18 +303,25 @@ class Photometry:
         flag[useCircle] = cFlag
 
         # equivalent of FLUX_RADIUS
-        PHOT_FLUXFRAC = 0.5
+        PHOT_FLUXFRAC = [0.5, 1.0]
 
         radius, _ = sep.flux_radius(
             image_sub, objs['x'], objs['y'], 6.0 * objs['a'], PHOT_FLUXFRAC,
             normflux=flux, subpix=5)
 
-        # limiting the resulting object by some more constraints
-        back = self.bkg.globalback
-        sn = flux / np.sqrt(flux + back * r * r * np.pi)
-        mask = (sn > 30)
+        # limiting the resulting object by checking the S/N values
+        back = self.bkg.back()
+        b = []
+        for x, y in zip(objs['x'], objs['y']):
+            b.append(back[int(y)][int(x)])
+        sn = flux / np.sqrt(np.abs(b * radius[:, 1] * radius[:, 1] * np.pi))
+        mask = (sn > 20)
+        objs = objs[mask]
+        radius = radius[:, 0]
+        radius = radius[mask]
 
-        # to get HFR
+        # and we need a min and max of HFR
+        mask = np.logical_and(radius > 1, radius < 20)
         self.objs = objs[mask]
         self.HFR = radius[mask]
         self.runCalcs()

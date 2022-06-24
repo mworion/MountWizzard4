@@ -312,7 +312,7 @@ def test_showTabImageSources(function):
                           'a': np.random.rand(20, 1) + 10,
                           'b': np.random.rand(20, 1) + 10}
     function.imgP.image = np.random.rand(100, 100) + 1
-    function.imgP.HFR = np.random.rand(20, 1) + 10
+    function.imgP.HFR = np.random.rand(20, ) + 10.0
 
     function.ui.showValues.setChecked(True)
     with mock.patch.object(function.ui.imageSource,

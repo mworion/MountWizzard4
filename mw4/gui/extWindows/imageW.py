@@ -210,20 +210,18 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.ui.load.setEnabled(True)
             self.ui.abortExpose.setEnabled(False)
 
-        if self.deviceStat.get('solve', False):
-            self.ui.abortSolve.setEnabled(True)
-        else:
-            self.ui.abortSolve.setEnabled(False)
+        isPlateSolve = bool(self.app.deviceStat.get('plateSolve', False))
+        isSolving = bool(self.deviceStat.get('solve', False))
+        isMount = bool(self.app.deviceStat.get('mount', False))
+        isImage = self.imageFileName != ''
+
+        self.ui.solve.setEnabled(isPlateSolve and isImage)
+        self.ui.abortSolve.setEnabled(isPlateSolve and isImage and isSolving)
+        self.ui.solveCenter.setEnabled(isPlateSolve and isMount and isImage)
 
         if not self.app.deviceStat.get('camera', False):
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
-
-        isPlateSolve = bool(self.app.deviceStat.get('plateSolve', False))
-        isMount = bool(self.app.deviceStat.get('mount', False))
-        isImage = self.imageFileName != ''
-        self.ui.solve.setEnabled(isPlateSolve and isImage)
-        self.ui.solveCenter.setEnabled(isPlateSolve and isMount and isImage)
 
         if self.deviceStat.get('expose', False):
             self.changeStyleDynamic(self.ui.expose, 'running', True)

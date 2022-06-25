@@ -27,6 +27,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from astropy.io import fits
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
+from threading import Thread
 
 # local import
 from base.tpool import Worker
@@ -36,7 +37,7 @@ class PhotometrySignals(QObject):
     """
     """
     __all__ = ['PhotometrySignals']
-    image = pyqtSignal()
+    imageLoaded = pyqtSignal()
     hfr = pyqtSignal()
     hfrSquare = pyqtSignal()
     hfrTriangle = pyqtSignal()
@@ -56,8 +57,8 @@ class Photometry:
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
 
-    def __init__(self, parent, imagePath=''):
-        self.threadPool = parent.threadPool
+    def __init__(self, app, imagePath=''):
+        self.threadPool = app.threadPool
         self.signals = PhotometrySignals()
 
         self.image = None
@@ -325,15 +326,17 @@ class Photometry:
         self.objs = objs[mask]
         self.HFR = radius[mask]
         self.runCalcs()
+        self.signals.sepFinished.emit()
         return True
 
     def processPhotometry(self):
         """
         :return:
         """
-        worker = Worker(self.workerCalcPhotometry)
-        worker.signals.finished.connect(lambda:  self.signals.sepFinished.emit())
-        self.threadPool.start(worker)
+        worker = Thread(target=self.workerCalcPhotometry)
+        #worker.signals.finished.connect(lambda:  self.signals.sepFinished.emit())
+        #self.threadPool.start(worker)
+        worker.start()
         return True
 
     def debayerImage(self, pattern):
@@ -403,7 +406,7 @@ class Photometry:
             self.debayerImage(bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
-        self.signals.image.emit()
+        self.signals.imageLoaded.emit()
         return True
 
     def processImage(self, imagePath=''):

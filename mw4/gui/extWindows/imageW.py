@@ -698,9 +698,9 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.changeStyleDynamic(self.ui.headerGroup, 'running', True)
         self.setWindowTitle(f'Imaging:   {os.path.basename(imagePath)}')
-        self.imgP = Photometry(self, imagePath)
-        self.imgP.signals.image.connect(self.showTabImage)
-        self.imgP.signals.image.connect(self.processPhotometry)
+        self.imgP = Photometry(self.app, imagePath)
+        self.imgP.signals.imageLoaded.connect(self.showTabImage)
+        self.imgP.signals.imageLoaded.connect(self.processPhotometry)
         self.imgP.signals.sepFinished.connect(self.resultPhotometry)
         self.imgP.signals.hfr.connect(self.showTabHFR)
         self.imgP.signals.hfrSquare.connect(self.showTabTiltSquare)

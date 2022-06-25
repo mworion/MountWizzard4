@@ -27,7 +27,6 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from astropy.io import fits
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
-from threading import Thread
 
 # local import
 from base.tpool import Worker
@@ -326,17 +325,15 @@ class Photometry:
         self.objs = objs[mask]
         self.HFR = radius[mask]
         self.runCalcs()
-        self.signals.sepFinished.emit()
         return True
 
     def processPhotometry(self):
         """
         :return:
         """
-        worker = Thread(target=self.workerCalcPhotometry)
-        #worker.signals.finished.connect(lambda:  self.signals.sepFinished.emit())
-        #self.threadPool.start(worker)
-        worker.start()
+        worker = Worker(self.workerCalcPhotometry)
+        worker.signals.finished.connect(lambda:  self.signals.sepFinished.emit())
+        self.threadPool.start(worker)
         return True
 
     def debayerImage(self, pattern):

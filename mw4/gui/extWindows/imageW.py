@@ -67,6 +67,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.imageItem = None
         self.imageFileName = ''
         self.imageFileNameOld = ''
+        self.processImageRunning = False
         self.expTime = 1
         self.binning = 1
         self.folder = ''
@@ -153,15 +154,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
-        self.ui.enablePhotometry.clicked.connect(self.processPhotometryGUI)
-        self.ui.isoLayer.clicked.connect(self.processPhotometryGUI)
-        self.ui.showValues.clicked.connect(self.processPhotometryGUI)
+        self.ui.enablePhotometry.clicked.connect(self.processPhotometry)
+        self.ui.isoLayer.clicked.connect(self.processPhotometry)
+        self.ui.showValues.clicked.connect(self.processPhotometry)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.solveCenter.clicked.connect(self.solveCenter)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
-        self.ui.abortImage.clicked.connect(self.abortImage)
+        self.ui.abortExpose.clicked.connect(self.abortExpose)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
         self.ui.offsetTiltAngle.valueChanged.connect(self.showTabTiltTriangle)
@@ -198,16 +199,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.deviceStat.get('expose', False):
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
-            self.ui.abortImage.setEnabled(True)
+            self.ui.abortExpose.setEnabled(True)
         elif self.deviceStat.get('exposeN', False):
             self.ui.expose.setEnabled(False)
             self.ui.load.setEnabled(False)
-            self.ui.abortImage.setEnabled(True)
+            self.ui.abortExpose.setEnabled(True)
         else:
             self.ui.expose.setEnabled(True)
             self.ui.exposeN.setEnabled(True)
             self.ui.load.setEnabled(True)
-            self.ui.abortImage.setEnabled(False)
+            self.ui.abortExpose.setEnabled(False)
 
         if self.deviceStat.get('solve', False):
             self.ui.abortSolve.setEnabled(True)
@@ -657,24 +658,23 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.msg.emit(2, 'Image', 'Photometry error', 'Too low pixel stack')
         else:
             self.msg.emit(0, 'Image', 'Photometry', 'SEP done')
+        self.processImageRunning = False
         return True
 
     def processPhotometry(self):
         """
         :return:
         """
-        if not self.ui.enablePhotometry.isChecked():
-            self.clearGui()
-            return False
-        self.imgP.processPhotometry()
-        return True
+        isPhotometry = self.ui.enablePhotometry.isChecked()
+        self.ui.showValues.setEnabled(isPhotometry)
+        self.ui.isoLayer.setEnabled(isPhotometry)
 
-    def processPhotometryGUI(self):
-        """
-        :return:
-        """
-        self.clearGui()
-        self.processPhotometry()
+        if not isPhotometry:
+            self.clearGui()
+            self.processImageRunning = False
+            return False
+
+        self.imgP.processPhotometry()
         return True
 
     def showImage(self, imagePath=''):
@@ -686,7 +686,14 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
         if not os.path.isfile(imagePath):
             return False
+        if self.processImageRunning:
+            t = f'{imagePath} skipped because process ongoing'
+            self.msg.emit(0, 'Image', 'Exposing skipped', t)
+            return False
+
+        self.processImageRunning = True
         if not self.deviceStat['exposeN']:
+            self.ui.image.setImage(None)
             self.clearGui()
 
         self.changeStyleDynamic(self.ui.headerGroup, 'running', True)
@@ -733,7 +740,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                                      focalLength=focalLength
                                      )
         if not suc:
-            self.abortImage()
+            self.abortExpose()
             text = f'{os.path.basename(imagePath)}'
             self.msg.emit(2, 'Image', 'Expose error', text)
             return False
@@ -799,7 +806,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.exposeRaw()
         return True
 
-    def abortImage(self):
+    def abortExpose(self):
         """
         :return: True for test purpose
         """

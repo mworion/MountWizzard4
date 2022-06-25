@@ -372,15 +372,6 @@ def test_processPhotometry_2(function):
         assert not suc
 
 
-def test_processPhotometryGUI(function):
-    with mock.patch.object(function,
-                           'clearGui'):
-        with mock.patch.object(function,
-                               'processPhotometry'):
-            suc = function.processPhotometryGUI()
-            assert suc
-
-
 def test_showImage_1(function):
     suc = function.showImage()
     assert not suc
@@ -392,6 +383,16 @@ def test_showImage_2(function):
 
 
 def test_showImage_3(function):
+    function.processImageRunning = True
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        suc = function.showImage('test')
+        assert not suc
+
+
+def test_showImage_4(function):
+    function.processImageRunning = False
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
@@ -468,15 +469,15 @@ def test_exposeImageN_1(function):
     assert suc
 
 
-def test_abortImage_1(function):
+def test_abortExpose_1(function):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        suc = function.abortImage()
+        suc = function.abortExpose()
         assert suc
 
 
-def test_abortImage_2(function):
+def test_abortExpose_2(function):
     function.app.camera.signals.saved.connect(function.showImage)
     function.ui.exposeN.setEnabled(True)
     function.ui.expose.setEnabled(False)
@@ -484,11 +485,11 @@ def test_abortImage_2(function):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        suc = function.abortImage()
+        suc = function.abortExpose()
         assert suc
 
 
-def test_abortImage_3(function):
+def test_abortExpose_3(function):
     function.deviceStat['expose'] = True
     function.deviceStat['exposeN'] = False
     function.app.camera.signals.saved.connect(function.showImage)
@@ -498,11 +499,11 @@ def test_abortImage_3(function):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        suc = function.abortImage()
+        suc = function.abortExpose()
         assert suc
 
 
-def test_abortImage_4(function):
+def test_abortExpose_4(function):
     function.deviceStat['expose'] = False
     function.deviceStat['exposeN'] = True
     function.app.camera.signals.saved.connect(function.showImage)
@@ -512,7 +513,7 @@ def test_abortImage_4(function):
     with mock.patch.object(function.app.camera,
                            'abort',
                            ):
-        suc = function.abortImage()
+        suc = function.abortExpose()
         assert suc
 
 

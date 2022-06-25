@@ -23,21 +23,21 @@ import glob
 import pytest
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QThreadPool
+from PyQt5.QtTest import QTest
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
 from mainApp import MountWizzard4
 from base.tpool import Worker
 from loader import extractDataFiles
 
 
-mwglob = {'dataDir': 'tests/data',
-          'configDir': 'tests/config',
-          'workDir': 'mw4/test',
-          'imageDir': 'tests/image',
-          'tempDir': 'tests/temp',
-          'measureDir': 'tests/measure',
-          'modelDir': 'tests/model',
+mwglob = {'dataDir': 'tests/workDir/data',
+          'configDir': 'tests/workDir/config',
+          'workDir': 'tests/workDir',
+          'imageDir': 'tests/workDir/image',
+          'tempDir': 'tests/workDir/temp',
+          'measureDir': 'tests/workDir/measure',
+          'modelDir': 'tests/workDir/model',
           'modelData': '4.0'
           }
 
@@ -49,7 +49,7 @@ def module_setup_teardown():
     global tp
 
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*')
+        files = glob.glob(f'{mwglob[d]}/*.*')
         if 'modelData' in d:
             continue
         for f in files:
@@ -62,7 +62,7 @@ def module_setup_teardown():
     yield
 
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*')
+        files = glob.glob(f'{mwglob[d]}/*.*')
         if 'modelData' in d:
             continue
         for f in files:
@@ -81,55 +81,19 @@ def test_configAlpaca(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.cameraSetup, Qt.LeftButton)
     popup = app.mainW.popupUi
-    qtbot.waitExposed(popup, 1000)
-    popup.ui.tab.setCurrentIndex(1)
+    qtbot.waitExposed(popup, timeout=1000)
+    popup.ui.tab.setCurrentIndex(0)
+    QTest.qWait(1000)
 
     popup.ui.alpacaHostAddress.setText('192.168.2.211')
     popup.ui.alpacaPort.setText('11111')
     popup.ui.alpacaCopyConfig.setChecked(True)
     qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
+    QTest.qWait(1000)
     qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
 
-    qtbot.mouseClick(app.mainW.ui.filterSetup, Qt.LeftButton)
-    popup = app.mainW.popupUi
-    qtbot.waitExposed(popup, 1000)
-    popup.ui.tab.setCurrentIndex(1)
-    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
-    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
-
-    qtbot.mouseClick(app.mainW.ui.domeSetup, Qt.LeftButton)
-    popup = app.mainW.popupUi
-    qtbot.waitExposed(popup, 1000)
-    popup.ui.tab.setCurrentIndex(1)
-    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
-    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
-
-    qtbot.mouseClick(app.mainW.ui.telescopeSetup, Qt.LeftButton)
-    popup = app.mainW.popupUi
-    qtbot.waitExposed(popup, 1000)
-    popup.ui.tab.setCurrentIndex(1)
-    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
-    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
-
-    qtbot.mouseClick(app.mainW.ui.focuserSetup, Qt.LeftButton)
-    popup = app.mainW.popupUi
-    qtbot.waitExposed(popup, 1000)
-    popup.ui.tab.setCurrentIndex(1)
-    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
-
-    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
-    qtbot.mouseClick(app.mainW.ui.sensorWeatherSetup, Qt.LeftButton)
-    popup = app.mainW.popupUi
-    qtbot.waitExposed(popup, 1000)
-    popup.ui.tab.setCurrentIndex(1)
-    qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.LeftButton)
-    qtbot.mouseClick(popup.ui.ok, Qt.LeftButton)
-
-    app.mainW.ui.mainTabWidget.setCurrentIndex(11)
-    app.mainW.ui.settingsTabWidget.setCurrentIndex(0)
-    sleepAndEvents(5000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)

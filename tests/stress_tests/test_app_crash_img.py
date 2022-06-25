@@ -16,12 +16,9 @@
 #
 ###########################################################
 # standard libraries
-import copy
 import os
 import glob
-import random
 import shutil
-import json
 
 # external packages
 import pytest
@@ -59,9 +56,12 @@ def module_setup_teardown():
         for f in files:
             if 'empty' in f:
                 continue
-            print(f)
             os.remove(f)
     extractDataFiles(mwGlob=mwglob)
+    shutil.copy('tests/testData/star1.fits', 'tests/workDir/image/star1.fits')
+    shutil.copy('tests/testData/star2.fits', 'tests/workDir/image/star2.fits')
+    shutil.copy('tests/testData/star3.fits', 'tests/workDir/image/star3.fits')
+
     yield
     for d in mwglob:
         files = glob.glob(f'{mwglob[d]}/*.*')
@@ -74,39 +74,31 @@ def module_setup_teardown():
     tp.waitForDone(1000)
 
 
-def test_1(qtbot, qapp):
+def test_showImages(qtbot, qapp):
     # open all windows and close them
     def run():
         qapp.exec_()
 
-    cfg = {"imageW": {
-            "imageFileName": "tests/workdir/image/star1.fits",
-        }
-    }
-    with open('tests/workDir/config/profile', 'w') as f:
-        f.write('config.cfg')
-    with open('tests/workDir/config/config.cfg', 'w') as f:
-        json.dump(cfg, f, sort_keys=True, indent=4)
-
-    shutil.copy('tests/testData/star1.fits', 'tests/workdir/image/star1.fits')
     app = MountWizzard4(mwGlob=mwglob, application=qapp)
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    app.mainW.move(100, 100)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
     imageW = app.uiWindows['showImageW']['classObj']
-    qtbot.waitExposed(imageW, 1000)
+    imageW.move(900, 100)
+    qtbot.waitExposed(imageW, timeout=1000)
 
-    for i in range(1):
-        name = f'star{i%1 + 1}.fits'
-        imageW.ui.imageFileName.setText(name)
-        app.showImage.emit(f'tests/workdir/image/star{i%1 + 1}.fits')
+    for i in range(50):
+        app.showImage.emit(f'tests/workDir/image/star{i%3 + 1}.fits')
+        QTest.qWait(500)
 
+    QTest.qWait(1000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
 
 
-def dddtest_1(qtbot, qapp):
+def test_showImagesPhotometry(qtbot, qapp):
     # open all windows and close them
     def run():
         qapp.exec_()
@@ -114,19 +106,45 @@ def dddtest_1(qtbot, qapp):
     app = MountWizzard4(mwGlob=mwglob, application=qapp)
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
-    shutil.copy('tests/testData/m51.fit', 'tests/workdir/image/m51.fit')
-    shutil.copy('tests/testData/star1.fits', 'tests/workdir/image/star1.fits')
-    shutil.copy('tests/testData/star2.fits', 'tests/workdir/image/star2.fits')
+    app.mainW.move(100, 100)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
-    for i in range(1):
-        qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-        imageW = app.uiWindows['showImageW']['classObj']
-        qtbot.waitExposed(imageW, 1000)
-        imageW.ui.imageFileName.setText('m51.fit')
-        app.showImage.emit('tests/workdir/image/m51.fit')
-        QTest.qWait(1000)
-        qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
+    imageW = app.uiWindows['showImageW']['classObj']
+    imageW.move(900, 100)
+
+    qtbot.waitExposed(imageW, timeout=1000)
+    imageW.ui.enablePhotometry.setChecked(True)
+
+    for i in range(50):
+        app.showImage.emit(f'tests/workDir/image/star{i%3 + 1}.fits')
         QTest.qWait(1000)
 
+    QTest.qWait(1000)
+    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+
+
+def test_showImagesPhotometryN(qtbot, qapp):
+    # open all windows and close them
+    def run():
+        qapp.exec_()
+
+    app = MountWizzard4(mwGlob=mwglob, application=qapp)
+    worker = Worker(run)
+    tp.start(worker)
+    app.mainW.move(100, 100)
+    qtbot.waitExposed(app.mainW, timeout=1000)
+
+    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
+    imageW = app.uiWindows['showImageW']['classObj']
+    imageW.move(900, 100)
+
+    qtbot.waitExposed(imageW, timeout=1000)
+    imageW.ui.enablePhotometry.setChecked(True)
+
+    qtbot.mouseClick(imageW.ui.exposeN, Qt.LeftButton)
+    QTest.qWait(3000)
+    qtbot.mouseClick(imageW.ui.abortExpose, Qt.LeftButton)
+
+    QTest.qWait(1000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)

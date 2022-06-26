@@ -438,12 +438,22 @@
           </item>
           <item>
            <property name="text">
-            <string>Star more</string>
+            <string>Star plus</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Star extended</string>
            </property>
           </item>
           <item>
            <property name="text">
             <string>Star max</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Star extreme</string>
            </property>
           </item>
          </widget>

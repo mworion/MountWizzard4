@@ -231,7 +231,7 @@ def test_writeHeaderDataToGUI_4(function):
     assert suc
 
 
-def test_showTabImage(function):
+def test_showTabImage_1(function):
     function.imgP = Photometry(function)
     function.imgP.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function,
@@ -242,6 +242,11 @@ def test_showTabImage(function):
                                    'writeHeaderDataToGUI'):
                 suc = function.showTabImage()
                 assert suc
+
+
+def test_showTabImage_2(function):
+    suc = function.showTabImage(imageValid=False)
+    assert not suc
 
 
 def test_showTabHFR(function):
@@ -357,6 +362,11 @@ def test_resultPhotometry_2(function):
 
 
 def test_processPhotometry_1(function):
+    suc = function.processPhotometry(imageValid=False)
+    assert suc
+
+
+def test_processPhotometry_2(function):
     function.ui.enablePhotometry.setChecked(True)
     function.imgP = Photometry(function)
     with mock.patch.object(function.imgP,
@@ -365,7 +375,7 @@ def test_processPhotometry_1(function):
         assert suc
 
 
-def test_processPhotometry_2(function):
+def test_processPhotometry_3(function):
     function.ui.enablePhotometry.setChecked(False)
     function.imgP = Photometry(function)
     with mock.patch.object(function,

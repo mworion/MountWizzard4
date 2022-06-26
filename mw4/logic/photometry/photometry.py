@@ -56,13 +56,16 @@ class Photometry:
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
 
-    def __init__(self, app, imagePath=''):
+    def __init__(self, app, imagePath='', flipH=False, flipV=False, snTarget=15):
         self.threadPool = app.threadPool
         self.signals = PhotometrySignals()
 
         self.image = None
         self.header = None
         self.aberrationImage = None
+        self.flipV = flipV
+        self.flipH = flipH
+        self.snTarget = snTarget
 
         self.objs = None
         self.objsAll = None
@@ -85,7 +88,8 @@ class Photometry:
         self.backgroundMax = None
         self.backgroundRMS = None
 
-        self.HFR = None
+        self.hfr = None
+        self.hfrAll = None
         self.hfrMin = None
         self.hfrMax = None
         self.hfrPercentile = None
@@ -113,10 +117,10 @@ class Photometry:
         radius = np.sqrt(x * x + y * y)
         maskOuter = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.75 < radius
         maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
-        self.hfrOuter = np.median(self.HFR[maskOuter])
-        self.hfrInner = np.median(self.HFR[maskInner])
-        self.hfrPercentile = np.percentile(self.HFR, 90)
-        self.hfrMedian = np.median(self.HFR)
+        self.hfrOuter = np.median(self.hfr[maskOuter])
+        self.hfrInner = np.median(self.hfr[maskInner])
+        self.hfrPercentile = np.percentile(self.hfr, 90)
+        self.hfrMedian = np.median(self.hfr)
         return True
 
     def workerGetHFR(self):
@@ -124,8 +128,8 @@ class Photometry:
         :return:
         """
         img = griddata((self.objs['x'], self.objs['y']),
-                       self.HFR, (self.xm, self.ym),
-                       method='nearest', fill_value=np.min(self.HFR))
+                       self.hfr, (self.xm, self.ym),
+                       method='nearest', fill_value=np.min(self.hfr))
         self.hfrGrid = uniform_filter(img, size=[self.filterConstH,
                                       self.filterConstW])
         minB, maxB = np.percentile(self.hfrGrid, (50, 95))
@@ -142,9 +146,9 @@ class Photometry:
         b = self.objs['b']
         aspectRatio = np.maximum(a / b, b / a)
         minB, maxB = np.percentile(aspectRatio, (50, 95))
-        img = griddata((self.objs['x'], self.objs['y']), aspectRatio, (self.xm,
-                                                                       self.ym),
-                       method='linear', fill_value=np.min(aspectRatio))
+        img = griddata((self.objs['x'], self.objs['y']), aspectRatio,
+                       (self.xm, self.ym), method='linear',
+                       fill_value=np.min(aspectRatio))
         self.roundnessGrid = uniform_filter(img, size=[self.filterConstH,
                                             self.filterConstW])
         self.roundnessPercentile = np.percentile(aspectRatio, 90)
@@ -171,7 +175,7 @@ class Photometry:
                 xMax = xRange[ix + 1]
                 yMin = yRange[iy]
                 yMax = yRange[iy + 1]
-                hfr = self.HFR[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
+                hfr = self.hfr[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
                 med_hfr = np.median(hfr)
                 segHFR[ix][iy] = med_hfr
         self.hfrSegSquare = segHFR
@@ -193,7 +197,7 @@ class Photometry:
         for i in range(36):
             mask3 = rangeA[i] < angles
             mask4 = rangeA[i + 1] > angles
-            segHFR[i] = np.median(self.HFR[mask1 & mask2 & mask3 & mask4])
+            segHFR[i] = np.median(self.hfr[mask1 & mask2 & mask3 & mask4])
         self.hfrSegTriangle = np.concatenate([segHFR, segHFR])
         self.signals.hfrTriangle.emit()
         return True
@@ -266,15 +270,13 @@ class Photometry:
 
         try:
             objs = sep.extract(image_sub, 2.5, err=self.bkg.rms(),
-                               filter_type='matched', minarea=7)
+                               filter_type='matched', minarea=11)
         except Exception as e:
             self.log.error(e)
             self.objs = None
             self.objsAll = None
-            self.HFR = None
+            self.hfr = None
             return False
-
-        self.objsAll = objs
 
         # limiting the resulting object by some constraints
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
@@ -309,13 +311,16 @@ class Photometry:
             image_sub, objs['x'], objs['y'], 6.0 * objs['a'], PHOT_FLUXFRAC,
             normflux=flux, subpix=5)
 
+        self.objsAll = objs
+        self.hfrAll = radius[:, 0]
+
         # limiting the resulting object by checking the S/N values
         back = self.bkg.back()
         b = []
         for x, y in zip(objs['x'], objs['y']):
             b.append(back[int(y)][int(x)])
         sn = flux / np.sqrt(np.abs(b * radius[:, 1] * radius[:, 1] * np.pi))
-        mask = (sn > 10)
+        mask = (sn > self.snTarget)
         objs = objs[mask]
         radius = radius[:, 0]
         radius = radius[mask]
@@ -323,7 +328,7 @@ class Photometry:
         # and we need a min and max of HFR
         mask = radius < 10
         self.objs = objs[mask]
-        self.HFR = radius[mask]
+        self.hfr = radius[mask]
         self.runCalcs()
         return True
 
@@ -377,7 +382,10 @@ class Photometry:
         """
         :return:
         """
-        self.image = np.flipud(self.image)
+        if not self.flipV:
+            self.image = np.flipud(self.image)
+        if self.flipH:
+            self.image = np.fliplr(self.image)
         self.image = (self.image / np.max(self.image) * 65536.0).astype('float32')
         return True
 

@@ -104,6 +104,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.move(x, y)
 
         self.ui.color.setCurrentIndex(config.get('color', 0))
+        self.ui.snSelector.setCurrentIndex(config.get('snSelector', 0))
         self.ui.tabImage.setCurrentIndex(config.get('tabImage', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
@@ -113,6 +114,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.embedData.setChecked(config.get('embedData', False))
         self.ui.enablePhotometry.setChecked(config.get('enablePhotometry', False))
         self.ui.isoLayer.setChecked(config.get('isoLayer', False))
+        self.ui.flipH.setChecked(config.get('flipH', False))
+        self.ui.flipV.setChecked(config.get('flipV', False))
         self.ui.showValues.setChecked(config.get('showValues', False))
         self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
         self.ui.timeTagImage.setChecked(config.get('timeTagImage', True))
@@ -131,6 +134,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['color'] = self.ui.color.currentIndex()
+        config['snSelector'] = self.ui.snSelector.currentIndex()
         config['tabImage'] = self.ui.tabImage.currentIndex()
         config['imageFileName'] = self.imageFileName
         config['showCrosshair'] = self.ui.showCrosshair.isChecked()
@@ -139,6 +143,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['embedData'] = self.ui.embedData.isChecked()
         config['enablePhotometry'] = self.ui.enablePhotometry.isChecked()
         config['isoLayer'] = self.ui.isoLayer.isChecked()
+        config['flipH'] = self.ui.flipH.isChecked()
+        config['flipV'] = self.ui.flipV.isChecked()
         config['showValues'] = self.ui.showValues.isChecked()
         config['offsetTiltAngle'] = self.ui.offsetTiltAngle.value()
         config['timeTagImage'] = self.ui.timeTagImage.isChecked()
@@ -156,9 +162,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
-        self.ui.enablePhotometry.clicked.connect(self.processPhotometry)
-        self.ui.isoLayer.clicked.connect(self.processPhotometry)
-        self.ui.showValues.clicked.connect(self.processPhotometry)
+        self.ui.enablePhotometry.clicked.connect(self.showCurrent)
+        self.ui.isoLayer.clicked.connect(self.showCurrent)
+        self.ui.showValues.clicked.connect(self.showCurrent)
+        self.ui.flipH.clicked.connect(self.showCurrent)
+        self.ui.flipV.clicked.connect(self.showCurrent)
+        self.ui.snSelector.currentIndexChanged.connect(self.showCurrent)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.solveCenter.clicked.connect(self.solveCenter)
@@ -367,7 +376,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.ui.hfrPercentile.setText(f'{self.imgP.hfrPercentile:1.1f}')
         self.ui.medianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
-        self.ui.numberStars.setText(f'{len(self.imgP.HFR):1.0f}')
+        self.ui.numberStars.setText(f'{len(self.imgP.hfr):1.0f}')
         if self.ui.isoLayer.isChecked():
             self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.imgP.hfrGrid, levels=20)
         self.ui.tabImage.setTabEnabled(1, True)
@@ -455,7 +464,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textSquareTiltOffAxis.setText(t)
         self.ui.squareMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
-        self.ui.squareNumberStars.setText(f'{len(self.imgP.HFR):1.0f}')
+        self.ui.squareNumberStars.setText(f'{len(self.imgP.hfr):1.0f}')
         self.ui.tabImage.setTabEnabled(2, True)
         return True
 
@@ -557,7 +566,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textTriangleTiltOffAxis.setText(t)
         self.ui.triangleMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
-        self.ui.triangleNumberStars.setText(f'{len(self.imgP.HFR):1.0f}')
+        self.ui.triangleNumberStars.setText(f'{len(self.imgP.hfr):1.0f}')
         self.ui.tabImage.setTabEnabled(3, True)
         return True
 
@@ -616,7 +625,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 objs['a'][i] * 4, objs['b'][i] * 4,
                 objs['theta'][i])
             if self.ui.showValues.isChecked():
-                t = f'{self.imgP.HFR[i]:2.1f}'
+                t = f'{self.imgP.hfr[i]:2.1f}'
                 item = pg.TextItem(text=t, color=self.M_BLUE, anchor=(1, 1))
                 item.setPos(objs['x'][i], objs['y'][i])
                 item.setFont(self.fontAnno)
@@ -706,7 +715,11 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.changeStyleDynamic(self.ui.headerGroup, 'running', True)
         self.setWindowTitle(f'Imaging:   {os.path.basename(imagePath)}')
-        self.imgP = Photometry(self.app, imagePath)
+        flipH = self.ui.flipH.isChecked()
+        flipV = self.ui.flipV.isChecked()
+        sn = [20, 10, 5]
+        snSelector = sn[self.ui.snSelector.currentIndex()]
+        self.imgP = Photometry(self.app, imagePath, flipH, flipV, snSelector)
         self.imgP.signals.imageLoaded.connect(self.showTabImage)
         self.imgP.signals.imageLoaded.connect(self.processPhotometry)
         self.imgP.signals.sepFinished.connect(self.resultPhotometry)

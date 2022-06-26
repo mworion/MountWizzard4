@@ -104,7 +104,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>95</width>
             <height>21</height>
            </size>
           </property>
@@ -120,7 +120,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>95</width>
             <height>21</height>
            </size>
           </property>
@@ -136,7 +136,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>95</width>
             <height>21</height>
            </size>
           </property>
@@ -149,7 +149,7 @@
          <widget class="QPushButton" name="load">
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>95</width>
             <height>21</height>
            </size>
           </property>
@@ -162,7 +162,7 @@
          <widget class="QCheckBox" name="enablePhotometry">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>100</width>
             <height>0</height>
            </size>
           </property>
@@ -178,7 +178,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>95</width>
             <height>21</height>
            </size>
           </property>
@@ -194,7 +194,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>95</width>
             <height>21</height>
            </size>
           </property>
@@ -207,7 +207,7 @@
          <widget class="QCheckBox" name="embedData">
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>100</width>
             <height>21</height>
            </size>
           </property>
@@ -223,12 +223,12 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>95</width>
             <height>21</height>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Solves the actual image and centers to mount to this coordinates&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Solves the actual image and centers the mount point to this coordinates. So the mount will slew to this position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Solve 'n' Center</string>
@@ -239,7 +239,7 @@
          <widget class="QCheckBox" name="autoSolve">
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>100</width>
             <height>21</height>
            </size>
           </property>
@@ -250,15 +250,17 @@
         </item>
         <item row="1" column="3">
          <widget class="QCheckBox" name="timeTagImage">
-          <property name="text">
-           <string>Add time tags</string>
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="timeTagImage">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the filename of the image is extended with the actual time to make it unique. Otherwise the file get just &amp;quot;exposure&amp;quot; and will be overwritten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
-           <string>TimeTagImage</string>
+           <string>Time tags</string>
           </property>
          </widget>
         </item>
@@ -286,7 +288,7 @@
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="Imageview">
         <property name="leftMargin">
          <number>5</number>
         </property>
@@ -309,7 +311,7 @@
          <widget class="QCheckBox" name="showCrosshair">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>105</width>
             <height>21</height>
            </size>
           </property>
@@ -317,7 +319,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing a red cross hair in the center of the image.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Show crosshair  </string>
+           <string>Crosshair  </string>
           </property>
          </widget>
         </item>
@@ -356,25 +358,94 @@
           </item>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="aspectLocked">
+        <item row="2" column="2">
+         <widget class="QCheckBox" name="showValues">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Aspect locked</string>
+           <string>Show values</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="2" column="1">
+         <widget class="QCheckBox" name="flipV">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Flip V</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="flipH">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Flip H</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
          <widget class="QCheckBox" name="isoLayer">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>2D contour</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QCheckBox" name="showValues">
-          <property name="text">
-           <string>Show values</string>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="aspectLocked">
+          <property name="minimumSize">
+           <size>
+            <width>105</width>
+            <height>0</height>
+           </size>
           </property>
+          <property name="text">
+           <string>Lock aspect</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QComboBox" name="snSelector">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>21</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>Star norm</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Star more</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Star max</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

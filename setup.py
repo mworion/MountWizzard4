@@ -38,6 +38,8 @@ releaseNotes = """
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: image: photometry functions (aberration, roundness, etc.)
+- add: image: tilt estimation like ASTAP does
+- add: image: add flip H and flip V
 - add: image: solve and center to image
 - add: imaging: separate page for imaging stats now
 - add: imaging: calcs for plate solvers (index files etc.)
@@ -50,11 +52,13 @@ releaseNotes = """
 - improve: GUI: cleanup of gui
 - improve: GUI: iers download messages
 - improve: model points: optimized DSO path generation (always fit, less params)
+- improve: plate solve: compatibility checks 
 - improve: system: use latest PyQt5 version for python 3.10
 - improve: system: adjust window sizes to be able to make mosaic layout on desktop
 - improve: system: moved to actual jpl kernel de440.bsp for ephemeris calcs
 - remove: system: matplotlib package and replace with more performant pyqtgraph
 - remove: system: PIL package and replace with more powerful cv2
+- remove: system: move from deprecated distutils to packaging
 - remove: imageW: stacking in imageW as it was never used
 - fix: drivers: device selection tab was not properly positioned in device popup
  """
@@ -119,6 +123,7 @@ setup(
         'websocket-client==1.3.3',
         'hidapi==0.12.0.post2',
         'range-key-dict==1.1.0',
+        'packaging==21.3',
     ]
     + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])

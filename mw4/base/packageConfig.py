@@ -15,7 +15,7 @@
 #
 ###########################################################
 import platform
-from distutils.version import StrictVersion
+from packaging.utils import Version
 
 excludedPlatforms = ['armv7l', 'aarch64']
 isAvailable = platform.machine() not in excludedPlatforms
@@ -26,7 +26,7 @@ isMac = platform.system() == 'Darwin'
 
 
 def checkAutomation():
-    verResult = StrictVersion('3.8.2') <= StrictVersion(platform.python_version())
+    verResult = Version('3.8.2') <= Version(platform.python_version())
     winResult = platform.system() == 'Windows'
     result = verResult and winResult
     return result

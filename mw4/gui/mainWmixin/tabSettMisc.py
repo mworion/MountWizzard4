@@ -22,7 +22,7 @@ import platform
 
 # external packages
 from pkg_resources import working_set
-from distutils.version import StrictVersion
+from packaging.utils import Version
 import PyQt5
 if pConf.isAvailable:
     import PyQt5.QtMultimedia
@@ -375,7 +375,7 @@ class SettMisc(object):
             return None, None, None
 
         vPackage = list(response['releases'].keys())
-        vPackage.sort(key=StrictVersion, reverse=True)
+        vPackage.sort(key=Version, reverse=True)
 
         verBeta = [x for x in vPackage if 'b' in x]
         verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
@@ -419,7 +419,7 @@ class SettMisc(object):
         self.ui.versionAvailable.setText(availPackage)
         self.ui.installVersion.setEnabled(True)
 
-        if StrictVersion(availPackage) <= StrictVersion(actPackage):
+        if Version(availPackage) <= Version(actPackage):
             return True
 
         t = f'A new version ({availPackage}) of MountWizzard is available!'

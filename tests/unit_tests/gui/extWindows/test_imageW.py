@@ -363,7 +363,7 @@ def test_resultPhotometry_2(function):
 
 def test_processPhotometry_1(function):
     suc = function.processPhotometry(imageValid=False)
-    assert suc
+    assert not suc
 
 
 def test_processPhotometry_2(function):

@@ -37,11 +37,3 @@ runs:
     - name: install #5
       run: python -m pip install pytest-pythonpath
       shell: bash
-    
-    - name: install #6
-      run: python -m pip install pyqt5==5.15.4
-      shell: bash
-    
-    - name: install #7
-      run: python -m pip install pyqt3d==5.15.4
-      shell: bash

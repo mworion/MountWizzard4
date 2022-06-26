@@ -35,6 +35,7 @@ from gui.extWindows.simulator import tools
 def function(qapp):
     func = SimulatorWindow(app=App())
     yield func
+    del func
 
 
 def test_initConfig_1(function):

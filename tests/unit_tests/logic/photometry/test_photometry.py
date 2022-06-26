@@ -258,6 +258,33 @@ def test_cleanImageFormat(function):
     assert function.image.dtype == np.dtype('float32')
 
 
+def test_checkValidImageFormat_1(function):
+    function.image = None
+    suc = function.checkValidImageFormat()
+    assert not suc
+
+
+def test_checkValidImageFormat_2(function):
+    function.image = np.random.rand(100, 100)
+    function.header = None
+    suc = function.checkValidImageFormat()
+    assert not suc
+
+
+def test_checkValidImageFormat_3(function):
+    function.image = np.random.rand(100, 100)
+    function.header = {}
+    suc = function.checkValidImageFormat()
+    assert not suc
+
+
+def test_checkValidImageFormat_4(function):
+    function.image = np.random.rand(100, 100)
+    function.header = {'NAXIS': 2}
+    suc = function.checkValidImageFormat()
+    assert suc
+
+
 def test_workerLoadImage_1(function):
     class Data:
         data = np.random.rand(100, 100)
@@ -277,8 +304,11 @@ def test_workerLoadImage_1(function):
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        suc = function.workerLoadImage(imageFileName)
-        assert not suc
+        with mock.patch.object(function,
+                               'checkValidImageFormat',
+                               return_value=False):
+            suc = function.workerLoadImage(imageFileName)
+            assert not suc
 
 
 def test_workerLoadImage_2(function):
@@ -300,8 +330,11 @@ def test_workerLoadImage_2(function):
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        suc = function.workerLoadImage(imageFileName)
-        assert not suc
+        with mock.patch.object(function,
+                               'checkValidImageFormat',
+                               return_value=False):
+            suc = function.workerLoadImage(imageFileName)
+            assert not suc
 
 
 def test_workerLoadImage_3(function):
@@ -326,8 +359,11 @@ def test_workerLoadImage_3(function):
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
-        suc = function.workerLoadImage(imageFileName)
-        assert suc
+        with mock.patch.object(function,
+                               'checkValidImageFormat',
+                               return_value=True):
+            suc = function.workerLoadImage(imageFileName)
+            assert suc
 
 
 def test_processImage_1(function):

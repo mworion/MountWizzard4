@@ -26,6 +26,7 @@ from PyQt5.QtGui import QCloseEvent
 from astropy.io import fits
 from skyfield.api import Angle
 import numpy as np
+import pyqtgraph as pg
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -316,7 +317,8 @@ def test_showTabImageSources(function):
 
     function.ui.showValues.setChecked(True)
     with mock.patch.object(function.ui.imageSource,
-                           'addEllipse'):
+                           'addEllipse',
+                           return_value=pg.PlotItem()):
         suc = function.showTabImageSources()
         assert suc
 

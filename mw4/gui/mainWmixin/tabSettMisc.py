@@ -28,8 +28,7 @@ if pConf.isAvailable:
     import PyQt5.QtMultimedia
 import requests
 import importlib_metadata
-from astropy.utils import iers
-from astropy.utils import data
+from astropy.utils import iers, data
 import hid
 import webbrowser
 

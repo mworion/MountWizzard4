@@ -20,7 +20,8 @@ on:
       - 'setup.py'
       - 'tox.ini'
       - '.github/workflows/unit_win.yml'
-
+      - '.github/actions/build_package/action.yml'
+      - '.github/actions/setup_test/action.yml'
 jobs:
   build_package:
     #

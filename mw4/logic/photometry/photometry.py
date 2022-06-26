@@ -266,7 +266,7 @@ class Photometry:
 
         try:
             objs = sep.extract(image_sub, 2.5, err=self.bkg.rms(),
-                               filter_type='matched', minarea=11)
+                               filter_type='matched', minarea=7)
         except Exception as e:
             self.log.error(e)
             self.objs = None
@@ -278,11 +278,11 @@ class Photometry:
 
         # limiting the resulting object by some constraints
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
-        mask = (r < 10) & (r > 1.25)
+        mask = (r < 10) & (r > 0.8)
         objs = objs[mask]
 
         # equivalent to FLUX_AUTO of sextractor
-        PHOT_AUTOPARAMS = [2.0, 3.0]
+        PHOT_AUTOPARAMS = [2.5, 3.5]
 
         kronRad, krFlag = sep.kron_radius(
             image_sub, objs['x'], objs['y'], objs['a'], objs['b'], objs['theta'], 6.0)
@@ -315,13 +315,13 @@ class Photometry:
         for x, y in zip(objs['x'], objs['y']):
             b.append(back[int(y)][int(x)])
         sn = flux / np.sqrt(np.abs(b * radius[:, 1] * radius[:, 1] * np.pi))
-        mask = (sn > 20)
+        mask = (sn > 10)
         objs = objs[mask]
         radius = radius[:, 0]
         radius = radius[mask]
 
         # and we need a min and max of HFR
-        mask = np.logical_and(radius > 1, radius < 20)
+        mask = radius < 10
         self.objs = objs[mask]
         self.HFR = radius[mask]
         self.runCalcs()

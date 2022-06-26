@@ -79,6 +79,7 @@ class SettImaging:
         self.ui.focuserStepsize.setValue(config.get('focuserStepsize', 100))
         self.ui.fastDownload.setChecked(config.get('fastDownload', False))
         self.ui.keepImages.setChecked(config.get('keepImages', False))
+
         return True
 
     def storeConfig(self):

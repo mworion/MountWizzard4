@@ -75,7 +75,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.pen = pg.mkPen(color=self.M_BLUE, width=2)
         self.penPink = pg.mkPen(color=self.M_PINK + '80', width=5)
         self.fontText = QFont(self.window().font().family(), 16)
-        self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
+        self.fontAnno = QFont(self.window().font().family(), 8, italic=True)
         self.fontText.setBold(True)
 
         self.deviceStat = {
@@ -115,6 +115,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.isoLayer.setChecked(config.get('isoLayer', False))
         self.ui.showValues.setChecked(config.get('showValues', False))
         self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
+        self.ui.timeTagImage.setChecked(config.get('timeTagImage', True))
         self.setCrosshair()
         return True
 
@@ -140,6 +141,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['isoLayer'] = self.ui.isoLayer.isChecked()
         config['showValues'] = self.ui.showValues.isChecked()
         config['offsetTiltAngle'] = self.ui.offsetTiltAngle.value()
+        config['timeTagImage'] = self.ui.timeTagImage.isChecked()
         return True
 
     def showWindow(self):
@@ -725,7 +727,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         fastReadout = self.app.camera.fastDownload
 
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        fileName = time + '-exposure.fits'
+
+        if self.ui.timeTagImage.isChecked():
+            fileName = time + '-exposure.fits'
+        else:
+            fileName = 'exposure.fits'
+
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
         focalLength = self.app.telescope.focalLength
 

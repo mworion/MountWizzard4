@@ -677,18 +677,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if not imageValid:
-            self.processImageRunning = False
-            return False
-
         isPhotometry = self.ui.enablePhotometry.isChecked()
-        self.ui.showValues.setEnabled(isPhotometry)
-        self.ui.isoLayer.setEnabled(isPhotometry)
 
-        if not isPhotometry:
+        if not imageValid or not isPhotometry:
             self.clearGui()
             self.processImageRunning = False
             return False
+
+        self.ui.showValues.setEnabled(isPhotometry)
+        self.ui.isoLayer.setEnabled(isPhotometry)
 
         self.imgP.processPhotometry()
         return True

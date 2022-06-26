@@ -88,6 +88,8 @@ class Photometry:
         self.backgroundMin = None
         self.backgroundMax = None
         self.backgroundRMS = None
+        self.backSignal = None
+        self.backRMS = None
 
         self.hfr = None
         self.hfrAll = None
@@ -227,10 +229,9 @@ class Photometry:
         """
         :return:
         """
-        back = self.bkg.back()
-        maxB = np.max(back) / self.bkg.globalback
-        minB = np.min(back) / self.bkg.globalback
-        img = back / self.bkg.globalback
+        maxB = np.max(self.backSignal) / self.bkg.globalback
+        minB = np.min(self.backSignal) / self.bkg.globalback
+        img = self.backSignal / self.bkg.globalback
         self.background = uniform_filter(img, size=[self.filterConstH,
                                          self.filterConstW])
         self.backgroundMin = minB
@@ -242,9 +243,9 @@ class Photometry:
         """
         :return:
         """
-        img = self.bkg.rms()
-        self.backgroundRMS = uniform_filter(img, size=[self.filterConstH,
-                                            self.filterConstW])
+        self.backgroundRMS = uniform_filter(self.backRMS,
+                                            size=[self.filterConstH,
+                                                  self.filterConstW])
         self.signals.backgroundRMS.emit()
         return True
 
@@ -268,9 +269,11 @@ class Photometry:
         """
         self.bkg = sep.Background(self.image, bw=32, bh=32)
         image_sub = self.image - self.bkg
+        self.backRMS = self.bkg.rms()
+        self.backSignal = self.bkg.back()
 
         try:
-            objs = sep.extract(image_sub, 3.0, err=self.bkg.rms(),
+            objs = sep.extract(image_sub, 3.0, err=self.backRMS,
                                filter_kernel=None,
                                minarea=7)
         except Exception as e:
@@ -321,10 +324,9 @@ class Photometry:
         self.hfrAll = radius[:, 0]
 
         # limiting the resulting object by checking the S/N values
-        back = self.bkg.back()
         b = []
         for x, y in zip(objs['x'], objs['y']):
-            b.append(back[int(y)][int(x)])
+            b.append(self.backSignal[int(y)][int(x)])
         sn = flux / np.sqrt(np.abs(b * radius[:, 1] * radius[:, 1] * np.pi))
         mask = (sn > self.snTarget)
         objs = objs[mask]

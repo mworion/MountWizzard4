@@ -43,7 +43,6 @@ jobs:
       - name: install head
         uses: ./.github/actions/install_ubuntu_head
     
-    
       - name: install package
         uses: ./.github/actions/setup_test
 

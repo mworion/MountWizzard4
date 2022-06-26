@@ -815,7 +815,7 @@ class ImageBar(PlotBase):
         ellipse.setTransform(tr)
         ellipse.setPen(self.penPink)
         self.p[0].addItem(ellipse)
-        return True
+        return ellipse
 
     def addValueAnnotation(self, x, y, value):
         """

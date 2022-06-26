@@ -55,7 +55,7 @@ class Photometry:
 
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
-    SN = [25, 15, 5]
+    SN = [30, 20, 10]
 
     def __init__(self, app, imagePath='', flipH=False, flipV=False, snSelector=0):
         self.threadPool = app.threadPool
@@ -271,8 +271,8 @@ class Photometry:
 
         try:
             objs = sep.extract(image_sub, 3.0, err=self.bkg.rms(),
-                               filter_type='matched',
-                               filter_kernel=None, minarea=7)
+                               filter_kernel=None,
+                               minarea=7)
         except Exception as e:
             self.log.error(e)
             self.objs = None
@@ -339,8 +339,6 @@ class Photometry:
         self.runCalcs()
         objsHFR = len(self.objs)
         self.log.info(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
-                      f'HFR:{objsHFR}')
-        print(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
                       f'HFR:{objsHFR}')
         return True
 

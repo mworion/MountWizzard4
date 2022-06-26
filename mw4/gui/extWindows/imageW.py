@@ -75,7 +75,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.pen = pg.mkPen(color=self.M_BLUE, width=2)
         self.penPink = pg.mkPen(color=self.M_PINK + '80', width=5)
         self.fontText = QFont(self.window().font().family(), 16)
-        self.fontAnno = QFont(self.window().font().family(), 8, italic=True)
+        self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)
 
         self.deviceStat = {
@@ -620,16 +620,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.imageSource.setImage(imageDisp=self.imgP.image)
         objs = self.imgP.objs
         for i in range(len(objs)):
-            self.ui.imageSource.addEllipse(
+            eItem = self.ui.imageSource.addEllipse(
                 objs['x'][i], objs['y'][i],
                 objs['a'][i] * 4, objs['b'][i] * 4,
                 objs['theta'][i])
             if self.ui.showValues.isChecked():
                 t = f'{self.imgP.hfr[i]:2.1f}'
                 item = pg.TextItem(text=t, color=self.M_BLUE, anchor=(1, 1))
-                item.setPos(objs['x'][i], objs['y'][i])
                 item.setFont(self.fontAnno)
-                self.ui.imageSource.p[0].addItem(item)
+                item.setParentItem(eItem)
         self.ui.tabImage.setTabEnabled(6, True)
         return True
 

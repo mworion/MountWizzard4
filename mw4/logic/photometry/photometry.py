@@ -55,7 +55,8 @@ class Photometry:
 
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
-    SN = [30, 20, 10]
+    SN = [30, 20, 15, 10, 10]
+    SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
 
     def __init__(self, app, imagePath='', flipH=False, flipV=False, snSelector=0):
         self.threadPool = app.threadPool
@@ -67,6 +68,7 @@ class Photometry:
         self.flipV = flipV
         self.flipH = flipH
         self.snTarget = self.SN[snSelector]
+        self.sepThreshold = self.SEP[snSelector]
 
         self.objs = None
         self.objsAll = None
@@ -273,7 +275,7 @@ class Photometry:
         self.backSignal = self.bkg.back()
 
         try:
-            objs = sep.extract(image_sub, 3.0, err=self.backRMS,
+            objs = sep.extract(image_sub, self.sepThreshold, err=self.backRMS,
                                filter_kernel=None,
                                minarea=7)
         except Exception as e:
@@ -288,7 +290,7 @@ class Photometry:
 
         # limiting the resulting object by some constraints
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
-        mask = (r < 10) & (r > 0.8)
+        mask = (r < 15) & (r > 0.8)
         objs = objs[mask]
         objsSelect = len(objs)
 

@@ -117,7 +117,7 @@ def test_2(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openAnalyseW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showAnalyseW']['classObj'], timeout=1000)
@@ -134,7 +134,7 @@ def test_3(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showHemisphereW']['classObj'], timeout=1000)
@@ -151,7 +151,7 @@ def test_4(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showImageW']['classObj'], timeout=1000)
@@ -168,7 +168,7 @@ def test_5(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openKeypadW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showKeypadW']['classObj'], timeout=1000)
@@ -185,7 +185,7 @@ def test_6(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showMeasureW']['classObj'], timeout=1000)
@@ -202,7 +202,7 @@ def test_7(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showMessageW']['classObj'], timeout=1000)
@@ -219,7 +219,7 @@ def test_8(qtbot, qapp):
 
     worker = Worker(run)
     tp.start(worker)
-    qtbot.waitExposed(app.mainW, 1000)
+    qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
     qtbot.waitExposed(app.uiWindows['showSatelliteW']['classObj'], timeout=1000)

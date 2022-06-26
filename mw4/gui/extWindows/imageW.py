@@ -368,19 +368,18 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
+        self.clearImageTab(self.ui.hfr)
         self.ui.hfr.setImage(imageDisp=self.imgP.hfrGrid)
         self.ui.hfr.p[0].showAxes(False, showValues=False)
         self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
         self.ui.hfr.barItem.setLevels(
             (self.imgP.hfrMin, self.imgP.hfrMax))
-
         self.ui.hfrPercentile.setText(f'{self.imgP.hfrPercentile:1.1f}')
         self.ui.medianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
         self.ui.numberStars.setText(f'{len(self.imgP.hfr):1.0f}')
         if self.ui.isoLayer.isChecked():
             self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.imgP.hfrGrid, levels=20)
         self.ui.tabImage.setTabEnabled(1, True)
-
         return True
 
     def showTabTiltSquare(self):
@@ -574,6 +573,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
+        self.clearImageTab(self.ui.roundness)
         self.ui.roundness.setImage(imageDisp=self.imgP.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
         self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)

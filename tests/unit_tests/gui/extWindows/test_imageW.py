@@ -423,6 +423,7 @@ def test_exposeRaw_1(function):
     function.app.camera.expTime = 3
     function.app.camera.binning = 3
     function.app.camera.subFrame = 100
+    function.ui.timeTagImage.setChecked(True)
     with mock.patch.object(function.app.camera,
                            'expose',
                            return_value=True):
@@ -431,6 +432,18 @@ def test_exposeRaw_1(function):
 
 
 def test_exposeRaw_2(function):
+    function.app.camera.expTime = 3
+    function.app.camera.binning = 3
+    function.app.camera.subFrame = 100
+    function.ui.timeTagImage.setChecked(False)
+    with mock.patch.object(function.app.camera,
+                           'expose',
+                           return_value=True):
+        suc = function.exposeRaw()
+        assert suc
+
+
+def test_exposeRaw_3(function):
     function.app.camera.expTime = 3
     function.app.camera.binning = 3
     function.app.camera.subFrame = 100

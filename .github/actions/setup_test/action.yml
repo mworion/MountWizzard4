@@ -2,7 +2,7 @@
 # v1.0, Michael Wuertenberger
 #
 name: setup test
-description: download package install and install testenvironment
+description: download package install and install test environment
 
 runs:
   using: 'composite'
@@ -35,7 +35,8 @@ runs:
       shell: bash
     
     - name: install #5
-      run: python -m pip install pytest-pythonpath
+      run: python -m pip install pyqt3d==5.15.4
+      # run: python -m pip install pytest-pythonpath
       shell: bash
     
     - name: install #6

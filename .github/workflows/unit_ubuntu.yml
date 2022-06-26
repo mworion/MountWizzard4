@@ -17,6 +17,9 @@ on:
       - 'tests/unit_tests/**'
       - 'setup.py'
       - '.github/workflows/unit_ubuntu.yml'
+      - '.github/actions/install_ubuntu_head/action.yml'
+      - '.github/actions/build_package/action.yml'
+      - '.github/actions/setup_test/action.yml'
 
 jobs:
   build_package:

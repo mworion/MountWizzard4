@@ -36,7 +36,7 @@ class PhotometrySignals(QObject):
     """
     """
     __all__ = ['PhotometrySignals']
-    imageLoaded = pyqtSignal()
+    imageLoaded = pyqtSignal(object)
     hfr = pyqtSignal()
     hfrSquare = pyqtSignal()
     hfrTriangle = pyqtSignal()
@@ -381,6 +381,21 @@ class Photometry:
         self.image = (self.image / np.max(self.image) * 65536.0).astype('float32')
         return True
 
+    def checkValidImageFormat(self):
+        """
+        :return:
+        """
+        if self.image is None or len(self.image) == 0:
+            self.log.debug('No image data in FITS')
+            return False
+        if self.header is None:
+            self.log.debug('No header data in FITS')
+            return False
+        if self.header.get('NAXIS') != 2:
+            self.log.debug('Incompatible format in FITS')
+            return False
+        return True
+
     def workerLoadImage(self, imagePath):
         """
         :param imagePath:
@@ -390,11 +405,9 @@ class Photometry:
             self.image = fitsHandle[0].data
             self.header = fitsHandle[0].header
 
-        if self.image is None or len(self.image) == 0:
-            self.log.debug('No image data in FITS')
-            return False
-        if self.header is None:
-            self.log.debug('No header data in FITS')
+        isValid = self.checkValidImageFormat()
+        if not isValid:
+            self.signals.imageLoaded.emit(False)
             return False
 
         self.cleanImageFormat()
@@ -403,7 +416,7 @@ class Photometry:
             self.debayerImage(bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
-        self.signals.imageLoaded.emit()
+        self.signals.imageLoaded.emit(True)
         return True
 
     def processImage(self, imagePath=''):

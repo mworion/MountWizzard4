@@ -340,15 +340,19 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
         return True
 
-    def showTabImage(self):
+    def showTabImage(self, imageValid=True):
         """
         :return:
         """
+        self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
+        if not imageValid:
+            self.msg.emit(0, 'Image', 'Rendering error', 'Incompatible image format')
+            return False
+
         self.ui.image.setImage(imageDisp=self.imgP.image)
         self.setBarColor()
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.imgP.header)
-        self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
         return True
 
     def showTabHFR(self):
@@ -661,10 +665,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.processImageRunning = False
         return True
 
-    def processPhotometry(self):
+    def processPhotometry(self, imageValid=True):
         """
         :return:
         """
+        if not imageValid:
+            self.processImageRunning = False
+            return False
+
         isPhotometry = self.ui.enablePhotometry.isChecked()
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
@@ -687,8 +695,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not os.path.isfile(imagePath):
             return False
         if self.processImageRunning:
-            t = f'{imagePath} skipped because process ongoing'
-            self.msg.emit(0, 'Image', 'Exposing skipped', t)
+            t = f'{os.path.basename(imagePath)} skipped'
+            self.msg.emit(0, 'Image', 'Rendering', t)
             return False
 
         self.processImageRunning = True

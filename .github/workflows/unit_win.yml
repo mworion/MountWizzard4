@@ -22,7 +22,7 @@ on:
       - '.github/workflows/unit_win.yml'
 
 jobs:
-  build_widgets_resource:
+  build_package:
     #
     runs-on: 'ubuntu-latest'
     steps:
@@ -35,7 +35,7 @@ jobs:
 
   run_tests_windows_1a:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -61,7 +61,7 @@ jobs:
 
   run_tests_windows_1b:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -87,7 +87,7 @@ jobs:
 
   run_tests_windows_1c:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -113,7 +113,7 @@ jobs:
 
   run_tests_windows_2a:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -140,7 +140,7 @@ jobs:
 
   run_tests_windows_2b:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -167,7 +167,7 @@ jobs:
 
   run_tests_windows_3a:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -193,7 +193,7 @@ jobs:
 
   run_tests_windows_3b:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -219,7 +219,7 @@ jobs:
 
   run_tests_windows_3c:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -245,7 +245,7 @@ jobs:
 
   run_tests_windows_4:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -271,7 +271,7 @@ jobs:
 
   run_tests_windows_5:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:
@@ -297,7 +297,7 @@ jobs:
 
   run_tests_windows_6:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: windows-latest
     
     steps:

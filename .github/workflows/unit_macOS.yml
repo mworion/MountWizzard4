@@ -19,7 +19,7 @@ on:
       - '.github/workflows/unit_macOS.yml'
 
 jobs:
-  build_widgets_resource:
+  build_package:
     #
     runs-on: 'ubuntu-latest'
     steps:
@@ -32,7 +32,7 @@ jobs:
 
   run_tests_macos_1:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: macos-latest
     
     steps:
@@ -52,7 +52,7 @@ jobs:
 
   run_tests_macos_2:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: macos-latest
     
     steps:
@@ -74,7 +74,7 @@ jobs:
 
   run_tests_macos_3:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: macos-latest
     
     steps:
@@ -91,7 +91,7 @@ jobs:
 
   run_tests_macos_4:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: macos-latest
     
     steps:
@@ -108,7 +108,7 @@ jobs:
 
   run_tests_macos_5:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: macos-latest
     
     steps:

@@ -19,7 +19,7 @@ on:
       - '.github/workflows/unit_ubuntu.yml'
 
 jobs:
-  build_widgets_resource:
+  build_package:
     #
     runs-on: 'ubuntu-latest'
     steps:
@@ -32,7 +32,7 @@ jobs:
         
   run_tests_ubuntu_1:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: ubuntu-latest
     
     steps:
@@ -57,7 +57,7 @@ jobs:
         
   run_tests_ubuntu_2:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: ubuntu-latest
     
     steps:
@@ -81,7 +81,7 @@ jobs:
 
   run_tests_ubuntu_3:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: ubuntu-latest
     
     steps:
@@ -102,7 +102,7 @@ jobs:
 
   run_tests_ubuntu_4:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: ubuntu-latest
     
     steps:
@@ -123,7 +123,7 @@ jobs:
 
   run_tests_ubuntu_5:
     #
-    needs: build_widgets_resource
+    needs: build_package
     runs-on: ubuntu-latest
     
     steps:

@@ -199,6 +199,15 @@ def test_workerCalcPhotometry_2(function):
         assert function.objs is None
 
 
+def test_workerCalcPhotometry_3(function):
+    function.image = np.random.rand(100, 100) + 1
+    function.image[40:60, 40:60] = 100
+    with mock.patch.object(function,
+                           'runCalcs'):
+        suc = function.workerCalcPhotometry()
+        assert suc
+
+
 def test_processPhotometry(function):
     with mock.patch.object(function.threadPool,
                            'start'):
@@ -251,8 +260,10 @@ def test_debayerImage_5(function):
     assert function.image.shape == (100, 100)
 
 
-def test_cleanImageFormat(function):
+def test_cleanImageFormat_1(function):
     function.image = np.random.rand(100, 100) + 1
+    function.flipV = False
+    function.flipH = True
     suc = function.cleanImageFormat()
     assert suc
     assert function.image.dtype == np.dtype('float32')

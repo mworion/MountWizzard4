@@ -55,8 +55,9 @@ class Photometry:
 
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
+    SN = [25, 15, 5]
 
-    def __init__(self, app, imagePath='', flipH=False, flipV=False, snTarget=15):
+    def __init__(self, app, imagePath='', flipH=False, flipV=False, snSelector=0):
         self.threadPool = app.threadPool
         self.signals = PhotometrySignals()
 
@@ -65,7 +66,7 @@ class Photometry:
         self.aberrationImage = None
         self.flipV = flipV
         self.flipH = flipH
-        self.snTarget = snTarget
+        self.snTarget = self.SN[snSelector]
 
         self.objs = None
         self.objsAll = None
@@ -269,19 +270,24 @@ class Photometry:
         image_sub = self.image - self.bkg
 
         try:
-            objs = sep.extract(image_sub, 2.5, err=self.bkg.rms(),
-                               filter_type='matched', minarea=11)
+            objs = sep.extract(image_sub, 3.0, err=self.bkg.rms(),
+                               filter_type='matched',
+                               filter_kernel=None, minarea=7)
         except Exception as e:
             self.log.error(e)
             self.objs = None
             self.objsAll = None
             self.hfr = None
+            self.hfrAll = None
             return False
+
+        objsRaw = len(objs)
 
         # limiting the resulting object by some constraints
         r = np.sqrt(objs['a'] * objs['a'] + objs['b'] * objs['b'])
         mask = (r < 10) & (r > 0.8)
         objs = objs[mask]
+        objsSelect = len(objs)
 
         # equivalent to FLUX_AUTO of sextractor
         PHOT_AUTOPARAMS = [2.5, 3.5]
@@ -324,12 +330,18 @@ class Photometry:
         objs = objs[mask]
         radius = radius[:, 0]
         radius = radius[mask]
+        objsSN = len(objs)
 
         # and we need a min and max of HFR
         mask = radius < 10
         self.objs = objs[mask]
         self.hfr = radius[mask]
         self.runCalcs()
+        objsHFR = len(self.objs)
+        self.log.info(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
+                      f'HFR:{objsHFR}')
+        print(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
+                      f'HFR:{objsHFR}')
         return True
 
     def processPhotometry(self):

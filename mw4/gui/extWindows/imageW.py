@@ -717,8 +717,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.setWindowTitle(f'Imaging:   {os.path.basename(imagePath)}')
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()
-        sn = [20, 10, 5]
-        snSelector = sn[self.ui.snSelector.currentIndex()]
+        snSelector = self.ui.snSelector.currentIndex()
         self.imgP = Photometry(self.app, imagePath, flipH, flipV, snSelector)
         self.imgP.signals.imageLoaded.connect(self.showTabImage)
         self.imgP.signals.imageLoaded.connect(self.processPhotometry)

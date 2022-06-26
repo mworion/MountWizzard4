@@ -24,7 +24,7 @@ on:
 jobs:
   build_package:
     #
-    runs-on: 'ubuntu-20.04'
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,7 +36,7 @@ jobs:
   run_tests_ubuntu_1:
     #
     needs: build_package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
   run_tests_ubuntu_2:
     #
     needs: build_package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v3
@@ -85,7 +85,7 @@ jobs:
   run_tests_ubuntu_3:
     #
     needs: build_package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v3
@@ -106,7 +106,7 @@ jobs:
   run_tests_ubuntu_4:
     #
     needs: build_package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v3
@@ -127,7 +127,7 @@ jobs:
   run_tests_ubuntu_5:
     #
     needs: build_package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v3

@@ -76,8 +76,8 @@ def test_workerGetRoundness(function):
 def test_workerCalcTiltValuesSquare(function):
     function.w = 10
     function.h = 10
-    function.objs = {'x': np.linspace(0, 50, 20),
-                     'y': np.linspace(50, 100, 20)}
+    function.objs = {'x': np.linspace(0, 100, 20),
+                     'y': np.linspace(0, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.hfr = np.linspace(20, 30, 20)
     suc = function.workerCalcTiltValuesSquare()
@@ -87,8 +87,8 @@ def test_workerCalcTiltValuesSquare(function):
 def test_workerCalcTiltValuesTriangle(function):
     function.w = 10
     function.h = 10
-    function.objs = {'x': np.linspace(0, 50, 20),
-                     'y': np.linspace(50, 100, 20)}
+    function.objs = {'x': np.linspace(0, 100, 20),
+                     'y': np.linspace(0, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
     function.hfr = np.linspace(20, 30, 20)
     suc = function.workerCalcTiltValuesTriangle()

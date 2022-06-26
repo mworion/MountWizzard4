@@ -912,7 +912,7 @@ class Mount(QObject):
         location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10,
                                 elevation_m=500)
         ts = load.timescale(builtin=True)
-        timeJD = ts.tt_jd(2459580.5)
+        timeJD = ts.tt_jd(2451544.5)
         timeDiff = 0
         loader = Loader('tests/workDir', verbose=False)
         status = 0

@@ -246,7 +246,7 @@ def test_showTabImage(function):
 def test_showTabHFR(function):
     function.ui.isoLayer.setChecked(True)
     function.imgP = Photometry(function)
-    function.imgP.HFR = np.random.rand(100, 100) + 1
+    function.imgP.hfr = np.random.rand(100, 100) + 1
     function.imgP.hfrPercentile = 0
     function.imgP.hfrMedian = 0
     with mock.patch.object(function.ui.hfr,
@@ -257,7 +257,7 @@ def test_showTabHFR(function):
 
 def test_showTabTiltSquare(function):
     function.imgP = Photometry(function)
-    function.imgP.HFR = np.linspace(20, 30, 20)
+    function.imgP.hfr = np.linspace(20, 30, 20)
     function.imgP.hfrMedian = 1
     function.imgP.hfrInner = 1
     function.imgP.hfrOuter = 1
@@ -271,7 +271,7 @@ def test_showTabTiltSquare(function):
 
 def test_showTabTiltTriangle(function):
     function.imgP = Photometry(function)
-    function.imgP.HFR = np.linspace(20, 30, 20)
+    function.imgP.hfr = np.linspace(20, 30, 20)
     function.imgP.hfrMedian = 1
     function.imgP.hfrInner = 1
     function.imgP.hfrOuter = 1
@@ -312,7 +312,7 @@ def test_showTabImageSources(function):
                           'a': np.random.rand(20, 1) + 10,
                           'b': np.random.rand(20, 1) + 10}
     function.imgP.image = np.random.rand(100, 100) + 1
-    function.imgP.HFR = np.random.rand(20, ) + 10.0
+    function.imgP.hfr = np.random.rand(20, ) + 10.0
 
     function.ui.showValues.setChecked(True)
     with mock.patch.object(function.ui.imageSource,

@@ -50,7 +50,7 @@ def test_workerGetHFR(function):
     function.ym = np.linspace(0, 100, 100)
     function.objs = {'x': np.linspace(0, 100, 20),
                      'y': np.linspace(0, 100, 20)}
-    function.HFR = np.ones((20, 30))
+    function.hfr = np.ones((20, 30))
     suc = function.workerGetHFR()
     assert suc
     assert function.hfrGrid.shape[0] == 100
@@ -79,7 +79,7 @@ def test_workerCalcTiltValuesSquare(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
-    function.HFR = np.linspace(20, 30, 20)
+    function.hfr = np.linspace(20, 30, 20)
     suc = function.workerCalcTiltValuesSquare()
     assert suc
 
@@ -90,7 +90,7 @@ def test_workerCalcTiltValuesTriangle(function):
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
     function.image = np.random.rand(100, 100) + 1
-    function.HFR = np.linspace(20, 30, 20)
+    function.hfr = np.linspace(20, 30, 20)
     suc = function.workerCalcTiltValuesTriangle()
     assert suc
 
@@ -140,7 +140,7 @@ def test_baseCalcs(function):
     function.h = 100
     function.objs = {'x': np.linspace(0, 50, 20),
                      'y': np.linspace(50, 100, 20)}
-    function.HFR = np.linspace(20, 30, 20)
+    function.hfr = np.linspace(20, 30, 20)
     function.image = np.random.rand(100, 100) + 1
     suc = function.baseCalcs()
     assert suc
@@ -179,7 +179,7 @@ def test_workerCalcPhotometry_1(function):
         suc = function.workerCalcPhotometry()
         assert suc
         assert function.bkg is not None
-        assert function.HFR is not None
+        assert function.hfr is not None
         assert function.objs is not None
 
 
@@ -195,7 +195,7 @@ def test_workerCalcPhotometry_2(function):
                            side_effect=Exception):
         suc = function.workerCalcPhotometry()
         assert not suc
-        assert function.HFR is None
+        assert function.hfr is None
         assert function.objs is None
 
 

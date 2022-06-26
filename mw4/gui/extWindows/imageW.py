@@ -422,7 +422,7 @@ class ImageWindow(toolsQtWidget.MWidget):
                 textItem.setZValue(10)
                 plotItem.addItem(textItem)
 
-        # calc extreme HFR values
+        # calc extreme hfr values
         # arrays upper left to lower right
         w3 = w / 3
         h3 = h / 3

@@ -7,8 +7,12 @@ description: installs headless setup for ubuntu
 runs:
   using: 'composite'
   steps:
-    - name: install #1
+    - name: install #0
       run: sudo apt-get update
+      shell: bash
+
+    - name: install #1
+      run: sudo apt-get upgrade
       shell: bash
 
     - name: install #2

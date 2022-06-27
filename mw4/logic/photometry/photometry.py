@@ -58,15 +58,12 @@ class Photometry:
     SN = [30, 20, 15, 10, 10]
     SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
 
-    def __init__(self, app, imagePath='', flipH=False, flipV=False, snSelector=0):
+    def __init__(self, app, image=None, snSelector=0):
         self.threadPool = app.threadPool
         self.signals = PhotometrySignals()
 
-        self.image = None
-        self.header = None
+        self.image = image
         self.aberrationImage = None
-        self.flipV = flipV
-        self.flipH = flipH
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
 
@@ -104,8 +101,6 @@ class Photometry:
         self.hfrOuter = None
         self.hfrSegTriangle = None
         self.hfrSegSquare = None
-
-        self.processImage(imagePath)
 
     def baseCalcs(self):
         """

@@ -87,6 +87,7 @@ setup(
         'mw4.logic.databaseProcessing',
         'mw4.logic.dome',
         'mw4.logic.environment',
+        'mw4.logic.file',
         'mw4.logic.filter',
         'mw4.logic.focuser',
         'mw4.logic.measure',

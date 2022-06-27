@@ -29,10 +29,10 @@ from base.tpool import Worker
 from gui.utilities.toolsQtWidget import MWidget
 
 
-class FileSignals(QObject):
+class FileHandlerSignals(QObject):
     """
     """
-    __all__ = ['FileSignals']
+    __all__ = ['FileHandlerSignals']
     imageLoaded = pyqtSignal(object)
 
 
@@ -44,7 +44,7 @@ class FileHandler:
 
     def __init__(self, app, imagePath='', flipH=False, flipV=False):
         self.threadPool = app.threadPool
-        self.signals = FileSignals()
+        self.signals = FileHandlerSignals()
 
         self.imagePath = imagePath
         self.flipH = flipH

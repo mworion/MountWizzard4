@@ -122,6 +122,7 @@ def test_showTabBackground(function):
     function.filterConstH = 5
     function.filterConstW = 5
     function.bkg = sep.Background(img)
+    function.backSignal = function.bkg.back()
     suc = function.calcBackground()
     assert suc
 
@@ -131,6 +132,7 @@ def test_showTabBackgroundRMS(function):
     function.filterConstH = 5
     function.filterConstW = 5
     function.bkg = sep.Background(img)
+    function.backRMS = function.bkg.rms()
     suc = function.calcBackgroundRMS()
     assert suc
 

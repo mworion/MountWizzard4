@@ -208,8 +208,28 @@ def test_workerCalcPhotometry_3(function):
         assert suc
 
 
-def test_processPhotometry(function):
+def test_unlockPhotometry(function):
+    function.lock.lock()
+    suc = function.unlockPhotometry()
+    assert suc
+
+
+def test_processPhotometry_1(function):
+    suc = function.processPhotometry()
+    assert not suc
+
+
+def test_processPhotometry_2(function):
+    function.lock.lock()
+    suc = function.processPhotometry(image=np.random.rand(100, 100) + 1)
+    assert not suc
+    function.lock.unlock()
+
+
+def test_processPhotometry_3(function):
+    function.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.processPhotometry()
+        suc = function.processPhotometry(image=np.random.rand(100, 100) + 1)
         assert suc
+    function.lock.unlock()

@@ -94,7 +94,7 @@ def test_showImagesPhotometry(qtbot, qapp):
 
     qtbot.waitExposed(imageW, timeout=1000)
     qtbot.waitExposed(messageW, timeout=1000)
-    imageW.ui.enablePhotometry.setChecked(True)
+    imageW.ui.photometryGroup.setChecked(True)
     imageW.ui.timeTagImage.setChecked(False)
 
     for i in range(20):

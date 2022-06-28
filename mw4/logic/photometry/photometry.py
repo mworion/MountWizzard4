@@ -16,15 +16,12 @@
 #
 ###########################################################
 # standard libraries
-import os
 import logging
 
 # external packages
 import numpy as np
-import cv2
 import sep
-from PyQt5.QtCore import pyqtSignal, QObject
-from astropy.io import fits
+from PyQt5.QtCore import pyqtSignal, QObject, QMutex
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 
@@ -36,7 +33,6 @@ class PhotometrySignals(QObject):
     """
     """
     __all__ = ['PhotometrySignals']
-    imageLoaded = pyqtSignal(object)
     hfr = pyqtSignal()
     hfrSquare = pyqtSignal()
     hfrTriangle = pyqtSignal()
@@ -66,6 +62,7 @@ class Photometry:
         self.aberrationImage = None
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
+        self.lock = QMutex()
 
         self.objs = None
         self.objsAll = None
@@ -340,6 +337,13 @@ class Photometry:
         self.log.info(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
                       f'HFR:{objsHFR}')
         return True
+    
+    def unlockPhotometry(self):
+        """
+        :return: 
+        """
+        self.lock.unlock()
+        return True
 
     def processPhotometry(self, image=None, snTarget=0):
         """
@@ -351,9 +355,14 @@ class Photometry:
             return False
 
         self.image = image
-        self.snTarget = snTarget
+        self.snTarget = self.SN[snTarget]
+        self.sepThreshold = self.SEP[snTarget]
+
+        if not self.lock.tryLock(1000):
+            return False
 
         worker = Worker(self.workerCalcPhotometry)
-        worker.signals.finished.connect(lambda:  self.signals.sepFinished.emit())
+        worker.signals.result.connect(lambda:  self.signals.sepFinished.emit())
+        worker.signals.finished.connect(self.unlockPhotometry)
         self.threadPool.start(worker)
         return True

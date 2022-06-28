@@ -347,7 +347,7 @@ class Photometry:
         :param snTarget:
         :return:
         """
-        if not image:
+        if image is None:
             return False
 
         self.image = image

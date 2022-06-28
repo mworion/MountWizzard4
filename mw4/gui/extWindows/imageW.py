@@ -63,13 +63,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
         self.photometry = Photometry(app=app)
-        self.imageFile = FileHandler(app=app)
+        self.fileHandler = FileHandler(app=app)
 
         self.barItem = None
         self.imageItem = None
         self.imageFileName = ''
         self.imageFileNameOld = ''
-        self.processImageRunning = False
         self.expTime = 1
         self.binning = 1
         self.folder = ''
@@ -160,6 +159,18 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         :return: true for test purpose
         """
+        self.fileHandler.signals.imageLoaded.connect(self.showTabImage)
+        self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
+        self.photometry.signals.sepFinished.connect(self.resultPhotometry)
+        self.photometry.signals.hfr.connect(self.showTabHFR)
+        self.photometry.signals.hfrSquare.connect(self.showTabTiltSquare)
+        self.photometry.signals.hfrTriangle.connect(self.showTabTiltTriangle)
+        self.photometry.signals.roundness.connect(self.showTabRoundness)
+        self.photometry.signals.aberration.connect(self.showTabAberrationInspect)
+        self.photometry.signals.aberration.connect(self.showTabImageSources)
+        self.photometry.signals.background.connect(self.showTabBackground)
+        self.photometry.signals.backgroundRMS.connect(self.showTabBackgroundRMS)
+
         self.app.update1s.connect(self.updateWindowsStats)
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
@@ -180,23 +191,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
         self.ui.offsetTiltAngle.valueChanged.connect(self.showTabTiltTriangle)
         self.signals.solveImage.connect(self.solveImage)
-        self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
+        self.app.showImage.connect(self.showImage)
 
-        self.imageFile.signals.imageLoaded.connect(self.showTabImage)
-        self.photometry.signals.sepFinished.connect(self.resultPhotometry)
-        self.photometry.signals.hfr.connect(self.showTabHFR)
-        self.photometry.signals.hfrSquare.connect(self.showTabTiltSquare)
-        self.photometry.signals.hfrTriangle.connect(self.showTabTiltTriangle)
-        self.photometry.signals.roundness.connect(self.showTabRoundness)
-        self.photometry.signals.aberration.connect(self.showTabAberrationInspect)
-        self.photometry.signals.aberration.connect(self.showTabImageSources)
-        self.photometry.signals.background.connect(self.showTabBackground)
-        self.photometry.signals.backgroundRMS.connect(self.showTabBackgroundRMS)
-
-        self.show()
         self.showCurrent()
         self.setAspectLocked()
+        self.show()
         return True
 
     def closeEvent(self, closeEvent):
@@ -363,26 +363,25 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.guiSetText(self.ui.sqm, '5.2f', getSQM(header=header))
         return True
 
-    def showTabImage(self, imageValid=True):
+    def showTabImage(self):
         """
         :return:
         """
         self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
-        if not imageValid:
+        if self.fileHandler.image is None:
             self.msg.emit(0, 'Image', 'Rendering error', 'Incompatible image format')
             return False
 
-        self.ui.image.setImage(imageDisp=self.imageFile.image)
+        self.ui.image.setImage(imageDisp=self.fileHandler.image)
         self.setBarColor()
         self.setCrosshair()
-        self.writeHeaderDataToGUI(self.imageFile.header)
+        self.writeHeaderDataToGUI(self.fileHandler.header)
         return True
 
     def showTabHFR(self):
         """
         :return:
         """
-        self.clearImageTab(self.ui.hfr)
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.p[0].showAxes(False, showValues=False)
         self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
@@ -587,7 +586,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.clearImageTab(self.ui.roundness)
         self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
         self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
@@ -684,25 +682,23 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.msg.emit(2, 'Image', 'Photometry error', 'Too low pixel stack')
         else:
             self.msg.emit(0, 'Image', 'Photometry', 'SEP done')
-        self.processImageRunning = False
         return True
 
-    def processPhotometry(self, imageValid=True):
+    def processPhotometry(self):
         """
         :return:
         """
         isPhotometry = self.ui.photometryGroup.isChecked()
 
-        if not imageValid or not isPhotometry:
+        if self.fileHandler.image is None or not isPhotometry:
             self.clearGui()
-            self.processImageRunning = False
             return False
 
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
         snTarget = self.ui.snTarget.currentIndex()
 
-        self.photometry.processPhotometry(image=self.imageFile.image,
+        self.photometry.processPhotometry(image=self.fileHandler.image,
                                           snTarget=snTarget)
         return True
 
@@ -716,12 +712,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not os.path.isfile(imagePath):
             return False
 
-        if self.processImageRunning and False:
-            t = f'{os.path.basename(imagePath)} skipped'
-            self.msg.emit(0, 'Image', 'Rendering', t)
-            return False
-
-        self.processImageRunning = True
         if not self.deviceStat['exposeN']:
             self.ui.image.setImage(None)
             self.clearGui()
@@ -730,7 +720,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.setWindowTitle(f'Imaging:   {os.path.basename(imagePath)}')
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()
-        self.imageFile.loadImage(imagePath, flipV, flipH)
+        self.fileHandler.loadImage(imagePath=imagePath, flipH=flipH, flipV=flipV)
         return True
 
     def showCurrent(self):

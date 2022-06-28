@@ -27,14 +27,13 @@ from astropy.io import fits
 
 # local import
 from base.tpool import Worker
-from gui.utilities.toolsQtWidget import MWidget
 
 
 class FileHandlerSignals(QObject):
     """
     """
     __all__ = ['FileHandlerSignals']
-    imageLoaded = pyqtSignal(object)
+    imageLoaded = pyqtSignal()
 
 
 class FileHandler:
@@ -137,18 +136,18 @@ class FileHandler:
         :return:
         """
         self.imagePath = imagePath
-        _, _, ext = MWidget.extractNames(self.imagePath)
+        _, ext = os.path.splitext(self.imagePath)
 
         self.image = None
         self.header = None
-        if ext in ['fits', 'fit']:
+        if ext in ['.fits', '.fit']:
             self.loadFITS()
-        elif ext in ['xsif']:
+        elif ext in ['.xsif']:
             self.loadXSIF()
 
         isValid = self.checkValidImageFormat()
         if not isValid:
-            self.signals.imageLoaded.emit(False)
+            self.signals.imageLoaded.emit()
             return False
 
         self.cleanImageFormat()
@@ -157,7 +156,7 @@ class FileHandler:
             self.debayerImage(bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
-        self.signals.imageLoaded.emit(True)
+        self.signals.imageLoaded.emit()
         return True
 
     def loadImage(self, imagePath='', flipH=False, flipV=False):

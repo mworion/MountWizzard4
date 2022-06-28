@@ -30,6 +30,7 @@ from base.transform import J2000ToJNow
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
+from logic.file.fileHandler import FileHandler
 from logic.photometry.photometry import Photometry
 
 
@@ -61,8 +62,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.signals = ImageWindowSignals()
+        self.photometry = Photometry(app=app)
+        self.imageFile = FileHandler(app=app)
 
-        self.imgP = None
         self.barItem = None
         self.imageItem = None
         self.imageFileName = ''
@@ -104,7 +106,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.move(x, y)
 
         self.ui.color.setCurrentIndex(config.get('color', 0))
-        self.ui.snSelector.setCurrentIndex(config.get('snSelector', 0))
+        self.ui.snTarget.setCurrentIndex(config.get('snTarget', 0))
         self.ui.tabImage.setCurrentIndex(config.get('tabImage', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
@@ -112,7 +114,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.aspectLocked.setChecked(config.get('aspectLocked', False))
         self.ui.autoSolve.setChecked(config.get('autoSolve', False))
         self.ui.embedData.setChecked(config.get('embedData', False))
-        self.ui.enablePhotometry.setChecked(config.get('enablePhotometry', False))
+        self.ui.photometryGroup.setChecked(config.get('photometryGroup', False))
         self.ui.isoLayer.setChecked(config.get('isoLayer', False))
         self.ui.flipH.setChecked(config.get('flipH', False))
         self.ui.flipV.setChecked(config.get('flipV', False))
@@ -134,14 +136,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['color'] = self.ui.color.currentIndex()
-        config['snSelector'] = self.ui.snSelector.currentIndex()
+        config['snTarget'] = self.ui.snTarget.currentIndex()
         config['tabImage'] = self.ui.tabImage.currentIndex()
         config['imageFileName'] = self.imageFileName
         config['showCrosshair'] = self.ui.showCrosshair.isChecked()
         config['aspectLocked'] = self.ui.aspectLocked.isChecked()
         config['autoSolve'] = self.ui.autoSolve.isChecked()
         config['embedData'] = self.ui.embedData.isChecked()
-        config['enablePhotometry'] = self.ui.enablePhotometry.isChecked()
+        config['photometryGroup'] = self.ui.photometryGroup.isChecked()
         config['isoLayer'] = self.ui.isoLayer.isChecked()
         config['flipH'] = self.ui.flipH.isChecked()
         config['flipV'] = self.ui.flipV.isChecked()
@@ -162,13 +164,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.setBarColor)
         self.ui.showCrosshair.clicked.connect(self.setCrosshair)
-        self.ui.enablePhotometry.clicked.connect(self.showCurrent)
-        self.ui.isoLayer.clicked.connect(self.showCurrent)
-        self.ui.showValues.clicked.connect(self.showCurrent)
         self.ui.flipH.clicked.connect(self.showCurrent)
         self.ui.flipV.clicked.connect(self.showCurrent)
-        self.ui.snSelector.currentIndexChanged.connect(self.showCurrent)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
+        self.ui.photometryGroup.clicked.connect(self.processPhotometry)
+        self.ui.isoLayer.clicked.connect(self.processPhotometry)
+        self.ui.showValues.clicked.connect(self.processPhotometry)
+        self.ui.snTarget.currentIndexChanged.connect(self.processPhotometry)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.solveCenter.clicked.connect(self.solveCenter)
         self.ui.expose.clicked.connect(self.exposeImage)
@@ -180,6 +182,18 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.signals.solveImage.connect(self.solveImage)
         self.app.showImage.connect(self.showImage)
         self.app.colorChange.connect(self.colorChange)
+
+        self.imageFile.signals.imageLoaded.connect(self.showTabImage)
+        self.photometry.signals.sepFinished.connect(self.resultPhotometry)
+        self.photometry.signals.hfr.connect(self.showTabHFR)
+        self.photometry.signals.hfrSquare.connect(self.showTabTiltSquare)
+        self.photometry.signals.hfrTriangle.connect(self.showTabTiltTriangle)
+        self.photometry.signals.roundness.connect(self.showTabRoundness)
+        self.photometry.signals.aberration.connect(self.showTabAberrationInspect)
+        self.photometry.signals.aberration.connect(self.showTabImageSources)
+        self.photometry.signals.background.connect(self.showTabBackground)
+        self.photometry.signals.backgroundRMS.connect(self.showTabBackgroundRMS)
+
         self.show()
         self.showCurrent()
         self.setAspectLocked()
@@ -358,10 +372,10 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.msg.emit(0, 'Image', 'Rendering error', 'Incompatible image format')
             return False
 
-        self.ui.image.setImage(imageDisp=self.imgP.image)
+        self.ui.image.setImage(imageDisp=self.imageFile.image)
         self.setBarColor()
         self.setCrosshair()
-        self.writeHeaderDataToGUI(self.imgP.header)
+        self.writeHeaderDataToGUI(self.imageFile.header)
         return True
 
     def showTabHFR(self):
@@ -369,16 +383,16 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.clearImageTab(self.ui.hfr)
-        self.ui.hfr.setImage(imageDisp=self.imgP.hfrGrid)
+        self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.p[0].showAxes(False, showValues=False)
         self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
         self.ui.hfr.barItem.setLevels(
-            (self.imgP.hfrMin, self.imgP.hfrMax))
-        self.ui.hfrPercentile.setText(f'{self.imgP.hfrPercentile:1.1f}')
-        self.ui.medianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
-        self.ui.numberStars.setText(f'{len(self.imgP.hfr):1.0f}')
+            (self.photometry.hfrMin, self.photometry.hfrMax))
+        self.ui.hfrPercentile.setText(f'{self.photometry.hfrPercentile:1.1f}')
+        self.ui.medianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
+        self.ui.numberStars.setText(f'{len(self.photometry.hfr):1.0f}')
         if self.ui.isoLayer.isChecked():
-            self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.imgP.hfrGrid, levels=20)
+            self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20)
         self.ui.tabImage.setTabEnabled(1, True)
         return True
 
@@ -386,12 +400,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        segHFR = self.imgP.hfrSegSquare
-        w = self.imgP.w
-        h = self.imgP.h
+        segHFR = self.photometry.hfrSegSquare
+        w = self.photometry.w
+        h = self.photometry.h
         plotItem = self.ui.tiltSquare.p[0]
         self.clearImageTab(self.ui.tiltSquare)
-        self.ui.tiltSquare.setImage(self.imgP.image)
+        self.ui.tiltSquare.setImage(self.photometry.image)
         self.ui.tiltSquare.barItem.setLevels(self.ui.image.barItem.levels())
 
         # draw lines on image
@@ -450,7 +464,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             plotItem.addItem(lineItem)
 
         tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.imgP.hfrMedian
+        tiltPercent = 100 * tiltDiff / self.photometry.hfrMedian
         for tiltHint in self.TILT:
             if tiltPercent < self.TILT[tiltHint]:
                 break
@@ -458,12 +472,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
         self.ui.textSquareTiltHFR.setText(t)
 
-        offAxisDiff = self.imgP.hfrOuter - segHFR[1][1]
-        offAxisPercent = 100 * offAxisDiff / self.imgP.hfrMedian
+        offAxisDiff = self.photometry.hfrOuter - segHFR[1][1]
+        offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textSquareTiltOffAxis.setText(t)
-        self.ui.squareMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
-        self.ui.squareNumberStars.setText(f'{len(self.imgP.hfr):1.0f}')
+        self.ui.squareMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
+        self.ui.squareNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
         self.ui.tabImage.setTabEnabled(2, True)
         return True
 
@@ -471,9 +485,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        segHFR = self.imgP.hfrSegTriangle
-        w = self.imgP.w
-        h = self.imgP.h
+        segHFR = self.photometry.hfrSegTriangle
+        w = self.photometry.w
+        h = self.photometry.h
         r = min(h, w) / 2
         cx = w / 2
         cy = h / 2
@@ -483,7 +497,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         plotItem = self.ui.tiltTriangle.p[0]
         self.clearImageTab(self.ui.tiltTriangle)
-        self.ui.tiltTriangle.setImage(self.imgP.image)
+        self.ui.tiltTriangle.setImage(self.photometry.image)
         self.ui.tiltTriangle.barItem.setLevels(self.ui.image.barItem.levels())
 
         # draw rings on image
@@ -494,7 +508,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             plotItem.addItem(ellipseItem)
 
         # add inner value
-        text = f'{self.imgP.hfrInner:1.2f}'
+        text = f'{self.photometry.hfrInner:1.2f}'
         textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.M_BLUE)
         textItem.setText(text)
         textItem.setFont(self.fontText)
@@ -537,7 +551,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         best = np.min(segData)
         worst = np.max(segData)
         tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.imgP.hfrMedian
+        tiltPercent = 100 * tiltDiff / self.photometry.hfrMedian
 
         # calc vectors
         points = [[cx, cy]]
@@ -560,12 +574,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         t = f'{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}'
         self.ui.textTriangleTiltHFR.setText(t)
 
-        offAxisDiff = self.imgP.hfrOuter - self.imgP.hfrInner
-        offAxisPercent = 100 * offAxisDiff / self.imgP.hfrMedian
+        offAxisDiff = self.photometry.hfrOuter - self.photometry.hfrInner
+        offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
         t = f'{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)'
         self.ui.textTriangleTiltOffAxis.setText(t)
-        self.ui.triangleMedianHFR.setText(f'{self.imgP.hfrMedian:1.2f}')
-        self.ui.triangleNumberStars.setText(f'{len(self.imgP.hfr):1.0f}')
+        self.ui.triangleMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
+        self.ui.triangleNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
         self.ui.tabImage.setTabEnabled(3, True)
         return True
 
@@ -574,15 +588,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.clearImageTab(self.ui.roundness)
-        self.ui.roundness.setImage(imageDisp=self.imgP.roundnessGrid)
+        self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
         self.ui.roundness.p[0].setMouseEnabled(x=False, y=False)
         self.ui.roundness.barItem.setLevels(
-            (self.imgP.roundnessMin, self.imgP.roundnessMax))
-        self.ui.aspectRatioPercentile.setText(f'{self.imgP.roundnessPercentile:1.1f}')
+            (self.photometry.roundnessMin, self.photometry.roundnessMax))
+        self.ui.aspectRatioPercentile.setText(f'{self.photometry.roundnessPercentile:1.1f}')
         if self.ui.isoLayer.isChecked():
             self.ui.roundness.addIsoBasic(self.ui.roundness.p[0],
-                                          self.imgP.roundnessGrid, levels=20)
+                                          self.photometry.roundnessGrid, levels=20)
         self.ui.tabImage.setTabEnabled(4, True)
         return True
 
@@ -595,18 +609,18 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.aberration.p[0].setAspectLocked(True)
         self.ui.aberration.p[0].showAxes(False, showValues=False)
         self.ui.aberration.p[0].setMouseEnabled(x=False, y=False)
-        self.ui.aberration.setImage(self.imgP.aberrationImage)
+        self.ui.aberration.setImage(self.photometry.aberrationImage)
         for i in range(1, 3):
-            posX = i * self.imgP.ABERRATION_SIZE
+            posX = i * self.photometry.ABERRATION_SIZE
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setPen(self.pen)
-            lineItem.setLine(posX, 0, posX, 3 * self.imgP.ABERRATION_SIZE)
+            lineItem.setLine(posX, 0, posX, 3 * self.photometry.ABERRATION_SIZE)
             self.ui.aberration.p[0].addItem(lineItem)
 
-            posY = i * self.imgP.ABERRATION_SIZE
+            posY = i * self.photometry.ABERRATION_SIZE
             lineItem = pg.QtWidgets.QGraphicsLineItem()
             lineItem.setPen(self.pen)
-            lineItem.setLine(0, posY, 3 * self.imgP.ABERRATION_SIZE, posY)
+            lineItem.setLine(0, posY, 3 * self.photometry.ABERRATION_SIZE, posY)
             self.ui.aberration.p[0].addItem(lineItem)
 
         self.ui.tabImage.setTabEnabled(5, True)
@@ -617,15 +631,15 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.imageSource.setImage(imageDisp=self.imgP.image)
-        objs = self.imgP.objs
+        self.ui.imageSource.setImage(imageDisp=self.photometry.image)
+        objs = self.photometry.objs
         for i in range(len(objs)):
             eItem = self.ui.imageSource.addEllipse(
                 objs['x'][i], objs['y'][i],
                 objs['a'][i] * 4, objs['b'][i] * 4,
                 objs['theta'][i])
             if self.ui.showValues.isChecked():
-                t = f'{self.imgP.hfr[i]:2.1f}'
+                t = f'{self.photometry.hfr[i]:2.1f}'
                 item = pg.TextItem(text=t, color=self.M_BLUE, anchor=(1, 1))
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
@@ -636,9 +650,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.background.setImage(imageDisp=self.imgP.background)
+        self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
-            (self.imgP.backgroundMin, self.imgP.backgroundMax))
+            (self.photometry.backgroundMin, self.photometry.backgroundMax))
         self.ui.tabImage.setTabEnabled(7, True)
         return True
 
@@ -646,7 +660,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.ui.backgroundRMS.setImage(imageDisp=self.imgP.backgroundRMS)
+        self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         self.ui.tabImage.setTabEnabled(8, True)
         return True
 
@@ -666,7 +680,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if self.imgP.objs is None:
+        if self.photometry.objs is None:
             self.msg.emit(2, 'Image', 'Photometry error', 'Too low pixel stack')
         else:
             self.msg.emit(0, 'Image', 'Photometry', 'SEP done')
@@ -677,7 +691,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        isPhotometry = self.ui.enablePhotometry.isChecked()
+        isPhotometry = self.ui.photometryGroup.isChecked()
 
         if not imageValid or not isPhotometry:
             self.clearGui()
@@ -686,8 +700,10 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
+        snTarget = self.ui.snTarget.currentIndex()
 
-        self.imgP.processPhotometry()
+        self.photometry.processPhotometry(image=self.imageFile.image,
+                                          snTarget=snTarget)
         return True
 
     def showImage(self, imagePath=''):
@@ -713,19 +729,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.setWindowTitle(f'Imaging:   {os.path.basename(imagePath)}')
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()
-        snSelector = self.ui.snSelector.currentIndex()
-        self.imgP = Photometry(self.app, imagePath, flipH, flipV, snSelector)
-        self.imgP.signals.imageLoaded.connect(self.showTabImage)
-        self.imgP.signals.imageLoaded.connect(self.processPhotometry)
-        self.imgP.signals.sepFinished.connect(self.resultPhotometry)
-        self.imgP.signals.hfr.connect(self.showTabHFR)
-        self.imgP.signals.hfrSquare.connect(self.showTabTiltSquare)
-        self.imgP.signals.hfrTriangle.connect(self.showTabTiltTriangle)
-        self.imgP.signals.roundness.connect(self.showTabRoundness)
-        self.imgP.signals.aberration.connect(self.showTabAberrationInspect)
-        self.imgP.signals.aberration.connect(self.showTabImageSources)
-        self.imgP.signals.background.connect(self.showTabBackground)
-        self.imgP.signals.backgroundRMS.connect(self.showTabBackgroundRMS)
+        self.imageFile.loadImage(imagePath, flipV, flipH)
         return True
 
     def showCurrent(self):

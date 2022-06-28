@@ -341,10 +341,18 @@ class Photometry:
                       f'HFR:{objsHFR}')
         return True
 
-    def processPhotometry(self):
+    def processPhotometry(self, image=None, snTarget=0):
         """
+        :param image:
+        :param snTarget:
         :return:
         """
+        if not image:
+            return False
+
+        self.image = image
+        self.snTarget = snTarget
+
         worker = Worker(self.workerCalcPhotometry)
         worker.signals.finished.connect(lambda:  self.signals.sepFinished.emit())
         self.threadPool.start(worker)

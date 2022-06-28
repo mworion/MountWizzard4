@@ -160,13 +160,20 @@ class FileHandler:
         self.signals.imageLoaded.emit(True)
         return True
 
-    def loadImage(self, imagePath=''):
+    def loadImage(self, imagePath='', flipH=False, flipV=False):
         """
         :param: imagePath:
+        :param: flipH:
+        :param: flipV:
         :return:
         """
         if not os.path.isfile(imagePath):
             return False
+
+        self.image = None
+        self.imagePath = imagePath
+        self.flipH = flipH
+        self.flipV = flipV
 
         worker = Worker(self.workerLoadImage, imagePath)
         self.threadPool.start(worker)

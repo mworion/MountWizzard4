@@ -54,7 +54,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,1">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -155,19 +155,6 @@
           </property>
           <property name="text">
            <string>Load FITS</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QCheckBox" name="enablePhotometry">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Photometry</string>
           </property>
          </widget>
         </item>
@@ -281,14 +268,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox_2">
+      <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Image view</string>
+        <string>Image View</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <layout class="QGridLayout" name="Imageview">
+       <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0,0">
         <property name="leftMargin">
          <number>5</number>
         </property>
@@ -301,13 +288,23 @@
         <property name="bottomMargin">
          <number>5</number>
         </property>
-        <property name="horizontalSpacing">
-         <number>10</number>
-        </property>
         <property name="verticalSpacing">
          <number>5</number>
         </property>
         <item row="1" column="0">
+         <widget class="QCheckBox" name="aspectLocked">
+          <property name="minimumSize">
+           <size>
+            <width>105</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Lock aspect</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
          <widget class="QCheckBox" name="showCrosshair">
           <property name="minimumSize">
            <size>
@@ -323,7 +320,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="2">
+        <item row="0" column="0">
          <widget class="QComboBox" name="color">
           <property name="minimumSize">
            <size>
@@ -358,6 +355,75 @@
           </item>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="flipH">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Flip H</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QCheckBox" name="flipV">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Flip V</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="photometryGroup">
+       <property name="title">
+        <string>Photometry</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <layout class="QGridLayout" name="Imageview">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>15</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>10</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>5</number>
+        </property>
         <item row="2" column="2">
          <widget class="QCheckBox" name="showValues">
           <property name="minimumSize">
@@ -368,32 +434,6 @@
           </property>
           <property name="text">
            <string>Show values</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QCheckBox" name="flipV">
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Flip V</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="flipH">
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Flip H</string>
           </property>
          </widget>
         </item>
@@ -410,21 +450,8 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="aspectLocked">
-          <property name="minimumSize">
-           <size>
-            <width>105</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Lock aspect</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="snSelector">
+        <item row="0" column="1" colspan="2">
+         <widget class="QComboBox" name="snTarget">
           <property name="minimumSize">
            <size>
             <width>0</width>

@@ -715,7 +715,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
         if not os.path.isfile(imagePath):
             return False
-        if self.processImageRunning:
+
+        if self.processImageRunning and False:
             t = f'{os.path.basename(imagePath)} skipped'
             self.msg.emit(0, 'Image', 'Rendering', t)
             return False

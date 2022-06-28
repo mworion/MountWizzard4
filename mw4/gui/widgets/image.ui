@@ -280,7 +280,7 @@
          <number>5</number>
         </property>
         <property name="topMargin">
-         <number>10</number>
+         <number>15</number>
         </property>
         <property name="rightMargin">
          <number>15</number>
@@ -410,7 +410,7 @@
          <number>5</number>
         </property>
         <property name="topMargin">
-         <number>10</number>
+         <number>15</number>
         </property>
         <property name="rightMargin">
          <number>15</number>
@@ -540,7 +540,7 @@
       <widget class="QGroupBox" name="headerGroup">
        <property name="minimumSize">
         <size>
-         <width>110</width>
+         <width>120</width>
          <height>0</height>
         </size>
        </property>

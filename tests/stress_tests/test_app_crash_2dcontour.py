@@ -88,26 +88,18 @@ def test_showImagesPhotometry(qtbot, qapp):
     imageW = app.uiWindows['showImageW']['classObj']
     imageW.move(900, 100)
 
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    messageW = app.uiWindows['showMessageW']['classObj']
-    messageW.move(1700, 100)
-
     qtbot.waitExposed(imageW, timeout=1000)
-    qtbot.waitExposed(messageW, timeout=1000)
     imageW.ui.photometryGroup.setChecked(True)
     imageW.ui.timeTagImage.setChecked(False)
+    app.showImage.emit('tests/workDir/image/star1.fits')
+    TAB = [1, 4]
 
-    for i in range(20):
-        imageW.ui.isoLayer.setChecked(randint(0, 1))
-        imageW.ui.tabImage.setCurrentIndex(0)
-        app.showImage.emit('tests/workDir/image/star1.fits')
-        QTest.qWait(randint(50, 2000))
-        imageW.ui.tabImage.setCurrentIndex(1)
-        QTest.qWait(randint(50, 2000))
-        for j in range(9):
-            imageW.ui.tabImage.setCurrentIndex(j)
-            QTest.qWait(randint(20, 50))
-        imageW.ui.tabImage.setCurrentIndex(0)
+    for i in range(50):
+        if randint(0, 1):
+            qtbot.mouseClick(imageW.ui.isoLayer, Qt.LeftButton)
+        index = TAB[randint(0, 1)]
+        imageW.ui.tabImage.setCurrentIndex(index)
+        QTest.qWait(randint(50, 500))
 
-    QTest.qWait(1000)
+    QTest.qWait(3000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)

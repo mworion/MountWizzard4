@@ -23,6 +23,7 @@ import os
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
+from PyQt5.QtCore import QRectF
 from astropy.io import fits
 from skyfield.api import Angle
 import numpy as np
@@ -33,6 +34,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.imageW import ImageWindow
 from logic.photometry.photometry import Photometry
+from logic.file.fileHandler import FileHandler
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -195,6 +197,11 @@ def test_setAspectLocked(function):
     assert suc
 
 
+def test_getImageSourceRange(function):
+    suc = function.getImageSourceRange()
+    assert suc
+
+
 def test_clearImageTab(function):
     suc = function.clearImageTab(function.ui.image)
     assert suc
@@ -232,8 +239,8 @@ def test_writeHeaderDataToGUI_4(function):
 
 
 def test_showTabImage_1(function):
-    function.imgP = Photometry(function)
-    function.imgP.image = np.random.rand(100, 100) + 1
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function,
                            'setBarColor'):
         with mock.patch.object(function,
@@ -245,16 +252,18 @@ def test_showTabImage_1(function):
 
 
 def test_showTabImage_2(function):
-    suc = function.showTabImage(imageValid=False)
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.image = None
+    suc = function.showTabImage()
     assert not suc
 
 
 def test_showTabHFR(function):
     function.ui.isoLayer.setChecked(True)
-    function.imgP = Photometry(function)
-    function.imgP.hfr = np.random.rand(100, 100) + 1
-    function.imgP.hfrPercentile = 0
-    function.imgP.hfrMedian = 0
+    function.photometry = Photometry(function)
+    function.photometry.hfr = np.random.rand(100, 100) + 1
+    function.photometry.hfrPercentile = 0
+    function.photometry.hfrMedian = 0
     with mock.patch.object(function.ui.hfr,
                            'addIsoBasic'):
         suc = function.showTabHFR()
@@ -262,28 +271,28 @@ def test_showTabHFR(function):
 
 
 def test_showTabTiltSquare(function):
-    function.imgP = Photometry(function)
-    function.imgP.hfr = np.linspace(20, 30, 20)
-    function.imgP.hfrMedian = 1
-    function.imgP.hfrInner = 1
-    function.imgP.hfrOuter = 1
-    function.imgP.w = 100
-    function.imgP.h = 100
-    function.imgP.hfrSegSquare = np.ones((3, 3))
-    function.imgP.image = np.random.rand(100, 100) + 1
+    function.photometry = Photometry(function)
+    function.photometry.hfr = np.linspace(20, 30, 20)
+    function.photometry.hfrMedian = 1
+    function.photometry.hfrInner = 1
+    function.photometry.hfrOuter = 1
+    function.photometry.w = 100
+    function.photometry.h = 100
+    function.photometry.hfrSegSquare = np.ones((3, 3))
+    function.photometry.image = np.random.rand(100, 100) + 1
     suc = function.showTabTiltSquare()
     assert suc
 
 
 def test_showTabTiltTriangle(function):
-    function.imgP = Photometry(function)
-    function.imgP.hfr = np.linspace(20, 30, 20)
-    function.imgP.hfrMedian = 1
-    function.imgP.hfrInner = 1
-    function.imgP.hfrOuter = 1
-    function.imgP.w = 100
-    function.imgP.h = 100
-    function.imgP.hfrSegTriangle = np.ones(72)
+    function.photometry = Photometry(function)
+    function.photometry.hfr = np.linspace(20, 30, 20)
+    function.photometry.hfrMedian = 1
+    function.photometry.hfrInner = 1
+    function.photometry.hfrOuter = 1
+    function.photometry.w = 100
+    function.photometry.h = 100
+    function.photometry.hfrSegTriangle = np.ones(72)
     function.image = np.random.rand(100, 100) + 1
     suc = function.showTabTiltTriangle()
     assert suc
@@ -291,11 +300,11 @@ def test_showTabTiltTriangle(function):
 
 def test_showTabRoundness(function):
     function.ui.isoLayer.setChecked(True)
-    function.imgP = Photometry(function)
-    function.imgP.roundnessMin = 1
-    function.imgP.roundnessMax = 10
-    function.imgP.roundnessPercentile = 10
-    function.imgP.roundnessGrid = np.random.rand(100, 100) + 1
+    function.photometry = Photometry(function)
+    function.photometry.roundnessMin = 1
+    function.photometry.roundnessMax = 10
+    function.photometry.roundnessPercentile = 10
+    function.photometry.roundnessGrid = np.random.rand(100, 100) + 1
     with mock.patch.object(function.ui.roundness,
                            'addIsoBasic'):
         suc = function.showTabRoundness()
@@ -303,22 +312,23 @@ def test_showTabRoundness(function):
 
 
 def test_showTabAberrationInspect(function):
-    function.imgP = Photometry(function)
-    function.imgP.image = np.random.rand(100, 100) + 1
-    function.imgP.roundnessPercentile = 1
+    function.photometry = Photometry(function)
+    function.photometry.image = np.random.rand(100, 100) + 1
+    function.photometry.roundnessPercentile = 1
     suc = function.showTabAberrationInspect()
     assert suc
 
 
 def test_showTabImageSources(function):
-    function.imgP = Photometry(function)
-    function.imgP.objs = {'x': np.linspace(0, 50, 20),
+    function.photometry = Photometry(function)
+    function.imageSourceRange = QRectF(1, 2, 3, 4)
+    function.photometry.objs = {'x': np.linspace(0, 50, 20),
                           'y': np.linspace(50, 100, 20),
                           'theta': np.random.rand(20, 1) + 10,
                           'a': np.random.rand(20, 1) + 10,
                           'b': np.random.rand(20, 1) + 10}
-    function.imgP.image = np.random.rand(100, 100) + 1
-    function.imgP.hfr = np.random.rand(20, ) + 10.0
+    function.photometry.image = np.random.rand(100, 100) + 1
+    function.photometry.hfr = np.random.rand(20, ) + 10.0
 
     function.ui.showValues.setChecked(True)
     with mock.patch.object(function.ui.imageSource,
@@ -329,15 +339,15 @@ def test_showTabImageSources(function):
 
 
 def test_showTabBackground(function):
-    function.imgP = Photometry(function)
-    function.imgP.background = np.random.rand(100, 100) + 1
+    function.photometry = Photometry(function)
+    function.photometry.background = np.random.rand(100, 100) + 1
     suc = function.showTabBackground()
     assert suc
 
 
 def test_showTabBackgroundRMS(function):
-    function.imgP = Photometry(function)
-    function.imgP.backgroundRMS = np.random.rand(100, 100) + 1
+    function.photometry = Photometry(function)
+    function.photometry.backgroundRMS = np.random.rand(100, 100) + 1
     suc = function.showTabBackgroundRMS()
     assert suc
 
@@ -348,36 +358,33 @@ def test_clearGui(function):
 
 
 def test_resultPhotometry_1(function):
-    function.imgP = Photometry(function)
-    function.imgP.objs = None
+    function.photometry = Photometry(function)
+    function.photometry.objs = None
     suc = function.resultPhotometry()
     assert suc
 
 
 def test_resultPhotometry_2(function):
-    function.imgP = Photometry(function)
-    function.imgP.objs = 1
+    function.photometry = Photometry(function)
+    function.photometry.objs = 1
     suc = function.resultPhotometry()
     assert suc
 
 
 def test_processPhotometry_1(function):
-    suc = function.processPhotometry(imageValid=False)
-    assert not suc
-
-
-def test_processPhotometry_2(function):
-    function.ui.enablePhotometry.setChecked(True)
-    function.imgP = Photometry(function)
-    with mock.patch.object(function.imgP,
+    function.ui.photometryGroup.setChecked(True)
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.image = 1
+    with mock.patch.object(function.photometry,
                            'processPhotometry'):
         suc = function.processPhotometry()
         assert suc
 
 
-def test_processPhotometry_3(function):
-    function.ui.enablePhotometry.setChecked(False)
-    function.imgP = Photometry(function)
+def test_processPhotometry_2(function):
+    function.ui.photometryGroup.setChecked(False)
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.image = None
     with mock.patch.object(function,
                            'clearGui'):
         suc = function.processPhotometry()
@@ -395,21 +402,11 @@ def test_showImage_2(function):
 
 
 def test_showImage_3(function):
-    function.processImageRunning = True
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
-        suc = function.showImage('test')
-        assert not suc
-
-
-def test_showImage_4(function):
-    function.processImageRunning = False
-    with mock.patch.object(os.path,
-                           'isfile',
-                           return_value=True):
-        with mock.patch.object(function.threadPool,
-                               'start'):
+        with mock.patch.object(function.fileHandler,
+                               'loadImage'):
             suc = function.showImage('tests')
             assert suc
 

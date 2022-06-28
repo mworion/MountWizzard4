@@ -67,6 +67,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.barItem = None
         self.imageItem = None
+        self.imageSourceRange = None
         self.imageFileName = ''
         self.imageFileNameOld = ''
         self.expTime = 1
@@ -333,6 +334,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.roundness.p[0].setAspectLocked(isLocked)
         return True
 
+    def getImageSourceRange(self):
+        """
+        :return:
+        """
+        vb = self.ui.imageSource.p[0].getViewBox()
+        self.imageSourceRange = vb.viewRect()
+        return True
+
     @staticmethod
     def clearImageTab(imageWidget):
         """
@@ -373,6 +382,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.msg.emit(0, 'Image', 'Rendering error', 'Incompatible image format')
             return False
 
+        self.imageSourceRange = None
         self.ui.image.setImage(imageDisp=self.fileHandler.image)
         self.setBarColor()
         self.setCrosshair()
@@ -628,7 +638,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
+        temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
+        self.ui.imageSource.p[0].getViewBox().sigRangeChanged.connect(
+            self.getImageSourceRange)
+        if temp:
+            self.ui.imageSource.p[0].getViewBox().setRange(
+                rect=temp)
+
         objs = self.photometry.objs
         for i in range(len(objs)):
             eItem = self.ui.imageSource.addEllipse(

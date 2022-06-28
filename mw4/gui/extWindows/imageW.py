@@ -179,8 +179,9 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.flipV.clicked.connect(self.showCurrent)
         self.ui.aspectLocked.clicked.connect(self.setAspectLocked)
         self.ui.photometryGroup.clicked.connect(self.processPhotometry)
-        self.ui.isoLayer.clicked.connect(self.processPhotometry)
-        self.ui.showValues.clicked.connect(self.processPhotometry)
+        self.ui.isoLayer.clicked.connect(self.showTabHFR)
+        self.ui.isoLayer.clicked.connect(self.showTabRoundness)
+        self.ui.showValues.clicked.connect(self.showTabImageSources)
         self.ui.snTarget.currentIndexChanged.connect(self.processPhotometry)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.solveCenter.clicked.connect(self.solveCenter)
@@ -383,8 +384,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
-        self.ui.hfr.p[0].showAxes(False, showValues=False)
-        self.ui.hfr.p[0].setMouseEnabled(x=False, y=False)
         self.ui.hfr.barItem.setLevels(
             (self.photometry.hfrMin, self.photometry.hfrMax))
         self.ui.hfrPercentile.setText(f'{self.photometry.hfrPercentile:1.1f}')

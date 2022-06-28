@@ -358,7 +358,7 @@ class Photometry:
         self.snTarget = self.SN[snTarget]
         self.sepThreshold = self.SEP[snTarget]
 
-        if not self.lock.tryLock(1000):
+        if not self.lock.tryLock():
             return False
 
         worker = Worker(self.workerCalcPhotometry)

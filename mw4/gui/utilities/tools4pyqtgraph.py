@@ -23,6 +23,7 @@ import numpy as np
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QTransform, QPainterPath
+from PyQt5.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 
@@ -475,6 +476,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             pg.nameStr = 'iso'
             pd.setPen(pg.mkPen(color=colorVal))
             plotItem.addItem(pd)
+            QApplication.processEvents()
         return True
 
     def addIsoItem(self, x, y, z, plotItem=None, rangeX=None,

@@ -123,8 +123,8 @@ def test_checkValidImageFormat_4(function):
     assert suc
 
 
-def test_workerLoadImage_1(function):
-    class Data:
+def test_loadFITS_1(function):
+        class Data:
         data = np.random.rand(100, 100)
         header = None
 
@@ -136,12 +136,17 @@ def test_workerLoadImage_1(function):
         @staticmethod
         def __exit__(a, b, c):
             return
-
-    imageFileName = 'tests/workDir/image/m51.fit'
-    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     with mock.patch.object(fits,
                            'open',
                            return_value=FitsHandle()):
+        suc = function.loadFITS()
+        assert suc
+
+
+def test_workerLoadImage_1(function):
+    imageFileName = 'tests/workDir/image/m51.fit'
+    with mock.patch.object(function,
+                           'loadFITS'):
         with mock.patch.object(function,
                                'checkValidImageFormat',
                                return_value=False):

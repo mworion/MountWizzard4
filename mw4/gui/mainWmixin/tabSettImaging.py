@@ -77,6 +77,7 @@ class SettImaging:
         self.ui.focalLength.setValue(config.get('focalLength', 100))
         self.ui.aperture.setValue(config.get('aperture', 100))
         self.ui.focuserStepsize.setValue(config.get('focuserStepsize', 100))
+        self.ui.focuserSteps.setValue(config.get('focuserSteps', 100))
         self.ui.fastDownload.setChecked(config.get('fastDownload', False))
         self.ui.keepImages.setChecked(config.get('keepImages', False))
 
@@ -95,6 +96,7 @@ class SettImaging:
         config['focalLength'] = self.ui.focalLength.value()
         config['aperture'] = self.ui.aperture.value()
         config['focuserStepsize'] = self.ui.focuserStepsize.value()
+        config['focuserSteps'] = self.ui.focuserSteps.value()
         config['fastDownload'] = self.ui.fastDownload.isChecked()
         config['keepImages'] = self.ui.keepImages.isChecked()
         return True
@@ -492,7 +494,7 @@ class SettImaging:
         :return: success
         """
         pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
-        step = self.ui.focuserStepsize.value()
+        step = self.ui.focuserSteps.value()
         newPos = pos - step
         suc = self.app.focuser.move(position=newPos)
         if not suc:
@@ -505,7 +507,7 @@ class SettImaging:
         :return: success
         """
         pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
-        step = self.ui.focuserStepsize.value()
+        step = self.ui.focuserSteps.value()
         newPos = pos + step
         suc = self.app.focuser.move(position=newPos)
         if not suc:

@@ -124,7 +124,7 @@ class FileHandler:
             self.header = fitsHandle[0].header
         return True
 
-    def loadXSIF(self):
+    def loadXISF(self):
         """
         :return:
         """
@@ -142,8 +142,8 @@ class FileHandler:
 
         if ext in ['.fits', '.fit']:
             self.loadFITS()
-        elif ext in ['.xsif']:
-            self.loadXSIF()
+        elif ext in ['.xisf']:
+            self.loadXISF()
 
         isValid = self.checkValidImageFormat()
         if not isValid:

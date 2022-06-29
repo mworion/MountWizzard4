@@ -124,7 +124,7 @@ def test_checkValidImageFormat_4(function):
 
 
 def test_loadXSIF(function):
-    suc = function.loadXSIF()
+    suc = function.loadXISF()
     assert suc
 
 
@@ -160,9 +160,9 @@ def test_workerLoadImage_1(function):
 
 
 def test_workerLoadImage_2(function):
-    imageFileName = 'tests/workDir/image/m51.xsif'
+    imageFileName = 'tests/workDir/image/m51.xisf'
     with mock.patch.object(function,
-                           'loadXSIF'):
+                           'loadXISF'):
         with mock.patch.object(function,
                                'checkValidImageFormat',
                                return_value=False):

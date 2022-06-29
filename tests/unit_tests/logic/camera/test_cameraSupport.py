@@ -114,10 +114,12 @@ def test_saveFits_2(function):
                                        'writeHeaderOptical'):
                     with mock.patch.object(function,
                                            'writeHeaderSite'):
-                        with mock.patch.object(fits.PrimaryHDU,
+                        with mock.patch.object(function,
+                                               'writeHeaderFocus'):
+                            with mock.patch.object(fits.PrimaryHDU,
                                                'writeto'):
-                            val = function.saveFits('', data, 1, 1, 1)
-                            assert val == ''
+                                val = function.saveFits('', data, 1, 1, 1)
+                                assert val == ''
 
 
 def test_retrieveFits_1(function):

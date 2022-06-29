@@ -128,6 +128,17 @@ class CameraSupport:
             header.append(('SITEELEV', elev))
         return True
 
+    @staticmethod
+    def writeHeaderFocus(header, focuser):
+        """
+        :param header:
+        :param focuser:
+        :return:
+        """
+        pos = focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
+        header.append(('FOCUSPOS', pos, 'Actual focuser position'))
+        return True
+
     def saveFits(self, imagePath, data, expTime, binning, focalLength):
         """
         :param imagePath:
@@ -148,6 +159,7 @@ class CameraSupport:
         self.writeHeaderTime(hdu.header, obs)
         self.writeHeaderOptical(hdu.header, binning, focalLength)
         self.writeHeaderSite(hdu.header, obs)
+        self.writeHeaderFocus(hdu.header, self.app.focuser)
         hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
         self.log.info(f'Saved Image: [{imagePath}]')
         return imagePath

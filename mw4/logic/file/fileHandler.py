@@ -128,6 +128,8 @@ class FileHandler:
         """
         :return:
         """
+        self.image = None
+        self.header = None
         return True
 
     def workerLoadImage(self, imagePath):
@@ -138,8 +140,6 @@ class FileHandler:
         self.imagePath = imagePath
         _, ext = os.path.splitext(self.imagePath)
 
-        self.image = None
-        self.header = None
         if ext in ['.fits', '.fit']:
             self.loadFITS()
         elif ext in ['.xsif']:

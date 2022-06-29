@@ -123,8 +123,13 @@ def test_checkValidImageFormat_4(function):
     assert suc
 
 
+def test_loadXSIF(function):
+    suc = function.loadXSIF()
+    assert suc
+
+
 def test_loadFITS_1(function):
-        class Data:
+    class Data:
         data = np.random.rand(100, 100)
         header = None
 
@@ -155,24 +160,9 @@ def test_workerLoadImage_1(function):
 
 
 def test_workerLoadImage_2(function):
-    class Data:
-        data = None
-        header = 2
-
-    class FitsHandle:
-        @staticmethod
-        def __enter__():
-            return [Data(), Data()]
-
-        @staticmethod
-        def __exit__(a, b, c):
-            return
-
-    imageFileName = 'tests/workDir/image/m51.fit'
-    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
-    with mock.patch.object(fits,
-                           'open',
-                           return_value=FitsHandle()):
+    imageFileName = 'tests/workDir/image/m51.xsif'
+    with mock.patch.object(function,
+                           'loadXSIF'):
         with mock.patch.object(function,
                                'checkValidImageFormat',
                                return_value=False):
@@ -181,32 +171,22 @@ def test_workerLoadImage_2(function):
 
 
 def test_workerLoadImage_3(function):
-    class Data:
-        data = np.random.rand(100, 100)
-        header = {'BAYERPAT': 1,
-                  'CTYPE1': 'DEF',
-                  'CTYPE2': 'DEF',
-                  }
-
-    class FitsHandle:
-        @staticmethod
-        def __enter__():
-            return [Data(), Data()]
-
-        @staticmethod
-        def __exit__(a, b, c):
-            return
+    function.header = {'BAYERPAT': 1,
+                       'CTYPE1': 'DEF',
+                       'CTYPE2': 'DEF'}
 
     imageFileName = 'tests/workDir/image/m51.fit'
-    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
-    with mock.patch.object(fits,
-                           'open',
-                           return_value=FitsHandle()):
+    with mock.patch.object(function,
+                           'loadFITS'):
         with mock.patch.object(function,
                                'checkValidImageFormat',
                                return_value=True):
-            suc = function.workerLoadImage(imageFileName)
-            assert suc
+            with mock.patch.object(function,
+                                   'cleanImageFormat'):
+                with mock.patch.object(function,
+                                       'debayerImage'):
+                    suc = function.workerLoadImage(imageFileName)
+                    assert suc
 
 
 def test_loadImage_1(function):

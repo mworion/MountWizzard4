@@ -23,6 +23,7 @@ import shutil
 # external packages
 from astropy.io import fits
 import numpy as np
+from logic.file.xisf import XISF
 
 
 # local import
@@ -123,9 +124,31 @@ def test_checkValidImageFormat_4(function):
     assert suc
 
 
+def test_convHeaderXISF2FITS(function):
+    header = {
+        'FITSKeywords': {
+            'COMMENT': [{'value': 'test', 'comment': 'test'}],
+            'SIMPLE': [{'value': 'T', 'comment': 'test'}]
+        },
+        'geometry': (1000, 2000, 3)
+    }
+    h = function.convHeaderXISF2FITS(header)
+    assert h['NAXIS'] == 2
+    assert h['NAXIS1'] == 1000
+    assert h['NAXIS2'] == 2000
+    assert 'SIMPLE' in h
+    assert 'EXTEND' in h
+
+
 def test_loadXSIF(function):
-    suc = function.loadXISF()
-    assert suc
+    img = np.ones((100, 100, 1))
+    with mock.patch.object(XISF,
+                           'read',
+                           return_value=img):
+        with mock.patch.object(function,
+                               'convHeaderXISF2FITS'):
+            suc = function.loadXISF()
+            assert suc
 
 
 def test_loadFITS_1(function):

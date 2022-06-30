@@ -147,10 +147,10 @@ class FileHandler:
         for key in fitHeaderXisf:
             if key in ['SIMPLE', 'EXTEND', 'NAXIS', 'NAXIS1', 'NAXIS2']:
                 continue
-            value = fitHeaderXisf[key][0]['value']
+            value = fitHeaderXisf[key][0].get('value', '')
             valueFloat = valueToFloat(value)
             value = value if valueFloat is None else valueFloat
-            comment = fitHeaderXisf[key][0]['comment']
+            comment = fitHeaderXisf[key][0].get('comment', '')
             fitsHeaderNew.append((key, value, comment))
         return fitsHeaderNew
 
@@ -176,7 +176,6 @@ class FileHandler:
         elif ext in ['.xisf']:
             self.loadXISF()
 
-        print(self.header)
         isValid = self.checkValidImageFormat()
         if not isValid:
             self.signals.imageLoaded.emit()

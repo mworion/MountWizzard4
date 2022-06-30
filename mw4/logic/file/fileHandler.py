@@ -27,6 +27,8 @@ from astropy.io import fits
 
 # local import
 from base.tpool import Worker
+from logic.file.xisf import XISF
+from mountcontrol.convert import valueToFloat
 
 
 class FileHandlerSignals(QObject):
@@ -106,12 +108,17 @@ class FileHandler:
         """
         if self.image is None or len(self.image) == 0:
             self.log.debug('No image data in FITS')
+            self.image = None
+            self.header = None
             return False
         if self.header is None:
             self.log.debug('No header data in FITS')
+            self.image = None
             return False
         if self.header.get('NAXIS') != 2:
             self.log.debug('Incompatible format in FITS')
+            self.image = None
+            self.header = None
             return False
         return True
 
@@ -124,12 +131,34 @@ class FileHandler:
             self.header = fitsHandle[0].header
         return True
 
+    @staticmethod
+    def convHeaderXISF2FITS(header):
+        """
+        :param header:
+        :return:
+        """
+        hdu = fits.PrimaryHDU()
+        fitsHeader = hdu.header
+        for key in header:
+            if key in ['SIMPLE', 'EXTEND']:
+                continue
+            value = header[key][0]['value']
+            valueFloat = valueToFloat(value)
+            value = value if valueFloat is None else valueFloat
+            comment = header[key][0]['comment']
+            if key in ['NAXIS']:
+                fitsHeader[key] = value
+            else:
+                fitsHeader.append((key, value, comment))
+        return fitsHeader
+
     def loadXISF(self):
         """
         :return:
         """
-        self.image = None
-        self.header = None
+        header = {}
+        self.image = XISF.read(self.imagePath, image_metadata=header)[:, :, -1]
+        self.header = self.convHeaderXISF2FITS(header['FITSKeywords'])
         return True
 
     def workerLoadImage(self, imagePath):

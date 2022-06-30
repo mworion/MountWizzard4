@@ -138,19 +138,21 @@ class FileHandler:
         :return:
         """
         hdu = fits.PrimaryHDU()
-        fitsHeader = hdu.header
-        for key in header:
-            if key in ['SIMPLE', 'EXTEND']:
+        fitsHeaderNew = hdu.header
+        fitsHeaderNew['NAXIS'] = 2
+        fitsHeaderNew['NAXIS1'] = header['geometry'][0]
+        fitsHeaderNew['NAXIS2'] = header['geometry'][1]
+
+        fitHeaderXisf = header['FITSKeywords']
+        for key in fitHeaderXisf:
+            if key in ['SIMPLE', 'EXTEND', 'NAXIS', 'NAXIS1', 'NAXIS2']:
                 continue
-            value = header[key][0]['value']
+            value = fitHeaderXisf[key][0]['value']
             valueFloat = valueToFloat(value)
             value = value if valueFloat is None else valueFloat
-            comment = header[key][0]['comment']
-            if key in ['NAXIS']:
-                fitsHeader[key] = value
-            else:
-                fitsHeader.append((key, value, comment))
-        return fitsHeader
+            comment = fitHeaderXisf[key][0]['comment']
+            fitsHeaderNew.append((key, value, comment))
+        return fitsHeaderNew
 
     def loadXISF(self):
         """
@@ -158,7 +160,7 @@ class FileHandler:
         """
         header = {}
         self.image = XISF.read(self.imagePath, image_metadata=header)[:, :, -1]
-        self.header = self.convHeaderXISF2FITS(header['FITSKeywords'])
+        self.header = self.convHeaderXISF2FITS(header)
         return True
 
     def workerLoadImage(self, imagePath):
@@ -174,6 +176,7 @@ class FileHandler:
         elif ext in ['.xisf']:
             self.loadXISF()
 
+        print(self.header)
         isValid = self.checkValidImageFormat()
         if not isValid:
             self.signals.imageLoaded.emit()

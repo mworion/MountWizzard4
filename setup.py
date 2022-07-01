@@ -126,6 +126,7 @@ setup(
         'range-key-dict==1.1.0',
         'packaging==21.3',
         'lz4==4.0.1',
+        'xisf==0.9.0',
     ]
     + (['pywin32==304'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])

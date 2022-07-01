@@ -659,7 +659,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         for item in items:
             item.setVisible(isVisible)
 
-        if not isVisible:
+        if not isVisible or not items:
             return False
 
         alt = obsSite.Alt.degrees

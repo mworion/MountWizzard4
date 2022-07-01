@@ -250,6 +250,10 @@ class MainWindow(
             self.move(x, y)
 
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
+        self.ui.mountTabWidget.setCurrentIndex(config.get('mountTabWidget', 0))
+        self.ui.imagingTabWidget.setCurrentIndex(config.get('imagingTabWidget', 0))
+        self.ui.modelingTabWidget.setCurrentIndex(config.get('modelingTabWidget', 0))
+        self.ui.manageTabWidget.setCurrentIndex(config.get('manageTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
         self.ui.toolsTabWidget.setCurrentIndex(config.get('toolsTabWidget', 0))
         self.ui.satTabWidget.setCurrentIndex(config.get('satTabWidget', 0))
@@ -289,6 +293,10 @@ class MainWindow(
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
+        config['mountTabWidget'] = self.ui.mountTabWidget.currentIndex()
+        config['modelingTabWidget'] = self.ui.modelingTabWidget.currentIndex()
+        config['manageTabWidget'] = self.ui.manageTabWidget.currentIndex()
+        config['imagingTabWidget'] = self.ui.imagingTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['toolsTabWidget'] = self.ui.toolsTabWidget.currentIndex()
         config['satTabWidget'] = self.ui.satTabWidget.currentIndex()
@@ -363,9 +371,9 @@ class MainWindow(
 
         # model
         self.wIcon(self.ui.plateSolveSync, 'start')
-        pixmap = self.img2pixmap(':/pics/azimuth.png')
+        pixmap = self.img2pixmap(':/pics/azimuth.png').scaled(101, 101)
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/pics/altitude.png')
+        pixmap = self.img2pixmap(':/pics/altitude.png').scaled(101, 101)
         self.ui.picALT.setPixmap(pixmap)
 
         self.wIcon(self.ui.cancelModel, 'cross-circle')

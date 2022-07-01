@@ -120,6 +120,17 @@ class SettImageStats:
             FOVY = None
             self.fovHint = None
 
+        if pixelSizeX and speed:
+            focusCCD = speed * pixelSizeX
+            focusRed = 4.88 * speed * speed * 0.650
+            focusGreen = 4.88 * speed * speed * 0.510
+            focusBlue = 4.88 * speed * speed * 0.475
+        else:
+            focusRed = None
+            focusGreen = None
+            focusBlue = None
+            focusCCD = None
+
         self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
         self.guiSetText(self.ui.pixelSizeY, '2.2f', pixelSizeY)
@@ -135,6 +146,10 @@ class SettImageStats:
         self.guiSetText(self.ui.FOVY, '2.2f', FOVY)
         self.guiSetText(self.ui.focalLengthStats, '3.0f', focalLength)
         self.guiSetText(self.ui.apertureStats, '3.0f', aperture)
+        self.guiSetText(self.ui.focusRed, '3.0f', focusRed)
+        self.guiSetText(self.ui.focusGreen, '3.0f', focusGreen)
+        self.guiSetText(self.ui.focusBlue, '3.0f', focusBlue)
+        self.guiSetText(self.ui.focusCCD, '3.0f', focusCCD)
 
         if self.fovHint is None:
             return False

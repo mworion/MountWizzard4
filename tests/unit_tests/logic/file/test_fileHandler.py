@@ -23,7 +23,7 @@ import shutil
 # external packages
 from astropy.io import fits
 import numpy as np
-from logic.file.xisf import XISF
+from xisf import XISF
 
 
 # local import

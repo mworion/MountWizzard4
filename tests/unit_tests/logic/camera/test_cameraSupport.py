@@ -93,6 +93,11 @@ def test_writeHeaderSite_1(function):
     assert header['SITELAT'] == '+20:00:00'
 
 
+def test_writeHeaderFocus(function):
+    suc = function.writeHeaderFocus()
+    assert suc
+
+
 def test_saveFits_1(function):
     data = np.array([])
     function.abortExpose = True

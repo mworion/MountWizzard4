@@ -61,9 +61,9 @@ class Environ:
         self.ui.onlineWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.sensorWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.directWeatherGroup.clicked.connect(self.selectRefractionSource)
-        self.ui.checkRefracNone.clicked.connect(self.setRefractionUpdateType)
-        self.ui.checkRefracCont.clicked.connect(self.setRefractionUpdateType)
-        self.ui.checkRefracNoTrack.clicked.connect(self.setRefractionUpdateType)
+        self.ui.refracNone.clicked.connect(self.setRefractionUpdateType)
+        self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
+        self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
         self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
         self.clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
@@ -82,9 +82,9 @@ class Environ:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
-        self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
-        self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
+        self.ui.refracNone.setChecked(config.get('refracNone', False))
+        self.ui.refracCont.setChecked(config.get('refracCont', False))
+        self.ui.refracNoTrack.setChecked(config.get('refracNoTrack', False))
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
         return True
@@ -94,9 +94,9 @@ class Environ:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
-        config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
-        config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
+        config['refracNone'] = self.ui.refracNone.isChecked()
+        config['refracCont'] = self.ui.refracCont.isChecked()
+        config['refracNoTrack'] = self.ui.refracNoTrack.isChecked()
         config['refractionSource'] = self.refractionSource
         return True
 
@@ -109,11 +109,11 @@ class Environ:
             return False
 
         if setting.weatherStatus == 0:
-            self.ui.checkRefracNone.setChecked(True)
+            self.ui.refracNone.setChecked(True)
         elif setting.weatherStatus == 1:
-            self.ui.checkRefracNoTrack.setChecked(True)
+            self.ui.refracNoTrack.setChecked(True)
         elif setting.weatherStatus == 2:
-            self.ui.checkRefracCont.setChecked(True)
+            self.ui.refracCont.setChecked(True)
         else:
             return False
 
@@ -128,9 +128,9 @@ class Environ:
             return suc
 
         # otherwise, we have to switch it on or off
-        if self.ui.checkRefracNone.isChecked():
+        if self.ui.refracNone.isChecked():
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
-        elif self.ui.checkRefracNoTrack.isChecked():
+        elif self.ui.refracNoTrack.isChecked():
             suc = self.app.mount.setting.setDirectWeatherUpdateType(1)
         else:
             suc = self.app.mount.setting.setDirectWeatherUpdateType(2)
@@ -253,10 +253,10 @@ class Environ:
             return False
 
         if self.sender() != self.ui.setRefractionManual:
-            if self.ui.checkRefracNone.isChecked():
+            if self.ui.refracNone.isChecked():
                 return False
 
-            if self.ui.checkRefracNoTrack.isChecked():
+            if self.ui.refracNoTrack.isChecked():
                 if self.app.mount.obsSite.status == 0:
                     return False
 

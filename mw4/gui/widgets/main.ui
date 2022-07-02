@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -5088,7 +5088,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <number>10</number>
          </property>
          <item row="2" column="0">
-          <widget class="QRadioButton" name="checkRefracNoTrack">
+          <widget class="QRadioButton" name="refracNoTrack">
            <property name="font">
             <font>
              <family>Arial</family>
@@ -5124,7 +5124,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </spacer>
          </item>
          <item row="1" column="0">
-          <widget class="QRadioButton" name="checkRefracCont">
+          <widget class="QRadioButton" name="refracCont">
            <property name="font">
             <font>
              <family>Arial</family>
@@ -5169,7 +5169,7 @@ to mount</string>
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QRadioButton" name="checkRefracNone">
+          <widget class="QRadioButton" name="refracNone">
            <property name="font">
             <font>
              <family>Arial</family>
@@ -29461,7 +29461,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>mountOn</tabstop>
   <tabstop>mountOff</tabstop>
   <tabstop>mainTabWidget</tabstop>
-  <tabstop>checkRefracNone</tabstop>
+  <tabstop>refracNone</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>mountMAC</tabstop>
   <tabstop>settleTimeMount</tabstop>
@@ -29483,8 +29483,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>versionAvailable</tabstop>
   <tabstop>installVersion</tabstop>
   <tabstop>settingsTabWidget</tabstop>
-  <tabstop>checkRefracNoTrack</tabstop>
-  <tabstop>checkRefracCont</tabstop>
+  <tabstop>refracNoTrack</tabstop>
+  <tabstop>refracCont</tabstop>
   <tabstop>twilightEvents</tabstop>
   <tabstop>virtualStop</tabstop>
   <tabstop>almanacAstronomical</tabstop>

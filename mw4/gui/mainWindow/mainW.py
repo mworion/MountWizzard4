@@ -696,7 +696,7 @@ class MainWindow(
         """
         if self.refractionSource in self.deviceStat:
             source = self.deviceStat[self.refractionSource]
-            mount = not self.ui.checkRefracNone.isChecked()
+            mount = not self.ui.refracNone.isChecked()
             self.deviceStat['environOverall'] = source and mount
         else:
             self.deviceStat['environOverall'] = None

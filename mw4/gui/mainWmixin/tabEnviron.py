@@ -187,11 +187,16 @@ class Environ:
 
         :return:
         """
-        if self.refractionSource in ['onlineWeather', 'sensorWeather']:
+        if self.refractionSource == 'sensorWeather':
             key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
             temp = self.app.sensorWeather.data.get(key)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
             press = self.app.sensorWeather.data.get(key)
+        elif self.refractionSource == 'onlineWeather':
+            key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
+            temp = self.app.onlineWeather.data.get(key)
+            key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
+            press = self.app.onlineWeather.data.get(key)
         else:
             temp = None
             press = None

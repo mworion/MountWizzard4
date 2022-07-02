@@ -124,7 +124,6 @@ class SettMisc(object):
         self.setSeeingOnline()
         self.setupIERS()
         self.showUpdates()
-        self.setColorsTest()
 
         return True
 

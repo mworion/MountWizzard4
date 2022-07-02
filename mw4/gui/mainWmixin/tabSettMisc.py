@@ -85,8 +85,8 @@ class SettMisc(object):
         config = self.app.config['mainW']
         self.setupAudioGui()
         self.ui.loglevelTrace.setChecked(config.get('loglevelTrace', False))
-        self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', False))
-        self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', True))
+        self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
+        self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', False))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.automateFast.setChecked(config.get('automateFast', False))
         self.ui.automateNormal.setChecked(config.get('automateSlow', True))

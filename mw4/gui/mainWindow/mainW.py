@@ -617,7 +617,7 @@ class MainWindow(
         smartTabs = {
             'Power': {
                 'statID': 'power',
-                'tab': self.ui.mainTabWidget,
+                'tab': self.ui.toolsTabWidget,
             },
             'Relay': {
                 'statID': 'relay',
@@ -625,7 +625,7 @@ class MainWindow(
             },
             'Analyse': {
                 'statID': 'analyse',
-                'tab': self.ui.toolsTabWidget,
+                'tab': self.ui.modelingTabWidget,
             },
         }
         tabChanged = False

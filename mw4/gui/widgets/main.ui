@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -2091,7 +2091,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QWidget" name="tab_19">
       <attribute name="title">
-       <string>Park and Coordinates</string>
+       <string>ParkPos and Coordinates</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_29">
        <property name="geometry">
@@ -8062,11 +8062,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_20">
       <attribute name="title">
-       <string>Select Build Points</string>
+       <string>Generate Build Points</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_3">
        <property name="geometry">
@@ -8078,7 +8078,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Generate model points as grid</string>
+        <string>Model points as grid</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -8406,7 +8406,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Load model points from file</string>
+        <string>Load build points from file</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -8667,7 +8667,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Generate model points from actual model</string>
+        <string>Build points from actual model</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -9016,7 +9016,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Generate model points from tracks</string>
+        <string>Build points from tracks</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -9289,7 +9289,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Generate model points as parallels of declination</string>
+        <string>Build points as parallels of declination</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -9370,7 +9370,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Generate model points equally distributed (Golden Spiral)</string>
+        <string>Build points equally distributed (Golden Spiral)</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -9450,7 +9450,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Generate model points align</string>
+        <string>Build points align</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -9523,7 +9523,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QWidget" name="tab_21">
       <attribute name="title">
-       <string>Model Build and Prog</string>
+       <string>Model Build and Program</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_28">
        <property name="geometry">
@@ -11244,7 +11244,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
      <widget class="QWidget" name="tab_22">
       <attribute name="title">
-       <string>Manage Model</string>
+       <string>Manage Models</string>
       </attribute>
       <widget class="QTabWidget" name="manageTabWidget">
        <property name="geometry">
@@ -12717,7 +12717,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </property>
      <widget class="QWidget" name="tab_25">
       <attribute name="title">
-       <string>Imaging Train</string>
+       <string>Manage Imaging Train</string>
       </attribute>
       <widget class="QGroupBox" name="GroupFocuser">
        <property name="geometry">
@@ -16110,7 +16110,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the length of the zone in which the focused image of a star is smaller than the size of its Airy disk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -16194,7 +16194,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual magnitude limit for your current imaging setup and parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the length of the zone in which the focused image of a star is smaller than the size of its Airy disk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -16238,7 +16238,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual Dawes' limit for your current imaging setup and parameters</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the length of the zone in which the focused image of a star is smaller than the size of its Airy disk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -16362,7 +16362,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
+         <string>For CCD cameras, if we take a 2x sampling ratio</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -16418,11 +16418,11 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
-       <string>Searching</string>
+       <string>Searching Database</string>
       </attribute>
       <widget class="QTableWidget" name="listSatelliteNames">
        <property name="geometry">
@@ -16984,7 +16984,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="Tracking">
       <attribute name="title">
-       <string>Tracking</string>
+       <string>Run Tracking </string>
       </attribute>
       <widget class="QGroupBox" name="satPassesGroup">
        <property name="geometry">
@@ -18703,7 +18703,7 @@ Next point in time when satellite settles.</string>
    </widget>
    <widget class="QWidget" name="MPC">
     <attribute name="title">
-     <string>Minor Planet and Time</string>
+     <string>MPC and Time</string>
     </attribute>
     <widget class="QGroupBox" name="groupBox_30">
      <property name="geometry">
@@ -18931,1446 +18931,6 @@ Next point in time when satellite settles.</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="Power">
-    <attribute name="title">
-     <string>Power</string>
-    </attribute>
-    <widget class="QGroupBox" name="groupBox_13">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>245</y>
-       <width>366</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Power Port 4</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_283">
-      <property name="geometry">
-       <rect>
-        <x>119</x>
-        <y>45</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_292">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>45</y>
-        <width>46</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="powerCurrent4">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>59</x>
-        <y>45</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="powerBootPort4">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>45</y>
-        <width>106</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Power on boot</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="powerLabel4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>91</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>---</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="powerPort4">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the power output on and off.</string>
-      </property>
-      <property name="text">
-       <string>Power</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_17">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>170</y>
-       <width>366</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Power Port 3</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_317">
-      <property name="geometry">
-       <rect>
-        <x>119</x>
-        <y>45</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_318">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>45</y>
-        <width>46</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="powerLabel3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>91</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>---</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="powerCurrent3">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>45</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="powerBootPort3">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>45</y>
-        <width>106</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Power on boot</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="powerPort3">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the power output on and off.</string>
-      </property>
-      <property name="text">
-       <string>Power</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_18">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>95</y>
-       <width>366</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Power Port 2</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_319">
-      <property name="geometry">
-       <rect>
-        <x>119</x>
-        <y>45</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_320">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>45</y>
-        <width>46</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="powerCurrent2">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>45</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="powerLabel2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>91</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>---</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="powerBootPort2">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>45</y>
-        <width>106</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Power on boot</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="powerPort2">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the power output on and off.</string>
-      </property>
-      <property name="text">
-       <string>Power</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="box">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>20</y>
-       <width>366</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Power Port 1</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_321">
-      <property name="geometry">
-       <rect>
-        <x>119</x>
-        <y>45</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_322">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>45</y>
-        <width>46</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="powerCurrent1">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>45</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="powerLabel1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>91</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>---</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="powerBootPort1">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>45</y>
-        <width>106</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Power on boot</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="powerPort1">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the power output on and off.</string>
-      </property>
-      <property name="text">
-       <string>Power</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupHubUSB">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>320</y>
-       <width>366</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>USB Hub</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="hubUSB">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>15</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the USB Hub on and off</string>
-      </property>
-      <property name="text">
-       <string>Power</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_21">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>25</y>
-       <width>366</width>
-       <height>146</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Consumption</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_192">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>45</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_284">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>70</y>
-        <width>20</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Wh</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_193">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>70</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Ah</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_191">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>45</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>W</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_286">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>AmpHours</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="sensorPower">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>45</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_287">
-      <property name="geometry">
-       <rect>
-        <x>185</x>
-        <y>45</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Aver. Current</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_165">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>21</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Voltage</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_285">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
-        <y>70</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>WattHours</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_289">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="sensorVoltage">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>21</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_288">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>45</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Power</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="consumptionWattHours">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>70</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="sensorCurrent">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>20</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="consumptionAvgAmps">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>45</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_173">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>21</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>V</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="consumptionAmpHours">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>70</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_172">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="rebootUPB">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>115</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Toggles the auto dew setting.</string>
-      </property>
-      <property name="text">
-       <string>Reboot</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupDewA">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>255</y>
-       <width>366</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Dew heater A</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLineEdit" name="dewCurrentA">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>20</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_276">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>%</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_268">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_279">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_266">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>20</y>
-        <width>79</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>DutyCycle</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="dewA">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>20</y>
-        <width>36</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Sets the dew heater power from 0 to 100 %</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="inputMask">
-       <string/>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="cursorPosition">
-       <number>1</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="input" stdset="0">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupDewB">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>315</y>
-       <width>366</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Dew heater B</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_280">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>%</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_274">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_281">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_275">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>20</y>
-        <width>79</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>DutyCycle</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="dewCurrentB">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>20</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="dewB">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>20</y>
-        <width>36</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Sets the dew heater power from 0 to 100 %</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="inputMask">
-       <string/>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="cursorPosition">
-       <number>1</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="input" stdset="0">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupDewC">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>375</y>
-       <width>366</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Dew heater C</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLabel" name="label_282">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>%</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_277">
-      <property name="geometry">
-       <rect>
-        <x>215</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_290">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>A</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_278">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>20</y>
-        <width>79</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>DutyCycle</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="dewCurrentC">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>20</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="dewC">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>20</y>
-        <width>36</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Sets the dew heater power from 0 to 100 %</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="inputMask">
-       <string/>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="cursorPosition">
-       <number>1</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="input" stdset="0">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupAutoDew">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>195</y>
-       <width>366</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Automatic dew</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="autoDew">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Toggles the auto dew setting.</string>
-      </property>
-      <property name="text">
-       <string>Auto Dew</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupPortUSB">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>320</y>
-       <width>366</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>USB Port</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="portUSB1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the USB Hub on and off</string>
-      </property>
-      <property name="text">
-       <string>USB 1</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="portUSB2">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the USB Hub on and off</string>
-      </property>
-      <property name="text">
-       <string>USB 2</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="portUSB3">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the USB Hub on and off</string>
-      </property>
-      <property name="text">
-       <string>USB 3</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="portUSB4">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the USB Hub on and off</string>
-      </property>
-      <property name="text">
-       <string>USB 4</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="portUSB5">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the USB Hub on and off</string>
-      </property>
-      <property name="text">
-       <string>USB 5</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="portUSB6">
-      <property name="geometry">
-       <rect>
-        <x>310</x>
-        <y>20</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Switches the USB Hub on and off</string>
-      </property>
-      <property name="text">
-       <string>USB 6</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupAdjustableOutput">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>375</y>
-       <width>366</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Adjustable output</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QLineEdit" name="adjustableOutput">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>20</y>
-        <width>36</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Sets the dew heater power from 0 to 100 %</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="inputMask">
-       <string/>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="cursorPosition">
-       <number>1</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="input" stdset="0">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_291">
-      <property name="geometry">
-       <rect>
-        <x>15</x>
-        <y>20</y>
-        <width>79</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Voltage</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_293">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>20</y>
-        <width>16</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>V</string>
-      </property>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QWidget" name="Tools">
     <attribute name="title">
      <string>Tools</string>
@@ -20387,501 +18947,78 @@ Next point in time when satellite settles.</string>
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_17">
+     <widget class="QWidget" name="Power">
       <attribute name="title">
-       <string>File Renaming / Terminal</string>
+       <string>Power</string>
       </attribute>
-      <widget class="QGroupBox" name="groupBox_46">
+      <widget class="QGroupBox" name="groupBox_21">
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>15</y>
+         <y>10</y>
          <width>366</width>
-         <height>371</height>
+         <height>131</height>
         </rect>
        </property>
        <property name="title">
-        <string>Batch renaming fits files</string>
+        <string>Consumption</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QComboBox" name="rename1">
+       <widget class="QLabel" name="label_192">
         <property name="geometry">
          <rect>
-          <x>130</x>
-          <y>175</y>
-          <width>226</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Chooses the FITS header Entry for renaming.</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="rename2">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>200</y>
-          <width>226</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Chooses the FITS header Entry for renaming.</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="renameDir">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>346</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_305">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>20</y>
-          <width>56</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Directory</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="renameInputSelect">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>65</y>
-          <width>91</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Select the directory for file manipulations.</string>
-        </property>
-        <property name="text">
-         <string>Select</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_8">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>175</y>
-          <width>66</width>
+          <x>330</x>
+          <y>45</y>
+          <width>16</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
-         <string>Position 1</string>
+         <string>A</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_60">
+       <widget class="QLabel" name="label_284">
         <property name="geometry">
          <rect>
-          <x>9</x>
-          <y>150</y>
-          <width>186</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Choice of FITS header entries</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_9">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>200</y>
-          <width>66</width>
+          <x>330</x>
+          <y>70</y>
+          <width>20</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
-         <string>Position 2</string>
+         <string>Wh</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkIncludeSubdirs">
+       <widget class="QLabel" name="label_193">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>65</y>
-          <width>171</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>If checked, the renaming process will run through all subdirectories.</string>
-        </property>
-        <property name="text">
-         <string>Include subdirectories</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="rename5">
-        <property name="geometry">
-         <rect>
-          <x>131</x>
-          <y>275</y>
-          <width>226</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Chooses the FITS header Entry for renaming.</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="rename4">
-        <property name="geometry">
-         <rect>
-          <x>131</x>
-          <y>250</y>
-          <width>226</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Chooses the FITS header Entry for renaming.</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_57">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>335</y>
-          <width>66</width>
+          <x>140</x>
+          <y>70</y>
+          <width>16</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
-         <string>Progress</string>
+         <string>Ah</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="label_191">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>225</y>
-          <width>66</width>
+          <x>140</x>
+          <y>45</y>
+          <width>16</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
-         <string>Position 3</string>
+         <string>W</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_11">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>250</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Position 4</string>
-        </property>
-       </widget>
-       <widget class="QProgressBar" name="renameProgress">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>335</y>
-          <width>201</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="renameStart">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>335</y>
-          <width>80</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>80</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Starts the renaming process. There will be no backup files made. Please take care about your raw files !</string>
-        </property>
-        <property name="text">
-         <string>Start</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_39">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>275</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Position 5</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="rename3">
-        <property name="geometry">
-         <rect>
-          <x>131</x>
-          <y>225</y>
-          <width>226</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Chooses the FITS header Entry for renaming.</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_308">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>116</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>New Object Name</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="newObjectName">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>110</y>
-          <width>226</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="rename6">
-        <property name="geometry">
-         <rect>
-          <x>131</x>
-          <y>300</y>
-          <width>226</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Chooses the FITS header Entry for renaming.</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_62">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>300</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Position 6</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_12">
-       <property name="geometry">
-        <rect>
-         <x>395</x>
-         <y>15</y>
-         <width>366</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Mount command terminal</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="commandInput">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>346</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10micron command from command protocol input. Please use the full command with ':' and '#'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_13">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Input</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_16">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>145</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Output</string>
-        </property>
-       </widget>
-       <widget class="QTextBrowser" name="commandOutput">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>165</y>
-          <width>346</width>
-          <height>196</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Result of the mount command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QTextBrowser" name="commandStatus">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>346</width>
-          <height>46</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some status information during sending and getting result from mount command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_17">
+       <widget class="QLabel" name="label_286">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -20891,7 +19028,1342 @@ Next point in time when satellite settles.</string>
          </rect>
         </property>
         <property name="text">
-         <string>Staus</string>
+         <string>AmpHours</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="sensorPower">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>45</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_287">
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>45</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Aver. Current</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_165">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>21</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Voltage</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_285">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>70</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>WattHours</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_289">
+        <property name="geometry">
+         <rect>
+          <x>215</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="sensorVoltage">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>21</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_288">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>45</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="consumptionWattHours">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>70</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="sensorCurrent">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="consumptionAvgAmps">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>45</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_173">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>21</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>V</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="consumptionAmpHours">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>70</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_172">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="rebootUPB">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>105</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Toggles the auto dew setting.</string>
+        </property>
+        <property name="text">
+         <string>Reboot</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="autoDew">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>105</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Toggles the auto dew setting.</string>
+        </property>
+        <property name="text">
+         <string>Auto Dew</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupDewC">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>275</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Dew heater C</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_282">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>%</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_277">
+        <property name="geometry">
+         <rect>
+          <x>215</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_290">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_278">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>20</y>
+          <width>79</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>DutyCycle</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="dewCurrentC">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="dewC">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>20</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Sets the dew heater power from 0 to 100 %</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupDewB">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>215</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Dew heater B</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_280">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>%</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_274">
+        <property name="geometry">
+         <rect>
+          <x>215</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_281">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_275">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>20</y>
+          <width>79</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>DutyCycle</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="dewCurrentB">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="dewB">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>20</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Sets the dew heater power from 0 to 100 %</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupDewA">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>155</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Dew heater A</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="dewCurrentA">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_276">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>%</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_268">
+        <property name="geometry">
+         <rect>
+          <x>215</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_279">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_266">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>20</y>
+          <width>79</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>DutyCycle</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="dewA">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>20</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Sets the dew heater power from 0 to 100 %</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_17">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>170</y>
+         <width>366</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Power Port 3</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_317">
+        <property name="geometry">
+         <rect>
+          <x>119</x>
+          <y>45</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_318">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>45</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="powerLabel3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>---</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="powerCurrent3">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>45</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="powerBootPort3">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>45</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Power on boot</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="powerPort3">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the power output on and off.</string>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_18">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>90</y>
+         <width>366</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Power Port 2</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_319">
+        <property name="geometry">
+         <rect>
+          <x>119</x>
+          <y>45</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_320">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>45</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="powerCurrent2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>45</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="powerLabel2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>---</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="powerBootPort2">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>45</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Power on boot</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="powerPort2">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the power output on and off.</string>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_13">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>250</y>
+         <width>366</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Power Port 4</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_283">
+        <property name="geometry">
+         <rect>
+          <x>119</x>
+          <y>45</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_292">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>45</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="powerCurrent4">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>59</x>
+          <y>45</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="powerBootPort4">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>45</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Power on boot</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="powerLabel4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>---</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="powerPort4">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the power output on and off.</string>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="box">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>10</y>
+         <width>366</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Power Port 1</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_321">
+        <property name="geometry">
+         <rect>
+          <x>119</x>
+          <y>45</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>A</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_322">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>45</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Current</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="powerCurrent1">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>45</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="powerLabel1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>---</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="powerBootPort1">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>45</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Power on boot</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="powerPort1">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the power output on and off.</string>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupHubUSB">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>345</y>
+         <width>366</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>USB Hub</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="hubUSB">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>15</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the USB Hub on and off</string>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupPortUSB">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>335</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>USB Port</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="portUSB1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the USB Hub on and off</string>
+        </property>
+        <property name="text">
+         <string>USB 1</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="portUSB2">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the USB Hub on and off</string>
+        </property>
+        <property name="text">
+         <string>USB 2</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="portUSB3">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the USB Hub on and off</string>
+        </property>
+        <property name="text">
+         <string>USB 3</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="portUSB4">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the USB Hub on and off</string>
+        </property>
+        <property name="text">
+         <string>USB 4</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="portUSB5">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the USB Hub on and off</string>
+        </property>
+        <property name="text">
+         <string>USB 5</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="portUSB6">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the USB Hub on and off</string>
+        </property>
+        <property name="text">
+         <string>USB 6</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupAdjustableOutput">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>335</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Adjustable output</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="adjustableOutput">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>20</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Sets the dew heater power from 0 to 100 %</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_291">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>20</y>
+          <width>79</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Voltage</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_293">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>V</string>
         </property>
        </widget>
       </widget>
@@ -20913,8 +20385,11 @@ Next point in time when satellite settles.</string>
         <property name="spacing">
          <number>4</number>
         </property>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
         <property name="topMargin">
-         <number>15</number>
+         <number>10</number>
         </property>
         <property name="rightMargin">
          <number>4</number>
@@ -21152,6 +20627,520 @@ Next point in time when satellite settles.</string>
        </layout>
       </widget>
      </widget>
+     <widget class="QWidget" name="tab_17">
+      <attribute name="title">
+       <string>File Renaming</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_46">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>10</y>
+         <width>366</width>
+         <height>376</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Batch renaming fits files</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QComboBox" name="rename1">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>175</y>
+          <width>226</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Chooses the FITS header Entry for renaming.</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="rename2">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>200</y>
+          <width>226</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Chooses the FITS header Entry for renaming.</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="renameDir">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>346</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_305">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Directory</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="renameInputSelect">
+        <property name="geometry">
+         <rect>
+          <x>265</x>
+          <y>65</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Select the directory for file manipulations.</string>
+        </property>
+        <property name="text">
+         <string>Select</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>175</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Position 1</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_60">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>150</y>
+          <width>186</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Choice of FITS header entries</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>200</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Position 2</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkIncludeSubdirs">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>65</y>
+          <width>171</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>If checked, the renaming process will run through all subdirectories.</string>
+        </property>
+        <property name="text">
+         <string>Include subdirectories</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="rename5">
+        <property name="geometry">
+         <rect>
+          <x>131</x>
+          <y>275</y>
+          <width>226</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Chooses the FITS header Entry for renaming.</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="rename4">
+        <property name="geometry">
+         <rect>
+          <x>131</x>
+          <y>250</y>
+          <width>226</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Chooses the FITS header Entry for renaming.</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_57">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>340</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Progress</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>225</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Position 3</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_11">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>250</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Position 4</string>
+        </property>
+       </widget>
+       <widget class="QProgressBar" name="renameProgress">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>340</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="renameStart">
+        <property name="geometry">
+         <rect>
+          <x>275</x>
+          <y>340</y>
+          <width>80</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Starts the renaming process. There will be no backup files made. Please take care about your raw files !</string>
+        </property>
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_39">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>275</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Position 5</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="rename3">
+        <property name="geometry">
+         <rect>
+          <x>131</x>
+          <y>225</y>
+          <width>226</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Chooses the FITS header Entry for renaming.</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_308">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>New Object Name</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="newObjectName">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>110</y>
+          <width>226</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="rename6">
+        <property name="geometry">
+         <rect>
+          <x>131</x>
+          <y>300</y>
+          <width>226</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Chooses the FITS header Entry for renaming.</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_62">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>300</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Position 6</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_28">
+      <attribute name="title">
+       <string>Mount Terminal</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_12">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>10</y>
+         <width>761</width>
+         <height>376</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Mount command terminal</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="commandInput">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>346</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10micron command from command protocol input. Please use the full command with ':' and '#'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_13">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Input</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_16">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>145</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Output</string>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="commandOutput">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>165</y>
+          <width>346</width>
+          <height>201</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Result of the mount command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="commandStatus">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>346</width>
+          <height>46</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some status information during sending and getting result from mount command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_17">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Staus</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="Settings">
@@ -21199,10 +21188,10 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
+      <enum>Qt::ElideNone</enum>
      </property>
      <property name="usesScrollButtons">
       <bool>true</bool>
@@ -24820,7 +24809,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="ParkPos">
       <attribute name="title">
-       <string>ParkPos / Relay</string>
+       <string>ParkPos and Relay</string>
       </attribute>
       <widget class="QGroupBox" name="GroupParkPositionsSettings">
        <property name="geometry">
@@ -27349,7 +27338,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="tab_18">
       <attribute name="title">
-       <string>GUI / Audio</string>
+       <string>GUI and Audio</string>
       </attribute>
       <widget class="QGroupBox" name="automateGroup">
        <property name="enabled">
@@ -28050,7 +28039,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="UpdateTime">
       <attribute name="title">
-       <string>Update / Log</string>
+       <string>Update and Logging</string>
       </attribute>
       <widget class="QGroupBox" name="InternetOnlineGroup">
        <property name="geometry">
@@ -28392,7 +28381,7 @@ Updater</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -28434,7 +28423,7 @@ p, li { white-space: pre-wrap; }
          <string>Debug</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="loglevelStandard">
@@ -28460,7 +28449,7 @@ p, li { white-space: pre-wrap; }
          <string>Standard</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="loglevelTrace">
@@ -30070,36 +30059,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>progMinorPlanetsFiltered</tabstop>
   <tabstop>downloadIERS</tabstop>
   <tabstop>progEarthRotationData</tabstop>
-  <tabstop>sensorVoltage</tabstop>
-  <tabstop>sensorCurrent</tabstop>
-  <tabstop>sensorPower</tabstop>
-  <tabstop>consumptionAvgAmps</tabstop>
-  <tabstop>consumptionAmpHours</tabstop>
-  <tabstop>consumptionWattHours</tabstop>
-  <tabstop>rebootUPB</tabstop>
-  <tabstop>autoDew</tabstop>
-  <tabstop>dewCurrentA</tabstop>
-  <tabstop>dewCurrentB</tabstop>
-  <tabstop>dewCurrentC</tabstop>
-  <tabstop>powerCurrent1</tabstop>
-  <tabstop>powerPort1</tabstop>
-  <tabstop>powerBootPort1</tabstop>
-  <tabstop>powerCurrent2</tabstop>
-  <tabstop>powerPort2</tabstop>
-  <tabstop>powerBootPort2</tabstop>
-  <tabstop>powerCurrent3</tabstop>
-  <tabstop>powerPort3</tabstop>
-  <tabstop>powerBootPort3</tabstop>
-  <tabstop>powerCurrent4</tabstop>
-  <tabstop>powerPort4</tabstop>
-  <tabstop>powerBootPort4</tabstop>
-  <tabstop>portUSB1</tabstop>
-  <tabstop>portUSB2</tabstop>
-  <tabstop>portUSB3</tabstop>
-  <tabstop>portUSB4</tabstop>
-  <tabstop>portUSB5</tabstop>
-  <tabstop>portUSB6</tabstop>
-  <tabstop>hubUSB</tabstop>
   <tabstop>openImageW</tabstop>
   <tabstop>openSatelliteW</tabstop>
   <tabstop>mountConnected</tabstop>
@@ -30211,9 +30170,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>startSatelliteTracking</tabstop>
   <tabstop>stopSatelliteTracking</tabstop>
   <tabstop>mpcExtendedFilter</tabstop>
-  <tabstop>commandInput</tabstop>
-  <tabstop>commandOutput</tabstop>
-  <tabstop>commandStatus</tabstop>
   <tabstop>mountWolAddress</tabstop>
   <tabstop>mountWolPort</tabstop>
   <tabstop>saveConfigAs</tabstop>

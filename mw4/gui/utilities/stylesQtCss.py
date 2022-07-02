@@ -637,8 +637,8 @@ class Styles:
         QTabBar::tab {
             background-color: $M_GREY1$;
             color: $M_WHITE$;
-            border-width: 2px;
-            border-color: $M_BLUE1$;
+            border-width: 1px;
+            border-color: $M_BLUE2$;
             border-radius: 3px;
             border-style: outset;
             padding: 4px;
@@ -646,8 +646,9 @@ class Styles:
             padding-right: 4px;
         }
         QTabBar::tab:selected {
-            color: $M_BLACK$;
-            background: $M_BLUE$;
+            background: $M_BLUE2$;
+            border-color: $M_BLUE$;
+            border-width: 2px;
         }
         QTabBar::tab:!selected {
             margin-top: 2px;

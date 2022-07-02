@@ -138,22 +138,21 @@ class HemisphereWindow(MWidget, EditHorizon):
         :return:
         """
         self.app.update3s.connect(self.drawAlignmentStars)
+        self.app.colorChange.connect(self.colorChange)
         self.app.updatePointMarker.connect(self.setupModel)
         self.app.redrawHemisphere.connect(self.drawHemisphereTab)
         self.app.redrawHorizon.connect(self.drawHorizonOnHem)
-        self.app.colorChange.connect(self.colorChange)
         self.app.enableEditPoints.connect(self.enableOperationModeChange)
-        self.app.mount.signals.alignDone.connect(self.drawHemisphereTab)
-        self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.app.mount.signals.pointDone.connect(self.drawPointerHem)
         self.app.dome.signals.azimuth.connect(self.drawDome)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
         self.app.dome.signals.serverDisconnected.connect(self.drawDome)
-
         self.ui.normalModeHem.clicked.connect(self.setOperationModeHem)
         self.ui.editModeHem.clicked.connect(self.setOperationModeHem)
         self.ui.alignmentModeHem.clicked.connect(self.setOperationModeHem)
 
+        self.app.mount.signals.alignDone.connect(self.drawHemisphereTab)
+        self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
         self.ui.showSlewPath.clicked.connect(self.drawHemisphereTab)
         self.ui.showHorizon.clicked.connect(self.drawHemisphereTab)
         self.ui.showAlignStar.clicked.connect(self.drawHemisphereTab)
@@ -165,6 +164,11 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(
             self.mouseMovedHemisphere)
 
+        sett = self.app.mount.setting
+        self.meridianSlew = sett.meridianLimitSlew
+        self.meridianTrack = sett.meridianLimitTrack
+        self.horizonLimitHigh = sett.horizonLimitHigh
+        self.horizonLimitLow = sett.horizonLimitLow
         self.drawHemisphereTab()
         self.drawHorizonTab()
         self.show()
@@ -725,7 +729,6 @@ class HemisphereWindow(MWidget, EditHorizon):
         hasModel = bool(self.app.mount.model.numberStars)
         self.ui.alignmentModeHem.setEnabled(hasModel)
         self.ui.showIsoModel.setEnabled(hasModel)
-
         isMount = bool(self.app.deviceStat['mount'])
         self.ui.showMountLimits.setEnabled(isMount)
 

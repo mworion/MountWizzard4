@@ -342,8 +342,8 @@ class Styles:
             image: url(:/icon/$checkmark$.svg);
         }
         QCheckBox::indicator:disabled {
-            background-color: $M_TRANS$;;
-            image: None;
+            background-color: $M_BACK$;
+            border-color: $M_GREY$;
         }
         QCheckBox:disabled {
             color: $M_GREY$;

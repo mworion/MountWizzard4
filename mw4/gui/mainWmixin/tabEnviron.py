@@ -274,16 +274,16 @@ class Environ:
         :return:    True if ok for testing
         """
         value = self.app.sensorWeather.data.get(
-            'WEATHER_PARAMETERS.WEATHER_TEMPERATURE', None)
+            'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.guiSetText(self.ui.sensorWeatherTemp, '4.1f', value)
         value = self.app.sensorWeather.data.get(
-            'WEATHER_PARAMETERS.WEATHER_PRESSURE', None)
+            'WEATHER_PARAMETERS.WEATHER_PRESSURE')
         self.guiSetText(self.ui.sensorWeatherPress, '4.1f', value)
         value = self.app.sensorWeather.data.get(
-            'WEATHER_PARAMETERS.WEATHER_DEWPOINT', None)
+            'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.guiSetText(self.ui.sensorWeatherDewPoint, '4.1f', value)
         value = self.app.sensorWeather.data.get(
-            'WEATHER_PARAMETERS.WEATHER_HUMIDITY', None)
+            'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
         self.guiSetText(self.ui.sensorWeatherHumidity, '3.0f', value)
         return True
 
@@ -300,9 +300,9 @@ class Environ:
         """
         :return:    True if ok for testing
         """
-        value = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+        value = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS')
         self.guiSetText(self.ui.skymeterSQR, '5.2f', value)
-        value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
+        value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE')
         self.guiSetText(self.ui.skymeterTemp, '4.1f', value)
         return True
 
@@ -322,11 +322,11 @@ class Environ:
 
         :return: success for test
         """
-        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
+        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.guiSetText(self.ui.powerTemp, '4.1f', value)
-        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
+        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY')
         self.guiSetText(self.ui.powerHumidity, '3.0f', value)
-        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
+        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.guiSetText(self.ui.powerDewPoint, '4.1f', value)
         return True
 
@@ -344,17 +344,17 @@ class Environ:
         """
         :return: success
         """
-        value = self.app.onlineWeather.data.get('temperature', None)
+        value = self.app.onlineWeather.data.get('temperature')
         self.guiSetText(self.ui.onlineWeatherTemp, '4.1f', value)
-        value = self.app.onlineWeather.data.get('pressure', None)
+        value = self.app.onlineWeather.data.get('pressure')
         self.guiSetText(self.ui.onlineWeatherPress, '5.1f', value)
-        value = self.app.onlineWeather.data.get('humidity', None)
+        value = self.app.onlineWeather.data.get('humidity')
         self.guiSetText(self.ui.onlineWeatherHumidity, '3.0f', value)
-        value = self.app.onlineWeather.data.get('dewPoint', None)
+        value = self.app.onlineWeather.data.get('dewPoint')
         self.guiSetText(self.ui.onlineWeatherDewPoint, '4.1f', value)
-        value = self.app.onlineWeather.data.get('cloudCover', None)
+        value = self.app.onlineWeather.data.get('cloudCover')
         self.guiSetText(self.ui.onlineWeatherCloudCover, '3.0f', value)
-        value = self.app.onlineWeather.data.get('rain', None)
+        value = self.app.onlineWeather.data.get('rain')
         self.guiSetText(self.ui.onlineWeatherRainVol, '5.2f', value)
         return True
 

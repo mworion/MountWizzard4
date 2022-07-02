@@ -210,16 +210,16 @@ def test_updateFilterRefractionParameters_1(function):
 
 def test_updateFilterRefractionParameters_2(function):
     function.refractionSource = 'weather'
-    function.app.onlineWeather.data = {'temperature': 10,
-                                       'pressure': 1000}
+    function.app.onlineWeather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
+                                       'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
     suc = function.updateFilterRefractionParameters()
     assert not suc
 
 
 def test_updateFilterRefractionParameters_3(function):
     function.refractionSource = 'onlineWeather'
-    function.app.onlineWeather.data = {'temperature': 10,
-                                       'pressure': 1000}
+    function.app.onlineWeather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
+                                       'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
     suc = function.updateFilterRefractionParameters()
     assert suc
 
@@ -473,6 +473,11 @@ def test_updateOnlineWeatherGui_1(function):
 
 def test_clearDirectWeatherGui_1(function):
     suc = function.clearDirectWeatherGui()
+    assert suc
+
+
+def test_clearOnlineWeatherGui_1(function):
+    suc = function.clearOnlineWeatherGui()
     assert suc
 
 

@@ -78,6 +78,25 @@ class SettMisc(object):
             self.app.playSound.connect(self.playSound)
             self.setupAudioSignals()
 
+        self.colorValues = {'M_BLUE': self.ui.c_blue,
+                  'M_BLUE1': self.ui.c_blue1,
+                  'M_BLUE2': self.ui.c_blue2,
+                  'M_RED': self.ui.c_red,
+                  'M_RED1': self.ui.c_red1,
+                  'M_RED2': self.ui.c_red2,
+                  'M_YELLOW': self.ui.c_yellow,
+                  'M_YELLOW1': self.ui.c_yellow1,
+                  'M_YELLOW2': self.ui.c_yellow2,
+                  'M_GREEN': self.ui.c_green,
+                  'M_GREEN1': self.ui.c_green1,
+                  'M_GREEN2': self.ui.c_green2,
+                  'M_WHITE': self.ui.c_white,
+                  'M_WHITE1': self.ui.c_white1,
+                  'M_GREY': self.ui.c_grey,
+                  'M_GREY1': self.ui.c_grey1,
+                  'M_BACK': self.ui.c_back,
+                  }
+
     def initConfig(self):
         """
         :return: True for test purpose
@@ -124,6 +143,7 @@ class SettMisc(object):
         self.setSeeingOnline()
         self.setupIERS()
         self.showUpdates()
+        self.setColorsTest()
 
         return True
 
@@ -632,4 +652,34 @@ class SettMisc(object):
             self.msg.emit(2, 'System', 'Setting Misc', 'Browser failed')
         else:
             self.msg.emit(0, 'System', 'Setting Misc', 'Doc opened')
+        return True
+
+    def setColorsTest(self):
+        """
+        :return:
+        """
+        for value in self.colorValues:
+            self.colorValues[value].setText(self.cs[value][0])
+            self.colorValues[value].editingFinished.connect(self.updateColorsTest)
+        return True
+
+    def updateColorsTest(self):
+        """
+        :return:
+        """
+        for value in self.colorValues:
+            self.cs[value][0] = self.colorValues[value].text()
+
+        cset = [0, 2, 3]
+        colset = self.colorSet
+        for col in range(3):
+            self.colorSet = col
+            cVal = cset[col]
+            if cVal == 0:
+                c = ''
+            else:
+                c = f'_{cVal:1d}'
+            for value in range(30):
+                eval(f'self.ui.c{value:02d}{c}.setStyleSheet(self.mw4Style)')
+        self.colorSet = colset
         return True

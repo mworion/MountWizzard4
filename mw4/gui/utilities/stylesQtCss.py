@@ -202,11 +202,6 @@ class Styles:
         }
         QLineEdit:disabled {
             background-color: $M_GREY1$;
-            color: $M_BLUE$;
-        }
-        QGroupBox QLineEdit:disabled {
-            background-color: $M_BLACK$;
-            color: $M_BLUE$;
         }
         QLineEdit[keypad] {
             background-color: $M_BACK$;
@@ -215,8 +210,8 @@ class Styles:
             border-color: $M_BACK$;
         }
         QLineEdit[input='true']{
-            background-color: $M_BLACK$;
-            border-color: $M_BLUE1$;
+            border-width: 2px;
+            border-color: $M_BLUE2$;
             border-style: outset;
         }
         QLineEdit[color='green'] {
@@ -244,9 +239,8 @@ class Styles:
             color: $M_RED$;
         }
         QLineEdit[status='on'] {
-            color: $M_BLACK$;
-            border-width: 2px;
-            background-color: $M_BLUE$;
+            color: $M_WHITE$;
+            background-color: $M_BLUE2$;
         }
         QLabel[color='green'] {
             color: $M_GREEN$;

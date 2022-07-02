@@ -138,7 +138,6 @@ class OnlineWeather():
 
         val = data['list'][0]
         self.log.trace(f'onlineWeatherData:[{val}]')
-        print(val)
 
         if 'main' in val:
             self.data['temperature'] = val['main']['temp'] - 273.15

@@ -22,36 +22,44 @@ Beta version of MW4
 - add: almanac: support set/rise times moon
 - add: environment: integrate meteoblue.com seeing conditions
 - add: analyse: charts could show horizon and values for each point
-- add: analyse: alt / az charts with iso error curves
+- add: analyse: alt / az charts with iso 2d contour error curves
 - add: audio: sound for connection lost and sat start tracking
 - add: model points: multiple variants for edit and move points
 - add: model points: set dither on celestial paths
 - add: model points: generate from actual used mount model
 - add: model points: existing model files could be loaded
+- add: plate solve: new watney astrometry solver for all platforms
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
+- add: hemisphere: show 2d contour error curve from actual model
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: image: photometry functions (aberration, roundness, etc.)
+- add: image: tilt estimation like ASTAP does
+- add: image: add flip H and flip V
 - add: image: solve and center to image
+- add: image: support for reading XISF files (simple versions)
 - add: imaging: separate page for imaging stats now
-- add: imaging: calcs for plate solvers (index files etc.)
+- add: imaging stats: calcs for plate solvers (index files etc.)
+- add: imaging stats: calcs for critical focus zones
 - add: drivers: polling timing for drivers could be set
 - add: drivers: game controller interface for mount and dome
 - add: system: support for python 3.10
 - add: system: support for up to 4 external RTSP streams or local cameras
 - add: help: local install of documentation in PDF format
+- improve: GUI:  layout for main window optimized and consistent and wording updates
 - improve: GUI: complete rework of charting: performance and functions
-- improve: GUI: cleanup of gui
-- improve: GUI: iers download messages
+- improve: GUI: clean up and optimize iers download messages
 - improve: model points: optimized DSO path generation (always fit, less params)
+- improve: plate solve: compatibility checks
 - improve: system: use latest PyQt5 version for python 3.10
 - improve: system: adjust window sizes to be able to make mosaic layout on desktop
 - improve: system: moved to actual jpl kernel de440.bsp for ephemeris calcs
 - remove: system: matplotlib package and replace with more performant pyqtgraph
 - remove: system: PIL package and replace with more powerful cv2
+- remove: system: move from deprecated distutils to packaging
 - remove: imageW: stacking in imageW as it was never used
 - fix: drivers: device selection tab was not properly positioned in device popup
 

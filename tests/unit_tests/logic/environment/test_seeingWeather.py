@@ -140,6 +140,18 @@ def test_workerGetSeeingData_5(function):
         assert suc
 
 
+def test_sendStatus_1(function):
+    function.running = True
+    suc = function.sendStatus(False)
+    assert suc
+
+
+def test_sendStatus_2(function):
+    function.running = False
+    suc = function.sendStatus(True)
+    assert suc
+
+
 def test_getSeeingData(function):
     with mock.patch.object(function.threadPool,
                            'start'):

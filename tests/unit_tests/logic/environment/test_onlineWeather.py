@@ -143,6 +143,22 @@ def test_processOpenWeatherMapData_4(function):
         assert suc
 
 
+def test_processOpenWeatherMapData_5(function):
+    entry = {'main': {'temp': 290,
+                      'grnd_level': 1000,
+                      'humidity': 50},
+             'clouds': {'all': 100},
+             'wind': {'speed': 10,
+                      'deg': 260},
+             }
+    data = {'list': [entry]}
+    with mock.patch.object(json,
+                           'load',
+                           return_value=data):
+        suc = function.processOpenWeatherMapData()
+        assert suc
+
+
 def test_workerGetOpenWeatherMapData_1(function):
     class Test:
         status_code = 300
@@ -188,6 +204,18 @@ def test_workerGetOpenWeatherMapData_5(function):
                            return_value=Test()):
         suc = function.workerGetOpenWeatherMapData('http://localhost')
         assert suc
+
+
+def test_sendStatus_1(function):
+    function.running = True
+    suc = function.sendStatus(False)
+    assert suc
+
+
+def test_sendStatus_2(function):
+    function.running = False
+    suc = function.sendStatus(True)
+    assert suc
 
 
 def test_getOpenWeatherMapData(function):

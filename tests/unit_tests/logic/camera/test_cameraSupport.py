@@ -94,7 +94,9 @@ def test_writeHeaderSite_1(function):
 
 
 def test_writeHeaderFocus(function):
-    suc = function.writeHeaderFocus()
+    header = fits.PrimaryHDU().header
+    focuser = function.app.focuser
+    suc = function.writeHeaderFocus(header, focuser)
     assert suc
 
 

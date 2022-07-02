@@ -40,15 +40,15 @@ class Styles:
             'M_GREY1': ['#282828', '#201010', '#C0C0C0', ],
             'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
             'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
-            'M_RED': ['#C03030', '#C03030', '#900000', ],
-            'M_RED1': ['#802020', '#802020', '#A00000', ],
-            'M_RED2': ['#601818', '#802020', '#B00000', ],
-            'M_YELLOW': ['#C0C000', '#808000', '#909000', ],
-            'M_YELLOW1': ['#808000', '#606000', '#A0A00', ],
-            'M_YELLOW2': ['#606000', '#606000', '#B0B000', ],
-            'M_GREEN': ['#008000', '#006000', '#009000', ],
-            'M_GREEN1': ['#006000', '#004000', '#00A000', ],
-            'M_GREEN2': ['#004000', '#004000', '#00B000', ],
+            'M_RED': ['#D03030', '#C03030', '#900000', ],
+            'M_RED1': ['#A02020', '#802020', '#A00000', ],
+            'M_RED2': ['#801818', '#802020', '#B00000', ],
+            'M_YELLOW': ['#D0D000', '#D0D000', '#D0D000', ],
+            'M_YELLOW1': ['#A0A000', '#A0A000', '#A0A00', ],
+            'M_YELLOW2': ['#808000', '#808000', '#B0B000', ],
+            'M_GREEN': ['#00C000', '#00C000', '#008000', ],
+            'M_GREEN1': ['#009000', '#009000', '#00A000', ],
+            'M_GREEN2': ['#006000', '#006000', '#00C000', ],
             'M_PINK': ['#FF00FF', '#C000C0', '#E000E0', ],
             'M_PINK1': ['#B000B0', '#900090', '#900090', ],
             'M_CYAN': ['#00FFFF', '#00FFFF', '#00FFFF', ],
@@ -589,6 +589,10 @@ class Styles:
             padding-left: 5px;
             background-color: $M_GREY1$;
         }
+        QComboBox[active=true] {
+            border-color: $M_GREEN$;
+            background-color: $M_GREEN2$;
+        }
         QComboBox::drop-down {
             subcontrol-origin: border;
             subcontrol-position: right;
@@ -598,6 +602,9 @@ class Styles:
             border-style: outset;
             border-radius: 2px;
             background-color: $M_GREY1$;
+        }
+        QComboBox[active=true]::drop-down {
+            border-color: $M_GREEN$;
         }
         QComboBox::down-arrow {
             image: url(:/icon/$arrow-down$.svg);
@@ -614,15 +621,13 @@ class Styles:
             min-height: 60px;
         }
         QComboBox QListView::item {
+            border-width: 1px;
             min-height: 28px;
+            border-color: $M_BLUE$;
         }
         QComboBox QListView::item:selected {
-            border-width: 1px;
             border-style: outset;
-            border-color: $M_GREY$;
-            border-radius: 2px;
-            color: $M_BACK$;
-            background-color: $M_BLUE$;
+            background-color: $M_BLUE2$;
         }
         /* lines */
         QFrame[frameShape="4"] {

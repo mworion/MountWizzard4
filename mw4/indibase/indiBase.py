@@ -411,8 +411,8 @@ class Client(QObject):
         """
         self.connected = False
         self.clearParser()
-        self.signals.serverDisconnected.emit(self.devices)
         self.clearDevices(deviceName)
+        self.signals.serverDisconnected.emit(self.devices)
         self.socket.abort()
         return True
 

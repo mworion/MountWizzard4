@@ -404,8 +404,8 @@ class SettDevice:
                           f'{framework.upper()} disabled',
                           f'{driver}')
 
-        style = f'background-color: {self.M_GREY1};'
-        self.drivers[driver]['uiDropDown'].setStyleSheet(style)
+        self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
+                                'active', False)
         self.deviceStat[driver] = None
 
         return True
@@ -465,8 +465,8 @@ class SettDevice:
         driverClass.framework = framework
         isInternal = framework == 'internal'
         if isInternal:
-            style = f'background-color: {self.M_GREEN};'
-            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
+            self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
+                                    'active', True)
 
         self.configDriver(driver=driver)
         if autoStart:
@@ -594,8 +594,6 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            style = f'background-color: {self.M_GREY1};'
-            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
             self.msg.emit(0, 'Driver', 'Server disconnected', f'{driver}')
         return True
 
@@ -611,8 +609,8 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            style = f'background-color: {self.M_GREEN};'
-            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
+            self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
+                                    'active', True)
             self.deviceStat[driver] = True
             self.msg.emit(0, 'Driver', 'Device connected', f'{driver}')
         return True
@@ -626,8 +624,8 @@ class SettDevice:
             if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
-            style = f'background-color: {self.M_GREY1};'
-            self.drivers[driver]['uiDropDown'].setStyleSheet(style)
+            self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
+                                    'active', False)
             self.deviceStat[driver] = False
             self.msg.emit(0, 'Driver', 'Device disconnected', f'{driver}')
         return True

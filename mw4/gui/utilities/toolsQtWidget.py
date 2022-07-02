@@ -342,7 +342,7 @@ class MWidget(QWidget, Styles):
 
         if isinstance(widget, QPushButton):
             if widgetProperty == 'running' and value:
-                self.changeIconColor(widget, self.M_BACK)
+                self.changeIconColor(widget, self.M_WHITE)
             elif widgetProperty == 'running' and not value:
                 self.changeIconColor(widget, self.M_BLUE)
 

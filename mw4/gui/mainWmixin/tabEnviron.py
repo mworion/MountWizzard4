@@ -280,12 +280,6 @@ class Environ:
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_HUMIDITY', None)
         self.guiSetText(self.ui.sensorWeatherHumidity, '3.0f', value)
-        value = self.app.sensorWeather.data.get('cloudCover', None)
-        self.guiSetText(self.ui.sensorWeatherCloudCover, '3.0f', value)
-        value = self.app.sensorWeather.data.get('rain', None)
-        self.guiSetText(self.ui.sensorWeatherRainVol, '5.2f', value)
-        value = self.app.sensorWeather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', None)
-        self.guiSetText(self.ui.sensorWeatherSQR, '4.2f', value)
         return True
 
     def clearSensorWeatherGui(self, deviceName=''):

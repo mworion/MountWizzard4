@@ -70,15 +70,14 @@ class Styles:
             font-weight: normal;
             font-size: 30pt;
         }
-        QGroupBox[large] {
-            font-family: Arial;
-            font-weight: bold;
-            font-size: 13pt;
-        }
         QGroupBox {
             font-family: Arial;
             font-weight: normal;
             font-size: 11pt;
+        }
+        QGroupBox[large] {
+            font-weight: bold;
+            font-size: 13pt;
         }
         QTextBrowser {
             font-family: Courier New;
@@ -112,15 +111,14 @@ class Styles:
             font-weight: bold;
             font-size: 20pt;
         }
-        QGroupBox[large] {
-            font-family: Arial;
-            font-weight: normal;
-            font-size: 10pt;
-        }
         QGroupBox {
             font-family: Arial;
             font-weight: normal;
             font-size: 8pt;
+        }
+        QGroupBox[large] {
+            font-weight: bold;
+            font-size: 10pt;
         }
         QTextBrowser {
             font-family: Courier New;
@@ -206,6 +204,10 @@ class Styles:
             background-color: $M_GREY1$;
             color: $M_BLUE$;
         }
+        QGroupBox QLineEdit:disabled {
+            background-color: $M_BLACK$;
+            color: $M_BLUE$;
+        }
         QLineEdit[keypad] {
             background-color: $M_BACK$;
             color: $M_BLUE$;
@@ -271,36 +273,38 @@ class Styles:
             color: $M_WHITE$;
             background-color: $M_BACK$;
         }
-        QGroupBox::title[large='true'] {
+        QGroupBox::title[large=true] {
             left: 5px;
             subcontrol-origin: margin;
             subcontrol-position: top left;
             color: $M_BLUE$;
             background-color: $M_BACK$;
         }
-        QGroupBox::title[refraction='true']{
+        QGroupBox::title[refraction=true]{
             color: $M_BLUE$;
         }
-        QGroupBox[refraction='true'] {
-            border-width: 2px;
+        QGroupBox[refraction=true] {
             border-color: $M_BLUE$;
         }
         QGroupBox:disabled{
-            border-width: 2px;
             border-color: $M_RED$;
         }
-        QGroupBox::title:disabled{
-            color: $M_BLUE1$;
+        QGroupBox::indicator:disabled {
+            border-color: $M_GREY$;
+            background-color: $M_BACK$;
         }
-        QGroupBox[frameless='true'] {
+        QGroupBox::title:disabled{
+            color: $M_GREY$;
+        }
+        QGroupBox[frameless=true] {
             border-width: 0px;
         }
-        QGroupBox[frameless='true']:disabled {
+        QGroupBox[frameless=true]:disabled {
             border-width: 2px;
             border-color: $M_RED$;
         }
         QGroupBox::indicator {
-            border-width: 1px;
+            border-width: 2px;
             border-color: $M_GREY$;
             background-color: $M_BACK$;
             border-style: outset;
@@ -309,7 +313,9 @@ class Styles:
             height: 13px;
         }
         QGroupBox::indicator:checked {
-            background-color: $M_BLUE$;
+            border-width: 1px;
+            border-color: $M_BLUE$;
+            background-color: $M_BLUE2$;
             image: url(:/icon/$checkmark$.svg);
         }
         QGroupBox[running=true] {

@@ -138,6 +138,7 @@ class OnlineWeather():
 
         val = data['list'][0]
         self.log.trace(f'onlineWeatherData:[{val}]')
+        print(val)
 
         if 'main' in val:
             self.data['temperature'] = val['main']['temp'] - 273.15
@@ -157,6 +158,8 @@ class OnlineWeather():
 
         if 'rain' in val:
             self.data['rain'] = val['rain']['3h']
+        else:
+            self.data['rain'] = 0
         return True
 
     def workerGetOpenWeatherMapData(self, url):

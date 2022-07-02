@@ -141,13 +141,24 @@ class SeeingWeather():
             json.dump(data, f, indent=4)
         return True
 
+    def sendStatus(self, status):
+        """
+        :return:
+        """
+        if not status and self.running:
+            self.signals.deviceDisconnected.emit('SeeingWeather')
+        elif status and not self.running:
+            self.signals.deviceConnected.emit('SeeingWeather')
+        return True
+
     def getSeeingData(self, url=''):
         """
         :param url:
         :return: true for test purpose
         """
         worker = Worker(self.workerGetSeeingData, url)
-        worker.signals.result.connect(self.processSeeingData)
+        worker.signals.finished.connect(self.processSeeingData)
+        worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(worker)
         return True
 

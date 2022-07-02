@@ -35,8 +35,8 @@ class SensorWeatherIndi(IndiClass):
 
     def setUpdateConfig(self, deviceName):
         """
-        setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
+        setUpdateRate corrects the update rate of weather devices to get a defined
+        setting regardless, what is set up in server side.
 
         :param deviceName:
         :return: success

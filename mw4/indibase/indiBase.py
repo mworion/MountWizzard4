@@ -394,6 +394,7 @@ class Client(QObject):
             if not device == deviceName and deviceName:
                 continue
 
+            self.signals.deviceDisconnected.emit(device)
             self.signals.removeDevice.emit(device)
             self.log.info(f'Remove device [{device}]')
 

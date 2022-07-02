@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -4465,7 +4465,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </rect>
      </property>
      <property name="title">
-      <string>Environment data from source</string>
+      <string>Refraction update source from environment data</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -5222,7 +5222,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <string>Setting refraction update types from MountWizzard to the mount</string>
         </property>
         <property name="title">
-         <string>Refraction update</string>
+         <string>Update to mount</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_10">
          <property name="leftMargin">
@@ -5243,74 +5243,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="verticalSpacing">
           <number>10</number>
          </property>
-         <item row="1" column="0">
-          <widget class="QRadioButton" name="checkRefracCont">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="toolTip">
-            <string>Update the refraction parameters to the mount continiously with moving average filter over 1 minute</string>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-            <string>continously</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="checkRefracNone">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="toolTip">
-            <string>No refraction update to the mount</string>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-            <string>no update</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QPushButton" name="setRefractionManual">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="toolTip">
-            <string>Pushes the refraction temperature and pressure to mount from the selected source</string>
-           </property>
-           <property name="text">
-            <string>Push 
- manually 
-to mount</string>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <widget class="QRadioButton" name="checkRefracNoTrack">
            <property name="font">
@@ -5346,6 +5278,74 @@ to mount</string>
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="checkRefracCont">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Update the refraction parameters to the mount continiously with moving average filter over 1 minute</string>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>continously</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QPushButton" name="setRefractionManual">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Pushes the refraction temperature and pressure to mount from the selected source</string>
+           </property>
+           <property name="text">
+            <string>Push 
+ manually 
+to mount</string>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="checkRefracNone">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>No refraction update to the mount</string>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>no update</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -28679,7 +28679,7 @@ p, li { white-space: pre-wrap; }
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of environment: &lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
-     <string>Environ</string>
+     <string>Refraction</string>
     </property>
    </widget>
    <widget class="QPushButton" name="domeConnected">

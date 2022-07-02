@@ -36,7 +36,6 @@ class Environ:
                                   'sensorWeather': self.ui.sensorWeatherGroup,
                                   'directWeather': self.ui.directWeatherGroup,
                                   }
-
         self.refractionSource = ''
         self.filteredTemperature = None
         self.filteredPressure = None
@@ -45,14 +44,14 @@ class Environ:
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
         signals = self.app.skymeter.signals
         signals.deviceDisconnected.connect(self.clearSkymeterGui)
+        signals = self.app.onlineWeather.signals
+        signals.deviceDisconnected.connect(self.clearOnlineWeatherGui)
         signals = self.app.powerWeather.signals
         signals.deviceDisconnected.connect(self.clearPowerWeatherGui)
         signals = self.app.seeingWeather.signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
         signals = self.app.seeingWeather.signals
         signals.deviceConnected.connect(self.prepareSeeingTable)
-        signals = self.app.onlineWeather.signals
-        signals.deviceDisconnected.connect(self.updateSensorWeatherGui)
 
         # weather functions
         self.app.mount.signals.settingDone.connect(self.updateDirectWeatherGui)
@@ -188,22 +187,16 @@ class Environ:
 
         :return:
         """
-        if self.refractionSource == 'onlineWeather':
-            if not self.app.onlineWeather.data:
-                return False
-
-            temp = self.app.onlineWeather.data['temperature']
-            press = self.app.onlineWeather.data['pressure']
-        elif self.refractionSource == 'sensorWeather':
+        if self.refractionSource in ['onlineWeather', 'sensorWeather']:
             key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
-            temp = self.app.sensorWeather.data.get(key, None)
+            temp = self.app.sensorWeather.data.get(key)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
-            press = self.app.sensorWeather.data.get(key, None)
+            press = self.app.sensorWeather.data.get(key)
         else:
             temp = None
             press = None
 
-        if temp is None or press is None:
+        if temp is None or press is None or press < 500:
             self.filteredTemperature = None
             self.filteredPressure = None
             return False
@@ -264,25 +257,11 @@ class Environ:
 
         suc = self.app.mount.setting.setRefractionParam(temperature=temp,
                                                         pressure=press)
-
+        self.log.debug(f'Setting refrac temp:[{temp}], press:[{press}]')
         if not suc:
             self.msg.emit(2, 'System', 'Environment', 'No refraction update')
             return False
 
-        return True
-
-    def clearSensorWeatherGui(self, deviceName):
-        """
-        :param deviceName:
-        :return: true for test purpose
-        """
-        self.ui.sensorWeatherTemp.setText('-')
-        self.ui.sensorWeatherPress.setText('-')
-        self.ui.sensorWeatherDewPoint.setText('-')
-        self.ui.sensorWeatherHumidity.setText('-')
-        self.ui.sensorWeatherCloudCover.setText('-')
-        self.ui.sensorWeatherRainVol.setText('-')
-        self.ui.sensorWeatherSQR.setText('-')
         return True
 
     def updateSensorWeatherGui(self):
@@ -292,36 +271,30 @@ class Environ:
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_TEMPERATURE', None)
         self.guiSetText(self.ui.sensorWeatherTemp, '4.1f', value)
-
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_PRESSURE', None)
         self.guiSetText(self.ui.sensorWeatherPress, '4.1f', value)
-
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_DEWPOINT', None)
         self.guiSetText(self.ui.sensorWeatherDewPoint, '4.1f', value)
-
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_HUMIDITY', None)
         self.guiSetText(self.ui.sensorWeatherHumidity, '3.0f', value)
-
         value = self.app.sensorWeather.data.get('cloudCover', None)
         self.guiSetText(self.ui.sensorWeatherCloudCover, '3.0f', value)
-
         value = self.app.sensorWeather.data.get('rain', None)
         self.guiSetText(self.ui.sensorWeatherRainVol, '5.2f', value)
-
         value = self.app.sensorWeather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', None)
         self.guiSetText(self.ui.sensorWeatherSQR, '4.2f', value)
         return True
 
-    def clearSkymeterGui(self, deviceName=''):
+    def clearSensorWeatherGui(self, deviceName=''):
         """
         :param deviceName:
         :return: true for test purpose
         """
-        self.ui.skymeterSQR.setText('-')
-        self.ui.skymeterTemp.setText('-')
+        self.app.sensorWeather.data.clear()
+        self.updateSensorWeatherGui()
         return True
 
     def updateSkymeterGui(self):
@@ -330,20 +303,17 @@ class Environ:
         """
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
         self.guiSetText(self.ui.skymeterSQR, '5.2f', value)
-
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
         self.guiSetText(self.ui.skymeterTemp, '4.1f', value)
         return True
 
-    def clearPowerWeatherGui(self):
+    def clearSkymeterGui(self, deviceName=''):
         """
-        clearPowerWeatherGui changes the state of the Pegasus values to '-'
-
-        :return: success for test
+        :param deviceName:
+        :return: true for test purpose
         """
-        self.ui.powerTemp.setText('-')
-        self.ui.powerHumidity.setText('-')
-        self.ui.powerDewPoint.setText('-')
+        self.app.skymeter.data.clear()
+        self.updateSkymeterGui()
         return True
 
     def updatePowerWeatherGui(self):
@@ -355,12 +325,20 @@ class Environ:
         """
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
         self.guiSetText(self.ui.powerTemp, '4.1f', value)
-
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
         self.guiSetText(self.ui.powerHumidity, '3.0f', value)
-
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
         self.guiSetText(self.ui.powerDewPoint, '4.1f', value)
+        return True
+
+    def clearPowerWeatherGui(self):
+        """
+        clearPowerWeatherGui changes the state of the Pegasus values to '-'
+
+        :return: success for test
+        """
+        self.app.powerWeather.data.clear()
+        self.updatePowerWeatherGui()
         return True
 
     def updateOnlineWeatherGui(self):
@@ -369,21 +347,44 @@ class Environ:
         """
         value = self.app.onlineWeather.data.get('temperature', None)
         self.guiSetText(self.ui.onlineWeatherTemp, '4.1f', value)
-
         value = self.app.onlineWeather.data.get('pressure', None)
         self.guiSetText(self.ui.onlineWeatherPress, '5.1f', value)
-
         value = self.app.onlineWeather.data.get('humidity', None)
         self.guiSetText(self.ui.onlineWeatherHumidity, '3.0f', value)
-
         value = self.app.onlineWeather.data.get('dewPoint', None)
         self.guiSetText(self.ui.onlineWeatherDewPoint, '4.1f', value)
-
         value = self.app.onlineWeather.data.get('cloudCover', None)
         self.guiSetText(self.ui.onlineWeatherCloudCover, '3.0f', value)
-
         value = self.app.onlineWeather.data.get('rain', None)
         self.guiSetText(self.ui.onlineWeatherRainVol, '5.2f', value)
+        return True
+
+    def clearOnlineWeatherGui(self):
+        """
+        updateOnlineWeatherGui takes the returned data from the dict to the Gui
+
+        :return: true for test purpose
+        """
+        self.app.onlineWeather.data.clear()
+        self.updateOnlineWeatherGui()
+        return True
+
+    def updateDirectWeatherGui(self, setting=None):
+        """
+        :param setting:
+        :return: success
+        """
+        if setting is None:
+            return False
+
+        value = setting.weatherTemperature
+        self.guiSetText(self.ui.directWeatherTemp, '4.1f', value)
+        value = setting.weatherPressure
+        self.guiSetText(self.ui.directWeatherPress, '5.1f', value)
+        value = setting.weatherHumidity
+        self.guiSetText(self.ui.directWeatherHumidity, '3.0f', value)
+        value = setting.weatherDewPoint
+        self.guiSetText(self.ui.directWeatherDewPoint, '4.1f', value)
         return True
 
     def clearDirectWeatherGui(self):
@@ -392,42 +393,8 @@ class Environ:
 
         :return: true for test purpose
         """
-        self.ui.directWeatherTemp.setText('-')
-        self.ui.directWeatherPress.setText('-')
-        self.ui.directWeatherHumidity.setText('-')
-        self.ui.directWeatherDewPoint.setText('-')
-        return True
-
-    def updateDirectWeatherGui(self, setting=None):
-        """
-        :param setting:
-        :return: success
-        """
-        if not self.deviceStat['directWeather']:
-            self.clearDirectWeatherGui()
-            return False
-
-        if setting is None:
-            return False
-
-        value = setting.weatherTemperature
-        self.guiSetText(self.ui.directWeatherTemp, '4.1f', value)
-
-        value = setting.weatherPressure
-        self.guiSetText(self.ui.directWeatherPress, '5.1f', value)
-
-        value = setting.weatherHumidity
-        self.guiSetText(self.ui.directWeatherHumidity, '3.0f', value)
-
-        value = setting.weatherDewPoint
-        self.guiSetText(self.ui.directWeatherDewPoint, '4.1f', value)
-        return True
-
-    def clearSeeingEntries(self):
-        """
-        :return:
-        """
-        self.ui.tableSeeing.clear()
+        self.app.directWeather.data.clear()
+        self.updateDirectWeatherGui()
         return True
 
     def addSkyfieldTimeObject(self, data):
@@ -506,6 +473,13 @@ class Environ:
                 seeTab.setItem(j, i, item)
 
         seeTab.selectColumn(columnCenter + 10)
+        return True
+
+    def clearSeeingEntries(self):
+        """
+        :return:
+        """
+        self.ui.tableSeeing.clear()
         return True
 
     def prepareSeeingTable(self):

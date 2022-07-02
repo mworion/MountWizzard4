@@ -589,17 +589,10 @@ class MainWindow(
         else:
             self.ui.batchModel.setEnabled(False)
 
-        stat = self.deviceStat.get('environOverall', None)
-
-        if stat is None:
-            self.ui.refractionGroup.setEnabled(False)
-            self.ui.setRefractionManual.setEnabled(False)
-        elif stat and self.deviceStat.get('mount', None):
+        if bool(self.deviceStat.get('mount')):
             self.ui.refractionGroup.setEnabled(True)
-            self.ui.setRefractionManual.setEnabled(True)
         else:
             self.ui.refractionGroup.setEnabled(False)
-            self.ui.setRefractionManual.setEnabled(False)
 
         if self.deviceStat.get('dome') and self.deviceStat.get('mount'):
             self.ui.useDomeAz.setEnabled(True)
@@ -702,7 +695,9 @@ class MainWindow(
         :return: True for test purpose
         """
         if self.refractionSource in self.deviceStat:
-            self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
+            source = self.deviceStat[self.refractionSource]
+            mount = not self.ui.checkRefracNone.isChecked()
+            self.deviceStat['environOverall'] = source and mount
         else:
             self.deviceStat['environOverall'] = None
 
@@ -767,7 +762,7 @@ class MainWindow(
         self.ui.statusOnline.setTitle(t)
 
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
-        t = f'Timezone: {tzT}'
+        t = f'TZ: {tzT}'
         self.ui.statusTime.setTitle(t)
         return True
 

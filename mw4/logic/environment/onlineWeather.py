@@ -66,7 +66,7 @@ class OnlineWeather():
         self.hostaddress = ''
         self.apiKey = ''
         self._online = False
-        self.app.update10m.connect(self.pollOpenWeatherMapData)
+        self.app.update10s.connect(self.pollOpenWeatherMapData)
 
     @property
     def online(self):
@@ -145,6 +145,9 @@ class OnlineWeather():
             self.data['humidity'] = val['main']['humidity']
             self.data['dewPoint'] = self.getDewPoint(self.data['temperature'],
                                                      self.data['humidity'])
+            self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.data['temperature']
+            self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.data['pressure']
+
         if 'clouds' in val:
             self.data['cloudCover'] = val['clouds']['all']
 
@@ -178,13 +181,24 @@ class OnlineWeather():
             self.log.trace(data.json())
         return True
 
+    def sendStatus(self, status):
+        """
+        :return:
+        """
+        if not status and self.running:
+            self.signals.deviceDisconnected.emit('OnlineWeather')
+        elif status and not self.running:
+            self.signals.deviceConnected.emit('OnlineWeather')
+        return True
+
     def getOpenWeatherMapData(self, url=''):
         """
         :param url:
         :return: true for test purpose
         """
         worker = Worker(self.workerGetOpenWeatherMapData, url)
-        worker.signals.result.connect(self.processOpenWeatherMapData)
+        worker.signals.finished.connect(self.processOpenWeatherMapData)
+        worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(worker)
         return True
 

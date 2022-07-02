@@ -41,11 +41,14 @@ class Styles:
             'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
             'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
             'M_RED': ['#C03030', '#C03030', '#900000', ],
-            'M_RED1': ['#802020', '#802020', '#900000', ],
+            'M_RED1': ['#802020', '#802020', '#A00000', ],
+            'M_RED2': ['#601818', '#802020', '#B00000', ],
             'M_YELLOW': ['#C0C000', '#808000', '#909000', ],
-            'M_YELLOW1': ['#808000', '#606000', '#909000', ],
+            'M_YELLOW1': ['#808000', '#606000', '#A0A00', ],
+            'M_YELLOW2': ['#606000', '#606000', '#B0B000', ],
             'M_GREEN': ['#008000', '#006000', '#009000', ],
-            'M_GREEN1': ['#006000', '#004000', '#009000', ],
+            'M_GREEN1': ['#006000', '#004000', '#00A000', ],
+            'M_GREEN2': ['#004000', '#004000', '#00B000', ],
             'M_PINK': ['#FF00FF', '#C000C0', '#E000E0', ],
             'M_PINK1': ['#B000B0', '#900090', '#900090', ],
             'M_CYAN': ['#00FFFF', '#00FFFF', '#00FFFF', ],
@@ -324,7 +327,7 @@ class Styles:
             background-color: $M_TRANS$;;
         }
         QCheckBox::indicator {
-            border-width: 1px;
+            border-width: 2px;
             border-color: $M_GREY$;
             background-color: $M_BACK$;
             border-style: outset;
@@ -333,7 +336,9 @@ class Styles:
             height: 13px;
         }
         QCheckBox::indicator:checked {
-            background-color: $M_BLUE$;
+            border-width: 1px;
+            border-color: $M_BLUE$;
+            background-color: $M_BLUE2$;
             image: url(:/icon/$checkmark$.svg);
         }
         QCheckBox::indicator:disabled {
@@ -361,7 +366,8 @@ class Styles:
             height: 13px;
         }
         QRadioButton::indicator:checked {
-            background-color: $M_BLUE$;
+            border-color: $M_BLUE$;
+            background-color: $M_BLUE2$;
         }
         /* Spin Boxes */
         QDoubleSpinBox {
@@ -476,19 +482,18 @@ class Styles:
         }
         QPushButton:pressed {
             background-color: $M_BLUE$;
-            color: $M_BLACK$;
         }
         QPushButton[running=true] {
-            background-color: $M_BLUE$;
-            color: $M_BLACK$;
+            border-color: $M_BLUE$;
+            background-color: $M_BLUE2$;
         }
         QPushButton[pause=true] {
-            background-color: $M_YELLOW$;
-            color: $M_BLACK$;
+            border-color: $M_YELLOW$;
+            background-color: $M_YELLOW2$;
         }
         QPushButton[cancel=true] {
-            background-color: $M_RED$;
-            color: $M_WHITE$;
+            border-color: $M_RED$;
+            background-color: $M_RED2$;
         }
         QPushButton:disabled {
             background-color: $M_BACK$;
@@ -503,16 +508,19 @@ class Styles:
             color: $M_BLACK$;
         }
         QPushButton[color='red'] {
-            background-color: $M_RED$;
-            color: $M_BLACK$;
+            border-color: $M_RED$;
+            background-color: $M_RED2$;
+            color: $M_WHITE$;
         }
         QPushButton[color='yellow'] {
-            background-color: $M_YELLOW$;
-            color: $M_BLACK$;
+            background-color: $M_YELLOW2$;
+            border-color: $M_YELLOW$;
+            color: $M_WHITE$;            
         }
         QPushButton[color='green'] {
-            background-color: $M_GREEN$;
-            color: $M_BLACK$;
+            background-color: $M_GREEN2$;
+            border-color: $M_GREEN$;
+            color: $M_WHITE$;
         }
         QPushButton[stop=true] {
             background-color: $M_TRANS$;
@@ -870,6 +878,10 @@ class Styles:
         return self.cs['M_RED1'][self.colorSet]
 
     @property
+    def M_RED2(self):
+        return self.cs['M_RED2'][self.colorSet]
+
+    @property
     def M_YELLOW(self):
         return self.cs['M_YELLOW'][self.colorSet]
 
@@ -878,12 +890,20 @@ class Styles:
         return self.cs['M_YELLOW1'][self.colorSet]
 
     @property
+    def M_YELLOW2(self):
+        return self.cs['M_YELLOW2'][self.colorSet]
+
+    @property
     def M_GREEN(self):
         return self.cs['M_GREEN'][self.colorSet]
 
     @property
     def M_GREEN1(self):
         return self.cs['M_GREEN1'][self.colorSet]
+
+    @property
+    def M_GREEN2(self):
+        return self.cs['M_GREEN2'][self.colorSet]
 
     @property
     def M_PINK(self):

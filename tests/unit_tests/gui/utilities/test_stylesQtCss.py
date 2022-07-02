@@ -72,10 +72,13 @@ def test_property(function):
     a = function.M_BLACK
     a = function.M_RED
     a = function.M_RED1
+    a = function.M_RED2
     a = function.M_YELLOW
     a = function.M_YELLOW1
+    a = function.M_YELLOW2
     a = function.M_GREEN
     a = function.M_GREEN1
+    a = function.M_GREEN2
     a = function.M_PINK
     a = function.M_PINK1
 

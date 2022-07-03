@@ -291,7 +291,8 @@ class SettMisc(object):
         """
         :return:
         """
-        if not self.ui.gameControllerGroup.isChecked():
+        isController = self.ui.gameControllerGroup.isChecked()
+        if not isController:
             self.gameControllerRunning = False
             return False
         if self.gameControllerRunning:

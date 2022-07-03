@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -132,7 +132,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_7">
       <attribute name="title">
@@ -2886,7 +2886,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QGroupBox" name="groupBox_37">
        <property name="geometry">
         <rect>
-         <x>5</x>
+         <x>385</x>
          <y>10</y>
          <width>381</width>
          <height>191</height>
@@ -3065,7 +3065,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>15</y>
+          <y>60</y>
           <width>91</width>
           <height>116</height>
          </rect>
@@ -3307,11 +3307,24 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <string>SW</string>
         </property>
        </widget>
+       <widget class="QLabel" name="controller2">
+        <property name="geometry">
+         <rect>
+          <x>360</x>
+          <y>0</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_38">
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>5</x>
          <y>10</y>
          <width>351</width>
          <height>191</height>
@@ -3602,6 +3615,19 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <string>UL</string>
         </property>
        </widget>
+       <widget class="QLabel" name="controller1">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>0</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -3664,6 +3690,19 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>Mount Park</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="controller4">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>0</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
       </property>
      </widget>
     </widget>
@@ -3818,6 +3857,19 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
       <property name="text">
        <string>Follow</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="controller3">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>0</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
       </property>
      </widget>
     </widget>
@@ -20586,7 +20638,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>

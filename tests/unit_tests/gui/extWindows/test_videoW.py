@@ -18,7 +18,6 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
-import time
 
 # external packages
 from PyQt5.QtGui import QCloseEvent, QPixmap
@@ -80,6 +79,22 @@ def test_sendImage_2(function):
             return (True, np.ones((10, 10, 1)))
 
     function.capture = Test()
+    function.running = False
+    with mock.patch.object(cv2,
+                           'cvtColor',
+                           return_value=np.ones((10, 10, 1)),
+                           side_effect=cv2.error):
+        suc = function.sendImage()
+        assert not suc
+
+
+def test_sendImage_3(function):
+    class Test:
+        @staticmethod
+        def retrieve():
+            return (True, np.ones((10, 10, 1)))
+
+    function.capture = Test()
     function.running = True
     with mock.patch.object(cv2,
                            'cvtColor',
@@ -112,6 +127,53 @@ def test_workerVideoStream_1(function):
     function.running = True
     with mock.patch.object(cv2,
                            'VideoCapture',
+                           return_value=Test(),
+                           side_effect=cv2.error):
+        suc = function.workerVideo('test', 1)
+        assert not suc
+        assert not function.running
+
+
+def test_workerVideoStream_2(function):
+    class Test:
+        @staticmethod
+        def isOpened():
+            return False
+
+        @staticmethod
+        def grab():
+            return False
+
+        @staticmethod
+        def release():
+            return
+
+    function.running = True
+    with mock.patch.object(cv2,
+                           'VideoCapture',
+                           return_value=Test()):
+        suc = function.workerVideo('test', 1)
+        assert not suc
+        assert not function.running
+
+
+def test_workerVideoStream_3(function):
+    class Test:
+        @staticmethod
+        def isOpened():
+            return True
+
+        @staticmethod
+        def grab():
+            return False
+
+        @staticmethod
+        def release():
+            return
+
+    function.running = True
+    with mock.patch.object(cv2,
+                           'VideoCapture',
                            return_value=Test()):
         with mock.patch.object(function,
                                'sendImage'):
@@ -119,7 +181,7 @@ def test_workerVideoStream_1(function):
             assert suc
 
 
-def test_workerVideoStream_2(function):
+def test_workerVideoStream_4(function):
     class Test:
         @staticmethod
         def isOpened():

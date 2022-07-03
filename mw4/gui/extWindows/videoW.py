@@ -41,6 +41,7 @@ class VideoWindow(toolsQtWidget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.msg = app.msg
         self.threadPool = app.threadPool
         self.ui = video_ui.Ui_VideoDialog()
         self.ui.setupUi(self)
@@ -82,8 +83,13 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        _, frame = self.capture.retrieve()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        try:
+            _, frame = self.capture.retrieve()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        except cv2.error as e:
+            self.msg.emit(2, 'Video', 'Compatibility', e)
+            return False
+
         image = qimage2ndarray.array2qimage(frame)
         if not self.running:
             return False
@@ -103,10 +109,20 @@ class VideoWindow(toolsQtWidget.MWidget):
         :param frameRate:
         :return:
         """
-        self.capture = cv2.VideoCapture(source)
-        self.log.debug(f'Video open : [{self.capture.isOpened()}]')
+        try:
+            self.capture = cv2.VideoCapture(source)
+        except cv2.error as e:
+            self.msg.emit(2, 'Video', 'Camera error', e)
+            self.running = False
+            return False
+
+        if not self.capture.isOpened():
+            self.msg.emit(2, 'Video', 'Camera', f'[{source}] could not be started')
+            self.running = False
+            return False
+
         self.runningCounter = 0
-        while self.running and self.capture.isOpened():
+        while self.running:
             suc = self.capture.grab()
             if not suc:
                 break
@@ -145,6 +161,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         self.changeStyleDynamic(self.ui.videoStart, 'running', False)
         self.changeStyleDynamic(self.ui.videoStop, 'running', True)
+        self.pixmapReady.emit(None)
         self.running = False
         return True
 
@@ -153,7 +170,8 @@ class VideoWindow(toolsQtWidget.MWidget):
         :param pixmap:
         :return:
         """
-        if not self.running:
+        if not self.running or pixmap is None:
+            self.ui.video.clear()
             return False
 
         pixmap = pixmap.scaled(self.ui.video.width(), self.ui.video.height())

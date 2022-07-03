@@ -150,7 +150,7 @@ def test_horizonP1(function):
     assert len(function.horizonP) == 110
     function.genGreaterCircle('med')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 82
+    assert len(function.horizonP) == 92
     function.genGreaterCircle('norm')
     function.horizonP = function.buildP
     assert len(function.horizonP) == 76
@@ -174,7 +174,7 @@ def test_buildP1(function):
     function.genGreaterCircle('max')
     assert len(function.buildP) == 110
     function.genGreaterCircle('med')
-    assert len(function.buildP) == 82
+    assert len(function.buildP) == 92
     function.genGreaterCircle('norm')
     assert len(function.buildP) == 76
     function.genGreaterCircle('min')
@@ -232,7 +232,7 @@ def test_genGreaterCircle3(function):
         assert alt >= 0
         assert az >= 0
         assert status
-    assert i == 81
+    assert i == 91
 
 
 def test_genGreaterCircle4(function):

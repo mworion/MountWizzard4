@@ -271,7 +271,7 @@ def test_smartFunctionGui_4(function):
 
 
 def test_smartFunctionGui_5(function):
-    function.deviceStat['environOverall'] = None
+    function.deviceStat['refraction'] = None
     suc = function.smartFunctionGui()
     assert suc
     assert not function.ui.refractionGroup.isEnabled()
@@ -279,7 +279,7 @@ def test_smartFunctionGui_5(function):
 
 
 def test_smartFunctionGui_6(function):
-    function.deviceStat['environOverall'] = True
+    function.deviceStat['refraction'] = True
     function.deviceStat['mount'] = True
     suc = function.smartFunctionGui()
     assert suc
@@ -288,7 +288,7 @@ def test_smartFunctionGui_6(function):
 
 
 def test_smartFunctionGui_7(function):
-    function.deviceStat['environOverall'] = True
+    function.deviceStat['refraction'] = True
     function.deviceStat['mount'] = False
     suc = function.smartFunctionGui()
     assert suc
@@ -400,7 +400,7 @@ def test_updateDeviceStats_1(function):
     function.refractionSource = 'online'
     suc = function.updateDeviceStats()
     assert suc
-    assert not function.deviceStat['environOverall']
+    assert not function.deviceStat['refraction']
 
 
 def test_updateDeviceStats_2(function):
@@ -408,19 +408,19 @@ def test_updateDeviceStats_2(function):
     function.refractionSource = 'online'
     suc = function.updateDeviceStats()
     assert suc
-    assert function.deviceStat['environOverall'] is None
+    assert function.deviceStat['refraction'] is None
 
 
 def test_updateDeviceStats_3(function):
-    function.deviceStat = {'online': True}
-    function.refractionSource = 'online'
+    function.deviceStat = {'camera': True}
+    function.refractionSource = 'camera'
     suc = function.updateDeviceStats()
     assert suc
 
 
 def test_updateDeviceStats_4(function):
     function.deviceStat = {}
-    function.refractionSource = 'online'
+    function.refractionSource = 'camera'
     suc = function.updateDeviceStats()
     assert suc
 

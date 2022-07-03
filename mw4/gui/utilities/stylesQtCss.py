@@ -40,15 +40,15 @@ class Styles:
             'M_GREY1': ['#282828', '#201010', '#C0C0C0', ],
             'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
             'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
-            'M_RED': ['#D03030', '#C03030', '#900000', ],
-            'M_RED1': ['#A02020', '#802020', '#A00000', ],
-            'M_RED2': ['#801818', '#802020', '#B00000', ],
-            'M_YELLOW': ['#D0D000', '#D0D000', '#D0D000', ],
-            'M_YELLOW1': ['#A0A000', '#A0A000', '#A0A00', ],
-            'M_YELLOW2': ['#808000', '#808000', '#B0B000', ],
-            'M_GREEN': ['#00C000', '#00C000', '#008000', ],
-            'M_GREEN1': ['#009000', '#009000', '#00A000', ],
-            'M_GREEN2': ['#006000', '#006000', '#00C000', ],
+            'M_RED': ['#D03030', '#C03030', '#600000', ],
+            'M_RED1': ['#902020', '#802020', '#A00000', ],
+            'M_RED2': ['#701818', '#802020', '#E00000', ],
+            'M_YELLOW': ['#D0D000', '#D0D000', '#606000', ],
+            'M_YELLOW1': ['#909000', '#808000', '#90900', ],
+            'M_YELLOW2': ['#707000', '#A0A000', '#C0C000', ],
+            'M_GREEN': ['#00C000', '#00C000', '#006000', ],
+            'M_GREEN1': ['#008000', '#008000', '#009000', ],
+            'M_GREEN2': ['#005000', '#00A000', '#00C000', ],
             'M_PINK': ['#FF00FF', '#C000C0', '#E000E0', ],
             'M_PINK1': ['#B000B0', '#900090', '#900090', ],
             'M_CYAN': ['#00FFFF', '#00FFFF', '#00FFFF', ],
@@ -56,6 +56,7 @@ class Styles:
             'checkmark': ['checkmark0', 'checkmark1', 'checkmark2', ],
             'arrow-up': ['arrow-up0', 'arrow-up1', 'arrow-up2', ],
             'arrow-down': ['arrow-down0', 'arrow-down1', 'arrow-down2', ],
+            'radio': ['radio0', 'radio1', 'radio2', ],
         }
 
         self.MAC_STYLE = """
@@ -215,32 +216,23 @@ class Styles:
             border-style: outset;
         }
         QLineEdit[color='green'] {
-            border-width: 2px;
+            border-width: 1px;
             border-style: outset;
             border-color: $M_GREEN$;
         }
         QLineEdit[color='yellow'] {
-            border-width: 2px;
+            border-width: 1px;
             border-style: outset;
             border-color: $M_YELLOW$;
         }
         QLineEdit[color='red'] {
-            border-width: 2px;
+            border-width: 1px;
             border-style: outset;
             border-color: $M_RED$;
         }
-        QLineEdit[char='green'] {
-            color: $M_GREEN$;
-        }
-        QLineEdit[char='yellow'] {
-            color: $M_YELLOW$;
-        }
-        QLineEdit[char='red'] {
-            color: $M_RED$;
-        }
         QLineEdit[status='on'] {
             color: $M_WHITE$;
-            background-color: $M_BLUE2$;
+            background-color: $M_BLUE3$;
         }
         QLabel[color='green'] {
             color: $M_GREEN$;
@@ -284,6 +276,10 @@ class Styles:
             border-color: $M_RED$;
         }
         QGroupBox::indicator:disabled {
+            border-color: $M_GREY$;
+            background-color: $M_BACK$;
+        }
+        QGroupBox::indicator:unchecked {
             border-color: $M_GREY$;
             background-color: $M_BACK$;
         }
@@ -368,6 +364,7 @@ class Styles:
         QRadioButton::indicator:checked {
             border-color: $M_BLUE$;
             background-color: $M_BLUE2$;
+            image: url(:/icon/$radio$.svg);
         }
         /* Spin Boxes */
         QDoubleSpinBox {
@@ -589,6 +586,9 @@ class Styles:
             padding-left: 5px;
             background-color: $M_GREY1$;
         }
+        QComboBox:disabled {
+            color: $M_GREY$;
+        }        
         QComboBox[active=true] {
             border-color: $M_GREEN$;
             background-color: $M_GREEN2$;

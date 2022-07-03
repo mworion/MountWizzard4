@@ -192,7 +192,7 @@ class MainWindow(
         self.deviceStatGui = {
             'dome': self.ui.domeConnected,
             'camera': self.ui.cameraConnected,
-            'environOverall': self.ui.environConnected,
+            'refraction': self.ui.refractionConnected,
             'plateSolve': self.ui.plateSolveConnected,
             'mount': self.ui.mountConnected,
         }
@@ -352,22 +352,6 @@ class MainWindow(
         self.wIcon(self.ui.saveBuildPoints, 'save')
         self.wIcon(self.ui.saveBuildPointsAs, 'save')
         self.wIcon(self.ui.clearBuildP, 'trash')
-        self.wIcon(self.ui.genBuildGrid, 'run')
-        self.wIcon(self.ui.genBuildMax, 'run')
-        self.wIcon(self.ui.genBuildMed, 'run')
-        self.wIcon(self.ui.genBuildNorm, 'run')
-        self.wIcon(self.ui.genBuildMin, 'run')
-        self.wIcon(self.ui.genBuildFile, 'show')
-        self.wIcon(self.ui.genBuildAlign3, 'run')
-        self.wIcon(self.ui.genBuildAlign6, 'run')
-        self.wIcon(self.ui.genBuildAlign9, 'run')
-        self.wIcon(self.ui.genBuildGrid, 'run')
-        self.wIcon(self.ui.genBuildSpiralMax, 'run')
-        self.wIcon(self.ui.genBuildSpiralMed, 'run')
-        self.wIcon(self.ui.genBuildSpiralNorm, 'run')
-        self.wIcon(self.ui.genBuildSpiralMin, 'run')
-        self.wIcon(self.ui.genBuildDSO, 'run')
-        self.wIcon(self.ui.genModel, 'run')
 
         # model
         self.wIcon(self.ui.plateSolveSync, 'start')
@@ -697,12 +681,12 @@ class MainWindow(
         if self.refractionSource in self.deviceStat:
             source = self.deviceStat[self.refractionSource]
             mount = not self.ui.refracNone.isChecked()
-            self.deviceStat['environOverall'] = source and mount
+            self.deviceStat['refraction'] = source and mount
         else:
-            self.deviceStat['environOverall'] = None
+            self.deviceStat['refraction'] = None
 
         for device, ui in self.deviceStatGui.items():
-            if self.deviceStat.get(device, None) is None:
+            if self.deviceStat.get(device) is None:
                 self.changeStyleDynamic(ui, 'color', 'gray')
             elif self.deviceStat[device]:
                 self.changeStyleDynamic(ui, 'color', 'green')

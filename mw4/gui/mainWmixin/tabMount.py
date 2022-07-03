@@ -130,14 +130,11 @@ class Mount(object):
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
             deltaYellow = datetime.timedelta(days=30)
             if now > expire:
-                self.changeStyleDynamic(ui, 'char', 'red')
                 self.changeStyleDynamic(ui, 'color', 'red')
             elif now > expire - deltaYellow:
-                self.changeStyleDynamic(ui, 'char', '')
-                self.changeStyleDynamic(ui, 'color', 'red')
+                self.changeStyleDynamic(ui, 'color', 'yellow')
             else:
                 self.changeStyleDynamic(ui, 'color', '')
-                self.changeStyleDynamic(ui, 'char', '')
 
         ui = self.ui.statusUnattendedFlip
         self.guiSetText(ui, 's', sett.statusUnattendedFlip)
@@ -725,15 +722,11 @@ class Mount(object):
         ui.setText(text)
 
         if not connectSync:
-            self.changeStyleDynamic(ui, 'char', '')
             self.changeStyleDynamic(ui, 'color', '')
         elif abs(delta) < 100:
-            self.changeStyleDynamic(ui, 'char', '')
             self.changeStyleDynamic(ui, 'color', '')
         elif abs(delta) < 500:
-            self.changeStyleDynamic(ui, 'char', 'yellow')
-            self.changeStyleDynamic(ui, 'color', '')
+            self.changeStyleDynamic(ui, 'color', 'yellow')
         else:
-            self.changeStyleDynamic(ui, 'char', 'red')
             self.changeStyleDynamic(ui, 'color', 'red')
         return True

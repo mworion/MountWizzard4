@@ -126,7 +126,7 @@ class MountWizzard4(QObject):
             'mount': None,
             'camera': None,
             'plateSolve': None,
-            'environOverall': None,
+            'refraction': None,
             'sensorWeather': None,
             'directWeather': None,
             'onlineWeather': None,

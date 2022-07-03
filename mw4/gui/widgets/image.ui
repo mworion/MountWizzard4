@@ -54,9 +54,9 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,1">
      <property name="spacing">
-      <number>4</number>
+      <number>10</number>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -255,19 +255,6 @@
       </widget>
      </item>
      <item>
-      <widget class="Line" name="line_13">
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
         <string>Image View</string>
@@ -385,16 +372,6 @@
       </widget>
      </item>
      <item>
-      <widget class="Line" name="line">
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QGroupBox" name="photometryGroup">
        <property name="title">
         <string>Photometry</string>
@@ -407,7 +384,7 @@
        </property>
        <layout class="QGridLayout" name="Imageview">
         <property name="leftMargin">
-         <number>5</number>
+         <number>10</number>
         </property>
         <property name="topMargin">
          <number>15</number>
@@ -424,37 +401,11 @@
         <property name="verticalSpacing">
          <number>5</number>
         </property>
-        <item row="2" column="2">
-         <widget class="QCheckBox" name="showValues">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Show values</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QCheckBox" name="isoLayer">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>2D contour</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1" colspan="2">
          <widget class="QComboBox" name="snTarget">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>120</width>
             <height>21</height>
            </size>
           </property>
@@ -483,6 +434,32 @@
             <string>Star extreme</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="QCheckBox" name="isoLayer">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>2D contour</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QCheckBox" name="showValues">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Show values</string>
+          </property>
          </widget>
         </item>
        </layout>

@@ -257,7 +257,7 @@ class MeasureData:
         :return: success
         """
         if not self.mutexMeasure.tryLock():
-            self.log.debug('overrun in measure')
+            self.log.info('overrun in measure')
             return False
 
         lenData = len(self.data['time'])

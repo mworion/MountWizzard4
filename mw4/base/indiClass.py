@@ -197,7 +197,7 @@ class IndiClass:
         """
         if self.deviceName:
             suc = self.client.watchDevice(self.deviceName)
-            self.log.debug(f'INDI watch: [{self.deviceName}], result: [{suc}]')
+            self.log.info(f'INDI watch: [{self.deviceName}], result: [{suc}]')
             return suc
         return False
 
@@ -543,7 +543,7 @@ class IndiClass:
 
     def discoverDevices(self, deviceType=''):
         """
-        discoverDevices implements a discover for devices of a certain device
+        discoverDevices implements a discovery for devices of a certain device
         type. it is called from a button press and checks which button it was.
         after that for the right device it collects all necessary data for host
         value, instantiates an INDI client and watches for all devices connected

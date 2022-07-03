@@ -236,7 +236,7 @@ class Astrometry(object):
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'image missing'
-            self.log.debug('Image missing for solving')
+            self.log.warning('Image missing for solving')
             return False
 
         tempPath = self.tempDir + '/temp.xy'
@@ -301,12 +301,12 @@ class Astrometry(object):
             return False
 
         if not os.path.isfile(solvedPath):
-            self.log.debug(f'Solve files for [{fitsPath}] missing')
+            self.log.warning(f'Solve files for [{fitsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 
         if not os.path.isfile(wcsPath):
-            self.log.debug(f'Solve files for [{wcsPath}] missing')
+            self.log.warning(f'Solve files for [{wcsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 

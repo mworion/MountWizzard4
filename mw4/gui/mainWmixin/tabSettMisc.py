@@ -186,7 +186,7 @@ class SettMisc(object):
                 data = gamepad.read(64)
             except Exception as e:
                 self.gameControllerRunning = False
-                self.log.debug(f'GameController error {e}')
+                self.log.warning(f'GameController error {e}')
                 return []
 
             if len(data) == 0:
@@ -283,7 +283,7 @@ class SettMisc(object):
             if check in name:
                 break
         else:
-            self.log.debug(f'Removed Game Controller: {[name]}')
+            self.log.info(f'Removed Game Controller: {[name]}')
             return False
         return True
 
@@ -379,8 +379,8 @@ class SettMisc(object):
         verBeta = [x for x in vPackage if 'b' in x]
         verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
 
-        self.log.debug(f'Package Beta:   {verBeta[:10]}')
-        self.log.debug(f'Package Release:{verRelease[:10]}')
+        self.log.info(f'Package Beta:   {verBeta[:10]}')
+        self.log.info(f'Package Release:{verRelease[:10]}')
 
         if self.ui.versionBeta.isChecked():
             finalPackage = verBeta[0]

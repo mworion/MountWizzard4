@@ -160,7 +160,7 @@ class CameraIndi(IndiClass, CameraSupport):
         :return:
         """
         if self.raJ2000 is None or self.decJ2000 is None:
-            self.log.debug('No coordinate for updating the header available')
+            self.log.info('No coordinate for updating the header available')
             return header
 
         if 'RA' in header and 'DEC' in header:
@@ -249,7 +249,7 @@ class CameraIndi(IndiClass, CameraSupport):
         :return: success
         """
         quality = self.device.getSwitch('READOUT_QUALITY')
-        self.log.debug(f'Camera has readout quality entry: {quality}')
+        self.log.info(f'Camera has readout quality entry: {quality}')
 
         if fastReadout:
             quality['QUALITY_LOW'] = 'On'
@@ -300,7 +300,7 @@ class CameraIndi(IndiClass, CameraSupport):
         self.imagePath = imagePath
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
-            self.log.debug('Download quality could not be set')
+            self.log.info('Download quality could not be set')
 
         indiCmd = self.device.getNumber('CCD_BINNING')
         indiCmd['HOR_BIN'] = binning
@@ -309,7 +309,7 @@ class CameraIndi(IndiClass, CameraSupport):
                                         propertyName='CCD_BINNING',
                                         elements=indiCmd)
         if not suc:
-            self.log.debug('Binning could not be set')
+            self.log.info('Binning could not be set')
 
         indiCmd = self.device.getNumber('CCD_FRAME')
         indiCmd['X'] = posX
@@ -320,7 +320,7 @@ class CameraIndi(IndiClass, CameraSupport):
                                         propertyName='CCD_FRAME',
                                         elements=indiCmd)
         if not suc:
-            self.log.debug('Frame could not be set')
+            self.log.info('Frame could not be set')
 
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
         indiCmd['CCD_EXPOSURE_VALUE'] = expTime

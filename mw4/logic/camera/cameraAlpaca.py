@@ -94,7 +94,7 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
             self.setAlpacaProperty('fastreadout', FastReadout=True)
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
-        self.log.debug(f'Camera has readout quality entry: {quality}')
+        self.log.info(f'Camera has readout quality entry: {quality}')
         return True
 
     def workerExpose(self,

@@ -280,7 +280,7 @@ class Model:
             self.cancelBuild()
             return False
 
-        self.log.debug('Solving started')
+        self.log.info('Solving started')
         mPoint = self.solveQueue.get()
         self.app.showImage.emit(mPoint["imagePath"])
         self.resultQueue.put(mPoint)
@@ -328,7 +328,7 @@ class Model:
 
         while self.ui.pauseModel.property('pause'):
             sleepAndEvents(100)
-        self.log.debug('Imaging started')
+        self.log.info('Imaging started')
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
@@ -377,7 +377,7 @@ class Model:
             self.log.info('Empty slew queue- model sequence finished')
             return False
 
-        self.log.debug('Slew started')
+        self.log.info('Slew started')
         mPoint = self.slewQueue.get()
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'])
@@ -865,7 +865,7 @@ class Model:
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:
-            self.log.debug('Cannot delete backup model on mount')
+            self.log.warning('Cannot delete backup model on mount')
 
         suc = self.app.mount.model.storeName('backup')
         if not suc:

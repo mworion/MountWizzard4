@@ -150,7 +150,7 @@ class ASTAP(object):
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'Image missing'
-            self.log.debug('Image missing for solving')
+            self.log.warning('Image missing for solving')
             return False
 
         tempFile = self.tempDir + '/temp'
@@ -182,7 +182,7 @@ class ASTAP(object):
 
         if not os.path.isfile(wcsPath):
             self.result['message'] = 'Solve failed'
-            self.log.debug(f'Solve files for [{wcsPath}] missing')
+            self.log.warning(f'Solve files for [{wcsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:

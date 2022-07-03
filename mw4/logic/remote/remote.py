@@ -59,7 +59,7 @@ class Remote(QObject):
             self.tcpServer = None
             return False
         else:
-            self.log.debug('Remote access enabled')
+            self.log.info('Remote access enabled')
             self.tcpServer.newConnection.connect(self.addConnection)
             return True
 
@@ -90,7 +90,7 @@ class Remote(QObject):
         self.clientConnection.disconnected.connect(self.removeConnection)
         self.clientConnection.error.connect(self.handleError)
         connection = self.clientConnection.peerAddress().toString()
-        self.log.debug(f'Connection to MountWizzard from {connection}')
+        self.log.info(f'Connection to MountWizzard from {connection}')
         return True
 
     def receiveMessage(self):

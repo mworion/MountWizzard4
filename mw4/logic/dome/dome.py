@@ -155,7 +155,7 @@ class Dome:
             return False
         BC = self.clearOpening - 2 * self.openingHysteresis
         if BC < 0:
-            self.log.debug('Resulting opening to small')
+            self.log.warning('Resulting opening to small')
             return False
         return True
 
@@ -259,7 +259,7 @@ class Dome:
 
         direction = self.app.mount.obsSite.AzDirection
         if direction is None:
-            self.log.debug(f'Overshoot discarded no direction: [{az}]')
+            self.log.info(f'Overshoot discarded no direction: [{az}]')
             return az
 
         y = max(self.clearOpening / 2 - self.openingHysteresis, 0)

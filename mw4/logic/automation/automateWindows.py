@@ -230,7 +230,7 @@ class AutomateWindows(QObject):
             self.installPath = ''
             self.name = ''
             self.updaterApp = ''
-            self.log.debug(f'App settings error: [{e}]')
+            self.log.warning(f'App settings error: [{e}]')
         return True
 
     def checkFloatingPointErrorWindow(self):

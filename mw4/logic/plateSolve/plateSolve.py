@@ -270,7 +270,7 @@ class PlateSolve:
             return False
 
         if not self.mutexSolve.tryLock():
-            self.log.debug('overrun in solve threading')
+            self.log.warning('overrun in solve threading')
             self.signals.done.emit(solver.result)
             return False
 

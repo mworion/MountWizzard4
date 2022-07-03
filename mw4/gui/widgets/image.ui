@@ -71,7 +71,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QGroupBox" name="groupBox_3">
+      <widget class="QGroupBox" name="groupImageActions">
        <property name="title">
         <string>Image actions</string>
        </property>

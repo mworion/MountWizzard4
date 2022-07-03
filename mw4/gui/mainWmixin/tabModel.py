@@ -434,15 +434,13 @@ class Model:
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
-        self.app.enableEditPoints.emit(False)
+        self.app.buildRunning.emit(True)
 
         winImage = self.app.uiWindows['showImageW']['classObj']
         if not winImage:
             return False
 
         winImage.ui.autoSolve.setChecked(False)
-        winImage.ui.stackImages.setChecked(False)
-
         if not winImage.deviceStat['expose']:
             return False
         if not winImage.deviceStat['exposeN']:
@@ -477,7 +475,7 @@ class Model:
         self.ui.mImage.setText('-')
         self.ui.mSolve.setText('-')
         self.ui.modelProgress.setValue(0)
-        self.app.enableEditPoints.emit(True)
+        self.app.buildRunning.emit(False)
         return True
 
     def setupSignalsForModelRun(self):

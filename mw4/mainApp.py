@@ -74,7 +74,7 @@ class MountWizzard4(QObject):
     redrawHorizon = pyqtSignal()
     updatePointMarker = pyqtSignal()
     drawBuildPoints = pyqtSignal()
-    enableEditPoints = pyqtSignal(object)
+    buildRunning = pyqtSignal(object)
     playSound = pyqtSignal(object)
     buildPointsChanged = pyqtSignal()
     drawHorizonPoints = pyqtSignal()

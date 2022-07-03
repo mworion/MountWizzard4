@@ -1114,7 +1114,7 @@ class App(QObject):
     showAnalyse = pyqtSignal(object)
     showImage = pyqtSignal(object)
     updatePointMarker = pyqtSignal()
-    enableEditPoints = pyqtSignal(object)
+    buildRunning = pyqtSignal(object)
     colorChange = pyqtSignal()
     buildPointsChanged = pyqtSignal()
     playSound = pyqtSignal(object)

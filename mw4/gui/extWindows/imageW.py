@@ -195,6 +195,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.signals.solveImage.connect(self.solveImage)
         self.app.colorChange.connect(self.colorChange)
         self.app.showImage.connect(self.showImage)
+        self.app.buildRunning.connect(self.operationMode)
 
         self.showCurrent()
         self.setAspectLocked()
@@ -217,6 +218,14 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.image.colorChange()
         self.pen = pg.mkPen(color=self.M_BLUE)
         self.showCurrent()
+        return True
+
+    def operationMode(self, status):
+        """
+        :param status:
+        :return:
+        """
+        self.ui.groupImageActions.setEnabled(not status)
         return True
 
     def updateWindowsStats(self):

@@ -106,6 +106,11 @@ def test_colorChange(function):
         assert suc
 
 
+def test_operationMode(function):
+    suc = function.operationMode(True)
+    assert suc
+
+
 def test_updateWindowsStats_1(function):
     function.deviceStat['expose'] = True
     function.deviceStat['exposeN'] = False

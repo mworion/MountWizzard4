@@ -142,7 +142,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.app.updatePointMarker.connect(self.setupModel)
         self.app.redrawHemisphere.connect(self.drawHemisphereTab)
         self.app.redrawHorizon.connect(self.drawHorizonOnHem)
-        self.app.enableEditPoints.connect(self.enableOperationModeChange)
+        self.app.buildRunning.connect(self.enableOperationModeChange)
         self.app.mount.signals.pointDone.connect(self.drawPointerHem)
         self.app.dome.signals.azimuth.connect(self.drawDome)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
@@ -219,9 +219,9 @@ class HemisphereWindow(MWidget, EditHorizon):
         :param value:
         :return:
         """
-        if not value:
+        if value:
             self.ui.normalModeHem.setChecked(True)
-        self.ui.operationModeGroup.setEnabled(value)
+        self.ui.operationModeGroup.setEnabled(not value)
         return True
 
     def setOperationModeHem(self):

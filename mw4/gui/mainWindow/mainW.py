@@ -491,12 +491,13 @@ class MainWindow(
 
         # misc setting
         self.wIcon(self.ui.installVersion, 'world')
-        pixmap = self.svg2pixmap(':/icon/controller.svg',
-                                 self.M_BLUE).scaled(16, 16)
-        self.ui.controller1.setPixmap(pixmap)
-        self.ui.controller2.setPixmap(pixmap)
-        self.ui.controller3.setPixmap(pixmap)
-        self.ui.controller4.setPixmap(pixmap)
+        pixmap = self.svg2pixmap(':/icon/controller.svg', self.M_BLUE)
+        self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
+        pixmap = self.svg2pixmap(':/icon/controllerNew.svg', self.M_BLUE)
+        self.ui.controllerOverview.setPixmap(pixmap)
         self.ui.controller1.setVisible(False)
         self.ui.controller2.setVisible(False)
         self.ui.controller3.setVisible(False)

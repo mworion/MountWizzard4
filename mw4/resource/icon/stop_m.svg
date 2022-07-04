@@ -6,7 +6,6 @@
 	  d="M61.3,0H2.7C1.1,0,0,1.1,0,2.7v58.7C0,62.9,1.1,64,2.7,64h58.7c1.6,0,2.7-1.1,2.7-2.7V2.7C64,1.1,62.9,0,61.3,0z M58.7,58.7
 	H5.3V5.3h53.3V58.7z"/>
 
-	<polyline stroke="#2090C0" fill="#2090C0" stroke-width="7" stroke-linecap="round"
-		  points="24,24 24,40 40,40 40,24 24,24 24,40"
-	/>
+<polyline stroke="#2090C0" fill="#2090C0" stroke-width="7" stroke-linecap="round"
+		  points="24,24 24,40 40,40 40,24 24,24 24,40"/>
 </svg>

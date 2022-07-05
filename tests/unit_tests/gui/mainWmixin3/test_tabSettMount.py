@@ -89,41 +89,6 @@ def test_storeConfig_1(function):
     function.storeConfig()
 
 
-def test_checkFormatMAC_1(function):
-    val = function.checkFormatMAC('')
-    assert val is None
-
-
-def test_checkFormatMAC_2(function):
-    val = function.checkFormatMAC(5)
-    assert val is None
-
-
-def test_checkFormatMAC_3(function):
-    val = function.checkFormatMAC('test')
-    assert val is None
-
-
-def test_checkFormatMAC_4(function):
-    val = function.checkFormatMAC('00:00:00')
-    assert val is None
-
-
-def test_checkFormatMAC_5(function):
-    val = function.checkFormatMAC('00:00:00:00.00.kk')
-    assert val is None
-
-
-def test_checkFormatMAC_6(function):
-    val = function.checkFormatMAC('00.11.22:ab:44:55')
-    assert val == '00:11:22:AB:44:55'
-
-
-def test_checkFormatMAC_7(function):
-    val = function.checkFormatMAC('00.11.2:ab:44:55')
-    assert val is None
-
-
 def test_bootRackComp_1(function):
     with mock.patch.object(wakeonlan,
                            'send_magic_packet',

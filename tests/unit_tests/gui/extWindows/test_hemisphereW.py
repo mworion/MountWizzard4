@@ -145,7 +145,7 @@ def test_colorChange(function):
 
 
 def test_enableOperationModeChange_1(function):
-    suc = function.enableOperationModeChange(False)
+    suc = function.enableOperationModeChange(True)
     assert suc
 
 

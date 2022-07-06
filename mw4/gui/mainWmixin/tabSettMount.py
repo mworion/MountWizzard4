@@ -21,7 +21,7 @@
 import wakeonlan
 
 # local import
-from mountcontrol import mount
+from mountcontrol.mount import checkFormatMAC
 
 
 class SettMount(object):
@@ -119,7 +119,7 @@ class SettMount(object):
         :return:
         """
         MAC = self.ui.rackCompMAC.text()
-        MAC = mount.checkFormatMAC(MAC)
+        MAC = checkFormatMAC(MAC)
         if MAC is not None:
             wakeonlan.send_magic_packet(MAC)
             self.msg.emit(0, 'Rack', 'Command',

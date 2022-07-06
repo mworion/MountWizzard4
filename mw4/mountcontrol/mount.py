@@ -30,7 +30,45 @@ from mountcontrol.geometry import Geometry
 
 
 __all__ = ['Mount',
-           ]
+          'checkFormatMac']
+
+def checkFormatMAC(self, value):
+"""
+checkFormatMAC makes some checks to ensure that the format of the
+string is ok for WOL package.
+
+:param      value: string with mac address
+:return:    checked string in upper cases
+"""
+if not value:
+ self.log.info('wrong MAC value: {0}'.format(value))
+ return None
+
+if not isinstance(value, str):
+ self.log.info('wrong MAC value: {0}'.format(value))
+ return None
+
+value = value.upper()
+value = value.replace('.', ':')
+value = value.split(':')
+if len(value) != 6:
+ self.log.info('wrong MAC value: {0}'.format(value))
+ return None
+
+for chunk in value:
+ if len(chunk) != 2:
+     self.log.info('wrong MAC value: {0}'.format(value))
+     return None
+
+ for char in chunk:
+     if char not in ['0', '1', '2', '3', '4',
+                     '5', '6', '7', '8', '9',
+                     'A', 'B', 'C', 'D', 'E', 'F']:
+         self.log.info('wrong MAC value: {0}'.format(value))
+         return None
+
+value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
+return value
 
 
 class Mount(object):
@@ -102,7 +140,7 @@ class Mount(object):
 
     @MAC.setter
     def MAC(self, value):
-        value = self.checkFormatMAC(value)
+        value = checkFormatMAC(value)
         self._MAC = value
 
     def checkFormatHost(self, value):
@@ -123,44 +161,6 @@ class Mount(object):
         if isinstance(value, str):
             value = (value, self.DEFAULT_PORT)
 
-        return value
-
-    def checkFormatMAC(self, value):
-        """
-        checkFormatMAC makes some checks to ensure that the format of the
-        string is ok for WOL package.
-
-        :param      value: string with mac address
-        :return:    checked string in upper cases
-        """
-        if not value:
-            self.log.info('wrong MAC value: {0}'.format(value))
-            return None
-
-        if not isinstance(value, str):
-            self.log.info('wrong MAC value: {0}'.format(value))
-            return None
-
-        value = value.upper()
-        value = value.replace('.', ':')
-        value = value.split(':')
-        if len(value) != 6:
-            self.log.info('wrong MAC value: {0}'.format(value))
-            return None
-
-        for chunk in value:
-            if len(chunk) != 2:
-                self.log.info('wrong MAC value: {0}'.format(value))
-                return None
-
-            for char in chunk:
-                if char not in ['0', '1', '2', '3', '4',
-                                '5', '6', '7', '8', '9',
-                                'A', 'B', 'C', 'D', 'E', 'F']:
-                    self.log.info('wrong MAC value: {0}'.format(value))
-                    return None
-
-        value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
         return value
 
     def resetData(self):

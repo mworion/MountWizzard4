@@ -130,6 +130,26 @@ class SettMount(object):
                           'Rack computer cannot be booted')
             return False
 
+    @staticmethod
+    def cleanHostIP(ip):
+        """
+        :param ip:
+        :return:
+        """
+        parts = ip.split('.')
+        if not len(parts) == 4:
+            return ip
+
+        for part in parts:
+            if not part.isdigit():
+                return ip
+
+        ip = parts[0].lstrip('0')
+        ip += '.' + parts[1].lstrip('0')
+        ip += '.' + parts[2].lstrip('0')
+        ip += '.' + parts[3].lstrip('0')
+        return ip
+
     def mountHost(self):
         """
         :return: true for test purpose
@@ -139,7 +159,9 @@ class SettMount(object):
         else:
             port = 3490
 
-        self.app.mount.host = (self.ui.mountHost.text(), port)
+        host = self.cleanHostIP(self.ui.mountHost.text())
+        self.ui.mountHost.setText(host)
+        self.app.mount.host = (host, port)
         self.app.hostChanged.emit()
         return True
 

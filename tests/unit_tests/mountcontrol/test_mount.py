@@ -24,6 +24,7 @@ from skyfield.api import wgs84
 
 # local imports
 from mountcontrol.mount import Mount
+from mountcontrol.mount import checkFormatMAC
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -64,37 +65,37 @@ def test_checkFormatHost_4():
 
 
 def test_checkFormatMAC_1():
-    val = m.checkFormatMAC('')
+    val = checkFormatMAC('')
     assert val is None
 
 
 def test_checkFormatMAC_2():
-    val = m.checkFormatMAC(1234)
+    val = checkFormatMAC(1234)
     assert val is None
 
 
 def test_checkFormatMAC_3():
-    val = m.checkFormatMAC('00:00:00')
+    val = checkFormatMAC('00:00:00')
     assert val is None
 
 
 def test_checkFormatMAC_4():
-    val = m.checkFormatMAC('00:00:00:123:00:00')
+    val = checkFormatMAC('00:00:00:123:00:00')
     assert val is None
 
 
 def test_checkFormatMAC_5():
-    val = m.checkFormatMAC('00:00:00:12K:00:00')
+    val = checkFormatMAC('00:00:00:12K:00:00')
     assert val is None
 
 
 def test_checkFormatMAC_6():
-    val = m.checkFormatMAC('00:00:00:12:00:00')
+    val = checkFormatMAC('00:00:00:12:00:00')
     assert val == '00:00:00:12:00:00'
 
 
 def test_checkFormatMAC_7():
-    val = m.checkFormatMAC('00:L0:00:12:00:00')
+    val = checkFormatMAC('00:L0:00:12:00:00')
     assert val is None
 
 

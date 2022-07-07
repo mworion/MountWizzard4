@@ -106,6 +106,16 @@ def test_bootRackComp_2(function):
         assert not suc
 
 
+def test_cleanHostIP_1(function):
+    val = function.cleanHostIP('019.02.030.001')
+    assert val == '19.2.30.1'
+
+
+def test_cleanHostIP_2(function):
+    val = function.cleanHostIP('astro.00comp.fritz.box')
+    assert val == 'astro.00comp.fritz.box'
+
+
 def test_mountHost_1(function):
     function.ui.port3492.setChecked(True)
     function.ui.mountHost.setText('test')

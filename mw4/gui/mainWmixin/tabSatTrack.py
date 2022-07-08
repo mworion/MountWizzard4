@@ -652,10 +652,7 @@ class SatTrack(object):
 
         self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', True)
         self.msg.emit(0, 'TLE', 'Command ', f'{message}')
-        suc = self.app.mount.satellite.clearTrackingOffsets()
-        if suc:
-            self.msg.emit(0, 'TLE', 'Command', 'Cleared tracking offsets')
-
+        self.app.mount.satellite.setTrackingOffsets()
         return True
 
     def stopTrack(self):

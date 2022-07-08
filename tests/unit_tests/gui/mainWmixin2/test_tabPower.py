@@ -42,10 +42,6 @@ def function(qapp):
     yield window
 
 
-def test_clearPowerGui_1(function, qtbot):
-    function.clearPowerGui()
-
-
 def test_setGuiVersion_1(function, qtbot):
     function.setGuiVersion()
 

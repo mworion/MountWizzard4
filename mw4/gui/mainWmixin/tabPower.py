@@ -86,26 +86,6 @@ class Power(object):
         # cyclic tasks
         self.app.update1s.connect(self.updatePowerGui)
 
-    def clearPowerGui(self):
-        """
-        clearPowerGui changes the state of the Pegasus values to '-'
-
-        :return: success for test
-        """
-        self.ui.powerCurrent1.setText('-')
-        self.ui.powerCurrent2.setText('-')
-        self.ui.powerCurrent3.setText('-')
-        self.ui.powerCurrent4.setText('-')
-        self.ui.consumptionAvgAmps.setText('-')
-        self.ui.consumptionAmpHours.setText('-')
-        self.ui.consumptionWattHours.setText('-')
-        self.ui.sensorVoltage.setText('-')
-        self.ui.sensorCurrent.setText('-')
-        self.ui.sensorPower.setText('-')
-        self.ui.dewCurrentA.setText('-')
-        self.ui.dewCurrentB.setText('-')
-        return True
-
     def setGuiVersion(self, version=1):
         """
         setGuiVersion enables and disables the gui elements according to the recognized

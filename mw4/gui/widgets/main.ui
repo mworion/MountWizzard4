@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>7</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -18525,7 +18525,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -18611,7 +18611,7 @@ Next point in time when satellite settles.</string>
          </rect>
         </property>
         <property name="text">
-         <string>AmpHours</string>
+         <string>Capacity</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="sensorPower">
@@ -18636,7 +18636,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_287">
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>190</x>
           <y>45</y>
           <width>81</width>
           <height>21</height>
@@ -18662,20 +18662,20 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_285">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>190</x>
           <y>70</y>
           <width>66</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
-         <string>WattHours</string>
+         <string>Energy</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_289">
         <property name="geometry">
          <rect>
-          <x>215</x>
+          <x>190</x>
           <y>20</y>
           <width>51</width>
           <height>21</height>

@@ -624,7 +624,10 @@ class MainWindow(
 
             stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
             smartTabs[key]['tab'].setTabVisible(tabIndex, stat)
-            tabChanged = tabChanged or (tabStatus != stat)
+            actChanged = tabStatus != stat
+            if actChanged and stat:
+                smartTabs[key]['tab'].setCurrentIndex(tabIndex)
+            tabChanged = tabChanged or (actChanged)
 
         # redraw tabs only when a change occurred. this is necessary, because
         # enable and disable does not remove tabs

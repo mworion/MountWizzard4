@@ -584,7 +584,7 @@ class SatTrack(object):
         :param value:
         :return:
         """
-        self.ui.trajectoryProgress.setValue(value)
+        self.ui.trajectoryProgress.setValue(int(value))
         if value == 100:
             self.changeStyleDynamic(self.ui.progTrajectory, 'running', False)
         return True

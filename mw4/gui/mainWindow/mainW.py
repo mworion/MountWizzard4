@@ -382,7 +382,6 @@ class MainWindow(
         self.wIcon(self.ui.refreshModel, 'reload')
 
         # minor planets
-        self.wIcon(self.ui.mpcExtendedFilter, 'cogs')
         self.wIcon(self.ui.progMinorPlanetsFull, 'run')
         self.wIcon(self.ui.progMinorPlanetsFiltered, 'run')
         self.wIcon(self.ui.progEarthRotationData, 'run')

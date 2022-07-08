@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -16014,7 +16014,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -16257,7 +16257,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled as selection of a satellite (double click on an entry) will automatically switch to the next (tracking) tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Select switch to tracking</string>
+         <string>Auto change to tracking</string>
         </property>
        </widget>
       </widget>
@@ -18343,7 +18343,7 @@ Next point in time when satellite settles.</string>
        <rect>
         <x>245</x>
         <y>30</y>
-        <width>81</width>
+        <width>116</width>
         <height>21</height>
        </rect>
       </property>
@@ -18391,25 +18391,6 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="text">
        <string>search string</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="mpcExtendedFilter">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>335</x>
-        <y>25</y>
-        <width>26</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programing the trajectory to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string/>
       </property>
      </widget>
     </widget>
@@ -29696,7 +29677,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>satelliteName</tabstop>
   <tabstop>startSatelliteTracking</tabstop>
   <tabstop>stopSatelliteTracking</tabstop>
-  <tabstop>mpcExtendedFilter</tabstop>
   <tabstop>mountWolAddress</tabstop>
   <tabstop>mountWolPort</tabstop>
   <tabstop>saveConfigAs</tabstop>

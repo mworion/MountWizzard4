@@ -224,7 +224,8 @@ class Almanac:
         index = self.ui.almanacPrediction.currentIndex()
         text = self.ui.almanacPrediction.currentText()
         timeWindow = timeWindowParam[index]
-        self.ui.almanacGroup.setTitle(f'Twilight passes for: {text}')
+        t = f'Twilight passes for: {text} (time is local)'
+        self.ui.almanacGroup.setTitle(t)
 
         ts = self.app.mount.obsSite.ts
         self.changeStyleDynamic(self.ui.almanacGroup, 'running', True)

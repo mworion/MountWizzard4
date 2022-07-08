@@ -520,9 +520,8 @@ class Styles:
             color: $M_WHITE$;
         }
         QPushButton[stop=true] {
-            background-color: $M_TRANS$;
-            color: $M_TRANS$;
-            border-color: $M_TRANS$;
+            color: $M_RED2$;
+            border-color: $M_RED$;
         }
         QMessageBox QPushButton {
             background-color: $M_GREY1$;

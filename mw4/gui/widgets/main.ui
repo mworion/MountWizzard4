@@ -28762,7 +28762,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
    <property name="geometry">
     <rect>
      <x>490</x>
-     <y>5</y>
+     <y>10</y>
      <width>136</width>
      <height>68</height>
     </rect>
@@ -29176,20 +29176,20 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="virtualStop">
+  <widget class="QPushButton" name="virtualStopR">
    <property name="geometry">
     <rect>
-     <x>495</x>
-     <y>10</y>
-     <width>126</width>
-     <height>56</height>
+     <x>720</x>
+     <y>120</y>
+     <width>71</width>
+     <height>26</height>
     </rect>
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string/>
+    <string>STOP</string>
    </property>
    <property name="stop" stdset="0">
     <bool>true</bool>
@@ -29457,7 +29457,25 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <string>V4</string>
    </property>
   </widget>
-  <zorder>virtualStop</zorder>
+  <widget class="QPushButton" name="virtualStopL">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>66</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>STOP</string>
+   </property>
+   <property name="stop" stdset="0">
+    <bool>true</bool>
+   </property>
+  </widget>
   <zorder>mainTabWidget</zorder>
   <zorder>statusOnline</zorder>
   <zorder>statusTime</zorder>
@@ -29468,6 +29486,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <zorder>openV1</zorder>
   <zorder>openV3</zorder>
   <zorder>openV4</zorder>
+  <zorder>virtualStopL</zorder>
+  <zorder>virtualStopR</zorder>
  </widget>
  <customwidgets>
   <customwidget>
@@ -29601,7 +29621,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>refracNoTrack</tabstop>
   <tabstop>refracCont</tabstop>
   <tabstop>twilightEvents</tabstop>
-  <tabstop>virtualStop</tabstop>
+  <tabstop>virtualStopR</tabstop>
   <tabstop>almanacAstronomical</tabstop>
   <tabstop>almanacNautical</tabstop>
   <tabstop>almanacCivil</tabstop>

@@ -813,19 +813,11 @@ def test_test_stop_3(function, qtbot):
 
 
 def test_virtualStop_1(function):
-    function.ui.activateVirtualStop.setChecked(True)
     with mock.patch.object(function,
                            'stop',
                            return_value=False):
-        function.virtualStop()
-
-
-def test_virtualStop_2(function):
-    function.ui.activateVirtualStop.setChecked(False)
-    with mock.patch.object(function,
-                           'stop',
-                           return_value=False):
-        function.virtualStop()
+        suc = function.virtualStop()
+        assert suc
 
 
 def test_setMeridianLimitTrack_1(function, qtbot):

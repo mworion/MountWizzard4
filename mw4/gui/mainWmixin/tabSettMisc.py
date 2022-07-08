@@ -123,6 +123,7 @@ class SettMisc(object):
         self.setWeatherOnline()
         self.setSeeingOnline()
         self.setupIERS()
+        self.setVirtualStop()
         self.showUpdates()
 
         return True
@@ -608,7 +609,10 @@ class SettMisc(object):
         :return:
         """
         isVirtual = self.ui.activateVirtualStop.isChecked()
-        self.ui.statusTime.setEnabled(not isVirtual)
+        self.ui.virtualStopL.setEnabled(isVirtual)
+        self.ui.virtualStopR.setEnabled(isVirtual)
+        self.ui.virtualStopL.setVisible(isVirtual)
+        self.ui.virtualStopR.setVisible(isVirtual)
         return True
 
     def setAutomationSpeed(self):

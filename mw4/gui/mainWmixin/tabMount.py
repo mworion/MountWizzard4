@@ -67,8 +67,8 @@ class Mount(object):
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
-        self.ui.virtualStop.raise_()
-        self.ui.virtualStop.clicked.connect(self.virtualStop)
+        self.ui.virtualStopL.clicked.connect(self.virtualStop)
+        self.ui.virtualStopR.clicked.connect(self.virtualStop)
         self.app.gameABXY.connect(self.changeParkGameController)
         self.app.gameABXY.connect(self.stopGameController)
         self.app.gameABXY.connect(self.changeTrackingGameController)
@@ -388,8 +388,8 @@ class Mount(object):
         """
         :return:
         """
-        if self.ui.activateVirtualStop.isChecked():
-            self.stop()
+        self.stop()
+        return True
 
     def stop(self):
         """

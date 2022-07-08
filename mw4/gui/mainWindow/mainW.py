@@ -631,7 +631,7 @@ class MainWindow(
         if tabChanged:
             ui = self.ui.mainTabWidget
             ui.setStyleSheet(ui.styleSheet())
-            ui = self.ui.settingsTabWidget
+            ui = self.ui.toolsTabWidget
             ui.setStyleSheet(ui.styleSheet())
         return True
 

@@ -50,6 +50,9 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
         self.createMutex = QMutex()
+        self.rootEntity = None
+        self.pL0E = None
+        self.camController = None
 
         self.dome = SimulatorDome(self.app)
         self.telescope = SimulatorTelescope(self.app)
@@ -60,29 +63,19 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.world = None
 
         self.view = Qt3DWindow()
+        self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
         container = QWidget.createWindowContainer(self.view)
         self.ui.simulator.addWidget(container)
 
-        self.rootEntity = QEntity()
         self.camera = self.view.camera()
         self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 1000.0)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-        self.camController = QOrbitCameraController(self.rootEntity)
-        self.camController.setCamera(self.camera)
-        self.camController.setLinearSpeed(5.0)
-        self.camController.setLookSpeed(90)
-        self.view.setRootEntity(self.rootEntity)
-        self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
 
-        self.pL0E = QEntity(self.rootEntity)
         self.pL0 = QPointLight(self.pL0E)
         self.pL0.setIntensity(1.5)
-        self.pL0ETransform = QTransform()
-        self.pL0ETransform.setTranslation(QVector3D(5, 20, 5))
-        self.pL0E.addComponent(self.pL0)
-        self.pL0E.addComponent(self.pL0ETransform)
+        self.setRootEntity()
 
     def initConfig(self):
         """
@@ -157,7 +150,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        self.createScene()
         self.ui.checkDomeTransparent.clicked.connect(self.createScene)
         self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
@@ -172,6 +164,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
         self.app.update1s.connect(self.dome.updatePositions)
+        self.app.dome.signals.deviceConnected.connect(self.createScene)
+        self.app.dome.signals.deviceDisconnected.connect(self.createScene)
         self.app.updateDomeSettings.connect(self.updateSettings)
         self.app.updateDomeSettings.connect(self.telescope.updateSettings)
         self.app.updateDomeSettings.connect(self.dome.updateSettings)
@@ -183,6 +177,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.app.drawHorizonPoints.connect(self.horizonCreate)
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.colorChange.connect(self.colorChange)
+        self.createScene()
         self.show()
         return True
 
@@ -193,6 +188,24 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.setStyleSheet(self.mw4Style)
         self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
         self.createScene()
+        return True
+
+    def setRootEntity(self):
+        """
+        :return:
+        """
+        self.rootEntity = None
+        self.rootEntity = QEntity()
+        self.view.setRootEntity(self.rootEntity)
+        self.pL0E = QEntity(self.rootEntity)
+        self.camController = QOrbitCameraController(self.rootEntity)
+        self.camController.setCamera(self.camera)
+        self.camController.setLinearSpeed(5.0)
+        self.camController.setLookSpeed(90)
+        pL0ETransform = QTransform()
+        pL0ETransform.setTranslation(QVector3D(5, 20, 5))
+        self.pL0E.addComponent(self.pL0)
+        self.pL0E.addComponent(pL0ETransform)
         return True
 
     def limitPositionZ(self):
@@ -374,19 +387,13 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         path = self.ui.checkShowSlewPath.isChecked()
         pointer = self.ui.checkShowPointer.isChecked()
         laser = self.ui.checkShowLaser.isChecked()
-        dome = self.app.deviceStat.get('dome', False)
+        dome = bool(self.app.deviceStat.get('dome'))
         horizon = self.ui.checkShowHorizon.isChecked()
         points = self.ui.checkShowBuildPoints.isChecked()
         isDomeTransparent = self.ui.checkDomeTransparent.isChecked()
 
-        if dome:
-            self.ui.checkDomeTransparent.setEnabled(True)
-            self.ui.checkShowPointer.setEnabled(True)
-        else:
-            self.ui.checkDomeTransparent.setEnabled(False)
-            self.ui.checkDomeTransparent.setChecked(False)
-            self.ui.checkShowPointer.setEnabled(False)
-            self.ui.checkShowPointer.setChecked(False)
+        self.ui.checkDomeTransparent.setEnabled(dome)
+        self.ui.checkShowPointer.setEnabled(dome)
 
         lat = self.app.mount.obsSite.location.latitude.degrees
         self.createWorld(self.rootEntity)

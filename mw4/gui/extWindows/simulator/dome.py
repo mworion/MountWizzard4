@@ -62,7 +62,7 @@ class SimulatorDome:
                 'parent': 'ref',
                 'source': 'dome-wall.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome3t if trans else Materials().dome3,
+                'mat': Materials().dome3,
             },
             'domeSphere': {
                 'parent': 'ref',

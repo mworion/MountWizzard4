@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import datetime
+import webbrowser
 
 # external packages
 import PyQt5.QtCore
@@ -52,6 +53,7 @@ class Mount(object):
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
         self.ui.stop.clicked.connect(self.stop)
+        self.ui.mountCommandTable.clicked.connect(self.openCommandProtocol)
 
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
         self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
@@ -729,4 +731,15 @@ class Mount(object):
             self.changeStyleDynamic(ui, 'color', 'yellow')
         else:
             self.changeStyleDynamic(ui, 'color', 'red')
+        return True
+
+    def openCommandProtocol(self):
+        """
+        :return:
+        """
+        url = 'http://' + self.ui.mountHost.text() + '/manuals/command-protocol.pdf'
+        if not webbrowser.open(url, new=0):
+            self.msg.emit(2, 'System', 'Mount', 'Browser failed')
+        else:
+            self.msg.emit(0, 'System', 'Mount', '10micron opened')
         return True

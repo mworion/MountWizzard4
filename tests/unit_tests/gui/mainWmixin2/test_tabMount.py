@@ -18,6 +18,7 @@
 import unittest.mock as mock
 import pytest
 import datetime
+import webbrowser
 
 # external packages
 import PyQt5
@@ -1450,3 +1451,19 @@ def test_showOffset_4(function):
     function.ui.syncTimePC2Mount.setChecked(True)
     suc = function.showOffset()
     assert suc
+
+
+def test_openCommandProtocol_1(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openCommandProtocol()
+        assert suc
+
+
+def test_openCommandProtocol_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openCommandProtocol()
+        assert suc

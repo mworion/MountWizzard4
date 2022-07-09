@@ -55,6 +55,7 @@ releaseNotes = """
 - improve: GUI: complete rework of charting: performance and functions
 - improve: GUI: clean up and optimize iers download messages
 - improve: model points: optimized DSO path generation (always fit, less params)
+- improve: model run: refactoring
 - improve: plate solve: compatibility checks 
 - improve: system: use latest PyQt5 version for python 3.10
 - improve: system: adjust window sizes to be able to make mosaic layout on desktop

@@ -333,4 +333,4 @@ def test_updateTelescopeParametersToGuiCyclic_2(function):
     with mock.patch.object(function,
                            'updateTelescopeParametersToGui'):
         suc = function.updateTelescopeParametersToGuiCyclic()
-        assert not suc
+        assert suc

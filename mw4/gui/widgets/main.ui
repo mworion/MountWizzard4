@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -9353,7 +9353,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <x>400</x>
          <y>5</y>
          <width>366</width>
-         <height>256</height>
+         <height>231</height>
         </rect>
        </property>
        <property name="title">
@@ -9382,50 +9382,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string>Cancel</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mSlew">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>145</x>
-          <y>95</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_35">
@@ -9464,50 +9420,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Run</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="mPoints">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>95</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_29">
         <property name="geometry">
          <rect>
@@ -9526,134 +9438,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string>Elapsed time:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mSolve">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>95</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_310">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>95</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Slew:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_311">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>95</y>
-          <width>46</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Solve:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mImage">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>245</x>
-          <y>95</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLineEdit" name="timeElapsed">
@@ -9698,26 +9482,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_216">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>95</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Points:</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="timeFinished">
@@ -9768,7 +9532,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>120</y>
+          <y>95</y>
           <width>356</width>
           <height>21</height>
          </rect>
@@ -9793,26 +9557,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="textDirection">
          <enum>QProgressBar::TopToBottom</enum>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_312">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>95</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Image:</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="timeEstimated">
@@ -9902,7 +9646,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>230</y>
+          <y>205</y>
           <width>266</width>
           <height>21</height>
          </rect>
@@ -9931,7 +9675,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>205</y>
+          <y>180</y>
           <width>336</width>
           <height>21</height>
          </rect>
@@ -9979,7 +9723,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>150</x>
-          <y>155</y>
+          <y>125</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -10014,7 +9758,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>200</x>
-          <y>155</y>
+          <y>125</y>
           <width>141</width>
           <height>21</height>
          </rect>
@@ -10034,7 +9778,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>155</y>
+          <y>125</y>
           <width>141</width>
           <height>21</height>
          </rect>
@@ -10054,7 +9798,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>180</y>
+          <y>155</y>
           <width>346</width>
           <height>21</height>
          </rect>
@@ -10777,7 +10521,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>275</y>
+         <y>260</y>
          <width>361</width>
          <height>46</height>
         </rect>

@@ -17,22 +17,17 @@
 # standard libraries
 import queue
 import os
-import time
 import shutil
-import json
-from datetime import datetime
 
 # external packages
-from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
 from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
-from logic.modeldata.modelHandling import writeRetrofitData
 
 
-class ModelBasic:
+class BasicRun:
     """
     """
 
@@ -44,8 +39,8 @@ class ModelBasic:
         self.modelQueue = queue.Queue()
         self.retryQueue = queue.Queue()
         self.collector = QMultiWait()
-        self.runProgress = None
-        self.processData = None
+        self.runProgressCB = None
+        self.processDataCB = None
         self.performanceTimingSignal = None
         self.retryCounter = 0
         self.runType = ''
@@ -142,7 +137,7 @@ class ModelBasic:
             self.msg.emit(2, self.runType, 'Solving error', text)
             self.retryQueue.put(mPoint)
 
-        self.runProgress(number=lenSequence, count=count)
+        self.runProgressCB(number=lenSequence, count=count)
         self.log.debug(f'Processing {[count]} from {[lenSequence]}')
         if lenSequence == count:
             self.cycleThroughPointsFinished()
@@ -190,8 +185,6 @@ class ModelBasic:
         text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.msg.emit(0, self.runType, 'Solving', text)
-        self.ui.mSolve.setText(f'{mPoint["countSequence"]:2d}')
-
         return True
 
     def runImage(self):
@@ -252,7 +245,6 @@ class ModelBasic:
         text = f'Exposing image-{mPoint["countSequence"]:03d}:  '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.msg.emit(0, self.runType, 'Imaging', text)
-        self.ui.mImage.setText(f'{mPoint["countSequence"]:2d}')
 
         return True
 
@@ -298,10 +290,6 @@ class ModelBasic:
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
         text += f'azimuth: {mPoint["azimuth"]:3.0f}'
         self.msg.emit(0, self.runType, 'Slewing mount', text)
-
-        self.ui.mPoints.setText(f'{mPoint["lenSequence"]:2d}')
-        self.ui.mSlew.setText(f'{mPoint["countSequence"]:2d}')
-
         return True
 
     def clearQueues(self):
@@ -370,8 +358,7 @@ class ModelBasic:
         self.app.plateSolve.abort()
         self.restoreSignalsRunDefault()
         self.clearQueues()
-        self.restoreModelDefaultContextAndGuiStatus()
-        self.msg.emit(2, self.runType, 'Run', 'Modeling cancelled')
+        self.msg.emit(2, self.runType, 'Run', 'Cancelled')
         return True
 
     def generateSaveData(self):
@@ -449,7 +436,7 @@ class ModelBasic:
             self.msg.emit(0, self.runType, 'Run', 'Deleting images')
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
-        self.processData(resultData)
+        self.processDataCB(resultData)
         return True
 
     def cycleThroughPointsFinished(self):
@@ -494,7 +481,6 @@ class ModelBasic:
 
         self.retryCounter -= 1
         self.runSlew()
-        self.ui.modelProgress.setValue(0)
         return True
 
     def cycleThroughPoints(self, modelPoints=None, retryCounter=0, runType=None,
@@ -513,8 +499,8 @@ class ModelBasic:
         :param progress:
         :return: true for test purpose
         """
-        self.runProgress = progress
-        self.processData = processData
+        self.runProgressCB = progress
+        self.processDataCB = processData
         self.retryCounter = retryCounter
         self.runType = runType
         self.clearQueues()

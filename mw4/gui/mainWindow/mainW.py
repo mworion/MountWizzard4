@@ -48,7 +48,7 @@ from gui.mainWmixin.tabMount import Mount
 from gui.mainWmixin.tabEnviron import Environ
 from gui.mainWmixin.tabAlmanac import Almanac
 from gui.mainWmixin.tabModel import Model
-from gui.mainWmixin.tabModelBasic import ModelBasic
+from gui.mainWmixin.runBasic import BasicRun
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.mainWmixin.tabManageModel import ManageModel
 from gui.mainWmixin.tabSatSearch import SatSearch
@@ -75,7 +75,7 @@ class MainWindow(
     Environ,
     Almanac,
     Model,
-    ModelBasic,
+    BasicRun,
     BuildPoints,
     ManageModel,
     SatSearch,

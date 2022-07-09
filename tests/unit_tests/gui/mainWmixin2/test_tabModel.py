@@ -28,12 +28,11 @@ import glob
 import skyfield.api
 from skyfield.api import Angle
 from mountcontrol.modelStar import ModelStar
-from PyQt5.QtWidgets import QCheckBox
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabModel import Model
-import gui.mainWmixin.tabModel
+import gui.mainWmixin
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
@@ -50,8 +49,6 @@ def function(qapp):
             self.deviceStat = {}
             self.refreshName = None
             self.refreshModel = None
-            self.scaleHint = None
-            self.fovHint = None
             self.playSound = None
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
@@ -151,411 +148,65 @@ def test_updateTurnKnobsGUI_3(function):
 
 
 def test_updateProgress_1(function):
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     suc = function.updateModelProgress()
     assert not suc
 
 
 def test_updateProgress_2(function):
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     suc = function.updateModelProgress(number=3, count=2)
     assert suc
 
 
 def test_updateProgress_3(function):
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     suc = function.updateModelProgress(number=2, count=3)
     assert not suc
 
 
 def test_updateProgress_4(function):
     suc = function.updateModelProgress(number=0, count=2)
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     assert not suc
 
 
 def test_updateProgress_5(function):
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     suc = function.updateModelProgress(number=3, count=1)
     assert suc
 
 
 def test_updateProgress_6(function):
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     suc = function.updateModelProgress(number=3, count=-1)
     assert not suc
 
 
 def test_updateProgress_7(function):
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     suc = function.updateModelProgress(number=3, count=2)
     assert suc
 
 
 def test_updateProgress_8(function):
-    function.startModeling = time.time()
+    function.timeStartModeling = time.time()
     suc = function.updateModelProgress(count=-1)
     assert not suc
-
-
-def test_modelSolveDone_0(function, qtbot):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'pointNumber': 1}
-    function.slewQueue.put(mPoint)
-    result = {'raJ2000S': 0,
-              'decJ2000S': 0,
-              'angleS': 0,
-              'scaleS': 1,
-              'errorRMS_S': 1,
-              'flippedS': False,
-              'success': False,
-              'message': 'test',
-              }
-
-    with mock.patch.object(function,
-                           'cancelRun'):
-        suc = function.runSolveDone(result)
-        assert not suc
-
-
-def test_modelSolveDone_1(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'pointNumber': 1}
-
-    function.resultQueue.put(mPoint)
-    suc = function.runSolveDone({})
-    assert not suc
-
-
-def test_modelSolveDone_2(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'pointNumber': 1}
-    function.resultQueue.put(mPoint)
-    result = {'raJ2000S': skyfield.api.Angle(hours=0),
-              'decJ2000S': skyfield.api.Angle(degrees=0),
-              'success': False,
-              }
-
-    with mock.patch.object(function,
-                           'updateModelProgress'):
-        with mock.patch.object(function,
-                               'cycleThroughPointsFinished'):
-            suc = function.runSolveDone(result)
-            assert suc
-
-
-def test_modelSolveDone_3(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 2,
-              'pointNumber': 1}
-    function.resultQueue.put(mPoint)
-    function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
-
-    class Julian:
-        ut1 = 2458635.168
-
-    result = {'raJ2000S': skyfield.api.Angle(hours=0),
-              'decJ2000S': skyfield.api.Angle(degrees=0),
-              'angleS': 0,
-              'scaleS': 1,
-              'errorRMS_S': 1,
-              'flippedS': False,
-              'success': True,
-              'message': 'test',
-              'raJNowM': skyfield.api.Angle(hours=0),
-              'decJNowM': skyfield.api.Angle(degrees=0),
-              'raJNowS': skyfield.api.Angle(hours=0),
-              'decJNowS': skyfield.api.Angle(degrees=0),
-              'siderealTime': 0,
-              'julianDate': Julian(),
-              'pierside': 'E',
-              'errorRA': 1,
-              'errorDEC': 2,
-              'errorRMS': 3,
-              }
-
-    function.resultQueue.put(mPoint)
-    with mock.patch.object(function,
-                           'updateModelProgress'):
-        with mock.patch.object(function,
-                               'cycleThroughPointsFinished'):
-            suc = function.runSolveDone(result)
-            assert suc
-
-
-def test_modelSolveDone_4(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 2,
-              'pointNumber': 1}
-
-    result = {'raJ2000S': skyfield.api.Angle(hours=0),
-              'decJ2000S': skyfield.api.Angle(degrees=0),
-              'angleS': 0,
-              'scaleS': 1,
-              'errorRMS_S': 999999999,
-              'flippedS': False,
-              'success': True,
-              'message': 'test',
-              'julianDate': function.app.mount.obsSite.timeJD,
-              }
-
-    function.startModeling = 0
-    function.resultQueue.put(mPoint)
-
-    with mock.patch.object(function,
-                           'cycleThroughPointsFinished'):
-        suc = function.runSolveDone(result)
-        assert suc
-
-
-def test_modelSolve_1(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 2,
-              'pointNumber': 1}
-    function.slewQueue.put(mPoint)
-    with mock.patch.object(function,
-                           'cancelRun'):
-        suc = function.runSolve()
-        assert not suc
-
-
-def test_modelSolve_2(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': '',
-              'searchRadius': 1,
-              'solveTimeout': 10,
-              'raJNowM': 10,
-              'decJNowM': 10,
-              }
-    function.solveQueue.put(mPoint)
-    with mock.patch.object(function.app.plateSolve,
-                           'solveThreading'):
-        suc = function.runSolve()
-        assert suc
-
-
-def test_modelImage_1(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': '',
-              'searchRadius': 1,
-              'solveTimeout': 10,
-              }
-    function.slewQueue.put(mPoint)
-    function.imageQueue.queue.clear()
-    with mock.patch.object(function,
-                           'cancelRun'):
-        suc = function.runImage()
-        assert not suc
-
-
-def test_modelImage_2(function):
-    def qWaitBreak(a):
-        function.ui.pauseModel.setProperty('pause', False)
-
-    gui.mainWmixin.tabModel.sleepAndEvents = qWaitBreak
-    function.ui.pauseModel.setProperty('pause', True)
-    function
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': '',
-              'exposureTime': 1,
-              'binning': 1,
-              'subFrame': 100,
-              'fastReadout': False,
-              'focalLength': 1,
-              }
-
-    function.imageQueue.put(mPoint)
-    with mock.patch.object(function.app.camera,
-                           'expose'):
-        suc = function.runImage()
-        assert suc
-
-
-def test_modelSlew_1(function):
-    suc = function.runSlew()
-    assert not suc
-
-
-def test_modelSlew_2(function):
-    function.deviceStat['dome'] = False
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': '',
-              'exposureTime': 1,
-              'binning': 1,
-              'subFrame': 100,
-              'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
-              }
-
-    function.slewQueue.put(mPoint)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=False):
-        suc = function.runSlew()
-        assert not suc
-
-
-def test_modelSlew_3(function):
-    function.deviceStat['dome'] = True
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': '',
-              'exposureTime': 1,
-              'binning': 1,
-              'subFrame': 100,
-              'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
-              }
-    function.slewQueue.put(mPoint)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetAltAz',
-                           return_value=True):
-        with mock.patch.object(function.app.dome,
-                               'slewDome',
-                               return_value=0):
-            suc = function.runSlew()
-            assert suc
-
-
-def test_modelSlew_4(function):
-    function.deviceStat['dome'] = True
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': '',
-              'exposureTime': 1,
-              'binning': 1,
-              'subFrame': 100,
-              'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
-              }
-    function.slewQueue.put(mPoint)
-    function.ui.useDomeGeometry.setChecked(True)
-    with mock.patch.object(function.app.dome,
-                           'slewDome',
-                           return_value=0):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setTargetAltAz',
-                               return_value=True):
-            suc = function.runSlew()
-            assert suc
-
-
-def test_clearQueues(function):
-    suc = function.clearQueues()
-    assert suc
 
 
 def test_setupModelRunContextAndGuiStatus_1(function):
     function.app.uiWindows = {'showImageW': {'classObj': None}}
     suc = function.setupModelRunContextAndGuiStatus()
-    assert not suc
-
-
-def test_setupModelRunContextAndGuiStatus_2(function):
-    class Test1:
-        autoSolve = QCheckBox()
-        stackImages = QCheckBox()
-
-    class Test:
-        deviceStat = {'expose': False,
-                      'exposeN': False}
-        ui = Test1()
-    function.app.uiWindows = {'showImageW': {'classObj': Test()}}
-    suc = function.setupModelRunContextAndGuiStatus()
-    assert not suc
-
-
-def test_setupModelRunContextAndGuiStatus_3(function):
-    class Test1:
-        autoSolve = QCheckBox()
-        stackImages = QCheckBox()
-
-    class Test:
-        deviceStat = {'expose': True,
-                      'exposeN': False}
-        ui = Test1()
-    function.app.uiWindows = {'showImageW': {'classObj': Test()}}
-    suc = function.setupModelRunContextAndGuiStatus()
-    assert not suc
-
-
-def test_setupModelRunContextAndGuiStatus_4(function):
-    class Test1:
-        autoSolve = QCheckBox()
-        stackImages = QCheckBox()
-
-    class Test:
-        deviceStat = {'expose': True,
-                      'exposeN': True}
-        ui = Test1()
-
-        @staticmethod
-        def abortImage():
-            return
-
-    function.app.uiWindows = {'showImageW': {'classObj': Test()}}
-    suc = function.setupModelRunContextAndGuiStatus()
     assert suc
 
 
 def test_restoreModelDefaultContextAndGuiStatus(function):
+    def test():
+        return
+
+    function.cancelRun = test
     suc = function.restoreModelDefaultContextAndGuiStatus()
-    assert suc
-
-
-def test_setupSignalsForModelRun_1(function):
-    suc = function.setupSignalsForRun()
-    assert suc
-
-
-def test_setupSignalsForModelRun_2(function):
-    function.deviceStat['dome'] = True
-    function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
-
-    suc = function.setupSignalsForRun()
-    assert suc
-
-
-def test_setupSignalsForModelRun_3(function):
-    function.deviceStat['dome'] = True
-    function.app.dome.data = {}
-    function.ui.progressiveTiming.setChecked(True)
-    suc = function.setupSignalsForRun()
-    assert suc
-
-
-def test_setupSignalsForModelRun_4(function):
-    function.deviceStat['dome'] = True
-    function.ui.normalTiming.setChecked(True)
-    suc = function.setupSignalsForRun()
-    assert suc
-
-
-def test_setupSignalsForModelRun_5(function):
-    function.deviceStat['dome'] = True
-    function.ui.conservativeTiming.setChecked(True)
-    suc = function.setupSignalsForRun()
-    assert suc
-
-
-def test_restoreSignalsModelDefault(function):
-    function.performanceTimingSignal = function.app.camera.signals.exposed
-    function.app.camera.signals.saved.connect(function.runSolve)
-    function.performanceTimingSignal.connect(function.runSlew)
-    function.app.plateSolve.signals.done.connect(function.runSolveDone)
-    function.collector.ready.connect(function.runImage)
-
-    suc = function.restoreSignalsRunDefault()
     assert suc
 
 
@@ -571,17 +222,6 @@ def test_pauseBuild_2(function):
     suc = function.pauseBuild()
     assert suc
     assert function.ui.pauseModel.property('pause')
-
-
-def test_cancelBuild(function):
-    suc = function.setupSignalsForRun()
-    assert suc
-    with mock.patch.object(function.app.camera,
-                           'abort'):
-        with mock.patch.object(function.app.plateSolve,
-                               'abort'):
-            suc = function.cancelRun()
-            assert suc
 
 
 def writeRFD(a, b):
@@ -606,36 +246,13 @@ def test_retrofitModel_1(function):
     assert suc
 
 
-def test_generateSaveModel_1(function):
-    mPoint = {'raJNowM': Angle(hours=0),
-              'decJNowM': Angle(degrees=0),
-              'raJNowS': Angle(hours=0),
-              'decJNowS': Angle(degrees=0),
-              'angularPosRA': Angle(degrees=0),
-              'angularPosDEC': Angle(degrees=0),
-              'raJ2000S': Angle(hours=0),
-              'decJ2000S': Angle(degrees=0),
-              'raJ2000M': Angle(hours=0),
-              'decJ2000M': Angle(degrees=0),
-              'siderealTime': Angle(hours=0),
-              'julianDate': function.app.mount.obsSite.timeJD,
-              }
-    function.model = list()
-    function.model.append(mPoint)
-    function.model.append(mPoint)
-    function.model.append(mPoint)
-
-    val = function.generateSaveData()
-    assert len(val) == 3
-    assert 'profile' in val[0]
-    assert 'firmware' in val[0]
-    assert 'latitude' in val[0]
-    assert 'version' in val[0]
-
-
 def test_saveModelFinish_1(function):
+    def test():
+        return
+
     shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
     function.modelName = 'test'
+    function.generateSaveData = test
     function.app.mount.signals.alignDone.connect(function.saveModelFinish)
     suc = function.saveModelFinish()
     assert suc
@@ -777,52 +394,6 @@ def test_generateBuildData_2(function):
     assert build[0].sCoord.dec.degrees == 64.3246
 
 
-def test_collectingModelRunOutput_1(function):
-    with mock.patch.object(function,
-                           'restoreSignalsRunDefault'):
-        with mock.patch.object(function,
-                               'restoreModelDefaultContextAndGuiStatus'):
-            suc = function.collectingRunOutput()
-            assert not suc
-
-
-def test_collectingModelRunOutput_2(function):
-    class Julian:
-        ut1 = 2458635.168
-
-    inputData = {
-        'raJ2000S': skyfield.api.Angle(hours=0),
-        'decJ2000S': skyfield.api.Angle(degrees=0),
-        'angleS': 0,
-        'scaleS': 1,
-        'errorRMS_S': 1,
-        'flippedS': False,
-        'success': True,
-        'message': 'test',
-        'raJNowM': skyfield.api.Angle(hours=0),
-        'decJNowM': skyfield.api.Angle(degrees=0),
-        'raJNowS': skyfield.api.Angle(hours=0),
-        'decJNowS': skyfield.api.Angle(degrees=0),
-        'siderealTime': skyfield.api.Angle(hours=0),
-        'julianDate': Julian(),
-        'pierside': 'E',
-        'errorRA': 1,
-        'errorDEC': 2,
-        'errorRMS': 3,
-    }
-
-    function.modelQueue.put(inputData)
-    function.modelQueue.put(inputData)
-    function.modelQueue.put(inputData)
-
-    with mock.patch.object(function,
-                           'restoreSignalsRunDefault'):
-        with mock.patch.object(function,
-                               'restoreModelDefaultContextAndGuiStatus'):
-            suc = function.collectingRunOutput()
-            assert suc
-
-
 def test_programModelToMount_1(function):
     with mock.patch.object(function,
                            'generateBuildData',
@@ -864,9 +435,8 @@ def test_renewHemisphereView_1(function):
 
 def test_processModelData_1(function):
     with mock.patch.object(function,
-                           'collectingRunOutput',
-                           return_value=False):
-        suc = function.processModelData()
+                           'restoreModelDefaultContextAndGuiStatus'):
+        suc = function.processModelData([])
         assert not suc
 
 
@@ -876,8 +446,7 @@ def test_processModelData_2(function):
 
     function.playSound = playSound
     with mock.patch.object(function,
-                           'collectingRunOutput',
-                           return_value=True):
+                           'restoreModelDefaultContextAndGuiStatus'):
         with mock.patch.object(function,
                                'programModelToMount',
                                return_value=False):
@@ -886,7 +455,7 @@ def test_processModelData_2(function):
                 with mock.patch.object(function.app.mount.obsSite,
                                        'park',
                                        return_value=False):
-                    suc = function.processModelData()
+                    suc = function.processModelData([0, 1, 2])
                     assert suc
 
 
@@ -897,8 +466,7 @@ def test_processModelData_3(function):
     function.playSound = playSound
     function.ui.parkMountAfterModel.setChecked(True)
     with mock.patch.object(function,
-                           'collectingRunOutput',
-                           return_value=True):
+                           'restoreModelDefaultContextAndGuiStatus'):
         with mock.patch.object(function,
                                'programModelToMount',
                                return_value=True):
@@ -907,7 +475,7 @@ def test_processModelData_3(function):
                 with mock.patch.object(function.app.mount.obsSite,
                                        'park',
                                        return_value=False):
-                    suc = function.processModelData()
+                    suc = function.processModelData([0, 1, 2])
                     assert suc
 
 
@@ -918,8 +486,7 @@ def test_processModelData_4(function):
     function.playSound = playSound
     function.ui.parkMountAfterModel.setChecked(True)
     with mock.patch.object(function,
-                           'collectingRunOutput',
-                           return_value=True):
+                           'restoreModelDefaultContextAndGuiStatus'):
         with mock.patch.object(function,
                                'programModelToMount',
                                return_value=True):
@@ -928,55 +495,8 @@ def test_processModelData_4(function):
                 with mock.patch.object(function.app.mount.obsSite,
                                        'park',
                                        return_value=True):
-                    suc = function.processModelData()
+                    suc = function.processModelData([0, 1, 2])
                     assert suc
-
-
-def test_modelCycleThroughBuildPointsFinished_1(function):
-    inputData = {
-         'lenSequence': 0,
-         'countSequence': 1,
-         }
-
-    function.modelQueue.put(inputData)
-
-    with mock.patch.object(function,
-                           'processModelData'):
-        suc = function.cycleThroughPointsFinished()
-        assert suc
-
-
-def test_modelCycleThroughBuildPointsFinished_2(function):
-    inputData = {
-        'lenSequence': 0,
-        'countSequence': 1,
-    }
-
-    function.retryQueue.put(inputData)
-
-    with mock.patch.object(function,
-                           'processModelData'):
-        with mock.patch.object(function,
-                               'runSlew'):
-            suc = function.cycleThroughPointsFinished()
-            assert suc
-
-
-def test_modelCycleThroughBuildPointsFinished_3(function):
-    inputData = {
-        'lenSequence': 0,
-        'countSequence': 1,
-    }
-
-    function.retryQueue.put(inputData)
-    function.modelBuildRetryCounter = 1
-
-    with mock.patch.object(function,
-                           'processModelData'):
-        with mock.patch.object(function,
-                               'runSlew'):
-            suc = function.cycleThroughPointsFinished()
-            assert suc
 
 
 def test_checkModelRunConditions_1(function):
@@ -1042,8 +562,10 @@ def test_clearAlignAndBackup_2(function):
                                return_value=False):
             with mock.patch.object(function,
                                    'refreshModel'):
-                suc = function.clearAlignAndBackup()
-                assert suc
+                with mock.patch.object(gui.mainWmixin.tabModel,
+                                       'sleepAndEvents'):
+                    suc = function.clearAlignAndBackup()
+                    assert suc
 
 
 def test_clearAlignAndBackup_3(function):
@@ -1058,8 +580,10 @@ def test_clearAlignAndBackup_3(function):
                 with mock.patch.object(function.app.mount.model,
                                        'storeName',
                                        return_value=False):
-                    suc = function.clearAlignAndBackup()
-                    assert suc
+                    with mock.patch.object(gui.mainWmixin.tabModel,
+                                           'sleepAndEvents'):
+                        suc = function.clearAlignAndBackup()
+                        assert suc
 
 
 def test_clearAlignAndBackup_4(function):
@@ -1074,8 +598,10 @@ def test_clearAlignAndBackup_4(function):
                                    return_value=True):
                 with mock.patch.object(function,
                                        'refreshModel'):
-                    suc = function.clearAlignAndBackup()
-                    assert suc
+                    with mock.patch.object(gui.mainWmixin.tabModel,
+                                           'sleepAndEvents'):
+                        suc = function.clearAlignAndBackup()
+                        assert suc
 
 
 def test_setupModelPointsAndContextData_1(function):
@@ -1086,7 +612,7 @@ def test_setupModelPointsAndContextData_1(function):
     function.app.plateSolve.framework = 'astap'
     function.app.plateSolve.run = {'astap': Test()}
     function.app.data.buildP = []
-    val = function.setupPointsAndContextData()
+    val = function.setupModelPointsAndContextData()
     assert val == []
 
 
@@ -1098,7 +624,7 @@ def test_setupModelPointsAndContextData_2(function):
     function.app.plateSolve.framework = 'astap'
     function.app.plateSolve.run = {'astap': Test()}
     function.app.data.buildP = [(0, 0, True), (10, 10, True), (20, 20, True)]
-    val = function.setupPointsAndContextData()
+    val = function.setupModelPointsAndContextData()
     assert len(val) == 3
     assert val[0]['lenSequence'] == 3
     assert val[0]['countSequence'] == 1
@@ -1116,23 +642,13 @@ def test_setupModelPointsAndContextData_3(function):
     function.app.plateSolve.run = {'astap': Test()}
     function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
     function.ui.excludeDonePoints.setChecked(True)
-    val = function.setupPointsAndContextData()
+    val = function.setupModelPointsAndContextData()
     assert len(val) == 2
     assert val[0]['lenSequence'] == 3
     assert val[0]['countSequence'] == 1
     assert val[1]['countSequence'] == 3
     assert val[1]['altitude'] == 20
     assert val[1]['azimuth'] == 20
-
-
-def test_modelCycleThroughBuildPoints_1(function):
-    points = [1, 2]
-    with mock.patch.object(function,
-                           'setupSignalsForRun'):
-        with mock.patch.object(function,
-                               'runSlew'):
-            suc = function.cycleThroughPoints(points)
-            assert suc
 
 
 def test_setupModelFilenamesAndDirectories_1(function):
@@ -1166,6 +682,8 @@ def test_modelBuild_2(function):
 
 
 def test_modelBuild_3(function):
+    def test():
+        return []
     with mock.patch.object(function,
                            'checkModelRunConditions',
                            return_value=True):
@@ -1175,13 +693,21 @@ def test_modelBuild_3(function):
             with mock.patch.object(function,
                                    'setupModelFilenamesAndDirectories'):
                 with mock.patch.object(function,
-                                       'setupPointsAndContextData',
+                                       'setupModelPointsAndContextData',
                                        return_value=[]):
                     suc = function.modelBuild()
                     assert not suc
 
 
 def test_modelBuild_4(function):
+    def test(modelPoints=None,
+             retryCounter=None,
+             runType=None,
+             processData=None,
+             progress=None):
+        return
+
+    function.cycleThroughPoints = test
     with mock.patch.object(function,
                            'checkModelRunConditions',
                            return_value=True):
@@ -1191,14 +717,12 @@ def test_modelBuild_4(function):
             with mock.patch.object(function,
                                    'setupModelFilenamesAndDirectories'):
                 with mock.patch.object(function,
-                                       'setupPointsAndContextData',
+                                       'setupModelPointsAndContextData',
                                        return_value=[1, 2]):
                     with mock.patch.object(function,
                                            'setupModelRunContextAndGuiStatus'):
-                        with mock.patch.object(function,
-                                               'cycleThroughPoints'):
-                            suc = function.modelBuild()
-                            assert suc
+                        suc = function.modelBuild()
+                        assert suc
 
 
 def test_loadProgramModel_1(function):

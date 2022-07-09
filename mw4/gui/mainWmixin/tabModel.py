@@ -15,10 +15,8 @@
 #
 ###########################################################
 # standard libraries
-import queue
 import os
 import time
-import shutil
 import json
 from datetime import datetime
 
@@ -27,8 +25,8 @@ from mountcontrol.alignStar import AlignStar
 from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
-from base.transform import JNowToJ2000, J2000ToJNow
-from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
+from base.transform import J2000ToJNow
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from logic.modeldata.modelHandling import writeRetrofitData
 
 
@@ -47,7 +45,7 @@ class Model:
         ms.alignDone.connect(self.updateTurnKnobsGUI)
 
         self.ui.runModel.clicked.connect(self.modelBuild)
-        self.ui.cancelModel.clicked.connect(self.cancelRun)
+        self.ui.cancelModel.clicked.connect(self.restoreModelDefaultContextAndGuiStatus)
         self.ui.endModel.clicked.connect(self.processModelData)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
@@ -187,6 +185,7 @@ class Model:
 
         :return: true for test purpose
         """
+        self.cancelRun()
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
@@ -259,9 +258,9 @@ class Model:
         """
         self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
         self.retrofitModel()
-        self.msg.emit(0, self.runType, 'Run',
+        self.msg.emit(0, 'Model', 'Run',
                       f'Writing model [{self.modelName}]')
-        saveData = self.generateSaveModel()
+        saveData = self.generateSaveData()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
             json.dump(saveData, outfile, sort_keys=True, indent=4)
@@ -356,7 +355,7 @@ class Model:
             self.msg.emit(2, 'Model', 'Run error',
                           'Model programming error')
 
-        self.msg.emit(1, self.runType, 'Run',
+        self.msg.emit(1, 'Model', 'Run',
                       f'Modeling finished [{self.modelName}]')
         self.playSound('ModelingFinished')
         self.renewHemisphereView()

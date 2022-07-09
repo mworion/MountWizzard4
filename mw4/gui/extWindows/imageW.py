@@ -806,6 +806,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         text = f'{os.path.basename(imagePath)}'
         self.msg.emit(0, 'Image', 'Exposed', text)
+        self.imageFileName = imagePath
 
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)

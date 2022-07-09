@@ -512,7 +512,7 @@ class Styles:
         QPushButton[color='yellow'] {
             background-color: $M_YELLOW2$;
             border-color: $M_YELLOW$;
-            color: $M_WHITE$;            
+            color: $M_WHITE$;
         }
         QPushButton[color='green'] {
             background-color: $M_GREEN2$;
@@ -587,7 +587,7 @@ class Styles:
         }
         QComboBox:disabled {
             color: $M_GREY$;
-        }        
+        }
         QComboBox[active=true] {
             border-color: $M_GREEN$;
             background-color: $M_GREEN2$;

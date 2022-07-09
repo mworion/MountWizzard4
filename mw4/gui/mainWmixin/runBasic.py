@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import queue
-import os
 import shutil
 
 # external packages
@@ -49,20 +48,6 @@ class BasicRun:
         self.modelName = ''
         self.model = []
         self.ui.cancelModel.clicked.connect(self.cancelRun)
-
-    def initConfig(self):
-        """
-        :return: True for test purpose
-        """
-        config = self.app.config['mainW']
-        return True
-
-    def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
-        config = self.app.config['mainW']
-        return True
 
     def runSolveDone(self, result):
         """

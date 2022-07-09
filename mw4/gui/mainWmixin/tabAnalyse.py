@@ -15,13 +15,10 @@
 #
 ###########################################################
 # standard libraries
-import os
 
 # external packages
 
 # local import
-from base.transform import J2000ToJNow
-from mountcontrol.convert import convertToHMS, convertToDMS
 
 
 class Analyse(object):
@@ -68,5 +65,3 @@ class Analyse(object):
         config['hysteresisMinAlt'] = self.ui.hysteresisMinAlt.value()
         config['hysteresisRuns'] = self.ui.hysteresisRuns.value()
         return True
-
-

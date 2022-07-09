@@ -61,17 +61,6 @@ def function(qapp):
         shutil.rmtree(path)
 
 
-def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
-
-
 def test_runSolveDone_0(function, qtbot):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,

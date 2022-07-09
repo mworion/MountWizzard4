@@ -337,10 +337,10 @@ class Photometry:
         self.log.info(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
                       f'HFR:{objsHFR}')
         return True
-    
+
     def unlockPhotometry(self):
         """
-        :return: 
+        :return:
         """
         self.lock.unlock()
         return True
@@ -362,7 +362,7 @@ class Photometry:
             return False
 
         worker = Worker(self.workerCalcPhotometry)
-        worker.signals.result.connect(lambda:  self.signals.sepFinished.emit())
+        worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
         worker.signals.finished.connect(self.unlockPhotometry)
         self.threadPool.start(worker)
         return True

@@ -48,6 +48,7 @@ class BasicRun:
 
         self.modelName = ''
         self.model = []
+        self.ui.cancelModel.clicked.connect(self.cancelRun)
 
     def initConfig(self):
         """
@@ -182,8 +183,7 @@ class BasicRun:
                                            scaleHint=self.scaleHint,
                                            fovHint=self.fovHint,
                                            updateFits=False)
-        text = f'Solving  image-{mPoint["countSequence"]:03d}:  '
-        text += f'path: {os.path.basename(mPoint["imagePath"])}'
+        text = f'Solving  image-{mPoint["countSequence"]:03d}:'
         self.msg.emit(0, self.runType, 'Solving', text)
         return True
 
@@ -242,8 +242,7 @@ class BasicRun:
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
-        text = f'Exposing image-{mPoint["countSequence"]:03d}:  '
-        text += f'path: {os.path.basename(mPoint["imagePath"])}'
+        text = f'Exposing image-{mPoint["countSequence"]:03d}'
         self.msg.emit(0, self.runType, 'Imaging', text)
 
         return True

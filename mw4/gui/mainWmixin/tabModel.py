@@ -158,6 +158,7 @@ class Model:
         self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime('%H:%M:%S'))
 
         modelPercent = int(100 * fraction)
+        self.ui.numberPoints.setText(f'{count} / {number}')
         self.ui.modelProgress.setValue(modelPercent)
         return True
 
@@ -185,7 +186,6 @@ class Model:
 
         :return: true for test purpose
         """
-        self.cancelRun()
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
@@ -200,10 +200,7 @@ class Model:
         self.ui.timeEstimated.setText('00:00:00')
         self.ui.timeElapsed.setText('00:00:00')
         self.ui.timeFinished.setText('00:00:00')
-        self.ui.mPoints.setText('-')
-        self.ui.mSlew.setText('-')
-        self.ui.mImage.setText('-')
-        self.ui.mSolve.setText('-')
+        self.ui.numberPoints.setText('-')
         self.ui.modelProgress.setValue(0)
         self.app.operationRunning.emit(False)
         return True

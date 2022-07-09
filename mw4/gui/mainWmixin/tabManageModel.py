@@ -29,7 +29,7 @@ import numpy as np
 from logic.modeldata.modelHandling import writeRetrofitData
 
 
-class ManageModel(object):
+class ManageModel:
     """
     """
 

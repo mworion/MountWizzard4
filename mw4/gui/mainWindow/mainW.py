@@ -48,6 +48,7 @@ from gui.mainWmixin.tabMount import Mount
 from gui.mainWmixin.tabEnviron import Environ
 from gui.mainWmixin.tabAlmanac import Almanac
 from gui.mainWmixin.tabModel import Model
+from gui.mainWmixin.tabModelBasic import ModelBasic
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.mainWmixin.tabManageModel import ManageModel
 from gui.mainWmixin.tabSatSearch import SatSearch
@@ -55,6 +56,7 @@ from gui.mainWmixin.tabSatTrack import SatTrack
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools import Tools
+from gui.mainWmixin.tabAnalyse import Analyse
 from gui.mainWmixin.tabPower import Power
 from gui.mainWmixin.tabSettDevice import SettDevice
 from gui.mainWmixin.tabSettMount import SettMount
@@ -73,6 +75,7 @@ class MainWindow(
     Environ,
     Almanac,
     Model,
+    ModelBasic,
     BuildPoints,
     ManageModel,
     SatSearch,
@@ -81,6 +84,7 @@ class MainWindow(
     Relay,
     Power,
     Tools,
+    Analyse,
     SettDevice,
     SettMount,
     SettImaging,
@@ -612,7 +616,7 @@ class MainWindow(
             },
             'Analyse': {
                 'statID': 'analyse',
-                'tab': self.ui.modelingTabWidget,
+                'tab': self.ui.toolsTabWidget,
             },
         }
         tabChanged = False

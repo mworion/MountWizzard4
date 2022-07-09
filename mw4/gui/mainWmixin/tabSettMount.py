@@ -42,7 +42,7 @@ class SettMount(object):
         self.app.update30s.connect(self.syncClock)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
-        self.app.update3s.connect(self.updateTelescopeParametersToGui)
+        self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
 
     def initConfig(self):
         """
@@ -264,8 +264,6 @@ class SettMount(object):
 
         :return: true for test purpose
         """
-        if not self.ui.automaticTelescope.isChecked():
-            return False
 
         value = self.app.telescope.data.get(
             'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
@@ -279,4 +277,13 @@ class SettMount(object):
             value = float(value)
             self.ui.aperture.setValue(value)
 
+        return True
+
+    def updateTelescopeParametersToGuiCyclic(self):
+        """
+        :return:
+        """
+        if not self.ui.automaticTelescope.isChecked():
+            return False
+        self.updateTelescopeParametersToGui()
         return True

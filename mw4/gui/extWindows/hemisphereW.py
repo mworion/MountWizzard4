@@ -142,7 +142,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.app.updatePointMarker.connect(self.setupModel)
         self.app.redrawHemisphere.connect(self.drawHemisphereTab)
         self.app.redrawHorizon.connect(self.drawHorizonOnHem)
-        self.app.buildRunning.connect(self.enableOperationModeChange)
+        self.app.operationRunning.connect(self.enableOperationModeChange)
         self.app.mount.signals.pointDone.connect(self.drawPointerHem)
         self.app.dome.signals.azimuth.connect(self.drawDome)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)

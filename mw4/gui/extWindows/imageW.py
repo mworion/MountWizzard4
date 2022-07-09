@@ -195,7 +195,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.signals.solveImage.connect(self.solveImage)
         self.app.colorChange.connect(self.colorChange)
         self.app.showImage.connect(self.showImage)
-        self.app.buildRunning.connect(self.operationMode)
+        self.app.operationRunning.connect(self.operationMode)
 
         self.showCurrent()
         self.setAspectLocked()

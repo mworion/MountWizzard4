@@ -609,10 +609,10 @@ class SettMisc(object):
         :return:
         """
         isVirtual = self.ui.activateVirtualStop.isChecked()
-        self.ui.virtualStopL.setEnabled(isVirtual)
-        self.ui.virtualStopR.setEnabled(isVirtual)
-        self.ui.virtualStopL.setVisible(isVirtual)
-        self.ui.virtualStopR.setVisible(isVirtual)
+        self.ui.addStopL.setEnabled(isVirtual)
+        self.ui.addStopR.setEnabled(isVirtual)
+        self.ui.addStopL.setVisible(isVirtual)
+        self.ui.addStopR.setVisible(isVirtual)
         return True
 
     def setAutomationSpeed(self):

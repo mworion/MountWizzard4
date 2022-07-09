@@ -318,15 +318,19 @@ def test_updateTelescopeParametersToGui_1(function):
     function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
     function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
 
-    function.ui.automaticTelescope.setChecked(True)
     suc = function.updateTelescopeParametersToGui()
     assert suc
 
 
-def test_updateTelescopeParametersToGui_2(function):
-    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
-    function.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
-
+def test_updateTelescopeParametersToGuiCyclic_1(function):
     function.ui.automaticTelescope.setChecked(False)
-    suc = function.updateTelescopeParametersToGui()
+    suc = function.updateTelescopeParametersToGuiCyclic()
     assert not suc
+
+
+def test_updateTelescopeParametersToGuiCyclic_2(function):
+    function.ui.automaticTelescope.setChecked(True)
+    with mock.patch.object(function,
+                           'updateTelescopeParametersToGui'):
+        suc = function.updateTelescopeParametersToGuiCyclic()
+        assert not suc

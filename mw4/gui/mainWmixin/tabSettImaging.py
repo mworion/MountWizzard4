@@ -78,8 +78,9 @@ class SettImaging:
         self.ui.aperture.setValue(config.get('aperture', 100))
         self.ui.focuserStepsize.setValue(config.get('focuserStepsize', 100))
         self.ui.focuserSteps.setValue(config.get('focuserSteps', 100))
-        self.ui.fastDownload.setChecked(config.get('fastDownload', False))
-        self.ui.keepImages.setChecked(config.get('keepImages', False))
+        self.ui.fastDownload.setChecked(config.get('fastDownload', True))
+        self.ui.keepModelImages.setChecked(config.get('keepModelImages', True))
+        self.ui.keepAnalysisImages.setChecked(config.get('keepAnalysisImages', True))
 
         return True
 
@@ -98,7 +99,8 @@ class SettImaging:
         config['focuserStepsize'] = self.ui.focuserStepsize.value()
         config['focuserSteps'] = self.ui.focuserSteps.value()
         config['fastDownload'] = self.ui.fastDownload.isChecked()
-        config['keepImages'] = self.ui.keepImages.isChecked()
+        config['keepModelImages'] = self.ui.keepModelImages.isChecked()
+        config['keepAnalysisImages'] = self.ui.keepAnalysisImages.isChecked()
         return True
 
     def checkEnableCameraUI(self):

@@ -40,6 +40,7 @@ class BasicRun:
         self.collector = QMultiWait()
         self.runProgressCB = None
         self.processDataCB = None
+        self.keepImages = None
         self.performanceTimingSignal = None
         self.retryCounter = 0
         self.runType = ''
@@ -416,7 +417,7 @@ class BasicRun:
             else:
                 self.msg.emit(0, self.runType, 'Run', 'Mount parked')
 
-        if not self.ui.keepImages.isChecked():
+        if not self.keepImages:
             self.msg.emit(0, self.runType, 'Run', 'Deleting images')
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
@@ -468,7 +469,7 @@ class BasicRun:
         return True
 
     def cycleThroughPoints(self, modelPoints=None, retryCounter=0, runType=None,
-                           processData=None, progress=None):
+                           processData=None, progress=None, keepImages=False):
         """
         cycleThroughPoints is the main method for preparing a model
         run. in addition it checks necessary components and prepares all the
@@ -481,11 +482,13 @@ class BasicRun:
         :param runType:
         :param processData:
         :param progress:
+        :param keepImages:
         :return: true for test purpose
         """
         self.runProgressCB = progress
         self.processDataCB = processData
         self.retryCounter = retryCounter
+        self.keepImages = keepImages
         self.runType = runType
         self.clearQueues()
         self.setupSignalsForRun()

@@ -12440,7 +12440,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QCheckBox" name="keepAnalyseImages">
+       <widget class="QCheckBox" name="keepAnalysisImages">
         <property name="geometry">
          <rect>
           <x>10</x>

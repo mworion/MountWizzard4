@@ -301,8 +301,7 @@ class Model:
                                          sCoord=(mPoint['raJNowS'],
                                                  mPoint['decJNowS']),
                                          sidereal=mPoint['siderealTime'],
-                                         pierside=mPoint['pierside'],
-                                         )
+                                         pierside=mPoint['pierside'])
             build.append(programmingPoint)
         return build
 
@@ -497,12 +496,14 @@ class Model:
                       f'Modeling start [{self.modelName}]')
         retryCounter = self.ui.numberBuildRetries.value()
         runType = 'Model'
+        keepImages = self.ui.keepModelImages.isChecked()
         self.timeStartModeling = time.time()
         self.cycleThroughPoints(modelPoints=modelPoints,
                                 retryCounter=retryCounter,
                                 runType=runType,
                                 processData=self.processModelData,
-                                progress=self.updateModelProgress)
+                                progress=self.updateModelProgress,
+                                keepImages=keepImages)
         return True
 
     def loadProgramModel(self):

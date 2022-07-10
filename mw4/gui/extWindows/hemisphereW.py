@@ -541,10 +541,12 @@ class HemisphereWindow(MWidget, EditHorizon):
                 active = act[i]
                 colActive = self.M_GREEN if active else self.M_YELLOW
                 color = self.M_PINK if isEdit else colActive
+                symbol = 'o' if active else 'x'
 
                 spot = item.scatter.points()[i]
                 spot.setPen(pg.mkPen(color=color, width=1.5))
                 spot.setBrush(pg.mkBrush(color=color + '40'))
+                spot.setSymbol(symbol)
         return True
 
     def drawModelText(self):

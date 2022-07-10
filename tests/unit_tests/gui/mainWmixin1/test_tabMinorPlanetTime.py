@@ -88,6 +88,11 @@ def test_setupMinorPlanetSourceURLsDropDown(function):
     assert suc
 
 
+def test_setupIERSSourceURLsDropDown(function):
+    suc = function.setupIERSSourceURLsDropDown()
+    assert suc
+
+
 def test_filterMinorPlanetNamesList(function):
     function.ui.filterMinorPlanet.setText('test')
     function.ui.listMinorPlanetNames.clear()

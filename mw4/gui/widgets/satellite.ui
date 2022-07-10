@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>1600</width>
-    <height>1230</height>
+    <height>600</height>
    </size>
   </property>
   <property name="sizeIncrement">

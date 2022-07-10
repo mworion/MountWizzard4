@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -17474,7 +17474,7 @@ Next point in time when satellite settles.</string>
        <x>410</x>
        <y>15</y>
        <width>371</width>
-       <height>96</height>
+       <height>136</height>
       </rect>
      </property>
      <property name="title">
@@ -17513,6 +17513,45 @@ Next point in time when satellite settles.</string>
       </property>
       <property name="text">
        <string>Program earth rotation data to mount</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="iersSource">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>100</y>
+        <width>271</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the minor planets database from where the minor planet list should be loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_296">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>81</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Source URL:</string>
       </property>
      </widget>
     </widget>
@@ -27747,7 +27786,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="refractionConnected">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -27791,7 +27830,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="domeConnected">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -27879,7 +27918,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="cameraConnected">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -28011,7 +28050,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="plateSolveConnected">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -28114,7 +28153,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QPushButton" name="mountConnected">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>

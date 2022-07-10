@@ -49,8 +49,9 @@ class MinorPlanetTime:
             'Asteroids Unusual e>0.5 or q>6 au': 'unusual_extended.json.gz',
         }
 
-        self.timeSourceURLs = {
-            'FTP IERS': 'ftp://cddis.nasa.gov/products/iers',
+        self.iersSourceURLs = {
+            'Datacenter from IERS': 'https://datacenter.iers.org/data/8/',
+            'Maia from usno.navy.mil': 'https://maia.usno.navy.mil/ser7',
         }
 
         self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetsSingle)
@@ -73,12 +74,12 @@ class MinorPlanetTime:
         config = self.app.config['mainW']
         self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
         self.setupMinorPlanetSourceURLsDropDown()
+        self.setupIERSSourceURLsDropDown()
+        self.ui.iersSource.setCurrentIndex(config.get('iersSource', 0))
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
-
         elif self.app.automation.installPath:
             self.installPath = self.app.automation.installPath
-
         else:
             self.installPath = self.app.mwGlob['dataDir']
         return True
@@ -89,6 +90,7 @@ class MinorPlanetTime:
         """
         config = self.app.config['mainW']
         config['filterMinorPlanet'] = self.ui.filterMinorPlanet.text()
+        config['iersSource'] = self.ui.iersSource.currentIndex()
         return True
 
     def setupMinorPlanetSourceURLsDropDown(self):
@@ -101,8 +103,22 @@ class MinorPlanetTime:
         """
         self.ui.minorPlanetSource.clear()
         self.ui.minorPlanetSource.setView(QListView())
-        for name in self.minorPlanetSourceURLs.keys():
+        for name in self.minorPlanetSourceURLs:
             self.ui.minorPlanetSource.addItem(name)
+        return True
+
+    def setupIERSSourceURLsDropDown(self):
+        """
+        setupMinorPlanetSourceURLsDropDown handles the dropdown list for the
+        satellite data online sources. therefore we add the necessary entries to
+        populate the list.
+
+        :return: success for test
+        """
+        self.ui.iersSource.clear()
+        self.ui.iersSource.setView(QListView())
+        for name in self.iersSourceURLs:
+            self.ui.iersSource.addItem(name)
         return True
 
     def filterMinorPlanetNamesList(self):
@@ -276,7 +292,6 @@ class MinorPlanetTime:
         source = 'finals2000A.all'
         url = 'https://datacenter.iers.org/data/9/' + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
-
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)
 

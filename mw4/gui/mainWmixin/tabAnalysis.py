@@ -21,7 +21,7 @@
 # local import
 
 
-class Analyse(object):
+class Analysis(object):
     """
     """
 

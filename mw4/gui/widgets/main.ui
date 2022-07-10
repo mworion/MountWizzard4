@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -11684,11 +11684,11 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <double>1.000000000000000</double>
         </property>
        </widget>
-       <widget class="QCheckBox" name="keepImages">
+       <widget class="QCheckBox" name="keepModelImages">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>345</y>
+          <y>325</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -12418,7 +12418,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>320</y>
+          <y>300</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -12435,6 +12435,35 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string>Use fast image download for modeling (if present)</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="keepAnalyseImages">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>350</y>
+          <width>231</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Checked if you would like to keep the images of modeling session</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Keep all images of analysis run</string>
         </property>
         <property name="checked">
          <bool>false</bool>

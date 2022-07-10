@@ -453,6 +453,8 @@ def test_processData_1(function):
         return
 
     function.processDataCB = test
+    function.ui.parkMountAfterModel.setChecked(True)
+    function.ui.keepImages.setChecked(False)
     with mock.patch.object(function,
                            'collectingRunOutput',
                            return_value=[]):
@@ -463,6 +465,27 @@ def test_processData_1(function):
                 with mock.patch.object(function.app.mount.obsSite,
                                        'park',
                                        return_value=False):
+                    suc = function.processData()
+                    assert suc
+
+
+def test_processData_2(function):
+    def test(a):
+        return
+
+    function.processDataCB = test
+    function.ui.parkMountAfterModel.setChecked(True)
+    function.ui.keepImages.setChecked(False)
+    with mock.patch.object(function,
+                           'collectingRunOutput',
+                           return_value=[]):
+        with mock.patch.object(function,
+                               'restoreSignalsRunDefault'):
+            with mock.patch.object(function,
+                                   'clearQueues'):
+                with mock.patch.object(function.app.mount.obsSite,
+                                       'park',
+                                       return_value=True):
                     suc = function.processData()
                     assert suc
 

@@ -56,7 +56,7 @@ from gui.mainWmixin.tabSatTrack import SatTrack
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools import Tools
-from gui.mainWmixin.tabAnalyse import Analyse
+from gui.mainWmixin.tabAnalysis import Analysis
 from gui.mainWmixin.tabPower import Power
 from gui.mainWmixin.tabSettDevice import SettDevice
 from gui.mainWmixin.tabSettMount import SettMount
@@ -84,7 +84,7 @@ class MainWindow(
     Relay,
     Power,
     Tools,
-    Analyse,
+    Analysis,
     SettDevice,
     SettMount,
     SettImaging,

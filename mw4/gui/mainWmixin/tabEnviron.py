@@ -244,18 +244,15 @@ class Environ:
         """
         if self.refractionSource == 'directWeather':
             return False
-
         if not self.deviceStat['mount']:
             return False
 
         temp, press = self.movingAverageRefractionParameters()
         if temp is None or press is None:
             return False
-
         if self.sender() != self.ui.setRefractionManual:
             if self.ui.refracNone.isChecked():
                 return False
-
             if self.ui.refracNoTrack.isChecked():
                 if self.app.mount.obsSite.status == 0:
                     return False

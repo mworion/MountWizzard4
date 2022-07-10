@@ -11223,7 +11223,7 @@ class Ui_MainWindow(object):
         self.plateSolveText.setToolTip(_translate("MainWindow", "<html><head/><body><p>Status feedback from solver source</p></body></html>"))
         self.statusText.setToolTip(_translate("MainWindow", "Status feedback from mount "))
         self.statusText.setText(_translate("MainWindow", "-"))
-        self.refractionConnected.setToolTip(_translate("MainWindow", "<html><head/><body><p>Status of environment: </p><p>Red: Error</p><p>Gray: No Configured</p><p>Green: Connected</p></body></html>"))
+        self.refractionConnected.setToolTip(_translate("MainWindow", "<html><head/><body><p>Status of environment: </p><p>Red: Not effective refraction working</p><p>Gray: No Configured</p><p>Green: Connected, source define and updates are on</p></body></html>"))
         self.refractionConnected.setText(_translate("MainWindow", "Refraction"))
         self.domeConnected.setToolTip(_translate("MainWindow", "<html><head/><body><p>Status of dome: </p><p>Red: Error</p><p>Gray: No Configured</p><p>Green: Connected</p></body></html>"))
         self.domeConnected.setText(_translate("MainWindow", "Dome"))

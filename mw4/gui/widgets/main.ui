@@ -27771,7 +27771,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of environment: &lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of environment: &lt;/p&gt;&lt;p&gt;Red: Not effective refraction working&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;p&gt;Green: Connected, source define and updates are on&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>Refraction</string>

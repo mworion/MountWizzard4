@@ -106,8 +106,13 @@ def test_colorChange(function):
         assert suc
 
 
-def test_operationMode(function):
-    suc = function.operationMode(True)
+def test_operationMode_1(function):
+    suc = function.operationMode(0)
+    assert suc
+
+
+def test_operationMode_2(function):
+    suc = function.operationMode(1)
     assert suc
 
 

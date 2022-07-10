@@ -30,12 +30,14 @@ releaseNotes = """
 - add: model points: set dither on celestial paths
 - add: model points: generate from actual used mount model
 - add: model points: existing model files could be loaded
+- add: polar align: adding hint how to use the knobs measures right
 - add: plate solve: new watney astrometry solver for all platforms
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
 - add: hemisphere: show 2d contour error curve from actual model
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
+- add: MPC / IERS: adding alternative server
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: image: photometry functions (aberration, roundness, etc.)

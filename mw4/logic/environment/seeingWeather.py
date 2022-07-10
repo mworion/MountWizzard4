@@ -131,7 +131,7 @@ class SeeingWeather():
             self.log.critical(f'[{url}] general exception: [{e}]')
             return False
         if data.status_code != 200:
-            self.log.warning(f'[{url}] status is not 200')
+            self.log.warning(f'[{url}] status is {data.status_code}')
             return False
 
         data = data.json()
@@ -188,7 +188,7 @@ class SeeingWeather():
         """
         if not self.enabled:
             return False
-        if not self.apiKey:
+        if not self.apiKey or not self.b:
             return False
 
         if not self.online and self.running:

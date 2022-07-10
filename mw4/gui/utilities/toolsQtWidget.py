@@ -270,7 +270,7 @@ class MWidget(QWidget, Styles):
 
     def wIcon(self, gui=None, name=''):
         """
-        widget icon adds an icon to a gui element like an button.
+        widget icon adds an icon to a gui element like a button.
 
         :param      gui:        gui element, which will be expanded by an icon
         :param      name:       icon to be added
@@ -281,7 +281,7 @@ class MWidget(QWidget, Styles):
         if not name:
             return False
 
-        icon = self.svg2icon(f':/icon/{name}.svg', self.M_BLUE)
+        icon = self.svg2icon(f':/icon/{name}.svg', self.M_WHITE)
         gui.setIcon(icon)
         gui.setIconSize(QSize(16, 16))
         gui.setProperty('alignLeft', True)
@@ -289,26 +289,11 @@ class MWidget(QWidget, Styles):
         gui.style().polish(gui)
         return True
 
-    @staticmethod
-    def changeIconColor(widget, color):
-        """
-        :param widget:
-        :param color:
-        :return:
-        """
-        icon = widget.icon()
-        pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)))
-        mask = pixmap.createMaskFromColor(QColor('transparent'), Qt.MaskInColor)
-        pixmap.fill(QColor(color))
-        pixmap.setMask(mask)
-        widget.setIcon(QIcon(pixmap))
-        return True
-
     def initUI(self):
         """
-        init_UI makes the basic initialisation of the GUI. is sets the window
+        init_UI makes the basic initialisation of the GUI. it sets the window
         flags and sets the handling of the window. is as well fixes the windows
-        size (unless a windows will be scalable later on. in addition the
+        size, unless a windows will be scalable later on. in addition, the
         appropriate style sheet for mac and non mac will be selected and used.
 
         :return:    true for test purpose
@@ -318,7 +303,8 @@ class MWidget(QWidget, Styles):
         self.setWindowIcon(QIcon(':/mw4.ico'))
         return True
 
-    def changeStyleDynamic(self, widget=None, widgetProperty=None, value=None):
+    @staticmethod
+    def changeStyleDynamic(widget=None, widgetProperty=None, value=None):
         """
         changeStyleDynamic changes the stylesheet of a given ui element and
         makes it visible. therefore the element has to be unpolished and
@@ -327,7 +313,7 @@ class MWidget(QWidget, Styles):
         :param      widget: widget element, where the stylesheet has to
                             be changed
         :param      widgetProperty: stylesheet attribute which has to be
-                                    changes
+                                    changed
         :param      value:  new value of the attribute
         :return:    true for test purpose
         """
@@ -339,12 +325,6 @@ class MWidget(QWidget, Styles):
             return False
         if widget.property(widgetProperty) == value:
             return True
-
-        if isinstance(widget, QPushButton):
-            if widgetProperty == 'running' and value:
-                self.changeIconColor(widget, self.M_WHITE)
-            elif widgetProperty == 'running' and not value:
-                self.changeIconColor(widget, self.M_BLUE)
 
         widget.style().unpolish(widget)
         widget.setProperty(widgetProperty, value)

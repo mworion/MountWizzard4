@@ -44,7 +44,7 @@ class Styles:
             'M_RED1': ['#902020', '#802020', '#A00000', ],
             'M_RED2': ['#701818', '#802020', '#E00000', ],
             'M_YELLOW': ['#D0D000', '#D0D000', '#606000', ],
-            'M_YELLOW1': ['#909000', '#808000', '#90900', ],
+            'M_YELLOW1': ['#909000', '#808000', '#909000', ],
             'M_YELLOW2': ['#707000', '#A0A000', '#C0C000', ],
             'M_GREEN': ['#00C000', '#00C000', '#006000', ],
             'M_GREEN1': ['#008000', '#008000', '#009000', ],
@@ -484,14 +484,6 @@ class Styles:
             border-color: $M_BLUE$;
             background-color: $M_BLUE2$;
         }
-        QPushButton[pause=true] {
-            border-color: $M_YELLOW$;
-            background-color: $M_YELLOW2$;
-        }
-        QPushButton[cancel=true] {
-            border-color: $M_RED$;
-            background-color: $M_RED2$;
-        }
         QPushButton:disabled {
             background-color: $M_BACK$;
             color: $M_GREY$;
@@ -518,6 +510,14 @@ class Styles:
             background-color: $M_GREEN2$;
             border-color: $M_GREEN$;
             color: $M_WHITE$;
+        }
+        QPushButton:disabled {
+            background-color: $M_BACK$;
+            color: $M_GREY$;
+            border-color: $M_GREY1$;
+            border-width: 1px;
+            border-style: outset;
+            border-radius: 2px;
         }
         QPushButton[stop=true] {
             color: $M_RED2$;

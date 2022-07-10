@@ -254,39 +254,28 @@ def test_wIcon_1(function):
 
 
 def test_wIcon_2(function):
-    suc = function.wIcon()
-    assert not suc
-
-
-def test_wIcon_3(function):
     ui = QPushButton()
     suc = function.wIcon(gui=ui)
     assert not suc
 
 
-def test_wIcon_4(function):
+def test_wIcon_3(function):
     ui = QPushButton()
     suc = function.wIcon(gui=ui, name='load')
     assert suc
 
 
-def test_changeIconColor_1(function):
-    ui = QPushButton()
-    suc = function.changeIconColor(ui, 'black')
-    assert suc
-
-
 def test_renderStyle_1(function):
-    input = '12345$M_BLUE$12345'
+    inp = '12345$M_BLUE$12345'
     function.colorSet = 0
-    val = function.renderStyle(input).strip(' ')
+    val = function.renderStyle(inp).strip(' ')
     assert val == '12345#2090C012345\n'
 
 
 def test_renderStyle_2(function):
-    input = '12345$M_TEST$12345'
+    inp = '12345$M_TEST$12345'
     function.colorSet = 0
-    val = function.renderStyle(input).strip(' ')
+    val = function.renderStyle(inp).strip(' ')
     assert val == '12345$M_TEST$12345\n'
 
 
@@ -314,7 +303,7 @@ def test_changeStyleDynamic_3(function):
 
 def test_changeStyleDynamic_4(function):
     ui = QPushButton()
-    suc = function.changeStyleDynamic(ui, 'color', 'red')
+    suc = function.changeStyleDynamic(ui, 'color', '')
     assert suc
 
 
@@ -328,6 +317,7 @@ def test_changeStyleDynamic_5(function):
 def test_changeStyleDynamic_6(function):
     ui = QPushButton()
     suc = function.changeStyleDynamic(ui, 'running', True)
+    assert suc
     suc = function.changeStyleDynamic(ui, 'running', False)
     assert suc
 

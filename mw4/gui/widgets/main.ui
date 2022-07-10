@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -7652,7 +7652,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -9383,6 +9383,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         <property name="text">
          <string>Cancel</string>
         </property>
+        <property name="color" stdset="0">
+         <string>red</string>
+        </property>
        </widget>
        <widget class="QLabel" name="label_35">
         <property name="geometry">
@@ -9640,6 +9643,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string>Pause</string>
+        </property>
+        <property name="color" stdset="0">
+         <string>yellow</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="parkMountAfterModel">
@@ -10842,6 +10848,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
        </widget>
        <widget class="QPushButton" name="cancelOptimize">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -10855,6 +10864,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="text">
          <string>Cancel</string>
+        </property>
+        <property name="color" stdset="0">
+         <string>red</string>
         </property>
        </widget>
        <widget class="QPushButton" name="runOptimize">

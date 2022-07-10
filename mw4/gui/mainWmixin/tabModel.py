@@ -193,8 +193,6 @@ class Model:
         :return:
         """
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
-        self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
-        self.changeStyleDynamic(self.ui.cancelModel, 'pause', False)
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
@@ -208,8 +206,6 @@ class Model:
         :return: true for test purpose
         """
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
-        self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
-        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.ui.runModel.setEnabled(True)
         self.ui.cancelModel.setEnabled(False)
         self.ui.endModel.setEnabled(False)

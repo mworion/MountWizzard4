@@ -198,9 +198,6 @@ class Model:
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
-        self.ui.plateSolveSync.setEnabled(False)
-        self.ui.batchModel.setEnabled(False)
-        self.app.operationRunning.emit(1)
         return True
 
     def restoreModelDefaultContextAndGuiStatus(self):
@@ -217,14 +214,11 @@ class Model:
         self.ui.cancelModel.setEnabled(False)
         self.ui.endModel.setEnabled(False)
         self.ui.pauseModel.setEnabled(False)
-        self.ui.batchModel.setEnabled(True)
-        self.ui.plateSolveSync.setEnabled(True)
         self.ui.timeEstimated.setText('00:00:00')
         self.ui.timeElapsed.setText('00:00:00')
         self.ui.timeFinished.setText('00:00:00')
         self.ui.numberPoints.setText('-')
         self.ui.modelProgress.setValue(0)
-        self.app.operationRunning.emit(0)
         return True
 
     def pauseBuild(self):
@@ -377,6 +371,7 @@ class Model:
                       f'Modeling finished [{self.modelName}]')
         self.playSound('ModelingFinished')
         self.renewHemisphereView()
+        self.app.operationRunning.emit(0)
 
         return True
 
@@ -501,9 +496,12 @@ class Model:
 
         :return: true for test purpose
         """
+        self.app.operationRunning.emit(1)
         if not self.checkModelRunConditions():
+            self.app.operationRunning.emit(0)
             return False
         if not self.clearAlignAndBackup():
+            self.app.operationRunning.emit(0)
             return False
 
         self.setupModelFilenamesAndDirectories()
@@ -511,6 +509,7 @@ class Model:
         if not modelPoints:
             self.msg.emit(2, 'Model', 'Run error',
                           'Modeling cancelled, no valid points')
+            self.app.operationRunning.emit(0)
             return False
 
         self.setupModelRunContextAndGuiStatus()
@@ -545,7 +544,10 @@ class Model:
             return False
         if isinstance(loadFilePath, str):
             loadFilePath = [loadFilePath]
+
+        self.app.operationRunning.emit(3)
         if not self.clearAlignAndBackup():
+            self.app.operationRunning.emit(0)
             return False
 
         self.msg.emit(1, 'Model', 'Run',
@@ -561,6 +563,7 @@ class Model:
         if len(modelJSON) > 99:
             self.msg.emit(2, 'Model', 'Run error',
                           'Model(s) exceed(s) limit of 99 points')
+            self.app.operationRunning.emit(0)
             return False
 
         self.msg.emit(0, 'Model', 'Run',
@@ -573,17 +576,8 @@ class Model:
         else:
             self.msg.emit(2, 'Model', 'Run error',
                           'Model programming error')
-
+        self.app.operationRunning.emit(0)
         return suc
-
-    def syncMountAndClearUp(self):
-        """
-        :return:
-        """
-        self.ui.runModel.setEnabled(True)
-        self.ui.batchModel.setEnabled(True)
-        self.ui.plateSolveSync.setEnabled(True)
-        return True
 
     def solveDone(self, result=None):
         """
@@ -591,10 +585,9 @@ class Model:
         :return: success
         """
         self.app.plateSolve.signals.done.disconnect(self.solveDone)
-
         if not result:
-            self.msg.emit(2, 'Model', 'Solving error',
-                          'Result missing')
+            self.msg.emit(2, 'Model', 'Solving error', 'Result missing')
+            self.app.operationRunning.emit(0)
             return False
 
         if result['success']:
@@ -612,8 +605,8 @@ class Model:
             self.msg.emit(0, '', '', text)
 
         else:
-            self.msg.emit(2, 'Model', 'Solve error',
-                          f'{result.get("message")}')
+            self.msg.emit(2, 'Model', 'Solve error', f'{result.get("message")}')
+            self.app.operationRunning.emit(0)
             return False
 
         self.app.showImage.emit(result['solvedPath'])
@@ -631,6 +624,7 @@ class Model:
         else:
             t = 'No sync, match failed because coordinates to far off for model'
             self.msg.emit(2, 'Model', 'Run error', t)
+        self.app.operationRunning.emit(0)
         return suc
 
     def solveImage(self, imagePath=''):
@@ -638,9 +632,8 @@ class Model:
         :param imagePath:
         :return:
         """
-        if not imagePath:
-            return False
         if not os.path.isfile(imagePath):
+            self.app.operationRunning.emit(0)
             return False
 
         self.app.plateSolve.signals.done.connect(self.solveDone)
@@ -715,8 +708,6 @@ class Model:
                           'No valid configuration for plate solver')
             return False
 
-        self.ui.runModel.setEnabled(False)
-        self.ui.batchModel.setEnabled(False)
-        self.ui.plateSolveSync.setEnabled(False)
+        self.app.operationRunning.emit(2)
         self.exposeImage()
         return True

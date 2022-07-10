@@ -114,7 +114,7 @@ def test_showImagesPhotometry(qtbot, qapp):
     imageW.move(900, 100)
 
     qtbot.waitExposed(imageW, timeout=1000)
-    imageW.ui.enablePhotometry.setChecked(True)
+    imageW.ui.photometryGroup.setChecked(True)
 
     for i in range(50):
         app.showImage.emit(f'tests/workDir/image/star{i%3 + 1}.fits')

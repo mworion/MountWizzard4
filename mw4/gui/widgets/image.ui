@@ -820,6 +820,9 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
+       <property name="elideMode">
+        <enum>Qt::ElideNone</enum>
+       </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
          <string>Image</string>

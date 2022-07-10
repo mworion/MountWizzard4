@@ -810,11 +810,6 @@ def test_loadProgramModel_5(function):
         assert not suc
 
 
-def test_syncMountAndClearUp(function):
-    suc = function.syncMountAndClearUp()
-    assert suc
-
-
 def test_solveDone_1(function):
     function.app.plateSolve.signals.done.connect(function.solveDone)
     suc = function.solveDone()

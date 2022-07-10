@@ -28,6 +28,7 @@ import os
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.tabAnalysis import Analysis
+import gui.mainWmixin.tabAnalysis
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
@@ -68,3 +69,48 @@ def test_initConfig_1(function):
 def test_storeConfig_1(function):
     suc = function.storeConfig()
     assert suc
+
+
+def test_setAnalysisOperationMode_1(function):
+    suc = function.setAnalysisOperationMode(0)
+    assert suc
+
+
+def test_setAnalysisOperationMode_2(function):
+    suc = function.setAnalysisOperationMode(4)
+    assert suc
+
+
+def test_setAnalysisOperationMode_3(function):
+    suc = function.setAnalysisOperationMode(5)
+    assert suc
+
+
+def test_setAnalysisOperationMode_4(function):
+    suc = function.setAnalysisOperationMode(6)
+    assert suc
+
+
+def test_runFlexure_1(function):
+    def qWaitBreak(a):
+        function.analysisRunning = False
+
+    gui.mainWmixin.tabAnalysis.sleepAndEvents = qWaitBreak
+    suc = function.runFlexure()
+    assert suc
+
+
+def test_runHysteresis_1(function):
+    def qWaitBreak(a):
+        function.analysisRunning = False
+
+    gui.mainWmixin.tabAnalysis.sleepAndEvents = qWaitBreak
+    suc = function.runHysteresis()
+    assert suc
+
+
+def test_cancelAnalysis(function):
+    function.analysisRunning = True
+    suc = function.cancelAnalysis()
+    assert suc
+    assert not function.analysisRunning

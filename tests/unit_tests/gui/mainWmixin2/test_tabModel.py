@@ -75,6 +75,31 @@ def test_storeConfig_1(function):
     assert suc
 
 
+def test_setModelOperationMode_1(function):
+    suc = function.setModelOperationMode(1)
+    assert suc
+
+
+def test_setModelOperationMode_2(function):
+    suc = function.setModelOperationMode(2)
+    assert suc
+
+
+def test_setModelOperationMode_3(function):
+    suc = function.setModelOperationMode(3)
+    assert suc
+
+
+def test_setModelOperationMode_4(function):
+    suc = function.setModelOperationMode(0)
+    assert suc
+
+
+def test_setModelOperationMode_5(function):
+    suc = function.setModelOperationMode(4)
+    assert suc
+
+
 def test_updateAlignGui_numberStars(function):
     function.updateAlignGUI(function.app.mount.model)
     assert ' 1' == function.ui.numberStars.text()

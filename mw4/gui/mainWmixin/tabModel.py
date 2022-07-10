@@ -50,6 +50,7 @@ class Model:
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
         self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)
+        self.app.operationRunning.connect(self.setModelOperationMode)
 
     def initConfig(self):
         """
@@ -76,6 +77,31 @@ class Model:
         config['progressiveTiming'] = self.ui.progressiveTiming.isChecked()
         config['normalTiming'] = self.ui.normalTiming.isChecked()
         config['conservativeTiming'] = self.ui.conservativeTiming.isChecked()
+        return True
+
+    def setModelOperationMode(self, status):
+        """
+        :param status:
+        :return:
+        """
+        if status == 1:
+            self.ui.platesolveSyncGroup.setEnabled(False)
+            self.ui.dataModelGroup.setEnabled(False)
+        elif status == 2:
+            self.ui.runModelGroup.setEnabled(False)
+            self.ui.dataModelGroup.setEnabled(False)
+        elif status == 3:
+            self.ui.runModelGroup.setEnabled(False)
+            self.ui.platesolveSyncGroup.setEnabled(False)
+        elif status == 0:
+            self.ui.runModelGroup.setEnabled(True)
+            self.ui.platesolveSyncGroup.setEnabled(True)
+            self.ui.dataModelGroup.setEnabled(True)
+        else:
+            self.ui.runModelGroup.setEnabled(False)
+            self.ui.platesolveSyncGroup.setEnabled(False)
+            self.ui.dataModelGroup.setEnabled(False)
+
         return True
 
     def updateAlignGUI(self, model):
@@ -173,8 +199,6 @@ class Model:
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(False)
-        self.ui.runFlexure.setEnabled(False)
-        self.ui.runHysteresis.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
         self.app.operationRunning.emit(1)
         return True
@@ -195,8 +219,6 @@ class Model:
         self.ui.pauseModel.setEnabled(False)
         self.ui.batchModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(True)
-        self.ui.runFlexure.setEnabled(True)
-        self.ui.runHysteresis.setEnabled(True)
         self.ui.timeEstimated.setText('00:00:00')
         self.ui.timeElapsed.setText('00:00:00')
         self.ui.timeFinished.setText('00:00:00')
@@ -561,8 +583,6 @@ class Model:
         self.ui.runModel.setEnabled(True)
         self.ui.batchModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(True)
-        self.ui.runFlexure.setEnabled(True)
-        self.ui.runHysteresis.setEnabled(True)
         return True
 
     def solveDone(self, result=None):
@@ -698,7 +718,5 @@ class Model:
         self.ui.runModel.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
         self.ui.plateSolveSync.setEnabled(False)
-        self.ui.runFlexure.setEnabled(False)
-        self.ui.runHysteresis.setEnabled(False)
         self.exposeImage()
         return True

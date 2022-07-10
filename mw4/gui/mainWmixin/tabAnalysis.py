@@ -19,6 +19,7 @@
 # external packages
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class Analysis(object):
@@ -31,6 +32,11 @@ class Analysis(object):
         self.app.operationRunning.emit(0)
         self.imageDirAnalyse = ''
         self.analyseName = ''
+        self.analysisRunning = False
+        self.ui.runFlexure.clicked.connect(self.runFlexure)
+        self.ui.runHysteresis.clicked.connect(self.runHysteresis)
+        self.ui.cancelAnalysis.clicked.connect(self.cancelAnalysis)
+        self.app.operationRunning.connect(self.setAnalysisOperationMode)
 
     def initConfig(self):
         """
@@ -64,4 +70,59 @@ class Analysis(object):
         config['flexureTime'] = self.ui.flexureTime.value()
         config['hysteresisMinAlt'] = self.ui.hysteresisMinAlt.value()
         config['hysteresisRuns'] = self.ui.hysteresisRuns.value()
+        return True
+
+    def setAnalysisOperationMode(self, status):
+        """
+        :param status:
+        :return:
+        """
+        if status == 4:
+            self.ui.hysteresisGroup.setEnabled(False)
+            self.ui.runFlexure.setEnabled(False)
+            self.ui.cancelAnalysis.setEnabled(True)
+            self.ui.runFlexure.setEnabled(False)
+        elif status == 5:
+            self.ui.runHysteresis.setEnabled(False)
+            self.ui.cancelAnalysis.setEnabled(True)
+            self.ui.flexureGroup.setEnabled(False)
+        elif status == 0:
+            self.ui.runFlexure.setEnabled(True)
+            self.ui.runHysteresis.setEnabled(True)
+            self.ui.hysteresisGroup.setEnabled(True)
+            self.ui.flexureGroup.setEnabled(True)
+            self.ui.cancelAnalysis.setEnabled(False)
+        else:
+            self.ui.hysteresisGroup.setEnabled(False)
+            self.ui.flexureGroup.setEnabled(False)
+            self.ui.cancelAnalysis.setEnabled(False)
+        return True
+
+    def runFlexure(self):
+        """
+        :return:
+        """
+        self.app.operationRunning.emit(4)
+        self.analysisRunning = True
+        while self.analysisRunning:
+            sleepAndEvents(100)
+        self.app.operationRunning.emit(0)
+        return True
+
+    def runHysteresis(self):
+        """
+        :return:
+        """
+        self.app.operationRunning.emit(5)
+        self.analysisRunning = True
+        while self.analysisRunning:
+            sleepAndEvents(100)
+        self.app.operationRunning.emit(0)
+        return True
+
+    def cancelAnalysis(self):
+        """
+        :return:
+        """
+        self.analysisRunning = False
         return True

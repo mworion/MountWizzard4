@@ -225,8 +225,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param status:
         :return:
         """
-        isEnabled = status == 0
-        self.ui.groupImageActions.setEnabled(isEnabled)
+        if status == 0:
+            self.ui.groupImageActions.setEnabled(True)
+        elif status != 6:
+            self.ui.groupImageActions.setEnabled(False)
         return True
 
     def updateWindowsStats(self):
@@ -812,6 +814,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
+        self.app.operationRunning.emit(0)
         return True
 
     def exposeImage(self):
@@ -822,6 +825,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.binning = int(self.app.camera.binning)
         self.deviceStat['expose'] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
+        self.app.operationRunning.emit(6)
         self.exposeRaw()
         return True
 
@@ -847,6 +851,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.binning = int(self.app.camera.binningN)
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
+        self.app.operationRunning.emit(6)
         self.exposeRaw()
         return True
 
@@ -865,6 +870,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.deviceStat['expose'] = False
         self.deviceStat['exposeN'] = False
         self.msg.emit(2, 'Image', 'Expose', 'Exposing aborted')
+        self.app.operationRunning.emit(0)
         return True
 
     def solveDone(self, result=None):
@@ -878,10 +884,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not result:
             self.msg.emit(2, 'Image', 'Solving',
                           'Solving error, result missing')
+            self.app.operationRunning.emit(0)
             return False
         if not result['success']:
             self.msg.emit(2, 'Image', 'Solving error',
                           f'{result.get("message")}')
+            self.app.operationRunning.emit(0)
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
@@ -899,6 +907,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.ui.embedData.isChecked():
             self.showCurrent()
+        self.app.operationRunning.emit(0)
         return True
 
     def solveImage(self, imagePath=''):
@@ -913,6 +922,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         updateFits = self.ui.embedData.isChecked()
         self.app.plateSolve.signals.done.connect(self.solveDone)
+        self.app.operationRunning.emit(6)
         self.app.plateSolve.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
         self.deviceStat['solve'] = True
@@ -932,6 +942,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return: success
         """
         suc = self.app.plateSolve.abort()
+        self.app.operationRunning.emit(0)
         return suc
 
     def slewSelectedTargetWithDome(self, slewType='normal'):
@@ -990,10 +1001,12 @@ class ImageWindow(toolsQtWidget.MWidget):
         if not result:
             self.msg.emit(2, 'Image', 'Solve center error',
                           'Solving error, result missing')
+            self.app.operationRunning.emit(0)
             return False
         if not result['success']:
             self.msg.emit(2, 'Image', 'Solve center error',
                           f'{result.get("message")}')
+            self.app.operationRunning.emit(0)
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
@@ -1011,6 +1024,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         self.msg.emit(0, 'Image', 'Solved center', 'Centering now')
         suc = self.moveRaDecAbsolute(result['raJ2000S'], result['decJ2000S'])
+        self.app.operationRunning.emit(0)
         if not suc:
             self.msg.emit(2, 'Image', 'Solved center error',
                           'Centering aborted')
@@ -1027,6 +1041,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         self.app.plateSolve.signals.done.connect(self.solveCenterDone)
+        self.app.operationRunning.emit(6)
         self.app.plateSolve.solveThreading(fitsPath=self.imageFileName)
         self.deviceStat['solve'] = True
         self.msg.emit(0, 'Image', 'Solving center',

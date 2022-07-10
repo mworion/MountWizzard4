@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -9312,7 +9312,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_9">
+      <widget class="QGroupBox" name="platesolveSyncGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -9347,7 +9347,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_8">
+      <widget class="QGroupBox" name="runModelGroup">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -9885,7 +9885,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_7">
+      <widget class="QGroupBox" name="dataModelGroup">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -19614,14 +19614,14 @@ Next point in time when satellite settles.</string>
       <attribute name="title">
        <string>Analyse Flexure</string>
       </attribute>
-      <widget class="QPushButton" name="cancelAnalyse">
+      <widget class="QPushButton" name="cancelAnalysis">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>370</y>
+         <y>365</y>
          <width>366</width>
          <height>26</height>
         </rect>
@@ -19633,7 +19633,7 @@ Next point in time when satellite settles.</string>
         <string>Cancel Analyse Run</string>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_15">
+      <widget class="QGroupBox" name="flexureGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
@@ -20020,7 +20020,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_16">
+      <widget class="QGroupBox" name="hysteresisGroup">
        <property name="geometry">
         <rect>
          <x>5</x>

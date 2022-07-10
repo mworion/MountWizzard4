@@ -400,8 +400,8 @@ class MainWindow(
 
         # analyse
         self.wIcon(self.ui.runFlexure, 'start')
-        self.wIcon(self.ui.runHysteresis, 'check-circle')
-        self.wIcon(self.ui.cancelAnalyse, 'cross-circle')
+        self.wIcon(self.ui.runHysteresis, 'start')
+        self.wIcon(self.ui.cancelAnalysis, 'cross-circle')
 
         # tools
         self.wIcon(self.ui.renameStart, 'start')
@@ -571,16 +571,12 @@ class MainWindow(
         if isModelingReady and self.app.data.buildP and not isPause:
             self.ui.runModel.setEnabled(True)
             self.ui.plateSolveSync.setEnabled(True)
-            self.ui.runFlexure.setEnabled(True)
-            self.ui.runHysteresis.setEnabled(True)
 
         elif isModelingReady and not isPause:
             self.ui.plateSolveSync.setEnabled(True)
         else:
             self.ui.runModel.setEnabled(False)
             self.ui.plateSolveSync.setEnabled(False)
-            self.ui.runFlexure.setEnabled(False)
-            self.ui.runHysteresis.setEnabled(False)
 
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
@@ -629,9 +625,7 @@ class MainWindow(
             stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
             smartTabs[key]['tab'].setTabVisible(tabIndex, stat)
             actChanged = tabStatus != stat
-            if actChanged and stat:
-                smartTabs[key]['tab'].setCurrentIndex(tabIndex)
-            tabChanged = tabChanged or (actChanged)
+            tabChanged = tabChanged or actChanged
 
         # redraw tabs only when a change occurred. this is necessary, because
         # enable and disable does not remove tabs

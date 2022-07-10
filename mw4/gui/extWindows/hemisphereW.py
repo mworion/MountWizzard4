@@ -214,14 +214,15 @@ class HemisphereWindow(MWidget, EditHorizon):
         self.colorChangeHorizon()
         return True
 
-    def enableOperationModeChange(self, value):
+    def enableOperationModeChange(self, status):
         """
-        :param value:
+        :param status:
         :return:
         """
-        if value:
+        isRunning = status != 0
+        if isRunning:
             self.ui.normalModeHem.setChecked(True)
-        self.ui.operationModeGroup.setEnabled(not value)
+        self.ui.operationModeGroup.setEnabled(not isRunning)
         return True
 
     def setOperationModeHem(self):

@@ -176,7 +176,7 @@ class Model:
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
-        self.app.operationRunning.emit(True)
+        self.app.operationRunning.emit(1)
         return True
 
     def restoreModelDefaultContextAndGuiStatus(self):
@@ -202,7 +202,7 @@ class Model:
         self.ui.timeFinished.setText('00:00:00')
         self.ui.numberPoints.setText('-')
         self.ui.modelProgress.setValue(0)
-        self.app.operationRunning.emit(False)
+        self.app.operationRunning.emit(0)
         return True
 
     def pauseBuild(self):

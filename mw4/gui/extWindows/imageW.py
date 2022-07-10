@@ -225,7 +225,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param status:
         :return:
         """
-        self.ui.groupImageActions.setEnabled(not status)
+        isEnabled = status == 0
+        self.ui.groupImageActions.setEnabled(isEnabled)
         return True
 
     def updateWindowsStats(self):

@@ -28,7 +28,7 @@ class Analysis(object):
     def __init__(self):
         self.ui.hysteresisProgress.setValue(0)
         self.ui.flexureProgress.setValue(0)
-        self.app.operationRunning.emit(False)
+        self.app.operationRunning.emit(0)
         self.imageDirAnalyse = ''
         self.analyseName = ''
 

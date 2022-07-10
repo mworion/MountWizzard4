@@ -454,7 +454,7 @@ def test_processData_1(function):
 
     function.processDataCB = test
     function.ui.parkMountAfterModel.setChecked(True)
-    function.ui.self.runProgressCB.setChecked(False)
+    function.ui.keepModelImages.setChecked(False)
     with mock.patch.object(function,
                            'collectingRunOutput',
                            return_value=[]):
@@ -475,7 +475,7 @@ def test_processData_2(function):
 
     function.processDataCB = test
     function.ui.parkMountAfterModel.setChecked(True)
-    function.ui.self.runProgressCB.setChecked(False)
+    function.ui.keepModelImages.setChecked(False)
     with mock.patch.object(function,
                            'collectingRunOutput',
                            return_value=[]):

@@ -704,7 +704,8 @@ def test_modelBuild_4(function):
              retryCounter=None,
              runType=None,
              processData=None,
-             progress=None):
+             progress=None,
+             keepImages=None):
         return
 
     function.cycleThroughPoints = test

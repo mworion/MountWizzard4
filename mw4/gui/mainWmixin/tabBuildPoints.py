@@ -377,7 +377,7 @@ class BuildPoints:
 
         if ha is None or dec is None or location is None or lst is None:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                          'DSO Path cannot be generated')
+                          'DSO Path cannot be generated - mount off')
             return False
 
         if self.simbadRa and self.simbadDec:
@@ -396,7 +396,7 @@ class BuildPoints:
         if not suc:
             self.ui.numberDSOPoints.setEnabled(True)
             self.msg.emit(2, 'Model', 'Buildpoints',
-                          'DSO Path cannot be generated')
+                          'DSO Path cannot be generated - calc error')
             return False
 
         if self.ui.ditherBuildPoints.isChecked():

@@ -212,6 +212,7 @@ def test_pollSeeingData_3(function):
     function.online = False
     function.running = True
     function.apiKey = 'test'
+    function.b = 'test'
     suc = function.pollSeeingData()
     assert not suc
     assert not function.running
@@ -222,6 +223,7 @@ def test_pollSeeingData_4(function):
     function.online = True
     function.running = False
     function.apiKey = 'test'
+    function.b = 'test'
     with mock.patch.object(function,
                            'loadingFileNeeded',
                            return_value=False):
@@ -234,6 +236,7 @@ def test_pollSeeingData_5(function):
     function.online = True
     function.running = True
     function.apiKey = 'test'
+    function.b = 'test'
     with mock.patch.object(function,
                            'loadingFileNeeded',
                            return_value=True):

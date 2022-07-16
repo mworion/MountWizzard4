@@ -23,7 +23,7 @@ from dateutil.tz import tzlocal
 
 # external packages
 from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
-from PyQt5.QtWidgets import QTableWidgetItem, QPushButton
+from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
 from PyQt5.QtGui import QPainterPath, QTransform
 from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal

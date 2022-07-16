@@ -350,6 +350,7 @@ class Model:
         if len(runResult) < 3:
             self.msg.emit(2, 'Model', 'Run error',
                           f'{self.modelName} Not enough valid model points')
+            self.app.operationRunning.emit(0)
             return False
 
         self.msg.emit(0, 'Model', 'Run',
@@ -386,7 +387,7 @@ class Model:
 
         excludeDonePoints = self.ui.excludeDonePoints.isChecked()
         if len([x for x in self.app.data.buildP if x[2]]) < 3 and excludeDonePoints:
-            t = 'No modeling start because less than 3 points left over'
+            t = 'No modeling start because less than 3 points'
             self.msg.emit(2, 'Model', 'Run error', t)
             return False
 
@@ -446,7 +447,7 @@ class Model:
             self.app.operationRunning.emit(0)
             return False
 
-        prefix = 'a'
+        prefix = 'm'
         postfix = self.lastGenerator
         self.modelName, imgDir = self.setupFilenamesAndDirectories(
             prefix=prefix, postfix=postfix)

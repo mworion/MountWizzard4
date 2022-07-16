@@ -89,28 +89,3 @@ def test_setAnalysisOperationMode_3(function):
 def test_setAnalysisOperationMode_4(function):
     suc = function.setAnalysisOperationMode(6)
     assert suc
-
-
-def test_runFlexure_1(function):
-    def qWaitBreak(a):
-        function.analysisRunning = False
-
-    gui.mainWmixin.tabAnalysis.sleepAndEvents = qWaitBreak
-    suc = function.runFlexure()
-    assert suc
-
-
-def test_runHysteresis_1(function):
-    def qWaitBreak(a):
-        function.analysisRunning = False
-
-    gui.mainWmixin.tabAnalysis.sleepAndEvents = qWaitBreak
-    suc = function.runHysteresis()
-    assert suc
-
-
-def test_cancelAnalysis(function):
-    function.analysisRunning = True
-    suc = function.cancelAnalysis()
-    assert suc
-    assert not function.analysisRunning

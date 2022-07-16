@@ -201,11 +201,14 @@ class BasicRun:
             self.cancelRun()
             return False
 
-        while self.ui.pauseModel.property('pause'):
-            sleepAndEvents(100)
         self.log.info('Imaging started')
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
+        waitTime = 10 * mPoint.get('waitTime', 0)
+
+        while self.ui.pauseModel.property('pause') or waitTime > 0:
+            sleepAndEvents(100)
+            waitTime -= 1
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
         mPoint['decJNowM'] = self.app.mount.obsSite.decJNow

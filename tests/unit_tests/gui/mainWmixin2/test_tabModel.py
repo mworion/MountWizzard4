@@ -651,9 +651,6 @@ def test_modelBuild_2(function):
 
 
 def test_modelBuild_3(function):
-    def test():
-        return []
-
     function.lastGenerator = ''
     with mock.patch.object(function,
                            'checkModelRunConditions',

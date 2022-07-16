@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import time
-import os
 
 # external packages
 
@@ -115,6 +114,24 @@ class Analysis(object):
 
         return True
 
+    def setupFlexurePoints(self):
+        """
+        :return:
+        """
+        return []
+
+    def processAnalysisData(self):
+        """
+        :return:
+        """
+        return True
+
+    def updateAnalysisProgress(self):
+        """
+        :return:
+        """
+        return True
+
     def runFlexure(self):
         """
         :return:
@@ -127,7 +144,7 @@ class Analysis(object):
         self.analysisRunning = True
 
         prefix = 'a'
-        postfix = self.lastGenerator
+        postfix = 'flexure'
 
         self.analysisName, imgDir = self.setupFilenamesAndDirectories(
             prefix=prefix, postfix=postfix)
@@ -143,8 +160,8 @@ class Analysis(object):
         self.cycleThroughPoints(modelPoints=analysisPoints,
                                 retryCounter=0,
                                 runType=runType,
-                                processData=self.processModelData,
-                                progress=self.updateModelProgress,
+                                processData=self.processAnalysisData,
+                                progress=self.updateAnalysisProgress,
                                 imgDir=imgDir,
                                 keepImages=keepImages)
         self.app.operationRunning.emit(0)

@@ -15,11 +15,12 @@
 #
 ###########################################################
 # standard libraries
+import time
+import os
 
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class Analysis(object):
@@ -30,12 +31,13 @@ class Analysis(object):
         self.ui.hysteresisProgress.setValue(0)
         self.ui.flexureProgress.setValue(0)
         self.app.operationRunning.emit(0)
-        self.imageDirAnalyse = ''
-        self.analyseName = ''
+        self.imageDirAnalysis = ''
+        self.analysisName = ''
         self.analysisRunning = False
+        self.timeStartAnalysis = None
         self.ui.runFlexure.clicked.connect(self.runFlexure)
         self.ui.runHysteresis.clicked.connect(self.runHysteresis)
-        self.ui.cancelAnalysis.clicked.connect(self.cancelAnalysis)
+        self.ui.cancelAnalysis.clicked.connect(self.cancel)
         self.app.operationRunning.connect(self.setAnalysisOperationMode)
 
     def initConfig(self):
@@ -98,31 +100,79 @@ class Analysis(object):
             self.ui.cancelAnalysis.setEnabled(False)
         return True
 
+    def setupModelFilenamesAndDirectories(self):
+        """
+        :return:
+        """
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        self.analysisName = f'a-{nameTime}-{self.lastGenerator}'
+        self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.analysisName}'
+
+        if not os.path.isdir(self.imageDir):
+            os.mkdir(self.imageDir)
+
+        return True
+
+    def setupModelPointsAndContextData(self):
+        """
+        :return:
+        """
+        plateSolveApp = self.ui.plateSolveDevice.currentText()
+        exposureTime = self.ui.expTime.value()
+        binning = int(self.ui.binning.value())
+        subFrame = self.ui.subFrame.value()
+        fastReadout = self.ui.fastDownload.isChecked()
+        focalLength = self.ui.focalLength.value()
+        lenSequence = len(self.app.data.buildP)
+        framework = self.app.plateSolve.framework
+        solveTimeout = self.app.plateSolve.run[framework].timeout
+        searchRadius = self.app.plateSolve.run[framework].searchRadius
+        modelPoints = list()
+        for index, point in enumerate(self.app.data.buildP):
+            if self.ui.excludeDonePoints.isChecked() and not point[2]:
+                continue
+
+            m = dict()
+            imagePath = f'{self.imageDir}/image-{index + 1:03d}.fits'
+            m['imagePath'] = imagePath
+            m['exposureTime'] = exposureTime
+            m['binning'] = binning
+            m['subFrame'] = subFrame
+            m['fastReadout'] = fastReadout
+            m['lenSequence'] = lenSequence
+            m['countSequence'] = index + 1
+            m['pointNumber'] = index + 1
+            m['modelName'] = self.modelName
+            m['imagePath'] = imagePath
+            m['plateSolveApp'] = plateSolveApp
+            m['solveTimeout'] = solveTimeout
+            m['searchRadius'] = searchRadius
+            m['focalLength'] = focalLength
+            m['altitude'] = point[0]
+            m['azimuth'] = point[1]
+            modelPoints.append(m)
+        return modelPoints
+
     def runFlexure(self):
         """
         :return:
         """
         self.app.operationRunning.emit(4)
         self.analysisRunning = True
-        while self.analysisRunning:
-            sleepAndEvents(100)
-        self.app.operationRunning.emit(0)
-        return True
 
-    def runHysteresis(self):
-        """
-        :return:
-        """
-        self.app.operationRunning.emit(5)
-        self.analysisRunning = True
-        while self.analysisRunning:
-            sleepAndEvents(100)
-        self.app.operationRunning.emit(0)
-        return True
+        self.setupModelFilenamesAndDirectories()
+        analysisPoints = self.setupAnalysisPointsAndContextData()
+        self.setupAnalysisRunContextAndGuiStatus()
 
-    def cancelAnalysis(self):
-        """
-        :return:
-        """
-        self.analysisRunning = False
+        self.msg.emit(1, 'Analysis', 'Run', f'Starting [{self.analysisName}]')
+        runType = 'Analysis'
+        keepImages = self.ui.keepAnalysisImages.isChecked()
+        self.timeStartAnalysis = time.time()
+        self.cycleThroughPoints(modelPoints=analysisPoints,
+                                retryCounter=0,
+                                runType=runType,
+                                processData=self.processModelData,
+                                progress=self.updateModelProgress,
+                                keepImages=keepImages)
+        self.app.operationRunning.emit(0)
         return True

@@ -465,7 +465,7 @@ def test_processData_1(function):
                 with mock.patch.object(function.app.mount.obsSite,
                                        'park',
                                        return_value=False):
-                    suc = function.processData()
+                    suc = function.processDataAndFinishRun()
                     assert suc
 
 
@@ -486,7 +486,7 @@ def test_processData_2(function):
                 with mock.patch.object(function.app.mount.obsSite,
                                        'park',
                                        return_value=True):
-                    suc = function.processData()
+                    suc = function.processDataAndFinishRun()
                     assert suc
 
 
@@ -499,7 +499,7 @@ def test_cycleThroughPointsFinished_1(function):
     function.modelQueue.put(inputData)
 
     with mock.patch.object(function,
-                           'processData'):
+                           'processDataAndFinishRun'):
         suc = function.cycleThroughPointsFinished()
         assert suc
 
@@ -513,7 +513,7 @@ def test_cycleThroughPointsFinished_2(function):
     function.retryQueue.put(inputData)
 
     with mock.patch.object(function,
-                           'processData'):
+                           'processDataAndFinishRun'):
         with mock.patch.object(function,
                                'runSlew'):
             suc = function.cycleThroughPointsFinished()
@@ -530,7 +530,7 @@ def test_cycleThroughPointsFinished_3(function):
     function.retryCounter = 1
 
     with mock.patch.object(function,
-                           'processData'):
+                           'processDataAndFinishRun'):
         with mock.patch.object(function,
                                'runSlew'):
             suc = function.cycleThroughPointsFinished()
@@ -545,3 +545,62 @@ def test_cycleThroughPoints_1(function):
                                'runSlew'):
             suc = function.cycleThroughPoints(points)
             assert suc
+
+
+def test_setupFilenamesAndDirectories_1(function):
+    function.lastGenerator = 'test'
+    with mock.patch.object(os.path,
+                           'isdir',
+                           return_value=False):
+        with mock.patch.object(os,
+                               'mkdir'):
+            n, d = function.setupFilenamesAndDirectories(prefix='a', postfix='b')
+            assert n
+            assert d
+
+
+def test_setupRunPoints_1(function):
+    class Test:
+        timeout = 1
+        searchRadius = 1
+
+    function.app.plateSolve.framework = 'astap'
+    function.app.plateSolve.run = {'astap': Test()}
+    function.app.data.buildP = []
+    val = function.setupRunPoints()
+    assert val == []
+
+
+def test_setupRunPoints_2(function):
+    class Test:
+        timeout = 1
+        searchRadius = 1
+
+    function.app.plateSolve.framework = 'astap'
+    function.app.plateSolve.run = {'astap': Test()}
+    data = [(0, 0, True), (10, 10, True), (20, 20, True)]
+    val = function.setupRunPoints(data=data)
+    assert len(val) == 3
+    assert val[0]['lenSequence'] == 3
+    assert val[0]['countSequence'] == 1
+    assert val[1]['countSequence'] == 2
+    assert val[1]['altitude'] == 10
+    assert val[1]['azimuth'] == 10
+
+
+def test_setupRunPoints_3(function):
+    class Test:
+        timeout = 1
+        searchRadius = 1
+
+    function.app.plateSolve.framework = 'astap'
+    function.app.plateSolve.run = {'astap': Test()}
+    data = [(0, 0, True), (10, 10, False), (20, 20, True)]
+    function.ui.excludeDonePoints.setChecked(True)
+    val = function.setupRunPoints(data=data)
+    assert len(val) == 2
+    assert val[0]['lenSequence'] == 3
+    assert val[0]['countSequence'] == 1
+    assert val[1]['countSequence'] == 3
+    assert val[1]['altitude'] == 20
+    assert val[1]['azimuth'] == 20

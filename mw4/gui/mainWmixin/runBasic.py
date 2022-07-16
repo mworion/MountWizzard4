@@ -17,6 +17,7 @@
 # standard libraries
 import queue
 import shutil
+import os
 
 # external packages
 from mountcontrol.convert import convertToHMS, convertToDMS
@@ -46,8 +47,6 @@ class BasicRun:
         self.runType = ''
         self.imageDir = ''
 
-        self.modelName = ''
-        self.model = []
         self.ui.cancelModel.clicked.connect(self.cancelRun)
 
     def runSolveDone(self, result):
@@ -404,7 +403,7 @@ class BasicRun:
             runResult.append(point)
         return runResult
 
-    def processData(self):
+    def processDataAndFinishRun(self):
         """
         :return:
         """
@@ -440,10 +439,10 @@ class BasicRun:
         :return: true for test purpose
         """
         if self.retryQueue.qsize() == 0:
-            self.processData()
+            self.processDataAndFinishRun()
             return True
         if self.retryCounter == 0:
-            self.processData()
+            self.processDataAndFinishRun()
             return True
 
         self.msg.emit(1, self.runType, 'Run', 'Starting retry failed points')
@@ -472,7 +471,8 @@ class BasicRun:
         return True
 
     def cycleThroughPoints(self, modelPoints=None, retryCounter=0, runType=None,
-                           processData=None, progress=None, keepImages=False):
+                           processData=None, progress=None,
+                           imgDir=None, keepImages=False):
         """
         cycleThroughPoints is the main method for preparing a model
         run. in addition it checks necessary components and prepares all the
@@ -485,6 +485,7 @@ class BasicRun:
         :param runType:
         :param processData:
         :param progress:
+        :param imgDir:
         :param keepImages:
         :return: true for test purpose
         """
@@ -492,6 +493,7 @@ class BasicRun:
         self.processDataCB = processData
         self.retryCounter = retryCounter
         self.keepImages = keepImages
+        self.imageDir = imgDir
         self.runType = runType
         self.clearQueues()
         self.setupSignalsForRun()
@@ -501,3 +503,59 @@ class BasicRun:
         self.app.dome.avoidFirstOvershoot()
         self.runSlew()
         return True
+
+    def setupFilenamesAndDirectories(self, prefix='', postfix=''):
+        """
+        :return:
+        """
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        name = f'{prefix}-{nameTime}-{postfix}'
+        imageDir = f'{self.app.mwGlob["imageDir"]}/{name}'
+
+        if not os.path.isdir(imageDir):
+            os.mkdir(imageDir)
+
+        return name, imageDir
+
+    def setupRunPoints(self, data=[], imgDir='', name=''):
+        """
+        :param data:
+        :param imgDir:
+        :param name:
+        :return:
+        """
+        plateSolveApp = self.ui.plateSolveDevice.currentText()
+        exposureTime = self.ui.expTime.value()
+        binning = int(self.ui.binning.value())
+        subFrame = self.ui.subFrame.value()
+        fastReadout = self.ui.fastDownload.isChecked()
+        focalLength = self.ui.focalLength.value()
+        lenSequence = len(data)
+        framework = self.app.plateSolve.framework
+        solveTimeout = self.app.plateSolve.run[framework].timeout
+        searchRadius = self.app.plateSolve.run[framework].searchRadius
+        modelPoints = list()
+        for index, point in enumerate(data):
+            if self.ui.excludeDonePoints.isChecked() and not point[2]:
+                continue
+
+            m = dict()
+            imagePath = f'{imgDir}/image-{index + 1:03d}.fits'
+            m['imagePath'] = imagePath
+            m['exposureTime'] = exposureTime
+            m['binning'] = binning
+            m['subFrame'] = subFrame
+            m['fastReadout'] = fastReadout
+            m['lenSequence'] = lenSequence
+            m['countSequence'] = index + 1
+            m['pointNumber'] = index + 1
+            m['name'] = name
+            m['imagePath'] = imagePath
+            m['plateSolveApp'] = plateSolveApp
+            m['solveTimeout'] = solveTimeout
+            m['searchRadius'] = searchRadius
+            m['focalLength'] = focalLength
+            m['altitude'] = point[0]
+            m['azimuth'] = point[1]
+            modelPoints.append(m)
+        return modelPoints

@@ -38,7 +38,6 @@ class Model:
         self.timeStartModeling = None
         self.modelName = ''
         self.model = []
-        self.imageDir = ''
 
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)
@@ -432,59 +431,6 @@ class Model:
 
         return True
 
-    def setupModelFilenamesAndDirectories(self):
-        """
-        :return:
-        """
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        self.modelName = f'm-{nameTime}-{self.lastGenerator}'
-        self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
-
-        if not os.path.isdir(self.imageDir):
-            os.mkdir(self.imageDir)
-
-        return True
-
-    def setupModelPointsAndContextData(self):
-        """
-        :return:
-        """
-        plateSolveApp = self.ui.plateSolveDevice.currentText()
-        exposureTime = self.ui.expTime.value()
-        binning = int(self.ui.binning.value())
-        subFrame = self.ui.subFrame.value()
-        fastReadout = self.ui.fastDownload.isChecked()
-        focalLength = self.ui.focalLength.value()
-        lenSequence = len(self.app.data.buildP)
-        framework = self.app.plateSolve.framework
-        solveTimeout = self.app.plateSolve.run[framework].timeout
-        searchRadius = self.app.plateSolve.run[framework].searchRadius
-        modelPoints = list()
-        for index, point in enumerate(self.app.data.buildP):
-            if self.ui.excludeDonePoints.isChecked() and not point[2]:
-                continue
-
-            m = dict()
-            imagePath = f'{self.imageDir}/image-{index + 1:03d}.fits'
-            m['imagePath'] = imagePath
-            m['exposureTime'] = exposureTime
-            m['binning'] = binning
-            m['subFrame'] = subFrame
-            m['fastReadout'] = fastReadout
-            m['lenSequence'] = lenSequence
-            m['countSequence'] = index + 1
-            m['pointNumber'] = index + 1
-            m['modelName'] = self.modelName
-            m['imagePath'] = imagePath
-            m['plateSolveApp'] = plateSolveApp
-            m['solveTimeout'] = solveTimeout
-            m['searchRadius'] = searchRadius
-            m['focalLength'] = focalLength
-            m['altitude'] = point[0]
-            m['azimuth'] = point[1]
-            modelPoints.append(m)
-        return modelPoints
-
     def modelBuild(self):
         """
         modelBuild sets the adequate gui elements, selects the model points and
@@ -500,8 +446,14 @@ class Model:
             self.app.operationRunning.emit(0)
             return False
 
-        self.setupModelFilenamesAndDirectories()
-        modelPoints = self.setupModelPointsAndContextData()
+        prefix = 'a'
+        postfix = self.lastGenerator
+        self.modelName, imgDir = self.setupFilenamesAndDirectories(
+            prefix=prefix, postfix=postfix)
+
+        data = self.app.data.buildP
+        modelPoints = self.setupRunPoints(data=data, imgDir=imgDir,
+                                          name=self.modelName)
         if not modelPoints:
             self.msg.emit(2, 'Model', 'Run error',
                           'Modeling cancelled, no valid points')
@@ -510,7 +462,7 @@ class Model:
 
         self.setupModelRunContextAndGuiStatus()
         self.msg.emit(1, 'Model', 'Run',
-                      f'Modeling start [{self.modelName}]')
+                      f'Starting [{self.modelName}]')
         retryCounter = self.ui.numberBuildRetries.value()
         runType = 'Model'
         keepImages = self.ui.keepModelImages.isChecked()
@@ -520,6 +472,7 @@ class Model:
                                 runType=runType,
                                 processData=self.processModelData,
                                 progress=self.updateModelProgress,
+                                imgDir=imgDir,
                                 keepImages=keepImages)
         return True
 

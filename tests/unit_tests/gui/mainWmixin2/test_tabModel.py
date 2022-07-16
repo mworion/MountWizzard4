@@ -629,64 +629,6 @@ def test_clearAlignAndBackup_4(function):
                         assert suc
 
 
-def test_setupModelPointsAndContextData_1(function):
-    class Test:
-        timeout = 1
-        searchRadius = 1
-
-    function.app.plateSolve.framework = 'astap'
-    function.app.plateSolve.run = {'astap': Test()}
-    function.app.data.buildP = []
-    val = function.setupModelPointsAndContextData()
-    assert val == []
-
-
-def test_setupModelPointsAndContextData_2(function):
-    class Test:
-        timeout = 1
-        searchRadius = 1
-
-    function.app.plateSolve.framework = 'astap'
-    function.app.plateSolve.run = {'astap': Test()}
-    function.app.data.buildP = [(0, 0, True), (10, 10, True), (20, 20, True)]
-    val = function.setupModelPointsAndContextData()
-    assert len(val) == 3
-    assert val[0]['lenSequence'] == 3
-    assert val[0]['countSequence'] == 1
-    assert val[1]['countSequence'] == 2
-    assert val[1]['altitude'] == 10
-    assert val[1]['azimuth'] == 10
-
-
-def test_setupModelPointsAndContextData_3(function):
-    class Test:
-        timeout = 1
-        searchRadius = 1
-
-    function.app.plateSolve.framework = 'astap'
-    function.app.plateSolve.run = {'astap': Test()}
-    function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
-    function.ui.excludeDonePoints.setChecked(True)
-    val = function.setupModelPointsAndContextData()
-    assert len(val) == 2
-    assert val[0]['lenSequence'] == 3
-    assert val[0]['countSequence'] == 1
-    assert val[1]['countSequence'] == 3
-    assert val[1]['altitude'] == 20
-    assert val[1]['azimuth'] == 20
-
-
-def test_setupModelFilenamesAndDirectories_1(function):
-    function.lastGenerator = 'test'
-    with mock.patch.object(os.path,
-                           'isdir',
-                           return_value=False):
-        with mock.patch.object(os,
-                               'mkdir'):
-            suc = function.setupModelFilenamesAndDirectories()
-            assert suc
-
-
 def test_modelBuild_1(function):
     with mock.patch.object(function,
                            'checkModelRunConditions',

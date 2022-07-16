@@ -461,8 +461,7 @@ class Model:
             return False
 
         self.setupModelRunContextAndGuiStatus()
-        self.msg.emit(1, 'Model', 'Run',
-                      f'Starting [{self.modelName}]')
+        self.msg.emit(1, 'Model', 'Run', f'Starting [{self.modelName}]')
         retryCounter = self.ui.numberBuildRetries.value()
         runType = 'Model'
         keepImages = self.ui.keepModelImages.isChecked()

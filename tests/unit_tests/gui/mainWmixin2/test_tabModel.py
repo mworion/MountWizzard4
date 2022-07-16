@@ -49,6 +49,8 @@ def function(qapp):
             self.deviceStat = {}
             self.refreshName = None
             self.refreshModel = None
+            self.setupFilenamesAndDirectories = None
+            self.setupRunPoints = None
             self.playSound = None
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
@@ -651,6 +653,8 @@ def test_modelBuild_2(function):
 def test_modelBuild_3(function):
     def test():
         return []
+
+    function.lastGenerator = ''
     with mock.patch.object(function,
                            'checkModelRunConditions',
                            return_value=True):
@@ -658,9 +662,10 @@ def test_modelBuild_3(function):
                                'clearAlignAndBackup',
                                return_value=True):
             with mock.patch.object(function,
-                                   'setupModelFilenamesAndDirectories'):
+                                   'setupFilenamesAndDirectories',
+                                   return_value=('', '')):
                 with mock.patch.object(function,
-                                       'setupModelPointsAndContextData',
+                                       'setupRunPoints',
                                        return_value=[]):
                     suc = function.modelBuild()
                     assert not suc
@@ -672,9 +677,11 @@ def test_modelBuild_4(function):
              runType=None,
              processData=None,
              progress=None,
+             imgDir=None,
              keepImages=None):
         return
 
+    function.lastGenerator = ''
     function.cycleThroughPoints = test
     with mock.patch.object(function,
                            'checkModelRunConditions',
@@ -683,9 +690,10 @@ def test_modelBuild_4(function):
                                'clearAlignAndBackup',
                                return_value=True):
             with mock.patch.object(function,
-                                   'setupModelFilenamesAndDirectories'):
+                                   'setupFilenamesAndDirectories',
+                                   return_value=('', '')):
                 with mock.patch.object(function,
-                                       'setupModelPointsAndContextData',
+                                       'setupRunPoints',
                                        return_value=[1, 2]):
                     with mock.patch.object(function,
                                            'setupModelRunContextAndGuiStatus'):

@@ -59,7 +59,7 @@ def test_updateImageStats_2(function):
     function.ui.focalLength.setValue(0)
     function.ui.aperture.setValue(0)
     suc = function.updateImageStats()
-    assert not suc
+    assert suc
 
 
 def test_updateImageStats_3(function):

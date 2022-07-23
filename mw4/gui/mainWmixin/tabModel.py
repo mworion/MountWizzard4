@@ -160,8 +160,8 @@ class Model:
         :param mPoint:
         :return: success
         """
-        number = mPoint["lenSequence"]
-        count = mPoint["countSequence"]
+        number = mPoint.get('lenSequence', 0)
+        count = mPoint.get('countSequence', 0)
 
         if not 0 < count <= number:
             return False

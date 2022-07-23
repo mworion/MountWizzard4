@@ -157,8 +157,8 @@ class Analysis(object):
         :param mPoint:
         :return:
         """
-        number = mPoint["lenSequence"]
-        count = mPoint["countSequence"]
+        number = mPoint.get('lenSequence', 0)
+        count = mPoint.get('countSequence', 0)
         if not 0 < count <= number:
             return False
 
@@ -195,9 +195,6 @@ class Analysis(object):
         self.msg.emit(1, 'Analysis', 'Flexure', f'Starting [{self.analysisName}]')
         runType = 'Analysis'
         keepImages = self.ui.keepAnalysisImages.isChecked()
-        sleepAndEvents(3000)
-        self.processAnalysisData()
-        return
         self.cycleThroughPoints(modelPoints=analysisPoints,
                                 retryCounter=0,
                                 runType=runType,

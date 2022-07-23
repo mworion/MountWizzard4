@@ -174,51 +174,66 @@ def test_updateTurnKnobsGUI_3(function):
     assert '1.0 revs left' == function.ui.azimuthTurns.text()
 
 
-def test_updateProgress_1(function):
+def test_updateModelProgress_1(function):
     function.timeStartModeling = time.time()
-    suc = function.updateModelProgress()
+    mPoint = {}
+    suc = function.updateModelProgress(mPoint)
     assert not suc
 
 
-def test_updateProgress_2(function):
+def test_updateModelProgress_2(function):
     function.timeStartModeling = time.time()
-    suc = function.updateModelProgress(number=3, count=2)
+    mPoint = {'lenSequence': 3,
+              'countSequence': 2}
+    suc = function.updateModelProgress(mPoint)
     assert suc
 
 
-def test_updateProgress_3(function):
+def test_updateModelProgress_3(function):
     function.timeStartModeling = time.time()
-    suc = function.updateModelProgress(number=2, count=3)
+    mPoint = {'lenSequence': 2,
+              'countSequence': 3}
+    suc = function.updateModelProgress(mPoint)
     assert not suc
 
 
-def test_updateProgress_4(function):
-    suc = function.updateModelProgress(number=0, count=2)
+def test_updateModelProgress_4(function):
+    mPoint = {'lenSequence': 0,
+              'countSequence': 2}
+    suc = function.updateModelProgress(mPoint)
     function.timeStartModeling = time.time()
     assert not suc
 
 
-def test_updateProgress_5(function):
+def test_updateModelProgress_5(function):
     function.timeStartModeling = time.time()
-    suc = function.updateModelProgress(number=3, count=1)
+    mPoint = {'lenSequence': 3,
+              'countSequence': 1}
+    suc = function.updateModelProgress(mPoint)
     assert suc
 
 
-def test_updateProgress_6(function):
+def test_updateModelProgress_6(function):
     function.timeStartModeling = time.time()
-    suc = function.updateModelProgress(number=3, count=-1)
+    mPoint = {'lenSequence': 3,
+              'countSequence': -1}
+    suc = function.updateModelProgress(mPoint)
     assert not suc
 
 
-def test_updateProgress_7(function):
+def test_updateModelProgress_7(function):
     function.timeStartModeling = time.time()
-    suc = function.updateModelProgress(number=3, count=2)
+    mPoint = {'lenSequence': 3,
+              'countSequence': 2}
+    suc = function.updateModelProgress(mPoint)
     assert suc
 
 
-def test_updateProgress_8(function):
+def test_updateModelProgress_8(function):
     function.timeStartModeling = time.time()
-    suc = function.updateModelProgress(count=-1)
+    mPoint = {'lenSequence': 0,
+              'countSequence': -1}
+    suc = function.updateModelProgress(mPoint)
     assert not suc
 
 

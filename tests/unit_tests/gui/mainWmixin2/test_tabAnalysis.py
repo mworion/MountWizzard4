@@ -118,8 +118,53 @@ def test_checkAnalysisConditions_3(function):
 
 
 def test_setupFlexurePoints(function):
-    val = function.setupFlexurePoints()
-    assert len(val) == 0
+    v, t = function.setupFlexurePoints()
+    assert len(v) == 120
+    assert t == 30
+
+
+def test_restoreAnalysisDefaultContextAndGuiStatus(function):
+    suc = function.restoreAnalysisDefaultContextAndGuiStatus()
+    assert suc
+
+
+def test_cancelAnalysis(function):
+    suc = function.cancelAnalysis()
+    assert suc
+
+
+def test_processAnalysisData(function):
+    with mock.patch.object(function,
+                           'restoreAnalysisDefaultContextAndGuiStatus'):
+        suc = function.processAnalysisData()
+        assert suc
+
+
+def test_updateAnalysisProgress_1(function):
+    mPoint = {}
+    suc = function.updateAnalysisProgress(mPoint)
+    assert not suc
+
+
+def test_updateAnalysisProgress_2(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 2}
+    suc = function.updateAnalysisProgress(mPoint)
+    assert suc
+
+
+def test_updateAnalysisProgress_3(function):
+    mPoint = {'lenSequence': 2,
+              'countSequence': 3}
+    suc = function.updateAnalysisProgress(mPoint)
+    assert not suc
+
+
+def test_updateAnalysisProgress_4(function):
+    mPoint = {'lenSequence': 0,
+              'countSequence': -1}
+    suc = function.updateAnalysisProgress(mPoint)
+    assert not suc
 
 
 def test_runFlexure_1(function):

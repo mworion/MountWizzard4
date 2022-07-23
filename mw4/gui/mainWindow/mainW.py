@@ -564,7 +564,7 @@ class MainWindow(
         isMountReady = bool(self.deviceStat.get('mount'))
         isDomeReady = bool(self.deviceStat.get('dome'))
         isModelingReady = all(
-            self.deviceStat[x] for x in ['mount', 'camera', 'plateSolve'])
+            bool(self.deviceStat.get(x)) for x in ['mount', 'camera', 'plateSolve'])
         isPause = self.ui.pauseModel.property('pause')
 
         if isModelingReady and self.app.data.buildP and not isPause:

@@ -243,6 +243,8 @@ def test_smartFunctionGui_1(function):
     assert suc
     assert function.ui.runModel.isEnabled()
     assert function.ui.plateSolveSync.isEnabled()
+    assert function.ui.dataModelGroup.isEnabled()
+    assert function.ui.analysisGroup.isEnabled()
 
 
 def test_smartFunctionGui_2(function):
@@ -254,66 +256,42 @@ def test_smartFunctionGui_2(function):
     assert suc
     assert not function.ui.runModel.isEnabled()
     assert not function.ui.plateSolveSync.isEnabled()
+    assert not function.ui.dataModelGroup.isEnabled()
+    assert not function.ui.analysisGroup.isEnabled()
 
 
 def test_smartFunctionGui_3(function):
     function.deviceStat['mount'] = True
     suc = function.smartFunctionGui()
     assert suc
-    assert function.ui.batchModel.isEnabled()
+    assert function.ui.refractionGroup.isEnabled()
+    assert function.ui.dsoGroup.isEnabled()
+    assert function.ui.mountCommandTable.isEnabled()
 
 
 def test_smartFunctionGui_4(function):
     function.deviceStat['mount'] = False
     suc = function.smartFunctionGui()
     assert suc
-    assert not function.ui.batchModel.isEnabled()
+    assert not function.ui.refractionGroup.isEnabled()
+    assert not function.ui.dsoGroup.isEnabled()
+    assert not function.ui.mountCommandTable.isEnabled()
 
 
 def test_smartFunctionGui_5(function):
-    function.deviceStat['refraction'] = None
+    function.deviceStat['dome'] = True
+    function.deviceStat['mount'] = True
     suc = function.smartFunctionGui()
     assert suc
-    assert not function.ui.refractionGroup.isEnabled()
-    assert not function.ui.setRefractionManual.isEnabled()
+    assert function.ui.useDomeAz.isEnabled()
 
 
 def test_smartFunctionGui_6(function):
-    function.deviceStat['refraction'] = True
-    function.deviceStat['mount'] = True
-    suc = function.smartFunctionGui()
-    assert suc
-    assert function.ui.refractionGroup.isEnabled()
-    assert function.ui.setRefractionManual.isEnabled()
-
-
-def test_smartFunctionGui_7(function):
-    function.deviceStat['refraction'] = True
+    function.deviceStat['dome'] = False
     function.deviceStat['mount'] = False
     suc = function.smartFunctionGui()
     assert suc
-    assert not function.ui.refractionGroup.isEnabled()
-    assert not function.ui.setRefractionManual.isEnabled()
-
-
-def test_smartFunctionGui_8(function):
-    function.deviceStat['dome'] = False
-    suc = function.smartFunctionGui()
-    assert suc
-
-
-def test_smartFunctionGui_9(function):
-    function.deviceStat['dome'] = True
-    suc = function.smartFunctionGui()
-    assert suc
-
-
-def test_smartFunctionGui_10(function):
-    function.deviceStat['camera'] = False
-    function.deviceStat['dome'] = True
-    function.deviceStat['mount'] = True
-    suc = function.smartFunctionGui()
-    assert suc
+    assert not function.ui.useDomeAz.isEnabled()
 
 
 def test_smartTabGui_1(function):

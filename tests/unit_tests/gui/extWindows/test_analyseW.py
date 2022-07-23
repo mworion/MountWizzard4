@@ -118,7 +118,6 @@ def test_colorChange(function):
 def test_writeGui_1(function):
     suc = function.writeGui([{'a': 1}], 'test')
     assert suc
-    assert function.ui.mirrored.text() == ''
 
 
 def test_generateDataSets(function):
@@ -291,14 +290,56 @@ def test_drawHorizon_2(function):
     assert suc
 
 
+def test_linkViewsAltAz_1(function):
+    function.ui.linkViews.setChecked(True)
+    suc = function.linkViewsAltAz()
+    assert suc
+
+
+def test_linkViewsAltAz_2(function):
+    function.ui.linkViews.setChecked(False)
+    suc = function.linkViewsAltAz()
+    assert suc
+
+
+def test_linkViewsRa_1(function):
+    function.ui.linkViews.setChecked(True)
+    suc = function.linkViewsRa()
+    assert suc
+
+
+def test_linkViewsRa_2(function):
+    function.ui.linkViews.setChecked(False)
+    suc = function.linkViewsRa()
+    assert suc
+
+
+def test_linkViewsDec_1(function):
+    function.ui.linkViews.setChecked(True)
+    suc = function.linkViewsDec()
+    assert suc
+
+
+def test_linkViewsDec_2(function):
+    function.ui.linkViews.setChecked(False)
+    suc = function.linkViewsDec()
+    assert suc
+
+
 def test_drawAll_1(function):
     def test():
         pass
 
     function.index = []
     function.charts = [test]
-    suc = function.drawAll()
-    assert suc
+    with mock.patch.object(function,
+                           'linkViewsAltAz'):
+        with mock.patch.object(function,
+                               'linkViewsRa'):
+            with mock.patch.object(function,
+                                   'linkViewsDec'):
+                suc = function.drawAll()
+                assert suc
 
 
 def test_drawAll_2(function):
@@ -307,5 +348,11 @@ def test_drawAll_2(function):
 
     function.index = None
     function.charts = [test]
-    suc = function.drawAll()
-    assert not suc
+    with mock.patch.object(function,
+                           'linkViewsAltAz'):
+        with mock.patch.object(function,
+                               'linkViewsRa'):
+            with mock.patch.object(function,
+                                   'linkViewsDec'):
+                suc = function.drawAll()
+                assert not suc

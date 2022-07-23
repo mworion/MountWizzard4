@@ -298,7 +298,7 @@
      <widget class="QLabel" name="label_18">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>105</x>
         <y>65</y>
         <width>56</width>
         <height>21</height>
@@ -408,8 +408,8 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>45</y>
+        <x>420</x>
+        <y>5</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -595,32 +595,6 @@
       </property>
       <property name="text">
        <string>Polar Error</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>420</x>
-        <y>5</y>
-        <width>76</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>21</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Mirrored</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_6">
@@ -809,7 +783,7 @@ Model</string>
      <widget class="QCheckBox" name="showHorizon">
       <property name="geometry">
        <rect>
-        <x>580</x>
+        <x>550</x>
         <y>65</y>
         <width>111</width>
         <height>21</height>
@@ -837,9 +811,9 @@ Model</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>175</x>
-        <y>65</y>
-        <width>46</width>
+        <x>340</x>
+        <y>45</y>
+        <width>36</width>
         <height>21</height>
        </rect>
       </property>
@@ -884,9 +858,9 @@ Model</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>45</y>
-        <width>36</width>
+        <x>495</x>
+        <y>5</y>
+        <width>41</width>
         <height>21</height>
        </rect>
       </property>
@@ -1001,8 +975,8 @@ Model</string>
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>105</x>
-        <y>65</y>
+        <x>280</x>
+        <y>45</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -1022,53 +996,6 @@ Model</string>
       </property>
       <property name="text">
        <string>Terms</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="mirrored">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>495</x>
-        <y>5</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>21</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Name of Model Points file, where the data is stored. </string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label">
@@ -1319,9 +1246,9 @@ Model</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>175</x>
         <y>65</y>
-        <width>196</width>
+        <width>201</width>
         <height>21</height>
        </rect>
       </property>
@@ -1526,6 +1453,31 @@ Model</string>
       </property>
       <property name="text">
        <string>2D contour</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="linkViews">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>65</y>
+        <width>116</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>21</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Link Views</string>
       </property>
      </widget>
     </widget>

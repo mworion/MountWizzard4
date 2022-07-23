@@ -569,14 +569,20 @@ class MainWindow(
         isPause = self.ui.pauseModel.property('pause')
 
         if isModelingReady and self.app.data.buildP and not isPause:
-            self.ui.runModel.setEnabled(True)
-            self.ui.plateSolveSync.setEnabled(True)
-
-        elif isModelingReady and not isPause:
-            self.ui.plateSolveSync.setEnabled(True)
+            self.ui.analysisGroup.setEnabled(True)
+            self.ui.runModelGroup.setEnabled(True)
+            self.ui.platesolveSyncGroup.setEnabled(True)
         else:
-            self.ui.runModel.setEnabled(False)
-            self.ui.plateSolveSync.setEnabled(False)
+            self.ui.analysisGroup.setEnabled(False)
+            self.ui.runModelGroup.setEnabled(False)
+            self.ui.platesolveSyncGroup.setEnabled(False)
+
+        if isModelingReady:
+            self.ui.dataModelGroup.setEnabled(True)
+            self.ui.analysisGroup.setEnabled(True)
+        else:
+            self.ui.dataModelGroup.setEnabled(False)
+            self.ui.analysisGroup.setEnabled(False)
 
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)

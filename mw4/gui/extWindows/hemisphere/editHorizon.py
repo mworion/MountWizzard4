@@ -150,6 +150,7 @@ class EditHorizon:
                           f'Mask [{fileName}] cannot no be loaded')
 
         self.app.redrawHemisphere.emit()
+        self.app.redrawHorizon.emit()
         self.drawHorizonTab()
         return True
 

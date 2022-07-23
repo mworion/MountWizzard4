@@ -95,6 +95,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
             self.move(x, y)
         self.ui.showHorizon.setChecked(config.get('showHorizon', False))
         self.ui.showISO.setChecked(config.get('showISO', False))
+        self.ui.linkViews.setChecked(config.get('linkViews', False))
         return True
 
     def storeConfig(self):
@@ -111,6 +112,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['width'] = self.width()
         config['showHorizon'] = self.ui.showHorizon.isChecked()
         config['showISO'] = self.ui.showISO.isChecked()
+        config['linkViews'] = self.ui.linkViews.isChecked()
         return True
 
     def closeEvent(self, closeEvent):
@@ -129,6 +131,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.app.showAnalyse.connect(self.showAnalyse)
         self.ui.showHorizon.clicked.connect(self.drawAll)
         self.ui.showISO.clicked.connect(self.drawAll)
+        self.ui.linkViews.clicked.connect(self.drawAll)
         return True
 
     def colorChange(self):
@@ -172,8 +175,6 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.firmware.setText(f'{d.get("firmware", "")}')
         self.ui.totalPoints.setText(f'{d.get("lenSequence", 0)}')
         self.ui.goodPoints.setText(f'{de.get("errorIndex", 0)}')
-        text = f'{d.get("mirroredS", "")}' + f'{d.get("flippedS", "")}'
-        self.ui.mirrored.setText(text)
         version = d.get("version", "").lstrip('MountWizzard4 - v')
         self.ui.version.setText(f'{version}')
 
@@ -442,6 +443,67 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
         return True
 
+    def linkViewsAltAz(self):
+        """
+        :return:
+        """
+        isLinked = self.ui.linkViews.isChecked()
+        views = list()
+        views.append(self.ui.raRawErrors.p[0].getViewBox())
+        views.append(self.ui.raErrors.p[0].getViewBox())
+        views.append(self.ui.decRawErrors.p[0].getViewBox())
+        views.append(self.ui.decErrors.p[0].getViewBox())
+        for sourceView in views:
+            for targetView in views:
+                if sourceView == targetView:
+                    continue
+                if isLinked:
+                    sourceView.setXLink(targetView)
+                    sourceView.setYLink(targetView)
+                else:
+                    sourceView.setXLink(None)
+                    sourceView.setYLink(None)
+            sourceView.rightMouseRange()
+        return True
+
+    def linkViewsRa(self):
+        """
+        :return:
+        """
+        isLinked = self.ui.linkViews.isChecked()
+        views = list()
+        views.append(self.ui.raRawErrorsRef.p[0].getViewBox())
+        views.append(self.ui.raErrorsRef.p[0].getViewBox())
+        for sourceView in views:
+            for targetView in views:
+                if sourceView == targetView:
+                    continue
+                if isLinked:
+                    sourceView.setXLink(targetView)
+                else:
+                    sourceView.setXLink(None)
+            sourceView.rightMouseRange()
+        return True
+
+    def linkViewsDec(self):
+        """
+        :return:
+        """
+        isLinked = self.ui.linkViews.isChecked()
+        views = list()
+        views.append(self.ui.decRawErrorsRef.p[0].getViewBox())
+        views.append(self.ui.decErrorsRef.p[0].getViewBox())
+        for sourceView in views:
+            for targetView in views:
+                if sourceView == targetView:
+                    continue
+                if isLinked:
+                    sourceView.setXLink(targetView)
+                else:
+                    sourceView.setXLink(None)
+            sourceView.rightMouseRange()
+        return True
+
     def drawAll(self):
         """
         :return:
@@ -451,4 +513,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         for chart in self.charts:
             chart()
             sleepAndEvents(0)
+        self.linkViewsAltAz()
+        self.linkViewsRa()
+        self.linkViewsDec()
         return True

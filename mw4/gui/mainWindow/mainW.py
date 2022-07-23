@@ -564,37 +564,36 @@ class MainWindow(
 
         :return: true for test purpose
         """
+        isMountReady = bool(self.deviceStat.get('mount'))
+        isDomeReady = bool(self.deviceStat.get('dome'))
         isModelingReady = all(
             self.deviceStat[x] for x in ['mount', 'camera', 'plateSolve'])
         isPause = self.ui.pauseModel.property('pause')
 
         if isModelingReady and self.app.data.buildP and not isPause:
-            self.ui.analysisGroup.setEnabled(True)
-            self.ui.runModelGroup.setEnabled(True)
-            self.ui.platesolveSyncGroup.setEnabled(True)
+            self.ui.runModel.setEnabled(True)
         else:
-            self.ui.analysisGroup.setEnabled(False)
-            self.ui.runModelGroup.setEnabled(False)
-            self.ui.platesolveSyncGroup.setEnabled(False)
+            self.ui.runModel.setEnabled(False)
 
         if isModelingReady:
+            self.ui.runModelGroup.setEnabled(True)
+            self.ui.platesolveSyncGroup.setEnabled(True)
             self.ui.dataModelGroup.setEnabled(True)
             self.ui.analysisGroup.setEnabled(True)
         else:
+            self.ui.runModelGroup.setEnabled(False)
+            self.ui.platesolveSyncGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
             self.ui.analysisGroup.setEnabled(False)
 
-        if self.deviceStat.get('mount', False):
-            self.ui.batchModel.setEnabled(True)
-        else:
-            self.ui.batchModel.setEnabled(False)
-
-        if bool(self.deviceStat.get('mount')):
+        if isMountReady:
             self.ui.refractionGroup.setEnabled(True)
+            self.ui.dsoGroup.setEnabled(True)
         else:
+            self.ui.dsoGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
 
-        if self.deviceStat.get('dome') and self.deviceStat.get('mount'):
+        if isDomeReady and isMountReady:
             self.ui.useDomeAz.setEnabled(True)
         else:
             self.ui.useDomeAz.setEnabled(False)

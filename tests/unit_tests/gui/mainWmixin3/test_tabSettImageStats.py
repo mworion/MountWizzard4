@@ -48,7 +48,7 @@ def function(qapp):
 
 def test_updateImageStats_1(function):
     suc = function.updateImageStats()
-    assert not suc
+    assert suc
 
 
 def test_updateImageStats_2(function):

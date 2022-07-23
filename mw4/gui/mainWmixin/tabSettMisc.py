@@ -103,8 +103,8 @@ class SettMisc(object):
         self.ui.soundDomeSlewFinished.setCurrentIndex(
             config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
-        self.ui.soundModelingFinished.setCurrentIndex(
-            config.get('soundModelingFinished', 0))
+        self.ui.soundRunFinished.setCurrentIndex(
+            config.get('soundRunFinished', 0))
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
         self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
         self.ui.soundConnectionLost.setCurrentIndex(
@@ -148,7 +148,7 @@ class SettMisc(object):
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
         config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()
-        config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
+        config['soundRunFinished'] = self.ui.soundRunFinished.currentIndex()
         config['soundImageSaved'] = self.ui.soundImageSaved.currentIndex()
         config['soundImageSolved'] = self.ui.soundImageSolved.currentIndex()
         config['soundConnectionLost'] = self.ui.soundConnectionLost.currentIndex()
@@ -553,7 +553,7 @@ class SettMisc(object):
         self.guiAudioList['MountSlew'] = self.ui.soundMountSlewFinished
         self.guiAudioList['DomeSlew'] = self.ui.soundDomeSlewFinished
         self.guiAudioList['MountAlert'] = self.ui.soundMountAlert
-        self.guiAudioList['ModelingFinished'] = self.ui.soundModelingFinished
+        self.guiAudioList['RunFinished'] = self.ui.soundRunFinished
         self.guiAudioList['ImageSaved'] = self.ui.soundImageSaved
         self.guiAudioList['ConnectionLost'] = self.ui.soundConnectionLost
         self.guiAudioList['SatStartTracking'] = self.ui.soundSatStartTracking

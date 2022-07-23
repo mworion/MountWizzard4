@@ -15,11 +15,11 @@
 #
 ###########################################################
 # standard libraries
-import time
 
 # external packages
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class Analysis(object):
@@ -27,14 +27,14 @@ class Analysis(object):
     """
 
     def __init__(self):
-        self.ui.hysteresisProgress.setValue(0)
-        self.ui.flexureProgress.setValue(0)
+        self.ui.analysisProgress.setValue(0)
         self.app.operationRunning.emit(0)
         self.imageDirAnalysis = ''
         self.analysisName = ''
         self.analysisRunning = False
-        self.timeStartAnalysis = None
+
         self.ui.runFlexure.clicked.connect(self.runFlexure)
+        self.ui.cancelAnalysis.clicked.connect(self.cancelAnalysis)
         self.app.operationRunning.connect(self.setAnalysisOperationMode)
 
     def initConfig(self):
@@ -77,23 +77,18 @@ class Analysis(object):
         :return:
         """
         if status == 4:
-            self.ui.hysteresisGroup.setEnabled(False)
-            self.ui.runFlexure.setEnabled(False)
             self.ui.cancelAnalysis.setEnabled(True)
-            self.ui.runFlexure.setEnabled(False)
-        elif status == 5:
             self.ui.runHysteresis.setEnabled(False)
+        elif status == 5:
+            self.ui.runFlexure.setEnabled(False)
             self.ui.cancelAnalysis.setEnabled(True)
-            self.ui.flexureGroup.setEnabled(False)
         elif status == 0:
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
-            self.ui.hysteresisGroup.setEnabled(True)
-            self.ui.flexureGroup.setEnabled(True)
+            self.ui.analysisGroup.setEnabled(True)
             self.ui.cancelAnalysis.setEnabled(False)
         else:
-            self.ui.hysteresisGroup.setEnabled(False)
-            self.ui.flexureGroup.setEnabled(False)
+            self.ui.analysisGroup.setEnabled(False)
             self.ui.cancelAnalysis.setEnabled(False)
         return True
 
@@ -118,18 +113,59 @@ class Analysis(object):
         """
         :return:
         """
-        return []
+        alt = self.ui.flexureAlt.value()
+        az = self.ui.flexureAz.value()
+        waitTime = self.ui.flexureTime.value()
+        duration = self.ui.flexureDuration.value()
+        numberPoints = int(duration * 60 / waitTime)
+
+        data = []
+        for i in range(numberPoints):
+            data.append((alt, az))
+        return data, waitTime
+
+    def restoreAnalysisDefaultContextAndGuiStatus(self):
+        """
+        :return:
+        """
+        self.changeStyleDynamic(self.ui.runFlexure, 'running', False)
+        self.changeStyleDynamic(self.ui.runHysteresis, 'running', False)
+        self.ui.cancelAnalysis.setEnabled(False)
+        self.ui.analysisPoints.setText('-')
+        self.ui.analysisProgress.setValue(0)
+
+        self.app.playSound.emit('RunFinished')
+        self.app.operationRunning.emit(0)
+        return True
+
+    def cancelAnalysis(self):
+        """
+        :return:
+        """
+        self.restoreAnalysisDefaultContextAndGuiStatus()
+        return True
 
     def processAnalysisData(self):
         """
         :return:
         """
+        self.restoreAnalysisDefaultContextAndGuiStatus()
         return True
 
-    def updateAnalysisProgress(self):
+    def updateAnalysisProgress(self, mPoint):
         """
+        :param mPoint:
         :return:
         """
+        number = mPoint["lenSequence"]
+        count = mPoint["countSequence"]
+        if not 0 < count <= number:
+            return False
+
+        fraction = count / number
+        self.ui.analysisPoints.setText(f'{count} / {number}')
+        analysisPercent = int(100 * fraction)
+        self.ui.analysisProgress.setValue(analysisPercent)
         return True
 
     def runFlexure(self):
@@ -145,18 +181,23 @@ class Analysis(object):
 
         prefix = 'a'
         postfix = 'flexure'
-
         self.analysisName, imgDir = self.setupFilenamesAndDirectories(
             prefix=prefix, postfix=postfix)
 
-        data = self.app.data.buildP
+        data, waitTime = self.setupFlexurePoints()
         analysisPoints = self.setupRunPoints(data=data, imgDir=imgDir,
-                                             name=self.analysisName)
+                                             name=self.analysisName,
+                                             waitTime=waitTime)
 
-        self.msg.emit(1, 'Analysis', 'Run', f'Starting [{self.analysisName}]')
+        self.changeStyleDynamic(self.ui.runFlexure, 'running', True)
+        self.ui.cancelAnalysis.setEnabled(True)
+
+        self.msg.emit(1, 'Analysis', 'Flexure', f'Starting [{self.analysisName}]')
         runType = 'Analysis'
         keepImages = self.ui.keepAnalysisImages.isChecked()
-        self.timeStartAnalysis = time.time()
+        sleepAndEvents(3000)
+        self.processAnalysisData()
+        return
         self.cycleThroughPoints(modelPoints=analysisPoints,
                                 retryCounter=0,
                                 runType=runType,
@@ -164,5 +205,4 @@ class Analysis(object):
                                 progress=self.updateAnalysisProgress,
                                 imgDir=imgDir,
                                 keepImages=keepImages)
-        self.app.operationRunning.emit(0)
         return True

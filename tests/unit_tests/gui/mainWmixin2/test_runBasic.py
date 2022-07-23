@@ -586,21 +586,3 @@ def test_setupRunPoints_2(function):
     assert val[1]['countSequence'] == 2
     assert val[1]['altitude'] == 10
     assert val[1]['azimuth'] == 10
-
-
-def test_setupRunPoints_3(function):
-    class Test:
-        timeout = 1
-        searchRadius = 1
-
-    function.app.plateSolve.framework = 'astap'
-    function.app.plateSolve.run = {'astap': Test()}
-    data = [(0, 0, True), (10, 10, False), (20, 20, True)]
-    function.ui.excludeDonePoints.setChecked(True)
-    val = function.setupRunPoints(data=data)
-    assert len(val) == 2
-    assert val[0]['lenSequence'] == 3
-    assert val[0]['countSequence'] == 1
-    assert val[1]['countSequence'] == 3
-    assert val[1]['altitude'] == 20
-    assert val[1]['azimuth'] == 20

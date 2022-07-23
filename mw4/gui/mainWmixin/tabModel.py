@@ -155,16 +155,14 @@ class Model:
         self.ui.altitudeTurns.setText(text)
         return True
 
-    def updateModelProgress(self, number=0, count=0):
+    def updateModelProgress(self, mPoint):
         """
-        updateModelProgress calculated from the elapsed time and number of point
-        with taking actual processing time into account a estimation of duration
-        and finishing time of the modeling process and updates this in the gui
-
-        :param number: total number of model points
-        :param count: index of the actual processed point
+        :param mPoint:
         :return: success
         """
+        number = mPoint["lenSequence"]
+        count = mPoint["countSequence"]
+
         if not 0 < count <= number:
             return False
 
@@ -365,10 +363,9 @@ class Model:
 
         self.msg.emit(1, 'Model', 'Run',
                       f'Modeling finished [{self.modelName}]')
-        self.playSound('ModelingFinished')
+        self.app.playSound.emit('RunFinished')
         self.renewHemisphereView()
         self.app.operationRunning.emit(0)
-
         return True
 
     def checkModelRunConditions(self):
@@ -452,9 +449,14 @@ class Model:
         self.modelName, imgDir = self.setupFilenamesAndDirectories(
             prefix=prefix, postfix=postfix)
 
-        data = self.app.data.buildP
+        data = []
+        for point in self.app.data.buildP:
+            if self.ui.excludeDonePoints.isChecked() and not point[2]:
+                continue
+            data.append(point)
+
         modelPoints = self.setupRunPoints(data=data, imgDir=imgDir,
-                                          name=self.modelName)
+                                          name=self.modelName, waitTime=0)
         if not modelPoints:
             self.msg.emit(2, 'Model', 'Run error',
                           'Modeling cancelled, no valid points')

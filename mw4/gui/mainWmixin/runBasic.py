@@ -123,7 +123,7 @@ class BasicRun:
             self.msg.emit(2, self.runType, 'Solving error', text)
             self.retryQueue.put(mPoint)
 
-        self.runProgressCB(number=lenSequence, count=count)
+        self.runProgressCB(mPoint)
         self.log.debug(f'Processing {[count]} from {[lenSequence]}')
         if lenSequence == count:
             self.cycleThroughPointsFinished()
@@ -204,6 +204,7 @@ class BasicRun:
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
         waitTime = 10 * mPoint.get('waitTime', 0)
+        self.log.info(f'Waiting time is {mPoint.get("waitTime", 0)}')
 
         while self.ui.pauseModel.property('pause') or waitTime > 0:
             sleepAndEvents(100)
@@ -517,11 +518,12 @@ class BasicRun:
 
         return name, imageDir
 
-    def setupRunPoints(self, data=[], imgDir='', name=''):
+    def setupRunPoints(self, data=[], imgDir='', name='', waitTime=0):
         """
         :param data:
         :param imgDir:
         :param name:
+        :param waitTime:
         :return:
         """
         plateSolveApp = self.ui.plateSolveDevice.currentText()
@@ -536,9 +538,6 @@ class BasicRun:
         searchRadius = self.app.plateSolve.run[framework].searchRadius
         modelPoints = list()
         for index, point in enumerate(data):
-            if self.ui.excludeDonePoints.isChecked() and not point[2]:
-                continue
-
             m = dict()
             imagePath = f'{imgDir}/image-{index + 1:03d}.fits'
             m['imagePath'] = imagePath
@@ -557,5 +556,6 @@ class BasicRun:
             m['focalLength'] = focalLength
             m['altitude'] = point[0]
             m['azimuth'] = point[1]
+            m['waitTime'] = waitTime
             modelPoints.append(m)
         return modelPoints

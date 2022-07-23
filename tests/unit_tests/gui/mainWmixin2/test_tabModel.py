@@ -680,6 +680,8 @@ def test_modelBuild_4(function):
 
     function.lastGenerator = ''
     function.cycleThroughPoints = test
+    function.ui.excludeDonePoints.setChecked(True)
+    function.app.data.buildP = [(0, 0, True), (10, 10, False), (20, 20, True)]
     with mock.patch.object(function,
                            'checkModelRunConditions',
                            return_value=True):

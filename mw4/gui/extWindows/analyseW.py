@@ -175,6 +175,8 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.firmware.setText(f'{d.get("firmware", "")}')
         self.ui.totalPoints.setText(f'{d.get("lenSequence", 0)}')
         self.ui.goodPoints.setText(f'{de.get("errorIndex", 0)}')
+        app = de.get('astrometryApp', '').split('-')[0].strip()
+        self.ui.solver.setText(f'{app}')
         version = d.get("version", "").lstrip('MountWizzard4 - v')
         self.ui.version.setText(f'{version}')
 

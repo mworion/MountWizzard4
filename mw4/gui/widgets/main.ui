@@ -132,7 +132,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -2092,7 +2092,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_19">
+     <widget class="QWidget" name="PosCoordinates">
       <attribute name="title">
        <string>ParkPos and Coordinates</string>
       </attribute>
@@ -3633,7 +3633,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_23">
+     <widget class="QWidget" name="MountTerminal">
       <attribute name="title">
        <string>Mount Terminal</string>
       </attribute>
@@ -11193,7 +11193,7 @@ hr { height: 1px; border-width: 0; }
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>171</width>
+          <width>201</width>
           <height>21</height>
          </rect>
         </property>
@@ -11238,9 +11238,9 @@ hr { height: 1px; border-width: 0; }
         </property>
         <property name="geometry">
          <rect>
-          <x>185</x>
-          <y>45</y>
-          <width>91</width>
+          <x>210</x>
+          <y>20</y>
+          <width>66</width>
           <height>21</height>
          </rect>
         </property>
@@ -11248,7 +11248,7 @@ hr { height: 1px; border-width: 0; }
          <string>Opens an analyse window showing multiple informations about the model context.</string>
         </property>
         <property name="text">
-         <string>Show it!</string>
+         <string>Show</string>
         </property>
        </widget>
        <widget class="QPushButton" name="showOriginalModelAnalyse">
@@ -11271,7 +11271,7 @@ hr { height: 1px; border-width: 0; }
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>20</y>
+          <y>45</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -19695,7 +19695,7 @@ Next point in time when satellite settles.</string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_28">
+     <widget class="QWidget" name="AnalyseFlexure">
       <attribute name="title">
        <string>Analyse Flexure</string>
       </attribute>

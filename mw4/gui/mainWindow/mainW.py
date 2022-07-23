@@ -262,9 +262,6 @@ class MainWindow(
         self.ui.toolsTabWidget.setCurrentIndex(config.get('toolsTabWidget', 0))
         self.ui.satTabWidget.setCurrentIndex(config.get('satTabWidget', 0))
 
-        if not packageConfig.isAnalyse:
-            self.deviceStat['analyse'] = False
-
         self.mwSuper('initConfig')
         self.smartTabGui()
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
@@ -589,9 +586,11 @@ class MainWindow(
         if isMountReady:
             self.ui.refractionGroup.setEnabled(True)
             self.ui.dsoGroup.setEnabled(True)
+            self.ui.mountCommandTable.setEnabled(True)
         else:
             self.ui.dsoGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
+            self.ui.mountCommandTable.setEnabled(False)
 
         if isDomeReady and isMountReady:
             self.ui.useDomeAz.setEnabled(True)
@@ -613,10 +612,6 @@ class MainWindow(
             },
             'Relay': {
                 'statID': 'relay',
-                'tab': self.ui.toolsTabWidget,
-            },
-            'Analyse': {
-                'statID': 'analyse',
                 'tab': self.ui.toolsTabWidget,
             },
         }

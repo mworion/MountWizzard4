@@ -197,6 +197,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.operationRunning.connect(self.operationMode)
 
+        self.wIcon(self.ui.load, 'load')
         self.showCurrent()
         self.setAspectLocked()
         self.show()
@@ -736,14 +737,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param: imagePath:
         :return:
         """
+        if not self.deviceStat['exposeN']:
+            self.ui.image.setImage(None)
+            self.clearGui()
         if not imagePath:
             return False
         if not os.path.isfile(imagePath):
             return False
-
-        if not self.deviceStat['exposeN']:
-            self.ui.image.setImage(None)
-            self.clearGui()
 
         self.changeStyleDynamic(self.ui.headerGroup, 'running', True)
         self.setWindowTitle(f'Imaging:   {os.path.basename(imagePath)}')

@@ -151,16 +151,22 @@ class SettImageStats:
         self.guiSetText(self.ui.focusBlue, '3.0f', focusBlue)
         self.guiSetText(self.ui.focusCCD, '3.0f', focusCCD)
 
-        if self.fovHint is None:
-            return False
+        hasFovHint = self.fovHint is not None
+        if hasFovHint:
+            watneyText = self.WATNEY[self.fovHint]
+            astapText = self.ASTAP[self.fovHint]
+            astrometryText = self.ASTROMETRY[self.fovHint]
+        else:
+            watneyText = None
+            astapText = None
+            astrometryText = None
 
-        watneyText = self.WATNEY[self.fovHint]
+        self.ui.openWatneyCatalog.setEnabled(hasFovHint)
+        self.ui.openASTAPCatalog.setEnabled(hasFovHint)
+        self.ui.openAstrometryCatalog.setEnabled(hasFovHint)
+
         self.guiSetText(self.ui.watneyIndex, 's', watneyText)
-
-        astapText = self.ASTAP[self.fovHint]
         self.guiSetText(self.ui.astapIndex, 's', astapText)
-
-        astrometryText = self.ASTROMETRY[self.fovHint]
         self.guiSetText(self.ui.astrometryIndex, 's', astrometryText)
 
         return True

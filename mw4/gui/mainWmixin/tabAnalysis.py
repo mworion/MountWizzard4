@@ -19,7 +19,6 @@
 # external packages
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class Analysis(object):

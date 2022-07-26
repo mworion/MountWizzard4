@@ -221,6 +221,7 @@ class MainWindow(
         self.showExtendedWindows()
 
         self.app.update1s.connect(self.updateTime)
+        self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.smartFunctionGui)
         self.app.update1s.connect(self.smartTabGui)
@@ -736,6 +737,18 @@ class MainWindow(
         self.ui.cameraText.setText(text)
         return True
 
+    def updateControllerStatus(self):
+        """
+        :return: True for test purpose
+        """
+        gcStatus = self.gameControllerRunning
+        self.ui.controller1.setVisible(gcStatus)
+        self.ui.controller2.setVisible(gcStatus)
+        self.ui.controller3.setVisible(gcStatus)
+        self.ui.controller4.setVisible(gcStatus)
+        self.ui.controller5.setVisible(gcStatus)
+        return True
+
     def updateTime(self):
         """
         :return: True for test purpose
@@ -753,15 +766,6 @@ class MainWindow(
 
         activeCount = self.threadPool.activeThreadCount()
         t = f'{mode}  -  Active Threads: {activeCount:2d} / 30'
-
-        gcStatus = self.gameControllerRunning
-        self.ui.controller1.setVisible(gcStatus)
-        self.ui.controller2.setVisible(gcStatus)
-        self.ui.controller3.setVisible(gcStatus)
-        self.ui.controller4.setVisible(gcStatus)
-        self.ui.controller5.setVisible(gcStatus)
-        gcText = '  -  Game Controller active' if gcStatus else ''
-        t += f'{gcText}'
         self.ui.statusOnline.setTitle(t)
 
         tzT = time.tzname[1] if time.daylight else time.tzname[0]

@@ -410,6 +410,11 @@ def test_updateDeviceStats_5(function):
     assert suc
 
 
+def test_updateControllerStatus_1(function):
+    suc = function.updateControllerStatus()
+    assert suc
+
+
 def test_updateTime_1(function):
     function.ui.isOnline.setChecked(True)
     suc = function.updateTime()

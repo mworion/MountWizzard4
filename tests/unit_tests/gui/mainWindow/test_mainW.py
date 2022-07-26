@@ -415,14 +415,19 @@ def test_updateControllerStatus_1(function):
     assert suc
 
 
-def test_updateTime_1(function):
+def test_updateThreadAndOnlineStatus_1(function):
     function.ui.isOnline.setChecked(True)
-    suc = function.updateTime()
+    suc = function.updateThreadAndOnlineStatus()
     assert suc
 
 
-def test_updateTime_2(function):
+def test_updateThreadAndOnlineStatus_2(function):
     function.ui.isOnline.setChecked(False)
+    suc = function.updateThreadAndOnlineStatus()
+    assert suc
+
+
+def test_updateTime_1(function):
     suc = function.updateTime()
     assert suc
 

@@ -222,6 +222,7 @@ class MainWindow(
 
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
+        self.app.update1s.connect(self.updateThreadAndOnlineStatus)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.smartFunctionGui)
         self.app.update1s.connect(self.smartTabGui)
@@ -749,6 +750,20 @@ class MainWindow(
         self.ui.controller5.setVisible(gcStatus)
         return True
 
+    def updateThreadAndOnlineStatus(self):
+        """
+        :return: True for test purpose
+        """
+        if self.ui.isOnline.isChecked():
+            mode = 'Internet Online Mode'
+        else:
+            mode = 'Offline Mode'
+
+        activeCount = self.threadPool.activeThreadCount()
+        t = f'{mode}  -  Active Threads: {activeCount:2d} / 30'
+        self.ui.statusOnline.setTitle(t)
+        return True
+
     def updateTime(self):
         """
         :return: True for test purpose
@@ -758,15 +773,6 @@ class MainWindow(
         if timeJD is not None:
             text = timeJD.utc_strftime('%H:%M:%S')
             self.ui.timeUTC.setText('UTC:  ' + text)
-
-        if self.ui.isOnline.isChecked():
-            mode = 'Internet Online Mode'
-        else:
-            mode = 'Offline Mode'
-
-        activeCount = self.threadPool.activeThreadCount()
-        t = f'{mode}  -  Active Threads: {activeCount:2d} / 30'
-        self.ui.statusOnline.setTitle(t)
 
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
         t = f'TZ: {tzT}'

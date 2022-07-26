@@ -496,12 +496,14 @@ class MainWindow(
         self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
         pixmap = self.svg2pixmap(':/icon/controllerNew.svg', self.M_BLUE)
         self.ui.controllerOverview.setPixmap(pixmap)
         self.ui.controller1.setVisible(False)
         self.ui.controller2.setVisible(False)
         self.ui.controller3.setVisible(False)
         self.ui.controller4.setVisible(False)
+        self.ui.controller5.setVisible(False)
 
         # environment
         pixmap = self.svg2pixmap(':/icon/meteoblue.svg', '#124673')
@@ -757,6 +759,7 @@ class MainWindow(
         self.ui.controller2.setVisible(gcStatus)
         self.ui.controller3.setVisible(gcStatus)
         self.ui.controller4.setVisible(gcStatus)
+        self.ui.controller5.setVisible(gcStatus)
         gcText = '  -  Game Controller active' if gcStatus else ''
         t += f'{gcText}'
         self.ui.statusOnline.setTitle(t)

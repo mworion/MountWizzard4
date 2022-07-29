@@ -48,31 +48,29 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features.html">Feature Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mw4/index.html">Config and use MW4</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mount/index.html">Config and use Mount</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../almanac/index.html">Use Almanac</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../environment/index.html">Use Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../buildpoints/index.html">Generate Build Points</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dome/index.html">Config and use Dome</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../iers/index.html">Update IERS data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../minorplanets/index.html">Use Minor Planet data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modeling/index.html">Run Model Task</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../platesolve/index.html">Use Plate Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../satellite/index.html">Use Satellite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Install Process</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#an-example-setup">An example setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="python.html">Install Python</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Install MW4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="astroberry.html">Install on Astroberry RaspberryPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stellarmate64.html">Install on StellarMate1.7++ (64bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rpi3.html">Install on RaspberryPi 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rpi4.html">Install on RaspberryPi 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update.html">Using the internal updater</a></li>
+<li class="toctree-l2"><a class="reference internal" href="platesolvers.html">Install Platesolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html">Example setup for rig</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../changelogScripts.html">Changelog for Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using/index.html">Using functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/index.html">Changelogs</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Install Process</a><ul>
+  <li><a href="index.html">Installing</a><ul>
       <li>Previous: <a href="python.html" title="previous chapter">Install Python</a></li>
       <li>Next: <a href="astroberry.html" title="next chapter">Install on Astroberry RaspberryPi</a></li>
   </ul></li>
@@ -107,58 +105,84 @@
             
   <section id="install-mw4">
 <h1>Install MW4<a class="headerlink" href="#install-mw4" title="Permalink to this heading">¶</a></h1>
-<p>When starting with the installation of MW4, python 3.7.x, 3.8.x or 3.9.x should be successful
+<p>When starting with the installation of MW4, python 3.7 - 3.10 should be successful
 installed. To check, open a terminal (available on all platforms) and run the command</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">--</span><span class="n">version</span>
 <span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
 </pre></div>
 </div>
-<p>if you are on Ubuntu or Mac, you might have python 2 and python3 versions installed, please
-refer to the following command:</p>
+<p>if you are on Ubuntu or Mac, you might have python 2 and python3 versions installed,
+please refer to the following command:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">--</span><span class="n">version</span>
 <span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
 </pre></div>
 </div>
-<p>If you have on Ubuntu and Mac mor than one python3 version installed, please refer to the
-following command:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span><span class="mf">.7</span> <span class="o">--</span><span class="n">version</span>
-<span class="o">--</span> <span class="ow">or</span> <span class="o">--</span>
-<span class="n">python3</span><span class="mf">.8</span> <span class="o">--</span><span class="n">version</span>
-<span class="o">--</span> <span class="ow">or</span> <span class="o">--</span>
-<span class="n">python3</span><span class="mf">.9</span> <span class="o">--</span><span class="n">version</span>
+<p>If you have on Ubuntu and Mac mor than one python3 version installed, please refer
+to the following command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span><span class="o">.</span><span class="n">XX</span> <span class="o">--</span><span class="n">version</span>
 
 <span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
 </pre></div>
 </div>
-<p>In one of the choices you should see the version number of the installed and available
-packages. For python it should say 3.7.x, 3.8.x or 3.9.x.</p>
+<p>In one of the choices you should see the version number of the installed and
+available packages. For python it should say 3.7.x … 3.10.x.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>MW4 does not need admin rights to install or run. To avoid problems with accessing
-directories or file please ensure, that you run install and MW4 itself as normal
-user!</p>
+<p>MW4 does not need admin rights to install or run. To avoid problems
+with accessing directories or file please ensure, that you run install
+and MW4 itself as normal user!</p>
 </div>
-<p>To install MW4 on your computer, there are some support scripts available for Windows, OSx
-and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
-available from Github:</p>
+<p>To install MW4 on your computer, there are some support scripts available for
+Windows, OSx and Ubuntu to make it a little bit easier to install and run MW4. The
+scripts are online, and available from Github:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Please check also scripts for updates of the script as they improve
 over time!</p>
 </div>
-<p>Windows 10/11:</p>
-<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip</a></p>
-<p>MacOSx (please use Rosetta for M1 Macs):</p>
-<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip</a></p>
-<p>Ubuntu:</p>
-<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip</a></p>
-<p>UbuntuMate ARM64 (64bit):</p>
-<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/Mate_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/Mate_Scripts.zip</a></p>
-<p>StellarMate ARM64 (64bit):</p>
-<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/StellarMate64_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/StellarMate64_Scripts.zip</a></p>
-<p>UbuntuMate Astroberry ARM7 (32bit):</p>
-<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/Astroberry_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/Astroberry_Scripts.zip</a></p>
+<section id="windows-10-11">
+<h2>Windows 10/11:<a class="headerlink" href="#windows-10-11" title="Permalink to this heading">¶</a></h2>
+<p>Version 2.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Windows_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Windows_Scripts.zip</a></p>
+<p>Version 3.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Windows_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Windows_Scripts.zip</a></p>
+</section>
+<section id="macosx-please-use-rosetta-for-m1-macs">
+<h2>MacOSx (please use Rosetta for M1 Macs):<a class="headerlink" href="#macosx-please-use-rosetta-for-m1-macs" title="Permalink to this heading">¶</a></h2>
+<p>Version 2.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/2.0/MacOSx_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/2.0/MacOSx_Scripts.zip</a></p>
+<p>Version 3.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/MacOSx_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/MacOSx_Scripts.zip</a></p>
+</section>
+<section id="ubuntu">
+<h2>Ubuntu:<a class="headerlink" href="#ubuntu" title="Permalink to this heading">¶</a></h2>
+<p>Version 2.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Ubuntu_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Ubuntu_Scripts.zip</a></p>
+<p>Version 3.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Ubuntu_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Ubuntu_Scripts.zip</a></p>
+</section>
+<section id="ubuntumate-arm64-64bit">
+<h2>UbuntuMate ARM64 (64bit):<a class="headerlink" href="#ubuntumate-arm64-64bit" title="Permalink to this heading">¶</a></h2>
+<p>Version 2.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Mate_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Mate_Scripts.zip</a></p>
+<p>Version 3.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Mate_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Mate_Scripts.zip</a></p>
+</section>
+<section id="stellarmate-arm64-64bit">
+<h2>StellarMate ARM64 (64bit):<a class="headerlink" href="#stellarmate-arm64-64bit" title="Permalink to this heading">¶</a></h2>
+<p>Version 2.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/2.0/StellarMate64_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/2.0/StellarMate64_Scripts.zip</a></p>
+<p>Version 3.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/StellarMate64_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/StellarMate64_Scripts.zip</a></p>
+</section>
+<section id="ubuntumate-astroberry-arm7-32bit">
+<h2>UbuntuMate Astroberry ARM7 (32bit):<a class="headerlink" href="#ubuntumate-astroberry-arm7-32bit" title="Permalink to this heading">¶</a></h2>
+<p>Version 2.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip</a></p>
+<p>Version 3.x:</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Astroberry_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Astroberry_Scripts.zip</a></p>
 <p>Whereas &lt;x.x&gt; is the major version MW4 you would like to install.</p>
+</section>
 <section id="downloading-the-zip-files">
 <h2>Downloading the zip files<a class="headerlink" href="#downloading-the-zip-files" title="Permalink to this heading">¶</a></h2>
 <p>Please click the link and press download from the page:</p>

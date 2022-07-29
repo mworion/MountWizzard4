@@ -540,25 +540,23 @@ class Model:
             self.msg.emit(2, 'Model', 'Solving error', 'Result missing')
             self.app.operationRunning.emit(0)
             return False
-
-        if result['success']:
-            text = f'RA: {convertToHMS(result["raJ2000S"])} '
-            text += f'({result["raJ2000S"].hours:4.3f}), '
-            self.msg.emit(0, 'Model', 'Solved ', text)
-            text = f'DEC: {convertToDMS(result["decJ2000S"])} '
-            text += f'({result["decJ2000S"].degrees:4.3f}), '
-            self.msg.emit(0, '', '', text)
-            text = f'Angle: {result["angleS"]:3.0f}, '
-            self.msg.emit(0, '', '', text)
-            text = f'Scale: {result["scaleS"]:4.3f}, '
-            self.msg.emit(0, '', '', text)
-            text = f'Error: {result["errorRMS_S"]:4.1f}'
-            self.msg.emit(0, '', '', text)
-
-        else:
+        if not result['success']:
             self.msg.emit(2, 'Model', 'Solve error', f'{result.get("message")}')
             self.app.operationRunning.emit(0)
             return False
+
+        text = f'RA: {convertToHMS(result["raJ2000S"])} '
+        text += f'({result["raJ2000S"].hours:4.3f}), '
+        self.msg.emit(0, 'Model', 'Solved ', text)
+        text = f'DEC: {convertToDMS(result["decJ2000S"])} '
+        text += f'({result["decJ2000S"].degrees:4.3f}), '
+        self.msg.emit(0, '', '', text)
+        text = f'Angle: {result["angleS"]:3.0f}, '
+        self.msg.emit(0, '', '', text)
+        text = f'Scale: {result["scaleS"]:4.3f}, '
+        self.msg.emit(0, '', '', text)
+        text = f'Error: {result["errorRMS_S"]:4.1f}'
+        self.msg.emit(0, '', '', text)
 
         self.app.showImage.emit(result['solvedPath'])
 

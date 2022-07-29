@@ -84,18 +84,8 @@ issues on GitHub.
     :maxdepth: 2
 
     features
-    mw4/index
-    mount/index
-    almanac/index
-    environment/index
-    buildpoints/index
-    dome/index
-    iers/index
-    minorplanets/index
-    modeling/index
-    platesolve/index
-    satellite/index
-    architecture/index
     install/index
-    changelog
-    changelogScripts
+    config/index
+    using/index
+    architecture/index
+    changelog/index

@@ -915,9 +915,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return:
         """
-        if not imagePath:
-            return False
         if not os.path.isfile(imagePath):
+            self.app.operationRunning.emit(0)
             return False
 
         updateFits = self.ui.embedData.isChecked()
@@ -926,8 +925,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.plateSolve.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
         self.deviceStat['solve'] = True
-        self.msg.emit(0, 'Image', 'Solving',
-                      f'{os.path.basename(imagePath)}')
+        t = f'[{os.path.basename(imagePath)}]'
+        self.msg.emit(0, 'Image', 'Solving', t)
         return True
 
     def solveCurrent(self):

@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Install MW4" href="mw4.html" />
-    <link rel="prev" title="Install Process" href="index.html" />
+    <link rel="prev" title="Installing" href="index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -48,32 +48,30 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features.html">Feature Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mw4/index.html">Config and use MW4</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mount/index.html">Config and use Mount</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../almanac/index.html">Use Almanac</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../environment/index.html">Use Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../buildpoints/index.html">Generate Build Points</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dome/index.html">Config and use Dome</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../iers/index.html">Update IERS data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../minorplanets/index.html">Use Minor Planet data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modeling/index.html">Run Model Task</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../platesolve/index.html">Use Plate Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../satellite/index.html">Use Satellite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Install Process</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#an-example-setup">An example setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installing</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Install Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mw4.html">Install MW4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="astroberry.html">Install on Astroberry RaspberryPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stellarmate64.html">Install on StellarMate1.7++ (64bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rpi3.html">Install on RaspberryPi 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rpi4.html">Install on RaspberryPi 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update.html">Using the internal updater</a></li>
+<li class="toctree-l2"><a class="reference internal" href="platesolvers.html">Install Platesolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html">Example setup for rig</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../changelogScripts.html">Changelog for Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">Configuring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using/index.html">Using functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/index.html">Changelogs</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Install Process</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Install Process</a></li>
+  <li><a href="index.html">Installing</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Installing</a></li>
       <li>Next: <a href="mw4.html" title="next chapter">Install MW4</a></li>
   </ul></li>
   </ul></li>
@@ -112,7 +110,7 @@ framework for GUI. Different to past versions of MW there will be no one box
 solution (MAC bundle, EXE File, etc.) available. As MW4 is python3 and comes with
 internal update functionality, it uses a standard python3 environment. Ideally it
 is recommended in a virtualenv.</p>
-<p>MW4 is tested on python 3.7, 3.8 and 3.9. The first step is to install the python3
+<p>MW4 is tested on python 3.7 - 3.10. The first step is to install the python3
 .8.x package if not already installed. For all platforms there is an installer
 available. Please follow the descriptions that comes with the installers. To give
 a short overview here are some quick installation hints for all platforms. The
@@ -123,7 +121,7 @@ installers for Windows and OSx can be downloaded from python.org.</p>
 precompiled binaries with them and they might not be available for a newer
 python version. A good overview what could run is in the readme on github.</p>
 </div>
-<p>If you already have python 3.7 / 3.8 / 3.9 installed, you can skip this section
+<p>If you already have python 3.7 - 3.10 installed, you can skip this section
 and go directly to the MW4 installation process. If you have to install python3.8
 this has to be done only once for as many MW4 installations you might want.</p>
 <p>There is a video on youtube with the install process python: <a class="reference external" href="https://youtu.be/xJxpx_SmrVc">https://youtu.be/xJxpx_SmrVc</a>.</p>
@@ -152,27 +150,33 @@ installer from:</p>
 is selected and to install for a single user if you want to use the scripts.</p>
 </div>
 <a class="reference internal image-reference" href="../_images/python_win_path.png"><img alt="../_images/python_win_path.png" class="align-center" src="../_images/python_win_path.png" style="width: 476.40999999999997px; height: 296.78px;" /></a>
-<p>Depending on your preference you could install python 3.9 for a single user or for
+<p>Depending on your preference you could install python 3.10 for a single user or for
 all users. MW4 does not need admin rights to run, so please choose the variant for
 a single users if you want wo use the installation scripts. They depend on access
 rights as a normal user and you might run into troubles using different modes!</p>
 </section>
 <section id="mac-osx">
 <h2>Mac OSx<a class="headerlink" href="#mac-osx" title="Permalink to this heading">¶</a></h2>
-<p>Depending on your OSx version please download the installer for 3.9 from:</p>
+<p>Depending on your OSx version please download the installer for 3.10 from:</p>
 <p><a class="reference external" href="https://www.python.org/downloads/mac-osx/">https://www.python.org/downloads/mac-osx/</a></p>
 <p>and follow the installation procedure. Depending on your preference you could install
 python3 for a single user or for all users. MW4 does not need admin rights to run,
 so please feel free to choose the variant you would like to use.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using a Mac with Apple silicon need special treatment. There is rather any
+experience with these setups. Actually MW4 only support Intel architecture so
+you need to use the Rosetta emulator.</p>
+</div>
 </section>
 <section id="ubuntu">
 <h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this heading">¶</a></h2>
 <p>Referring to Ubuntu 18.04 LTS as it comes with python3.6. This should work, but
-you could upgrade to python 3.9.x. This could be done by adding an appropriate
+you could upgrade to python 3.10. This could be done by adding an appropriate
 repo, which enables this version.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>If you update to a higher python version, please update to python 3.9.x if you
+<p>If you update to a higher python version, please update to python 3.10 if you
 want in a way, which fits best to your environment. There are many
 descriptions out, so please search for it in case you don’t know exactly.</p>
 </div>
@@ -180,7 +184,7 @@ descriptions out, so please search for it in case you don’t know exactly.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span> <span class="n">ppa</span><span class="p">:</span><span class="n">deadsnakes</span><span class="o">/</span><span class="n">ppa</span>
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">upgrade</span>
-<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="mf">.8</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="mf">.10</span>
 </pre></div>
 </div>
 <p>Please check the right version and the availability of virtualenv in your setup. If

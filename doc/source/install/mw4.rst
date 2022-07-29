@@ -1,7 +1,7 @@
 Install MW4
 ===========
 
-When starting with the installation of MW4, python 3.7.x, 3.8.x or 3.9.x should be successful
+When starting with the installation of MW4, python 3.7 - 3.10 should be successful
 installed. To check, open a terminal (available on all platforms) and run the command
 
 .. code-block:: python
@@ -9,64 +9,97 @@ installed. To check, open a terminal (available on all platforms) and run the co
     python --version
     virtualenv --version
 
-if you are on Ubuntu or Mac, you might have python 2 and python3 versions installed, please
-refer to the following command:
+if you are on Ubuntu or Mac, you might have python 2 and python3 versions installed,
+please refer to the following command:
 
 .. code-block:: python
 
     python3 --version
     virtualenv --version
 
-If you have on Ubuntu and Mac mor than one python3 version installed, please refer to the
-following command:
+If you have on Ubuntu and Mac mor than one python3 version installed, please refer
+to the following command:
 
 .. code-block:: python
 
-    python3.7 --version
-    -- or --
-    python3.8 --version
-    -- or --
-    python3.9 --version
+    python3.XX --version
 
     virtualenv --version
 
-In one of the choices you should see the version number of the installed and available
-packages. For python it should say 3.7.x, 3.8.x or 3.9.x.
+In one of the choices you should see the version number of the installed and
+available packages. For python it should say 3.7.x ... 3.10.x.
 
-.. hint:: MW4 does not need admin rights to install or run. To avoid problems with accessing
-          directories or file please ensure, that you run install and MW4 itself as normal
-          user!
+.. hint:: MW4 does not need admin rights to install or run. To avoid problems
+          with accessing directories or file please ensure, that you run install
+          and MW4 itself as normal user!
 
-To install MW4 on your computer, there are some support scripts available for Windows, OSx
-and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
-available from Github:
+To install MW4 on your computer, there are some support scripts available for
+Windows, OSx and Ubuntu to make it a little bit easier to install and run MW4. The
+scripts are online, and available from Github:
 
 .. note:: Please check also scripts for updates of the script as they improve
           over time!
 
 Windows 10/11:
+--------------
+Version 2.x:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Windows_Scripts.zip
+
+Version 3.x:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Windows_Scripts.zip
+
 
 MacOSx (please use Rosetta for M1 Macs):
+----------------------------------------
+Version 2.x:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/2.0/MacOSx_Scripts.zip
+
+Version 3.x:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/MacOSx_Scripts.zip
 
 Ubuntu:
+-------
+Version 2.x:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Ubuntu_Scripts.zip
+
+Version 3.x:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Ubuntu_Scripts.zip
 
 UbuntuMate ARM64 (64bit):
+-------------------------
+Version 2.x:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/Mate_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Mate_Scripts.zip
+
+Version 3.x:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Mate_Scripts.zip
 
 StellarMate ARM64 (64bit):
+--------------------------
+Version 2.x:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/StellarMate64_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/2.0/StellarMate64_Scripts.zip
+
+Version 3.x:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/StellarMate64_Scripts.zip
 
 UbuntuMate Astroberry ARM7 (32bit):
+-----------------------------------
+Version 2.x:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/Astroberry_Scripts.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip
+
+Version 3.x:
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Astroberry_Scripts.zip
 
 Whereas <x.x> is the major version MW4 you would like to install.
 

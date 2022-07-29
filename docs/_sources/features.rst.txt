@@ -24,9 +24,10 @@ For being fully operational, MW4 needs either:
 -   In addition an internet connection is used for some services which might be
     very helpful.
 
-It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some
-of the functions don't work with older firmware versions. It should not be a
-problem using older versions. A HW pre2012 might also have some issues.
+It is recommended to use mount firmware 3.x or later as some of the functions
+don't work with older firmware versions. It should not be a problem using older
+versions. A HW pre2012 might also have some issues. MW4 supports also older
+firmwares from 2.x onwards, but with limited features and untested.
 
 
 .. list-table:: Supported devices and frameworks in MW4

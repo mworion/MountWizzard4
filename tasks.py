@@ -20,6 +20,7 @@ from PIL import Image
 import glob
 import time
 import os
+import zipapp
 
 rn = ''
 #
@@ -281,6 +282,30 @@ def test_windows(c, user, work, scp):
         runMW(c, f'ssh {user} "cd {work} && MW4_Run.bat"')
 
 
+def test_windows_3(c, user, work, scp):
+    printMW('...delete test dir')
+    runMW(c, f'ssh {user} "if exist {work} rd /s /q {work}"')
+    time.sleep(1)
+    printMW('...make test dir')
+    runMW(c, f'ssh {user} "if not exist {work} mkdir {work}"')
+    time.sleep(1)
+
+    with c.cd('dist'):
+        printMW('...copy *.tar.gz to test dir')
+        runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
+
+    with c.cd('support'):
+        printMW('...make zip archive')
+        zipapp.create_archive('./support/startup',
+                              target='./support/startup/startup.pyz',
+                              compressed=True,
+                              main='startup:main')
+        printMW('...copy install script to test dir')
+        runMW(c, f'scp -r ./startup/startup.pyz {scp}')
+        runMW(c, f'ssh {user} "cd {work} && echo > test.txt"')
+        # runMW(c, f'ssh {user} "cd {work} && python startup.pyz"')
+
+
 def test_ubuntu_main(c, user, work, scp):
     printMW('...delete test dir')
     runMW(c, f'ssh {user} "rm -rf {work}"')
@@ -370,6 +395,16 @@ def test_win1064(c):
     work = client['win10-64']['work']
     scp = client['win10-64']['scp']
     test_windows(c, user, work, scp)
+    printMW('test windows10 install finished\n')
+
+
+@task(pre=[])
+def test_win1064_3(c):
+    printMW('test windows10 64 install')
+    user = client['win10-64']['user']
+    work = client['win10-64']['work']
+    scp = client['win10-64']['scp']
+    test_windows_3(c, user, work, scp)
     printMW('test windows10 install finished\n')
 
 

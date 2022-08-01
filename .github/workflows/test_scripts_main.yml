@@ -24,7 +24,7 @@ jobs:
   
   install_windows:
     runs-on: windows-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/setup-python@v4
         with:
@@ -50,7 +50,7 @@ jobs:
   
   install_ubuntu:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/setup-python@v4
         with:
@@ -83,7 +83,7 @@ jobs:
           
   install_macOS:
     runs-on: macos-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/setup-python@v4
         with:

@@ -184,19 +184,24 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
-def installMW4(venvContext, upgrade=False, upgradeBeta=False):
+def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     """
     :param venvContext:
     :param upgrade:
     :param upgradeBeta:
+    :param version:
     :return:
     """
     command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
                         recursive=True)
 
     hasInstall = len(command) == 1
-    if hasInstall and not upgrade:
+    if hasInstall:
         print('MountWizzard4 present')
+    else:
+        print('MountWizzard4 not present')
+
+    if hasInstall and not (upgrade or upgradeBeta):
         print('...starting')
         return command
 
@@ -208,18 +213,19 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False):
     else:
         package = 'mountwizzard4'
 
-    if upgrade:
-        print('MountWizzard4 present')
+    if version:
+        print(f'...upgrading to version {version}')
+        print('...this will take some time')
+        command = ['-m', 'pip', 'install', '-U', f'{package}={version}']
+    elif upgrade:
         print('...upgrading to latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package]
     elif upgradeBeta:
-        print('MountWizzard4 present')
-        print('...upgrading to latest beta')
+        print('...upgrading to latest version including beta')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package, '--pre']
     else:
-        print('MountWizzard4 not present')
         print('...installing latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', package]
@@ -236,7 +242,7 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False):
 
 
 def cleanSystem():
-    print('Clean system from packages')
+    print('Clean system site-packages')
     print('...takes some time')
 
     if platform.system() == 'Windows':
@@ -289,6 +295,9 @@ def main(args=None):
         '--upgrade-beta', default=False, action='store_true', dest='upgradeMW4beta',
         help='Upgrade MountWizzard4 to the actual beta version')
     parser.add_argument(
+        '--version', default='', type=str, dest='version',
+        help='Upgrade MountWizzard4 to the named version')
+    parser.add_argument(
         '--no-start', default=False, action='store_true', dest='noStart',
         help='Running script without starting MountWizzard4')
     parser.add_argument(
@@ -310,7 +319,8 @@ def main(args=None):
 
     command = installMW4(venvContext,
                          upgrade=options.upgradeMW4,
-                         upgradeBeta=options.upgradeMW4beta)
+                         upgradeBeta=options.upgradeMW4beta,
+                         version=options.version)
 
     if options.scaleFactor != 1 or options.fontDPI != 96:
         os.environ['QT_SCALE_FACTOR'] = str(options.scaleFactor)

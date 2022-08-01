@@ -266,10 +266,10 @@ def main(args=None):
         '--no-start', default=False, action='store_true', dest='noStart',
         help='Running script without starting MountWizzard4')
     parser.add_argument(
-        '--QT_SCALE_FACTOR', default=1, type=int, dest='scale',
+        '--QT_SCALE_FACTOR', default=1, type=int, dest='scaleFactor',
         help='Setting DPI scale factor for MountWizzard4')
     parser.add_argument(
-        '--QT_FONT_DPI', default=96, type=int, dest='font',
+        '--QT_FONT_DPI', default=96, type=int, dest='fontDPI',
         help='Setting font DPI for MountWizzard4')
 
     options = parser.parse_args(args)
@@ -277,8 +277,10 @@ def main(args=None):
     venvContext = venvCreate(venvPath, upgrade=options.upgrade)
     command = installMW4(venvContext, upgrade=options.upgradeMW4)
 
-    if options.scale != 1 or options.font != 96:
-        QT = ['']
+    if options.scaleFactor != 1 or options.fontDPI != 96:
+        os.environ['QT_SCALE_FACTOR'] = str(options.scaleFactor)
+        os.environ['QT_FONT_DPI'] = str(options.fontDPI)
+
     if not options.noStart:
         runPythonInVenv(venvContext, command)
 

@@ -3,14 +3,14 @@
 #
 # v 1.0, Michael Wuertenberger
 #
-name: test_packages
+name: test_scripts_packages
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
 env:
-  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/2.0/'
+  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/startup/'
   wid: 'mw4/gui/widgets/'
   uic: 'python -m PyQt5.uic.pyuic'
   ucc: 'python -m PyQt5.pyrcc_main'
@@ -21,7 +21,7 @@ on:
     # Run this action on the trigger event when specific files are touched
     paths:
       - 'setup.py'
-      - '.github/workflows/test_packages.yml'
+      - '.github/workflows/test_scripts_packages.yml'
 
 jobs:
   build_widgets_resource:
@@ -77,7 +77,6 @@ jobs:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 3
       matrix:
         os: [windows-latest]
         python-version: [3.9]
@@ -101,36 +100,29 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Windows/MW4_InstallTest.bat
-          target: dist/
-
-      - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1
-        with:
-          url: ${{ env.gh }}Windows/MW4_Run.bat
+          url: ${{ env.gh }}startup/startup.py
           target: dist/
           
       - name: MountWizzard4 Install
         shell: cmd
         run: |
           cd dist
-          call MW4_InstallTest.bat
-          more install.log
+          touch test.package
+          python startup.py --no-start
+          dir
           
       - name: Run MountWizzard4
         shell: cmd
         run: |
           cd dist
           touch test.txt
-          call MW4_Run.bat
+          python startup.py
           dir
-          more run.log
 
   install_package_ubuntu:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 3
       matrix:
         os: [ubuntu-latest]
         python-version: [3.9]
@@ -158,40 +150,31 @@ jobs:
           sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
           sudo apt-get install -y libxcb-keysyms1
 
-      - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1
-        with:
-          url: ${{ env.gh }}Ubuntu/MW4_InstallTest.sh
-          target: dist/
-
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Ubuntu/MW4_Run.sh
+          url: ${{ env.gh }}startup/startup.py
           target: dist/
           
       - name: MountWizzard4 Install
         run: |
           cd dist
-          chmod 777 MW4_InstallTest.sh
-          ./MW4_InstallTest.sh
-          cat install.log
+          touch test.package
+          python3 startup.py --no-start
+          ls -la
           
       - name: Run MountWizzard4
         run: |
           cd dist
-          chmod 777 MW4_Run.sh
           touch test.txt
-          xvfb-run ./MW4_Run.sh
+          xvfb-run python3 startup.py
           ls -la
-          cat run.log
 
 
   install_package_macOS:
     needs: [build_widgets_resource]
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 3
       matrix:
         os: [macos-latest]
         python-version: [3.9]
@@ -208,30 +191,22 @@ jobs:
           name: dist
           path: dist
 
-      - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1
-        with:
-          url: ${{ env.gh }}MacOSx/MW4_InstallTest.command
-          target: dist/
-
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}MacOSx/MW4_Run.command
+          url: ${{ env.gh }}startup/startup.py
           target: dist/
           
       - name: MountWizzard4 Install
         run: |
           cd dist
-          chmod 777 MW4_InstallTest.command
-          ./MW4_InstallTest.command
-          cat install.log
+          touch test.package
+          python3 startup.py --no-start
+          ls -la
           
       - name: Run MountWizzard4
         run: |
           cd dist
-          chmod 777 MW4_Run.command
           touch test.txt
-          ./MW4_Run.command
+          python3 startup.py
           ls -la
-          cat run.log

@@ -201,7 +201,7 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     else:
         print('MountWizzard4 not present')
 
-    if hasInstall and not (upgrade or upgradeBeta):
+    if hasInstall and not (upgrade or upgradeBeta or version):
         print('...starting')
         return command
 
@@ -214,9 +214,9 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         package = 'mountwizzard4'
 
     if version:
-        print(f'...upgrading to version {version}')
+        print(f'...installing version {version}')
         print('...this will take some time')
-        command = ['-m', 'pip', 'install', '-U', f'{package}={version}']
+        command = ['-m', 'pip', 'install', f'{package}=={version}']
     elif upgrade:
         print('...upgrading to latest release')
         print('...this will take some time')
@@ -231,7 +231,8 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         command = ['-m', 'pip', 'install', package]
 
     runPythonInVenv(venvContext, command)
-    if upgrade:
+
+    if upgrade or upgradeBeta:
         print('Upgrade finished')
     else:
         print('Install finished')

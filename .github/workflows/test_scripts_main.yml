@@ -76,12 +76,15 @@ jobs:
         run: |
           touch test.package
           python3 startup.py --no-start
+          ls -la
+          ls -la venv/lib/python3.9/site-packages
   
       - name: Run MountWizzard4
         run: |
           touch test.run
           xvfb-run python3 startup.py
           ls -la
+          ls -la venv/lib/python3.9/site-packages
           
   install_macOS:
     runs-on: macos-latest

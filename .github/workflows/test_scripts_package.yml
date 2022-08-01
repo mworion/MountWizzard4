@@ -3,7 +3,7 @@
 #
 # v 1.0, Michael Wuertenberger
 #
-name: test_scripts
+name: test_scripts_package
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

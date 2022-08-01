@@ -298,7 +298,6 @@ def main(args=None):
     venvContext = venvCreate(venvPath, upgrade=options.upgrade)
     if options.clean:
         cleanSystem()
-        return
 
     command = installMW4(venvContext, upgrade=options.upgradeMW4)
 

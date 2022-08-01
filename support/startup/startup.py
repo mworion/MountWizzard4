@@ -229,6 +229,21 @@ def installMW4(venvContext, upgrade=False):
     return command
 
 
+def cleanSystem():
+    print('Clean system from packages')
+    print('...takes some time')
+
+    if platform.system() == 'Windows':
+        py = 'python'
+    else:
+        py = 'python3'
+
+    os.system(f'{py} -m pip freeze > clean.txt')
+    os.system(f'{py} -m pip uninstall -y -r clean.txt')
+    print('Clean finished')
+    print()
+
+
 def main(args=None):
     """
     :return:
@@ -266,14 +281,21 @@ def main(args=None):
         '--no-start', default=False, action='store_true', dest='noStart',
         help='Running script without starting MountWizzard4')
     parser.add_argument(
-        '--QT_SCALE_FACTOR', default=1, type=int, dest='scaleFactor',
+        '--clean_system', default=False, action='store_true', dest='clean',
+        help='Cleaning system packages from faulty installs')
+    parser.add_argument(
+        '--QT_SCALE_FACTOR', default=1, type=float, dest='scaleFactor',
         help='Setting DPI scale factor for MountWizzard4')
     parser.add_argument(
-        '--QT_FONT_DPI', default=96, type=int, dest='fontDPI',
+        '--QT_FONT_DPI', default=96, type=float, dest='fontDPI',
         help='Setting font DPI for MountWizzard4')
 
     options = parser.parse_args(args)
     venvPath = pathlib.Path.cwd().joinpath('venv')
+
+    if clean:
+        cleanSystem()
+
     venvContext = venvCreate(venvPath, upgrade=options.upgrade)
     command = installMW4(venvContext, upgrade=options.upgradeMW4)
 

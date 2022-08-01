@@ -48,7 +48,7 @@ def test_start_parameters_1(qapp):
               'modelDir': 'tests/workDir/model',
               'workDir': 'tests/workDir',
               }
-    with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
+    with open(mwGlob['workDir'] + '/test.run', 'w+') as test:
         test.write('test')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
@@ -72,7 +72,7 @@ def test_start_parameters_2(qapp):
               'modelDir': 'tests/workDir/model',
               'workDir': 'tests/workDir',
               }
-    with open(mwGlob['workDir'] + '/test.txt', 'w+') as test:
+    with open(mwGlob['workDir'] + '/test.run', 'w+') as test:
         test.write('test')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,

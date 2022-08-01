@@ -28,6 +28,7 @@ from logging.handlers import RotatingFileHandler
 import argparse
 
 log = logging.getLogger()
+version = '3.0'
 
 
 class EnvBuilder(venv.EnvBuilder):
@@ -130,6 +131,7 @@ def venvCreate(venvPath, upgrade=False):
     print('-' * 40)
     print('MountWizzard4')
     print('-' * 40)
+    print(f'scrip version    : {version}')
     print(f'platform         : {platform.system()}')
     print(f'machine          : {platform.machine()}')
     print(f'python           : {platform.python_version()}')
@@ -137,6 +139,7 @@ def venvCreate(venvPath, upgrade=False):
     print()
 
     log.info('-' * 100)
+    log.info(f'scrip version    : {version}')
     log.info(f'platform         : {platform.system()}')
     log.info(f'sys.executable   : {sys.executable}')
     log.info(f'actual workdir   : {os.getcwd()}')
@@ -196,16 +199,25 @@ def installMW4(venvContext, upgrade=False):
         print('...starting')
         return command
 
+    isTest = os.path.isfile('test.package')
+    if isTest:
+        package = 'mountwizzard4.tar.gz'
+        print()
+        print('Test setup')
+        print()
+    else:
+        package = 'mountwizzard4'
+
     if upgrade:
         print('MountWizzard4 present')
         print('...upgrading to latest release')
         print('...this will take some time')
-        command = ['-m', 'pip', 'install', '-U', 'mountwizzard4.tar.gz']
+        command = ['-m', 'pip', 'install', '-U', package]
     else:
         print('MountWizzard4 not present')
         print('...installing to latest release')
         print('...this will take some time')
-        command = ['-m', 'pip', 'install', 'mountwizzard4.tar.gz']
+        command = ['-m', 'pip', 'install', package]
 
     runPythonInVenv(venvContext, command)
     if upgrade:

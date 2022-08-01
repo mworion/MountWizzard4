@@ -16,7 +16,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/test_scripts.yml'
+      - '.github/workflows/test_scripts_main.yml'
       - 'support/**'
       - 'setup.py'
 
@@ -44,8 +44,8 @@ jobs:
       - name: Run MountWizzard4
         shell: cmd
         run: |
-          touch test.txt
-          python startup.pyz --no-start
+          touch test.run
+          python startup.pyz
           dir
   
   install_ubuntu:
@@ -77,7 +77,7 @@ jobs:
   
       - name: Run MountWizzard4
         run: |
-          touch test.txt
+          touch test.run
           xvfb-run python startup.pyz
           ls -la
           
@@ -101,6 +101,6 @@ jobs:
           
       - name: Run MountWizzard4
         run: |
-          touch test.txt
+          touch test.run
           python startup.pyz
           ls -la

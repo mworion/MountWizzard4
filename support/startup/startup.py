@@ -202,8 +202,7 @@ def installMW4(venvContext, upgrade=False):
     isTest = os.path.isfile('test.package')
     if isTest:
         package = 'mountwizzard4.tar.gz'
-        print()
-        print('Test setup')
+        print('Test setup - using local package')
         print()
     else:
         package = 'mountwizzard4'

@@ -215,7 +215,7 @@ def installMW4(venvContext, upgrade=False):
         command = ['-m', 'pip', 'install', '-U', package]
     else:
         print('MountWizzard4 not present')
-        print('...installing to latest release')
+        print('...installing latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', package]
 
@@ -236,7 +236,7 @@ def main(args=None):
     """
     setupLogging()
     compatible = True
-    if sys.version_info < (3, 7):
+    if sys.version_info < (3, 7) or sys.version_info >= (3, 11):
         compatible = False
     elif not hasattr(sys, 'base_prefix'):
         compatible = False
@@ -246,7 +246,7 @@ def main(args=None):
         print()
         print('-' * 40)
         print('MountWizzard4 startup')
-        print('needs python3.7 or newer')
+        print('needs python3.7 .. 3.10')
         print('...closing application')
         print()
         print('-' * 40)

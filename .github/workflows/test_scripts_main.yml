@@ -73,12 +73,12 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python startup.pyz --no-start
+          python3 startup.pyz --no-start
   
       - name: Run MountWizzard4
         run: |
           touch test.run
-          xvfb-run python startup.pyz
+          xvfb-run python3 startup.pyz
           ls -la
           
   install_macOS:
@@ -97,10 +97,10 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python startup.pyz --no-start
+          python3 startup.pyz --no-start
           
       - name: Run MountWizzard4
         run: |
           touch test.run
-          python startup.pyz
+          python3 startup.pyz
           ls -la

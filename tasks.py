@@ -269,25 +269,26 @@ def test_windows(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support/3.0/Windows'):
+    with c.cd('support'):
+        printMW('...make zip archive')
+        zipapp.create_archive('./support/startup',
+                              target='./support/startup/startup.pyz',
+                              compressed=True,
+                              main='startup:main')
         printMW('...copy install script to test dir')
-        runMW(c, f'scp -r MW4_InstallTest.bat {scp}')
-        runMW(c, f'scp -r MW4_Install.bat {scp}')
-        printMW('...run install script in test dir')
-        runMW(c, f'ssh {user} "cd {work} && MW4_InstallTest.bat"')
-        printMW('...copy run script to test dir')
+        runMW(c, f'scp -r ./startup/startup.pyz {scp}')
         runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-        runMW(c, f'scp -r MW4_Run.bat {scp}')
-        printMW('...run MountWizzard4 for 3 seconds')
-        runMW(c, f'ssh {user} "cd {work} && MW4_Run.bat"')
+        runMW(c, f'ssh {user} "cd {work} && echo > test.package"')
+        runMW(c, f'ssh {user} "cd {work} && python startup.pyz --no-start"')
+        runMW(c, f'ssh {user} "cd {work} && python startup.pyz"')
 
 
-def test_windows_3(c, user, work, scp):
+def test_ubuntu_main(c, user, work, scp):
     printMW('...delete test dir')
-    runMW(c, f'ssh {user} "if exist {work} rd /s /q {work}"')
+    runMW(c, f'ssh {user} "rm -rf {work}"')
     time.sleep(1)
     printMW('...make test dir')
-    runMW(c, f'ssh {user} "if not exist {work} mkdir {work}"')
+    runMW(c, f'ssh {user} "mkdir {work}"')
     time.sleep(1)
 
     with c.cd('dist'):
@@ -303,34 +304,9 @@ def test_windows_3(c, user, work, scp):
         printMW('...copy install script to test dir')
         runMW(c, f'scp -r ./startup/startup.pyz {scp}')
         runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-        # runMW(c, f'ssh {user} "cd {work} && python startup.pyz"')
-
-
-def test_ubuntu_main(c, user, work, scp):
-    printMW('...delete test dir')
-    runMW(c, f'ssh {user} "rm -rf {work}"')
-    time.sleep(1)
-    printMW('...make test dir')
-    runMW(c, f'ssh {user} "mkdir {work}"')
-    time.sleep(1)
-
-    with c.cd('dist'):
-        printMW('...copy *.tar.gz to test dir')
-        runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
-
-    with c.cd('support/3.0/Ubuntu'):
-        printMW('...copy install script to test dir')
-        runMW(c, f'scp -r MW4_InstallTest.sh {scp}')
-        runMW(c, f'scp -r MW4_Install.sh {scp}')
-        printMW('...run install script in test dir')
-        runMW(c, f'ssh {user} "cd {work} && ./MW4_InstallTest.sh"')
-        printMW('...copy run script and environ to test dir')
-        runMW(c, f'ssh {user} "cd {work} && touch test.run"')
-        runMW(c, f'scp -r MW4_Run.sh {scp}')
-        runMW(c, f'scp -r MountWizzard4.desktop {scp}')
-        runMW(c, f'scp -r mw4.png {scp}')
-        printMW('...run MountWizzard4 for 3 seconds')
-        runMW(c, f'ssh {user} "cd {work} && xvfb-run ./MW4_Run.sh"')
+        runMW(c, f'ssh {user} "cd {work} && echo > test.package"')
+        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
+        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
 
 
 def test_mac(c, user, work, scp):
@@ -345,17 +321,18 @@ def test_mac(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support/3.0/MacOSx'):
+    with c.cd('support'):
+        printMW('...make zip archive')
+        zipapp.create_archive('./support/startup',
+                              target='./support/startup/startup.pyz',
+                              compressed=True,
+                              main='startup:main')
         printMW('...copy install script to test dir')
-        runMW(c, f'scp -r MW4_InstallTest.command {scp}')
-        runMW(c, f'scp -r MW4_Install.command {scp}')
-        printMW('...run install script in test dir')
-        runMW(c, f'ssh {user} "cd {work} && ./MW4_InstallTest.command"')
-        printMW('...copy run script and environ to test dir')
-        runMW(c, f'ssh {user} "cd {work} && touch test.run"')
-        runMW(c, f'scp -r MW4_Run.command {scp}')
-        printMW('...run MountWizzard4 for 3 seconds')
-        runMW(c, f'ssh {user} "cd {work} && ./MW4_Run.command"')
+        runMW(c, f'scp -r ./startup/startup.pyz {scp}')
+        runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
+        runMW(c, f'ssh {user} "cd {work} && echo > test.package"')
+        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
+        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
 
 
 @task(pre=[])
@@ -395,16 +372,6 @@ def test_win1064(c):
     work = client['win10-64']['work']
     scp = client['win10-64']['scp']
     test_windows(c, user, work, scp)
-    printMW('test windows10 install finished\n')
-
-
-@task(pre=[])
-def test_win1064_3(c):
-    printMW('test windows10 64 install')
-    user = client['win10-64']['user']
-    work = client['win10-64']['work']
-    scp = client['win10-64']['scp']
-    test_windows_3(c, user, work, scp)
     printMW('test windows10 install finished\n')
 
 

@@ -184,10 +184,11 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
-def installMW4(venvContext, upgrade=False):
+def installMW4(venvContext, upgrade=False, upgradeBeta=False):
     """
     :param venvContext:
     :param upgrade:
+    :param upgradeBeta:
     :return:
     """
     command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
@@ -212,6 +213,11 @@ def installMW4(venvContext, upgrade=False):
         print('...upgrading to latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package]
+    elif upgradeBeta:
+        print('MountWizzard4 present')
+        print('...upgrading to latest beta')
+        print('...this will take some time')
+        command = ['-m', 'pip', 'install', '-U', package, '--pre']
     else:
         print('MountWizzard4 not present')
         print('...installing latest release')
@@ -277,8 +283,11 @@ def main(args=None):
         help='Upgrade the virtual environment directory to use this version of '
              'Python, assuming Python has been upgraded in-place.')
     parser.add_argument(
-        '--upgrade-mw4', default=False, action='store_true', dest='upgradeMW4',
+        '--upgrade', default=False, action='store_true', dest='upgradeMW4',
         help='Upgrade MountWizzard4 to the actual release version')
+    parser.add_argument(
+        '--upgrade-beta', default=False, action='store_true', dest='upgradeMW4beta',
+        help='Upgrade MountWizzard4 to the actual beta version')
     parser.add_argument(
         '--no-start', default=False, action='store_true', dest='noStart',
         help='Running script without starting MountWizzard4')
@@ -299,7 +308,9 @@ def main(args=None):
     if options.clean:
         cleanSystem()
 
-    command = installMW4(venvContext, upgrade=options.upgradeMW4)
+    command = installMW4(venvContext,
+                         upgrade=options.upgradeMW4,
+                         upgradeBeta=options.upgradeMW4beta)
 
     if options.scaleFactor != 1 or options.fontDPI != 96:
         os.environ['QT_SCALE_FACTOR'] = str(options.scaleFactor)

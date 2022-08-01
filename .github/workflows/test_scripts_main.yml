@@ -39,6 +39,7 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
+          touch test.package
           python startup.pyz --no-start
       
       - name: Run MountWizzard4
@@ -73,6 +74,7 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
+          touch test.package
           python3 startup.pyz --no-start
   
       - name: Run MountWizzard4
@@ -97,6 +99,7 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
+          touch test.package
           python3 startup.pyz --no-start
           
       - name: Run MountWizzard4

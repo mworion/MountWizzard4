@@ -238,8 +238,10 @@ def cleanSystem():
     else:
         py = 'python3'
 
+    print()
     os.system(f'{py} -m pip freeze > clean.txt')
-    os.system(f'{py} -m pip uninstall -y -r clean.txt')
+    os.system(f'{py} -m pip uninstall -y -r clean.txt >> clean.txt')
+    print()
     print('Clean finished')
     print()
 
@@ -295,6 +297,7 @@ def main(args=None):
 
     if options.clean:
         cleanSystem()
+        return
 
     venvContext = venvCreate(venvPath, upgrade=options.upgrade)
     command = installMW4(venvContext, upgrade=options.upgradeMW4)

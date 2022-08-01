@@ -131,7 +131,7 @@ def venvCreate(venvPath, upgrade=False):
     print('-' * 40)
     print('MountWizzard4')
     print('-' * 40)
-    print(f'scrip version    : {version}')
+    print(f'script version   : {version}')
     print(f'platform         : {platform.system()}')
     print(f'machine          : {platform.machine()}')
     print(f'python           : {platform.python_version()}')
@@ -139,7 +139,7 @@ def venvCreate(venvPath, upgrade=False):
     print()
 
     log.info('-' * 100)
-    log.info(f'scrip version    : {version}')
+    log.info(f'script version   : {version}')
     log.info(f'platform         : {platform.system()}')
     log.info(f'sys.executable   : {sys.executable}')
     log.info(f'actual workdir   : {os.getcwd()}')

@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/3.0/'
+  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/'
 
 on:
   push:
@@ -30,31 +30,23 @@ jobs:
         with:
           python-version: '3.9'
       
-      - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1
-        with:
-          url: ${{ env.gh }}Windows/MW4_Install.bat
-          target: .
-      
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Windows/MW4_Run.bat
+          url: ${{ env.gh }}startup/startup.pyz
           target: .
       
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          call MW4_Install.bat
-          more install.log
+          python startup.pyz --no-start
       
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.txt
-          call MW4_Run.bat
+          python startup.pyz --no-start
           dir
-          more run.log
   
   install_ubuntu:
     runs-on: ubuntu-latest
@@ -76,28 +68,18 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}Ubuntu/MW4_Install.sh
-          target: .
-
-      - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1
-        with:
-          url: ${{ env.gh }}Ubuntu/MW4_Run.sh
+          url: ${{ env.gh }}startup/startup.pyz
           target: .
           
       - name: MountWizzard4 Install
         run: |
-          chmod 777 MW4_Install.sh
-          ./MW4_Install.sh
-          cat install.log
+          python startup.pyz --no-start
   
       - name: Run MountWizzard4
         run: |
           touch test.txt
-          chmod 777 MW4_Run.sh
-          xvfb-run ./MW4_Run.sh
+          xvfb-run python startup.pyz
           ls -la
-          cat run.log
           
   install_macOS:
     runs-on: macos-latest
@@ -110,25 +92,15 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}MacOSx/MW4_Install.command
-          target: .
-
-      - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1
-        with:
-          url: ${{ env.gh }}MacOSx/MW4_Run.command
+          url: ${{ env.gh }}startup/startup.pyz
           target: .
           
       - name: MountWizzard4 Install
         run: |
-          chmod 777 MW4_Install.command
-          ./MW4_Install.command
-          cat install.log
+          python startup.pyz --no-start
           
       - name: Run MountWizzard4
         run: |
-          chmod 777 MW4_Run.command
           touch test.txt
-          ./MW4_Run.command
+          python startup.pyz
           ls -la
-          cat run.log

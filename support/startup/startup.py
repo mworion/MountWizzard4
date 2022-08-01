@@ -293,7 +293,7 @@ def main(args=None):
     options = parser.parse_args(args)
     venvPath = pathlib.Path.cwd().joinpath('venv')
 
-    if clean:
+    if options.clean:
         cleanSystem()
 
     venvContext = venvCreate(venvPath, upgrade=options.upgrade)

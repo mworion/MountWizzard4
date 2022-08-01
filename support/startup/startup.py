@@ -295,11 +295,11 @@ def main(args=None):
     options = parser.parse_args(args)
     venvPath = pathlib.Path.cwd().joinpath('venv')
 
+    venvContext = venvCreate(venvPath, upgrade=options.upgrade)
     if options.clean:
         cleanSystem()
         return
 
-    venvContext = venvCreate(venvPath, upgrade=options.upgrade)
     command = installMW4(venvContext, upgrade=options.upgradeMW4)
 
     if options.scaleFactor != 1 or options.fontDPI != 96:

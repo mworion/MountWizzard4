@@ -46,6 +46,7 @@ jobs:
         shell: cmd
         run: |
           touch test.run
+          touch test.txt
           python startup.py
           dir
   
@@ -80,6 +81,7 @@ jobs:
       - name: Run MountWizzard4
         run: |
           touch test.run
+          touch test.txt
           xvfb-run python3 startup.py
           ls -la
           
@@ -105,5 +107,6 @@ jobs:
       - name: Run MountWizzard4
         run: |
           touch test.run
+          touch test.txt
           python3 startup.py
           ls -la

@@ -251,8 +251,10 @@ def cleanSystem():
         py = 'python3'
 
     print()
-    os.system(f'{py} -m pip freeze > clean.txt')
-    os.system(f'{py} -m pip uninstall -y -r clean.txt > clean.log')
+    ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
+    print(ret)
+    ret = os.popen(f'{py} -m pip uninstall -y -r clean.txt').read()
+    print(ret)
     print()
     print('Clean finished')
     print()

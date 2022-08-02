@@ -136,7 +136,6 @@ def venvCreate(venvPath, upgrade=False):
     print(f'machine          : {platform.machine()}')
     print(f'python           : {platform.python_version()}')
     print('-' * 40)
-    print()
 
     log.info('-' * 100)
     log.info(f'script version   : {version}')

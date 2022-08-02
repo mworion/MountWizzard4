@@ -253,7 +253,7 @@ def cleanSystem():
 
     print()
     os.system(f'{py} -m pip freeze > clean.txt')
-    os.system(f'{py} -m pip uninstall -y -r clean.txt >> clean.txt')
+    os.system(f'{py} -m pip uninstall -y -r clean.txt > clean.log')
     print()
     print('Clean finished')
     print()

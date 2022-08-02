@@ -259,8 +259,8 @@ jobs:
           run: |
             ls /root/support/*.*
             cd /root/support
-            python3 startup.py --no-start
+            python3 startup.pyz --no-start
             ls -la
             touch test.run
-            python3 startup.py
+            python3 startup.pyz
             ls -la

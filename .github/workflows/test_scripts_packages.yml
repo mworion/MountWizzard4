@@ -257,7 +257,6 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            cp
             ls /root/support/*.*
             cd /root/support
             python3 startup.py --no-start

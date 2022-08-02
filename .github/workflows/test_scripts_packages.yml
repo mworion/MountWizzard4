@@ -252,3 +252,50 @@ jobs:
           touch test.run
           python3 startup.py
           ls -la
+
+
+  install_package_armv7:
+    needs: [build_widgets_resource]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        python-version: [3.9]
+
+    steps:
+      - name: setup QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm
+          
+      - name: checkout
+        uses: actions/checkout@v3
+        
+      - name: setup_python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+  
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ env.gh }}startup/startup.py
+          target: dist/
+          
+      - name: MountWizzard4 Install
+        run: |
+          cd dist
+          python3 startup.py --no-start
+          ls -la
+          
+      - name: Run MountWizzard4
+        run: |
+          cd dist
+          touch test.run
+          python3 startup.py
+          ls -la

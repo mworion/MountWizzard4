@@ -104,7 +104,6 @@ jobs:
         shell: cmd
         run: |
           cd dist
-          touch test.package
           python startup.py --no-start
           dir
           
@@ -156,7 +155,6 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
-          touch test.package
           python3 startup.py --no-start
           ls -la
           
@@ -197,7 +195,6 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
-          touch test.package
           python3 startup.py --no-start
           ls -la
           

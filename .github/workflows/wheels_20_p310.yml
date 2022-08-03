@@ -60,29 +60,26 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             apt-get -y install pyqt5-dev pyqt5-dev-tools
-            python3.10 -m venv venv
-            source venv/bin/activate
-            
-            python --version
-            python -m pip install pip --upgrade
-            pip install setuptools --upgrade
-            pip install wheel
+            python3 --version
+            python3 -m pip install pip --upgrade
+            python3 -m pip install setuptools --upgrade
+            python3 -m pip install wheel
             
             ls /root/wheels/*.*
             
             if [ ! -f "/root/wheels/sgp4-2.21-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" ]
             then
-              pip wheel sgp4==2.21 -w "/root/wheels"
+              python3 -m pip wheel sgp4==2.21 -w "/root/wheels"
             fi
             
             if [ ! -f "/root/wheels/PyQt5_sip-12.10.1-cp310-cp310-linux_aarch64.whl" ]
             then
-              pip wheel pyqt5_sip==12.10.1 -w "/root/wheels"
+              python3 -m pip wheel pyqt5_sip==12.11.0 -w "/root/wheels"
             fi
             
-            if [ ! -f "/root/wheels/pyqt55-5.15.7-cp310-cp310-linux_aarch64.whl" ]
+            if [ ! -f "/root/wheels/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl" ]
             then
-              pip wheel pyqt5==5.15.7 -w "/root/wheels"
+              python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels"
             fi
 
       - name: Update changes in GitHub repository

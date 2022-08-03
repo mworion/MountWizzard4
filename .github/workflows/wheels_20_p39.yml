@@ -3,7 +3,7 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: wheels_20_39
+name: wheels_20_p39
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

@@ -59,11 +59,14 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            apt-get -y install pyqt5-dev pyqt5-dev-tools
+            apt-get -y install pyqt5-dev pyqt5-dev-tools python3-pip
+            apt-get -y install python3.10-venv
             python3 --version
-            python3 -m pip install pip --upgrade
-            python3 -m pip install setuptools --upgrade
-            python3 -m pip install wheel
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install pip --upgrade
+            pip install setuptools --upgrade
+            pip install wheel
             
             ls /root/wheels/*.*
             

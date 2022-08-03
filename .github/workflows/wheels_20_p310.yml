@@ -58,6 +58,8 @@ jobs:
             apt-get upgrade -y
             apt-get install -y apt-utils
             apt-get install -y --fix-missing
+            apt-get install -y software-properties-common
+            add-apt-repository ppa:deadsnakes/ppa
             
           # Produce a binary artifact and place it in the mounted volume
           run: |

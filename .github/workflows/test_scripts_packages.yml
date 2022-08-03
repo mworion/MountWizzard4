@@ -261,6 +261,7 @@ jobs:
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
+            apt-get -y install python3.10-venv python3.9-dev
             python3 --version
             ls /root/support/*.*
             cd /root/support

@@ -253,7 +253,9 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
-            
+            apt-get install -y software-properties-common
+            add-apt-repository ppa:deadsnakes/ppa
+
           # Produce a binary artifact and place it in the mounted volume
           run: |
             apt-get -y install python3.9 python3-pip python3.9-venv python3.9-dev

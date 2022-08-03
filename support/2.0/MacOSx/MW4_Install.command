@@ -97,7 +97,7 @@ echo installing mountwizzard4 - takes some time
 echo ---------------------------------------------
 
 echo checking system packages, should be no mw4 in >> install.log  2>&1
-python -p pip list >> install.log 2>&1
+python -m pip list >> install.log 2>&1
 
 source ./venv/bin/activate venv >> install.log 2>&1
 python -m pip install pip --upgrade >> install.log 2>&1
@@ -106,7 +106,7 @@ python -m pip install wheel --upgrade >> install.log 2>&1
 pip install mountwizzard4 --upgrade --no-cache-dir >> install.log 2>&1
 
 echo checking venv packages, mw4 should be present >> install.log  2>&1
-python -p pip list >> install.log 2>&1
+python -m pip list >> install.log 2>&1
 
 echo
 echo ---------------------------------------------

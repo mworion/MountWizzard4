@@ -263,7 +263,6 @@ jobs:
             ls /root/support/*.*
             cd /root/support
             python3 startup.pyz --no-start
-            ls -la
             touch test.run
-            python3 startup.pyz
+            ls -la venv/lib/python3.8/site-packages
             ls -la

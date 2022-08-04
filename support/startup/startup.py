@@ -194,15 +194,21 @@ def addArmSpecials(venvContext):
     if platform.machine() == 'aarch64':
         command = ['-m', 'pip', 'install', 'requests']
         runPythonInVenv(venvContext, command)
+        print('download PyQt5-SIP')
         requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
                      '/master/support/wheels/ubuntu22.04'
                      '/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl')
+        print('download PyQt5')
         requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
                      '/master/support/wheels/ubuntu20.04'
                      '/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl')
         pyqt5sip = 'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl'
         pyqt5 = 'PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64'
-        command = ['-m', 'pip', 'install', pyqt5sip, pyqt5]
+        print('install PyQt5-SIP')
+        command = ['-m', 'pip', 'install', pyqt5sip]
+        runPythonInVenv(venvContext, command)
+        print('install PyQt5')
+        command = ['-m', 'pip', 'install', pyqt5]
         runPythonInVenv(venvContext, command)
     return True
 

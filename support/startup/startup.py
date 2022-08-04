@@ -230,7 +230,7 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('...starting')
         return command
 
-    suc = addArmSpecials()
+    suc = addArmSpecials(venvContext)
     if not suc:
         print('precompiled packages missing')
         print('...install aborted')

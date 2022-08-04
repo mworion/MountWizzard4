@@ -204,8 +204,6 @@ def addArmSpecials(venvContext):
         pyqt5 = 'PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64'
         command = ['-m', 'pip', 'install', pyqt5sip, pyqt5]
         runPythonInVenv(venvContext, command)
-    else:
-        return False
     return True
 
 

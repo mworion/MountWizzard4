@@ -183,6 +183,32 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
+def addArmSpecials(venvContext):
+    """
+    :param venvContext:
+    :return:
+    """
+    if platform.system() != 'Linux':
+        return True
+
+    if platform.machine() == 'aarch64':
+        command = ['-m', 'pip', 'install', 'requests']
+        runPythonInVenv(venvContext, command)
+        requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
+                     '/master/support/wheels/ubuntu22.04'
+                     '/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl')
+        requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
+                     '/master/support/wheels/ubuntu20.04'
+                     '/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl')
+        pyqt5sip = 'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl'
+        pyqt5 = 'PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64'
+        command = ['-m', 'pip', 'install', pyqt5sip, pyqt5]
+        runPythonInVenv(venvContext, command)
+    else:
+        return False
+    return True
+
+
 def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     """
     :param venvContext:
@@ -204,10 +230,15 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('...starting')
         return command
 
+    suc = addArmSpecials()
+    if not suc:
+        print('precompiled packages missing')
+        print('...install aborted')
+        return
+
     isTest = os.path.isfile('mountwizzard4.tar.gz')
     if isTest:
         package = 'mountwizzard4.tar.gz'
-        print('Test setup - using local package')
         print()
     else:
         package = 'mountwizzard4'
@@ -224,6 +255,10 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('...upgrading to latest version including beta')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package, '--pre']
+    elif isTest:
+        print('...installing test package')
+        print('...this will take some time')
+        command = ['-m', 'pip', 'install', package]
     else:
         print('...installing latest release')
         print('...this will take some time')

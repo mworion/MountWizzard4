@@ -76,12 +76,10 @@ jobs:
               python3 -m pip wheel pyqt5_sip==12.11.0 -w "/root/wheels"
             fi
             
-            #if [ ! -f "/root/wheels/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl" ]
-            #then
-            #  python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels"
-            #fi
-            
-            ls /root/wheels
+            if [ ! -f "/root/wheels/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl" ]
+            then
+              python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels"
+            fi
 
       - name: Update changes in GitHub repository
         continue-on-error: true

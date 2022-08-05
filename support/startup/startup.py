@@ -194,6 +194,7 @@ def addArmSpecials(venvContext):
     if platform.machine() == 'aarch64':
         command = ['-m', 'pip', 'install', 'requests']
         runPythonInVenv(venvContext, command)
+        import requests
         print('download PyQt5-SIP')
         requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
                      '/master/support/wheels/ubuntu22.04'

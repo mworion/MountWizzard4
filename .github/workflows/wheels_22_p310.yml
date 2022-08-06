@@ -71,13 +71,13 @@ jobs:
             pip install setuptools --upgrade
             pip install wheel
 
-            python3 -m pip wheel numpy==1.21.2 -w "/root/wheels"
+            python3 -m pip install markupsafe==2.0.1
+            python3 -m pip install numpy==1.21.2
             python3 -m pip wheel sep==1.2.0 -w "/root/wheels"
             python3 -m pip wheel pyerfa==2.0.0 -w "/root/wheels"
-            # python3 -m pip wheel astropy==4.3.1 -w "/root/wheels"
+            python3 -m pip wheel astropy==4.3.1 -w "/root/wheels"
 
-            # pip install "${PWD}/support/wheels/${{matrix.distro}}/PyQt5_sip-12.11
-            # .0-cp310-cp310-linux_aarch64.whl"
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
             # python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels"
 
       - name: Update changes in GitHub repository
@@ -86,7 +86,7 @@ jobs:
           rm build-log.txt
           git config --global user.name 'mworion'
           git config --global user.email 'michael@wuertenberger.org'
-          git add -A "${PWD}/support/wheels/${{matrix.distro}}/*.whl"
+          git add -A "${PWD}/support/wheels/*.whl"
           git pull
           git diff-index --quiet HEAD || git commit -m '[automated commit]'
           git push --force

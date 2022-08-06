@@ -193,7 +193,6 @@ def downloadAndInstallWheels(venvContext):
     postRepo = '?raw=true'
     wheels = {
         '3.7': [
-            'numpy-1.21.2-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
             'sep-1.2.0-cp37-cp37m-linux_aarch64.whl',
             'sgp4-2.20-cp37-cp37m-linux_aarch64.whl',
             'pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl',
@@ -202,7 +201,6 @@ def downloadAndInstallWheels(venvContext):
             'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
         ],
         '3.8': [
-            'numpy-1.21.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
             'sep-1.2.0-cp38-cp38-linux_aarch64.whl',
             'sgp4-2.20-cp38-cp38-linux_aarch64.whl',
             'pyerfa-2.0.0-cp38-cp38-linux_aarch64.whl',
@@ -211,7 +209,6 @@ def downloadAndInstallWheels(venvContext):
             'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
         ],
         '3.9': [
-            'numpy-1.21.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
             'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
             'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
             'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
@@ -220,7 +217,6 @@ def downloadAndInstallWheels(venvContext):
             'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
         ],
         '3.10': [
-            'numpy-1.21.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
             'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
             'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
             'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',

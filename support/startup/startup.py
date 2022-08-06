@@ -288,8 +288,6 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('...install aborted')
         return ''
 
-    return ''
-
     isTest = os.path.isfile('mountwizzard4.tar.gz')
     if isTest:
         package = 'mountwizzard4.tar.gz'

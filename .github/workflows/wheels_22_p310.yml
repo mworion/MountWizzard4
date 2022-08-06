@@ -71,8 +71,14 @@ jobs:
             pip install setuptools --upgrade
             pip install wheel
 
-            pip install "${PWD}/support/wheels/${{matrix.distro}}/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
-            python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels"
+            python3 -m pip wheel numpy==1.21.2 -w "/root/wheels"
+            python3 -m pip wheel sep==1.2.0 -w "/root/wheels"
+            python3 -m pip wheel pyerfa==2.0.0 -w "/root/wheels"
+            python3 -m pip wheel astropy==4.3.1 -w "/root/wheels"
+
+            # pip install "${PWD}/support/wheels/${{matrix.distro}}/PyQt5_sip-12.11
+            # .0-cp310-cp310-linux_aarch64.whl"
+            # python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels"
 
       - name: Update changes in GitHub repository
         continue-on-error: true

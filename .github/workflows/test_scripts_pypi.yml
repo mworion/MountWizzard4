@@ -266,6 +266,7 @@ jobs:
             python3 --version
             ls /root/support/*.*
             cd /root/support
+            mkdir venv
             echo "[global]" >> /venv/pip.conf
             echo "extra-index-url=https://www.piwheels.hostedpi.com/simple" >> /venv/pip.conf
             python3 startup.pyz --no-start --version 2.2.7
@@ -323,6 +324,7 @@ jobs:
             python3 --version
             ls /root/support/*.*
             cd /root/support
+            mkdir venv
             echo "[global]" >> /venv/pip.conf
             echo "extra-index-url=https://www.piwheels.hostedpi.com/simple" >> /venv/pip.conf
             python3 startup.pyz --no-start --version 2.2.7

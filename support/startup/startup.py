@@ -236,8 +236,7 @@ def downloadAndInstallWheels(venvContext):
             print('...failed')
             print('')
             return False
-    print('install wheels finished')
-    print('now moving to MountWizzard4')
+    print('install precompiled packages finished')
     print('')
     return True
 
@@ -254,6 +253,15 @@ def addArmSpecials(venvContext):
         return downloadAndInstallWheels(venvContext)
 
     return True
+
+
+def updateEnvironment(venvContext):
+    """
+    :param venvContext:
+    :return:
+    """
+    command = ['-m', 'pip', 'install', 'wheel']
+    runPythonInVenv(venvContext, command)
 
 
 def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
@@ -278,6 +286,8 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('...starting')
         return command
 
+    updateEnvironment(venvContext)
+
     suc = addArmSpecials(venvContext)
     if not suc:
         print('precompiled packages missing')
@@ -292,32 +302,35 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         package = 'mountwizzard4'
 
     if version:
-        print(f'...installing version {version}')
+        print(f'Installing MW4 version {version}')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', f'{package}=={version}']
     elif upgrade:
-        print('...upgrading to latest release')
+        print('Upgrading MW4 to latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package]
     elif upgradeBeta:
-        print('...upgrading to latest version including beta')
+        print('Upgrading MW4 to latest version including beta')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package, '--pre']
     elif isTest:
-        print('...installing test package')
+        print('Installing MW4 test package')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', package]
     else:
-        print('...installing latest release')
+        print('Installing MW4 latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', package]
 
-    runPythonInVenv(venvContext, command)
+    suc = runPythonInVenv(venvContext, command)
+    if not suc:
+        print('...install failed, abort')
+        return ''
 
     if upgrade or upgradeBeta:
-        print('Upgrade finished')
+        print('...upgrade finished')
     else:
-        print('Install finished')
+        print('...install finished')
 
     command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
                         recursive=True)

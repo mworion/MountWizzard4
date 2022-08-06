@@ -71,14 +71,13 @@ jobs:
             pip install setuptools --upgrade
             pip install wheel
 
-            python3 -m pip install markupsafe==2.0.1
-            python3 -m pip install numpy==1.21.2
-            python3 -m pip wheel sep==1.2.0 -w "/root/wheels"
-            python3 -m pip wheel pyerfa==2.0.0 -w "/root/wheels"
-            # python3 -m pip wheel astropy==4.3.1 -w "/root/wheels"
+            echo "markupsafe==2.0.1" > const.txt
+            echo "numpy==1.21.2" >> const.txt
+            pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
+            python3 -m pip wheel astropy==4.3.1 -w "/root/wheels" -c const.txt
 
             # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
-            # python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels"
+            # python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels" -c const.txt
 
       - name: Update changes in GitHub repository
         continue-on-error: true

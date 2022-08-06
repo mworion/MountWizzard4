@@ -69,7 +69,7 @@ jobs:
             python --version
             pip install setuptools
             pip install wheel
-            pip install markupsafe==1.1.1
+            pip install markupsafe==2.0.1
             pip install jinja2==3.0.3
             pip install numpy==1.21.2
             pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"

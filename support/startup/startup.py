@@ -217,11 +217,11 @@ def downloadAndInstallWheels(venvContext):
             'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
         ],
         '3.10': [
-            'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
-            'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
-            'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
-            'astropy-4.3.1-cp39-cp39-linux_aarch64.whl',
-            'PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl',
+            'sep-1.2.0-cp310-cp310-linux_aarch64.whl',
+            'sgp4-2.20-cp310-cp310-linux_aarch64.whl',
+            'pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl',
+            'astropy-4.3.1-cp310-cp310-linux_aarch64.whl',
+            'PyQt5_sip-12.8.1-cp310-cp310-linux_aarch64.whl',
             'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
         ],
     }

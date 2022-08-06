@@ -1,0 +1,312 @@
+.. _astropy-units-format:
+
+String Representations of Units
+*******************************
+
+Converting Units to String Representations
+==========================================
+
+You can control the way that |Quantity| and |Unit| objects are rendered as
+strings using the `Python Format String Syntax
+<https://docs.python.org/3/library/string.html#format-string-syntax>`_
+(demonstrated below using `f-strings
+<https://www.python.org/dev/peps/pep-0498/>`_).
+
+For quantities, format specifiers, like ``0.003f`` will be applied to
+the |Quantity| value, without affecting the unit. Specifiers like
+``20s``, which would only apply to a string, will be applied to the
+whole string representation of the |Quantity|.
+
+Examples
+--------
+
+.. EXAMPLE START: Converting Units to String Representations
+
+To render |Quantity| or |Unit| objects as strings::
+
+    >>> from astropy import units as u
+    >>> import numpy as np
+    >>> q = 10.5 * u.km
+    >>> q
+    <Quantity  10.5 km>
+    >>> f"{q}"
+    '10.5 km'
+    >>> f"{q:+0.03f}"
+    '+10.500 km'
+    >>> f"{q:20s}"
+    '10.5 km             '
+
+To format both the value and the unit separately, you can access the |Quantity|
+class attributes within format strings::
+
+    >>> q = 10.5 * u.km
+    >>> q
+    <Quantity  10.5 km>
+    >>> f"{q.value:0.003f} in {q.unit:s}"
+    '10.500 in km'
+
+Because ``numpy`` arrays do not accept most format specifiers, using specifiers
+like ``0.003f`` will not work when applied to a ``numpy`` array or non-scalar
+|Quantity|. Use :func:`numpy.array_str` instead. For instance::
+
+    >>> q = np.linspace(0,1,10) * u.m
+    >>> f"{np.array_str(q.value, precision=1)} {q.unit}"  # doctest: +FLOAT_CMP
+    '[0.  0.1 0.2 0.3 0.4 0.6 0.7 0.8 0.9 1. ] m'
+
+Examine the NumPy documentation for more examples with :func:`numpy.array_str`.
+
+.. EXAMPLE END
+
+Units, or the unit part of a quantity, can also be formatted in a number of
+different styles. By default, the string format used is referred to as the
+"generic" format, which is based on syntax of the FITS standard format for
+representing units, but supports all of the units defined within the
+`astropy.units` framework, including user-defined units. The format specifier
+(and `~astropy.units.core.UnitBase.to_string`) functions also take an optional
+parameter to select a different format, including ``"latex"``, ``"unicode"``,
+``"cds"``, and others, defined below.
+
+    >>> f"{q.value:0.003f} in {q.unit:latex}"  # doctest: +SKIP
+    '10.000 in $\\mathrm{km}$'
+    >>> fluxunit = u.erg / (u.cm ** 2 * u.s)
+    >>> f"{fluxunit}"
+    u'erg / (cm2 s)'
+    >>> print(f"{fluxunit:console}")
+     erg
+    ------
+    s cm^2
+    >>> f"{fluxunit:latex}"
+    u'$\\mathrm{\\frac{erg}{s\\,cm^{2}}}$'
+    >>> f"{fluxunit:>20s}"
+    u'       erg / (cm2 s)'
+
+The `~astropy.units.core.UnitBase.to_string` method is an alternative way to
+format units as strings, and is the underlying implementation of the
+`format`-style usage::
+
+    >>> fluxunit = u.erg / (u.cm ** 2 * u.s)
+    >>> fluxunit.to_string('latex')
+    u'$\\mathrm{\\frac{erg}{s\\,cm^{2}}}$'
+
+Creating Units from Strings
+===========================
+
+.. EXAMPLE START: Creating Units from Strings
+
+Units can also be created from strings in a number of different
+formats using the `~astropy.units.Unit` class::
+
+  >>> from astropy import units as u
+  >>> u.Unit("m")
+  Unit("m")
+  >>> u.Unit("erg / (s cm2)")
+  Unit("erg / (cm2 s)")
+  >>> u.Unit("erg.s-1.cm-2", format="cds")
+  Unit("erg / (cm2 s)")
+
+.. note::
+
+   Creating units from strings requires the use of a specialized
+   parser for the unit language, which results in a performance
+   penalty if units are created using strings. Thus, it is much
+   faster to use unit objects directly (e.g., ``unit = u.degree /
+   u.minute``) instead of via string parsing (``unit =
+   u.Unit('deg/min')``). This parser is very useful, however, if your
+   unit definitions are coming from a file format such as FITS or
+   VOTable.
+
+.. EXAMPLE END
+
+Built-In Formats
+================
+
+`astropy.units` includes support for parsing and writing the following
+formats:
+
+  - ``"fits"``: This is the format defined in the Units section of the
+    `FITS Standard <https://fits.gsfc.nasa.gov/fits_standard.html>`__.
+    Unlike the "generic" string format, this will only accept or
+    generate units defined in the FITS standard.
+
+  - ``"vounit"``: The `Units in the VO 1.0
+    <http://www.ivoa.net/documents/VOUnits/>`__ standard for
+    representing units in the VO. Again, based on the FITS syntax,
+    but the collection of supported units is different.
+
+  - ``"cds"``: `Standards for astronomical catalogues from Centre de
+    Données astronomiques de Strasbourg
+    <http://vizier.u-strasbg.fr/vizier/doc/catstd-3.2.htx>`_: This is the
+    standard used by `Vizier tables <http://vizier.u-strasbg.fr/>`__,
+    as well as what is used by VOTable versions 1.3 and earlier.
+
+  - ``"ogip"``: A standard for storing units as recommended by the
+    `Office of Guest Investigator Programs (OGIP)
+    <https://heasarc.gsfc.nasa.gov/docs/heasarc/ofwg/docs/general/ogip_93_001/>`_.
+
+`astropy.units` is also able to write, but not read, units in the
+following formats:
+
+  - ``"latex"``: Writes units out using LaTeX math syntax using the
+    `IAU Style Manual
+    <https://www.iau.org/static/publications/stylemanual1989.pdf>`_
+    recommendations for unit presentation. This format is
+    automatically used when printing a unit in the IPython notebook::
+
+      >>> fluxunit  # doctest: +SKIP
+
+    .. math::
+
+       \mathrm{\frac{erg}{s\,cm^{2}}}
+
+  - ``"latex_inline"``: Writes units out using LaTeX math syntax using the
+    `IAU Style Manual
+    <https://www.iau.org/static/publications/stylemanual1989.pdf>`_
+    recommendations for unit presentation, using negative powers instead of
+    fractions, as required by some journals (e.g., `Apj and AJ
+    <https://journals.aas.org/manuscript-preparation/>`_).
+    Best suited for unit representation inline with text::
+
+      >>> fluxunit.to_string('latex_inline')  # doctest: +SKIP
+
+    .. math::
+
+       \mathrm{erg\,s^{-1}\,cm^{-2}}
+
+  - ``"console"``: Writes a multiline representation of the unit
+    useful for display in a text console::
+
+      >>> print(fluxunit.to_string('console'))
+       erg
+      ------
+      s cm^2
+
+  - ``"unicode"``: Same as ``"console"``, except uses Unicode
+    characters::
+
+      >>> print(u.Ry.decompose().to_string('unicode'))  # doctest: +SKIP
+                      m² kg
+      2.1798721×10-¹⁸ ─────
+                       s²
+
+.. _astropy-units-format-unrecognized:
+
+Dealing with Unrecognized Units
+===============================
+
+Since many files found in the wild have unit strings that do not
+correspond to any given standard, `astropy.units` also has a
+consistent way to store and pass around unit strings that did not
+parse.  In addition, it provides tools for transforming non-standard,
+legacy or misspelt unit strings into their standardized form,
+preventing the further propagation of these unit strings.
+
+By default, passing an unrecognized unit string raises an exception::
+
+  >>> # The FITS standard uses 'angstrom', not 'Angstroem'
+  >>> u.Unit("Angstroem", format="fits")
+  Traceback (most recent call last):
+    ...
+  ValueError: 'Angstroem' did not parse as fits unit: At col 0, Unit
+  'Angstroem' not supported by the FITS standard. Did you mean Angstrom
+  or angstrom? If this is meant to be a custom unit, define it with
+  'u.def_unit'. To have it recognized inside a file reader or other
+  code, enable it with 'u.add_enabled_units'. For details, see
+  https://docs.astropy.org/en/latest/units/combining_and_defining.html
+
+However, the `~astropy.units.Unit` constructor has the keyword
+argument ``parse_strict`` that can take one of three values to control
+this behavior:
+
+  - ``'raise'``: (default) raise a ValueError exception.
+
+  - ``'warn'``: emit a Warning, and return an
+    `~astropy.units.UnrecognizedUnit` instance.
+
+  - ``'silent'``: return an `~astropy.units.UnrecognizedUnit`
+    instance.
+
+By either adding additional unit aliases for the misspelt units with
+`~astropy.units.set_enabled_aliases` (e.g., 'Angstroms' for 'Angstrom'; as
+demonstrated below), or defining new units via `~astropy.units.def_unit` and
+`~astropy.units.add_enabled_units`, we can use ``parse_strict='raise'`` to
+rapidly find issues with the units used, while also being able to read in
+older datasets where the unit usage may have been less standard.
+
+
+Examples
+--------
+
+.. EXAMPLE START: Define Aliases for Units
+
+To set unit aliases, pass `~astropy.units.set_enabled_aliases` a
+dictionary mapping the misspelt string to an astropy unit. The following code
+snippet shows how to set up Angstroem -> Angstrom::
+
+    >>> u.set_enabled_aliases({"Angstroem": u.Angstrom})
+    <astropy.units.core._UnitContext object at 0x...>
+    >>> u.Unit("Angstroem")
+    Unit("Angstrom")
+    >>> u.Unit("Angstroem") == u.Angstrom
+    True
+
+You can also set multiple aliases up at once or add to existing ones::
+
+    >>> u.set_enabled_aliases({"Angstroem": u.Angstrom, "Angstroms": u.Angstrom})
+    <astropy.units.core._UnitContext object at 0x...>
+    >>> u.add_enabled_aliases({"angstroem": u.Angstrom})
+    <astropy.units.core._UnitContext object at 0x...>
+    >>> u.Unit("Angstroem") == u.Unit("Angstroms") == u.Unit("angstroem") == u.Angstrom
+    True
+
+The aliases can be reset by passing an empty dictionary::
+
+    >>> u.set_enabled_aliases({})
+    <astropy.units.core._UnitContext object at 0x...>
+
+You can use both `~astropy.units.set_enabled_aliases` and
+`~astropy.units.add_enabled_aliases` as context manager, limiting where a
+particular alias is used::
+
+    >>> with u.add_enabled_aliases({"Angstroem": u.Angstrom}):
+    ...     print(u.Unit("Angstroem") == u.Angstrom)
+    True
+    >>> u.Unit("Angstroem") == u.Angstrom
+    Traceback (most recent call last):
+      ...
+    ValueError: 'Angstroem' did not parse as unit: At col 0, Angstroem is not a
+    valid unit. Did you mean Angstrom or angstrom? If this is meant to be a
+    custom unit, define it with 'u.def_unit'. To have it recognized inside a
+    file reader or other code, enable it with 'u.add_enabled_units'. For
+    details, see
+    https://docs.astropy.org/en/latest/units/combining_and_defining.html
+
+.. EXAMPLE END
+
+.. EXAMPLE START: Using `~astropy.units.UnrecognizedUnit`
+
+To pass an unrecognized unit string::
+
+   >>> x = u.Unit("Angstroem", format="fits", parse_strict="warn")  # doctest: +SKIP
+   WARNING: UnitsWarning: 'Angstroem' did not parse as unit format
+   'fits': At col 0, 'Angstroem' is not a valid unit in string
+   'Angstroem' [astropy.units.core]
+
+This `~astropy.units.UnrecognizedUnit` object remembers the
+original string it was created with, so it can be written back out,
+but any meaningful operations on it, such as converting to another
+unit or composing with other units, will fail.
+
+   >>> x.to_string()  # doctest: +SKIP
+   'Angstroem'
+   >>> x.to(u.km)  # doctest: +SKIP
+   Traceback (most recent call last):
+     ...
+   ValueError: The unit 'Angstroem' is unrecognized.  It can not be
+   converted to other units.
+   >>> x / u.m  # doctest: +SKIP
+   Traceback (most recent call last):
+     ...
+   ValueError: The unit 'Angstroem' is unrecognized, so all arithmetic
+   operations with it are invalid.
+
+.. EXAMPLE END

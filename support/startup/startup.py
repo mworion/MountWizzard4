@@ -251,10 +251,10 @@ def addArmSpecials(venvContext):
     :param venvContext:
     :return:
     """
-    if platform.system() != 'Linux' and False:
+    if platform.system() != 'Linux':
         return True
 
-    if platform.machine() == 'aarch64' or True:
+    if platform.machine() == 'aarch64':
         return downloadAndInstallWheels(venvContext)
 
     return True

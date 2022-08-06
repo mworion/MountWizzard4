@@ -189,7 +189,7 @@ def downloadAndInstallWheels(venvContext):
     :return:
     """
     preRepo = 'https://github.com/mworion/MountWizzard4'
-    preSource = '/blob/master/support/wheels/ubuntu20.04/'
+    preSource = '/blob/master/support/wheels/'
     postRepo = '?raw=true'
     wheels = {
         '3.7': [

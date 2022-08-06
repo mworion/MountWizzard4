@@ -115,7 +115,7 @@ jobs:
   install_package_aarch64_2004:
     # The host should always be linux
     runs-on: ubuntu-20.04
-    name: install_{{ matrix.distro }}_${{ matrix.arch }}
+    name: install_${{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
@@ -169,7 +169,7 @@ jobs:
   install_package_aarch64_2204:
     # The host should always be linux
     runs-on: ubuntu-22.04
-    name: install_{{ matrix.distro }}_${{ matrix.arch }}
+    name: install_${{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
@@ -222,7 +222,7 @@ jobs:
   install_package_armv7:
     # The host should always be linux
     runs-on: ubuntu-20.04
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    name: install_${{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:

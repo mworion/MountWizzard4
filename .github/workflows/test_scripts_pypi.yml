@@ -113,7 +113,6 @@ jobs:
           
 
   install_package_aarch64:
-    needs: [ build_widgets_resource ]
     # The host should always be linux
     runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
@@ -166,7 +165,6 @@ jobs:
             ls -la
 
   install_package_armv7:
-    needs: [ build_widgets_resource ]
     # The host should always be linux
     runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}

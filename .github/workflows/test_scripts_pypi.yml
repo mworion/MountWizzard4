@@ -153,6 +153,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             apt-get -y install python3-dev python3-pip python3-venv python3-wheel
+            apt-get -y install python3-qt5
             python3 --version
             ls /root/support/*.*
             cd /root/support
@@ -207,6 +208,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             apt-get -y install python3-dev python3-pip python3-venv python3-wheel
+            apt-get -y install python3-qt5
             python3 --version
             ls /root/support/*.*
             cd /root/support
@@ -260,6 +262,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             apt-get -y install python3-dev python3-pip python3-venv python3-wheel
+            apt-get -y install python3-qt5
             python3 --version
             ls /root/support/*.*
             cd /root/support
@@ -314,6 +317,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             apt-get -y install python3-dev python3-pip python3-venv python3-wheel
+            apt-get -y install python3-qt5
             python3 --version
             ls /root/support/*.*
             cd /root/support

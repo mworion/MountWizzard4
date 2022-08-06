@@ -183,6 +183,68 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
+def downloadAndInstallWheels(venvContext):
+    """
+    :param venvContext:
+    :return:
+    """
+    preRepo = 'https://github.com/mworion/MountWizzard4'
+    preSource = '/blob/master/support/wheels/ubuntu20.04/'
+    wheels = {
+        '3.7': [
+            'numpy-1.21.2-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
+            'sep-1.2.0-cp37-cp37m-linux_aarch64.whl',
+            'sgp4-2.20-cp37-cp37m-linux_aarch64.whl',
+            'pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl',
+            'astropy-4.3.1-cp37-cp37m-linux_aarch64.whl',
+            'PyQt5_sip-12.8.1-cp37-cp37-linux_aarch64.whl',
+            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+        ],
+        '3.8': [
+            'numpy-1.21.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
+            'sep-1.2.0-cp38-cp38-linux_aarch64.whl',
+            'sgp4-2.20-cp38-cp38-linux_aarch64.whl',
+            'pyerfa-2.0.0-cp38-cp38-linux_aarch64.whl',
+            'astropy-4.3.1-cp38-cp38-linux_aarch64.whl',
+            'PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl',
+            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+        ],
+        '3.9': [
+            'numpy-1.21.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
+            'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
+            'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
+            'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
+            'astropy-4.3.1-cp39-cp39-linux_aarch64.whl',
+            'PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl',
+            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+        ],
+        '3.10': [
+            'numpy-1.21.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
+            'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
+            'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
+            'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
+            'astropy-4.3.1-cp39-cp39-linux_aarch64.whl',
+            'PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl',
+            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+        ],
+    }
+
+    print('installing precompiled packages')
+    ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
+    for wheel in wheels[ver]:
+        print(f'install {wheel.split("-")[0]}-{wheel.split("-")[1]}')
+        command = ['-m', 'pip', 'install', preRepo + preSource + wheel]
+        suc = runPythonInVenv(venvContext, command)
+        if not suc:
+            print('...failed')
+            print('')
+            return False
+    print('install wheels finished')
+    print('now moving to MountWizzard4')
+    print('')
+    return True
+
+
 def addArmSpecials(venvContext):
     """
     :param venvContext:
@@ -192,25 +254,8 @@ def addArmSpecials(venvContext):
         return True
 
     if platform.machine() == 'aarch64' or True:
-        command = ['-m', 'pip', 'install', 'requests']
-        runPythonInVenv(venvContext, command)
-        import requests
-        print('download PyQt5-SIP')
-        requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
-                     '/master/support/wheels/ubuntu22.04'
-                     '/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl')
-        print('download PyQt5')
-        requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
-                     '/master/support/wheels/ubuntu20.04'
-                     '/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl')
-        pyqt5sip = 'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl'
-        pyqt5 = 'PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64'
-        print('install PyQt5-SIP')
-        command = ['-m', 'pip', 'install', pyqt5sip]
-        runPythonInVenv(venvContext, command)
-        print('install PyQt5')
-        command = ['-m', 'pip', 'install', pyqt5]
-        runPythonInVenv(venvContext, command)
+        return downloadAndInstallWheels(venvContext)
+
     return True
 
 
@@ -230,6 +275,7 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('MountWizzard4 present')
     else:
         print('MountWizzard4 not present')
+    print('')
 
     if hasInstall and not (upgrade or upgradeBeta or version):
         print('...starting')
@@ -239,7 +285,9 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     if not suc:
         print('precompiled packages missing')
         print('...install aborted')
-        return
+        return ''
+
+    return ''
 
     isTest = os.path.isfile('mountwizzard4.tar.gz')
     if isTest:
@@ -369,7 +417,7 @@ def main(args=None):
         os.environ['QT_SCALE_FACTOR'] = str(options.scaleFactor)
         os.environ['QT_FONT_DPI'] = str(options.fontDPI)
 
-    if not options.noStart:
+    if not options.noStart and command:
         runPythonInVenv(venvContext, command)
 
     print()

@@ -209,7 +209,7 @@ jobs:
   install_package_aarch64_2004:
     needs: [ build_widgets_resource ]
     # The host should always be linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: install_${{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
@@ -268,7 +268,7 @@ jobs:
   install_package_aarch64_2204:
     needs: [ build_widgets_resource ]
     # The host should always be linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     name: install_${{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
@@ -325,17 +325,17 @@ jobs:
             ls -la
 
 
-  install_package_armv7_2004:
+  install_package_armv7_buster:
     needs: [ build_widgets_resource ]
     # The host should always be linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: install_${{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
         include:
           - arch: armv7
-            distro: ubuntu20.04
+            distro: buster
 
     steps:
       - uses: actions/checkout@v3
@@ -385,17 +385,17 @@ jobs:
             ls -la
 
 
-  install_package_armv7_2204:
+  install_package_armv7_bullseye:
     needs: [ build_widgets_resource ]
     # The host should always be linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     name: install_${{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
         include:
           - arch: armv7
-            distro: ubuntu22.04
+            distro: bullseye
 
     steps:
       - uses: actions/checkout@v3

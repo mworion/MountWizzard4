@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/'
+  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/3.0/'
 
 on:
   push:
@@ -32,13 +32,13 @@ jobs:
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}startup/startup.py
+          url: ${{ env.gh }}startup.pyz
           target: .
       
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          python startup.py --no-start --version 2.2.7
+          python startup.pyz --no-start --version 2.2.7
           dir
       
       - name: Run MountWizzard4
@@ -46,7 +46,7 @@ jobs:
         run: |
           touch test.run
           touch test.txt
-          python startup.py
+          python startup.pyz
           dir
   
   install_ubuntu:

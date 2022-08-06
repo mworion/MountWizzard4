@@ -115,7 +115,7 @@ jobs:
   install_package_aarch64_2004:
     # The host should always be linux
     runs-on: ubuntu-20.04
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    name: install_{{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
@@ -169,7 +169,7 @@ jobs:
   install_package_aarch64_2204:
     # The host should always be linux
     runs-on: ubuntu-22.04
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    name: install_{{ matrix.distro }}_${{ matrix.arch }}
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
@@ -209,7 +209,7 @@ jobs:
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            apt-get -y install python3.9-venv
+            apt-get -y install python3.10-venv
             python3 --version
             ls /root/support/*.*
             cd /root/support

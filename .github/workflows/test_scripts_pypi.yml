@@ -149,11 +149,11 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
+            apt-get -y install python3-dev python3-pip python3-venv python3-wheel
+            apt-get -y install python3-pyqt5
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            apt-get -y install python3-dev python3-pip python3-venv python3-wheel
-            apt-get -y install python3-pyqt5
             python3 --version
             ls /root/support/*.*
             cd /root/support
@@ -204,11 +204,11 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
+            apt-get -y install python3-dev python3-pip python3-venv python3-wheel
+            apt-get -y install python3-pyqt5
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            apt-get -y install python3-dev python3-pip python3-venv python3-wheel
-            apt-get -y install python3-pyqt5
             python3 --version
             ls /root/support/*.*
             cd /root/support
@@ -258,13 +258,13 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
-
-          # Produce a binary artifact and place it in the mounted volume
-          run: |
             apt-get -y install python3-dev python3-pip python3-venv python3-wheel
             apt-get -y install python3-pyqt5
             echo "[global]" >> /etc/pip.conf
-            echo "extra-index-url=https://www.piwheels.hostedapi.com/simple" >> /etc/pip.conf
+            echo "extra-index-url=https://www.piwheels.hostedpi.com/simple" >> /etc/pip.conf
+
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
             python3 --version
             ls /root/support/*.*
             cd /root/support
@@ -315,13 +315,13 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
-
-          # Produce a binary artifact and place it in the mounted volume
-          run: |
             apt-get -y install python3-dev python3-pip python3-venv python3-wheel
             apt-get -y install python3-pyqt5
             echo "[global]" >> /etc/pip.conf
-            echo "extra-index-url=https://www.piwheels.hostedapi.com/simple" >> /etc/pip.conf
+            echo "extra-index-url=https://www.piwheels.hostedpi.com/simple" >> /etc/pip.conf
+
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
             python3 --version
             ls /root/support/*.*
             cd /root/support

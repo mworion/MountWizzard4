@@ -190,6 +190,7 @@ def downloadAndInstallWheels(venvContext):
     """
     preRepo = 'https://github.com/mworion/MountWizzard4'
     preSource = '/blob/master/support/wheels/ubuntu20.04/'
+    postRepo = '?raw=true'
     wheels = {
         '3.7': [
             'numpy-1.21.2-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl',
@@ -233,7 +234,7 @@ def downloadAndInstallWheels(venvContext):
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
     for wheel in wheels[ver]:
         print(f'install {wheel.split("-")[0]}-{wheel.split("-")[1]}')
-        command = ['-m', 'pip', 'install', preRepo + preSource + wheel]
+        command = ['-m', 'pip', 'install', preRepo + preSource + wheel + postRepo]
         suc = runPythonInVenv(venvContext, command)
         if not suc:
             print('...failed')

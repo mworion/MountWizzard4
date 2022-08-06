@@ -57,7 +57,8 @@ jobs:
             apt-get update -y
             apt-get upgrade -y
             apt-get install -y apt-utils
-            apt-get -y install pyqt5-dev pyqt5-dev-tools qt5-qmake
+            apt-get install -y --fix-missing
+            apt-get -y install pyqt5-dev pyqt5-dev-tools qt5-qmake qt5-default
             apt-get -y install python3.10-venv python3-pip
             
           # Produce a binary artifact and place it in the mounted volume
@@ -66,16 +67,19 @@ jobs:
             source venv/bin/activate
 
             python --version
-            pip install setuptools
-            pip install wheel
-            pip install numpy==1.21.2
-            pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
-            cd "${PWD}/support/wheels/astropy-4.3.1"
-            pip wheel . -w "/root/wheels"
-            # cd "${PWD}"
-            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
-            # cd "${PWD}/support/wheels/PyQt5-5.15.4"
+            python -m pip install pip --upgrade
+            pip install setuptools --upgrade
+            pip install wheel --upgrade
+            
+            # pip install numpy==1.21.2
+            # pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
+            # cd "${PWD}/support/wheels/astropy-4.3.1"
             # pip wheel . -w "/root/wheels"
+            
+            cd "${PWD}"
+            pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
+            cd "${PWD}/support/wheels/PyQt5-5.15.4"
+            pip wheel . -w "/root/wheels"
 
       - name: Update changes in GitHub repository
         continue-on-error: true

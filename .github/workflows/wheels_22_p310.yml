@@ -68,7 +68,9 @@ jobs:
 
             python --version
             pip install setuptools
+            pip install setuptools_scm
             pip install wheel
+            pip install cython==0.29.22
             pip install markupsafe==2.0.1
             pip install jinja2==3.0.3
             pip install numpy==1.21.2

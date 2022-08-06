@@ -1,0 +1,58 @@
+version: 2
+
+# NOTE: We run these in CircleCI because it has better artifacts support.
+# TODO: Move to GitHub Actions when its artifacts support improves.
+jobs:
+
+  image-tests-mpl302:
+    docker:
+      - image: astropy/image-tests-py37-mpl302:1.10
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pip install -e .[test] pytest-mpl
+      - run:
+          name: Force scipy upgrade
+          command: pip install scipy -U
+      - run:
+          name: Run tests
+          command: pytest -P visualization --remote-data=astropy --open-files --mpl --mpl-results-path=$PWD/results -W ignore:np.asscalar
+      - store_artifacts:
+          path: results
+
+  image-tests-mpl310:
+    docker:
+      - image: astropy/image-tests-py37-mpl311:1.10
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pip install -e .[test] pytest-mpl
+      - run:
+          name: Run tests
+          command: pytest -P visualization --remote-data=astropy --open-files --mpl --mpl-results-path=$PWD/results -W ignore:np.asscalar
+      - store_artifacts:
+          path: results
+
+  image-tests-mpldev:
+    docker:
+      - image: astropy/image-tests-py37-base:1.4
+    steps:
+      - checkout
+      - run:
+          name: Install tox
+          command: pip3 install tox
+      - run:
+          name: Run tests
+          command: tox -e py37-test-image-mpldev -- -P visualization --remote-data=astropy --open-files --mpl-results-path=$PWD/results -W ignore:np.asscalar
+      - store_artifacts:
+          path: results
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - image-tests-mpl302
+      - image-tests-mpl310
+      - image-tests-mpldev

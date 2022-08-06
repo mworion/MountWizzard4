@@ -1,0 +1,84 @@
+# Compiled files
+*.py[cod]
+*.a
+*.o
+*.so
+*.pyd
+*.dll
+__pycache__
+
+# Ignore .c files by default to avoid including generated code. If you want to
+# add a non-generated .c extension, put that into the src/ subdirectory of a
+# package or else use `git add -f filename.c`.
+*.c
+!astropy/*/src/*.c
+astropy/modeling/src/projections.c
+
+# Other generated files
+MANIFEST
+astropy/cython_version.py
+astropy/wcs/include/wcsconfig.h
+astropy/_erfa/core.py
+astropy/_version.py
+
+# Sphinx
+_build
+_generated
+docs/api
+docs/generated
+docs/visualization/ngc6976.jpeg
+docs/visualization/ngc6976-default.jpeg
+
+# Packages/installer info
+*.egg
+*.egg-info
+dist
+build
+eggs
+.eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+distribute-*.tar.gz
+.venv
+venv
+
+# pyinstaller files
+.pyinstaller/astropy_tests/
+.pyinstaller/run_astropy_tests
+.pyinstaller/run_astropy_tests.spec
+
+
+# Other
+.cache
+.tox
+.*.swp
+.*.swo
+*~
+.project
+.pydevproject
+.settings
+.coverage
+cover
+htmlcov
+.hypothesis
+.github_cache
+
+# Mac OSX
+.DS_Store
+
+# PyCharm
+.idea
+
+# Pytest
+v
+.pytest_cache
+
+# VSCode
+.vscode
+
+.tmp
+pip-wheel-metadata

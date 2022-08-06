@@ -1,0 +1,213 @@
+#-----------------------------------------------------------------------------
+# Makefile overrides for various combinations of architecture, operating
+# system and compiler.  Used for development and testing only, not required
+# for building WCSLIB.
+#
+# Variables like CC and CFLAGS are exported into the environment so that they
+# will be seen by 'configure'.  Thus, normal usage is as follows:
+#
+#   make distclean
+#   make FLAVOUR=Linux configure
+#   make
+#
+# Reminder: add '-d' to FLFLAGS for debugging.
+#
+# $Id: flavours,v 7.6 2021/04/13 12:57:02 mcalabre Exp $
+#-----------------------------------------------------------------------------
+
+# The list of FLAVOURs can be set on the command line.
+F := $(shell echo $(FLAVOURS) | tr a-z A-Z)
+ifeq "$F" ""
+  F :=
+  FLAVOURS := ""
+endif
+
+ifeq "$F" "LINUX"
+  override FLAVOURS := "" Linux Linuxp
+endif
+
+ifeq "$F" "SUN"
+  override FLAVOURS := "" SUN/GNU SUN/GNU3 SUN/GNUp SUN/ANSI
+endif
+
+ifeq "$F" "PURE"
+  override FLAVOURS := SUN/Pure SUN/Quant
+endif
+
+F :=
+
+
+# Quench warnings about padding in foreign structs, particularly in fitsio.h.
+ifneq "$(findstring $(SUBDIR),C Fortran pgsbox)" ""
+  WPADDED := -Wpadded
+endif
+
+
+# Linux with gcc/gfortran (also works for Darwin).
+ifeq "$(FLAVOUR)" "Linux"
+  F := $(FLAVOUR)
+  CWARNINGS       := -Wall -Wextra -Wno-clobbered -Wno-long-long $(WPADDED)
+  export CC       := gcc -std=c99 -pedantic
+  export CPPFLAGS :=
+  export CFLAGS   := -g -O0 $(CWARNINGS)
+  export F77      := gfortran
+  export FFLAGS   := -g -O0 -fimplicit-none -I. -Wall
+  export LDFLAGS  :=
+  ifdef VALGRIND
+    override VALGRIND := valgrind -v --leak-check=full --show-leak-kinds=all
+    override VALGRIND += --track-origins=yes
+  endif
+endif
+
+ifeq "$(FLAVOUR)" "Linux9"
+  F := $(FLAVOUR)
+  SANITIZE        := -fsanitize=address -fsanitize=undefined
+  CWARNINGS       := -Wall -Wextra -Wno-clobbered -Wno-long-long
+  export CC       := gcc-9.2.0 -std=c99 -pedantic
+  export CPPFLAGS := -D_FORTIFY_SOURCE=2
+  export CFLAGS   := -g -O2 $(SANITIZE) $(CWARNINGS)
+  export F77      := gfortran-9.2.0
+  export FFLAGS   := -g -O2 -fimplicit-none -I. $(SANITIZE) -Wall
+  export LDFLAGS  := $(SANITIZE)
+  export LD_RUN_PATH := /usr/local/lib64
+  ifdef VALGRIND
+    override VALGRIND := valgrind -v --leak-check=full --show-leak-kinds=all
+    override VALGRIND += --track-origins=yes
+  endif
+endif
+
+ifeq "$(FLAVOUR)" "Linuxp"
+  F := $(FLAVOUR)
+  export CC       := gcc -std=c99 -pedantic
+  export CPPFLAGS :=
+  export CFLAGS   := -pg -g -O -Wall -Wextra -Wno-long-long $(WPADDED)
+  export FFLAGS   := -pg -a -g -O -fimplicit-none -Wall -I.
+  export LDFLAGS  := -pg -g $(filter -L%, $(LDFLAGS))
+  override EXTRA_CLEAN := gmon.out bb.out
+endif
+
+
+# Solaris with gcc/gfortran 4.x (lynx).
+ifeq "$(FLAVOUR)" "SUN/GNU"
+  F := $(FLAVOUR)
+  export CC       := gcc -std=c99
+  export CPPFLAGS :=
+  export CFLAGS   := -g -Wall -Wno-long-long $(WPADDED)
+  export F77      := gfortran
+  export FFLAGS   := -g -fimplicit-none -Wall -I.
+  LD      := gcc
+endif
+
+ifeq "$(FLAVOUR)" "SUN/GNU3"
+  F := $(FLAVOUR)
+  export CC       := gcc-3.1.1 -std=c99
+  export CPPFLAGS :=
+  export CFLAGS   := -g -Wall -Wno-long-long $(WPADDED)
+  export F77      := g77-3.1.1
+  export FFLAGS   := -g -Wimplicit -Wunused -Wno-globals -I.
+  LD      := gcc-3.1.1
+endif
+
+ifeq "$(FLAVOUR)" "SUN/GNUp"
+  F := $(FLAVOUR)
+  export CC       := gcc -std=c99 -pedantic
+  export CPPFLAGS :=
+  export CFLAGS   := -pg -a -g -O -Wall -Wno-long-long $(WPADDED)
+  export FFLAGS   := -pg -a -g -O -fimplicit-none -Wall -I.
+  export LDFLAGS  := -pg -a -g $(filter -L%, $(LDFLAGS))
+  override EXTRA_CLEAN := gmon.out bb.out
+endif
+
+
+# Solaris with SUN cc/f77.
+ifeq "$(FLAVOUR)" "SUN/ANSI"
+  F := $(FLAVOUR)
+  WCSTRIG := NATIVE
+  export CC       := cc
+  export CFLAGS   := -g -I/usr/local/include
+  export F77      := f77
+  export FFLAGS   := -g -erroff=WDECL_LOCAL_NOTUSED
+  LD      := f77
+endif
+
+
+# Purify and quantify in Solaris.
+ifeq "$(FLAVOUR)" "SUN/Pure"
+  F := $(FLAVOUR)
+  WCSTRIG := NATIVE
+  export CC       := purify gcc
+  export CFLAGS   := -g
+  export F77      := purify gcc
+  export FFLAGS   := -g -Wimplicit -Wno-globals -I.
+  export LDFLAGS  := $(filter -L%, $(LDFLAGS))
+  override EXTRA_CLEAN := *_pure_p*.[ao] *.pcv .pure ../C/*_pure_p*.[ao]
+endif
+
+ifeq "$(FLAVOUR)" "SUN/Quant"
+  F := $(FLAVOUR)
+  WCSTRIG := NATIVE
+  export CC       := quantify gcc
+  export CFLAGS   := -g
+  export F77      := quantify gcc
+  export FFLAGS   := -g -Wimplicit -Wno-globals -I.
+  export LDFLAGS  := $(filter -L%, $(LDFLAGS))
+  override EXTRA_CLEAN := *_pure_q*.[ao] .pure
+endif
+
+
+# Check FLAVOUR.
+ifneq "$F" "$(FLAVOUR)"
+  override FLAVOUR := unrecognised
+endif
+
+# Check VALGRIND.
+ifeq "$(findstring valgrind, $(VALGRIND))" "valgrind"
+  override MODE := interactive
+else
+  # Unrecognised.
+  override VALGRIND :=
+endif
+
+# Check MODE.
+ifeq "$(MODE)" "interactive"
+  # Important not to have output batched when running the test programs.
+  MAKEFLAGS := $(filter-out -Otarget,$(MAKEFLAGS)) -Onone
+else
+  # Unrecognised.
+  override MODE :=
+endif
+
+
+# gmake uses FC in place of configure's F77.
+ifdef F77
+  FC := $(F77)
+endif
+
+ifndef TIMER
+  TIMER := date +"%a %Y/%m/%d %X %z, executing on $$HOST"
+endif
+
+ifdef FLAVOUR
+  TIMER := $(TIMER) ; echo "    with $(FLAVOUR) FLAVOUR."
+endif
+
+# Experimental (see http://upstream-tracker.org/versions/wcslib.html).
+api-sanity-check :
+	-@ $(RM) -r $@/
+	 @ mkdir $@/
+	 @ cp C/*.h C/$(SHRLIB) $@/
+	 @ echo "<version>$(LIBVER)</version>" > $@/opts.xml
+	 @ echo "<headers>.</headers>" >> $@/opts.xml
+	 @ echo "<libs>.</libs>" >> $@/opts.xml
+	 @ echo "<gcc_options>-Dwtbarr=wtbarr_s</gcc_options>" >> $@/opts.xml
+	   cd $@ && api-sanity-checker -lib WCSLIB -d opts.xml \
+	     -show-retval -gen -build -run
+
+show ::
+	-@ echo 'For code development...'
+	-@ echo '  FLAVOURS    := $(FLAVOURS)'
+	-@ echo '  FLAVOUR     := $(FLAVOUR)'
+	-@ echo '  MODE        := $(MODE)'
+	-@ echo '  VALGRIND    := $(VALGRIND)'
+	-@ echo '  EXTRA_CLEAN := $(EXTRA_CLEAN)'
+	-@ echo ''

@@ -1,0 +1,303 @@
+v5.15.4 5th March 2021
+  - Packaging bug fixes.
+
+v5.15.3 23rd February 2021
+  - Added the missing QImage.setAlphaChannel().
+  - Support for the QtNetworkAuth library has been moved to a separate
+    PyQtNetworkAuth package.
+  - Wheels now assume that the corresponding Qt libraries are in an external
+    wheel rather than being bundled.
+  - Bug fixes.
+
+v5.15.2 23rd November 2020
+  - Bound signals are now hashable.
+  - The QT_MAC_WANTS_LAYER environment variable is automatically set on macOS.
+
+v5.15.1 12th September 2020
+  - Added the QtTextToSpeech module.
+  - None is now interpreted as a null QJsonValue.
+  - Bound signals can now be compared for equality.
+  - Q_CLASSINFO, Q_ENUM, Q_ENUMS, Q_FLAG and Q_FLAGS are not implemented when
+    using PyPy.
+
+v5.15.0 1st June 2020
+  - Added support for Qt v5.15.0.
+  - Added the QtQuick3D module.
+  - Added a callStaticMethod() overload to QAndroidJniObject that takes a
+    QJsonDocument as the method argument and returns another QJsonDocument.
+  - Added the missing QMultimedia control classes.
+  - pyuic5 now supports QUndoView.
+
+v5.14.2 3rd April 2020
+  - Added the missing QTextCodec.convertFromUnicode().
+  - Added the OpenGL ES bindings.
+  - Added QFlags.__index__().
+
+v5.14.1 6th January 2020
+  - This is a bug-fix release.
+
+v5.14.0 18th December 2019
+  - Added support for Qt v5.14.0.
+
+v5.13.2 3rd November 2019
+  - Added the missing pos() and setPos() overloads to QCursor.
+  - A QVariant for a pointer to an unknown type will now be converted to a SIP
+    voidptr.
+  - Added support for QKeySequenceEdit to pyuic5.
+  - Added support for SIP v5.
+
+v5.13.1 14th September 2019
+  - Added the (temporary) pyqt5_enable_new_onexit_scheme() to allow
+    experimentation with the new on-exit clean-up scheme.
+  - Added the missing QObject.disconnect(QMetaObject.Connection) overload.
+  - Deprecated PYQT_CONFIGURATION.
+  - SIP v4.19.19 is required.
+
+v5.13.0 5th July 2019
+  - Added support for Qt v5.13.0.
+
+v5.12.3 26th June 2019
+  - Added support for Qt v5.12.4.
+  - Added support for Python v3.8.
+  - QCoreApplication (and sub-classes) can be used as a context manager.
+  - Added the missing WA_ContentsMarginsRespectsSafeArea enum member.
+
+v5.12.2 6th May 2019
+  - Added support for Qt v5.12.3.
+  - Added QOpenGLContext.getProcAddress().
+  - Added support for Python fstrings to pylupdate.
+
+v5.12.1 19th March 2019
+  - Added support for Qt v5.12.2.
+
+v5.12 10th February 2019
+  - Added support for Qt v5.12.0 and Qt v5.12.1.
+  - Added the QtRemoteObjects module.
+  - Added the remote objects examples.
+  - Added the missing QLoggingCategory class.
+  - The QtWebEngine, QtWebEngineCore and QtWebEngineWidgets modules have been
+    moved to a separate PyQtWebEngine package.  This is a packaging change only
+    and does not affect applications.
+  - Overflow checking when converting Python int object to C/C++ integer types
+    is now enabled by default.
+  - SIP v4.19.14 is required.
+
+v5.11.3 1st October 2018
+  - Added support for Qt v5.11.2.
+  - Added the missing qInfo().
+  - QRandomGenerator.global() is renamed to global_().
+
+v5.11.2 2nd July 2018
+  - Added the 'signatures' attribute to unbound signals.
+  - SIP v4.19.11 is required.
+
+v5.11.1 24th June 2018
+  - A pseudo-release to create a version number for updated wheels.
+
+v5.11 23rd June 2018
+  - Added support for Qt v5.11.0 and v5.11.1.
+  - Enum members are also visible as attributes of the enum in order to
+    emulate the behaviour of Python enums.  The traditional use, where a member
+    is visible at the same scope as the enum, is deprecated but will be
+    supported throughout the life of PyQt5.
+  - Versions of Python earlier than v3.4 require the enum34 package to be
+    installed from PyPI.
+  - The connect() method of a bound signal now returns a QMetaObject.Connection
+    object that can be passed to the disconnect() method.
+  - Added QtCore.Q_ENUM() and QtCore.Q_FLAG().
+  - Python enums can now be used with Q_ENUM() etc.
+  - Added the missing QGuiApplication.inputMethod() method.
+  - Added the missing QGuiApplication.styleHints() method.
+  - Added the missing QSqlQuery.exec() overload for Python v3.
+  - Added glReadPixels().
+  - A PEP 376 .dist-info directory is created on installation that provides
+    version information for dependent packages and allows pip to uninstall.
+  - Added the --no-dist-info option to configure.py.
+  - Added support for Python v3.7.
+
+v5.10.1 26th February 2018
+  - Added support for Qt v5.10.1.
+  - Added the missing qmlClearTypeRegistrations() to the QtQml module.
+  - Added the --disable-feature option to configure.py.
+
+v5.10 23rd January 2018
+  - Added support for Qt v5.10.0.
+  - Added the QtNetworkAuth module.
+
+v5.9.2 23rd November 2017
+  - Added support for Qt v5.9.3.
+  - Added the QtAndroidExtras module.
+
+v5.9.1 1st November 2017
+  - Added support for Qt v5.9.2.
+  - Added the --allow-sip-warnings option to configure.py.
+  - Removed the unimplemented -name option to pyrcc5.
+  - SIP v4.19.4 is required.
+
+v5.9 3rd July 2017
+  - Added support for Qt v5.9.0 and v5.9.1.
+  - Improved detection of the destruction of QObject-based instances by C++.
+  - QFlags instances are now hashable.
+  - pyrcc5 now supports v2 of the resource file format.
+  - Added the interview.py, frozencolumn.py and storageview.py examples from
+    Hans-Peter Jansen.
+  - SIP v4.19.3 is required.
+
+v5.8.2 30th March 2017
+  - This is a bug-fix release.
+
+v5.8.1 7th March 2017
+  - This is a bug-fix release.
+
+v5.8 15th February 2017
+  - Added support for Qt v5.8.0.
+  - Added __fspath__() to QFileInfo.
+  - Added the --qml-debug option to configure.py.  The --debug option no longer
+    enables the QML debugging infrastructure.
+  - Added the --link-full-dll option to configure.py.
+  - SIP v4.19.1 is required.
+
+v5.7.1 25th December 2016
+  - Added support for Qt v5.7.1.
+  - Added the QtWebEngine module.
+  - Added QRegion.setRects().
+  - Added QtMac to the QtMacExtras module.
+  - Added pyuic5 plugins for QChartView and QWebEngineView.
+  - The Python v3.4 limited API is used.
+  - SIP v4.19 is required.
+
+v5.7 25th July 2016
+  - Added support for Qt v5.7.0.
+
+v5.6 24th April 2016
+  - Added full support for Qt v5.6.0.
+  - Python v3.5 wheels are available for 64-bit Linux, 64-bit OS X and 32 and
+    64-bit Windows.  (After this release Windows .exe installers will no longer
+    be produced.)
+  - Added the QtWebEngineCore module.
+  - Added the missing qt_set_sequence_auto_mnemonic() to QtGui.
+  - Added the missing MouseLock to QWebEnginePage.Feature.
+  - Added the missing WA_DontShowOnScreen.
+  - PEP 484 stub files are installed by default.
+  - Added the --import-from command line argument to pyuic5.
+  - Added the --no-stubs and --stubsdir options to configure.py.
+  - Added the --qtconf-prefix option to configure.py.
+
+v5.5.1 25th October 2015
+  - Added support for Qt v5.5.1.
+  - Added the --disable option to configure.py.
+  - Implemented __matmul__ and __imatmul__ for QMatrix4x4 and QTransform.
+
+v5.5 17th July 2015
+  - Added full support for Qt v5.5.0.
+  - Added the QtLocation module.
+  - Added the QtNfc module.
+  - Added Qt.NoOpaqueDetection amd Qt.NoFormatConversion to QtCore.
+  - Added QMacToolBar and QMacToolBarItem to QtMacExtras.
+  - Added QProxyStyle to QtWidgets.
+
+v5.4.2 11th June 2015
+  - Added support for Qt v5.4.2.
+  - Added QWIDGETSIZE_MAX to QtWidgets.
+  - Added the --no-python-dbus command line option to configure.py.
+
+v5.4.1 26th February 2015
+  - Added support for Qt v5.4.1.
+  - Added the QMacCocoaViewContainer class.
+  - All OpenGL examples use QOpenGLWidget and no longer require PyOpenGL.
+  - Added initial implementations of _QOpenGLFunctions_2_1 and
+    _QOpenGLFunctions_4_1_Core.
+  - QEvent.None is now QEvent.None_.
+  - Added missing QEvent.Type members that are now documented in Qt.
+  - Added the --license-dir option to configure.py.
+  - Installing into a virtual env should now work.
+  - pyuic5 and pyrcc5 no longer include a timestamp in the generated code.
+
+v5.4 25th December 2014
+  - Added full support for Qt v5.4.0.
+  - Added the QtWebChannel module.
+  - Added the QtWebEngineWidgets module.
+  - Added the QtXml module.
+
+v5.3.2 11th September 2014
+  - Added the Enginio module.
+  - Added the QJsonDocument and QJsonValue classes.
+  - QJsonObject is implemented as a Python dict.
+  - QJsonArray is implemented as a Python list.
+  - Added setUnifiedTitleAndToolBarOnMac() and unifiedTitleAndToolBarOnMac() to
+    QWidget.
+  - Added windowHandle() to QWidget.
+
+v5.3.1 4th July 2014
+  - Added support for Qt v5.3.1.
+  - Added the -tr-function and -translate-function command line options to
+    pylupdate5.
+
+v5.3 26th May 2014
+  - By default a Python slot is only invoked if the underlying C++ instance
+    still exists.
+  - Added the no_receiver_check argument to connect().
+  - Added support for Qt v5.3.0.
+  - Added the QtQuickWidgets module.
+  - Added the QtWebSockets module.
+  - Added the --target-py-version, --sysroot and --no-tools option to
+    configure.py.
+  - Cross-compilation (specifically to iOS and Android) is now supported.
+
+v5.2.1 14th March 2014
+  - Added full support for Qt v5.2.1.
+  - Properties, signals and slots can now be defined in mixins (i.e.
+    non-QObject classes).
+  - Added support for creating QSGGeometry.AttributeSet instances.
+  - A fundamental value may now be given whenever a QJSValue is expected.
+  - Building PyQt5 as static libraries now works.
+  - Added support for building without OpenGL.
+
+v5.2 8th January 2014
+  - Added full support for Qt v5.2.
+  - Added the QtBluetooth module.
+  - Added the QtPositioning module.
+  - Added the QtMacExtras module.
+  - Added the QtWinExtras module.
+  - Added the QtX11Extras module.
+  - Improved the conversion of Python objects to Qt collection types (e.g.
+    QList, QSet).  Iterators (rather than just sequences) are accepted and
+    failed conversions now raise much more informative exceptions.
+  - QtCore.Q_ENUMS() and QtCore.Q_FLAGS() now populate the meta-object.
+  - The QML debugger is automatically enabled when --debug is passed to
+    configure.py.
+
+v5.1.1 16th October 2013
+  - This is a bug-fix release.
+
+v5.1 2nd October 2013
+  - Added full support for Qt v5.1.
+  - Added the QtSensors module.
+  - Added the QtSerialPort module.
+  - A (nearly) complete set of OpenGL v2.0 and OpenGL ES/2 bindings are
+    included.
+  - Cross-compilation is now supported. A configuration file for Python3 on the
+    Raspberry Pi is included.
+
+v5.0.1 21st August 2013
+  - Added the QtQuick module including the ability to create Python Quick items
+    from QML.
+  - Added the QtQml module including the ability to create Python objects from
+    QML.
+  - Added the QtMultimediaWidgets module.
+  - Completed the implementation of the QtMultimedia module including support
+    for cameras and radios.
+  - Added the remaining OpenGL classes to the QtGui module.
+  - Added the 'revision' keyword argument to pyqtProperty().
+  - Added the 'revision' and 'arguments' keyword arguments to pyqtSignal().
+  - Added the 'revision' keyword argument to pyqtSlot().
+  - Added the 'pyqt5qmlplugin' plugin for qmlscene.
+  - The DBus main loop module has been renamed to dbus.mainloop.pyqt5 from
+    dbus.mainloop.qt.
+  - Added the --no-qml-plugin and --qml-plugindir options to configure.py.
+  - Added many QtMultimedia, QML and QtQuick related examples.
+  - Classes now support co-operative multi-inheritance.  (This may introduce
+    incompatibilities with PyQt v5.0.)
+
+v5.0 16th June 2013
+  - The first release of PyQt5.

@@ -75,7 +75,7 @@ jobs:
             echo "numpy==1.21.2" >> const.txt
             # pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
             # python3 -m pip wheel astropy==4.3.1 -w "/root/wheels" -c const.txt
-            python3 -m pip wheel sgp4==1.2.0 -w "/root/wheels" -c const.txt
+            python3 -m pip wheel sgp4==2.20 -w "/root/wheels" -c const.txt
 
             # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
             # python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels" -c const.txt

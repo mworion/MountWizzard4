@@ -73,7 +73,7 @@ jobs:
             pip install markupsafe==2.0.1
             pip install numpy==1.21.2
             pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
-            pip install astropy==4.3.1 -w "/root/wheels" -c const.txt
+            pip install astropy==4.3.1 -c const.txt
             pip wheel astropy==4.3.1 -w "/root/wheels" -c const.txt
 
             # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"

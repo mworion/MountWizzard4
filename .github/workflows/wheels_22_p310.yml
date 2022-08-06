@@ -79,6 +79,7 @@ jobs:
 
             # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
             # python3 -m pip wheel pyqt5==5.15.7 -w "/root/wheels" -c const.txt
+            cat const.txt
 
       - name: Update changes in GitHub repository
         continue-on-error: true

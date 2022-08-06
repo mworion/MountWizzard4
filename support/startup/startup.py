@@ -183,6 +183,37 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
+def addArmSpecials(venvContext):
+    """
+    :param venvContext:
+    :return:
+    """
+    if platform.system() != 'Linux' and False:
+        return True
+
+    if platform.machine() == 'aarch64' or True:
+        command = ['-m', 'pip', 'install', 'requests']
+        runPythonInVenv(venvContext, command)
+        import requests
+        print('download PyQt5-SIP')
+        requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
+                     '/master/support/wheels/ubuntu22.04'
+                     '/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl')
+        print('download PyQt5')
+        requests.get('https://raw.githubusercontent.com/mworion/MountWizzard4/blob'
+                     '/master/support/wheels/ubuntu20.04'
+                     '/PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64.whl')
+        pyqt5sip = 'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl'
+        pyqt5 = 'PyQt5-5.15.6-cp37-abi3-manylinux1_aarch64'
+        print('install PyQt5-SIP')
+        command = ['-m', 'pip', 'install', pyqt5sip]
+        runPythonInVenv(venvContext, command)
+        print('install PyQt5')
+        command = ['-m', 'pip', 'install', pyqt5]
+        runPythonInVenv(venvContext, command)
+    return True
+
+
 def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     """
     :param venvContext:
@@ -203,6 +234,12 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     if hasInstall and not (upgrade or upgradeBeta or version):
         print('...starting')
         return command
+
+    suc = addArmSpecials(venvContext)
+    if not suc:
+        print('precompiled packages missing')
+        print('...install aborted')
+        return
 
     isTest = os.path.isfile('mountwizzard4.tar.gz')
     if isTest:
@@ -280,6 +317,7 @@ def main(args=None):
         print('-' * 40)
         print('MountWizzard4 startup')
         print('needs python3.7 .. 3.10')
+        print(f'you are running {sys.version_info}')
         print('...closing application')
         print()
         print('-' * 40)

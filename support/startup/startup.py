@@ -226,17 +226,19 @@ def downloadAndInstallWheels(venvContext):
         ],
     }
 
-    print('installing precompiled packages')
+    print('Installing precompiled packages')
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
     for wheel in wheels[ver]:
-        print(f'install {wheel.split("-")[0]}-{wheel.split("-")[1]}')
+        print(f'...{wheel.split("-")[0]}-{wheel.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + wheel + postRepo]
         suc = runPythonInVenv(venvContext, command)
         if not suc:
-            print('...failed')
+            print('...error installing precompiled packages')
+            print('Install aborted')
             print('')
             return False
-    print('install precompiled packages finished')
+    print('...finished')
+    print('Precompiled packages ready')
     print('')
     return True
 
@@ -290,8 +292,6 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
 
     suc = addArmSpecials(venvContext)
     if not suc:
-        print('precompiled packages missing')
-        print('...install aborted')
         return ''
 
     isTest = os.path.isfile('mountwizzard4.tar.gz')
@@ -324,13 +324,13 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
 
     suc = runPythonInVenv(venvContext, command)
     if not suc:
-        print('...install failed, abort')
+        print('Install failed, abort')
         return ''
 
     if upgrade or upgradeBeta:
-        print('...upgrade finished')
+        print('Upgrade finished')
     else:
-        print('...install finished')
+        print('Install finished')
 
     command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
                         recursive=True)

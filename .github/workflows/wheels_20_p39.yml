@@ -73,7 +73,8 @@ jobs:
             pip install wheel
             
             ls /root/wheels/*.*
-            pip wheel pyqt5_sip==12.11.0 -w "/root/wheels"
+            pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp39-cp39-linux_aarch64.whl"
+            pip wheel pyqt5==5.15.7 -w "/root/wheels"
 
       - name: Update changes in GitHub repository
         continue-on-error: true

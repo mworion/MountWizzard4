@@ -183,52 +183,72 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
-def downloadAndInstallWheels(venvContext):
+def downloadAndInstallWheels(venvContext, verMW4='3.0.0'):
     """
     :param venvContext:
+    :param verMW4:
     :return:
     """
     preRepo = 'https://github.com/mworion/MountWizzard4'
     preSource = '/blob/master/support/wheels/'
     postRepo = '?raw=true'
     wheels = {
-        '3.7': [
-            'sep-1.2.0-cp37-cp37m-linux_aarch64.whl',
-            'sgp4-2.20-cp37-cp37m-linux_aarch64.whl',
-            'pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl',
-            'astropy-4.3.1-cp37-cp37m-linux_aarch64.whl',
-            'PyQt5_sip-12.8.1-cp37-cp37-linux_aarch64.whl',
-            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-        ],
-        '3.8': [
-            'sep-1.2.0-cp38-cp38-linux_aarch64.whl',
-            'sgp4-2.20-cp38-cp38-linux_aarch64.whl',
-            'pyerfa-2.0.0-cp38-cp38-linux_aarch64.whl',
-            'astropy-4.3.1-cp38-cp38-linux_aarch64.whl',
-            'PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl',
-            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-        ],
-        '3.9': [
-            'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
-            'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
-            'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
-            'astropy-4.3.1-cp39-cp39-linux_aarch64.whl',
-            'PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl',
-            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-        ],
-        '3.10': [
-            'sep-1.2.0-cp310-cp310-linux_aarch64.whl',
-            'sgp4-2.20-cp310-cp310-linux_aarch64.whl',
-            'pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl',
-            'astropy-4.3.1-cp310-cp310-linux_aarch64.whl',
-            'PyQt5_sip-12.8.1-cp310-cp310-linux_aarch64.whl',
-            'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-        ],
+        '2.0.0': {
+            '3.7': [
+                'sep-1.2.0-cp37-cp37m-linux_aarch64.whl',
+                'sgp4-2.20-cp37-cp37m-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl',
+                'astropy-4.3.1-cp37-cp37m-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp37-cp37-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.8': [
+                'sep-1.2.0-cp38-cp38-linux_aarch64.whl',
+                'sgp4-2.20-cp38-cp38-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp38-cp38-linux_aarch64.whl',
+                'astropy-4.3.1-cp38-cp38-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.9': [
+                'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
+                'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
+                'astropy-4.3.1-cp39-cp39-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.10': [
+                'sep-1.2.0-cp310-cp310-linux_aarch64.whl',
+                'sgp4-2.20-cp310-cp310-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl',
+                'astropy-4.3.1-cp310-cp310-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp310-cp310-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+        },
+        '3.0.0': {
+            '3.7': [
+                'PyQt5_sip-12.11.0-cp37-cp37-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.8': [
+                'PyQt5_sip-12.11.0-cp38-cp38-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.9': [
+                'PyQt5_sip-12.11.0-cp39-cp39-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.10': [
+                'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+        },
     }
-
     print('Installing precompiled packages')
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
-    for wheel in wheels[ver]:
+    for wheel in wheels[verMW4][ver]:
         print(f'...{wheel.split("-")[0]}-{wheel.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + wheel + postRepo]
         suc = runPythonInVenv(venvContext, command)

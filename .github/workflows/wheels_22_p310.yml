@@ -74,19 +74,17 @@ jobs:
             pip install setuptools --upgrade
             pip install wheel --upgrade
             
-            pip install numpy==1.21.2
-            pip install cython==0.29.22
-            pip install jinja2==2.10.3
-            pip install markupsafe==2.0.1
+            # pip install numpy==1.21.2
+            # pip install cython==0.29.22
+            # pip install jinja2==2.10.3
+            # pip install markupsafe==2.0.1
             
             # pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
             # cd "${PWD}/support/wheels/astropy-4.3.1"
             # pip wheel . -w "/root/wheels"
-            
-            pip wheel PyQt5-sip==12.8.1 -w "/root/wheels"
-            
+
             # cd "${PWD}"
-            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.8.1-cp310-cp310-linux_aarch64.whl"
             # cd "${PWD}/support/wheels/PyQt5-5.15.4"
             # pip wheel . -w "/root/wheels"
 

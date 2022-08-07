@@ -165,8 +165,10 @@ jobs:
             cd /root/support
             python3 startup.pyz --no-start --version 2.2.7
             touch test.run
+            touch test.txt
             xvfb-run python3 startup.pyz
             cat startup*.log
+            ls -la
           
 
   install_package_aarch64_2204:
@@ -224,8 +226,10 @@ jobs:
             cd /root/support
             python3 startup.pyz --no-start --version 2.2.7
             touch test.run
+            touch test.txt
             xvfb-run python3 startup.pyz
             cat startup*.log
+            ls -la
 
   install_package_armv7_buster:
     # The host should always be linux
@@ -280,6 +284,7 @@ jobs:
             echo "extra-index-url=https://www.piwheels.hostedpi.com/simple" >> venv/pip.conf
             python3 startup.pyz --no-start --version 2.2.7
             cat startup*.log
+            ls -la
 
 
   install_package_armv7_bullseye:
@@ -335,3 +340,4 @@ jobs:
             echo "extra-index-url=https://www.piwheels.hostedpi.com/simple" >> venv/pip.conf
             python3 startup.pyz --no-start --version 2.2.7
             cat startup*.log
+            ls -la

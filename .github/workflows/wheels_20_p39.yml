@@ -72,16 +72,7 @@ jobs:
             pip install wheel
             
             ls /root/wheels/*.*
-            
-            if [ ! -f "/root/wheels/sgp4-2.21-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" ]
-            then
-              pip wheel sgp4==2.21 -w "/root/wheels"
-            fi
-            
-            if [ ! -f "/root/wheels/PyQt5_sip-12.10.1-cp39-cp39-linux_aarch64.whl" ]
-            then
-              pip wheel pyqt5_sip==12.10.1 -w "/root/wheels"
-            fi
+            pip wheel pyqt5_sip==12.11.0 -w "/root/wheels"
 
       - name: Update changes in GitHub repository
         continue-on-error: true

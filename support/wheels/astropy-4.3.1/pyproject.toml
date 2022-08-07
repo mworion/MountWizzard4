@@ -19,6 +19,7 @@ build-backend = 'setuptools.build_meta'
 
 [tool.towncrier]
     package = "astropy"
+    version = "4.3.1"
     filename = "CHANGES.rst"
     directory = "docs/changes"
     underlines = "=-^"

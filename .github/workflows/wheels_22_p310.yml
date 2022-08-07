@@ -20,6 +20,7 @@ jobs:
     # The host should always be linux
     runs-on: ubuntu-22.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    timeout-minutes: 180
 
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
@@ -43,6 +44,7 @@ jobs:
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
             -v "${PWD}/support/wheels/${{matrix.distro}}":/root/wheels
+            --stop-timeout -1
 
           # The shell to run commands with in the container
           shell: /bin/bash
@@ -72,15 +74,15 @@ jobs:
             pip install setuptools --upgrade
             pip install wheel --upgrade
             
-            # pip install numpy==1.21.2
-            # pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
-            # cd "${PWD}/support/wheels/astropy-4.3.1"
-            # pip wheel . -w "/root/wheels"
-            
-            cd "${PWD}"
-            pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
-            cd "${PWD}/support/wheels/PyQt5-5.15.4"
+            pip install numpy==1.21.2
+            pip install "${PWD}/support/wheels/pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl"
+            cd "${PWD}/support/wheels/astropy-4.3.1"
             pip wheel . -w "/root/wheels"
+            
+            # cd "${PWD}"
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl"
+            # cd "${PWD}/support/wheels/PyQt5-5.15.4"
+            # pip wheel . -w "/root/wheels"
 
       - name: Update changes in GitHub repository
         continue-on-error: true

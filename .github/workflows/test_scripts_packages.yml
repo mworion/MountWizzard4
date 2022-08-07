@@ -267,7 +267,7 @@ jobs:
             cd /root/support
             python3 startup/startup.py --no-start
             touch test.run
-            xvfb-run python3 startup.pyz
+            xvfb-run python3 startup.py
             cat startup*.log
             ls -la
 
@@ -332,7 +332,7 @@ jobs:
             cd /root/support
             python3 startup/startup.py --no-start
             touch test.run
-            xvfb-run python3 startup.pyz
+            xvfb-run python3 startup.py
             cat startup*.log
             ls -la
 

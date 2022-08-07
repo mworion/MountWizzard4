@@ -85,8 +85,9 @@ jobs:
 
             cd "${PWD}"
             pip install "${PWD}/support/wheels/PyQt5_sip-12.8.1-cp310-cp310-linux_aarch64.whl"
-            cd "${PWD}/support/wheels/PyQt5-5.15.4"
-            pip wheel . -w "/root/wheels"
+            pip wheel PyQt5-5.15.4 -w "/root/wheels"
+            # cd "${PWD}/support/wheels/PyQt5-5.15.4"
+            # pip wheel . -w "/root/wheels"
 
       - name: Update changes in GitHub repository
         continue-on-error: true

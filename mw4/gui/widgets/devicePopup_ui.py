@@ -34,7 +34,7 @@ class Ui_DevicePopup(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.tab.setFont(font)
-        self.tab.setElideMode(QtCore.Qt.ElideLeft)
+        self.tab.setElideMode(QtCore.Qt.ElideNone)
         self.tab.setObjectName("tab")
         self.alpaca = QtWidgets.QWidget()
         self.alpaca.setObjectName("alpaca")

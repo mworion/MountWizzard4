@@ -68,7 +68,7 @@
     <number>0</number>
    </property>
    <property name="elideMode">
-    <enum>Qt::ElideLeft</enum>
+    <enum>Qt::ElideNone</enum>
    </property>
    <widget class="QWidget" name="alpaca">
     <attribute name="title">

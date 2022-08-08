@@ -101,5 +101,5 @@ def test_showImagesPhotometry(qtbot, qapp):
         imageW.ui.tabImage.setCurrentIndex(index)
         QTest.qWait(randint(50, 500))
 
-    QTest.qWait(3000)
+    QTest.qWait(5000)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)

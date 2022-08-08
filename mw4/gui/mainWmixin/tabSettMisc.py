@@ -284,7 +284,7 @@ class SettMisc(object):
             if check in name:
                 break
         else:
-            self.log.info(f'Removed Game Controller: {[name]}')
+            self.log.debug(f'Unused HID devices: {[name]}')
             return False
         return True
 

@@ -183,100 +183,6 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
-def downloadAndInstallWheels(venvContext, verMW4='3.0.0'):
-    """
-    :param venvContext:
-    :param verMW4:
-    :return:
-    """
-    preRepo = 'https://github.com/mworion/MountWizzard4'
-    preSource = '/blob/master/support/wheels/'
-    postRepo = '?raw=true'
-    wheels = {
-        '2.0.0': {
-            '3.7': [
-                'sep-1.2.0-cp37-cp37m-linux_aarch64.whl',
-                'sgp4-2.20-cp37-cp37m-linux_aarch64.whl',
-                'pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl',
-                'astropy-4.3.1-cp37-cp37m-linux_aarch64.whl',
-                'PyQt5_sip-12.8.1-cp37-cp37-linux_aarch64.whl',
-                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-            '3.8': [
-                'sep-1.2.0-cp38-cp38-linux_aarch64.whl',
-                'sgp4-2.20-cp38-cp38-linux_aarch64.whl',
-                'pyerfa-2.0.0-cp38-cp38-linux_aarch64.whl',
-                'astropy-4.3.1-cp38-cp38-linux_aarch64.whl',
-                'PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl',
-                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-            '3.9': [
-                'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
-                'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
-                'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
-                'astropy-4.3.1-cp39-cp39-linux_aarch64.whl',
-                'PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl',
-                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-            '3.10': [
-                'sep-1.2.0-cp310-cp310-linux_aarch64.whl',
-                'sgp4-2.20-cp310-cp310-linux_aarch64.whl',
-                'pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl',
-                'astropy-4.3.1-cp310-cp310-linux_aarch64.whl',
-                'PyQt5_sip-12.8.1-cp310-cp310-linux_aarch64.whl',
-                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-        },
-        '3.0.0': {
-            '3.7': [
-                'PyQt5_sip-12.11.0-cp37-cp37-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-            '3.8': [
-                'PyQt5_sip-12.11.0-cp38-cp38-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-            '3.9': [
-                'PyQt5_sip-12.11.0-cp39-cp39-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-            '3.10': [
-                'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
-        },
-    }
-    print('Installing precompiled packages')
-    ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
-    for wheel in wheels[verMW4][ver]:
-        print(f'...{wheel.split("-")[0]}-{wheel.split("-")[1]}')
-        command = ['-m', 'pip', 'install', preRepo + preSource + wheel + postRepo]
-        suc = runPythonInVenv(venvContext, command)
-        if not suc:
-            print('...error installing precompiled packages')
-            print('Install aborted')
-            print('')
-            return False
-    print('...finished')
-    print('Precompiled packages ready')
-    print('')
-    return True
-
-
-def addArmSpecials(venvContext):
-    """
-    :param venvContext:
-    :return:
-    """
-    if platform.system() != 'Linux':
-        return True
-
-    if platform.machine() == 'aarch64':
-        return downloadAndInstallWheels(venvContext)
-
-    return True
-
-
 def updateEnvironment(venvContext):
     """
     :param venvContext:
@@ -284,6 +190,15 @@ def updateEnvironment(venvContext):
     """
     command = ['-m', 'pip', 'install', 'wheel']
     runPythonInVenv(venvContext, command)
+
+
+def checkVersion(package, isTest):
+    """
+    :param package:
+    :param isTest:
+    :return:
+    """
+    return '3.0.0'
 
 
 def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
@@ -310,35 +225,30 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
 
     updateEnvironment(venvContext)
 
-    suc = addArmSpecials(venvContext)
-    if not suc:
-        return ''
-
     isTest = os.path.isfile('mountwizzard4.tar.gz')
     if isTest:
         package = 'mountwizzard4.tar.gz'
-        print()
     else:
         package = 'mountwizzard4'
 
-    if version:
-        print(f'Installing MW4 version {version}')
+    if isTest:
+        print('Installing local package *.tar.gz')
+        print('...this will take some time')
+        command = ['-m', 'pip', 'install', package]
+    elif version:
+        print(f'Installing version {version}')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', f'{package}=={version}']
     elif upgrade:
-        print('Upgrading MW4 to latest release')
+        print('Upgrading to latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package]
     elif upgradeBeta:
-        print('Upgrading MW4 to latest version including beta')
+        print('Upgrading to latest version including beta')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package, '--pre']
-    elif isTest:
-        print('Installing MW4 test package')
-        print('...this will take some time')
-        command = ['-m', 'pip', 'install', package]
     else:
-        print('Installing MW4 latest release')
+        print('Installing latest release')
         print('...this will take some time')
         command = ['-m', 'pip', 'install', package]
 
@@ -386,6 +296,9 @@ def main(args=None):
         compatible = False
     elif not hasattr(sys, 'base_prefix'):
         compatible = False
+    if platform.machine() in ['armv7l', 'aarch64']:
+        compatible = False
+
     if not compatible:
         print()
         print()
@@ -393,6 +306,7 @@ def main(args=None):
         print('-' * 40)
         print('MountWizzard4 startup')
         print('needs python3.7 .. 3.10')
+        print('actually no support for ARM')
         print(f'you are running {sys.version_info}')
         print('...closing application')
         print()

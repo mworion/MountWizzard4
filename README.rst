@@ -48,7 +48,7 @@ Unit tests:
 
 Test install / run scripts:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|TEST_PACKAGES| |TEST_SCRIPTS| |RPI4_Mate18| |RPI4_Mate20|
+|TEST_SCRIPTS_PYPI| |TEST_SCRIPTS_PACKAGES| |RPI4_Mate18| |RPI4_Mate20|
 
 Test coverage:
 ^^^^^^^^^^^^^^
@@ -136,11 +136,11 @@ CS Michel
 .. |COMMITS_WEEK| image::
     https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
-.. |TEST_PACKAGES| image::
-    https://github.com/mworion/MountWizzard4/workflows/test_packages/badge.svg?branch=master
+.. |TEST_SCRIPTS_PYPI| image::
+    https://github.com/mworion/MountWizzard4/workflows/test_scripts_pypi/badge.svg?branch=master
 
-.. |TEST_SCRIPTS| image::
-    https://github.com/mworion/MountWizzard4/workflows/test_scripts/badge.svg?branch=master
+.. |TEST_SCRIPTS_PACKAGES| image::
+    https://github.com/mworion/MountWizzard4/workflows/test_scripts_packages/badge.svg?branch=master
 
 .. |RPI4_Mate18| image::
     https://github.com/mworion/MountWizzard4/workflows/rpi4_mate18/badge.svg?branch=master

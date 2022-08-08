@@ -16,7 +16,6 @@
 ###########################################################
 import os
 import sys
-import site
 import pathlib
 import subprocess
 import venv
@@ -24,7 +23,6 @@ import glob
 import platform
 import logging
 import datetime
-from logging.handlers import RotatingFileHandler
 import argparse
 
 log = logging.getLogger()

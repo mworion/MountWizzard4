@@ -274,7 +274,8 @@ class SettMisc(object):
         self.threadPool.start(worker)
         return True
 
-    def isValidGameControllers(self, name):
+    @staticmethod
+    def isValidGameControllers(name):
         """
         :param name:
         :return:
@@ -284,7 +285,6 @@ class SettMisc(object):
             if check in name:
                 break
         else:
-            self.log.debug(f'Unused HID devices: {[name]}')
             return False
         return True
 

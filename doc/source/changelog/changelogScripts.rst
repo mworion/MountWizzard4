@@ -5,8 +5,11 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Unreleased versions of scripts
 ------------------------------
+3.0
 
-- further improvements
+- enable all feature of scripts to one single startup.pyz file with parameters
+- new script is limited to windows, mac and linux only. No support of Raspi or
+  aarch64
 
 Released versions of scripts
 ----------------------------

@@ -41,7 +41,7 @@ releaseNotes = """
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: image: photometry functions (aberration, roundness, etc.)
-- add: image: tilt estimation like ASTAP does
+- add: image: tilt estimation like ASTAP does as rectangle and triangle
 - add: image: add flip H and flip V
 - add: image: solve and center to image
 - add: image: support for reading XISF files (simple versions)
@@ -53,13 +53,15 @@ releaseNotes = """
 - add: system: support for python 3.10
 - add: system: support for up to 4 external RTSP streams or local cameras
 - add: help: local install of documentation in PDF format
-- improve: GUI:  layout for main window optimized and consistent and wording updates
+- improve: GUI: layout for main window optimized and consistent and wording updates
 - improve: GUI: complete rework of charting: performance and functions
 - improve: GUI: clean up and optimize iers download messages
+- improve: GUI: get more interaction bullet prove for invalid cross use cases
 - improve: model points: optimized DSO path generation (always fit, less params)
 - improve: model run: refactoring
 - improve: plate solve: compatibility checks 
-- improve: system: use latest PyQt5 version for python 3.10
+- improve: system: enable usage of python 3.10
+- improve: system: use latest PyQt5 version 
 - improve: system: adjust window sizes to be able to make mosaic layout on desktop
 - improve: system: moved to actual jpl kernel de440.bsp for ephemeris calcs
 - remove: system: matplotlib package and replace with more performant pyqtgraph
@@ -74,7 +76,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0b0',
+    version='3.0.0a0',
     packages=[
         'mw4',
         'mw4.base',

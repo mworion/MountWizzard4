@@ -161,7 +161,8 @@ class ASTAP(object):
         binPathASTAP = self.appPath + '/astap'
         options = ['-r', f'{self.searchRadius:1.1f}',
                    '-t', '0.005',
-                   '-z', '0']
+                   '-z', '0',
+                   '-d', self.indexPath]
 
         if raHint is not None and decHint is not None:
             options += ['-ra', f'{raHint.hours}',
@@ -254,5 +255,5 @@ class ASTAP(object):
             sucIndex = True
 
         self.log.info(f'ASTAP OK, app: [{program}], index: [{self.indexPath}]')
-        self.log.info(f'Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
+        self.log.info(f'ASTAP Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
         return sucProgram, sucIndex

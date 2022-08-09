@@ -162,7 +162,7 @@ class ASTAP(object):
         options = ['-r', f'{self.searchRadius:1.1f}',
                    '-t', '0.005',
                    '-z', '0',
-                   '-d', self.indexPath]
+                   '-d', self.indexPath,]
 
         if raHint is not None and decHint is not None:
             options += ['-ra', f'{raHint.hours}',

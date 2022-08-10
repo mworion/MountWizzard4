@@ -538,9 +538,11 @@ class Model:
         self.app.plateSolve.signals.done.disconnect(self.solveDone)
         if not result:
             self.msg.emit(2, 'Model', 'Solving error', 'Result missing')
+            self.app.operationRunning.emit(0)
             return False
         if not result['success']:
             self.msg.emit(2, 'Model', 'Solve error', f'{result.get("message")}')
+            self.app.operationRunning.emit(0)
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '
@@ -598,8 +600,8 @@ class Model:
         :param focalLength:
         :return: True for test purpose
         """
-        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        fileName = time + '-sync.fits'
+        timeTag = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        fileName = timeTag + '-sync.fits'
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
 
         self.app.camera.expose(imagePath=imagePath,

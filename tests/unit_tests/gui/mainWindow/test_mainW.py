@@ -243,8 +243,9 @@ def test_smartFunctionGui_1(function):
     assert suc
     assert function.ui.runModel.isEnabled()
     assert function.ui.plateSolveSync.isEnabled()
-    assert function.ui.dataModelGroup.isEnabled()
-    assert function.ui.analysisGroup.isEnabled()
+    assert function.ui.dataModel.isEnabled()
+    assert function.ui.runFlexure.isEnabled()
+    assert function.ui.runHysteresis.isEnabled()
 
 
 def test_smartFunctionGui_2(function):
@@ -256,8 +257,9 @@ def test_smartFunctionGui_2(function):
     assert suc
     assert not function.ui.runModel.isEnabled()
     assert not function.ui.plateSolveSync.isEnabled()
-    assert not function.ui.dataModelGroup.isEnabled()
-    assert not function.ui.analysisGroup.isEnabled()
+    assert not function.ui.dataModel.isEnabled()
+    assert not function.ui.runFlexure.isEnabled()
+    assert not function.ui.runHysteresis.isEnabled()
 
 
 def test_smartFunctionGui_3(function):

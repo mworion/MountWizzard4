@@ -346,6 +346,7 @@ class BasicRun:
         self.app.plateSolve.abort()
         self.restoreSignalsRunDefault()
         self.clearQueues()
+        self.app.operationRunning.emit(0)
         self.msg.emit(2, self.runType, 'Run', 'Cancelled')
         return True
 

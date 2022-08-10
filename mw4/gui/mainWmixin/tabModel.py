@@ -600,8 +600,8 @@ class Model:
         :param focalLength:
         :return: True for test purpose
         """
-        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        fileName = time + '-sync.fits'
+        timeTag = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        fileName = timeTag + '-sync.fits'
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
 
         self.app.camera.expose(imagePath=imagePath,

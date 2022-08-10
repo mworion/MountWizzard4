@@ -345,6 +345,7 @@ class SettImaging:
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
         if actValue is None:
             return False
+        actValue = int(actValue)
 
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
         numberFilter = len(availNames)
@@ -374,6 +375,7 @@ class SettImaging:
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
         if actValue is None:
             return False
+        actValue = int(actValue)
 
         availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
 

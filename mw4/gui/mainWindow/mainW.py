@@ -367,7 +367,7 @@ class MainWindow(
         self.wIcon(self.ui.runModel, 'start')
         self.wIcon(self.ui.pauseModel, 'pause')
         self.wIcon(self.ui.endModel, 'stop_m')
-        self.wIcon(self.ui.batchModel, 'choose')
+        self.wIcon(self.ui.dataModel, 'choose')
 
         # manage model
         self.wIcon(self.ui.runOptimize, 'start')
@@ -577,15 +577,17 @@ class MainWindow(
             self.ui.runModel.setEnabled(False)
 
         if isModelingReady:
-            self.ui.runModelGroup.setEnabled(True)
-            self.ui.platesolveSyncGroup.setEnabled(True)
-            self.ui.dataModelGroup.setEnabled(True)
-            self.ui.analysisGroup.setEnabled(True)
+            self.ui.runModel.setEnabled(True)
+            self.ui.plateSolveSync.setEnabled(True)
+            self.ui.dataModel.setEnabled(True)
+            self.ui.runFlexure.setEnabled(True)
+            self.ui.runHysteresis.setEnabled(True)
         else:
-            self.ui.runModelGroup.setEnabled(False)
-            self.ui.platesolveSyncGroup.setEnabled(False)
-            self.ui.dataModelGroup.setEnabled(False)
-            self.ui.analysisGroup.setEnabled(False)
+            self.ui.runModel.setEnabled(False)
+            self.ui.plateSolveSync.setEnabled(False)
+            self.ui.dataModel.setEnabled(False)
+            self.ui.runFlexure.setEnabled(False)
+            self.ui.runHysteresis.setEnabled(False)
 
         if isMountReady:
             self.ui.refractionGroup.setEnabled(True)

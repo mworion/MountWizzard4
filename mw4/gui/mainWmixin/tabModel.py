@@ -47,7 +47,7 @@ class Model:
         self.ui.cancelModel.clicked.connect(self.restoreModelDefaultContextAndGuiStatus)
         self.ui.endModel.clicked.connect(self.processModelData)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
-        self.ui.batchModel.clicked.connect(self.loadProgramModel)
+        self.ui.dataModel.clicked.connect(self.loadProgramModel)
         self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)
         self.app.operationRunning.connect(self.setModelOperationMode)
 
@@ -83,22 +83,23 @@ class Model:
         :param status:
         :return:
         """
+        print(status)
         if status == 1:
-            self.ui.platesolveSyncGroup.setEnabled(False)
+            self.ui.plateSolveSyncGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
         elif status == 2:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
         elif status == 3:
             self.ui.runModelGroup.setEnabled(False)
-            self.ui.platesolveSyncGroup.setEnabled(False)
+            self.ui.plateSolveSyncGroup.setEnabled(False)
         elif status == 0:
             self.ui.runModelGroup.setEnabled(True)
-            self.ui.platesolveSyncGroup.setEnabled(True)
+            self.ui.plateSolveSyncGroup.setEnabled(True)
             self.ui.dataModelGroup.setEnabled(True)
         else:
             self.ui.runModelGroup.setEnabled(False)
-            self.ui.platesolveSyncGroup.setEnabled(False)
+            self.ui.plateSolveSyncGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)
 
         return True

@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -7655,7 +7655,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -9340,7 +9340,7 @@ hr { height: 1px; border-width: 0; }
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="platesolveSyncGroup">
+      <widget class="QGroupBox" name="plateSolveSyncGroup">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -9934,7 +9934,7 @@ hr { height: 1px; border-width: 0; }
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="batchModel">
+       <widget class="QPushButton" name="dataModel">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -17617,7 +17617,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>

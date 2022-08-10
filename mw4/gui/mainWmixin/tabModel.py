@@ -538,11 +538,9 @@ class Model:
         self.app.plateSolve.signals.done.disconnect(self.solveDone)
         if not result:
             self.msg.emit(2, 'Model', 'Solving error', 'Result missing')
-            self.app.operationRunning.emit(0)
             return False
         if not result['success']:
             self.msg.emit(2, 'Model', 'Solve error', f'{result.get("message")}')
-            self.app.operationRunning.emit(0)
             return False
 
         text = f'RA: {convertToHMS(result["raJ2000S"])} '

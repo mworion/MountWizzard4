@@ -773,11 +773,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         else:
             fileName = 'exposure.fits'
 
-        imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
+        self.imageFileName = self.app.mwGlob['imageDir'] + '/' + fileName
         focalLength = self.app.telescope.focalLength
-
         self.imageFileNameOld = self.imageFileName
-        suc = self.app.camera.expose(imagePath=imagePath,
+        suc = self.app.camera.expose(imagePath=self.imageFileName,
                                      expTime=self.expTime,
                                      binning=self.binning,
                                      subFrame=subFrame,
@@ -786,11 +785,11 @@ class ImageWindow(toolsQtWidget.MWidget):
                                      )
         if not suc:
             self.abortExpose()
-            text = f'{os.path.basename(imagePath)}'
+            text = f'{os.path.basename(self.imageFileName)}'
             self.msg.emit(2, 'Image', 'Expose error', text)
             return False
 
-        text = f'{os.path.basename(imagePath)}'
+        text = f'{os.path.basename(self.imageFileName)}'
         self.msg.emit(0, 'Image', 'Exposing', text)
         text = f'Duration:{self.expTime:3.0f}s  '
         self.msg.emit(0, '', '', f'{text}')

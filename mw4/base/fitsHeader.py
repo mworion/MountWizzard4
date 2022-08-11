@@ -57,6 +57,8 @@ def getCoordinates(header={}):
         ra = Angle(hours=0)
         dec = Angle(degrees=0)
 
+    log.trace(f'HasFloat: [{hasDecimal}], HasDeg: [{hasSexagesimal}], '
+              f'Header:[{header}]')
     log.debug(f'HasFloat: [{hasDecimal}], HasDeg: [{hasSexagesimal}], Header:[{header}]')
     log.debug(f'Ra:[{ra}][{ra.hours}], Dec: [{dec}][{dec.degrees}]')
 

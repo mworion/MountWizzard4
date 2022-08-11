@@ -301,12 +301,12 @@ class Astrometry(object):
             return False
 
         if not os.path.isfile(solvedPath):
-            self.log.warning(f'Solve files for [{fitsPath}] missing')
+            self.log.info(f'Solve files for [{fitsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 
         if not os.path.isfile(wcsPath):
-            self.log.warning(f'Solve files for [{wcsPath}] missing')
+            self.log.info(f'Solve files for [{wcsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 

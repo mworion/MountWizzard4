@@ -332,7 +332,8 @@ class Photometry:
         mask = radius < 10
         self.objs = objs[mask]
         self.hfr = radius[mask]
-        self.runCalcs()
+        if len(self.hfr) > 10:
+            self.runCalcs()
         objsHFR = len(self.objs)
         self.log.info(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
                       f'HFR:{objsHFR}')

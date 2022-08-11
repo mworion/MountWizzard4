@@ -577,7 +577,8 @@ class HemisphereWindow(MWidget, EditHorizon):
             az = x[i]
             alt = y[i]
             active = act[i]
-            colActive = self.M_GREEN if active else self.M_YELLOW
+            col = [self.M_WHITE, self.M_GREEN, self.M_RED]
+            colActive = col[active]
             color = self.M_PINK if isEdit else colActive
 
             text = f'{i + 1}'

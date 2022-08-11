@@ -233,7 +233,6 @@ class BasicRun:
 
         text = f'Exposing image-{mPoint["countSequence"]:03d}'
         self.msg.emit(0, self.runType, 'Imaging', text)
-
         return True
 
     def runSlew(self):

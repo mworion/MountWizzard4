@@ -335,11 +335,11 @@ def main(args=None):
         '--clean_system', default=False, action='store_true', dest='clean',
         help='Cleaning system packages from faulty installs')
     parser.add_argument(
-        '--QT_SCALE_FACTOR', default=1, type=float, dest='scaleFactor',
-        help='Setting DPI scale factor for MountWizzard4')
+        '--scale', default=1, type=float, dest='scale',
+        help='Setting Qt DPI scale factor for MountWizzard4')
     parser.add_argument(
-        '--QT_FONT_DPI', default=96, type=float, dest='fontDPI',
-        help='Setting font DPI for MountWizzard4')
+        '--dpi', default=96, type=float, dest='dpi',
+        help='Setting QT font DPI for MountWizzard4')
 
     options = parser.parse_args(args)
     venvPath = pathlib.Path.cwd().joinpath('venv')
@@ -354,8 +354,8 @@ def main(args=None):
                          version=options.version)
 
     if options.scaleFactor != 1 or options.fontDPI != 96:
-        os.environ['QT_SCALE_FACTOR'] = str(options.scaleFactor)
-        os.environ['QT_FONT_DPI'] = str(options.fontDPI)
+        os.environ['QT_SCALE_FACTOR'] = str(options.scale)
+        os.environ['QT_FONT_DPI'] = str(options.dpi)
 
     if not options.noStart and command:
         print('MountWizzard4 is ready')

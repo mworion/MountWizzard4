@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -7655,7 +7655,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -9748,6 +9748,9 @@ hr { height: 1px; border-width: 0; }
         </property>
         <property name="text">
          <string>End</string>
+        </property>
+        <property name="color" stdset="0">
+         <string>yellow</string>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="numberBuildRetries">
@@ -17617,7 +17620,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>

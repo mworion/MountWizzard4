@@ -48,6 +48,7 @@ class BasicRun:
         self.imageDir = ''
 
         self.ui.cancelModel.clicked.connect(self.cancelRun)
+        self.ui.endModel.clicked.connect(self.processDataAndFinishRun)
 
     def runSolveDone(self, result):
         """

@@ -218,7 +218,6 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     print('')
 
     if hasInstall and not (upgrade or upgradeBeta or version):
-        print('...starting')
         return command
 
     updateEnvironment(venvContext)
@@ -259,6 +258,7 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('Upgrade finished')
     else:
         print('Install finished')
+    print()
 
     command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
                         recursive=True)
@@ -358,6 +358,8 @@ def main(args=None):
         os.environ['QT_FONT_DPI'] = str(options.fontDPI)
 
     if not options.noStart and command:
+        print('MountWizzard4 is ready')
+        print('...starting')
         runPythonInVenv(venvContext, command)
 
     print()

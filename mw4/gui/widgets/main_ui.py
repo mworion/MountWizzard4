@@ -10310,7 +10310,7 @@ class Ui_MainWindow(object):
         self.timeEstimated.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Progress in modeling.</span></p></body></html>"))
         self.timeEstimated.setText(_translate("MainWindow", "00:00:00"))
         self.label_42.setText(_translate("MainWindow", "Finishing Time:"))
-        self.pauseModel.setToolTip(_translate("MainWindow", "<html><head/><body><p>Pause a model build after actual point.</p></body></html>"))
+        self.pauseModel.setToolTip(_translate("MainWindow", "<html><head/><body><p>Pause a model build after actual point. This means process continious until next exposure state. Then pause will happen. Enabling makes button yellow. In waitung phase it flashes.</p></body></html>"))
         self.pauseModel.setText(_translate("MainWindow", "Pause"))
         self.parkMountAfterModel.setToolTip(_translate("MainWindow", "<html><head/><body><p>When enabled MW4 issues a park command after a model run.</p></body></html>"))
         self.parkMountAfterModel.setText(_translate("MainWindow", "Park mount after model build"))

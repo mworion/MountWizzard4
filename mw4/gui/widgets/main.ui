@@ -9667,7 +9667,7 @@ hr { height: 1px; border-width: 0; }
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pause a model build after actual point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pause a model build after actual point. This means process continious until next exposure state. Then pause will happen. Enabling makes button yellow. In waitung phase it flashes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Pause</string>

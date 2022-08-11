@@ -103,8 +103,7 @@ class BasicRun:
             t = f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]'
             self.log.debug(t)
             self.modelQueue.put(mPoint)
-            self.app.data.setStatusBuildP(pointNumber - 1, False)
-            self.app.updatePointMarker.emit()
+            self.app.data.setStatusBuildP(pointNumber - 1, 0)
 
             text = f'RA: {convertToHMS(mPoint["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
@@ -123,7 +122,9 @@ class BasicRun:
             text = f'Solving failed for image-{count:03d}'
             self.msg.emit(2, self.runType, 'Solving error', text)
             self.retryQueue.put(mPoint)
+            self.app.data.setStatusBuildP(pointNumber - 1, 2)
 
+        self.app.updatePointMarker.emit()
         self.runProgressCB(mPoint)
         self.log.debug(f'Processing {[count]} from {[lenSequence]}')
         if lenSequence == count:

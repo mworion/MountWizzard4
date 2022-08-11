@@ -546,7 +546,7 @@ class DataPoint(object):
             self.clearBuildP()
             return False
 
-        points = [(x[0], x[1], True) for x in value]
+        points = [(x[0], x[1], 1) for x in value]
 
         if keep:
             self._buildP += points
@@ -625,9 +625,7 @@ class DataPoint(object):
         fileName = self.configDir + '/' + fileName + '.hpts'
 
         with open(fileName, 'w') as handle:
-            json.dump(self.horizonP,
-                      handle,
-                      indent=4)
+            json.dump(self.horizonP, handle, indent=4)
 
         return True
 
@@ -688,7 +686,7 @@ class DataPoint(object):
 
                 # only values with above horizon = 0
                 if 5 <= alt <= 85 and 2 < az < 358:
-                    self.addBuildP((alt, az, True))
+                    self.addBuildP((alt, az, 1))
         return True
 
     @staticmethod
@@ -707,18 +705,18 @@ class DataPoint(object):
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
-                    yield(alt, az, True)
+                    yield(alt, az, 1)
             else:
                 for az in range(180 - minAz, 0, -stepAz):
-                    yield(alt, az, True)
+                    yield(alt, az, 1)
 
         for i, alt in enumerate(westAlt):
             if i % 2:
                 for az in range(180 + minAz, 360, stepAz):
-                    yield(alt, az, True)
+                    yield(alt, az, 1)
             else:
                 for az in range(maxAz, 180, -stepAz):
-                    yield(alt, az, True)
+                    yield(alt, az, 1)
 
     def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6, keep=False):
         """
@@ -802,7 +800,7 @@ class DataPoint(object):
 
         for i in range(0, numberBase):
             az = azBase + i * stepAz
-            self.addBuildP((altBase, az % 360, True))
+            self.addBuildP((altBase, az % 360, 1))
 
         return True
 
@@ -833,7 +831,8 @@ class DataPoint(object):
 
         return celestialEquator
 
-    def calcPath(self, ts, numberPoints, edgeDSO, ha, dec, location):
+    @staticmethod
+    def calcPath(ts, numberPoints, edgeDSO, ha, dec, location):
         """
         :param ts:
         :param numberPoints:
@@ -848,7 +847,7 @@ class DataPoint(object):
             starTime = ts.tt_jd(edgeDSO + i / numberPoints)
             az, alt = transform.J2000ToAltAz(ha, dec, starTime, location)
             if alt.degrees > 0:
-                buildP.append((alt.degrees, az.degrees % 360, True))
+                buildP.append((alt.degrees, az.degrees % 360, 1))
         return buildP
 
     def generateDSOPath(self, ha=0, dec=0, timeJD=0, location=None,
@@ -926,7 +925,7 @@ class DataPoint(object):
 
         for alt, az in zip(altitude, azimuth):
             if alt > 0:
-                self.addBuildP((alt, az, True))
+                self.addBuildP((alt, az, 1))
 
         return True
 
@@ -939,5 +938,5 @@ class DataPoint(object):
             az = point[1]
             alt += random.uniform(-1, 1)
             az += random.uniform(-1, 1)
-            self.buildP[i] = (alt, az, True)
+            self.buildP[i] = (alt, az, 1)
         return True

@@ -539,9 +539,11 @@ class HemisphereWindow(MWidget, EditHorizon):
             isEdit = self.ui.editModeHem.isChecked()
             for i in range(len(x)):
                 active = act[i]
-                colActive = self.M_GREEN if active else self.M_YELLOW
+                col = [self.M_WHITE, self.M_GREEN, self.M_RED]
+                colActive = col[active]
                 color = self.M_PINK if isEdit else colActive
-                symbol = 'o' if active else 'd'
+                sym = ['d', 'o', 'x']
+                symbol = sym[active]
 
                 spot = item.scatter.points()[i]
                 spot.setPen(pg.mkPen(color=color, width=1.5))

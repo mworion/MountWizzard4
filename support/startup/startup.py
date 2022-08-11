@@ -26,7 +26,7 @@ import datetime
 import argparse
 
 log = logging.getLogger()
-version = '3.0'
+version = '3.0beta0'
 
 
 class EnvBuilder(venv.EnvBuilder):

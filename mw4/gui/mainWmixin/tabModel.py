@@ -218,12 +218,13 @@ class Model:
         """
         :return: True for test purpose
         """
-        if self.ui.pauseModel.property('pause'):
-            self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
-            self.ui.runModel.setEnabled(True)
-        else:
+
+        if not self.ui.pauseModel.property('pause'):
+            self.changeStyleDynamic(self.ui.pauseModel, 'color', 'yellow')
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', True)
-            self.ui.runModel.setEnabled(False)
+        else:
+            self.changeStyleDynamic(self.ui.pauseModel, 'color', '')
+            self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
 
         return True
 

@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -7655,7 +7655,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -9672,9 +9672,6 @@ hr { height: 1px; border-width: 0; }
         <property name="text">
          <string>Pause</string>
         </property>
-        <property name="color" stdset="0">
-         <string>yellow</string>
-        </property>
        </widget>
        <widget class="QCheckBox" name="parkMountAfterModel">
         <property name="geometry">
@@ -9748,9 +9745,6 @@ hr { height: 1px; border-width: 0; }
         </property>
         <property name="text">
          <string>End</string>
-        </property>
-        <property name="color" stdset="0">
-         <string>yellow</string>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="numberBuildRetries">

@@ -46,10 +46,6 @@ Version 2.x:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Windows_Scripts.zip
 
-Version 3.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Windows_Scripts.zip
-
 
 MacOSx (please use Rosetta for M1 Macs):
 ----------------------------------------
@@ -57,9 +53,6 @@ Version 2.x:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/2.0/MacOSx_Scripts.zip
 
-Version 3.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/MacOSx_Scripts.zip
 
 Ubuntu:
 -------
@@ -67,9 +60,6 @@ Version 2.x:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Ubuntu_Scripts.zip
 
-Version 3.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Ubuntu_Scripts.zip
 
 UbuntuMate ARM64 (64bit):
 -------------------------
@@ -77,9 +67,6 @@ Version 2.x:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Mate_Scripts.zip
 
-Version 3.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Mate_Scripts.zip
 
 StellarMate ARM64 (64bit):
 --------------------------
@@ -87,9 +74,6 @@ Version 2.x:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/2.0/StellarMate64_Scripts.zip
 
-Version 3.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/StellarMate64_Scripts.zip
 
 UbuntuMate Astroberry ARM7 (32bit):
 -----------------------------------
@@ -97,11 +81,23 @@ Version 2.x:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip
 
-Version 3.x:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/Astroberry_Scripts.zip
+Installing version 3.x:
+-----------------------
+As version 3 of MW4 support python3.10 and some major changes in libraries happened,
+the install procedure also got improved. You will have only a single compressed
+python script (startup.pyz) which is valid for all platforms and does all things
+the different existing scripts stand for.
 
-Whereas <x.x> is the major version MW4 you would like to install.
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz
+
+On windows you should be able to start the script just be double click on it,
+in all other platforms you start it with
+
+.. code-block:: python
+
+    python3 startup.pyz
+
 
 Downloading the zip files
 -------------------------

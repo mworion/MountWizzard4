@@ -204,11 +204,13 @@ class BasicRun:
         self.log.info('Imaging started')
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
-        waitTime = 10 * mPoint.get('waitTime', 0)
+        waitTime = 2 * mPoint.get('waitTime', 0)
         self.log.info(f'Waiting time is {mPoint.get("waitTime", 0)}')
 
         while self.ui.pauseModel.property('pause') or waitTime > 0:
-            sleepAndEvents(100)
+            color = '' if waitTime % 2 else 'yellow'
+            self.changeStyleDynamic(self.ui.pauseModel, 'color', color)
+            sleepAndEvents(500)
             waitTime -= 1
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow

@@ -54,6 +54,8 @@ class VideoWindow4(VideoWindow):
             x = 0
         if y > self.screenSizeY - height:
             y = 0
+        x = max(x, 0)
+        y = max(y, 0)
         if x != 0 and y != 0:
             self.move(x, y)
         self.ui.videoURL.setText(config.get('videoURL', ''))

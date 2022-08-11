@@ -318,8 +318,8 @@ class Astrometry(object):
                                                     wcsHeader=wcsHeader,
                                                     updateFits=updateFits)
             self.log.trace(f'Header: [{header}]')
-            self.log.debug(f'Header RA: [{wcsHeader["RA"]}]'
-                           f'DEC: [{wcsHeader["DEC"]}')
+            self.log.debug(f'Header RA: [{header["RA"]}]'
+                           f'DEC: [{header["DEC"]}')
             self.log.debug(f'Solve : [{solve}]')
             fitsHDU[0].header = header
 

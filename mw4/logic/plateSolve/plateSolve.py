@@ -158,7 +158,7 @@ class PlateSolve:
                  error in arcsec and flag if image is flipped
         """
         self.log.trace(f'wcs header: [{wcsHeader}]')
-        self.log.debug(f'wcs RA: [{wcsHeader["CRVAL1"]}]'
+        self.log.debug(f'wcs RA: [{wcsHeader["CRVAL1"]}] '
                        f'DEC: [{wcsHeader["CRVAL2"]}')
         raJ2000 = convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
         decJ2000 = convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)

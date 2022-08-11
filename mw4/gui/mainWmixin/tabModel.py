@@ -82,7 +82,6 @@ class Model:
         :param status:
         :return:
         """
-        print(status)
         if status == 1:
             self.ui.plateSolveSyncGroup.setEnabled(False)
             self.ui.dataModelGroup.setEnabled(False)

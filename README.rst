@@ -1,6 +1,11 @@
 MountWizzard4
 =============
 
+Documentation:
+--------------
+There is a documentation available for MW4:
+https://mworion.github.io/MountWizzard4/index.html
+
 Welcome to MountWizzard4 is a utility for 10micron users for improving the
 workflow for astronomy work and imaging runs on Windows (10 and 11), OSx (Mojave
 - Monterey), Linux (Ubuntu 18.04 and 20.04) and some Linux ARMV7 and ARM64 distributions
@@ -34,8 +39,8 @@ It is recommended to use mount firmware 3.0 or later as some
 of the functions don't work with older firmware versions. It should not be a
 problem using older versions. A HW pre2012 might also have some issues.
 
-Versions, downloads and docs:
------------------------------
+Versions, downloads:
+--------------------
 |PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
 
 Code quality:
@@ -57,14 +62,6 @@ Test coverage:
 Commit status:
 ^^^^^^^^^^^^^^
 |COMMITS_WEEK| |COMMITS_MASTER|
-
-
-Documentation:
---------------
-There is a documentation available for MW4 which could be searched for entries:
-
-Online:
-https://mworion.github.io/MountWizzard4/index.html
 
 PDF document:
 https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/build/latex/mountwizzard4.pdf

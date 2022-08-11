@@ -218,7 +218,6 @@ class Model:
         """
         :return: True for test purpose
         """
-
         if not self.ui.pauseModel.property('pause'):
             self.changeStyleDynamic(self.ui.pauseModel, 'color', 'yellow')
             self.changeStyleDynamic(self.ui.pauseModel, 'pause', True)
@@ -234,7 +233,7 @@ class Model:
         computer and adds the optimized (recalculated) error values to the point.
         that's necessary, because when imaging and solving a point the error is
         related to this old model. when programming a new model, all point will
-        be recalculated be the mount computer an get a new error value which is
+        be recalculated be the mount computer and get a new error value which is
         based on the new model.
 
         :return: True for test purpose

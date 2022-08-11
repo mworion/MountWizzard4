@@ -165,8 +165,6 @@ class BasicRun:
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'],
-                                           raHint=mPoint['raJNowM'],
-                                           decHint=mPoint['decJNowM'],
                                            updateFits=False)
         text = f'Solving  image-{mPoint["countSequence"]:03d}:'
         self.msg.emit(0, self.runType, 'Solving', text)
@@ -344,6 +342,7 @@ class BasicRun:
 
         :return: true for test purpose
         """
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.app.camera.abort()
         self.app.plateSolve.abort()
         self.restoreSignalsRunDefault()
@@ -412,6 +411,7 @@ class BasicRun:
         :return:
         """
         resultData = self.collectingRunOutput()
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.restoreSignalsRunDefault()
         self.clearQueues()
 

@@ -924,7 +924,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.plateSolve.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
         self.deviceStat['solve'] = True
-        t = f'[{os.path.basename(imagePath)}]'
+        t = f'{os.path.basename(imagePath)}'
         self.msg.emit(0, 'Image', 'Solving', t)
         return True
 

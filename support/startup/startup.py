@@ -154,7 +154,11 @@ def venvCreate(venvPath, upgrade=False):
         EnvBuilder(with_pip=True, upgrade=upgrade)
         print()
 
-    print('Activate virtual environment')
+    if os.path.isdir('venv'):
+        print('Activate virtual environment')
+    else:
+        print('Install and activate virtual environment')
+
     venvBuilder = EnvBuilder(with_pip=True)
     venvBuilder.create(venvPath)
     print()
@@ -353,7 +357,7 @@ def main(args=None):
                          upgradeBeta=options.upgradeMW4beta,
                          version=options.version)
 
-    if options.scaleFactor != 1 or options.fontDPI != 96:
+    if options.scale != 1 or options.dpi != 96:
         os.environ['QT_SCALE_FACTOR'] = str(options.scale)
         os.environ['QT_FONT_DPI'] = str(options.dpi)
 

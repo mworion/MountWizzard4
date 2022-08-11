@@ -13,9 +13,10 @@ a short overview here are some quick installation hints for all platforms. The
 installers for Windows and OSx can be downloaded from python.org.
 
 .. warning::
-    Please do not use a newer version of python than 3.9.x! Some libraries bring
+    Please do not use a newer version of python than 3.9 if you would use MW4 on
+    other platforms than Windows, Mac or x86 Linux. Some libraries bring
     precompiled binaries with them and they might not be available for a newer
-    python version. A good overview what could run is in the readme on github.
+    python version.
 
 If you already have python 3.7 - 3.10 installed, you can skip this section
 and go directly to the MW4 installation process. If you have to install python3.8

@@ -106,40 +106,44 @@
   <section id="install-mw4">
 <h1>Install MW4<a class="headerlink" href="#install-mw4" title="Permalink to this heading">¶</a></h1>
 <p>When starting with the installation of MW4, python 3.7 - 3.10 should be successful
-installed. To check, open a terminal (available on all platforms) and run the command</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">--</span><span class="n">version</span>
-<span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
-</pre></div>
-</div>
-<p>if you are on Ubuntu or Mac, you might have python 2 and python3 versions installed,
-please refer to the following command:</p>
+installed. To check, open a terminal (available on all platforms) and run the
+command</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">--</span><span class="n">version</span>
 <span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
 </pre></div>
 </div>
-<p>If you have on Ubuntu and Mac mor than one python3 version installed, please refer
-to the following command:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span><span class="o">.</span><span class="n">XX</span> <span class="o">--</span><span class="n">version</span>
-
-<span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
+<p>On windows you can’t call python3, but you have to run the command</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">--</span><span class="n">version</span>
 </pre></div>
 </div>
 <p>In one of the choices you should see the version number of the installed and
 available packages. For python it should say 3.7.x … 3.10.x.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>MW4 does not need admin rights to install or run. To avoid problems
-with accessing directories or file please ensure, that you run install
-and MW4 itself as normal user!</p>
+<p>MW4 does not need admin rights to install or run. To avoid problems with
+accessing directories or file please ensure, that you run install and MW4
+itself as normal user!</p>
 </div>
-<p>To install MW4 on your computer, there are some support scripts available for
-Windows, OSx and Ubuntu to make it a little bit easier to install and run MW4. The
-scripts are online, and available from Github:</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Please check also scripts for updates of the script as they improve
-over time!</p>
+<p>To install MW4 on your computer, there are some support available for Windows, OSx
+and Ubuntu to make it a little bit easier to install and run MW4. The scripts are
+online, and available from Github.</p>
+<section id="installing-with-installer-version-3-x">
+<h2>Installing with installer version 3.x:<a class="headerlink" href="#installing-with-installer-version-3-x" title="Permalink to this heading">¶</a></h2>
+<p>The install procedure also got improved: You will have only a single compressed
+python script (startup.pyz) which is valid for all platforms and does all things
+the different existing scripts stand for.</p>
+<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz</a></p>
+<p>On windows you should be able to start the script just be double click on it,
+in all other platforms you start it with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">startup</span><span class="o">.</span><span class="n">pyz</span>
+</pre></div>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The new installer script 3.x supports only Windows, Mac and x86 Linux
+distributions! If you need other support, please refer to installer scripts 2.x</p>
+</div>
+</section>
 <section id="windows-10-11">
 <h2>Windows 10/11:<a class="headerlink" href="#windows-10-11" title="Permalink to this heading">¶</a></h2>
 <p>Version 2.x:</p>
@@ -169,19 +173,6 @@ over time!</p>
 <h2>UbuntuMate Astroberry ARM7 (32bit):<a class="headerlink" href="#ubuntumate-astroberry-arm7-32bit" title="Permalink to this heading">¶</a></h2>
 <p>Version 2.x:</p>
 <p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip">https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip</a></p>
-</section>
-<section id="installing-version-3-x">
-<h2>Installing version 3.x:<a class="headerlink" href="#installing-version-3-x" title="Permalink to this heading">¶</a></h2>
-<p>As version 3 of MW4 support python3.10 and some major changes in libraries happened,
-the install procedure also got improved. You will have only a single compressed
-python script (startup.pyz) which is valid for all platforms and does all things
-the different existing scripts stand for.</p>
-<p><a class="reference external" href="https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz">https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz</a></p>
-<p>On windows you should be able to start the script just be double click on it,
-in all other platforms you start it with</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">startup</span><span class="o">.</span><span class="n">pyz</span>
-</pre></div>
-</div>
 </section>
 <section id="downloading-the-zip-files">
 <h2>Downloading the zip files<a class="headerlink" href="#downloading-the-zip-files" title="Permalink to this heading">¶</a></h2>

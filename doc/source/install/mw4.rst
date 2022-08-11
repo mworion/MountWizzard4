@@ -2,43 +2,52 @@ Install MW4
 ===========
 
 When starting with the installation of MW4, python 3.7 - 3.10 should be successful
-installed. To check, open a terminal (available on all platforms) and run the command
-
-.. code-block:: python
-
-    python --version
-    virtualenv --version
-
-if you are on Ubuntu or Mac, you might have python 2 and python3 versions installed,
-please refer to the following command:
+installed. To check, open a terminal (available on all platforms) and run the
+command
 
 .. code-block:: python
 
     python3 --version
     virtualenv --version
 
-If you have on Ubuntu and Mac mor than one python3 version installed, please refer
-to the following command:
+On windows you can't call python3, but you have to run the command
 
 .. code-block:: python
 
-    python3.XX --version
+    python --version
 
-    virtualenv --version
 
 In one of the choices you should see the version number of the installed and
 available packages. For python it should say 3.7.x ... 3.10.x.
 
-.. hint:: MW4 does not need admin rights to install or run. To avoid problems
-          with accessing directories or file please ensure, that you run install
-          and MW4 itself as normal user!
+.. hint::
+    MW4 does not need admin rights to install or run. To avoid problems with
+    accessing directories or file please ensure, that you run install and MW4
+    itself as normal user!
 
-To install MW4 on your computer, there are some support scripts available for
-Windows, OSx and Ubuntu to make it a little bit easier to install and run MW4. The
-scripts are online, and available from Github:
+To install MW4 on your computer, there are some support available for Windows, OSx
+and Ubuntu to make it a little bit easier to install and run MW4. The scripts are
+online, and available from Github.
 
-.. note:: Please check also scripts for updates of the script as they improve
-          over time!
+Installing with installer version 3.x:
+--------------------------------------
+The install procedure also got improved: You will have only a single compressed
+python script (startup.pyz) which is valid for all platforms and does all things
+the different existing scripts stand for.
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz
+
+On windows you should be able to start the script just be double click on it,
+in all other platforms you start it with
+
+.. code-block:: python
+
+    python3 startup.pyz
+
+.. warning::
+    The new installer script 3.x supports only Windows, Mac and x86 Linux
+    distributions! If you need other support, please refer to installer scripts 2.x
+
 
 Windows 10/11:
 --------------
@@ -80,23 +89,6 @@ UbuntuMate Astroberry ARM7 (32bit):
 Version 2.x:
 
 https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip
-
-
-Installing version 3.x:
------------------------
-As version 3 of MW4 support python3.10 and some major changes in libraries happened,
-the install procedure also got improved. You will have only a single compressed
-python script (startup.pyz) which is valid for all platforms and does all things
-the different existing scripts stand for.
-
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz
-
-On windows you should be able to start the script just be double click on it,
-in all other platforms you start it with
-
-.. code-block:: python
-
-    python3 startup.pyz
 
 
 Downloading the zip files

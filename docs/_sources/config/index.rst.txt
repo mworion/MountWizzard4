@@ -6,4 +6,3 @@ Configuring
 
     mount/index
     dome/index
-    platesolve/index

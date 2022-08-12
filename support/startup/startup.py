@@ -15,6 +15,7 @@
 #
 ###########################################################
 import os
+import shutil
 import sys
 import pathlib
 import subprocess
@@ -24,9 +25,24 @@ import platform
 import logging
 import datetime
 import argparse
+import tarfile
+
+try:
+    import requests
+except Exception:
+    installBasicPackages()
+    import requests
+finally:
+    import shutil
+    from packaging.utils import Version
 
 log = logging.getLogger()
-version = '3.0beta0'
+version = '3.0beta1'
+
+if platform.system() == 'Windows':
+    py = 'python'
+else:
+    py = 'python3'
 
 
 class EnvBuilder(venv.EnvBuilder):
@@ -104,66 +120,15 @@ def run(command):
     except subprocess.TimeoutExpired as e:
         log.error(e)
         return False
-
     except Exception as e:
         log.error(f'Error: {e} happened')
         return False
-
     else:
         retCode = str(process.returncode)
-        log.debug(f'run: [{retCode}] [{output}]')
+        log.debug(f'Run exit code: [{retCode}], message: [{output}]')
 
     success = (process.returncode == 0)
     return success
-
-
-def venvCreate(venvPath, upgrade=False):
-    """
-    :param venvPath:
-    :param upgrade:
-    :return:
-    """
-    print()
-    print()
-    print()
-    print('-' * 40)
-    print('MountWizzard4')
-    print('-' * 40)
-    print(f'script version   : {version}')
-    print(f'platform         : {platform.system()}')
-    print(f'machine          : {platform.machine()}')
-    print(f'python           : {platform.python_version()}')
-    print('-' * 40)
-    print()
-
-    log.info('-' * 100)
-    log.info(f'script version   : {version}')
-    log.info(f'platform         : {platform.system()}')
-    log.info(f'sys.executable   : {sys.executable}')
-    log.info(f'actual workdir   : {os.getcwd()}')
-    log.info(f'machine          : {platform.machine()}')
-    log.info(f'cpu              : {platform.processor()}')
-    log.info(f'release          : {platform.release()}')
-    log.info(f'python           : {platform.python_version()}')
-    log.info(f'python runtime   : {platform.architecture()[0]}')
-    log.info(f'upgrade venv     : {upgrade}')
-    log.info('-' * 100)
-
-    if upgrade:
-        print('Prepare environment present')
-        print('...upgrading to actual python version')
-        EnvBuilder(with_pip=True, upgrade=upgrade)
-        print()
-
-    if os.path.isdir('venv'):
-        print('Activate virtual environment')
-    else:
-        print('Install and activate virtual environment')
-
-    venvBuilder = EnvBuilder(with_pip=True)
-    venvBuilder.create(venvPath)
-    print()
-    return venvBuilder.context
 
 
 def runPythonInVenv(venvContext, command):
@@ -195,13 +160,198 @@ def updateEnvironment(venvContext):
     runPythonInVenv(venvContext, command)
 
 
-def checkVersion(package, isTest):
+def installBasicPackages():
     """
-    :param package:
-    :param isTest:
     :return:
     """
-    return '3.0.0'
+    print('...adding basic packages')
+    command = [py, '-m', 'pip', 'install', 'pip', '-U']
+    run(command)
+    command = [py, '-m', 'pip', 'install', 'requests']
+    run(command)
+    command = [py, '-m', 'pip', 'install', 'packaging']
+    run(command)
+    command = [py, '-m', 'pip', 'install', 'shutils']
+    run(command)
+
+
+def venvCreate(venvPath, upgrade=False):
+    """
+    :param venvPath:
+    :param upgrade:
+    :return:
+    """
+    print()
+    print()
+    print()
+    print('-' * 40)
+    print('MountWizzard4')
+    print('-' * 40)
+    print(f'script version   : {version}')
+    print(f'platform         : {platform.system()}')
+    print(f'machine          : {platform.machine()}')
+    print(f'python           : {platform.python_version()}')
+    print('-' * 40)
+
+    log.info('-' * 100)
+    log.info(f'script version   : {version}')
+    log.info(f'platform         : {platform.system()}')
+    log.info(f'sys.executable   : {sys.executable}')
+    log.info(f'actual workdir   : {os.getcwd()}')
+    log.info(f'machine          : {platform.machine()}')
+    log.info(f'cpu              : {platform.processor()}')
+    log.info(f'release          : {platform.release()}')
+    log.info(f'python           : {platform.python_version()}')
+    log.info(f'python runtime   : {platform.architecture()[0]}')
+    log.info(f'upgrade venv     : {upgrade}')
+    log.info('-' * 100)
+
+    if upgrade:
+        print('Upgrading virtual environment')
+        print('...to actual python version')
+        EnvBuilder(with_pip=True, upgrade=upgrade)
+        print()
+
+    existInstall = os.path.isdir('venv')
+    if existInstall:
+        print('Activate virtual environment')
+    else:
+        print('Install and activate virtual environment')
+
+    venvBuilder = EnvBuilder(with_pip=True)
+    venvBuilder.create(venvPath)
+    print()
+    return venvBuilder.context
+
+
+def downloadAndInstallWheels(venvContext, verMW4=None):
+    """
+    :param venvContext:
+    :param verMW4:
+    :return:
+    """
+    preRepo = 'https://github.com/mworion/MountWizzard4'
+    preSource = '/blob/master/support/wheels/'
+    postRepo = '?raw=true'
+    wheels = {
+        '2.0.0': {
+            '3.7': [
+                'sep-1.2.0-cp37-cp37m-linux_aarch64.whl',
+                'sgp4-2.20-cp37-cp37m-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl',
+                'astropy-4.3.1-cp37-cp37m-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp37-cp37-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.8': [
+                'sep-1.2.0-cp38-cp38-linux_aarch64.whl',
+                'sgp4-2.20-cp38-cp38-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp38-cp38-linux_aarch64.whl',
+                'astropy-4.3.1-cp38-cp38-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp38-cp38-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.9': [
+                'sep-1.2.0-cp39-cp39-linux_aarch64.whl',
+                'sgp4-2.20-cp39-cp39-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp39-cp39-linux_aarch64.whl',
+                'astropy-4.3.1-cp39-cp39-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp39-cp39-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.10': [
+                'sep-1.2.0-cp310-cp310-linux_aarch64.whl',
+                'sgp4-2.20-cp310-cp310-linux_aarch64.whl',
+                'pyerfa-2.0.0-cp310-cp310-linux_aarch64.whl',
+                'astropy-4.3.1-cp310-cp310-linux_aarch64.whl',
+                'PyQt5_sip-12.8.1-cp310-cp310-linux_aarch64.whl',
+                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+        },
+        '3.0.0': {
+            '3.7': [
+                'PyQt5_sip-12.11.0-cp37-cp37-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.8': [
+                'PyQt5_sip-12.11.0-cp38-cp38-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.9': [
+                'PyQt5_sip-12.11.0-cp39-cp39-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+            '3.10': [
+                'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl',
+                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+            ],
+        },
+    }
+
+    print('Installing precompiled packages')
+    if verMW4 >= Version('3.0.0'):
+        print('...no precompiled packages available')
+        print('Install aborted')
+        print('')
+        verMW4 = '3.0.0'
+        return False
+    elif verMW4 >= Version('2.0.0'):
+        verMW4 = '2.0.0'
+    else:
+        print('...no precompiled packages available')
+        print('Install aborted')
+        print('')
+        return False
+
+    ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
+    for item in wheels[verMW4][ver]:
+        print(f'...{item.split("-")[0]}-{item.split("-")[1]}')
+        command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
+        suc = runPythonInVenv(venvContext, command)
+        if not suc:
+            print('...error installing precompiled packages')
+            print('Install aborted')
+            print('')
+            return False
+    print('...finished')
+    print('Precompiled packages ready')
+    print('')
+    return True
+
+
+def addArmSpecials(venvContext, verMW4=''):
+    """
+    :param venvContext:
+    :param verMW4:
+    :return:
+    """
+    if platform.machine() == 'aarch64':
+        return downloadAndInstallWheels(venvContext, verMW4=verMW4)
+
+    return True
+
+
+def checkVersion(isTest, upgradeBeta):
+    """
+    :param isTest:
+    :param upgradeBeta:
+    :return:
+    """
+    if isTest:
+        with tarfile.open('mountwizzard4.tar.gz', 'r') as f:
+            for member in f.getmembers():
+                if "PKG-INFO" in member.name:
+                    pkg = f.extractfile(member.name)
+                    with open('PKG_INFO', 'wb') as o:
+                        o.write(pkg.read())
+        ver = ''
+        with open('PKG_INFO', 'r') as f:
+            for line in f.readlines():
+                if line.startswith('Version:'):
+                    ver = line.split(':')[1]
+        os.remove('PKG_INFO')
+        verMW4 = Version(ver)
+    return verMW4
 
 
 def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
@@ -233,27 +383,30 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     else:
         package = 'mountwizzard4'
 
+    verMW4 = checkVersion(isTest, upgradeBeta)
+
+    suc = addArmSpecials(venvContext, verMW4=verMW4)
+    if not suc:
+        return ''
+
     if isTest:
-        print('Installing local package *.tar.gz')
-        print('...this will take some time')
+        print('Installing local package mountwizzard4.tar.gz')
         command = ['-m', 'pip', 'install', package]
     elif version:
         print(f'Installing version {version}')
-        print('...this will take some time')
         command = ['-m', 'pip', 'install', f'{package}=={version}']
     elif upgrade:
         print('Upgrading to latest release')
-        print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package]
     elif upgradeBeta:
         print('Upgrading to latest version including beta')
-        print('...this will take some time')
         command = ['-m', 'pip', 'install', '-U', package, '--pre']
     else:
         print('Installing latest release')
-        print('...this will take some time')
         command = ['-m', 'pip', 'install', package]
 
+    print(f'...this will install version {verMW4}')
+    print('...and it will take some time')
     suc = runPythonInVenv(venvContext, command)
     if not suc:
         print('Install failed, abort')
@@ -273,12 +426,6 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
 def cleanSystem():
     print('Clean system site-packages')
     print('...takes some time')
-
-    if platform.system() == 'Windows':
-        py = 'python'
-    else:
-        py = 'python3'
-
     print()
     ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
     print(ret)
@@ -299,7 +446,9 @@ def main(args=None):
         compatible = False
     elif not hasattr(sys, 'base_prefix'):
         compatible = False
-    if platform.machine() in ['armv7l', 'aarch64']:
+    if platform.machine() in ['armv7l']:
+        compatible = False
+    elif platform.machine() in ['aarch64'] and sys.version_info >= (3, 10):
         compatible = False
 
     if not compatible:
@@ -307,12 +456,13 @@ def main(args=None):
         print()
         print()
         print('-' * 40)
-        print('MountWizzard4 startup')
-        print('needs python3.7 .. 3.10')
-        print('actually no support for ARM')
+        print('MountWizzard4 startup - not compatible environment')
+        print('needs python3.7 .. 3.9 for version 2.x')
+        print('needs python3.7 .. 3.10 for version 3.x')
+        print('actually no support for ARM7')
+        print('actually no support for AARCH64 for version 3.x')
         print(f'you are running {sys.version_info}')
-        print('...closing application')
-        print()
+        print('Closing application')
         print('-' * 40)
         print()
         return
@@ -348,8 +498,8 @@ def main(args=None):
 
     options = parser.parse_args(args)
     venvPath = pathlib.Path.cwd().joinpath('venv')
-
     venvContext = venvCreate(venvPath, upgrade=options.upgrade)
+
     if options.clean:
         cleanSystem()
 
@@ -365,9 +515,9 @@ def main(args=None):
     if not options.noStart and command:
         print('MountWizzard4 is ready')
         print('...starting')
+        print()
         runPythonInVenv(venvContext, command)
 
-    print()
     print('Closing application')
     print('-' * 40)
     print()

@@ -1,22 +1,46 @@
-Install Platesolvers
-====================
+Install Plate Solvers
+=====================
+Supported platesolvers are astrometry.net, ASTAP and Watney. All solvers should be
+installed locally. There is no support for astrometry.net online. If you install a
+plate solver, please be reminded that you have to install their index files as
+well. Unfortunately all are using different index files and methods, also
+depending on your optical setup. MW4 helps you in finding the necessary index
+files for your setup:
 
-When starting with the use of MW4, you might need to install a plate solver.
-Actually MW4 supports only local plate solvers like ASTAP, Cloudmakers (on OSx)
-astrometry.net and Watney.
+.. image:: image/information.png
+    :align: center
+    :scale: 71%
 
-ASTAP could be downloaded from https://www.hnsky.org/astap.htm, please follow their
-instructions. ASTAP is available for all platforms (Mac, Ubuntu and Windows)
+Based on optical and Sensor data. MW4 will make a prognosis, which index selection
+might be good. You also have direct internet links to the sources.
 
-Watney could be downloaded from https://github.com/Jusas/WatneyAstrometry, please
-follow their instructions. Watney is available for all platforms (Mac, Ubuntu and
-Windows)
+Astrometry.net
+--------------
+Astrometry.net is useful on Linux and Mac installations. On Windows there is no
+good setup possible. There are many solutions available (e.g. ANSRV), but these
+could not be used through MW4. You will find astrometry.net here:
 
-Astrometry.net local install is available on Ubuntu you could install it with
+http://astrometry.net
 
-.. code-block:: python
+ASTAP
+-----
+ASTAP is an application available for all platforms from Han. Great software! It
+is available as application with GUI and as pure command line interface solution
+(CLI). If you don't use ASTAP for other things as well, I would recommend
+installing the CLI version locally in a folder of your choice. You find all
+information on:
 
-    sudo apt-get install astrometry.net
+https://www.hnsky.org/astap.htm
 
-Pleas keep in mind that for both programs you need to install the index files as
-well.
+Watney
+------
+Watney is a new solver from Jusas, based in the algorithm Han published for ASTAP.
+It is available as API and command line interface (CLI) version for all platforms.
+For the use with MW4, please install the CLI version in a folder of your choice.
+You will find all information on:
+
+https://github.com/Jusas/WatneyAstrometry
+
+and
+
+https://watney-astrometry.net

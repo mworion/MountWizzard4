@@ -412,65 +412,37 @@ def checkVersion(isTest, upgradeBeta):
     return verMW4
 
 
-def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
+def installMW4(venvContext, upgrade=False, upgradeBeta=False,
+               isTest=False, version=''):
     """
     :param venvContext:
     :param upgrade:
     :param upgradeBeta:
+    :param isTest:
     :param version:
     :return:
     """
-    command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
-                        recursive=True)
-
-    hasInstall = len(command) == 1
-    if hasInstall:
-        print('MountWizzard4 present')
-    else:
-        print('MountWizzard4 not present')
-    print('')
-
-    if hasInstall and not (upgrade or upgradeBeta or version):
-        return command
-
-    updateEnvironment(venvContext)
-
-    isTest = os.path.isfile('mountwizzard4.tar.gz')
-    if isTest:
-        package = 'mountwizzard4.tar.gz'
-    else:
-        package = 'mountwizzard4'
-
-    log.info(f'Package is test: {isTest}, {package}')
-    verMW4 = checkVersion(isTest, upgradeBeta)
-    suc = addArmSpecials(venvContext, verMW4=verMW4)
-    if not suc:
-        log.info('Add ARM specials failed')
-        return ''
-
     if isTest:
         print('Installing local package mountwizzard4.tar.gz')
-        command = ['-m', 'pip', 'install', package]
+        command = ['-m', 'pip', 'install', 'mountwizzard4.tar.gz']
     elif version:
         print(f'Installing version {version}')
-        command = ['-m', 'pip', 'install', f'{package}=={version}']
+        command = ['-m', 'pip', 'install', f'mountwizzard4=={version}']
     elif upgrade:
         print('Upgrading to latest release')
-        command = ['-m', 'pip', 'install', '-U', package]
+        command = ['-m', 'pip', 'install', '-U', 'mountwizzard4']
     elif upgradeBeta:
         print('Upgrading to latest version including beta')
-        command = ['-m', 'pip', 'install', '-U', package, '--pre']
+        command = ['-m', 'pip', 'install', '-U', 'mountwizzard4', '--pre']
     else:
         print('Installing latest release')
-        command = ['-m', 'pip', 'install', package]
+        command = ['-m', 'pip', 'install', 'mountwizzard4']
 
     print(f'...version is {verMW4}')
     print('...this will take some time')
     suc = runPythonInVenv(venvContext, command)
     print()
     if not suc:
-        print('Install failed, abort')
-        print()
         return ''
 
     if upgrade or upgradeBeta:
@@ -478,9 +450,48 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     else:
         print('Install finished')
     print()
-
     command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
                         recursive=True)
+    return command
+
+
+def checkInstalled(venvContext):
+    """
+    :param venvContext:
+    :return:
+    """
+    command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
+                        recursive=True)
+    hasInstall = len(command) == 1
+    if hasInstall:
+        print('MountWizzard4 present')
+    else:
+        print('MountWizzard4 not present')
+    print('')
+    return hasInstall
+
+
+def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
+    """
+    :param venvContext:
+    :param upgrade:
+    :param upgradeBeta:
+    :param version:
+    :return:
+    """
+    hasInstall = checkInstalled(venvContext)
+    if hasInstall and not (upgrade or upgradeBeta or version):
+        return command
+
+    verMW4 = checkVersion(isTest, upgradeBeta)
+    suc = addArmSpecials(venvContext, verMW4=verMW4)
+    if not suc:
+        return ''
+
+    updateEnvironment(venvContext)
+    isTest = os.path.isfile('mountwizzard4.tar.gz')
+    command = installMW4(venvContext, upgrade=upgrade, upgradeBeta=upgradeBeta,
+                         version=version, isTest=isTest)
     return command
 
 
@@ -556,10 +567,10 @@ def main(args=None):
         installBasicPackages()
     print()
 
-    command = installMW4(venvContext,
-                         upgrade=options.upgradeMW4,
-                         upgradeBeta=options.upgradeMW4beta,
-                         version=options.version)
+    command = install(venvContext,
+                      upgrade=options.upgradeMW4,
+                      upgradeBeta=options.upgradeMW4beta,
+                      version=options.version)
 
     os.environ['QT_SCALE_FACTOR'] = str(options.scale)
     os.environ['QT_FONT_DPI'] = str(options.dpi)
@@ -571,6 +582,9 @@ def main(args=None):
         suc = runPythonInVenv(venvContext, command)
         if not suc:
             print('...failed to start MW4')
+    elif not command:
+        print('Install failed, abort')
+        print()
 
     print('Closing application')
     print('-' * 50)

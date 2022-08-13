@@ -297,12 +297,8 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     if verMW4.major >= 3:
         log.info('Path version 3.0.0 and above')
         print('...no precompiled packages available')
-        print('Install aborted')
-        print('')
         if not Version(platform.python_version()) < Version('3.10'):
             print('...no precompiled packages available')
-            print('Install aborted')
-            print('')
         verMW4 = '3.0.0'
         return False
     elif verMW4.major >= 2:
@@ -311,8 +307,6 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     else:
         log.info('Path default')
         print('...no precompiled packages available')
-        print('Install aborted')
-        print('')
         return False
 
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
@@ -322,8 +316,6 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
         suc = runPythonInVenv(venvContext, command)
         if not suc:
             print('...error installing precompiled packages')
-            print('Install aborted')
-            print('')
             return False
     print('...finished')
     print('Precompiled packages ready')
@@ -574,7 +566,7 @@ def main(args=None):
             print('...failed to start MW4')
         print()
     elif not command:
-        print('Install failed, abort')
+        print('Install failed')
         print()
 
     print('Closing application')

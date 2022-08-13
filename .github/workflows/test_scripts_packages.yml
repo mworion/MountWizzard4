@@ -254,7 +254,5 @@ jobs:
             python3 --version
             cd /root/support/3.0
             python3 startup.pyz --no-start
-            touch test.run
-            python3 startup.pyz
             cat startup*.log
             ls -la

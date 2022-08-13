@@ -145,6 +145,19 @@ def setupLogging():
     return True
 
 
+def cleanSystem():
+    print('Clean system site-packages')
+    print('...takes some time')
+    print()
+    ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
+    print(ret)
+    ret = os.popen(f'{py} -m pip uninstall -y -r clean.txt').read()
+    print(ret)
+    print()
+    print('Clean finished')
+    print()
+
+
 def runPythonInVenv(venvContext, command):
     """
     :param venvContext:
@@ -290,7 +303,7 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     }
     log.info(f'Got version {verMW4}')
     print('Installing precompiled packages')
-    if verMW4 >= Version('3.0.0'):
+    if not verMW4 < Version('3.0.0'):
         log.info('Path version 3.0.0 and above')
         print('...no precompiled packages available')
         print('Install aborted')
@@ -301,7 +314,7 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
             print('')
         verMW4 = '3.0.0'
         return False
-    elif verMW4 >= Version('2.0.0'):
+    elif not verMW4 < Version('2.0.0'):
         log.info('Path version 2.0.0 and above')
         verMW4 = '2.0.0'
     else:
@@ -428,9 +441,11 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     else:
         package = 'mountwizzard4'
 
+    log.info(f'Package is test: {isTest}, {package}')
     verMW4 = checkVersion(isTest, upgradeBeta)
     suc = addArmSpecials(venvContext, verMW4=verMW4)
     if not suc:
+        log.info('Add ARM specials failed')
         return ''
 
     if isTest:
@@ -467,19 +482,6 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
     command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
                         recursive=True)
     return command
-
-
-def cleanSystem():
-    print('Clean system site-packages')
-    print('...takes some time')
-    print()
-    ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
-    print(ret)
-    ret = os.popen(f'{py} -m pip uninstall -y -r clean.txt').read()
-    print(ret)
-    print()
-    print('Clean finished')
-    print()
 
 
 def main(args=None):

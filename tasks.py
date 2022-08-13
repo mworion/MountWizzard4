@@ -265,6 +265,12 @@ def zipStartup(c):
                           main='startup:main')
     printMW('...copy install script to test dir')
 
+@task
+def pypiCleanup(c):
+    printMW('...clean pypi from alpha versions')
+    regex = '1\\.\\w*\\.\\d\\D\\d*$'
+    runMW(c, f'pypi-cleanup -u mworion -p mountwizzard4 -r {regex} -y')
+
 
 def test_windows(c, user, work, scp):
     printMW('...delete test dir')

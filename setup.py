@@ -46,8 +46,8 @@ releaseNotes = """
 - add: image: solve and center to image
 - add: image: support for reading XISF files (simple versions)
 - add: imaging: separate page for imaging stats now
-- add: imaging stats: calcs for plate solvers (index files etc.)
-- add: imaging stats: calcs for critical focus zones
+- add: imaging: stats: calcs for plate solvers (index files etc.)
+- add: imaging: stats: calcs for critical focus zones
 - add: drivers: polling timing for drivers could be set
 - add: drivers: game controller interface for mount and dome
 - add: system: support for python 3.10

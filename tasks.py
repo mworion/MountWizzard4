@@ -259,7 +259,7 @@ def upload_mw(c):
 @task
 def zipStartup(c):
     printMW('...make zip archive')
-    zipapp.create_archive('./support/startup',
+    zipapp.create_archive('./support/startup/startup.py',
                           target='./support/3.0/startup.pyz',
                           compressed=True,
                           main='startup:main')

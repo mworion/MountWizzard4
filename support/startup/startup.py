@@ -59,10 +59,10 @@ def run(command):
         log.error(f'Error: {e} happened')
         return False
     else:
-        retCode = str(process.returncode)
-        log.debug(f'Run exit code: [{retCode}], message: [{output}]')
+        retCode = process.returncode
 
     success = (process.returncode == 0)
+    log.debug(f'Exit code:[{retCode}], message:[{output}], success:[{success}]')
     return success
 
 

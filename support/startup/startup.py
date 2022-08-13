@@ -185,20 +185,17 @@ def venvCreate(venvPath, upgrade=False):
     """
     print()
     print('-' * 50)
-
-    print(' #     #    #     #    #       ')
-    print(' ##   ##    #  #  #    #    #  ')
-    print(' # # # #    #  #  #    #    #  ')
-    print(' #  #  #    #  #  #    #    #  ')
-    print(' #     #    #  #  #    ####### ')
-    print(' #     #    #  #  #         #  ')
-    print(' #     #     ## ##          #  ')
+    print(' ███    ███  ██     ██  ██   ██')
+    print(' ████  ████  ██     ██  ██   ██')
+    print(' ██ ████ ██  ██  █  ██  ███████')
+    print(' ██  ██  ██  ██ ███ ██       ██')
+    print(' ██      ██   ███ ███        ██')
+    print('-' * 50)
     print('    __  ____       ____ __')
     print('   /  |/  / |     / / // /')
     print('  / /|_/ /| | /| / / // /_')
     print(' / /  / / | |/ |/ /__  __/')
-    print('_/  /_/  |__/|__/  /_/    ')
-    print('                          ')
+    print('/_/  /_/  |__/|__/  /_/    ')
     print('-' * 50)
     print('MountWizzard4')
     print(f'script version   : {version}')
@@ -459,8 +456,8 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('Installing latest release')
         command = ['-m', 'pip', 'install', package]
 
-    print(f'...installs version {verMW4}')
-    print('...it will take some time')
+    print(f'...version is {verMW4}')
+    print('...this will take some time')
     suc = runPythonInVenv(venvContext, command)
     print()
     if not suc:

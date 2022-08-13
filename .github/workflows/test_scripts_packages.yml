@@ -207,6 +207,7 @@ jobs:
           ls -la
 
   install_aarch64:
+    needs: [build_widgets_resource]
     # The host should always be linux
     runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
@@ -224,7 +225,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: dist
-          path: "${PWD}/support/3.0"
+          path: support/3.0
 
       - uses: uraimo/run-on-arch-action@v2.2.0
         name: build_artifact

@@ -152,10 +152,7 @@ def runPythonInVenv(venvContext, command):
     :return:
     """
     command = [venvContext.env_exe] + command
-    success = run(command)
-    if not success:
-        print('...no version that satisfies the requirement')
-    return success
+    return run(command)
 
 
 def runBinInVenv(venvContext, command):
@@ -190,12 +187,6 @@ def venvCreate(venvPath, upgrade=False):
     print(' ██ ████ ██  ██  █  ██  ███████')
     print(' ██  ██  ██  ██ ███ ██       ██')
     print(' ██      ██   ███ ███        ██')
-    print('-' * 50)
-    print('    __  ____       ____ __')
-    print('   /  |/  / |     / / // /')
-    print('  / /|_/ /| | /| / / // /_')
-    print(' / /  / / | |/ |/ /__  __/')
-    print('/_/  /_/  |__/|__/  /_/    ')
     print('-' * 50)
     print('MountWizzard4')
     print(f'script version   : {version}')
@@ -573,7 +564,9 @@ def main(args=None):
         print('MountWizzard4 is ready')
         print('...starting')
         print()
-        runPythonInVenv(venvContext, command)
+        suc = runPythonInVenv(venvContext, command)
+        if not suc:
+            print('...failed to start MW4')
 
     print('Closing application')
     print('-' * 50)

@@ -446,7 +446,7 @@ def checkIfInstalled(venvContext):
     isInstalled = len(solutions) == 1
     if isInstalled:
         print('MountWizzard4 present')
-        command = solutions[0]
+        command = [solutions[0]]
     else:
         print('MountWizzard4 not present')
         command = ''

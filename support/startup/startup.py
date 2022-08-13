@@ -27,22 +27,66 @@ import datetime
 import argparse
 import tarfile
 
-try:
-    import requests
-except Exception:
-    installBasicPackages()
-    import requests
-finally:
-    import shutil
-    from packaging.utils import Version
-
-log = logging.getLogger()
-version = '3.0beta1'
-
 if platform.system() == 'Windows':
     py = 'python'
 else:
     py = 'python3'
+
+log = logging.getLogger()
+version = '3.0beta1'
+
+
+def run(command):
+    """
+    :param command:
+    :return:
+    """
+    try:
+        process = subprocess.Popen(args=command,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT,
+                                   text=True,
+                                   )
+        for stdout_line in iter(process.stdout.readline, ""):
+            if stdout_line:
+                log.info(stdout_line.strip('\n'))
+        output = process.communicate(timeout=60)[0]
+
+    except subprocess.TimeoutExpired as e:
+        log.error(e)
+        return False
+    except Exception as e:
+        log.error(f'Error: {e} happened')
+        return False
+    else:
+        retCode = str(process.returncode)
+        log.debug(f'Run exit code: [{retCode}], message: [{output}]')
+
+    success = (process.returncode == 0)
+    return success
+
+
+def installBasicPackages():
+    """
+    :return:
+    """
+    print('...adding basic packages')
+    command = [py, '-m', 'pip', 'install', 'pip', '-U']
+    run(command)
+    command = [py, '-m', 'pip', 'install', 'requests', '-U']
+    run(command)
+    command = [py, '-m', 'pip', 'install', 'packaging', '-U']
+    run(command)
+
+
+try:
+    import requests
+    import packaging
+except ImportError:
+    installBasicPackages()
+finally:
+    import requests
+    from packaging.utils import Version
 
 
 class EnvBuilder(venv.EnvBuilder):
@@ -101,36 +145,6 @@ def setupLogging():
     return True
 
 
-def run(command):
-    """
-    :param command:
-    :return:
-    """
-    try:
-        process = subprocess.Popen(args=command,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT,
-                                   text=True,
-                                   )
-        for stdout_line in iter(process.stdout.readline, ""):
-            if stdout_line:
-                log.info(stdout_line.strip('\n'))
-        output = process.communicate(timeout=60)[0]
-
-    except subprocess.TimeoutExpired as e:
-        log.error(e)
-        return False
-    except Exception as e:
-        log.error(f'Error: {e} happened')
-        return False
-    else:
-        retCode = str(process.returncode)
-        log.debug(f'Run exit code: [{retCode}], message: [{output}]')
-
-    success = (process.returncode == 0)
-    return success
-
-
 def runPythonInVenv(venvContext, command):
     """
     :param venvContext:
@@ -138,7 +152,10 @@ def runPythonInVenv(venvContext, command):
     :return:
     """
     command = [venvContext.env_exe] + command
-    return run(command)
+    success = run(command)
+    if not success:
+        print('...no version that satisfies the requirement')
+    return success
 
 
 def runBinInVenv(venvContext, command):
@@ -160,21 +177,6 @@ def updateEnvironment(venvContext):
     runPythonInVenv(venvContext, command)
 
 
-def installBasicPackages():
-    """
-    :return:
-    """
-    print('...adding basic packages')
-    command = [py, '-m', 'pip', 'install', 'pip', '-U']
-    run(command)
-    command = [py, '-m', 'pip', 'install', 'requests']
-    run(command)
-    command = [py, '-m', 'pip', 'install', 'packaging']
-    run(command)
-    command = [py, '-m', 'pip', 'install', 'shutils']
-    run(command)
-
-
 def venvCreate(venvPath, upgrade=False):
     """
     :param venvPath:
@@ -182,16 +184,20 @@ def venvCreate(venvPath, upgrade=False):
     :return:
     """
     print()
-    print()
-    print()
-    print('-' * 40)
+    print('-' * 50)
+    print('    __  ____       ____ __')
+    print('   /  |/  / |     / / // /')
+    print('  / /|_/ /| | /| / / // /_')
+    print(' / /  / / | |/ |/ /__  __/')
+    print('_/  /_/  |__/|__/  /_/    ')
+    print('                          ')
+    print('-' * 50)
     print('MountWizzard4')
-    print('-' * 40)
     print(f'script version   : {version}')
     print(f'platform         : {platform.system()}')
     print(f'machine          : {platform.machine()}')
     print(f'python           : {platform.python_version()}')
-    print('-' * 40)
+    print('-' * 50)
 
     log.info('-' * 100)
     log.info(f'script version   : {version}')
@@ -220,7 +226,6 @@ def venvCreate(venvPath, upgrade=False):
 
     venvBuilder = EnvBuilder(with_pip=True)
     venvBuilder.create(venvPath)
-    print()
     return venvBuilder.context
 
 
@@ -331,6 +336,51 @@ def addArmSpecials(venvContext, verMW4=''):
     return True
 
 
+def versionOnline(upgradeBeta):
+    """
+    :param upgradeBeta:
+    :return:
+    """
+    url = f'https://pypi.python.org/pypi/mountwizzard4/json'
+    try:
+        response = requests.get(url).json()
+    except Exception as e:
+        log.critical(f'Cannot determine package version: {e}')
+        return Version('0.0.0')
+
+    vPackage = list(response['releases'].keys())
+    vPackage.sort(key=Version, reverse=True)
+    verBeta = [x for x in vPackage if 'b' in x]
+    verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
+    log.info(f'Package Beta:   {verBeta[:10]}')
+    log.info(f'Package Release:{verRelease[:10]}')
+
+    if upgradeBeta:
+        verMW4 = Version(verBeta[0])
+    else:
+        verMW4 = Version(verRelease[0])
+    return verMW4
+
+
+def versionLocal():
+    """
+    :return:
+    """
+    with tarfile.open('mountwizzard4.tar.gz', 'r') as f:
+        for member in f.getmembers():
+            if "PKG-INFO" in member.name:
+                pkg = f.extractfile(member.name)
+                with open('PKG_INFO', 'wb') as o:
+                    o.write(pkg.read())
+    ver = ''
+    with open('PKG_INFO', 'r') as f:
+        for line in f.readlines():
+            if line.startswith('Version:'):
+                ver = line.split(':')[1]
+    os.remove('PKG_INFO')
+    return Version(ver)
+
+
 def checkVersion(isTest, upgradeBeta):
     """
     :param isTest:
@@ -338,19 +388,11 @@ def checkVersion(isTest, upgradeBeta):
     :return:
     """
     if isTest:
-        with tarfile.open('mountwizzard4.tar.gz', 'r') as f:
-            for member in f.getmembers():
-                if "PKG-INFO" in member.name:
-                    pkg = f.extractfile(member.name)
-                    with open('PKG_INFO', 'wb') as o:
-                        o.write(pkg.read())
-        ver = ''
-        with open('PKG_INFO', 'r') as f:
-            for line in f.readlines():
-                if line.startswith('Version:'):
-                    ver = line.split(':')[1]
-        os.remove('PKG_INFO')
-        verMW4 = Version(ver)
+        verMW4 = versionLocal()
+    elif upgradeBeta:
+        verMW4 = versionOnline(True)
+    else:
+        verMW4 = versionOnline(False)
     return verMW4
 
 
@@ -384,6 +426,10 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         package = 'mountwizzard4'
 
     verMW4 = checkVersion(isTest, upgradeBeta)
+    if verMW4 < Version('2.0.0'):
+        print('...no compatible package found')
+        print('Install failed, abort')
+        return ''
 
     suc = addArmSpecials(venvContext, verMW4=verMW4)
     if not suc:
@@ -405,11 +451,13 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         print('Installing latest release')
         command = ['-m', 'pip', 'install', package]
 
-    print(f'...this will install version {verMW4}')
-    print('...and it will take some time')
+    print(f'...installs version {verMW4}')
+    print('...it will take some time')
     suc = runPythonInVenv(venvContext, command)
+    print()
     if not suc:
         print('Install failed, abort')
+        print()
         return ''
 
     if upgrade or upgradeBeta:
@@ -453,17 +501,16 @@ def main(args=None):
 
     if not compatible:
         print()
-        print()
-        print()
-        print('-' * 40)
-        print('MountWizzard4 startup - not compatible environment')
-        print('needs python3.7 .. 3.9 for version 2.x')
-        print('needs python3.7 .. 3.10 for version 3.x')
+        print('-' * 50)
+        print('MountWizzard4 startup - no compatible environment')
+        print('needs python 3.7 .. 3.9 for version 2.x')
+        print('needs python 3.7 .. 3.10 for version 3.x')
         print('actually no support for ARM7')
-        print('actually no support for AARCH64 for version 3.x')
-        print(f'you are running {sys.version_info}')
+        print('actually no support for AARCH64 for MW4 3.x')
+        print('actually no support for AARCH64 for python 3.10')
+        print(f'you are running {platform.python_version()}')
         print('Closing application')
-        print('-' * 40)
+        print('-' * 50)
         print()
         return
 
@@ -495,6 +542,9 @@ def main(args=None):
     parser.add_argument(
         '--dpi', default=96, type=float, dest='dpi',
         help='Setting QT font DPI for MountWizzard4')
+    parser.add_argument(
+        '--basic', default=False, action='store_true', dest='basic',
+        help='Upgrade basic install packages')
 
     options = parser.parse_args(args)
     venvPath = pathlib.Path.cwd().joinpath('venv')
@@ -502,15 +552,17 @@ def main(args=None):
 
     if options.clean:
         cleanSystem()
+    if options.basic:
+        installBasicPackages()
+    print()
 
     command = installMW4(venvContext,
                          upgrade=options.upgradeMW4,
                          upgradeBeta=options.upgradeMW4beta,
                          version=options.version)
 
-    if options.scale != 1 or options.dpi != 96:
-        os.environ['QT_SCALE_FACTOR'] = str(options.scale)
-        os.environ['QT_FONT_DPI'] = str(options.dpi)
+    os.environ['QT_SCALE_FACTOR'] = str(options.scale)
+    os.environ['QT_FONT_DPI'] = str(options.dpi)
 
     if not options.noStart and command:
         print('MountWizzard4 is ready')
@@ -519,7 +571,7 @@ def main(args=None):
         runPythonInVenv(venvContext, command)
 
     print('Closing application')
-    print('-' * 40)
+    print('-' * 50)
     print()
 
 

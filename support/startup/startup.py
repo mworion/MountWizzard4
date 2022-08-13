@@ -480,7 +480,9 @@ def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
     suc = installMW4(venvContext, upgrade=upgrade, upgradeBeta=upgradeBeta,
                      version=version, verMW4=verMW4, isTest=isTest)
     if not suc:
-        command = ''
+        return ''
+
+    _, command = checkIfInstalled(venvContext)
     return command
 
 

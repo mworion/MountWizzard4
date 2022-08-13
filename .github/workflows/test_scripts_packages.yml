@@ -224,7 +224,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: dist
-          path: support/3.0
+          path: "${PWD}/support/3.0"
 
       - uses: uraimo/run-on-arch-action@v2.2.0
         name: build_artifact

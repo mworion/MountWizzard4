@@ -141,12 +141,9 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
-            apt-get install -y apt-utils
-            apt-get install -y --fix-missing
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            source venv/bin/activate
             python3 --version
             cd /root/support/3.0
             python3 startup.pyz --no-start

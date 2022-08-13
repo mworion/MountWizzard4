@@ -178,15 +178,6 @@ def runBinInVenv(venvContext, command):
     return run(command)
 
 
-def updateEnvironment(venvContext):
-    """
-    :param venvContext:
-    :return:
-    """
-    command = ['-m', 'pip', 'install', 'wheel']
-    runPythonInVenv(venvContext, command)
-
-
 def venvCreate(venvPath, upgrade=False):
     """
     :param venvPath:
@@ -340,17 +331,6 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     return True
 
 
-def addArmSpecials(venvContext, verMW4=''):
-    """
-    :param venvContext:
-    :param verMW4:
-    :return:
-    """
-    if platform.machine() == 'aarch64':
-        return downloadAndInstallWheels(venvContext, verMW4=verMW4)
-    return True
-
-
 def versionOnline(upgradeBeta):
     """
     :param upgradeBeta:
@@ -412,15 +392,19 @@ def getVersion(isTest, upgradeBeta):
 
 
 def installMW4(venvContext, upgrade=False, upgradeBeta=False,
-               isTest=False, version=''):
+               isTest=False, version='', verMW4=''):
     """
     :param venvContext:
     :param upgrade:
     :param upgradeBeta:
     :param isTest:
     :param version:
+    :param verMW4:
     :return:
     """
+    command = ['-m', 'pip', 'install', 'wheel']
+    runPythonInVenv(venvContext, command)
+
     if isTest:
         print('Installing local package mountwizzard4.tar.gz')
         command = ['-m', 'pip', 'install', 'mountwizzard4.tar.gz']
@@ -435,9 +419,10 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False,
         command = ['-m', 'pip', 'install', '-U', 'mountwizzard4', '--pre']
     else:
         print('Installing latest release')
-        command = ['-m', 'pip', 'install', 'mountwizzard4']
+        command = ['-m', 'pip', 'install', '-U', 'mountwizzard4']
 
-    print(f'...version is {verMW4}')
+    ver = version if version else verMW4
+    print(f'...version is {ver}')
     print('...this will take some time')
     suc = runPythonInVenv(venvContext, command)
     print()
@@ -449,25 +434,24 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False,
     else:
         print('Install finished')
     print()
-    command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
-                        recursive=True)
-    return command
 
 
-def checkInstalled(venvContext):
+def checkIfInstalled(venvContext):
     """
     :param venvContext:
     :return:
     """
-    command = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
-                        recursive=True)
-    hasInstall = len(command) == 1
-    if hasInstall:
+    solutions = glob.glob(venvContext.env_dir + '/lib/**/mw4/loader.py',
+                          recursive=True)
+    isInstalled = len(solutions) == 1
+    if isInstalled:
         print('MountWizzard4 present')
+        command = solutions[0]
     else:
         print('MountWizzard4 not present')
+        command = ''
     print('')
-    return hasInstall
+    return isInstalled, command
 
 
 def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
@@ -478,19 +462,22 @@ def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
     :param version:
     :return:
     """
-    hasInstall = checkInstalled(venvContext)
-    if hasInstall and not (upgrade or upgradeBeta or version):
+    isInstalled, command = checkIfInstalled(venvContext)
+    if isInstalled and not (upgrade or upgradeBeta or version):
         return command
 
     isTest = os.path.isfile('mountwizzard4.tar.gz')
     verMW4 = getVersion(isTest, upgradeBeta)
-    suc = addArmSpecials(venvContext, verMW4=verMW4)
-    if not suc:
+
+    if platform.machine() == 'aarch64':
+        suc = downloadAndInstallWheels(venvContext, verMW4=verMW4)
+        if not suc:
+            return ''
+    elif platform.machine() == 'armv7':
         return ''
 
-    updateEnvironment(venvContext)
     command = installMW4(venvContext, upgrade=upgrade, upgradeBeta=upgradeBeta,
-                         version=version, isTest=isTest)
+                         version=version, verMW4=verMW4, isTest=isTest)
     return command
 
 

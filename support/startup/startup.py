@@ -80,11 +80,16 @@ def installBasicPackages():
 
 try:
     import requests
-    import packaging
 except ImportError:
     installBasicPackages()
 finally:
     import requests
+
+try:
+    from packaging.utils import Version
+except ImportError:
+    installBasicPackages()
+finally:
     from packaging.utils import Version
 
 

@@ -348,7 +348,6 @@ def addArmSpecials(venvContext, verMW4=''):
     """
     if platform.machine() == 'aarch64':
         return downloadAndInstallWheels(venvContext, verMW4=verMW4)
-
     return True
 
 
@@ -397,7 +396,7 @@ def versionLocal():
     return Version(ver)
 
 
-def checkVersion(isTest, upgradeBeta):
+def getVersion(isTest, upgradeBeta):
     """
     :param isTest:
     :param upgradeBeta:
@@ -483,13 +482,13 @@ def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
     if hasInstall and not (upgrade or upgradeBeta or version):
         return command
 
-    verMW4 = checkVersion(isTest, upgradeBeta)
+    isTest = os.path.isfile('mountwizzard4.tar.gz')
+    verMW4 = getVersion(isTest, upgradeBeta)
     suc = addArmSpecials(venvContext, verMW4=verMW4)
     if not suc:
         return ''
 
     updateEnvironment(venvContext)
-    isTest = os.path.isfile('mountwizzard4.tar.gz')
     command = installMW4(venvContext, upgrade=upgrade, upgradeBeta=upgradeBeta,
                          version=version, isTest=isTest)
     return command

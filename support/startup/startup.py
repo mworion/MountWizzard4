@@ -288,17 +288,24 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
             ],
         },
     }
-
+    log.info(f'Got version {verMW4}')
     print('Installing precompiled packages')
     if verMW4 >= Version('3.0.0'):
+        log.info('Path version 3.0.0 and above')
         print('...no precompiled packages available')
         print('Install aborted')
         print('')
+        if not Version(platform.python_version()) < Version('3.10'):
+            print('...no precompiled packages available')
+            print('Install aborted')
+            print('')
         verMW4 = '3.0.0'
         return False
     elif verMW4 >= Version('2.0.0'):
+        log.info('Path version 2.0.0 and above')
         verMW4 = '2.0.0'
     else:
+        log.info('Path default')
         print('...no precompiled packages available')
         print('Install aborted')
         print('')
@@ -422,11 +429,6 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False, version=''):
         package = 'mountwizzard4'
 
     verMW4 = checkVersion(isTest, upgradeBeta)
-    if verMW4 < Version('2.0.0'):
-        print('...no compatible package found')
-        print('Install failed, abort')
-        return ''
-
     suc = addArmSpecials(venvContext, verMW4=verMW4)
     if not suc:
         return ''

@@ -294,7 +294,7 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     }
     log.info(f'Got version {verMW4}')
     print('Installing precompiled packages')
-    if verMW4 >= 3:
+    if verMW4.major >= 3:
         log.info('Path version 3.0.0 and above')
         print('...no precompiled packages available')
         print('Install aborted')
@@ -305,7 +305,7 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
             print('')
         verMW4 = '3.0.0'
         return False
-    elif verMW4 >= 2:
+    elif verMW4.major >= 2:
         log.info('Path version 2.0.0 and above')
         verMW4 = '2.0.0'
     else:

@@ -185,6 +185,14 @@ def venvCreate(venvPath, upgrade=False):
     """
     print()
     print('-' * 50)
+
+    print(' #     #    #     #    #       ')
+    print(' ##   ##    #  #  #    #    #  ')
+    print(' # # # #    #  #  #    #    #  ')
+    print(' #  #  #    #  #  #    #    #  ')
+    print(' #     #    #  #  #    ####### ')
+    print(' #     #    #  #  #         #  ')
+    print(' #     #     ## ##          #  ')
     print('    __  ____       ____ __')
     print('   /  |/  / |     / / // /')
     print('  / /|_/ /| | /| / / // /_')

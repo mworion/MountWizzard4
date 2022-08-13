@@ -424,16 +424,17 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False,
     ver = version if version else verMW4
     print(f'...version is {ver}')
     print('...this will take some time')
-    suc = runPythonInVenv(venvContext, command)
     print()
+    suc = runPythonInVenv(venvContext, command)
     if not suc:
-        return ''
+        return False
 
     if upgrade or upgradeBeta:
         print('Upgrade finished')
     else:
         print('Install finished')
     print()
+    return True
 
 
 def checkIfInstalled(venvContext):
@@ -476,8 +477,10 @@ def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
     elif platform.machine() == 'armv7':
         return ''
 
-    command = installMW4(venvContext, upgrade=upgrade, upgradeBeta=upgradeBeta,
-                         version=version, verMW4=verMW4, isTest=isTest)
+    suc = installMW4(venvContext, upgrade=upgrade, upgradeBeta=upgradeBeta,
+                     version=version, verMW4=verMW4, isTest=isTest)
+    if not suc:
+        command = ''
     return command
 
 
@@ -564,10 +567,10 @@ def main(args=None):
     if not options.noStart and command:
         print('MountWizzard4 is ready')
         print('...starting')
-        print()
         suc = runPythonInVenv(venvContext, command)
         if not suc:
             print('...failed to start MW4')
+        print()
     elif not command:
         print('Install failed, abort')
         print()

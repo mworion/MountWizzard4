@@ -278,8 +278,36 @@ def test_loadDefaultConfig_3(function):
             assert suc
 
 
-def test_setUpdateConfig(function):
-    function.setUpdateConfig('test')
+def test_setUpdateConfig_1(function):
+    function.deviceName = ''
+    function.loadConfig = True
+    with mock.patch.object(function,
+                           'loadIndiConfig'):
+        suc = function.setUpdateConfig('test')
+        assert not suc
+
+
+def test_setUpdateConfig_2(function):
+    function.deviceName = 'test'
+    function.loadConfig = True
+    with mock.patch.object(function,
+                           'loadIndiConfig'):
+        suc = function.setUpdateConfig('test')
+        assert not suc
+
+
+def test_setUpdateConfig_3(function):
+    function.deviceName = 'test'
+    function.loadConfig = True
+    function.updateRate = 1000
+    function.device = Device()
+    with mock.patch.object(function,
+                           'loadIndiConfig'):
+        with mock.patch.object(function.client,
+                               'sendNewNumber',
+                               return_value=True):
+            suc = function.setUpdateConfig('test')
+            assert suc
 
 
 def test_convertIndigoProperty_1(function):

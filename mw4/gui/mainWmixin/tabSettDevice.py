@@ -609,6 +609,11 @@ class SettDevice:
                                     'active', True)
             self.deviceStat[driver] = True
             self.msg.emit(0, 'Driver', 'Device connected', f'{driver}')
+
+            data = self.driversData[driver]
+            framework = data['framework']
+            if data['frameworks'][framework].get('loadConfig', False):
+                self.msg.emit(0, 'Driver', 'Config loaded', f'{driver}')
         return True
 
     def deviceDisconnected(self, deviceName):

@@ -792,6 +792,26 @@ def test_deviceConnected_2(function):
     assert suc
 
 
+def test_deviceConnected_3(function):
+    def Sender():
+        return function.drivers['dome']['class'].signals
+    function.sender = Sender
+
+    function.driversData = {
+        'dome': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'loadConfig': True
+                }
+            }
+        }
+    }
+    function.BACK_GREEN = '#000000'
+    suc = function.deviceConnected('dome')
+    assert suc
+
+
 def test_deviceDisconnected_1(function):
     suc = function.deviceDisconnected('')
     assert suc

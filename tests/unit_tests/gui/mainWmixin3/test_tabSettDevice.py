@@ -783,6 +783,17 @@ def test_deviceConnected_1(function):
 
 
 def test_deviceConnected_2(function):
+    function.driversData = {
+        'filter': {
+            'framework': 'indi',
+            'frameworks': {
+                'indi': {
+                    'loadConfig': True
+                }
+            }
+        }
+    }
+
     def Sender():
         return function.drivers['filter']['class'].signals
     function.sender = Sender
@@ -793,10 +804,6 @@ def test_deviceConnected_2(function):
 
 
 def test_deviceConnected_3(function):
-    def Sender():
-        return function.drivers['dome']['class'].signals
-    function.sender = Sender
-
     function.driversData = {
         'dome': {
             'framework': 'indi',
@@ -807,6 +814,11 @@ def test_deviceConnected_3(function):
             }
         }
     }
+
+    def Sender():
+        return function.drivers['dome']['class'].signals
+    function.sender = Sender
+
     function.BACK_GREEN = '#000000'
     suc = function.deviceConnected('dome')
     assert suc

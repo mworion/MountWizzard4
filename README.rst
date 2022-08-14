@@ -99,7 +99,7 @@ CS Michel
     https://github.com/mworion/MountWizzard4/workflows/unit_macOS/badge.svg?branch=master
 
 .. |PYTEST Windows| image::
-    https://github.com/mworion/MountWizzard4/workflows/win_unit/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/unit_win/badg.svg?branch=master
 
 .. |PYTEST Ubuntu| image::
     https://github.com/mworion/MountWizzard4/workflows/unit_ubuntu/badge.svg?branch=master

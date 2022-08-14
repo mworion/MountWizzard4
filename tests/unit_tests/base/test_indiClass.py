@@ -36,6 +36,7 @@ class S(IndiClass):
         self.signals = Signals()
         self.data = data
         super().__init__(app=app, data=None)
+        self.SHOW_COMM = True
 
 
 @pytest.fixture(autouse=True, scope='function')

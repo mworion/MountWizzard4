@@ -57,29 +57,25 @@ class CameraIndi(IndiClass, CameraSupport):
         objectName['FITS_OBJECT'] = 'skymodel'
         self.client.sendNewText(deviceName=deviceName,
                                 propertyName='FITS_HEADER',
-                                elements=objectName,
-                                )
+                                elements=objectName)
 
         wcs = self.device.getSwitch('WCS_CONTROL')
         wcs['WCS_DISABLE'] = 'On'
         self.client.sendNewSwitch(deviceName=deviceName,
                                   propertyName='WCS_CONTROL',
-                                  elements=wcs,
-                                  )
+                                  elements=wcs)
 
         telescope = self.device.getText('ACTIVE_DEVICES')
         telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
         self.client.sendNewText(deviceName=deviceName,
                                 propertyName='ACTIVE_DEVICES',
-                                elements=telescope,
-                                )
+                                elements=telescope)
 
         update = self.device.getNumber('POLLING_PERIOD')
         update['PERIOD_MS'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='POLLING_PERIOD',
-                                        elements=update,
-                                        )
+                                        elements=update)
         return suc
 
     def setExposureState(self):

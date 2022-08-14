@@ -36,6 +36,8 @@ class IndiClass:
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
 
+    SHOW_COMM = False
+
     INDIGO = {
         # numbers
         'WEATHER_PARAMETERS.WEATHER_BAROMETER': 'WEATHER_PARAMETERS.WEATHER_PRESSURE',
@@ -328,8 +330,8 @@ class IndiClass:
         loadObject['CONFIG_LOAD'] = True
         suc = self.client.sendNewSwitch(deviceName=deviceName,
                                         propertyName='CONFIG_PROCESS',
-                                        elements=loadObject,
-                                        )
+                                        elements=loadObject)
+        self.log.info(f'Config load {deviceName}:[{suc}]')
         return suc
 
     def setUpdateConfig(self, deviceName):
@@ -375,7 +377,8 @@ class IndiClass:
 
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
-            # print('number', self.deviceName, key, value)
+            if self.SHOW_COMM:
+                print('number', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
             self.data[key] = float(value)
 
@@ -401,7 +404,8 @@ class IndiClass:
             # todo: is that the item which tells me it's an indigo server ?
             if propertyName == 'PROFILE':
                 self.isINDIGO = True
-            # print('switch', self.deviceName, key, value)
+            if self.SHOW_COMM:
+                print('switch', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
             self.data[key] = value == 'On'
 
@@ -424,7 +428,8 @@ class IndiClass:
 
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
-            # print('text  ', self.deviceName, key, value)
+            if self.SHOW_COMM:
+                print('text  ', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
             self.data[key] = value
 
@@ -447,7 +452,8 @@ class IndiClass:
 
         for element, value in self.device.getLight(propertyName).items():
             key = propertyName + '.' + element
-            # print('light ', self.deviceName, key, value)
+            if self.SHOW_COMM:
+                print('light ', self.deviceName, key, value)
             key = self.convertIndigoProperty(key)
             self.data[key] = value
 
@@ -467,7 +473,8 @@ class IndiClass:
             return False
         if deviceName != self.deviceName:
             return False
-        # print('blob ', deviceName)
+        if self.SHOW_COMM:
+            print('blob ', deviceName)
         return True
 
     @staticmethod
@@ -508,7 +515,7 @@ class IndiClass:
     def addDiscoveredDevice(self, deviceName, propertyName):
         """
         addDevicesWithType gety called whenever a new device send out text
-        messages. than it checks, if the device type fits to the search type
+        messages. then it checks, if the device type fits to the search type
         desired. if they match, the device name is added to the list.
 
         unfortunately the indi definitions are not well defined. so for example

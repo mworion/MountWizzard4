@@ -58,8 +58,11 @@ releaseNotes = """
 - improve: GUI: complete rework of charting: performance and functions
 - improve: GUI: clean up and optimize iers download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
+- improve: INDI: correcting setting parameters on startup
 - improve: model points: optimized DSO path generation (always fit, less params)
 - improve: model run: refactoring
+- improve: model run: better information about status and result
+- improve: hemisphere: improve solved point presentation (white, red)
 - improve: plate solve: compatibility checks 
 - improve: system: enable usage of python 3.10
 - improve: system: use latest PyQt5 version 

@@ -39,6 +39,11 @@ def test_properties_1(function):
     assert function.settlingTime == 1
 
 
+def test_properties_2(function):
+    function.updateRate = 1000
+    function.loadConfig = True
+
+
 def test_startCommunication_1(function):
     function.domeStarted = False
     function.framework = ''

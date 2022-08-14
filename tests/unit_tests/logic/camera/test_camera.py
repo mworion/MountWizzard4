@@ -40,6 +40,8 @@ def test_properties(function):
     function.deviceName = 'test'
     assert function.deviceName == 'test'
 
+
+def test_properties_2(function):
     function.updateRate = 1000
     function.loadConfig = True
 

@@ -37,6 +37,11 @@ def test_startCommunication_1(function):
     assert not suc
 
 
+def test_properties_2(function):
+    function.updateRate = 1000
+    function.loadConfig = True
+
+
 def test_startCommunication_2(function):
     function.framework = 'indi'
     with mock.patch.object(function.run['indi'],

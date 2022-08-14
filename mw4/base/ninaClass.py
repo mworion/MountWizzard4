@@ -47,6 +47,7 @@ class NINAClass(DriverData, QObject):
         self.msg = app.msg
         self.data = data
         self.updateRate = 1000
+        self.loadConfig = False
         self._deviceName = ''
         self.defaultConfig = {
             'deviceList': ['N.I.N.A. controlled'],

@@ -47,6 +47,7 @@ class SGProClass(DriverData, QObject):
         self.msg = app.msg
         self.data = data
         self.updateRate = 1000
+        self.loadConfig = False
         self._deviceName = ''
         self.defaultConfig = {
             'deviceList': ['SGPro controlled'],

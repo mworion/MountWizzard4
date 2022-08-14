@@ -45,6 +45,7 @@ class AlpacaClass(DriverData):
         self.data = data
         self.threadPool = app.threadPool
         self.updateRate = 1000
+        self.loadConfig = False
         self.propertyExceptions = []
 
         self._host = ('localhost', 11111)

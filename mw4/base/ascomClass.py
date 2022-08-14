@@ -45,6 +45,7 @@ class AscomClass(DriverData):
         self.threadPool = app.threadPool
         self.msg = app.msg
         self.updateRate = 3000
+        self.loadConfig = False
         self.tM = QMutex()
 
         self.client = None

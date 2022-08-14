@@ -243,17 +243,17 @@ def test_connectDevice4(function):
 
 
 def test_loadDefaultConfig_1(function):
-    function.loadIndiConfig = False
+    function.loadIndiConfigFlag = False
     function.device = Device()
     with mock.patch.object(function.device,
                            'getSwitch',
                            return_value={'test': 1}):
-        suc = function.loadConfig('test')
+        suc = function.loadIndiConfig('test')
         assert not suc
 
 
 def test_loadDefaultConfig_2(function):
-    function.loadIndiConfig = True
+    function.loadIndiConfigFlag = True
     function.device = Device()
     with mock.patch.object(function.device,
                            'getSwitch',
@@ -261,12 +261,12 @@ def test_loadDefaultConfig_2(function):
         with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=False):
-            suc = function.loadConfig('test')
+            suc = function.loadIndiConfig('test')
             assert not suc
 
 
 def test_loadDefaultConfig_3(function):
-    function.loadIndiConfig = True
+    function.loadIndiConfigFlag = True
     function.device = Device()
     with mock.patch.object(function.device,
                            'getSwitch',
@@ -274,7 +274,7 @@ def test_loadDefaultConfig_3(function):
         with mock.patch.object(function.client,
                                'sendNewSwitch',
                                return_value=True):
-            suc = function.loadConfig('test')
+            suc = function.loadIndiConfig('test')
             assert suc
 
 

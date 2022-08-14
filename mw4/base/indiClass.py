@@ -125,7 +125,7 @@ class IndiClass:
         self.retryCounter = 0
         self.discoverType = None
         self.discoverList = None
-        self.loadIndiConfig = False
+        self.loadIndiConfigFlag = False
         self.isINDIGO = False
         self.messages = False
 
@@ -156,7 +156,6 @@ class IndiClass:
         self.client.signals.defLight.connect(self.updateLight)
         self.client.signals.newBLOB.connect(self.updateBLOB)
         self.client.signals.defBLOB.connect(self.updateBLOB)
-        self.client.signals.deviceConnected.connect(self.loadConfig)
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
@@ -208,8 +207,7 @@ class IndiClass:
         :param devices:
         :return: true for test purpose
         """
-        t = f'INDI server for [{self.deviceName}] disconnected, '
-        t += f'related devices: {devices.keys()}'
+        t = f'INDI server for [{self.deviceName}] disconnected'
         self.log.debug(t)
         return True
 
@@ -276,7 +274,7 @@ class IndiClass:
         :return: success of reconnecting to server
         """
         self.data.clear()
-        self.loadIndiConfig = loadConfig
+        self.loadIndiConfigFlag = loadConfig
         self.retryCounter = 0
         self.client.startTimers()
         suc = self.client.connectServer()
@@ -315,23 +313,19 @@ class IndiClass:
             suc = self.client.connectDevice(deviceName=deviceName)
         return suc
 
-    def loadConfig(self, deviceName):
+    def loadIndiConfig(self, deviceName):
         """
-        loadConfig send the command to the indi server to load the default
+        loadIndiConfig send the command to the indi server to load the default
         config for the given device.
 
         :param deviceName:
         :return: success
         """
-        if not self.loadIndiConfig:
-            return False
-
         loadObject = self.device.getSwitch('CONFIG_PROCESS')
         loadObject['CONFIG_LOAD'] = True
         suc = self.client.sendNewSwitch(deviceName=deviceName,
                                         propertyName='CONFIG_PROCESS',
                                         elements=loadObject)
-        self.log.info(f'Config load {deviceName}:[{suc}]')
         return suc
 
     def setUpdateConfig(self, deviceName):
@@ -344,11 +338,16 @@ class IndiClass:
         if self.device is None:
             return False
 
+        if self.loadIndiConfigFlag:
+            suc = self.loadIndiConfig(deviceName=deviceName)
+            self.log.info(f'Config load [{deviceName}] success: [{suc}]')
+
         update = self.device.getNumber('PERIOD_MS')
         update['PERIOD'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='PERIOD_MS',
                                         elements=update)
+        self.log.info(f'Polling [{deviceName}] success: [{suc}]')
         return suc
 
     def convertIndigoProperty(self, key):
@@ -554,7 +553,7 @@ class IndiClass:
         type. it is called from a button press and checks which button it was.
         after that for the right device it collects all necessary data for host
         value, instantiates an INDI client and watches for all devices connected
-        to this server. Than it connects a subroutine for collecting the right
+        to this server. Then it connects a subroutine for collecting the right
         device names and waits a certain amount of time. the data collection
         takes place as long as the model dialog is open. when the user closes
         this dialog, the collected data is written to the drop down list.

@@ -582,10 +582,8 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-
         if not hasattr(self.devices[deviceName], propertyName):
             return False
-
         if not isinstance(elements, dict):
             elements = {elements: text}
 
@@ -615,10 +613,8 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-
         if not hasattr(self.devices[deviceName], propertyName):
             return False
-
         if not isinstance(elements, dict):
             elements = {elements: number}
 
@@ -647,10 +643,8 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-
         if not hasattr(self.devices[deviceName], propertyName):
             return False
-
         if not isinstance(elements, dict):
             elements = {elements: 'On'}
 

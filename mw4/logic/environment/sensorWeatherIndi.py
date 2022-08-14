@@ -41,9 +41,7 @@ class SensorWeatherIndi(IndiClass):
         :param deviceName:
         :return: success
         """
-        if deviceName != self.deviceName:
-            return False
-        if self.device is None:
+        if not super().setUpdateConfig(deviceName):
             return False
 
         update = self.device.getNumber('WEATHER_UPDATE')
@@ -51,4 +49,5 @@ class SensorWeatherIndi(IndiClass):
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='WEATHER_UPDATE',
                                         elements=update)
+        self.log.info(f'Polling [{deviceName}] success: [{suc}]')
         return suc

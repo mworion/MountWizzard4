@@ -45,38 +45,34 @@ class CameraIndi(IndiClass, CameraSupport):
         :param deviceName:
         :return: success
         """
-        if deviceName != self.deviceName:
-            return False
-        if self.device is None:
+        if not super().setUpdateConfig(deviceName):
             return False
 
-        self.client.setBlobMode(blobHandling='Also',
-                                deviceName=deviceName)
+        suc = self.client.setBlobMode(blobHandling='Also',
+                                      deviceName=deviceName)
+        self.log.info(f'Blob mode [{deviceName}] success: [{suc}]')
 
         objectName = self.device.getText('FITS_HEADER')
         objectName['FITS_OBJECT'] = 'skymodel'
-        self.client.sendNewText(deviceName=deviceName,
-                                propertyName='FITS_HEADER',
-                                elements=objectName)
+        suc = self.client.sendNewText(deviceName=deviceName,
+                                      propertyName='FITS_HEADER',
+                                      elements=objectName)
+        self.log.info(f'Fits Header [{deviceName}] success: [{suc}]')
 
         wcs = self.device.getSwitch('WCS_CONTROL')
         wcs['WCS_DISABLE'] = 'On'
-        self.client.sendNewSwitch(deviceName=deviceName,
-                                  propertyName='WCS_CONTROL',
-                                  elements=wcs)
+        suc = self.client.sendNewSwitch(deviceName=deviceName,
+                                        propertyName='WCS_CONTROL',
+                                        elements=wcs)
+        self.log.info(f'WCS control [{deviceName}] success: [{suc}]')
 
         telescope = self.device.getText('ACTIVE_DEVICES')
         telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
-        self.client.sendNewText(deviceName=deviceName,
-                                propertyName='ACTIVE_DEVICES',
-                                elements=telescope)
-
-        update = self.device.getNumber('POLLING_PERIOD')
-        update['PERIOD_MS'] = self.updateRate
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING_PERIOD',
-                                        elements=update)
-        return suc
+        suc = self.client.sendNewText(deviceName=deviceName,
+                                      propertyName='ACTIVE_DEVICES',
+                                      elements=telescope)
+        self.log.info(f'Active telescope [{deviceName}] success: [{suc}]')
+        return True
 
     def setExposureState(self):
         """

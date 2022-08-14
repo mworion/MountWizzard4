@@ -35,6 +35,7 @@ releaseNotes = """
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
 - add: hemisphere: show 2d contour error curve from actual model
+- add: hemisphere: move point with mouse around
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
 - add: MPC / IERS: adding alternative server

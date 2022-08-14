@@ -163,7 +163,7 @@ jobs:
         run: |
           cd dist
           touch test.run
-          xvfb-run python3 startup.py
+          xvfb-run python3 startup.pyz
           ls -la
 
 
@@ -190,7 +190,7 @@ jobs:
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}3.0/startup.py
+          url: ${{ env.gh }}3.0/startup.pyz
           target: dist/
           
       - name: MountWizzard4 Install

@@ -334,17 +334,13 @@ class SettDevice:
                 continue
             if framework not in self.driversData[driverLoop]['frameworks']:
                 continue
-
             for param in self.driversData[driverLoop]['frameworks'][framework]:
+                # no local information should be copied
                 if param in ['deviceList', 'deviceName']:
-                    # should be not copied
                     continue
 
                 source = self.driversData[driver]['frameworks'][framework][param]
                 self.driversData[driverLoop]['frameworks'][framework][param] = source
-
-            if driverClass.framework == framework:
-                self.startDriver(driver=driver)
         return True
 
     def callPopup(self, driver):

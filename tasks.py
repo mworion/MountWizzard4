@@ -256,16 +256,18 @@ def upload_mw(c):
     runMW(c, 'rm notes.txt')
     printMW('uploading dist mountwizzard4 finished\n')
 
-@task
+
+@task(pre=[])
 def zipStartup(c):
     printMW('...make zip archive')
-    zipapp.create_archive('./support/startup/startup.py',
+    zipapp.create_archive('./generator/startup/startup.py',
                           target='./support/3.0/startup.pyz',
                           compressed=True,
                           main='startup:main')
     printMW('...copy install script to test dir')
 
-@task
+
+@task(pre=[])
 def pypiCleanup(c):
     printMW('...clean pypi from alpha versions')
     regex = '1\\.\\w*\\.\\d\\D\\d*$'

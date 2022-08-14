@@ -36,7 +36,7 @@ class IndiClass:
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
 
-    SHOW_COMM = False
+    SHOW_COMM = True
 
     INDIGO = {
         # numbers
@@ -107,7 +107,6 @@ class IndiClass:
         self.data = data
         self.threadPool = app.threadPool
         self.client = Client(host=None, threadPool=app.threadPool)
-        self.updateRate = 1000
 
         clientSig = self.client.signals
         selfSig = self.signals
@@ -125,7 +124,6 @@ class IndiClass:
         self.retryCounter = 0
         self.discoverType = None
         self.discoverList = None
-        self.loadIndiConfigFlag = False
         self.isINDIGO = False
         self.messages = False
 
@@ -274,7 +272,7 @@ class IndiClass:
         :return: success of reconnecting to server
         """
         self.data.clear()
-        self.loadIndiConfigFlag = loadConfig
+        # self.loadConfig = loadConfig
         self.retryCounter = 0
         self.client.startTimers()
         suc = self.client.connectServer()
@@ -326,6 +324,8 @@ class IndiClass:
         suc = self.client.sendNewSwitch(deviceName=deviceName,
                                         propertyName='CONFIG_PROCESS',
                                         elements=loadObject)
+        t = f'Config load [{deviceName}] success: [{suc}], value: [True]'
+        self.log.info(t)
         return suc
 
     def setUpdateConfig(self, deviceName):
@@ -338,16 +338,16 @@ class IndiClass:
         if self.device is None:
             return False
 
-        if self.loadIndiConfigFlag:
-            suc = self.loadIndiConfig(deviceName=deviceName)
-            self.log.info(f'Config load [{deviceName}] success: [{suc}]')
+        if self.loadConfig:
+            self.loadIndiConfig(deviceName=deviceName)
 
-        update = self.device.getNumber('PERIOD_MS')
-        update['PERIOD'] = self.updateRate
+        update = self.device.getNumber('POLLING_PERIOD')
+        update['PERIOD_MS'] = int(self.updateRate)
         suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='PERIOD_MS',
+                                        propertyName='POLLING_PERIOD',
                                         elements=update)
-        self.log.info(f'Polling [{deviceName}] success: [{suc}]')
+        t = f'Polling [{deviceName}] success: [{suc}], value:[{update["PERIOD_MS"]}]'
+        self.log.info(t)
         return suc
 
     def convertIndigoProperty(self, key):

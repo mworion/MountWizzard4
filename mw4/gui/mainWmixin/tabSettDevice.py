@@ -456,8 +456,13 @@ class SettDevice:
         if not framework:
             return False
 
-        loadConfig = data['frameworks'][framework].get('loadConfig', False)
         driverClass = self.drivers[driver]['class']
+
+        loadConfig = data['frameworks'][framework].get('loadConfig', False)
+        updateRate = data['frameworks'][framework].get('updateRate', 1000)
+        driverClass.updateRate = updateRate
+        driverClass.loadConfig = loadConfig
+
         driverClass.framework = framework
         isInternal = framework == 'internal'
         if isInternal:

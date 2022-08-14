@@ -54,6 +54,26 @@ class SensorWeather:
         for fw in self.run:
             self.defaultConfig['frameworks'].update({fw: self.run[fw].defaultConfig})
 
+    @property
+    def updateRate(self):
+        return self.run[self.framework].updateRate
+
+    @updateRate.setter
+    def updateRate(self, value):
+        value = int(value)
+        for fw in self.run:
+            self.run[fw].updateRate = value
+
+    @property
+    def loadConfig(self):
+        return self.run[self.framework].loadConfig
+
+    @loadConfig.setter
+    def loadConfig(self, value):
+        value = bool(value)
+        for fw in self.run:
+            self.run[fw].loadConfig = value
+
     def startCommunication(self, loadConfig=False):
         """
         :param loadConfig:

@@ -63,9 +63,9 @@ class INDISignals(QObject):
 
 class Device(object):
     """
-    Device implements an INDI Device. it rely on PyQt5 and it's signalling scheme.
+    Device implements an INDI Device. it relies on PyQt5 and it's signalling scheme.
     there might be not all capabilities implemented right now. all the data, properties
-    and attributes are stored in a the devices dict.
+    and attributes are stored in a device dict.
 
         >>> indiDevice = Device(
         >>>                     name=''
@@ -73,15 +73,7 @@ class Device(object):
 
     """
 
-    __all__ = ['Device',
-               'version',
-               'getNumber',
-               'getText',
-               'getSwitch',
-               'getLight',
-               'getBlob',
-               ]
-
+    __all__ = ['Device']
     log = logging.getLogger(__name__)
 
     def __init__(self, name=''):
@@ -224,32 +216,7 @@ class Client(QObject):
 
     """
 
-    __all__ = ['Client',
-               'version',
-               'setServer',
-               'watchDevice',
-               'connectServer',
-               'disconnectServer',
-               'isServerConnected',
-               'connectDevice',
-               'disconnectDevice',
-               'getDevice',
-               'getDevices',
-               'setBlobMode',
-               'getBlobMode',
-               'getHost',
-               'getPort',
-               'sendNewText',
-               'sendNewNumber',
-               'sendNewSwitch',
-               'startBlob',
-               'sendOneBlob',
-               'finishBlob',
-               'setVerbose',
-               'isVerbose',
-               'setConnectionTimeout',
-               ]
-
+    __all__ = ['Client']
     log = logging.getLogger(__name__)
 
     GENERAL_INTERFACE = 0
@@ -582,8 +549,8 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-        if not hasattr(self.devices[deviceName], propertyName):
-            return False
+        # if not hasattr(self.devices[deviceName], propertyName):
+        #     return False
         if not isinstance(elements, dict):
             elements = {elements: text}
 
@@ -613,8 +580,8 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-        if not hasattr(self.devices[deviceName], propertyName):
-            return False
+        # if not hasattr(self.devices[deviceName], propertyName):
+        #     return False
         if not isinstance(elements, dict):
             elements = {elements: number}
 
@@ -643,8 +610,8 @@ class Client(QObject):
         """
         if deviceName not in self.devices:
             return False
-        if not hasattr(self.devices[deviceName], propertyName):
-            return False
+        # if not hasattr(self.devices[deviceName], propertyName):
+        #     return False
         if not isinstance(elements, dict):
             elements = {elements: 'On'}
 

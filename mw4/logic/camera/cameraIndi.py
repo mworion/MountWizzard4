@@ -53,18 +53,12 @@ class CameraIndi(IndiClass, CameraSupport):
         self.log.info(f'Blob mode [{deviceName}] success: [{suc}]')
 
         objectName = self.device.getText('FITS_HEADER')
-        objectName['FITS_OBJECT'] = 'skymodel'
+        objectName['FITS_OBJECT'] = 'Skymodel'
+        objectName['FITS_OBSERVER'] = 'MountWizzard4'
         suc = self.client.sendNewText(deviceName=deviceName,
                                       propertyName='FITS_HEADER',
                                       elements=objectName)
         self.log.info(f'Fits Header [{deviceName}] success: [{suc}]')
-
-        wcs = self.device.getSwitch('WCS_CONTROL')
-        wcs['WCS_DISABLE'] = 'On'
-        suc = self.client.sendNewSwitch(deviceName=deviceName,
-                                        propertyName='WCS_CONTROL',
-                                        elements=wcs)
-        self.log.info(f'WCS control [{deviceName}] success: [{suc}]')
 
         telescope = self.device.getText('ACTIVE_DEVICES')
         telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
@@ -72,6 +66,13 @@ class CameraIndi(IndiClass, CameraSupport):
                                       propertyName='ACTIVE_DEVICES',
                                       elements=telescope)
         self.log.info(f'Active telescope [{deviceName}] success: [{suc}]')
+
+        telescope = self.device.getText('TELESCOPE_TYPE')
+        telescope['TELESCOPE_PRIMARY'] = 'On'
+        suc = self.client.sendNewSwitch(deviceName=deviceName,
+                                        propertyName='TELESCOPE_TYPE',
+                                        elements=telescope)
+        self.log.info(f'Primary telescope [{deviceName}] success: [{suc}]')
         return True
 
     def setExposureState(self):

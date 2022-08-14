@@ -13,7 +13,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/rpi4_mate20.yml'
+      - '.github/workflows/rpi4_mate.yml'
       - 'support/2.0/Mate/MW4_Install_20_04.sh'
 
 jobs:

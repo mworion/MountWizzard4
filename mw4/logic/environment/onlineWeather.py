@@ -77,9 +77,8 @@ class OnlineWeather():
         self._online = value
         self.pollOpenWeatherMapData()
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: success of reconnecting to server
         """
         self.enabled = True

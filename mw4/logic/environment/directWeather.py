@@ -44,17 +44,16 @@ class DirectWeather:
                               'frameworks': {'internal': {'deviceName': 'Direct'}}}
 
     @staticmethod
-    def startCommunication(loadConfig=False):
+    def startCommunication():
         """
         startCommunication enables the cyclic polling in framework driver
-
-        :param loadConfig:
         :return: success
         """
-
         return True
 
     @staticmethod
     def stopCommunication():
-
+        """
+        :return:
+        """
         return True

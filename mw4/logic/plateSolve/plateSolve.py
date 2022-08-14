@@ -311,9 +311,8 @@ class PlateSolve:
         val = self.run[self.framework].checkAvailability()
         return val
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: True for test purpose
         """
         self.signals.serverConnected.emit()

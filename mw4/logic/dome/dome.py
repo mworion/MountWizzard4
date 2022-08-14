@@ -94,15 +94,14 @@ class Dome:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return:
         """
         if self.framework not in self.run.keys():
             return False
 
-        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+        suc = self.run[self.framework].startCommunication()
         self.app.update1s.connect(self.checkSlewingDome)
         self.domeStarted = True
         return suc

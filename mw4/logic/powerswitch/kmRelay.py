@@ -77,9 +77,8 @@ class KMRelay:
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.cyclePolling)
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: success
         """
         if not self.hostaddress:

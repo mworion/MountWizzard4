@@ -305,9 +305,8 @@ class AscomClass(DriverData):
         self.callMethodThreaded(self.workerGetInitialConfig)
         return True
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: True for test purpose
         """
         self.data.clear()

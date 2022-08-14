@@ -147,11 +147,9 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
 
         return True
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
         startCommunication starts cycling of the polling.
-
-        :param loadConfig:
         :return: True for test purpose
         """
 

@@ -72,15 +72,14 @@ class PegasusUPB:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: success
         """
         if self.framework not in self.run.keys():
             return False
 
-        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+        suc = self.run[self.framework].startCommunication()
         return suc
 
     def stopCommunication(self):

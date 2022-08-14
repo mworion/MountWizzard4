@@ -36,6 +36,8 @@ def function():
 
 def test_setUpdateConfig_1(function):
     function.deviceName = ''
+    function.loadConfig = True
+    function.updateRate = 1000
     suc = function.setUpdateConfig('test')
     assert not suc
 
@@ -43,6 +45,8 @@ def test_setUpdateConfig_1(function):
 def test_setUpdateConfig_2(function):
     function.deviceName = 'test'
     function.device = None
+    function.loadConfig = True
+    function.updateRate = 1000
     suc = function.setUpdateConfig('test')
     assert not suc
 
@@ -50,6 +54,8 @@ def test_setUpdateConfig_2(function):
 def test_setUpdateConfig_3(function):
     function.deviceName = 'test'
     function.device = Device()
+    function.loadConfig = True
+    function.updateRate = 1000
     with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'Test': 1}):
@@ -61,6 +67,8 @@ def test_setUpdateConfig_4(function):
     function.deviceName = 'test'
     function.device = Device()
     function.client = Client()
+    function.loadConfig = True
+    function.updateRate = 1000
     with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD_MS': 1}):
@@ -75,6 +83,8 @@ def test_setUpdateConfig_5(function):
     function.deviceName = 'test'
     function.device = Device()
     function.client = Client()
+    function.loadConfig = True
+    function.updateRate = 1000
     with mock.patch.object(function.device,
                            'getNumber',
                            return_value={'PERIOD_MS': 1}):

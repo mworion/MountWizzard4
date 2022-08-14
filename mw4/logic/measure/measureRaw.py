@@ -64,11 +64,9 @@ class MeasureDataRaw(PyQt5.QtCore.QObject):
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
         startCommunication starts cycling of the polling.
-
-        :param loadConfig:
         :return: True for test purpose
         """
 

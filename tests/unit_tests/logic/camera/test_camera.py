@@ -40,6 +40,9 @@ def test_properties(function):
     function.deviceName = 'test'
     assert function.deviceName == 'test'
 
+    function.updateRate = 1000
+    function.loadConfig = True
+
 
 def test_startCommunication_1(function):
     function.framework = ''

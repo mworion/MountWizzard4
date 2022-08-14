@@ -440,9 +440,8 @@ class AlpacaClass(DriverData):
         self.threadPool.start(worker)
         return True
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: True for test purpose
         """
         self.data.clear()

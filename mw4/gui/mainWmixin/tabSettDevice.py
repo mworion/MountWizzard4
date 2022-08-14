@@ -471,7 +471,7 @@ class SettDevice:
 
         self.configDriver(driver=driver)
         if autoStart:
-            driverClass.startCommunication(loadConfig=loadConfig)
+            driverClass.startCommunication()
 
         self.msg.emit(0, 'Driver',
                       f'{framework.upper()} enabled',

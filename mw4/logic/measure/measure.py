@@ -64,9 +64,8 @@ class MeasureData:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
         self.framework = ''
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: True for test purpose
         """
         deviceStat = self.app.deviceStat
@@ -77,7 +76,7 @@ class MeasureData:
             return False
 
         name = self.run[self.framework].deviceName
-        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+        suc = self.run[self.framework].startCommunication()
         if suc:
             self.signals.deviceConnected.emit(name)
             self.msg.emit(0, 'System', 'Measure device found', f'{name}')

@@ -44,9 +44,8 @@ class Remote(QObject):
         self.clientConnection = None
         self.tcpServer = None
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: success
         """
         if self.tcpServer is not None:

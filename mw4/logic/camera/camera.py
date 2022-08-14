@@ -82,13 +82,12 @@ class Camera:
         for fw in self.run:
             self.run[fw].loadConfig = value
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: success
         """
         if self.framework in self.run.keys():
-            suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+            suc = self.run[self.framework].startCommunication()
             return suc
         else:
             return False

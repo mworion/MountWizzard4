@@ -266,13 +266,11 @@ class IndiClass:
             self.timerRetry.start(self.RETRY_DELAY)
         return False
 
-    def startCommunication(self, loadConfig=False):
+    def startCommunication(self):
         """
-        :param loadConfig:
         :return: success of reconnecting to server
         """
         self.data.clear()
-        # self.loadConfig = loadConfig
         self.retryCounter = 0
         self.client.startTimers()
         suc = self.client.connectServer()

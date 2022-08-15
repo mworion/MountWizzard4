@@ -336,12 +336,11 @@ class Client(QObject):
         """
         if self._host is None:
             return False
-
         if self.connected:
             return True
 
         self.socket.connectToHost(*self._host)
-        if not self.socket.waitForConnected(self.CONNECTION_TIMEOUT):
+        if not self.socket.waitForConnected(self.CONNECTION_TIMEOUT * 1000):
             self.connected = False
             return False
 

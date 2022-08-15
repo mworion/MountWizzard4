@@ -82,14 +82,12 @@ try:
     import requests
 except ImportError:
     installBasicPackages()
-finally:
     import requests
 
 try:
     from packaging.utils import Version
 except ImportError:
     installBasicPackages()
-finally:
     from packaging.utils import Version
 
 
@@ -299,7 +297,6 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     log.info(f'Got version {verMW4}')
     print('Installing precompiled packages')
     if verMW4.major >= 3:
-        verMW4 = '3.0.0'
         log.info('Path version 3.0.0 and above')
         print('...no precompiled packages available')
         if not Version(platform.python_version()) < Version('3.10'):

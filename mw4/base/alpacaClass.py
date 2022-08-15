@@ -36,6 +36,7 @@ class AlpacaClass(DriverData):
     log = logging.getLogger(__name__)
 
     ALPACA_TIMEOUT = 3
+    CLIENT_ID = uuid.uuid4().int % 2**16
 
     def __init__(self, app=None, data=None):
         super().__init__()
@@ -144,10 +145,14 @@ class AlpacaClass(DriverData):
         url = '{0}://{1}:{2}/management/apiversions'.format(
             self.protocol,
             self.host[0],
-            self.host[1],
-        )
+            self.host[1])
+
+        uid = uuid.uuid4().int % 2**32
+        data = {'ClientTransactionID': uid,
+                'ClientID': self.CLIENT_ID}
+
         try:
-            response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
+            response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
             t = 'Discover API version has timeout'
             self.log.debug(t)
@@ -184,10 +189,14 @@ class AlpacaClass(DriverData):
             self.protocol,
             self.host[0],
             self.host[1],
-            self.apiVersion,
-        )
+            self.apiVersion)
+
+        uid = uuid.uuid4().int % 2**32
+        data = {'ClientTransactionID': uid,
+                'ClientID': self.CLIENT_ID}
+
         try:
-            response = requests.get(url, timeout=self.ALPACA_TIMEOUT)
+            response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
         except requests.exceptions.Timeout:
             t = 'Search devices has timeout'
             self.log.debug(t)
@@ -229,6 +238,7 @@ class AlpacaClass(DriverData):
 
         uid = uuid.uuid4().int % 2**32
         data['ClientTransactionID'] = uid
+        data['ClientID'] = self.CLIENT_ID
 
         t = f'[{self.deviceName}] [{uid:10d}], get [{valueProp}], data:[{data}]'
         self.log.trace(t)

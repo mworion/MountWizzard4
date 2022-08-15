@@ -420,18 +420,19 @@ class Model:
 
         :return: true for test purpose
         """
-        self.app.operationRunning.emit(1)
-        if not self.checkModelRunConditions():
-            self.app.operationRunning.emit(0)
-            return False
-        if not self.clearAlignAndBackup():
-            self.app.operationRunning.emit(0)
-            return False
-
         prefix = 'm'
         postfix = self.lastGenerator
+
         self.modelName, imgDir = self.setupFilenamesAndDirectories(
             prefix=prefix, postfix=postfix)
+        self.msg.emit(1, 'Model', 'Run', f'Starting [{self.modelName}]')
+
+        if not self.checkModelRunConditions():
+            return False
+        if not self.clearAlignAndBackup():
+            return False
+
+        self.app.operationRunning.emit(1)
 
         data = []
         for point in self.app.data.buildP:
@@ -448,7 +449,6 @@ class Model:
             return False
 
         self.setupModelRunContextAndGuiStatus()
-        self.msg.emit(1, 'Model', 'Run', f'Starting [{self.modelName}]')
         retryCounter = self.ui.numberBuildRetries.value()
         runType = 'Model'
         keepImages = self.ui.keepModelImages.isChecked()

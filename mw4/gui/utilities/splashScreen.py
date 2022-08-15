@@ -105,9 +105,10 @@ class SplashScreen(QObject):
         painter.drawText(rect, Qt.AlignCenter, str(self.msg))
         painter.setPen(QColor(43, 192, 255))
         painter.drawLine(0, 0, w, 0)
+        painter.drawLine(0, h, 0, 0)
+        painter.setPen(QColor(32, 144, 192))
         painter.drawLine(w, 0, w, h)
         painter.drawLine(w, h, 0, h)
-        painter.drawLine(0, h, 0, 0)
 
     def finish(self, qwid):
         self.qss.finish(qwid)

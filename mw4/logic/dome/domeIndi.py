@@ -99,8 +99,7 @@ class DomeIndi(IndiClass):
         position['DOME_ABSOLUTE_POSITION'] = azimuth
         suc = self.client.sendNewNumber(deviceName=self.deviceName,
                                         propertyName='ABS_DOME_POSITION',
-                                        elements=position,
-                                        )
+                                        elements=position)
         return suc
 
     def openShutter(self):
@@ -120,8 +119,7 @@ class DomeIndi(IndiClass):
         position['SHUTTER_CLOSE'] = 'Off'
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_SHUTTER',
-                                        elements=position,
-                                        )
+                                        elements=position)
         return suc
 
     def closeShutter(self):
@@ -141,8 +139,7 @@ class DomeIndi(IndiClass):
         position['SHUTTER_CLOSE'] = 'On'
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_SHUTTER',
-                                        elements=position,
-                                        )
+                                        elements=position)
         return suc
 
     def slewCW(self):
@@ -162,8 +159,7 @@ class DomeIndi(IndiClass):
         position['DOME_CCW'] = 'Off'
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_MOTION',
-                                        elements=position,
-                                        )
+                                        elements=position)
         return suc
 
     def slewCCW(self):
@@ -183,8 +179,7 @@ class DomeIndi(IndiClass):
         position['DOME_CCW'] = 'On'
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_MOTION',
-                                        elements=position,
-                                        )
+                                        elements=position)
         return suc
 
     def abortSlew(self):
@@ -203,6 +198,5 @@ class DomeIndi(IndiClass):
         position['ABORT'] = 'On'
         suc = self.client.sendNewSwitch(deviceName=self.deviceName,
                                         propertyName='DOME_ABORT_MOTION',
-                                        elements=position,
-                                        )
+                                        elements=position)
         return suc

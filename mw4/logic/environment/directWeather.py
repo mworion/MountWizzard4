@@ -46,7 +46,7 @@ class DirectWeather:
             'framework': '',
             'frameworks': {
                 'directWeather': {
-                    'deviceName': 'Attached'
+                    'deviceName': 'On Mount'
                 }
             }
         }

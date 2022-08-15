@@ -93,11 +93,8 @@ class SplashScreen(QObject):
         painter.setBrush(QColor(0, 0, 0, 128))
         painter.drawRect(10, h - 64, w - 20, 19)
 
-        redlg = QLinearGradient(0, h - 63, 0, h)
-        redlg.setColorAt(0.2, QColor(8, 36, 48))
-        redlg.setColorAt(0.0, QColor(32, 144, 192))
         painter.setPen(Qt.NoPen)
-        painter.setBrush(redlg)
+        painter.setBrush(QColor(32, 144, 192, 128))
         painter.drawRect(13, h - 61, int((w - 24) * self.cval / self.maxv), 14)
 
         painter.setPen(Qt.white)

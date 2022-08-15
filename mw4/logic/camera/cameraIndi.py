@@ -67,7 +67,7 @@ class CameraIndi(IndiClass, CameraSupport):
                                       elements=telescope)
         self.log.info(f'Active telescope [{deviceName}] success: [{suc}]')
 
-        telescope = self.device.getText('TELESCOPE_TYPE')
+        telescope = self.device.getSwitch('TELESCOPE_TYPE')
         telescope['TELESCOPE_PRIMARY'] = 'On'
         suc = self.client.sendNewSwitch(deviceName=deviceName,
                                         propertyName='TELESCOPE_TYPE',

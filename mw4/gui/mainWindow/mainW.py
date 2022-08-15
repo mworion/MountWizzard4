@@ -212,6 +212,7 @@ class MainWindow(
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
+        self.app.seeingWeather.b = self.ui.label_b.property('a')
 
         for window in self.uiWindows:
             self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
@@ -336,7 +337,6 @@ class MainWindow(
         :return:    True if success for test
         """
         # main window
-        self.app.seeingWeather.b = self.ui.label_b.property('a')
         self.wIcon(self.ui.saveConfigAs, 'save')
         self.wIcon(self.ui.loadFrom, 'load')
         self.wIcon(self.ui.saveConfig, 'save')

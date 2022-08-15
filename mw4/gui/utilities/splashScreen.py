@@ -89,7 +89,7 @@ class SplashScreen(QObject):
         w = view_port.right()
         h = view_port.bottom()
 
-        painter.setPen(QColor(55, 55, 55, 255))
+        painter.setPen(QColor(43, 192, 255))
         painter.setBrush(QColor(0, 0, 0, 255))
         painter.drawRect(10,
                          h - 64,

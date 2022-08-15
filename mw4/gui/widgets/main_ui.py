@@ -10959,7 +10959,7 @@ class Ui_MainWindow(object):
         self.sky.setText(_translate("MainWindow", "Skymeter"))
         self.env.setText(_translate("MainWindow", "Sensor"))
         self.env_2.setText(_translate("MainWindow", "Online"))
-        self.env_3.setText(_translate("MainWindow", "On Mount"))
+        self.env_3.setText(_translate("MainWindow", "Direct"))
         self.sensorWeatherSetup.setToolTip(_translate("MainWindow", "Configure the external sensor device. A popup will open and ask for the parameters."))
         self.sensorWeatherSetup.setText(_translate("MainWindow", "Set"))
         self.sky_2.setText(_translate("MainWindow", "Power"))

@@ -272,24 +272,6 @@ class Model:
 
         return True
 
-    def saveModelPrepare(self):
-        """
-        saveModelPrepare checks boundaries for model save and prepares the
-        signals. the save a model we need the calculated parameters from the
-        mount after the new points are programmed in an earlier step. the new
-        model data is retrieved from the mount by refreshModel() call. this call
-        needs some time and has a callback which is set here. the calculations
-        and the saving is done in the callback.
-
-        :return: success
-        """
-        if len(self.model) < 3:
-            self.log.debug(f'Only {len(self.model)} points available')
-            return False
-
-        self.app.mount.signals.alignDone.connect(self.saveModelFinish)
-        return True
-
     @staticmethod
     def generateBuildData(model=None):
         """
@@ -319,11 +301,14 @@ class Model:
         :return: True for test purpose
         """
         build = self.generateBuildData(model=model)
+        if len(build) < 3:
+            self.log.debug(f'Only {len(build)} points available')
+            return False
         suc = self.app.mount.model.programAlign(build)
         if not suc:
             return False
 
-        self.saveModelPrepare()
+        self.app.mount.signals.alignDone.connect(self.saveModelFinish)
         self.app.mount.model.storeName('actual')
         self.refreshName()
         self.refreshModel()

@@ -300,106 +300,6 @@ def test_saveModelFinish_1(function):
     assert suc
 
 
-def test_saveModelPrepare_1(function):
-    suc = function.saveModelPrepare()
-    assert not suc
-
-
-def test_saveModelPrepare_2(function):
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': 'testPath',
-              'name': 'test',
-              'exposureTime': 1,
-              'binning': 1,
-              'subFrame': 100,
-              'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
-              }
-
-    function.model = list()
-    function.model.append(mPoint)
-    function.model.append(mPoint)
-
-    suc = function.saveModelPrepare()
-    assert not suc
-
-
-def test_saveModelPrepare_3(function):
-    class Julian:
-        ut1 = 2458635.168
-
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': 'testPath',
-              'name': 'test',
-              'exposureTime': 1,
-              'binning': 1,
-              'subFrame': 100,
-              'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
-              'raJNowM': skyfield.api.Angle(hours=0),
-              'decJNowM': skyfield.api.Angle(degrees=0),
-              'raJNowS': skyfield.api.Angle(hours=0),
-              'decJNowS': skyfield.api.Angle(degrees=0),
-              'siderealTime': 0,
-              'julianDate': Julian(),
-              'pierside': 'E',
-              'errorRA': 1,
-              'errorDEC': 2,
-              'errorRMS': 3,
-              }
-
-    function.model = list()
-    function.modelName = 'test'
-    function.model.append(mPoint)
-    function.model.append(mPoint)
-    function.model.append(mPoint)
-
-    suc = function.saveModelPrepare()
-    assert suc
-
-
-def test_saveModel_4(function):
-    class Julian:
-        @staticmethod
-        def utc_iso():
-            return 2458635.168
-
-    mPoint = {'lenSequence': 3,
-              'countSequence': 3,
-              'imagePath': 'testPath',
-              'name': 'test',
-              'exposureTime': 1,
-              'binning': 1,
-              'subFrame': 100,
-              'fastReadout': False,
-              'azimuth': 0,
-              'altitude': 0,
-              'raJ2000S': skyfield.api.Angle(hours=0),
-              'decJ2000S': skyfield.api.Angle(degrees=0),
-              'raJNowM': skyfield.api.Angle(hours=0),
-              'decJNowM': skyfield.api.Angle(degrees=0),
-              'raJNowS': skyfield.api.Angle(hours=0),
-              'decJNowS': skyfield.api.Angle(degrees=0),
-              'siderealTime': skyfield.api.Angle(hours=0),
-              'julianDate': Julian(),
-              'pierside': 'E',
-              'errorRA': 1,
-              'errorDEC': 2,
-              'errorRMS': 3,
-              }
-    function.model = list()
-    function.model.append(mPoint)
-    function.model.append(mPoint)
-    function.model.append(mPoint)
-
-    suc = function.saveModelPrepare()
-    assert suc
-
-
 def test_generateBuildData_1(function):
     build = function.generateBuildData()
     assert build == []
@@ -439,31 +339,38 @@ def test_generateBuildData_2(function):
 def test_programModelToMount_1(function):
     with mock.patch.object(function,
                            'generateBuildData',
-                           return_value=None):
+                           return_value=[]):
         with mock.patch.object(function.app.mount.model,
                                'programAlign',
                                return_value=False):
-            suc = function.programModelToMount(function.model)
+            suc = function.programModelToMount([])
             assert not suc
 
 
 def test_programModelToMount_2(function):
     with mock.patch.object(function,
                            'generateBuildData',
-                           return_value=None):
+                           return_value=[1, 2, 3]):
+        with mock.patch.object(function.app.mount.model,
+                               'programAlign',
+                               return_value=False):
+            suc = function.programModelToMount([])
+            assert not suc
+
+
+def test_programModelToMount_3(function):
+    with mock.patch.object(function,
+                           'generateBuildData',
+                           return_value=[1, 2, 3]):
         with mock.patch.object(function.app.mount.model,
                                'programAlign',
                                return_value=True):
             with mock.patch.object(function,
-                                   'saveModelPrepare'):
+                                   'refreshName'):
                 with mock.patch.object(function,
-                                       'refreshName'):
-                    with mock.patch.object(function,
-                                           'refreshModel'):
-                        with mock.patch.object(function.app.mount.model,
-                                               'storeName'):
-                            suc = function.programModelToMount(function.model)
-                            assert suc
+                                       'refreshModel'):
+                    suc = function.programModelToMount(function.model)
+                    assert suc
 
 
 def test_renewHemisphereView_1(function):

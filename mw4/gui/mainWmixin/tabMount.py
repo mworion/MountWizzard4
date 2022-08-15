@@ -414,7 +414,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        actValue = sett.meridianLimitTrack
+        actValue = int(sett.meridianLimitTrack)
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Meridian Limit Track', 'Value (1-30):', actValue, 1, 30, 1)
@@ -438,7 +438,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        actValue = sett.meridianLimitSlew
+        actValue = int(sett.meridianLimitSlew)
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Meridian Limit Slew', 'Value (0-30):', actValue, 0, 30, 1)
@@ -462,7 +462,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        actValue = sett.horizonLimitHigh
+        actValue = int(sett.horizonLimitHigh)
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Horizon Limit High', 'Value (0-90):', actValue, 0, 90, 1)
@@ -486,7 +486,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        actValue = sett.horizonLimitLow
+        actValue = int(sett.horizonLimitLow)
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Horizon Limit Low', 'Value (-5 - 90):', actValue, -5, 90, 1,)
@@ -508,9 +508,9 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        actValue = sett.slewRate
-        minRate = sett.slewRateMin
-        maxRate = sett.slewRateMax
+        actValue = int(sett.slewRate)
+        minRate = int(sett.slewRateMin)
+        maxRate = int(sett.slewRateMax)
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Slew Rate', f'Value ({minRate}-{maxRate}):',

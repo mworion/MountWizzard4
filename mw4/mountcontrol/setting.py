@@ -410,7 +410,7 @@ class Setting(object):
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
-        if response[0] != '1':
+        if response[0] != '10':
             return False
         return True
 

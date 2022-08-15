@@ -38,3 +38,38 @@ def test_startCommunication_1(function):
 def test_stopCommunication_1(function):
     suc = function.stopCommunication()
     assert suc
+
+
+def test_updateData_1(function):
+    function.enabled = False
+    function.running = False
+    suc = function.updateData(1)
+    assert not suc
+
+
+def test_updateData_2(function):
+    class Sett:
+        weatherTemperature = None
+        weatherPressure = 900
+        weatherHumidity = 50
+        weatherDewPoint = 10
+
+    function.enabled = True
+    function.running = True
+    suc = function.updateData(Sett())
+    assert suc
+    assert not function.running
+
+
+def test_updateData_3(function):
+    class Sett:
+        weatherTemperature = 10
+        weatherPressure = 900
+        weatherHumidity = 50
+        weatherDewPoint = 10
+
+    function.enabled = True
+    function.running = False
+    suc = function.updateData(Sett())
+    assert suc
+    assert function.running

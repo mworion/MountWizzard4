@@ -56,7 +56,6 @@ class SeeingWeather():
             'seeing': self
         }
         self.deviceName = ''
-
         self.data = {}
         self.defaultConfig = {
             'framework': '',

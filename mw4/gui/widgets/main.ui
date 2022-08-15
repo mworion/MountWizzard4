@@ -21091,7 +21091,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="sky">
         <property name="geometry">
          <rect>
-          <x>11</x>
+          <x>10</x>
           <y>50</y>
           <width>76</width>
           <height>21</height>
@@ -21221,7 +21221,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Mount dir.</string>
+         <string>On Mount</string>
         </property>
        </widget>
        <widget class="QComboBox" name="directWeatherDevice">

@@ -46,6 +46,8 @@ class Environ:
         signals.deviceDisconnected.connect(self.clearSkymeterGui)
         signals = self.app.onlineWeather.signals
         signals.deviceDisconnected.connect(self.clearOnlineWeatherGui)
+        signals = self.app.directWeather.signals
+        signals.deviceDisconnected.connect(self.clearDirectWeatherGui)
         signals = self.app.powerWeather.signals
         signals.deviceDisconnected.connect(self.clearPowerWeatherGui)
         signals = self.app.seeingWeather.signals
@@ -365,22 +367,22 @@ class Environ:
         self.updateOnlineWeatherGui()
         return True
 
-    def updateDirectWeatherGui(self, setting=None):
+    def updateDirectWeatherGui(self):
         """
-        :param setting:
         :return: success
         """
-        if setting is None:
-            return False
-
-        value = setting.weatherTemperature
+        value = self.app.directWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.guiSetText(self.ui.directWeatherTemp, '4.1f', value)
-        value = setting.weatherPressure
-        self.guiSetText(self.ui.directWeatherPress, '5.1f', value)
-        value = setting.weatherHumidity
-        self.guiSetText(self.ui.directWeatherHumidity, '3.0f', value)
-        value = setting.weatherDewPoint
+        value = self.app.directWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_PRESSURE')
+        self.guiSetText(self.ui.directWeatherPress, '4.1f', value)
+        value = self.app.directWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.guiSetText(self.ui.directWeatherDewPoint, '4.1f', value)
+        value = self.app.directWeather.data.get(
+            'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
+        self.guiSetText(self.ui.directWeatherHumidity, '3.0f', value)
         return True
 
     def clearDirectWeatherGui(self):

@@ -554,22 +554,30 @@ def test_clearAlignAndBackup_4(function):
 
 
 def test_modelBuild_1(function):
+    function.lastGenerator = 'test'
     with mock.patch.object(function,
-                           'checkModelRunConditions',
-                           return_value=False):
-        suc = function.modelBuild()
-        assert not suc
+                           'setupFilenamesAndDirectories',
+                           return_value=('', '')):
+        with mock.patch.object(function,
+                               'checkModelRunConditions',
+                               return_value=False):
+            suc = function.modelBuild()
+            assert not suc
 
 
 def test_modelBuild_2(function):
+    function.lastGenerator = 'test'
     with mock.patch.object(function,
                            'checkModelRunConditions',
                            return_value=True):
         with mock.patch.object(function,
-                               'clearAlignAndBackup',
-                               return_value=False):
-            suc = function.modelBuild()
-            assert not suc
+                               'setupFilenamesAndDirectories',
+                               return_value=('', '')):
+            with mock.patch.object(function,
+                                   'clearAlignAndBackup',
+                                   return_value=False):
+                suc = function.modelBuild()
+                assert not suc
 
 
 def test_modelBuild_3(function):

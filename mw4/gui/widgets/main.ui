@@ -22726,7 +22726,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;p&gt;Please be aware, that you need a very goog connection to the mount e.g. a wired connection to make the measurements reliable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Sync clock continously</string>
@@ -22758,7 +22758,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off.&lt;/p&gt;&lt;p&gt;Please be aware, that you need a very goog connection to the mount e.g. a wired connection to make the measurements reliable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Do not sync while tracking</string>
@@ -22790,7 +22790,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and enable possible sync of the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and compares the mount clock to the PC clock like 10micron tool does.&lt;/p&gt;&lt;p&gt;Please be aware, that you need a very goog connection to the mount e.g. a wired connection to make the measurements reliable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Enable clock compare</string>

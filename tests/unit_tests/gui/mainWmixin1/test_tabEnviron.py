@@ -494,14 +494,15 @@ def test_updateDirectWeatherGui_2(function):
 
 
 def test_updateDirectWeatherGui_3(function):
-    class Test:
-        weatherTemperature = 3
-        weatherPressure = 1000
-        weatherHumidity = 50
-        weatherDewPoint = 10
 
+    function.app.directWeather.data = {
+        'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
+        'WEATHER_PARAMETERS.WEATHER_PRESSURE': 900,
+        'WEATHER_PARAMETERS.WEATHER_DEWPOINT': 5,
+        'WEATHER_PARAMETERS.WEATHER_HUMIDITY':50,
+    }
     function.deviceStat['directWeather'] = True
-    suc = function.updateDirectWeatherGui(setting=Test())
+    suc = function.updateDirectWeatherGui()
     assert suc
 
 

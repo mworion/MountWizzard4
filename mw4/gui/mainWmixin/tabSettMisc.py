@@ -91,7 +91,6 @@ class SettMisc(object):
         self.ui.automateFast.setChecked(config.get('automateFast', False))
         self.ui.automateNormal.setChecked(config.get('automateSlow', True))
         self.ui.automateSlow.setChecked(config.get('automateSlow', True))
-        self.ui.syncNotTracking.setChecked(config.get('syncNotTracking', True))
         self.ui.unitTimeUTC.setChecked(config.get('unitTimeUTC', True))
         self.ui.unitTimeLocal.setChecked(config.get('unitTimeLocal', False))
         self.ui.activateVirtualStop.setChecked(
@@ -140,7 +139,6 @@ class SettMisc(object):
         config['automateNormal'] = self.ui.automateNormal.isChecked()
         config['automateSlow'] = self.ui.automateSlow.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
-        config['syncNotTracking'] = self.ui.syncNotTracking.isChecked()
         config['unitTimeUTC'] = self.ui.unitTimeUTC.isChecked()
         config['unitTimeLocal'] = self.ui.unitTimeLocal.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()

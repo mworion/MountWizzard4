@@ -61,7 +61,9 @@ class SettMount(object):
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
         self.ui.automaticTelescope.setChecked(config.get('automaticTelescope', False))
         self.ui.automaticWOL.setChecked(config.get('automaticWOL', False))
-        self.ui.syncTimePC2Mount.setChecked(config.get('syncTimePC2Mount', False))
+        self.ui.syncTimeNone.setChecked(config.get('syncTimeNone', True))
+        self.ui.syncTimeCont.setChecked(config.get('syncTimeCont', False))
+        self.ui.syncTimeNotTrack.setChecked(config.get('syncTimeNotTrack', False))
         self.ui.clockSync.setChecked(config.get('clockSync', False))
         self.toggleClockSync()
 
@@ -83,9 +85,10 @@ class SettMount(object):
         config['port3492'] = self.ui.port3492.isChecked()
         config['automaticTelescope'] = self.ui.automaticTelescope.isChecked()
         config['automaticWOL'] = self.ui.automaticWOL.isChecked()
-        config['syncTimePC2Mount'] = self.ui.syncTimePC2Mount.isChecked()
+        config['syncTimeNone'] = self.ui.syncTimeNone.isChecked()
+        config['syncTimeCont'] = self.ui.syncTimeCont.isChecked()
+        config['syncTimeNotTrack'] = self.ui.syncTimeNotTrack.isChecked()
         config['clockSync'] = self.ui.clockSync.isChecked()
-
         return True
 
     def mountBoot(self):
@@ -211,11 +214,11 @@ class SettMount(object):
         :return:
         """
         enableSync = self.ui.clockSync.isChecked()
-        self.ui.syncTimePC2Mount.setEnabled(enableSync)
-        self.ui.syncNotTracking.setEnabled(enableSync)
+        self.ui.syncTimeNone.setEnabled(enableSync)
+        self.ui.syncTimeCont.setEnabled(enableSync)
+        self.ui.syncTimeNotTrack.setEnabled(enableSync)
         self.ui.clockOffset.setEnabled(enableSync)
         self.ui.clockOffsetMS.setEnabled(enableSync)
-        self.ui.timeDeltaPC2Mount.setEnabled(enableSync)
         if enableSync:
             self.app.mount.startClockTimer()
         else:
@@ -226,13 +229,13 @@ class SettMount(object):
         """
         :return:
         """
-        doSync = self.ui.syncTimePC2Mount.isChecked()
-        if not doSync:
+        noSync = self.ui.syncTimeNone.isChecked()
+        if noSync:
             return False
         if not self.deviceStat['mount']:
             return False
 
-        doSyncNotTrack = self.ui.syncNotTracking.isChecked()
+        doSyncNotTrack = self.ui.syncTimeNotTrack.isChecked()
         mountTracks = self.app.mount.obsSite.status in [0, 10]
         if doSyncNotTrack and mountTracks:
             return False

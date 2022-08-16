@@ -257,21 +257,20 @@ def test_toggleClockSync_2(function):
 
 
 def test_syncClock_1(function):
-    function.ui.syncTimePC2Mount.setChecked(False)
+    function.ui.syncTimeNone.setChecked(True)
     suc = function.syncClock()
     assert not suc
 
 
 def test_syncClock_2(function):
-    function.ui.syncTimePC2Mount.setChecked(True)
+    function.ui.syncTimeNotTrack.setChecked(True)
     function.app.deviceStat['mount'] = False
     suc = function.syncClock()
     assert not suc
 
 
 def test_syncClock_3(function):
-    function.ui.syncTimePC2Mount.setChecked(True)
-    function.ui.syncNotTracking.setChecked(True)
+    function.ui.syncTimeNotTrack.setChecked(True)
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 0
     suc = function.syncClock()
@@ -280,8 +279,7 @@ def test_syncClock_3(function):
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', 0.005)
 def test_syncClock_4(function):
-    function.ui.syncTimePC2Mount.setChecked(True)
-    function.ui.syncNotTracking.setChecked(False)
+    function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 1
     suc = function.syncClock()
@@ -290,8 +288,7 @@ def test_syncClock_4(function):
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', 1)
 def test_syncClock_5(function):
-    function.ui.syncTimePC2Mount.setChecked(True)
-    function.ui.syncNotTracking.setChecked(False)
+    function.ui.syncTimeCont.setChecked(False)
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.obsSite,
@@ -303,8 +300,7 @@ def test_syncClock_5(function):
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite.timeDiff', -1)
 def test_syncClock_6(function):
-    function.ui.syncTimePC2Mount.setChecked(True)
-    function.ui.syncNotTracking.setChecked(False)
+    function.ui.syncTimeCont.setChecked(True)
     function.app.deviceStat['mount'] = True
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.obsSite,

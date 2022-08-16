@@ -22692,9 +22692,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>240</y>
+         <y>225</y>
          <width>366</width>
-         <height>66</height>
+         <height>86</height>
         </rect>
        </property>
        <property name="title">
@@ -22703,14 +22703,14 @@ Next point in time when satellite settles.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QCheckBox" name="syncTimePC2Mount">
+       <widget class="QRadioButton" name="syncTimeCont">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>20</y>
+          <y>40</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -22735,14 +22735,14 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QCheckBox" name="syncNotTracking">
+       <widget class="QRadioButton" name="syncTimeNotTrack">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>40</y>
+          <y>60</y>
           <width>176</width>
           <height>21</height>
          </rect>
@@ -22761,7 +22761,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the clocks only if tracking state is off.&lt;/p&gt;&lt;p&gt;Please be aware, that you need a very goog connection to the mount e.g. a wired connection to make the measurements reliable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Do not sync while tracking</string>
+         <string>Sync clock except tracking</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -22794,6 +22794,38 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="text">
          <string>Enable clock compare</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="syncTimeNone">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>20</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will sync the mount clock to PC clock like 10micron tool does.&lt;/p&gt;&lt;p&gt;Please be aware, that you need a very goog connection to the mount e.g. a wired connection to make the measurements reliable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Do not sync</string>
         </property>
         <property name="checked">
          <bool>false</bool>

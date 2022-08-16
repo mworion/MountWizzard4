@@ -484,13 +484,13 @@ def test_clearOnlineWeatherGui_1(function):
 def test_updateDirectWeatherGui_1(function):
     function.deviceStat['directWeather'] = False
     suc = function.updateDirectWeatherGui()
-    assert not suc
+    assert suc
 
 
 def test_updateDirectWeatherGui_2(function):
     function.deviceStat['directWeather'] = True
     suc = function.updateDirectWeatherGui()
-    assert not suc
+    assert suc
 
 
 def test_updateDirectWeatherGui_3(function):

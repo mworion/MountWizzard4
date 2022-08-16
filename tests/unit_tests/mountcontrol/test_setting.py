@@ -924,9 +924,9 @@ class TestConfigData(unittest.TestCase):
     def test_Setting_setSlewRate_ok(self):
         setting = Setting()
 
-        response = ['1']
+        response = ['10']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
-            mConn.return_value.communicate.return_value = True, response, 1
+            mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setSlewRate(5)
             self.assertEqual(True, suc)
 
@@ -954,6 +954,33 @@ class TestConfigData(unittest.TestCase):
         response = ['0']
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response, 1
+            suc = setting.setSlewRate(5)
+            self.assertEqual(False, suc)
+
+    def test_Setting_setSlewRate_not_ok1a(self):
+        setting = Setting()
+
+        response = ['01']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            suc = setting.setSlewRate(5)
+            self.assertEqual(False, suc)
+
+    def test_Setting_setSlewRate_not_ok1b(self):
+        setting = Setting()
+
+        response = ['11']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
+            suc = setting.setSlewRate(5)
+            self.assertEqual(False, suc)
+
+    def test_Setting_setSlewRate_not_ok1c(self):
+        setting = Setting()
+
+        response = ['00']
+        with mock.patch('mountcontrol.setting.Connection') as mConn:
+            mConn.return_value.communicate.return_value = True, response, 2
             suc = setting.setSlewRate(5)
             self.assertEqual(False, suc)
 

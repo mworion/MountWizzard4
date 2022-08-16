@@ -148,6 +148,18 @@ def test_colorChange(function):
         assert suc
 
 
+def test_setTitle_1(function):
+    function.app.measure.framework = ''
+    suc = function.setTitle()
+    assert suc
+
+
+def test_setTitle_2(function):
+    function.app.measure.framework = 'csv'
+    suc = function.setTitle()
+    assert suc
+
+
 def test_setupButtons(function):
     suc = function.setupButtons()
     assert suc

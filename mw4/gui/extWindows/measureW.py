@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import os
 
 # external packages
 from PyQt5.QtWidgets import QListView
@@ -252,6 +253,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
             ui.currentIndexChanged.connect(self.changeChart)
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.drawMeasure)
+        self.app.update1s.connect(self.setTitle)
         return True
 
     def closeEvent(self, closeEvent):
@@ -272,6 +274,18 @@ class MeasureWindow(toolsQtWidget.MWidget):
             values = self.dataPlots.get(ui.currentText(), 0)
             self.resetPlotItem(plotItem, values)
         self.drawMeasure()
+        return True
+
+    def setTitle(self):
+        """
+        :return:
+        """
+        if self.app.measure.framework == 'csv':
+            imagePath = self.app.measure.run['csv'].csvFilename
+            title = f'Measuring:   {os.path.basename(imagePath)}'
+        else:
+            title = 'Measuring'
+        self.setWindowTitle(title)
         return True
 
     def setupButtons(self):

@@ -54,6 +54,7 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
         self.parent = parent
         self.data = data
         self.deviceName = 'CSV'
+        self.csvFilename = ''
         self.defaultConfig = {
             'csv': {
                 'deviceName': 'save to file',
@@ -69,14 +70,12 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
 
     def openCSV(self):
         """
-
         :return: success
         """
-
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        csvFilename = f'{self.app.mwGlob["measureDir"]}/measure-{nameTime}.csv'
+        self.csvFilename = f'{self.app.mwGlob["measureDir"]}/measure-{nameTime}.csv'
 
-        self.csvFile = open(csvFilename, 'w+')
+        self.csvFile = open(self.csvFilename, 'w+')
         fieldnames = ['time',
                       'deltaRaJNow',
                       'deltaDecJNow',
@@ -119,7 +118,6 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
 
     def writeCSV(self):
         """
-
         :return: success for write
         """
         if not self.csvFile or not self.csvWriter:
@@ -130,12 +128,10 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
             row[key] = self.data[key][0]
 
         self.csvWriter.writerow(row)
-
         return True
 
     def closeCSV(self):
         """
-
         :return: success for close
         """
         if not self.csvFile or not self.csvWriter:
@@ -144,7 +140,6 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
         self.csvFile.close()
         self.csvWriter = None
         self.csvFile = None
-
         return True
 
     def startCommunication(self):
@@ -152,20 +147,16 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
         startCommunication starts cycling of the polling.
         :return: True for test purpose
         """
-
         self.parent.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
         self.openCSV()
-
         return True
 
     def stopCommunication(self):
         """
         stopCommunication stops the device
-
         :return: true for test purpose
         """
-
         self.closeCSV()
         self.timerTask.stop()
         return True
@@ -183,7 +174,6 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
 
         :return: success
         """
-
         suc = self.parent.measureTask()
         if suc:
             self.writeCSV()

@@ -147,7 +147,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>135</x>
+         <x>140</x>
          <y>35</y>
          <width>76</width>
          <height>21</height>
@@ -214,8 +214,8 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>135</y>
+         <x>165</x>
+         <y>85</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -259,7 +259,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
+         <y>185</y>
          <width>126</width>
          <height>21</height>
         </rect>
@@ -278,7 +278,7 @@
       <widget class="QLabel" name="label_55">
        <property name="geometry">
         <rect>
-         <x>285</x>
+         <x>295</x>
          <y>60</y>
          <width>101</width>
          <height>21</height>
@@ -298,8 +298,8 @@
       <widget class="QLabel" name="label_28">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>185</y>
+         <x>535</x>
+         <y>110</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -321,8 +321,8 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>160</x>
-         <y>185</y>
+         <x>675</x>
+         <y>110</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -371,7 +371,7 @@
       <widget class="QLabel" name="label_88">
        <property name="geometry">
         <rect>
-         <x>710</x>
+         <x>725</x>
          <y>60</y>
          <width>16</width>
          <height>20</height>
@@ -400,8 +400,8 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>160</x>
-         <y>135</y>
+         <x>165</x>
+         <y>160</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -444,7 +444,7 @@
       <widget class="QLabel" name="label_91">
        <property name="geometry">
         <rect>
-         <x>455</x>
+         <x>465</x>
          <y>35</y>
          <width>31</width>
          <height>21</height>
@@ -470,7 +470,7 @@
       <widget class="QLabel" name="label_89">
        <property name="geometry">
         <rect>
-         <x>710</x>
+         <x>725</x>
          <y>85</y>
          <width>16</width>
          <height>20</height>
@@ -496,8 +496,8 @@
       <widget class="QLabel" name="label_148">
        <property name="geometry">
         <rect>
-         <x>285</x>
-         <y>135</y>
+         <x>10</x>
+         <y>85</y>
          <width>116</width>
          <height>21</height>
         </rect>
@@ -519,7 +519,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>660</x>
+         <x>675</x>
          <y>85</y>
          <width>51</width>
          <height>21</height>
@@ -569,7 +569,7 @@
       <widget class="QLabel" name="label_104">
        <property name="geometry">
         <rect>
-         <x>710</x>
+         <x>725</x>
          <y>10</y>
          <width>16</width>
          <height>20</height>
@@ -595,7 +595,7 @@
       <widget class="QLabel" name="label_mountMAC_2">
        <property name="geometry">
         <rect>
-         <x>285</x>
+         <x>295</x>
          <y>160</y>
          <width>106</width>
          <height>21</height>
@@ -635,7 +635,7 @@
       <widget class="QLabel" name="label_65">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>535</x>
          <y>85</y>
          <width>131</width>
          <height>21</height>
@@ -658,7 +658,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>135</x>
+         <x>140</x>
          <y>10</y>
          <width>76</width>
          <height>21</height>
@@ -699,7 +699,7 @@
       <widget class="QLabel" name="label_18">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>295</x>
          <y>85</y>
          <width>71</width>
          <height>21</height>
@@ -722,7 +722,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>630</x>
+         <x>645</x>
          <y>185</y>
          <width>81</width>
          <height>21</height>
@@ -769,7 +769,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>415</x>
          <y>60</y>
          <width>51</width>
          <height>21</height>
@@ -816,7 +816,7 @@
       <widget class="QLabel" name="label_105">
        <property name="geometry">
         <rect>
-         <x>715</x>
+         <x>730</x>
          <y>160</y>
          <width>31</width>
          <height>20</height>
@@ -842,7 +842,7 @@
       <widget class="QLabel" name="label_130">
        <property name="geometry">
         <rect>
-         <x>215</x>
+         <x>220</x>
          <y>10</y>
          <width>46</width>
          <height>21</height>
@@ -862,7 +862,7 @@
       <widget class="QLabel" name="label_109">
        <property name="geometry">
         <rect>
-         <x>710</x>
+         <x>725</x>
          <y>35</y>
          <width>16</width>
          <height>20</height>
@@ -888,7 +888,7 @@
       <widget class="QLabel" name="label_52">
        <property name="geometry">
         <rect>
-         <x>285</x>
+         <x>295</x>
          <y>35</y>
          <width>91</width>
          <height>20</height>
@@ -914,8 +914,8 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>110</y>
+         <x>415</x>
+         <y>135</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -961,7 +961,7 @@
       <widget class="QLabel" name="clockOffsetMS">
        <property name="geometry">
         <rect>
-         <x>215</x>
+         <x>220</x>
          <y>60</y>
          <width>21</width>
          <height>21</height>
@@ -981,8 +981,8 @@
       <widget class="QLabel" name="label_133">
        <property name="geometry">
         <rect>
-         <x>215</x>
-         <y>185</y>
+         <x>730</x>
+         <y>110</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -1001,7 +1001,7 @@
       <widget class="QLabel" name="label_90">
        <property name="geometry">
         <rect>
-         <x>285</x>
+         <x>295</x>
          <y>10</y>
          <width>101</width>
          <height>20</height>
@@ -1024,7 +1024,7 @@
       <widget class="QLabel" name="label_82">
        <property name="geometry">
         <rect>
-         <x>710</x>
+         <x>725</x>
          <y>185</y>
          <width>21</width>
          <height>20</height>
@@ -1053,7 +1053,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>415</x>
          <y>185</y>
          <width>51</width>
          <height>21</height>
@@ -1100,7 +1100,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>660</x>
+         <x>675</x>
          <y>60</y>
          <width>51</width>
          <height>21</height>
@@ -1150,7 +1150,7 @@
       <widget class="QLabel" name="label_4">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>535</x>
          <y>35</y>
          <width>121</width>
          <height>21</height>
@@ -1173,8 +1173,8 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>85</y>
+         <x>415</x>
+         <y>110</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1221,7 +1221,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_6">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>535</x>
          <y>135</y>
          <width>101</width>
          <height>21</height>
@@ -1241,7 +1241,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_20">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>535</x>
          <y>10</y>
          <width>121</width>
          <height>21</height>
@@ -1261,7 +1261,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_222">
        <property name="geometry">
         <rect>
-         <x>215</x>
+         <x>220</x>
          <y>35</y>
          <width>46</width>
          <height>21</height>
@@ -1284,7 +1284,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>415</x>
          <y>35</y>
          <width>51</width>
          <height>21</height>
@@ -1328,7 +1328,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>415</x>
          <y>85</y>
          <width>51</width>
          <height>21</height>
@@ -1372,7 +1372,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>415</x>
          <y>160</y>
          <width>51</width>
          <height>21</height>
@@ -1425,8 +1425,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>160</x>
-         <y>110</y>
+         <x>165</x>
+         <y>135</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1469,8 +1469,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_74">
        <property name="geometry">
         <rect>
-         <x>285</x>
-         <y>85</y>
+         <x>295</x>
+         <y>110</y>
          <width>116</width>
          <height>21</height>
         </rect>
@@ -1492,7 +1492,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>415</x>
          <y>10</y>
          <width>51</width>
          <height>21</height>
@@ -1533,7 +1533,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_61">
        <property name="geometry">
         <rect>
-         <x>455</x>
+         <x>465</x>
          <y>10</y>
          <width>31</width>
          <height>21</height>
@@ -1560,7 +1560,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>110</y>
+         <y>135</y>
          <width>136</width>
          <height>21</height>
         </rect>
@@ -1579,8 +1579,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_64">
        <property name="geometry">
         <rect>
-         <x>215</x>
-         <y>110</y>
+         <x>220</x>
+         <y>135</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -1602,7 +1602,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>660</x>
+         <x>675</x>
          <y>10</y>
          <width>51</width>
          <height>21</height>
@@ -1653,7 +1653,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>135</y>
+         <y>160</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -1672,7 +1672,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_12">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>535</x>
          <y>185</y>
          <width>101</width>
          <height>21</height>
@@ -1692,8 +1692,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_151">
        <property name="geometry">
         <rect>
-         <x>285</x>
-         <y>110</y>
+         <x>295</x>
+         <y>135</y>
          <width>116</width>
          <height>21</height>
         </rect>
@@ -1712,7 +1712,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_34">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>535</x>
          <y>60</y>
          <width>131</width>
          <height>21</height>
@@ -1732,7 +1732,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>535</x>
          <y>160</y>
          <width>101</width>
          <height>21</height>
@@ -1752,7 +1752,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_mountMAC_4">
        <property name="geometry">
         <rect>
-         <x>285</x>
+         <x>295</x>
          <y>185</y>
          <width>106</width>
          <height>21</height>
@@ -1775,7 +1775,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>630</x>
+         <x>645</x>
          <y>135</y>
          <width>81</width>
          <height>21</height>
@@ -1842,7 +1842,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>165</x>
          <y>60</y>
          <width>51</width>
          <height>21</height>
@@ -1889,7 +1889,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>630</x>
+         <x>645</x>
          <y>160</y>
          <width>81</width>
          <height>21</height>
@@ -1939,8 +1939,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_81">
        <property name="geometry">
         <rect>
-         <x>215</x>
-         <y>135</y>
+         <x>220</x>
+         <y>160</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -1959,7 +1959,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_106">
        <property name="geometry">
         <rect>
-         <x>715</x>
+         <x>730</x>
          <y>135</y>
          <width>31</width>
          <height>20</height>
@@ -1988,8 +1988,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>160</x>
-         <y>160</y>
+         <x>165</x>
+         <y>185</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2038,7 +2038,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>660</x>
+         <x>675</x>
          <y>35</y>
          <width>51</width>
          <height>21</height>

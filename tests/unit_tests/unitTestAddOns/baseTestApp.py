@@ -390,12 +390,16 @@ class Measure:
         deviceConnected = pyqtSignal(object)
         deviceDisconnected = pyqtSignal(object)
 
+    class CSV:
+        csvFilename = ''
+
     signals = MeasureSignals()
     data = {}
     framework = None
     devices = {}
     defaultConfig = {'framework': '',
                      'frameworks': {}}
+    run = {'csv': CSV()}
 
 
 class Relay:

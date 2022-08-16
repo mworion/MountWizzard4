@@ -334,7 +334,7 @@ class MeasureData:
         dat['cameraTemp'] = np.append(dat['cameraTemp'], temp)
         delta = self.app.mount.obsSite.timeDiff * 1000
         dat['timeDiff'] = np.append(dat['timeDiff'], delta)
-        if len(dat['timeDiff']) == 30:
+        if len(dat['timeDiff']) == 31:
             dat['timeDiff'][0:29].fill(dat['timeDiff'][30])
 
         self.mutexMeasure.unlock()

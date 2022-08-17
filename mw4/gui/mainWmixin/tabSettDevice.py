@@ -220,16 +220,17 @@ class SettDevice:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        if 'driversData' not in config:
-            config['driversData'] = {}
+        configD = self.app.config
+        if 'driversData' not in configD:
+            configD['driversData'] = {}
 
         for driver in self.drivers:
-            if driver in config['driversData']:
-                self.checkStructureDriversData(driver, config)
+            if driver in configD['driversData']:
+                self.checkStructureDriversData(driver, configD)
             else:
-                self.setDefaultData(driver, config)
+                self.setDefaultData(driver, configD)
 
-        self.driversData.update(config.get('driversData', {}))
+        self.driversData.update(configD.get('driversData', {}))
         self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
         self.setupDeviceGui()
         self.startDrivers()

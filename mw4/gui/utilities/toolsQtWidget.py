@@ -419,12 +419,13 @@ class MWidget(QWidget, Styles):
         """
         return dlg.exec_()
 
-    def messageDialog(self, parentWidget, title, question, buttons=None):
+    def messageDialog(self, parentWidget, title, question, buttons=None, iconType=0):
         """
         :param parentWidget:
         :param title:
         :param question:
         :param buttons:
+        :param iconType:
         :return: OK
         """
         msg = QMessageBox()
@@ -432,7 +433,9 @@ class MWidget(QWidget, Styles):
         msg.setStyleSheet(self.mw4Style)
         msg.setTextFormat(Qt.AutoText)
         msg.setWindowTitle(title)
-        pixmap = QPixmap(':/icon/question.svg').scaled(64, 64)
+        icons = [':/icon/question.svg', ':/icon/question.svg',
+                 ':/icon/question.svg',':/icon/question.svg']
+        pixmap = QPixmap(icons[iconType]).scaled(64, 64)
         msg.setIconPixmap(pixmap)
         msg.setText(question)
         if buttons is None:

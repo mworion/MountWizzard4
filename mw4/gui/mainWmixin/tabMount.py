@@ -230,14 +230,12 @@ class Mount(object):
         """
         :return:
         """
-        msg = PyQt5.QtWidgets.QMessageBox
         isMount = self.deviceStat.get('mount', False)
         isObsSite = self.app.mount.obsSite is not None
         isSetting = self.app.mount.setting is not None
         if not isMount or not isObsSite or not isSetting:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
+            self.messageDialog(self, 'Error Message',
+                               'Value cannot be set when mount not connected !')
             return False
         else:
             return True

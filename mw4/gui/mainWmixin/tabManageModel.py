@@ -21,7 +21,7 @@ import json
 import os
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox, QLineEdit, QInputDialog
+from PyQt5.QtWidgets import QLineEdit, QInputDialog
 from PyQt5.QtCore import Qt
 import numpy as np
 
@@ -353,12 +353,9 @@ class ManageModel:
             return False
 
         modelName = self.ui.nameList.currentItem().text()
-        msg = QMessageBox
-        reply = msg.question(self,
-                             'Delete model',
-                             f'Delete model [{modelName}] from database?',
-                             msg.Yes | msg.No, msg.No)
-        if reply != msg.Yes:
+        suc = self.messageDialog(
+            self, 'Delete model', f'Delete model [{modelName}] from database?')
+        if not suc:
             return False
 
         suc = self.app.mount.model.deleteName(modelName)
@@ -450,11 +447,9 @@ class ManageModel:
         """
         :return:
         """
-        msg = QMessageBox
-        reply = msg.question(self,
-                             'Clear model', 'Clear actual alignment model?',
-                             msg.Yes | msg.No, msg.No)
-        if reply == msg.No:
+        suc = self.messageDialog(
+            self, 'Clear model', 'Clear actual alignment model')
+        if not suc:
             return False
 
         suc = self.app.mount.model.clearAlign()
@@ -462,7 +457,6 @@ class ManageModel:
             self.msg.emit(2, 'Model', 'Manage error',
                           'Actual model cannot be cleared')
             return False
-
         else:
             self.msg.emit(0, 'Model', 'Manage',
                           'Actual model cleared')
@@ -485,7 +479,6 @@ class ManageModel:
             self.msg.emit(2, 'Model', 'Manage error',
                           'Worst point cannot be deleted')
             return False
-
         else:
             text = f'Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}'
             text += ' arcsec deleted.'
@@ -626,19 +619,6 @@ class ManageModel:
         self.app.showAnalyse.emit(actualPath)
         return True
 
-    def deleteDialog(self, question):
-        """
-        :param question:
-        :return: OK
-        """
-        msg = QMessageBox
-        reply = msg.question(self, 'Deleting point', question,
-                             msg.Yes | msg.No, msg.No)
-        if reply != msg.Yes:
-            return False
-        else:
-            return True
-
     def pointClicked(self, scatterPlotItem, points, event):
         """
         :param scatterPlotItem:
@@ -652,12 +632,12 @@ class ManageModel:
             return False
         if len(points[0].data()) == 0:
             return False
-        index = points[0].data()[0] - 1
+        index = points[0].data()[0]
 
         error = self.app.mount.model.starList[index].errorRMS
         text = f'Do you want to delete \npoint {index + 1:3.0f}'
         text += f'\nRMS of {error:5.1f} arcsec'
-        isYes = self.deleteDialog(text)
+        isYes = self.messageDialog(self, 'Deleting point', text)
         if not isYes:
             return False
 
@@ -669,6 +649,6 @@ class ManageModel:
 
         text = f'Point: {index + 1:3.0f}, RMS of {error:5.1f}'
         text += ' arcsec deleted.'
-        self.msg.emit(0, 'Model', 'Manage', 'Optimizing done')
+        self.msg.emit(0, 'Model', 'Manage', text)
         self.refreshModel()
         return True

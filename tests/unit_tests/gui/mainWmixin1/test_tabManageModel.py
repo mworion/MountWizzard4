@@ -24,7 +24,7 @@ import os
 
 # external packages
 import PyQt5
-from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5.QtWidgets import QWidget
 from skyfield.api import Star, Angle
 from mountcontrol.modelStar import ModelStar
 
@@ -410,9 +410,9 @@ def test_deleteName_2(function):
     with mock.patch.object(function.ui.nameList,
                            'currentItem',
                            return_value=Test):
-        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                               'question',
-                               return_value=PyQt5.QtWidgets.QMessageBox.No):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=False):
             suc = function.deleteName()
             assert not suc
 
@@ -425,9 +425,9 @@ def test_deleteName_3(function):
     with mock.patch.object(function.ui.nameList,
                            'currentItem',
                            return_value=Test):
-        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                               'question',
-                               return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=True):
             with mock.patch.object(function.app.mount.model,
                                    'deleteName',
                                    return_value=True):
@@ -443,9 +443,9 @@ def test_deleteName_4(function):
     with mock.patch.object(function.ui.nameList,
                            'currentItem',
                            return_value=Test):
-        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                               'question',
-                               return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=True):
             with mock.patch.object(function.app.mount.model,
                                    'deleteName',
                                    return_value=False):
@@ -497,17 +497,17 @@ def test_refreshModel(function):
 
 
 def test_clearModel_1(function):
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=False):
         suc = function.clearModel()
         assert not suc
 
 
 def test_clearModel_2(function):
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
         with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=False):
@@ -516,9 +516,9 @@ def test_clearModel_2(function):
 
 
 def test_clearModel_3(function):
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
         with mock.patch.object(function.app.mount.model,
                                'clearAlign',
                                return_value=True):
@@ -790,22 +790,6 @@ def test_showActualModelAnalyse_3(function):
     assert suc
 
 
-def test_deleteDialog_1(function):
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox.No):
-        suc = function.deleteDialog('test')
-        assert not suc
-
-
-def test_deleteDialog_2(function):
-    with mock.patch.object(QMessageBox,
-                           'question',
-                           return_value=QMessageBox.Yes):
-        suc = function.deleteDialog('test')
-        assert suc
-
-
 def test_pointClicked_1(function):
     class Event:
         @staticmethod
@@ -881,7 +865,7 @@ def test_pointClicked_4(function):
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function,
-                           'deleteDialog',
+                           'messageDialog',
                            return_value=False):
         suc = function.pointClicked(None, points, Event())
         assert not suc
@@ -913,7 +897,7 @@ def test_pointClicked_5(function):
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function,
-                           'deleteDialog',
+                           'messageDialog',
                            return_value=True):
         with mock.patch.object(function.app.mount.model,
                                'deletePoint',
@@ -948,7 +932,7 @@ def test_pointClicked_6(function):
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function,
-                           'deleteDialog',
+                           'messageDialog',
                            return_value=True):
         with mock.patch.object(function.app.mount.model,
                                'deletePoint',

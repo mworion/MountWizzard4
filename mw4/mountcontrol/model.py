@@ -545,7 +545,7 @@ class Model(object):
         :param      number: number of point in int / float
         :return:    success
         """
-        if not isinstance(number, (int, float)):
+        if isinstance(number, str):
             return False
 
         number = int(number)

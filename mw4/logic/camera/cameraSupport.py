@@ -42,6 +42,7 @@ class CameraSupport:
         :return:
         """
         header.append(('OBJECT', 'SKY_OBJECT', 'default name from MW4'))
+        header.append(('AUTHOR', 'MountWizzard4', 'default name from MW4'))
         header.append(('FRAME', 'Light', 'Modeling works with light frames'))
         header.append(('EQUINOX', 2000, 'All data is stored in J2000'))
         header.append(('OBSERVER', 'MW4'))
@@ -72,6 +73,11 @@ class CameraSupport:
         header.append(('FOCTEMP',
                        self.app.directWeather.data.get(
                            'WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)))
+
+        filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+        key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
+        filterName = self.app.filter.data.get(key, 'not found')
+        header.append(('FILTER', filterName))
         return True
 
     @staticmethod

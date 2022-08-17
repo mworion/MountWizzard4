@@ -253,20 +253,15 @@ class Model:
 
         return True
 
-    @staticmethod
-    def generateBuildData(model=None):
+    def generateBuildData(self):
         """
         generateBuildData takes the model data and generates from it a data
         structure needed for programming the model into the mount computer.
-
-        :param model:
         :return: build
         """
-        if model is None:
-            model = []
 
         build = list()
-        for mPoint in model:
+        for mPoint in self.model:
             programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'],
                                                  mPoint['decJNowM']),
                                          sCoord=(mPoint['raJNowS'],
@@ -276,13 +271,11 @@ class Model:
             build.append(programmingPoint)
         return build
 
-    def programModelToMount(self, model):
+    def programModelToMount(self):
         """
-        :param model:
         :return: True for test purpose
         """
-        self.model = model
-        build = self.generateBuildData(model=model)
+        build = self.generateBuildData()
         if len(build) < 3:
             self.log.debug(f'Only {len(build)} points available')
             return False
@@ -307,11 +300,12 @@ class Model:
         self.app.updatePointMarker.emit()
         return True
 
-    def processModelData(self, runResult):
+    def processModelData(self, model):
         """
         :return:
         """
-        if len(runResult) < 3:
+        self.model = model
+        if len(self.model) < 3:
             self.msg.emit(2, 'Model', 'Run error',
                           f'{self.modelName} Not enough valid model points')
             self.app.operationRunning.emit(0)
@@ -319,7 +313,7 @@ class Model:
 
         self.msg.emit(0, 'Model', 'Run',
                       'Programming model to mount')
-        suc = self.programModelToMount(runResult)
+        suc = self.programModelToMount()
         if suc:
             self.msg.emit(0, 'Model', 'Run',
                           'Model programmed with success')

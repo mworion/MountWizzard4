@@ -44,7 +44,6 @@ class Model:
         ms.alignDone.connect(self.updateTurnKnobsGUI)
 
         self.ui.runModel.clicked.connect(self.modelBuild)
-        self.ui.cancelModel.clicked.connect(self.restoreModelDefaultContextAndGuiStatus)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.dataModel.clicked.connect(self.loadProgramModel)
         self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)

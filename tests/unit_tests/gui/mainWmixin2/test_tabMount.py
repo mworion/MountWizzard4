@@ -1411,8 +1411,6 @@ def test_updatePointGui_ra_j2000(function):
 
 def test_showOffset_1(function):
     function.ui.clockSync.setChecked(False)
-    function.ui.syncTimePC2Mount.setChecked(False)
-
     suc = function.showOffset()
     assert suc
 
@@ -1421,7 +1419,6 @@ def test_showOffset_1(function):
             '.obsSite.timeDiff', 0.003)
 def test_showOffset_2(function):
     function.ui.clockSync.setChecked(True)
-    function.ui.syncTimePC2Mount.setChecked(True)
     suc = function.showOffset()
     assert suc
 
@@ -1430,8 +1427,6 @@ def test_showOffset_2(function):
             '.obsSite.timeDiff', 0.3)
 def test_showOffset_3(function):
     function.ui.clockSync.setChecked(True)
-    function.ui.syncTimePC2Mount.setChecked(True)
-
     suc = function.showOffset()
     assert suc
 
@@ -1440,7 +1435,6 @@ def test_showOffset_3(function):
             '.timeDiff', 0.6)
 def test_showOffset_4(function):
     function.ui.clockSync.setChecked(True)
-    function.ui.syncTimePC2Mount.setChecked(True)
     suc = function.showOffset()
     assert suc
 

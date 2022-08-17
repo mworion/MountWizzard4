@@ -115,6 +115,7 @@ class MountWizzard4(QObject):
         self.mountUp = False
         self.mwGlob = mwGlob
         self.timerCounter = 0
+        self.statusOperationRunning = 0
         self.mainW = None
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
@@ -189,6 +190,7 @@ class MountWizzard4(QObject):
         self.timer0_1s.timeout.connect(self.sendUpdate)
         self.timer0_1s.start(100)
         self.application.aboutToQuit.connect(self.aboutToQuit)
+        self.operationRunning.connect(self.storeStatusOperationRunning)
 
         if os.path.isfile(self.mwGlob["workDir"] + '/test.run'):
             self.update3s.connect(self.quit)
@@ -217,6 +219,13 @@ class MountWizzard4(QObject):
             self.messageQueue.put((2, 'System', '10micron updater',
                                   'Not available !'))
         return automation
+
+    def storeStatusOperationRunning(self, status):
+        """
+        :return:
+        """
+        self.statusOperationRunning = status
+        return True
 
     def initConfig(self):
         """

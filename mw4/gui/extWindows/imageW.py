@@ -200,6 +200,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.operationRunning.connect(self.operationMode)
 
         self.wIcon(self.ui.load, 'load')
+        self.operationMode(self.app.statusOperationRunning)
         self.showCurrent()
         self.setAspectLocked()
         self.show()

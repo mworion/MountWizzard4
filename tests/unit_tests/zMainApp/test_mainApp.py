@@ -117,6 +117,12 @@ def test_checkAndSetAutomation_3(app):
             assert val is not None
 
 
+def test_storeStatusOperationRunning(app):
+    suc = app.storeStatusOperationRunning(4)
+    assert suc
+    assert app.statusOperationRunning == 4
+
+
 def test_initConfig_1(app):
     val = app.initConfig()
     assert val.longitude.degrees == 0

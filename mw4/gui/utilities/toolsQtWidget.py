@@ -433,8 +433,8 @@ class MWidget(QWidget, Styles):
         msg.setStyleSheet(self.mw4Style)
         msg.setTextFormat(Qt.AutoText)
         msg.setWindowTitle(title)
-        icons = [':/icon/question.svg', ':/icon/question.svg',
-                 ':/icon/question.svg',':/icon/question.svg']
+        icons = [':/icon/question.svg', ':/icon/information.svg',
+                 ':/icon/warning.svg', ':/icon/question.svg']
         pixmap = QPixmap(icons[iconType]).scaled(64, 64)
         msg.setIconPixmap(pixmap)
         msg.setText(question)

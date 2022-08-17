@@ -20,7 +20,7 @@
 # external packages
 import numpy as np
 from PyQt5.QtCore import QObject, Qt, QRectF
-from PyQt5.QtGui import QPixmap, QColor, QLinearGradient
+from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtWidgets import QApplication, QSplashScreen
 
 # local import

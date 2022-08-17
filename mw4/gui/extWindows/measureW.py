@@ -386,8 +386,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.messageDialog(self, 'Chart selection',
-                           'Chart already in use!\nRemoving it.',
-                           ['Ok'])
+                           'Chart already in use\n\n     Cannot be selected!',
+                           ['Ok'], iconType=1)
         return True
 
     def changeChart(self, index):
@@ -400,8 +400,8 @@ class MeasureWindow(toolsQtWidget.MWidget):
             if ui == sender:
                 continue
             if index == ui.currentIndex():
-                self.inUseMessage()
                 sender.setCurrentIndex(0)
+                self.inUseMessage()
         self.drawMeasure()
         return True
 

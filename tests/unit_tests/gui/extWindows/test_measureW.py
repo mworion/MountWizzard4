@@ -193,6 +193,13 @@ def test_triggerUpdate(function):
     assert suc
 
 
+def test_inUseMessage(function):
+    with mock.patch.object(function,
+                           'messageDialog'):
+        suc = function.inUseMessage()
+        assert suc
+
+
 def test_changeChart(function):
     def sender():
         return function.ui.set0

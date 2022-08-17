@@ -1095,6 +1095,7 @@ class Mount(QObject):
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
+    statusOperationRunning = 0
     update10s = pyqtSignal()
     timer0_1s = QTimer()
     update0_1s = pyqtSignal()

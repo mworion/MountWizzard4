@@ -234,8 +234,9 @@ class Mount(object):
         isObsSite = self.app.mount.obsSite is not None
         isSetting = self.app.mount.setting is not None
         if not isMount or not isObsSite or not isSetting:
-            self.messageDialog(self, 'Error Message',
-                               'Value cannot be set when mount not connected !')
+            self.messageDialog(
+                self, 'Error Message',
+                'Value cannot be set when mount not connected !', iconType=2)
             return False
         else:
             return True

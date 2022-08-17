@@ -66,9 +66,13 @@ class VideoWindow2(VideoWindow):
         """
         :return: True for test purpose
         """
-        if 'videoW2' not in self.app.config:
-            self.app.config['videoW2'] = {}
-        config = self.app.config['videoW2']
+        config = self.app.config
+        if 'videoW2' not in config:
+            config['videoW2'] = {}
+        else:
+            config['videoW2'].clear()
+        config = config['videoW2']
+
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

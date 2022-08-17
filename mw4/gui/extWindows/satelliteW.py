@@ -96,9 +96,13 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        if 'satelliteW' not in self.app.config:
-            self.app.config['satelliteW'] = {}
-        config = self.app.config['satelliteW']
+        config = self.app.config
+        if 'satelliteW' not in config:
+            config['satelliteW'] = {}
+        else:
+            config['satelliteW'].clear()
+        config = config['satelliteW']
+
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

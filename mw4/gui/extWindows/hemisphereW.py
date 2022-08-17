@@ -105,10 +105,13 @@ class HemisphereWindow(MWidget, EditHorizon):
         """
         :return: True for test purpose
         """
-        if 'hemisphereW' not in self.app.config:
-            self.app.config['hemisphereW'] = {}
+        config = self.app.config
+        if 'hemisphereW' not in config:
+            config['hemisphereW'] = {}
+        else:
+            config['hemisphereW'].clear()
+        config = config['hemisphereW']
 
-        config = self.app.config['hemisphereW']
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

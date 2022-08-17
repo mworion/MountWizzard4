@@ -232,9 +232,13 @@ class MeasureWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        if 'measureW' not in self.app.config:
-            self.app.config['measureW'] = {}
-        config = self.app.config['measureW']
+        config = self.app.config
+        if 'measureW' not in config:
+            config['measureW'] = {}
+        else:
+            config['measureW'].clear()
+        config = config['measureW']
+
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

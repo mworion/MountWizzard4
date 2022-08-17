@@ -107,10 +107,13 @@ class KeypadWindow(toolsQtWidget.MWidget):
 
         :return: True for test purpose
         """
-        if 'keypadW' not in self.app.config:
-            self.app.config['keypadW'] = {}
+        config = self.app.config
+        if 'keypadW' not in config:
+            config['keypadW'] = {}
+        else:
+            config['keypadW'].clear()
+        config = config['keypadW']
 
-        config = self.app.config['keypadW']
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

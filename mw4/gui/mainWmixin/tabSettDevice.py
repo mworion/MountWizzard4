@@ -242,7 +242,8 @@ class SettDevice:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['driversData'] = self.driversData
+        configD = self.app.config
+        configD['driversData'] = self.driversData
         config['checkASCOMAutoConnect'] = self.ui.checkASCOMAutoConnect.isChecked()
         return True
 

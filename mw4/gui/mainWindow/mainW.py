@@ -295,6 +295,8 @@ class MainWindow(
         config['profileName'] = self.ui.profile.text()
         if 'mainW' not in config:
             config['mainW'] = {}
+        else:
+            config['mainW'].clear()
         config = config['mainW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()

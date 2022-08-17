@@ -119,10 +119,13 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        if 'simulatorW' not in self.app.config:
-            self.app.config['simulatorW'] = {}
+        config = self.app.config
+        if 'simulatorW' not in config:
+            config['simulatorW'] = {}
+        else:
+            config['simulatorW'].clear()
+        config = config['simulatorW']
 
-        config = self.app.config['simulatorW']
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

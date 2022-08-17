@@ -104,10 +104,13 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        if 'analyseW' not in self.app.config:
-            self.app.config['analyseW'] = {}
+        config = self.app.config
+        if 'analyseW' not in config:
+            config['analyseW'] = {}
+        else:
+            config['analyseW'].clear()
+        config = config['analyseW']
 
-        config = self.app.config['analyseW']
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

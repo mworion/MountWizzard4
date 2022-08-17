@@ -130,9 +130,13 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        if 'imageW' not in self.app.config:
-            self.app.config['imageW'] = {}
-        config = self.app.config['imageW']
+        config = self.app.config
+        if 'imageW' not in config:
+            config['imageW'] = {}
+        else:
+            config['imageW'].clear()
+        config = config['imageW']
+
         config['winPosX'] = max(self.pos().x(), 0)
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()

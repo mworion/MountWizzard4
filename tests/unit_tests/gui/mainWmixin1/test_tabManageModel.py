@@ -851,7 +851,7 @@ def test_pointClicked_4(function):
     class Points:
         @staticmethod
         def data():
-            return [1]
+            return [1, 1]
 
     points = [Points()]
 
@@ -862,6 +862,7 @@ def test_pointClicked_4(function):
     a.coord = Star(ra_hours=0, dec_degrees=0)
     a.errorAngle = Angle(degrees=0)
     a.errorRMS = 1
+    function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function,
@@ -884,7 +885,7 @@ def test_pointClicked_5(function):
     class Points:
         @staticmethod
         def data():
-            return [1]
+            return [1, 1]
 
     points = [Points()]
     function.app.mount.model.starList = list()
@@ -894,6 +895,7 @@ def test_pointClicked_5(function):
     a.coord = Star(ra_hours=0, dec_degrees=0)
     a.errorAngle = Angle(degrees=0)
     a.errorRMS = 1
+    function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function,
@@ -919,7 +921,7 @@ def test_pointClicked_6(function):
     class Points:
         @staticmethod
         def data():
-            return [1]
+            return [1, 1]
 
     points = [Points()]
     function.app.mount.model.starList = list()
@@ -929,6 +931,7 @@ def test_pointClicked_6(function):
     a.coord = Star(ra_hours=0, dec_degrees=0)
     a.errorAngle = Angle(degrees=0)
     a.errorRMS = 1
+    function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
     with mock.patch.object(function,

@@ -34,8 +34,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
 
     """
 
-    __all__ = ['MeasureWindow',
-               ]
+    __all__ = ['MeasureWindow']
 
     NUMBER_POINTS = 250
     NUMBER_XTICKS = 5

@@ -18,16 +18,16 @@
 # standard libraries
 import os
 import glob
-import shutil
+import pytest
 from random import randint
 
 # external packages
-import pytest
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtTest import QTest
+import numpy as np
 
 # local import
+from gui.utilities.toolsQtWidget import sleepAndEvents
 from mainApp import MountWizzard4
 from base.tpool import Worker
 from loader import extractDataFiles
@@ -36,7 +36,7 @@ from resource import resources
 
 mwglob = {'dataDir': 'tests/workDir/data',
           'configDir': 'tests/workDir/config',
-          'workDir': 'tests/workDir',
+          'workDir': 'mw4/workDir',
           'imageDir': 'tests/workDir/image',
           'tempDir': 'tests/workDir/temp',
           'measureDir': 'tests/workDir/measure',
@@ -50,56 +50,63 @@ def module_setup_teardown():
     global tp
 
     tp = QThreadPool()
+
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
+        files = glob.glob(f'{mwglob[d]}/*')
         if 'modelData' in d:
             continue
         for f in files:
             if 'empty' in f:
                 continue
             os.remove(f)
+
     extractDataFiles(mwGlob=mwglob)
-    shutil.copy('tests/testData/star1.fits', 'tests/workDir/image/star1.fits')
 
     yield
+
     for d in mwglob:
-        files = glob.glob(f'{mwglob[d]}/*.*')
+        files = glob.glob(f'{mwglob[d]}/*')
         if 'modelData' in d:
             continue
         for f in files:
             if 'empty' in f:
                 continue
             os.remove(f)
-    tp.waitForDone(1000)
+
+    tp.waitForDone(3000)
 
 
-def test_showImagesPhotometry(qtbot, qapp):
-    # open all windows and close them
+def test_1(qtbot, qapp):
     def run():
         qapp.exec_()
 
     app = MountWizzard4(mwGlob=mwglob, application=qapp)
+    count = 59
+    app.measure.data = {
+        'time': np.empty(shape=[0, 1], dtype='datetime64'),
+        'sensorWeatherTemp': np.array([1] * count),
+        'onlineWeatherTemp': np.array([1] * count),
+        'directWeatherTemp': np.array([1] * count),
+        'skyTemp': np.array([1] * count),
+        'powTemp': np.array([1] * count),
+    }
+    for i in range(count):
+        value = np.datetime64(f'2014-12-12 20:20:{count:02d}')
+        app.measure.data['time'] = np.append(app.measure.data['time'], value)
+
     worker = Worker(run)
     tp.start(worker)
-    app.mainW.move(100, 100)
     qtbot.waitExposed(app.mainW, timeout=1000)
+    sleepAndEvents(100)
 
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    imageW = app.uiWindows['showImageW']['classObj']
-    imageW.move(900, 100)
-
-    qtbot.waitExposed(imageW, timeout=1000)
-    imageW.ui.photometryGroup.setChecked(True)
-    imageW.ui.timeTagImage.setChecked(False)
-    app.showImage.emit('tests/workDir/image/star1.fits')
-    TAB = [1, 4]
-
-    for i in range(50):
-        if randint(0, 1):
-            qtbot.mouseClick(imageW.ui.isoLayer, Qt.LeftButton)
-        index = TAB[randint(0, 1)]
-        imageW.ui.tabImage.setCurrentIndex(index)
-        QTest.qWait(randint(50, 500))
-
-    QTest.qWait(5000)
+    for index in range(5):
+        qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
+        c = app.uiWindows['showMeasureW']['classObj']
+        qtbot.waitExposed(c, timeout=3000)
+        c.ui.set0.setCurrentIndex(3)
+        sleepAndEvents(50)
+        c.drawMeasure()
+        sleepAndEvents(randint(500, 1500))
+        c.close()
+        sleepAndEvents(50)
     qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)

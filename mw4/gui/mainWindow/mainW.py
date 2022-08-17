@@ -244,8 +244,6 @@ class MainWindow(
 
         if 'mainW' not in config:
             config['mainW'] = {}
-        else:
-            config['mainW'].clear()
         config = config['mainW']
 
         self.positionWindow(config)
@@ -289,6 +287,7 @@ class MainWindow(
         else:
             config['mainW'].clear()
         config = config['mainW']
+
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()

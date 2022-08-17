@@ -209,8 +209,10 @@ def test_changeChart(function):
     function.ui.set0.setCurrentIndex(0)
     with mock.patch.object(function,
                            'drawMeasure'):
-        suc = function.changeChart(0)
-        assert suc
+        with mock.patch.object(function,
+                               'inUseMessage'):
+            suc = function.changeChart(0)
+            assert suc
 
 
 def test_drawMeasure_1(function):

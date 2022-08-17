@@ -335,10 +335,10 @@ def test_showTabImageSources(function):
     function.photometry = Photometry(function)
     function.imageSourceRange = QRectF(1, 2, 3, 4)
     function.photometry.objs = {'x': np.linspace(0, 50, 20),
-                          'y': np.linspace(50, 100, 20),
-                          'theta': np.random.rand(20, 1) + 10,
-                          'a': np.random.rand(20, 1) + 10,
-                          'b': np.random.rand(20, 1) + 10}
+                                'y': np.linspace(50, 100, 20),
+                                'theta': np.random.rand(20, 1) + 10,
+                                'a': np.random.rand(20, 1) + 10,
+                                'b': np.random.rand(20, 1) + 10}
     function.photometry.image = np.random.rand(100, 100) + 1
     function.photometry.hfr = np.random.rand(20, ) + 10.0
 

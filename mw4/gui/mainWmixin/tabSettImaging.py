@@ -253,10 +253,9 @@ class SettImaging:
             return False
 
         dlg = QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set cooler temperature',
-                               'Value (-30..+20):',
-                               actValue, -30, 20, 1)
+        value, ok = dlg.getInt(
+            self, 'Set cooler temperature', 'Value (-30..+20):',
+            actValue, -30, 20, 1)
         if not ok:
             return False
 
@@ -277,9 +276,8 @@ class SettImaging:
         offsetMax = self.app.camera.data.get('CCD_OFFSET.OFFSET_MAX')
         if offsetList is not None:
             offsetList = list(offsetList)
-            value, ok = dlg.getItem(self,
-                                    'Set offset', 'Offset entry: ',
-                                    offsetList, actValue)
+            value, ok = dlg.getItem(
+                self, 'Set offset', 'Offset entry: ', offsetList, actValue)
             value = offsetList.index(value)
 
         elif offsetMin is not None and offsetMax is not None:
@@ -291,10 +289,7 @@ class SettImaging:
                                    actValue, offsetMin, offsetMax,
                                    int((offsetMax - offsetMin) / 20))
         else:
-            value, ok = dlg.getInt(self,
-                                   'Set offset',
-                                   'Values:',
-                                   actValue)
+            value, ok = dlg.getInt(self, 'Set offset', 'Values:', actValue)
         if not ok:
             return False
 
@@ -315,19 +310,16 @@ class SettImaging:
         gainMax = self.app.camera.data.get('CCD_GAIN.GAIN_MAX')
         if gainList is not None:
             gainList = list(gainList)
-            value, ok = dlg.getItem(self,
-                                    'Set gain', 'Gain entry: ',
-                                    gainList, actValue)
+            value, ok = dlg.getItem(
+                self, 'Set gain', 'Gain entry: ', gainList, actValue)
             value = gainList.index(value)
 
         elif gainMin is not None and gainMax is not None:
             gainMin = int(gainMin)
             gainMax = int(gainMax)
-            value, ok = dlg.getInt(self,
-                                   'Set gain',
-                                   f'Values ({gainMin:4}..{gainMax:4}):',
-                                   actValue, gainMin, gainMax,
-                                   int((gainMax - gainMin) / 20))
+            value, ok = dlg.getInt(
+                self, 'Set gain', f'Values ({gainMin:4}..{gainMax:4}):',
+                actValue, gainMin, gainMax, int((gainMax - gainMin) / 20))
         else:
             value, ok = dlg.getInt(self, 'Set gain', 'Values:', actValue)
 
@@ -358,9 +350,9 @@ class SettImaging:
             end = numberFilter
 
         dlg = QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set filter number', f'Value ({start}..{end}):',
-                               actValue, start, end, 1)
+        value, ok = dlg.getInt(
+            self, 'Set filter number', f'Value ({start}..{end}):',
+            actValue, start, end, 1)
         if not ok:
             return False
 

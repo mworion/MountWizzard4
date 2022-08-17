@@ -494,8 +494,8 @@ def test_updateLocGUI_3(function):
 
 def test_checkMount_1(function):
     function.app.deviceStat['mount'] = False
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
+    with mock.patch.object(function,
+                           'messageDialog',
                            return_value=True):
         suc = function.checkMount()
         assert not suc
@@ -503,8 +503,8 @@ def test_checkMount_1(function):
 
 def test_checkMount_2(function):
     function.app.deviceStat['mount'] = True
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'critical',
+    with mock.patch.object(function,
+                           'messageDialog',
                            return_value=True):
         suc = function.checkMount()
         assert suc

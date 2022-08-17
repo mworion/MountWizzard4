@@ -20,7 +20,6 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QInputDialog
 
 # local import
@@ -132,56 +131,46 @@ def test_updateImagingParam_3(function):
 
 
 def test_setCoolerTemp_1(function):
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        suc = function.setCoolerTemp()
-        assert not suc
+    suc = function.setCoolerTemp()
+    assert not suc
 
 
 def test_setCoolerTemp_2(function):
     function.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = False
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, False)):
-            suc = function.setCoolerTemp()
-            assert not suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = function.setCoolerTemp()
+        assert not suc
 
 
 def test_setCoolerTemp_3(function):
     function.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            suc = function.setCoolerTemp()
-            assert not suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = function.setCoolerTemp()
+        assert not suc
 
 
 def test_setCoolerTemp_4(function):
     function.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
     function.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            suc = function.setCoolerTemp()
-            assert suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = function.setCoolerTemp()
+        assert suc
 
 
 def test_setCoolerTemp_5(function):
     function.app.camera.data['CAN_SET_CCD_TEMPERATURE'] = True
     function.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, False)):
-            suc = function.setCoolerTemp()
-            assert not suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = function.setCoolerTemp()
+        assert not suc
 
 
 def test_setOffset_1(function):
@@ -293,33 +282,27 @@ def test_setGain_5(function):
 
 
 def test_setFilterNumber_1(function):
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        suc = function.setFilterNumber()
-        assert not suc
+    suc = function.setFilterNumber()
+    assert not suc
 
 
 def test_setFilterNumber_2(function):
     function.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 10
     function.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_0'] = 'test'
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, False)):
-            suc = function.setFilterNumber()
-            assert not suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = function.setFilterNumber()
+        assert not suc
 
 
 def test_setFilterNumber_3(function):
     function.app.filter.data = {'FILTER_SLOT.FILTER_SLOT_VALUE': 10}
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            suc = function.setFilterNumber()
-            assert suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = function.setFilterNumber()
+        assert suc
 
 
 def test_setFilterName_1(function):
@@ -343,26 +326,22 @@ def test_setFilterName_3(function):
     function.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 1
     function.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_0'] = 'test1'
     function.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_1'] = 'test2'
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getItem',
-                               return_value=('test1', True)):
-            suc = function.setFilterName()
-            assert suc
+    with mock.patch.object(QInputDialog,
+                           'getItem',
+                           return_value=('test1', True)):
+        suc = function.setFilterName()
+        assert suc
 
 
 def test_setFilterName_4(function):
     function.app.filter.data = {'FILTER_SLOT.FILTER_SLOT_VALUE': 1,
                                 'FILTER_NAME.FILTER_SLOT_NAME_1': 'test1',
                                 'FILTER_NAME.FILTER_SLOT_NAME_2': 'test2'}
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getItem',
-                               return_value=('test1', True)):
-            suc = function.setFilterName()
-            assert suc
+    with mock.patch.object(QInputDialog,
+                           'getItem',
+                           return_value=('test1', True)):
+        suc = function.setFilterName()
+        assert suc
 
 
 def test_setDownloadModeFast(function):
@@ -550,49 +529,41 @@ def test_switchLightOff_2(function):
 
 
 def test_setLightIntensity_1(function):
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        suc = function.setLightIntensity()
-        assert not suc
+    suc = function.setLightIntensity()
+    assert not suc
 
 
 def test_setLightIntensity_2(function):
     function.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, False)):
-            suc = function.setLightIntensity()
-            assert not suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = function.setLightIntensity()
+        assert not suc
 
 
 def test_setLightIntensity_3(function):
     function.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            with mock.patch.object(function.app.cover,
-                                   'lightIntensity',
-                                   return_value=False):
-                suc = function.setLightIntensity()
-                assert not suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(function.app.cover,
+                               'lightIntensity',
+                               return_value=False):
+            suc = function.setLightIntensity()
+            assert not suc
 
 
 def test_setLightIntensity_4(function):
     function.app.cover.data['FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE'] = 10
-    with mock.patch.object(QMessageBox,
-                           'critical'):
-        with mock.patch.object(QInputDialog,
-                               'getInt',
-                               return_value=(10, True)):
-            with mock.patch.object(function.app.cover,
-                                   'lightIntensity',
-                                   return_value=True):
-                suc = function.setLightIntensity()
-                assert suc
+    with mock.patch.object(QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(function.app.cover,
+                               'lightIntensity',
+                               return_value=True):
+            suc = function.setLightIntensity()
+            assert suc
 
 
 def test_updateDomeGui_1(function):

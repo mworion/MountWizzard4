@@ -243,15 +243,6 @@ def test_setupModelRunContextAndGuiStatus_1(function):
     assert suc
 
 
-def test_restoreModelDefaultContextAndGuiStatus(function):
-    def test():
-        return
-
-    function.cancelRun = test
-    suc = function.restoreModelDefaultContextAndGuiStatus()
-    assert suc
-
-
 def test_pauseBuild_1(function):
     function.ui.pauseModel.setProperty('pause', True)
     suc = function.pauseBuild()
@@ -306,7 +297,7 @@ def test_generateBuildData_1(function):
 
 
 def test_generateBuildData_2(function):
-    inputData = [
+    function.model = [
         {
             "altitude": 44.556745182012854,
             "azimuth": 37.194805194805184,
@@ -332,29 +323,31 @@ def test_generateBuildData_2(function):
         },
     ]
 
-    build = function.generateBuildData(inputData)
+    build = function.generateBuildData()
     assert build[0].sCoord.dec.degrees == 64.3246
 
 
 def test_programModelToMount_1(function):
+    function.model = []
     with mock.patch.object(function,
                            'generateBuildData',
                            return_value=[]):
         with mock.patch.object(function.app.mount.model,
                                'programAlign',
                                return_value=False):
-            suc = function.programModelToMount([])
+            suc = function.programModelToMount()
             assert not suc
 
 
 def test_programModelToMount_2(function):
+    function.model = []
     with mock.patch.object(function,
                            'generateBuildData',
                            return_value=[1, 2, 3]):
         with mock.patch.object(function.app.mount.model,
                                'programAlign',
                                return_value=False):
-            suc = function.programModelToMount([])
+            suc = function.programModelToMount()
             assert not suc
 
 
@@ -369,7 +362,7 @@ def test_programModelToMount_3(function):
                                    'refreshName'):
                 with mock.patch.object(function,
                                        'refreshModel'):
-                    suc = function.programModelToMount(function.model)
+                    suc = function.programModelToMount()
                     assert suc
 
 
@@ -383,10 +376,8 @@ def test_renewHemisphereView_1(function):
 
 
 def test_processModelData_1(function):
-    with mock.patch.object(function,
-                           'restoreModelDefaultContextAndGuiStatus'):
-        suc = function.processModelData([])
-        assert not suc
+    suc = function.processModelData([])
+    assert not suc
 
 
 def test_processModelData_2(function):
@@ -395,17 +386,15 @@ def test_processModelData_2(function):
 
     function.playSound = playSound
     with mock.patch.object(function,
-                           'restoreModelDefaultContextAndGuiStatus'):
+                           'programModelToMount',
+                           return_value=False):
         with mock.patch.object(function,
-                               'programModelToMount',
-                               return_value=False):
-            with mock.patch.object(function,
-                                   'renewHemisphereView'):
-                with mock.patch.object(function.app.mount.obsSite,
-                                       'park',
-                                       return_value=False):
-                    suc = function.processModelData([0, 1, 2])
-                    assert suc
+                               'renewHemisphereView'):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'park',
+                                   return_value=False):
+                suc = function.processModelData([0, 1, 2])
+                assert suc
 
 
 def test_processModelData_3(function):
@@ -415,17 +404,15 @@ def test_processModelData_3(function):
     function.playSound = playSound
     function.ui.parkMountAfterModel.setChecked(True)
     with mock.patch.object(function,
-                           'restoreModelDefaultContextAndGuiStatus'):
+                           'programModelToMount',
+                           return_value=True):
         with mock.patch.object(function,
-                               'programModelToMount',
-                               return_value=True):
-            with mock.patch.object(function,
-                                   'renewHemisphereView'):
-                with mock.patch.object(function.app.mount.obsSite,
-                                       'park',
-                                       return_value=False):
-                    suc = function.processModelData([0, 1, 2])
-                    assert suc
+                               'renewHemisphereView'):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'park',
+                                   return_value=False):
+                suc = function.processModelData([0, 1, 2])
+                assert suc
 
 
 def test_processModelData_4(function):
@@ -435,17 +422,15 @@ def test_processModelData_4(function):
     function.playSound = playSound
     function.ui.parkMountAfterModel.setChecked(True)
     with mock.patch.object(function,
-                           'restoreModelDefaultContextAndGuiStatus'):
+                           'programModelToMount',
+                           return_value=True):
         with mock.patch.object(function,
-                               'programModelToMount',
-                               return_value=True):
-            with mock.patch.object(function,
-                                   'renewHemisphereView'):
-                with mock.patch.object(function.app.mount.obsSite,
-                                       'park',
-                                       return_value=True):
-                    suc = function.processModelData([0, 1, 2])
-                    assert suc
+                               'renewHemisphereView'):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'park',
+                                   return_value=True):
+                suc = function.processModelData([0, 1, 2])
+                assert suc
 
 
 def test_checkModelRunConditions_1(function):

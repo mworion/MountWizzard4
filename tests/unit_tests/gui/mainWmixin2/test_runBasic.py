@@ -361,6 +361,15 @@ def test_setupSignalsForRun_5(function):
     assert suc
 
 
+def test_restoreModelDefaultContextAndGuiStatus(function):
+    def test():
+        return
+
+    function.cancelRun = test
+    suc = function.restoreModelDefaultContextAndGuiStatus()
+    assert suc
+
+
 def test_cancelRun(function):
     suc = function.setupSignalsForRun()
     assert suc

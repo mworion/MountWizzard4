@@ -258,7 +258,6 @@ class Model:
         structure needed for programming the model into the mount computer.
         :return: build
         """
-
         build = list()
         for mPoint in self.model:
             programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'],

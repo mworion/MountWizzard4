@@ -289,6 +289,6 @@ def test_measureTask_8(function):
 def test_measureTask_9(function):
     function.devices = ['camera']
     function.setEmptyData()
-    function.data['timeDiff'] = np.ones(100)
+    function.data['timeDiff'] = np.ones(30)
     suc = function.measureTask()
     assert suc

@@ -146,7 +146,30 @@ def test_baseCalcs(function):
     assert suc
 
 
-def test_runCalcs(function):
+def test_runCalcs_1(function):
+    function.hfr = [1, 2, 3]
+    with mock.patch.object(function,
+                           'baseCalcs'):
+        with mock.patch.object(function,
+                               'workerGetHFR'):
+            with mock.patch.object(function,
+                                   'workerCalcTiltValuesSquare'):
+                with mock.patch.object(function,
+                                       'workerCalcTiltValuesTriangle'):
+                    with mock.patch.object(function,
+                                           'workerGetRoundness'):
+                        with mock.patch.object(function,
+                                               'calcAberrationInspectView'):
+                            with mock.patch.object(function,
+                                                   'calcBackground'):
+                                with mock.patch.object(function,
+                                                       'calcBackgroundRMS'):
+                                    suc = function.runCalcs()
+                                    assert not suc
+
+
+def test_runCalcs_2(function):
+    function.hfr = [1] * 20
     with mock.patch.object(function,
                            'baseCalcs'):
         with mock.patch.object(function,

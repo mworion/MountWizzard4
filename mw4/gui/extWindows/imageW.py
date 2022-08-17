@@ -739,7 +739,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param: imagePath:
         :return:
         """
-        if not self.deviceStat['exposeN']:
+        if self.deviceStat['expose']:
             self.ui.image.setImage(None)
             self.clearGui()
         if not imagePath:
@@ -806,7 +806,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param imagePath:
         :return: True for test purpose
         """
-        self.deviceStat['expose'] = False
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         text = f'{os.path.basename(imagePath)}'
         self.msg.emit(0, 'Image', 'Exposed', text)
@@ -816,6 +815,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
         self.app.operationRunning.emit(0)
+        self.deviceStat['expose'] = False
         return True
 
     def exposeImage(self):

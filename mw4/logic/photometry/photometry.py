@@ -247,6 +247,8 @@ class Photometry:
         """
         :return:
         """
+        if len(self.hfr) < 10:
+            return False
         self.baseCalcs()
         self.workerGetHFR()
         self.workerCalcTiltValuesSquare()
@@ -332,8 +334,7 @@ class Photometry:
         mask = radius < 10
         self.objs = objs[mask]
         self.hfr = radius[mask]
-        if len(self.hfr) > 10:
-            self.runCalcs()
+        self.runCalcs()
         objsHFR = len(self.objs)
         self.log.info(f'Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, '
                       f'HFR:{objsHFR}')

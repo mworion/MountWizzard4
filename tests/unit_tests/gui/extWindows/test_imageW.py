@@ -35,6 +35,8 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.imageW import ImageWindow
 from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -402,16 +404,21 @@ def test_processPhotometry_2(function):
 
 
 def test_showImage_1(function):
-    suc = function.showImage()
-    assert not suc
+    function.deviceStat['expose'] = True
+    with mock.patch.object(function,
+                           'clearGui'):
+        suc = function.showImage()
+        assert not suc
 
 
 def test_showImage_2(function):
+    function.deviceStat['expose'] = False
     suc = function.showImage('test')
     assert not suc
 
 
 def test_showImage_3(function):
+    function.deviceStat['expose'] = False
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):

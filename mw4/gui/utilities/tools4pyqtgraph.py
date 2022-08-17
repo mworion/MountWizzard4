@@ -790,7 +790,8 @@ class ImageBar(PlotBase):
 
         minB = np.min(imageDisp)
         maxB = 2 * np.mean(imageDisp)
-        self.barItem.setLevels(values=(minB, maxB))
+        if (maxB - minB) > 1:
+            self.barItem.setLevels(values=(minB, maxB))
         self.lx.setPos((xMax / 2, 0))
         self.ly.setPos((0, yMax / 2))
         return True

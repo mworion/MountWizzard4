@@ -194,25 +194,6 @@ class Model:
         self.ui.pauseModel.setEnabled(True)
         return True
 
-    def restoreModelDefaultContextAndGuiStatus(self):
-        """
-        restoreModelDefaultContextAndGuiStatus will reset all gui elements to
-        the idle or default state and new actions could be started again
-
-        :return: true for test purpose
-        """
-        self.changeStyleDynamic(self.ui.runModel, 'running', False)
-        self.ui.runModel.setEnabled(True)
-        self.ui.cancelModel.setEnabled(False)
-        self.ui.endModel.setEnabled(False)
-        self.ui.pauseModel.setEnabled(False)
-        self.ui.timeEstimated.setText('00:00:00')
-        self.ui.timeElapsed.setText('00:00:00')
-        self.ui.timeFinished.setText('00:00:00')
-        self.ui.numberPoints.setText('-')
-        self.ui.modelProgress.setValue(0)
-        return True
-
     def pauseBuild(self):
         """
         :return: True for test purpose
@@ -300,12 +281,14 @@ class Model:
         :param model:
         :return: True for test purpose
         """
+        self.model = model
         build = self.generateBuildData(model=model)
         if len(build) < 3:
             self.log.debug(f'Only {len(build)} points available')
             return False
         suc = self.app.mount.model.programAlign(build)
         if not suc:
+            self.log.debug('Program align failed')
             return False
 
         self.app.mount.signals.alignDone.connect(self.saveModelFinish)
@@ -328,7 +311,6 @@ class Model:
         """
         :return:
         """
-        self.restoreModelDefaultContextAndGuiStatus()
         if len(runResult) < 3:
             self.msg.emit(2, 'Model', 'Run error',
                           f'{self.modelName} Not enough valid model points')

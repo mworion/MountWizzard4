@@ -334,6 +334,26 @@ class BasicRun:
         self.performanceTimingSignal.connect(self.runSlew)
         return True
 
+    def restoreModelDefaultContextAndGuiStatus(self):
+        """
+        restoreModelDefaultContextAndGuiStatus will reset all gui elements to
+        the idle or default state and new actions could be started again
+
+        :return: true for test purpose
+        """
+        self.changeStyleDynamic(self.ui.runModel, 'running', False)
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        self.ui.runModel.setEnabled(True)
+        self.ui.cancelModel.setEnabled(False)
+        self.ui.endModel.setEnabled(False)
+        self.ui.pauseModel.setEnabled(False)
+        self.ui.timeEstimated.setText('00:00:00')
+        self.ui.timeElapsed.setText('00:00:00')
+        self.ui.timeFinished.setText('00:00:00')
+        self.ui.numberPoints.setText('-')
+        self.ui.modelProgress.setValue(0)
+        return True
+
     def cancelRun(self):
         """
         cancelRun aborts imaging and stops all modeling queues and actions
@@ -341,7 +361,7 @@ class BasicRun:
 
         :return: true for test purpose
         """
-        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        self.restoreModelDefaultContextAndGuiStatus()
         self.app.camera.abort()
         self.app.plateSolve.abort()
         self.restoreSignalsRunDefault()
@@ -403,6 +423,7 @@ class BasicRun:
         while not self.modelQueue.empty():
             point = self.modelQueue.get()
             runResult.append(point)
+        self.log.info(f'Collected model points: [{len(runResult)}]')
         return runResult
 
     def processDataAndFinishRun(self):
@@ -410,8 +431,8 @@ class BasicRun:
         :return:
         """
         resultData = self.collectingRunOutput()
-        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.restoreSignalsRunDefault()
+        self.restoreModelDefaultContextAndGuiStatus()
         self.clearQueues()
 
         if self.ui.parkMountAfterModel.isChecked():

@@ -788,8 +788,9 @@ class ImageBar(PlotBase):
                             minXRange=xMinR, minYRange=yMinR)
         self.p[0].getViewBox().rightMouseRange()
 
-        minB = np.min(imageDisp)
-        maxB = 2 * np.mean(imageDisp)
+        med = np.median(imageDisp)
+        minB = 1.5 * med
+        maxB = 5 * med
         if (maxB - minB) > 1:
             self.barItem.setLevels(values=(minB, maxB))
         self.lx.setPos((xMax / 2, 0))

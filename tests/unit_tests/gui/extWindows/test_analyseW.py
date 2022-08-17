@@ -42,35 +42,6 @@ def test_initConfig_1(function):
     assert suc
 
 
-def test_initConfig_2(function):
-    suc = function.initConfig()
-    assert suc
-
-    function.app.config['analyseW'] = {'winPosX': 10000}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_initConfig_3(function):
-    suc = function.initConfig()
-    assert suc
-
-    function.app.config['analyseW'] = {'winPosY': 10000}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_initConfig_4(function):
-    function.screenSizeX = 1000
-    function.screenSizeY = 1000
-    function.app.config['analyseW'] = {'winPosX': 100,
-                                       'winPosY': 100,
-                                       'height': 10,
-                                       'width': 10}
-    suc = function.initConfig()
-    assert suc
-
-
 def test_storeConfig_1(function):
     if 'analyseW' in function.app.config:
         del function.app.config['analyseW']

@@ -84,19 +84,8 @@ class KeypadWindow(toolsQtWidget.MWidget):
         if 'keypadW' not in self.app.config:
             self.app.config['keypadW'] = {}
         config = self.app.config['keypadW']
-        height = config.get('height', 500)
-        width = config.get('width', 260)
-        self.resize(width, height)
-        x = config.get('winPosX', 0)
-        y = config.get('winPosY', 0)
-        if x > self.screenSizeX - width:
-            x = 0
-        if y > self.screenSizeY - height:
-            y = 0
-        x = max(x, 0)
-        y = max(y, 0)
-        if x != 0 and y != 0:
-            self.move(x, y)
+
+        self.positionWindow(config)
         return True
 
     def storeConfig(self):

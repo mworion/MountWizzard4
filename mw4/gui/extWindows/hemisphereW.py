@@ -76,19 +76,8 @@ class HemisphereWindow(MWidget, EditHorizon):
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
         config = self.app.config['hemisphereW']
-        height = config.get('height', 600)
-        width = config.get('width', 800)
-        self.resize(width, height)
-        x = config.get('winPosX', 0)
-        y = config.get('winPosY', 0)
-        if x > self.screenSizeX - width:
-            x = 0
-        if y > self.screenSizeY - height:
-            y = 0
-        x = max(x, 0)
-        y = max(y, 0)
-        if x != 0 and y != 0:
-            self.move(x, y)
+
+        self.positionWindow(config)
         self.ui.showSlewPath.setChecked(config.get('showSlewPath', False))
         self.ui.showMountLimits.setChecked(config.get('showMountLimits', False))
         self.ui.showCelestial.setChecked(config.get('showCelestial', False))

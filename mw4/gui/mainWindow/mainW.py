@@ -241,23 +241,14 @@ class MainWindow(
         Styles.colorSet = colSet
         self.ui.colorSet.setCurrentIndex(colSet)
         self.setStyleSheet(self.mw4Style)
+
         if 'mainW' not in config:
             config['mainW'] = {}
+        else:
+            config['mainW'].clear()
         config = config['mainW']
-        height = config.get('height', 600)
-        width = config.get('width', 800)
-        self.resize(width, height)
-        x = config.get('winPosX', 0)
-        y = config.get('winPosY', 0)
-        if x > self.screenSizeX - width:
-            x = 0
-        if y > self.screenSizeY - height:
-            y = 0
-        x = max(x, 0)
-        y = max(y, 0)
-        if x != 0 and y != 0:
-            self.move(x, y)
 
+        self.positionWindow(config)
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.mountTabWidget.setCurrentIndex(config.get('mountTabWidget', 0))
         self.ui.imagingTabWidget.setCurrentIndex(config.get('imagingTabWidget', 0))

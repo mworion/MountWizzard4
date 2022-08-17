@@ -44,19 +44,8 @@ class VideoWindow2(VideoWindow):
         if 'videoW2' not in self.app.config:
             self.app.config['videoW2'] = {}
         config = self.app.config['videoW2']
-        height = config.get('height', 600)
-        width = config.get('width', 800)
-        self.resize(width, height)
-        x = config.get('winPosX', 0)
-        y = config.get('winPosY', 0)
-        if x > self.screenSizeX - width:
-            x = 0
-        if y > self.screenSizeY - height:
-            y = 0
-        x = max(x, 0)
-        y = max(y, 0)
-        if x != 0 and y != 0:
-            self.move(x, y)
+
+        self.positionWindow(config)
         self.ui.videoURL.setText(config.get('videoURL', ''))
         self.ui.videoSource.setCurrentIndex(config.get('videoSource', 0))
         self.ui.frameRate.setCurrentIndex(config.get('frameRate', 2))

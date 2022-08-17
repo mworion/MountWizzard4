@@ -43,36 +43,6 @@ def test_initConfig_1(function):
     assert suc
 
 
-def test_initConfig_2(function):
-    suc = function.initConfig()
-    assert suc
-
-    function.app.config['simulatorW'] = {'winPosX': 10000}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_initConfig_3(function):
-    suc = function.initConfig()
-    assert suc
-
-    function.app.config['simulatorW'] = {'winPosY': 10000}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_initConfig_4(function):
-    suc = function.initConfig()
-    assert suc
-
-    function.app.config['simulatorW'] = {'cameraPositionX': 1,
-                                         'cameraPositionY': 1,
-                                         'cameraPositionZ': 1,
-                                         }
-    suc = function.initConfig()
-    assert suc
-
-
 def test_initConfig_5(function):
     function.app.config['simulatorW'] = {}
     function.app.config['simulatorW']['winPosX'] = 100

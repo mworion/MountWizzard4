@@ -51,32 +51,6 @@ def test_initConfig_1(function):
     assert suc
 
 
-def test_initConfig_2(function):
-    suc = function.initConfig()
-    assert suc
-
-    function.app.config['imageW'] = {'winPosX': 10000}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_initConfig_3(function):
-    suc = function.initConfig()
-    assert suc
-
-    function.app.config['imageW'] = {'winPosY': 10000}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_initConfig_4(function):
-    function.app.config['imageW'] = {}
-    function.app.config['imageW']['winPosX'] = 100
-    function.app.config['imageW']['winPosY'] = 100
-    suc = function.initConfig()
-    assert suc
-
-
 def test_storeConfig_1(function):
     if 'imageW' in function.app.config:
         del function.app.config['imageW']

@@ -109,11 +109,11 @@ class Mount(object):
             dec = obs.decJNow
 
         self.guiSetText(self.ui.RA, 'HSTR', ra)
-        self.guiSetText(self.ui.RAfloat, 'H5.4f', ra)
+        self.guiSetText(self.ui.RAfloat, 'H5.5f', ra)
         self.guiSetText(self.ui.DEC, 'DSTR', dec)
-        self.guiSetText(self.ui.DECfloat, 'D5.4f', dec)
+        self.guiSetText(self.ui.DECfloat, 'D5.5f', dec)
         self.guiSetText(self.ui.HA, 'HSTR', obs.haJNow)
-        self.guiSetText(self.ui.HAfloat, 'H5.4f', obs.haJNow)
+        self.guiSetText(self.ui.HAfloat, 'H5.5f', obs.haJNow)
         self.guiSetText(self.ui.ALT, 'D5.2f', obs.Alt)
         self.guiSetText(self.ui.AZ, 'D5.2f', obs.Az)
         self.guiSetText(self.ui.pierside, 's', obs.pierside)

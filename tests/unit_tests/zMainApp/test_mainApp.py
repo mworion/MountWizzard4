@@ -260,6 +260,44 @@ def test_defaultConfig(app):
     assert val
 
 
+def test_convertData_1(app):
+    data = {
+        'version': '5.0'
+    }
+    val = app.convertData(data)
+    assert val['version'] == '5.0'
+
+
+def test_convertData_2(app):
+    data = {
+        'version': '4.0'
+    }
+    val = app.convertData(data)
+    assert val['version'] == '4.0'
+
+
+def test_convertData_3(app):
+    data = {
+        'version': '4.0',
+        'mainW': {},
+    }
+    val = app.convertData(data)
+    assert val['version'] == '4.0'
+
+
+def test_convertData_4(app):
+    data = {
+        'version': '4.0',
+        'mainW': {
+            'driversData': 'test'
+        },
+    }
+    val = app.convertData(data)
+    assert val['version'] == '5.0'
+    assert 'driversData' in val
+    assert 'driversData' not in val['mainW']
+
+
 def test_loadConfig_1(app):
     suc = app.loadConfig()
     assert not suc
@@ -286,7 +324,7 @@ def test_loadConfig_3(app):
     suc = app.loadConfig()
     assert suc
     assert app.config['profileName'] == 'config'
-    assert app.config['version'] == '4.0'
+    assert app.config['version'] == '5.0'
 
 
 def test_loadConfig_4(app):
@@ -304,12 +342,7 @@ def test_loadConfig_4(app):
         suc = app.loadConfig()
     assert not suc
     assert app.config['profileName'] == 'config'
-    assert app.config['version'] == '4.0'
-
-
-def test_convertData(app):
-    val = app.convertData('test')
-    assert val == 'test'
+    assert app.config['version'] == '5.0'
 
 
 def test_saveConfig_1(app):

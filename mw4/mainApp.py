@@ -328,8 +328,29 @@ class MountWizzard4(QObject):
             config = dict()
 
         config['profileName'] = 'config'
-        config['version'] = '4.0'
+        config['version'] = '5.0'
         return config
+
+    def convertData(self, data):
+        """
+        convertDate tries to convert data from an older or newer version of the
+        config file to the actual needed one.
+
+        :param      data: config data as dict
+        :return:    data: config data as dict
+        """
+        if data.get('version', '0.0') in ['0.0', '5.0']:
+            return data
+        if 'mainW' not in data:
+            return data
+        if 'driversData' not in data['mainW']:
+            return data
+
+        self.log.info(f'Conversion from [{data.get("version")}] to [5.0]')
+        data['driversData'] = data['mainW']['driversData']
+        data['version'] = '5.0'
+        del data['mainW']['driversData']
+        return data
 
     def loadConfig(self, name=None):
         """
@@ -366,20 +387,9 @@ class MountWizzard4(QObject):
             self.config = self.defaultConfig()
             return False
         else:
-            self.config = configData
+            self.config = self.convertData(configData)
 
         return True
-
-    @staticmethod
-    def convertData(data):
-        """
-        convertDate tries to convert data from an older or newer version of the
-        config file to the actual needed one.
-
-        :param      data: config data as dict
-        :return:    data: config data as dict
-        """
-        return data
 
     def saveConfig(self, name=None):
         """

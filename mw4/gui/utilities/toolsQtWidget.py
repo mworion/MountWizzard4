@@ -815,8 +815,7 @@ class MWidget(QWidget, Styles):
             self.move(x, y)
         return True
 
-    @staticmethod
-    def getTabAndIndex(tab, config, name):
+    def getTabAndIndex(self, tab, config, name):
         """
         :param tab:
         :param config:
@@ -826,6 +825,8 @@ class MWidget(QWidget, Styles):
         config[name] = {
             'index':  tab.currentIndex()
         }
+        if not self.app.mainW.ui.storeTabOrder.isChecked():
+            return False
         for index in range(tab.count()):
             config[name][f'{index:02d}'] = tab.widget(index).objectName()
         return True

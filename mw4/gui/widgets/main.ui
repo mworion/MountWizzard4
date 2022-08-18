@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -20413,7 +20413,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -26999,7 +26999,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>76</height>
+         <height>106</height>
         </rect>
        </property>
        <property name="title">
@@ -27012,8 +27012,8 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
-          <width>271</width>
+          <y>50</y>
+          <width>166</width>
           <height>21</height>
          </rect>
         </property>
@@ -27031,7 +27031,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, press / click on time / profile simulated pressing mount stop.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Activate addtional mount stop buttons</string>
+         <string>Additional mount stops</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -27041,8 +27041,8 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
-          <width>121</width>
+          <y>25</y>
+          <width>166</width>
           <height>21</height>
          </rect>
         </property>
@@ -27053,9 +27053,9 @@ Next point in time when satellite settles.</string>
        <widget class="QComboBox" name="colorSet">
         <property name="geometry">
          <rect>
-          <x>175</x>
-          <y>45</y>
-          <width>181</width>
+          <x>190</x>
+          <y>25</y>
+          <width>166</width>
           <height>21</height>
          </rect>
         </property>
@@ -27078,12 +27078,54 @@ Next point in time when satellite settles.</string>
          </property>
         </item>
        </widget>
+       <widget class="QPushButton" name="collectWindows">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>50</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Collect Windows</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="storeTabOrder">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>75</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, press / click on time / profile simulated pressing mount stop.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Store tab orders</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>110</y>
+         <y>130</y>
          <width>366</width>
          <height>56</height>
         </rect>
@@ -27160,7 +27202,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>190</y>
+         <y>200</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -27247,9 +27289,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>265</y>
+         <y>275</y>
          <width>366</width>
-         <height>126</height>
+         <height>116</height>
         </rect>
        </property>
        <property name="toolTip">

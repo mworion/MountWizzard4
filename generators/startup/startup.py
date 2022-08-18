@@ -278,19 +278,19 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
         '3.0.0': {
             '3.7': [
                 'PyQt5_sip-12.11.0-cp37-cp37-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
             ],
             '3.8': [
                 'PyQt5_sip-12.11.0-cp38-cp38-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
             ],
             '3.9': [
                 'PyQt5_sip-12.11.0-cp39-cp39-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
             ],
             '3.10': [
                 'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
+                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
             ],
         },
     }

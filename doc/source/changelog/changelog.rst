@@ -5,6 +5,8 @@ Version 3.0
 3.0.0b0
 
 - add: GUI: all charts could be zoomed and panned
+- add: GUI: all tab menu entries could be customized in order and stored
+- add: GUI: in emergency all open windows could be collected to visual area
 - add: almanac: now supports UTC / local time
 - add: almanac: support set/rise times moon
 - add: environment: integrate meteoblue.com seeing conditions
@@ -20,6 +22,7 @@ Version 3.0
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
 - add: hemisphere: show 2d contour error curve from actual model
+- add: hemisphere: move point with mouse around
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
 - add: MPC / IERS: adding alternative server
@@ -31,8 +34,8 @@ Version 3.0
 - add: image: solve and center to image
 - add: image: support for reading XISF files (simple versions)
 - add: imaging: separate page for imaging stats now
-- add: imaging stats: calcs for plate solvers (index files etc.)
-- add: imaging stats: calcs for critical focus zones
+- add: imaging: stats: calcs for plate solvers (index files etc.)
+- add: imaging: stats: calcs for critical focus zones
 - add: drivers: polling timing for drivers could be set
 - add: drivers: game controller interface for mount and dome
 - add: system: support for python 3.10
@@ -42,8 +45,11 @@ Version 3.0
 - improve: GUI: complete rework of charting: performance and functions
 - improve: GUI: clean up and optimize iers download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
+- improve: INDI: correcting setting parameters on startup
 - improve: model points: optimized DSO path generation (always fit, less params)
 - improve: model run: refactoring
+- improve: model run: better information about status and result
+- improve: hemisphere: improve solved point presentation (white, red)
 - improve: plate solve: compatibility checks
 - improve: system: enable usage of python 3.10
 - improve: system: use latest PyQt5 version

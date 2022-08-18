@@ -57,7 +57,7 @@ class FileSortProxyModel(QSortFilterProxyModel):
     """
     FileSortProxyModel enables a proxy solution for reversing the order of all
     file dialogues. The sorting is now Descending meaning the last added files
-    will be on top. This is don by just overwriting the sort method
+    will be on top. This is done by just overwriting the sort method
     """
     def sort(self, column, order):
         self.sourceModel().sort(0, Qt.DescendingOrder)
@@ -71,7 +71,7 @@ class QMultiWait(QObject):
 
     https://stackoverflow.com/questions/21108407/qt-how-to-wait-for-multiple-signals
 
-    in addition all received signals could be reset
+    in addition, all received signals could be reset
     """
     ready = pyqtSignal()
     log = logging.getLogger(__name__)

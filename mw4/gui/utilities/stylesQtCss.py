@@ -645,6 +645,8 @@ class Styles:
             border-color: $M_GREY$;
             border-radius: 2px;
             border-style: outset;
+            top: -10px;
+            padding-top: 10px;
         }
         /* needed for MAC OSX */
         QTabWidget:tab-bar {
@@ -658,8 +660,6 @@ class Styles:
             border-radius: 3px;
             border-style: outset;
             padding: 4px;
-            padding-left: 4px;
-            padding-right: 4px;
         }
         QTabBar::tab:selected {
             background: $M_BLUE2$;

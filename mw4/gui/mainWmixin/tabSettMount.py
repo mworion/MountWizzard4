@@ -147,10 +147,10 @@ class SettMount(object):
             if not part.isdigit():
                 return ip
 
-        ip = parts[0].lstrip('0')
-        ip += '.' + parts[1].lstrip('0')
-        ip += '.' + parts[2].lstrip('0')
-        ip += '.' + parts[3].lstrip('0')
+        ip = f'{float(parts[0]):1.0f}'
+        ip += '.' + f'{float(parts[1]):1.0f}'
+        ip += '.' + f'{float(parts[2]):1.0f}'
+        ip += '.' + f'{float(parts[3]):1.0f}'
         return ip
 
     def mountHost(self):

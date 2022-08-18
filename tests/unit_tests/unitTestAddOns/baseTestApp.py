@@ -1092,6 +1092,21 @@ class Mount(QObject):
         return
 
 
+class MainW:
+    class Test(QObject):
+        class CheckBox:
+            checked = False
+
+            def isChecked(self):
+                return self.checked
+
+            def setChecked(self, value):
+                self.checked = value
+
+        storeTabOrder = CheckBox()
+    ui = Test()
+
+
 class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
@@ -1165,6 +1180,7 @@ class App(QObject):
               'configDir': 'tests/workDir/config',
               }
     uiWindows = {}
+    mainW = MainW()
     threadPool = QThreadPool()
     __version__ = 'test'
 

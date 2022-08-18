@@ -19,6 +19,9 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+Version 3.0 is a major release! Please update with care!
+No ARM7 support / ARM64 only Python 3.7 - 3.9 
+
 - add: GUI: all charts could be zoomed and panned
 - add: GUI: all tab menu entries could be customized in order and stored
 - add: GUI: in emergency all open windows could be collected to visual area
@@ -40,7 +43,7 @@ releaseNotes = """
 - add: hemisphere: move point with mouse around
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
-- add: MPC / IERS: adding alternative server
+- add: MPC / IERS: adding alternative server for download
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: image: photometry functions (aberration, roundness, etc.)

@@ -126,13 +126,13 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>180</y>
+       <y>185</y>
        <width>776</width>
        <height>246</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -2892,7 +2892,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <x>385</x>
          <y>10</y>
          <width>381</width>
-         <height>191</height>
+         <height>196</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -2908,7 +2908,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>60</y>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -2937,7 +2937,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>20</y>
+          <y>25</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -2966,7 +2966,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>60</y>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -2995,7 +2995,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>60</y>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3024,7 +3024,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>145</y>
+          <y>155</y>
           <width>246</width>
           <height>25</height>
          </rect>
@@ -3070,7 +3070,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <x>280</x>
           <y>20</y>
           <width>91</width>
-          <height>136</height>
+          <height>161</height>
          </rect>
         </property>
         <property name="title">
@@ -3169,7 +3169,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3198,7 +3198,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>100</y>
+          <y>105</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3227,7 +3227,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>100</y>
+          <y>105</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3256,7 +3256,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>20</y>
+          <y>25</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3285,7 +3285,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>100</y>
+          <y>105</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3330,7 +3330,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <x>5</x>
          <y>10</y>
          <width>351</width>
-         <height>191</height>
+         <height>196</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -3346,7 +3346,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>60</y>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3375,7 +3375,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>145</y>
+          <y>155</y>
           <width>246</width>
           <height>25</height>
          </rect>
@@ -3419,7 +3419,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>100</y>
+          <y>105</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3448,7 +3448,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>60</y>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3477,7 +3477,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>20</y>
+          <y>25</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3506,7 +3506,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>100</y>
+          <y>105</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3535,7 +3535,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>20</y>
+          <y>25</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3564,7 +3564,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>100</y>
+          <y>105</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -3593,7 +3593,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -6918,7 +6918,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>230</y>
+       <y>225</y>
        <width>776</width>
        <height>206</height>
       </rect>
@@ -7046,7 +7046,7 @@ to mount</string>
        <x>5</x>
        <y>10</y>
        <width>461</width>
-       <height>416</height>
+       <height>421</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -7207,7 +7207,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="geometry">
       <rect>
        <x>485</x>
-       <y>210</y>
+       <y>215</y>
        <width>296</width>
        <height>216</height>
       </rect>
@@ -7651,7 +7651,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <x>5</x>
        <y>0</y>
        <width>776</width>
-       <height>426</height>
+       <height>431</height>
       </rect>
      </property>
      <property name="currentIndex">
@@ -7668,7 +7668,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>85</y>
+         <y>90</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -8257,7 +8257,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>340</y>
+         <y>345</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -8308,7 +8308,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>245</y>
+         <y>250</y>
          <width>361</width>
          <height>141</height>
         </rect>
@@ -8879,7 +8879,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>230</y>
+         <y>235</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -8960,7 +8960,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>285</y>
+         <y>290</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -9040,7 +9040,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>175</y>
+         <y>180</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -9125,7 +9125,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>220</y>
+         <y>225</y>
          <width>366</width>
          <height>166</height>
         </rect>
@@ -9344,7 +9344,7 @@ hr { height: 1px; border-width: 0; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>265</y>
+         <y>270</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -9920,7 +9920,7 @@ hr { height: 1px; border-width: 0; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -10687,7 +10687,7 @@ hr { height: 1px; border-width: 0; }
          <x>5</x>
          <y>0</y>
          <width>461</width>
-         <height>386</height>
+         <height>396</height>
         </rect>
        </property>
        <property name="currentIndex">
@@ -10709,7 +10709,7 @@ hr { height: 1px; border-width: 0; }
            <x>10</x>
            <y>10</y>
            <width>446</width>
-           <height>326</height>
+           <height>336</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -10723,7 +10723,7 @@ hr { height: 1px; border-width: 0; }
          <property name="geometry">
           <rect>
            <x>70</x>
-           <y>335</y>
+           <y>345</y>
            <width>21</width>
            <height>21</height>
           </rect>
@@ -10764,7 +10764,7 @@ hr { height: 1px; border-width: 0; }
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>335</y>
+           <y>345</y>
            <width>61</width>
            <height>21</height>
           </rect>
@@ -10794,7 +10794,7 @@ hr { height: 1px; border-width: 0; }
            <x>10</x>
            <y>10</y>
            <width>446</width>
-           <height>346</height>
+           <height>351</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -10815,7 +10815,7 @@ hr { height: 1px; border-width: 0; }
            <x>10</x>
            <y>15</y>
            <width>451</width>
-           <height>341</height>
+           <height>346</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -11083,7 +11083,7 @@ hr { height: 1px; border-width: 0; }
          <x>485</x>
          <y>235</y>
          <width>281</width>
-         <height>151</height>
+         <height>161</height>
         </rect>
        </property>
        <property name="title">
@@ -11114,7 +11114,7 @@ hr { height: 1px; border-width: 0; }
           <x>5</x>
           <y>20</y>
           <width>186</width>
-          <height>126</height>
+          <height>136</height>
          </rect>
         </property>
        </widget>
@@ -11310,7 +11310,7 @@ hr { height: 1px; border-width: 0; }
        <x>5</x>
        <y>0</y>
        <width>776</width>
-       <height>426</height>
+       <height>431</height>
       </rect>
      </property>
      <property name="currentIndex">
@@ -11582,7 +11582,7 @@ hr { height: 1px; border-width: 0; }
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>376</height>
+         <height>381</height>
         </rect>
        </property>
        <property name="title">
@@ -11731,7 +11731,7 @@ hr { height: 1px; border-width: 0; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>325</y>
+          <y>330</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -12461,7 +12461,7 @@ hr { height: 1px; border-width: 0; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>300</y>
+          <y>305</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -12487,7 +12487,7 @@ hr { height: 1px; border-width: 0; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>350</y>
+          <y>355</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -12721,7 +12721,7 @@ hr { height: 1px; border-width: 0; }
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>305</y>
+         <y>310</y>
          <width>366</width>
          <height>81</height>
         </rect>
@@ -13230,7 +13230,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>260</y>
+         <y>265</y>
          <width>366</width>
          <height>126</height>
         </rect>
@@ -14696,7 +14696,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>260</y>
+         <y>265</y>
          <width>366</width>
          <height>126</height>
         </rect>
@@ -15060,11 +15060,11 @@ When clicking the button, you could change the value.</string>
        <x>5</x>
        <y>0</y>
        <width>781</width>
-       <height>426</height>
+       <height>431</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -15079,7 +15079,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>10</y>
          <width>566</width>
-         <height>376</height>
+         <height>381</height>
         </rect>
        </property>
        <property name="font">
@@ -15213,7 +15213,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>580</x>
-         <y>335</y>
+         <y>340</y>
          <width>191</width>
          <height>51</height>
         </rect>
@@ -15261,7 +15261,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>580</x>
-         <y>265</y>
+         <y>270</y>
          <width>191</width>
          <height>56</height>
         </rect>
@@ -15639,7 +15639,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>100</y>
+         <y>105</y>
          <width>366</width>
          <height>121</height>
         </rect>
@@ -16475,7 +16475,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>235</y>
+         <y>245</y>
          <width>366</width>
          <height>146</height>
         </rect>
@@ -17164,7 +17164,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>355</y>
+         <y>360</y>
          <width>181</width>
          <height>26</height>
         </rect>
@@ -17186,7 +17186,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>585</x>
-         <y>355</y>
+         <y>360</y>
          <width>181</width>
          <height>26</height>
         </rect>
@@ -17199,28 +17199,6 @@ Next point in time when satellite settles.</string>
        </property>
        <property name="text">
         <string>Stop satellite tracking</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_65">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
        </property>
       </widget>
       <widget class="QGroupBox" name="satOffGroup">
@@ -17450,7 +17428,7 @@ Next point in time when satellite settles.</string>
        <x>10</x>
        <y>80</y>
        <width>371</width>
-       <height>306</height>
+       <height>311</height>
       </rect>
      </property>
      <property name="title">
@@ -17465,7 +17443,7 @@ Next point in time when satellite settles.</string>
         <x>5</x>
         <y>25</y>
         <width>361</width>
-        <height>276</height>
+        <height>281</height>
        </rect>
       </property>
       <property name="font">
@@ -17484,7 +17462,7 @@ Next point in time when satellite settles.</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>395</y>
+       <y>400</y>
        <width>181</width>
        <height>26</height>
       </rect>
@@ -17500,7 +17478,7 @@ Next point in time when satellite settles.</string>
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>395</y>
+       <y>400</y>
        <width>181</width>
        <height>26</height>
       </rect>
@@ -17610,7 +17588,7 @@ Next point in time when satellite settles.</string>
        <x>5</x>
        <y>0</y>
        <width>776</width>
-       <height>426</height>
+       <height>431</height>
       </rect>
      </property>
      <property name="currentIndex">
@@ -18836,7 +18814,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -18948,7 +18926,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -19309,7 +19287,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>10</y>
          <width>366</width>
-         <height>376</height>
+         <height>381</height>
         </rect>
        </property>
        <property name="title">
@@ -20385,7 +20363,7 @@ Next point in time when satellite settles.</string>
        <x>5</x>
        <y>0</y>
        <width>776</width>
-       <height>426</height>
+       <height>431</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -21077,7 +21055,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>190</y>
+         <y>195</y>
          <width>366</width>
          <height>196</height>
         </rect>
@@ -21443,7 +21421,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>315</y>
+         <y>320</y>
          <width>366</width>
          <height>71</height>
         </rect>
@@ -21956,7 +21934,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>325</y>
+         <y>330</y>
          <width>366</width>
          <height>61</height>
         </rect>
@@ -22033,7 +22011,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -22692,7 +22670,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>225</y>
+         <y>230</y>
          <width>366</width>
          <height>86</height>
         </rect>
@@ -23615,7 +23593,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -24078,7 +24056,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>371</height>
+         <height>376</height>
         </rect>
        </property>
        <property name="title">
@@ -25961,7 +25939,7 @@ Next point in time when satellite settles.</string>
          <x>400</x>
          <y>15</y>
          <width>366</width>
-         <height>371</height>
+         <height>376</height>
         </rect>
        </property>
        <property name="title">
@@ -26608,7 +26586,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>335</y>
+         <y>340</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -27161,7 +27139,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>185</y>
+         <y>190</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -27248,7 +27226,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>260</y>
+         <y>265</y>
          <width>366</width>
          <height>126</height>
         </rect>
@@ -27630,7 +27608,7 @@ Updater</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>275</y>
+         <y>280</y>
          <width>366</width>
          <height>111</height>
         </rect>

@@ -643,7 +643,7 @@ class Styles:
         QTabWidget:pane {
             border-width: 2px;
             border-color: $M_GREY$;
-            border-radius: 2px;
+            border-radius: 5px;
             border-style: outset;
             top: -10px;
             padding-top: 10px;
@@ -657,7 +657,7 @@ class Styles:
             color: $M_WHITE$;
             border-width: 1px;
             border-color: $M_BLUE2$;
-            border-radius: 3px;
+            border-radius: 2px;
             border-style: outset;
             padding: 4px;
         }

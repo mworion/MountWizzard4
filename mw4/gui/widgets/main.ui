@@ -132,7 +132,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -8626,7 +8626,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLabel" name="label_188">
         <property name="geometry">
          <rect>
-          <x>5</x>
+          <x>240</x>
           <y>20</y>
           <width>56</width>
           <height>21</height>
@@ -8646,7 +8646,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QDoubleSpinBox" name="numberDSOPoints">
         <property name="geometry">
          <rect>
-          <x>50</x>
+          <x>285</x>
           <y>20</y>
           <width>41</width>
           <height>21</height>
@@ -8684,9 +8684,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QPushButton" name="genBuildDSO">
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>5</x>
           <y>20</y>
-          <width>176</width>
+          <width>201</width>
           <height>21</height>
          </rect>
         </property>
@@ -8700,9 +8700,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLineEdit" name="generateDec">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>285</x>
           <y>75</y>
-          <width>66</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -8741,9 +8741,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLineEdit" name="generateRa">
         <property name="geometry">
          <rect>
-          <x>185</x>
-          <y>75</y>
-          <width>66</width>
+          <x>285</x>
+          <y>50</y>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -8782,8 +8782,8 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLabel" name="generateRaText">
         <property name="geometry">
          <rect>
-          <x>155</x>
-          <y>75</y>
+          <x>240</x>
+          <y>50</y>
           <width>31</width>
           <height>21</height>
          </rect>
@@ -8802,7 +8802,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <widget class="QLabel" name="generateDecText">
         <property name="geometry">
          <rect>
-          <x>260</x>
+          <x>240</x>
           <y>75</y>
           <width>31</width>
           <height>21</height>
@@ -8844,7 +8844,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <rect>
           <x>5</x>
           <y>75</y>
-          <width>96</width>
+          <width>201</width>
           <height>21</height>
          </rect>
         </property>
@@ -8878,6 +8878,9 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

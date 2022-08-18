@@ -86,13 +86,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         config = self.app.config['simulatorW']
 
         self.positionWindow(config)
-        if 'cameraPositionX' in config:
-            x = config['cameraPositionX']
-            y = config['cameraPositionY']
-            z = config['cameraPositionZ']
-            self.camera.setPosition(QVector3D(x, y, z))
-            self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-
         self.ui.checkDomeTransparent.setChecked(config.get('checkDomeTransparent', False))
         self.ui.checkShowPointer.setChecked(config.get('checkShowPointer', False))
         self.ui.checkShowLaser.setChecked(config.get('checkShowLaser', False))

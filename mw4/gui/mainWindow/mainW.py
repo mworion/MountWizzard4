@@ -496,11 +496,11 @@ class MainWindow(
         self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
         pixmap = self.svg2pixmap(':/icon/controllerNew.svg', self.M_BLUE)
         self.ui.controllerOverview.setPixmap(pixmap)
-        self.ui.controller1.setVisible(False)
-        self.ui.controller2.setVisible(False)
-        self.ui.controller3.setVisible(False)
-        self.ui.controller4.setVisible(False)
-        self.ui.controller5.setVisible(False)
+        self.ui.controller1.setEnabled(False)
+        self.ui.controller2.setEnabled(False)
+        self.ui.controller3.setEnabled(False)
+        self.ui.controller4.setEnabled(False)
+        self.ui.controller5.setEnabled(False)
 
         # environment
         pixmap = self.svg2pixmap(':/icon/meteoblue.svg', '#124673')
@@ -740,11 +740,11 @@ class MainWindow(
         :return: True for test purpose
         """
         gcStatus = self.gameControllerRunning
-        self.ui.controller1.setVisible(gcStatus)
-        self.ui.controller2.setVisible(gcStatus)
-        self.ui.controller3.setVisible(gcStatus)
-        self.ui.controller4.setVisible(gcStatus)
-        self.ui.controller5.setVisible(gcStatus)
+        self.ui.controller1.setEnabled(gcStatus)
+        self.ui.controller2.setEnabled(gcStatus)
+        self.ui.controller3.setEnabled(gcStatus)
+        self.ui.controller4.setEnabled(gcStatus)
+        self.ui.controller5.setEnabled(gcStatus)
         return True
 
     def updateThreadAndOnlineStatus(self):

@@ -219,6 +219,7 @@ class MainWindow(
 
         self.initConfig()
         self.ui.colorSet.currentIndexChanged.connect(self.refreshColorSet)
+        self.ui.collectWindows.clicked.connect(self.collectWindows)
         self.showExtendedWindows()
 
         self.app.update1s.connect(self.updateTime)
@@ -1022,4 +1023,17 @@ class MainWindow(
         elif command == 'boot mount':
             self.mountBoot()
             self.msg.emit(2, 'System', 'Remote', 'Boot Mount remotely')
+        return True
+
+    def collectWindows(self):
+        """
+        :return:
+        """
+        for i, window in enumerate(self.uiWindows):
+            if self.uiWindows[window]['classObj']:
+                self.uiWindows[window]['classObj'].resize(800, 600)
+                self.uiWindows[window]['classObj'].move(i * 50 + 10, i * 50 + 10)
+                self.uiWindows[window]['classObj'].activateWindow()
+        self.move(i * 50 + 10, i * 50 + 10)
+        self.activateWindow()
         return True

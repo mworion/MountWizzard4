@@ -856,3 +856,23 @@ def test_remoteCommand_4(function):
                            'mountBoot'):
         suc = function.remoteCommand('boot mount')
         assert suc
+
+
+def test_collectWindows(function):
+    class Test:
+        @staticmethod
+        def resize(a, b):
+            return
+
+        @staticmethod
+        def move(a, b):
+            return
+
+        @staticmethod
+        def activateWindow():
+            return
+
+    function.uiWindows = {'showMessageW': {'classObj': Test(),
+                                           'button': QPushButton()}}
+    suc = function.collectWindows()
+    assert suc

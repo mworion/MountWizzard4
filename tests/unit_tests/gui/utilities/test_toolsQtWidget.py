@@ -21,7 +21,7 @@ import pytest
 import os
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget
+from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
 from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
 from PyQt5.QtCore import pyqtSignal, QObject, Qt, QPoint
 from PyQt5.QtGui import QIcon, QPixmap, QPainterPath
@@ -881,4 +881,27 @@ def test_positionWindow_2(function):
     function.screenSizeX = 1000
     function.screenSizeY = 1000
     suc = function.positionWindow(config)
+    assert suc
+
+
+def test_getTabAndIndex_1(function):
+    widget = QTabWidget()
+    config = {}
+    suc = function.getTabAndIndex(widget, config, 'test')
+    assert suc
+
+
+def test_setTabAndIndex_1(function):
+    widget = QTabWidget()
+    config = {'test': 0}
+    suc = function.setTabAndIndex(widget, config, 'test')
+    assert suc
+
+
+def test_setTabAndIndex_2(function):
+    widget = QTabWidget()
+    widget.addTab(QWidget(), 'test')
+    widget.addTab(QWidget(), 'tes1')
+    config = {'test': {'00': 'test'}}
+    suc = function.setTabAndIndex(widget, config, 'test')
     assert suc

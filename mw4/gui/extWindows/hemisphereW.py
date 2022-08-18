@@ -78,6 +78,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         config = self.app.config['hemisphereW']
 
         self.positionWindow(config)
+        self.setTabAndIndex(self.ui.tabWidget, config, 'tabMain')
         self.ui.showSlewPath.setChecked(config.get('showSlewPath', False))
         self.ui.showMountLimits.setChecked(config.get('showMountLimits', False))
         self.ui.showCelestial.setChecked(config.get('showCelestial', False))
@@ -105,6 +106,7 @@ class HemisphereWindow(MWidget, EditHorizon):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
+        self.getTabAndIndex(self.ui.tabWidget, config, 'tabMain')
         config['showSlewPath'] = self.ui.showSlewPath.isChecked()
         config['showMountLimits'] = self.ui.showMountLimits.isChecked()
         config['showCelestial'] = self.ui.showCelestial.isChecked()

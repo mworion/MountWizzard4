@@ -657,7 +657,7 @@ class Styles:
             color: $M_WHITE$;
             border-width: 1px;
             border-color: $M_BLUE2$;
-            border-radius: 2px;
+            border-radius: 3px;
             border-style: outset;
             padding: 4px;
         }

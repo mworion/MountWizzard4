@@ -522,12 +522,15 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideNone</enum>
        </property>
-       <widget class="QWidget" name="tab">
+       <property name="movable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="Image">
         <attribute name="title">
          <string>Image</string>
         </attribute>
@@ -565,7 +568,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_7">
+       <widget class="QWidget" name="HFR">
         <attribute name="title">
          <string>HFR</string>
         </attribute>
@@ -688,7 +691,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_5">
+       <widget class="QWidget" name="TiltSquare">
         <attribute name="title">
          <string>Tilt Square</string>
         </attribute>
@@ -828,7 +831,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_9">
+       <widget class="QWidget" name="TileTriangle">
         <attribute name="title">
          <string>Tilt Triangle</string>
         </attribute>
@@ -1009,7 +1012,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_4">
+       <widget class="QWidget" name="Roundness">
         <attribute name="title">
          <string>Roundness</string>
         </attribute>
@@ -1080,7 +1083,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_8">
+       <widget class="QWidget" name="AbberationInspect">
         <attribute name="title">
          <string>Aberration Inspect</string>
         </attribute>
@@ -1105,7 +1108,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_6">
+       <widget class="QWidget" name="ImageSources">
         <attribute name="title">
          <string>Image + Source</string>
         </attribute>
@@ -1130,7 +1133,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="BAck">
         <attribute name="title">
          <string>Back</string>
         </attribute>
@@ -1155,7 +1158,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_3">
+       <widget class="QWidget" name="BAckRMS">
         <attribute name="title">
          <string>Back RMS</string>
         </attribute>

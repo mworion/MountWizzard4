@@ -113,7 +113,7 @@
     <bool>false</bool>
    </property>
    <property name="movable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="tabBarAutoHide">
     <bool>false</bool>
@@ -132,12 +132,15 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
      </property>
-     <widget class="QWidget" name="tab_7">
+     <property name="movable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="SettingsMount">
       <attribute name="title">
        <string>Settings Mount Computer</string>
       </attribute>
@@ -2882,7 +2885,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_27">
+     <widget class="QWidget" name="SlewRaDec">
       <attribute name="title">
        <string>Slew Ra/Dec and Alt/az</string>
       </attribute>
@@ -7641,7 +7644,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_8">
+   <widget class="QWidget" name="Modeling">
     <attribute name="title">
      <string>Modeling</string>
     </attribute>
@@ -7660,7 +7663,10 @@ MW4 will show the actual day always in the middel of the chart.</string>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
      </property>
-     <widget class="QWidget" name="tab_20">
+     <property name="movable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="GenerateBuildPoints">
       <attribute name="title">
        <string>Generate Build Points</string>
       </attribute>
@@ -9117,7 +9123,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_21">
+     <widget class="QWidget" name="ModelBuildProgram">
       <attribute name="title">
        <string>Model Build and Program</string>
       </attribute>
@@ -10677,7 +10683,7 @@ hr { height: 1px; border-width: 0; }
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_22">
+     <widget class="QWidget" name="ManageModels">
       <attribute name="title">
        <string>Manage Models</string>
       </attribute>
@@ -10696,7 +10702,10 @@ hr { height: 1px; border-width: 0; }
        <property name="elideMode">
         <enum>Qt::ElideNone</enum>
        </property>
-       <widget class="QWidget" name="tab">
+       <property name="movable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="ModelPositions">
         <attribute name="title">
          <string>Model Positions</string>
         </attribute>
@@ -10781,7 +10790,7 @@ hr { height: 1px; border-width: 0; }
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_3">
+       <widget class="QWidget" name="ErrorDistribution">
         <attribute name="title">
          <string>Error Distribution</string>
         </attribute>
@@ -10802,7 +10811,7 @@ hr { height: 1px; border-width: 0; }
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="ErrorAscending">
         <attribute name="title">
          <string>Error Ascending</string>
         </attribute>
@@ -11300,7 +11309,7 @@ hr { height: 1px; border-width: 0; }
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_24">
+   <widget class="QWidget" name="Imaging">
     <attribute name="title">
      <string>Imaging</string>
     </attribute>
@@ -11319,7 +11328,10 @@ hr { height: 1px; border-width: 0; }
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
      </property>
-     <widget class="QWidget" name="tab_25">
+     <property name="movable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="ManageImaging">
       <attribute name="title">
        <string>Manage Imaging Train</string>
       </attribute>
@@ -13129,7 +13141,7 @@ When clicking the button, you could change the value.</string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_26">
+     <widget class="QWidget" name="StatisticsFormulae">
       <attribute name="title">
        <string>Statistics and Formulae</string>
       </attribute>
@@ -15047,7 +15059,7 @@ When clicking the button, you could change the value.</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_6">
+   <widget class="QWidget" name="Satellite">
     <attribute name="title">
      <string>Satellite</string>
     </attribute>
@@ -15064,10 +15076,13 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
+     </property>
+     <property name="movable">
+      <bool>true</bool>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -17597,6 +17612,9 @@ Next point in time when satellite settles.</string>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
      </property>
+     <property name="movable">
+      <bool>true</bool>
+     </property>
      <widget class="QWidget" name="Power">
       <attribute name="title">
        <string>Power</string>
@@ -19277,7 +19295,7 @@ Next point in time when satellite settles.</string>
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_17">
+     <widget class="QWidget" name="FileRenaming">
       <attribute name="title">
        <string>File Renaming</string>
       </attribute>
@@ -20401,6 +20419,9 @@ Next point in time when satellite settles.</string>
       <enum>Qt::ElideNone</enum>
      </property>
      <property name="usesScrollButtons">
+      <bool>true</bool>
+     </property>
+     <property name="movable">
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="Devices">
@@ -26575,7 +26596,7 @@ Next point in time when satellite settles.</string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_18">
+     <widget class="QWidget" name="GUIAudio">
       <attribute name="title">
        <string>GUI and Audio</string>
       </attribute>

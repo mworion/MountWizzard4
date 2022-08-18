@@ -222,6 +222,7 @@ class Ui_HemisphereDialog(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.tabWidget = QtWidgets.QTabWidget(HemisphereDialog)
+        self.tabWidget.setMovable(True)
         self.tabWidget.setObjectName("tabWidget")
         self.HemisphereTab = QtWidgets.QWidget()
         self.HemisphereTab.setObjectName("HemisphereTab")

@@ -1430,7 +1430,10 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tab">
+       <property name="movable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="General">
         <attribute name="title">
          <string>General Analyse</string>
         </attribute>
@@ -1615,7 +1618,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="AltAz">
         <attribute name="title">
          <string>Alt / Az Analyse</string>
         </attribute>
@@ -1797,7 +1800,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_3">
+       <widget class="QWidget" name="RaDec">
         <attribute name="title">
          <string>RA / DEC Analyse</string>
         </attribute>

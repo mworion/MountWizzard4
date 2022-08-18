@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - add: GUI: all charts could be zoomed and panned
+- add. GUI: all tab could be customized in order
 - add: almanac: now supports UTC / local time
 - add: almanac: support set/rise times moon
 - add: environment: integrate meteoblue.com seeing conditions

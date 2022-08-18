@@ -814,3 +814,39 @@ class MWidget(QWidget, Styles):
         if x != 0 and y != 0:
             self.move(x, y)
         return True
+
+    @staticmethod
+    def getTabAndIndex(tab, config, name):
+        """
+        :param tab:
+        :param config:
+        :param name:
+        :return:
+        """
+        config[name] = {
+            'index':  tab.currentIndex()
+        }
+        for index in range(tab.count()):
+            config[name][f'{index:02d}'] = tab.widget(index).objectName()
+        return True
+
+    @staticmethod
+    def setTabAndIndex(tab, config, name):
+        """
+        :param tab:
+        :param config:
+        :param name:
+        :return:
+        """
+        config = config.get(name, {})
+        if not isinstance(config, dict):
+            config = {}
+        for index in reversed(range(tab.count())):
+            nameTab = config.get(f'{index:02d}', None)
+            if nameTab is None:
+                continue
+            tabWidget = tab.findChild(QWidget, nameTab)
+            tabIndex = tab.indexOf(tabWidget)
+            tab.tabBar().moveTab(tabIndex, index)
+        tab.setCurrentIndex(config.get('index', 0))
+        return True

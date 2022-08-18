@@ -95,6 +95,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         config = self.app.config['imageW']
 
         self.positionWindow(config)
+        self.setTabAndIndex(self.ui.tabImage, config, 'tabMain')
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.snTarget.setCurrentIndex(config.get('snTarget', 0))
         self.ui.tabImage.setCurrentIndex(config.get('tabImage', 0))
@@ -129,6 +130,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
+        self.getTabAndIndex(self.ui.tabImage, config, 'tabMain')
         config['color'] = self.ui.color.currentIndex()
         config['snTarget'] = self.ui.snTarget.currentIndex()
         config['tabImage'] = self.ui.tabImage.currentIndex()

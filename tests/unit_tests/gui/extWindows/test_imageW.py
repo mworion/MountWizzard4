@@ -82,6 +82,11 @@ def test_colorChange(function):
         assert suc
 
 
+def test_clearGui(function):
+    suc = function.clearGui()
+    assert suc
+
+
 def test_operationMode_1(function):
     suc = function.operationMode(0)
     assert suc
@@ -335,11 +340,6 @@ def test_showTabBackgroundRMS(function):
     function.photometry = Photometry(function)
     function.photometry.backgroundRMS = np.random.rand(100, 100) + 1
     suc = function.showTabBackgroundRMS()
-    assert suc
-
-
-def test_clearGui(function):
-    suc = function.clearGui()
     assert suc
 
 

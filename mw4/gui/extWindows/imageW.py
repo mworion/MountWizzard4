@@ -22,6 +22,7 @@ import os
 import numpy as np
 import pyqtgraph as pg
 from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QFont
 
 # local import
@@ -130,7 +131,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        self.getTabAndIndex(self.ui.tabImage, config, 'tabMain')
+        store = self.app.mainW.ui.storeTabOrder.isChecked()
+        self.getTabAndIndex(self.ui.tabImage, config, 'tabMain', store)
         config['color'] = self.ui.color.currentIndex()
         config['snTarget'] = self.ui.snTarget.currentIndex()
         config['tabImage'] = self.ui.tabImage.currentIndex()
@@ -217,6 +219,22 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.image.colorChange()
         self.pen = pg.mkPen(color=self.M_BLUE)
         self.showCurrent()
+        return True
+
+    def clearGui(self):
+        """
+        :return:
+        """
+        self.ui.medianHFR.setText('')
+        self.ui.hfrPercentile.setText('')
+        self.ui.numberStars.setText('')
+        self.ui.aspectRatioPercentile.setText('')
+        tab = self.ui.tabImage
+        tabIndex = tab.indexOf(tab.findChild(QWidget, 'Image'))
+        for i in range(0, self.ui.tabImage.count()):
+            if i == tabIndex:
+                continue
+            self.ui.tabImage.setTabEnabled(i, False)
         return True
 
     def operationMode(self, status):
@@ -393,6 +411,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
+        tab = self.ui.tabImage
+        tabIndex = tab.indexOf(tab.findChild(QWidget, 'Image'))
+        tab.setTabEnabled(tabIndex, True)
+
         if self.fileHandler.image is None:
             self.msg.emit(0, 'Image', 'Rendering error', 'Incompatible image format')
             return False
@@ -416,7 +438,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.numberStars.setText(f'{len(self.photometry.hfr):1.0f}')
         if self.ui.isoLayer.isChecked():
             self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20)
-        self.ui.tabImage.setTabEnabled(1, True)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'HFR')), True)
         return True
 
     def showTabTiltSquare(self):
@@ -501,7 +524,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.textSquareTiltOffAxis.setText(t)
         self.ui.squareMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
         self.ui.squareNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
-        self.ui.tabImage.setTabEnabled(2, True)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'TiltSquare')), True)
         return True
 
     def showTabTiltTriangle(self):
@@ -603,7 +627,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.textTriangleTiltOffAxis.setText(t)
         self.ui.triangleMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
         self.ui.triangleNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
-        self.ui.tabImage.setTabEnabled(3, True)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'TiltTriangle')), True)
         return True
 
     def showTabRoundness(self):
@@ -619,7 +644,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         if self.ui.isoLayer.isChecked():
             self.ui.roundness.addIsoBasic(self.ui.roundness.p[0],
                                           self.photometry.roundnessGrid, levels=20)
-        self.ui.tabImage.setTabEnabled(4, True)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Roundness')), True)
         return True
 
     def showTabAberrationInspect(self):
@@ -645,7 +671,8 @@ class ImageWindow(toolsQtWidget.MWidget):
             lineItem.setLine(0, posY, 3 * self.photometry.ABERRATION_SIZE, posY)
             self.ui.aberration.p[0].addItem(lineItem)
 
-        self.ui.tabImage.setTabEnabled(5, True)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Aberration')), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
         return True
 
@@ -672,7 +699,8 @@ class ImageWindow(toolsQtWidget.MWidget):
                 item = pg.TextItem(text=t, color=self.M_BLUE, anchor=(1, 1))
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
-        self.ui.tabImage.setTabEnabled(6, True)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Sources')), True)
         return True
 
     def showTabBackground(self):
@@ -682,7 +710,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
             (self.photometry.backgroundMin, self.photometry.backgroundMax))
-        self.ui.tabImage.setTabEnabled(7, True)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Back')), True)
         return True
 
     def showTabBackgroundRMS(self):
@@ -690,19 +719,8 @@ class ImageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
-        self.ui.tabImage.setTabEnabled(8, True)
-        return True
-
-    def clearGui(self):
-        """
-        :return:
-        """
-        self.ui.medianHFR.setText('')
-        self.ui.hfrPercentile.setText('')
-        self.ui.numberStars.setText('')
-        self.ui.aspectRatioPercentile.setText('')
-        for i in range(1, self.ui.tabImage.count()):
-            self.ui.tabImage.setTabEnabled(i, False)
+        tab = self.ui.tabImage
+        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'BackRMS')), True)
         return True
 
     def resultPhotometry(self):

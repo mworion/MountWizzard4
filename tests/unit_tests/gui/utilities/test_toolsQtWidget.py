@@ -888,6 +888,13 @@ def test_getTabAndIndex_1(function):
     widget = QTabWidget()
     config = {}
     suc = function.getTabAndIndex(widget, config, 'test')
+    assert not suc
+
+
+def test_getTabAndIndex_2(function):
+    widget = QTabWidget()
+    config = {}
+    suc = function.getTabAndIndex(widget, config, 'test', store=True)
     assert suc
 
 

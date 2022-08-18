@@ -831,7 +831,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="TileTriangle">
+       <widget class="QWidget" name="TiltTriangle">
         <attribute name="title">
          <string>Tilt Triangle</string>
         </attribute>
@@ -1083,7 +1083,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="AbberationInspect">
+       <widget class="QWidget" name="Aberration">
         <attribute name="title">
          <string>Aberration Inspect</string>
         </attribute>
@@ -1108,7 +1108,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="ImageSources">
+       <widget class="QWidget" name="Sources">
         <attribute name="title">
          <string>Image + Source</string>
         </attribute>
@@ -1133,7 +1133,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="BAck">
+       <widget class="QWidget" name="Back">
         <attribute name="title">
          <string>Back</string>
         </attribute>
@@ -1158,7 +1158,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="BAckRMS">
+       <widget class="QWidget" name="BackRMS">
         <attribute name="title">
          <string>Back RMS</string>
         </attribute>

@@ -468,7 +468,7 @@ class MWidget(QWidget, Styles):
                  multiple=False,
                  reverseOrder=False):
         """
-        openFile handles a single file select with filter in a non native format.
+        openFile handles a single file select with filter in a non-native format.
 
         :param window:      parent window class
         :param title:       title for the file dialog
@@ -494,7 +494,6 @@ class MWidget(QWidget, Styles):
                                      enableDir=enableDir,
                                      reverseOrder=reverseOrder)
         dlg.setAcceptMode(QFileDialog.AcceptOpen)
-
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)

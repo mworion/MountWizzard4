@@ -277,9 +277,10 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         :return: success
         """
-        val = self.openFile(self, 'Select image file', self.folder,
-                            'FITS files (*.fit*);;XISF files (*.xisf)',
-                            enableDir=True)
+        val = self.openFile(
+            self, 'Select image file', self.folder,
+            'All (*.fit* *.xisf);; FITS files (*.fit*);;XISF files (*.xisf)',
+            enableDir=True)
         loadFilePath, name, ext = val
         if not name:
             self.msg.emit(0, 'Image', 'Loading', 'No image selected')

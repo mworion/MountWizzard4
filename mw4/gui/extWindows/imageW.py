@@ -197,6 +197,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.operationMode(self.app.statusOperationRunning)
         self.showCurrent()
         self.setAspectLocked()
+        self.clearGui()
         self.show()
         return True
 

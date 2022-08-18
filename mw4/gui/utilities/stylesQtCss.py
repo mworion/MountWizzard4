@@ -38,7 +38,7 @@ class Styles:
             'M_WHITE1': ['#A0A0A0', '#A00000', '#404040', ],
             'M_GREY': ['#404040', '#402020', '#A0A0A0', ],
             'M_GREY1': ['#282828', '#201010', '#C0C0C0', ],
-            'M_BACK': ['#181818', '#181818', '#E0E0E0', ],
+            'M_BACK': ['#101010', '#181818', '#E0E0E0', ],
             'M_BLACK': ['#000000', '#000000', '#FFFFFF', ],
             'M_RED': ['#D03030', '#C03030', '#600000', ],
             'M_RED1': ['#902020', '#802020', '#A00000', ],
@@ -365,6 +365,10 @@ class Styles:
             border-color: $M_BLUE$;
             background-color: $M_BLUE2$;
             image: url(:/icon/$radio$.svg);
+        }
+        QRadioButton::indicator:disabled {
+            background-color: $M_BACK$;
+            border-color: $M_GREY$;
         }
         /* Spin Boxes */
         QDoubleSpinBox {

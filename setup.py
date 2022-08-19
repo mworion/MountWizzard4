@@ -37,6 +37,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: model points: existing model files could be loaded
 - add: polar align: adding hint how to use the knobs measures right
 - add: plate solve: new watney astrometry solver for all platforms
+- add: hemisphere: selection of terrain file
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
 - add: hemisphere: show 2d contour error curve from actual model

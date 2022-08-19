@@ -825,7 +825,7 @@ class MWidget(QWidget, Styles):
         :return:
         """
         config[name] = {
-            'index':  tab.currentIndex()
+            'index': tab.currentIndex()
         }
         if not store:
             return False

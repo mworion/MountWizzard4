@@ -18,6 +18,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import ipaddress
 
 # external packages
 import wakeonlan
@@ -109,15 +110,17 @@ def test_bootRackComp_2(function):
 def test_mountHost_1(function):
     function.ui.port3492.setChecked(True)
     function.ui.mountHost.setText('test')
-    function.mountHost()
-    assert function.app.mount.host == ('test', 3492)
+    suc = function.mountHost()
+    assert not suc
+    assert function.app.mount.host is None
 
 
 def test_mountHost_2(function):
     function.ui.port3490.setChecked(True)
-    function.ui.mountHost.setText('test')
-    function.mountHost()
-    assert function.app.mount.host == ('test', 3490)
+    function.ui.mountHost.setText('192.168.2.1')
+    suc = function.mountHost()
+    assert suc
+    assert function.app.mount.host == ('192.168.2.1', 3490)
 
 
 def test_mountMAC(function):

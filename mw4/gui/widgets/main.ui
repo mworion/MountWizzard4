@@ -21576,7 +21576,7 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of mount, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of mount, ip address and host names!&lt;/p&gt;&lt;p&gt;Please look closely to malformed explressions like 190.001.004.128. There should be no leading zero's in the ip address. Ideally you use a formal address like mount.fritz.box if your environmen supports it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>

@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import ipaddress
 
 # external packages
 import wakeonlan
@@ -143,6 +144,12 @@ class SettMount(object):
             port = 3490
 
         host = self.ui.mountHost.text()
+        try:
+            ipaddress.ip_address(host)
+        except Exception as e:
+            self.msg.emit(2, 'Mount', 'Setting error', f'{e}')
+            return False
+
         self.ui.mountHost.setText(host)
         self.app.mount.host = (host, port)
         self.app.hostChanged.emit()

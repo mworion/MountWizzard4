@@ -403,7 +403,7 @@ class SatTrack(object):
 
         satellite = self.app.mount.satellite
         self.msg.emit(0, 'TLE', 'Program',
-                      f'Upload to mount:    [{satName}]')
+                      f'Upload to mount: [{satName}]')
         line1, line2 = export_tle(self.satellites[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,

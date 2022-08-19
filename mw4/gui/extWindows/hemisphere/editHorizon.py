@@ -39,6 +39,8 @@ class EditHorizon:
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
+        self.ui.loadTerrainFile.clicked.connect(self.loadTerrainFile)
+        self.ui.clearTerrainFile.clicked.connect(self.clearTerrainFile)
         self.ui.clearHorizonMask.clicked.connect(self.clearHorizonMask)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
         self.ui.addPositionToHorizon.clicked.connect(self.addActualPosition)
@@ -60,6 +62,7 @@ class EditHorizon:
         self.ui.horizonMaskFileName.setText(fileName)
         self.app.data.loadHorizonP(fileName=fileName)
 
+        fileName = config.get('terrainFileName', '')
         self.ui.terrainAlpha.setValue(config.get('terrainAlpha', 0.35))
         self.ui.azimuthShift.setValue(config.get('azimuthShift', 0))
         self.ui.altitudeShift.setValue(config.get('altitudeShift', 0))
@@ -70,22 +73,7 @@ class EditHorizon:
 
         self.ui.normalModeHor.clicked.connect(self.setOperationModeHor)
         self.ui.editModeHor.clicked.connect(self.setOperationModeHor)
-
-        terrainFile = self.app.mwGlob['configDir'] + '/terrain.jpg'
-        self.drawHorizonTab()
-        if not os.path.isfile(terrainFile):
-            self.imageTerrain = None
-            return False
-
-        img = cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE)
-        h, w = img.shape
-        h2 = int(h / 2)
-        img = img[0:h2, 0:w]
-        img = cv2.resize(img, (1440, 360))
-        img = cv2.flip(img, 0)
-        self.imageTerrain = np.ones((480, 2880)) * 128
-        self.imageTerrain[60:420, 0:1440] = img
-        self.imageTerrain[60:420, 1440:2880] = img
+        self.setTerrainFile(fileName)
         return True
 
     def storeConfig(self):
@@ -98,6 +86,7 @@ class EditHorizon:
         """
         config = self.app.config['hemisphereW']
         config['horizonMaskFileName'] = self.ui.horizonMaskFileName.text()
+        config['terrainFileName'] = self.ui.terrainFileName.text()
         config['terrainAlpha'] = self.ui.terrainAlpha.value()
         config['azimuthShift'] = self.ui.azimuthShift.value()
         config['altitudeShift'] = self.ui.altitudeShift.value()
@@ -116,6 +105,8 @@ class EditHorizon:
         """
         :return:
         """
+        self.wIcon(self.ui.loadTerrainFile, 'load')
+        self.wIcon(self.ui.clearTerrainFile, 'trash')
         self.wIcon(self.ui.loadHorizonMask, 'load')
         self.wIcon(self.ui.saveHorizonMask, 'save')
         self.wIcon(self.ui.saveHorizonMaskAs, 'save')
@@ -127,6 +118,62 @@ class EditHorizon:
         :return:
         """
         self.setIcons()
+        return True
+
+    def setTerrainFile(self, fileName):
+        """
+        :param fileName:
+        :param ext:
+        :return:
+        """
+        self.ui.terrainFileName.setText(fileName)
+        terrainFile = self.app.mwGlob['configDir'] + '/' + fileName + '.jpg'
+        if not os.path.isfile(terrainFile):
+            self.imageTerrain = None
+            return False
+
+        img = cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE)
+        h, w = img.shape
+        h2 = int(h / 2)
+        img = img[0:h2, 0:w]
+        img = cv2.resize(img, (1440, 360))
+        img = cv2.flip(img, 0)
+        self.imageTerrain = np.ones((480, 2880)) * 128
+        self.imageTerrain[60:420, 0:1440] = img
+        self.imageTerrain[60:420, 1440:2880] = img
+        return True
+
+    def loadTerrainFile(self):
+        """
+        :return:
+        """
+        folder = self.app.mwGlob['configDir']
+        fileTypes = 'Terrain images (*.jpg)'
+        loadFilePath, fileName, ext = self.openFile(
+            self, 'Open terrain image', folder, fileTypes)
+        if not loadFilePath:
+            return False
+
+        suc = self.setTerrainFile(fileName)
+        if suc:
+            self.ui.terrainFileName.setText(fileName)
+            self.ui.showTerrain.setChecked(True)
+            self.msg.emit(0, 'Hemisphere', 'Terrain',
+                          f'Mask [{fileName}] loaded')
+        else:
+            self.msg.emit(2, 'Hemisphere', 'Terrain',
+                          f'Image [{fileName}] cannot no be loaded')
+        self.drawHorizonTab()
+        return True
+
+    def clearTerrainFile(self):
+        """
+        :return:
+        """
+        self.ui.terrainFileName.setText('')
+        self.ui.showTerrain.setChecked(False)
+        self.setTerrainFile('')
+        self.drawHorizonTab()
         return True
 
     def loadHorizonMask(self):

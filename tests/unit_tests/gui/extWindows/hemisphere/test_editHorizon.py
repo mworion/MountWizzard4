@@ -18,6 +18,7 @@
 import unittest.mock as mock
 import pytest
 import os
+import shutil
 
 # external packages
 import pyqtgraph as pg
@@ -31,6 +32,7 @@ from gui.utilities.tools4pyqtgraph import CustomViewBox
 
 @pytest.fixture(autouse=True, scope='module')
 def module(qapp):
+    shutil.copy('tests/testData/terrain.jpg', 'tests/workDir/config/terrain.jpg')
     yield
 
 
@@ -72,12 +74,73 @@ def test_setIcons(function):
     assert suc
 
 
-def test_colorChange(function):
+def test_colorChangeHorizon(function):
     suc = function.colorChangeHorizon()
     assert suc
 
 
-def test_loadHorizonMaskFile_1(function):
+def test_setTerrainFile_1(function):
+    suc = function.setTerrainFile('test')
+    assert not suc
+    assert function.imageTerrain is None
+
+
+def test_setTerrainFile_2(function):
+    suc = function.setTerrainFile('terrain')
+    assert suc
+    assert function.imageTerrain is not None
+
+
+def test_loadTerrainFile_1(function):
+    class Test:
+        @staticmethod
+        def drawHemisphere():
+            return
+
+    function.app.uiWindows = {'showHemisphereW': {'classObj': Test()}}
+    with mock.patch.object(function,
+                           'openFile',
+                           return_value=('build', 'test', 'jpg')):
+        with mock.patch.object(function,
+                               'setTerrainFile',
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'drawHorizonTab'):
+                suc = function.loadTerrainFile()
+                assert suc
+
+
+def test_loadTerrainFile_2(function):
+    with mock.patch.object(function,
+                           'openFile',
+                           return_value=('', '', '')):
+        suc = function.loadTerrainFile()
+        assert not suc
+
+
+def test_loadTerrainFile_3(function):
+    with mock.patch.object(function,
+                           'openFile',
+                           return_value=('build', 'test', 'jpg')):
+        with mock.patch.object(function,
+                               'setTerrainFile',
+                               return_value=False):
+            with mock.patch.object(function,
+                                   'drawHorizonTab'):
+                suc = function.loadTerrainFile()
+                assert suc
+
+
+def test_clearTerrainFile(function):
+    with mock.patch.object(function,
+                           'setTerrainFile'):
+        with mock.patch.object(function,
+                               'drawHorizonTab'):
+            suc = function.clearTerrainFile()
+            assert suc
+
+
+def test_loadHorizonMask_1(function):
     class Test:
         @staticmethod
         def drawHemisphere():
@@ -94,7 +157,7 @@ def test_loadHorizonMaskFile_1(function):
             assert suc
 
 
-def test_loadHorizonMaskFile_2(function):
+def test_loadHorizonMask_2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('', '', '')):
@@ -113,7 +176,7 @@ def test_loadHorizonMaskFile_3(function):
             assert suc
 
 
-def test_saveHorizonMaskFile_1(function):
+def test_loadHorizonMask_1(function):
     function.ui.horizonMaskFileName.setText('test')
     with mock.patch.object(function,
                            'saveFile',

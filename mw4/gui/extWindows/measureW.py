@@ -395,6 +395,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
             if ui.currentIndex() == 0:
                 continue
             if index == ui.currentIndex():
+                sender.setCurrentIndex(0)
                 self.inUseMessage()
                 break
         else:

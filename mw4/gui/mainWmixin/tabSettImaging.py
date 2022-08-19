@@ -252,6 +252,7 @@ class SettImaging:
         if actValue is None:
             return False
 
+        actValue = int(actValue)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set cooler temperature', 'Value (-30..+20):',
@@ -270,6 +271,7 @@ class SettImaging:
         if actValue is None:
             return False
 
+        actValue = int(actValue)
         dlg = QInputDialog()
         offsetList = self.app.camera.data.get('CCD_OFFSET.OFFSET_LIST')
         offsetMin = self.app.camera.data.get('CCD_OFFSET.OFFSET_MIN')
@@ -303,7 +305,7 @@ class SettImaging:
         actValue = self.app.camera.data.get('CCD_GAIN.GAIN', None)
         if actValue is None:
             return False
-
+        actValue = int(actValue)
         dlg = QInputDialog()
         gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
         gainMin = self.app.camera.data.get('CCD_GAIN.GAIN_MIN')

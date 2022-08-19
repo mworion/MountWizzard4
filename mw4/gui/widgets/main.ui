@@ -11326,7 +11326,7 @@ hr { height: 1px; border-width: 0; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -11974,6 +11974,9 @@ hr { height: 1px; border-width: 0; }
          <property name="readOnly">
           <bool>false</bool>
          </property>
+         <property name="input" stdset="0">
+          <bool>true</bool>
+         </property>
         </widget>
         <widget class="QLabel" name="textCoolerStatus">
          <property name="geometry">
@@ -12107,6 +12110,9 @@ hr { height: 1px; border-width: 0; }
          </property>
          <property name="readOnly">
           <bool>false</bool>
+         </property>
+         <property name="input" stdset="0">
+          <bool>true</bool>
          </property>
         </widget>
         <widget class="QDoubleSpinBox" name="subFrame">
@@ -12449,6 +12455,9 @@ hr { height: 1px; border-width: 0; }
          </property>
          <property name="readOnly">
           <bool>false</bool>
+         </property>
+         <property name="input" stdset="0">
+          <bool>true</bool>
          </property>
         </widget>
         <widget class="QLabel" name="textSubFrameUnit">
@@ -15079,7 +15088,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -15377,6 +15386,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_298">
@@ -17418,6 +17430,9 @@ Next point in time when satellite settles.</string>
       <property name="readOnly">
        <bool>false</bool>
       </property>
+      <property name="input" stdset="0">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QLabel" name="label_270">
       <property name="geometry">
@@ -17610,7 +17625,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -19669,6 +19684,9 @@ Next point in time when satellite settles.</string>
           <height>0</height>
          </size>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QComboBox" name="rename6">
         <property name="geometry">
@@ -21596,6 +21614,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLabel" name="label_mountIP">
         <property name="geometry">
@@ -21851,6 +21872,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLineEdit" name="mountWolPort">
         <property name="geometry">
@@ -21900,6 +21924,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="Line" name="line_88">
@@ -22028,6 +22055,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -24230,6 +24260,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLabel" name="label_101">
         <property name="geometry">
@@ -24311,6 +24344,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLabel" name="label_93">
         <property name="geometry">
@@ -24371,6 +24407,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_257">
@@ -24462,6 +24501,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLabel" name="label_132">
         <property name="geometry">
@@ -24519,6 +24561,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_47">
@@ -24757,6 +24802,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLabel" name="label_97">
         <property name="geometry">
@@ -24866,6 +24914,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_2">
@@ -25045,6 +25096,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_22">
@@ -25281,6 +25335,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLineEdit" name="posText9">
         <property name="geometry">
@@ -25318,6 +25375,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_263">
@@ -26032,6 +26092,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText5">
         <property name="geometry">
@@ -26070,6 +26133,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText7">
         <property name="geometry">
@@ -26107,6 +26173,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QComboBox" name="relayFun6">
@@ -26245,6 +26314,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText1">
         <property name="geometry">
@@ -26283,6 +26355,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText6">
         <property name="geometry">
@@ -26320,6 +26395,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="label_255">
@@ -26518,6 +26596,9 @@ Next point in time when satellite settles.</string>
         <property name="readOnly">
          <bool>false</bool>
         </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText0">
         <property name="geometry">
@@ -26552,6 +26633,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QComboBox" name="relayFun0">
@@ -27603,6 +27687,9 @@ Updater</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QCheckBox" name="versionReleaseNotes">

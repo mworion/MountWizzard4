@@ -438,9 +438,9 @@ class Environ:
                 item.setForeground(QColor(self.M_BLUE))
 
                 if j == 0:
-                    t = self.convertTime(data[field][i], '%d/%m')
+                    t = self.convertTime(data[field][i], '%d.%m.')
                 elif j == 1:
-                    t = self.convertTime(data[field][i], '%H')
+                    t = self.convertTime(data[field][i], '%H:00')
                 elif j in [2, 3, 4]:
                     color = self.calcHexColor(colorMain, data[field][i] / 100)
                     item.setBackground(QColor(color))
@@ -484,8 +484,8 @@ class Environ:
         """
         :return:
         """
-        vl = ['Date',
-              'Hour',
+        vl = ['Date [dd.mm.]',
+              'Hour [hh:mm]',
               'Low clouds  [%]',
               'Mid clouds  [%]',
               'High clouds [%]',

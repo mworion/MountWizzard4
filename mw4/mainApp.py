@@ -343,13 +343,18 @@ class MountWizzard4(QObject):
             return data
         if 'mainW' not in data:
             return data
-        if 'driversData' not in data['mainW']:
-            return data
 
         self.log.info(f'Conversion from [{data.get("version")}] to [5.0]')
-        data['driversData'] = data['mainW']['driversData']
-        data['version'] = '5.0'
-        del data['mainW']['driversData']
+        if 'driversData' in data['mainW']:
+            data['driversData'] = data['mainW']['driversData']
+            data['version'] = '5.0'
+            del data['mainW']['driversData']
+
+        horizonFile = data['mainW'].get('horizonFileName', '')
+        if 'hemisphereW' in data:
+            data['hemisphereW']['horizonMaskFileName'] = horizonFile
+        else:
+            data['hemisphereW'] = {'horizonMaskFileName': horizonFile}
         return data
 
     def loadConfig(self, name=None):

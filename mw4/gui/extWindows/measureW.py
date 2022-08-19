@@ -392,10 +392,13 @@ class MeasureWindow(toolsQtWidget.MWidget):
         for ui in self.mSetUI:
             if ui == sender:
                 continue
+            if ui.currentIndex() == 0:
+                continue
             if index == ui.currentIndex():
-                sender.setCurrentIndex(0)
                 self.inUseMessage()
-        self.drawMeasure()
+                break
+        else:
+            self.drawMeasure()
         return True
 
     def drawMeasure(self):

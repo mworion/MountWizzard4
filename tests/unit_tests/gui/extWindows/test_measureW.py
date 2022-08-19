@@ -174,7 +174,7 @@ def test_inUseMessage(function):
         assert suc
 
 
-def test_changeChart(function):
+def test_changeChart_1(function):
     def sender():
         return function.ui.set0
 
@@ -186,6 +186,23 @@ def test_changeChart(function):
         with mock.patch.object(function,
                                'inUseMessage'):
             suc = function.changeChart(0)
+            assert suc
+
+
+def test_changeChart_2(function):
+    def sender():
+        return function.ui.set1
+
+    function.sender = sender
+    function.ui.set4.addItem('test')
+    function.ui.set0.addItem('No chart')
+    function.ui.set0.addItem('test')
+    function.ui.set0.setCurrentIndex(1)
+    with mock.patch.object(function,
+                           'drawMeasure'):
+        with mock.patch.object(function,
+                               'inUseMessage'):
+            suc = function.changeChart(1)
             assert suc
 
 

@@ -652,7 +652,8 @@ class NormalScatter(PlotBase):
             err = np.abs(z)
             minE = np.min(err)
             maxE = np.max(err)
-            self.colorInx = (err - minE) / (maxE - minE)
+            divisor = max((maxE - minE), 0.1)
+            self.colorInx = (err - minE) / divisor
 
         hasBar = kwargs.get('bar', False)
         if hasBar and 'z' in kwargs:

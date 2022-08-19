@@ -155,7 +155,6 @@ class KeypadWindow(toolsQtWidget.MWidget):
         self.signals.cursorPos.connect(self.setCursorPos)
         self.signals.imgChunk.connect(self.buildGraphics)
         self.signals.clearCursor.connect(self.clearCursor)
-        self.app.update1s.connect(self.startKeypad)
         self.app.update1s.connect(self.drawGraphics)
         self.setupButtons()
         self.show()

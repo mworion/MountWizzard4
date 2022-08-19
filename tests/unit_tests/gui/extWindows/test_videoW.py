@@ -28,6 +28,7 @@ import cv2
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.videoW import VideoWindow
+import gui.extWindows.videoW
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -225,6 +226,17 @@ def test_startVideoStream_2(function):
 def test_stopVideoStream_1(function):
     suc = function.stopVideo()
     assert suc
+
+
+def test_restartVideo(function):
+    with mock.patch.object(function,
+                           'stopVideo'):
+        with mock.patch.object(function,
+                               'startVideo'):
+            with mock.patch.object(gui.extWindows.videoW,
+                                   'sleepAndEvents'):
+                suc = function.restartVideo()
+                assert suc
 
 
 def test_receivedImage_1(function):

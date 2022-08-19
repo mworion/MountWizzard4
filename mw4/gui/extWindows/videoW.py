@@ -28,6 +28,7 @@ import qimage2ndarray
 from gui.utilities import toolsQtWidget
 from gui.widgets import video_ui
 from base.tpool import Worker
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class VideoWindow(toolsQtWidget.MWidget):
@@ -72,7 +73,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.videoStart.clicked.connect(self.startVideo)
         self.ui.videoStop.clicked.connect(self.stopVideo)
         self.ui.videoSource.currentIndexChanged.connect(self.stopVideo)
-        self.ui.frameRate.currentIndexChanged.connect(self.stopVideo)
+        self.ui.frameRate.currentIndexChanged.connect(self.restartVideo)
         self.app.colorChange.connect(self.colorChange)
         self.app.update0_1s.connect(self.count)
         self.changeStyleDynamic(self.ui.videoStop, 'running', True)
@@ -136,7 +137,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        url = self.ui.videoURL.text()
+        url = f'rtsp://{self.ui.videoURL.text()}'
         sources = [url, 0, 1, 2, 3]
         frameCounter = [2, 5, 10, 20, 50]
 
@@ -163,6 +164,15 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.videoStop, 'running', True)
         self.pixmapReady.emit(None)
         self.running = False
+        return True
+
+    def restartVideo(self):
+        """
+        :return:
+        """
+        self.stopVideo()
+        sleepAndEvents(1000)
+        self.startVideo()
         return True
 
     def receivedImage(self, pixmap):

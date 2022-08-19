@@ -471,7 +471,7 @@ class Styles:
             border-color: $M_BLUE$;
             border-radius: 8px;
             border-width: 2px;
-            border-style: solid;
+            border-style: outset;
             font-weight: bold;
             font-size: 12px;
         }

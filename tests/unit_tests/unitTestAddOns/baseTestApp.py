@@ -1193,6 +1193,10 @@ class App(QObject):
         return
 
     @staticmethod
+    def blendConfig(a, b):
+        return a
+
+    @staticmethod
     def storeConfig():
         return
 

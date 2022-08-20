@@ -886,6 +886,8 @@ def test_positionWindow_2(function):
 
 def test_getTabAndIndex_1(function):
     widget = QTabWidget()
+    widget.addTab(QWidget(), 'test')
+    widget.addTab(QWidget(), 'tes1')
     config = {}
     suc = function.getTabAndIndex(widget, config, 'test')
     assert not suc
@@ -893,6 +895,8 @@ def test_getTabAndIndex_1(function):
 
 def test_getTabAndIndex_2(function):
     widget = QTabWidget()
+    widget.addTab(QWidget(), 'test')
+    widget.addTab(QWidget(), 'tes1')
     config = {}
     suc = function.getTabAndIndex(widget, config, 'test', store=True)
     assert suc

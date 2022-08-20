@@ -288,6 +288,7 @@ def test_convertData_3(app):
 def test_convertData_4(app):
     data = {
         'version': '4.0',
+        'hemisphereW': {},
         'mainW': {
             'driversData': 'test'
         },

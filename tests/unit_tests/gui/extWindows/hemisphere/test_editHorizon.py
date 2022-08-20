@@ -141,28 +141,24 @@ def test_clearTerrainFile(function):
 
 
 def test_loadHorizonMask_1(function):
-    class Test:
-        @staticmethod
-        def drawHemisphere():
-            return
-
-    function.app.uiWindows = {'showHemisphereW': {'classObj': Test()}}
-    with mock.patch.object(function,
-                           'openFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(function.app.data,
-                               'loadHorizonP',
-                               return_value=True):
-            suc = function.loadHorizonMask()
-            assert suc
-
-
-def test_loadHorizonMask_2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('', '', '')):
         suc = function.loadHorizonMask()
         assert not suc
+
+
+def test_loadHorizonMask_2(function):
+    with mock.patch.object(function,
+                           'openFile',
+                           return_value=('build', 'test', 'bpts')):
+        with mock.patch.object(function.app.data,
+                               'loadHorizonP',
+                               return_value=False):
+            with mock.patch.object(function,
+                                   'drawHorizonTab'):
+                suc = function.loadHorizonMask()
+                assert suc
 
 
 def test_loadHorizonMaskFile_3(function):
@@ -171,15 +167,17 @@ def test_loadHorizonMaskFile_3(function):
                            return_value=('build', 'test', 'bpts')):
         with mock.patch.object(function.app.data,
                                'loadHorizonP',
-                               return_value=False):
-            suc = function.loadHorizonMask()
-            assert suc
+                               return_value=True):
+            with mock.patch.object(function,
+                                   'drawHorizonTab'):
+                suc = function.loadHorizonMask()
+                assert suc
 
 
-def test_loadHorizonMask_1(function):
+def test_saveHorizonMask_1(function):
     function.ui.horizonMaskFileName.setText('test')
     with mock.patch.object(function,
-                           'saveFile',
+                           'openFile',
                            return_value=('build', 'test', 'bpts')):
         with mock.patch.object(function.app.data,
                                'saveHorizonP',

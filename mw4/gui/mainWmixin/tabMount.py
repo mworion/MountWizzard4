@@ -730,6 +730,12 @@ class Mount(object):
             self.changeStyleDynamic(ui, 'color', 'yellow')
         else:
             self.changeStyleDynamic(ui, 'color', 'red')
+
+        timeJD = self.app.mount.obsSite.timeJD
+        if timeJD is not None:
+            text = timeJD.utc_strftime('%H:%M:%S')
+            self.ui.timeUTC.setText(text)
+
         return True
 
     def openCommandProtocol(self):

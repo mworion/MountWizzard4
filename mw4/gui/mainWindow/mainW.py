@@ -212,6 +212,7 @@ class MainWindow(
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
+        self.clickable(self.ui.profile).connect(self.loadPartialProfile)
         self.app.seeingWeather.b = self.ui.label_b.property('a')
 
         for window in self.uiWindows:
@@ -332,6 +333,7 @@ class MainWindow(
         # main window
         self.wIcon(self.ui.saveConfigAs, 'save')
         self.wIcon(self.ui.loadFrom, 'load')
+        self.wIcon(self.ui.addFrom, 'load')
         self.wIcon(self.ui.saveConfig, 'save')
         self.wIcon(self.ui.saveConfigQuit, 'save')
         self.wIcon(self.ui.mountOn, 'power-on')
@@ -766,11 +768,6 @@ class MainWindow(
         :return: True for test purpose
         """
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
-        timeJD = self.app.mount.obsSite.timeJD
-        if timeJD is not None:
-            text = timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeUTC.setText('UTC:  ' + text)
-
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
         t = f'TZ: {tzT}'
         self.ui.statusTime.setTitle(t)
@@ -1036,4 +1033,10 @@ class MainWindow(
                 self.uiWindows[window]['classObj'].activateWindow()
         self.move(i * 50 + 10, i * 50 + 10)
         self.activateWindow()
+        return True
+
+    def loadPartialProfile(self):
+        """
+        :return:
+        """
         return True

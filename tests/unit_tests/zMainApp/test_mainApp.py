@@ -299,6 +299,11 @@ def test_convertData_4(app):
     assert 'driversData' not in val['mainW']
 
 
+def test_blendConfig(app):
+    conf = app.blendConfig({}, {})
+    assert conf == {}
+
+
 def test_loadConfig_1(app):
     suc = app.loadConfig()
     assert not suc

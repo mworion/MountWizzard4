@@ -210,9 +210,9 @@ class MainWindow(
         self.app.camera.signals.message.connect(self.updateCameraStatus)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
+        self.ui.addFrom.clicked.connect(self.addProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.clickable(self.ui.profile).connect(self.loadPartialProfile)
         self.app.seeingWeather.b = self.ui.label_b.property('a')
 
         for window in self.uiWindows:
@@ -920,29 +920,11 @@ class MainWindow(
             filePath += ext
         return filePath
 
-    def loadProfile(self):
+    def switchProfile(self, name):
         """
-        loadProfile interacts to get a new profile name. if a valid is received,
-        it closes all extended windows to be sure to have all setup saved,
-        than load the new profile and initializes all classes and opens the
-        necessary extended windows with their setups stored.
-        loadProfile does not save the actual configuration before loading
-        another one.
-
+        :param name:
         :return:
         """
-        folder = self.app.mwGlob['configDir']
-        loadFilePath, name, ext = self.openFile(
-            self,
-            'Open config file',
-            folder,
-            'Config files (*.cfg)',
-            enableDir=False,
-        )
-        if not name:
-            return False
-
-        # closing all windows to be base lined
         self.closeExtendedWindows()
         self.stopDrivers()
         suc = self.app.loadConfig(name=name)
@@ -960,18 +942,33 @@ class MainWindow(
         self.showExtendedWindows()
         return True
 
+    def loadProfile(self):
+        """
+        :return:
+        """
+        folder = self.app.mwGlob['configDir']
+        loadFilePath, name, ext = self.openFile(
+            self, 'Open config file', folder, 'Config files (*.cfg)',
+            enableDir=False)
+        if not name:
+            return False
+        self.switchProfile(name)
+        return True
+
+    def addProfile(self):
+        """
+        :return:
+        """
+        return True
+
     def saveProfileAs(self):
         """
         :return:
         """
         folder = self.app.mwGlob['configDir']
         saveFilePath, name, ext = self.saveFile(
-            self,
-            'Save config file',
-            folder,
-            'Config files (*.cfg)',
-            enableDir=False,
-        )
+            self, 'Save config file', folder, 'Config files (*.cfg)',
+            enableDir=False)
         if not name:
             return False
 
@@ -990,7 +987,6 @@ class MainWindow(
         """
         saveProfile calls save profile in main and sends a message to the user
         about success.
-
         :return: nothing
         """
         self.storeConfig()
@@ -998,7 +994,6 @@ class MainWindow(
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
             self.msg.emit(0, 'System', 'Profile', 'Actual profile saved')
-
         else:
             self.msg.emit(2, 'System', 'Profile',
                           'Actual profile cannot not be saved')
@@ -1007,7 +1002,6 @@ class MainWindow(
     def remoteCommand(self, command):
         """
         remoteCommand received signals from remote class and executes them.
-
         :param command:
         :return: True for test purpose
         """
@@ -1033,10 +1027,4 @@ class MainWindow(
                 self.uiWindows[window]['classObj'].activateWindow()
         self.move(i * 50 + 10, i * 50 + 10)
         self.activateWindow()
-        return True
-
-    def loadPartialProfile(self):
-        """
-        :return:
-        """
         return True

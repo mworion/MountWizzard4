@@ -920,22 +920,14 @@ class MainWindow(
             filePath += ext
         return filePath
 
-    def switchProfile(self, name):
+    def switchProfile(self, config):
         """
-        :param name:
+        :param config:
         :return:
         """
         self.closeExtendedWindows()
         self.stopDrivers()
-        suc = self.app.loadConfig(name=name)
-        if suc:
-            self.app.config['profileName'] = name
-            self.ui.profile.setText(name)
-            self.msg.emit(0, 'System', 'Profile loaded', f'{name}')
-        else:
-            self.msg.emit(2, 'System', 'Profile error',
-                          f'{name}] cannot no be loaded')
-
+        self.app.config = config
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
         self.initConfig()
@@ -952,13 +944,44 @@ class MainWindow(
             enableDir=False)
         if not name:
             return False
-        self.switchProfile(name)
+
+        config = self.app.loadConfig(name=name)
+        if config:
+            self.ui.profile.setText(name)
+            self.msg.emit(0, 'System', 'Profile', f'loaded {name}')
+        else:
+            self.msg.emit(2, 'System', 'Profile error',
+                          f'{name}] cannot no be loaded')
+            return False
+
+        self.switchProfile(config)
         return True
 
     def addProfile(self):
         """
         :return:
         """
+        config = self.app.config
+        folder = self.app.mwGlob['configDir']
+        loadFilePath, name, ext = self.openFile(
+            self, 'Open add-on config file', folder, 'Config files (*.cfg)',
+            enableDir=False)
+        if not name:
+            self.ui.profileAdd.setText('-')
+            return False
+
+        configAdd = self.app.loadConfig(name=name)
+        if configAdd:
+            self.ui.profileAdd.setText(name)
+            self.msg.emit(0, 'System', 'Profile', f'add-on loaded {name}')
+        else:
+            self.ui.profileAdd.setText('-')
+            self.msg.emit(2, 'System', 'Profile error',
+                          f'{name}] cannot no be loaded')
+            return False
+
+        config = self.app.blendConfig(config, configAdd)
+        self.switchProfile(config)
         return True
 
     def saveProfileAs(self):
@@ -977,7 +1000,8 @@ class MainWindow(
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            self.msg.emit(0, 'System', 'Profile saved', f'{name}')
+            self.msg.emit(0, 'System', 'Profile', f'saved {name}')
+            self.ui.profileAdd.setText('-')
         else:
             self.msg.emit(2, 'System', 'Profile error',
                           f'{name}] cannot no be saved')
@@ -993,6 +1017,7 @@ class MainWindow(
         self.app.storeConfig()
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
+            self.ui.profileAdd.setText('-')
             self.msg.emit(0, 'System', 'Profile', 'Actual profile saved')
         else:
             self.msg.emit(2, 'System', 'Profile',

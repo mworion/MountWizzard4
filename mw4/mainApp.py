@@ -120,8 +120,7 @@ class MountWizzard4(QObject):
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
         self.msg.connect(self.writeMessageQueue)
-        self.config = {}
-        self.loadConfig()
+        self.config = self.loadConfig()
         self.deviceStat = {
             'dome': None,
             'mount': None,
@@ -357,6 +356,14 @@ class MountWizzard4(QObject):
             data['hemisphereW'] = {'horizonMaskFileName': horizonFile}
         return data
 
+    def blendConfig(self, config, configAdd):
+        """
+        :param config:
+        :param configAdd:
+        :return:
+        """
+        return config
+
     def loadConfig(self, name=None):
         """
         loadConfig loads a json file from disk and stores it to the config
@@ -376,25 +383,21 @@ class MountWizzard4(QObject):
             else:
                 name = 'config'
 
-        self.config['profileName'] = name
         fileName = f'{configDir}/{name}.cfg'
 
         if not os.path.isfile(fileName):
-            self.config = self.defaultConfig()
             self.log.info(f'Config file {fileName} not existing')
-            return False
+            return self.defaultConfig()
 
         try:
             with open(fileName, 'r') as configFile:
                 configData = json.load(configFile)
         except Exception as e:
             self.log.critical(f'Cannot parse: {fileName}, error: {e}')
-            self.config = self.defaultConfig()
-            return False
+            return self.defaultConfig()
         else:
-            self.config = self.convertData(configData)
-
-        return True
+            configData['profileName'] = name
+            return self.convertData(configData)
 
     def saveConfig(self, name=None):
         """

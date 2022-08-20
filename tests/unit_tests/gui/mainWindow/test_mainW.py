@@ -742,62 +742,91 @@ def test_saveProfile2(function):
 
 def test_switchProfile_1(function):
     loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
-    with mock.patch.object(function.app,
-                           'loadConfig',
-                           return_value=True):
+    with mock.patch.object(function,
+                           'closeExtendedWindows'):
         with mock.patch.object(function,
-                               'closeExtendedWindows'):
+                               'showExtendedWindows'):
             with mock.patch.object(function,
-                                   'showExtendedWindows'):
-                with mock.patch.object(function,
-                                       'initConfig'):
-                    with mock.patch.object(function.app,
-                                           'initConfig',
-                                           return_value=loc):
-                        with mock.patch.object(function,
-                                               'stopDrivers'):
-                            suc = function.switchProfile('test')
-                            assert suc
-
-
-def test_switchProfile_2(function):
-    loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
-    with mock.patch.object(function.app,
-                           'loadConfig',
-                           return_value=False):
-        with mock.patch.object(function,
-                               'closeExtendedWindows'):
-            with mock.patch.object(function,
-                                   'showExtendedWindows'):
-                with mock.patch.object(function,
-                                       'initConfig'):
-                    with mock.patch.object(function.app,
-                                           'initConfig',
-                                           return_value=loc):
-                        with mock.patch.object(function,
-                                               'stopDrivers'):
-                            suc = function.switchProfile('test')
-                            assert suc
+                                   'initConfig'):
+                with mock.patch.object(function.app,
+                                       'initConfig',
+                                       return_value=loc):
+                    with mock.patch.object(function,
+                                           'stopDrivers'):
+                        suc = function.switchProfile('test')
+                        assert suc
 
 
 def test_loadProfile_1(function):
     with mock.patch.object(function,
                            'openFile',
-                           return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(function,
-                               'switchProfile'):
-            suc = function.loadProfile()
-            assert suc
+                           return_value=(None, None, 'cfg')):
+        suc = function.loadProfile()
+        assert not suc
 
 
 def test_loadProfile_2(function):
     with mock.patch.object(function,
                            'openFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(function.app,
+                               'loadConfig',
+                               return_value={}):
+            with mock.patch.object(function,
+                                   'switchProfile'):
+                suc = function.loadProfile()
+                assert not suc
+
+
+def test_loadProfile_3(function):
+    with mock.patch.object(function,
+                           'openFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(function.app,
+                               'loadConfig',
+                               return_value={'test': 1}):
+            with mock.patch.object(function,
+                                   'switchProfile'):
+                suc = function.loadProfile()
+                assert suc
+
+
+def test_addProfile_1(function):
+    with mock.patch.object(function,
+                           'openFile',
                            return_value=(None, None, 'cfg')):
-        with mock.patch.object(function,
-                               'switchProfile'):
-            suc = function.loadProfile()
-            assert not suc
+        suc = function.addProfile()
+        assert not suc
+
+
+def test_addProfile_2(function):
+    with mock.patch.object(function,
+                           'openFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(function.app,
+                               'loadConfig',
+                               return_value={}):
+            with mock.patch.object(function,
+                                   'switchProfile'):
+                with mock.patch.object(function.app,
+                                       'blendConfig'):
+                    suc = function.addProfile()
+                    assert not suc
+
+
+def test_addProfile_3(function):
+    with mock.patch.object(function,
+                           'openFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(function.app,
+                               'loadConfig',
+                               return_value={'test': 1}):
+            with mock.patch.object(function,
+                                   'switchProfile'):
+                with mock.patch.object(function.app,
+                                       'blendConfig'):
+                    suc = function.addProfile()
+                    assert suc
 
 
 def test_saveProfileAs1(function):

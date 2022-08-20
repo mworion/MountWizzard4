@@ -305,18 +305,16 @@ def test_blendConfig(app):
 
 
 def test_loadConfig_1(app):
-    suc = app.loadConfig()
-    assert not suc
-    assert app.config['profileName'] == 'config'
+    val = app.loadConfig()
+    assert val == {'profileName': 'config', 'version': '5.0'}
 
 
 def test_loadConfig_2(app):
     with open('tests/workDir/config/profile', 'w') as outfile:
         outfile.write('config')
 
-    suc = app.loadConfig()
-    assert not suc
-    assert app.config['profileName'] == 'config'
+    val = app.loadConfig()
+    assert val == {'profileName': 'config', 'version': '5.0'}
 
 
 def test_loadConfig_3(app):
@@ -327,10 +325,8 @@ def test_loadConfig_3(app):
     with open('tests/workDir/config/config.cfg', 'w') as outfile:
         json.dump(config, outfile)
 
-    suc = app.loadConfig()
-    assert suc
-    assert app.config['profileName'] == 'config'
-    assert app.config['version'] == '5.0'
+    val = app.loadConfig('config')
+    assert val == {'profileName': 'config', 'version': '5.0'}
 
 
 def test_loadConfig_4(app):
@@ -346,9 +342,8 @@ def test_loadConfig_4(app):
                            'load',
                            side_effect=Exception()):
         suc = app.loadConfig()
-    assert not suc
-    assert app.config['profileName'] == 'config'
-    assert app.config['version'] == '5.0'
+    val = app.loadConfig('config')
+    assert val == {'profileName': 'config', 'version': '5.0'}
 
 
 def test_saveConfig_1(app):

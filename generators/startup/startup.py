@@ -25,6 +25,9 @@ import logging
 import datetime
 import argparse
 import tarfile
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
 
 if platform.system() == 'Windows':
     py = 'python'

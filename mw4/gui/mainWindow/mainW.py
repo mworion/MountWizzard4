@@ -222,6 +222,7 @@ class MainWindow(
         self.ui.colorSet.currentIndexChanged.connect(self.refreshColorSet)
         self.ui.collectWindows.clicked.connect(self.collectWindows)
         self.showExtendedWindows()
+        self.activateWindow()
 
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
@@ -977,8 +978,8 @@ class MainWindow(
         if configAdd:
             self.ui.profileAdd.setText(name)
             profile = self.ui.profile.text()
-            self.msg.emit(1, 'System', 'Profile', f'Base profile: {profile}')
-            self.msg.emit(1, 'System', 'Profile', f'Add  profile: {name}')
+            self.msg.emit(1, 'System', 'Profile', f'Base: {profile}')
+            self.msg.emit(1, 'System', 'Profile', f'Add : {name}')
         else:
             self.ui.profileAdd.setText('-')
             self.msg.emit(2, 'System', 'Profile error',

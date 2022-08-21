@@ -814,3 +814,7 @@ def test_openPDF_2(function):
                            return_value=False):
         suc = function.openPDF()
         assert suc
+
+def test_setAddProfileGUI(function):
+    suc = function.setAddProfileGUI()
+    assert suc

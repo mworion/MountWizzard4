@@ -926,7 +926,7 @@ class MainWindow(
         :return:
         """
         self.closeExtendedWindows()
-        self.stopDrivers()
+        # self.stopDrivers()
         self.app.config = config
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
@@ -948,7 +948,7 @@ class MainWindow(
         config = self.app.loadConfig(name=name)
         if config:
             self.ui.profile.setText(name)
-            self.msg.emit(0, 'System', 'Profile', f'loaded {name}')
+            self.msg.emit(1, 'System', 'Profile', f'loaded {name}')
         else:
             self.msg.emit(2, 'System', 'Profile error',
                           f'{name}] cannot no be loaded')
@@ -970,10 +970,15 @@ class MainWindow(
             self.ui.profileAdd.setText('-')
             return False
 
+        self.storeConfig()
+        self.app.storeConfig()
+        self.app.saveConfig()
         configAdd = self.app.loadConfig(name=name)
         if configAdd:
             self.ui.profileAdd.setText(name)
-            self.msg.emit(0, 'System', 'Profile', f'add-on loaded {name}')
+            profile = self.ui.profile.text()
+            self.msg.emit(1, 'System', 'Profile', f'Base profile: {profile}')
+            self.msg.emit(1, 'System', 'Profile', f'Add  profile: {name}')
         else:
             self.ui.profileAdd.setText('-')
             self.msg.emit(2, 'System', 'Profile error',
@@ -1000,7 +1005,7 @@ class MainWindow(
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
-            self.msg.emit(0, 'System', 'Profile', f'saved {name}')
+            self.msg.emit(1, 'System', 'Profile', f'saved {name}')
             self.ui.profileAdd.setText('-')
         else:
             self.msg.emit(2, 'System', 'Profile error',
@@ -1018,7 +1023,7 @@ class MainWindow(
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
             self.ui.profileAdd.setText('-')
-            self.msg.emit(0, 'System', 'Profile', 'Actual profile saved')
+            self.msg.emit(1, 'System', 'Profile', 'Actual profile saved')
         else:
             self.msg.emit(2, 'System', 'Profile',
                           'Actual profile cannot not be saved')

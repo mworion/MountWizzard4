@@ -68,6 +68,7 @@ class SettMisc(object):
         self.app.update3s.connect(self.populateGameControllerList)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
         self.ui.openPDF.clicked.connect(self.openPDF)
+        self.ui.addProfileGroup.clicked.connect(self.setAddProfileGUI)
 
         if pConf.isAvailable:
             self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -94,6 +95,7 @@ class SettMisc(object):
         self.ui.automateSlow.setChecked(config.get('automateSlow', True))
         self.ui.unitTimeUTC.setChecked(config.get('unitTimeUTC', True))
         self.ui.unitTimeLocal.setChecked(config.get('unitTimeLocal', False))
+        self.ui.addProfileGroup.setChecked(config.get('addProfileGroup', False))
         self.ui.activateVirtualStop.setChecked(
             config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(
@@ -124,8 +126,8 @@ class SettMisc(object):
         self.setSeeingOnline()
         self.setupIERS()
         self.setVirtualStop()
+        self.setAddProfileGUI()
         self.showUpdates()
-
         return True
 
     def storeConfig(self):
@@ -143,6 +145,7 @@ class SettMisc(object):
         config['storeTabOrder'] = self.ui.storeTabOrder.isChecked()
         config['unitTimeUTC'] = self.ui.unitTimeUTC.isChecked()
         config['unitTimeLocal'] = self.ui.unitTimeLocal.isChecked()
+        config['addProfileGroup'] = self.ui.addProfileGroup.isChecked()
         config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
@@ -637,4 +640,15 @@ class SettMisc(object):
             self.msg.emit(2, 'System', 'Setting Misc', 'Browser failed')
         else:
             self.msg.emit(0, 'System', 'Setting Misc', 'Doc opened')
+        return True
+
+    def setAddProfileGUI(self):
+        """
+        :return:
+        """
+        isEnabled = self.ui.addProfileGroup.isChecked()
+        self.ui.addFrom.setEnabled(isEnabled)
+        self.ui.addFrom.setVisible(isEnabled)
+        self.ui.profileAdd.setEnabled(isEnabled)
+        self.ui.profileAdd.setVisible(isEnabled)
         return True

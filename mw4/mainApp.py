@@ -144,7 +144,7 @@ class MountWizzard4(QObject):
         workDir = self.mwGlob['workDir']
         self.messageQueue.put((1, 'System', 'Lifecycle', 'MountWizzard4 started...'))
         self.messageQueue.put((1, 'System', 'Workdir', f'{workDir}'))
-        self.messageQueue.put((1, 'System', 'Profile', f'{profile}'))
+        self.messageQueue.put((1, 'System', 'Profile', f'Base profile: {profile}'))
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
         self.mount = qtmount.Mount(host='localhost',

@@ -388,11 +388,14 @@ class SettMisc(object):
         self.log.info(f'Package Release:{verRelease[:10]}')
 
         if self.ui.versionBeta.isChecked():
-            finalPackage = verBeta[0]
-
+            finalPackage = verBeta
         else:
-            finalPackage = verRelease[0]
+            finalPackage = verRelease
 
+        if len(finalPackage) == 0:
+            return None, None, None
+
+        finalPackage = finalPackage[0]
         comment = response['releases'][finalPackage][0]['comment_text']
         return finalPackage, comment, vPackage
 

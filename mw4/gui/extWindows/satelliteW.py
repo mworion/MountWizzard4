@@ -104,7 +104,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.storeConfig()
-        self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self):

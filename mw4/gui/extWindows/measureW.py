@@ -283,7 +283,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
     def setupButtons(self):
         """
         setupButtons prepares the dynamic content od the buttons in measurement
-        window. it write the bottom texts and number as well as the coloring for
+        window. it writes the bottom texts and number as well as the coloring for
         the actual setting
 
         :return: success for test purpose

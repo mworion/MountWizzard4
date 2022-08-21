@@ -34,8 +34,10 @@ import warnings
 # and https://github.com/pywinauto/pywinauto/issues/472
 # order is important to set sys.coinit_flags = 2 before import pywinauto
 #
-warnings.simplefilter('ignore', UserWarning)
-warnings.simplefilter('ignore', RuntimeWarning)
+# warnings.simplefilter('ignore', UserWarning)
+# warnings.simplefilter('ignore', RuntimeWarning)
+# sys.stdout.reconfigure(encoding='utf-8')
+# sys.stderr.reconfigure(encoding='utf-8')
 sys.coinit_flags = 2
 
 # external packages

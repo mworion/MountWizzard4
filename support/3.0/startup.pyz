@@ -27,8 +27,8 @@ import argparse
 import tarfile
 import locale
 
-locale.setlocale(locale.LC_ALL, '')
-
+# sys.stdout.reconfigure(encoding='utf-8')
+# sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
     py = 'python'
 else:
@@ -191,13 +191,8 @@ def venvCreate(venvPath, upgrade=False):
     """
     print()
     print('-' * 50)
-    print(' ███    ███  ██     ██  ██   ██')
-    print(' ████  ████  ██     ██  ██   ██')
-    print(' ██ ████ ██  ██  █  ██  ███████')
-    print(' ██  ██  ██  ██ ███ ██       ██')
-    print(' ██      ██   ███ ███        ██')
-    print('-' * 50)
     print('MountWizzard4')
+    print('-' * 50)
     print(f'script version   : {version}')
     print(f'platform         : {platform.system()}')
     print(f'machine          : {platform.machine()}')

@@ -24,7 +24,8 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 
 - add: GUI: all charts could be zoomed and panned
 - add: GUI: all tab menu entries could be customized in order and stored
-- add: GUI: in emergency all open windows could be collected to visual area
+- add: GUI: all open windows could be collected to visual area
+- add: GUI: separate window with big buttons are available 
 - add: almanac: now supports UTC / local time
 - add: almanac: support set/rise times moon
 - add: environment: integrate meteoblue.com seeing conditions
@@ -64,6 +65,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - improve: GUI: complete rework of charting: performance and functions
 - improve: GUI: clean up and optimize iers download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
+- improve: GUI: moved on / off mount to their settings: avoid undesired shutoff
 - improve: INDI: correcting setting parameters on startup
 - improve: model points: optimized DSO path generation (always fit, less params)
 - improve: model run: refactoring
@@ -86,7 +88,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0a4',
+    version='3.0.0a5',
     packages=[
         'mw4',
         'mw4.base',

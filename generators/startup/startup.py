@@ -25,7 +25,6 @@ import logging
 import datetime
 import argparse
 import tarfile
-import locale
 
 # sys.stdout.reconfigure(encoding='utf-8')
 # sys.stderr.reconfigure(encoding='utf-8')

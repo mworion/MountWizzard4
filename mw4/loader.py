@@ -25,19 +25,18 @@ import platform
 import socket
 import sys
 import traceback
-import warnings
-#
+# import warnings
+# warnings.simplefilter('ignore', UserWarning)
+# warnings.simplefilter('ignore', RuntimeWarning)
+# sys.stdout.reconfigure(encoding='utf-8')
+# sys.stderr.reconfigure(encoding='utf-8')
+
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see
 # https://stackoverflow.com/questions/51284268/
 #         windowscontext-oleinitialize-failed-com-error-0x80010106-rpc-e-changed-mode
 # and https://github.com/pywinauto/pywinauto/issues/472
 # order is important to set sys.coinit_flags = 2 before import pywinauto
-#
-# warnings.simplefilter('ignore', UserWarning)
-# warnings.simplefilter('ignore', RuntimeWarning)
-# sys.stdout.reconfigure(encoding='utf-8')
-# sys.stderr.reconfigure(encoding='utf-8')
 sys.coinit_flags = 2
 
 # external packages

@@ -88,11 +88,16 @@ class BigPopup(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
+        self.wIcon(self.ui.mountOn, 'power-on')
+        self.wIcon(self.ui.mountOff, 'power-off')
+        self.wIcon(self.ui.stop, 'hand')
+
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.updateDeviceStats)
-        self.ui.virtualStop.clicked.connect(lambda: self.app.virtualStop.emit())
-        self.ui.mountBoot.clicked.connect(lambda: self.app.mountBoot.emit())
-        self.ui.mountStop.clicked.connect(lambda: self.app.mountStop.emit())
+        self.app.mount.signals.pointDone.connect(self.updateStatus)
+        self.ui.stop.clicked.connect(lambda: self.app.virtualStop.emit())
+        self.ui.mountOn.clicked.connect(lambda: self.app.mountOn.emit())
+        self.ui.mountOff.clicked.connect(lambda: self.app.mountOff.emit())
         self.show()
         return True
 
@@ -101,7 +106,16 @@ class BigPopup(toolsQtWidget.MWidget):
         :return:
         """
         isMount = self.app.deviceStat.get('mount', False)
-        self.changeStyleDynamic(self.ui.mountBoot, 'running', isMount)
-        self.changeStyleDynamic(self.ui.mountStop, 'running', not isMount)
+        self.changeStyleDynamic(self.ui.mountOn, 'running', isMount)
+        self.changeStyleDynamic(self.ui.mountOff, 'running', not isMount)
         return True
 
+    def updateStatus(self):
+        """
+        :return:
+        """
+        if self.app.mount.obsSite.status == 1:
+            self.changeStyleDynamic(self.ui.stop, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.stop, 'running', False)
+        return True

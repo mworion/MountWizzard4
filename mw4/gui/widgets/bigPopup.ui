@@ -74,7 +74,7 @@
       <number>5</number>
      </property>
      <item>
-      <widget class="QPushButton" name="mountBoot">
+      <widget class="QPushButton" name="mountOn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -87,7 +87,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mountStop">
+      <widget class="QPushButton" name="mountOff">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -102,7 +102,7 @@
     </layout>
    </item>
    <item row="2" column="0">
-    <widget class="QPushButton" name="virtualStop">
+    <widget class="QPushButton" name="stop">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -110,10 +110,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Emergency Stop</string>
-     </property>
-     <property name="color" stdset="0">
-      <string>red</string>
+      <string>Mount Stop</string>
      </property>
     </widget>
    </item>

@@ -79,3 +79,15 @@ def test_colorChange(function):
 def test_updateDeviceStats(function):
     suc = function.updateDeviceStats()
     assert suc
+
+
+def test_updateStatus_1(function):
+    function.app.mount.obsSite.status = 0
+    suc = function.updateStatus()
+    assert suc
+
+
+def test_updateStatus_2(function):
+    function.app.mount.obsSite.status = 1
+    suc = function.updateStatus()
+    assert suc

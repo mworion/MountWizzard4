@@ -31,7 +31,9 @@ class SettMount(object):
 
     def __init__(self):
         self.ui.mountOn.clicked.connect(self.mountBoot)
+        self.app.mountBoot.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
+        self.app.mountStop.connect(self.mountShutdown)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.port3492.clicked.connect(self.mountHost)
         self.ui.port3490.clicked.connect(self.mountHost)

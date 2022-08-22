@@ -795,11 +795,6 @@ def test_playSound_3(function):
         assert not suc
 
 
-def test_setVirtualStop(function):
-    suc = function.setVirtualStop()
-    assert suc
-
-
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_1(function):
     with mock.patch.object(gui.mainWmixin.tabSettMisc,

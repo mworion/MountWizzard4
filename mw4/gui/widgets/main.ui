@@ -21655,7 +21655,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>191</height>
+         <height>241</height>
         </rect>
        </property>
        <property name="title">
@@ -22079,6 +22079,110 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QPushButton" name="mountOff">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>205</y>
+          <width>166</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Shuts the mount down.</string>
+        </property>
+        <property name="text">
+         <string>Off</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="mountOn">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>205</y>
+          <width>166</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+        </property>
+        <property name="text">
+         <string>On</string>
+        </property>
+       </widget>
+       <widget class="Line" name="line_90">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>195</y>
+          <width>346</width>
+          <height>1</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupRigComputer">
        <property name="geometry">
@@ -22163,8 +22267,8 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupMountSettleTime">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>340</y>
+         <x>400</x>
+         <y>140</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -22609,7 +22713,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>170</y>
+         <y>215</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -22823,7 +22927,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>230</y>
+         <y>305</y>
          <width>366</width>
          <height>86</height>
         </rect>
@@ -27185,7 +27289,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>106</height>
+         <height>116</height>
         </rect>
        </property>
        <property name="title">
@@ -27194,35 +27298,6 @@ Next point in time when satellite settles.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QCheckBox" name="activateVirtualStop">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, press / click on time / profile simulated pressing mount stop.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Additional mount stops</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_85">
         <property name="geometry">
          <rect>
@@ -27268,7 +27343,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>50</y>
+          <y>55</y>
           <width>166</width>
           <height>21</height>
          </rect>
@@ -27284,7 +27359,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>75</y>
+          <y>55</y>
           <width>166</width>
           <height>21</height>
          </rect>
@@ -27309,12 +27384,25 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QPushButton" name="big">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>85</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Show big buttons</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>130</y>
+         <x>400</x>
+         <y>260</y>
          <width>366</width>
          <height>56</height>
         </rect>
@@ -27391,7 +27479,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>200</y>
+         <y>175</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -29448,114 +29536,13 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="addStopR">
-   <property name="geometry">
-    <rect>
-     <x>720</x>
-     <y>120</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>STOP</string>
-   </property>
-   <property name="stop" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="mountOn">
-   <property name="geometry">
-    <rect>
-     <x>445</x>
-     <y>85</y>
-     <width>66</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>50</width>
-     <height>25</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>16777215</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>10</pointsize>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="toolTip">
-    <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
-   </property>
-   <property name="text">
-    <string>On</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="mountOff">
-   <property name="geometry">
-    <rect>
-     <x>515</x>
-     <y>85</y>
-     <width>66</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>50</width>
-     <height>25</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>16777215</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>10</pointsize>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="toolTip">
-    <string>Shuts the mount down.</string>
-   </property>
-   <property name="text">
-    <string>Off</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="openV2">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>515</x>
      <y>60</y>
-     <width>31</width>
-     <height>21</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -29599,8 +29586,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <rect>
      <x>445</x>
      <y>60</y>
-     <width>31</width>
-     <height>21</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -29642,10 +29629,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <widget class="QPushButton" name="openV3">
    <property name="geometry">
     <rect>
-     <x>515</x>
-     <y>60</y>
-     <width>31</width>
-     <height>21</height>
+     <x>445</x>
+     <y>86</y>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -29687,10 +29674,10 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <widget class="QPushButton" name="openV4">
    <property name="geometry">
     <rect>
-     <x>550</x>
-     <y>60</y>
-     <width>31</width>
-     <height>21</height>
+     <x>515</x>
+     <y>86</y>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -29729,37 +29716,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
     <string>V4</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="addStopL">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>120</y>
-     <width>66</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>STOP</string>
-   </property>
-   <property name="stop" stdset="0">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <zorder>mainTabWidget</zorder>
-  <zorder>statusOnline</zorder>
-  <zorder>statusTime</zorder>
-  <zorder>main</zorder>
-  <zorder>mountOn</zorder>
-  <zorder>mountOff</zorder>
-  <zorder>openV2</zorder>
-  <zorder>openV1</zorder>
-  <zorder>openV3</zorder>
-  <zorder>openV4</zorder>
-  <zorder>addStopL</zorder>
-  <zorder>addStopR</zorder>
  </widget>
  <customwidgets>
   <customwidget>
@@ -29797,10 +29753,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>openV2</tabstop>
   <tabstop>openV3</tabstop>
   <tabstop>openV4</tabstop>
-  <tabstop>mountOn</tabstop>
-  <tabstop>mountOff</tabstop>
-  <tabstop>addStopL</tabstop>
-  <tabstop>addStopR</tabstop>
   <tabstop>mainTabWidget</tabstop>
   <tabstop>checkJ2000</tabstop>
   <tabstop>checkJNow</tabstop>
@@ -30238,7 +30190,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>soundImageSolved</tabstop>
   <tabstop>soundSatStartTracking</tabstop>
   <tabstop>soundConnectionLost</tabstop>
-  <tabstop>activateVirtualStop</tabstop>
   <tabstop>colorSet</tabstop>
   <tabstop>collectWindows</tabstop>
   <tabstop>storeTabOrder</tabstop>

@@ -812,14 +812,6 @@ def test_test_stop_3(function, qtbot):
             assert not suc
 
 
-def test_virtualStop_1(function):
-    with mock.patch.object(function,
-                           'stop',
-                           return_value=False):
-        suc = function.virtualStop()
-        assert suc
-
-
 def test_setMeridianLimitTrack_1(function, qtbot):
     with mock.patch.object(function,
                            'checkMount',

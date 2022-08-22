@@ -53,6 +53,7 @@ class Mount(object):
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
         self.ui.stop.clicked.connect(self.stop)
+        self.app.virtualStop.connect(self.stop)
         self.ui.mountCommandTable.clicked.connect(self.openCommandProtocol)
 
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
@@ -67,8 +68,6 @@ class Mount(object):
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
-        self.ui.addStopL.clicked.connect(self.virtualStop)
-        self.ui.addStopR.clicked.connect(self.virtualStop)
         self.app.gameABXY.connect(self.changeParkGameController)
         self.app.gameABXY.connect(self.stopGameController)
         self.app.gameABXY.connect(self.changeTrackingGameController)
@@ -381,13 +380,6 @@ class Mount(object):
         """
         if value == 0b00001000:
             self.stop()
-        return True
-
-    def virtualStop(self):
-        """
-        :return:
-        """
-        self.stop()
         return True
 
     def stop(self):

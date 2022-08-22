@@ -188,7 +188,7 @@ def build_widgets(c):
     widgets = [
         'analyse', 'devicePopup', 'downloadPopup', 'hemisphere', 'image',
         'keypad', 'main', 'measure', 'message', 'satellite', 'simulator',
-        'video',
+        'video', 'bigPopup',
     ]
     for widget in widgets:
         name = widgetDir + widget

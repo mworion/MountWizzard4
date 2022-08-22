@@ -43,6 +43,7 @@ from gui.extWindows.videoW1 import VideoWindow1
 from gui.extWindows.videoW2 import VideoWindow2
 from gui.extWindows.videoW3 import VideoWindow3
 from gui.extWindows.videoW4 import VideoWindow4
+from gui.extWindows.bigPopup import BigPopup
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
 from gui.mainWmixin.tabEnviron import Environ
@@ -192,6 +193,12 @@ class MainWindow(
             'classObj': None,
             'name': 'KeypadDialog',
             'class': KeypadWindow,
+        }
+        self.uiWindows['showBigPopupW'] = {
+            'button': self.ui.big,
+            'classObj': None,
+            'name': 'BigPopup',
+            'class': BigPopup,
         }
         self.deviceStatGui = {
             'dome': self.ui.domeConnected,

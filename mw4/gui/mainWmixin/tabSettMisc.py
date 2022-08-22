@@ -19,13 +19,12 @@ import base.packageConfig as pConf
 import os
 import sys
 import platform
+from packaging.utils import Version
 
 # external packages
 from pkg_resources import working_set
-from packaging.utils import Version
-import PyQt5
 if pConf.isAvailable:
-    import PyQt5.QtMultimedia
+    from PyQt5.QtMultimedia import QSound
 import requests
 import importlib_metadata
 from astropy.utils import iers, data
@@ -39,7 +38,6 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 
 
-# noinspection PyAttributeOutsideInit
 class SettMisc(object):
     """
     """
@@ -49,6 +47,7 @@ class SettMisc(object):
         self.guiAudioList = dict()
         self.gameControllerList = dict()
         self.process = None
+        self.stopWindow = None
 
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -64,7 +63,6 @@ class SettMisc(object):
         self.ui.versionReleaseNotes.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
-        self.ui.activateVirtualStop.stateChanged.connect(self.setVirtualStop)
         self.app.update3s.connect(self.populateGameControllerList)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
         self.ui.openPDF.clicked.connect(self.openPDF)
@@ -96,8 +94,6 @@ class SettMisc(object):
         self.ui.unitTimeUTC.setChecked(config.get('unitTimeUTC', True))
         self.ui.unitTimeLocal.setChecked(config.get('unitTimeLocal', False))
         self.ui.addProfileGroup.setChecked(config.get('addProfileGroup', False))
-        self.ui.activateVirtualStop.setChecked(
-            config.get('activateVirtualStop', False))
         self.ui.versionReleaseNotes.setChecked(
             config.get('versionReleaseNotes', True))
         self.ui.soundMountSlewFinished.setCurrentIndex(
@@ -125,7 +121,6 @@ class SettMisc(object):
         self.setWeatherOnline()
         self.setSeeingOnline()
         self.setupIERS()
-        self.setVirtualStop()
         self.setAddProfileGUI()
         self.showUpdates()
         return True
@@ -146,7 +141,6 @@ class SettMisc(object):
         config['unitTimeUTC'] = self.ui.unitTimeUTC.isChecked()
         config['unitTimeLocal'] = self.ui.unitTimeLocal.isChecked()
         config['addProfileGroup'] = self.ui.addProfileGroup.isChecked()
-        config['activateVirtualStop'] = self.ui.activateVirtualStop.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
@@ -604,22 +598,11 @@ class SettMisc(object):
 
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            PyQt5.QtMultimedia.QSound.play(self.audioSignalsSet[sound])
+            QSound.play(self.audioSignalsSet[sound])
             return True
 
         else:
             return False
-
-    def setVirtualStop(self):
-        """
-        :return:
-        """
-        isVirtual = self.ui.activateVirtualStop.isChecked()
-        self.ui.addStopL.setEnabled(isVirtual)
-        self.ui.addStopR.setEnabled(isVirtual)
-        self.ui.addStopL.setVisible(isVirtual)
-        self.ui.addStopR.setVisible(isVirtual)
-        return True
 
     def setAutomationSpeed(self):
         """

@@ -116,7 +116,7 @@ class Almanac:
         yTicks = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
         yLabels = ['', '14', '16', '18', '20', '22', '24',
                    '02', '04', '06', '08', '10', '']
-        xTicks = np.arange(xMin, xMax, (xMax - xMin) / 10)
+        xTicks = np.arange(xMin, xMax, (xMax - xMin) / 9)
         xLabels = ts.tt_jd(xTicks).utc_strftime('%d%b')
         xLabels[0] = ''
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]

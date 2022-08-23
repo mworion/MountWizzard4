@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -17724,7 +17724,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -20533,7 +20533,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -21562,9 +21562,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>320</y>
+         <y>340</y>
          <width>366</width>
-         <height>71</height>
+         <height>51</height>
         </rect>
        </property>
        <property name="title">
@@ -21581,7 +21581,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>101</width>
+          <width>96</width>
           <height>21</height>
          </rect>
         </property>
@@ -21598,9 +21598,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>145</x>
+          <x>115</x>
           <y>20</y>
-          <width>101</width>
+          <width>96</width>
           <height>21</height>
          </rect>
         </property>
@@ -21617,9 +21617,9 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>211</width>
+          <x>220</x>
+          <y>20</y>
+          <width>141</width>
           <height>21</height>
          </rect>
         </property>
@@ -21637,7 +21637,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>Automatic connect devices</string>
+         <string>Automatic connect</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -21655,7 +21655,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>241</height>
+         <height>261</height>
         </rect>
        </property>
        <property name="title">
@@ -21886,7 +21886,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>115</y>
+          <y>125</y>
           <width>151</width>
           <height>21</height>
          </rect>
@@ -21906,7 +21906,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>140</y>
+          <y>150</y>
           <width>151</width>
           <height>21</height>
          </rect>
@@ -21926,7 +21926,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>165</x>
-          <y>115</y>
+          <y>125</y>
           <width>116</width>
           <height>21</height>
          </rect>
@@ -21979,7 +21979,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>165</x>
-          <y>140</y>
+          <y>150</y>
           <width>116</width>
           <height>21</height>
          </rect>
@@ -22032,7 +22032,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>105</y>
+          <y>110</y>
           <width>346</width>
           <height>1</height>
          </rect>
@@ -22054,7 +22054,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>165</y>
+          <y>175</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -22083,7 +22083,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>205</y>
+          <y>225</y>
           <width>166</width>
           <height>26</height>
          </rect>
@@ -22124,7 +22124,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>205</y>
+          <y>225</y>
           <width>166</width>
           <height>26</height>
          </rect>
@@ -22165,7 +22165,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>195</y>
+          <y>210</y>
           <width>346</width>
           <height>1</height>
          </rect>
@@ -22268,7 +22268,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>140</y>
+         <y>135</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -22364,7 +22364,7 @@ Next point in time when satellite settles.</string>
          <x>400</x>
          <y>15</y>
          <width>366</width>
-         <height>101</height>
+         <height>106</height>
         </rect>
        </property>
        <property name="title">
@@ -22380,7 +22380,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>260</x>
-          <y>70</y>
+          <y>75</y>
           <width>96</width>
           <height>21</height>
          </rect>
@@ -22424,7 +22424,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>50</y>
           <width>56</width>
           <height>21</height>
          </rect>
@@ -22444,7 +22444,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>75</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -22464,7 +22464,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>225</x>
-          <y>70</y>
+          <y>75</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -22487,7 +22487,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>65</x>
-          <y>20</y>
+          <y>25</y>
           <width>291</width>
           <height>21</height>
          </rect>
@@ -22534,7 +22534,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>65</x>
-          <y>70</y>
+          <y>75</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -22578,7 +22578,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>56</width>
           <height>21</height>
          </rect>
@@ -22601,7 +22601,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>260</x>
-          <y>45</y>
+          <y>50</y>
           <width>96</width>
           <height>21</height>
          </rect>
@@ -22645,7 +22645,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>225</x>
-          <y>45</y>
+          <y>50</y>
           <width>31</width>
           <height>21</height>
          </rect>
@@ -22668,7 +22668,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>65</x>
-          <y>45</y>
+          <y>50</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -22713,7 +22713,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>215</y>
+         <y>200</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -24305,7 +24305,7 @@ Next point in time when satellite settles.</string>
      </widget>
      <widget class="QWidget" name="ParkPos">
       <attribute name="title">
-       <string>ParkPos and Relay</string>
+       <string>ParkPos</string>
       </attribute>
       <widget class="QGroupBox" name="GroupParkPositionsSettings">
        <property name="geometry">
@@ -26220,10 +26220,15 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
+     </widget>
+     <widget class="QWidget" name="RelaySett">
+      <attribute name="title">
+       <string>Relay</string>
+      </attribute>
       <widget class="QGroupBox" name="GroupRelaySettings">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>5</x>
          <y>15</y>
          <width>366</width>
          <height>376</height>
@@ -27401,8 +27406,8 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>260</y>
+         <x>5</x>
+         <y>205</y>
          <width>366</width>
          <height>56</height>
         </rect>
@@ -27456,7 +27461,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>10</x>
           <y>25</y>
-          <width>136</width>
+          <width>161</width>
           <height>21</height>
          </rect>
         </property>
@@ -27468,7 +27473,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Length of prediction</string>
+         <string>Length of time window</string>
         </property>
        </widget>
       </widget>
@@ -27479,7 +27484,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>175</y>
+         <y>140</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -30170,22 +30175,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posAlt9</tabstop>
   <tabstop>posAz9</tabstop>
   <tabstop>posSave9</tabstop>
-  <tabstop>relayButtonText0</tabstop>
-  <tabstop>relayFun0</tabstop>
-  <tabstop>relayButtonText1</tabstop>
-  <tabstop>relayFun1</tabstop>
-  <tabstop>relayButtonText2</tabstop>
-  <tabstop>relayFun2</tabstop>
-  <tabstop>relayButtonText3</tabstop>
-  <tabstop>relayFun3</tabstop>
-  <tabstop>relayButtonText4</tabstop>
-  <tabstop>relayFun4</tabstop>
-  <tabstop>relayButtonText5</tabstop>
-  <tabstop>relayFun5</tabstop>
-  <tabstop>relayButtonText6</tabstop>
-  <tabstop>relayFun6</tabstop>
-  <tabstop>relayButtonText7</tabstop>
-  <tabstop>relayFun7</tabstop>
   <tabstop>soundImageSaved</tabstop>
   <tabstop>soundImageSolved</tabstop>
   <tabstop>soundSatStartTracking</tabstop>

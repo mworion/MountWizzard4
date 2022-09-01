@@ -5,3 +5,4 @@ Ideas for the future
 - receive video indi for sat tracking and horizon setup
 - data exchange to EKOS SQLite for Location and horizon through SQLite interface
 - satellite scheduler
+- beeing able to define a numer of valid point after sorten and deleting for any build method

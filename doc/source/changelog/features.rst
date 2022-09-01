@@ -6,3 +6,4 @@ Ideas for the future
 - data exchange to EKOS SQLite for Location and horizon through SQLite interface
 - satellite scheduler
 - beeing able to define a numer of valid point after sorten and deleting for any build method
+- adding simple model feature for rainbow 135

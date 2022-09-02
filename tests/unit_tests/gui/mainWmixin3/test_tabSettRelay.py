@@ -43,18 +43,6 @@ def function(qapp):
     window = Mixin()
     yield window
 
-
-def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_storeConfig_1(function):
-    function.ui.relayDevice.setCurrentIndex(0)
-    function.storeConfig()
-
-
 def test_setupRelayGui(function):
     assert 8 == len(function.relayDropDowns)
     assert 8 == len(function.relayButtonTexts)

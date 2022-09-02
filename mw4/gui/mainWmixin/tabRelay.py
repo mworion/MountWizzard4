@@ -28,14 +28,6 @@ class Relay(object):
     def __init__(self):
         self.app.relay.signals.statusReady.connect(self.updateRelayGui)
 
-    def initConfig(self):
-        # config = self.app.config['mainW']
-        return True
-
-    def storeConfig(self):
-        # config = self.app.config['mainW']
-        return True
-
     def updateRelayGui(self):
         """
         updateRelayGui changes the style of the button related to the state of the relay

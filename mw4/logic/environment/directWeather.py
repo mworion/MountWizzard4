@@ -86,7 +86,8 @@ class DirectWeather:
         value2 = sett.weatherPressure
         value3 = sett.weatherHumidity
         value4 = sett.weatherDewPoint
-        isValid = None not in [value1, value2, value3, value4]
+        value5 = sett.weatherAge
+        isValid = None not in [value1, value2, value3, value4, value5]
 
         if not isValid and self.running:
             self.signals.deviceDisconnected.emit('DirectWeather')
@@ -100,4 +101,5 @@ class DirectWeather:
         self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = value2
         self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = value3
         self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = value4
+        self.data['WEATHER_PARAMETERS.WEATHER_AGE'] = value5
         return True

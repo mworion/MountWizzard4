@@ -701,9 +701,12 @@ class MainWindow(
         isManual = self.ui.refracManual.isChecked()
         if not refracOn:
             self.deviceStat['refraction'] = None
+            self.ui.refractionConnected.setText('Refrac Off')
         elif isManual:
+            self.ui.refractionConnected.setText('Refrac Manu')
             self.deviceStat['refraction'] = True
         else:
+            self.ui.refractionConnected.setText('Refrac Auto')
             isSource = self.deviceStat.get(self.refractionSource, False)
             self.deviceStat['refraction'] = isSource
 

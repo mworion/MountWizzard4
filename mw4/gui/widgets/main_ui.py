@@ -9810,7 +9810,7 @@ class Ui_MainWindow(object):
         self.openV4.setObjectName("openV4")
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(1)
+        self.mainTabWidget.setCurrentIndex(0)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
@@ -10541,11 +10541,13 @@ class Ui_MainWindow(object):
         self.refractionGroup.setToolTip(_translate("MainWindow", "Setting refraction update types from MountWizzard to the mount"))
         self.refractionGroup.setTitle(_translate("MainWindow", "Update to mount"))
         self.refracCont.setToolTip(_translate("MainWindow", "Update the refraction parameters to the mount continiously with moving average filter over 1 minute"))
-        self.refracCont.setText(_translate("MainWindow", "continously"))
+        self.refracCont.setText(_translate("MainWindow", "auto\n"
+"continously"))
         self.refracManual.setToolTip(_translate("MainWindow", "No refraction update to the mount"))
         self.refracManual.setText(_translate("MainWindow", "manual"))
         self.refracNoTrack.setToolTip(_translate("MainWindow", "Update the refraction parameters to the mount when the mount is not tracking"))
-        self.refracNoTrack.setText(_translate("MainWindow", "no tracking"))
+        self.refracNoTrack.setText(_translate("MainWindow", "auto\n"
+"no tracking"))
         self.onlineWeatherGroup.setToolTip(_translate("MainWindow", "Select weather device as source for refraction updates."))
         self.onlineWeatherGroup.setTitle(_translate("MainWindow", "Online"))
         self.onlineWeatherRainVol.setText(_translate("MainWindow", "-"))
@@ -11744,7 +11746,7 @@ class Ui_MainWindow(object):
         self.statusText.setToolTip(_translate("MainWindow", "Status feedback from mount "))
         self.statusText.setText(_translate("MainWindow", "-"))
         self.refractionConnected.setToolTip(_translate("MainWindow", "<html><head/><body><p>Status of environment: </p><p>Red: Not effective refraction working</p><p>Gray: No Configured</p><p>Green: Connected, source define and updates are on</p></body></html>"))
-        self.refractionConnected.setText(_translate("MainWindow", "Refraction"))
+        self.refractionConnected.setText(_translate("MainWindow", "Refrac Off"))
         self.domeConnected.setToolTip(_translate("MainWindow", "<html><head/><body><p>Status of dome: </p><p>Red: Error</p><p>Gray: No Configured</p><p>Green: Connected</p></body></html>"))
         self.domeConnected.setText(_translate("MainWindow", "Dome"))
         self.openImageW.setToolTip(_translate("MainWindow", "Opens and closes the image window. If blue, the windows should be visible. Position and size will be stored in case of closing."))

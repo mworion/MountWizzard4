@@ -102,14 +102,14 @@ class Environ:
         config['refractionSource'] = self.refractionSource
         return True
 
-    def updateRefractionUpdateType(self, setting):
+    def updateRefractionUpdateType(self):
         """
-        :param setting:
         :return: success
         """
         if self.refractionSource != 'directWeather':
             return False
 
+        setting = self.app.mount.setting
         if setting.weatherStatus == 0:
             self.ui.refracNone.setChecked(True)
         elif setting.weatherStatus == 1:

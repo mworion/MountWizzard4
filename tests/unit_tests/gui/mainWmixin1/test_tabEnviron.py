@@ -65,46 +65,41 @@ def test_storeConfig_1(function):
 
 
 def test_updateRefractionUpdateType_1(function):
-    class Test:
-        weatherStatus = 3
+    function.app.mount.setting.weatherStatus = 3
     function.refractionSource = 'onlineWeather'
-    suc = function.updateRefractionUpdateType(setting=Test())
+    suc = function.updateRefractionUpdateType()
     assert not suc
 
 
 def test_updateRefractionUpdateType_2(function):
-    class Test:
-        weatherStatus = 3
+    function.app.mount.setting.weatherStatus = 3
     function.refractionSource = 'directWeather'
-    suc = function.updateRefractionUpdateType(setting=Test())
+    suc = function.updateRefractionUpdateType()
     assert not suc
 
 
 def test_updateRefractionUpdateType_3(function):
-    class Test:
-        weatherStatus = 0
+    function.app.mount.setting.weatherStatus = 0
     function.refractionSource = 'directWeather'
     function.ui.refracNone.setChecked(False)
-    suc = function.updateRefractionUpdateType(setting=Test())
+    suc = function.updateRefractionUpdateType()
     assert suc
     assert function.ui.refracNone.isChecked()
 
 
 def test_updateRefractionUpdateType_4(function):
-    class Test:
-        weatherStatus = 1
+    function.app.mount.setting.weatherStatus = 1
     function.refractionSource = 'directWeather'
     function.ui.refracNoTrack.setChecked(False)
-    suc = function.updateRefractionUpdateType(setting=Test())
+    suc = function.updateRefractionUpdateType()
     assert suc
 
 
 def test_updateRefractionUpdateType_5(function):
-    class Test:
-        weatherStatus = 2
+    function.app.mount.setting.weatherStatus = 2
     function.refractionSource = 'directWeather'
     function.ui.refracCont.setChecked(False)
-    suc = function.updateRefractionUpdateType(setting=Test())
+    suc = function.updateRefractionUpdateType()
     assert suc
 
 
@@ -314,10 +309,6 @@ def test_updateRefractionParameters_3(function):
 
 
 def test_updateRefractionParameters_4(function):
-    def Sender():
-        return function.ui.isOnline
-
-    function.sender = Sender
     function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     function.ui.refracNone.setChecked(True)
@@ -329,10 +320,6 @@ def test_updateRefractionParameters_4(function):
 
 
 def test_updateRefractionParameters_5(function):
-    def Sender():
-        return function.ui.isOnline
-
-    function.sender = Sender
     function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     function.ui.refracNone.setChecked(False)
@@ -346,13 +333,10 @@ def test_updateRefractionParameters_5(function):
 
 
 def test_updateRefractionParameters_6(function):
-    def Sender():
-        return function.ui.setRefractionManual
-
-    function.sender = Sender
     function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     function.ui.refracNoTrack.setChecked(True)
+    function.app.mount.obsSite.status = 1
 
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
@@ -365,12 +349,10 @@ def test_updateRefractionParameters_6(function):
 
 
 def test_updateRefractionParameters_7(function, qtbot):
-    def Sender():
-        return function.ui.setRefractionManual
-
-    function.sender = Sender
     function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
+    function.ui.refracNoTrack.setChecked(True)
+    function.app.mount.obsSite.status = 1
 
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',

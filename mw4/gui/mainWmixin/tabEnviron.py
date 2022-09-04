@@ -59,7 +59,6 @@ class Environ:
         self.app.mount.signals.settingDone.connect(self.updateDirectWeatherGui)
         self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
         # gui connections
-        self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.ui.onlineWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.sensorWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.directWeatherGroup.clicked.connect(self.selectRefractionSource)
@@ -252,12 +251,11 @@ class Environ:
         temp, press = self.movingAverageRefractionParameters()
         if temp is None or press is None:
             return False
-        if self.sender() != self.ui.setRefractionManual:
-            if self.ui.refracNone.isChecked():
+        if self.ui.refracNone.isChecked():
+            return False
+        if self.ui.refracNoTrack.isChecked():
+            if self.app.mount.obsSite.status == 0:
                 return False
-            if self.ui.refracNoTrack.isChecked():
-                if self.app.mount.obsSite.status == 0:
-                    return False
 
         suc = self.app.mount.setting.setRefractionParam(temperature=temp,
                                                         pressure=press)

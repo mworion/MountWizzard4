@@ -271,6 +271,12 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(1, sett.weatherDewPoint)
         self.assertEqual(1, sett._weatherDewPoint)
 
+    def test_Setting_weatherAge(self):
+        sett = Setting()
+        sett.weatherAge = 1
+        self.assertEqual(1, sett.weatherAge)
+        self.assertEqual(1, sett.weatherAge)
+
     #
     #
     # testing pollSetting med
@@ -282,7 +288,16 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
+        suc = sett.parseSetting(response,  23)
+        self.assertEqual(True, suc)
+
+    def test_Setting_parse_ok_1(self):
+        sett = Setting()
+        response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
+                    '101+90*',
+                    '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
+                    '0', 'E', '+20,5', '90.4', '-13,5', '60.2', '1']
         suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
 
@@ -291,7 +306,7 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0EEE.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5']
+                    '0', '987.0,0100', '+20,5']
         suc = sett.parseSetting(response,  23)
         self.assertEqual(False, suc)
 
@@ -300,7 +315,7 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0EEE.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
         suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
 
@@ -309,7 +324,7 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '+90*',
                     '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
         suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
 
@@ -318,7 +333,7 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         suc = sett.parseSetting(response,  23)
         self.assertEqual(True, suc)
@@ -329,7 +344,7 @@ class TestConfigData(unittest.TestCase):
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*',
                     '+00*', ',2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         suc = sett.parseSetting(response,  23)
 
@@ -340,7 +355,7 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response,  23
@@ -352,7 +367,7 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = True, response,  23
@@ -364,7 +379,7 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response,  23
@@ -376,7 +391,7 @@ class TestConfigData(unittest.TestCase):
 
         response = ['15', '1', '20', '0426', '05', '+010.0', '0950.0', '60.2', '+033.0',
                     '101+90*', '+00*', 'E,2018-08-11', '1', '0', '00:00:00:00:00:00', 'N',
-                    '0', '987.0', '+20,5', '90.4', '-13,5', '60.2', '1']
+                    '0', '987.0,0100', '+20,5', '90.4', '-13,5', '60.2', '1']
 
         with mock.patch('mountcontrol.setting.Connection') as mConn:
             mConn.return_value.communicate.return_value = False, response, 6

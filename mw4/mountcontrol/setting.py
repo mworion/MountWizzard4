@@ -71,6 +71,7 @@ class Setting(object):
         self._weatherTemperature = None
         self._weatherHumidity = None
         self._weatherDewPoint = None
+        self._weatherAge = None
         self._trackingRate = None
         self._webInterfaceStat = None
 
@@ -310,6 +311,14 @@ class Setting(object):
         self._weatherDewPoint = valueToFloat(value)
 
     @property
+    def weatherAge(self):
+        return self._weatherAge
+
+    @weatherAge.setter
+    def weatherAge(self, value):
+        self._weatherAge = valueToInt(value)
+
+    @property
     def trackingRate(self):
         return self._trackingRate
 
@@ -363,6 +372,10 @@ class Setting(object):
         self.addressLanMAC = response[14]
         self.wakeOnLan = response[15]
         self.weatherStatus = response[16]
+        if len(response[17].split(',')) > 1:
+            self.weatherAge = response[17].split(',')[1]
+        else:
+            self.weatherAge = ''
         self.weatherPressure = response[17].split(',')[0]
         self.weatherTemperature = response[18].split(',')[0]
         self.weatherHumidity = response[19].split(',')[0]

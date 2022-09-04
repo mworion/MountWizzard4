@@ -704,13 +704,15 @@ class MainWindow(
 
         :return: True for test purpose
         """
-        if self.refractionSource in self.deviceStat:
+        refracOn = self.app.mount.setting.statusRefraction == 1
+        if not refracOn:
+            self.deviceStat['refraction'] = None
+        elif self.refractionSource in self.deviceStat:
             source = self.deviceStat[self.refractionSource]
             mount = not self.ui.refracNone.isChecked()
-            refracOn = self.app.mount.setting.statusRefraction == 1
-            self.deviceStat['refraction'] = source and mount and refracOn
+            self.deviceStat['refraction'] = source and mount
         else:
-            self.deviceStat['refraction'] = None
+            self.deviceStat['refraction'] = False
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device) is None:

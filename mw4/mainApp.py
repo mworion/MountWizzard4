@@ -54,6 +54,7 @@ from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from logic.plateSolve.plateSolve import PlateSolve
+from logic.profiles.profileConvert import convertProfileData
 
 
 class MountWizzard4(QObject):
@@ -333,32 +334,6 @@ class MountWizzard4(QObject):
         config['version'] = '5.0'
         return config
 
-    def convertData(self, data):
-        """
-        convertDate tries to convert data from an older or newer version of the
-        config file to the actual needed one.
-
-        :param      data: config data as dict
-        :return:    data: config data as dict
-        """
-        if data.get('version', '0.0') in ['0.0', '5.0']:
-            return data
-        if 'mainW' not in data:
-            return data
-
-        self.log.info(f'Conversion from [{data.get("version")}] to [5.0]')
-        if 'driversData' in data['mainW']:
-            data['driversData'] = data['mainW']['driversData']
-            data['version'] = '5.0'
-            del data['mainW']['driversData']
-
-        horizonFile = data['mainW'].get('horizonFileName', '')
-        if 'hemisphereW' in data:
-            data['hemisphereW']['horizonMaskFileName'] = horizonFile
-        else:
-            data['hemisphereW'] = {'horizonMaskFileName': horizonFile}
-        return data
-
     def blendConfig(self, config, configAdd):
         """
         :param config:
@@ -400,7 +375,7 @@ class MountWizzard4(QObject):
             return self.defaultConfig()
         else:
             configData['profileName'] = name
-            return self.convertData(configData)
+            return convertProfileData(configData)
 
     def saveConfig(self, name=None):
         """

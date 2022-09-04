@@ -115,6 +115,7 @@ setup(
         'mw4.logic.photometry',
         'mw4.logic.plateSolve',
         'mw4.logic.powerswitch',
+        'mw4.logic.profiles',
         'mw4.logic.remote',
         'mw4.logic.telescope',
         'mw4.logic.keypad',

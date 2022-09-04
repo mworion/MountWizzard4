@@ -334,14 +334,6 @@ class MountWizzard4(QObject):
         config['version'] = '5.0'
         return config
 
-    def blendConfig(self, config, configAdd):
-        """
-        :param config:
-        :param configAdd:
-        :return:
-        """
-        return config
-
     def loadConfig(self, name=None):
         """
         loadConfig loads a json file from disk and stores it to the config

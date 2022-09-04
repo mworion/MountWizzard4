@@ -18,10 +18,9 @@
 # standard libraries
 
 # external packages
-import pytest
 
 # local import
-from logic.profiles.profileConvert import convertProfileData
+from logic.profiles.profileConvert import convertProfileData, blendProfile
 
 
 def test_convertProfileData_1():
@@ -61,3 +60,8 @@ def test_convertProfileData_4():
     assert val['version'] == '4.1'
     assert 'driversData' in val
     assert 'driversData' not in val['mainW']
+
+
+def test_blendProfile():
+    conf = blendProfile({}, {})
+    assert conf == {}

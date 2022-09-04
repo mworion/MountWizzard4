@@ -50,3 +50,12 @@ def convertProfileData(data):
     else:
         data['hemisphereW'] = {'horizonMaskFileName': horizonFile}
     return data
+
+
+def blendProfile(config, configAdd):
+    """
+    :param config:
+    :param configAdd:
+    :return:
+    """
+    return config

@@ -260,11 +260,6 @@ def test_defaultConfig(app):
     assert val
 
 
-def test_blendConfig(app):
-    conf = app.blendConfig({}, {})
-    assert conf == {}
-
-
 def test_loadConfig_1(app):
     val = app.loadConfig()
     assert val == {'profileName': 'config', 'version': '5.0'}

@@ -56,6 +56,8 @@ class Mount(object):
         self.app.virtualStop.connect(self.stop)
         self.ui.mountCommandTable.clicked.connect(self.openCommandProtocol)
 
+        self.clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
+        self.clickable(self.ui.refractionPress).connect(self.setRefractionPress)
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
         self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
         self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
@@ -504,7 +506,7 @@ class Mount(object):
         maxRate = int(sett.slewRateMax)
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(
-            self, 'Set Slew Rate', f'Value ({minRate}-{maxRate}):',
+            self, 'Set Slew Rate', f'Value ({minRate}...{maxRate}):',
             actValue, minRate, maxRate, 1)
 
         if not ok:
@@ -674,6 +676,56 @@ class Mount(object):
         else:
             self.msg.emit(2, 'Mount', 'Setting', 'Wake On Lan cannot be set')
         return suc
+
+    def setRefractionTemp(self):
+        """
+        :return:
+        """
+        if not self.checkMount():
+            return False
+
+        sett = self.app.mount.setting
+        actValue = sett.refractionTemp
+        minVal = -40
+        maxVal = 75
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getDouble(
+            self, 'Set Refraction Temperature', f'Value ({minVal}...{maxVal}):',
+            actValue, minVal, maxVal, 1)
+
+        if not ok:
+            return False
+        if sett.setRefractionTemp(value):
+            self.msg.emit(0, 'Mount', 'Setting', f'Refraction Temp: [{value}]')
+            return True
+        else:
+            self.msg.emit(2, 'Mount', 'Setting', 'Refraction Temp cannot be set')
+            return False
+
+    def setRefractionPress(self):
+        """
+        :return:
+        """
+        if not self.checkMount():
+            return False
+
+        sett = self.app.mount.setting
+        actValue = sett.refractionPress
+        minVal = 500
+        maxVal = 1300
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getDouble(
+            self, 'Set Refraction Pressure', f'Value ({minVal}...{maxVal}):',
+            actValue, minVal, maxVal, 1)
+
+        if not ok:
+            return False
+        if sett.setRefractionPress(value):
+            self.msg.emit(0, 'Mount', 'Setting', f'Refraction Press: [{value}]')
+            return True
+        else:
+            self.msg.emit(2, 'Mount', 'Setting', 'Refraction Press cannot be set')
+            return False
 
     def setRefraction(self):
         """

@@ -1292,6 +1292,106 @@ def test_setDualAxisTracking_4(function, qtbot):
                 assert suc
 
 
+def test_setRefractionTemp_1(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        suc = function.setRefractionTemp()
+        assert not suc
+
+
+def test_setRefractionTemp_2(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getDouble',
+                               return_value=(10, False)):
+            suc = function.setRefractionTemp()
+            assert not suc
+
+
+def test_setRefractionTemp_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getDouble',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setRefractionTemp',
+                                   return_value=False):
+                suc = function.setRefractionTemp()
+                assert not suc
+
+
+def test_setRefractionTemp_4(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getDouble',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setRefractionTemp',
+                                   return_value=True):
+                suc = function.setRefractionTemp()
+                assert suc
+
+
+def test_setRefractionPress_1(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        suc = function.setRefractionPress()
+        assert not suc
+
+
+def test_setRefractionPress_2(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getDouble',
+                               return_value=(10, False)):
+            suc = function.setRefractionPress()
+            assert not suc
+
+
+def test_setRefractionPress_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getDouble',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setRefractionPress',
+                                   return_value=False):
+                suc = function.setRefractionPress()
+                assert not suc
+
+
+def test_setRefractionPress_4(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getDouble',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setRefractionPress',
+                                   return_value=True):
+                suc = function.setRefractionPress()
+                assert suc
+
+
 def test_setRefraction_1(function, qtbot):
     with mock.patch.object(function,
                            'checkMount',

@@ -821,6 +821,14 @@ class Mount(QObject):
             return True
 
         @staticmethod
+        def setRefractionTemp(a):
+            return True
+
+        @staticmethod
+        def setRefractionPress(a):
+            return True
+
+        @staticmethod
         def setRefraction():
             return True
 

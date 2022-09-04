@@ -443,6 +443,9 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="label_91">
        <property name="geometry">
@@ -1468,6 +1471,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="readOnly">
         <bool>true</bool>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="label_74">
        <property name="geometry">
@@ -2029,7 +2035,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="input" stdset="0">
         <bool>true</bool>
@@ -5435,7 +5441,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <enum>Qt::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>no update</string>
+            <string>manual</string>
            </property>
            <property name="checked">
             <bool>true</bool>

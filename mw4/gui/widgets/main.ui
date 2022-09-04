@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -5116,114 +5116,21 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="verticalSpacing">
           <number>1</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLineEdit" name="directWeatherTemp">
-           <property name="enabled">
-            <bool>true</bool>
+         <item row="4" column="0">
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
-           <property name="minimumSize">
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>0</width>
-             <height>20</height>
+             <width>20</width>
+             <height>40</height>
             </size>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>1000</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="mouseTracking">
-            <bool>false</bool>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="acceptDrops">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::RightToLeft</enum>
-           </property>
-           <property name="text">
-            <string>-</string>
-           </property>
-           <property name="maxLength">
-            <number>8</number>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
+          </spacer>
          </item>
          <item row="1" column="0">
           <widget class="QLineEdit" name="directWeatherPress">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>1000</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="mouseTracking">
-            <bool>false</bool>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="acceptDrops">
-            <bool>false</bool>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::RightToLeft</enum>
-           </property>
-           <property name="text">
-            <string>-</string>
-           </property>
-           <property name="maxLength">
-            <number>8</number>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLineEdit" name="directWeatherDewPoint">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -5328,18 +5235,111 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
-          <spacer name="verticalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+         <item row="0" column="0">
+          <widget class="QLineEdit" name="directWeatherTemp">
+           <property name="enabled">
+            <bool>true</bool>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="minimumSize">
             <size>
-             <width>20</width>
-             <height>40</height>
+             <width>0</width>
+             <height>20</height>
             </size>
            </property>
-          </spacer>
+           <property name="maximumSize">
+            <size>
+             <width>1000</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="mouseTracking">
+            <bool>false</bool>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::RightToLeft</enum>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+           <property name="maxLength">
+            <number>8</number>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLineEdit" name="directWeatherDewPoint">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1000</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="mouseTracking">
+            <bool>false</bool>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::RightToLeft</enum>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+           <property name="maxLength">
+            <number>8</number>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -5396,42 +5396,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="verticalSpacing">
           <number>10</number>
          </property>
-         <item row="2" column="0">
-          <widget class="QRadioButton" name="refracNoTrack">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="toolTip">
-            <string>Update the refraction parameters to the mount when the mount is not tracking</string>
-           </property>
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-            <string>no tracking</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <spacer name="verticalSpacer_10">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="1" column="0">
           <widget class="QRadioButton" name="refracCont">
            <property name="font">
@@ -5451,28 +5415,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <string>continously</string>
            </property>
            <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QPushButton" name="setRefractionManual">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="toolTip">
-            <string>Pushes the refraction temperature and pressure to mount from the selected source</string>
-           </property>
-           <property name="text">
-            <string>Push 
- manually 
-to mount</string>
-           </property>
-           <property name="flat">
             <bool>false</bool>
            </property>
           </widget>
@@ -5497,6 +5439,42 @@ to mount</string>
            </property>
            <property name="checked">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <spacer name="verticalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0">
+          <widget class="QRadioButton" name="refracNoTrack">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>10</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Update the refraction parameters to the mount when the mount is not tracking</string>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>no tracking</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -20533,7 +20511,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -29827,7 +29805,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>refracNone</tabstop>
   <tabstop>refracCont</tabstop>
   <tabstop>refracNoTrack</tabstop>
-  <tabstop>setRefractionManual</tabstop>
   <tabstop>tableSeeing</tabstop>
   <tabstop>almanacCivil</tabstop>
   <tabstop>almanacNautical</tabstop>

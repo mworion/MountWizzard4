@@ -8,7 +8,7 @@ Security updates will be supported for version
 +----------+---------------+
 | Version  | Supported     |
 |----------+-------------- +
-| 2.0.x    | yes           |
+| 2.x.x    | yes           |
 | 1.1.x    | yes           |
 | 1.0.x    | no            |
 | < 1.0    | no            |

@@ -787,6 +787,7 @@ class Mount(QObject):
         weatherPressure = 1000.0
         weatherDewPoint = 0.0
         weatherHumidity = 50
+        weatherAge = 1
 
         @staticmethod
         def timeToMeridian():

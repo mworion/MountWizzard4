@@ -5426,7 +5426,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QRadioButton" name="refracNone">
+          <widget class="QRadioButton" name="refracManual">
            <property name="font">
             <font>
              <family>Arial</family>
@@ -29808,7 +29808,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>onlineWeatherGroup</tabstop>
   <tabstop>sensorWeatherGroup</tabstop>
   <tabstop>directWeatherGroup</tabstop>
-  <tabstop>refracNone</tabstop>
+  <tabstop>refracManual</tabstop>
   <tabstop>refracCont</tabstop>
   <tabstop>refracNoTrack</tabstop>
   <tabstop>tableSeeing</tabstop>

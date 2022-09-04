@@ -376,7 +376,7 @@ def test_updateWindowsStats_2(function):
 
 def test_updateDeviceStats_1(function):
     function.deviceStat = {'online': True}
-    function.ui.refracNone.setChecked(False)
+    function.ui.refracManual.setChecked(False)
     function.refractionSource = 'online'
     suc = function.updateDeviceStats()
     assert suc

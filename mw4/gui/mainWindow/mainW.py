@@ -695,24 +695,17 @@ class MainWindow(
 
     def updateDeviceStats(self):
         """
-        updateDeviceStats sets the colors in main window upper bar for getting
-        important overview, which functions are available.
-
-        the refraction sources etc are defined in tabEnviron, but it is optimal
-        setting the selected source right at this point as it is synchronous if
-        state is switching
-
         :return: True for test purpose
         """
         refracOn = self.app.mount.setting.statusRefraction == 1
+        isManual = self.ui.refracManual.isChecked()
         if not refracOn:
             self.deviceStat['refraction'] = None
-        elif self.refractionSource in self.deviceStat:
-            source = self.deviceStat[self.refractionSource]
-            mount = not self.ui.refracNone.isChecked()
-            self.deviceStat['refraction'] = source and mount
+        elif isManual:
+            self.deviceStat['refraction'] = True
         else:
-            self.deviceStat['refraction'] = False
+            isSource = self.deviceStat.get(self.refractionSource, False)
+            self.deviceStat['refraction'] = isSource
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device) is None:

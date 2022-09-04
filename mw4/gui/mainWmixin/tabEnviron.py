@@ -62,7 +62,7 @@ class Environ:
         self.ui.onlineWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.sensorWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.directWeatherGroup.clicked.connect(self.selectRefractionSource)
-        self.ui.refracNone.clicked.connect(self.setRefractionUpdateType)
+        self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
@@ -83,7 +83,7 @@ class Environ:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.refracNone.setChecked(config.get('refracNone', False))
+        self.ui.refracManual.setChecked(config.get('refracManual', False))
         self.ui.refracCont.setChecked(config.get('refracCont', False))
         self.ui.refracNoTrack.setChecked(config.get('refracNoTrack', False))
         self.refractionSource = config.get('refractionSource', '')
@@ -95,7 +95,7 @@ class Environ:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['refracNone'] = self.ui.refracNone.isChecked()
+        config['refracManual'] = self.ui.refracManual.isChecked()
         config['refracCont'] = self.ui.refracCont.isChecked()
         config['refracNoTrack'] = self.ui.refracNoTrack.isChecked()
         config['refractionSource'] = self.refractionSource
@@ -110,7 +110,7 @@ class Environ:
 
         setting = self.app.mount.setting
         if setting.weatherStatus == 0:
-            self.ui.refracNone.setChecked(True)
+            self.ui.refracManual.setChecked(True)
         elif setting.weatherStatus == 1:
             self.ui.refracNoTrack.setChecked(True)
         elif setting.weatherStatus == 2:
@@ -129,7 +129,7 @@ class Environ:
             return suc
 
         # otherwise, we have to switch it on or off
-        if self.ui.refracNone.isChecked():
+        if self.ui.refracManual.isChecked():
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
         elif self.ui.refracNoTrack.isChecked():
             suc = self.app.mount.setting.setDirectWeatherUpdateType(1)
@@ -251,7 +251,7 @@ class Environ:
         temp, press = self.movingAverageRefractionParameters()
         if temp is None or press is None:
             return False
-        if self.ui.refracNone.isChecked():
+        if self.ui.refracManual.isChecked():
             return False
         if self.ui.refracNoTrack.isChecked():
             if self.app.mount.obsSite.status == 0:

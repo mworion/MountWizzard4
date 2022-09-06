@@ -27,6 +27,7 @@ import unittest.mock as mock
 # local import
 from logic.profiles.profile import convertProfileData, blendProfile, defaultConfig
 from logic.profiles.profile import loadProfile, saveProfile
+from logic.profiles.profile import convertKeyData, replaceKeys
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -37,6 +38,23 @@ def setup():
     f = 'tests/workDir/config/profile'
     if os.path.isfile(f):
         os.remove(f)
+
+
+def test_replaceKeys():
+    keyDict = {'old': 'new'}
+    data = {'test': {
+        'out': {
+            'old': 10,
+        }
+    }}
+    val = replaceKeys(data, keyDict)
+    assert 'new' in val['test']['out']
+
+
+def test_convertKeyData():
+    i = {'horizonFileName': 'test'}
+    r = convertKeyData(i)
+    assert 'horizonMaskFileName' in r
 
 
 def test_convertProfileData_1():
@@ -56,15 +74,6 @@ def test_convertProfileData_2():
 
 
 def test_convertProfileData_3():
-    data = {
-        'version': '4.0',
-        'mainW': {},
-    }
-    val = convertProfileData(data)
-    assert val['version'] == '4.0'
-
-
-def test_convertProfileData_4():
     data = {
         'version': '4.0',
         'hemisphereW': {},

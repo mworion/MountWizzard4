@@ -145,6 +145,7 @@ setup(
         'websocket-client==1.3.3',
         'hidapi==0.12.0.post2',
         'range-key-dict==1.1.0',
+        'ndicts==0.1.0',
         'packaging==21.3',
         'lz4==4.0.2',
         'xisf==0.9.0',

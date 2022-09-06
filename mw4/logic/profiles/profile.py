@@ -20,11 +20,48 @@ import logging
 import os
 import json
 
+# external libraries
+from ndicts.ndicts import NestedDict
+
 # local imports
 from base.loggerMW import setupLogging
 
 setupLogging()
 log = logging.getLogger()
+
+
+def replaceKeys(oldDict, keyDict):
+    """
+    :param oldDict:
+    :param keyDict:
+    :return:
+    """
+    newDict = {}
+    for key in oldDict.keys():
+        newKey = keyDict.get(key, key)
+        if isinstance(oldDict[key], dict):
+            newDict[newKey] = replaceKeys(oldDict[key], keyDict)
+        else:
+            newDict[newKey] = oldDict[key]
+    return newDict
+
+
+def convertKeyData(data):
+    """
+    :param data:
+    :return:
+    """
+    keyDict = {
+        'test11': 'new11',
+        'test12': 'new12',
+        'test21': 'new21',
+        'test22': 'new22',
+        'test32': 'xxxx',
+        'addW': 'newW',
+        'oldW': 'shifted',
+    }
+    data = replaceKeys(data, keyDict)
+    return data
 
 
 def convertProfileData(data):
@@ -41,16 +78,12 @@ def convertProfileData(data):
         return data
 
     log.info(f'Conversion from [{data.get("version")}] to [4.1]')
-    if 'driversData' in data['mainW']:
-        data['driversData'] = data['mainW']['driversData']
-        data['version'] = '4.1'
-        del data['mainW']['driversData']
+    data = NestedDict(data)
 
-    horizonFile = data['mainW'].get('horizonFileName', '')
-    if 'hemisphereW' in data:
-        data['hemisphereW']['horizonMaskFileName'] = horizonFile
-    else:
-        data['hemisphereW'] = {'horizonMaskFileName': horizonFile}
+    data['driversData'] = data['mainW', 'driversData']
+    data['version'] = '4.1'
+    del data['mainW']['driversData']
+    data = data.to_dict()
     return data
 
 

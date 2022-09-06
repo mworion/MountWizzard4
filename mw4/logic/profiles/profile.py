@@ -100,10 +100,12 @@ def convertProfileData(data):
 
     log.info(f'Conversion from [{data.get("version")}] to [4.1]')
     data = NestedDict(data)
-
     data['driversData'] = data['mainW', 'driversData']
+    del data['mainW']['driversData']
     data['driversData', 'plateSolve'] = data['driversData', 'astrometry']
+    del data['driversData']['astrometry']
     data['hemisphereW', 'horizonMaskFileName'] = data['mainW', 'horizonFileName']
+    del data['mainW']['horizonFileName']
     data['version'] = '4.1'
     data = data.to_dict()
     return data

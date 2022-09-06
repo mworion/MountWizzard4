@@ -230,7 +230,7 @@ class SettDevice:
             else:
                 self.setDefaultData(driver, configD)
 
-        self.driversData.update(configD.get('driversData', {}))
+        self.driversData = configD.get('driversData', {})
         self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()

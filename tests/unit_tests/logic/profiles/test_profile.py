@@ -52,9 +52,10 @@ def test_replaceKeys():
 
 
 def test_convertKeyData():
-    i = {'horizonFileName': 'test'}
+    i = {'checkASCOMAutoConnect': 'test'}
     r = convertKeyData(i)
-    assert 'horizonMaskFileName' in r
+    assert 'checkASCOMAutoConnect' not in r
+    assert 'autoConnectASCOM' in r
 
 
 def test_convertProfileData_1():
@@ -78,13 +79,21 @@ def test_convertProfileData_3():
         'version': '4.0',
         'hemisphereW': {},
         'mainW': {
-            'driversData': 'test'
+            'horizonFileName': 'test',
+            'driversData': {
+                'astrometry': {
+                    'test1': 1,
+                    'test2': 2
+                }
+            }
         },
     }
     val = convertProfileData(data)
     assert val['version'] == '4.1'
     assert 'driversData' in val
     assert 'driversData' not in val['mainW']
+    assert 'astrometry' not in val['driversData']
+    assert 'plateSolve' in val['driversData']
 
 
 def test_blendProfile():

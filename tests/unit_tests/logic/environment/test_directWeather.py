@@ -53,6 +53,7 @@ def test_updateData_2(function):
         weatherPressure = 900
         weatherHumidity = 50
         weatherDewPoint = 10
+        weatherAge = 10
 
     function.enabled = True
     function.running = True
@@ -67,6 +68,7 @@ def test_updateData_3(function):
         weatherPressure = 900
         weatherHumidity = 50
         weatherDewPoint = 10
+        weatherAge = 10
 
     function.enabled = True
     function.running = False

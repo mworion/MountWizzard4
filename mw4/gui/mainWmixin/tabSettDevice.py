@@ -231,7 +231,7 @@ class SettDevice:
                 self.setDefaultData(driver, configD)
 
         self.driversData.update(configD.get('driversData', {}))
-        self.ui.checkASCOMAutoConnect.setChecked(config.get('checkASCOMAutoConnect', False))
+        self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()
 
@@ -244,7 +244,7 @@ class SettDevice:
         config = self.app.config['mainW']
         configD = self.app.config
         configD['driversData'] = self.driversData
-        config['checkASCOMAutoConnect'] = self.ui.checkASCOMAutoConnect.isChecked()
+        config['autoConnectASCOM'] = self.ui.autoConnectASCOM.isChecked()
         return True
 
     def setupDeviceGui(self):
@@ -487,7 +487,7 @@ class SettDevice:
 
         :return: true for test purpose
         """
-        isAscomAutoConnect = self.ui.checkASCOMAutoConnect.isChecked()
+        isAscomAutoConnect = self.ui.autoConnectASCOM.isChecked()
         for driver in self.drivers:
             if driver not in self.driversData:
                 continue

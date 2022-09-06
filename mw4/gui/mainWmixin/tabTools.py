@@ -122,7 +122,7 @@ class Tools(object):
         defaultDir = self.app.mwGlob['imageDir']
         self.ui.renameDir.setText(config.get('renameDir', defaultDir))
         self.ui.newObjectName.setText(config.get('newObjectName', ''))
-        self.ui.checkIncludeSubdirs.setChecked(config.get('checkIncludeSubdirs', False))
+        self.ui.includeSubdirs.setChecked(config.get('includeSubdirs', False))
         for name, ui in self.selectorsDropDowns.items():
             ui.setCurrentIndex(config.get(name, 0))
 
@@ -146,7 +146,7 @@ class Tools(object):
         config = self.app.config['mainW']
         config['renameDir'] = self.ui.renameDir.text()
         config['newObjectName'] = self.ui.newObjectName.text()
-        config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
+        config['includeSubdirs'] = self.ui.includeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
 
@@ -309,7 +309,7 @@ class Tools(object):
         :return: True for test purpose
         """
         pathDir = self.ui.renameDir.text()
-        includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
+        includeSubdirs = self.ui.includeSubdirs.isChecked()
         if not os.path.isdir(pathDir):
             self.msg.emit(2, 'Tools', 'Rename error',
                           'No valid input directory given')

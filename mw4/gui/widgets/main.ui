@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -4163,7 +4163,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <property name="title">
        <string>Epoch</string>
       </property>
-      <widget class="QRadioButton" name="checkJNow">
+      <widget class="QRadioButton" name="coordsJNow">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -4198,7 +4198,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QRadioButton" name="checkJ2000">
+      <widget class="QRadioButton" name="coordsJ2000">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -17710,7 +17710,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -19557,7 +19557,7 @@ Next point in time when satellite settles.</string>
          <string>Position 2</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkIncludeSubdirs">
+       <widget class="QCheckBox" name="includeSubdirs">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -21597,7 +21597,7 @@ Next point in time when satellite settles.</string>
          <string>Disconnect</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkASCOMAutoConnect">
+       <widget class="QCheckBox" name="autoConnectASCOM">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -29370,7 +29370,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="saveProfile">
+       <widget class="QPushButton" name="saveConfig">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -29745,8 +29745,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>openV3</tabstop>
   <tabstop>openV4</tabstop>
   <tabstop>mainTabWidget</tabstop>
-  <tabstop>checkJ2000</tabstop>
-  <tabstop>checkJNow</tabstop>
+  <tabstop>coordsJ2000</tabstop>
+  <tabstop>coordsJNow</tabstop>
   <tabstop>tracking</tabstop>
   <tabstop>setLunarTracking</tabstop>
   <tabstop>followSat</tabstop>
@@ -30019,7 +30019,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>relayButton6</tabstop>
   <tabstop>relayButton7</tabstop>
   <tabstop>renameDir</tabstop>
-  <tabstop>checkIncludeSubdirs</tabstop>
+  <tabstop>includeSubdirs</tabstop>
   <tabstop>renameInputSelect</tabstop>
   <tabstop>newObjectName</tabstop>
   <tabstop>rename1</tabstop>
@@ -30085,7 +30085,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>telescopeSetup</tabstop>
   <tabstop>ascomConnect</tabstop>
   <tabstop>ascomDisconnect</tabstop>
-  <tabstop>checkASCOMAutoConnect</tabstop>
+  <tabstop>autoConnectASCOM</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>port3490</tabstop>
   <tabstop>port3492</tabstop>

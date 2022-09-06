@@ -592,7 +592,7 @@ def test_startDrivers_1(function):
 
 
 def test_startDrivers_2(function):
-    function.ui.checkASCOMAutoConnect.setChecked(False)
+    function.ui.autoConnectASCOM.setChecked(False)
     function.driversData = {
         'telescope': {
             'framework': 'ascom',
@@ -607,7 +607,7 @@ def test_startDrivers_2(function):
 
 
 def test_startDrivers_3(function):
-    function.ui.checkASCOMAutoConnect.setChecked(True)
+    function.ui.autoConnectASCOM.setChecked(True)
     function.driversData = {
         'telescope': {
             'framework': 'ascom',
@@ -622,7 +622,7 @@ def test_startDrivers_3(function):
 
 
 def test_startDrivers_4(function):
-    function.ui.checkASCOMAutoConnect.setChecked(False)
+    function.ui.autoConnectASCOM.setChecked(False)
     function.driversData = {
         'telescope': {
             'framework': 'indi',

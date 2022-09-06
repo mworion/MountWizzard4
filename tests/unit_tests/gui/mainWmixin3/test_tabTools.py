@@ -267,7 +267,7 @@ def test_renameRunGUI_2(function):
 
 
 def test_renameRunGUI_3(function):
-    function.ui.checkIncludeSubdirs.setChecked(True)
+    function.ui.includeSubdirs.setChecked(True)
     function.ui.renameDir.setText('tests/workDir/image')
     suc = function.renameRunGUI()
     assert not suc

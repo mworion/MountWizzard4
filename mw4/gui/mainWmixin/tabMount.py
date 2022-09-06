@@ -80,8 +80,8 @@ class Mount(object):
         :return: True for test purpose
         """
         config = self.app.config.get('mainW', {})
-        self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
-        self.ui.checkJNow.setChecked(config.get('checkJNow', False))
+        self.ui.coordsJ2000.setChecked(config.get('coordsJ2000', False))
+        self.ui.coordsJNow.setChecked(config.get('coordsJNow', False))
         self.updateLocGUI(self.app.mount.obsSite)
         return True
 
@@ -90,8 +90,8 @@ class Mount(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['checkJ2000'] = self.ui.checkJ2000.isChecked()
-        config['checkJNow'] = self.ui.checkJNow.isChecked()
+        config['coordsJ2000'] = self.ui.coordsJ2000.isChecked()
+        config['coordsJNow'] = self.ui.coordsJNow.isChecked()
         return True
 
     def updatePointGUI(self, obs):
@@ -99,7 +99,7 @@ class Mount(object):
         :param obs:
         :return:    True if ok for testing
         """
-        isJ2000 = self.ui.checkJ2000.isChecked()
+        isJ2000 = self.ui.coordsJ2000.isChecked()
         isValid = obs.raJNow is not None
         isValid = isValid and obs.decJNow is not None
         isValid = isValid and obs.timeJD is not None

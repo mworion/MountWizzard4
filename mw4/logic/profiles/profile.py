@@ -52,13 +52,25 @@ def convertKeyData(data):
     :return:
     """
     keyDict = {
-        'test11': 'new11',
-        'test12': 'new12',
-        'test21': 'new21',
-        'test22': 'new22',
-        'test32': 'xxxx',
-        'addW': 'newW',
-        'oldW': 'shifted',
+        'checkASCOMAutoConnect': 'autoConnectASCOM',
+        'checkAutoDeleteHorizon': 'autoDeleteHorizon',
+        'checkAutoDeleteMeridian': 'autoDeleteMeridian',
+        'checkAutomaticTelescope': 'automaticTelescope',
+        'checkAvoidFlip': 'avoidFlip',
+        'checkFastDownload': 'fastDownload',
+        'checkIncludeSubdirs': 'includeSubdirs',
+        'checkJ2000': 'coordsJ2000',
+        'checkJNow': 'coordsJNow',
+        'checkKeepImages': 'keepModelImages',
+        'checkRefracCont': 'refracCont',
+        'checkRefracNoTrack': 'refracNoTrack',
+        'checkRefracNone': 'refracManual',
+        'checkSafetyMarginHorizon': 'useSafetyMargin',
+        'checkSortEW': 'sortEW',
+        'checkSortHL': 'sortHL',
+        'checkSortNothing': 'sortNothing',
+        'safetyMarginHorizon': 'safetyMarginValue',
+        'syncNotTracking': 'syncTimeNotTrack',
     }
     data = replaceKeys(data, keyDict)
     return data
@@ -81,8 +93,9 @@ def convertProfileData(data):
     data = NestedDict(data)
 
     data['driversData'] = data['mainW', 'driversData']
+    data['driversData', 'plateSolve'] = data['driversData', 'astrometry']
+    data['hemisphereW', 'horizonMaskFileName'] = data['mainW', 'horizonFileName']
     data['version'] = '4.1'
-    del data['mainW']['driversData']
     data = data.to_dict()
     return data
 

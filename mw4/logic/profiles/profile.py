@@ -71,6 +71,15 @@ def convertKeyData(data):
         'checkSortNothing': 'sortNothing',
         'safetyMarginHorizon': 'safetyMarginValue',
         'syncNotTracking': 'syncTimeNotTrack',
+        'checkShowAlignStar': 'showAlignStar',
+        'checkShowCelestial': 'showCelestial',
+        'checkShowMeridian': 'showMeridian',
+        'checkShowSlewPath': 'showSlewPath',
+        'checkUseHorizon': 'showHorizon',
+        'useTerrain': 'showTerrain',
+        'checkAutoSolve': 'autoSolve',
+        'checkEmbedData': 'embedData',
+        'checkShowCrosshair': 'showCrosshair',
     }
     data = replaceKeys(data, keyDict)
     return data

@@ -29370,7 +29370,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="saveConfig">
+       <widget class="QPushButton" name="saveProfile">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>

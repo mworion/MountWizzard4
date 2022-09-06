@@ -9693,7 +9693,7 @@ class Ui_MainWindow(object):
         font.setBold(False)
         self.saveConfig.setFont(font)
         self.saveConfig.setStyleSheet("")
-        self.saveConfig.setObjectName("saveConfig")
+        self.saveConfig.setObjectName("saveProfile")
         self.horizontalLayout_5.addWidget(self.saveConfig)
         self.verticalLayout.addLayout(self.horizontalLayout_5)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()

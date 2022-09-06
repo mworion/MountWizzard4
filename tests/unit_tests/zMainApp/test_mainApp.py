@@ -18,8 +18,6 @@
 # standard libraries
 import pytest
 import os
-import glob
-import json
 import unittest.mock as mock
 import logging
 import platform
@@ -49,10 +47,6 @@ def app(qapp):
               'modelDir': 'tests/workDir/model',
               'workDir': 'tests/workdir',
               }
-
-    files = glob.glob('tests/workDir/config/*.cfg')
-    for f in files:
-        os.remove(f)
 
     shutil.copy('tests/testData/de440_mw4.bsp', 'tests/workDir/data/de440_mw4.bsp')
     shutil.copy('tests/testData/test.run', 'tests/workDir/test.run')
@@ -253,101 +247,6 @@ def test_quit_1(app):
                                'stopTimers'):
             suc = app.quit()
             assert suc
-
-
-def test_defaultConfig(app):
-    val = app.defaultConfig()
-    assert val
-
-
-def test_loadConfig_1(app):
-    val = app.loadConfig()
-    assert val == {'profileName': 'config', 'version': '5.0'}
-
-
-def test_loadConfig_2(app):
-    with open('tests/workDir/config/profile', 'w') as outfile:
-        outfile.write('config')
-
-    val = app.loadConfig()
-    assert val == {'profileName': 'config', 'version': '5.0'}
-
-
-def test_loadConfig_3(app):
-    with open('tests/workDir/config/profile', 'w') as outfile:
-        outfile.write('config')
-    config = app.defaultConfig()
-
-    with open('tests/workDir/config/config.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-
-    val = app.loadConfig('config')
-    assert val == {'profileName': 'config', 'version': '5.0'}
-
-
-def test_loadConfig_4(app):
-    with open('tests/workDir/config/profile', 'w') as outfile:
-        outfile.write('config')
-    config = app.defaultConfig()
-    config['version'] = '5.0'
-
-    with open('tests/workDir/config/config.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-
-    with mock.patch.object(json,
-                           'load',
-                           side_effect=Exception()):
-        suc = app.loadConfig()
-    val = app.loadConfig('config')
-    assert val == {'profileName': 'config', 'version': '5.0'}
-
-
-def test_saveConfig_1(app):
-    app.config = {'profileName': 'config'}
-
-    suc = app.saveConfig()
-    assert suc
-    assert os.path.isfile('tests/workDir/config/config.cfg')
-    assert os.path.isfile('tests/workDir/config/profile')
-    with open('tests/workDir/config/profile', 'r') as infile:
-        name = infile.readline().strip()
-    assert name == 'config'
-
-
-def test_saveConfig_2(app):
-    app.config = {'profileName': 'config'}
-
-    suc = app.saveConfig('config')
-    assert suc
-    assert os.path.isfile('tests/workDir/config/config.cfg')
-    assert os.path.isfile('tests/workDir/config/profile')
-    with open('tests/workDir/config/profile', 'r') as infile:
-        name = infile.readline().strip()
-    assert name == 'config'
-
-
-def test_saveConfig_3(app):
-    app.config = {'profileName': 'new'}
-
-    suc = app.saveConfig('new')
-    assert suc
-    assert os.path.isfile('tests/workDir/config/new.cfg')
-    assert os.path.isfile('tests/workDir/config/profile')
-    with open('tests/workDir/config/profile', 'r') as infile:
-        name = infile.readline().strip()
-    assert name == 'new'
-
-
-def test_saveConfig_4(app):
-    app.config = {'profileName': 'new'}
-
-    suc = app.saveConfig()
-    assert suc
-    assert os.path.isfile('tests/workDir/config/new.cfg')
-    assert os.path.isfile('tests/workDir/config/profile')
-    with open('tests/workDir/config/profile', 'r') as infile:
-        name = infile.readline().strip()
-    assert name == 'new'
 
 
 def test_loadMountData_1(app):

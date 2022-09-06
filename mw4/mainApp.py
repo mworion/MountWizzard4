@@ -54,7 +54,7 @@ from logic.powerswitch.pegasusUPB import PegasusUPB
 from logic.measure.measure import MeasureData
 from logic.remote.remote import Remote
 from logic.plateSolve.plateSolve import PlateSolve
-from logic.profiles.profileConvert import convertProfileData
+from logic.profiles.profile import loadProfile
 
 
 class MountWizzard4(QObject):
@@ -124,7 +124,7 @@ class MountWizzard4(QObject):
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(30)
         self.msg.connect(self.writeMessageQueue)
-        self.config = self.loadConfig()
+        self.config = loadProfile(configDir=self.mwGlob['configDir'])
         self.deviceStat = {
             'dome': None,
             'mount': None,
@@ -319,75 +319,6 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, 'System', 'Lifecycle',
                               'MountWizzard4 manual stopped'))
         self.application.quit()
-        return True
-
-    @staticmethod
-    def defaultConfig(config=None):
-        """
-        :param config:
-        :return:
-        """
-        if config is None:
-            config = dict()
-
-        config['profileName'] = 'config'
-        config['version'] = '5.0'
-        return config
-
-    def loadConfig(self, name=None):
-        """
-        loadConfig loads a json file from disk and stores it to the config
-        dicts for persistent data. if a file path is given, that's the relevant
-        file, otherwise loadConfig loads from th default file, which is
-        config.cfg
-
-        :param      name:   name of the config file
-        :return:    success if file could be loaded
-        """
-        configDir = self.mwGlob['configDir']
-        if name is None:
-            profileFile = f'{configDir}/profile'
-            if os.path.isfile(profileFile):
-                with open(profileFile, 'r') as profile:
-                    name = profile.readline().strip()
-            else:
-                name = 'config'
-
-        fileName = f'{configDir}/{name}.cfg'
-
-        if not os.path.isfile(fileName):
-            self.log.info(f'Config file {fileName} not existing')
-            return self.defaultConfig()
-
-        try:
-            with open(fileName, 'r') as configFile:
-                configData = json.load(configFile)
-        except Exception as e:
-            self.log.critical(f'Cannot parse: {fileName}, error: {e}')
-            return self.defaultConfig()
-        else:
-            configData['profileName'] = name
-            return convertProfileData(configData)
-
-    def saveConfig(self, name=None):
-        """
-        :param      name:   name of the config file
-        :return:    success
-        """
-        configDir = self.mwGlob['configDir']
-        if name is None:
-            name = self.config['profileName']
-
-        profileFile = f'{configDir}/profile'
-        with open(profileFile, 'w') as profile:
-            profile.writelines(f'{name}')
-
-        fileName = configDir + '/' + name + '.cfg'
-        with open(fileName, 'w') as outfile:
-            json.dump(self.config,
-                      outfile,
-                      sort_keys=True,
-                      indent=4)
         return True
 
     def loadHorizonData(self):

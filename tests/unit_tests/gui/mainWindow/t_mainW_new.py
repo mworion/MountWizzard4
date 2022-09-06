@@ -513,7 +513,7 @@ def test_mountShutdown2(function, qtbot):
 
 def test_saveProfile1(function, qtbot):
     with mock.patch.object(function.app,
-                           'saveConfig',
+                           'saveProfile',
                            return_value=True):
         with qtbot.waitSignal(function.app.message) as blocker:
             app.saveProfile()
@@ -571,7 +571,7 @@ def test_saveProfileAs1(function, qtbot):
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
         with mock.patch.object(function.app,
-                               'saveConfig',
+                               'saveProfile',
                                return_value=True):
             with qtbot.waitSignal(function.app.message) as blocker:
                 suc = function.saveProfileAs()
@@ -584,7 +584,7 @@ def test_saveProfileAs2(function, qtbot):
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
         with mock.patch.object(function.app,
-                               'saveConfig',
+                               'saveProfile',
                                return_value=False):
             with qtbot.waitSignal(function.app.message) as blocker:
                 suc = function.saveProfileAs()
@@ -602,7 +602,7 @@ def test_saveProfileAs3(function, qtbot):
 
 def test_saveProfile2(function, qtbot):
     with mock.patch.object(function.app,
-                           'saveConfig',
+                           'saveProfile',
                            return_value=False):
         with qtbot.waitSignal(function.app.message) as blocker:
             function.saveProfile()

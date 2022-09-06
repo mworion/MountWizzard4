@@ -45,7 +45,7 @@ class Coordinates:
     self._targetAlt = 0
     self._targetAz = 0
     self._actAngRa = 0
-    self._actAngDec = =
+    self._actAngDec = 0
     self._targetAngRa = 0
     self._tragetAngDec = 0
     

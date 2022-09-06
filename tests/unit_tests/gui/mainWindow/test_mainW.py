@@ -145,9 +145,9 @@ def test_closeEvent_1(function):
 def test_quitSave_1(function):
     function.ui.profile.setText('test')
     with mock.patch.object(function,
-                           'saveProfile'):
-        with mock.patch.object(function.app,
-                               'saveConfig'):
+                           'saveConfig'):
+        with mock.patch.object(gui.mainWindow.mainW,
+                               'saveProfile'):
             with mock.patch.object(function,
                                    'close'):
                 suc = function.quitSave()
@@ -716,27 +716,27 @@ def test_mountShutdown2(function):
         assert not suc
 
 
-def test_saveProfile1(function):
+def test_saveConfig1(function):
     with mock.patch.object(function,
                            'storeConfig'):
         with mock.patch.object(function.app,
                                'storeConfig'):
-            with mock.patch.object(function.app,
-                                   'saveConfig',
+            with mock.patch.object(gui.mainWindow.mainW,
+                                   'saveProfile',
                                    return_value=True):
-                suc = function.saveProfile()
+                suc = function.saveConfig()
                 assert suc
 
 
-def test_saveProfile2(function):
+def test_saveConfig2(function):
     with mock.patch.object(function,
                            'storeConfig'):
         with mock.patch.object(function.app,
                                'storeConfig'):
-            with mock.patch.object(function.app,
-                                   'saveConfig',
+            with mock.patch.object(gui.mainWindow.mainW,
+                                   'saveProfile',
                                    return_value=False):
-                suc = function.saveProfile()
+                suc = function.saveConfig()
                 assert not suc
 
 
@@ -769,8 +769,8 @@ def test_loadProfile_2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(function.app,
-                               'loadConfig',
+        with mock.patch.object(gui.mainWindow.mainW,
+                               'loadProfile',
                                return_value={}):
             with mock.patch.object(function,
                                    'switchProfile'):
@@ -782,8 +782,8 @@ def test_loadProfile_3(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(function.app,
-                               'loadConfig',
+        with mock.patch.object(gui.mainWindow.mainW,
+                               'loadProfile',
                                return_value={'test': 1}):
             with mock.patch.object(function,
                                    'switchProfile'):
@@ -803,13 +803,13 @@ def test_addProfile_2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(function.app,
-                               'loadConfig',
+        with mock.patch.object(gui.mainWindow.mainW,
+                               'loadProfile',
                                return_value={}):
             with mock.patch.object(function,
                                    'switchProfile'):
-                with mock.patch.object(function.app,
-                                       'blendConfig'):
+                with mock.patch.object(gui.mainWindow.mainW,
+                                       'blendProfile'):
                     suc = function.addProfile()
                     assert not suc
 
@@ -818,52 +818,52 @@ def test_addProfile_3(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(function.app,
-                               'loadConfig',
+        with mock.patch.object(gui.mainWindow.mainW,
+                               'loadProfile',
                                return_value={'test': 1}):
             with mock.patch.object(function,
                                    'switchProfile'):
-                with mock.patch.object(function.app,
-                                       'blendConfig'):
+                with mock.patch.object(gui.mainWindow.mainW,
+                                       'blendProfile'):
                     suc = function.addProfile()
                     assert suc
 
 
-def test_saveProfileAs1(function):
+def test_saveConfigAs1(function):
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(function.app,
-                               'saveConfig',
+        with mock.patch.object(gui.mainWindow.mainW,
+                               'saveProfile',
                                return_value=True):
             with mock.patch.object(function.app,
                                    'storeConfig'):
                 with mock.patch.object(function,
                                        'storeConfig'):
-                    suc = function.saveProfileAs()
+                    suc = function.saveConfigAs()
                     assert suc
 
 
-def test_saveProfileAs2(function):
+def test_saveConfigAs2(function):
     with mock.patch.object(function,
                            'saveFile',
                            return_value=('config', 'test', 'cfg')):
-        with mock.patch.object(function.app,
-                               'saveConfig',
+        with mock.patch.object(gui.mainWindow.mainW,
+                               'saveProfile',
                                return_value=False):
             with mock.patch.object(function.app,
                                    'storeConfig'):
                 with mock.patch.object(function,
                                        'storeConfig'):
-                    suc = function.saveProfileAs()
+                    suc = function.saveConfigAs()
                     assert suc
 
 
-def test_saveProfileAs3(function):
+def test_saveConfigAs3(function):
     with mock.patch.object(function,
                            'saveFile',
                            return_value=(None, None, 'cfg')):
-        suc = function.saveProfileAs()
+        suc = function.saveConfigAs()
         assert not suc
 
 

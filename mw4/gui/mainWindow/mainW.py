@@ -67,6 +67,7 @@ from gui.mainWmixin.tabSettDome import SettDome
 from gui.mainWmixin.tabSettParkPos import SettParkPos
 from gui.mainWmixin.tabSettRelay import SettRelay
 from gui.mainWmixin.tabSettMisc import SettMisc
+from logic.profiles.profile import loadProfile, saveProfile, blendProfile
 
 
 class MainWindow(
@@ -218,8 +219,8 @@ class MainWindow(
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.addFrom.clicked.connect(self.addProfile)
-        self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
-        self.ui.saveConfig.clicked.connect(self.saveProfile)
+        self.ui.saveConfigAs.clicked.connect(self.saveConfigAs)
+        self.ui.saveConfig.clicked.connect(self.saveConfig)
         self.app.seeingWeather.b = self.ui.label_b.property('a')
 
         for window in self.uiWindows:
@@ -329,8 +330,8 @@ class MainWindow(
         """
         :return:    true for test purpose
         """
-        self.saveProfile()
-        self.app.saveConfig()
+        self.app.storeConfig()
+        self.saveConfig()
         self.close()
         return True
 
@@ -955,7 +956,7 @@ class MainWindow(
         if not name:
             return False
 
-        config = self.app.loadConfig(name=name)
+        config = loadProfile(configDir=self.app.mwGlob['configDir'], name=name)
         if config:
             self.ui.profile.setText(name)
             self.msg.emit(1, 'System', 'Profile', f'loaded {name}')
@@ -983,7 +984,7 @@ class MainWindow(
         self.storeConfig()
         self.app.storeConfig()
         self.app.saveConfig()
-        configAdd = self.app.loadConfig(name=name)
+        configAdd = loadProfile(configDir=self.app.mwGlob['configDir'], name=name)
         if configAdd:
             self.ui.profileAdd.setText(name)
             profile = self.ui.profile.text()
@@ -995,11 +996,11 @@ class MainWindow(
                           f'{name}] cannot no be loaded')
             return False
 
-        config = self.app.blendConfig(config, configAdd)
+        config = blendProfile(config, configAdd)
         self.switchProfile(config)
         return True
 
-    def saveProfileAs(self):
+    def saveConfigAs(self):
         """
         :return:
         """
@@ -1012,7 +1013,9 @@ class MainWindow(
 
         self.storeConfig()
         self.app.storeConfig()
-        suc = self.app.saveConfig(name=name)
+        suc = saveProfile(configDir=self.app.mwGlob['configDir'],
+                          name=name,
+                          config=self.app.config)
         if suc:
             self.ui.profile.setText(name)
             self.msg.emit(1, 'System', 'Profile', f'saved {name}')
@@ -1022,15 +1025,15 @@ class MainWindow(
                           f'{name}] cannot no be saved')
         return True
 
-    def saveProfile(self):
+    def saveConfig(self):
         """
-        saveProfile calls save profile in main and sends a message to the user
-        about success.
         :return: nothing
         """
         self.storeConfig()
         self.app.storeConfig()
-        suc = self.app.saveConfig(name=self.ui.profile.text())
+        suc = saveProfile(configDir=self.app.mwGlob['configDir'],
+                          name=self.ui.profile.text(),
+                          config=self.app.config)
         if suc:
             self.ui.profileAdd.setText('-')
             self.msg.emit(1, 'System', 'Profile', 'Actual profile saved')

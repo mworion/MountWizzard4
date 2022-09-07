@@ -106,7 +106,11 @@ def convertProfileData(data):
     del data['driversData']['astrometry']
     data['hemisphereW', 'horizonMaskFileName'] = data['mainW', 'horizonFileName']
     del data['mainW']['horizonFileName']
-    # here we need to integrate the internal weather conversion
+    t = data['driversData', 'directWeather', 'frameworks', 'internal']
+    data['driversData', 'directWeather', 'frameworks', 'directWeather'] = t
+    del data['driversData']['directWeather']['frameworks']['internal']
+    data['driversData', 'directWeather', 'frameworks', 'directWeather',
+         'deviceName'] = 'On Mount'
     data['version'] = '4.1'
     data = data.to_dict()
     return data

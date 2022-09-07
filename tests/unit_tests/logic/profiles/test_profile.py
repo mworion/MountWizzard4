@@ -84,6 +84,13 @@ def test_convertProfileData_3():
                 'astrometry': {
                     'test1': 1,
                     'test2': 2
+                },
+                'directWeather': {
+                    'frameworks': {
+                        'internal': {
+                            'deviceName': 'Direct'
+                        }
+                    }
                 }
             }
         },
@@ -94,6 +101,11 @@ def test_convertProfileData_3():
     assert 'driversData' not in val['mainW']
     assert 'astrometry' not in val['driversData']
     assert 'plateSolve' in val['driversData']
+    assert 'directWeather' in val['driversData']['directWeather']['frameworks']
+    assert 'internal' not in val['driversData']['directWeather']['frameworks']
+    t = val['driversData']['directWeather']['frameworks']
+    assert 'On Mount' in t['directWeather']['deviceName']
+    assert 'Direct' not in t['directWeather']['deviceName']
 
 
 def test_blendProfile():

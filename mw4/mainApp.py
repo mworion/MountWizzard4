@@ -18,7 +18,6 @@
 # standard libraries
 import logging
 import os
-import json
 import sys
 from queue import Queue
 

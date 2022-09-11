@@ -58,6 +58,12 @@ def test_convertKeyData():
     assert 'autoConnectASCOM' in r
 
 
+def test_convertProfileData_0():
+    data = {}
+    val = convertProfileData(data)
+    assert 'version' not in val
+
+
 def test_convertProfileData_1():
     data = {
         'version': '4.1'

@@ -46,7 +46,7 @@ class OnlineWeather():
         # minimum set for driver package built in
         self.framework = ''
         self.run = {
-            'weather': self
+            'onlineWeather': self
         }
         self.deviceName = ''
 
@@ -54,7 +54,7 @@ class OnlineWeather():
         self.defaultConfig = {
             'framework': '',
             'frameworks': {
-                'weather': {
+                'onlineWeather': {
                     'deviceName': 'OnlineWeather',
                     'apiKey': '',
                     'hostaddress': 'api.openweathermap.org',

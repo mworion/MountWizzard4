@@ -225,16 +225,14 @@ class SettDevice:
             configD['driversData'] = {}
 
         for driver in self.drivers:
-            if driver in configD['driversData']:
-                self.checkStructureDriversData(driver, configD)
-            else:
+            if driver not in configD['driversData']:
                 self.setDefaultData(driver, configD)
 
-        self.driversData = configD.get('driversData', {})
+        self.driversData.clear()
+        self.driversData.update(configD.get('driversData', {}))
         self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()
-
         return True
 
     def storeConfig(self):
@@ -275,7 +273,6 @@ class SettDevice:
             framework = self.driversData[driver]['framework']
             index = self.findIndexValue(self.drivers[driver]['uiDropDown'], framework)
             self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
-
         return True
 
     def processPopupResults(self):

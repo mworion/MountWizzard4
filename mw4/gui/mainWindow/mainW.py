@@ -938,7 +938,8 @@ class MainWindow(
         """
         self.closeExtendedWindows()
         # self.stopDrivers()
-        self.app.config = config
+        self.app.config.clear()
+        self.app.config.update(config)
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
         self.initConfig()

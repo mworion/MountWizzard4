@@ -61,6 +61,8 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: system: support for python 3.10
 - add: system: support for up to 4 external RTSP streams or local cameras
 - add: help: local install of documentation in PDF format
+- add: profiles: partly takeover for some data and blending multiple profiles 
+- add: profiles: automatic translation from v2.2.x to 3.x
 - improve: GUI: layout for main window optimized and consistent and wording updates
 - improve: GUI: complete rework of charting: performance and functions
 - improve: GUI: clean up and optimize iers download messages
@@ -88,7 +90,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0a5',
+    version='3.0.0a6',
     packages=[
         'mw4',
         'mw4.base',

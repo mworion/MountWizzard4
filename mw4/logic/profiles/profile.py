@@ -22,6 +22,7 @@ import json
 
 # external libraries
 from ndicts.ndicts import NestedDict
+from packaging.utils import Version
 
 # local imports
 from base.loggerMW import setupLogging
@@ -93,7 +94,8 @@ def convertProfileData(data):
     :param      data: config data as dict
     :return:    data: config data as dict
     """
-    if data.get('version', '0.0') in ['0.0', '4.1']:
+    actVer = Version(data.get('version', '0.0'))
+    if actVer >= Version('4.1'):
         return data
     if 'mainW' not in data:
         return data

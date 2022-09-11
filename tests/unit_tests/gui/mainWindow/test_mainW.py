@@ -753,7 +753,7 @@ def test_switchProfile_1(function):
                                        return_value=loc):
                     with mock.patch.object(function,
                                            'stopDrivers'):
-                        suc = function.switchProfile('test')
+                        suc = function.switchProfile({'test': 1})
                         assert suc
 
 

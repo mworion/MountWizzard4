@@ -29,6 +29,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: GUI: reduced GUI configurable for a simpler user interface
 - add: video: support for up to 4 external RTSP streams or local cameras
 - add: video: adding authentication to video streams
+- add: video: adding support for HTTP and HTTPS streams
 - add: almanac: now supports UTC / local time
 - add: almanac: support set/rise times moon
 - add: environment: integrate meteoblue.com seeing conditions

@@ -100,6 +100,16 @@
        </item>
        <item>
         <property name="text">
+         <string>HTTP Stream</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HTTPS Stream</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Camera 1</string>
         </property>
        </item>

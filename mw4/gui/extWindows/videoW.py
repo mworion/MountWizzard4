@@ -20,7 +20,7 @@
 # external packages
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSizePolicy, QInputDialog, QLineEdit
 import cv2
 import qimage2ndarray
 
@@ -48,6 +48,8 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.running = False
         self.capture = None
+        self.user = ''
+        self.password = ''
         self.runningCounter = 0
 
     def closeEvent(self, closeEvent):
@@ -74,9 +76,11 @@ class VideoWindow(toolsQtWidget.MWidget):
         self.ui.videoStop.clicked.connect(self.stopVideo)
         self.ui.videoSource.currentIndexChanged.connect(self.stopVideo)
         self.ui.frameRate.currentIndexChanged.connect(self.restartVideo)
+        self.ui.authPopup.clicked.connect(self.authPopup)
         self.app.colorChange.connect(self.colorChange)
         self.app.update0_1s.connect(self.count)
         self.changeStyleDynamic(self.ui.videoStop, 'running', True)
+        self.checkAuth()
         self.show()
         return True
 
@@ -137,7 +141,11 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        url = f'rtsp://{self.ui.videoURL.text()}'
+        if self.user and self.password:
+            auth = f'{self.user}:{self.password}'
+        else:
+            auth = ''
+        url = f'rtsp://{auth}{self.ui.videoURL.text()}'
         sources = [url, 0, 1, 2, 3]
         frameCounter = [2, 5, 10, 20, 50]
 
@@ -187,4 +195,30 @@ class VideoWindow(toolsQtWidget.MWidget):
         pixmap = pixmap.scaled(self.ui.video.width(), self.ui.video.height())
         self.ui.video.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
         self.ui.video.setPixmap(pixmap)
+        return True
+
+    def checkAuth(self):
+        """
+        :return:
+        """
+        hasAuth = self.user != '' and self.password != ''
+        self.changeStyleDynamic(self.ui.authPopup, 'running', hasAuth)
+        return True
+
+    def authPopup(self):
+        """
+        :return:
+        """
+        dlg = QInputDialog()
+        value, ok = dlg.getText(
+            self, 'Get authentication', 'Username: ', QLineEdit.Normal, self.user)
+        if not ok:
+            return False
+        value, ok = dlg.getText(
+            self, 'Get authentication', 'Password: ', QLineEdit.Normal, self.password)
+        if not ok:
+            return False
+        self.user = value
+        self.password = value
+        self.checkAuth()
         return True

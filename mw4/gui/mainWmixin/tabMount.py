@@ -19,8 +19,7 @@ import datetime
 import webbrowser
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+from PyQt5.QtWidgets import QInputDialog
 from skyfield.api import wgs84
 
 # local import
@@ -408,7 +407,7 @@ class Mount(object):
 
         sett = self.app.mount.setting
         actValue = int(sett.meridianLimitTrack)
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Meridian Limit Track', 'Value (1-30):', actValue, 1, 30, 1)
 
@@ -432,7 +431,7 @@ class Mount(object):
 
         sett = self.app.mount.setting
         actValue = int(sett.meridianLimitSlew)
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Meridian Limit Slew', 'Value (0-30):', actValue, 0, 30, 1)
 
@@ -456,7 +455,7 @@ class Mount(object):
 
         sett = self.app.mount.setting
         actValue = int(sett.horizonLimitHigh)
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Horizon Limit High', 'Value (0-90):', actValue, 0, 90, 1)
 
@@ -480,7 +479,7 @@ class Mount(object):
 
         sett = self.app.mount.setting
         actValue = int(sett.horizonLimitLow)
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Horizon Limit Low', 'Value (-5 - 90):', actValue, -5, 90, 1,)
 
@@ -504,7 +503,7 @@ class Mount(object):
         actValue = int(sett.slewRate)
         minRate = int(sett.slewRateMin)
         maxRate = int(sett.slewRateMax)
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getInt(
             self, 'Set Slew Rate', f'Value ({minRate}...{maxRate}):',
             actValue, minRate, maxRate, 1)
@@ -555,7 +554,7 @@ class Mount(object):
         if obs.location is None:
             return False
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Longitude',
                                 'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
@@ -577,7 +576,7 @@ class Mount(object):
         if obs.location is None:
             return False
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
                                 'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
@@ -598,7 +597,7 @@ class Mount(object):
         if obs.location is None:
             return False
 
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getDouble(
             self, 'Set Site Elevation', 'Format: d.d',
             obs.location.elevation.m, 0, 8000, 1)
@@ -616,7 +615,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getItem(
             self, 'Set Unattended Flip', 'Value: On / Off',
             ['ON', 'OFF'], 0, False)
@@ -637,7 +636,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Dual Axis Tracking',
                                 'Value: On / Off',
@@ -661,7 +660,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Wake On Lan',
                                 'Value: On / Off',
@@ -688,7 +687,7 @@ class Mount(object):
         actValue = sett.refractionTemp
         minVal = -40
         maxVal = 75
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getDouble(
             self, 'Set Refraction Temperature', f'Value ({minVal}...{maxVal}):',
             actValue, minVal, maxVal, 1)
@@ -713,7 +712,7 @@ class Mount(object):
         actValue = sett.refractionPress
         minVal = 500
         maxVal = 1300
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getDouble(
             self, 'Set Refraction Pressure', f'Value ({minVal}...{maxVal}):',
             actValue, minVal, maxVal, 1)
@@ -735,7 +734,7 @@ class Mount(object):
             return False
 
         sett = self.app.mount.setting
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Refraction Correction',
                                 'Value: On / Off',

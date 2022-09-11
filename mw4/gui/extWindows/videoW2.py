@@ -49,6 +49,8 @@ class VideoWindow2(VideoWindow):
         self.ui.videoURL.setText(config.get('videoURL', ''))
         self.ui.videoSource.setCurrentIndex(config.get('videoSource', 0))
         self.ui.frameRate.setCurrentIndex(config.get('frameRate', 2))
+        self.user = (config.get('user', ''))
+        self.password = (config.get('password', ''))
         return True
 
     def storeConfig(self):
@@ -69,6 +71,8 @@ class VideoWindow2(VideoWindow):
         config['videoURL'] = self.ui.videoURL.text()
         config['videoSource'] = self.ui.videoSource.currentIndex()
         config['frameRate'] = self.ui.frameRate.currentIndex()
+        config['user'] = self.user
+        config['password'] = self.password
         return True
 
     def closeEvent(self, closeEvent):

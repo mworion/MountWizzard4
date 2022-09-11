@@ -20,7 +20,7 @@ import time
 from pathlib import Path
 
 # external packages
-from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLineEdit, QListView, QApplication, QInputDialog
 from PyQt5.QtGui import QTextCursor
 from astropy.io import fits
 
@@ -165,7 +165,7 @@ class Tools(object):
 
         for name, selectorUI in self.selectorsDropDowns.items():
             selectorUI.clear()
-            selectorUI.setView(PyQt5.QtWidgets.QListView())
+            selectorUI.setView(QListView())
             for headerEntry in self.fitsHeaderKeywords:
                 selectorUI.addItem(headerEntry)
 
@@ -328,7 +328,7 @@ class Tools(object):
 
         for i, fileName in enumerate(Path(pathDir).glob(search)):
             self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
-            PyQt5.QtWidgets.QApplication.processEvents()
+            QApplication.processEvents()
             suc = self.renameFile(fileName=fileName)
             if not suc:
                 self.msg.emit(2, 'Tools', 'Rename error',
@@ -572,7 +572,7 @@ class Tools(object):
         """
         :return:    success as bool if value could be changed
         """
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set telescope RA',
                                 'Format: <dd[H] mm ss.s> in hours or <[+]d.d> in '
@@ -597,7 +597,7 @@ class Tools(object):
         """
         :return:    success as bool if value could be changed
         """
-        dlg = PyQt5.QtWidgets.QInputDialog()
+        dlg = QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set telescope DEC',
                                 'Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees',

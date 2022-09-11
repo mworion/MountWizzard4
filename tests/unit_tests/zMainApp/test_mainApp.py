@@ -24,7 +24,8 @@ import platform
 import shutil
 
 # external packages
-import PyQt5
+from PyQt5.QtCore import QTimer, QBasicTimer, QCoreApplication
+from PyQt5.QtWidgets import QWidget
 
 # local import
 from base.packageConfig import checkAutomation
@@ -51,11 +52,11 @@ def app(qapp):
     shutil.copy('tests/testData/de440_mw4.bsp', 'tests/workDir/data/de440_mw4.bsp')
     shutil.copy('tests/testData/test.run', 'tests/workDir/test.run')
 
-    with mock.patch.object(PyQt5.QtWidgets.QWidget,
+    with mock.patch.object(QWidget,
                            'show'):
-        with mock.patch.object(PyQt5.QtCore.QTimer,
+        with mock.patch.object(QTimer,
                                'start'):
-            with mock.patch.object(PyQt5.QtCore.QBasicTimer,
+            with mock.patch.object(QBasicTimer,
                                    'start'):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
@@ -241,7 +242,7 @@ def test_sendUpdate_14(app):
 
 
 def test_quit_1(app):
-    with mock.patch.object(PyQt5.QtCore.QCoreApplication,
+    with mock.patch.object(QCoreApplication,
                            'quit'):
         with mock.patch.object(app.mount,
                                'stopTimers'):

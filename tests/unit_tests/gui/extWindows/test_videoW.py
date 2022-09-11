@@ -112,7 +112,7 @@ def test_count(function):
     assert function.runningCounter == 1
 
 
-def test_workerVideoStream_1(function):
+def test_workerVideoStream_0(function):
     class Test:
         @staticmethod
         def isOpened():
@@ -126,14 +126,58 @@ def test_workerVideoStream_1(function):
         def release():
             return
 
+        @staticmethod
+        def open(a):
+            return
+
+        @staticmethod
+        def setExceptionMode(a):
+            return
+
     function.running = True
     with mock.patch.object(cv2,
                            'VideoCapture',
-                           return_value=Test(),
-                           side_effect=cv2.error):
-        suc = function.workerVideo('test', 1)
-        assert not suc
-        assert not function.running
+                           return_value=Test()):
+        with mock.patch.object(Test,
+                               'open',
+                               side_effect=cv2.error):
+            suc = function.workerVideo('test', 1)
+            assert not suc
+            assert not function.running
+
+
+def test_workerVideoStream_1(function):
+    class Test:
+        @staticmethod
+        def isOpened():
+            return True
+
+        @staticmethod
+        def open(a):
+            return
+
+        @staticmethod
+        def grab():
+            return False
+
+        @staticmethod
+        def release():
+            return
+
+        @staticmethod
+        def setExceptionMode(a):
+            return
+
+    function.running = True
+    with mock.patch.object(cv2,
+                           'VideoCapture',
+                           return_value=Test()):
+        with mock.patch.object(Test,
+                               'open',
+                               side_effect=Exception):
+            suc = function.workerVideo('test', 1)
+            assert not suc
+            assert not function.running
 
 
 def test_workerVideoStream_2(function):
@@ -143,11 +187,19 @@ def test_workerVideoStream_2(function):
             return False
 
         @staticmethod
+        def open(a):
+            return
+
+        @staticmethod
         def grab():
             return False
 
         @staticmethod
         def release():
+            return
+
+        @staticmethod
+        def setExceptionMode(a):
             return
 
     function.running = True
@@ -166,11 +218,19 @@ def test_workerVideoStream_3(function):
             return True
 
         @staticmethod
+        def open(a):
+            return
+
+        @staticmethod
         def grab():
             return False
 
         @staticmethod
         def release():
+            return
+
+        @staticmethod
+        def setExceptionMode(a):
             return
 
     function.running = True
@@ -190,12 +250,20 @@ def test_workerVideoStream_4(function):
             return True
 
         @staticmethod
+        def open(a):
+            return
+
+        @staticmethod
         def grab():
             function.running = False
             return True
 
         @staticmethod
         def release():
+            return
+
+        @staticmethod
+        def setExceptionMode(a):
             return
 
     function.running = True

@@ -128,7 +128,7 @@ class VideoWindow(toolsQtWidget.MWidget):
             self.running = False
             return False
         except Exception as e:
-            self.msg.emit(2, 'Video', 'Camera error', f'MSG: {e.err}')
+            self.msg.emit(2, 'Video', 'Camera error', f'MSG: {e}')
             self.running = False
             return False
 

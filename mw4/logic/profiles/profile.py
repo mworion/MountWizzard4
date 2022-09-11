@@ -29,6 +29,7 @@ from base.loggerMW import setupLogging
 
 setupLogging()
 log = logging.getLogger()
+profileVersion = '4.1'
 
 
 def replaceKeys(oldDict, keyDict):
@@ -95,12 +96,12 @@ def convertProfileData(data):
     :return:    data: config data as dict
     """
     actVer = Version(data.get('version', '0.0'))
-    if actVer >= Version('4.1'):
+    if actVer >= Version(profileVersion):
         return data
     if 'mainW' not in data:
         return data
 
-    log.info(f'Conversion from [{data.get("version")}] to [4.1]')
+    log.info(f'Conversion from [{data.get("version")}] to [{profileVersion}]')
     data = NestedDict(data)
     data['driversData'] = data['mainW', 'driversData']
     del data['mainW']['driversData']
@@ -113,7 +114,7 @@ def convertProfileData(data):
     del data['driversData']['directWeather']['frameworks']['internal']
     data['driversData', 'directWeather', 'frameworks', 'directWeather',
          'deviceName'] = 'On Mount'
-    data['version'] = '4.1'
+    data['version'] = profileVersion
     data = data.to_dict()
     return data
 
@@ -136,7 +137,7 @@ def defaultConfig(config=None):
         config = dict()
 
     config['profileName'] = 'config'
-    config['version'] = '4.1'
+    config['version'] = profileVersion
     return config
 
 
@@ -186,6 +187,7 @@ def saveProfile(configDir=None, name=None, config={}):
         profile.writelines(f'{name}')
 
     fileName = configDir + '/' + name + '.cfg'
+    config['version'] = profileVersion
     with open(fileName, 'w') as outfile:
         json.dump(config, outfile, sort_keys=True, indent=4)
     return True

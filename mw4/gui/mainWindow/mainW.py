@@ -944,8 +944,6 @@ class MainWindow(
         """
         self.closeExtendedWindows()
         # self.stopDrivers()
-        self.app.config.clear()
-        self.app.config.update(config)
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
         self.initConfig()
@@ -990,7 +988,6 @@ class MainWindow(
 
         self.storeConfig()
         self.app.storeConfig()
-        self.app.saveConfig()
         configAdd = loadProfile(configDir=self.app.mwGlob['configDir'], name=name)
         if configAdd:
             self.ui.profileAdd.setText(name)

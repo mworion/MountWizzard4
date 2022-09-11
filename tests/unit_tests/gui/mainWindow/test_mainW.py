@@ -339,6 +339,7 @@ def test_setEnvironDeviceStats_1(function):
 
 
 def test_setEnvironDeviceStats_2(function):
+    function.ui.showTabEnviron.setChecked(True)
     function.ui.refracManual.setChecked(True)
     function.app.mount.setting.statusRefraction = 1
 
@@ -348,6 +349,7 @@ def test_setEnvironDeviceStats_2(function):
 
 
 def test_setEnvironDeviceStats_3(function):
+    function.ui.showTabEnviron.setChecked(True)
     function.ui.refracCont.setChecked(True)
     function.app.mount.setting.statusRefraction = 1
     function.refractionSource = 'onlineWeather'

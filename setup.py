@@ -26,6 +26,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: GUI: all tab menu entries could be customized in order and stored
 - add: GUI: all open windows could be collected to visual area
 - add: GUI: separate window with big buttons are available 
+- add: GUI: reduced GUI configurable for a simpler user interface
 - add: almanac: now supports UTC / local time
 - add: almanac: support set/rise times moon
 - add: environment: integrate meteoblue.com seeing conditions

@@ -69,6 +69,7 @@ class Environ:
         self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
         self.clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
         # cyclic functions
+        self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
         self.app.update1s.connect(self.updateSkymeterGui)
@@ -101,6 +102,35 @@ class Environ:
         config['refractionSource'] = self.refractionSource
         return True
 
+    def smartEnvironGui(self):
+        """
+        smartEnvironGui enables and disables gui actions depending on the actual
+        state of the different environment devices. it is run every 1 second
+        synchronously, because it can't be simpler done with dynamic approach.
+        all different situations in a running environment is done locally.
+
+        :return: true for test purpose
+        """
+        environ = {
+            'directWeather': self.ui.directWeatherGroup,
+            'sensorWeather': self.ui.sensorWeatherGroup,
+            'onlineWeather': self.ui.onlineWeatherGroup,
+            'skymeter': self.ui.skymeterGroup,
+            'powerWeather': self.ui.powerGroup,
+        }
+        for key, group in environ.items():
+            stat = self.deviceStat.get(key, None)
+            if stat is None:
+                group.setFixedWidth(0)
+                group.setEnabled(False)
+            elif stat:
+                group.setMinimumSize(75, 0)
+                group.setEnabled(True)
+            else:
+                group.setMinimumSize(75, 0)
+                group.setEnabled(False)
+        return True
+
     def updateRefractionUpdateType(self):
         """
         :return: success
@@ -124,6 +154,8 @@ class Environ:
         """
         :return: success
         """
+        if not self.ui.showTabEnviron.isChecked():
+            return False
         if self.refractionSource != 'directWeather':
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
             return suc
@@ -178,7 +210,6 @@ class Environ:
 
         self.setRefractionSourceGui()
         self.setRefractionUpdateType()
-
         return True
 
     def updateFilterRefractionParameters(self):

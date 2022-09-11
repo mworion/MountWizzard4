@@ -238,7 +238,6 @@ class MainWindow(
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.smartFunctionGui)
         self.app.update1s.connect(self.smartTabGui)
-        self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
@@ -653,35 +652,6 @@ class MainWindow(
             ui.setStyleSheet(ui.styleSheet())
         return True
 
-    def smartEnvironGui(self):
-        """
-        smartEnvironGui enables and disables gui actions depending on the actual
-        state of the different environment devices. it is run every 1 second
-        synchronously, because it can't be simpler done with dynamic approach.
-        all different situations in a running environment is done locally.
-
-        :return: true for test purpose
-        """
-        environ = {
-            'directWeather': self.ui.directWeatherGroup,
-            'sensorWeather': self.ui.sensorWeatherGroup,
-            'onlineWeather': self.ui.onlineWeatherGroup,
-            'skymeter': self.ui.skymeterGroup,
-            'powerWeather': self.ui.powerGroup,
-        }
-        for key, group in environ.items():
-            stat = self.deviceStat.get(key, None)
-            if stat is None:
-                group.setFixedWidth(0)
-                group.setEnabled(False)
-            elif stat:
-                group.setMinimumSize(75, 0)
-                group.setEnabled(True)
-            else:
-                group.setMinimumSize(75, 0)
-                group.setEnabled(False)
-        return True
-
     def updateWindowsStats(self):
         """
         :return: True for test purpose
@@ -701,9 +671,10 @@ class MainWindow(
         """
         refracOn = self.app.mount.setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
-        if not refracOn:
+        isTabEnabled = self.ui.showTabEnviron.isChecked()
+        if not refracOn or not isTabEnabled:
             self.deviceStat['refraction'] = None
-            self.ui.refractionConnected.setText('Refrac Off')
+            self.ui.refractionConnected.setText('Refraction')
         elif isManual:
             self.ui.refractionConnected.setText('Refrac Manu')
             self.deviceStat['refraction'] = True

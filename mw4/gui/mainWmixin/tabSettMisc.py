@@ -30,6 +30,7 @@ import importlib_metadata
 from astropy.utils import iers, data
 import hid
 import webbrowser
+from PyQt5.QtWidgets import QWidget
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
@@ -67,6 +68,14 @@ class SettMisc(object):
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
         self.ui.openPDF.clicked.connect(self.openPDF)
         self.ui.addProfileGroup.clicked.connect(self.setAddProfileGUI)
+        self.ui.showTabAlmanac.clicked.connect(self.minimizeGUI)
+        self.ui.showTabEnviron.clicked.connect(self.minimizeGUI)
+        self.ui.showTabSatellite.clicked.connect(self.minimizeGUI)
+        self.ui.showTabMPC.clicked.connect(self.minimizeGUI)
+        self.ui.showTabTools.clicked.connect(self.minimizeGUI)
+        self.ui.showTabDome.clicked.connect(self.minimizeGUI)
+        self.ui.showTabParkPos.clicked.connect(self.minimizeGUI)
+        self.ui.showTabProfile.clicked.connect(self.minimizeGUI)
 
         if pConf.isAvailable:
             self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -94,6 +103,15 @@ class SettMisc(object):
         self.ui.unitTimeUTC.setChecked(config.get('unitTimeUTC', True))
         self.ui.unitTimeLocal.setChecked(config.get('unitTimeLocal', False))
         self.ui.addProfileGroup.setChecked(config.get('addProfileGroup', False))
+        self.ui.showTabAlmanac.setChecked(config.get('showTabAlmanac', False))
+        self.ui.showTabEnviron.setChecked(config.get('showTabEnviron', False))
+        self.ui.showTabSatellite.setChecked(config.get('showTabSatellite', False))
+        self.ui.showTabMPC.setChecked(config.get('showTabMPC', False))
+        self.ui.showTabTools.setChecked(config.get('showTabTools', False))
+        self.ui.showTabDome.setChecked(config.get('showTabDome', False))
+        self.ui.showTabParkPos.setChecked(config.get('showTabParkPos', False))
+        self.ui.showTabProfile.setChecked(config.get('showTabProfile', False))
+
         self.ui.versionReleaseNotes.setChecked(
             config.get('versionReleaseNotes', True))
         self.ui.soundMountSlewFinished.setCurrentIndex(
@@ -116,6 +134,7 @@ class SettMisc(object):
 
         isWindows = platform.system() == 'Windows'
         self.ui.automateGroup.setVisible(isWindows)
+        self.minimizeGUI()
         self.populateGameControllerList()
         self.setAutomationSpeed()
         self.setWeatherOnline()
@@ -141,6 +160,14 @@ class SettMisc(object):
         config['unitTimeUTC'] = self.ui.unitTimeUTC.isChecked()
         config['unitTimeLocal'] = self.ui.unitTimeLocal.isChecked()
         config['addProfileGroup'] = self.ui.addProfileGroup.isChecked()
+        config['showTabAlmanac'] = self.ui.showTabAlmanac.isChecked()
+        config['showTabEnviron'] = self.ui.showTabEnviron.isChecked()
+        config['showTabSatellite'] = self.ui.showTabSatellite.isChecked()
+        config['showTabMPC'] = self.ui.showTabMPC.isChecked()
+        config['showTabTools'] = self.ui.showTabTools.isChecked()
+        config['showTabDome'] = self.ui.showTabDome.isChecked()
+        config['showTabParkPos'] = self.ui.showTabParkPos.isChecked()
+        config['showTabProfile'] = self.ui.showTabProfile.isChecked()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
@@ -637,4 +664,49 @@ class SettMisc(object):
         self.ui.addFrom.setVisible(isEnabled)
         self.ui.profileAdd.setEnabled(isEnabled)
         self.ui.profileAdd.setVisible(isEnabled)
+        return True
+
+    def minimizeGUI(self):
+        """
+        :return:
+        """
+        tabs = {
+            'Almanac': {
+                'cb': self.ui.showTabAlmanac,
+                'tab': self.ui.mainTabWidget
+            },
+            'Environ': {
+                'cb': self.ui.showTabEnviron,
+                'tab': self.ui.mainTabWidget
+            },
+            'Satellite': {
+                'cb': self.ui.showTabSatellite,
+                'tab': self.ui.mainTabWidget,
+            },
+            'MPC': {
+                'cb': self.ui.showTabMPC,
+                'tab': self.ui.mainTabWidget,
+            },
+            'Tools': {
+                'cb': self.ui.showTabTools,
+                'tab': self.ui.mainTabWidget,
+            },
+            'Dome': {
+                'cb': self.ui.showTabDome,
+                'tab': self.ui.settingsTabWidget,
+            },
+            'ParkPos': {
+                'cb': self.ui.showTabParkPos,
+                'tab': self.ui.settingsTabWidget,
+            },
+            'Profile': {
+                'cb': self.ui.showTabProfile,
+                'tab': self.ui.settingsTabWidget,
+            },
+        }
+        for tab in tabs:
+            isVisible = tabs[tab]['cb'].isChecked()
+            tabWidget = tabs[tab]['tab'].findChild(QWidget, tab)
+            tabIndex = tabs[tab]['tab'].indexOf(tabWidget)
+            tabs[tab]['tab'].setTabVisible(tabIndex, isVisible)
         return True

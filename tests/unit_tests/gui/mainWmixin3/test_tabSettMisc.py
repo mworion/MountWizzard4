@@ -828,6 +828,12 @@ def test_openPDF_2(function):
         suc = function.openPDF()
         assert suc
 
+
 def test_setAddProfileGUI(function):
     suc = function.setAddProfileGUI()
+    assert suc
+
+
+def test_minimizeGUI(function):
+    suc = function.minimizeGUI()
     assert suc

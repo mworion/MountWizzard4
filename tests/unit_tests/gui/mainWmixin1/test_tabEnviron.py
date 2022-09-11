@@ -64,6 +64,51 @@ def test_storeConfig_1(function):
     assert suc
 
 
+def test_smartEnvironGui_1(function):
+    function.deviceStat['directWeather'] = False
+    function.deviceStat['sensorWeather'] = False
+    function.deviceStat['onlineWeather'] = False
+    function.deviceStat['skymeter'] = False
+    function.deviceStat['powerWeather'] = False
+    suc = function.smartEnvironGui()
+    assert suc
+    assert not function.ui.directWeatherGroup.isEnabled()
+    assert not function.ui.sensorWeatherGroup.isEnabled()
+    assert not function.ui.onlineWeatherGroup.isEnabled()
+    assert not function.ui.skymeterGroup.isEnabled()
+    assert not function.ui.powerGroup.isEnabled()
+
+
+def test_smartEnvironGui_2(function):
+    function.deviceStat['directWeather'] = True
+    function.deviceStat['sensorWeather'] = True
+    function.deviceStat['onlineWeather'] = True
+    function.deviceStat['skymeter'] = True
+    function.deviceStat['powerWeather'] = True
+    suc = function.smartEnvironGui()
+    assert suc
+    assert function.ui.directWeatherGroup.isEnabled()
+    assert function.ui.sensorWeatherGroup.isEnabled()
+    assert function.ui.onlineWeatherGroup.isEnabled()
+    assert function.ui.skymeterGroup.isEnabled()
+    assert function.ui.powerGroup.isEnabled()
+
+
+def test_smartEnvironGui_3(function):
+    function.deviceStat['directWeather'] = None
+    function.deviceStat['sensorWeather'] = None
+    function.deviceStat['onlineWeather'] = None
+    function.deviceStat['skymeter'] = None
+    function.deviceStat['powerWeather'] = False
+    suc = function.smartEnvironGui()
+    assert suc
+    assert not function.ui.directWeatherGroup.isEnabled()
+    assert not function.ui.sensorWeatherGroup.isEnabled()
+    assert not function.ui.onlineWeatherGroup.isEnabled()
+    assert not function.ui.skymeterGroup.isEnabled()
+    assert not function.ui.powerGroup.isEnabled()
+
+
 def test_updateRefractionUpdateType_1(function):
     function.app.mount.setting.weatherStatus = 3
     function.refractionSource = 'onlineWeather'
@@ -103,7 +148,14 @@ def test_updateRefractionUpdateType_5(function):
     assert suc
 
 
+def test_setRefractionUpdateType_0(function):
+    function.ui.showTabEnviron.setChecked(False)
+    suc = function.setRefractionUpdateType()
+    assert not suc
+
+
 def test_setRefractionUpdateType_1(function):
+    function.ui.showTabEnviron.setChecked(True)
     function.refractionSource = 'onlineWeather'
     with mock.patch.object(function.app.mount.setting,
                            'setDirectWeatherUpdateType',
@@ -113,6 +165,7 @@ def test_setRefractionUpdateType_1(function):
 
 
 def test_setRefractionUpdateType_2(function):
+    function.ui.showTabEnviron.setChecked(True)
     function.refractionSource = 'directWeather'
     function.ui.refracManual.setChecked(True)
     with mock.patch.object(function.app.mount.setting,
@@ -123,6 +176,7 @@ def test_setRefractionUpdateType_2(function):
 
 
 def test_setRefractionUpdateType_3(function):
+    function.ui.showTabEnviron.setChecked(True)
     function.refractionSource = 'directWeather'
     function.ui.refracNoTrack.setChecked(True)
     with mock.patch.object(function.app.mount.setting,
@@ -133,6 +187,7 @@ def test_setRefractionUpdateType_3(function):
 
 
 def test_setRefractionUpdateType_4(function):
+    function.ui.showTabEnviron.setChecked(True)
     function.refractionSource = 'directWeather'
     function.ui.refracCont.setChecked(True)
     with mock.patch.object(function.app.mount.setting,

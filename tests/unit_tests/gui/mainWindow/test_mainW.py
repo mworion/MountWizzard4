@@ -315,51 +315,6 @@ def test_mountBoot1(function):
         assert suc
 
 
-def test_smartEnvironGui_1(function):
-    function.deviceStat['directWeather'] = False
-    function.deviceStat['sensorWeather'] = False
-    function.deviceStat['onlineWeather'] = False
-    function.deviceStat['skymeter'] = False
-    function.deviceStat['powerWeather'] = False
-    suc = function.smartEnvironGui()
-    assert suc
-    assert not function.ui.directWeatherGroup.isEnabled()
-    assert not function.ui.sensorWeatherGroup.isEnabled()
-    assert not function.ui.onlineWeatherGroup.isEnabled()
-    assert not function.ui.skymeterGroup.isEnabled()
-    assert not function.ui.powerGroup.isEnabled()
-
-
-def test_smartEnvironGui_2(function):
-    function.deviceStat['directWeather'] = True
-    function.deviceStat['sensorWeather'] = True
-    function.deviceStat['onlineWeather'] = True
-    function.deviceStat['skymeter'] = True
-    function.deviceStat['powerWeather'] = True
-    suc = function.smartEnvironGui()
-    assert suc
-    assert function.ui.directWeatherGroup.isEnabled()
-    assert function.ui.sensorWeatherGroup.isEnabled()
-    assert function.ui.onlineWeatherGroup.isEnabled()
-    assert function.ui.skymeterGroup.isEnabled()
-    assert function.ui.powerGroup.isEnabled()
-
-
-def test_smartEnvironGui_3(function):
-    function.deviceStat['directWeather'] = None
-    function.deviceStat['sensorWeather'] = None
-    function.deviceStat['onlineWeather'] = None
-    function.deviceStat['skymeter'] = None
-    function.deviceStat['powerWeather'] = False
-    suc = function.smartEnvironGui()
-    assert suc
-    assert not function.ui.directWeatherGroup.isEnabled()
-    assert not function.ui.sensorWeatherGroup.isEnabled()
-    assert not function.ui.onlineWeatherGroup.isEnabled()
-    assert not function.ui.skymeterGroup.isEnabled()
-    assert not function.ui.powerGroup.isEnabled()
-
-
 def test_updateWindowsStats_1(function):
     function.uiWindows = {'showMessageW': {'classObj': 1,
                                            'button': QPushButton()}}

@@ -330,6 +330,7 @@ def test_updateWindowsStats_2(function):
 
 
 def test_setEnvironDeviceStats_1(function):
+    function.ui.showTabEnviron.setChecked(True)
     function.app.mount.setting.statusRefraction = 0
 
     suc = function.setEnvironDeviceStats()

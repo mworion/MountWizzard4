@@ -142,7 +142,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         :return:
         """
         if self.user and self.password:
-            auth = f'{self.user}:{self.password}'
+            auth = f'{self.user}:{self.password}@'
         else:
             auth = ''
         url = f'rtsp://{auth}{self.ui.videoURL.text()}'
@@ -210,15 +210,16 @@ class VideoWindow(toolsQtWidget.MWidget):
         :return:
         """
         dlg = QInputDialog()
-        value, ok = dlg.getText(
+        value1, ok = dlg.getText(
             self, 'Get authentication', 'Username: ', QLineEdit.Normal, self.user)
         if not ok:
             return False
-        value, ok = dlg.getText(
+        value2, ok = dlg.getText(
             self, 'Get authentication', 'Password: ', QLineEdit.Normal, self.password)
         if not ok:
             return False
-        self.user = value
-        self.password = value
+        self.user = value1
+        self.password = value2
         self.checkAuth()
+        self.restartVideo()
         return True

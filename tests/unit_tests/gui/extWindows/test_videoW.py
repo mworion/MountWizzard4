@@ -21,6 +21,7 @@ import unittest.mock as mock
 
 # external packages
 from PyQt5.QtGui import QCloseEvent, QPixmap
+from PyQt5.QtWidgets import QInputDialog
 import numpy as np
 import cv2
 
@@ -251,3 +252,40 @@ def test_receivedImage_2(function):
     function.running = True
     suc = function.receivedImage(pixmap)
     assert suc
+
+
+def test_checkAuth(function):
+    suc = function.checkAuth()
+    assert suc
+
+
+def test_authPopup_1(function):
+    function.user = 'test'
+    function.password = 'test'
+    with mock.patch.object(function,
+                           'stopVideo'):
+        with mock.patch.object(function,
+                               'stopVideo'):
+            with mock.patch.object(QInputDialog,
+                                   'getText',
+                                   return_value=('test', False)):
+                suc = function.authPopup()
+                assert not suc
+                assert function.user == 'test'
+                assert function.password == 'test'
+
+
+def test_authPopup_2(function):
+    function.user = 'test'
+    function.password = 'test'
+    with mock.patch.object(function,
+                           'stopVideo'):
+        with mock.patch.object(function,
+                               'stopVideo'):
+            with mock.patch.object(QInputDialog,
+                                   'getText',
+                                   return_value=('test1', True)):
+                suc = function.authPopup()
+                assert suc
+                assert function.user == 'test1'
+                assert function.password == 'test1'

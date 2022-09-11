@@ -441,7 +441,7 @@ class SettDevice:
         as the configuration is stored in the config, start also stores the
         selected framework in the framework attribute of the driver's class. this
         is needed as when stopping the driver the config dict already has the new
-        framework set and we have to remember it.
+        framework set, and we have to remember it.
 
         :param driver:
         :param autoStart:

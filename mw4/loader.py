@@ -25,11 +25,6 @@ import platform
 import socket
 import sys
 import traceback
-# import warnings
-# warnings.simplefilter('ignore', UserWarning)
-# warnings.simplefilter('ignore', RuntimeWarning)
-# sys.stdout.reconfigure(encoding='utf-8')
-# sys.stderr.reconfigure(encoding='utf-8')
 
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see

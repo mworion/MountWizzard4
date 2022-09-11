@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import os
 
 # external packages
 from PyQt5.QtCore import pyqtSignal
@@ -114,15 +115,20 @@ class VideoWindow(toolsQtWidget.MWidget):
         :param frameRate:
         :return:
         """
+        self.capture = cv2.VideoCapture()
+        self.capture.setExceptionMode(True)
         try:
-            self.capture = cv2.VideoCapture(source)
+            self.capture.open(source)
+            if not self.capture.isOpened():
+                self.msg.emit(2, 'Video', 'Camera', f'[{source}] not available')
+                self.running = False
+                return False
         except cv2.error as e:
-            self.msg.emit(2, 'Video', 'Camera error', e)
+            self.msg.emit(2, 'Video', 'Camera error', f'MSG: {e.err}')
             self.running = False
             return False
-
-        if not self.capture.isOpened():
-            self.msg.emit(2, 'Video', 'Camera', f'[{source}] could not be started')
+        except Exception as e:
+            self.msg.emit(2, 'Video', 'Camera error', f'MSG: {e.err}')
             self.running = False
             return False
 

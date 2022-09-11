@@ -20,7 +20,7 @@ import time
 from pathlib import Path
 
 # external packages
-import PyQt5
+from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtGui import QTextCursor
 from astropy.io import fits
 
@@ -577,7 +577,7 @@ class Tools(object):
                                 'Set telescope RA',
                                 'Format: <dd[H] mm ss.s> in hours or <[+]d.d> in '
                                 'degrees',
-                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                QLineEdit.Normal,
                                 self.ui.moveCoordinateRa.text(),
                                 )
         if not ok:
@@ -601,7 +601,7 @@ class Tools(object):
         value, ok = dlg.getText(self,
                                 'Set telescope DEC',
                                 'Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees',
-                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                QLineEdit.Normal,
                                 self.ui.moveCoordinateDec.text(),
                                 )
         if not ok:

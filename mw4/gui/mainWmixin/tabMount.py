@@ -19,7 +19,7 @@ import datetime
 import webbrowser
 
 # external packages
-from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import wgs84
 
 # local import
@@ -559,7 +559,7 @@ class Mount(object):
                                 'Set Site Longitude',
                                 'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
                                 'positive',
-                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                QLineEdit.Normal,
                                 self.ui.siteLongitude.text())
         if not ok:
             return False
@@ -580,7 +580,7 @@ class Mount(object):
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
                                 'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
-                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                QLineEdit.Normal,
                                 self.ui.siteLatitude.text())
         if not ok:
             return False

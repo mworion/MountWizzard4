@@ -374,40 +374,48 @@ def test_updateWindowsStats_2(function):
     assert suc
 
 
-def test_updateDeviceStats_1(function):
-    function.deviceStat = {'online': True}
-    function.ui.refracManual.setChecked(False)
-    function.refractionSource = 'online'
-    suc = function.updateDeviceStats()
-    assert suc
-    assert not function.deviceStat['refraction']
+def test_setEnvironDeviceStats_1(function):
+    function.app.mount.setting.statusRefraction = 0
 
-
-def test_updateDeviceStats_2(function):
-    function.deviceStat = {'test': True}
-    function.refractionSource = 'online'
-    suc = function.updateDeviceStats()
+    suc = function.setEnvironDeviceStats()
     assert suc
     assert function.deviceStat['refraction'] is None
 
 
+def test_setEnvironDeviceStats_2(function):
+    function.ui.refracManual.setChecked(True)
+    function.app.mount.setting.statusRefraction = 1
+
+    suc = function.setEnvironDeviceStats()
+    assert suc
+    assert function.deviceStat['refraction']
+
+
+def test_setEnvironDeviceStats_3(function):
+    function.ui.refracCont.setChecked(True)
+    function.app.mount.setting.statusRefraction = 1
+    function.refractionSource = 'onlineWeather'
+    function.deviceStat['onlineWeather'] = False
+
+    suc = function.setEnvironDeviceStats()
+    assert suc
+    assert not function.deviceStat['refraction']
+
+
+def test_updateDeviceStats_1(function):
+    function.deviceStat = {'onlineWeather': True}
+    suc = function.updateDeviceStats()
+    assert suc
+
+
+def test_updateDeviceStats_2(function):
+    function.deviceStat = {'onlineWeather': False}
+    suc = function.updateDeviceStats()
+    assert suc
+
+
 def test_updateDeviceStats_3(function):
-    function.deviceStat = {'camera': True}
-    function.refractionSource = 'camera'
-    suc = function.updateDeviceStats()
-    assert suc
-
-
-def test_updateDeviceStats_4(function):
-    function.deviceStat = {}
-    function.refractionSource = 'camera'
-    suc = function.updateDeviceStats()
-    assert suc
-
-
-def test_updateDeviceStats_5(function):
-    function.deviceStat = {'online': False}
-    function.refractionSource = 'online'
+    function.deviceStat = {'onlineWeather': None}
     suc = function.updateDeviceStats()
     assert suc
 

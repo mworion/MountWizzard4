@@ -240,6 +240,7 @@ class MainWindow(
         self.app.update1s.connect(self.smartTabGui)
         self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
 
     def initConfig(self):
@@ -694,9 +695,9 @@ class MainWindow(
                 self.changeStyleDynamic(winObj['button'], 'running', False)
         return True
 
-    def updateDeviceStats(self):
+    def setEnvironDeviceStats(self):
         """
-        :return: True for test purpose
+        :return:
         """
         refracOn = self.app.mount.setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
@@ -710,7 +711,12 @@ class MainWindow(
             self.ui.refractionConnected.setText('Refrac Auto')
             isSource = self.deviceStat.get(self.refractionSource, False)
             self.deviceStat['refraction'] = isSource
+        return True
 
+    def updateDeviceStats(self):
+        """
+        :return: True for test purpose
+        """
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device) is None:
                 self.changeStyleDynamic(ui, 'color', 'gray')

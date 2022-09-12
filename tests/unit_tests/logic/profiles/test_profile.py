@@ -211,3 +211,14 @@ def test_saveConfig_4():
     with open('tests/workDir/config/profile', 'r') as infile:
         name = infile.readline().strip()
     assert name == 'new'
+    
+
+def test_saveConfig_5():
+    suc = saveProfile(configDir='tests/workDir/config')
+    assert suc
+    assert os.path.isfile('tests/workDir/config/config.cfg')
+    assert os.path.isfile('tests/workDir/config/profile')
+    with open('tests/workDir/config/profile', 'r') as infile:
+        name = infile.readline().strip()
+    assert name == 'config'
+

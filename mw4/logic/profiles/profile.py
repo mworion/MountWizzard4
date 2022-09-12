@@ -172,16 +172,18 @@ def loadProfile(configDir=None, name=None):
         return convertProfileData(configData)
 
 
-def saveProfile(configDir=None, name=None, config={}):
+def saveProfile(configDir=None, name=None, config=None):
     """
     :param      configDir:   name of the config dir
     :param      name:   name of the config file
     :param      config:   data
     :return:    success
     """
+    if config is None:
+        config = {}
     if name is None:
-        name = config['profileName']
-
+        name = config.get('profileName', 'config')
+        
     profileFile = f'{configDir}/profile'
     with open(profileFile, 'w') as profile:
         profile.writelines(f'{name}')

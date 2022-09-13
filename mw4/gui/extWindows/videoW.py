@@ -151,7 +151,7 @@ class VideoWindow(toolsQtWidget.MWidget):
         else:
             auth = ''
         url = f'{auth}{self.ui.videoURL.text()}'
-        sources = ['rtsp://' + 'http://' + url, 'https://' + url, url, 0, 1, 2, 3]
+        sources = ['rtsp://' + url, 'http://' + url, 'https://' + url, 0, 1, 2, 3]
         frameCounter = [2, 5, 10, 20, 50]
 
         sourceIndex = self.ui.videoSource.currentIndex()

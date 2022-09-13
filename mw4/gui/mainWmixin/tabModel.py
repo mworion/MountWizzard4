@@ -94,6 +94,7 @@ class Model:
             self.ui.runModelGroup.setEnabled(True)
             self.ui.plateSolveSyncGroup.setEnabled(True)
             self.ui.dataModelGroup.setEnabled(True)
+            self.changeStyleDynamic(self.ui.plateSolveSync, 'running', False)
         else:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.plateSolveSyncGroup.setEnabled(False)
@@ -616,5 +617,6 @@ class Model:
             return False
 
         self.app.operationRunning.emit(2)
+        self.changeStyleDynamic(self.ui.plateSolveSync, 'running', True)
         self.exposeImage()
         return True

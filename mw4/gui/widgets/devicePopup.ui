@@ -1234,7 +1234,7 @@
       <double>5.000000000000000</double>
      </property>
      <property name="value">
-      <double>25.000000000000000</double>
+      <double>30.000000000000000</double>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="astrometryTimeout">
@@ -1529,7 +1529,7 @@
       <double>5.000000000000000</double>
      </property>
      <property name="value">
-      <double>25.000000000000000</double>
+      <double>30.000000000000000</double>
      </property>
     </widget>
     <widget class="QLabel" name="label_319">
@@ -2074,7 +2074,7 @@
       <double>5.000000000000000</double>
      </property>
      <property name="value">
-      <double>25.000000000000000</double>
+      <double>30.000000000000000</double>
      </property>
     </widget>
     <widget class="QLineEdit" name="watneyIndexPath">

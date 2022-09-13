@@ -361,18 +361,21 @@ def test_setEnvironDeviceStats_3(function):
 
 
 def test_updateDeviceStats_1(function):
+    function.deviceStatGui = {'onlineWeather': QWidget()}
     function.deviceStat = {'onlineWeather': True}
     suc = function.updateDeviceStats()
     assert suc
 
 
 def test_updateDeviceStats_2(function):
+    function.deviceStatGui = {'onlineWeather': QWidget()}
     function.deviceStat = {'onlineWeather': False}
     suc = function.updateDeviceStats()
     assert suc
 
 
 def test_updateDeviceStats_3(function):
+    function.deviceStatGui = {'onlineWeather': QWidget()}
     function.deviceStat = {'onlineWeather': None}
     suc = function.updateDeviceStats()
     assert suc

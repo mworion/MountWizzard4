@@ -215,13 +215,11 @@ class VideoWindow(toolsQtWidget.MWidget):
         :return:
         """
         dlg = QInputDialog()
-        value1, ok = dlg.getText(
+        value1, ok1 = dlg.getText(
             self, 'Get authentication', 'Username: ', QLineEdit.Normal, self.user)
-        if not ok:
-            return False
-        value2, ok = dlg.getText(
+        value2, ok2 = dlg.getText(
             self, 'Get authentication', 'Password: ', QLineEdit.Normal, self.password)
-        if not ok:
+        if not ok1 or not ok2:
             return False
         self.user = value1
         self.password = value2

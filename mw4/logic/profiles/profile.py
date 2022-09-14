@@ -102,12 +102,21 @@ def convertProfileData(data):
         return data
 
     log.info(f'Conversion from [{data.get("version")}] to [{profileVersion}]')
+    watney = {
+        'deviceName': 'Watney',
+        'deviceList': ['Watney'],
+        'searchRadius': 10,
+        'timeout': 30,
+        'appPath': '',
+        'indexPath': '',
+    }
     try:
         d = NestedDict(data)
         d['driversData'] = d['mainW', 'driversData']
         del d['mainW']['driversData']
         d['driversData', 'plateSolve'] = d['driversData', 'astrometry']
         del d['driversData']['astrometry']
+        d['driversData', 'plateSolve', 'frameworks', 'watney'] = watney
         d['hemisphereW', 'horizonMaskFileName'] = d['mainW', 'horizonFileName']
         del d['mainW']['horizonFileName']
         t = d['driversData', 'directWeather', 'frameworks', 'internal']

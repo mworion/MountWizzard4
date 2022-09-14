@@ -67,15 +67,6 @@ class Watney(object):
             }
         }
 
-    def setDefaultPath(self):
-        """
-        :return: true for test purpose
-        """
-        self.appPath = self.workDir + '/watney-cli'
-        self.indexPath = self.workDir + '/watney-index'
-        self.saveConfigFile()
-        return True
-
     def saveConfigFile(self):
         """
         :return:
@@ -83,6 +74,15 @@ class Watney(object):
         cfgFile = self.tempDir + '/watney-solve-config.yml'
         with open(cfgFile, 'w+') as outFile:
             outFile.write(f"quadDbPath: '{self.indexPath}'\n")
+        return True
+
+    def setDefaultPath(self):
+        """
+        :return: true for test purpose
+        """
+        self.appPath = self.workDir + '/watney-cli'
+        self.indexPath = self.workDir + '/watney-index'
+        self.saveConfigFile()
         return True
 
     def runWatney(self, runnable):

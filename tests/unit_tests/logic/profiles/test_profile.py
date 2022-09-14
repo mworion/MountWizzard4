@@ -114,6 +114,14 @@ def test_convertProfileData_3():
     assert 'Direct' not in t['directWeather']['deviceName']
 
 
+def test_convertProfileData_4():
+    data = {
+        'mainW': '4.0'
+    }
+    val = convertProfileData(data)
+    assert val['mainW'] == '4.0'
+
+
 def test_blendProfile():
     conf = blendProfile({}, {})
     assert conf == {}

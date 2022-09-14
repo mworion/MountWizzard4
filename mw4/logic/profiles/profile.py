@@ -102,20 +102,23 @@ def convertProfileData(data):
         return data
 
     log.info(f'Conversion from [{data.get("version")}] to [{profileVersion}]')
-    data = NestedDict(data)
-    data['driversData'] = data['mainW', 'driversData']
-    del data['mainW']['driversData']
-    data['driversData', 'plateSolve'] = data['driversData', 'astrometry']
-    del data['driversData']['astrometry']
-    data['hemisphereW', 'horizonMaskFileName'] = data['mainW', 'horizonFileName']
-    del data['mainW']['horizonFileName']
-    t = data['driversData', 'directWeather', 'frameworks', 'internal']
-    data['driversData', 'directWeather', 'frameworks', 'directWeather'] = t
-    del data['driversData']['directWeather']['frameworks']['internal']
-    data['driversData', 'directWeather', 'frameworks', 'directWeather',
-         'deviceName'] = 'On Mount'
-    data['version'] = profileVersion
-    data = data.to_dict()
+    try:
+        d = NestedDict(data)
+        d['driversData'] = d['mainW', 'driversData']
+        del d['mainW']['driversData']
+        d['driversData', 'plateSolve'] = d['driversData', 'astrometry']
+        del d['driversData']['astrometry']
+        d['hemisphereW', 'horizonMaskFileName'] = d['mainW', 'horizonFileName']
+        del d['mainW']['horizonFileName']
+        t = d['driversData', 'directWeather', 'frameworks', 'internal']
+        d['driversData', 'directWeather', 'frameworks', 'directWeather'] = t
+        del d['driversData']['directWeather']['frameworks']['internal']
+        d['driversData', 'directWeather', 'frameworks', 'directWeather',
+          'deviceName'] = 'On Mount'
+        d['version'] = profileVersion
+        data = d.to_dict()
+    except Exception as e:
+        log.error('Failed conversion, keep old structure')
     return data
 
 

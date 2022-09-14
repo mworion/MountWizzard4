@@ -70,10 +70,7 @@ class BuildPoints:
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
-        self.ui.genBuildSpiralMax.clicked.connect(self.genBuildSpiralMax)
-        self.ui.genBuildSpiralMed.clicked.connect(self.genBuildSpiralMed)
-        self.ui.genBuildSpiralNorm.clicked.connect(self.genBuildSpiralNorm)
-        self.ui.genBuildSpiralMin.clicked.connect(self.genBuildSpiralMin)
+        self.ui.genBuildSpiral.clicked.connect(self.genBuildGoldenSpiral)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
         self.ui.sortNothing.clicked.connect(self.rebuildPoints)
         self.ui.sortEW.clicked.connect(self.rebuildPoints)
@@ -104,6 +101,7 @@ class BuildPoints:
         self.ui.altitudeMin.setValue(config.get('altitudeMin', 30))
         self.ui.altitudeMax.setValue(config.get('altitudeMax', 75))
         self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 15))
+        self.ui.numberSpiral.setValue(config.get('numberSpiral', 30))
 
         self.ui.autoDeleteMeridian.setChecked(config.get('autoDeleteMeridian', False))
         self.ui.autoDeleteHorizon.setChecked(config.get('autoDeleteHorizon', True))
@@ -136,6 +134,7 @@ class BuildPoints:
         config['altitudeMin'] = self.ui.altitudeMin.value()
         config['altitudeMax'] = self.ui.altitudeMax.value()
         config['numberDSOPoints'] = self.ui.numberDSOPoints.value()
+        config['numberSpiral'] = self.ui.numberSpiral.value()
         config['autoDeleteMeridian'] = self.ui.autoDeleteMeridian.isChecked()
         config['autoDeleteHorizon'] = self.ui.autoDeleteHorizon.isChecked()
         config['useSafetyMargin'] = self.ui.useSafetyMargin.isChecked()
@@ -405,7 +404,7 @@ class BuildPoints:
         self.ui.numberDSOPoints.setEnabled(True)
         return True
 
-    def genBuildSpiralMax(self):
+    def genBuildGoldenSpiral(self):
         """
         genBuildGoldenSpiral generates points along the actual tracking path
         as the processing might take to long (at least on ubuntu), we have to
@@ -415,60 +414,27 @@ class BuildPoints:
 
         :return: success
         """
-        self.lastGenerator = 'spiralMax'
+        self.lastGenerator = 'spiral'
+        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', True)
+        numberTarget = int(self.ui.numberSpiral.value())
         keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateGoldenSpiral(numberPoints=350, keep=keep)
+        suc = self.app.data.generateGoldenSpiral(numberPoints=numberTarget,
+                                                 keep=keep)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Golden spiral [max] cannot be generated')
+                          'Golden spiral cannot be generated')
+            self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', False)
             return False
 
         self.processPoints()
-        return True
-
-    def genBuildSpiralMed(self):
-        """
-        :return: success
-        """
-        self.lastGenerator = 'spiralMed'
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateGoldenSpiral(numberPoints=250, keep=keep)
-        if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Golden spiral [med] cannot be generated')
-            return False
-
-        self.processPoints()
-        return True
-
-    def genBuildSpiralNorm(self):
-        """
-        :return: success
-        """
-        self.lastGenerator = 'spiralNorm'
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateGoldenSpiral(numberPoints=150, keep=keep)
-        if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Golden spiral [norm] cannot be generated')
-            return False
-
-        self.processPoints()
-        return True
-
-    def genBuildSpiralMin(self):
-        """
-        :return: success
-        """
-        self.lastGenerator = 'spiralMin'
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateGoldenSpiral(numberPoints=75, keep=keep)
-        if not suc:
-            self.msg.emit(2, 'Model', 'Buildpoints',
-                          'Golden spiral [min] cannot be generated')
-            return False
-
-        self.processPoints()
+        numberFilter = len(self.app.data.buildP)
+        numberPoints = 0
+        while numberFilter < numberTarget and not keep:
+            numberFilter = len(self.app.data.buildP)
+            numberPoints = numberPoints + numberTarget - numberFilter
+            self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
+            self.processPoints()
+        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', False)
         return True
 
     def genModel(self):
@@ -560,9 +526,6 @@ class BuildPoints:
 
     def saveBuildFileAs(self):
         """
-        saveBuildFileAs calls a file selector box and selects the filename to be
-        save.
-
         :return: success
         """
         folder = self.app.mwGlob['configDir']
@@ -685,7 +648,7 @@ class BuildPoints:
     def autoSortPoints(self):
         """
         autoSortPoints sort the given build point first to east and west and
-        than based on the decision high altitude to low altitude or east to west
+        then based on the decision high altitude to low altitude or east to west
         in each hemisphere
 
         :return: success if sorted

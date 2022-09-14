@@ -911,8 +911,6 @@ class DataPoint(object):
         :param keep:
         :return: true for test purpose
         """
-        if numberPoints < 50:
-            return False
         if not keep:
             self.clearBuildP()
 

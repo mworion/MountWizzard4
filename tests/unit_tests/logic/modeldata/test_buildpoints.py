@@ -1279,11 +1279,6 @@ def test_generateDSOPath_5(function):
 
 
 def test_generateGoldenSpiral_1(function):
-    suc = function.generateGoldenSpiral(0)
-    assert not suc
-
-
-def test_generateGoldenSpiral_2(function):
     suc = function.generateGoldenSpiral(200)
     assert suc
 

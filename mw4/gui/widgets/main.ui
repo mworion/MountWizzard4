@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -9065,60 +9065,12 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="genBuildSpiralMin">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
-        </property>
-        <property name="text">
-         <string>Minimal</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="genBuildSpiralNorm">
-        <property name="geometry">
-         <rect>
-          <x>185</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
-        </property>
-        <property name="text">
-         <string>Norm</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="genBuildSpiralMed">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
-        </property>
-        <property name="text">
-         <string>Medium</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="genBuildSpiralMax">
+       <widget class="QPushButton" name="genBuildSpiral">
         <property name="geometry">
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>86</width>
+          <width>176</width>
           <height>21</height>
          </rect>
         </property>
@@ -9126,7 +9078,65 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
         </property>
         <property name="text">
-         <string>Maximal</string>
+         <string>Generate</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_195">
+        <property name="geometry">
+         <rect>
+          <x>255</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Points</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberSpiral">
+        <property name="geometry">
+         <rect>
+          <x>305</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Number of points.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>12.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>30.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -30106,10 +30116,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>genBuildMed</tabstop>
   <tabstop>genBuildNorm</tabstop>
   <tabstop>genBuildMin</tabstop>
-  <tabstop>genBuildSpiralMax</tabstop>
-  <tabstop>genBuildSpiralMed</tabstop>
-  <tabstop>genBuildSpiralNorm</tabstop>
-  <tabstop>genBuildSpiralMin</tabstop>
+  <tabstop>genBuildSpiral</tabstop>
   <tabstop>genModel</tabstop>
   <tabstop>numberDSOPoints</tabstop>
   <tabstop>genBuildDSO</tabstop>

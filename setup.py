@@ -40,6 +40,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: model points: set dither on celestial paths
 - add: model points: generate from actual used mount model
 - add: model points: existing model files could be loaded
+- add: model points: golden spiral with exact number of points
 - add: polar align: adding hint how to use the knobs measures right
 - add: plate solve: new watney astrometry solver for all platforms
 - add: hemisphere: selection of terrain file

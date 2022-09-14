@@ -415,26 +415,23 @@ class BuildPoints:
         :return: success
         """
         self.lastGenerator = 'spiral'
-        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', True)
         numberTarget = int(self.ui.numberSpiral.value())
-        keep = self.ui.keepGeneratedPoints.isChecked()
-        suc = self.app.data.generateGoldenSpiral(numberPoints=numberTarget,
-                                                 keep=keep)
+        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', True)
+        numberFilter = len(self.app.data.buildP)
+        numberPoints = 0
+
+        while numberFilter < numberTarget:
+            numberFilter = len(self.app.data.buildP)
+            numberPoints = numberPoints + numberTarget - numberFilter
+            suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
+            if not suc:
+                break
+            self.processPoints()
+        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', False)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',
                           'Golden spiral cannot be generated')
-            self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', False)
             return False
-
-        self.processPoints()
-        numberFilter = len(self.app.data.buildP)
-        numberPoints = 0
-        while numberFilter < numberTarget and not keep:
-            numberFilter = len(self.app.data.buildP)
-            numberPoints = numberPoints + numberTarget - numberFilter
-            self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
-            self.processPoints()
-        self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', False)
         return True
 
     def genModel(self):

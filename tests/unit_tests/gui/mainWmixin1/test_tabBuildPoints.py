@@ -328,66 +328,26 @@ def test_genBuildDSO_6(function):
 
 
 def test_genBuildGoldenSpiral_1(function):
+    def test():
+        function.app.data.buildP = [1] * 20
+
+    function.ui.numberSpiral.setValue(15)
+    t = function.processPoints
+    function.processPoints = test
     with mock.patch.object(function.app.data,
                            'generateGoldenSpiral',
                            return_value=True):
-        suc = function.genBuildSpiralMax()
+        suc = function.genBuildGoldenSpiral()
         assert suc
-
-
-def test_genBuildGoldenSpiral_1a(function):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=True):
-        suc = function.genBuildSpiralMed()
-        assert suc
-
-
-def test_genBuildGoldenSpiral_1b(function):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=True):
-        suc = function.genBuildSpiralNorm()
-        assert suc
-
-
-def test_genBuildGoldenSpiral_1c(function):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=True):
-        suc = function.genBuildSpiralMin()
-        assert suc
+    function.processPoints = t
 
 
 def test_genBuildGoldenSpiral_2(function):
+    function.ui.numberSpiral.setValue(2)
     with mock.patch.object(function.app.data,
                            'generateGoldenSpiral',
                            return_value=False):
-        suc = function.genBuildSpiralMax()
-        assert not suc
-
-
-def test_genBuildGoldenSpiral_2a(function):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        suc = function.genBuildSpiralMed()
-        assert not suc
-
-
-def test_genBuildGoldenSpiral_2b(function):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        suc = function.genBuildSpiralNorm()
-        assert not suc
-
-
-def test_genBuildGoldenSpiral_2c(function):
-    with mock.patch.object(function.app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        suc = function.genBuildSpiralMin()
+        suc = function.genBuildGoldenSpiral()
         assert not suc
 
 

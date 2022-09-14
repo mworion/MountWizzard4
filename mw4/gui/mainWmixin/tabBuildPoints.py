@@ -417,16 +417,15 @@ class BuildPoints:
         self.lastGenerator = 'spiral'
         numberTarget = int(self.ui.numberSpiral.value())
         self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', True)
-        numberFilter = len(self.app.data.buildP)
         numberPoints = 0
-
+        numberFilter = 0
         while numberFilter < numberTarget:
-            numberFilter = len(self.app.data.buildP)
             numberPoints = numberPoints + numberTarget - numberFilter
             suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
             if not suc:
                 break
             self.processPoints()
+            numberFilter = len(self.app.data.buildP)
         self.changeStyleDynamic(self.ui.genBuildSpiral, 'running', False)
         if not suc:
             self.msg.emit(2, 'Model', 'Buildpoints',

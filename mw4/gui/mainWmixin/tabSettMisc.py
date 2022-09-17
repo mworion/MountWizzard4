@@ -402,7 +402,7 @@ class SettMisc(object):
         vPackage = list(response['releases'].keys())
         vPackage.sort(key=Version, reverse=True)
 
-        verBeta = [x for x in vPackage if 'a' in x]
+        verBeta = [x for x in vPackage if 'b' in x]
         verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
 
         self.log.info(f'Package Beta:   {verBeta[:10]}')

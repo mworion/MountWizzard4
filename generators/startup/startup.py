@@ -34,7 +34,7 @@ else:
     py = 'python3'
 
 log = logging.getLogger()
-version = '3.0beta3'
+version = '3.0beta4'
 
 
 def run(command):

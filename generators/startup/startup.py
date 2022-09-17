@@ -101,6 +101,15 @@ class EnvBuilder(venv.EnvBuilder):
 
     def post_setup(self, context):
         self.context = context
+        os.environ['VIRTUAL_ENV'] = context.env_dir
+        pathListOld = os.environ['PATH'].split(os.pathsep)
+        pathList = []
+        for path in pathListOld:
+            if 'Python' in path:
+                continue
+            pathList.append(path)
+        os.environ['PATH'] = context.env_dir + '/bin'
+        os.environ['PATH'] += os.pathsep + os.pathsep.join(pathList)
 
 
 class LoggerWriter:

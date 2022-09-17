@@ -475,8 +475,14 @@ class SettMisc(object):
         hasBase = hasattr(sys, 'base_prefix')
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
-        self.log.debug(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
-        self.log.debug(f'venv path: [{os.environ.get("VIRTUAL_ENV", "")}]')
+        status = status and os.environ.get('VIRTUAL_ENV', '') != ''
+        if hasReal:
+            self.log.debug(f'Real prefix: [{sys.real_prefix}]')
+        if hasBase:
+            self.log.debug(f'Base prefix: [{sys.base_prefix}]')
+        self.log.debug(f'PATH:        [{os.environ.get("PATH", "")}]')
+        self.log.debug(f'VENV path:   [{os.environ.get("VIRTUAL_ENV", "")}]')
+        self.log.debug(f'VENV status: [{status}]')
         return status
 
     def checkUpdateVersion(self, versionPackage):

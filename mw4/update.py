@@ -57,13 +57,13 @@ class Update:
             line = f'{prefix} : {packageName}'
 
         elif line.startswith('Collecting'):
-            line = line.split('<')[0].split('>')[0].split('=')[0]
+            line = line.split('<')[0].split('>')[0].split('=')[0].rstrip()
 
         elif line.startswith('Installing') or line.startswith('Building'):
-            line = line.split(':')[0]
+            line = line.split(':')[0].rstrip()
 
         else:
-            line = line.split('\n')[0]
+            line = line.split('\n')[0].rstrip()
 
         return line
 
@@ -78,8 +78,14 @@ class Update:
         hasBase = hasattr(sys, 'base_prefix')
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
-        self.log.debug(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
-        self.log.debug(f'venv path: [{os.environ.get("VIRTUAL_ENV", "")}]')
+        status = status and os.environ.get('VIRTUAL_ENV', '') != ''
+        if hasReal:
+            self.log.debug(f'Real prefix: [{sys.real_prefix}]')
+        if hasBase:
+            self.log.debug(f'Base prefix: [{sys.base_prefix}]')
+        self.log.debug(f'PATH:        [{os.environ.get("PATH", "")}]')
+        self.log.debug(f'VENV path:   [{os.environ.get("VIRTUAL_ENV", "")}]')
+        self.log.debug(f'VENV status: [{status}]')
         return status
 
     def runInstall(self, versionPackage=''):

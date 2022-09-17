@@ -78,7 +78,6 @@ class Update:
         hasBase = hasattr(sys, 'base_prefix')
 
         status = hasReal or hasBase and sys.base_prefix != sys.prefix
-        status = status and os.environ.get('VIRTUAL_ENV', '') != ''
         if hasReal:
             self.log.debug(f'Real prefix: [{sys.real_prefix}]')
         if hasBase:

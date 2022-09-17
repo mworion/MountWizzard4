@@ -76,6 +76,8 @@ def installBasicPackages():
     run(command)
     command = [py, '-m', 'pip', 'install', 'requests', '-U']
     run(command)
+    command = [py, '-m', 'pip', 'install', 'wheel', '-U']
+    run(command)
     command = [py, '-m', 'pip', 'install', 'packaging', '-U']
     run(command)
 
@@ -93,6 +95,15 @@ except ImportError:
     from packaging.utils import Version
 
 
+def findfile(startDir, pattern):
+    for root, dirs, files in os.walk(startDir):
+        for name in files:
+            if name.find(pattern) >= 0:
+                return root + os.sep + name
+
+    return None
+
+
 class EnvBuilder(venv.EnvBuilder):
 
     def __init__(self, *args, **kwargs):
@@ -101,15 +112,10 @@ class EnvBuilder(venv.EnvBuilder):
 
     def post_setup(self, context):
         self.context = context
-        os.environ['VIRTUAL_ENV'] = context.env_dir
-        pathListOld = os.environ['PATH'].split(os.pathsep)
-        pathList = []
-        for path in pathListOld:
-            if 'Python' in path:
-                continue
-            pathList.append(path)
-        os.environ['PATH'] = context.env_dir + '/bin'
-        os.environ['PATH'] += os.pathsep + os.pathsep.join(pathList)
+
+        binPath = os.path.dirname(findfile(os.getcwd(), 'activate')) + os.pathsep
+        os.environ['PATH'] = binPath + os.environ['PATH']
+        #sys.path.insert(1, os.path.dirname(findfile(venvPath, 'easy_install.py')))
 
 
 class LoggerWriter:
@@ -330,9 +336,9 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     return True
 
 
-def versionOnline(upgradeBeta):
+def versionOnline(updateBeta):
     """
-    :param upgradeBeta:
+    :param updateBeta:
     :return:
     """
     url = f'https://pypi.python.org/pypi/mountwizzard4/json'
@@ -349,7 +355,7 @@ def versionOnline(upgradeBeta):
     log.info(f'Package Beta:   {verBeta[:10]}')
     log.info(f'Package Release:{verRelease[:10]}')
 
-    if upgradeBeta:
+    if updateBeta:
         verMW4 = Version(verBeta[0])
     else:
         verMW4 = Version(verRelease[0])
@@ -375,27 +381,27 @@ def versionLocal():
     return Version(ver)
 
 
-def getVersion(isTest, upgradeBeta):
+def getVersion(isTest, updateBeta):
     """
     :param isTest:
-    :param upgradeBeta:
+    :param updateBeta:
     :return:
     """
     if isTest:
         verMW4 = versionLocal()
-    elif upgradeBeta:
+    elif updateBeta:
         verMW4 = versionOnline(True)
     else:
         verMW4 = versionOnline(False)
     return verMW4
 
 
-def installMW4(venvContext, upgrade=False, upgradeBeta=False,
+def installMW4(venvContext, update=False, updateBeta=False,
                isTest=False, version='', verMW4=''):
     """
     :param venvContext:
-    :param upgrade:
-    :param upgradeBeta:
+    :param update:
+    :param updateBeta:
     :param isTest:
     :param version:
     :param verMW4:
@@ -410,10 +416,10 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False,
     elif version:
         print(f'Installing version {version}')
         command = ['-m', 'pip', 'install', f'mountwizzard4=={version}']
-    elif upgrade:
+    elif update:
         print('Upgrading to latest release')
         command = ['-m', 'pip', 'install', '-U', 'mountwizzard4']
-    elif upgradeBeta:
+    elif updateBeta:
         print('Upgrading to latest version including beta')
         command = ['-m', 'pip', 'install', '-U', 'mountwizzard4', '--pre']
     else:
@@ -428,8 +434,8 @@ def installMW4(venvContext, upgrade=False, upgradeBeta=False,
     if not suc:
         return False
 
-    if upgrade or upgradeBeta:
-        print('Upgrade finished')
+    if update or updateBeta:
+        print('Update finished')
     else:
         print('Install finished')
     print()
@@ -454,20 +460,20 @@ def checkIfInstalled(venvContext):
     return isInstalled, command
 
 
-def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
+def install(venvContext, update=False, updateBeta=False, version=''):
     """
     :param venvContext:
-    :param upgrade:
-    :param upgradeBeta:
+    :param update:
+    :param updateBeta:
     :param version:
     :return:
     """
     isInstalled, command = checkIfInstalled(venvContext)
-    if isInstalled and not (upgrade or upgradeBeta or version):
+    if isInstalled and not (update or updateBeta or version):
         return command
 
     isTest = os.path.isfile('mountwizzard4.tar.gz')
-    verMW4 = getVersion(isTest, upgradeBeta)
+    verMW4 = getVersion(isTest, updateBeta)
 
     if platform.machine() == 'aarch64':
         suc = downloadAndInstallWheels(venvContext, verMW4=verMW4)
@@ -476,7 +482,7 @@ def install(venvContext, upgrade=False, upgradeBeta=False, version=''):
     elif platform.machine() == 'armv7':
         return ''
 
-    suc = installMW4(venvContext, upgrade=upgrade, upgradeBeta=upgradeBeta,
+    suc = installMW4(venvContext, update=update, updateBeta=updateBeta,
                      version=version, verMW4=verMW4, isTest=isTest)
     if not suc:
         return ''
@@ -523,19 +529,19 @@ def main(args=None):
         help='Upgrade the virtual environment directory to use this version of '
              'Python, assuming Python has been upgraded in-place.')
     parser.add_argument(
-        '--upgrade', default=False, action='store_true', dest='upgradeMW4',
-        help='Upgrade MountWizzard4 to the actual release version')
+        '--update', default=False, action='store_true', dest='updateMW4',
+        help='Update MountWizzard4 to the actual release version')
     parser.add_argument(
-        '--upgrade-beta', default=False, action='store_true', dest='upgradeMW4beta',
-        help='Upgrade MountWizzard4 to the actual beta version')
+        '--update-beta', default=False, action='store_true', dest='updateMW4beta',
+        help='Update MountWizzard4 to the actual beta version')
     parser.add_argument(
         '--version', default='', type=str, dest='version',
-        help='Upgrade MountWizzard4 to the named version')
+        help='Update MountWizzard4 to the named version')
     parser.add_argument(
         '--no-start', default=False, action='store_true', dest='noStart',
         help='Running script without starting MountWizzard4')
     parser.add_argument(
-        '--clean_system', default=False, action='store_true', dest='clean',
+        '--clean', default=False, action='store_true', dest='clean',
         help='Cleaning system packages from faulty installs')
     parser.add_argument(
         '--scale', default=1, type=float, dest='scale',
@@ -558,8 +564,8 @@ def main(args=None):
     print()
 
     command = install(venvContext,
-                      upgrade=options.upgradeMW4,
-                      upgradeBeta=options.upgradeMW4beta,
+                      update=options.updateMW4,
+                      updateBeta=options.updateMW4beta,
                       version=options.version)
     if platform.system() == 'Windows':
         os.environ['QT_SCALE_FACTOR'] = str(options.scale)

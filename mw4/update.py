@@ -299,9 +299,11 @@ class UpdateCLI:
 
     def writeText(self, text, color):
         """
+        :param text:
+        :param color:
         :return:
         """
-        sys.stdout.write(text + '\n')
+        print(text + '\n')
         self.log.ui(f'Updater terminal: [{text}]')
         return True
 

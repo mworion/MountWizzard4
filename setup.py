@@ -77,6 +77,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - improve: model run: better information about status and result
 - improve: hemisphere: improve solved point presentation (white, red)
 - improve: plate solve: compatibility checks 
+- improve: system: all log files will be stored in a separate folder /log
 - improve: system: enable usage of python 3.10
 - improve: system: use latest PyQt5 version 
 - improve: system: adjust window sizes to be able to make mosaic layout on desktop
@@ -93,7 +94,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0a14',
+    version='3.0.0a15',
     packages=[
         'mw4',
         'mw4.base',

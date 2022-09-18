@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import sys
+import os
 
 import pytest
 import logging
@@ -31,7 +32,6 @@ from base.loggerMW import LoggerWriter
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-
     yield
 
 
@@ -47,8 +47,13 @@ def test_timeTz():
 
 
 def test_setupLogging():
-    suc = loggerMW.setupLogging()
-    assert suc
+    with mock.patch.object(os.path,
+                           'isdir',
+                           return_value=False):
+        with mock.patch.object(os,
+                               'mkdir'):
+            suc = loggerMW.setupLogging()
+            assert suc
 
 
 def test_setCustomLoggingLevel():

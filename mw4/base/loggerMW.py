@@ -15,6 +15,7 @@
 #
 ###########################################################
 # standard libraries
+import os
 import logging
 from logging.handlers import RotatingFileHandler
 import datetime
@@ -88,13 +89,10 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
     """
     if not methodName:
         methodName = levelName.lower()
-
     if hasattr(logging, levelName):
         return
-
     if hasattr(logging, methodName):
         return
-
     if hasattr(logging.getLoggerClass(), methodName):
         return
 
@@ -114,9 +112,12 @@ def setupLogging():
 
     :return: true for test purpose
     """
+    if not os.path.isdir('./log'):
+        os.mkdir('./log')
+
     logging.Formatter.converter = timeTz
     timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
-    logFile = f'./mw4-{timeTag}.log'
+    logFile = f'./log/mw4-{timeTag}.log'
     logHandler = RotatingFileHandler(logFile, mode='a', maxBytes=100 * 1024 * 1024,
                                      backupCount=100, encoding=None, delay=False)
     logging.basicConfig(level=logging.DEBUG,

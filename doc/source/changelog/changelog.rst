@@ -78,6 +78,12 @@ Released versions of MW4
 
 Version 2.2
 ^^^^^^^^^^^
+2.2.7
+
+2.2.6
+
+2.2.5
+
 2.2.4
 
 - fix: remove race condition for image file causing ASTAP to fail

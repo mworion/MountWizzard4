@@ -4,9 +4,17 @@ Version 3.0
 ^^^^^^^^^^^
 3.0.0b0
 
+Version 3.0 is a major release! Please update with care!
+No ARM7 support / ARM64 only Python 3.7 - 3.9
+
 - add: GUI: all charts could be zoomed and panned
 - add: GUI: all tab menu entries could be customized in order and stored
-- add: GUI: in emergency all open windows could be collected to visual area
+- add: GUI: all open windows could be collected to visual area
+- add: GUI: separate window with big buttons are available
+- add: GUI: reduced GUI configurable for a simpler user interface
+- add: video: support for up to 4 external RTSP streams or local cameras
+- add: video: adding authentication to video streams
+- add: video: adding support for HTTP and HTTPS streams
 - add: almanac: now supports UTC / local time
 - add: almanac: support set/rise times moon
 - add: environment: integrate meteoblue.com seeing conditions
@@ -17,15 +25,17 @@ Version 3.0
 - add: model points: set dither on celestial paths
 - add: model points: generate from actual used mount model
 - add: model points: existing model files could be loaded
+- add: model points: golden spiral with exact number of points
 - add: polar align: adding hint how to use the knobs measures right
 - add: plate solve: new watney astrometry solver for all platforms
+- add: hemisphere: selection of terrain file
 - add: hemisphere: show actual model error in background
 - add: hemisphere: edit horizon model much more efficient
 - add: hemisphere: show 2d contour error curve from actual model
 - add: hemisphere: move point with mouse around
 - add: dome: control azimuth move CW / CCW for INDI
 - add: satellites: all time values could be UTC or local time now
-- add: MPC / IERS: adding alternative server
+- add: MPC / IERS: adding alternative server for download
 - add: measure: window has max 5 charts now (from 3)
 - add: measure: more values (time delta, focus, etc)
 - add: image: photometry functions (aberration, roundness, etc.)
@@ -39,18 +49,20 @@ Version 3.0
 - add: drivers: polling timing for drivers could be set
 - add: drivers: game controller interface for mount and dome
 - add: system: support for python 3.10
-- add: system: support for up to 4 external RTSP streams or local cameras
 - add: help: local install of documentation in PDF format
+- add: profiles: automatic translation from v2.2.x to 3.x
 - improve: GUI: layout for main window optimized and consistent and wording updates
 - improve: GUI: complete rework of charting: performance and functions
 - improve: GUI: clean up and optimize iers download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
+- improve: GUI: moved on / off mount to their settings: avoid undesired shutoff
 - improve: INDI: correcting setting parameters on startup
 - improve: model points: optimized DSO path generation (always fit, less params)
 - improve: model run: refactoring
 - improve: model run: better information about status and result
 - improve: hemisphere: improve solved point presentation (white, red)
 - improve: plate solve: compatibility checks
+- improve: system: all log files will be stored in a separate folder /log
 - improve: system: enable usage of python 3.10
 - improve: system: use latest PyQt5 version
 - improve: system: adjust window sizes to be able to make mosaic layout on desktop

@@ -464,8 +464,18 @@ def test_writeBuildModelOptimized_1(function):
                            return_value=[{'errorIndex': 1}, {'errorIndex': 3}]):
         with mock.patch.object(json,
                                'dump'):
-            suc = function.writeBuildModelOptimized('test', [2], [1])
+            suc = function.writeBuildModelOptimized('test', [1])
             assert suc
+
+
+@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
+def test_writeBuildModelOptimized_2(function):
+    with mock.patch.object(json,
+                           'load',
+                           return_value=[{'errorIndex': 1}, {'errorIndex': 3}],
+                           side_effect=Exception):
+        suc = function.writeBuildModelOptimized('test', [1])
+        assert not suc
 
 
 def test_clearRefreshModel_1(function):

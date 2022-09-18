@@ -369,10 +369,9 @@ class ManageModel:
             self.refreshName()
             return True
 
-    def writeBuildModelOptimized(self, foundModel, pointsIn, pointsOut):
+    def writeBuildModelOptimized(self, foundModel, pointsOut):
         """
         :param foundModel:
-        :param pointsIn:
         :param pointsOut:
         :return: true for test purpose
         """
@@ -409,13 +408,13 @@ class ManageModel:
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
         self.msg.emit(0, 'Model', 'Manage', 'Align model data refreshed')
-        foundModel, pointsIn, pointsOut = self.findFittingModel()
+        foundModel, _, pointsOut = self.findFittingModel()
 
         if foundModel:
             self.msg.emit(0, 'Model', 'Manage',
                           f'Found stored model:  [{foundModel}]')
             self.ui.originalModel.setText(foundModel)
-            self.writeBuildModelOptimized(foundModel, pointsIn, pointsOut)
+            self.writeBuildModelOptimized(foundModel, pointsOut)
 
         else:
             self.ui.originalModel.setText('No fitting model file found')

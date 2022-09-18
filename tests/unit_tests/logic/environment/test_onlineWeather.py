@@ -117,6 +117,15 @@ def test_processOpenWeatherMapData_2(function):
         assert not suc
 
 
+def test_processOpenWeatherMapData_2b(function):
+    with mock.patch.object(json,
+                           'load',
+                           return_value={},
+                           side_effect=Exception):
+        suc = function.processOpenWeatherMapData()
+        assert not suc
+
+
 def test_processOpenWeatherMapData_3(function):
     data = {'list': []}
     with mock.patch.object(json,

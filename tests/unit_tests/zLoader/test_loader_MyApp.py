@@ -167,6 +167,24 @@ def test_notify_3():
 
 def test_notify_4():
     ui = QtWidgets.QLineEdit()
+    event = QMouseEvent(QEvent.MouseButtonRelease,
+                        QPoint(100, 100),
+                        Qt.LeftButton,
+                        Qt.LeftButton,
+                        Qt.NoModifier,
+                        )
+    with mock.patch.object(PyQt5.QtWidgets.QApplication,
+                           'notify',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'handleButtons',
+                               return_value=True):
+            suc = app.notify(obj=ui, event=event)
+            assert suc
+
+
+def test_notify_5():
+    ui = QtWidgets.QLineEdit()
     event = QMouseEvent(QEvent.MouseButtonPress,
                         QPoint(100, 100),
                         Qt.LeftButton,

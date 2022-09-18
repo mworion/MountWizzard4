@@ -111,6 +111,15 @@ def test_processModel_1(function):
                 assert suc
 
 
+def test_processModel_2(function):
+    with mock.patch.object(json,
+                           'load',
+                           return_value={},
+                           side_effect=Exception):
+        suc = function.processModel('tests/testData/test.model')
+        assert not suc
+
+
 def test_loadModel_1(function):
     with mock.patch.object(function,
                            'openFile',

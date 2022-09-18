@@ -16,6 +16,7 @@
 #
 ###########################################################
 # standard libraries
+import sys
 import pytest
 from unittest import mock
 import logging
@@ -576,6 +577,7 @@ def test_showUpdates_6(function):
 
 
 def test_isVenv_1(function):
+    setattr(sys, 'real_prefix', '')
     function.isVenv()
 
 

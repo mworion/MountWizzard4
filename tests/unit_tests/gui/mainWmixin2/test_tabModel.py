@@ -23,6 +23,7 @@ import time
 import os
 import shutil
 import glob
+import json
 
 # external packages
 import skyfield.api
@@ -681,6 +682,29 @@ def test_loadProgramModel_4(function):
 
 
 def test_loadProgramModel_5(function):
+    shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
+
+    def openFile(a, b, c, d, multiple=False):
+        return (['tests/workDir/model/test.model'],
+                ['test'],
+                ['.model'])
+    function.openFile = openFile
+
+    with mock.patch.object(function,
+                           'clearAlignAndBackup',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'programModelToMount',
+                               return_value=True):
+            with mock.patch.object(json,
+                                   'load',
+                                   return_value={},
+                                   side_effect=Exception):
+                suc = function.loadProgramModel()
+                assert suc
+
+
+def test_loadProgramModel_6(function):
     shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
     shutil.copy('tests/testData/test1.model', 'tests/workDir/model/test1.model')
 

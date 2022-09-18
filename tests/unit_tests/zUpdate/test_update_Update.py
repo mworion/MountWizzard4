@@ -17,6 +17,7 @@
 ###########################################################
 # standard libraries
 import os
+import sys
 import unittest.mock as mock
 import pytest
 import subprocess
@@ -72,6 +73,8 @@ def test_formatPIP_6(update):
 
 
 def test_isVenv_1(update):
+    setattr(sys, 'real_prefix', '')
+    setattr(sys, 'base_prefix', '')
     update.isVenv()
 
 

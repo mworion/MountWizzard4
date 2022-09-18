@@ -88,6 +88,15 @@ def test_processSeeingData_1(function):
 def test_processSeeingData_2(function):
     with mock.patch.object(json,
                            'load',
+                           return_value={},
+                           side_effect=Exception):
+        suc = function.processSeeingData()
+        assert not suc
+
+
+def test_processSeeingData_3(function):
+    with mock.patch.object(json,
+                           'load',
                            return_value={}):
         suc = function.processSeeingData()
         assert suc

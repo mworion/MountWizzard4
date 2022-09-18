@@ -211,8 +211,12 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         """
         :return: success
         """
-        with open(loadFilePath, 'r') as infile:
-            modelJSON = json.load(infile)
+        try:
+            with open(loadFilePath, 'r') as infile:
+                modelJSON = json.load(infile)
+        except Exception as e:
+            self.log.warning(f'Cannot load model file: {[loadFilePath]}, error: {e}')
+            return False
 
         self.writeGui(modelJSON, loadFilePath)
         self.generateDataSets(modelJSON)

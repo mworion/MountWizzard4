@@ -379,18 +379,20 @@ class ManageModel:
         actPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '.model'
         newPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '-opt.model'
 
-        with open(actPath) as actFile:
-            actModel = json.load(actFile)
+        try:
+            with open(actPath) as actFile:
+                actModel = json.load(actFile)
+        except Exception as e:
+            self.log.warning(f'Cannot load model file: {[actFile]}, error: {e}')
+            return False
 
         newModel = []
-
         for element in actModel:
             if element['errorIndex'] in pointsOut:
                 continue
             newModel.append(element)
 
         newModel = writeRetrofitData(self.app.mount.model, newModel)
-
         with open(newPath, 'w+') as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
 

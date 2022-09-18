@@ -466,9 +466,13 @@ class Model:
         for index, file in enumerate(loadFilePath):
             self.msg.emit(0, '', '',
                           f'Loading model [{os.path.basename(file)}]')
-            with open(file, 'r') as infile:
-                model = json.load(infile)
-                modelJSON += model
+            try:
+                with open(file, 'r') as infile:
+                    model = json.load(infile)
+                    modelJSON += model
+            except Exception as e:
+                self.log.warning(f'Cannot load model file: {[file]}, error: {e}')
+                continue
 
         if len(modelJSON) > 99:
             self.msg.emit(2, 'Model', 'Run error',

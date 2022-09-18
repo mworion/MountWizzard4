@@ -224,9 +224,15 @@ class SettDevice:
         if 'driversData' not in configD:
             configD['driversData'] = {}
 
+        # adding default for missing drivers
         for driver in self.drivers:
             if driver not in configD['driversData']:
                 self.setDefaultData(driver, configD)
+
+        # remove unknown drivers from data
+        for driver in list(configD['driversData'].keys()):
+            if driver not in self.drivers:
+                del configD['driversData'][driver]
 
         self.driversData.clear()
         self.driversData.update(configD.get('driversData', {}))

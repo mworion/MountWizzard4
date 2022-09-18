@@ -190,7 +190,6 @@ class MinorPlanetTime:
         with open(destUnzip) as inFile:
             try:
                 self.minorPlanets = json.load(inFile)
-
             except Exception:
                 self.minorPlanets = {}
 

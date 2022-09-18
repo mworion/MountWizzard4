@@ -124,8 +124,12 @@ class OnlineWeather():
             self.log.info(f'{dataFile} not available')
             return False
 
-        with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'r') as f:
-            data = json.load(f)
+        try:
+            with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'r') as f:
+                data = json.load(f)
+        except Exception as e:
+            self.log.warning(f'Cannot load data file, error: {e}')
+            return False
 
         if 'list' not in data:
             self.data.clear()

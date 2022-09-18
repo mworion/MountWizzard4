@@ -110,8 +110,13 @@ class SeeingWeather():
             self.log.info(f'{dataFile} not available')
             return False
 
-        with open(dataFile, 'r') as f:
-            self.data = json.load(f)
+        try:
+            with open(dataFile, 'r') as f:
+                self.data = json.load(f)
+        except Exception as e:
+            self.log.warning(f'Cannot load data file, error: {e}')
+            return False
+
         self.signals.update.emit()
         return True
 

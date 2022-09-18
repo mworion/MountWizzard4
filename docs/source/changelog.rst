@@ -20,6 +20,30 @@ Released version of MW4
 
 Version 2.2
 ^^^^^^^^^^^
+2.2.7
+
+- fix: text labels
+- fix: getting min / max values from indi devices
+- fix: updates for supporting newer ASTAP versions
+- fix: model run will cancel if solving fails
+
+2.2.6
+
+- fix: reduce load in debug trace mode
+- fix: model process stalls in some cases in normal mode
+- fix: text labels
+- fix: getting min / max values from indi devices
+
+2.2.5
+
+- fix: reduce load in debug trace mode
+- fix: model process stalls in some cases in normal mode
+
+2.2.4
+
+- fix: remove race condition for large image file causing solve error in ASTAP
+- fix: reduce load in debug trace mode
+
 2.2.3
 
 - fix: mount orientation in southern hemisphere

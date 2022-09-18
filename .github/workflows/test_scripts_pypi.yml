@@ -149,5 +149,5 @@ jobs:
             python3 --version
             cd /root/support/3.0
             python3 startup.pyz --no-start
-            cat startup*.log
+            cat ./log/startup*.log
             ls -la

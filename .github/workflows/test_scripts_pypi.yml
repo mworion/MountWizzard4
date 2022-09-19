@@ -32,12 +32,13 @@ jobs:
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}startup.pyz
+          url: ${{ env.gh }}startup_package.zip
           target: .
       
       - name: MountWizzard4 Install
         shell: cmd
         run: |
+          python -m zipfile -e startup_package.zip .
           python startup.pyz --no-start --version 2.2.7
           dir
       
@@ -68,11 +69,12 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}startup.pyz
+          url: ${{ env.gh }}startup_package.zip
           target: .
           
       - name: MountWizzard4 Install
         run: |
+          python3 -m zipfile -e startup_package.zip .
           python3 startup.pyz --no-start --version 2.2.7
           ls -la
   
@@ -93,11 +95,12 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.gh }}startup.pyz
+          url: ${{ env.gh }}startup_package.zip
           target: .
           
       - name: MountWizzard4 Install
         run: |
+          python3 -m zipfile -e startup_package.zip .
           python3 startup.pyz --no-start --version 2.2.7
           ls -la
           
@@ -148,6 +151,7 @@ jobs:
           run: |
             python3 --version
             cd /root/support/3.0
+            python3 -m zipfile -e startup_package.zip .
             python3 startup.pyz --no-start
             cat ./log/startup*.log
             ls -la

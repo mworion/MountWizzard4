@@ -33,20 +33,26 @@ Installing with installer version 3.x:
 --------------------------------------
 The install procedure also got improved: You will have only a single compressed
 python script (startup.pyz) which is valid for all platforms and does all things
-the different existing scripts stand for.
+the different existing scripts stand for. Please download the package and unzip it
+to get the content. You will find three files:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz
+- startup.pyz -> the script for doing all the work
+- mountwizzard4.desktop -> support for ubuntu / linux running the script
+- mw4.ico -> icon for use if you would like to customize the link for runnign the script
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup_package.zip
 
 On windows you should be able to start the script just be double click on it,
-in all other platforms you start it with
+in all other platforms you start it with (please keep in mind: in windows you call that
+command with *python*):
 
 .. code-block:: python
 
     python3 startup.pyz
 
 .. warning::
-    The new installer script 3.x supports only Windows, Mac and x86 Linux
-    distributions! If you need other support, please refer to installer scripts 2.x
+    The new script 3.x supports only Windows, Mac and x86 Linux distributions! 
+    If you need other support, please use the actual scripts 2.x. 
 
 
 Windows 10/11:

@@ -805,8 +805,8 @@ class HemisphereWindow(MWidget, EditHorizon):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
         if not suc:
-            t = f'Cannot slew to Az:[{azimuth:3.1f}], Alt:[{altitude:3.1f}]'
-            self.msg.emit(2, 'Hemisphere', 'Slewing error', t)
+            self.msg.emit(2, 'Hemisphere', 'Slewing error',
+                          'Cannot set target coordinates')
             return False
 
         suc = self.slewSelectedTarget(slewType='keep')
@@ -849,8 +849,8 @@ class HemisphereWindow(MWidget, EditHorizon):
         suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
                                                     dec_degrees=dec)
         if not suc:
-            t = f'Cannot slew to [{name}]'
-            self.msg.emit(2, 'Hemisphere', 'Slewing error', t)
+            self.msg.emit(2, 'Hemisphere', 'Slewing error',
+                          'Cannot set target star')
             return False
 
         t = f'Align [{reply}] to [{name}]'

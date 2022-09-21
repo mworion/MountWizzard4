@@ -25,6 +25,7 @@ import numpy as np
 import cv2
 from astropy.io import fits
 from xisf import XISF
+from astropy import wcs
 
 # local import
 from base.tpool import Worker
@@ -53,6 +54,7 @@ class FileHandler:
         self.flipV = flipV
         self.image = None
         self.header = None
+        self.wcs = None
 
     def debayerImage(self, pattern):
         """
@@ -187,6 +189,7 @@ class FileHandler:
             self.debayerImage(bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
+        self.wcs = wcs.WCS(self.header)
         self.signals.imageLoaded.emit()
         return True
 

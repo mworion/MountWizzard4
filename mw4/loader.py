@@ -25,6 +25,7 @@ import platform
 import socket
 import sys
 import traceback
+import warnings
 
 # the following lines should avoid errors messages from OLE Automation with PyQt5
 # see
@@ -52,6 +53,7 @@ import resource.resources as res
 res.qInitResources()
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
+warnings.filterwarnings('ignore', category=Warning, append=True)
 log = logging.getLogger()
 
 

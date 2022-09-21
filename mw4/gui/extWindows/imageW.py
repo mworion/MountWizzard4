@@ -1017,7 +1017,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         if self.fileHandler.header is None:
             return False
-        if not os.path.isfile(self.imageFileName):
+        if self.fileHandler.image is None:
             return False
 
         ra, dec = getCoordinates(header=self.fileHandler.header)
@@ -1132,6 +1132,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         """
         if not self.fileHandler.wcs.has_celestial:
             return False
-        print('test')
-        # self.slewDirect(posView)
+
+        self.slewDirect(posView)
         return True

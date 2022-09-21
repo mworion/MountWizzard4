@@ -25,6 +25,7 @@ import os
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import QRectF
 from astropy.io import fits
+from astropy import wcs
 from skyfield.api import Angle
 import numpy as np
 import pyqtgraph as pg
@@ -232,6 +233,7 @@ def test_writeHeaderDataToGUI_4(function):
 def test_showTabImage_1(function):
     function.fileHandler = FileHandler(function)
     function.fileHandler.image = np.random.rand(100, 100) + 1
+    function.fileHandler.wcs = wcs.WCS()
     with mock.patch.object(function,
                            'setBarColor'):
         with mock.patch.object(function,
@@ -674,87 +676,55 @@ def test_moveRaDecAbsolute_3(function):
             assert suc
 
 
-def test_solveCenterDone_1(function):
-    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
-    suc = function.solveCenterDone()
+def test_slewCenter_1(function):
+    suc = function.slewCenter()
     assert not suc
 
 
-def test_solveCenterDone_2(function):
-    result = {
-        'success': False,
-        'raJ2000S': Angle(hours=10),
-        'decJ2000S': Angle(degrees=20),
-        'angleS': 30,
-        'scaleS': 1,
-        'errorRMS_S': 3,
-        'flippedS': False,
-        'imagePath': 'test',
-        'message': 'test',
-    }
-
-    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
-    suc = function.solveCenterDone(result=result)
+def test_slewCenter_2(function):
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.header = {}
+    suc = function.slewCenter()
     assert not suc
 
 
-def test_solveCenterDone_3(function):
-    function.ui.embedData.setChecked(True)
-    result = {
-        'success': True,
-        'raJ2000S': Angle(hours=10),
-        'decJ2000S': Angle(degrees=20),
-        'angleS': 30,
-        'scaleS': 1,
-        'errorRMS_S': 3,
-        'flippedS': False,
-        'imagePath': 'test',
-        'message': 'test',
-    }
-    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
+def test_slewCenter_3(function):
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.header = {}
+    function.fileHandler.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function,
                            'moveRaDecAbsolute',
                            return_value=False):
-        suc = function.solveCenterDone(result=result)
+        suc = function.slewCenter()
         assert not suc
 
 
-def test_solveCenterDone_4(function):
-    function.ui.embedData.setChecked(True)
-    result = {
-        'success': True,
-        'raJ2000S': Angle(hours=10),
-        'decJ2000S': Angle(degrees=20),
-        'angleS': 30,
-        'scaleS': 1,
-        'errorRMS_S': 3,
-        'flippedS': False,
-        'imagePath': 'test',
-        'message': 'test',
-    }
-    function.app.plateSolve.signals.done.connect(function.solveCenterDone)
+def test_slewCenter_4(function):
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.header = {}
+    function.fileHandler.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function,
                            'moveRaDecAbsolute',
                            return_value=True):
-        suc = function.solveCenterDone(result=result)
+        suc = function.slewCenter()
         assert suc
 
 
-def test_solveCenter_1(function):
-    suc = function.solveCenter()
+def test_mouseDoubleClick_1(function):
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.image = np.random.rand(100, 100) + 1
+    function.fileHandler.wcs = wcs.WCS({})
+    suc = function.mouseDoubleClick(1, 2)
     assert not suc
 
 
-def test_solveCenter_2(function):
-    function.imageFileName = 'test'
-    suc = function.solveCenter()
-    assert not suc
-
-
-def test_solveCenter_3(function):
+def test_mouseDoubleClick_2(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
-    function.imageFileName = 'tests/workDir/image/m51.fit'
-    with mock.patch.object(function.app.plateSolve,
-                           'solveThreading'):
-        suc = function.solveCenter()
+    hdulist = fits.open('tests/workDir/image/m51.fit')
+    function.fileHandler = FileHandler(function)
+    function.fileHandler.image = np.random.rand(100, 100) + 1
+    function.fileHandler.wcs = wcs.WCS(hdulist[0].header)
+    with mock.patch.object(function,
+                           'slewDirect'):
+        suc = function.mouseDoubleClick(1, 2)
         assert suc

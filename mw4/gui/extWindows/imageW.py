@@ -422,8 +422,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             self.msg.emit(0, 'Image', 'Rendering error', 'Incompatible image format')
             return False
 
-        hasCelestial = self.fileHandler.wcs.has_celestial
-        self.ui.groupMouseCoord.setVisible(hasCelestial)
+        self.ui.groupMouseCoord.setVisible(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
         self.ui.image.setImage(imageDisp=self.fileHandler.image)
         self.setBarColor()
@@ -1071,8 +1070,8 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         question = '<b>Manual slewing to coordinate</b>'
         question += '<br><br>Selected coordinates are:<br>'
-        question += f'<font color={self.M_BLUE}> RA: {ra.hours:3.1f}°'
-        question += f'   DEC: {dec.degrees:3.1f}°</font>'
+        question += f'<font color={self.M_BLUE}> RA: {ra:3.1f}°'
+        question += f'   DEC: {dec:3.1f}°</font>'
         question += '<br><br>Would you like to start slewing?<br>'
 
         suc = self.messageDialog(self, 'Slewing mount', question)
@@ -1093,20 +1092,19 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param pos:
         :return:
         """
-        if not self.fileHandler.wcs.has_celestial:
+        if not self.fileHandler.hasCelestial:
             return False
 
         plotItem = self.ui.image.p[0]
         mousePoint = plotItem.getViewBox().mapSceneToView(pos)
         vr = plotItem.getViewBox().viewRange()
-        yM, xM = self.fileHandler.wcs.array_shape
         xp = x = mousePoint.x()
         yp = y = mousePoint.y()
 
-        if self.ui.flipH.isChecked():
-            xp = xM - xp
-        if not self.ui.flipV.isChecked():
-            yp = yM - yp
+        if self.fileHandler.flipH:
+            xp = self.fileHandler.sizeX - xp
+        if not self.fileHandler.flipH:
+            yp = self.fileHandler.sizeY - yp
 
         ra, dec = self.fileHandler.wcs.wcs_pix2world(xp, yp, 0)
         ra = Angle(hours=float(ra / 360 * 24))
@@ -1130,7 +1128,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param posView:
         :return:
         """
-        if not self.fileHandler.wcs.has_celestial:
+        if not self.fileHandler.hasCelestial:
             return False
 
         self.slewDirect(posView)

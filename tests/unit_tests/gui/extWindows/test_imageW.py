@@ -23,7 +23,7 @@ import os
 
 # external packages
 from PyQt5.QtGui import QCloseEvent
-from PyQt5.QtCore import QRectF
+from PyQt5.QtCore import QRectF, QPointF
 from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle
@@ -360,8 +360,11 @@ def test_resultPhotometry_2(function):
 
 
 def test_processPhotometry_1(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
     function.ui.photometryGroup.setChecked(True)
-    function.fileHandler = FileHandler(function)
     function.fileHandler.image = 1
     with mock.patch.object(function.photometry,
                            'processPhotometry'):
@@ -370,8 +373,10 @@ def test_processPhotometry_1(function):
 
 
 def test_processPhotometry_2(function):
-    function.ui.photometryGroup.setChecked(False)
-    function.fileHandler = FileHandler(function)
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
     function.fileHandler.image = None
     with mock.patch.object(function,
                            'clearGui'):
@@ -682,14 +687,20 @@ def test_slewCenter_1(function):
 
 
 def test_slewCenter_2(function):
-    function.fileHandler = FileHandler(function)
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
     function.fileHandler.header = {}
     suc = function.slewCenter()
     assert not suc
 
 
 def test_slewCenter_3(function):
-    function.fileHandler = FileHandler(function)
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
     function.fileHandler.header = {}
     function.fileHandler.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function,
@@ -700,7 +711,10 @@ def test_slewCenter_3(function):
 
 
 def test_slewCenter_4(function):
-    function.fileHandler = FileHandler(function)
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
     function.fileHandler.header = {}
     function.fileHandler.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function,
@@ -710,20 +724,167 @@ def test_slewCenter_4(function):
         assert suc
 
 
-def test_mouseDoubleClick_1(function):
-    function.fileHandler = FileHandler(function)
-    function.fileHandler.image = np.random.rand(100, 100) + 1
+def test_slewSelectedTarget_1(function):
+    function.app.deviceStat['dome'] = False
+    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startSlewing',
+                           return_value=False):
+        suc = function.slewSelectedTarget('test')
+        assert not suc
+
+
+def test_slewSelectedTarget_2(function):
+    function.app.deviceStat['dome'] = True
+    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
+    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
+    with mock.patch.object(function.app.mount.obsSite,
+                           'startSlewing',
+                           return_value=True):
+        with mock.patch.object(function.app.dome,
+                               'slewDome',
+                               return_value=5):
+            suc = function.slewSelectedTarget('test')
+            assert suc
+
+
+def test_slewDirect_1(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
     function.fileHandler.wcs = wcs.WCS({})
+    with mock.patch.object(function.fileHandler.wcs,
+                           'wcs_pix2world',
+                           return_value=(0, 0)):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=False):
+            suc = function.slewDirect(QPointF(1, 1))
+            assert not suc
+
+
+def test_slewDirect_2(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.wcs = wcs.WCS({})
+    with mock.patch.object(function.fileHandler.wcs,
+                           'wcs_pix2world',
+                           return_value=(0, 0)):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=True):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'setTargetRaDec',
+                                   return_value=False):
+                suc = function.slewDirect(QPointF(1, 1))
+                assert not suc
+
+
+def test_slewDirect_3(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.wcs = wcs.WCS({})
+    with mock.patch.object(function.fileHandler.wcs,
+                           'wcs_pix2world',
+                           return_value=(0, 0)):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=True):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'setTargetRaDec',
+                                   return_value=True):
+                with mock.patch.object(function,
+                                       'slewSelectedTarget',
+                                       return_value=False):
+                    suc = function.slewDirect(QPointF(1, 1))
+                    assert not suc
+
+
+def test_slewDirect_4(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.wcs = wcs.WCS({})
+    with mock.patch.object(function.fileHandler.wcs,
+                           'wcs_pix2world',
+                           return_value=(0, 0)):
+        with mock.patch.object(function,
+                               'messageDialog',
+                               return_value=True):
+            with mock.patch.object(function.app.mount.obsSite,
+                                   'setTargetRaDec',
+                                   return_value=True):
+                with mock.patch.object(function,
+                                       'slewSelectedTarget',
+                                       return_value=True):
+                    suc = function.slewDirect(QPointF(1, 1))
+                    assert suc
+
+
+def test_mouseMoved_1(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.hasCelestial = False
+    suc = function.mouseMoved(pos=QPointF(1, 1))
+    assert not suc
+
+
+def test_mouseMoved_2(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.hasCelestial = True
+    function.fileHandler.flipH = True
+    function.fileHandler.flipV = False
+    function.fileHandler.wcs = wcs.WCS({})
+    with mock.patch.object(function.fileHandler.wcs,
+                           'wcs_pix2world',
+                           return_value=(0, 0)):
+        suc = function.mouseMoved(pos=QPointF(1, 1))
+        assert suc
+
+
+def test_mouseMoved_3(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.hasCelestial = True
+    function.fileHandler.flipH = True
+    function.fileHandler.flipV = False
+    function.fileHandler.wcs = wcs.WCS({})
+    with mock.patch.object(function.fileHandler.wcs,
+                           'wcs_pix2world',
+                           return_value=(0, 0)):
+        suc = function.mouseMoved(pos=QPointF(0.5, 0.5))
+        assert suc
+
+
+def test_mouseDoubleClick_1(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
     suc = function.mouseDoubleClick(1, 2)
     assert not suc
 
 
 def test_mouseDoubleClick_2(function):
-    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
-    hdulist = fits.open('tests/workDir/image/m51.fit')
-    function.fileHandler = FileHandler(function)
-    function.fileHandler.image = np.random.rand(100, 100) + 1
-    function.fileHandler.wcs = wcs.WCS(hdulist[0].header)
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.hasCelestial = True
     with mock.patch.object(function,
                            'slewDirect'):
         suc = function.mouseDoubleClick(1, 2)

@@ -847,6 +847,7 @@ def test_mouseMoved_2(function):
     function.fileHandler.flipH = True
     function.fileHandler.flipV = False
     function.fileHandler.wcs = wcs.WCS({})
+    function.fileHandler.image = np.random.rand(100, 100) + 1
     with mock.patch.object(function.fileHandler.wcs,
                            'wcs_pix2world',
                            return_value=(0, 0)):
@@ -863,10 +864,11 @@ def test_mouseMoved_3(function):
     function.fileHandler.flipH = True
     function.fileHandler.flipV = False
     function.fileHandler.wcs = wcs.WCS({})
+    function.ui.image.setImage(imageDisp=np.random.rand(100, 100) + 1)
     with mock.patch.object(function.fileHandler.wcs,
                            'wcs_pix2world',
                            return_value=(0, 0)):
-        suc = function.mouseMoved(pos=QPointF(0.5, 0.5))
+        suc = function.mouseMoved(pos=QPointF(50, 25))
         assert suc
 
 

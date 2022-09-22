@@ -1103,7 +1103,7 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         if self.fileHandler.flipH:
             xp = self.fileHandler.sizeX - xp
-        if not self.fileHandler.flipH:
+        if not self.fileHandler.flipV:
             yp = self.fileHandler.sizeY - yp
 
         ra, dec = self.fileHandler.wcs.wcs_pix2world(xp, yp, 0)

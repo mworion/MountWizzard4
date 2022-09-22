@@ -196,7 +196,11 @@ def test_workerLoadImage_2(function):
 def test_workerLoadImage_3(function):
     function.header = {'BAYERPAT': 1,
                        'CTYPE1': 'DEF',
-                       'CTYPE2': 'DEF'}
+                       'CTYPE2': 'DEF',
+                       'NAXIS': 2,
+                       'NAXIS1': 100,
+                       'NAXIS2': 200,
+                      }
 
     imageFileName = 'tests/workDir/image/m51.fit'
     with mock.patch.object(function,

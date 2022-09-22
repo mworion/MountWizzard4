@@ -609,49 +609,6 @@ def test_abortSolve_1(function):
     assert not suc
 
 
-def test_slewCenter_1(function):
-    suc = function.slewCenter()
-    assert not suc
-
-
-def test_slewCenter_2(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.header = {}
-    suc = function.slewCenter()
-    assert not suc
-
-
-def test_slewCenter_3(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.header = {}
-    function.fileHandler.image = np.random.rand(100, 100) + 1
-    with mock.patch.object(function,
-                           'moveRaDecAbsolute',
-                           return_value=False):
-        suc = function.slewCenter()
-        assert not suc
-
-
-def test_slewCenter_4(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.header = {}
-    function.fileHandler.image = np.random.rand(100, 100) + 1
-    with mock.patch.object(function,
-                           'moveRaDecAbsolute',
-                           return_value=True):
-        suc = function.slewCenter()
-        assert suc
-
-
 def test_slewSelectedTarget_1(function):
     function.app.deviceStat['dome'] = False
     function.app.mount.obsSite.AltTarget = Angle(degrees=0)
@@ -677,83 +634,66 @@ def test_slewSelectedTarget_2(function):
             assert suc
 
 
-def test_slewDirect_1(function):
+def test_mouseToWorld(function):
     class App:
         threadPool = None
 
     function.fileHandler = FileHandler(App())
     function.fileHandler.wcs = wcs.WCS({})
+    function.fileHandler.flipH = True
+    function.fileHandler.flipV = False
+
     with mock.patch.object(function.fileHandler.wcs,
                            'wcs_pix2world',
                            return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=False):
-            suc = function.slewDirect(QPointF(1, 1))
-            assert not suc
+        ra, dec = function.mouseToWorld(QPointF(1, 1))
+
+
+def test_slewDirect_1(function):
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=False):
+        suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
+        assert not suc
 
 
 def test_slewDirect_2(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.wcs = wcs.WCS({})
-    with mock.patch.object(function.fileHandler.wcs,
-                           'wcs_pix2world',
-                           return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=True):
-            with mock.patch.object(function.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=False):
-                suc = function.slewDirect(QPointF(1, 1))
-                assert not suc
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetRaDec',
+                               return_value=False):
+            suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
+            assert not suc
 
 
 def test_slewDirect_3(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.wcs = wcs.WCS({})
-    with mock.patch.object(function.fileHandler.wcs,
-                           'wcs_pix2world',
-                           return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'messageDialog',
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetRaDec',
                                return_value=True):
-            with mock.patch.object(function.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=True):
-                with mock.patch.object(function,
-                                       'slewSelectedTarget',
-                                       return_value=False):
-                    suc = function.slewDirect(QPointF(1, 1))
-                    assert not suc
+            with mock.patch.object(function,
+                                   'slewSelectedTarget',
+                                   return_value=False):
+                suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
+                assert not suc
 
 
 def test_slewDirect_4(function):
-    class App:
-        threadPool = None
-
-    function.fileHandler = FileHandler(App())
-    function.fileHandler.wcs = wcs.WCS({})
-    with mock.patch.object(function.fileHandler.wcs,
-                           'wcs_pix2world',
-                           return_value=(0, 0)):
-        with mock.patch.object(function,
-                               'messageDialog',
+    with mock.patch.object(function,
+                           'messageDialog',
+                           return_value=True):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetRaDec',
                                return_value=True):
-            with mock.patch.object(function.app.mount.obsSite,
-                                   'setTargetRaDec',
+            with mock.patch.object(function,
+                                   'slewSelectedTarget',
                                    return_value=True):
-                with mock.patch.object(function,
-                                       'slewSelectedTarget',
-                                       return_value=True):
-                    suc = function.slewDirect(QPointF(1, 1))
-                    assert suc
+                suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
+                assert suc
 
 
 def test_mouseMoved_1(function):
@@ -805,7 +745,7 @@ def test_mouseDoubleClick_1(function):
         threadPool = None
 
     function.fileHandler = FileHandler(App())
-    suc = function.mouseDoubleClick(1, 2)
+    suc = function.mouseDoubleClick(1, QPointF(50, 25))
     assert not suc
 
 
@@ -817,5 +757,8 @@ def test_mouseDoubleClick_2(function):
     function.fileHandler.hasCelestial = True
     with mock.patch.object(function,
                            'slewDirect'):
-        suc = function.mouseDoubleClick(1, 2)
-        assert suc
+        with mock.patch.object(function,
+                               'mouseToWorld',
+                               return_value=(0, 0)):
+            suc = function.mouseDoubleClick(1, QPointF(50, 25))
+            assert suc

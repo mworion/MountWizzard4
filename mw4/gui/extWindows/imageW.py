@@ -28,7 +28,6 @@ from skyfield.api import Angle
 
 # local import
 from mountcontrol.convert import convertToDMS, convertToHMS
-from base.transform import J2000ToJNow
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget
 from gui.widgets import image_ui
@@ -184,7 +183,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.showValues.clicked.connect(self.showTabImageSources)
         self.ui.snTarget.currentIndexChanged.connect(self.processPhotometry)
         self.ui.solve.clicked.connect(self.solveCurrent)
-        self.ui.slewCenter.clicked.connect(self.slewCenter)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortExpose.clicked.connect(self.abortExpose)
@@ -271,12 +269,10 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         isPlateSolve = bool(self.app.deviceStat.get('plateSolve', False))
         isSolving = bool(self.deviceStat.get('solve', False))
-        isMount = bool(self.app.deviceStat.get('mount', False))
         isImage = self.imageFileName != ''
 
         self.ui.solve.setEnabled(isPlateSolve and isImage)
         self.ui.abortSolve.setEnabled(isPlateSolve and isImage and isSolving)
-        self.ui.slewCenter.setEnabled(isMount and isImage)
 
         if not self.app.deviceStat.get('camera', False):
             self.ui.expose.setEnabled(False)
@@ -965,71 +961,6 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.app.operationRunning.emit(0)
         return suc
 
-    def slewSelectedTargetWithDome(self, slewType='normal'):
-        """
-        :param slewType:
-        :return: success
-        """
-        azimuthT = self.app.mount.obsSite.AzTarget
-        altitudeT = self.app.mount.obsSite.AltTarget
-        if azimuthT is None or altitudeT is None:
-            return False
-
-        azimuthT = azimuthT.degrees
-        altitudeT = altitudeT.degrees
-        if self.app.deviceStat['dome']:
-            delta = self.app.dome.slewDome(altitude=altitudeT,
-                                           azimuth=azimuthT)
-            geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            text = f'{geoStat}'
-            text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.msg.emit(0, 'Image', 'Slewing dome', text)
-
-        suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
-        if suc:
-            t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.msg.emit(0, 'Image', 'Slewing mount', t)
-        else:
-            t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.msg.emit(2, 'Image', 'Slewing error', t)
-        return suc
-
-    def moveRaDecAbsolute(self, ra, dec):
-        """
-        :param ra:
-        :param dec:
-        :return:
-        """
-        timeJD = self.app.mount.obsSite.timeJD
-        if timeJD is None:
-            return False
-
-        raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
-        self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
-                                              dec=decJNow)
-        suc = self.slewSelectedTargetWithDome(slewType='keep')
-        return suc
-
-    def slewCenter(self):
-        """
-        :return:
-        """
-        if self.fileHandler.header is None:
-            return False
-        if self.fileHandler.image is None:
-            return False
-
-        ra, dec = getCoordinates(header=self.fileHandler.header)
-        self.app.operationRunning.emit(6)
-        self.msg.emit(0, 'Image', 'Slew center', 'Slew to image center now')
-        suc = self.moveRaDecAbsolute(ra, dec)
-        self.app.operationRunning.emit(0)
-        if not suc:
-            self.msg.emit(2, 'Image', 'Slew center error',
-                          'Centering aborted')
-            return False
-        return True
-
     def slewSelectedTarget(self, slewType='normal'):
         """
         :param slewType:
@@ -1057,21 +988,33 @@ class ImageWindow(toolsQtWidget.MWidget):
 
         return suc
 
-    def slewDirect(self, posView):
+    def mouseToWorld(self, mousePoint):
         """
-        :param posView:
+        :param mousePoint:
         :return:
         """
-        x = int(posView.x() + 0.5)
-        y = int(posView.y() + 0.5)
+        x = mousePoint.x()
+        y = mousePoint.y()
+        if self.fileHandler.flipH:
+            x = self.fileHandler.sizeX - x
+        if not self.fileHandler.flipV:
+            y = self.fileHandler.sizeY - y
 
-        pix = np.array([x, y], dtype=np.float64)
-        ra, dec = self.fileHandler.wcs.wcs_pix2world(pix, 0)
+        ra, dec = self.fileHandler.wcs.wcs_pix2world(x, y, 0)
+        ra = Angle(hours=float(ra / 360 * 24))
+        dec = Angle(degrees=float(dec))
+        return ra, dec
 
+    def slewDirect(self, ra, dec):
+        """
+        :param ra:
+        :param dec:
+        :return:
+        """
         question = '<b>Manual slewing to coordinate</b>'
         question += '<br><br>Selected coordinates are:<br>'
-        question += f'<font color={self.M_BLUE}> RA: {ra:3.1f}°'
-        question += f'   DEC: {dec:3.1f}°</font>'
+        question += f'<font color={self.M_BLUE}> RA: {ra.hours:3.2f}h'
+        question += f'   DEC: {dec.degrees:3.2f}°</font>'
         question += '<br><br>Would you like to start slewing?<br>'
 
         suc = self.messageDialog(self, 'Slewing mount', question)
@@ -1096,19 +1039,11 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         plotItem = self.ui.image.p[0]
-        mousePoint = plotItem.getViewBox().mapSceneToView(pos)
         vr = plotItem.getViewBox().viewRange()
-        xp = x = mousePoint.x()
-        yp = y = mousePoint.y()
-
-        if self.fileHandler.flipH:
-            xp = self.fileHandler.sizeX - xp
-        if not self.fileHandler.flipV:
-            yp = self.fileHandler.sizeY - yp
-
-        ra, dec = self.fileHandler.wcs.wcs_pix2world(xp, yp, 0)
-        ra = Angle(hours=float(ra / 360 * 24))
-        dec = Angle(degrees=float(dec))
+        mousePoint = plotItem.getViewBox().mapSceneToView(pos)
+        x = mousePoint.x()
+        y = mousePoint.y()
+        ra, dec = self.mouseToWorld(mousePoint)
 
         if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:
             self.guiSetText(self.ui.raMouse, 'HSTR', ra)
@@ -1118,18 +1053,21 @@ class ImageWindow(toolsQtWidget.MWidget):
             QGuiApplication.setOverrideCursor(QCursor(Qt.CrossCursor))
         else:
             self.ui.raMouse.setText('')
+            self.ui.raMouseFloat.setText('')
             self.ui.decMouse.setText('')
+            self.ui.decMouseFloat.setText('')
             QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
         return True
 
-    def mouseDoubleClick(self, ev, posView):
+    def mouseDoubleClick(self, ev, mousePoint):
         """
         :param ev:
-        :param posView:
+        :param mousePoint:
         :return:
         """
         if not self.fileHandler.hasCelestial:
             return False
 
-        self.slewDirect(posView)
+        ra, dec = self.mouseToWorld(mousePoint)
+        self.slewDirect(ra, dec)
         return True

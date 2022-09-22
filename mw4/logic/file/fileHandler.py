@@ -55,6 +55,9 @@ class FileHandler:
         self.image = None
         self.header = None
         self.wcs = None
+        self.hasCelestial = False
+        self.sizeX = 0
+        self.sizeY = 0
 
     def debayerImage(self, pattern):
         """
@@ -190,6 +193,8 @@ class FileHandler:
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')
 
         self.wcs = wcs.WCS(self.header)
+        self.hasCelestial = self.wcs.has_celestial
+        self.sizeY, self.sizeX = self.wcs.array_shape
         self.signals.imageLoaded.emit()
         return True
 

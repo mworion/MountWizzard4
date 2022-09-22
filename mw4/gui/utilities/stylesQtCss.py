@@ -318,11 +318,11 @@ class Styles:
         /* Checkboxes */
         QCheckBox {
             color: $M_WHITE$;
-            spacing: 8px;
+            spacing: 5px;
             background-color: $M_TRANS$;;
         }
         QCheckBox::indicator {
-            border-width: 2px;
+            border-width: 1px;
             border-color: $M_GREY$;
             background-color: $M_BACK$;
             border-style: outset;
@@ -345,6 +345,7 @@ class Styles:
         }
         QRadioButton {
             color: $M_WHITE$;
+            spacing: 5px;
             background-color: $M_TRANS$;;
         }
         QRadioButton:disabled {

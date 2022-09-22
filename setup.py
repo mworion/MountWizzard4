@@ -56,7 +56,8 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: image: photometry functions (aberration, roundness, etc.)
 - add: image: tilt estimation like ASTAP does as rectangle and triangle
 - add: image: add flip H and flip V
-- add: image: solve and center to image
+- add: image: show RA/DEC coordinates in image if image was solved
+- add: image: center mount to any point in image
 - add: image: support for reading XISF files (simple versions)
 - add: imaging: separate page for imaging stats now
 - add: imaging: stats: calcs for plate solvers (index files etc.)
@@ -94,7 +95,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0a15',
+    version='3.0.0a16',
     packages=[
         'mw4',
         'mw4.base',

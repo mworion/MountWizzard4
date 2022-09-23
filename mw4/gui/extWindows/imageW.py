@@ -187,6 +187,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortExpose.clicked.connect(self.abortExpose)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
+        self.ui.slewCenter.clicked.connect(self.slewCenter)
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
         self.ui.offsetTiltAngle.valueChanged.connect(self.showTabTiltTriangle)
         self.signals.solveImage.connect(self.solveImage)
@@ -419,6 +420,7 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         self.ui.groupMouseCoord.setVisible(self.fileHandler.hasCelestial)
+        self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
         self.ui.image.setImage(imageDisp=self.fileHandler.image)
         self.setBarColor()
@@ -1011,7 +1013,7 @@ class ImageWindow(toolsQtWidget.MWidget):
         :param dec:
         :return:
         """
-        question = '<b>Manual slewing to coordinate</b>'
+        question = '<b>Slewing to target</b>'
         question += '<br><br>Selected coordinates are:<br>'
         question += f'<font color={self.M_BLUE}> RA: {ra.hours:3.2f}h'
         question += f'   DEC: {dec.degrees:3.2f}°</font>'
@@ -1069,5 +1071,16 @@ class ImageWindow(toolsQtWidget.MWidget):
             return False
 
         ra, dec = self.mouseToWorld(mousePoint)
+        self.slewDirect(ra, dec)
+        return True
+
+    def slewCenter(self):
+        """
+        :return:
+        """
+        if not self.fileHandler.hasCelestial:
+            return False
+
+        ra, dec = getCoordinates(self.fileHandler.header)
         self.slewDirect(ra, dec)
         return True

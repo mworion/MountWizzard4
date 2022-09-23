@@ -762,3 +762,28 @@ def test_mouseDoubleClick_2(function):
                                return_value=(0, 0)):
             suc = function.mouseDoubleClick(1, QPointF(50, 25))
             assert suc
+
+
+def test_slewCenter_1(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    suc = function.slewCenter()
+    assert not suc
+
+
+def test_slewCenter_2(function):
+    class App:
+        threadPool = None
+
+    function.fileHandler = FileHandler(App())
+    function.fileHandler.header = {
+        'RA': 10,
+        'DEC': 10,
+    }
+    function.fileHandler.hasCelestial = True
+    with mock.patch.object(function,
+                           'slewDirect'):
+        suc = function.slewCenter()
+        assert suc

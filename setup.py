@@ -57,7 +57,8 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: image: tilt estimation like ASTAP does as rectangle and triangle
 - add: image: add flip H and flip V
 - add: image: show RA/DEC coordinates in image if image was solved
-- add: image: center mount to any point in image
+- add: image: center mount pointing g to any point in image by mouse double click
+- add: image: center mount pointing to image center
 - add: image: support for reading XISF files (simple versions)
 - add: imaging: separate page for imaging stats now
 - add: imaging: stats: calcs for plate solvers (index files etc.)

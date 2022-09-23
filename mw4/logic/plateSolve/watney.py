@@ -74,6 +74,8 @@ class Watney(object):
         cfgFile = self.tempDir + '/watney-solve-config.yml'
         with open(cfgFile, 'w+') as outFile:
             outFile.write(f"quadDbPath: '{self.indexPath}'\n")
+            outFile.write("defaultStarDetectionBgOffset: 1.0\n")
+            outFile.write("defaultLowerDensityOffset: 3\n")
         return True
 
     def setDefaultPath(self):

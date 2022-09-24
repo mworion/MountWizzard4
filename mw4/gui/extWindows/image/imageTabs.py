@@ -16,23 +16,13 @@
 #
 ###########################################################
 # standard libraries
-import os
 
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt5.QtCore import pyqtSignal, QObject, Qt
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QFont, QGuiApplication, QCursor
-from skyfield.api import Angle
 
 # local import
-from mountcontrol.convert import convertToDMS, convertToHMS
-from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
-from gui.utilities import toolsQtWidget
-from gui.widgets import image_ui
-from logic.file.fileHandler import FileHandler
-from logic.photometry.photometry import Photometry
 
 
 class ImageTabs:

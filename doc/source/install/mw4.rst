@@ -38,9 +38,10 @@ to get the content. You will find three files:
 
 - startup.pyz -> the script for doing all the work
 - mountwizzard4.desktop -> support for ubuntu / linux running the script
-- mw4.ico -> icon for use if you would like to customize the link for runnign the script
+- mw4.png -> icon for mountwizzard4.desktop
+- mw4.ico -> icon to customize the link in windows for running the script
 
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup_package.zip
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startupPackage.zip
 
 On windows you should be able to start the script just be double click on it,
 in all other platforms you start it with (please keep in mind: in windows you call that

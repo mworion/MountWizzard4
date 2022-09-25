@@ -101,6 +101,7 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           python3 -m zipfile -e startupPackage.zip .
+          ls -la
           python3 startup.pyz --no-start --version 2.2.7
           ls -la
           

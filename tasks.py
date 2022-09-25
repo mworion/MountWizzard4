@@ -265,11 +265,13 @@ def build_startup(c):
                           target='./support/3.0/startup.pyz',
                           compressed=True,
                           main='startup:main')
-    with zipfile.ZipFile('./support/3.0/startupPackage.zip', 'w') as myzip:
-        myzip.write('./support/3.0/startup.pyz')
-        myzip.write('./support/3.0/MountWizzard4.desktop')
-        myzip.write('./support/3.0/mw4.ico')
-        myzip.write('./support/3.0/mw4.png')
+    os.chdir('./support/3.0')
+    with zipfile.ZipFile('startupPackage.zip', 'w') as myzip:
+        myzip.write('startup.pyz')
+        myzip.write('MountWizzard4.desktop')
+        myzip.write('mw4.ico')
+        myzip.write('mw4.png')
+    os.chdir('../../')
     printMW('...copy install script to test dir')
 
 

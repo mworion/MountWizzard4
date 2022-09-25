@@ -19,7 +19,6 @@
 import os
 
 # external packages
-import numpy as np
 import pyqtgraph as pg
 from PyQt5.QtCore import pyqtSignal, QObject, Qt
 from PyQt5.QtWidgets import QWidget

@@ -29,6 +29,7 @@ from skyfield.api import Angle
 from mountcontrol.convert import convertToDMS, convertToHMS
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
 from gui.utilities import toolsQtWidget
+from gui.utilities.slewInterface import SlewInterface
 from gui.widgets import image_ui
 from logic.file.fileHandler import FileHandler
 from logic.photometry.photometry import Photometry
@@ -42,7 +43,7 @@ class ImageWindowSignals(QObject):
     solveImage = pyqtSignal(object)
 
 
-class ImageWindow(toolsQtWidget.MWidget, ImageTabs):
+class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
     """
     """
     __all__ = ['ImageWindow']
@@ -644,33 +645,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs):
         self.app.operationRunning.emit(0)
         return suc
 
-    def slewSelectedTarget(self, slewType='normal'):
-        """
-        :param slewType:
-        :return: success
-        """
-        azimuthT = self.app.mount.obsSite.AzTarget.degrees
-        altitudeT = self.app.mount.obsSite.AltTarget.degrees
-
-        if self.app.deviceStat['dome']:
-            self.app.dome.avoidFirstOvershoot()
-            delta = self.app.dome.slewDome(altitude=altitudeT,
-                                           azimuth=azimuthT)
-            geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            text = f'{geoStat}'
-            text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.msg.emit(0, 'Hemisphere', 'Slewing dome', text)
-
-        suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
-        if suc:
-            t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.msg.emit(0, 'Hemisphere', 'Slewing mount', t)
-        else:
-            t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.msg.emit(2, 'Hemisphere', 'Slewing error', t)
-
-        return suc
-
     def mouseToWorld(self, mousePoint):
         """
         :param mousePoint:
@@ -704,13 +678,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs):
         if not suc:
             return False
 
-        suc = self.app.mount.obsSite.setTargetRaDec(ra=ra, dec=dec)
-        if not suc:
-            self.msg.emit(2, 'Image', 'Slewing error',
-                          'Cannot set target coordinates')
-            return False
-
-        suc = self.slewSelectedTarget(slewType='keep')
+        suc = self.slewTargetRaDec(ra, dec)
         return suc
 
     def mouseMoved(self, pos):

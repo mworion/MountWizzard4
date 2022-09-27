@@ -74,10 +74,11 @@ class SlewInterface:
             self.msg.emit(2, 'Tools', 'Slewing error', 'Cannot slew to target')
         return suc
 
-    def slewTargetAltAz(self, alt, az):
+    def slewTargetAltAz(self, alt, az, slewType='normal'):
         """
         :param alt:
         :param az:
+        :param slewType:
         :return:
         """
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
@@ -87,13 +88,14 @@ class SlewInterface:
             self.msg.emit(2, 'Tools', 'Slewing error', t)
             return False
 
-        suc = self.slewSelectedTargetWithDome(slewType='keep')
+        suc = self.slewSelectedTargetWithDome(slewType=slewType)
         return suc
 
-    def slewTargetRaDec(self, ra, dec):
+    def slewTargetRaDec(self, ra, dec, slewType='normal'):
         """
         :param ra:
         :param dec:
+        :param slewType:
         :return:
         """
         timeJD = self.app.mount.obsSite.timeJD
@@ -108,5 +110,5 @@ class SlewInterface:
             self.msg.emit(2, 'Tools', 'Slewing error', t)
             return False
 
-        suc = self.slewSelectedTargetWithDome(slewType='keep')
+        suc = self.slewSelectedTargetWithDome(slewType=slewType)
         return suc

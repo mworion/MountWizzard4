@@ -32,6 +32,7 @@ import numpy as np
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
+from gui.utilities.slewInterface import SlewInterface
 from gui.extWindows.imageW import ImageWindow
 from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler
@@ -493,31 +494,6 @@ def test_abortSolve_1(function):
     assert not suc
 
 
-def test_slewSelectedTarget_1(function):
-    function.app.deviceStat['dome'] = False
-    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
-    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'startSlewing',
-                           return_value=False):
-        suc = function.slewSelectedTarget('test')
-        assert not suc
-
-
-def test_slewSelectedTarget_2(function):
-    function.app.deviceStat['dome'] = True
-    function.app.mount.obsSite.AltTarget = Angle(degrees=0)
-    function.app.mount.obsSite.AzTarget = Angle(degrees=0)
-    with mock.patch.object(function.app.mount.obsSite,
-                           'startSlewing',
-                           return_value=True):
-        with mock.patch.object(function.app.dome,
-                               'slewDome',
-                               return_value=5):
-            suc = function.slewSelectedTarget('test')
-            assert suc
-
-
 def test_mouseToWorld(function):
     class App:
         threadPool = None
@@ -545,8 +521,8 @@ def test_slewDirect_2(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setTargetRaDec',
+        with mock.patch.object(SlewInterface,
+                               'slewTargetRaDec',
                                return_value=False):
             suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
             assert not suc
@@ -556,28 +532,11 @@ def test_slewDirect_3(function):
     with mock.patch.object(function,
                            'messageDialog',
                            return_value=True):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setTargetRaDec',
+        with mock.patch.object(SlewInterface,
+                               'slewTargetRaDec',
                                return_value=True):
-            with mock.patch.object(function,
-                                   'slewSelectedTarget',
-                                   return_value=False):
-                suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
-                assert not suc
-
-
-def test_slewDirect_4(function):
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setTargetRaDec',
-                               return_value=True):
-            with mock.patch.object(function,
-                                   'slewSelectedTarget',
-                                   return_value=True):
-                suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
-                assert suc
+            suc = function.slewDirect(Angle(hours=0), Angle(degrees=0))
+            assert suc
 
 
 def test_mouseMoved_1(function):

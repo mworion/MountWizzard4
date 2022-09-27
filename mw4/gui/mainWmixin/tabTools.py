@@ -25,15 +25,15 @@ from PyQt5.QtGui import QTextCursor
 from astropy.io import fits
 
 # local import
-from base.transform import J2000ToJNow
 from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.slewInterface import SlewInterface
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 from mountcontrol.convert import valueToFloat
 from mountcontrol.connection import Connection
 
 
-class Tools(object):
+class Tools(SlewInterface):
     """
     """
 
@@ -454,53 +454,6 @@ class Tools(object):
         self.slewSpeeds[ui]()
         return True
 
-    def slewSelectedTargetWithDome(self, slewType='normal'):
-        """
-        :param slewType:
-        :return: success
-        """
-        azimuthT = self.app.mount.obsSite.AzTarget
-        altitudeT = self.app.mount.obsSite.AltTarget
-
-        if azimuthT is None or altitudeT is None:
-            return False
-
-        azimuthT = azimuthT.degrees
-        altitudeT = altitudeT.degrees
-
-        if self.app.deviceStat['dome']:
-            delta = self.app.dome.slewDome(altitude=altitudeT,
-                                           azimuth=azimuthT)
-            geoStat = 'Geometry corrected' if delta else 'Equal mount'
-            text = f'{geoStat}'
-            text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
-            self.msg.emit(0, 'Tools', 'Slewing dome', text)
-
-        suc = self.app.mount.obsSite.startSlewing(slewType=slewType)
-        if suc:
-            t = f'Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.msg.emit(0, 'Tools', 'Slewing mount', t)
-        else:
-            t = f'Cannot slew to Az:[{azimuthT:3.1f}], Alt:[{altitudeT:3.1f}]'
-            self.msg.emit(2, 'Tools', 'Slewing error', t)
-        return suc
-
-    def slewTargetAltAz(self, alt, az):
-        """
-        :param alt:
-        :param az:
-        :return:
-        """
-        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=alt,
-                                                    az_degrees=az)
-        if not suc:
-            t = f'Cannot slew to Az:[{az:3.1f}], Alt:[{alt:3.1f}]'
-            self.msg.emit(2, 'Tools', 'Slewing error', t)
-            return False
-
-        suc = self.slewSelectedTargetWithDome(slewType='keep')
-        return suc
-
     def moveAltAzDefault(self):
         """
         :return:
@@ -649,14 +602,7 @@ class Tools(object):
         if dec is None:
             return False
 
-        timeJD = self.app.mount.obsSite.timeJD
-        if timeJD is None:
-            return False
-
-        raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
-        self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
-                                              dec=decJNow)
-        suc = self.slewSelectedTargetWithDome(slewType='keep')
+        suc = self.slewTargetRaDec(ra, dec)
         return suc
 
     def commandRaw(self):

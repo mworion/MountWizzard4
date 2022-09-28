@@ -20,7 +20,7 @@ import platform
 
 releaseNotes = """
 Version 3.0 is a major release! Please update with care!
-No ARM7 support / ARM64 only Python 3.7 - 3.9 
+No ARM7 support / ARM64 only Python 3.8 - 3.9 
 
 - add: GUI: all charts could be zoomed and panned
 - add: GUI: all tab menu entries could be customized in order and stored
@@ -70,7 +70,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: profiles: automatic translation from v2.2.x to 3.x
 - improve: GUI: layout for main window optimized and consistent and wording updates
 - improve: GUI: complete rework of charting: performance and functions
-- improve: GUI: clean up and optimize iers download messages
+- improve: GUI: clean up and optimize IERS download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
 - improve: GUI: moved on / off mount to their settings: avoid undesired shutoff
 - improve: INDI: correcting setting parameters on startup
@@ -87,6 +87,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - remove: system: matplotlib package and replace with more performant pyqtgraph
 - remove: system: PIL package and replace with more powerful cv2
 - remove: system: move from deprecated distutils to packaging
+- remove: system: support for python 3.7 as some libraries stopped support
 - remove: imageW: stacking in imageW as it was never used
 - fix: drivers: device selection tab was not properly positioned in device popup
  """
@@ -131,7 +132,7 @@ setup(
         'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.7.0, <3.11',
+    python_requires='>=3.8.0, <3.11',
     install_requires=[
         'numpy==1.23.3',
         'opencv-python-headless==4.6.0.66',
@@ -185,7 +186,6 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Environment :: MacOS X',
         'Environment :: Other Environment',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',

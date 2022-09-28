@@ -34,7 +34,7 @@ else:
     py = 'python3'
 
 log = logging.getLogger()
-version = '3.0beta5'
+version = '3.0beta6'
 
 
 def run(command):
@@ -257,14 +257,6 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
     postRepo = '?raw=true'
     wheels = {
         '2.0.0': {
-            '3.7': [
-                'sep-1.2.0-cp37-cp37m-linux_aarch64.whl',
-                'sgp4-2.20-cp37-cp37m-linux_aarch64.whl',
-                'pyerfa-2.0.0-cp37-cp37m-linux_aarch64.whl',
-                'astropy-4.3.1-cp37-cp37m-linux_aarch64.whl',
-                'PyQt5_sip-12.8.1-cp37-cp37-linux_aarch64.whl',
-                'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
-            ],
             '3.8': [
                 'sep-1.2.0-cp38-cp38-linux_aarch64.whl',
                 'sgp4-2.20-cp38-cp38-linux_aarch64.whl',
@@ -291,10 +283,6 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
             ],
         },
         '3.0.0': {
-            '3.7': [
-                'PyQt5_sip-12.11.0-cp37-cp37-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
-            ],
             '3.8': [
                 'PyQt5_sip-12.11.0-cp38-cp38-linux_aarch64.whl',
                 'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
@@ -500,7 +488,7 @@ def main(args=None):
     """
     setupLogging()
     compatible = True
-    if sys.version_info < (3, 7) or sys.version_info >= (3, 11):
+    if sys.version_info < (3, 8) or sys.version_info >= (3, 11):
         compatible = False
     elif not hasattr(sys, 'base_prefix'):
         compatible = False
@@ -513,8 +501,8 @@ def main(args=None):
         print()
         print('-' * 50)
         print('MountWizzard4 startup - no compatible environment')
-        print('needs python 3.7 .. 3.9 for version 2.x')
-        print('needs python 3.7 .. 3.10 for version 3.x')
+        print('needs python 3.8 .. 3.9 for version 2.x')
+        print('needs python 3.8 .. 3.10 for version 3.x')
         print('actually no support for ARM7')
         print('actually no support for AARCH64 for MW4 3.x')
         print('actually no support for AARCH64 for python 3.10')

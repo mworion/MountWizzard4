@@ -35,7 +35,7 @@ and in addition Sequence Generator Pro and N.I.N.A. as camera device.
 
 Known limitations
 -----------------
-MW4 does only support python 3.7 - 3.9 right now. The reason for that is the
+MW4 does support python 3.8 - 3.10 right now. The reason for that is the
 lack of precompiled packages. Some features are limited to windows as they need
 the original 10micron updater program for execution.
 

@@ -13,5 +13,5 @@ the installation speed e.g. on your RPi4.
 After a short while MW4 is installed and should be ready to run like in ubuntu
 installation.
 
-.. note:: The install scripts only support python 3.7-3.9 versions"
+.. note:: The install scripts only support python 3.8-3.9 versions"
 

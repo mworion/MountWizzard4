@@ -5,7 +5,7 @@ Version 3.0
 3.0.0b0
 
 Version 3.0 is a major release! Please update with care!
-No ARM7 support / ARM64 only Python 3.7 - 3.9
+No ARM7 support / ARM64 only Python 3.8 - 3.9
 
 - add: GUI: all charts could be zoomed and panned
 - add: GUI: all tab menu entries could be customized in order and stored
@@ -41,7 +41,9 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: image: photometry functions (aberration, roundness, etc.)
 - add: image: tilt estimation like ASTAP does as rectangle and triangle
 - add: image: add flip H and flip V
-- add: image: solve and center to image
+- add: image: show RA/DEC coordinates in image if image was solved
+- add: image: center mount pointing g to any point in image by mouse double click
+- add: image: center mount pointing to image center
 - add: image: support for reading XISF files (simple versions)
 - add: imaging: separate page for imaging stats now
 - add: imaging: stats: calcs for plate solvers (index files etc.)
@@ -53,7 +55,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - add: profiles: automatic translation from v2.2.x to 3.x
 - improve: GUI: layout for main window optimized and consistent and wording updates
 - improve: GUI: complete rework of charting: performance and functions
-- improve: GUI: clean up and optimize iers download messages
+- improve: GUI: clean up and optimize IERS download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
 - improve: GUI: moved on / off mount to their settings: avoid undesired shutoff
 - improve: INDI: correcting setting parameters on startup
@@ -70,6 +72,7 @@ No ARM7 support / ARM64 only Python 3.7 - 3.9
 - remove: system: matplotlib package and replace with more performant pyqtgraph
 - remove: system: PIL package and replace with more powerful cv2
 - remove: system: move from deprecated distutils to packaging
+- remove: system: support for python 3.7 as some libraries stopped support
 - remove: imageW: stacking in imageW as it was never used
 - fix: drivers: device selection tab was not properly positioned in device popup
 

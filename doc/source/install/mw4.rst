@@ -1,7 +1,7 @@
 Install MW4
 ===========
 
-When starting with the installation of MW4, python 3.7 - 3.10 should be successful
+When starting with the installation of MW4, python 3.8 - 3.10 should be successful
 installed. To check, open a terminal (available on all platforms) and run the
 command
 
@@ -18,7 +18,7 @@ On windows you can't call python3, but you have to run the command
 
 
 In one of the choices you should see the version number of the installed and
-available packages. For python it should say 3.7.x ... 3.10.x.
+available packages. For python it should say 3.8.x ... 3.10.x.
 
 .. hint::
     MW4 does not need admin rights to install or run. To avoid problems with

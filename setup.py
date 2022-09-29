@@ -141,7 +141,7 @@ setup(
         'pyerfa==2.0.0.1',
         'astroquery==0.4.6',
         'sep==1.2.1',
-        'pyqtgraph==0.13.0',
+        'pyqtgraph==0.13.1',
         'qimage2ndarray==1.9.0',
         'skyfield==1.45',
         'sgp4==2.21',

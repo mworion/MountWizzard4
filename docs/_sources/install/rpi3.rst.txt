@@ -9,23 +9,17 @@ Installing Python on RPi3
 To get MW4 installed on RPi3 you will follow the instructions of Robert Lancaste
 (many thanks to him fore this work!) on https://github.com/rlancaste/AstroPi3 with
 installing AstroPi3 scripts. The installation procedure I describe is based on
-Raspbian Buster with desktop. As this distribution already supports python 3.7 we
-should check this:
-
-.. code-block:: python
-
-    python3 --version
-
+Raspbian Buster with desktop.
 should give you the following result:
 
 .. image:: image/rpi3_rlancaste.png
     :align: center
     :scale: 71%
 
-In addition you have to take care, that python 3.7 is installed. The
+In addition you have to take care, that python3.8 is installed. The
 actual Ubuntu mate 18.04.2 distribution comes with python 3.6, so we need to
 update this. Please follow the description: :ref:`Ubuntu`. After that you should
-get an python3.7 or newer available on your system:
+get an python3.8 or newer available on your system:
 
 .. image:: image/rpi3_python37.png
     :align: center
@@ -46,7 +40,7 @@ compile it yourself.
 .. code-block:: python
 
     sudo apt-get update
-    sudo apt-get install python3.7-dev
+    sudo apt-get install python3.8-dev
     sudo apt-get install qt5-default
     sudo apt-get install sip-dev
 
@@ -88,13 +82,13 @@ Once you are set, make a work directory, cd to this directory and install MW4 by
 
 .. code-block:: python
 
-    python3.7 -m pip install mountwizzard4
+    python3.8 -m pip install mountwizzard4
 
 and run MW4 with the command
 
 .. code-block:: python
 
-    python3.7 ~/.local/lib/python3.7/site-packages/mw4/loader.py
+    python3.8 ~/.local/lib/python3.8/site-packages/mw4/loader.py
 
 If everything went fine, you should see MW4 on RPi3:
 

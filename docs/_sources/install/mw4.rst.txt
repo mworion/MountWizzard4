@@ -1,7 +1,7 @@
 Install MW4
 ===========
 
-When starting with the installation of MW4, python 3.7 - 3.10 should be successful
+When starting with the installation of MW4, python 3.8 - 3.10 should be successful
 installed. To check, open a terminal (available on all platforms) and run the
 command
 
@@ -18,7 +18,7 @@ On windows you can't call python3, but you have to run the command
 
 
 In one of the choices you should see the version number of the installed and
-available packages. For python it should say 3.7.x ... 3.10.x.
+available packages. For python it should say 3.8.x ... 3.10.x.
 
 .. hint::
     MW4 does not need admin rights to install or run. To avoid problems with
@@ -33,20 +33,27 @@ Installing with installer version 3.x:
 --------------------------------------
 The install procedure also got improved: You will have only a single compressed
 python script (startup.pyz) which is valid for all platforms and does all things
-the different existing scripts stand for.
+the different existing scripts stand for. Please download the package and unzip it
+to get the content. You will find three files:
 
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startup.pyz
+- startup.pyz -> the script for doing all the work
+- mountwizzard4.desktop -> support for ubuntu / linux running the script
+- mw4.png -> icon for mountwizzard4.desktop
+- mw4.ico -> icon to customize the link in windows for running the script
+
+https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startupPackage.zip
 
 On windows you should be able to start the script just be double click on it,
-in all other platforms you start it with
+in all other platforms you start it with (please keep in mind: in windows you call that
+command with *python*):
 
 .. code-block:: python
 
     python3 startup.pyz
 
 .. warning::
-    The new installer script 3.x supports only Windows, Mac and x86 Linux
-    distributions! If you need other support, please refer to installer scripts 2.x
+    The new script 3.x supports only Windows, Mac and x86 Linux distributions! 
+    If you need other support, please use the actual scripts 2.x. 
 
 
 Windows 10/11:

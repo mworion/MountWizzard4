@@ -469,7 +469,7 @@ def make_pdf(c):
         runMW(c, command)
     with c.cd('doc'):
         runMW(c, 'make latexpdf')
-    runMW(c, 'mv ./doc/build/latex/mountwizzard4.pdf ./mw4/resource/doc')
+    runMW(c, 'mv ./doc/build/latex/mountwizzard4.pdf ./mw4/resource/data')
     runMW(c, 'open ./mw4/resource/data/mountwizzard4.pdf')
     printMW('Generation finished\n')
 

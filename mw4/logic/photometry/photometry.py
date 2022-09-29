@@ -323,7 +323,16 @@ class Photometry:
         b = []
         for x, y in zip(objs['x'], objs['y']):
             b.append(self.backSignal[int(y)][int(x)])
+
+        # calculate sn based on optimized version of
+        # http://www1.phys.vt.edu/~jhs/phys3154/snr20040108.pdf
         sn = flux / np.sqrt(np.abs(b * radius[:, 1] * radius[:, 1] * np.pi))
+
+        # pure version of source compared to use in stellarsolver
+        # starNumPixels = np.abs(b * radius[:, 1] * radius[:, 1] * np.pi)
+        # varSky = self.bkg.globalrms * self.bkg.globalrms
+        # sn = flux / np.sqrt(flux + starNumPixels * varSky * (1 + 1 / (32 * 32)))
+
         mask = (sn > self.snTarget)
         objs = objs[mask]
         radius = radius[:, 0]

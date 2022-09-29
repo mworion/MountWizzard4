@@ -6,7 +6,7 @@ solution (MAC bundle, EXE File, etc.) available. As MW4 is python3 and comes wit
 internal update functionality, it uses a standard python3 environment. Ideally it
 is recommended in a virtualenv.
 
-MW4 is tested on python 3.7 - 3.10. The first step is to install the python3
+MW4 is tested on python 3.8 - 3.10. The first step is to install the python3
 .8.x package if not already installed. For all platforms there is an installer
 available. Please follow the descriptions that comes with the installers. To give
 a short overview here are some quick installation hints for all platforms. The
@@ -18,7 +18,7 @@ installers for Windows and OSx can be downloaded from python.org.
     precompiled binaries with them and they might not be available for a newer
     python version.
 
-If you already have python 3.7 - 3.10 installed, you can skip this section
+If you already have python 3.8 - 3.10 installed, you can skip this section
 and go directly to the MW4 installation process. If you have to install python3.8
 this has to be done only once for as many MW4 installations you might want.
 

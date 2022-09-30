@@ -231,33 +231,6 @@ def test_mw(c):
     printMW('testing mountwizzard finished\n')
 
 
-@task(pre=[build_resource, build_widgets, version_doc])
-def build_mw(c):
-    printMW('building dist mountwizzard4')
-    with c.cd('.'):
-        runMW(c, 'rm -f dist/mountwizzard4*.tar.gz')
-        runMW(c, 'python setup.py sdist')
-        runMW(c, 'cp dist/mountwizzard4*.tar.gz '
-                 '../MountWizzard4/dist/mountwizzard4.tar.gz')
-
-    with open('notes.txt') as f:
-        tmp = f.readlines()
-    rn = ''
-    for line in tmp:
-        rn += line
-    printMW('building dist mountwizzard4 finished\n')
-
-
-@task(pre=[build_mw])
-def upload_mw(c):
-    printMW('uploading dist mountwizzard4')
-    with c.cd('./dist'):
-        print(f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
-        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
-    runMW(c, 'rm notes.txt')
-    printMW('uploading dist mountwizzard4 finished\n')
-
-
 @task(pre=[])
 def build_startup(c):
     printMW('...make zip archive')
@@ -495,3 +468,30 @@ def make_html(c):
     with c.cd('docs'):
         runMW(c, 'open ./index.html')
     printMW('Generation finished\n')
+
+
+@task(pre=[version_doc, make_pdf, make_html, build_resource, build_widgets])
+def build_mw(c):
+    printMW('building dist mountwizzard4')
+    with c.cd('.'):
+        runMW(c, 'rm -f dist/mountwizzard4*.tar.gz')
+        runMW(c, 'python setup.py sdist')
+        runMW(c, 'cp dist/mountwizzard4*.tar.gz '
+                 '../MountWizzard4/dist/mountwizzard4.tar.gz')
+
+    with open('notes.txt') as f:
+        tmp = f.readlines()
+    rn = ''
+    for line in tmp:
+        rn += line
+    printMW('building dist mountwizzard4 finished\n')
+
+
+@task(pre=[build_mw])
+def upload_mw(c):
+    printMW('uploading dist mountwizzard4')
+    with c.cd('./dist'):
+        print(f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
+        runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
+    runMW(c, 'rm notes.txt')
+    printMW('uploading dist mountwizzard4 finished\n')

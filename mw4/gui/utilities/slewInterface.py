@@ -16,25 +16,11 @@
 #
 ###########################################################
 # standard libraries
-import os
 import logging
-import datetime
-from dateutil.tz import tzlocal
 
 # external packages
-from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
-from PyQt5.QtWidgets import QTableWidgetItem
-from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
-from PyQt5.QtGui import QPainterPath, QTransform
-from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
-from PyQt5.QtCore import Qt, QSize, QEvent
-from PyQt5.QtTest import QTest
-import numpy as np
-from qimage2ndarray import rgb_view, array2qimage
 
 # local imports
-from gui.utilities.stylesQtCss import Styles
-from mountcontrol.convert import formatHstrToText, formatDstrToText
 from base.transform import J2000ToJNow
 
 

@@ -265,7 +265,7 @@ class Mount(mountcontrol.mount.Mount):
 
         if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:
-                self.settlingWait.start(self._settlingTime)
+                self.settlingWait.start(int(self._settlingTime))
             self.statusSlew = True
         else:
             self.statusSlew = False

@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -11421,7 +11421,7 @@ hr { height: 1px; border-width: 0; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -15163,6 +15163,11 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
+     </widget>
+     <widget class="QWidget" name="Reference">
+      <attribute name="title">
+       <string>Reference</string>
+      </attribute>
      </widget>
     </widget>
    </widget>

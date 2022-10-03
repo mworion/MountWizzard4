@@ -52,7 +52,7 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - add: satellites: all time values could be UTC or local time now
 - add: MPC / IERS: adding alternative server for download
 - add: measure: window has max 5 charts now (from 3)
-- add: measure: more values (time delta, focus, etc)
+- add: measure: more values (time delta, focus, cooler power, etc.)
 - add: image: photometry functions (aberration, roundness, etc.)
 - add: image: tilt estimation like ASTAP does as rectangle and triangle
 - add: image: add flip H and flip V

@@ -108,6 +108,7 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
                       'powTemp',
                       'powDew',
                       'cameraTemp',
+                      'cameraPower',
                       'timeDiff',
                       ]
 

@@ -75,7 +75,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                        'pen': self.M_RED},
             },
             'Temperature': {
-                'gen': {'range': (-20, 40),
+                'gen': {'range': (-20, 40, False),
                         'leg': None,
                         'label': 'Temperature [°C]'},
                 'sensorWeatherTemp': {'pd': None,
@@ -95,15 +95,23 @@ class MeasureWindow(toolsQtWidget.MWidget):
                             'pen': self.M_PINK},
             },
             'Camera Temperature': {
-                'gen': {'range': (-20, 20),
+                'gen': {'range': (-20, 20, False),
                         'leg': None,
                         'label': 'Camera Temperature [°C]'},
                 'cameraTemp': {'pd': None,
                                'name': 'Camera',
                                'pen': self.M_PINK},
             },
+            'Camera Cooler Power': {
+                'gen': {'range': (-5, 105, True),
+                        'leg': None,
+                        'label': 'Camera Cooler Power [%]'},
+                'cameraPower': {'pd': None,
+                                'name': 'CoolerPower',
+                                'pen': self.M_PINK},
+            },
             'Dew Temperature': {
-                'gen': {'range': (-20, 40),
+                'gen': {'range': (-20, 40, False),
                         'leg': None,
                         'label': 'Dew Temperature [°C]'},
                 'sensorWeatherDew': {'pd': None,
@@ -120,7 +128,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            'pen': self.M_PINK},
             },
             'Pressure': {
-                'gen': {'range': (900, 1050),
+                'gen': {'range': (900, 1050, False),
                         'leg': None,
                         'label': 'Pressure [hPa]'},
                 'sensorWeatherPress': {'pd': None,
@@ -134,7 +142,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                                        'pen': self.M_YELLOW},
             },
             'Humidity': {
-                'gen': {'range': (0, 100),
+                'gen': {'range': (-5, 105, True),
                         'leg': None,
                         'label': 'Humidity [%]'},
                 'sensorWeatherHum': {'pd': None,
@@ -151,7 +159,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            'pen': self.M_PINK},
             },
             'Sky Quality': {
-                'gen': {'range': (0, 22),
+                'gen': {'range': (10, 22.5, False),
                         'leg': None,
                         'label': 'Sky Quality [mpas]'},
                 'skySQR': {'pd': None,
@@ -159,7 +167,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                            'pen': self.M_YELLOW},
             },
             'Voltage': {
-                'gen': {'range': (8, 14),
+                'gen': {'range': (8, 15, False),
                         'leg': None,
                         'label': 'Supply Voltage [V]'},
                 'powVolt': {'pd': None,
@@ -167,7 +175,7 @@ class MeasureWindow(toolsQtWidget.MWidget):
                             'pen': self.M_YELLOW},
             },
             'Current': {
-                'gen': {'range': (0, 5),
+                'gen': {'range': (0, 5, False),
                         'leg': None,
                         'label': 'Current [A]'},
                 'powCurr': {'pd': None,
@@ -306,11 +314,13 @@ class MeasureWindow(toolsQtWidget.MWidget):
         :param x:
         :return:
         """
-        yMin, yMax = values['gen'].get('range', (None, None))
+        yMin, yMax, fixed = values['gen'].get('range', (None, None, False))
         if yMin is not None and yMax is not None:
+            minYRange = (yMax - yMin) if fixed else (yMax - yMin) / 4
+            maxYRange = (yMax - yMin)
             plotItem.setLimits(yMin=yMin, yMax=yMax,
-                               minYRange=(yMax - yMin) / 4,
-                               maxYRange=(yMax - yMin))
+                               minYRange=minYRange,
+                               maxYRange=maxYRange)
         label = values['gen'].get('label', '-')
         plotItem.setLabel('left', label)
         legend = pg.LegendItem(pen=self.ui.measure.pen,

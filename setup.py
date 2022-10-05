@@ -73,6 +73,7 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - improve: GUI: clean up and optimize IERS download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
 - improve: GUI: moved on / off mount to their settings: avoid undesired shutoff
+- improve: GUI: show twilight and moon illumination in main window
 - improve: INDI: correcting setting parameters on startup
 - improve: model points: optimized DSO path generation (always fit, less params)
 - improve: model run: refactoring

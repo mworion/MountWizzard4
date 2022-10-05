@@ -24,6 +24,7 @@ import time
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTransform
 from PyQt5.QtWidgets import QWidget
+from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import
 if packageConfig.isAvailable:
@@ -742,12 +743,17 @@ class MainWindow(
         :return: True for test purpose
         """
         if self.ui.isOnline.isChecked():
-            mode = 'Internet Online Mode'
+            mode = 'Online'
         else:
-            mode = 'Offline Mode'
+            mode = 'Offline'
+
+        moon = self.ui.moonPhaseIllumination.text()
+
+        f = dark_twilight_day(self.app.ephemeris, self.app.mount.obsSite.location)
+        twilight = TWILIGHTS[int(f(self.app.mount.obsSite.ts.now()))]
 
         activeCount = self.threadPool.activeThreadCount()
-        t = f'{mode}  -  Active Threads: {activeCount:2d} / 30'
+        t = f'{mode} - {twilight} - Moon: {moon}% - Threads:{activeCount:2d} / 30'
         self.ui.statusOnline.setTitle(t)
         return True
 

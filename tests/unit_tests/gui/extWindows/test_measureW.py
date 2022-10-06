@@ -141,7 +141,7 @@ def test_setupButtons(function):
 
 def test_constructPlotItem_1(function):
     plotItem = pg.PlotItem()
-    values = function.dataPlots = {'gen': {'range': (0, 1)}}
+    values = function.dataPlots = {'gen': {'range': (0, 1, False)}}
     x = function.app.measure.data['time'].astype('datetime64[s]').astype('int')
     suc = function.constructPlotItem(plotItem, values, x)
     assert suc

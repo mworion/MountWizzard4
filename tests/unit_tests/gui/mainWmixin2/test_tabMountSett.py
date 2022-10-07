@@ -84,7 +84,7 @@ def test_updatePointGui_dec_1(function):
 
 
 def test_updatePointGui_dec_2(function):
-    function.app.mount.obsSite.decJNow = Angle(degrees=0)
+    function.app.mount.obsSite.decJNow = None
     function.ui.coordsJ2000.setChecked(False)
     function.updatePointGUI(function.app.mount.obsSite)
     assert '-00:07:13' == function.ui.DEC.text()

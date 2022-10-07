@@ -70,23 +70,24 @@ def test_updatePointGui_az(function):
 
 
 def test_updatePointGui_ra(function):
+    function.ui.coordsJ2000.setChecked(True)
+    function.app.mount.obsSite.raJNow = Angle(hours=0)
     function.updatePointGUI(function.app.mount.obsSite)
     assert '23:58:53' == function.ui.RA.text()
 
 
 def test_updatePointGui_dec_1(function):
-    function.ui.coordsJ2000.setChecked(False)
+    function.ui.coordsJ2000.setChecked(True)
+    function.app.mount.obsSite.decJNow = Angle(degrees=0)
     function.updatePointGUI(function.app.mount.obsSite)
     assert '-00:07:13' == function.ui.DEC.text()
 
 
 def test_updatePointGui_dec_2(function):
-    temp = function.app.mount.obsSite.raJNow
-    function.app.mount.obsSite.raJNow = None
+    function.app.mount.obsSite.decJNow = Angle(degrees=0)
     function.ui.coordsJ2000.setChecked(False)
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '+00:00:00' == function.ui.DEC.text()
-    function.app.mount.obsSite.raJNow = temp
+    assert '-00:07:13' == function.ui.DEC.text()
 
 
 def test_updatePointGui_pierside(function):

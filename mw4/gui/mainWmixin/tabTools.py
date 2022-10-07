@@ -23,16 +23,13 @@ from PyQt5.QtWidgets import QListView, QApplication
 from astropy.io import fits
 
 # local import
-from gui.utilities.slewInterface import SlewInterface
 
 
-class Tools(SlewInterface):
+class Tools:
     """
     """
 
     def __init__(self):
-        self.targetAlt = None
-        self.targetAz = None
         self.selectorsDropDowns = {'rename1': self.ui.rename1,
                                    'rename2': self.ui.rename2,
                                    'rename3': self.ui.rename3,
@@ -48,60 +45,9 @@ class Tools(SlewInterface):
                                    'Exp Time': ['EXPTIME'],
                                    'CCD Temp': ['CCD-TEMP'],
                                    }
-        self.slewSpeeds = {self.ui.slewSpeedMax: self.app.mount.setting.setSlewSpeedMax,
-                           self.ui.slewSpeedHigh: self.app.mount.setting.setSlewSpeedHigh,
-                           self.ui.slewSpeedMed: self.app.mount.setting.setSlewSpeedMed,
-                           self.ui.slewSpeedLow: self.app.mount.setting.setSlewSpeedLow,
-                           }
-        self.setupStepsizes = {'Stepsize 0.25°': 0.25,
-                               'Stepsize 0.5°': 0.5,
-                               'Stepsize 1.0°': 1,
-                               'Stepsize 2.0°': 2,
-                               'Stepsize 5.0°': 5,
-                               'Stepsize 10°': 10,
-                               'Stepsize 20°': 20,
-                               }
-        self.setupMoveClassic = {self.ui.moveNorth: [1, 0],
-                                 self.ui.moveNorthEast: [1, 1],
-                                 self.ui.moveEast: [0, 1],
-                                 self.ui.moveSouthEast: [-1, 1],
-                                 self.ui.moveSouth: [-1, 0],
-                                 self.ui.moveSouthWest: [-1, -1],
-                                 self.ui.moveWest: [0, -1],
-                                 self.ui.moveNorthWest: [1, -1],
-                                 self.ui.stopMoveAll: [0, 0],
-                                 }
-        self.setupMoveAltAz = {self.ui.moveNorthAltAz: [1, 0],
-                               self.ui.moveNorthEastAltAz: [1, 1],
-                               self.ui.moveEastAltAz: [0, 1],
-                               self.ui.moveSouthEastAltAz: [-1, 1],
-                               self.ui.moveSouthAltAz: [-1, 0],
-                               self.ui.moveSouthWestAltAz: [-1, -1],
-                               self.ui.moveWestAltAz: [0, -1],
-                               self.ui.moveNorthWestAltAz: [1, -1],
-                               }
-        self.slewSpeedSelected = None
-        self.setupGui()
-
+        self.setupGuiTools()
         self.ui.renameStart.clicked.connect(self.renameRunGUI)
         self.ui.renameInputSelect.clicked.connect(self.chooseDir)
-        self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
-        self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
-        self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
-        self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
-        self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
-        self.ui.moveCoordinateRa.textEdited.connect(self.setRA)
-        self.ui.moveCoordinateRa.returnPressed.connect(self.setRA)
-        self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
-        self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
-        self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
-        self.ui.commandInput.returnPressed.connect(self.commandRaw)
-        self.app.mount.signals.slewFinished.connect(self.moveAltAzDefault)
-        self.app.gameDirection.connect(self.moveAltAzGameController)
-        self.app.game_sR.connect(self.moveClassicGameController)
 
     def initConfig(self):
         """
@@ -139,26 +85,15 @@ class Tools(SlewInterface):
 
         return True
 
-    def setupGui(self):
+    def setupGuiTools(self):
         """
         :return: success for test
         """
-
         for name, selectorUI in self.selectorsDropDowns.items():
             selectorUI.clear()
             selectorUI.setView(QListView())
             for headerEntry in self.fitsHeaderKeywords:
                 selectorUI.addItem(headerEntry)
-
-        for ui in self.setupMoveClassic:
-            ui.clicked.connect(self.moveClassicUI)
-
-        for ui in self.setupMoveAltAz:
-            ui.clicked.connect(self.moveAltAzUI)
-
-        self.ui.moveStepSizeAltAz.clear()
-        for text in self.setupStepsizes:
-            self.ui.moveStepSizeAltAz.addItem(text)
         return True
 
     @staticmethod

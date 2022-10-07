@@ -27,12 +27,12 @@ from skyfield.api import Angle, wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
-from mountcontrol.convert import formatDstrToText, formatDstrToText
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
 import gui.mainWmixin.tabTools
 import mountcontrol
+
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
@@ -1551,7 +1551,7 @@ def test_openCommandProtocol_2(function):
 
 def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
-    with mock.patch.object(gui.mainWmixin.tabTools,
+    with mock.patch.object(gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1561,7 +1561,7 @@ def test_moveDuration_1(function):
 
 def test_moveDuration_2(function):
     function.ui.moveDuration.setCurrentIndex(2)
-    with mock.patch.object(gui.mainWmixin.tabTools,
+    with mock.patch.object(gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1571,7 +1571,7 @@ def test_moveDuration_2(function):
 
 def test_moveDuration_3(function):
     function.ui.moveDuration.setCurrentIndex(3)
-    with mock.patch.object(gui.mainWmixin.tabTools,
+    with mock.patch.object(gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1581,7 +1581,7 @@ def test_moveDuration_3(function):
 
 def test_moveDuration_4(function):
     function.ui.moveDuration.setCurrentIndex(4)
-    with mock.patch.object(gui.mainWmixin.tabTools,
+    with mock.patch.object(gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1591,7 +1591,7 @@ def test_moveDuration_4(function):
 
 def test_moveDuration_5(function):
     function.ui.moveDuration.setCurrentIndex(0)
-    with mock.patch.object(gui.mainWmixin.tabTools,
+    with mock.patch.object(gui.mainWmixin.tabMount,
                            'sleepAndEvents'):
         suc = function.moveDuration()
         assert not suc

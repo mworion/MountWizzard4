@@ -33,7 +33,6 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabTools import Tools
 
 
-
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
 
@@ -66,8 +65,8 @@ def test_storeConfig_1(function):
     assert suc
 
 
-def test_setupGui(function):
-    suc = function.setupGui()
+def test_setupGuiTools(function):
+    suc = function.setupGuiTools()
     assert suc
     for _, ui in function.selectorsDropDowns.items():
         assert ui.count() == 7

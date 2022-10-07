@@ -27,14 +27,16 @@ from skyfield.api import wgs84
 # local import
 from base import transform
 from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.slewInterface import SlewInterface
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
+from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 from mountcontrol.convert import valueToFloat
 from mountcontrol.connection import Connection
 
 
-class Mount(object):
+class Mount(SlewInterface):
     """
     """
 
@@ -44,6 +46,41 @@ class Mount(object):
                                     'LAN',
                                     'WiFi',
                                     ]
+        self.slewSpeeds = {self.ui.slewSpeedMax: self.app.mount.setting.setSlewSpeedMax,
+                           self.ui.slewSpeedHigh: self.app.mount.setting.setSlewSpeedHigh,
+                           self.ui.slewSpeedMed: self.app.mount.setting.setSlewSpeedMed,
+                           self.ui.slewSpeedLow: self.app.mount.setting.setSlewSpeedLow,
+                           }
+        self.setupStepsizes = {'Stepsize 0.25°': 0.25,
+                               'Stepsize 0.5°': 0.5,
+                               'Stepsize 1.0°': 1,
+                               'Stepsize 2.0°': 2,
+                               'Stepsize 5.0°': 5,
+                               'Stepsize 10°': 10,
+                               'Stepsize 20°': 20,
+                               }
+        self.setupMoveClassic = {self.ui.moveNorth: [1, 0],
+                                 self.ui.moveNorthEast: [1, 1],
+                                 self.ui.moveEast: [0, 1],
+                                 self.ui.moveSouthEast: [-1, 1],
+                                 self.ui.moveSouth: [-1, 0],
+                                 self.ui.moveSouthWest: [-1, -1],
+                                 self.ui.moveWest: [0, -1],
+                                 self.ui.moveNorthWest: [1, -1],
+                                 self.ui.stopMoveAll: [0, 0],
+                                 }
+        self.setupMoveAltAz = {self.ui.moveNorthAltAz: [1, 0],
+                               self.ui.moveNorthEastAltAz: [1, 1],
+                               self.ui.moveEastAltAz: [0, 1],
+                               self.ui.moveSouthEastAltAz: [-1, 1],
+                               self.ui.moveSouthAltAz: [-1, 0],
+                               self.ui.moveSouthWestAltAz: [-1, -1],
+                               self.ui.moveWestAltAz: [0, -1],
+                               self.ui.moveNorthWestAltAz: [1, -1],
+                               }
+        self.targetAlt = None
+        self.targetAz = None
+        self.slewSpeedSelected = None
 
         ms = self.app.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
@@ -79,6 +116,24 @@ class Mount(object):
         self.app.gameABXY.connect(self.stopGameController)
         self.app.gameABXY.connect(self.changeTrackingGameController)
         self.app.gameABXY.connect(self.flipMountGameController)
+        self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
+        self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeed)
+        self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
+        self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
+        self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
+        self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
+        self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
+        self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
+        self.ui.moveCoordinateRa.textEdited.connect(self.setRA)
+        self.ui.moveCoordinateRa.returnPressed.connect(self.setRA)
+        self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
+        self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
+        self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
+        self.ui.commandInput.returnPressed.connect(self.commandRaw)
+        self.app.mount.signals.slewFinished.connect(self.moveAltAzDefault)
+        self.app.gameDirection.connect(self.moveAltAzGameController)
+        self.app.game_sR.connect(self.moveClassicGameController)
+        self.setupGuiMount()
 
     def initConfig(self):
         """
@@ -109,6 +164,21 @@ class Mount(object):
         config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
         config['moveDuration'] = self.ui.moveDuration.currentIndex()
         config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
+        return True
+
+    def setupGuiMount(self):
+        """
+        :return: success for test
+        """
+        for ui in self.setupMoveClassic:
+            ui.clicked.connect(self.moveClassicUI)
+
+        for ui in self.setupMoveAltAz:
+            ui.clicked.connect(self.moveAltAzUI)
+
+        self.ui.moveStepSizeAltAz.clear()
+        for text in self.setupStepsizes:
+            self.ui.moveStepSizeAltAz.addItem(text)
         return True
 
     def updatePointGUI(self, obs):

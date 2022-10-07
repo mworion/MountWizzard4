@@ -27,10 +27,10 @@ from skyfield.api import Angle, wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
-import gui.mainWmixin.tabTools
+import gui.mainWmixin.tabMount
 import mountcontrol
 
 

@@ -87,7 +87,7 @@ def test_updatePointGui_dec_2(function):
     function.app.mount.obsSite.decJNow = None
     function.ui.coordsJ2000.setChecked(False)
     function.updatePointGUI(function.app.mount.obsSite)
-    assert '-00:07:13' == function.ui.DEC.text()
+    assert '-' == function.ui.DEC.text()
 
 
 def test_updatePointGui_pierside(function):

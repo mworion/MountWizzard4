@@ -16,139 +16,54 @@
 ###########################################################
 # standard libraries
 import datetime
-import webbrowser
-import time
 
 # external packages
 from PyQt5.QtWidgets import QInputDialog, QLineEdit
-from PyQt5.QtGui import QTextCursor
 from skyfield.api import wgs84
 
 # local import
 from base import transform
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from gui.utilities.slewInterface import SlewInterface
-from gui.mainWmixin.tabMountSett import MountSett
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
-from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
-from mountcontrol.convert import formatHstrToText, formatDstrToText
-from mountcontrol.convert import valueToFloat
-from mountcontrol.connection import Connection
 
 
-class Mount(SlewInterface, MountSett):
+class MountSett:
     """
     """
-
     def __init__(self):
-        self.slewSpeeds = {self.ui.slewSpeedMax: self.app.mount.setting.setSlewSpeedMax,
-                           self.ui.slewSpeedHigh: self.app.mount.setting.setSlewSpeedHigh,
-                           self.ui.slewSpeedMed: self.app.mount.setting.setSlewSpeedMed,
-                           self.ui.slewSpeedLow: self.app.mount.setting.setSlewSpeedLow,
-                           }
-        self.setupStepsizes = {'Stepsize 0.25°': 0.25,
-                               'Stepsize 0.5°': 0.5,
-                               'Stepsize 1.0°': 1,
-                               'Stepsize 2.0°': 2,
-                               'Stepsize 5.0°': 5,
-                               'Stepsize 10°': 10,
-                               'Stepsize 20°': 20,
-                               }
-        self.setupMoveClassic = {self.ui.moveNorth: [1, 0],
-                                 self.ui.moveNorthEast: [1, 1],
-                                 self.ui.moveEast: [0, 1],
-                                 self.ui.moveSouthEast: [-1, 1],
-                                 self.ui.moveSouth: [-1, 0],
-                                 self.ui.moveSouthWest: [-1, -1],
-                                 self.ui.moveWest: [0, -1],
-                                 self.ui.moveNorthWest: [1, -1],
-                                 self.ui.stopMoveAll: [0, 0],
-                                 }
-        self.setupMoveAltAz = {self.ui.moveNorthAltAz: [1, 0],
-                               self.ui.moveNorthEastAltAz: [1, 1],
-                               self.ui.moveEastAltAz: [0, 1],
-                               self.ui.moveSouthEastAltAz: [-1, 1],
-                               self.ui.moveSouthAltAz: [-1, 0],
-                               self.ui.moveSouthWestAltAz: [-1, -1],
-                               self.ui.moveWestAltAz: [0, -1],
-                               self.ui.moveNorthWestAltAz: [1, -1],
-                               }
-        self.targetAlt = None
-        self.targetAz = None
-        self.slewSpeedSelected = None
+        self.typeConnectionTexts = ['RS-232',
+                                    'GPS/RS-232',
+                                    'LAN',
+                                    'WiFi',
+                                    ]
 
-        MountSett.__init__(self)
-
-        self.ui.mountCommandTable.clicked.connect(self.openCommandProtocol)
-        self.app.gameABXY.connect(self.changeParkGameController)
-        self.app.gameABXY.connect(self.stopGameController)
-        self.app.gameABXY.connect(self.changeTrackingGameController)
-        self.app.gameABXY.connect(self.flipMountGameController)
-        self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
-        self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
-        self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
-        self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
-        self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
-        self.ui.moveCoordinateRa.textEdited.connect(self.setRA)
-        self.ui.moveCoordinateRa.returnPressed.connect(self.setRA)
-        self.clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
-        self.ui.moveCoordinateDec.textEdited.connect(self.setDEC)
-        self.ui.moveCoordinateDec.returnPressed.connect(self.setDEC)
-        self.ui.commandInput.returnPressed.connect(self.commandRaw)
-        self.app.mount.signals.slewFinished.connect(self.moveAltAzDefault)
-        self.app.gameDirection.connect(self.moveAltAzGameController)
-        self.app.game_sR.connect(self.moveClassicGameController)
-        self.setupGuiMount()
-
-    def initConfig(self):
-        """
-        :return: True for test purpose
-        """
-        config = self.app.config.get('mainW', {})
-        self.ui.coordsJ2000.setChecked(config.get('coordsJ2000', False))
-        self.ui.coordsJNow.setChecked(config.get('coordsJNow', False))
-        self.ui.slewSpeedMax.setChecked(config.get('slewSpeedMax', True))
-        self.ui.slewSpeedHigh.setChecked(config.get('slewSpeedHigh', False))
-        self.ui.slewSpeedMed.setChecked(config.get('slewSpeedMed', False))
-        self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
-        self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
-        self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
-        self.updateLocGUI(self.app.mount.obsSite)
-        return True
-
-    def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
-        config = self.app.config['mainW']
-        config['coordsJ2000'] = self.ui.coordsJ2000.isChecked()
-        config['coordsJNow'] = self.ui.coordsJNow.isChecked()
-        config['slewSpeedMax'] = self.ui.slewSpeedMax.isChecked()
-        config['slewSpeedHigh'] = self.ui.slewSpeedHigh.isChecked()
-        config['slewSpeedMed'] = self.ui.slewSpeedMed.isChecked()
-        config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
-        config['moveDuration'] = self.ui.moveDuration.currentIndex()
-        config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
-        return True
-
-    def setupGuiMount(self):
-        """
-        :return: success for test
-        """
-        for ui in self.setupMoveClassic:
-            ui.clicked.connect(self.moveClassicUI)
-
-        for ui in self.setupMoveAltAz:
-            ui.clicked.connect(self.moveAltAzUI)
-
-        self.ui.moveStepSizeAltAz.clear()
-        for text in self.setupStepsizes:
-            self.ui.moveStepSizeAltAz.addItem(text)
-        return True
+        ms = self.app.mount.signals
+        ms.locationDone.connect(self.updateLocGUI)
+        ms.pointDone.connect(self.updatePointGUI)
+        ms.settingDone.connect(self.updateSettingGUI)
+        self.app.update1s.connect(self.showOffset)
+        self.ui.park.clicked.connect(self.changePark)
+        self.ui.flipMount.clicked.connect(self.flipMount)
+        self.ui.tracking.clicked.connect(self.changeTracking)
+        self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
+        self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
+        self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
+        self.ui.stop.clicked.connect(self.stop)
+        self.app.virtualStop.connect(self.stop)
+        self.clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
+        self.clickable(self.ui.refractionPress).connect(self.setRefractionPress)
+        self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
+        self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
+        self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
+        self.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
+        self.clickable(self.ui.slewRate).connect(self.setSlewRate)
+        self.clickable(self.ui.siteLatitude).connect(self.setLatitude)
+        self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
+        self.clickable(self.ui.siteElevation).connect(self.setElevation)
+        self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
+        self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
+        self.clickable(self.ui.statusWOL).connect(self.setWOL)
+        self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
 
     def updatePointGUI(self, obs):
         """
@@ -836,295 +751,4 @@ class Mount(SlewInterface, MountSett):
             text = timeJD.utc_strftime('%H:%M:%S')
             self.ui.timeUTC.setText(text)
 
-        return True
-
-    def openCommandProtocol(self):
-        """
-        :return:
-        """
-        url = 'http://' + self.ui.mountHost.text() + '/manuals/command-protocol.pdf'
-        if not webbrowser.open(url, new=0):
-            self.msg.emit(2, 'System', 'Mount', 'Browser failed')
-        else:
-            self.msg.emit(0, 'System', 'Mount', '10micron opened')
-        return True
-
-    def stopMoveAll(self):
-        """
-        :return: success
-        """
-        for uiR in self.setupMoveClassic:
-            self.changeStyleDynamic(uiR, 'running', False)
-        self.app.mount.obsSite.stopMoveAll()
-        return True
-
-    def moveDuration(self):
-        """
-        :return:
-        """
-        if self.ui.moveDuration.currentIndex() == 1:
-            sleepAndEvents(10000)
-        elif self.ui.moveDuration.currentIndex() == 2:
-            sleepAndEvents(5000)
-        elif self.ui.moveDuration.currentIndex() == 3:
-            sleepAndEvents(2000)
-        elif self.ui.moveDuration.currentIndex() == 4:
-            sleepAndEvents(1000)
-        else:
-            return False
-        self.stopMoveAll()
-        return True
-
-    def moveClassicGameController(self, decVal, raVal):
-        """
-        :return:
-        """
-        dirRa = 0
-        dirDec = 0
-        if raVal < 64:
-            dirRa = 1
-        elif raVal > 192:
-            dirRa = -1
-        if decVal < 64:
-            dirDec = -1
-        elif decVal > 192:
-            dirDec = 1
-
-        direction = [dirRa, dirDec]
-        if direction == [0, 0]:
-            self.stopMoveAll()
-        else:
-            self.moveClassic(direction)
-        return True
-
-    def moveClassicUI(self):
-        """
-        :return:
-        """
-        if not self.deviceStat.get('mount'):
-            return False
-
-        ui = self.sender()
-        direction = self.setupMoveClassic[ui]
-        self.moveClassic(direction)
-        return True
-
-    def moveClassic(self, direction):
-        """
-        :return:
-        """
-        uiList = self.setupMoveClassic
-        for uiR in uiList:
-            self.changeStyleDynamic(uiR, 'running', False)
-
-        key = next(key for key, value in uiList.items() if value == direction)
-        self.changeStyleDynamic(key, 'running', True)
-
-        if direction[0] == 1:
-            self.app.mount.obsSite.moveNorth()
-        elif direction[0] == -1:
-            self.app.mount.obsSite.moveSouth()
-        elif direction[0] == 0:
-            self.app.mount.obsSite.stopMoveNorth()
-            self.app.mount.obsSite.stopMoveSouth()
-
-        if direction[1] == 1:
-            self.app.mount.obsSite.moveEast()
-        elif direction[1] == -1:
-            self.app.mount.obsSite.moveWest()
-        elif direction[1] == 0:
-            self.app.mount.obsSite.stopMoveEast()
-            self.app.mount.obsSite.stopMoveWest()
-
-        self.moveDuration()
-        return True
-
-    def setSlewSpeed(self):
-        """
-        :return: success
-        """
-        ui = self.sender()
-        if ui not in self.slewSpeeds:
-            return False
-
-        self.slewSpeeds[ui]()
-        return True
-
-    def moveAltAzDefault(self):
-        """
-        :return:
-        """
-        self.targetAlt = None
-        self.targetAz = None
-        for ui in self.setupMoveAltAz:
-            self.changeStyleDynamic(ui, 'running', False)
-        return True
-
-    def moveAltAzUI(self):
-        """
-        :return:
-        """
-        if not self.deviceStat.get('mount'):
-            return False
-
-        ui = self.sender()
-        directions = self.setupMoveAltAz[ui]
-        self.moveAltAz(directions)
-
-    def moveAltAzGameController(self, value):
-        """
-        :param value:
-        :return:
-        """
-        if value == 0b00000000:
-            direction = [1, 0]
-        elif value == 0b00000010:
-            direction = [0, 1]
-        elif value == 0b00000100:
-            direction = [-1, 0]
-        elif value == 0b00000110:
-            direction = [0, -1]
-        else:
-            return False
-        self.moveAltAz(direction)
-        return True
-
-    def moveAltAz(self, direction):
-        """
-        :param direction:
-        :return:
-        """
-        alt = self.app.mount.obsSite.Alt
-        az = self.app.mount.obsSite.Az
-        if alt is None or az is None:
-            return False
-
-        uiList = self.setupMoveAltAz
-        key = next(key for key, value in uiList.items() if value == direction)
-        self.changeStyleDynamic(key, 'running', True)
-
-        key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
-        step = self.setupStepsizes[key]
-
-        if self.targetAlt is None or self.targetAz is None:
-            targetAlt = self.targetAlt = alt.degrees + direction[0] * step
-            targetAz = self.targetAz = az.degrees + direction[1] * step
-        else:
-            targetAlt = self.targetAlt = self.targetAlt + direction[0] * step
-            targetAz = self.targetAz = self.targetAz + direction[1] * step
-
-        targetAz = targetAz % 360
-        suc = self.slewTargetAltAz(targetAlt, targetAz)
-        return suc
-
-    def setRA(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        dlg = QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set telescope RA',
-                                'Format: <dd[H] mm ss.s> in hours or <[+]d.d> in '
-                                'degrees',
-                                QLineEdit.Normal,
-                                self.ui.moveCoordinateRa.text(),
-                                )
-        if not ok:
-            return False
-
-        value = convertRaToAngle(value)
-        if value is None:
-            self.ui.moveCoordinateRaFloat.setText('')
-            return False
-
-        text = formatHstrToText(value)
-        self.ui.moveCoordinateRa.setText(text)
-        self.ui.moveCoordinateRaFloat.setText(f'{value.hours:2.4f}')
-        return True
-
-    def setDEC(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        dlg = QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set telescope DEC',
-                                'Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees',
-                                QLineEdit.Normal,
-                                self.ui.moveCoordinateDec.text(),
-                                )
-        if not ok:
-            return False
-
-        value = convertDecToAngle(value)
-        if value is None:
-            self.ui.moveCoordinateDecFloat.setText('')
-            return False
-
-        text = formatDstrToText(value)
-        self.ui.moveCoordinateDec.setText(text)
-        self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.4f}')
-        return True
-
-    def moveAltAzAbsolute(self):
-        """
-        :return:
-        """
-        alt = self.ui.moveCoordinateAlt.text()
-        alt = valueToFloat(alt)
-        if alt is None:
-            return False
-
-        az = self.ui.moveCoordinateAz.text()
-        az = valueToFloat(az)
-        if az is None:
-            return False
-
-        az = (az + 360) % 360
-        suc = self.slewTargetAltAz(alt, az)
-        return suc
-
-    def moveRaDecAbsolute(self):
-        """
-        :return:
-        """
-        value = self.ui.moveCoordinateRa.text()
-        ra = convertRaToAngle(value)
-        if ra is None:
-            return False
-
-        value = self.ui.moveCoordinateDec.text()
-        dec = convertDecToAngle(value)
-        if dec is None:
-            return False
-
-        suc = self.slewTargetRaDec(ra, dec)
-        return suc
-
-    def commandRaw(self):
-        """
-        :return:
-        """
-        host = self.app.mount.host
-        conn = Connection(host)
-        cmd = self.ui.commandInput.text()
-        self.ui.commandStatus.clear()
-        self.ui.commandOutput.clear()
-        startTime = time.time()
-        sucSend, sucRec, val = conn.communicateRaw(cmd)
-        endTime = time.time()
-        delta = endTime - startTime
-        self.ui.commandOutput.clear()
-        if sucSend:
-            t = 'Command OK\n'
-            self.ui.commandStatus.insertPlainText(t)
-        if sucRec:
-            t = f'Receive OK, took {delta:2.3f}s'
-            self.ui.commandStatus.insertPlainText(t)
-        else:
-            t = f'Receive ERROR, took {delta:2.3f}s'
-            self.ui.commandStatus.insertPlainText(t)
-
-        self.ui.commandOutput.insertPlainText(val + '\n')
-        self.ui.commandOutput.moveCursor(QTextCursor.End)
         return True

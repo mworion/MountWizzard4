@@ -16,21 +16,14 @@
 ###########################################################
 # standard libraries
 import os
-import time
 from pathlib import Path
 
 # external packages
-from PyQt5.QtWidgets import QLineEdit, QListView, QApplication, QInputDialog
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QListView, QApplication
 from astropy.io import fits
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
 from gui.utilities.slewInterface import SlewInterface
-from mountcontrol.convert import convertRaToAngle, convertDecToAngle
-from mountcontrol.convert import formatHstrToText, formatDstrToText
-from mountcontrol.convert import valueToFloat
-from mountcontrol.connection import Connection
 
 
 class Tools(SlewInterface):
@@ -127,12 +120,6 @@ class Tools(SlewInterface):
             ui.setCurrentIndex(config.get(name, 0))
 
         self.ui.renameProgress.setValue(0)
-        self.ui.slewSpeedMax.setChecked(config.get('slewSpeedMax', True))
-        self.ui.slewSpeedHigh.setChecked(config.get('slewSpeedHigh', False))
-        self.ui.slewSpeedMed.setChecked(config.get('slewSpeedMed', False))
-        self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
-        self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
-        self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
         return True
 
     def storeConfig(self):
@@ -150,12 +137,6 @@ class Tools(SlewInterface):
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
 
-        config['slewSpeedMax'] = self.ui.slewSpeedMax.isChecked()
-        config['slewSpeedHigh'] = self.ui.slewSpeedHigh.isChecked()
-        config['slewSpeedMed'] = self.ui.slewSpeedMed.isChecked()
-        config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
-        config['moveDuration'] = self.ui.moveDuration.currentIndex()
-        config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
         return True
 
     def setupGui(self):
@@ -351,284 +332,4 @@ class Tools(SlewInterface):
         if pathDir:
             self.ui.renameDir.setText(pathDir)
             self.ui.renameProgress.setValue(0)
-        return True
-
-    def stopMoveAll(self):
-        """
-        :return: success
-        """
-        for uiR in self.setupMoveClassic:
-            self.changeStyleDynamic(uiR, 'running', False)
-        self.app.mount.obsSite.stopMoveAll()
-        return True
-
-    def moveDuration(self):
-        """
-        :return:
-        """
-        if self.ui.moveDuration.currentIndex() == 1:
-            sleepAndEvents(10000)
-        elif self.ui.moveDuration.currentIndex() == 2:
-            sleepAndEvents(5000)
-        elif self.ui.moveDuration.currentIndex() == 3:
-            sleepAndEvents(2000)
-        elif self.ui.moveDuration.currentIndex() == 4:
-            sleepAndEvents(1000)
-        else:
-            return False
-        self.stopMoveAll()
-        return True
-
-    def moveClassicGameController(self, decVal, raVal):
-        """
-        :return:
-        """
-        dirRa = 0
-        dirDec = 0
-        if raVal < 64:
-            dirRa = 1
-        elif raVal > 192:
-            dirRa = -1
-        if decVal < 64:
-            dirDec = -1
-        elif decVal > 192:
-            dirDec = 1
-
-        direction = [dirRa, dirDec]
-        if direction == [0, 0]:
-            self.stopMoveAll()
-        else:
-            self.moveClassic(direction)
-        return True
-
-    def moveClassicUI(self):
-        """
-        :return:
-        """
-        if not self.deviceStat.get('mount'):
-            return False
-
-        ui = self.sender()
-        direction = self.setupMoveClassic[ui]
-        self.moveClassic(direction)
-        return True
-
-    def moveClassic(self, direction):
-        """
-        :return:
-        """
-        uiList = self.setupMoveClassic
-        for uiR in uiList:
-            self.changeStyleDynamic(uiR, 'running', False)
-
-        key = next(key for key, value in uiList.items() if value == direction)
-        self.changeStyleDynamic(key, 'running', True)
-
-        if direction[0] == 1:
-            self.app.mount.obsSite.moveNorth()
-        elif direction[0] == -1:
-            self.app.mount.obsSite.moveSouth()
-        elif direction[0] == 0:
-            self.app.mount.obsSite.stopMoveNorth()
-            self.app.mount.obsSite.stopMoveSouth()
-
-        if direction[1] == 1:
-            self.app.mount.obsSite.moveEast()
-        elif direction[1] == -1:
-            self.app.mount.obsSite.moveWest()
-        elif direction[1] == 0:
-            self.app.mount.obsSite.stopMoveEast()
-            self.app.mount.obsSite.stopMoveWest()
-
-        self.moveDuration()
-        return True
-
-    def setSlewSpeed(self):
-        """
-        :return: success
-        """
-        ui = self.sender()
-        if ui not in self.slewSpeeds:
-            return False
-
-        self.slewSpeeds[ui]()
-        return True
-
-    def moveAltAzDefault(self):
-        """
-        :return:
-        """
-        self.targetAlt = None
-        self.targetAz = None
-        for ui in self.setupMoveAltAz:
-            self.changeStyleDynamic(ui, 'running', False)
-        return True
-
-    def moveAltAzUI(self):
-        """
-        :return:
-        """
-        if not self.deviceStat.get('mount'):
-            return False
-
-        ui = self.sender()
-        directions = self.setupMoveAltAz[ui]
-        self.moveAltAz(directions)
-
-    def moveAltAzGameController(self, value):
-        """
-        :param value:
-        :return:
-        """
-        if value == 0b00000000:
-            direction = [1, 0]
-        elif value == 0b00000010:
-            direction = [0, 1]
-        elif value == 0b00000100:
-            direction = [-1, 0]
-        elif value == 0b00000110:
-            direction = [0, -1]
-        else:
-            return False
-        self.moveAltAz(direction)
-        return True
-
-    def moveAltAz(self, direction):
-        """
-        :param direction:
-        :return:
-        """
-        alt = self.app.mount.obsSite.Alt
-        az = self.app.mount.obsSite.Az
-        if alt is None or az is None:
-            return False
-
-        uiList = self.setupMoveAltAz
-        key = next(key for key, value in uiList.items() if value == direction)
-        self.changeStyleDynamic(key, 'running', True)
-
-        key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
-        step = self.setupStepsizes[key]
-
-        if self.targetAlt is None or self.targetAz is None:
-            targetAlt = self.targetAlt = alt.degrees + direction[0] * step
-            targetAz = self.targetAz = az.degrees + direction[1] * step
-        else:
-            targetAlt = self.targetAlt = self.targetAlt + direction[0] * step
-            targetAz = self.targetAz = self.targetAz + direction[1] * step
-
-        targetAz = targetAz % 360
-        suc = self.slewTargetAltAz(targetAlt, targetAz)
-        return suc
-
-    def setRA(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        dlg = QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set telescope RA',
-                                'Format: <dd[H] mm ss.s> in hours or <[+]d.d> in '
-                                'degrees',
-                                QLineEdit.Normal,
-                                self.ui.moveCoordinateRa.text(),
-                                )
-        if not ok:
-            return False
-
-        value = convertRaToAngle(value)
-        if value is None:
-            self.ui.moveCoordinateRaFloat.setText('')
-            return False
-
-        text = formatHstrToText(value)
-        self.ui.moveCoordinateRa.setText(text)
-        self.ui.moveCoordinateRaFloat.setText(f'{value.hours:2.4f}')
-        return True
-
-    def setDEC(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        dlg = QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set telescope DEC',
-                                'Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees',
-                                QLineEdit.Normal,
-                                self.ui.moveCoordinateDec.text(),
-                                )
-        if not ok:
-            return False
-
-        value = convertDecToAngle(value)
-        if value is None:
-            self.ui.moveCoordinateDecFloat.setText('')
-            return False
-
-        text = formatDstrToText(value)
-        self.ui.moveCoordinateDec.setText(text)
-        self.ui.moveCoordinateDecFloat.setText(f'{value.degrees:2.4f}')
-        return True
-
-    def moveAltAzAbsolute(self):
-        """
-        :return:
-        """
-        alt = self.ui.moveCoordinateAlt.text()
-        alt = valueToFloat(alt)
-        if alt is None:
-            return False
-
-        az = self.ui.moveCoordinateAz.text()
-        az = valueToFloat(az)
-        if az is None:
-            return False
-
-        az = (az + 360) % 360
-        suc = self.slewTargetAltAz(alt, az)
-        return suc
-
-    def moveRaDecAbsolute(self):
-        """
-        :return:
-        """
-        value = self.ui.moveCoordinateRa.text()
-        ra = convertRaToAngle(value)
-        if ra is None:
-            return False
-
-        value = self.ui.moveCoordinateDec.text()
-        dec = convertDecToAngle(value)
-        if dec is None:
-            return False
-
-        suc = self.slewTargetRaDec(ra, dec)
-        return suc
-
-    def commandRaw(self):
-        """
-        :return:
-        """
-        host = self.app.mount.host
-        conn = Connection(host)
-        cmd = self.ui.commandInput.text()
-        self.ui.commandStatus.clear()
-        self.ui.commandOutput.clear()
-        startTime = time.time()
-        sucSend, sucRec, val = conn.communicateRaw(cmd)
-        endTime = time.time()
-        delta = endTime - startTime
-        self.ui.commandOutput.clear()
-        if sucSend:
-            t = 'Command OK\n'
-            self.ui.commandStatus.insertPlainText(t)
-        if sucRec:
-            t = f'Receive OK, took {delta:2.3f}s'
-            self.ui.commandStatus.insertPlainText(t)
-        else:
-            t = f'Receive ERROR, took {delta:2.3f}s'
-            self.ui.commandStatus.insertPlainText(t)
-
-        self.ui.commandOutput.insertPlainText(val + '\n')
-        self.ui.commandOutput.moveCursor(QTextCursor.End)
         return True

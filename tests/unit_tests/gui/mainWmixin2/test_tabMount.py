@@ -22,15 +22,17 @@ import webbrowser
 
 # external packages
 import PyQt5
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QInputDialog
 from skyfield.api import Angle, wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
+from mountcontrol.convert import formatDstrToText, formatDstrToText
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
-
+import gui.mainWmixin.tabTools
+import mountcontrol
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
@@ -1544,4 +1546,414 @@ def test_openCommandProtocol_2(function):
                            'open',
                            return_value=False):
         suc = function.openCommandProtocol()
+        assert suc
+
+
+def test_moveDuration_1(function):
+    function.ui.moveDuration.setCurrentIndex(1)
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
+        with mock.patch.object(function,
+                               'stopMoveAll'):
+            suc = function.moveDuration()
+            assert suc
+
+
+def test_moveDuration_2(function):
+    function.ui.moveDuration.setCurrentIndex(2)
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
+        with mock.patch.object(function,
+                               'stopMoveAll'):
+            suc = function.moveDuration()
+            assert suc
+
+
+def test_moveDuration_3(function):
+    function.ui.moveDuration.setCurrentIndex(3)
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
+        with mock.patch.object(function,
+                               'stopMoveAll'):
+            suc = function.moveDuration()
+            assert suc
+
+
+def test_moveDuration_4(function):
+    function.ui.moveDuration.setCurrentIndex(4)
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
+        with mock.patch.object(function,
+                               'stopMoveAll'):
+            suc = function.moveDuration()
+            assert suc
+
+
+def test_moveDuration_5(function):
+    function.ui.moveDuration.setCurrentIndex(0)
+    with mock.patch.object(gui.mainWmixin.tabTools,
+                           'sleepAndEvents'):
+        suc = function.moveDuration()
+        assert not suc
+
+
+def test_moveClassicGameController_1(function):
+    with mock.patch.object(function,
+                           'stopMoveAll'):
+        suc = function.moveClassicGameController(128, 128)
+        assert suc
+
+
+def test_moveClassicGameController_2(function):
+    with mock.patch.object(function,
+                           'moveClassic'):
+        suc = function.moveClassicGameController(0, 0)
+        assert suc
+
+
+def test_moveClassicGameController_3(function):
+    with mock.patch.object(function,
+                           'moveClassic'):
+        suc = function.moveClassicGameController(255, 255)
+        assert suc
+
+
+def test_moveClassicUI_1(function):
+    def Sender():
+        return function.ui.moveNorthEast
+
+    function.deviceStat['mount'] = False
+    function.sender = Sender
+    suc = function.moveClassicUI()
+    assert not suc
+
+
+def test_moveClassicUI_2(function):
+    def Sender():
+        return function.ui.moveNorthEast
+
+    function.deviceStat['mount'] = True
+    function.sender = Sender
+    suc = function.moveClassicUI()
+    assert suc
+
+
+def test_moveClassic_1(function):
+    with mock.patch.object(function,
+                           'moveDuration'):
+        suc = function.moveClassic([1, 1])
+        assert suc
+
+
+def test_moveClassic_2(function):
+    with mock.patch.object(function,
+                           'moveDuration'):
+        suc = function.moveClassic([-1, -1])
+        assert suc
+
+
+def test_moveClassic_3(function):
+    with mock.patch.object(function,
+                           'moveDuration'):
+        suc = function.moveClassic([0, 0])
+        assert suc
+
+
+def test_stopMoveAll(function):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'stopMoveAll',
+                           return_value=True):
+        suc = function.stopMoveAll()
+        assert suc
+
+
+def test_setSlewSpeed_1(function):
+    def Sender():
+        return function.ui.renameStart
+
+    function.sender = Sender
+
+    suc = function.setSlewSpeed()
+    assert not suc
+
+
+def test_setSlewSpeed_2(function):
+    def Sender():
+        return function.ui.slewSpeedMax
+
+    def test():
+        return
+
+    function.slewSpeeds = {function.ui.slewSpeedMax: test}
+    function.sender = Sender
+
+    suc = function.setSlewSpeed()
+    assert suc
+
+
+def test_moveAltAzDefault(function):
+    suc = function.moveAltAzDefault()
+    assert suc
+
+
+def test_moveAltAzUI_1(function):
+    def Sender():
+        return function.ui.moveNorthEastAltAz
+
+    function.sender = Sender
+    function.deviceStat['mount'] = False
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzUI()
+        assert not suc
+
+
+def test_moveAltAzUI_2(function):
+    def Sender():
+        return function.ui.moveNorthEastAltAz
+
+    function.sender = Sender
+    function.deviceStat['mount'] = True
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzUI()
+        assert not suc
+
+
+def test_moveAltAzGameController_1(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(0)
+        assert suc
+
+
+def test_moveAltAzGameController_2(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(2)
+        assert suc
+
+
+def test_moveAltAzGameController_3(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(4)
+        assert suc
+
+
+def test_moveAltAzGameController_4(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(6)
+        assert suc
+
+
+def test_moveAltAzGameController_5(function):
+    with mock.patch.object(function,
+                           'moveAltAz'):
+        suc = function.moveAltAzGameController(99)
+        assert not suc
+
+
+def test_moveAltAz_1(function):
+    function.targetAlt = None
+    function.targetAz = None
+    function.app.mount.obsSite.Alt = None
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAz([1, 1])
+        assert not suc
+
+
+def test_moveAltAz_2(function):
+    function.targetAlt = None
+    function.targetAz = None
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAz([1, 1])
+        assert not suc
+
+
+def test_moveAltAz_3(function):
+    function.targetAlt = 10
+    function.targetAz = 10
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=10)
+
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=True):
+        suc = function.moveAltAz([1, 1])
+        assert suc
+
+
+def test_setRA_1(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', False)):
+        suc = function.setRA()
+        assert not suc
+
+
+def test_setRA_2(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', True)):
+        suc = function.setRA()
+        assert not suc
+
+
+def test_setRA_3(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('12H', True)):
+        suc = function.setRA()
+        assert suc
+
+
+def test_setDEC_1(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', False)):
+        suc = function.setDEC()
+        assert not suc
+
+
+def test_setDEC_2(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('', True)):
+        suc = function.setDEC()
+        assert not suc
+
+
+def test_setDEC_3(function):
+    with mock.patch.object(QInputDialog,
+                           'getText',
+                           return_value=('12', True)):
+        suc = function.setDEC()
+        assert suc
+
+
+def test_moveAltAzAbsolute_1(function):
+    function.ui.moveCoordinateAlt.setText('50h')
+    function.ui.moveCoordinateAz.setText('50h')
+    suc = function.moveAltAzAbsolute()
+    assert not suc
+
+
+def test_moveAltAzAbsolute_2(function):
+    function.ui.moveCoordinateAlt.setText('50')
+    function.ui.moveCoordinateAz.setText('50h')
+    suc = function.moveAltAzAbsolute()
+    assert not suc
+
+
+def test_moveAltAzAbsolute_3(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 70
+    function.ui.moveCoordinateAlt.setText('50')
+    function.ui.moveCoordinateAz.setText('50')
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=False):
+        suc = function.moveAltAzAbsolute()
+        assert not suc
+
+
+def test_moveAltAzAbsolute_4(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    function.app.mount.setting.horizonLimitHigh = 70
+    function.ui.moveCoordinateAlt.setText('50')
+    function.ui.moveCoordinateAz.setText('50')
+    with mock.patch.object(function,
+                           'slewTargetAltAz',
+                           return_value=True):
+        suc = function.moveAltAzAbsolute()
+        assert suc
+
+
+def test_moveRaDecAbsolute_1(function):
+    function.ui.moveCoordinateRa.setText('asd')
+    function.ui.moveCoordinateDec.setText('asd')
+    suc = function.moveRaDecAbsolute()
+    assert not suc
+
+
+def test_moveRaDecAbsolute_2(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('asd')
+    suc = function.moveRaDecAbsolute()
+    assert not suc
+
+
+def test_moveRaDecAbsolute_3(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
+    a = function.app.mount.obsSite.timeJD
+    function.app.mount.obsSite.timeJD = None
+    suc = function.moveRaDecAbsolute()
+    assert not suc
+    function.app.mount.obsSite.timeJD = a
+
+
+def test_moveRaDecAbsolute_4(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=False):
+            suc = function.moveRaDecAbsolute()
+            assert not suc
+
+
+def test_moveRaDecAbsolute_5(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec'):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=True):
+            suc = function.moveRaDecAbsolute()
+            assert suc
+
+
+def test_moveRaDecAbsolute_6(function):
+    function.ui.moveCoordinateRa.setText('12H')
+    function.ui.moveCoordinateDec.setText('30 30')
+    with mock.patch.object(function.app.mount.obsSite,
+                           'timeJD',
+                           return_value=None):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetRaDec'):
+            with mock.patch.object(function,
+                                   'slewSelectedTargetWithDome',
+                                   return_value=False):
+                suc = function.moveRaDecAbsolute()
+                assert not suc
+
+
+def test_commandRaw_1(function):
+    with mock.patch.object(mountcontrol.connection.Connection,
+                           'communicateRaw',
+                           return_value=(True, False, '')):
+        suc = function.commandRaw()
+        assert suc
+
+
+def test_commandRaw_2(function):
+    with mock.patch.object(mountcontrol.connection.Connection,
+                           'communicateRaw',
+                           return_value=(True, True, '')):
+        suc = function.commandRaw()
         assert suc

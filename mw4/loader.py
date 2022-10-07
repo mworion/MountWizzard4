@@ -33,6 +33,7 @@ import warnings
 #         windowscontext-oleinitialize-failed-com-error-0x80010106-rpc-e-changed-mode
 # and https://github.com/pywinauto/pywinauto/issues/472
 # order is important to set sys.coinit_flags = 2 before import pywinauto
+warnings.filterwarnings('ignore', category=Warning, append=True)
 sys.coinit_flags = 2
 
 # external packages
@@ -53,7 +54,6 @@ import resource.resources as res
 res.qInitResources()
 astropy.utils.iers.conf.auto_download = False
 astropy.utils.data.conf.allow_internet = False
-warnings.filterwarnings('ignore', category=Warning, append=True)
 log = logging.getLogger()
 
 

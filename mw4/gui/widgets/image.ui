@@ -199,7 +199,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Embed Data</string>
+           <string>Embed WCS</string>
           </property>
          </widget>
         </item>
@@ -228,7 +228,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the filename of the image is extended with the actual time to make it unique. Otherwise the file get just &amp;quot;exposure&amp;quot; and will be overwritten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Time tags</string>
+           <string>Add time tags</string>
           </property>
          </widget>
         </item>

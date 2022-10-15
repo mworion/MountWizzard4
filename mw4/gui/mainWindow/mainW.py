@@ -644,6 +644,13 @@ class MainWindow(
             actChanged = tabStatus != stat
             tabChanged = tabChanged or actChanged
 
+        tabWidget = self.ui.imagingTabWidget.findChild(QWidget, 'reference')
+        tabIndex = self.ui.imagingTabWidget.indexOf(tabWidget)
+        self.ui.imagingTabWidget.setTabVisible(tabIndex, packageConfig.isReference)
+        tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'AnalyseFlexure')
+        tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
+        self.ui.toolsTabWidget.setTabVisible(tabIndex, packageConfig.isAnalyse)
+
         # redraw tabs only when a change occurred. this is necessary, because
         # enable and disable does not remove tabs
         if tabChanged:

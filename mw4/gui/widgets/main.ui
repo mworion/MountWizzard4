@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -19655,7 +19655,7 @@ Next point in time when satellite settles.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -19711,7 +19711,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals.data and the actual tai-utc.dat. it downloads the data first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Program earth rotation data to mount</string>
+         <string>Download IERS data and program to mount</string>
         </property>
        </widget>
        <widget class="QComboBox" name="iersSource">

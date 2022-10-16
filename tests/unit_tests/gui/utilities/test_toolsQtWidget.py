@@ -884,6 +884,18 @@ def test_positionWindow_2(function):
     assert suc
 
 
+def test_getTabIndex(function):
+    widget = QTabWidget()
+    w = QWidget()
+    w.setObjectName('test')
+    widget.addTab(w, 'test')
+    w = QWidget()
+    w.setObjectName('test1')
+    widget.addTab(w, 'test1')
+    index = function.getTabIndex(widget, 'test1')
+    assert index == 1
+
+
 def test_getTabAndIndex_1(function):
     widget = QTabWidget()
     widget.addTab(QWidget(), 'test')

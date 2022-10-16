@@ -635,8 +635,7 @@ class MainWindow(
         tabChanged = False
 
         for key, tab in smartTabs.items():
-            tabWidget = smartTabs[key]['tab'].findChild(QWidget, key)
-            tabIndex = smartTabs[key]['tab'].indexOf(tabWidget)
+            tabIndex = self.getTabIndex(smartTabs[key]['tab'], key)
             tabStatus = smartTabs[key]['tab'].isTabVisible(tabIndex)
 
             stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
@@ -644,11 +643,9 @@ class MainWindow(
             actChanged = tabStatus != stat
             tabChanged = tabChanged or actChanged
 
-        tabWidget = self.ui.imagingTabWidget.findChild(QWidget, 'reference')
-        tabIndex = self.ui.imagingTabWidget.indexOf(tabWidget)
+        tabIndex = self.getTabIndex(self.ui.imagingTabWidget, 'reference')
         self.ui.imagingTabWidget.setTabVisible(tabIndex, packageConfig.isReference)
-        tabWidget = self.ui.toolsTabWidget.findChild(QWidget, 'AnalyseFlexure')
-        tabIndex = self.ui.toolsTabWidget.indexOf(tabWidget)
+        tabIndex = self.getTabIndex(self.ui.imagingTabWidget, 'AnalyseFlexure')
         self.ui.toolsTabWidget.setTabVisible(tabIndex, packageConfig.isAnalyse)
 
         # redraw tabs only when a change occurred. this is necessary, because

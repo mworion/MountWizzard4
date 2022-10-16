@@ -233,7 +233,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.numberStars.setText('')
         self.ui.aspectRatioPercentile.setText('')
         tab = self.ui.tabImage
-        tabIndex = tab.indexOf(tab.findChild(QWidget, 'Image'))
+        tabIndex = self.getTabIndex(tab, 'Image')
         for i in range(0, self.ui.tabImage.count()):
             if i == tabIndex:
                 continue

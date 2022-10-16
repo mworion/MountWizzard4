@@ -710,7 +710,6 @@ class SettMisc(object):
         }
         for tab in tabs:
             isVisible = tabs[tab]['cb'].isChecked()
-            tabWidget = tabs[tab]['tab'].findChild(QWidget, tab)
-            tabIndex = tabs[tab]['tab'].indexOf(tabWidget)
+            tabIndex = self.getTabIndex(tabs[tab]['tab'], tab)
             tabs[tab]['tab'].setTabVisible(tabIndex, isVisible)
         return True

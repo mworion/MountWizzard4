@@ -155,8 +155,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         if not framework:
             framework = firstFramework
 
-        tabWidget = self.ui.tab.findChild(QWidget, framework)
-        tabIndex = self.ui.tab.indexOf(tabWidget)
+        tabIndex = self.getTabIndex(self.ui.tab, framework)
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):

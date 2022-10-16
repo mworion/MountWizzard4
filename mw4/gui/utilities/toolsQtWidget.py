@@ -817,6 +817,17 @@ class MWidget(QWidget, Styles):
         return True
 
     @staticmethod
+    def getTabIndex(tab, name):
+        """
+        :param tab:
+        :param name:
+        :return:
+        """
+        tabWidget = tab.findChild(QWidget, name)
+        tabIndex = tab.indexOf(tabWidget)
+        return tabIndex
+
+    @staticmethod
     def getTabAndIndex(tab, config, name, store=False):
         """
         :param tab:
@@ -834,8 +845,7 @@ class MWidget(QWidget, Styles):
             config[name][f'{index:02d}'] = tab.widget(index).objectName()
         return True
 
-    @staticmethod
-    def setTabAndIndex(tab, config, name):
+    def setTabAndIndex(self, tab, config, name):
         """
         :param tab:
         :param config:
@@ -849,8 +859,7 @@ class MWidget(QWidget, Styles):
             nameTab = config.get(f'{index:02d}', None)
             if nameTab is None:
                 continue
-            tabWidget = tab.findChild(QWidget, nameTab)
-            tabIndex = tab.indexOf(tabWidget)
+            tabIndex = self.getTabIndex(tab, nameTab)
             tab.tabBar().moveTab(tabIndex, index)
         tab.setCurrentIndex(config.get('index', 0))
         return True

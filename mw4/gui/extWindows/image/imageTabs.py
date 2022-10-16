@@ -33,7 +33,7 @@ class ImageTabs:
         """
         self.changeStyleDynamic(self.ui.headerGroup, 'running', False)
         tab = self.ui.tabImage
-        tabIndex = tab.indexOf(tab.findChild(QWidget, 'Image'))
+        tabIndex = self.getTabIndex(tab, 'Image')
         tab.setTabEnabled(tabIndex, True)
 
         if self.fileHandler.image is None:
@@ -62,7 +62,7 @@ class ImageTabs:
         if self.ui.isoLayer.isChecked():
             self.ui.hfr.addIsoBasic(self.ui.hfr.p[0], self.photometry.hfrGrid, levels=20)
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'HFR')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'HFR'), True)
         return True
 
     def showTabTiltSquare(self):
@@ -148,7 +148,7 @@ class ImageTabs:
         self.ui.squareMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
         self.ui.squareNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'TiltSquare')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'TiltSquare'), True)
         return True
 
     def showTabTiltTriangle(self):
@@ -251,7 +251,7 @@ class ImageTabs:
         self.ui.triangleMedianHFR.setText(f'{self.photometry.hfrMedian:1.2f}')
         self.ui.triangleNumberStars.setText(f'{len(self.photometry.hfr):1.0f}')
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'TiltTriangle')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'TiltTriangle'), True)
         return True
 
     def showTabRoundness(self):
@@ -268,7 +268,7 @@ class ImageTabs:
             self.ui.roundness.addIsoBasic(self.ui.roundness.p[0],
                                           self.photometry.roundnessGrid, levels=20)
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Roundness')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'Roundness'), True)
         return True
 
     def showTabAberrationInspect(self):
@@ -295,7 +295,7 @@ class ImageTabs:
             self.ui.aberration.p[0].addItem(lineItem)
 
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Aberration')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'Aberration'), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
         return True
 
@@ -323,7 +323,7 @@ class ImageTabs:
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Sources')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'Sources'), True)
         return True
 
     def showTabBackground(self):
@@ -334,7 +334,7 @@ class ImageTabs:
         self.ui.background.barItem.setLevels(
             (self.photometry.backgroundMin, self.photometry.backgroundMax))
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'Back')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'Back'), True)
         return True
 
     def showTabBackgroundRMS(self):
@@ -343,5 +343,5 @@ class ImageTabs:
         """
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage
-        tab.setTabEnabled(tab.indexOf(tab.findChild(QWidget, 'BackRMS')), True)
+        tab.setTabEnabled(self.getTabIndex(tab, 'BackRMS'), True)
         return True

@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import datetime
 import webbrowser
 import time
 
@@ -25,13 +24,11 @@ from PyQt5.QtGui import QTextCursor
 from skyfield.api import wgs84
 
 # local import
-from base import transform
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from gui.utilities.slewInterface import SlewInterface
 from gui.mainWmixin.tabMountSett import MountSett
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
-from mountcontrol.convert import formatLatToText, formatLonToText
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 from mountcontrol.convert import valueToFloat
 from mountcontrol.connection import Connection

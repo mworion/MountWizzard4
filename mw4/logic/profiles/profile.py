@@ -65,7 +65,7 @@ def convertKeyData(data):
         'checkJNow': 'coordsJNow',
         'checkKeepImages': 'keepModelImages',
         'checkRefracCont': 'refracCont',
-        'checkRefracNoTrack': 'refracNoTrack',
+        'checkRefracNoTrack': 'refracNoTrack',7
         'checkRefracNone': 'refracManual',
         'checkSafetyMarginHorizon': 'useSafetyMargin',
         'checkSortEW': 'sortEW',

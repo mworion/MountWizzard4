@@ -23,7 +23,6 @@ import time
 # external packages
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTransform
-from PyQt5.QtWidgets import QWidget
 from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import

@@ -30,7 +30,6 @@ import importlib_metadata
 from astropy.utils import iers, data
 import hid
 import webbrowser
-from PyQt5.QtWidgets import QWidget
 
 # local import
 from base.loggerMW import setCustomLoggingLevel

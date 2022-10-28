@@ -21,7 +21,6 @@ import os
 # external packages
 import pyqtgraph as pg
 from PyQt5.QtCore import pyqtSignal, QObject, Qt
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 from skyfield.api import Angle
 

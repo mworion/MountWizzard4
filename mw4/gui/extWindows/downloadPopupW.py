@@ -96,7 +96,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param dest:
         :return:
         """
-        r = requests.get(url, stream=True, timeout=1)
+        r = requests.get(url, stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get('content-length', 1))
         if r.text.startswith('<') or r.status_code != 200:
             return False

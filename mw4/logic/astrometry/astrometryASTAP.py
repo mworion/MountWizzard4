@@ -154,6 +154,8 @@ class AstrometryASTAP(object):
 
         tempString = ''
         for line in wcsTextFile:
+            if len(line) > 81:
+                continue
             if line.startswith('END'):
                 continue
             if line.startswith('COMMENT'):

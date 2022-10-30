@@ -22,6 +22,7 @@ import platform
 releaseNotes = """
 - fix: updates for supporting newer ASTAP versions
 - fix: model run will cancel if solving fails
+- fix: workaround ASTAP FITS outputs which are not readable via astropy 
  """
 
 with open('notes.txt', 'w') as f:
@@ -29,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.8a0',
+    version='2.2.8a1',
     packages=[
         'mw4',
         'mw4.base',

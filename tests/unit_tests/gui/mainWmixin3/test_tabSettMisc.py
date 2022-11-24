@@ -839,3 +839,8 @@ def test_setAddProfileGUI(function):
 def test_minimizeGUI(function):
     suc = function.minimizeGUI()
     assert suc
+
+
+def test_enableTabOrder(function):
+    suc = function.enableTabOrder()
+    assert suc

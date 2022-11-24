@@ -49,6 +49,41 @@ class SettMisc(object):
         self.process = None
         self.stopWindow = None
 
+        self.uiTabs = {
+            'Almanac': {
+                'cb': self.ui.showTabAlmanac,
+                'tab': self.ui.mainTabWidget
+            },
+            'Environ': {
+                'cb': self.ui.showTabEnviron,
+                'tab': self.ui.mainTabWidget
+            },
+            'Satellite': {
+                'cb': self.ui.showTabSatellite,
+                'tab': self.ui.mainTabWidget,
+            },
+            'MPC': {
+                'cb': self.ui.showTabMPC,
+                'tab': self.ui.mainTabWidget,
+            },
+            'Tools': {
+                'cb': self.ui.showTabTools,
+                'tab': self.ui.mainTabWidget,
+            },
+            'Dome': {
+                'cb': self.ui.showTabDome,
+                'tab': self.ui.settingsTabWidget,
+            },
+            'ParkPos': {
+                'cb': self.ui.showTabParkPos,
+                'tab': self.ui.settingsTabWidget,
+            },
+            'Profile': {
+                'cb': self.ui.showTabProfile,
+                'tab': self.ui.settingsTabWidget,
+            },
+        }
+
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
@@ -75,6 +110,7 @@ class SettMisc(object):
         self.ui.showTabDome.clicked.connect(self.minimizeGUI)
         self.ui.showTabParkPos.clicked.connect(self.minimizeGUI)
         self.ui.showTabProfile.clicked.connect(self.minimizeGUI)
+        self.ui.storeTabOrder.clicked.connect(self.enableTabOrder)
 
         if pConf.isAvailable:
             self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -141,6 +177,7 @@ class SettMisc(object):
         self.setupIERS()
         self.setAddProfileGUI()
         self.showUpdates()
+        self.enableTabOrder()
         return True
 
     def storeConfig(self):
@@ -674,42 +711,27 @@ class SettMisc(object):
         """
         :return:
         """
-        tabs = {
-            'Almanac': {
-                'cb': self.ui.showTabAlmanac,
-                'tab': self.ui.mainTabWidget
-            },
-            'Environ': {
-                'cb': self.ui.showTabEnviron,
-                'tab': self.ui.mainTabWidget
-            },
-            'Satellite': {
-                'cb': self.ui.showTabSatellite,
-                'tab': self.ui.mainTabWidget,
-            },
-            'MPC': {
-                'cb': self.ui.showTabMPC,
-                'tab': self.ui.mainTabWidget,
-            },
-            'Tools': {
-                'cb': self.ui.showTabTools,
-                'tab': self.ui.mainTabWidget,
-            },
-            'Dome': {
-                'cb': self.ui.showTabDome,
-                'tab': self.ui.settingsTabWidget,
-            },
-            'ParkPos': {
-                'cb': self.ui.showTabParkPos,
-                'tab': self.ui.settingsTabWidget,
-            },
-            'Profile': {
-                'cb': self.ui.showTabProfile,
-                'tab': self.ui.settingsTabWidget,
-            },
-        }
+        for tab in self.uiTabs:
+            isVisible = self.uiTabs[tab]['cb'].isChecked()
+            tabIndex = self.getTabIndex(self.uiTabs[tab]['tab'], tab)
+            self.uiTabs[tab]['tab'].setTabVisible(tabIndex, isVisible)
+        return True
+
+    def enableTabOrder(self):
+        """
+        :return:
+        """
+        tabs = [
+            self.ui.mainTabWidget,
+            self.ui.mountTabWidget,
+            self.ui.modelingTabWidget,
+            self.ui.imagingTabWidget,
+            self.ui.satTabWidget,
+            self.ui.toolsTabWidget,
+            self.ui.settingsTabWidget,
+            self.ui.manageTabWidget,
+        ]
+        isEnabled = self.ui.storeTabOrder.isChecked()
         for tab in tabs:
-            isVisible = tabs[tab]['cb'].isChecked()
-            tabIndex = self.getTabIndex(tabs[tab]['tab'], tab)
-            tabs[tab]['tab'].setTabVisible(tabIndex, isVisible)
+            tab.setMovable(isEnabled)
         return True

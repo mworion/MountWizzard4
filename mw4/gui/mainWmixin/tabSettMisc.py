@@ -430,8 +430,9 @@ class SettMisc(object):
         packageName = 'mountwizzard4'
         actPackage = importlib_metadata.version(packageName)
         self.ui.versionActual.setText(actPackage)
+        isOnline = self.ui.isOnline.isChecked()
 
-        if not self.ui.isOnline.isChecked():
+        if not isOnline:
             self.ui.versionAvailable.setText('disabled')
             self.ui.installVersion.setEnabled(False)
             return False
@@ -483,7 +484,7 @@ class SettMisc(object):
         self.log.debug(f'VENV status: [{status}]')
         return status
 
-    def checkUpdateVersion(self, versionPackage):
+    def checkNewQt5LibNeeded(self, versionPackage):
         """
         :return:
         """
@@ -517,10 +518,10 @@ class SettMisc(object):
             updaterScript = "\"" + updaterScript + "\""
             pythonRuntime = "\"" + pythonPath + "\""
 
-        uType = self.checkUpdateVersion(versionPackage)
-        if uType is None:
+        needNewQt5Lib = self.checkNewQt5LibNeeded(versionPackage)
+        if needNewQt5Lib is None:
             return False
-        elif uType:
+        elif needNewQt5Lib:
             updateType = 'GUI'
         else:
             updateType = 'CLI'

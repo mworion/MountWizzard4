@@ -232,6 +232,8 @@ class MainWindow(
         self.showExtendedWindows()
         self.activateWindow()
 
+        self.ui.storeTabOrder.clicked.connect(self.enableMovableTab)
+
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateThreadAndOnlineStatus)
@@ -241,6 +243,21 @@ class MainWindow(
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
+
+    def enableMovableTab(self):
+        """
+        :return: True for test purpose
+        """
+        config = self.app.config['mainW']
+        self.setTabAndIndex(self.ui.mainTabWidget, config, 'tabMain')
+        self.setTabAndIndex(self.ui.mountTabWidget, config, 'tabMount')
+        self.setTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging')
+        self.setTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling')
+        self.setTabAndIndex(self.ui.manageTabWidget, config, 'tabManage')
+        self.setTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings')
+        self.setTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools')
+        self.setTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite')
+        return True
 
     def initConfig(self):
         """
@@ -258,15 +275,8 @@ class MainWindow(
         config = config['mainW']
 
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.mainTabWidget, config, 'tabMain')
-        self.setTabAndIndex(self.ui.mountTabWidget, config, 'tabMount')
-        self.setTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging')
-        self.setTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling')
-        self.setTabAndIndex(self.ui.manageTabWidget, config, 'tabManage')
-        self.setTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings')
-        self.setTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools')
-        self.setTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite')
         self.mwSuper('initConfig')
+        self.enableMovableTab()
         self.smartTabGui()
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()

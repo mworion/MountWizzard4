@@ -110,7 +110,6 @@ class SettMisc(object):
         self.ui.showTabDome.clicked.connect(self.minimizeGUI)
         self.ui.showTabParkPos.clicked.connect(self.minimizeGUI)
         self.ui.showTabProfile.clicked.connect(self.minimizeGUI)
-        self.ui.storeTabOrder.clicked.connect(self.enableTabOrder)
 
         if pConf.isAvailable:
             self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -177,7 +176,6 @@ class SettMisc(object):
         self.setupIERS()
         self.setAddProfileGUI()
         self.showUpdates()
-        self.enableTabOrder()
         return True
 
     def storeConfig(self):
@@ -715,23 +713,4 @@ class SettMisc(object):
             isVisible = self.uiTabs[tab]['cb'].isChecked()
             tabIndex = self.getTabIndex(self.uiTabs[tab]['tab'], tab)
             self.uiTabs[tab]['tab'].setTabVisible(tabIndex, isVisible)
-        return True
-
-    def enableTabOrder(self):
-        """
-        :return:
-        """
-        tabs = [
-            self.ui.mainTabWidget,
-            self.ui.mountTabWidget,
-            self.ui.modelingTabWidget,
-            self.ui.imagingTabWidget,
-            self.ui.satTabWidget,
-            self.ui.toolsTabWidget,
-            self.ui.settingsTabWidget,
-            self.ui.manageTabWidget,
-        ]
-        isEnabled = self.ui.storeTabOrder.isChecked()
-        for tab in tabs:
-            tab.setMovable(isEnabled)
         return True

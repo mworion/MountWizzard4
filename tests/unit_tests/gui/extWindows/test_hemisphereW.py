@@ -101,6 +101,11 @@ def test_storeConfig_1(function):
         assert suc
 
 
+def test_enableTabsMovable(function):
+    suc = function.enableTabsMovable()
+    assert suc
+
+
 def test_closeEvent_1(function):
     with mock.patch.object(function,
                            'drawHemisphereTab'):

@@ -158,7 +158,7 @@ class Ui_ImageDialog(object):
         self.tabImage = QtWidgets.QTabWidget(ImageDialog)
         self.tabImage.setMinimumSize(QtCore.QSize(140, 0))
         self.tabImage.setElideMode(QtCore.Qt.ElideNone)
-        self.tabImage.setMovable(True)
+        self.tabImage.setMovable(False)
         self.tabImage.setObjectName("tabImage")
         self.Image = QtWidgets.QWidget()
         self.Image.setObjectName("Image")

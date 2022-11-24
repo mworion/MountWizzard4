@@ -578,7 +578,7 @@ class Ui_AnalyseDialog(object):
         self.gridLayout_9.addWidget(self.groupBox_5, 0, 0, 1, 1)
         self.tabWidget = QtWidgets.QTabWidget(AnalyseDialog)
         self.tabWidget.setMinimumSize(QtCore.QSize(0, 200))
-        self.tabWidget.setMovable(True)
+        self.tabWidget.setMovable(False)
         self.tabWidget.setObjectName("tabWidget")
         self.General = QtWidgets.QWidget()
         self.General.setObjectName("General")

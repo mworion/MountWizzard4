@@ -142,6 +142,11 @@ def test_closeEvent_1(function):
                     function.closeEvent(QCloseEvent())
 
 
+def test_enableTabsMovable(function):
+    suc = function.enableTabsMovable()
+    assert suc
+
+
 def test_quitSave_1(function):
     function.ui.profile.setText('test')
     with mock.patch.object(function,

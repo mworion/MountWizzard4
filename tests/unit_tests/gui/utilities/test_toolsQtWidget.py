@@ -905,15 +905,6 @@ def test_getTabAndIndex_1(function):
     assert not suc
 
 
-def test_getTabAndIndex_2(function):
-    widget = QTabWidget()
-    widget.addTab(QWidget(), 'test')
-    widget.addTab(QWidget(), 'tes1')
-    config = {}
-    suc = function.getTabAndIndex(widget, config, 'test', store=True)
-    assert suc
-
-
 def test_setTabAndIndex_1(function):
     widget = QTabWidget()
     config = {'test': 0}

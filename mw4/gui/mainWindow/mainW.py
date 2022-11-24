@@ -232,7 +232,7 @@ class MainWindow(
         self.showExtendedWindows()
         self.activateWindow()
 
-        self.ui.storeTabOrder.clicked.connect(self.enableMovableTab)
+        self.ui.tabsMovable.toggled.connect(self.enableTabsMovable)
 
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
@@ -243,21 +243,6 @@ class MainWindow(
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
-
-    def enableMovableTab(self):
-        """
-        :return: True for test purpose
-        """
-        config = self.app.config['mainW']
-        self.setTabAndIndex(self.ui.mainTabWidget, config, 'tabMain')
-        self.setTabAndIndex(self.ui.mountTabWidget, config, 'tabMount')
-        self.setTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging')
-        self.setTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling')
-        self.setTabAndIndex(self.ui.manageTabWidget, config, 'tabManage')
-        self.setTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings')
-        self.setTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools')
-        self.setTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite')
-        return True
 
     def initConfig(self):
         """
@@ -276,7 +261,14 @@ class MainWindow(
 
         self.positionWindow(config)
         self.mwSuper('initConfig')
-        self.enableMovableTab()
+        self.setTabAndIndex(self.ui.mainTabWidget, config, 'tabMain')
+        self.setTabAndIndex(self.ui.mountTabWidget, config, 'tabMount')
+        self.setTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging')
+        self.setTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling')
+        self.setTabAndIndex(self.ui.manageTabWidget, config, 'tabManage')
+        self.setTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings')
+        self.setTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools')
+        self.setTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite')
         self.smartTabGui()
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
@@ -310,17 +302,31 @@ class MainWindow(
 
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
-        store = self.ui.storeTabOrder.isChecked()
-        self.getTabAndIndex(self.ui.mainTabWidget, config, 'tabMain', store)
-        self.getTabAndIndex(self.ui.mountTabWidget, config, 'tabMount', store)
-        self.getTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging', store)
-        self.getTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling', store)
-        self.getTabAndIndex(self.ui.manageTabWidget, config, 'tabManage', store)
-        self.getTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings', store)
-        self.getTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools', store)
-        self.getTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite', store)
+        self.getTabAndIndex(self.ui.mainTabWidget, config, 'tabMain')
+        self.getTabAndIndex(self.ui.mountTabWidget, config, 'tabMount')
+        self.getTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging')
+        self.getTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling')
+        self.getTabAndIndex(self.ui.manageTabWidget, config, 'tabManage')
+        self.getTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings')
+        self.getTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools')
+        self.getTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite')
         self.mwSuper('storeConfig')
         self.storeConfigExtendedWindows()
+        return True
+
+    def enableTabsMovable(self):
+        """
+        :return: True for test purpose
+        """
+        isMovable = self.ui.tabsMovable.isChecked()
+        self.ui.mainTabWidget.setMovable(isMovable)
+        self.ui.mountTabWidget.setMovable(isMovable)
+        self.ui.imagingTabWidget.setMovable(isMovable)
+        self.ui.modelingTabWidget.setMovable(isMovable)
+        self.ui.manageTabWidget.setMovable(isMovable)
+        self.ui.settingsTabWidget.setMovable(isMovable)
+        self.ui.toolsTabWidget.setMovable(isMovable)
+        self.ui.satTabWidget.setMovable(isMovable)
         return True
 
     def closeEvent(self, closeEvent):

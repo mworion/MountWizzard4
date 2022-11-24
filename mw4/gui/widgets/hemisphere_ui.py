@@ -223,7 +223,7 @@ class Ui_HemisphereDialog(object):
         self.verticalLayout.addItem(spacerItem1)
         self.tabWidget = QtWidgets.QTabWidget(HemisphereDialog)
         self.tabWidget.setElideMode(QtCore.Qt.ElideNone)
-        self.tabWidget.setMovable(True)
+        self.tabWidget.setMovable(False)
         self.tabWidget.setObjectName("tabWidget")
         self.HemisphereTab = QtWidgets.QWidget()
         self.HemisphereTab.setObjectName("HemisphereTab")

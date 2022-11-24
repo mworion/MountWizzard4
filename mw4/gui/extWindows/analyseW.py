@@ -88,6 +88,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.showHorizon.setChecked(config.get('showHorizon', False))
         self.ui.showISO.setChecked(config.get('showISO', False))
         self.ui.linkViews.setChecked(config.get('linkViews', False))
+        self.app.mainW.ui.tabsMovable.toggled.connect(self.enableTabsMovable)
         return True
 
     def storeConfig(self):
@@ -105,11 +106,18 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        store = self.app.mainW.ui.storeTabOrder.isChecked()
-        self.getTabAndIndex(self.ui.tabWidget, config, 'tabMain', store)
+        self.getTabAndIndex(self.ui.tabWidget, config, 'tabMain')
         config['showHorizon'] = self.ui.showHorizon.isChecked()
         config['showISO'] = self.ui.showISO.isChecked()
         config['linkViews'] = self.ui.linkViews.isChecked()
+        return True
+
+    def enableTabsMovable(self):
+        """
+        :return: True for test purpose
+        """
+        isMovable = self.app.mainW.ui.tabsMovable.isChecked()
+        self.ui.tabWidget.setMovable(isMovable)
         return True
 
     def closeEvent(self, closeEvent):

@@ -113,7 +113,7 @@
     <bool>false</bool>
    </property>
    <property name="movable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="tabBarAutoHide">
     <bool>false</bool>
@@ -138,7 +138,7 @@
       <enum>Qt::ElideNone</enum>
      </property>
      <property name="movable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <widget class="QWidget" name="SettingsMount">
       <attribute name="title">
@@ -7749,7 +7749,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <enum>Qt::ElideNone</enum>
      </property>
      <property name="movable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <widget class="QWidget" name="GenerateBuildPoints">
       <attribute name="title">
@@ -10801,7 +10801,7 @@ hr { height: 1px; border-width: 0; }
         <enum>Qt::ElideNone</enum>
        </property>
        <property name="movable">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <widget class="QWidget" name="ModelPositions">
         <attribute name="title">
@@ -11427,7 +11427,7 @@ hr { height: 1px; border-width: 0; }
       <enum>Qt::ElideNone</enum>
      </property>
      <property name="movable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <widget class="QWidget" name="ManageImaging">
       <attribute name="title">
@@ -17211,7 +17211,7 @@ When clicking the button, you could change the value.</string>
       <enum>Qt::ElideNone</enum>
      </property>
      <property name="movable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <widget class="QWidget" name="Searching">
       <attribute name="title">
@@ -19661,7 +19661,7 @@ Next point in time when satellite settles.</string>
       <enum>Qt::ElideNone</enum>
      </property>
      <property name="movable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <widget class="QWidget" name="timeTables">
       <attribute name="title">
@@ -22556,7 +22556,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -22565,7 +22565,7 @@ Next point in time when satellite settles.</string>
       <bool>true</bool>
      </property>
      <property name="movable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <widget class="QWidget" name="Devices">
       <attribute name="title">
@@ -30076,7 +30076,7 @@ hr { height: 1px; border-width: 0; }
          <string>Collect Windows</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="storeTabOrder">
+       <widget class="QCheckBox" name="tabsMovable">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -30099,7 +30099,7 @@ hr { height: 1px; border-width: 0; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will store custom made order of tabs in menue. If not checked, they will return to default order next start.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Store tab orders</string>
+         <string>Tabs movable</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -30116,6 +30116,19 @@ hr { height: 1px; border-width: 0; }
         </property>
         <property name="text">
          <string>Show big buttons</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="resetTabOrder">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>85</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Reset Tab Order</string>
         </property>
        </widget>
       </widget>
@@ -32454,7 +32467,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posSave9</tabstop>
   <tabstop>colorSet</tabstop>
   <tabstop>collectWindows</tabstop>
-  <tabstop>storeTabOrder</tabstop>
+  <tabstop>tabsMovable</tabstop>
   <tabstop>almanacPrediction</tabstop>
   <tabstop>unitTimeUTC</tabstop>
   <tabstop>unitTimeLocal</tabstop>

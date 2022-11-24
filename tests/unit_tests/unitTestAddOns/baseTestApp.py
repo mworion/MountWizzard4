@@ -1112,7 +1112,7 @@ class MainW:
             def setChecked(self, value):
                 self.checked = value
 
-        storeTabOrder = CheckBox()
+        tabsMovable = CheckBox()
     ui = Test()
 
 

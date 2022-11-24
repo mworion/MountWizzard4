@@ -113,6 +113,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.showValues.setChecked(config.get('showValues', False))
         self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
         self.ui.timeTagImage.setChecked(config.get('timeTagImage', True))
+        self.app.mainW.ui.tabsMovable.toggled.connect(self.enableTabsMovable)
+
         self.setCrosshair()
         return True
 
@@ -131,8 +133,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        store = self.app.mainW.ui.storeTabOrder.isChecked()
-        self.getTabAndIndex(self.ui.tabImage, config, 'tabMain', store)
+        self.getTabAndIndex(self.ui.tabImage, config, 'tabMain')
         config['color'] = self.ui.color.currentIndex()
         config['snTarget'] = self.ui.snTarget.currentIndex()
         config['tabImage'] = self.ui.tabImage.currentIndex()
@@ -148,6 +149,14 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         config['showValues'] = self.ui.showValues.isChecked()
         config['offsetTiltAngle'] = self.ui.offsetTiltAngle.value()
         config['timeTagImage'] = self.ui.timeTagImage.isChecked()
+        return True
+
+    def enableTabsMovable(self):
+        """
+        :return: True for test purpose
+        """
+        isMovable = self.app.mainW.ui.tabsMovable.isChecked()
+        self.ui.tabImage.setMovable(isMovable)
         return True
 
     def showWindow(self):

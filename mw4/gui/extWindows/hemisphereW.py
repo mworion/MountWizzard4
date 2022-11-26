@@ -89,7 +89,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.ui.showTerrain.setChecked(config.get('showTerrain', False))
         self.ui.showIsoModel.setChecked(config.get('showIsoModel', False))
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
-        self.app.mainW.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
+        self.app.tabsMovable.connect(self.enableTabsMovable)
 
         self.mwSuper('initConfig')
         return True
@@ -122,11 +122,11 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.mwSuper('storeConfig')
         return True
 
-    def enableTabsMovable(self):
+    def enableTabsMovable(self, isMovable):
         """
-        :return: True for test purpose
+        :param isMovable:
+        :return:
         """
-        isMovable = self.app.mainW.ui.tabsMovable.isChecked()
         self.ui.tabWidget.setMovable(isMovable)
         return True
 

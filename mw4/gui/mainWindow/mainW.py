@@ -233,7 +233,6 @@ class MainWindow(
         self.activateWindow()
 
         self.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
-
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateThreadAndOnlineStatus)
@@ -327,6 +326,7 @@ class MainWindow(
         self.ui.settingsTabWidget.setMovable(isMovable)
         self.ui.toolsTabWidget.setMovable(isMovable)
         self.ui.satTabWidget.setMovable(isMovable)
+        self.app.tabsMovable.emit(isMovable)
         return True
 
     def closeEvent(self, closeEvent):

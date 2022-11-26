@@ -88,7 +88,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.showHorizon.setChecked(config.get('showHorizon', False))
         self.ui.showISO.setChecked(config.get('showISO', False))
         self.ui.linkViews.setChecked(config.get('linkViews', False))
-        self.app.mainW.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
+        self.app.tabsMovable.connect(self.enableTabsMovable)
         return True
 
     def storeConfig(self):
@@ -112,11 +112,11 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['linkViews'] = self.ui.linkViews.isChecked()
         return True
 
-    def enableTabsMovable(self):
+    def enableTabsMovable(self, isMovable):
         """
-        :return: True for test purpose
+        :param isMovable:
+        :return:
         """
-        isMovable = self.app.mainW.ui.tabsMovable.isChecked()
         self.ui.tabWidget.setMovable(isMovable)
         return True
 

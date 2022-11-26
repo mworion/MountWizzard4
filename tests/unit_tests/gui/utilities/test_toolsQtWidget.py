@@ -896,15 +896,6 @@ def test_getTabIndex(function):
     assert index == 1
 
 
-def test_getTabAndIndex_1(function):
-    widget = QTabWidget()
-    widget.addTab(QWidget(), 'test')
-    widget.addTab(QWidget(), 'tes1')
-    config = {}
-    suc = function.getTabAndIndex(widget, config, 'test')
-    assert not suc
-
-
 def test_setTabAndIndex_1(function):
     widget = QTabWidget()
     config = {'test': 0}

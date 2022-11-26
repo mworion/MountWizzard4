@@ -88,7 +88,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         self.ui.showHorizon.setChecked(config.get('showHorizon', False))
         self.ui.showISO.setChecked(config.get('showISO', False))
         self.ui.linkViews.setChecked(config.get('linkViews', False))
-        self.app.mainW.ui.tabsMovable.toggled.connect(self.enableTabsMovable)
+        self.app.mainW.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
         return True
 
     def storeConfig(self):

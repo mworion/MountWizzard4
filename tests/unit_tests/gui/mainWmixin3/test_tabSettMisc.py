@@ -581,19 +581,6 @@ def test_isVenv_1(function):
     function.isVenv()
 
 
-def test_startUpdater_1(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(os,
-                               'execl'):
-            with mock.patch.object(function,
-                                   'checkUpdateVersion',
-                                   return_value=None):
-                suc = function.startUpdater('1.2.3')
-                assert not suc
-
-
 def test_checkNewQt5LibNeeded_0(function):
     with mock.patch.object(platform,
                            'system',
@@ -657,6 +644,19 @@ def test_checkNewQt5LibNeeded_3(function):
                 assert not suc
 
 
+def test_startUpdater_1(function):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(os,
+                               'execl'):
+            with mock.patch.object(function,
+                                   'checkNewQt5LibNeeded',
+                                   return_value=None):
+                suc = function.startUpdater('1.2.3')
+                assert not suc
+
+
 def test_startUpdater_2(function):
     with mock.patch.object(platform,
                            'system',
@@ -664,7 +664,7 @@ def test_startUpdater_2(function):
         with mock.patch.object(os,
                                'execl'):
             with mock.patch.object(function,
-                                   'checkUpdateVersion',
+                                   'checkNewQt5LibNeeded',
                                    return_value=True):
                 suc = function.startUpdater('1.2.3')
                 assert suc
@@ -677,7 +677,7 @@ def test_startUpdater_3(function):
         with mock.patch.object(os,
                                'execl'):
             with mock.patch.object(function,
-                                   'checkUpdateVersion',
+                                   'checkNewQt5LibNeeded',
                                    return_value=False):
                 suc = function.startUpdater('1.2.3')
                 assert suc

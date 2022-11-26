@@ -232,7 +232,7 @@ class MainWindow(
         self.showExtendedWindows()
         self.activateWindow()
 
-        self.ui.tabsMovable.toggled.connect(self.enableTabsMovable)
+        self.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
 
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)

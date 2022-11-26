@@ -102,7 +102,7 @@ def test_storeConfig_1(function):
 
 
 def test_enableTabsMovable(function):
-    suc = function.enableTabsMovable()
+    suc = function.enableTabsMovable(True)
     assert suc
 
 

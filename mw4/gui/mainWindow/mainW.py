@@ -217,8 +217,8 @@ class MainWindow(
         self.app.dome.signals.message.connect(self.updateDomeStatus)
         self.app.camera.signals.message.connect(self.updateCameraStatus)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
-        self.ui.loadFrom.clicked.connect(self.loadProfile)
-        self.ui.addFrom.clicked.connect(self.addProfile)
+        self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
+        self.ui.addFrom.clicked.connect(self.addProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveConfigAs)
         self.ui.saveConfig.clicked.connect(self.saveConfig)
         self.app.seeingWeather.b = self.ui.label_b.property('a')
@@ -260,14 +260,14 @@ class MainWindow(
 
         self.positionWindow(config)
         self.mwSuper('initConfig')
-        self.setTabAndIndex(self.ui.mainTabWidget, config, 'tabMain')
-        self.setTabAndIndex(self.ui.mountTabWidget, config, 'tabMount')
-        self.setTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging')
-        self.setTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling')
-        self.setTabAndIndex(self.ui.manageTabWidget, config, 'tabManage')
-        self.setTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings')
-        self.setTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools')
-        self.setTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite')
+        self.setTabAndIndex(self.ui.mainTabWidget, config, 'orderMain')
+        self.setTabAndIndex(self.ui.mountTabWidget, config, 'orderMount')
+        self.setTabAndIndex(self.ui.imagingTabWidget, config, 'orderImaging')
+        self.setTabAndIndex(self.ui.modelingTabWidget, config, 'orderModeling')
+        self.setTabAndIndex(self.ui.manageTabWidget, config, 'orderManage')
+        self.setTabAndIndex(self.ui.settingsTabWidget, config, 'orderSettings')
+        self.setTabAndIndex(self.ui.toolsTabWidget, config, 'orderTools')
+        self.setTabAndIndex(self.ui.satTabWidget, config, 'orderSatellite')
         self.smartTabGui()
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
@@ -301,14 +301,14 @@ class MainWindow(
 
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
-        self.getTabAndIndex(self.ui.mainTabWidget, config, 'tabMain')
-        self.getTabAndIndex(self.ui.mountTabWidget, config, 'tabMount')
-        self.getTabAndIndex(self.ui.imagingTabWidget, config, 'tabImaging')
-        self.getTabAndIndex(self.ui.modelingTabWidget, config, 'tabModeling')
-        self.getTabAndIndex(self.ui.manageTabWidget, config, 'tabManage')
-        self.getTabAndIndex(self.ui.settingsTabWidget, config, 'tabSettings')
-        self.getTabAndIndex(self.ui.toolsTabWidget, config, 'tabTools')
-        self.getTabAndIndex(self.ui.satTabWidget, config, 'tabSatellite')
+        self.getTabAndIndex(self.ui.mainTabWidget, config, 'orderMain')
+        self.getTabAndIndex(self.ui.mountTabWidget, config, 'orderMount')
+        self.getTabAndIndex(self.ui.imagingTabWidget, config, 'orderImaging')
+        self.getTabAndIndex(self.ui.modelingTabWidget, config, 'orderModeling')
+        self.getTabAndIndex(self.ui.manageTabWidget, config, 'orderManage')
+        self.getTabAndIndex(self.ui.settingsTabWidget, config, 'orderSettings')
+        self.getTabAndIndex(self.ui.toolsTabWidget, config, 'orderTools')
+        self.getTabAndIndex(self.ui.satTabWidget, config, 'orderSatellite')
         self.mwSuper('storeConfig')
         self.storeConfigExtendedWindows()
         return True
@@ -947,7 +947,7 @@ class MainWindow(
         self.showExtendedWindows()
         return True
 
-    def loadProfile(self):
+    def loadProfileGUI(self):
         """
         :return:
         """
@@ -970,7 +970,7 @@ class MainWindow(
         self.switchProfile(config)
         return True
 
-    def addProfile(self):
+    def addProfileGUI(self):
         """
         :return:
         """

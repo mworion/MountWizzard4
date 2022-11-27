@@ -110,8 +110,8 @@ def convertProfileData(data):
         'appPath': '',
         'indexPath': '',
     }
+    d = NestedDict(data)
     try:
-        d = NestedDict(data)
         d['driversData'] = d['mainW', 'driversData']
         del d['mainW']['driversData']
         d['driversData', 'plateSolve'] = d['driversData', 'astrometry']
@@ -125,9 +125,10 @@ def convertProfileData(data):
         d['driversData', 'directWeather', 'frameworks', 'directWeather',
           'deviceName'] = 'On Mount'
         d['version'] = profileVersion
-        data = d.to_dict()
     except Exception as e:
         log.error('Failed conversion, keep old structure')
+    else:
+        data = d.to_dict()
     return data
 
 
@@ -151,6 +152,22 @@ def defaultConfig(config=None):
     config['profileName'] = 'config'
     config['version'] = profileVersion
     return config
+
+
+def checkResetTabOrder(profile):
+    """
+    :param profile:
+    :return:
+    """
+    newDict = {}
+    for key in profile.keys():
+        if key.startswith('order'):
+            continue
+        if isinstance(profile[key], dict):
+            newDict[key] = checkResetTabOrder(profile[key])
+        else:
+            newDict[key] = profile[key]
+    return newDict
 
 
 def loadProfile(configDir=None, name=None):
@@ -179,9 +196,14 @@ def loadProfile(configDir=None, name=None):
     except Exception as e:
         log.critical(f'Cannot parse: {fileName}, error: {e}')
         return defaultConfig()
-    else:
-        configData['profileName'] = name
-        return convertProfileData(configData)
+
+    configData['profileName'] = name
+    profile = convertProfileData(configData)
+    resetOrder = profile['mainW'].get('resetTabOrder', False)
+    if resetOrder:
+        log.info('Resetting tab order upon start')
+        profile = checkResetTabOrder(profile)
+    return profile
 
 
 def saveProfile(configDir=None, name=None, config=None):

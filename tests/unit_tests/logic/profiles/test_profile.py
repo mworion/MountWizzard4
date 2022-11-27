@@ -27,7 +27,7 @@ import unittest.mock as mock
 # local import
 from logic.profiles.profile import convertProfileData, blendProfile, defaultConfig
 from logic.profiles.profile import loadProfile, saveProfile
-from logic.profiles.profile import convertKeyData, replaceKeys
+from logic.profiles.profile import convertKeyData, replaceKeys, checkResetTabOrder
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -133,12 +133,30 @@ def test_defaultConfig():
     assert val['version'] == '4.1'
 
 
-def test_loadConfig_1():
+def test_checkResetTabOrder_1():
+    test = {
+        'order': {},
+    }
+    val = checkResetTabOrder(test)
+    assert val == {}
+
+
+def test_checkResetTabOrder_2():
+    test = {
+        'test': {
+            'order': {},
+        },
+    }
+    val = checkResetTabOrder(test)
+    assert val == {'test': {}}
+
+
+def test_loadProfile_1():
     val = loadProfile(configDir='tests/workDir/config')
     assert val == {'profileName': 'config', 'version': '4.1'}
 
 
-def test_loadConfig_2():
+def test_loadProfile_2():
     with open('tests/workDir/config/profile', 'w') as outfile:
         outfile.write('config')
 
@@ -150,7 +168,7 @@ def test_loadConfig_2():
     assert val == {'profileName': 'config', 'version': '4.1'}
 
 
-def test_loadConfig_3():
+def test_loadProfile_3():
     with open('tests/workDir/config/profile', 'w') as outfile:
         outfile.write('config')
 
@@ -158,7 +176,7 @@ def test_loadConfig_3():
     assert val == {'profileName': 'config', 'version': '4.1'}
 
 
-def test_loadConfig_4():
+def test_loadProfile_4():
     with open('tests/workDir/config/profile', 'w') as outfile:
         outfile.write('config')
     config = defaultConfig()
@@ -173,7 +191,25 @@ def test_loadConfig_4():
         assert val == {'profileName': 'config', 'version': '4.1'}
 
 
-def test_saveConfig_1():
+def test_loadProfile_5():
+    with open('tests/workDir/config/profile', 'w') as outfile:
+        outfile.write('config')
+    config = defaultConfig()
+    config['mainW'] = {}
+    config['mainW']['resetTabOrder'] = True
+    config['mainW']['orderMain'] = {
+        '00': 'Environ',
+        'index': 0,
+    }
+
+    with open('tests/workDir/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    val = loadProfile(configDir='tests/workDir/config', name='config')
+    assert 'oderMain' not in list(val['mainW'].keys())
+
+
+def test_saveProfile_1():
     config = {'profileName': 'config'}
 
     suc = saveProfile(configDir='tests/workDir/config', config=config)
@@ -185,7 +221,7 @@ def test_saveConfig_1():
     assert name == 'config'
 
 
-def test_saveConfig_2():
+def test_saveProfile_2():
     config = {'profileName': 'config'}
 
     suc = saveProfile(configDir='tests/workDir/config', config=config, name='config')
@@ -197,7 +233,7 @@ def test_saveConfig_2():
     assert name == 'config'
 
 
-def test_saveConfig_3():
+def test_saveProfile_3():
     config = {'profileName': 'new'}
 
     suc = saveProfile(configDir='tests/workDir/config', config=config, name='new')
@@ -209,7 +245,7 @@ def test_saveConfig_3():
     assert name == 'new'
 
 
-def test_saveConfig_4():
+def test_saveProfile_4():
     config = {'profileName': 'new'}
 
     suc = saveProfile(configDir='tests/workDir/config', config=config)
@@ -221,7 +257,7 @@ def test_saveConfig_4():
     assert name == 'new'
     
 
-def test_saveConfig_5():
+def test_saveProfile_5():
     suc = saveProfile(configDir='tests/workDir/config')
     assert suc
     assert os.path.isfile('tests/workDir/config/config.cfg')

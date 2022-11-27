@@ -84,7 +84,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config = self.app.config['analyseW']
 
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.tabWidget, config, 'tabMain')
+        self.setTabAndIndex(self.ui.tabWidget, config, 'orderMain')
         self.ui.showHorizon.setChecked(config.get('showHorizon', False))
         self.ui.showISO.setChecked(config.get('showISO', False))
         self.ui.linkViews.setChecked(config.get('linkViews', False))
@@ -106,7 +106,7 @@ class AnalyseWindow(toolsQtWidget.MWidget):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        self.getTabAndIndex(self.ui.tabWidget, config, 'tabMain')
+        self.getTabAndIndex(self.ui.tabWidget, config, 'orderMain')
         config['showHorizon'] = self.ui.showHorizon.isChecked()
         config['showISO'] = self.ui.showISO.isChecked()
         config['linkViews'] = self.ui.linkViews.isChecked()

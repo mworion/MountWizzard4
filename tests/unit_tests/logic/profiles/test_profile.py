@@ -161,11 +161,12 @@ def test_loadProfile_2():
         outfile.write('config')
 
     config = defaultConfig()
+    config['mainW'] = {}
     with open('tests/workDir/config/config.cfg', 'w') as outfile:
         json.dump(config, outfile)
 
     val = loadProfile(configDir='tests/workDir/config')
-    assert val == {'profileName': 'config', 'version': '4.1'}
+    assert val == {'profileName': 'config', 'version': '4.1', 'mainW': {}}
 
 
 def test_loadProfile_3():

@@ -113,7 +113,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.showValues.setChecked(config.get('showValues', False))
         self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
         self.ui.timeTagImage.setChecked(config.get('timeTagImage', True))
-
+        isMovable = self.app.config['mainW'].get('tabsMovable', False)
+        self.enableTabsMovable(isMovable)
         self.setCrosshair()
         return True
 

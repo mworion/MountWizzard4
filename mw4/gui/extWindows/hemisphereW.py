@@ -89,7 +89,8 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.ui.showTerrain.setChecked(config.get('showTerrain', False))
         self.ui.showIsoModel.setChecked(config.get('showIsoModel', False))
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
-        self.app.tabsMovable.connect(self.enableTabsMovable)
+        isMovable = self.app.config['mainW'].get('tabsMovable', False)
+        self.enableTabsMovable(isMovable)
 
         self.mwSuper('initConfig')
         return True
@@ -160,6 +161,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
         self.app.mount.signals.alignDone.connect(self.drawHemisphereTab)
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
+        self.app.tabsMovable.connect(self.enableTabsMovable)
         self.ui.showSlewPath.clicked.connect(self.drawHemisphereTab)
         self.ui.showHorizon.clicked.connect(self.drawHemisphereTab)
         self.ui.showAlignStar.clicked.connect(self.drawHemisphereTab)

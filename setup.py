@@ -135,10 +135,10 @@ setup(
     ],
     python_requires='>=3.8.0, <3.11',
     install_requires=[
-        'numpy==1.23.4',
+        'numpy==1.23.5',
         'opencv-python-headless==4.6.0.66',
-        'scipy==1.9.2',
-        'astropy==5.1',
+        'scipy==1.9.3',
+        'astropy==5.1.1',
         'pyerfa==2.0.0.1',
         'astroquery==0.4.6',
         'sep==1.2.1',

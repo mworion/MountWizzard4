@@ -157,7 +157,7 @@ setup(
         'hidapi==0.12.0.post2',
         'range-key-dict==1.1.0',
         'ndicts==0.1.0',
-        'packaging==22.3.1',
+        'packaging==22.0',
         'lz4==4.0.2',
         'xisf==0.9.0',
     ]

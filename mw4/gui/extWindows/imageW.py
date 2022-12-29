@@ -453,6 +453,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.clearGui()
         if not imagePath:
             return False
+        imagePath = os.path.normpath(imagePath)
         if not os.path.isfile(imagePath):
             return False
 

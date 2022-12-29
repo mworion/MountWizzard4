@@ -128,6 +128,7 @@ class EditHorizon:
         """
         self.ui.terrainFileName.setText(fileName)
         terrainFile = self.app.mwGlob['configDir'] + '/' + fileName + '.jpg'
+        terrainFile = os.path.normpath(terrainFile)
         if not os.path.isfile(terrainFile):
             self.imageTerrain = None
             return False

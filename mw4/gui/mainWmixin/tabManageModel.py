@@ -170,7 +170,8 @@ class ManageModel:
             mountModel[star.number] = {'ha': star.coord.ra.hours,
                                        'dec': star.coord.dec.degrees}
 
-        modelFileList = glob.glob(self.app.mwGlob['modelDir'] + '/*.model')
+        searchPath = os.path.isfile(self.app.mwGlob['modelDir'] + '/*.model')
+        modelFileList = glob.glob(searchPath)
 
         for modelFilePath in modelFileList:
             if 'opt' in modelFilePath:
@@ -613,7 +614,7 @@ class ManageModel:
             return False
 
         temp = os.path.splitext(self.fittedModelPath)
-        actualPath = temp[0] + '-opt' + temp[1]
+        actualPath = os.path.normpath(temp[0] + '-opt' + temp[1])
         if not os.path.isfile(actualPath):
             return False
 

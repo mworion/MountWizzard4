@@ -188,6 +188,7 @@ class Tools:
         if not os.path.isfile(fileName):
             return False
 
+        fileName = os.path.normpath(fileName)
         with fits.open(name=fileName) as fd:
             fitsHeader = fd[0].header
 
@@ -212,7 +213,7 @@ class Tools:
 
             newFilename += '.fits'
             dirName = os.path.dirname(fileName)
-            newFilename = f'{dirName}/{newFilename}'
+            newFilename = os.path.isfile(f'{dirName}/{newFilename}')
             os.rename(fileName, newFilename)
 
         return True

@@ -177,14 +177,14 @@ def loadProfile(configDir=None, name=None):
     :return:    success if file could be loaded
     """
     if name is None:
-        profileFile = f'{configDir}/profile'
+        profileFile = os.path.normpath(f'{configDir}/profile')
         if os.path.isfile(profileFile):
             with open(profileFile, 'r') as profile:
                 name = profile.readline().strip()
         else:
             name = 'config'
 
-    fileName = f'{configDir}/{name}.cfg'
+    fileName = os.path.normpath(f'{configDir}/{name}.cfg')
 
     if not os.path.isfile(fileName):
         log.info(f'Config file {fileName} not existing')

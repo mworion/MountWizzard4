@@ -133,6 +133,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param unzip:
         :return:
         """
+        dest = os.path.normpath(dest)
         if not os.path.dirname(dest):
             return False
         if os.path.isfile(dest):

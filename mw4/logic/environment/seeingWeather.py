@@ -106,6 +106,7 @@ class SeeingWeather():
         :return: success
         """
         dataFile = self.app.mwGlob['dataDir'] + '/meteoblue.data'
+        dataFile = os.path.normpath(dataFile)
         if not os.path.isfile(dataFile):
             self.log.info(f'{dataFile} not available')
             return False
@@ -172,6 +173,7 @@ class SeeingWeather():
         :return:
         """
         filePath = self.app.mwGlob['dataDir'] + '/' + fileName
+        filePath = os.path.normpath(filePath)
         if not os.path.isfile(filePath):
             return True
 

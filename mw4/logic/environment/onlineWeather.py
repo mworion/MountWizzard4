@@ -120,12 +120,13 @@ class OnlineWeather():
         :return: success
         """
         dataFile = self.app.mwGlob['dataDir'] + '/openweathermap.data'
+        dataFile = os.path.normpath(dataFile)
         if not os.path.isfile(dataFile):
             self.log.info(f'{dataFile} not available')
             return False
 
         try:
-            with open(self.app.mwGlob['dataDir'] + '/openweathermap.data', 'r') as f:
+            with open(dataFile, 'r') as f:
                 data = json.load(f)
         except Exception as e:
             self.log.warning(f'Cannot load data file, error: {e}')
@@ -214,6 +215,7 @@ class OnlineWeather():
         :return:
         """
         filePath = self.app.mwGlob['dataDir'] + '/' + fileName
+        filePath = os.path.normpath(filePath)
         if not os.path.isfile(filePath):
             return True
 

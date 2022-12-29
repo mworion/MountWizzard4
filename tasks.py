@@ -69,16 +69,6 @@ client = {
         'work': 'test',
         'scp': 'mw@astro-win11.fritz.box:/Users/mw/test',
     },
-    'macMojave': {
-        'user': 'mw@astro-mac-mojave.fritz.box',
-        'work': 'test',
-        'scp': 'mw@astro-mac-mojave.fritz.box:/Users/mw/test',
-    },
-    'macCatalina': {
-        'user': 'mw@astro-mac-catalina.fritz.box',
-        'work': 'test',
-        'scp': 'mw@astro-mac-catalina.fritz.box:/Users/mw/test',
-    },
     'macBigsur': {
         'user': 'mw@astro-mac-bigsur.fritz.box',
         'work': 'test',
@@ -88,6 +78,11 @@ client = {
         'user': 'mw@astro-mac-monterey.fritz.box',
         'work': 'test',
         'scp': 'mw@astro-mac-monterey.fritz.box:/Users/mw/test',
+    },
+    'macVentura': {
+        'user': 'mw@astro-mac-ventura.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-mac-ventura.fritz.box:/Users/mw/test',
     },
 }
 
@@ -393,26 +388,6 @@ def test_comp(c):
 
 
 @task(pre=[build_startup])
-def test_macMojave(c):
-    printMW('test Mojave install')
-    user = client['macMojave']['user']
-    work = client['macMojave']['work']
-    scp = client['macMojave']['scp']
-    test_mac(c, user, work, scp)
-    printMW('test Mojave install finished\n')
-
-
-@task(pre=[build_startup])
-def test_macCatalina(c):
-    printMW('test Catalina install')
-    user = client['macCatalina']['user']
-    work = client['macCatalina']['work']
-    scp = client['macCatalina']['scp']
-    test_mac(c, user, work, scp)
-    printMW('test Catalina install finished\n')
-
-
-@task(pre=[build_startup])
 def test_macBigsur(c):
     printMW('test BigSur install')
     user = client['macBigsur']['user']
@@ -430,6 +405,16 @@ def test_macMonterey(c):
     scp = client['macMonterey']['scp']
     test_mac(c, user, work, scp)
     printMW('test Monterey install finished\n')
+
+
+@task(pre=[build_startup])
+def test_macVentura(c):
+    printMW('test Monterey install')
+    user = client['macVentura']['user']
+    work = client['macVentura']['work']
+    scp = client['macVentura']['scp']
+    test_mac(c, user, work, scp)
+    printMW('test Ventura install finished\n')
 
 
 @task(pre=[version_doc])

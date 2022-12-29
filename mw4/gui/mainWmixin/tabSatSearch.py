@@ -625,7 +625,7 @@ class SatSearch(object):
         loader = self.app.mount.obsSite.loader
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
-        filePath = f'{dirPath}/{fileName}'
+        filePath = os.path.isfile(f'{dirPath}/{fileName}')
         if not isOnline:
             source = filePath
         satellites = loader.tle_file(source, reload=isOnline)

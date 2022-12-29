@@ -239,12 +239,12 @@ class Astrometry(object):
             self.log.warning('Image missing for solving')
             return False
 
-        tempPath = self.tempDir + '/temp.xy'
-        configPath = self.tempDir + '/astrometry.cfg'
-        solvedPath = self.tempDir + '/temp.solved'
-        wcsPath = self.tempDir + '/temp.wcs'
-        binPathImage2xy = self.appPath + '/image2xy'
-        binPathSolveField = self.appPath + '/solve-field'
+        tempPath = os.path.normpath(self.tempDir + '/temp.xy')
+        configPath = os.path.normpath(self.tempDir + '/astrometry.cfg')
+        solvedPath = os.path.normpath(self.tempDir + '/temp.solved')
+        wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
+        binPathImage2xy = os.path.normpath(self.appPath + '/image2xy')
+        binPathSolveField = os.path.normpath(self.appPath + '/solve-field')
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)

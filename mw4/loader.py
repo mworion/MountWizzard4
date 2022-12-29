@@ -381,7 +381,7 @@ def getWindowPos():
     :return:
     """
     configDir = os.getcwd() + '/config'
-    profile = configDir + '/profile'
+    profile = os.path.normpath(configDir + '/profile')
     if not os.path.isfile(profile):
         return 0, 0
 
@@ -389,6 +389,7 @@ def getWindowPos():
         configName = f.readline()
 
     configFile = configDir + '/' + configName + '.cfg'
+    configFile = os.path.normpath(configFile)
     if not os.path.isfile(configFile):
         return 0, 0
 

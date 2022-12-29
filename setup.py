@@ -90,6 +90,7 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - remove: system: move from deprecated distutils to packaging
 - remove: system: support for python 3.7 as some libraries stopped support
 - remove: imageW: stacking in imageW as it was never used
+- remove: testing support for OSx Mojave and OSx Catalina (still should work) 
 - fix: drivers: device selection tab was not properly positioned in device popup
  """
 
@@ -98,7 +99,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0b5',
+    version='3.0.0b6',
     packages=[
         'mw4',
         'mw4.base',
@@ -135,7 +136,7 @@ setup(
     ],
     python_requires='>=3.8.0, <3.11',
     install_requires=[
-        'numpy==1.24',
+        'numpy==1.24.1',
         'opencv-python-headless==4.6.0.66',
         'scipy==1.9.3',
         'astropy==5.2',

@@ -513,7 +513,7 @@ def main(args=None):
         return
 
     parser = argparse.ArgumentParser(
-        prog=__name__, description='Installs MountWizzard4 in Python virtual '
+        prog=__name__, description='Installs MW4 in Python virtual '
                                    'environment in local workdir')
     parser.add_argument(
         '--upgrade-venv', default=False, action='store_true', dest='upgrade',
@@ -521,25 +521,25 @@ def main(args=None):
              'Python, assuming Python has been upgraded in-place.')
     parser.add_argument(
         '--update', default=False, action='store_true', dest='updateMW4',
-        help='Update MountWizzard4 to the actual release version')
+        help='Update MW4 to the actual release version')
     parser.add_argument(
         '--update-beta', default=False, action='store_true', dest='updateMW4beta',
-        help='Update MountWizzard4 to the actual beta version')
+        help='Update MW4 to the actual beta version')
     parser.add_argument(
         '--version', default='', type=str, dest='version',
-        help='Update MountWizzard4 to the named version')
+        help='Update MW4 to the named version')
     parser.add_argument(
         '--no-start', default=False, action='store_true', dest='noStart',
-        help='Running script without starting MountWizzard4')
+        help='Running script without starting MW4')
     parser.add_argument(
         '--clean', default=False, action='store_true', dest='clean',
         help='Cleaning system packages from faulty installs')
     parser.add_argument(
         '--scale', default=1, type=float, dest='scale',
-        help='Setting Qt DPI scale factor for MountWizzard4')
+        help='Setting Qt DPI scale factor (+scale = +size)')
     parser.add_argument(
         '--dpi', default=96, type=float, dest='dpi',
-        help='Setting QT font DPI for MountWizzard4')
+        help='Setting QT font DPI (+dpi = -fontsize)')
     parser.add_argument(
         '--basic', default=False, action='store_true', dest='basic',
         help='Upgrade basic install packages')

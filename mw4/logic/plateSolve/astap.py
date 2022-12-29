@@ -153,8 +153,8 @@ class ASTAP(object):
             self.log.warning('Image missing for solving')
             return False
 
-        tempFile = self.tempDir + '/temp'
-        wcsPath = self.tempDir + '/temp.wcs'
+        tempFile = os.path.normpath(self.tempDir + '/temp')
+        wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
@@ -240,6 +240,7 @@ class ASTAP(object):
         elif platform.system() == 'Windows':
             program = self.appPath + '/astap.exe'
 
+        program = os.path.normpath(program)
         if not os.path.isfile(program):
             self.log.info(f'[{program}] not found')
             sucProgram = False

@@ -181,6 +181,7 @@ class MinorPlanetTime:
         """
         source = self.ui.minorPlanetSource.currentText()
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
+        dest = os.path.normpath(dest)
         destUnzip = dest[:-3]
 
         if not os.path.isfile(destUnzip):

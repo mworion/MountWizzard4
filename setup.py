@@ -175,7 +175,7 @@ setup(
     long_description=Path("README.rst").read_text(encoding="utf-8"),
     long_description_content_type="text/x-rst",
     project_urls={
-        'Documentation': 'https://mountwizzard4.readthedocs.io',
+        'Documentation': 'https://mworion.github.io/MountWizzard4',
         'Source Code': 'https://github.com/mworion/mountwizzard4',
         'Bug Tracker': 'https://github.com/mworion/mountwizzard4/issues',
         'Discussions': 'https://github.com/mworion/MountWizzard4/discussions',

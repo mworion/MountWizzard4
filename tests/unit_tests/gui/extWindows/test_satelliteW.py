@@ -306,7 +306,8 @@ def test_drawHorizonView_2(function):
     function.app.mount.obsSite.location.latitude = Angle(degrees=45)
     function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     obsSite = function.app.mount.obsSite
-    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
+    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits,
+                                   altitude=[], azimuth=[])
     assert suc
 
 
@@ -338,7 +339,8 @@ def test_drawHorizonView_3(function):
     function.app.mount.obsSite.location.latitude = Angle(degrees=45)
     function.app.mount.obsSite.location.longitude = Angle(degrees=11)
     obsSite = function.app.mount.obsSite
-    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
+    suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits,
+                                   altitude=[], azimuth=[])
     assert suc
 
 

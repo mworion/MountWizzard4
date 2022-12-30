@@ -551,7 +551,7 @@ def test_calcTrajectory_2(function):
 
 
 def test_workerProgTrajectory_1(function):
-    suc = function.workerProgTrajectory()
+    suc = function.workerProgTrajectory([], [])
     assert not suc
 
 
@@ -560,7 +560,7 @@ def test_workerProgTrajectory_2(function):
     az = [10, 20, 30]
     with mock.patch.object(function.satellite,
                            'progTrajectory'):
-        suc = function.workerProgTrajectory(alt=alt, az=az)
+        suc = function.workerProgTrajectory(alt, az)
         assert not suc
 
 
@@ -569,7 +569,7 @@ def test_workerProgTrajectory_3(function):
     az = [10, 20, 30]
     with mock.patch.object(function.satellite,
                            'progTrajectory'):
-        suc = function.workerProgTrajectory(alt=alt, az=az, sim=True)
+        suc = function.workerProgTrajectory(alt, az)
         assert suc
 
 

@@ -652,7 +652,7 @@ class Mount(mountcontrol.mount.Mount):
         self.calcTrajectory(replay=sim)
         return True
 
-    def workerProgTrajectory(self, alt, az):
+    def workerProgTrajectory(self, alt=None, az=None):
         """
         :param alt:
         :param az:
@@ -671,7 +671,7 @@ class Mount(mountcontrol.mount.Mount):
         self.signals.trajectoryProgress.emit(100)
         return True
 
-    def progTrajectory(self, start, alt, az):
+    def progTrajectory(self, start, alt=None, az=None):
         """
         :param start:
         :param alt:
@@ -679,8 +679,6 @@ class Mount(mountcontrol.mount.Mount):
         :return:
         """
         if not self.mountUp:
-            return False
-        if not alt or not az:
             return False
 
         self.satellite.startProgTrajectory(julD=start)

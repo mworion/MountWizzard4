@@ -1236,24 +1236,6 @@ class TestConfigData(unittest.TestCase):
             suc = sat.startProgTrajectory(julD=julD)
             assert suc
 
-    def test_progTrajectoryData_1(self):
-        class ObsSite:
-            UTC2TT = 69
-            ts = load.timescale()
-
-        class Parent:
-            obsSite = ObsSite()
-
-        sat = Satellite(parent=Parent())
-        val = (True, ['V'], 1)
-        alt = [10, 20, 30]
-        az = [40, 50, 60]
-        with mock.patch.object(Connection,
-                               'communicate',
-                               return_value=val):
-            suc = sat.progTrajectory()
-            assert not suc
-
     def test_progTrajectoryData_2(self):
         class ObsSite:
             UTC2TT = 69

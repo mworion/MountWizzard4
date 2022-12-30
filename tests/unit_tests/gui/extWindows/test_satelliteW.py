@@ -276,11 +276,6 @@ def test_drawEarth_3(function):
     suc = function.drawEarth(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
 
-    
-def test_drawHorizonView_1(function):
-    suc = function.drawHorizonView()
-    assert not suc
-
 
 def test_drawHorizonView_2(function):
     tle = ["CALSPHERE 1",
@@ -345,15 +340,6 @@ def test_drawHorizonView_3(function):
     obsSite = function.app.mount.obsSite
     suc = function.drawHorizonView(obsSite=obsSite, satOrbits=satOrbits)
     assert suc
-
-
-def test_drawSatellite_1(function):
-    with mock.patch.object(function,
-                           'drawEarth'):
-        with mock.patch.object(function,
-                               'drawHorizonView'):
-            suc = function.drawSatellite()
-            assert suc
 
 
 def test_drawSatellite_2(function):

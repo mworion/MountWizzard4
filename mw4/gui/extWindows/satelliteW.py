@@ -440,7 +440,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
         return True
 
-    def drawHorizonView(self, obsSite, satOrbits, altitude, azimuth):
+    def drawHorizonView(self, obsSite=None, satOrbits=None,
+                        altitude=None, azimuth=None):
         """
         drawHorizonView shows the horizon and enable the users to explore a
         satellite passing by

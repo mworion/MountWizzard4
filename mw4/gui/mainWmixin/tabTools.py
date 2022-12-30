@@ -213,7 +213,7 @@ class Tools:
 
             newFilename += '.fits'
             dirName = os.path.dirname(fileName)
-            newFilename = os.path.isfile(f'{dirName}/{newFilename}')
+            newFilename = os.path.normpath(f'{dirName}/{newFilename}')
             os.rename(fileName, newFilename)
 
         return True

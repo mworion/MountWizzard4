@@ -170,7 +170,7 @@ class ManageModel:
             mountModel[star.number] = {'ha': star.coord.ra.hours,
                                        'dec': star.coord.dec.degrees}
 
-        searchPath = os.path.isfile(self.app.mwGlob['modelDir'] + '/*.model')
+        searchPath = os.path.normpath(self.app.mwGlob['modelDir'] + '/*.model')
         modelFileList = glob.glob(searchPath)
 
         for modelFilePath in modelFileList:

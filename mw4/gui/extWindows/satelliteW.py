@@ -440,8 +440,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
         return True
 
-    def drawHorizonView(self, obsSite=None, satOrbits=None,
-                        altitude=[], azimuth=[], isSunlit=[]):
+    def drawHorizonView(self, obsSite, satOrbits, altitude, azimuth):
         """
         drawHorizonView shows the horizon and enable the users to explore a
         satellite passing by
@@ -450,14 +449,10 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param satOrbits:
         :param altitude:
         :param azimuth:
-        :param isSunlit:
         :return: success
         """
         plotItem = self.ui.satHorizon.p[0]
         self.prepareHorizon(plotItem)
-        if not satOrbits or obsSite is None:
-            return False
-
         self.drawHorizonTrajectory(
             plotItem, obsSite, satOrbits, altitude, azimuth)
         self.plotSatPosHorizon = self.prepareHorizonSatellite(
@@ -466,8 +461,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.drawHorizon()
         return True
 
-    def drawSatellite(self, satellite=None, satOrbits=None, altitude=[],
-                      azimuth=[], name=''):
+    def drawSatellite(self, satellite=None, satOrbits=None, altitude=None,
+                      azimuth=None, name=''):
         """
         :param satellite:
         :param satOrbits:
@@ -479,6 +474,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.setWindowTitle(f'Satellite {name}')
         self.satellite = satellite
         self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)
+        if not satOrbits or self.app.mount.obsSite is None:
+            return False
         self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits,
                              altitude=altitude, azimuth=azimuth)
         return True

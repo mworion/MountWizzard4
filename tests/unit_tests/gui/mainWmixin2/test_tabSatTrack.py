@@ -401,7 +401,7 @@ def test_updatePasses_2(function):
 def test_sendSatelliteData_1(function):
     function.satellite = None
     function.satOrbits = None
-    suc = function.sendSatelliteData()
+    suc = function.signalSatelliteData()
     assert not suc
 
 
@@ -409,7 +409,7 @@ def test_sendSatelliteData_2(function):
     function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
     function.satellite = 1
     function.satOrbits = 1
-    suc = function.sendSatelliteData()
+    suc = function.signalSatelliteData()
     assert not suc
 
 
@@ -427,7 +427,7 @@ def test_sendSatelliteData_3(function):
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
     function.satOrbits = 1
-    suc = function.sendSatelliteData()
+    suc = function.signalSatelliteData()
     assert suc
 
 
@@ -906,7 +906,7 @@ def test_progTrajectoryToMount_2(function):
                                    'filterHorizon',
                                    return_value=(0, 0, 0, 0)):
                 with mock.patch.object(function,
-                                       'sendSatelliteData'):
+                                       'signalSatelliteData'):
                     suc = function.progTrajectoryToMount()
                     assert suc
 
@@ -920,7 +920,7 @@ def test_progTrajectoryToMount_3(function):
         with mock.patch.object(function.app.mount,
                                'calcTLE'):
             with mock.patch.object(function,
-                                   'sendSatelliteData'):
+                                   'signalSatelliteData'):
                 suc = function.progTrajectoryToMount()
                 assert suc
 
@@ -934,7 +934,7 @@ def test_progTrajectoryToMount_4(function):
         with mock.patch.object(function.app.mount,
                                'calcTLE'):
             with mock.patch.object(function,
-                                   'sendSatelliteData'):
+                                   'signalSatelliteData'):
                 suc = function.progTrajectoryToMount()
                 assert suc
 

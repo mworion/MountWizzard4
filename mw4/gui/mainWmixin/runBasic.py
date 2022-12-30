@@ -541,7 +541,7 @@ class BasicRun:
 
         return name, imageDir
 
-    def setupRunPoints(self, data=[], imgDir='', name='', waitTime=0):
+    def setupRunPoints(self, data=None, imgDir='', name='', waitTime=0):
         """
         :param data:
         :param imgDir:
@@ -549,6 +549,8 @@ class BasicRun:
         :param waitTime:
         :return:
         """
+        if data is None:
+            data = []
         plateSolveApp = self.ui.plateSolveDevice.currentText()
         exposureTime = self.ui.expTime.value()
         binning = int(self.ui.binning.value())

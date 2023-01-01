@@ -37,7 +37,6 @@ class LoggerWriter:
         self.standard = std
 
     def write(self, message):
-        self.standard.write(message)
         first = True
         for line in message.rstrip().splitlines():
             if first:

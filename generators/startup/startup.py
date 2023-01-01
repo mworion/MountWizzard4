@@ -34,7 +34,7 @@ else:
     py = 'python3'
 
 log = logging.getLogger()
-version = '3.0beta6'
+version = '3.0beta7'
 
 
 def run(command):
@@ -559,8 +559,8 @@ def main(args=None):
                       updateBeta=options.updateMW4beta,
                       version=options.version)
     if platform.system() == 'Windows':
-        os.environ['QT_SCALE_FACTOR'] = str(options.scale)
-        os.environ['QT_FONT_DPI'] = str(options.dpi)
+        os.environ['QT_SCALE_FACTOR'] = f'{options.scale:2.1f}'
+        os.environ['QT_FONT_DPI'] = f'{options.dpi:2.0f}'
 
     if not options.noStart and command:
         print('MountWizzard4 is ready')

@@ -20,10 +20,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: updates for supporting newer ASTAP versions
-- fix: model run will cancel if solving fails
-- fix: workaround ASTAP FITS outputs which are not readable via astropy 
-- update ephemeris file
+- fix: internal updater shows only alpha versions instead of betas
  """
 
 with open('notes.txt', 'w') as f:
@@ -31,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='2.2.8',
+    version='2.2.9',
     packages=[
         'mw4',
         'mw4.base',

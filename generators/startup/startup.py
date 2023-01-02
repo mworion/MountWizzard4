@@ -26,15 +26,15 @@ import datetime
 import argparse
 import tarfile
 
-# sys.stdout.reconfigure(encoding='utf-8')
-# sys.stderr.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
     py = 'python'
 else:
     py = 'python3'
 
 log = logging.getLogger()
-version = '3.0beta7'
+version = '3.0beta8'
 
 
 def run(command):

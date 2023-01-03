@@ -316,7 +316,7 @@ def main():
     version = sys.argv[1]
     x = int(sys.argv[2]) + 150
     y = int(sys.argv[3]) + 150
-    simpleGui = sys.argv[4] == 'CLI' or True
+    simpleGui = sys.argv[4] == 'CLI'
     colorSet = int(sys.argv[5])
 
     log.header('-' * 100)

@@ -115,7 +115,6 @@ class EnvBuilder(venv.EnvBuilder):
 
         binPath = os.path.dirname(findfile(os.getcwd(), 'activate')) + os.pathsep
         os.environ['PATH'] = binPath + os.environ['PATH']
-        #sys.path.insert(1, os.path.dirname(findfile(venvPath, 'easy_install.py')))
 
 
 class LoggerWriter:
@@ -128,7 +127,6 @@ class LoggerWriter:
         self.standard = std
 
     def write(self, message):
-        self.standard.write(message)
         first = True
         for line in message.rstrip().splitlines():
             if first:
@@ -163,7 +161,6 @@ def setupLogging():
                         filename=logFile)
     # transfer all sys outputs to logging
     sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
-    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
     return True
 
 

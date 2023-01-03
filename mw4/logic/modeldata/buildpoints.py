@@ -705,18 +705,18 @@ class DataPoint(object):
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
-                    yield(alt, az, 1)
+                    yield (alt, az, 1)
             else:
                 for az in range(180 - minAz, 0, -stepAz):
-                    yield(alt, az, 1)
+                    yield (alt, az, 1)
 
         for i, alt in enumerate(westAlt):
             if i % 2:
                 for az in range(180 + minAz, 360, stepAz):
-                    yield(alt, az, 1)
+                    yield (alt, az, 1)
             else:
                 for az in range(maxAz, 180, -stepAz):
-                    yield(alt, az, 1)
+                    yield (alt, az, 1)
 
     def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6, keep=False):
         """

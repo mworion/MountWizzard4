@@ -27,7 +27,7 @@ import platform
 # local import
 from base.loggerMW import setupLogging
 
-setupLogging()
+setupLogging(redirect=False)
 log = logging.getLogger()
 
 
@@ -316,7 +316,7 @@ def main():
     version = sys.argv[1]
     x = int(sys.argv[2]) + 150
     y = int(sys.argv[3]) + 150
-    simpleGui = sys.argv[4] == 'CLI'
+    simpleGui = sys.argv[4] == 'CLI' or True
     colorSet = int(sys.argv[5])
 
     log.header('-' * 100)

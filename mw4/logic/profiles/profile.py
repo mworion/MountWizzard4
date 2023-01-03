@@ -126,7 +126,7 @@ def convertProfileData(data):
           'deviceName'] = 'On Mount'
         d['version'] = profileVersion
     except Exception as e:
-        log.error('Failed conversion, keep old structure')
+        log.error(f'Failed conversion, keep old structure: {e}')
     else:
         data = d.to_dict()
     return data
@@ -217,7 +217,7 @@ def saveProfile(configDir=None, name=None, config=None):
         config = {}
     if name is None:
         name = config.get('profileName', 'config')
-        
+
     profileFile = f'{configDir}/profile'
     with open(profileFile, 'w') as profile:
         profile.writelines(f'{name}')

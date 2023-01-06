@@ -649,7 +649,7 @@
    </widget>
    <widget class="QWidget" name="nina">
     <attribute name="title">
-     <string>N.I.N.A.</string>
+     <string>NINA</string>
     </attribute>
     <widget class="QComboBox" name="ninaDeviceList">
      <property name="geometry">
@@ -696,7 +696,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available devices in N.I.N.A. application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available devices in NINA application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Search</string>

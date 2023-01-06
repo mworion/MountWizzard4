@@ -23,7 +23,7 @@ For being fully operational, MW4 needs either:
     abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
     you want to connect over IP with your environment.
 
--   Running versions of Sequence Generator Pro or N.I.N.A. as frontend for camera
+-   Running versions of Sequence Generator Pro or NINA as frontend for camera
     device.
 
 -   For the core devices there is native ASCOM support (Windows platform only).
@@ -113,14 +113,6 @@ CS Michel
     :target: https://codecov.io/gh/mworion/MountWizzard4
     :width: 80%
     :align: top
-
-.. |CODE_QUALITY_ALERTS| image::
-    https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
-    :target: https://lgtm.com/projects/g/mworion/MountWizzard4/latest/files/?sort=name&dir=ASC&mode=heatmap&showExcluded=false
-
-.. |CODE_QUALITY_PYTHON| image::
-    https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
-    :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 
 .. |OPEN_ISSUES| image::
     https://img.shields.io/github/issues-raw/mworion/mountwizzard4

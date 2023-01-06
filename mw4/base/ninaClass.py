@@ -50,8 +50,8 @@ class NINAClass(DriverData, QObject):
         self.loadConfig = False
         self._deviceName = ''
         self.defaultConfig = {
-            'deviceList': ['N.I.N.A. controlled'],
-            'deviceName': 'N.I.N.A. controlled',
+            'deviceList': ['NINA controlled'],
+            'deviceName': 'NINA controlled',
         }
         self.signalRS = RemoteDeviceShutdown()
 
@@ -94,21 +94,21 @@ class NINAClass(DriverData, QObject):
                 response = requests.get(f'{self.BASE_URL}/{valueProp}?format=json',
                                         timeout=self.NINA_TIMEOUT)
         except requests.exceptions.Timeout:
-            self.log.debug('Request N.I.N.A. timeout error')
+            self.log.debug('Request NINA timeout error')
             return None
         except requests.exceptions.ConnectionError:
-            self.log.error('Request N.I.N.A. connection error')
+            self.log.error('Request NINA connection error')
             return None
         except Exception as e:
-            self.log.error(f'Request N.I.N.A. error: [{e}]')
+            self.log.error(f'Request NINA error: [{e}]')
             return None
 
         if response.status_code != 200:
-            t = f'Request N.I.N.A. response invalid: [{response.status_code}]'
+            t = f'Request NINA response invalid: [{response.status_code}]'
             self.log.warning(t)
             return None
 
-        self.log.trace(f'Request N.I.N.A. response: [{response.json()}]')
+        self.log.trace(f'Request NINA response: [{response.json()}]')
         response = response.json()
         return response
 
@@ -150,7 +150,7 @@ class NINAClass(DriverData, QObject):
         """
         :return: success of reconnecting to server
         """
-        if self.deviceName == 'N.I.N.A. controlled':
+        if self.deviceName == 'NINA controlled':
             return True
 
         for retry in range(0, 20):
@@ -167,7 +167,7 @@ class NINAClass(DriverData, QObject):
             t = f'[{self.deviceName}] connected'
             self.log.debug(t)
         else:
-            self.msg.emit(2, 'N.I.N.A.', 'Connect error',
+            self.msg.emit(2, 'NINA', 'Connect error',
                           f'{self.deviceName}')
             self.deviceConnected = False
             self.serverConnected = False
@@ -239,14 +239,14 @@ class NINAClass(DriverData, QObject):
             if self.deviceConnected:
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')
-                self.msg.emit(0, 'N.I.N.A.', 'Device remove',
+                self.msg.emit(0, 'NINA', 'Device remove',
                               f'{self.deviceName}')
         else:
             if not self.deviceConnected:
                 self.deviceConnected = True
                 self.getInitialConfig()
                 self.signals.deviceConnected.emit(f'{self.deviceName}')
-                self.msg.emit(0, 'N.I.N.A.', 'Device found',
+                self.msg.emit(0, 'NINA', 'Device found',
                               f'{self.deviceName}')
         return True
 
@@ -277,13 +277,13 @@ class NINAClass(DriverData, QObject):
         :return: true for test purpose
         """
         self.stopTimer()
-        if self.deviceName != 'N.I.N.A. controlled':
+        if self.deviceName != 'NINA controlled':
             self.disconnectDevice()
         self.deviceConnected = False
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(f'{self.deviceName}')
         self.signals.serverDisconnected.emit({f'{self.deviceName}': 0})
-        self.msg.emit(0, 'N.I.N.A.', 'Device remove',
+        self.msg.emit(0, 'NINA', 'Device remove',
                       f'{self.deviceName}')
         return True
 

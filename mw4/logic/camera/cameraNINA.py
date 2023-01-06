@@ -115,6 +115,7 @@ class CameraNINA(NINAClass, CameraSupport):
             return False
         suc, response = self.getCameraProps()
         if not suc:
+            self.log.debug('No camera props received')
             return False
 
         self.storePropertyToData(response['Message'], 'CCD_INFO.Message')

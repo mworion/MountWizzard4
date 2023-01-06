@@ -116,6 +116,7 @@ class CameraSGPro(SGProClass, CameraSupport):
             return False
         suc, response = self.sgGetCameraProps()
         if not suc:
+            self.log.debug('No camera props received')
             return False
 
         self.storePropertyToData(response['Message'],

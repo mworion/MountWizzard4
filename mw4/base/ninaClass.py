@@ -34,7 +34,7 @@ class NINAClass(DriverData, QObject):
     """
     log = logging.getLogger(__name__)
 
-    NINA_TIMEOUT = 1
+    NINA_TIMEOUT = 3
     HOST_ADDR = '127.0.0.1'
     PORT = 59590
     PROTOCOL = 'http'
@@ -82,7 +82,7 @@ class NINAClass(DriverData, QObject):
         :return:
         """
         try:
-            t = f'N.I.N.A: [{self.BASE_URL}/{valueProp}?format=json]'
+            t = f'NINA: [{self.BASE_URL}/{valueProp}?format=json]'
             if params is not None:
                 t += f' data: [{bytes(json.dumps(params).encode("utf-8"))}]'
                 self.log.trace('POST ' + t)

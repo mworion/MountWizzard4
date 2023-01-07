@@ -824,7 +824,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         else:
             alignType = 'polar'
 
-        t = f'Align [{reply}] to [{name}]'
+        t = f'Align [{alignType}] to [{name}]'
         self.msg.emit(1, 'Hemisphere', 'Align', t)
         suc = self.slewTargetRaDec(ra, dec, slewType=alignType, epoch='JNow')
         return suc

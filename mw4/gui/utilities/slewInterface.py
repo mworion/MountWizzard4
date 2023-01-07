@@ -19,6 +19,7 @@
 import logging
 
 # external packages
+from skyfield.api import Angle
 
 # local imports
 from base.transform import J2000ToJNow
@@ -92,8 +93,8 @@ class SlewInterface:
         if epoch == 'J2000':
             raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
         else:
-            raJNow = ra
-            decJNow = dec
+            raJNow = Angle(ra_hours=ra)
+            decJNow = Angle(dec_degrees=dec)
 
         suc = self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
                                                     dec=decJNow)

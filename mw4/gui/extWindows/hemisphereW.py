@@ -826,7 +826,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
         t = f'Align [{reply}] to [{name}]'
         self.msg.emit(1, 'Hemisphere', 'Align', t)
-        suc = self.slewTargetRaDec(ra, dec, slewType=alignType)
+        suc = self.slewTargetRaDec(ra, dec, slewType=alignType, epoch='JNow')
         return suc
 
     def mouseDoubleClick(self, ev, posView):

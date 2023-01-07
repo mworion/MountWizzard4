@@ -77,18 +77,24 @@ class SlewInterface:
         suc = self.slewSelectedTargetWithDome(slewType=slewType)
         return suc
 
-    def slewTargetRaDec(self, ra, dec, slewType='normal'):
+    def slewTargetRaDec(self, ra, dec, slewType='normal', epoch='J2000'):
         """
         :param ra:
         :param dec:
         :param slewType:
+        :param epoch:
         :return:
         """
         timeJD = self.app.mount.obsSite.timeJD
         if timeJD is None:
             return False
 
-        raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
+        if epoch == 'J2000':
+            raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
+        else:
+            raJNow = ra
+            decJNow = dec
+
         suc = self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
                                                     dec=decJNow)
         if not suc:

@@ -476,7 +476,7 @@ def build_mw(c):
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
     with c.cd('./dist'):
-        print(f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
+        print(f'twine upload mountwizzard4-*.tar.gz --verbose -r pypi -c "{rn}"')
         runMW(c, f'twine upload mountwizzard4-*.tar.gz -r pypi -c "{rn}"')
     runMW(c, 'rm notes.txt')
     printMW('uploading dist mountwizzard4 finished\n')

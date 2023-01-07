@@ -45,7 +45,7 @@ Versions, downloads:
 
 Code quality:
 -------------
-|CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS| |CODECOV| |OPEN_ISSUES|
+|CODECOV| |OPEN_ISSUES|
 
 Unit tests:
 ^^^^^^^^^^^

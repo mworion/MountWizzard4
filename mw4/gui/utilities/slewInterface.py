@@ -93,8 +93,8 @@ class SlewInterface:
         if epoch == 'J2000':
             raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
         else:
-            raJNow = Angle(ra_hours=ra)
-            decJNow = Angle(dec_degrees=dec)
+            raJNow = Angle(hours=ra)
+            decJNow = Angle(degrees=dec)
 
         suc = self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
                                                     dec=decJNow)

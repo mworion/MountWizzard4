@@ -99,7 +99,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0b8',
+    version='3.0.0b9',
     packages=[
         'mw4',
         'mw4.base',
@@ -139,7 +139,7 @@ setup(
         'numpy==1.24.1',
         'opencv-python-headless==4.6.0.66',
         'scipy==1.9.3',
-        'astropy==5.2',
+        'astropy==5.2.1,
         'pyerfa==2.0.0.1',
         'astroquery==0.4.6',
         'sep==1.2.1',

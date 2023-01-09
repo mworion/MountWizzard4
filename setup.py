@@ -139,7 +139,7 @@ setup(
         'numpy==1.24.1',
         'opencv-python-headless==4.6.0.66',
         'scipy==1.9.3',
-        'astropy==5.2.1,
+        'astropy==5.2.1',
         'pyerfa==2.0.0.1',
         'astroquery==0.4.6',
         'sep==1.2.1',

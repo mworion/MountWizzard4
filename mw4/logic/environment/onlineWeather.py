@@ -49,7 +49,6 @@ class OnlineWeather():
             'onlineWeather': self
         }
         self.deviceName = ''
-
         self.data = {}
         self.defaultConfig = {
             'framework': '',

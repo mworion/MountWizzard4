@@ -2207,7 +2207,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="weather">
+   <widget class="QWidget" name="onlineWeather">
     <attribute name="title">
      <string>Online Weather</string>
     </attribute>

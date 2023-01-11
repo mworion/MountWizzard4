@@ -211,7 +211,7 @@ def test_enumerateDevice_2(function):
 
 
 def test_workerConnectDevice_1(function):
-    function.deviceName = 'N.I.N.A. controlled'
+    function.deviceName = 'NINA controlled'
     suc = function.workerConnectDevice()
     assert suc
 

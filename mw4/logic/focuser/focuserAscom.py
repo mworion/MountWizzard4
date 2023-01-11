@@ -59,5 +59,5 @@ class FocuserAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.getAscomProperty('halt')
+        self.getAscomProperty('Halt')
         return True

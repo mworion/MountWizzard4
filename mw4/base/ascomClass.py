@@ -88,7 +88,6 @@ class AscomClass(DriverData):
         :return: value
         """
         value = None
-        valueProp = valueProp.lower()
         if valueProp in self.propertyExceptions:
             return value
 
@@ -100,7 +99,7 @@ class AscomClass(DriverData):
             self.log.debug(t)
             self.propertyExceptions.append(valueProp)
         else:
-            if valueProp != 'imagearray':
+            if valueProp != 'ImageArray':
                 t = f'[{self.deviceName}] property [{valueProp}] has value: [{value}]'
                 self.log.trace(t)
             else:
@@ -113,7 +112,6 @@ class AscomClass(DriverData):
         :param valueProp:
         :param value:
         """
-        valueProp = valueProp.lower()
         if valueProp in self.propertyExceptions:
             return False
 
@@ -123,7 +121,7 @@ class AscomClass(DriverData):
         except Exception as e:
             t = f'[{self.deviceName}] [{cmd}], property [{valueProp}] not implemented: {e}'
             self.log.debug(t)
-            if valueProp != 'Connect':
+            if valueProp != 'Connected':
                 self.propertyExceptions.append(valueProp)
             return False
         else:
@@ -174,8 +172,8 @@ class AscomClass(DriverData):
         """
         self.propertyExceptions = []
         for retry in range(0, 10):
-            self.setAscomProperty('connected', True)
-            suc = self.getAscomProperty('connected')
+            self.setAscomProperty('Connected', True)
+            suc = self.getAscomProperty('Connected')
 
             if suc:
                 t = f'[{self.deviceName}] connected, retries: [{retry}]'
@@ -217,7 +215,7 @@ class AscomClass(DriverData):
         """
         :return: success
         """
-        suc = self.getAscomProperty('connected')
+        suc = self.getAscomProperty('Connected')
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False

@@ -64,7 +64,7 @@ class SatTrack(object):
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
-        self.app.sendSatelliteData.connect(self.sendSatelliteData)
+        self.app.sendSatelliteData.connect(self.signalSatelliteData)
         self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
         self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
         self.ui.avoidHorizon.clicked.connect(self.showSatPasses)
@@ -98,7 +98,7 @@ class SatTrack(object):
             self.installPath = self.app.automation.installPath
         else:
             self.installPath = self.app.mwGlob['dataDir']
-        self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
+        self.ui.unitTimeUTC.clicked.connect(self.showSatPasses)
         return True
 
     def storeConfig(self):
@@ -253,7 +253,7 @@ class SatTrack(object):
             self.sortFlipEvents(satOrbit, t0, t1, t2)
         return True
 
-    def sendSatelliteData(self, alt=[], az=[]):
+    def signalSatelliteData(self, alt=None, az=None):
         """
         :param alt:
         :param az:
@@ -559,7 +559,7 @@ class SatTrack(object):
         if isMount and not useInternal:
             self.app.mount.calcTLE(start)
 
-        self.sendSatelliteData(alt=alt, az=az)
+        self.signalSatelliteData(alt=alt, az=az)
         return True
 
     def startProg(self):

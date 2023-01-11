@@ -30,7 +30,6 @@ import importlib_metadata
 from astropy.utils import iers, data
 import hid
 import webbrowser
-from PyQt5.QtWidgets import QWidget
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
@@ -49,6 +48,41 @@ class SettMisc(object):
         self.gameControllerList = dict()
         self.process = None
         self.stopWindow = None
+
+        self.uiTabs = {
+            'Almanac': {
+                'cb': self.ui.showTabAlmanac,
+                'tab': self.ui.mainTabWidget
+            },
+            'Environ': {
+                'cb': self.ui.showTabEnviron,
+                'tab': self.ui.mainTabWidget
+            },
+            'Satellite': {
+                'cb': self.ui.showTabSatellite,
+                'tab': self.ui.mainTabWidget,
+            },
+            'MPC': {
+                'cb': self.ui.showTabMPC,
+                'tab': self.ui.mainTabWidget,
+            },
+            'Tools': {
+                'cb': self.ui.showTabTools,
+                'tab': self.ui.mainTabWidget,
+            },
+            'Dome': {
+                'cb': self.ui.showTabDome,
+                'tab': self.ui.settingsTabWidget,
+            },
+            'ParkPos': {
+                'cb': self.ui.showTabParkPos,
+                'tab': self.ui.settingsTabWidget,
+            },
+            'Profile': {
+                'cb': self.ui.showTabProfile,
+                'tab': self.ui.settingsTabWidget,
+            },
+        }
 
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -96,7 +130,8 @@ class SettMisc(object):
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', False))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
-        self.ui.storeTabOrder.setChecked(config.get('storeTabOrder', False))
+        self.ui.tabsMovable.setChecked(config.get('tabsMovable', False))
+        self.ui.resetTabOrder.setChecked(config.get('resetTabOrder', False))
         self.ui.automateFast.setChecked(config.get('automateFast', False))
         self.ui.automateNormal.setChecked(config.get('automateSlow', True))
         self.ui.automateSlow.setChecked(config.get('automateSlow', True))
@@ -156,7 +191,8 @@ class SettMisc(object):
         config['automateNormal'] = self.ui.automateNormal.isChecked()
         config['automateSlow'] = self.ui.automateSlow.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
-        config['storeTabOrder'] = self.ui.storeTabOrder.isChecked()
+        config['tabsMovable'] = self.ui.tabsMovable.isChecked()
+        config['resetTabOrder'] = self.ui.resetTabOrder.isChecked()
         config['unitTimeUTC'] = self.ui.unitTimeUTC.isChecked()
         config['unitTimeLocal'] = self.ui.unitTimeLocal.isChecked()
         config['addProfileGroup'] = self.ui.addProfileGroup.isChecked()
@@ -431,8 +467,9 @@ class SettMisc(object):
         packageName = 'mountwizzard4'
         actPackage = importlib_metadata.version(packageName)
         self.ui.versionActual.setText(actPackage)
+        isOnline = self.ui.isOnline.isChecked()
 
-        if not self.ui.isOnline.isChecked():
+        if not isOnline:
             self.ui.versionAvailable.setText('disabled')
             self.ui.installVersion.setEnabled(False)
             return False
@@ -484,7 +521,7 @@ class SettMisc(object):
         self.log.debug(f'VENV status: [{status}]')
         return status
 
-    def checkUpdateVersion(self, versionPackage):
+    def checkNewQt5LibNeeded(self, versionPackage):
         """
         :return:
         """
@@ -518,10 +555,10 @@ class SettMisc(object):
             updaterScript = "\"" + updaterScript + "\""
             pythonRuntime = "\"" + pythonPath + "\""
 
-        uType = self.checkUpdateVersion(versionPackage)
-        if uType is None:
+        needNewQt5Lib = self.checkNewQt5LibNeeded(versionPackage)
+        if needNewQt5Lib is None:
             return False
-        elif uType:
+        elif needNewQt5Lib:
             updateType = 'GUI'
         else:
             updateType = 'CLI'
@@ -674,42 +711,8 @@ class SettMisc(object):
         """
         :return:
         """
-        tabs = {
-            'Almanac': {
-                'cb': self.ui.showTabAlmanac,
-                'tab': self.ui.mainTabWidget
-            },
-            'Environ': {
-                'cb': self.ui.showTabEnviron,
-                'tab': self.ui.mainTabWidget
-            },
-            'Satellite': {
-                'cb': self.ui.showTabSatellite,
-                'tab': self.ui.mainTabWidget,
-            },
-            'MPC': {
-                'cb': self.ui.showTabMPC,
-                'tab': self.ui.mainTabWidget,
-            },
-            'Tools': {
-                'cb': self.ui.showTabTools,
-                'tab': self.ui.mainTabWidget,
-            },
-            'Dome': {
-                'cb': self.ui.showTabDome,
-                'tab': self.ui.settingsTabWidget,
-            },
-            'ParkPos': {
-                'cb': self.ui.showTabParkPos,
-                'tab': self.ui.settingsTabWidget,
-            },
-            'Profile': {
-                'cb': self.ui.showTabProfile,
-                'tab': self.ui.settingsTabWidget,
-            },
-        }
-        for tab in tabs:
-            isVisible = tabs[tab]['cb'].isChecked()
-            tabIndex = self.getTabIndex(tabs[tab]['tab'], tab)
-            tabs[tab]['tab'].setTabVisible(tabIndex, isVisible)
+        for tab in self.uiTabs:
+            isVisible = self.uiTabs[tab]['cb'].isChecked()
+            tabIndex = self.getTabIndex(self.uiTabs[tab]['tab'], tab)
+            self.uiTabs[tab]['tab'].setTabVisible(tabIndex, isVisible)
         return True

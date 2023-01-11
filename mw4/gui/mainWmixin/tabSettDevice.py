@@ -112,13 +112,13 @@ class SettDevice:
                 'uiDropDown': self.ui.onlineWeatherDevice,
                 'uiSetup': self.ui.onlineWeatherSetup,
                 'class': self.app.onlineWeather,
-                'deviceType': None,
+                'deviceType': 'observingconditions',
             },
             'seeingWeather': {
                 'uiDropDown': self.ui.seeingWeatherDevice,
                 'uiSetup': self.ui.seeingWeatherSetup,
                 'class': self.app.seeingWeather,
-                'deviceType': None,
+                'deviceType': 'observingconditions',
             },
             'skymeter': {
                 'uiDropDown': self.ui.skymeterDevice,

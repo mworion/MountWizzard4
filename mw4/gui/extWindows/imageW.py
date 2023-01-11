@@ -21,7 +21,6 @@ import os
 # external packages
 import pyqtgraph as pg
 from PyQt5.QtCore import pyqtSignal, QObject, Qt
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QFont, QGuiApplication, QCursor
 from skyfield.api import Angle
 
@@ -97,7 +96,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         config = self.app.config['imageW']
 
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.tabImage, config, 'tabMain')
+        self.setTabAndIndex(self.ui.tabImage, config, 'orderMain')
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.snTarget.setCurrentIndex(config.get('snTarget', 0))
         self.ui.tabImage.setCurrentIndex(config.get('tabImage', 0))
@@ -114,6 +113,8 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.ui.showValues.setChecked(config.get('showValues', False))
         self.ui.offsetTiltAngle.setValue(config.get('offsetTiltAngle', 0))
         self.ui.timeTagImage.setChecked(config.get('timeTagImage', True))
+        isMovable = self.app.config['mainW'].get('tabsMovable', False)
+        self.enableTabsMovable(isMovable)
         self.setCrosshair()
         return True
 
@@ -132,8 +133,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        store = self.app.mainW.ui.storeTabOrder.isChecked()
-        self.getTabAndIndex(self.ui.tabImage, config, 'tabMain', store)
+        self.getTabAndIndex(self.ui.tabImage, config, 'tabMain')
         config['color'] = self.ui.color.currentIndex()
         config['snTarget'] = self.ui.snTarget.currentIndex()
         config['tabImage'] = self.ui.tabImage.currentIndex()
@@ -149,6 +149,14 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         config['showValues'] = self.ui.showValues.isChecked()
         config['offsetTiltAngle'] = self.ui.offsetTiltAngle.value()
         config['timeTagImage'] = self.ui.timeTagImage.isChecked()
+        return True
+
+    def enableTabsMovable(self, isMovable):
+        """
+        :param isMovable:
+        :return:
+        """
+        self.ui.tabImage.setMovable(isMovable)
         return True
 
     def showWindow(self):
@@ -195,6 +203,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.app.colorChange.connect(self.colorChange)
         self.app.showImage.connect(self.showImage)
         self.app.operationRunning.connect(self.operationMode)
+        self.app.tabsMovable.connect(self.enableTabsMovable)
 
         self.wIcon(self.ui.load, 'load')
         self.operationMode(self.app.statusOperationRunning)
@@ -444,6 +453,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.clearGui()
         if not imagePath:
             return False
+        imagePath = os.path.normpath(imagePath)
         if not os.path.isfile(imagePath):
             return False
 

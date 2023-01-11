@@ -79,7 +79,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         config = self.app.config['hemisphereW']
 
         self.positionWindow(config)
-        self.setTabAndIndex(self.ui.tabWidget, config, 'tabMain')
+        self.setTabAndIndex(self.ui.tabWidget, config, 'orderMain')
         self.ui.showSlewPath.setChecked(config.get('showSlewPath', False))
         self.ui.showMountLimits.setChecked(config.get('showMountLimits', False))
         self.ui.showCelestial.setChecked(config.get('showCelestial', False))
@@ -89,6 +89,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.ui.showTerrain.setChecked(config.get('showTerrain', False))
         self.ui.showIsoModel.setChecked(config.get('showIsoModel', False))
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
+        isMovable = self.app.config['mainW'].get('tabsMovable', False)
+        self.enableTabsMovable(isMovable)
+
         self.mwSuper('initConfig')
         return True
 
@@ -107,8 +110,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         config['winPosY'] = max(self.pos().y(), 0)
         config['height'] = self.height()
         config['width'] = self.width()
-        store = self.app.mainW.ui.storeTabOrder.isChecked()
-        self.getTabAndIndex(self.ui.tabWidget, config, 'tabMain', store)
+        self.getTabAndIndex(self.ui.tabWidget, config, 'orderMain')
         config['showSlewPath'] = self.ui.showSlewPath.isChecked()
         config['showMountLimits'] = self.ui.showMountLimits.isChecked()
         config['showCelestial'] = self.ui.showCelestial.isChecked()
@@ -119,6 +121,14 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         config['showIsoModel'] = self.ui.showIsoModel.isChecked()
         config['tabWidget'] = self.ui.tabWidget.currentIndex()
         self.mwSuper('storeConfig')
+        return True
+
+    def enableTabsMovable(self, isMovable):
+        """
+        :param isMovable:
+        :return:
+        """
+        self.ui.tabWidget.setMovable(isMovable)
         return True
 
     def closeEvent(self, closeEvent):
@@ -151,6 +161,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
         self.app.mount.signals.alignDone.connect(self.drawHemisphereTab)
         self.app.mount.signals.settingDone.connect(self.updateOnChangedParams)
+        self.app.tabsMovable.connect(self.enableTabsMovable)
         self.ui.showSlewPath.clicked.connect(self.drawHemisphereTab)
         self.ui.showHorizon.clicked.connect(self.drawHemisphereTab)
         self.ui.showAlignStar.clicked.connect(self.drawHemisphereTab)
@@ -813,9 +824,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         else:
             alignType = 'polar'
 
-        t = f'Align [{reply}] to [{name}]'
+        t = f'Align [{alignType}] to [{name}]'
         self.msg.emit(1, 'Hemisphere', 'Align', t)
-        suc = self.slewTargetRaDec(ra, dec, slewType=alignType)
+        suc = self.slewTargetRaDec(ra, dec, slewType=alignType, epoch='JNow')
         return suc
 
     def mouseDoubleClick(self, ev, posView):

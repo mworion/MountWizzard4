@@ -1112,7 +1112,7 @@ class MainW:
             def setChecked(self, value):
                 self.checked = value
 
-        storeTabOrder = CheckBox()
+        tabsMovable = CheckBox()
     ui = Test()
 
 
@@ -1120,12 +1120,13 @@ class App(QObject):
     config = {'mainW': {}}
     deviceStat = {}
     statusOperationRunning = 0
+    tabsMovable = pyqtSignal(object)
     update10s = pyqtSignal()
     timer0_1s = QTimer()
     update0_1s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()
-    update30s = pyqtSignal()
+    update30s = pyqtSignal(bool)
     update10m = pyqtSignal()
     update30m = pyqtSignal()
     update1h = pyqtSignal()

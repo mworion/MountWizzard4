@@ -37,7 +37,7 @@ class PegasusUPBAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        maxSwitch = self.getAscomProperty('maxswitch')
+        maxSwitch = self.getAscomProperty('MaxSwitch')
         model = 'UPB' if maxSwitch == 15 else 'UPBv2'
 
         self.data['FIRMWARE_INFO.VERSION'] = '1.4' if model == 'UPB' else '2.1'
@@ -103,7 +103,7 @@ class PegasusUPBAscom(AscomClass):
         if port is None:
             return False
 
-        maxSwitch = self.getAscomProperty('maxswitch')
+        maxSwitch = self.getAscomProperty('MaxSwitch')
         model = 'UPB' if maxSwitch == 15 else 'UPBv2'
         if model == 'UPBv2':
             switchNumber = int(port) + 6
@@ -115,7 +115,7 @@ class PegasusUPBAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        maxSwitch = self.getAscomProperty('maxswitch')
+        maxSwitch = self.getAscomProperty('MaxSwitch')
         model = 'UPB' if maxSwitch == 15 else 'UPBv2'
 
         if model == 'UPB':
@@ -134,7 +134,7 @@ class PegasusUPBAscom(AscomClass):
         if value is None:
             return False
 
-        maxSwitch = self.getAscomProperty('maxswitch')
+        maxSwitch = self.getAscomProperty('MaxSwitch')
         model = 'UPB' if maxSwitch == 15 else 'UPBv2'
 
         switchNumber = ord(port) - ord('A') + 4

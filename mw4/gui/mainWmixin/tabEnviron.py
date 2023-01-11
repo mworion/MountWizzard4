@@ -65,7 +65,7 @@ class Environ:
         self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
-        self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
+        self.ui.unitTimeUTC.clicked.connect(self.updateSeeingEntries)
         self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
         self.clickable(self.ui.meteoblueIcon).connect(self.openMeteoblue)
         # cyclic functions

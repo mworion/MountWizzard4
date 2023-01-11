@@ -37,7 +37,6 @@ class LoggerWriter:
         self.standard = std
 
     def write(self, message):
-        self.standard.write(message)
         first = True
         for line in message.rstrip().splitlines():
             if first:
@@ -105,7 +104,17 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
     setattr(logging.getLoggerClass(), methodName, logForLevel)
 
 
-def setupLogging():
+def redirectSTD():
+    """
+    :return:
+    """
+    # transfer all sys outputs to logging
+    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
+    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
+    return True
+
+
+def setupLogging(redirect=True):
     """
     setupLogging defines the logger and formats and disables unnecessary
     library logging
@@ -140,9 +149,8 @@ def setupLogging():
     addLoggingLevel('HEADER', 55)
     addLoggingLevel('UI', 35)
     addLoggingLevel('TRACE', 5)
-    # transfer all sys outputs to logging
-    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
-    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
+    if redirect:
+        redirectSTD()
     return True
 
 

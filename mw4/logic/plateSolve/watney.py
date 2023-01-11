@@ -136,8 +136,8 @@ class Watney(object):
         self.result = {'success': False,
                        'message': 'Internal error'}
         isBlind = self.searchRadius == 180
-        jsonPath = self.tempDir + '/solve.json'
-        wcsPath = self.tempDir + '/temp.wcs'
+        jsonPath = os.path.normpath(self.tempDir + '/solve.json')
+        wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
 
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'Image missing'

@@ -202,6 +202,7 @@ class AutomateWindows(QObject):
 
         for updaterApp in self.updaterAppList:
             fullPath = f'{values["InstallLocation"]}/{updaterApp}'
+            fullPath = os.path.normpath(fullPath)
             if os.path.isfile(fullPath):
                 break
         else:

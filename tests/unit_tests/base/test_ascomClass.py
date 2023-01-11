@@ -64,8 +64,8 @@ def test_stopTimer(function):
 
 
 def test_getAscomProperty_1(function):
-    function.propertyExceptions = ['connect']
-    val = function.getAscomProperty('Connect')
+    function.propertyExceptions = ['Connected']
+    val = function.getAscomProperty('Connected')
     assert val is None
 
 
@@ -74,9 +74,9 @@ def test_getAscomProperty_2(function):
     with mock.patch.object(builtins,
                            'eval',
                            side_effect=Exception):
-        val = function.getAscomProperty('Connect')
+        val = function.getAscomProperty('Connected')
         assert val is None
-        assert 'connect' in function.propertyExceptions
+        assert 'Connected' in function.propertyExceptions
 
 
 def test_getAscomProperty_3(function):
@@ -85,7 +85,7 @@ def test_getAscomProperty_3(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
-    val = function.getAscomProperty('Connect')
+    val = function.getAscomProperty('Connected')
     assert val
 
 
@@ -96,13 +96,13 @@ def test_getAscomProperty_4(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
-    val = function.getAscomProperty('imagearray')
+    val = function.getAscomProperty('Imagearray')
     assert val is None
 
 
 def test_setAscomProperty_1(function):
-    function.propertyExceptions = ['connect']
-    suc = function.setAscomProperty('Connect', True)
+    function.propertyExceptions = ['Connected']
+    suc = function.setAscomProperty('Connected', True)
     assert not suc
 
 
@@ -111,7 +111,7 @@ def test_setAscomProperty_2(function):
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
-        suc = function.setAscomProperty('Connect', True)
+        suc = function.setAscomProperty('Connected', True)
         assert not suc
         assert 'Connect' not in function.propertyExceptions
 
@@ -132,14 +132,14 @@ def test_setAscomProperty_4(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
-    suc = function.setAscomProperty('Connect', True)
+    suc = function.setAscomProperty('Connected', True)
     assert suc
     assert function.client
 
 
 def test_callAscomMethod_1(function):
-    function.propertyExceptions = ['Connect']
-    suc = function.callAscomMethod('Connect', True)
+    function.propertyExceptions = ['Connected']
+    suc = function.callAscomMethod('Connected', True)
     assert not suc
 
 
@@ -148,9 +148,9 @@ def test_callAscomMethod_2(function):
     with mock.patch.object(builtins,
                            'exec',
                            side_effect=Exception):
-        suc = function.callAscomMethod('Connect', True)
+        suc = function.callAscomMethod('Connected', True)
         assert not suc
-        assert 'Connect' in function.propertyExceptions
+        assert 'Connected' in function.propertyExceptions
 
 
 def test_callAscomMethod_3(function):
@@ -160,8 +160,8 @@ def test_callAscomMethod_3(function):
     function.client = Client()
     function.propertyExceptions = ['Test']
     with mock.patch.object(function.client,
-                           'Connect'):
-        suc = function.callAscomMethod('Connect', True)
+                           'Connected'):
+        suc = function.callAscomMethod('Connected', True)
         assert suc
         assert function.client
 
@@ -173,8 +173,8 @@ def test_callAscomMethod_4(function):
     function.client = Client()
     function.propertyExceptions = ['Test']
     with mock.patch.object(function.client,
-                           'Connect'):
-        suc = function.callAscomMethod('Connect', (True, 1))
+                           'Connected'):
+        suc = function.callAscomMethod('Connected', (True, 1))
         assert suc
         assert function.client
 

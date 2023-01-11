@@ -142,6 +142,11 @@ def test_closeEvent_1(function):
                     function.closeEvent(QCloseEvent())
 
 
+def test_enableTabsMovable(function):
+    suc = function.enableTabsMovable()
+    assert suc
+
+
 def test_quitSave_1(function):
     function.ui.profile.setText('test')
     with mock.patch.object(function,
@@ -726,15 +731,15 @@ def test_switchProfile_1(function):
                         assert suc
 
 
-def test_loadProfile_1(function):
+def test_loadProfileGUI_1(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=(None, None, 'cfg')):
-        suc = function.loadProfile()
+        suc = function.loadProfileGUI()
         assert not suc
 
 
-def test_loadProfile_2(function):
+def test_loadProfileGUI2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
@@ -743,11 +748,11 @@ def test_loadProfile_2(function):
                                return_value={}):
             with mock.patch.object(function,
                                    'switchProfile'):
-                suc = function.loadProfile()
+                suc = function.loadProfileGUI()
                 assert not suc
 
 
-def test_loadProfile_3(function):
+def test_loadProfileGUI_3(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
@@ -756,19 +761,19 @@ def test_loadProfile_3(function):
                                return_value={'test': 1}):
             with mock.patch.object(function,
                                    'switchProfile'):
-                suc = function.loadProfile()
+                suc = function.loadProfileGUI()
                 assert suc
 
 
-def test_addProfile_1(function):
+def test_addProfileGUI_1(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=(None, None, 'cfg')):
-        suc = function.addProfile()
+        suc = function.addProfileGUI()
         assert not suc
 
 
-def test_addProfile_2(function):
+def test_addProfileGUI_2(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
@@ -779,11 +784,11 @@ def test_addProfile_2(function):
                                    'switchProfile'):
                 with mock.patch.object(gui.mainWindow.mainW,
                                        'blendProfile'):
-                    suc = function.addProfile()
+                    suc = function.addProfileGUI()
                     assert not suc
 
 
-def test_addProfile_3(function):
+def test_addProfileGUI_3(function):
     with mock.patch.object(function,
                            'openFile',
                            return_value=('config', 'test', 'cfg')):
@@ -794,7 +799,7 @@ def test_addProfile_3(function):
                                    'switchProfile'):
                 with mock.patch.object(gui.mainWindow.mainW,
                                        'blendProfile'):
-                    suc = function.addProfile()
+                    suc = function.addProfileGUI()
                     assert suc
 
 

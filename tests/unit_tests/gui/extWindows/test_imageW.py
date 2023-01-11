@@ -67,6 +67,11 @@ def test_storeConfig_2(function):
     assert suc
 
 
+def test_enableTabsMovable(function):
+    suc = function.enableTabsMovable(True)
+    assert suc
+
+
 def test_closeEvent_1(function):
     with mock.patch.object(function,
                            'show'):

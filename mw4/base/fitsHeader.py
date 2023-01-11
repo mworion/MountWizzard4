@@ -32,11 +32,14 @@ __all__ = ['getCoordinates',
 log = logging.getLogger()
 
 
-def getCoordinates(header={}):
+def getCoordinates(header=None):
     """
     :param header:
     :return:
     """
+    if header is None:
+        header = {}
+
     if 'RA' in header and 'DEC' in header:
         hasDecimal = True
     else:
@@ -65,11 +68,14 @@ def getCoordinates(header={}):
     return ra, dec
 
 
-def getSQM(header={}):
+def getSQM(header=None):
     """
     :param header:
     :return:
     """
+    if header is None:
+        header = {}
+
     for key in ['SQM', 'SKY-QLTY', 'MPSAS']:
         value = header.get(key)
         if value is None:
@@ -80,11 +86,14 @@ def getSQM(header={}):
     return float(value)
 
 
-def getExposure(header={}):
+def getExposure(header=None):
     """
     :param header:
     :return:
     """
+    if header is None:
+        header = {}
+
     for key in ['EXPOSURE', 'EXPTIME']:
         value = header.get(key)
         if value is None:
@@ -95,11 +104,14 @@ def getExposure(header={}):
     return float(value)
 
 
-def getScale(header={}):
+def getScale(header=None):
     """
     :param header:
     :return:
     """
+    if header is None:
+        header = {}
+
     hasScale = 'SCALE' in header
     focalLength = float(header.get('FOCALLEN', 0))
     binning = float(header.get('XBINNING', 0))

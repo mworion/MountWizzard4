@@ -96,7 +96,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param dest:
         :return:
         """
-        r = requests.get(url, stream=True, timeout=1)
+        r = requests.get(url, stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get('content-length', 1))
         if r.text.startswith('<') or r.status_code != 200:
             return False
@@ -133,6 +133,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param unzip:
         :return:
         """
+        dest = os.path.normpath(dest)
         if not os.path.dirname(dest):
             return False
         if os.path.isfile(dest):

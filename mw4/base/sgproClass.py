@@ -34,7 +34,7 @@ class SGProClass(DriverData, QObject):
     """
     log = logging.getLogger(__name__)
 
-    SGPRO_TIMEOUT = 1
+    SGPRO_TIMEOUT = 3
     HOST_ADDR = '127.0.0.1'
     PORT = 59590
     PROTOCOL = 'http'

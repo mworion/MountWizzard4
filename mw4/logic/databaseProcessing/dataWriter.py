@@ -50,6 +50,7 @@ class DataWriter:
         if destDir == sourceDir:
             return False
 
+        destDir = os.path.normpath(destDir)
         if not os.path.isfile(sourceDir + 'CDFLeapSeconds.txt'):
             return False
 

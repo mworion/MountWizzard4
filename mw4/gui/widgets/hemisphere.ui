@@ -650,7 +650,7 @@
       <enum>Qt::ElideNone</enum>
      </property>
      <property name="movable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <widget class="QWidget" name="HemisphereTab">
       <attribute name="title">

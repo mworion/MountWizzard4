@@ -581,28 +581,15 @@ def test_isVenv_1(function):
     function.isVenv()
 
 
-def test_startUpdater_1(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(os,
-                               'execl'):
-            with mock.patch.object(function,
-                                   'checkUpdateVersion',
-                                   return_value=None):
-                suc = function.startUpdater('1.2.3')
-                assert not suc
-
-
-def test_checkUpdateVersion_(function):
+def test_checkNewQt5LibNeeded_0(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
-        suc = function.checkUpdateVersion('1.2.3')
+        suc = function.checkNewQt5LibNeeded('1.2.3')
         assert suc
 
 
-def test_checkUpdateVersion_1(function):
+def test_checkNewQt5LibNeeded_1(function):
     class Test:
         @staticmethod
         def json():
@@ -615,11 +602,11 @@ def test_checkUpdateVersion_1(function):
                                'get',
                                return_value=Test(),
                                side_effect=Exception):
-            suc = function.checkUpdateVersion('1.2.3')
+            suc = function.checkNewQt5LibNeeded('1.2.3')
             assert suc is None
 
 
-def test_checkUpdateVersion_2(function):
+def test_checkNewQt5LibNeeded_2(function):
     class Test:
         @staticmethod
         def json():
@@ -634,11 +621,11 @@ def test_checkUpdateVersion_2(function):
             with mock.patch.object(importlib_metadata,
                                    'version',
                                    return_value='5.15.4'):
-                suc = function.checkUpdateVersion('1.2.3')
+                suc = function.checkNewQt5LibNeeded('1.2.3')
                 assert suc
 
 
-def test_checkUpdateVersion_3(function):
+def test_checkNewQt5LibNeeded_3(function):
     class Test:
         @staticmethod
         def json():
@@ -653,7 +640,20 @@ def test_checkUpdateVersion_3(function):
             with mock.patch.object(importlib_metadata,
                                    'version',
                                    return_value='5.14.4'):
-                suc = function.checkUpdateVersion('1.2.3')
+                suc = function.checkNewQt5LibNeeded('1.2.3')
+                assert not suc
+
+
+def test_startUpdater_1(function):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        with mock.patch.object(os,
+                               'execl'):
+            with mock.patch.object(function,
+                                   'checkNewQt5LibNeeded',
+                                   return_value=None):
+                suc = function.startUpdater('1.2.3')
                 assert not suc
 
 
@@ -664,7 +664,7 @@ def test_startUpdater_2(function):
         with mock.patch.object(os,
                                'execl'):
             with mock.patch.object(function,
-                                   'checkUpdateVersion',
+                                   'checkNewQt5LibNeeded',
                                    return_value=True):
                 suc = function.startUpdater('1.2.3')
                 assert suc
@@ -677,7 +677,7 @@ def test_startUpdater_3(function):
         with mock.patch.object(os,
                                'execl'):
             with mock.patch.object(function,
-                                   'checkUpdateVersion',
+                                   'checkNewQt5LibNeeded',
                                    return_value=False):
                 suc = function.startUpdater('1.2.3')
                 assert suc

@@ -26,15 +26,15 @@ import datetime
 import argparse
 import tarfile
 
-# sys.stdout.reconfigure(encoding='utf-8')
-# sys.stderr.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
     py = 'python'
 else:
     py = 'python3'
 
 log = logging.getLogger()
-version = '3.0beta6'
+version = '3.0beta8'
 
 
 def run(command):
@@ -115,7 +115,6 @@ class EnvBuilder(venv.EnvBuilder):
 
         binPath = os.path.dirname(findfile(os.getcwd(), 'activate')) + os.pathsep
         os.environ['PATH'] = binPath + os.environ['PATH']
-        #sys.path.insert(1, os.path.dirname(findfile(venvPath, 'easy_install.py')))
 
 
 class LoggerWriter:
@@ -128,7 +127,6 @@ class LoggerWriter:
         self.standard = std
 
     def write(self, message):
-        self.standard.write(message)
         first = True
         for line in message.rstrip().splitlines():
             if first:
@@ -163,7 +161,6 @@ def setupLogging():
                         filename=logFile)
     # transfer all sys outputs to logging
     sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
-    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
     return True
 
 
@@ -513,7 +510,7 @@ def main(args=None):
         return
 
     parser = argparse.ArgumentParser(
-        prog=__name__, description='Installs MountWizzard4 in Python virtual '
+        prog=__name__, description='Installs MW4 in Python virtual '
                                    'environment in local workdir')
     parser.add_argument(
         '--upgrade-venv', default=False, action='store_true', dest='upgrade',
@@ -521,25 +518,25 @@ def main(args=None):
              'Python, assuming Python has been upgraded in-place.')
     parser.add_argument(
         '--update', default=False, action='store_true', dest='updateMW4',
-        help='Update MountWizzard4 to the actual release version')
+        help='Update MW4 to the actual release version')
     parser.add_argument(
         '--update-beta', default=False, action='store_true', dest='updateMW4beta',
-        help='Update MountWizzard4 to the actual beta version')
+        help='Update MW4 to the actual beta version')
     parser.add_argument(
         '--version', default='', type=str, dest='version',
-        help='Update MountWizzard4 to the named version')
+        help='Update MW4 to the named version')
     parser.add_argument(
         '--no-start', default=False, action='store_true', dest='noStart',
-        help='Running script without starting MountWizzard4')
+        help='Running script without starting MW4')
     parser.add_argument(
         '--clean', default=False, action='store_true', dest='clean',
         help='Cleaning system packages from faulty installs')
     parser.add_argument(
         '--scale', default=1, type=float, dest='scale',
-        help='Setting Qt DPI scale factor for MountWizzard4')
+        help='Setting Qt DPI scale factor (+scale = +size)')
     parser.add_argument(
         '--dpi', default=96, type=float, dest='dpi',
-        help='Setting QT font DPI for MountWizzard4')
+        help='Setting QT font DPI (+dpi = -fontsize)')
     parser.add_argument(
         '--basic', default=False, action='store_true', dest='basic',
         help='Upgrade basic install packages')
@@ -559,8 +556,8 @@ def main(args=None):
                       updateBeta=options.updateMW4beta,
                       version=options.version)
     if platform.system() == 'Windows':
-        os.environ['QT_SCALE_FACTOR'] = str(options.scale)
-        os.environ['QT_FONT_DPI'] = str(options.dpi)
+        os.environ['QT_SCALE_FACTOR'] = f'{options.scale:2.1f}'
+        os.environ['QT_FONT_DPI'] = f'{options.dpi:2.0f}'
 
     if not options.noStart and command:
         print('MountWizzard4 is ready')

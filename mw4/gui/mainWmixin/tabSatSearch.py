@@ -120,7 +120,7 @@ class SatSearch(object):
 
         self.app.update1s.connect(self.satCalcDynamicTable)
         self.app.update10m.connect(self.updateSatTable)
-        self.ui.unitTimeUTC.toggled.connect(self.satCalcTable)
+        self.ui.unitTimeUTC.clicked.connect(self.satCalcTable)
 
     def initConfig(self):
         """
@@ -625,7 +625,7 @@ class SatSearch(object):
         loader = self.app.mount.obsSite.loader
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
-        filePath = f'{dirPath}/{fileName}'
+        filePath = os.path.normpath(f'{dirPath}/{fileName}')
         if not isOnline:
             source = filePath
         satellites = loader.tle_file(source, reload=isOnline)

@@ -19,7 +19,7 @@ import platform
 
 # external packages
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QListView, QComboBox, QLineEdit
+from PyQt5.QtWidgets import QListView, QComboBox, QLineEdit
 from PyQt5.QtWidgets import QCheckBox, QDoubleSpinBox
 
 if platform.system() == 'Windows':
@@ -111,7 +111,7 @@ class DevicePopup(toolsQtWidget.MWidget):
                 'appPath': self.ui.watneyAppPath,
                 'indexPath': self.ui.watneyIndexPath,
             },
-            'weather': {
+            'onlineWeather': {
                 'apiKey': self.ui.onlineWeatherApiKey,
                 'hostaddress': self.ui.onlineWeatherHostAddress,
             },
@@ -269,7 +269,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.close()
         return True
 
-    def updateIndiDeviceNameList(self, deviceNames=[]):
+    def updateIndiDeviceNameList(self, deviceNames):
         """
         updateIndiDeviceNameList updates the indi device name selectors combobox
         with the discovered entries. therefore it deletes the old list and
@@ -310,7 +310,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.updateIndiDeviceNameList(deviceNames=deviceNames)
         return True
 
-    def updateAlpacaDeviceNameList(self, deviceNames=[]):
+    def updateAlpacaDeviceNameList(self, deviceNames):
         """
         updateAlpacaDeviceNameList updates the indi device name selectors
         combobox with the discovered entries. therefore it deletes the old list
@@ -350,7 +350,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.updateAlpacaDeviceNameList(deviceNames=deviceNames)
         return True
 
-    def updateSGProDeviceNameList(self, deviceNames=[]):
+    def updateSGProDeviceNameList(self, deviceNames):
         """
         updateSGProDeviceNameList updates the indi device name selectors
         combobox with the discovered entries. therefore it deletes the old list
@@ -388,7 +388,7 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.updateSGProDeviceNameList(deviceNames=deviceNames)
         return True
 
-    def updateNINADeviceNameList(self, deviceNames=[]):
+    def updateNINADeviceNameList(self, deviceNames):
         """
         updateSGProDeviceNameList updates the indi device name selectors
         combobox with the discovered entries. therefore it deletes the old list
@@ -415,13 +415,13 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', True)
         deviceNames = nina.discoverDevices()
         if not deviceNames:
-            self.msg.emit(2, 'N.I.N.A.', 'Device', 'No devices found')
+            self.msg.emit(2, 'NINA', 'Device', 'No devices found')
 
-        deviceNames.insert(0, 'N.I.N.A. controlled')
+        deviceNames.insert(0, 'NINA controlled')
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', False)
 
         for deviceName in deviceNames:
-            self.msg.emit(0, 'N.I.N.A.', 'Device discovered', f'{deviceName}')
+            self.msg.emit(0, 'NINA', 'Device discovered', f'{deviceName}')
 
         self.updateNINADeviceNameList(deviceNames=deviceNames)
         return True

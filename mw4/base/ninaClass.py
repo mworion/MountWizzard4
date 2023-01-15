@@ -122,7 +122,7 @@ class NINAClass(DriverData, QObject):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def disconnectDevice(self):
         """
@@ -133,7 +133,7 @@ class NINAClass(DriverData, QObject):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def enumerateDevice(self):
         """
@@ -144,7 +144,7 @@ class NINAClass(DriverData, QObject):
         if response is None:
             return []
 
-        return response['Devices']
+        return response.get('Devices', '')
 
     def workerConnectDevice(self):
         """
@@ -227,7 +227,7 @@ class NINAClass(DriverData, QObject):
         if response is None:
             return False
 
-        state = response['State']
+        state = response.get('State', -1)
         self.storePropertyToData(state, 'Device.Status')
         if state == 3:
             self.storePropertyToData('integrating downloading image is ready',

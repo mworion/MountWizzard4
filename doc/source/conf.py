@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python3, (c) 2019-2021 by mworion
+# written in python3, (c) 2019-2023 by mworion
 #
 # Licence APL2.0
 #
@@ -36,12 +36,12 @@
 # -- Project information -----------------------------------------------------
 
 project = 'MountWizzard4'
-copyright = '2022, mworion'
+copyright = '2023, mworion'
 author = 'Michael Würtenberger'
 
 # The full version, including alpha/beta/rc tags
-version = '3.0.0b8'
-release = '3.0.0b8'
+version = '3.0.0b9'
+release = '3.0.0b9'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

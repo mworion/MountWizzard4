@@ -122,7 +122,7 @@ class SGProClass(DriverData, QObject):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def sgDisconnectDevice(self):
         """
@@ -133,7 +133,7 @@ class SGProClass(DriverData, QObject):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def sgEnumerateDevice(self):
         """
@@ -144,7 +144,7 @@ class SGProClass(DriverData, QObject):
         if response is None:
             return []
 
-        return response['Devices']
+        return response.get('Devices', '')
 
     def workerConnectDevice(self):
         """
@@ -230,7 +230,7 @@ class SGProClass(DriverData, QObject):
         self.storePropertyToData(response['State'], 'Device.Status')
         self.storePropertyToData(response['Message'], 'Device.Message')
 
-        if response['State'] == 'DISCONNECTED':
+        if response.get('State', '') == 'DISCONNECTED':
             if self.deviceConnected:
                 self.deviceConnected = False
                 self.signals.deviceDisconnected.emit(f'{self.deviceName}')

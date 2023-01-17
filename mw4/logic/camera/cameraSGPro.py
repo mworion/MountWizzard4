@@ -50,7 +50,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if response is None:
             return False, {}
 
-        return response['Success'], response
+        return response.get('Success', ''), response
 
     def sgSetCameraTemp(self, temperature):
         """
@@ -62,7 +62,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def sgCaptureImage(self, params):
         """
@@ -73,7 +73,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if response is None:
             return False, {}
 
-        return response['Success'], response
+        return response.get('Success', ''), response
 
     def sgAbortImage(self):
         """
@@ -83,7 +83,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def sgGetImagePath(self, receipt):
         """
@@ -95,7 +95,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def sgGetCameraProps(self):
         """
@@ -105,7 +105,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         if response is None:
             return False, {}
 
-        return response['Success'], response
+        return response.get('Success', ''), response
 
     def workerGetInitialConfig(self):
         """

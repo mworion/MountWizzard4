@@ -49,7 +49,7 @@ class CameraNINA(NINAClass, CameraSupport):
         if response is None:
             return False, {}
 
-        return response['Success'], response
+        return response.get('Success', ''), response
 
     def setCameraTemp(self, temperature):
         """
@@ -61,7 +61,7 @@ class CameraNINA(NINAClass, CameraSupport):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def captureImage(self, params):
         """
@@ -72,7 +72,7 @@ class CameraNINA(NINAClass, CameraSupport):
         if response is None:
             return False, {}
 
-        return response['Success'], response
+        return response.get('Success', ''), response
 
     def abortImage(self):
         """
@@ -82,7 +82,7 @@ class CameraNINA(NINAClass, CameraSupport):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def getImagePath(self, receipt):
         """
@@ -94,7 +94,7 @@ class CameraNINA(NINAClass, CameraSupport):
         if response is None:
             return False
 
-        return response['Success']
+        return response.get('Success', '')
 
     def getCameraProps(self):
         """
@@ -104,7 +104,7 @@ class CameraNINA(NINAClass, CameraSupport):
         if response is None:
             return False, {}
 
-        return response['Success'], response
+        return response.get('Success', ''), response
 
     def workerGetInitialConfig(self):
         """

@@ -180,6 +180,13 @@ class PlateSolve:
             'mirroredS': mirrored,
         }
 
+        if 'RA' not in fitsHeader:
+            fitsHeader.append(('RA', wcsHeader['CRVAL1'],
+                               'MW4 - solved parameters'))
+        if 'DEC' not in fitsHeader:
+            fitsHeader.append(('DEC', wcsHeader['CRVAL2'],
+                               'MW4 - solved parameters'))
+
         if not updateFits:
             return solve, fitsHeader
 

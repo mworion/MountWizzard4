@@ -92,8 +92,9 @@ class FileHandler:
             self.log.info('Unknown debayer pattern, keep it')
             return False
 
+        h, w = self.image.shape
         self.image = 0.2989 * R + 0.5870 * (G0 + G1) / 2 + 0.1140 * B
-        self.image = cv2.resize(self.image, (self.w, self.h))
+        self.image = cv2.resize(self.image, (w, h))
         return True
 
     def cleanImageFormat(self):
@@ -187,7 +188,7 @@ class FileHandler:
             return False
 
         self.cleanImageFormat()
-        bayerPattern = self.header.get('BAYERPAT', '')
+        bayerPattern = self.header.get('BAYERPAT', '').strip()
         if bayerPattern:
             self.debayerImage(bayerPattern)
             self.log.debug(f'Image has bayer pattern: {bayerPattern}')

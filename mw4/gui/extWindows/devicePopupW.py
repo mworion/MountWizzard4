@@ -415,13 +415,13 @@ class DevicePopup(toolsQtWidget.MWidget):
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', True)
         deviceNames = nina.discoverDevices()
         if not deviceNames:
-            self.msg.emit(2, 'NINA', 'Device', 'No devices found')
+            self.msg.emit(2, 'N.I.N.A.', 'Device', 'No devices found')
 
-        deviceNames.insert(0, 'NINA controlled')
+        deviceNames.insert(0, 'N.I.N.A. controlled')
         self.changeStyleDynamic(self.ui.ninaDiscover, 'running', False)
 
         for deviceName in deviceNames:
-            self.msg.emit(0, 'NINA', 'Device discovered', f'{deviceName}')
+            self.msg.emit(0, 'N.I.N.A.', 'Device discovered', f'{deviceName}')
 
         self.updateNINADeviceNameList(deviceNames=deviceNames)
         return True

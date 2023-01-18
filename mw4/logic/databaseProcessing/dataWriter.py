@@ -47,25 +47,25 @@ class DataWriter:
         """
         sourceDir = self.app.mwGlob['dataDir'] + '/'
         destDir = installPath + '/'
+
         if destDir == sourceDir:
             return False
-
-        destDir = os.path.normpath(destDir)
         if not os.path.isfile(sourceDir + 'CDFLeapSeconds.txt'):
             return False
-
         if not os.path.isfile(sourceDir + 'finals.data'):
             return False
-
         if not os.path.isfile(sourceDir + 'tai-utc.dat'):
             return False
 
         if updaterApp == 'tenmicron_v2.exe':
-            shutil.copy(sourceDir + 'CDFLeapSeconds.txt', destDir + 'CDFLeapSeconds.txt')
+            shutil.copy(os.path.normpath(sourceDir + 'CDFLeapSeconds.txt'),
+                        os.path.normpath(destDir + 'CDFLeapSeconds.txt'))
         else:
-            shutil.copy(sourceDir + 'tai-utc.dat', destDir + 'tai-utc.dat')
+            shutil.copy(os.path.normpath(sourceDir + 'tai-utc.dat'),
+                        os.path.normpath(destDir + 'tai-utc.dat'))
 
-        shutil.copy(sourceDir + 'finals.data', destDir + 'finals.data')
+        shutil.copy(os.path.normpath(sourceDir + 'finals.data'),
+                    os.path.normpath(destDir + 'finals.data'))
         return True
 
     @staticmethod

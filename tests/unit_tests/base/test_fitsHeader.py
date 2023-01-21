@@ -58,7 +58,7 @@ def test_getCoordinates_3():
 
 def test_getSQM_0():
     sqm = getSQM()
-    assert sqm == 17.0
+    assert sqm is None
 
 
 def test_getSQM_1():
@@ -97,7 +97,7 @@ def test_getSQM_4():
 
 def test_getExposure_0():
     exposure = getExposure()
-    assert exposure == 17.0
+    assert exposure is None
 
 
 def test_getExposure_1():

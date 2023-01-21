@@ -133,16 +133,15 @@ class SatTrack(object):
                                                    altitude_degrees=minAlt)
         return times, events
 
-    def extractOrbits(self, timeNow, times, events):
+    def collectOrbits(self, events, timeNow, times):
         """
+        :param events:
         :param timeNow:
         :param times:
-        :param events:
         :return:
         """
         counter = 0
         self.satOrbits = []
-
         for ti, event in zip(times, events):
             if event == 0:
                 self.satOrbits.append({'rise': ti})
@@ -164,6 +163,16 @@ class SatTrack(object):
 
             if counter > 2:
                 break
+        return counter
+
+    def extractOrbits(self, timeNow, times, events):
+        """
+        :param timeNow:
+        :param times:
+        :param events:
+        :return:
+        """
+        counter = self.collectOrbits(events, timeNow, times)
 
         if not self.satOrbits and np.all(events == 1) and len(events) > 0:
             self.satOrbits.append({'rise': times[0]})

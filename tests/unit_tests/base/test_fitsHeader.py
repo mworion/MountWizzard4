@@ -126,7 +126,7 @@ def test_getExposure_3():
 
 
 def test_getScale_0():
-    scale = getScale(r)
+    scale = getScale()
     assert scale is None
 
 

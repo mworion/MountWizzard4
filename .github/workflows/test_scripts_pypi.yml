@@ -125,7 +125,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: uraimo/run-on-arch-action@v2.2.0
+      - uses: uraimo/run-on-arch-action@v2.5.0
         name: build_artifact
         id: build
         with:
@@ -153,5 +153,5 @@ jobs:
             cd /root/support/3.0
             python3 -m zipfile -e startupPackage.zip .
             python3 startup.pyz --no-start
-            cat ./log/startup*.log
+            cat ./log/mw4*.log
             ls -la

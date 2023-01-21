@@ -24,7 +24,7 @@ jobs:
     #
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
         with:
           ref: ${{env.branch}}
           
@@ -37,7 +37,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
         with:
           ref: ${{env.branch}}
   
@@ -57,7 +57,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
         with:
           ref: ${{env.branch}}
   
@@ -79,7 +79,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
         with:
           ref: ${{env.branch}}
   
@@ -96,7 +96,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
         with:
           ref: ${{env.branch}}
   
@@ -113,7 +113,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
         with:
           ref: ${{env.branch}}
   

@@ -25,12 +25,12 @@ jobs:
   install_windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4.5.0
         with:
           python-version: '3.9'
       
       - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1
+        uses: suisei-cn/actions-download-file@v1.3.0
         with:
           url: ${{ env.gh }}startupPackage.zip
           target: .
@@ -53,7 +53,7 @@ jobs:
   install_ubuntu:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4.5.0
         with:
           python-version: '3.9'
       - name: Install Head
@@ -67,7 +67,7 @@ jobs:
           sudo apt-get install -y libxcb-keysyms1
         
       - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1
+        uses: suisei-cn/actions-download-file@v1.3.0
         with:
           url: ${{ env.gh }}startupPackage.zip
           target: .
@@ -88,12 +88,12 @@ jobs:
   install_macOS:
     runs-on: macos-latest
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4.5.0
         with:
           python-version: '3.9'
 
       - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1
+        uses: suisei-cn/actions-download-file@v1.3.0
         with:
           url: ${{ env.gh }}startupPackage.zip
           target: .
@@ -124,7 +124,7 @@ jobs:
             distro: ubuntu20.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - uses: uraimo/run-on-arch-action@v2.5.0
         name: build_artifact
         id: build

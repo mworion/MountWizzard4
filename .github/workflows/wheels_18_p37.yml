@@ -29,7 +29,7 @@ jobs:
             distro: ubuntu18.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - uses: uraimo/run-on-arch-action@v2.2.0
         name: Build artifact
         id: build

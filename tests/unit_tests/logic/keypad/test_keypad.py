@@ -78,31 +78,55 @@ def test_dispatch_1(function):
     assert not suc
 
 
-def test_dispatch_2(function):
-    msg = [1, 1, 1, 1, 88]
+def test_dispText(function):
+    value = [1, 1, 1, 1, 88]
+    suc = function.dispText(value)
+    assert suc
+
+
+def test_drawPixel(function):
+    value = [2, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40]
+    suc = function.drawPixel(value)
+    assert suc
+
+
+def test_deletePixel(function):
+    value = [3, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    suc = function.deletePixel(value)
+    assert suc
+
+
+def test_dispatch_1(function):
+    msg = [1, 1]
     with mock.patch.object(function,
                            'expand7to8',
                            return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
+        with mock.patch.object(function,
+                               'dispText'):
+            suc = function.dispatch(msg)
+            assert suc
+
+
+def test_dispatch_2(function):
+    msg = [2, 1]
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        with mock.patch.object(function,
+                               'drawPixel'):
+            suc = function.dispatch(msg)
+            assert suc
 
 
 def test_dispatch_3(function):
-    msg = [2, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40]
+    msg = [3, 1]
     with mock.patch.object(function,
                            'expand7to8',
                            return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
-
-
-def test_dispatch_4(function):
-    msg = [3, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
-    with mock.patch.object(function,
-                           'expand7to8',
-                           return_value=msg):
-        suc = function.dispatch(msg)
-        assert suc
+        with mock.patch.object(function,
+                               'deletePixel'):
+            suc = function.dispatch(msg)
+            assert suc
 
 
 def test_dispatch_5(function):

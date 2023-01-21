@@ -355,16 +355,11 @@ def convertLonToAngle(value):
     return angle
 
 
-def convertRaToAngle(value):
+def parseRaToAngleString(value):
     """
     :param value:
     :return:
     """
-    if value is None:
-        return None
-    if isinstance(value, (float, int)):
-        value = str(value)
-
     value = value.strip()
     p1 = re.compile(r'([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
     p2 = re.compile(r'([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
@@ -380,6 +375,21 @@ def convertRaToAngle(value):
         elements = p2.split(value)
     else:
         elements = ''
+
+    return isSexagesimal, isFloat, elements
+
+
+def convertRaToAngle(value):
+    """
+    :param value:
+    :return:
+    """
+    if value is None:
+        return None
+    if isinstance(value, (float, int)):
+        value = str(value)
+
+    isSexagesimal, isFloat, elements = parseRaToAngleString(value)
 
     if isFloat:
         angle = float(value.replace(',', '.'))
@@ -404,16 +414,11 @@ def convertRaToAngle(value):
     return angle
 
 
-def convertDecToAngle(value):
+def parseDecToAngleString(value):
     """
     :param value:
     :return:
     """
-    if value is None:
-        return None
-    if isinstance(value, (float, int)):
-        value = str(value)
-
     value = value.strip()
     p1 = re.compile(r'([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
     p2 = re.compile(r'([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?')
@@ -429,6 +434,21 @@ def convertDecToAngle(value):
         elements = p2.split(value)
     else:
         elements = ''
+
+    return isSexagesimal, isFloat, elements
+
+
+def convertDecToAngle(value):
+    """
+    :param value:
+    :return:
+    """
+    if value is None:
+        return None
+    if isinstance(value, (float, int)):
+        value = str(value)
+
+    isSexagesimal, isFloat, elements = parseDecToAngleString(value)
 
     if isFloat:
         angle = float(value.replace(',', '.'))

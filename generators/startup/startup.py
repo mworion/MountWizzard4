@@ -28,12 +28,15 @@ import datetime
 import argparse
 import tarfile
 
+log = logging.getLogger()
+version = '3.0beta9'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
     py = 'python'
 else:
     py = 'python3'
+
 
 def run(command):
     """
@@ -629,9 +632,8 @@ def main(args=None):
     print('-' * 50)
     print()
 
+setupLogging()
+
 
 if __name__ == '__main__':
-    setupLogging()
-    log = logging.getLogger()
-    version = '3.0beta9'
     main()

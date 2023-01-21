@@ -18,11 +18,11 @@
 import pytest
 
 # external packages
-from skyfield.api import Angle
-from skyfield.api import wgs84
 
 # local import
+from base.loggerMW import setupLogging
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -51,11 +51,14 @@ def test_getCoordinates_2():
 
 
 def test_getCoordinates_3():
-    header = {
-    }
-    ra, dec = getCoordinates(header=header)
+    ra, dec = getCoordinates()
     assert ra.hours == 0
     assert dec.degrees == 0
+
+
+def test_getSQM_0():
+    sqm = getSQM()
+    assert sqm == 17.0
 
 
 def test_getSQM_1():
@@ -90,6 +93,11 @@ def test_getSQM_4():
     }
     sqm = getSQM(header=header)
     assert sqm == 17.0
+
+
+def test_getExposure_0():
+    exposure = getExposure()
+    assert exposure == 17.0
 
 
 def test_getExposure_1():

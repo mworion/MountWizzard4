@@ -344,6 +344,13 @@ def test_drawHorizonView_3(function):
     assert suc
 
 
+def test_drawSatellite_1(function):
+    with mock.patch.object(function,
+                           'drawEarth'):
+        suc = function.drawSatellite()
+        assert not suc
+
+
 def test_drawSatellite_2(function):
     tle = ["ISS (ZARYA)",
            "1 25544U 98067A   21103.51063550  .00000247  00000-0  12689-4 0  9995",

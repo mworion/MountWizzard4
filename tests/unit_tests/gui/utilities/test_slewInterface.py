@@ -152,3 +152,27 @@ def test_slewTargetRaDec_3(function):
                                return_value=True):
             suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
             assert suc
+
+
+def test_slewTargetRaDec_4(function):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=True):
+            suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10),
+                                           epoch='JNow')
+            assert suc
+
+
+def test_slewTargetRaDec_5(function):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec',
+                           return_value=True):
+        with mock.patch.object(function,
+                               'slewSelectedTargetWithDome',
+                               return_value=True):
+            suc = function.slewTargetRaDec(10, 10,
+                                           epoch='JNow')
+            assert suc

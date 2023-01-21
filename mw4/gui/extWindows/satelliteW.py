@@ -475,7 +475,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.setWindowTitle(f'Satellite {name}')
         self.satellite = satellite
         self.drawEarth(self.app.mount.obsSite, satOrbits=satOrbits)
-        if not satOrbits or self.app.mount.obsSite is None:
+        if satOrbits is None or self.app.mount.obsSite is None:
             return False
         self.drawHorizonView(self.app.mount.obsSite, satOrbits=satOrbits,
                              altitude=altitude, azimuth=azimuth)

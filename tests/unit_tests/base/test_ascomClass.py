@@ -96,7 +96,7 @@ def test_getAscomProperty_4(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
-    val = function.getAscomProperty('Imagearray')
+    val = function.getAscomProperty('ImageArray')
     assert val is None
 
 

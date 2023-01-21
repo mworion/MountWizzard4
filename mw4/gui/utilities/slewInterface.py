@@ -92,6 +92,9 @@ class SlewInterface:
 
         if epoch == 'J2000':
             raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
+        elif epoch != 'J2000' and isinstance(ra, Angle):
+            raJNow = ra
+            decJNow = dec
         else:
             raJNow = Angle(hours=ra)
             decJNow = Angle(degrees=dec)

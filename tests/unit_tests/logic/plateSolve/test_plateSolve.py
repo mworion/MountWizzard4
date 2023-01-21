@@ -28,6 +28,8 @@ from astropy.io import fits
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.plateSolve.plateSolve import PlateSolve
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -125,8 +127,6 @@ def test_getSolutionFromWCS_1(function):
     header = hdu[0].header
     header.set('CRVAL1', 180.0)
     header.set('CRVAL2', 60.0)
-    header.set('RA', 180.0)
-    header.set('DEC', 60.0)
     solve, header = function.getSolutionFromWCS(fitsHeader=header,
                                                 wcsHeader=header)
     assert solve['raJ2000S'].hours == 12

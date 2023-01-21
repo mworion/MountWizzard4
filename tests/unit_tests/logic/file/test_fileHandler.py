@@ -194,7 +194,7 @@ def test_workerLoadImage_2(function):
 
 
 def test_workerLoadImage_3(function):
-    function.header = {'BAYERPAT': '',
+    function.header = {'BAYERPAT': 'RGGB  ',
                        'CTYPE1': 'DEF',
                        'CTYPE2': 'DEF',
                        'NAXIS': 2,

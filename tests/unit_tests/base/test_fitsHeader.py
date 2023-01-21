@@ -125,6 +125,11 @@ def test_getExposure_3():
     assert exposure == 16.0
 
 
+def test_getScale_0():
+    scale = getScale(r)
+    assert scale is None
+
+
 def test_getScale_1():
     header = {
         'SCALE': '1.333',

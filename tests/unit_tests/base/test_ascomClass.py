@@ -99,8 +99,11 @@ def test_getAscomProperty_4(function):
 
     function.client = Client()
     function.propertyExceptions = ['test']
-    val = function.getAscomProperty('ImageArray')
-    assert val is None
+    with mock.patch.object(base.ascomClass,
+                           'eval',
+                           return_value='1'):
+        val = function.getAscomProperty('ImageArray')
+        assert val
 
 
 def test_setAscomProperty_1(function):

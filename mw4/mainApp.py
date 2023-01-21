@@ -190,7 +190,7 @@ class MountWizzard4(QObject):
         self.mount.startTimers()
         self.timer0_1s = QTimer()
         self.timer0_1s.setSingleShot(False)
-        self.timer0_1s.timeout.connect(self.sendUpdate)
+        self.timer0_1s.timeout.connect(self.sendCyclic)
         self.timer0_1s.start(100)
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
@@ -262,9 +262,25 @@ class MountWizzard4(QObject):
             self.config['topoElev'] = location.elevation.m
         return True
 
-    def sendUpdate(self):
+    def sendStart(self):
         """
-        sendUpdate send regular signals in 1 and 10 seconds to enable regular
+        :return:
+        """
+        if self.timerCounter == 10:
+            self.start1s.emit()
+        if self.timerCounter == 30:
+            self.start3s.emit()
+        if self.timerCounter == 50:
+            self.start5s.emit()
+        if self.timerCounter == 100:
+            self.start10s.emit()
+        if self.timerCounter == 300:
+            self.start30s.emit()
+        return True
+
+    def sendCyclic(self):
+        """
+        sendCyclic send regular signals in 1 and 10 seconds to enable regular
         tasks. it tries to avoid sending the signals at the same time.
 
         :return: true for test purpose
@@ -290,16 +306,7 @@ class MountWizzard4(QObject):
             self.update30m.emit()
         if (self.timerCounter + 15) % 36000 == 0:
             self.update1h.emit()
-        if self.timerCounter == 10:
-            self.start1s.emit()
-        if self.timerCounter == 30:
-            self.start3s.emit()
-        if self.timerCounter == 50:
-            self.start5s.emit()
-        if self.timerCounter == 100:
-            self.start10s.emit()
-        if self.timerCounter == 300:
-            self.start30s.emit()
+        self.sendStart()
         return True
 
     def aboutToQuit(self):

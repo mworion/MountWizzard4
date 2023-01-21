@@ -157,87 +157,87 @@ def test_storeConfig_2(app):
         del app.uiWindows['showMessageW']['classObj']
 
 
-def test_sendUpdate_1(app):
+def test_sendStart_1(app):
+    app.timerCounter = 10
+    suc = app.sendStart()
+    assert suc
+
+
+def test_sendStart_2(app):
+    app.timerCounter = 30
+    suc = app.sendStart()
+    assert suc
+
+
+def test_sendStart_3(app):
+    app.timerCounter = 50
+    suc = app.sendStart()
+    assert suc
+
+
+def test_sendStart_4(app):
+    app.timerCounter = 100
+    suc = app.sendStart()
+    assert suc
+
+
+def test_sendStart_5(app):
+    app.timerCounter = 300
+    suc = app.sendStart()
+    assert suc
+
+
+def test_sendCyclic_1(app):
     app.timerCounter = 0
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_2(app):
+def test_sendCyclic_2(app):
     app.timerCounter = 4
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_3(app):
+def test_sendCyclic_3(app):
     app.timerCounter = 19
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_4(app):
+def test_sendCyclic_4(app):
     app.timerCounter = 79
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_5(app):
+def test_sendCyclic_5(app):
     app.timerCounter = 574
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_6(app):
+def test_sendCyclic_6(app):
     app.timerCounter = 1800 - 12 - 1
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_7(app):
+def test_sendCyclic_7(app):
     app.timerCounter = 6000 - 13 - 1
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_8(app):
+def test_sendCyclic_8(app):
     app.timerCounter = 18000 - 14 - 1
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 
-def test_sendUpdate_9(app):
+def test_sendCyclic_9(app):
     app.timerCounter = 36000 - 15 - 1
-    suc = app.sendUpdate()
-    assert suc
-
-
-def test_sendUpdate_10(app):
-    app.timerCounter = 9
-    suc = app.sendUpdate()
-    assert suc
-
-
-def test_sendUpdate_11(app):
-    app.timerCounter = 29
-    suc = app.sendUpdate()
-    assert suc
-
-
-def test_sendUpdate_12(app):
-    app.timerCounter = 49
-    suc = app.sendUpdate()
-    assert suc
-
-
-def test_sendUpdate_13(app):
-    app.timerCounter = 99
-    suc = app.sendUpdate()
-    assert suc
-
-
-def test_sendUpdate_14(app):
-    app.timerCounter = 299
-    suc = app.sendUpdate()
+    suc = app.sendCyclic()
     assert suc
 
 

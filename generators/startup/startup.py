@@ -35,11 +35,6 @@ if platform.system() == 'Windows':
 else:
     py = 'python3'
 
-setupLogging()
-log = logging.getLogger()
-version = '3.0beta9'
-
-
 def run(command):
     """
     :param command:
@@ -636,4 +631,7 @@ def main(args=None):
 
 
 if __name__ == '__main__':
+    setupLogging()
+    log = logging.getLogger()
+    version = '3.0beta9'
     main()

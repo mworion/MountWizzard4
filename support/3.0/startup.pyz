@@ -35,6 +35,7 @@ if platform.system() == 'Windows':
 else:
     py = 'python3'
 
+setupLogging()
 log = logging.getLogger()
 version = '3.0beta9'
 
@@ -543,7 +544,6 @@ def main(args=None):
     """
     :return:
     """
-    setupLogging()
     compatible = True
     if sys.version_info < (3, 8) or sys.version_info >= (3, 11):
         compatible = False

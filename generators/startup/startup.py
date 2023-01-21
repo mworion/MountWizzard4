@@ -632,8 +632,7 @@ def main(args=None):
     print('-' * 50)
     print()
 
-setupLogging()
-
 
 if __name__ == '__main__':
+    setupLogging()
     main()

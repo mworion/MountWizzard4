@@ -41,11 +41,6 @@ def test_loggerWriter():
     a.flush()
 
 
-def test_timeTz():
-    suc = loggerMW.timeTz()
-    assert suc
-
-
 def test_setupLogging():
     with mock.patch.object(os.path,
                            'isdir',

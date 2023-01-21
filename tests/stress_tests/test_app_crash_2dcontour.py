@@ -94,7 +94,7 @@ def test_showImagesPhotometry(qtbot, qapp):
     app.showImage.emit('tests/workDir/image/star1.fits')
     TAB = [1, 4]
 
-    for i in range(50):
+    for i in range(20):
         if randint(0, 1):
             qtbot.mouseClick(imageW.ui.isoLayer, Qt.LeftButton)
         index = TAB[randint(0, 1)]

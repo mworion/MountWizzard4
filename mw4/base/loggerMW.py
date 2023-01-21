@@ -17,9 +17,9 @@
 # standard libraries
 import os
 import logging
+import time
 from logging.handlers import RotatingFileHandler
 import datetime
-from dateutil.tz import tzutc
 import sys
 
 # external packages
@@ -47,10 +47,6 @@ class LoggerWriter:
 
     def flush(self):
         pass
-
-
-def timeTz(*args):
-    return datetime.datetime.now(tzutc()).timetuple()
 
 
 def addLoggingLevel(levelName, levelNum, methodName=None):
@@ -124,8 +120,8 @@ def setupLogging(redirect=True):
     if not os.path.isdir('./log'):
         os.mkdir('./log')
 
-    logging.Formatter.converter = timeTz
-    timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
+    logging.Formatter.converter = time.gmtime
+    timeTag = datetime.datetime.utcnow().strftime('%Y-%m-%d')
     logFile = f'./log/mw4-{timeTag}.log'
     logHandler = RotatingFileHandler(logFile, mode='a', maxBytes=100 * 1024 * 1024,
                                      backupCount=100, encoding=None, delay=False)

@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.0beta9'
+version = '3.0beta10'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -51,7 +51,7 @@ def run(command):
                                    )
         for stdout_line in iter(process.stdout.readline, ""):
             if stdout_line:
-                log.header(stdout_line.strip('\n'))
+                log.info(stdout_line.strip('\n'))
         output = process.communicate(timeout=60)[0]
 
     except subprocess.TimeoutExpired as e:
@@ -140,57 +140,6 @@ class LoggerWriter:
         pass
 
 
-def addLoggingLevel(levelName, levelNum, methodName=None):
-    """
-    Comprehensively adds a new logging level to the `logging` module and the
-    currently configured logging class.
-
-    `levelName` becomes an attribute of the `logging` module with the value
-    `levelNum`.
-
-    `methodName` becomes a convenience method for both `logging`
-    itself and the class returned by `logging.getLoggerClass()` (usually just
-    `logging.Logger`).
-
-    If `methodName` is not specified, `levelName.lower()` is
-    used.
-
-    To avoid accidental clobberings of existing attributes, this method will
-    raise an `AttributeError` if the level name is already an attribute of the
-    `logging` module or if the method name is already present
-
-    This method was inspired by the answers to Stack Overflow post
-    http://stackoverflow.com/q/2183233/2988730, especially
-    http://stackoverflow.com/a/13638084/2988730
-
-    Example
-    -------
-    >>> addLoggingLevel('TRACE', logging.DEBUG - 5)
-    >>> logging.getLogger(__name__).setLevel("TRACE")
-    >>> logging.getLogger(__name__).trace('that worked')
-    >>> logging.trace('so did this')
-    >>> logging.TRACE
-    5
-
-    """
-    if not methodName:
-        methodName = levelName.lower()
-    if hasattr(logging, levelName):
-        return
-    if hasattr(logging, methodName):
-        return
-    if hasattr(logging.getLoggerClass(), methodName):
-        return
-
-    def logForLevel(self, message, *args, **kwargs):
-        if self.isEnabledFor(levelNum):
-            self._log(levelNum, message, args, **kwargs)
-
-    logging.addLevelName(levelNum, levelName)
-    setattr(logging, levelName, levelNum)
-    setattr(logging.getLoggerClass(), methodName, logForLevel)
-
-
 def setupLogging():
     """
     setupLogging defines the logger and formats and disables unnecessary
@@ -215,9 +164,6 @@ def setupLogging():
                         handlers=[logHandler],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
-    addLoggingLevel('HEADER', 55)
-    addLoggingLevel('UI', 35)
-    addLoggingLevel('TRACE', 5)
     # transfer all sys outputs to logging
     sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
     return True
@@ -272,18 +218,18 @@ def venvCreate(venvPath, upgrade=False):
     print(f'python           : {platform.python_version()}')
     print('-' * 50)
 
-    log.header('-' * 100)
-    log.header(f'script version   : {version}')
-    log.header(f'platform         : {platform.system()}')
-    log.header(f'sys.executable   : {sys.executable}')
-    log.header(f'actual workdir   : {os.getcwd()}')
-    log.header(f'machine          : {platform.machine()}')
-    log.header(f'cpu              : {platform.processor()}')
-    log.header(f'release          : {platform.release()}')
-    log.header(f'python           : {platform.python_version()}')
-    log.header(f'python runtime   : {platform.architecture()[0]}')
-    log.header(f'upgrade venv     : {upgrade}')
-    log.header('-' * 100)
+    log.info('-' * 100)
+    log.info(f'script version   : {version}')
+    log.info(f'platform         : {platform.system()}')
+    log.info(f'sys.executable   : {sys.executable}')
+    log.info(f'actual workdir   : {os.getcwd()}')
+    log.info(f'machine          : {platform.machine()}')
+    log.info(f'cpu              : {platform.processor()}')
+    log.info(f'release          : {platform.release()}')
+    log.info(f'python           : {platform.python_version()}')
+    log.info(f'python runtime   : {platform.architecture()[0]}')
+    log.info(f'upgrade venv     : {upgrade}')
+    log.info('-' * 100)
 
     if upgrade:
         print('Upgrading virtual environment')
@@ -353,19 +299,19 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
             ],
         },
     }
-    log.header(f'Got version {verMW4}')
+    log.info(f'Got version {verMW4}')
     print('Installing precompiled packages')
     if verMW4.major >= 3:
-        log.header('Path version 3.0.0 and above')
+        log.info('Path version 3.0.0 and above')
         print('...no precompiled packages available')
         if not Version(platform.python_version()) < Version('3.10'):
             print('...no precompiled packages available')
         return False
     elif verMW4.major >= 2:
         verMW4 = '2.0.0'
-        log.header('Path version 2.0.0 and above')
+        log.info('Path version 2.0.0 and above')
     else:
-        log.header('Path default')
+        log.info('Path default')
         print('...no precompiled packages available')
         return False
 
@@ -399,8 +345,8 @@ def versionOnline(updateBeta):
     vPackage.sort(key=Version, reverse=True)
     verBeta = [x for x in vPackage if 'b' in x]
     verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
-    log.header(f'Package Beta:   {verBeta[:10]}')
-    log.header(f'Package Release:{verRelease[:10]}')
+    log.info(f'Package Beta:   {verBeta[:10]}')
+    log.info(f'Package Release:{verRelease[:10]}')
 
     if updateBeta:
         verMW4 = Version(verBeta[0])
@@ -542,6 +488,7 @@ def main(args=None):
     """
     :return:
     """
+    setupLogging()
     compatible = True
     if sys.version_info < (3, 8) or sys.version_info >= (3, 11):
         compatible = False
@@ -634,5 +581,4 @@ def main(args=None):
 
 
 if __name__ == '__main__':
-    setupLogging()
     main()

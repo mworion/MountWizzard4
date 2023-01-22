@@ -99,7 +99,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0b10',
+    version='3.0.0b11',
     packages=[
         'mw4',
         'mw4.base',
@@ -137,8 +137,8 @@ setup(
     python_requires='>=3.8.0, <3.11',
     install_requires=[
         'numpy==1.24.1',
-        'opencv-python-headless==4.6.0.66',
-        'scipy==1.9.3',
+        'opencv-python-headless==4.7.0.68',
+        'scipy==1.10.0',
         'astropy==5.2.1',
         'pyerfa==2.0.0.1',
         'astroquery==0.4.6',
@@ -147,11 +147,11 @@ setup(
         'qimage2ndarray==1.9.0',
         'skyfield==1.45',
         'sgp4==2.21',
-        'requests==2.28.1',
+        'requests==2.28.2',
         'requests_toolbelt==0.10.1',
-        'importlib_metadata==5.1.0',
+        'importlib_metadata==6.0.0',
         'python-dateutil==2.8.2',
-        'deepdiff==6.2.2',
+        'deepdiff==6.2.3',
         'wakeonlan==3.0.0',
         'pybase64==1.2.3',
         'websocket-client==1.4.2',

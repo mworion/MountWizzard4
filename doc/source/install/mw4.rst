@@ -44,12 +44,17 @@ to get the content. You will find three files:
 https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startupPackage.zip
 
 On windows you should be able to start the script just be double click on it,
-in all other platforms you start it with (please keep in mind: in windows you call that
-command with *python*):
+in all other platforms you start it with:
 
 .. code-block:: python
 
     python3 startup.pyz
+
+On windows please use the command:
+
+.. code-block:: python
+
+    python startup.pyz
 
 .. warning::
     The new script 3.x supports only Windows, Mac and x86 Linux distributions! 

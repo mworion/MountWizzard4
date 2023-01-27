@@ -155,7 +155,7 @@ setup(
         'wakeonlan==3.0.0',
         'pybase64==1.2.3',
         'websocket-client==1.4.2',
-        'hidapi==0.12.0.post2',
+        'hidapi==0.13.1',
         'range-key-dict==1.1.0',
         'ndicts==0.1.0',
         'packaging==22.0',

@@ -38,7 +38,7 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            -v "${PWD}/support/wheels/${{matrix.distro}}":/root/wheels
+            -v "${PWD}/support/wheels":/root/wheels
             --stop-timeout -1
 
           # The shell to run commands with in the container

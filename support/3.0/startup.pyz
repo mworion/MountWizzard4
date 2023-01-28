@@ -38,6 +38,14 @@ else:
     py = 'python3'
 
 
+def prt(*args):
+    """
+    :param args:
+    :return:
+    """
+    print('    ', *args)
+
+
 def run(command):
     """
     :param command:
@@ -47,11 +55,10 @@ def run(command):
         process = subprocess.Popen(args=command,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT,
-                                   text=True,
-                                   )
+                                   text=True)
         for stdout_line in iter(process.stdout.readline, ""):
             if stdout_line:
-                log.header(stdout_line.strip('\n'))
+                log.info(stdout_line.strip('\n'))
         output = process.communicate(timeout=60)[0]
 
     except subprocess.TimeoutExpired as e:
@@ -72,7 +79,7 @@ def installBasicPackages():
     """
     :return:
     """
-    print('...adding basic packages')
+    prt('...adding basic packages')
     command = [py, '-m', 'pip', 'install', 'pip', '-U']
     run(command)
     command = [py, '-m', 'pip', 'install', 'requests', '-U']
@@ -106,28 +113,44 @@ def findfile(startDir, pattern):
 
 
 class EnvBuilder(venv.EnvBuilder):
-
+    """
+    """
     def __init__(self, *args, **kwargs):
+        """
+        :param args:
+        :param kwargs:
+        """
         self.context = None
         super().__init__(*args, **kwargs)
 
     def post_setup(self, context):
+        """
+        :param context:
+        :return:
+        """
         self.context = context
-
         binPath = os.path.dirname(findfile(os.getcwd(), 'activate')) + os.pathsep
         os.environ['PATH'] = binPath + os.environ['PATH']
 
 
 class LoggerWriter:
-    # taken from:
-    # https://stackoverflow.com/questions/19425736/
-    # how-to-redirect-stdout-and-stderr-to-logger-in-python
+    """
+    """
     def __init__(self, level, mode, std):
+        """
+        :param level:
+        :param mode:
+        :param std:
+        """
         self.level = level
         self.mode = mode
         self.standard = std
 
     def write(self, message):
+        """
+        :param message:
+        :return:
+        """
         first = True
         for line in message.rstrip().splitlines():
             if first:
@@ -189,20 +212,24 @@ def setupLogging():
                         handlers=[logHandler],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
+    logging.getLogger('requests').setLevel(logging.WARNING)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
     # transfer all sys outputs to logging
     sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
     return True
 
 
 def cleanSystem():
-    print('Clean system site-packages')
-    print('...takes some time')
-
+    """
+    :return:
+    """
+    prt('Clean system site-packages')
+    prt('...takes some time')
     ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
-    print(ret)
+    prt(ret)
     ret = os.popen(f'{py} -m pip uninstall -y -r clean.txt').read()
-    print(ret)
-    print('Clean finished')
+    prt(ret)
+    prt('Clean finished')
 
 
 def runPythonInVenv(venvContext, command):
@@ -231,14 +258,15 @@ def venvCreate(venvPath, upgrade=False):
     :param upgrade:
     :return:
     """
-    print('-' * 50)
-    print('MountWizzard4')
-    print('-' * 50)
-    print(f'script version   : {version}')
-    print(f'platform         : {platform.system()}')
-    print(f'machine          : {platform.machine()}')
-    print(f'python           : {platform.python_version()}')
-    print('-' * 50)
+    prt()
+    prt('-' * 40)
+    prt('MountWizzard4')
+    prt('-' * 40)
+    prt(f'script version   : {version}')
+    prt(f'platform         : {platform.system()}')
+    prt(f'machine          : {platform.machine()}')
+    prt(f'python           : {platform.python_version()}')
+    prt('-' * 40)
 
     log.header('-' * 100)
     log.header(f'script version   : {version}')
@@ -254,15 +282,14 @@ def venvCreate(venvPath, upgrade=False):
     log.header('-' * 100)
 
     if upgrade:
-        print('Upgrading virtual environment')
-        print('...to actual python version')
+        prt('Update virtual environment')
         EnvBuilder(with_pip=True, upgrade=upgrade)
 
     existInstall = os.path.isdir('venv')
     if existInstall:
-        print('Activate virtual environment')
+        prt('Activate virtual environment')
     else:
-        print('Install and activate virtual environment')
+        prt('Install and activate virtual environment')
 
     venvBuilder = EnvBuilder(with_pip=True)
     venvBuilder.create(venvPath)
@@ -320,32 +347,31 @@ def downloadAndInstallWheels(venvContext, version=None):
             ],
         },
     }
-    log.header(f'Got version {version}')
-    print('Installing precompiled packages')
+    log.info(f'Got version {version}')
+    prt('Install precompiled packages')
     if version.major >= 3:
-        log.header('Path version 3.0.0 and above')
-        print('...no precompiled packages available')
+        log.info('Path version 3.0.0 and above')
+        prt('...no precompiled packages available')
         if not Version(platform.python_version()) < Version('3.10'):
-            print('...no precompiled packages available')
+            prt('...no precompiled packages available')
         return False
     elif version.major >= 2:
         version = '2.0.0'
-        log.header('Path version 2.0.0 and above')
+        log.info('Path version 2.0.0 and above')
     else:
-        log.header('Path default')
-        print('...no precompiled packages available')
+        log.info('Path default')
+        prt('...no precompiled packages available')
         return False
 
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
     for item in wheels[version][ver]:
-        print(f'...{item.split("-")[0]}-{item.split("-")[1]}')
+        prt(f'...{item.split("-")[0]}-{item.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
         suc = runPythonInVenv(venvContext, command)
         if not suc:
-            print('...error installing precompiled packages')
+            prt('...error install precompiled packages')
             return False
-    print('...finished')
-    print('Precompiled packages ready')
+    prt('Precompiled packages ready')
     return True
 
 
@@ -365,8 +391,8 @@ def versionOnline(updateBeta):
     vPackage.sort(key=Version, reverse=True)
     verBeta = [x for x in vPackage if 'b' in x]
     verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
-    log.header(f'Package Beta:   {verBeta[:10]}')
-    log.header(f'Package Release:{verRelease[:10]}')
+    log.info(f'Package Beta:   {verBeta[:10]}')
+    log.info(f'Package Release:{verRelease[:10]}')
 
     if updateBeta:
         version = Version(verBeta[0])
@@ -423,13 +449,13 @@ def install(venvContext, version='', isTest=False):
     runPythonInVenv(venvContext, command)
 
     if isTest:
-        print('Installing local package mountwizzard4.tar.gz')
+        prt('Install local package mountwizzard4.tar.gz')
         command = ['-m', 'pip', 'install', 'mountwizzard4.tar.gz']
     else:
-        print(f'Installing version {version}')
+        prt(f'Install version {version}')
         command = ['-m', 'pip', 'install', f'mountwizzard4=={version}']
 
-    print('...this will take some time')
+    prt('...this will take some time')
     suc = runPythonInVenv(venvContext, command)
     return suc
 
@@ -443,10 +469,10 @@ def checkIfInstalled(venvContext):
                           recursive=True)
     isInstalled = len(solutions) == 1
     if isInstalled:
-        print('MountWizzard4 installed')
+        prt('MountWizzard4 installed')
         loaderPath = [solutions[0]]
     else:
-        print('MountWizzard4 not installed')
+        prt('MountWizzard4 not installed')
         loaderPath = ''
     return isInstalled, loaderPath
 
@@ -463,13 +489,13 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
     if isInstalled and not (update or updateBeta or version):
         return loaderPath
 
-    isTest = os.path.isfile('mountwizzard4.tar.gz')
+    isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
     version = getVersion(isTest, updateBeta)
     isV2 = version < Version('2.100')
     compatibleV2 = Version(platform.python_version()) < Version('3.10')
 
     if isV2 and not compatibleV2:
-        print('MW4 v2.x needs python 3.7 .. 3.9')
+        prt('MountWizzard4 v2.x needs python 3.7-3.9')
         return ''
 
     if platform.machine() == 'aarch64':
@@ -512,17 +538,17 @@ def main(options):
     addLoggingLevel('HEADER', 55)
     compatible = checkBaseCompatibility()
     if not compatible:
-        print()
-        print('-' * 50)
-        print('MountWizzard4 startup - no compatible environment')
-        print('needs python 3.8 .. 3.9 for version 2.x')
-        print('needs python 3.8 .. 3.10 for version 3.x')
-        print('actually no support for ARM7')
-        print('actually no support for AARCH64 for MW4 3.x')
-        print('actually no support for AARCH64 for python 3.10')
-        print(f'you are running {platform.python_version()}')
-        print('Closing application')
-        print('-' * 50)
+        prt()
+        prt('-' * 40)
+        prt('MountWizzard4 startup - no compatible environment')
+        prt('needs python 3.7-3.9 for version 2.x')
+        prt('needs python 3.8-3.10 for version 3.x')
+        prt('no support for ARM7')
+        prt('no support for AARCH64 for MountWizzard4 3.x')
+        prt('no support for AARCH64 for python 3.10')
+        prt(f'you are running {platform.python_version()}')
+        prt('Closing application')
+        prt('-' * 40)
         return False
 
     if platform.system() == 'Windows':
@@ -543,12 +569,12 @@ def main(options):
         version=options.version)
 
     if not options.noStart and loaderPath:
-        print('MountWizzard4 starting')
+        prt('MountWizzard4 starting')
         suc = runPythonInVenv(venvContext, loaderPath)
         if not suc:
-            print('...failed to start MW4')
+            prt('...failed to start MountWizzard4')
     elif not loaderPath:
-        print('Install failed')
+        prt('Install failed')
 
 
 def readOptions():
@@ -556,36 +582,36 @@ def readOptions():
     :return:
     """
     parser = argparse.ArgumentParser(
-        prog=__name__, description='Installs MW4 in Python virtual '
+        prog=__name__, description='Installs MountWizzard4 in Python virtual '
                                    'environment in local workdir')
     parser.add_argument(
-        '--basic', default=False, action='store_true', dest='basic',
-        help='Upgrade basic install packages')
-    parser.add_argument(
-        '--clean', default=False, action='store_true', dest='clean',
+        '-c', '--clean', default=False, action='store_true', dest='clean',
         help='Cleaning system packages from faulty installs')
     parser.add_argument(
-        '--dpi', default=96, type=float, dest='dpi',
-        help='Setting QT font DPI (+dpi = -fontsize)')
+        '-d', '--dpi', default=96, type=float, dest='dpi',
+        help='Setting QT font DPI (+dpi = -fontsize, default=96)')
     parser.add_argument(
-        '--no-start', default=False, action='store_true', dest='noStart',
-        help='Running script without starting MW4')
+        '-n', '--no-start', default=False, action='store_true', dest='noStart',
+        help='Running script without starting MountWizzard4')
     parser.add_argument(
-        '--scale', default=1, type=float, dest='scale',
-        help='Setting Qt DPI scale factor (+scale = +size)')
+        '-s', '--scale', default=1, type=float, dest='scale',
+        help='Setting Qt DPI scale factor (+scale = +size, default=1)')
     parser.add_argument(
-        '--update', default=False, action='store_true', dest='update',
-        help='Update MW4 to the actual release version')
+        '-u', '--update', default=False, action='store_true', dest='update',
+        help='Update MountWizzard4 to the actual release version')
+    parser.add_argument(
+        '--update-basic', default=False, action='store_true', dest='basic',
+        help='Update basic install packages')
     parser.add_argument(
         '--update-beta', default=False, action='store_true', dest='updateBeta',
-        help='Update MW4 to the actual beta version')
+        help='Update MountWizzard4 to the actual beta version')
     parser.add_argument(
         '--update-venv', default=False, action='store_true', dest='venv',
-        help='Upgrade the virtual environment directory to use this version of '
+        help='Update the virtual environment directory to use this version of '
              'Python, assuming Python has been upgraded in-place.')
     parser.add_argument(
-        '--version', default='', type=str, dest='version',
-        help='Update MW4 to the named version')
+        '-v', '--version', default='', type=str, dest='version',
+        help='Update MountWizzard4 to the named version')
 
     options = parser.parse_args()
     return options
@@ -594,6 +620,7 @@ def readOptions():
 if __name__ == '__main__':
     options = readOptions()
     main(options)
-    print('Closing application')
-    print('-' * 50)
-    print()
+    prt('-' * 40)
+    prt('Closing application')
+    prt('-' * 40)
+    prt()

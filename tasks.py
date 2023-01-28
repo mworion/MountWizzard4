@@ -238,6 +238,7 @@ def build_startup(c):
         myzip.write('MountWizzard4.desktop')
         myzip.write('mw4.ico')
         myzip.write('mw4.png')
+    runMW(c, 'cp startup.pyz ../../work')
     os.chdir('../../')
     printMW('...copy install script to test dir')
 

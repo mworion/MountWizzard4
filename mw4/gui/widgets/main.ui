@@ -29755,7 +29755,7 @@ Updater</string>
         </rect>
        </property>
        <property name="title">
-        <string>MountWizzard4 (C) 2019-2022 MWORION</string>
+        <string>MountWizzard4 (C) 2019-2023 MWORION</string>
        </property>
        <widget class="QTextBrowser" name="textBrowser_2">
         <property name="enabled">

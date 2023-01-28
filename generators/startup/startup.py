@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python3
 #
-# written in python3, (c) 2019-2022 by mworion
+# written in python3, (c) 2019-2023 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.0beta10'
+version = '3.0beta11'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -51,7 +51,7 @@ def run(command):
                                    )
         for stdout_line in iter(process.stdout.readline, ""):
             if stdout_line:
-                log.info(stdout_line.strip('\n'))
+                log.header(stdout_line.strip('\n'))
         output = process.communicate(timeout=60)[0]
 
     except subprocess.TimeoutExpired as e:
@@ -140,6 +140,31 @@ class LoggerWriter:
         pass
 
 
+def addLoggingLevel(levelName, levelNum, methodName=None):
+    """    
+    :param levelName: 
+    :param levelNum: 
+    :param methodName: 
+    :return: 
+    """
+    if not methodName:
+        methodName = levelName.lower()
+    if hasattr(logging, levelName):
+        return
+    if hasattr(logging, methodName):
+        return
+    if hasattr(logging.getLoggerClass(), methodName):
+        return
+
+    def logForLevel(self, message, *args, **kwargs):
+        if self.isEnabledFor(levelNum):
+            self._log(levelNum, message, args, **kwargs)
+
+    logging.addLevelName(levelNum, levelName)
+    setattr(logging, levelName, levelNum)
+    setattr(logging.getLoggerClass(), methodName, logForLevel)
+
+
 def setupLogging():
     """
     setupLogging defines the logger and formats and disables unnecessary
@@ -172,14 +197,12 @@ def setupLogging():
 def cleanSystem():
     print('Clean system site-packages')
     print('...takes some time')
-    print()
+
     ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
     print(ret)
     ret = os.popen(f'{py} -m pip uninstall -y -r clean.txt').read()
     print(ret)
-    print()
     print('Clean finished')
-    print()
 
 
 def runPythonInVenv(venvContext, command):
@@ -208,7 +231,6 @@ def venvCreate(venvPath, upgrade=False):
     :param upgrade:
     :return:
     """
-    print()
     print('-' * 50)
     print('MountWizzard4')
     print('-' * 50)
@@ -218,24 +240,23 @@ def venvCreate(venvPath, upgrade=False):
     print(f'python           : {platform.python_version()}')
     print('-' * 50)
 
-    log.info('-' * 100)
-    log.info(f'script version   : {version}')
-    log.info(f'platform         : {platform.system()}')
-    log.info(f'sys.executable   : {sys.executable}')
-    log.info(f'actual workdir   : {os.getcwd()}')
-    log.info(f'machine          : {platform.machine()}')
-    log.info(f'cpu              : {platform.processor()}')
-    log.info(f'release          : {platform.release()}')
-    log.info(f'python           : {platform.python_version()}')
-    log.info(f'python runtime   : {platform.architecture()[0]}')
-    log.info(f'upgrade venv     : {upgrade}')
-    log.info('-' * 100)
+    log.header('-' * 100)
+    log.header(f'script version   : {version}')
+    log.header(f'platform         : {platform.system()}')
+    log.header(f'sys.executable   : {sys.executable}')
+    log.header(f'actual workdir   : {os.getcwd()}')
+    log.header(f'machine          : {platform.machine()}')
+    log.header(f'cpu              : {platform.processor()}')
+    log.header(f'release          : {platform.release()}')
+    log.header(f'python           : {platform.python_version()}')
+    log.header(f'python runtime   : {platform.architecture()[0]}')
+    log.header(f'upgrade venv     : {upgrade}')
+    log.header('-' * 100)
 
     if upgrade:
         print('Upgrading virtual environment')
         print('...to actual python version')
         EnvBuilder(with_pip=True, upgrade=upgrade)
-        print()
 
     existInstall = os.path.isdir('venv')
     if existInstall:
@@ -248,10 +269,10 @@ def venvCreate(venvPath, upgrade=False):
     return venvBuilder.context
 
 
-def downloadAndInstallWheels(venvContext, verMW4=None):
+def downloadAndInstallWheels(venvContext, version=None):
     """
     :param venvContext:
-    :param verMW4:
+    :param version:
     :return:
     """
     preRepo = 'https://github.com/mworion/MountWizzard4'
@@ -299,24 +320,24 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
             ],
         },
     }
-    log.info(f'Got version {verMW4}')
+    log.header(f'Got version {version}')
     print('Installing precompiled packages')
-    if verMW4.major >= 3:
-        log.info('Path version 3.0.0 and above')
+    if version.major >= 3:
+        log.header('Path version 3.0.0 and above')
         print('...no precompiled packages available')
         if not Version(platform.python_version()) < Version('3.10'):
             print('...no precompiled packages available')
         return False
-    elif verMW4.major >= 2:
-        verMW4 = '2.0.0'
-        log.info('Path version 2.0.0 and above')
+    elif version.major >= 2:
+        version = '2.0.0'
+        log.header('Path version 2.0.0 and above')
     else:
-        log.info('Path default')
+        log.header('Path default')
         print('...no precompiled packages available')
         return False
 
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
-    for item in wheels[verMW4][ver]:
+    for item in wheels[version][ver]:
         print(f'...{item.split("-")[0]}-{item.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
         suc = runPythonInVenv(venvContext, command)
@@ -325,7 +346,6 @@ def downloadAndInstallWheels(venvContext, verMW4=None):
             return False
     print('...finished')
     print('Precompiled packages ready')
-    print('')
     return True
 
 
@@ -345,14 +365,15 @@ def versionOnline(updateBeta):
     vPackage.sort(key=Version, reverse=True)
     verBeta = [x for x in vPackage if 'b' in x]
     verRelease = [x for x in vPackage if 'b' not in x and 'a' not in x]
-    log.info(f'Package Beta:   {verBeta[:10]}')
-    log.info(f'Package Release:{verRelease[:10]}')
+    log.header(f'Package Beta:   {verBeta[:10]}')
+    log.header(f'Package Release:{verRelease[:10]}')
 
     if updateBeta:
-        verMW4 = Version(verBeta[0])
+        version = Version(verBeta[0])
     else:
-        verMW4 = Version(verRelease[0])
-    return verMW4
+        version = Version(verRelease[0])
+
+    return version
 
 
 def versionLocal():
@@ -381,58 +402,36 @@ def getVersion(isTest, updateBeta):
     :return:
     """
     if isTest:
-        verMW4 = versionLocal()
+        version = versionLocal()
     elif updateBeta:
-        verMW4 = versionOnline(True)
+        version = versionOnline(True)
     else:
-        verMW4 = versionOnline(False)
-    return verMW4
+        version = versionOnline(False)
+    return version
 
 
-def installMW4(venvContext, update=False, updateBeta=False,
-               isTest=False, version='', verMW4=''):
+def install(venvContext, version='', isTest=False):
     """
     :param venvContext:
-    :param update:
-    :param updateBeta:
-    :param isTest:
     :param version:
-    :param verMW4:
+    :param isTest:
     :return:
     """
     command = ['-m', 'pip', 'install', 'wheel']
+    runPythonInVenv(venvContext, command)
+    command = ['-m', 'pip', 'install', 'pip', '-U']
     runPythonInVenv(venvContext, command)
 
     if isTest:
         print('Installing local package mountwizzard4.tar.gz')
         command = ['-m', 'pip', 'install', 'mountwizzard4.tar.gz']
-    elif version:
+    else:
         print(f'Installing version {version}')
         command = ['-m', 'pip', 'install', f'mountwizzard4=={version}']
-    elif update:
-        print('Upgrading to latest release')
-        command = ['-m', 'pip', 'install', '-U', 'mountwizzard4']
-    elif updateBeta:
-        print('Upgrading to latest version including beta')
-        command = ['-m', 'pip', 'install', '-U', 'mountwizzard4', '--pre']
-    else:
-        print('Installing latest release')
-        command = ['-m', 'pip', 'install', '-U', 'mountwizzard4']
 
-    ver = version if version else verMW4
-    print(f'...version is {ver}')
     print('...this will take some time')
-    print()
     suc = runPythonInVenv(venvContext, command)
-    if not suc:
-        return False
-
-    if update or updateBeta:
-        print('Update finished')
-    else:
-        print('Install finished')
-    print()
-    return True
+    return suc
 
 
 def checkIfInstalled(venvContext):
@@ -444,16 +443,15 @@ def checkIfInstalled(venvContext):
                           recursive=True)
     isInstalled = len(solutions) == 1
     if isInstalled:
-        print('MountWizzard4 present')
-        command = [solutions[0]]
+        print('MountWizzard4 installed')
+        loaderPath = [solutions[0]]
     else:
-        print('MountWizzard4 not present')
-        command = ''
-    print('')
-    return isInstalled, command
+        print('MountWizzard4 not installed')
+        loaderPath = ''
+    return isInstalled, loaderPath
 
 
-def install(venvContext, update=False, updateBeta=False, version=''):
+def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
     """
     :param venvContext:
     :param update:
@@ -461,34 +459,38 @@ def install(venvContext, update=False, updateBeta=False, version=''):
     :param version:
     :return:
     """
-    isInstalled, command = checkIfInstalled(venvContext)
+    isInstalled, loaderPath = checkIfInstalled(venvContext)
     if isInstalled and not (update or updateBeta or version):
-        return command
+        return loaderPath
 
     isTest = os.path.isfile('mountwizzard4.tar.gz')
-    verMW4 = getVersion(isTest, updateBeta)
+    version = getVersion(isTest, updateBeta)
+    isV2 = version < Version('2.100')
+    compatibleV2 = Version(platform.python_version()) < Version('3.10')
+
+    if isV2 and not compatibleV2:
+        print('MW4 v2.x needs python 3.7 .. 3.9')
+        return ''
 
     if platform.machine() == 'aarch64':
-        suc = downloadAndInstallWheels(venvContext, verMW4=verMW4)
+        suc = downloadAndInstallWheels(venvContext, version=version)
         if not suc:
             return ''
     elif platform.machine() == 'armv7':
         return ''
 
-    suc = installMW4(venvContext, update=update, updateBeta=updateBeta,
-                     version=version, verMW4=verMW4, isTest=isTest)
+    suc = install(venvContext, version=version, isTest=isTest)
     if not suc:
         return ''
 
-    _, command = checkIfInstalled(venvContext)
-    return command
+    _, loaderPath = checkIfInstalled(venvContext)
+    return loaderPath
 
 
-def main(args=None):
+def checkBaseCompatibility():
     """
     :return:
     """
-    setupLogging()
     compatible = True
     if sys.version_info < (3, 8) or sys.version_info >= (3, 11):
         compatible = False
@@ -498,7 +500,17 @@ def main(args=None):
         compatible = False
     elif platform.machine() in ['aarch64'] and sys.version_info >= (3, 10):
         compatible = False
+    return compatible
 
+
+def main(options):
+    """
+    :param options:
+    :return:
+    """
+    setupLogging()
+    addLoggingLevel('HEADER', 55)
+    compatible = checkBaseCompatibility()
     if not compatible:
         print()
         print('-' * 50)
@@ -511,74 +523,77 @@ def main(args=None):
         print(f'you are running {platform.python_version()}')
         print('Closing application')
         print('-' * 50)
-        print()
-        return
+        return False
 
+    if platform.system() == 'Windows':
+        os.environ['QT_SCALE_FACTOR'] = f'{options.scale:2.1f}'
+        os.environ['QT_FONT_DPI'] = f'{options.dpi:2.0f}'
+    venvPath = pathlib.Path.cwd().joinpath('venv')
+    venvContext = venvCreate(venvPath, upgrade=options.venv)
+
+    if options.basic:
+        installBasicPackages()
+    if options.clean:
+        cleanSystem()
+
+    loaderPath = prepareInstall(
+        venvContext,
+        update=options.update,
+        updateBeta=options.updateBeta,
+        version=options.version)
+
+    if not options.noStart and loaderPath:
+        print('MountWizzard4 starting')
+        suc = runPythonInVenv(venvContext, loaderPath)
+        if not suc:
+            print('...failed to start MW4')
+    elif not loaderPath:
+        print('Install failed')
+
+
+def readOptions():
+    """
+    :return:
+    """
     parser = argparse.ArgumentParser(
         prog=__name__, description='Installs MW4 in Python virtual '
                                    'environment in local workdir')
     parser.add_argument(
-        '--upgrade-venv', default=False, action='store_true', dest='upgrade',
-        help='Upgrade the virtual environment directory to use this version of '
-             'Python, assuming Python has been upgraded in-place.')
-    parser.add_argument(
-        '--update', default=False, action='store_true', dest='updateMW4',
-        help='Update MW4 to the actual release version')
-    parser.add_argument(
-        '--update-beta', default=False, action='store_true', dest='updateMW4beta',
-        help='Update MW4 to the actual beta version')
-    parser.add_argument(
-        '--version', default='', type=str, dest='version',
-        help='Update MW4 to the named version')
-    parser.add_argument(
-        '--no-start', default=False, action='store_true', dest='noStart',
-        help='Running script without starting MW4')
+        '--basic', default=False, action='store_true', dest='basic',
+        help='Upgrade basic install packages')
     parser.add_argument(
         '--clean', default=False, action='store_true', dest='clean',
         help='Cleaning system packages from faulty installs')
     parser.add_argument(
-        '--scale', default=1, type=float, dest='scale',
-        help='Setting Qt DPI scale factor (+scale = +size)')
-    parser.add_argument(
         '--dpi', default=96, type=float, dest='dpi',
         help='Setting QT font DPI (+dpi = -fontsize)')
     parser.add_argument(
-        '--basic', default=False, action='store_true', dest='basic',
-        help='Upgrade basic install packages')
+        '--no-start', default=False, action='store_true', dest='noStart',
+        help='Running script without starting MW4')
+    parser.add_argument(
+        '--scale', default=1, type=float, dest='scale',
+        help='Setting Qt DPI scale factor (+scale = +size)')
+    parser.add_argument(
+        '--update', default=False, action='store_true', dest='update',
+        help='Update MW4 to the actual release version')
+    parser.add_argument(
+        '--update-beta', default=False, action='store_true', dest='updateBeta',
+        help='Update MW4 to the actual beta version')
+    parser.add_argument(
+        '--update-venv', default=False, action='store_true', dest='venv',
+        help='Upgrade the virtual environment directory to use this version of '
+             'Python, assuming Python has been upgraded in-place.')
+    parser.add_argument(
+        '--version', default='', type=str, dest='version',
+        help='Update MW4 to the named version')
 
-    options = parser.parse_args(args)
-    venvPath = pathlib.Path.cwd().joinpath('venv')
-    venvContext = venvCreate(venvPath, upgrade=options.upgrade)
-
-    if options.clean:
-        cleanSystem()
-    if options.basic:
-        installBasicPackages()
-    print()
-
-    command = install(venvContext,
-                      update=options.updateMW4,
-                      updateBeta=options.updateMW4beta,
-                      version=options.version)
-    if platform.system() == 'Windows':
-        os.environ['QT_SCALE_FACTOR'] = f'{options.scale:2.1f}'
-        os.environ['QT_FONT_DPI'] = f'{options.dpi:2.0f}'
-
-    if not options.noStart and command:
-        print('MountWizzard4 is ready')
-        print('...starting')
-        suc = runPythonInVenv(venvContext, command)
-        if not suc:
-            print('...failed to start MW4')
-        print()
-    elif not command:
-        print('Install failed')
-        print()
-
-    print('Closing application')
-    print('-' * 50)
-    print()
+    options = parser.parse_args()
+    return options
 
 
 if __name__ == '__main__':
-    main()
+    options = readOptions()
+    main(options)
+    print('Closing application')
+    print('-' * 50)
+    print()

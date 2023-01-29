@@ -1,14 +1,19 @@
 Beta versions of MW4
 --------------------
+
+- none so far
+
+Released versions of MW4
+------------------------
 Version 3.0
 ^^^^^^^^^^^
-3.0.0b0
+3.0.0
 
 Version 3.0 is a major release! Please update with care!
 No ARM7 support / ARM64 only Python 3.8 - 3.9
 
 - add: GUI: all charts could be zoomed and panned
-- add: GUI: all tab menu entries could be customized in order and stored
+- add: GUI: all tab menu entries could be customized in order and stored /reset
 - add: GUI: all open windows could be collected to visual area
 - add: GUI: separate window with big buttons are available
 - add: GUI: reduced GUI configurable for a simpler user interface
@@ -37,7 +42,7 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - add: satellites: all time values could be UTC or local time now
 - add: MPC / IERS: adding alternative server for download
 - add: measure: window has max 5 charts now (from 3)
-- add: measure: more values (time delta, focus, etc)
+- add: measure: more values (time delta, focus, cooler power, etc.)
 - add: image: photometry functions (aberration, roundness, etc.)
 - add: image: tilt estimation like ASTAP does as rectangle and triangle
 - add: image: add flip H and flip V
@@ -58,6 +63,7 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - improve: GUI: clean up and optimize IERS download messages
 - improve: GUI: get more interaction bullet prove for invalid cross use cases
 - improve: GUI: moved on / off mount to their settings: avoid undesired shutoff
+- improve: GUI: show twilight and moon illumination in main window
 - improve: INDI: correcting setting parameters on startup
 - improve: model points: optimized DSO path generation (always fit, less params)
 - improve: model run: refactoring
@@ -74,13 +80,22 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - remove: system: move from deprecated distutils to packaging
 - remove: system: support for python 3.7 as some libraries stopped support
 - remove: imageW: stacking in imageW as it was never used
+- remove: testing support for OSx Mojave and OSx Catalina (still should work)
 - fix: drivers: device selection tab was not properly positioned in device popup
-
-Released versions of MW4
-------------------------
 
 Version 2.2
 ^^^^^^^^^^^
+2.2.9
+
+- fix: internal updater shows only alpha versions instead of betas
+
+2.2.8
+
+- fix: updates for supporting newer ASTAP versions
+- fix: model run will cancel if solving fails
+- fix: workaround ASTAP FITS outputs which are not readable via astropy
+- update ephemeris file
+
 2.2.7
 
 - fix: text labels

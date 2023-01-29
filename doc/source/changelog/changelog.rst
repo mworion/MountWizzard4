@@ -1,8 +1,13 @@
 Beta versions of MW4
 --------------------
+
+- none so far
+
+Released versions of MW4
+------------------------
 Version 3.0
 ^^^^^^^^^^^
-3.0.0b10
+3.0.0
 
 Version 3.0 is a major release! Please update with care!
 No ARM7 support / ARM64 only Python 3.8 - 3.9
@@ -77,9 +82,6 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - remove: imageW: stacking in imageW as it was never used
 - remove: testing support for OSx Mojave and OSx Catalina (still should work)
 - fix: drivers: device selection tab was not properly positioned in device popup
-
-Released versions of MW4
-------------------------
 
 Version 2.2
 ^^^^^^^^^^^

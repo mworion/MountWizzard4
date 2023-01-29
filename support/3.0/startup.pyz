@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.0beta11'
+version = '3.0'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -259,14 +259,14 @@ def venvCreate(venvPath, upgrade=False):
     :return:
     """
     prt()
-    prt('-' * 40)
+    prt('-' * 45)
     prt('MountWizzard4')
-    prt('-' * 40)
+    prt('-' * 45)
     prt(f'script version   : {version}')
     prt(f'platform         : {platform.system()}')
     prt(f'machine          : {platform.machine()}')
     prt(f'python           : {platform.python_version()}')
-    prt('-' * 40)
+    prt('-' * 45)
 
     log.header('-' * 100)
     log.header(f'script version   : {version}')
@@ -539,7 +539,7 @@ def main(options):
     compatible = checkBaseCompatibility()
     if not compatible:
         prt()
-        prt('-' * 40)
+        prt('-' * 45)
         prt('MountWizzard4 startup - no compatible environment')
         prt('needs python 3.7-3.9 for version 2.x')
         prt('needs python 3.8-3.10 for version 3.x')
@@ -548,7 +548,7 @@ def main(options):
         prt('no support for AARCH64 for python 3.10')
         prt(f'you are running {platform.python_version()}')
         prt('Closing application')
-        prt('-' * 40)
+        prt('-' * 45)
         return False
 
     if platform.system() == 'Windows':
@@ -620,7 +620,7 @@ def readOptions():
 if __name__ == '__main__':
     options = readOptions()
     main(options)
-    prt('-' * 40)
+    prt('-' * 45)
     prt('Closing application')
-    prt('-' * 40)
+    prt('-' * 45)
     prt()

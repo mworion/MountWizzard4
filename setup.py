@@ -19,8 +19,11 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-Version 3.0 is a major release! Please update with care!
-No ARM7 support / ARM64 only Python 3.8 - 3.9 
+Version 3.0 is a major release! 
+Please update with care!
+No Python 3.7 support! 
+No ARM7 support!
+ARM64 only Python 3.8 - 3.9!
 
 - add: GUI: all charts could be zoomed and panned
 - add: GUI: all tab menu entries could be customized in order and stored /reset
@@ -99,7 +102,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.0b11',
+    version='3.0.0RC',
     packages=[
         'mw4',
         'mw4.base',
@@ -144,7 +147,7 @@ setup(
         'astroquery==0.4.6',
         'sep==1.2.1',
         'pyqtgraph==0.13.1',
-        'qimage2ndarray==1.9.0',
+        'qimage2ndarray==1.10.0',
         'skyfield==1.45',
         'sgp4==2.21',
         'requests==2.28.2',
@@ -154,20 +157,20 @@ setup(
         'deepdiff==6.2.3',
         'wakeonlan==3.0.0',
         'pybase64==1.2.3',
-        'websocket-client==1.4.2',
+        'websocket-client==1.5.0',
         'hidapi==0.13.1',
         'range-key-dict==1.1.0',
-        'ndicts==0.1.0',
-        'packaging==22.0',
-        'lz4==4.0.2',
+        'ndicts==0.3.0',
+        'packaging==23.0',
+        'lz4==4.3.2',
         'xisf==0.9.0',
     ]
-    + (['pywin32==304'] if platform.system() == "Windows" else [])
+    + (['pywin32==305'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt5==5.15.7'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.15.5'] if platform.machine() not in ['armv7l',
+    + (['PyQt5==5.15.8'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==5.15.6'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
-    keywords=['5.15.7'],
+    keywords=['5.15.8'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

@@ -20,7 +20,7 @@ import os
 import json
 
 # external libraries
-from ndicts.ndicts import NestedDict
+from ndicts import NestedDict
 from packaging.utils import Version
 
 # local imports

@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-
+- improve refraction: when selecting internal sensor, go to automatic
  """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.1',
+    version='3.1.0b0',
     packages=[
         'mw4',
         'mw4.base',

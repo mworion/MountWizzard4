@@ -159,6 +159,9 @@ class Environ:
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
             return suc
 
+        if self.app.mount.setting.weatherStatus == 0:
+            self.ui.refracCont.setChecked(True)
+
         # otherwise, we have to switch it on or off
         if self.ui.refracManual.isChecked():
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)

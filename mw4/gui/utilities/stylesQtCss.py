@@ -705,10 +705,19 @@ class Styles:
             border-radius: 2px;
         }
         /* scroll bar */
-        QScrollBar
+        QScrollBar:vertical
         {   background-color: $M_GREY1$;
-            width: 14px;
-            margin: 0px 3px 0px 3px;
+            width: 16px;
+            margin: 4px 4px 16px 4px;
+            border-width: 1px;
+            border-color: $M_GREY$;
+            border-style: outset;
+            border-radius: 2px;
+        }
+        QScrollBar:horizontal
+        {   background-color: $M_GREY1$;
+            height: 16px;
+            margin: 4px 16px 4px 4px;
             border-width: 1px;
             border-color: $M_GREY$;
             border-style: outset;
@@ -717,6 +726,7 @@ class Styles:
         QScrollBar::handle
         {   background-color: $M_BLUE$;
             min-height: 24px;
+            min-width: 24px;
             border-radius: 2px;
         }
         /* progress bar */

@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -7088,7 +7088,7 @@ no tracking</string>
        <bool>false</bool>
       </attribute>
       <attribute name="horizontalHeaderMinimumSectionSize">
-       <number>10</number>
+       <number>6</number>
       </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>10</number>
@@ -17243,6 +17243,9 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="lineWidth">
         <number>0</number>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
        </property>
        <property name="editTriggers">
         <set>QAbstractItemView::NoEditTriggers</set>

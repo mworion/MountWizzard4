@@ -529,12 +529,14 @@ class Environ:
               'Bad Layers Bot [km]',
               'Bad Layers [K/100m]',
               'Jet stream [m/s]',
+              '',
               ]
 
         seeTab = self.ui.tableSeeing
-        seeTab.setRowCount(14)
+        seeTab.setRowCount(15)
         seeTab.setColumnCount(96)
         seeTab.setVerticalHeaderLabels(vl)
+        seeTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         seeTab.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()
         seeTab.resizeColumnsToContents()

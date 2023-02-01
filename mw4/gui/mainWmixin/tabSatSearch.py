@@ -586,7 +586,6 @@ class SatSearch(object):
         satTab.setColumnWidth(6, 50)
         satTab.setColumnWidth(7, 45)
         satTab.setColumnWidth(8, 0)
-        satTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         satTab.verticalHeader().setDefaultSectionSize(16)
         return True
 

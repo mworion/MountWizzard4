@@ -707,7 +707,7 @@ class Styles:
         /* scroll bar */
         QScrollBar
         {   background-color: $M_GREY1$;
-            width: 20px;
+            width: 14px;
             margin: 0px 3px 0px 3px;
             border-width: 1px;
             border-color: $M_GREY$;
@@ -716,44 +716,8 @@ class Styles:
         }
         QScrollBar::handle
         {   background-color: $M_BLUE$;
-            min-height: 32px;
+            min-height: 24px;
             border-radius: 2px;
-        }
-        QScrollBar::sub-line
-        {   margin: 2px 0px 2px 0px;
-            height: 0px;
-            width: 0px;
-            subcontrol-position: top;
-            subcontrol-origin: margin;
-        }
-        QScrollBar::add-line
-        {   margin: 2px 0px 2px 0px;
-            height: 0px;
-            width: 0px;
-            subcontrol-position: bottom;
-            subcontrol-origin: margin;
-        }
-        QScrollBar::sub-line:on
-        {   height: 16px;
-            width: 16px;
-            subcontrol-position: top;
-            subcontrol-origin: margin;
-        }
-        QScrollBar::add-line:on
-        {   height: 0px;
-            width: 0px;
-            subcontrol-position: bottom;
-            subcontrol-origin: margin;
-        }
-        QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
-        {   background: none;
-            border-width: 0px;
-            border-color: $M_GREY$;
-            border-style: plain;
-            border-radius: 0px;
-        }
-        QScrollBar::add-page, QScrollBar::sub-page
-        {   background: none;
         }
         /* progress bar */
         QProgressBar {

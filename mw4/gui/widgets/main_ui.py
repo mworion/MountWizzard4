@@ -2353,8 +2353,8 @@ class Ui_MainWindow(object):
         self.meteoblueIcon.setObjectName("meteoblueIcon")
         self.tableSeeing = QtWidgets.QTableWidget(self.seeingGroup)
         self.tableSeeing.setGeometry(QtCore.QRect(50, 20, 716, 181))
-        self.tableSeeing.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.tableSeeing.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.tableSeeing.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.tableSeeing.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.tableSeeing.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableSeeing.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableSeeing.setTabKeyNavigation(False)
@@ -10601,7 +10601,7 @@ class Ui_MainWindow(object):
         self.openV4.setObjectName("openV4")
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(0)
+        self.mainTabWidget.setCurrentIndex(1)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
@@ -11499,6 +11499,8 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'Arial\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">For polar align, turn knobs info is only helpful for large errors. If turns &lt; 0.25 or polar error &lt; 5 arcmin, please center star for improvement.</span></p></body></html>"))
         self.plateSolveSyncGroup.setTitle(_translate("MainWindow", "Fast align"))
@@ -12490,6 +12492,8 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">astropy, deepdiff, hdiapi, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4</p></body></html>"))
         self.LoglevelGroup.setTitle(_translate("MainWindow", "Logging"))

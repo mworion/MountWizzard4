@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -19611,6 +19611,9 @@ Next point in time when satellite settles.</string>
       <property name="toolTip">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of minor planets. This includes comets, asteroids and others.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::ExtendedSelection</enum>
+      </property>
      </widget>
     </widget>
     <widget class="QPushButton" name="progMinorPlanetsFull">
@@ -19618,7 +19621,7 @@ Next point in time when satellite settles.</string>
       <rect>
        <x>10</x>
        <y>400</y>
-       <width>181</width>
+       <width>121</width>
        <height>26</height>
       </rect>
      </property>
@@ -19626,15 +19629,15 @@ Next point in time when satellite settles.</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Prog complete database</string>
+      <string>Prog complete</string>
      </property>
     </widget>
     <widget class="QPushButton" name="progMinorPlanetsFiltered">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>135</x>
        <y>400</y>
-       <width>181</width>
+       <width>121</width>
        <height>26</height>
       </rect>
      </property>
@@ -19642,7 +19645,23 @@ Next point in time when satellite settles.</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Prog filtered database</string>
+      <string>Prog filtered</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="progMinorPlanetsSelected">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>400</y>
+       <width>121</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Prog selected</string>
      </property>
     </widget>
    </widget>

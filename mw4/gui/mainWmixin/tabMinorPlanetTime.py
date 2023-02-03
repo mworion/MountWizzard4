@@ -54,7 +54,7 @@ class MinorPlanetTime:
             'Maia from usno.navy.mil': 'https://maia.usno.navy.mil/ser7',
         }
 
-        self.ui.listMinorPlanetNames.doubleClicked.connect(self.progMinorPlanetsSingle)
+        self.ui.progMinorPlanetsSelected.clicked.connect(self.progMinorPlanetsSelected)
         self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
         self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
         self.ui.progEarthRotationData.clicked.connect(self.startProgEarthRotationDataToMount)
@@ -333,7 +333,7 @@ class MinorPlanetTime:
         :return:
         """
         filterStr = self.ui.filterMinorPlanet.text().lower()
-        filtered = list()
+        filtered = []
         for index, mp in enumerate(mpcRaw):
             text = self.generateName(index, mp)
 
@@ -370,7 +370,7 @@ class MinorPlanetTime:
         self.msg.emit(1, '', '', 'Exporting MPC data')
         return True
 
-    def progMinorPlanetsSingle(self):
+    def progMinorPlanetsSelected(self):
         """
         :return: success
         """
@@ -378,10 +378,12 @@ class MinorPlanetTime:
         if not suc:
             return False
 
-        source = self.ui.listMinorPlanetNames.currentItem().text()
-        number = int(source.split(':')[0])
-        mpcFiltered = [self.minorPlanets[number]]
-        self.progMinorPlanets(mpcFiltered)
+        mpcSelectedIndexes = self.ui.listMinorPlanetNames.selectedIndexes()
+        mpcSelected = []
+        for entry in mpcSelectedIndexes:
+            index = entry.row()
+            mpcSelected.append(self.minorPlanets[index])
+        self.progMinorPlanets(mpcSelected)
         return True
 
     def progMinorPlanetsFiltered(self):

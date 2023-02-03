@@ -410,6 +410,7 @@ class MainWindow(
         # minor planets
         self.wIcon(self.ui.progMinorPlanetsFull, 'run')
         self.wIcon(self.ui.progMinorPlanetsFiltered, 'run')
+        self.wIcon(self.ui.progMinorPlanetsSelected, 'run')
         self.wIcon(self.ui.progEarthRotationData, 'run')
         self.wIcon(self.ui.downloadIERS, 'run')
 

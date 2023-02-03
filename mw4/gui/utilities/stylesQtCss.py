@@ -171,7 +171,7 @@ class Styles:
             border-radius: 8px;
         }
         QLabel:disabled {
-            background-color: $M_TRANS$;;
+            background-color: $M_TRANS$;
             color: $M_GREY$;
         }
         QLabel[color='blue'] {
@@ -550,6 +550,9 @@ class Styles:
             margin: 0px;
             border: 0px;
         }
+        QListView::item:selected {
+            background-color: $M_BLUE$;
+        }
         QTableWidget {
             border-color: $M_GREY$;
             border-width: 0px;
@@ -708,7 +711,7 @@ class Styles:
         QScrollBar:vertical
         {   background-color: $M_GREY1$;
             width: 16px;
-            margin: 4px 4px 16px 4px;
+            margin: 4px 4px 4px 4px;
             border-width: 1px;
             border-color: $M_GREY$;
             border-style: outset;
@@ -717,7 +720,7 @@ class Styles:
         QScrollBar:horizontal
         {   background-color: $M_GREY1$;
             height: 16px;
-            margin: 4px 16px 4px 4px;
+            margin: 4px 4px 4px 4px;
             border-width: 1px;
             border-color: $M_GREY$;
             border-style: outset;
@@ -728,6 +731,42 @@ class Styles:
             min-height: 24px;
             min-width: 24px;
             border-radius: 2px;
+        }
+        QScrollBar::sub-line
+        {   margin: 2px 0px 2px 0px;
+            height: 0px;
+            width: 0px;
+            subcontrol-position: top;
+            subcontrol-origin: margin;
+        }
+        QScrollBar::add-line
+        {   margin: 2px 0px 2px 0px;
+            height: 0px;
+            width: 0px;
+            subcontrol-position: bottom;
+            subcontrol-origin: margin;
+        }
+        QScrollBar::sub-line:on
+        {   height: 16px;
+            width: 16px;
+            subcontrol-position: top;
+            subcontrol-origin: margin;
+        }
+        QScrollBar::add-line:on
+        {   height: 0px;
+            width: 0px;
+            subcontrol-position: bottom;
+            subcontrol-origin: margin;
+        }
+        QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+        {   background: none;
+            border-width: 0px;
+            border-color: $M_GREY$;
+            border-style: plain;
+            border-radius: 0px;
+        }
+        QScrollBar::add-page, QScrollBar::sub-page
+        {   background: none;
         }
         /* progress bar */
         QProgressBar {

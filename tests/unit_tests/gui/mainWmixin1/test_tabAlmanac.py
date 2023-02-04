@@ -31,7 +31,7 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabAlmanac import Almanac
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     class Mixin(MWidget, Almanac):

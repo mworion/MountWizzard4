@@ -41,8 +41,8 @@ from resource import resources
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 resources.qInitResources()
 
-    
-@pytest.fixture(autouse=True, scope='function')
+
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     shutil.copy('tests/testData/visual.txt', 'tests/workDir/data/visual.txt')
@@ -103,6 +103,8 @@ def test_storeConfigExtendedWindows_1(function):
         @staticmethod
         def storeConfig():
             return
+
+    test = function.uiWindows
     function.uiWindows = {'showSimulatorW': {
         'button': function.ui.mountConnected,
         'classObj': Test(),
@@ -113,6 +115,7 @@ def test_storeConfigExtendedWindows_1(function):
     function.app.config['showSimulatorW'] = True
     suc = function.storeConfigExtendedWindows()
     assert suc
+    function.uiWindows = test
 
 
 def test_storeConfig_1(function):
@@ -182,6 +185,7 @@ def test_updateMountConnStat_2(function):
 
 @patch('base.packageConfig.isAvailable', True)
 def test_updateMountConnStat_3(function):
+    test = function.uiWindows
     function.uiWindows = {'showSimulatorW': {
         'button': function.ui.mountConnected,
         'classObj': QWidget(),
@@ -193,7 +197,7 @@ def test_updateMountConnStat_3(function):
     assert function.ui.mountConnected.text() == 'Mount'
     assert not function.deviceStat['mount']
     assert suc
-
+    function.uiWindows = test
 
 def test_updateMountWeatherStat_1(function):
     class S:
@@ -321,17 +325,21 @@ def test_mountBoot1(function):
 
 
 def test_updateWindowsStats_1(function):
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': {'classObj': 1,
                                            'button': QPushButton()}}
     suc = function.updateWindowsStats()
     assert suc
+    function.uiWindows = test
 
 
 def test_updateWindowsStats_2(function):
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': {'classObj': None,
                                            'button': QPushButton()}}
     suc = function.updateWindowsStats()
     assert suc
+    function.uiWindows = test
 
 
 def test_setEnvironDeviceStats_1(function):
@@ -489,6 +497,7 @@ def test_deleteWindowResource_1(function):
 
 
 def test_deleteWindowResource_2(function):
+
     suc = function.deleteWindowResource(widget=function.ui.openImageW)
     assert suc
 
@@ -575,24 +584,29 @@ def test_toggleWindow_3(function):
 
 def test_showExtendedWindows_1(function):
     function.app.config = {}
+    test = function.uiWindows
     function.uiWindows = {'showSimulatorW': True}
     function.app.config['showMessageW'] = True
     with mock.patch.object(function,
                            'buildWindow'):
         suc = function.showExtendedWindows()
         assert suc
+    function.uiWindows = test
 
 
 def test_showExtendedWindows_2(function):
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': True}
     function.app.config['showMessageW'] = False
     with mock.patch.object(function,
                            'buildWindow'):
         suc = function.showExtendedWindows()
         assert suc
+    function.uiWindows = test
 
 
 def test_showExtendedWindows_3(function):
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': True}
     function.app.config['showMessageW'] = True
     with mock.patch.object(function,
@@ -600,6 +614,7 @@ def test_showExtendedWindows_3(function):
         suc = function.showExtendedWindows()
         assert suc
     function.app.config['showMessageW'] = False
+    function.uiWindows = test
 
 
 def test_waitClosedExtendedWindows_1(function):
@@ -609,6 +624,7 @@ def test_waitClosedExtendedWindows_1(function):
             function.uiWindows['showMessageW']['classObj'] = None
             return
 
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': {'classObj': Test(),
                                            'button': QPushButton()},
                           'showImageW': {'classObj': None,
@@ -617,17 +633,18 @@ def test_waitClosedExtendedWindows_1(function):
                            'sleepAndEvents'):
         suc = function.waitClosedExtendedWindows()
         assert suc
-    function.uiWindows = {}
+    function.uiWindows = test
 
 
 def test_waitClosedExtendedWindows_2(function):
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': {'classObj': None,
                                            'button': QPushButton()}}
     with mock.patch.object(gui.utilities.toolsQtWidget,
                            'sleepAndEvents'):
         suc = function.waitClosedExtendedWindows()
         assert suc
-    function.uiWindows = {}
+    function.uiWindows = test
 
 
 def test_closeExtendedWindows_1(function):
@@ -637,23 +654,25 @@ def test_closeExtendedWindows_1(function):
             function.uiWindows['showMessageW']['classObj'] = None
             return
 
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': {'classObj': Test(),
                                            'button': QPushButton()}}
     with mock.patch.object(function,
                            'waitClosedExtendedWindows'):
         suc = function.closeExtendedWindows()
         assert suc
-    function.uiWindows = {}
+    function.uiWindows = test
 
 
 def test_closeExtendedWindows_2(function):
+    test = function.uiWindows
     function.uiWindows = {'showMessageW': {'classObj': None,
                                            'button': QPushButton()}}
     with mock.patch.object(function,
                            'waitClosedExtendedWindows'):
         suc = function.closeExtendedWindows()
         assert suc
-    function.uiWindows = {}
+    function.uiWindows = test
 
 
 def test_checkExtension_1(function):
@@ -781,11 +800,15 @@ def test_addProfileGUI_2(function):
                                'loadProfile',
                                return_value={}):
             with mock.patch.object(function,
-                                   'switchProfile'):
-                with mock.patch.object(gui.mainWindow.mainW,
-                                       'blendProfile'):
-                    suc = function.addProfileGUI()
-                    assert not suc
+                                   'storeConfig'):
+                with mock.patch.object(function.app,
+                                       'storeConfig'):
+                    with mock.patch.object(function,
+                                           'switchProfile'):
+                        with mock.patch.object(gui.mainWindow.mainW,
+                                               'blendProfile'):
+                            suc = function.addProfileGUI()
+                            assert not suc
 
 
 def test_addProfileGUI_3(function):
@@ -796,11 +819,15 @@ def test_addProfileGUI_3(function):
                                'loadProfile',
                                return_value={'test': 1}):
             with mock.patch.object(function,
-                                   'switchProfile'):
-                with mock.patch.object(gui.mainWindow.mainW,
-                                       'blendProfile'):
-                    suc = function.addProfileGUI()
-                    assert suc
+                                   'storeConfig'):
+                with mock.patch.object(function.app,
+                                       'storeConfig'):
+                    with mock.patch.object(function,
+                                           'switchProfile'):
+                        with mock.patch.object(gui.mainWindow.mainW,
+                                               'blendProfile'):
+                            suc = function.addProfileGUI()
+                            assert suc
 
 
 def test_saveConfigAs1(function):

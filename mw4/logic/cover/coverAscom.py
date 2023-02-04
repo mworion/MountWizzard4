@@ -81,7 +81,7 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.callMethodThreaded(self.client.CalibratorOn)
+        self.callMethodThreaded(self.client.CalibratorOn, 128)
         return True
 
     def lightOff(self):
@@ -102,5 +102,5 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.callMethodThreaded(self.client.Brightness, value)
+        self.callMethodThreaded(self.client.CalibratorOn, value)
         return True

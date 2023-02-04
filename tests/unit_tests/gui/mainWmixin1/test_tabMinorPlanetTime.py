@@ -466,15 +466,15 @@ def test_mpcGUI_4(function):
             assert suc
 
 
-def test_progMinorPlanetsSingle_1(function):
+def test_progMinorPlanetsSelected_1(function):
     with mock.patch.object(function,
                            'mpcGUI',
                            return_value=False):
-        suc = function.progMinorPlanetsSingle()
+        suc = function.progMinorPlanetsSelected()
         assert not suc
 
 
-def test_progMinorPlanetsSingle_2(function):
+def test_progMinorPlanetsSelected_2(function):
     function.ui.listMinorPlanetNames.clear()
     function.ui.listMinorPlanetNames.addItem('0:test')
     function.minorPlanets = ['test']
@@ -488,7 +488,7 @@ def test_progMinorPlanetsSingle_2(function):
                            return_value=True):
         with mock.patch.object(function,
                                'progMinorPlanets'):
-            suc = function.progMinorPlanetsSingle()
+            suc = function.progMinorPlanetsSelected()
             assert suc
 
 

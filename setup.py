@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- improve minor planets selection: adding multiple selection by mouse
 - improve refraction: when selecting internal sensor, go to automatic
  """
 

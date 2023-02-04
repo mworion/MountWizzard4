@@ -193,11 +193,11 @@ def build_widgets(c):
 
 @task()
 def test_mw(c):
-    printMW('testing mountwizzard')
+    printMW('testing mountwizzard4')
     runMW(c, 'flake8')
-    runMW(c, 'pytest  tests/unit_tests/zLoader')
-    runMW(c, 'pytest  tests/unit_tests/zMainApp')
-    runMW(c, 'pytest  tests/unit_tests/zUpdate')
+    runMW(c, 'pytest tests/unit_tests/zLoader')
+    runMW(c, 'pytest tests/unit_tests/zMainApp')
+    runMW(c, 'pytest tests/unit_tests/zUpdate')
     runMW(c, 'pytest tests/unit_tests/base')
     runMW(c, 'pytest tests/unit_tests/gui/extWindows')
     runMW(c, 'pytest tests/unit_tests/gui/mainWindow')

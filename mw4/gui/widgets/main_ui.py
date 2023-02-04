@@ -10606,7 +10606,7 @@ class Ui_MainWindow(object):
         self.openV4.setObjectName("openV4")
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(6)
+        self.mainTabWidget.setCurrentIndex(0)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)

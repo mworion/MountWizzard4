@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- fix: ascom cover: brightness status. 
 - improve minor planets selection: adding multiple selection by mouse
 - improve refraction: when selecting internal sensor, go to automatic
  """
@@ -28,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.1.0b0',
+    version='3.0.1b0',
     packages=[
         'mw4',
         'mw4.base',

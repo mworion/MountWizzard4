@@ -15,6 +15,7 @@
 #
 ###########################################################
 # standard libraries
+import platform
 import webbrowser
 
 # external packages
@@ -529,10 +530,14 @@ class Environ:
               'Bad Layers Bot [km]',
               'Bad Layers [K/100m]',
               'Jet stream [m/s]',
+              '',
               ]
 
         seeTab = self.ui.tableSeeing
-        seeTab.setRowCount(14)
+        if platform.system() == 'Darwin':
+            seeTab.setRowCount(15)
+        else:
+            seeTab.setRowCount(14)
         seeTab.setColumnCount(96)
         seeTab.setVerticalHeaderLabels(vl)
         seeTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)

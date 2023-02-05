@@ -708,23 +708,20 @@ class Styles:
             border-radius: 2px;
         }
         /* scroll bar */
-        QScrollBar:vertical
-        {   background-color: $M_GREY1$;
-            width: 16px;
-            margin: 4px 4px 4px 4px;
+        QScrollBar {
             border-width: 1px;
             border-color: $M_GREY$;
+            background-color: $M_GREY1$;
             border-style: outset;
             border-radius: 2px;
         }
-        QScrollBar:horizontal
-        {   background-color: $M_GREY1$;
-            height: 16px;
+        QScrollBar:vertical
+        {   width: 16px;
             margin: 4px 4px 4px 4px;
-            border-width: 1px;
-            border-color: $M_GREY$;
-            border-style: outset;
-            border-radius: 2px;
+        }
+        QScrollBar:horizontal
+        {   height: 16px;
+            margin: 4px 16px 4px 4px;
         }
         QScrollBar::handle
         {   background-color: $M_BLUE$;

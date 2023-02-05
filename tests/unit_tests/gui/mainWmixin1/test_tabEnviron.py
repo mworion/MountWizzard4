@@ -19,6 +19,7 @@ import pytest
 from unittest import mock
 import shutil
 import webbrowser
+import platform
 
 # external packages
 import numpy as np
@@ -32,7 +33,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     shutil.copy('tests/testData/meteoblue.data',
                 'tests/workDir/data/meteoblue.data')
@@ -326,6 +327,9 @@ def test_updateFilterRefractionParameters_9(function):
 
 
 def test_movingAverageRefractionParameters_1(function):
+    function.app.sensorWeather.data = {}
+    function.filteredPressure = None
+    function.filteredTemperature = None
     v1, v2 = function.movingAverageRefractionParameters()
     assert v1 is None
     assert v2 is None
@@ -635,9 +639,20 @@ def test_updateSeeingEntries_3(function):
         assert suc
 
 
-def test_prepareSeeingTable(function):
-    suc = function.prepareSeeingTable()
-    assert suc
+def test_prepareSeeingTable_1(function):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        suc = function.prepareSeeingTable()
+        assert suc
+
+
+def test_prepareSeeingTable_2(function):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        suc = function.prepareSeeingTable()
+        assert suc
 
 
 def test_openMeteoblue_1(function):

@@ -166,6 +166,7 @@ def test_setRefractionUpdateType_1(function):
 
 def test_setRefractionUpdateType_2(function):
     function.ui.showTabEnviron.setChecked(True)
+    function.app.mount.setting.weatherStatus = 0
     function.refractionSource = 'directWeather'
     function.ui.refracManual.setChecked(True)
     with mock.patch.object(function.app.mount.setting,

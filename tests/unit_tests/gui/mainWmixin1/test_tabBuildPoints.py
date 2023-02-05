@@ -29,7 +29,7 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     class Mixin(MWidget, BuildPoints):
         def __init__(self):
@@ -606,13 +606,19 @@ def test_buildPointsChanged(function):
 
 def test_rebuildPoints_1(function):
     function.lastGenerator = 'align3'
-    suc = function.rebuildPoints()
-    assert suc
+    with mock.patch.object(function,
+                           'processPoints'):
+        suc = function.rebuildPoints()
+        assert suc
 
 
 def test_processPoints(function):
-    suc = function.processPoints()
-    assert suc
+    with mock.patch.object(function,
+                           'autoDeletePoints'):
+        with mock.patch.object(function,
+                               'autoSortPoints'):
+            suc = function.processPoints()
+            assert suc
 
 
 def test_setupDsoGui(function):

@@ -151,6 +151,8 @@ jobs:
           run: |
             python3 --version
             cd /root/support/3.0
+            pacman -U python-pyqt5-sip-12.11.1-1-aarch64.pkg.tar.xz
+            pacman -U python-pyqt5-5.15.9-1-aarch64.pkg.tar.xz
             python3 -m zipfile -e startupPackage.zip .
             python3 startup.pyz --no-start
             cat ./log/mw4*.log

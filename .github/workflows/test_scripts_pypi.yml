@@ -145,16 +145,16 @@ jobs:
             apt-get update -y
             apt-get upgrade -y
             apt-get -y install python3-pip python3-venv python3-wheel
-            apt-get -y install python3-pyqt5
+            apt-get -y install python3-pyqt5 apt-utils
   
   # Produce a binary artifact and place it in the mounted volume
           run: |
             python3 --version
             cd /root/support/3.0
             apt-get install pacman
-            ls -la
-            pacman -U python-pyqt5-sip-12.11.1-1-aarch64.pkg.tar.xz
-            pacman -U python-pyqt5-5.15.9-1-aarch64.pkg.tar.xz
+            ls -la wheels
+            pacman -U wheels/python-pyqt5-sip-12.11.1-1-aarch64.pkg.tar.xz
+            pacman -U wheels/python-pyqt5-5.15.9-1-aarch64.pkg.tar.xz
             #python3 -m zipfile -e startupPackage.zip .
             #python3 startup.pyz --no-start
             python3 -venv venv

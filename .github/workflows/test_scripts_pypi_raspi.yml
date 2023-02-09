@@ -35,6 +35,7 @@ jobs:
     steps:
       - uses: pguyot/arm-runner-action@v2
         with:
+          image_additional_mb: 8192
           base_image: ${{ matrix.base_image }}
           cpu: ${{ matrix.cpu }}
           cpu_info: ${{ matrix.cpu_info }}

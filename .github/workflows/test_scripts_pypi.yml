@@ -151,8 +151,6 @@ jobs:
           run: |
             python3 --version
             cd /root/support/3.0
-            # python3 -m zipfile -e startupPackage.zip .
-            # python3 startup.pyz --no-start
             cd ../wheels
             ls -la
             apt-get install pacman

@@ -29,7 +29,7 @@ jobs:
         include:
         - arch: aarch64
           cpu: cortex-a53
-          base_image: raspi_4_bullseye:20220121
+          base_image: dietpi:rpi_armv8_bullseye
           cpu_info: raspberrypi_zero2_w_arm64
 
     steps:
@@ -38,6 +38,7 @@ jobs:
         with:
           base_image: ${{ matrix.base_image }}
           cpu: ${{ matrix.cpu }}
+          githubToken: ${{ github.token }}
           cpu_info: ${{ matrix.cpu_info }}
           commands: |
             ls -la

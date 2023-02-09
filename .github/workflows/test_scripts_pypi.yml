@@ -154,7 +154,7 @@ jobs:
             cd ../wheels
             ls -la
             apt-get install pacman
-            python3 -venv venv
+            python3 -m venv venv
             source ./venv/bin/activate
             pip list
             pacman -h

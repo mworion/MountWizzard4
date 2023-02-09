@@ -40,11 +40,12 @@ jobs:
           cpu_info: ${{ matrix.cpu_info }}
           commands: |
             ls -la
-            python --version
-            python -m venv venv
+            sudo apt-get install -y python3 python3-venv
+            pacman -h
+            python3 --version
+            python3 -m venv venv
             source ./venv/bin/activate
             pip list
-            pacman -h
             pacman -U python-pyqt5
             pip install mountwizzard4==3.0.1a0
             cat ./log/mw4*.log

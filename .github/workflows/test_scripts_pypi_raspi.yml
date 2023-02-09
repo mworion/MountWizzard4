@@ -30,7 +30,7 @@ jobs:
         - arch: aarch64
           cpu: cortex-a53
           base_image: dietpi:rpi_armv8_bullseye
-          cpu_info: raspberrypi_zero2_w_arm64
+          cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
 
     steps:
       - uses: actions/checkout@v3.3.0

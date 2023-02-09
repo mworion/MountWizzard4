@@ -29,8 +29,8 @@ jobs:
         include:
         - arch: aarch64
           cpu: cortex-a53
-          base_image: raspios_lite_arm64:latest
-          cpu_info: raspberrypi_zero2_w_arm64_w
+          base_image: raspi_4_bullseye:20220121
+          cpu_info: raspberrypi_zero2_w_arm64
 
     steps:
       - uses: actions/checkout@v3.3.0

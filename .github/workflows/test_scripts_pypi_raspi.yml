@@ -40,8 +40,8 @@ jobs:
           cpu_info: ${{ matrix.cpu_info }}
           commands: |
             ls -la
-            sudo apt update
-            sudo apt upgrade
+            sudo apt-get update
+            sudo apt-get -y upgrade
             sudo apt-get install -y python3.10 python3.10-venv
             pacman -h
             python3 --version

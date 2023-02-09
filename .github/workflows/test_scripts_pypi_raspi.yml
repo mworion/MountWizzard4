@@ -43,7 +43,7 @@ jobs:
             ls -la
             # sudo apt-get update
             # sudo apt-get -y upgrade
-            apt-get install -y python3.10 python3-venv python3-pip apt-utils
+            apt-get install -y python3.10 python3-venv python3-pip
             apt-get install -y pacman
             python3 --version
             python3 -m venv venv

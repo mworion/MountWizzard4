@@ -29,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.1a0',
+    version='3.0.1a1',
     packages=[
         'mw4',
         'mw4.base',
@@ -84,7 +84,7 @@ setup(
         'deepdiff==6.2.3',
         'wakeonlan==3.0.0',
         'pybase64==1.2.3',
-        'websocket-client==1.5.0',
+        'websocket-client==1.5.1',
         'hidapi==0.13.1',
         'range-key-dict==1.1.0',
         'ndicts==0.3.0',
@@ -94,10 +94,10 @@ setup(
     ]
     + (['pywin32==305'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt5==5.15.9'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt5==5.15.8'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.6'] if platform.machine() not in ['armv7l',
                                                         'aarch64'] else []),
-    keywords=['5.15.9'],
+    keywords=['5.15.8'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

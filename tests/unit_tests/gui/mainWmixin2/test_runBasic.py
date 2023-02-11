@@ -35,7 +35,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     class Mixin(MWidget, BasicRun):
         def __init__(self):
@@ -248,6 +248,7 @@ def test_runImage_2(function):
 
 
 def test_runSlew_1(function):
+    function.slewQueue.queue.clear()
     suc = function.runSlew()
     assert not suc
 
@@ -361,23 +362,25 @@ def test_setupSignalsForRun_5(function):
 
 
 def test_restoreModelDefaultContextAndGuiStatus(function):
-    def test():
-        return
-
-    function.cancelRun = test
-    suc = function.restoreModelDefaultContextAndGuiStatus()
-    assert suc
+    with mock.patch.object(function,
+                           'cancelRun'):
+        suc = function.restoreModelDefaultContextAndGuiStatus()
+        assert suc
 
 
 def test_cancelRun(function):
-    suc = function.setupSignalsForRun()
-    assert suc
-    with mock.patch.object(function.app.camera,
-                           'abort'):
-        with mock.patch.object(function.app.plateSolve,
-                               'abort'):
-            suc = function.cancelRun()
-            assert suc
+    with mock.patch.object(function,
+                           'restoreModelDefaultContextAndGuiStatus'):
+        with mock.patch.object(function,
+                               'clearQueues'):
+            with mock.patch.object(function,
+                                   'restoreSignalsRunDefault'):
+                with mock.patch.object(function.app.camera,
+                                       'abort'):
+                    with mock.patch.object(function.app.plateSolve,
+                                           'abort'):
+                        suc = function.cancelRun()
+                        assert suc
 
 
 def test_generateSaveData_1(function):

@@ -34,7 +34,7 @@ import gui.mainWmixin.tabMount
 import mountcontrol
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     class Mixin(MWidget, Mount):
         def __init__(self):

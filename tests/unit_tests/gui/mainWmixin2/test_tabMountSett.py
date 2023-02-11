@@ -31,7 +31,7 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMountSett import MountSett
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     class Mixin(MWidget, MountSett):
         def __init__(self):

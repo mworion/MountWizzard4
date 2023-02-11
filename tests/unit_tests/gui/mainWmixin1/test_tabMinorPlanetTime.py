@@ -28,11 +28,12 @@ from PyQt5.QtCore import QThreadPool
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
+import gui.utilities
 from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     class Mixin(MWidget, MinorPlanetTime):
@@ -59,12 +60,14 @@ def test_initConfig_1(function):
 
 
 def test_initConfig_2(function):
+    temp = function.app.automation
     function.app.automation = None
     with mock.patch.object(function,
                            'setupMinorPlanetSourceURLsDropDown'):
         suc = function.initConfig()
         assert suc
         assert function.installPath == 'tests/workDir/data'
+    function.app.automation = temp
 
 
 def test_initConfig_3(function):
@@ -153,7 +156,8 @@ def test_setupMinorPlanetNameList_2(function):
 
 
 def test_processSourceData_1(function):
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+                           'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=False):
@@ -173,7 +177,8 @@ def test_processSourceData_1(function):
 
 
 def test_processSourceData_2(function):
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+                           'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
@@ -193,7 +198,8 @@ def test_processSourceData_2(function):
 
 
 def test_processSourceData_3(function):
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+                           'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=True):
@@ -231,7 +237,8 @@ def test_loadMPCDataFromSourceURLs_2(function):
 
 
 def test_loadMPCDataFromSourceURLs_3(function):
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+                           'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
                                return_value=False):
@@ -323,7 +330,8 @@ def test_progEarthRotationData_4(function):
 
 def test_startProgEarthRotationDataToMount_1(function):
     function.ui.isOnline.setChecked(True)
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+                           'DownloadPopup'):
         suc = function.startProgEarthRotationDataToMount()
         assert suc
 
@@ -339,14 +347,16 @@ def test_startProgEarthRotationDataToMount_2(function):
 
 def test_loadTimeDataFromSourceURLs_1(function):
     function.ui.isOnline.setChecked(False)
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+                           'DownloadPopup'):
         suc = function.loadTimeDataFromSourceURLs()
         assert not suc
 
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.setChecked(True)
-    with mock.patch('gui.mainWmixin.tabMinorPlanetTime.DownloadPopup'):
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+                           'DownloadPopup'):
         suc = function.loadTimeDataFromSourceURLs()
         assert suc
 

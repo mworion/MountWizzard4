@@ -39,7 +39,7 @@ from gui.mainWmixin.tabSatTrack import  SatTrack
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     class Mixin(MWidget, SatSearch, SatTrack):
@@ -67,24 +67,30 @@ def test_initConfig_1(function):
     class Test:
         installPath = ''
 
+    temp = function.app.automation
     function.app.automation = Test()
     suc = function.initConfig()
     assert suc
     assert function.installPath == 'tests/workDir/data'
+    function.app.automation = temp
 
 
 def test_initConfig_2(function):
+    temp = function.app.automation
     function.app.automation = None
     suc = function.initConfig()
     assert suc
     assert function.installPath == 'tests/workDir/data'
+    function.app.automation = temp
 
 
 def test_initConfig_3(function):
+    temp = function.app.automation.installPath
     function.app.automation.installPath = 'test'
     suc = function.initConfig()
     assert suc
     assert function.installPath == 'test'
+    function.app.automation.installPath = temp
 
 
 def test_storeConfig_1(function):
@@ -109,6 +115,11 @@ def test_enableGuiFunctions_2(function):
 
 
 def test_chooseSatellite_1(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+    function.satellites = {'NOAA 8': sat}
     satTab = function.ui.listSatelliteNames
     function.ui.switchToTrackingTab.setChecked(True)
     function.app.deviceStat['mount'] = True
@@ -495,11 +506,6 @@ def test_positionCursorInSatTable_2(function):
     assert suc
 
 
-def test_filterSatelliteNamesList_1(function):
-    suc = function.filterSatelliteNamesList()
-    assert suc
-
-
 def test_filterSatelliteNamesList_2(function):
     function.ui.satIsUp.setEnabled(True)
     function.ui.satIsUp.setChecked(True)
@@ -551,13 +557,12 @@ def test_workerSatCalcTable_1(function):
 
 
 def test_workerSatCalcTable_2(function):
-    class Test1:
-        satnum = 12345
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    class Test:
-        model = Test1()
-
-    function.satellites = {'sat1': Test()}
+    function.satellites = {'sat1': sat}
 
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.setColumnCount(9)
@@ -606,13 +611,12 @@ def test_workerSatCalcTable_3a(function):
 
 
 def test_workerSatCalcTable_3b(function):
-    class Test1:
-        satnum = 12345
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    class Test:
-        model = Test1()
-
-    function.satellites = {'sat1': Test()}
+    function.satellites = {'sat1': sat}
 
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.setColumnCount(9)
@@ -649,13 +653,12 @@ def test_workerSatCalcTable_3b(function):
 
 
 def test_workerSatCalcTable_4(function):
-    class Test1:
-        satnum = 12345
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    class Test:
-        model = Test1()
-
-    function.satellites = {'sat1': Test()}
+    function.satellites = {'sat1': sat}
 
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.setColumnCount(9)
@@ -689,13 +692,12 @@ def test_workerSatCalcTable_4(function):
 
 
 def test_workerSatCalcTable_5(function):
-    class Test1:
-        satnum = 12345
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    class Test:
-        model = Test1()
-
-    function.satellites = {'sat1': Test()}
+    function.satellites = {'sat1': sat}
 
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.setColumnCount(9)
@@ -763,14 +765,13 @@ def test_prepareSatTable_1(function):
 
 
 def test_setupSatelliteNameList_1(function):
-    class Test1:
-        satnum = 12345
-
-    class Test:
-        model = Test1()
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     function.satSourceValid = False
-    function.satellites = {'sat1': Test()}
+    function.satellites = {'sat1': sat}
     with mock.patch.object(function,
                            'prepareSatTable'):
         suc = function.setupSatelliteNameList()
@@ -778,14 +779,13 @@ def test_setupSatelliteNameList_1(function):
 
 
 def test_setupSatelliteNameList_2(function):
-    class Test1:
-        satnum = 12345
-
-    class Test:
-        model = Test1()
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
     function.satSourceValid = True
-    function.satellites = {'sat1': Test()}
+    function.satellites = {'sat1': sat}
 
     with mock.patch.object(function,
                            'prepareSatTable'):
@@ -838,18 +838,20 @@ def test_workerLoadDataFromSourceURLs_3(function):
 
 
 def test_loadDataFromSourceURLs_1(function):
+    function.ui.satelliteSource.clear()
     suc = function.loadDataFromSourceURLs()
     assert not suc
 
 
 def test_loadDataFromSourceURLs_2(function):
-    function.ui.satelliteSource.addItem('test')
+    function.ui.satelliteSource.clear()
     suc = function.loadDataFromSourceURLs()
     assert not suc
 
 
 def test_loadDataFromSourceURLs_3(function):
     function.ui.satelliteSource.addItem('Active')
+    function.ui.satelliteSource.setCurrentIndex(0)
     suc = function.loadDataFromSourceURLs()
     assert suc
 

@@ -40,15 +40,15 @@ class SatSearch(object):
     populated. If the satellite window is open, data will be sent to gui drawing
     as well.
 
-    2. When a satellite is chosen from a drop down list by double click, it
+    2. When a satellite is chosen from a drop-down list by double click, it
     selects the corresponding TLE data, programs is to the mount and follows the
     steps of 1.
 
     3. If a new satellite database is selected, is downloads the database and
-    updates the drop down menus with the satellite entries.
+    updates the drop-down menus with the satellite entries.
 
     4. If a satellite is to be tracked, it takes the satellite TLE data, the user
-    gui input and calculates the satellite trajectory. In case of built in
+    gui input and calculates the satellite trajectory. In case of built-in
     command it only pushes the command if explicit, it calculates the trajectory
     with alt/az positions and programs it to the mount. afterward a tracking
     could be started.
@@ -470,7 +470,6 @@ class SatSearch(object):
         satName = self.ui.satelliteName.text()
         self.positionCursorInSatTable(satTab, satName)
         self.changeStyleDynamic(self.ui.satFilterGroup, 'running', False)
-
         return True
 
     def checkSatOk(self, sat, tEnd):

@@ -42,6 +42,14 @@ class CoverAscom(AscomClass):
         state = self.getAscomProperty('CoverState')
         stateText = self.coverStates[state]
         self.storePropertyToData(stateText, 'Status.Cover')
+
+        brightness = self.getAscomProperty('Brightness')
+        self.storePropertyToData(brightness,
+                                 'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
+
+        maxBrightness = self.getAscomProperty('MaxBrightness')
+        self.storePropertyToData(maxBrightness,
+                                 'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX')
         return True
 
     def closeCover(self):
@@ -81,7 +89,10 @@ class CoverAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.callMethodThreaded(self.client.CalibratorOn, 128)
+        maxBrightness = self.app.cover.data.get(
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX', 255)
+        brightness = int(maxBrightness / 2)
+        self.callMethodThreaded(self.client.CalibratorOn, brightness)
         return True
 
     def lightOff(self):

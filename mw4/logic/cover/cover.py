@@ -74,7 +74,6 @@ class Cover:
 
     def startCommunication(self):
         """
-        :param loadConfig:
         :return:
         """
         if self.framework not in self.run.keys():

@@ -551,11 +551,13 @@ class SettImaging:
             'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
         if actValue is None:
             return False
+        maxBrightness = self.app.cover.data.get(
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX', 255)
 
         dlg = QInputDialog()
         value, ok = dlg.getInt(self,
-                               'Set light intensity', 'Value (0..255):',
-                               float(actValue), 0, 255, 1)
+                               'Set light intensity', f'Value (0..{maxBrightness}):',
+                               float(actValue), 0, maxBrightness, 1)
         if not ok:
             return False
 

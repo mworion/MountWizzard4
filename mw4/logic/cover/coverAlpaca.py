@@ -45,6 +45,14 @@ class CoverAlpaca(AlpacaClass):
         state = self.getAlpacaProperty('coverstate')
         stateText = states[state]
         self.storePropertyToData(stateText, 'Status.Cover')
+
+        brightness = self.getAlpacaProperty('Brightness')
+        self.storePropertyToData(brightness,
+                                 'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
+
+        maxBrightness = self.getAlpacaProperty('MaxBrightness')
+        self.storePropertyToData(maxBrightness,
+                                 'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX')
         return True
 
     def closeCover(self):
@@ -84,7 +92,9 @@ class CoverAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        brightness = self.getAlpacaProperty('brightness')
+        maxBrightness = self.app.cover.data.get(
+            'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX', 255)
+        brightness = int(maxBrightness / 2)
         self.setAlpacaProperty('calibratoron', Brightness=brightness)
         return True
 

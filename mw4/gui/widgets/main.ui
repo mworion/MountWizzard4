@@ -9439,8 +9439,6 @@ MW4 will show the actual day always in the middel of the chart.</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;For polar align, turn knobs info is only helpful for large errors. If turns &amp;lt; 0.25 or polar error &amp;lt; 5 arcmin, please center star for improvement.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -12654,7 +12652,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </property>
        <widget class="QLineEdit" name="coverStatusText">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -12813,27 +12811,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual cooler temp for the camera. When clicking you could change the value.</string>
+         <string>Shows the status of the cover.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
-        <property name="inputMask">
-         <string/>
-        </property>
         <property name="text">
          <string>-</string>
-        </property>
-        <property name="cursorPosition">
-         <number>1</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>false</bool>
-        </property>
-        <property name="input" stdset="0">
          <bool>true</bool>
         </property>
        </widget>
@@ -12874,7 +12863,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </widget>
        <widget class="QLineEdit" name="domeShutterStatusText">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="geometry">
          <rect>
@@ -29798,8 +29787,6 @@ Updater</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, pyqt5, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>

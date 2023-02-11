@@ -19,7 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: ascom cover: brightness status. 
+- fix: ASCOM cover: brightness status. 
+- fix: ASCOM cover: setting / reading brightness / max brightness 
 - improve minor planets selection: adding multiple selection by mouse
 - improve refraction: when selecting internal sensor, go to automatic
  """

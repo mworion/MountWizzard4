@@ -11684,7 +11684,7 @@ class Ui_MainWindow(object):
         self.keepAnalysisImages.setToolTip(_translate("MainWindow", "Checked if you would like to keep the images of modeling session"))
         self.keepAnalysisImages.setText(_translate("MainWindow", "Keep all images of analysis run"))
         self.GroupFlipFlat.setToolTip(_translate("MainWindow", "<html><head/><body><p>Switches the light on. Only available when closed.</p></body></html>"))
-        self.GroupFlipFlat.setTitle(_translate("MainWindow", "Flip Flat"))
+        self.GroupFlipFlat.setTitle(_translate("MainWindow", "Cover Calibrator"))
         self.coverStatusText.setToolTip(_translate("MainWindow", "Shows the status of the cover."))
         self.coverStatusText.setText(_translate("MainWindow", "-"))
         self.coverPark.setText(_translate("MainWindow", "Close"))

@@ -12645,7 +12645,7 @@ hr { height: 1px; border-width: 0; }
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the light on. Only available when closed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
-        <string>Flip Flat</string>
+        <string>Cover Calibrator</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>

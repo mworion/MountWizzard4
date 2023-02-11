@@ -71,12 +71,6 @@ def test_convertChar_2(function):
     assert val == 176
 
 
-def test_dispatch_1(function):
-    valIn = []
-    suc = function.dispatch(valIn)
-    assert not suc
-
-
 def test_dispText(function):
     value = [1, 1, 1, 1, 88]
     suc = function.dispText(value)
@@ -93,6 +87,15 @@ def test_deletePixel(function):
     value = [3, 1, 1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
     suc = function.deletePixel(value)
     assert suc
+
+
+def test_dispatch_0(function):
+    msg = []
+    with mock.patch.object(function,
+                           'expand7to8',
+                           return_value=msg):
+        suc = function.dispatch(msg)
+        assert not suc
 
 
 def test_dispatch_1(function):

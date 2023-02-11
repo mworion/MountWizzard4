@@ -67,7 +67,7 @@ class SatSearch(object):
         self.databaseProcessing = DataWriter(self.app)
         self.installPath = ''
 
-        baseUrl = 'http://www.celestrak.com/NORAD/elements/'
+        baseUrl = 'http://www.celestrak.org/NORAD/elements/'
         self.satelliteSourceURLs = {
             '100 brightest': baseUrl + 'visual.txt',
             'Active': baseUrl + 'active.txt',

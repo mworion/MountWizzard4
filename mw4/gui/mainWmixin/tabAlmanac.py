@@ -388,7 +388,7 @@ class Almanac:
         text = ''
         self.ui.riseSetEventsMoon.clear()
         self.ui.riseSetEventsMoon.setTextColor(QColor(self.M_BLUE))
-        moon = ['rise', 'set']
+        moon = ['set', 'rise']
         for moonTime, moonEvent in zip(moonTimes, moonEvents):
             textTime = self.convertTime(moonTime, '%d.%m. %H:%M')
             text += f'{textTime} {moon[moonEvent]}'

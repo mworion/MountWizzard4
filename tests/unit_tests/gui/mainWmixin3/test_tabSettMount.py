@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import ipaddress
 
 # external packages
 import wakeonlan

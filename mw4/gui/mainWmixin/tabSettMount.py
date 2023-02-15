@@ -15,7 +15,7 @@
 #
 ###########################################################
 # standard libraries
-import ipaddress
+import socket
 
 # external packages
 import wakeonlan
@@ -148,7 +148,7 @@ class SettMount(object):
         if not host:
             return False
         try:
-            ipaddress.ip_address(host)
+            socket.gethostbyname(host)
         except Exception as e:
             self.msg.emit(2, 'Mount', 'Setting error', f'{e}')
             return False

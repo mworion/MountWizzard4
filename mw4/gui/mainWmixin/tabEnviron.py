@@ -518,9 +518,9 @@ class Environ:
         """
         vl = ['Date [dd mon]',
               'Hour [hh:mm]',
-              'Low clouds  [%]',
+              'High clouds  [%]',
               'Mid clouds  [%]',
-              'High clouds [%]',
+              'Low clouds [%]',
               'Seeing [arcsec]',
               'Seeing index 1',
               'Seeing index 2',

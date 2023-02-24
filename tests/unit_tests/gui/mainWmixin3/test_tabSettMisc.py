@@ -52,8 +52,8 @@ def function(qapp):
             self.ui.setupUi(self)
             SettMisc.__init__(self)
 
-    func = Mixin()
-    yield func
+    window = Mixin()
+    yield window
     window.threadPool.waitForDone(1000)
 
 

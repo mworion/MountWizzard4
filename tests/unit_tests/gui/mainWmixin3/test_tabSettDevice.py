@@ -41,9 +41,9 @@ def function(qapp):
             self.ui.setupUi(self)
             SettDevice.__init__(self)
 
-    func = Mixin()
-    yield func
-    func.threadPool.waitForDone(1000)
+    window = Mixin()
+    yield window
+    window.threadPool.waitForDone(1000)
 
 
 def test_checkStructureDriversData_1(function):

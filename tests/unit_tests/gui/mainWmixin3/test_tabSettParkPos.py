@@ -41,9 +41,9 @@ def function(qapp):
             self.ui.setupUi(self)
             SettParkPos.__init__(self)
 
-    func = Mixin()
-    yield func
-    func.threadPool.waitForDone(1000)
+    window = Mixin()
+    yield window
+    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):

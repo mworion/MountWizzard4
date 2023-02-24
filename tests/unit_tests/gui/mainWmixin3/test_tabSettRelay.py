@@ -42,6 +42,7 @@ def function(qapp):
     window = Mixin()
     yield window
 
+
 def test_setupRelayGui(function):
     assert 8 == len(function.relayDropDowns)
     assert 8 == len(function.relayButtonTexts)

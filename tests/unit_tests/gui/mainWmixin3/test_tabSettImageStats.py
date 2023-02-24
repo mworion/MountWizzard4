@@ -43,6 +43,7 @@ def function(qapp):
 
     window = Mixin()
     yield window
+    window.threadPool.waitForDone(1000)
 
 
 def test_updateImageStats_1(function):

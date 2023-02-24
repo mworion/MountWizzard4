@@ -43,6 +43,7 @@ def function(qapp):
 
     func = Mixin()
     yield func
+    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):

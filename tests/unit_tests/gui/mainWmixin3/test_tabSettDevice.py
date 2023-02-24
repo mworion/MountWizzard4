@@ -43,6 +43,7 @@ def function(qapp):
 
     func = Mixin()
     yield func
+    func.threadPool.waitForDone(1000)
 
 
 def test_checkStructureDriversData_1(function):

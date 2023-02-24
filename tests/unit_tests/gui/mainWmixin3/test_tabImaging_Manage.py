@@ -23,14 +23,14 @@ from PyQt5.QtWidgets import QInputDialog
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabSettImaging import SettImaging
+from gui.mainWmixin.tabImage_Manage import ImageManage
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-    class Mixin(MWidget, SettImaging):
+    class Mixin(MWidget, ImageManage):
         def __init__(self):
             super().__init__()
             self.app = App()
@@ -39,7 +39,7 @@ def function(qapp):
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            SettImaging.__init__(self)
+            ImageManage.__init__(self)
 
     window = Mixin()
     yield window
@@ -127,6 +127,48 @@ def test_updateImagingParam_3(function):
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     suc = function.updateImagingParam()
+    assert suc
+
+
+def test_updateImagingParam_4(function):
+    function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
+    function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
+    function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 4000
+    function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 4000
+    function.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    function.ui.automaticTelescope.setChecked(False)
+    function.ui.aperture.setValue(0)
+    function.ui.focalLength.setValue(0)
+    suc = function.updateImagingParam()
+    assert function.ui.optimalBinning.text() == '2'
+    assert suc
+
+
+def test_updateImagingParam_5(function):
+    function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
+    function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
+    function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1000
+    function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 4000
+    function.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    function.ui.automaticTelescope.setChecked(False)
+    function.ui.aperture.setValue(0)
+    function.ui.focalLength.setValue(0)
+    suc = function.updateImagingParam()
+    assert function.ui.optimalBinning.text() == '1'
+    assert suc
+
+
+def test_updateImagingParam_6(function):
+    function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
+    function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
+    function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 8000
+    function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 6000
+    function.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    function.ui.automaticTelescope.setChecked(False)
+    function.ui.aperture.setValue(0)
+    function.ui.focalLength.setValue(0)
+    suc = function.updateImagingParam()
+    assert function.ui.optimalBinning.text() == '3'
     assert suc
 
 

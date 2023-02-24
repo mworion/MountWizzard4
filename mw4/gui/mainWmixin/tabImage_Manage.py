@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import QInputDialog
 # local import
 
 
-class SettImaging:
+class ImageManage:
     """
     """
 
@@ -211,8 +211,14 @@ class SettImaging:
         aperture = self.ui.aperture.value()
         maxBinX = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
         maxBinY = self.app.camera.data.get('CCD_BINNING.HOR_BIN_MAX', 9)
+        pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X', 0)
+        pixelY = self.app.camera.data.get('CCD_INFO.CCD_MAX_Y', 0)
         humidityCCD = self.app.camera.data.get('CCD_HUMIDITY.HUMIDITY')
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
+
+        optimalBinningX = int(pixelX / 1750)
+        optimalBinningY = int(pixelY / 1750)
+        optimalBinning = max(1, min(optimalBinningX, optimalBinningY))
 
         if maxBinX and maxBinY:
             maxBin = min(maxBinX, maxBinY)
@@ -229,6 +235,7 @@ class SettImaging:
         self.app.telescope.aperture = aperture
 
         self.guiSetText(self.ui.humidityCCD, '3.1f', humidityCCD)
+        self.guiSetText(self.ui.optimalBinning, '1.0f', optimalBinning)
 
         if downloadFast:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', True)

@@ -24,7 +24,7 @@ from range_key_dict import RangeKeyDict
 # local import
 
 
-class SettImageStats:
+class ImagsStats:
     """
     """
     WATNEY = RangeKeyDict({

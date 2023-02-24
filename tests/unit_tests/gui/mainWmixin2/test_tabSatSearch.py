@@ -506,12 +506,14 @@ def test_positionCursorInSatTable_2(function):
     assert suc
 
 
-def test_filterSatelliteNamesList_2(function):
+def test_filterSatelliteNamesList_1(function):
+    function.ui.satFilterGroup.setEnabled(True)
     function.ui.satIsUp.setEnabled(True)
     function.ui.satIsUp.setChecked(True)
     function.ui.satIsSunlit.setEnabled(True)
     function.ui.satIsSunlit.setChecked(True)
     function.ui.satRemoveSO.setChecked(True)
+    function.ui.listSatelliteNames.clear()
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.setColumnCount(9)
     function.ui.listSatelliteNames.insertRow(0)
@@ -523,8 +525,11 @@ def test_filterSatelliteNamesList_2(function):
     function.ui.listSatelliteNames.setItem(0, 8, entry)
     entry = QTableWidgetItem('1234')
     function.ui.listSatelliteNames.setItem(0, 7, entry)
-    suc = function.filterSatelliteNamesList()
-    assert suc
+    with mock.patch.object(function.ui.satTwilight,
+                           'currentIndex',
+                           return_value=1):
+        suc = function.filterSatelliteNamesList()
+        assert suc
 
 
 def test_checkSatOk_1(function):

@@ -7,12 +7,21 @@ description: installs headless setup for ubuntu
 runs:
   using: 'composite'
   steps:
+
     - name: install #0
       run: sudo apt-get update
       shell: bash
 
     - name: install #1
       run: sudo apt-get upgrade
+      shell: bash
+
+    - name: install #1b
+      run: sudo apt-get install -y grub-efi
+      shell: bash
+
+    - name: install #1c
+      run: sudo update-grub
       shell: bash
 
     - name: install #2
@@ -34,4 +43,3 @@ runs:
     - name: install #6
       run: sudo apt-get install -y libxcb-keysyms1
       shell: bash
-    

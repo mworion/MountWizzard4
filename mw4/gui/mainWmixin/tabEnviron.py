@@ -324,6 +324,8 @@ class Environ:
         :return: true for test purpose
         """
         self.app.sensorWeather.data.clear()
+        self.ui.meteoblueIcon.setVisible(False)
+        self.ui.meteoblueSeeing.setVisible(False)
         self.updateSensorWeatherGui()
         return True
 
@@ -456,7 +458,7 @@ class Environ:
         colorMain = self.cs['M_BLUE'][0]
         colorBlack = self.cs['M_BLACK'][0]
         colorWhite = self.cs['M_WHITE'][0]
-        seeTab = self.ui.tableSeeing
+        seeTab = self.ui.meteoblueSeeing
         data = self.app.seeingWeather.data['hourly']
         self.addSkyfieldTimeObject(data)
 
@@ -509,7 +511,9 @@ class Environ:
         """
         :return:
         """
-        self.ui.tableSeeing.clear()
+        self.ui.meteoblueSeeing.clear()
+        self.ui.meteoblueIcon.setVisible(False)
+        self.ui.meteoblueSeeing.setVisible(False)
         return True
 
     def prepareSeeingTable(self):
@@ -533,7 +537,9 @@ class Environ:
               '',
               ]
 
-        seeTab = self.ui.tableSeeing
+        self.ui.meteoblueIcon.setVisible(True)
+        self.ui.meteoblueSeeing.setVisible(True)
+        seeTab = self.ui.meteoblueSeeing
         if platform.system() == 'Darwin':
             seeTab.setRowCount(15)
         else:

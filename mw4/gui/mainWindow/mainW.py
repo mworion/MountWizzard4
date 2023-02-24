@@ -536,6 +536,8 @@ class MainWindow(
         pixmap = pixmap.transformed(QTransform().rotate(-90))
         pixmap = pixmap.scaled(37, 128, 1)
         self.ui.meteoblueIcon.setPixmap(pixmap)
+        self.ui.meteoblueIcon.setVisible(False)
+        self.ui.meteoblueSeeing.setVisible(False)
         return True
 
     def updateMountConnStat(self, status):

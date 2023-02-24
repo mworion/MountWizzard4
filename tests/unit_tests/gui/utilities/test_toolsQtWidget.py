@@ -18,6 +18,7 @@
 import unittest.mock as mock
 import pytest
 import os
+import platform
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
@@ -784,23 +785,41 @@ def test_returnDriver_2(function):
     assert driver == ''
 
 
+def test_checkUpdaterOK_0(function):
+    function.app.automation = None
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+        suc = function.checkUpdaterOK()
+        assert not suc
+
+
 def test_checkUpdaterOK_1(function):
     function.app.automation = None
-    suc = function.checkUpdaterOK()
-    assert not suc
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        suc = function.checkUpdaterOK()
+        assert not suc
 
 
 def test_checkUpdaterOK_2(function):
     function.app.automation.installPath = None
-    suc = function.checkUpdaterOK()
-    assert not suc
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        suc = function.checkUpdaterOK()
+        assert not suc
 
 
 def test_checkUpdaterOK_3(function):
     function.app.automation.installPath = 'test'
     function.app.automation.updaterApp = 'test'
-    suc = function.checkUpdaterOK()
-    assert suc
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        suc = function.checkUpdaterOK()
+        assert suc
 
 
 def test_sleepAndEvents(function):

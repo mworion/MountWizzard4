@@ -18,6 +18,7 @@
 import os
 import logging
 import datetime
+import platform
 from dateutil.tz import tzlocal
 
 # external packages
@@ -712,6 +713,11 @@ class MWidget(QWidget, Styles):
         """
         :return:
         """
+        if platform.system() != 'Windows':
+            self.app.msg.emit(2, 'System', 'Automation',
+                              'Automation only on windows - upload not possible')
+            return ''
+
         if not self.app.automation:
             self.app.msg.emit(2, 'System', 'Automation',
                               'No automation enabled - upload not possible')

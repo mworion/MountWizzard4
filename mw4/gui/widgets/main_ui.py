@@ -11705,7 +11705,7 @@ class Ui_MainWindow(object):
         self.keepAnalysisImages.setToolTip(_translate("MainWindow", "Checked if you would like to keep the images of modeling session"))
         self.keepAnalysisImages.setText(_translate("MainWindow", "Keep all images of analysis run"))
         self.label_21.setText(_translate("MainWindow", "Recommended optimal binning"))
-        self.optimalBinning.setToolTip(_translate("MainWindow", "Shows the status of the cover."))
+        self.optimalBinning.setToolTip(_translate("MainWindow", "<html><head/><body><p>Shows the optimal binning as result from number of camera pixels and needed size of images to fulfill the modeling and functional tasks within MW4 </p></body></html>"))
         self.optimalBinning.setText(_translate("MainWindow", "1"))
         self.GroupFlipFlat.setToolTip(_translate("MainWindow", "<html><head/><body><p>Switches the light on. Only available when closed.</p></body></html>"))
         self.GroupFlipFlat.setTitle(_translate("MainWindow", "Cover Calibrator"))

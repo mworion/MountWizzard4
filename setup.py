@@ -23,6 +23,8 @@ releaseNotes = """
 - fix: ASCOM cover: setting / reading brightness / max brightness 
 - fix: almanac: text for "rise" and "set" were mixed
 - fix: DNS resolving
+- improve: add a hint for optimal binning to keep reasonable image sizes
+- improve meteoblue behavior: correct text and undisplayed if disabled 
 - improve minor planets selection: adding multiple selection by mouse
 - improve refraction: when selecting internal sensor, go to automatic
  """
@@ -32,7 +34,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.0.1a4',
+    version='3.0.1',
     packages=[
         'mw4',
         'mw4.base',

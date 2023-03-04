@@ -42,7 +42,7 @@ jobs:
             sudo apt-get update
             sudo apt-get -y upgrade
             apt-get install -y python3.10 python3-pip python3-dev
-            apt-get install -y build-essentials autoconf libtool
+            apt-get install -y build-essential autoconf libtool qtwayland5
             python3 --version
             pip install pyqt5==5.15.8
             ls -la

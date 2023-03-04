@@ -15,6 +15,7 @@ jobs:
   build_job:
     # The host should always be linux
     runs-on: ubuntu-22.04
+    timeout-minutes: 240
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     # Run steps on a matrix of 3 arch/distro combinations

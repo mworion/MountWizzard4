@@ -46,11 +46,8 @@ jobs:
             apt-get install -y python3.10 python3-venv python3-pip
             apt-get install -y pacman
             python3 --version
-            python3 -m venv venv
-            ls -la
-            source venv/bin/activate
             pip list
             pacman -S python-pyqt5
-            pip install mountwizzard4==3.0.1a0
+            pip install mountwizzard4
             cat ./log/mw4*.log
             ls -la

@@ -1,0 +1,50 @@
+#
+# GitHub actions for checking the installation of MW4 through scripts
+#
+# v 1.0, Michael Wuertenberger
+#
+name: test_raspi
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/3.0/'
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - '.github/workflows/test_raspi.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        arch: [aarch64]
+        include:
+        - arch: aarch64
+          cpu: cortex-a53
+          base_image: dietpi:rpi_armv8_bullseye
+          cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
+
+    steps:
+      - uses: pguyot/arm-runner-action@v2
+        with:
+          image_additional_mb: 8192
+          base_image: ${{ matrix.base_image }}
+          cpu: ${{ matrix.cpu }}
+          cpu_info: ${{ matrix.cpu_info }}
+          copy_artifact_path: ./wheels
+          commands: |
+            ls -la
+            echo "test" >> test.txt
+            ls -la
+            mkdir wheels
+            mv test.txt ./wheels
+            
+      - name: test output
+        run: |
+          ls -la

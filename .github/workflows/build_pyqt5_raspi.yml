@@ -41,7 +41,7 @@ jobs:
             ls -la
             sudo apt-get update
             sudo apt-get -y upgrade
-            apt-get install -y python3.10 python3-pip python3-dev qt5-default
+            apt-get install -y python3.10 python3-pip python3-dev
             apt-get install -y build-essential autoconf libtool qtwayland5
             python3 --version
             sudo python3 -m pip install --upgrade pip

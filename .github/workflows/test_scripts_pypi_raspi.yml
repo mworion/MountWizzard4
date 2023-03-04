@@ -45,10 +45,11 @@ jobs:
             sudo apt-get -y upgrade
             apt-get install -y python3.10 python3-venv python3-pip
             sudo wget -O /usr/local/bin/pacapt https://github.com/icy/pacapt/raw/ng/pacapt
-            chmod 755 /usr/bin/pacman
+            sudo chmod 755 /usr/local/bin/pacapt
+            sudo ln -sv /usr/local/bin/pacapt /usr/local/bin/pacman || true
             python3 --version
             pip list
-            /usr/bin/pacman -S python-pyqt5
+            /usr/local/bin/pacman -S python-pyqt5
             pip install mountwizzard4
             cat ./log/mw4*.log
             ls -la

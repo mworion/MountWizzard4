@@ -39,14 +39,15 @@ jobs:
           cpu_info: ${{ matrix.cpu_info }}
           commands: |
             ls -la
-            sudo apt-get update
-            sudo apt-get -y upgrade
+            apt-get update
+            apt-get -y upgrade
             apt-get install -y python3.10 python3-pip python3-dev qtbase5-dev
             apt-get install -y build-essential autoconf libtool qtwayland5
+            apt-get install -y python3-pyqt5
             python3 --version
             sudo python3 -m pip install --upgrade pip
-            pip install PyQt-builder<2,>=1.14.1
-            pip install packaging setuptools toml wheels
-            pip install pyqt5-sip
-            pip install pyqt5==5.15.8 --config-settings --confirm-license= --verbose
+            sudo python3 -m pip install PyQt-builder<2,>=1.14.1
+            sudo python3 -m pip install packaging setuptools toml wheels
+            sudo python3 -m pip install pyqt5-sip
+            sudo python3 -m pip install pyqt5==5.15.8 --config-settings --confirm-license= --verbose
             ls -la

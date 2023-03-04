@@ -46,8 +46,8 @@ jobs:
             apt-get install -y python3-pyqt5
             python3 --version
             sudo python3 -m pip install --upgrade pip
+            sudo python3 -m pip install packaging setuptools toml wheel
             sudo python3 -m pip install PyQt-builder==1.14.1
-            sudo python3 -m pip install packaging setuptools toml wheels
             sudo python3 -m pip install pyqt5-sip
             sudo python3 -m pip install pyqt5==5.15.8 --config-settings --confirm-license= --verbose
             ls -la

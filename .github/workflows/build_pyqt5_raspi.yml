@@ -3,7 +3,7 @@
 #
 # v 1.0, Michael Wuertenberger
 #
-name: test_scripts_pypi_raspi
+name: build_pyqt5_raspi
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -16,9 +16,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/test_scripts_pypi_raspi.yml'
-      - 'support/**'
-      - 'setup.py'
+      - '.github/workflows/build_pyqt5_raspi.yml'
 
 jobs:
   build:
@@ -43,13 +41,7 @@ jobs:
             ls -la
             sudo apt-get update
             sudo apt-get -y upgrade
-            apt-get install -y python3.10 python3-venv python3-pip
-            sudo wget -O /usr/local/bin/pacapt https://github.com/icy/pacapt/raw/ng/pacapt
-            sudo chmod 755 /usr/local/bin/pacapt
-            sudo ln -sv /usr/local/bin/pacapt /usr/local/bin/pacman || true
+            apt-get install -y python3 python3-venv python3-pip
             python3 --version
-            pip list
-            /usr/local/bin/pacman -S python-pyqt5
-            pip install mountwizzard4
-            cat ./log/mw4*.log
+            pip install pyqt5
             ls -la

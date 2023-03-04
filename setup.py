@@ -19,22 +19,14 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: ASCOM cover: brightness status. 
-- fix: ASCOM cover: setting / reading brightness / max brightness 
-- fix: almanac: text for "rise" and "set" were mixed
-- fix: DNS resolving
-- improve: add a hint for optimal binning to keep reasonable image sizes
-- improve meteoblue behavior: correct text and undisplayed if disabled 
-- improve minor planets selection: adding multiple selection by mouse
-- improve refraction: when selecting internal sensor, go to automatic
- """
+"""
 
 with open('notes.txt', 'w') as f:
     f.writelines(releaseNotes)
 
 setup(
     name='mountwizzard4',
-    version='3.0.1',
+    version='3.0.2b',
     packages=[
         'mw4',
         'mw4.base',

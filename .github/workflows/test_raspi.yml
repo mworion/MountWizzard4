@@ -40,13 +40,20 @@ jobs:
           copy_artifact_path: ./wheels
           commands: |
             ls -la
-            echo "test" >> test.txt
+            echo "test" >> test1.txt
+            echo "test" >> test2.txt
             ls -la
             mkdir wheels
-            mv test.txt ./wheels
+            mv test1.txt ./wheels
+            mv test2.txt ./wheels
             ls -la wheels
             
       - name: test output
         run: |
           ls -la
           ls -la wheels
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-wheels
+          path: wheels

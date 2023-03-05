@@ -348,12 +348,12 @@ def downloadAndInstallWheels(venvContext, version=None):
         },
     }
     log.info(f'Got version {version}')
-    prt('Install precompiled packages')
-    if version >= Version('3.0.99'):
-        version = '3.1.0'
+    prt(f'Install precompiled packages for {version}')
+    if version > Version('3.0.99'):
+        versionKey = '3.1.0'
         log.info('Path version 3.x.y')
     elif version >= Version('2'):
-        version = '2.0.0'
+        versionKey = '2.0.0'
         log.info('Path version 2.x.y')
     else:
         log.info('No actual supported version')
@@ -361,7 +361,7 @@ def downloadAndInstallWheels(venvContext, version=None):
         return False
 
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
-    for item in wheels[version][ver]:
+    for item in wheels[versionKey][ver]:
         prt(f'...{item.split("-")[0]}-{item.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
         suc = runPythonInVenv(venvContext, command)

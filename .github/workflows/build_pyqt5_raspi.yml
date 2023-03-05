@@ -45,13 +45,14 @@ jobs:
             apt-get install -y python3.10 python3-pip python3-dev qtbase5-dev
             apt-get install -y build-essential autoconf libtool qtwayland5
             apt-get install -y python3-pyqt5
-            python3.10 --version
-            python3.10 -m pip install --upgrade pip
-            python3.10 -m pip install PyQt-builder==1.14.1
-            python3.10 -m pip install packaging setuptools toml wheel
-            python3.10 -m pip wheel -w wheels pyqt5-sip
-            python3.10 -m pip wheel -w wheels pyqt5==5.15.9 --config-settings
-            --confirm-license= --verbose
+            python3 --version
+            ls -la /usr/bin/python*.*
+            # python3 -m pip install --upgrade pip
+            # python3 -m pip install PyQt-builder==1.14.1
+            # python3 -m pip install packaging setuptools toml wheel
+            # python3 -m pip wheel -w wheels pyqt5-sip
+            # python3 -m pip wheel -w wheels pyqt5==5.15.9 --config-settings
+            # --confirm-license= --verbose
             ls -la
             ls -la wheels
           

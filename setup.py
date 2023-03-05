@@ -19,7 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for aarch64 on raspi for python 3.8 - 3.10 
+- add: support for aarch64 on raspi for python 3.8 - 3.10
+- fix: download sources IERS 
 """
 
 with open('notes.txt', 'w') as f:

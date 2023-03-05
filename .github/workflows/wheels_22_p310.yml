@@ -1,0 +1,93 @@
+#
+# GitHub actions for running the unit test of the mountwizzard4 package
+#
+# v0.1,  Michael Wuertenberger
+#
+name: wheels_22_310
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+on:
+  push:
+    # Run this action on the trigger event when specific files are touched
+    paths:
+      - '.github/workflows/wheels_22_p310.yml'
+
+jobs:
+  build_job:
+    # The host should always be linux
+    runs-on: ubuntu-22.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    timeout-minutes: 180
+
+    # Run steps on a matrix of 3 arch/distro combinations
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+            distro: ubuntu22.04
+
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - uses: uraimo/run-on-arch-action@v2.5.0
+        name: build_artifact
+        id: build
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
+
+          # Mount the wheels directory as /artifacts in the container
+          dockerRunArgs: |
+            -v "${PWD}/support/wheels/${{matrix.distro}}":/root/wheels
+            --stop-timeout -1
+
+          # The shell to run commands with in the container
+          shell: /bin/bash
+
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            apt-get update -y
+            apt-get upgrade -y
+            apt-get install -y apt-utils
+            
+            apt-get -y install pyqt5-dev pyqt5-dev-tools qt5-qmake qtbase5-dev
+            apt-get -y install python3.10-venv python3-pip build-essential
+            apt-get -y install python3.10-dev autoconf libtool qtwayland5
+            apt-get install -y python3-pyqt5
+            
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            python3 -m venv venv
+            source venv/bin/activate
+
+            python --version
+            python -m pip install pip --upgrade
+            pip install setuptools --upgrade
+            pip install wheel --upgrade
+            pip install PyQt-builder==1.14.1
+            pip install packaging setuptools toml wheel
+
+            cd "${PWD}"
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.10.1-cp310-cp310-linux_aarch64.whl"
+            pip wheel pyqt5-sip -w "/root/wheels"
+
+      - name: Update changes in GitHub repository
+        continue-on-error: true
+        run:  |
+          rm build-log.txt
+          git config --global user.name 'mworion'
+          git config --global user.email 'michael@wuertenberger.org'
+          git add -A "${PWD}/support/wheels/*.whl"
+          git pull
+          git diff-index --quiet HEAD || git commit -m '[automated commit]'
+          git push --force

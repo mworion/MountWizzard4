@@ -20,7 +20,6 @@ jobs:
     # The host should always be linux
     runs-on: ubuntu-22.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
-    timeout-minutes: 180
 
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
@@ -30,8 +29,8 @@ jobs:
             distro: ubuntu22.04
 
     steps:
-      - uses: actions/checkout@v3.3.0
-      - uses: uraimo/run-on-arch-action@v2.5.0
+      - uses: actions/checkout@v3
+      - uses: uraimo/run-on-arch-action@v2
         name: build_artifact
         id: build
         with:
@@ -67,7 +66,7 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            python3 -m venv venv
+            python3.10 -m venv venv
             source venv/bin/activate
 
             python --version

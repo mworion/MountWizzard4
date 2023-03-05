@@ -3,7 +3,7 @@
 #
 # v0.1,  Michael Wuertenberger
 #
-name: wheels_22_310
+name: wheels_22_39
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -13,7 +13,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/wheels_22_p310.yml'
+      - '.github/workflows/wheels_22_p39.yml'
 
 jobs:
   build_job:
@@ -60,13 +60,13 @@ jobs:
             apt-get install -y apt-utils
             
             apt-get -y install pyqt5-dev pyqt5-dev-tools qt5-qmake qtbase5-dev
-            apt-get -y install python3.10-venv python3-pip build-essential
-            apt-get -y install python3.10-dev autoconf libtool qtwayland5
+            apt-get -y install python3.9-venv python3-pip build-essential
+            apt-get -y install python3.9-dev autoconf libtool qtwayland5
             apt-get install -y python3-pyqt5
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            python3.10 -m venv venv
+            python3.9 -m venv venv
             source venv/bin/activate
 
             python --version
@@ -77,8 +77,8 @@ jobs:
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"
-            pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp310-cp310-linux_aarch64.whl"
-            pip wheel pyqt5 -w "/root/wheels"
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp39-cp39-linux_aarch64.whl"
+            pip wheel pyqt5-sip -w "/root/wheels"
 
       - name: Update changes in GitHub repository
         continue-on-error: true

@@ -521,8 +521,6 @@ def checkBaseCompatibility():
         compatible = False
     if platform.machine() in ['armv7l']:
         compatible = False
-    elif platform.machine() in ['aarch64'] and sys.version_info >= (3, 10):
-        compatible = False
     return compatible
 
 
@@ -541,8 +539,6 @@ def main(options):
         prt('needs python 3.7-3.9 for version 2.x')
         prt('needs python 3.8-3.10 for version 3.x')
         prt('no support for ARM7')
-        prt('no support for AARCH64 for MountWizzard4 3.x')
-        prt('no support for AARCH64 for python 3.10')
         prt(f'you are running {platform.python_version()}')
         prt('Closing application')
         prt('-' * 45)

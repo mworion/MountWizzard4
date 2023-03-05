@@ -349,10 +349,10 @@ def downloadAndInstallWheels(venvContext, version=None):
     }
     log.info(f'Got version {version}')
     prt('Install precompiled packages')
-    if version.major >= 3 and version.minor > 0:
+    if version >= Version('3.0.99'):
         version = '3.1.0'
         log.info('Path version 3.x.y')
-    elif version.major >= 2:
+    elif version >= Version('2'):
         version = '2.0.0'
         log.info('Path version 2.x.y')
     else:

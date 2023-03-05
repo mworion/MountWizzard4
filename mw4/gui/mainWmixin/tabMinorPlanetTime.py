@@ -50,8 +50,8 @@ class MinorPlanetTime:
         }
 
         self.iersSourceURLs = {
-            'Datacenter from IERS': 'https://datacenter.iers.org/data/8/',
-            'Maia from usno.navy.mil': 'https://maia.usno.navy.mil/ser7',
+            'Datacenter from IERS': 'https://datacenter.iers.org/data/',
+            'Maia from usno.navy.mil': 'https://maia.usno.navy.mil/ser7/',
         }
 
         self.ui.progMinorPlanetsSelected.clicked.connect(self.progMinorPlanetsSelected)
@@ -270,15 +270,19 @@ class MinorPlanetTime:
         :return:
         """
         isOnline = self.ui.isOnline.isChecked()
-        if isOnline:
-            source = 'finals.data'
-            url = 'https://datacenter.iers.org/data/8/' + source
-            dest = self.app.mwGlob['dataDir'] + '/' + source
-            self.msg.emit(1, 'IERS', 'Download', f'{source}')
-            DownloadPopup(self, url=url, dest=dest, unzip=False,
-                          callBack=self.progEarthRotationData)
-        else:
-            self.progEarthRotationData()
+        if not isOnline:
+            return False
+
+        sourceURL = self.ui.iersSource.currentText()
+        urlMain = self.iersSourceURLs[sourceURL]
+
+        source = 'finals.data'
+        sourcePre = '8/' if sourceURL.startswith('Data') else ''
+        url = urlMain + source
+        dest = self.app.mwGlob['dataDir'] + '/' + source
+        self.msg.emit(1, 'IERS', 'Download', f'{source}')
+        DownloadPopup(self, url=url, dest=dest, unzip=False,
+                      callBack=self.progEarthRotationData)
         return True
 
     def loadTimeDataFromSourceURLs(self):
@@ -289,14 +293,19 @@ class MinorPlanetTime:
         if not isOnline:
             return False
 
+        sourceURL = self.ui.iersSource.currentText()
+        urlMain = self.iersSourceURLs[sourceURL]
+
         source = 'finals2000A.all'
-        url = 'https://datacenter.iers.org/data/9/' + source
+        sourcePre = '9/' if sourceURL.startswith('Data') else ''
+        url = urlMain + sourcePre + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)
 
         source = 'finals.data'
-        url = 'https://datacenter.iers.org/data/8/' + source
+        sourcePre = '8/' if sourceURL.startswith('Data') else ''
+        url = urlMain + sourcePre + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)

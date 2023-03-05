@@ -418,13 +418,16 @@ def versionLocal():
     return Version(ver)
 
 
-def getVersion(isTest, updateBeta):
+def getVersion(isTest, updateBeta, version):
     """
     :param isTest:
     :param updateBeta:
+    :param version:
     :return:
     """
-    if isTest:
+    if version:
+        version = Version(version)
+    elif isTest:
         version = versionLocal()
     elif updateBeta:
         version = versionOnline(True)
@@ -487,7 +490,7 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
         return loaderPath
 
     isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
-    version = getVersion(isTest, updateBeta)
+    version = getVersion(isTest, updateBeta, version)
     isV2 = version < Version('2.100')
     compatibleV2 = Version(platform.python_version()) < Version('3.10')
 

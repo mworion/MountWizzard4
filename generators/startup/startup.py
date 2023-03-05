@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.0'
+version = '3.1b0'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -332,39 +332,36 @@ def downloadAndInstallWheels(venvContext, version=None):
                 'PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_aarch64.whl',
             ],
         },
-        '3.0.0': {
+        '3.1.0': {
             '3.8': [
-                'PyQt5_sip-12.11.0-cp38-cp38-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
+                'PyQt5_sip-12.11.1-cp38-cp38-linux_aarch64.whl',
+                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
             ],
             '3.9': [
-                'PyQt5_sip-12.11.0-cp39-cp39-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
+                'PyQt5_sip-12.11.1-cp39-cp39-linux_aarch64.whl',
+                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
             ],
             '3.10': [
-                'PyQt5_sip-12.11.0-cp310-cp310-linux_aarch64.whl',
-                'PyQt5-5.15.7-cp310-abi3-manylinux2014_aarch64.whl',
+                'PyQt5_sip-12.11.1-cp310-cp310-linux_aarch64.whl',
+                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
             ],
         },
     }
     log.info(f'Got version {version}')
-    prt('Install precompiled packages')
-    if version.major >= 3:
-        log.info('Path version 3.0.0 and above')
-        prt('...no precompiled packages available')
-        if not Version(platform.python_version()) < Version('3.10'):
-            prt('...no precompiled packages available')
-        return False
-    elif version.major >= 2:
-        version = '2.0.0'
-        log.info('Path version 2.0.0 and above')
+    prt(f'Install precompiled packages for {version}')
+    if version > Version('3.0.99'):
+        versionKey = '3.1.0'
+        log.info('Path version 3.x.y')
+    elif version >= Version('2'):
+        versionKey = '2.0.0'
+        log.info('Path version 2.x.y')
     else:
-        log.info('Path default')
-        prt('...no precompiled packages available')
+        log.info('No actual supported version')
+        prt('...no supported version')
         return False
 
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
-    for item in wheels[version][ver]:
+    for item in wheels[versionKey][ver]:
         prt(f'...{item.split("-")[0]}-{item.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
         suc = runPythonInVenv(venvContext, command)
@@ -421,13 +418,16 @@ def versionLocal():
     return Version(ver)
 
 
-def getVersion(isTest, updateBeta):
+def getVersion(isTest, updateBeta, version):
     """
     :param isTest:
     :param updateBeta:
+    :param version:
     :return:
     """
-    if isTest:
+    if version:
+        version = Version(version)
+    elif isTest:
         version = versionLocal()
     elif updateBeta:
         version = versionOnline(True)
@@ -490,7 +490,7 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
         return loaderPath
 
     isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
-    version = getVersion(isTest, updateBeta)
+    version = getVersion(isTest, updateBeta, version)
     isV2 = version < Version('2.100')
     compatibleV2 = Version(platform.python_version()) < Version('3.10')
 
@@ -524,8 +524,6 @@ def checkBaseCompatibility():
         compatible = False
     if platform.machine() in ['armv7l']:
         compatible = False
-    elif platform.machine() in ['aarch64'] and sys.version_info >= (3, 10):
-        compatible = False
     return compatible
 
 
@@ -544,8 +542,6 @@ def main(options):
         prt('needs python 3.7-3.9 for version 2.x')
         prt('needs python 3.8-3.10 for version 3.x')
         prt('no support for ARM7')
-        prt('no support for AARCH64 for MountWizzard4 3.x')
-        prt('no support for AARCH64 for python 3.10')
         prt(f'you are running {platform.python_version()}')
         prt('Closing application')
         prt('-' * 45)

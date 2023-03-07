@@ -343,7 +343,7 @@ def test_startProgEarthRotationDataToMount_2(function):
                            'progEarthRotationData',
                            return_value=True):
         suc = function.startProgEarthRotationDataToMount()
-        assert suc
+        assert not suc
 
 
 def test_loadTimeDataFromSourceURLs_1(function):

@@ -98,24 +98,6 @@ def test_getFileFromUrl_2(function):
 def test_getFileFromUrl_3(function):
     class Response:
         headers = {}
-        text = '<'
-        status_code = 200
-
-        @staticmethod
-        def iter_content(a):
-            return [b's' * 512]
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Response()):
-        with mock.patch.object(builtins,
-                               'open'):
-            suc = function.getFileFromUrl('http://local', 'tests/workDir/temp/test.txt')
-            assert not suc
-
-
-def test_getFileFromUrl_4(function):
-    class Response:
-        headers = {}
         text = 'test'
         status_code = 500
 

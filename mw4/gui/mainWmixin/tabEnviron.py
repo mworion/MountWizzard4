@@ -77,7 +77,7 @@ class Environ:
         self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update1s.connect(self.updateOnlineWeatherGui)
         self.app.update30m.connect(self.updateSeeingEntries)
-        self.app.colorChange.connect(self.updateSeeingEntries)
+        self.app.colorChange.connect(self.prepareSeeingTable)
 
     def initConfig(self):
         """

@@ -252,6 +252,8 @@ class Client(QObject):
         self.socket = QTcpSocket()
         self.socket.readyRead.connect(self._handleReadyRead)
         self.socket.error.connect(self._handleError)
+        self.socket.hostFound.connect(self._handleHostFound)
+        self.socket.connected.connect(self._handleConnected)
         self.socket.disconnected.connect(self.handleDisconnected)
         self.clearParser()
 
@@ -340,12 +342,6 @@ class Client(QObject):
             return True
 
         self.socket.connectToHost(*self._host)
-        if not self.socket.waitForConnected(self.CONNECTION_TIMEOUT * 1000):
-            self.connected = False
-            return False
-
-        self.connected = True
-        self.signals.serverConnected.emit()
         return True
 
     def clearDevices(self, deviceName=''):
@@ -1031,4 +1027,19 @@ class Client(QObject):
 
         self.log.error(f'INDI connection fault, error: [{socketError}]')
         self.disconnectServer()
+        return True
+
+    def _handleHostFound(self):
+        """
+        :return:
+        """
+        self.log.error(f'INDI Host found')
+        return True
+
+    def _handleConnected(self):
+        """
+        :return:
+        """
+        self.connected = True
+        self.signals.serverConnected.emit()
         return True

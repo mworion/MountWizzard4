@@ -39,6 +39,7 @@ class Environ:
         self.refractionSource = ''
         self.filteredTemperature = None
         self.filteredPressure = None
+        self.seeingEnabled = False
 
         signals = self.app.sensorWeather.signals
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
@@ -76,6 +77,7 @@ class Environ:
         self.app.update1s.connect(self.updatePowerWeatherGui)
         self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update1s.connect(self.updateOnlineWeatherGui)
+        self.app.start3s.connect(self.enableSeeingEntries)
         self.app.update30m.connect(self.updateSeeingEntries)
         self.app.colorChange.connect(self.prepareSeeingTable)
 
@@ -514,6 +516,18 @@ class Environ:
         self.ui.meteoblueSeeing.clear()
         self.ui.meteoblueIcon.setVisible(False)
         self.ui.meteoblueSeeing.setVisible(False)
+        self.seeingEnabled = False
+        return True
+
+    def enableSeeingEntries(self):
+        """
+        :return:
+        """
+        if not self.seeingEnabled:
+            return False
+
+        self.ui.meteoblueIcon.setVisible(True)
+        self.ui.meteoblueSeeing.setVisible(True)
         return True
 
     def prepareSeeingTable(self):
@@ -537,8 +551,8 @@ class Environ:
               '',
               ]
 
-        self.ui.meteoblueIcon.setVisible(True)
-        self.ui.meteoblueSeeing.setVisible(True)
+        self.seeingEnabled = True
+        self.enableSeeingEntries()
         seeTab = self.ui.meteoblueSeeing
         if platform.system() == 'Darwin':
             seeTab.setRowCount(15)

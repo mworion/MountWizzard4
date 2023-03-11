@@ -28,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.1.0b0',
+    version='3.1.0b2',
     packages=[
         'mw4',
         'mw4.base',
@@ -66,7 +66,7 @@ setup(
     python_requires='>=3.8.0, <3.11',
     install_requires=[
         'numpy==1.24.2',
-        'opencv-python-headless==4.7.0.72',
+        'opencv-python-headless==4.6.0.66',
         'scipy==1.10.1',
         'astropy==5.2.1',
         'pyerfa==2.0.0.1',

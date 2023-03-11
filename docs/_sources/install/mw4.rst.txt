@@ -57,8 +57,10 @@ On windows please use the command:
     python startup.pyz
 
 .. warning::
-    The new script 3.x supports only Windows, Mac and x86 Linux distributions! 
-    If you need other support, please use the actual scripts 2.x. 
+    The new script 3.x supports only Windows, Mac and x86 Linux distributions!
+    This is valid also for the support of MW4 v3.x
+    If you need support other platforms, please use the actual scripts 2.x. and
+    MW4 v2.x versions.
 
 
 Windows 10/11:

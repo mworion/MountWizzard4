@@ -556,6 +556,18 @@ def test_clearSeeingEntries(function):
     assert suc
 
 
+def test_enableSeeingEntries_1(function):
+    function.seeingEnabled = False
+    suc = function.enableSeeingEntries()
+    assert not suc
+
+
+def test_enableSeeingEntries_1(function):
+    function.seeingEnabled = True
+    suc = function.enableSeeingEntries()
+    assert suc
+
+
 def test_addSkyfieldTimeObject(function):
     data = {
         'hour': [10, 11],

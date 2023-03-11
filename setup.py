@@ -20,7 +20,9 @@ import platform
 
 releaseNotes = """
 - add: support for aarch64 on raspi for python 3.8 - 3.10
+- improve: speedup launch if INDI server not ready
 - fix: download sources IERS 
+- fix: seeing entries visibility upon startup
 """
 
 with open('notes.txt', 'w') as f:

@@ -233,6 +233,9 @@ class ASTAP(object):
         g18 = '/g18*.290'
         h17 = '/h17*.1476'
         h18 = '/h18*.1476'
+        d50 = '/d50*.1476'
+        d20 = '/d20*.1476'
+        d05 = '/d05*.1476'
         if platform.system() == 'Darwin':
             program = self.appPath + '/astap'
         elif platform.system() == 'Linux':
@@ -251,7 +254,10 @@ class ASTAP(object):
         isG18 = sum('.290' in s for s in glob.glob(self.indexPath + g18)) == 290
         isH17 = sum('.1476' in s for s in glob.glob(self.indexPath + h17)) == 1476
         isH18 = sum('.1476' in s for s in glob.glob(self.indexPath + h18)) == 1476
-        if not any((isG17, isG18, isH17, isH18)):
+        isD50 = sum('.1476' in s for s in glob.glob(self.indexPath + d50)) == 1476
+        isD20 = sum('.1476' in s for s in glob.glob(self.indexPath + d20)) == 1169
+        isD05 = sum('.1476' in s for s in glob.glob(self.indexPath + d05)) == 1476
+        if not any((isG17, isG18, isH17, isH18, isD05, isD20, isD50)):
             self.log.info('No index files found')
             sucIndex = False
         else:
@@ -259,4 +265,5 @@ class ASTAP(object):
 
         self.log.info(f'ASTAP OK, app: [{program}], index: [{self.indexPath}]')
         self.log.info(f'ASTAP Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
+        self.log.info(f'ASTAP Index D50:{isD50}, D20:{isD20}, D05:{isD05}')
         return sucProgram, sucIndex

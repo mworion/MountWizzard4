@@ -56,7 +56,7 @@ from gui.mainWmixin.tabSatSearch import SatSearch
 from gui.mainWmixin.tabSatTrack import SatTrack
 from gui.mainWmixin.tabMinorPlanet import MinorPlanet
 from gui.mainWmixin.tabRelay import Relay
-from gui.mainWmixin.tabTools import Tools
+from gui.mainWmixin.tabTools_Rename import Rename
 from gui.mainWmixin.tabTools_IERSTime import IERSTime
 from gui.mainWmixin.tabAnalysis import Analysis
 from gui.mainWmixin.tabPower import Power
@@ -86,7 +86,7 @@ class MainWindow(
     MinorPlanet,
     Relay,
     Power,
-    Tools,
+    ToolsRename,
     IERSTime,
     Analysis,
     SettDevice,

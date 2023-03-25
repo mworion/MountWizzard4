@@ -29,13 +29,13 @@ import numpy as np
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabTools import Tools
+from gui.mainWmixin.tabTools_Rename import Rename
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
 
-    class Mixin(MWidget, Tools):
+    class Mixin(MWidget, Rename):
         def __init__(self):
             super().__init__()
             self.app = App()
@@ -43,7 +43,7 @@ def function(qapp):
             self.deviceStat = self.app.deviceStat
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            Tools.__init__(self)
+            Rename.__init__(self)
 
     window = Mixin()
     yield window

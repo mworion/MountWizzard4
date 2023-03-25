@@ -25,7 +25,7 @@ from astropy.io import fits
 # local import
 
 
-class Tools:
+class Rename:
     """
     """
 

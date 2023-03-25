@@ -17,9 +17,6 @@
 # standard libraries
 import pytest
 from unittest import mock
-import os
-import json
-import builtins
 
 # external packages
 from PyQt5.QtCore import QThreadPool

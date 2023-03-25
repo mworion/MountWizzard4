@@ -55,6 +55,22 @@ def test_initConfig_1(function):
     assert function.installPath == 'tests/workDir/data'
 
 
+def test_initConfig_2(function):
+    temp = function.app.automation
+    function.app.automation = None
+    suc = function.initConfig()
+    assert suc
+    assert function.installPath == 'tests/workDir/data'
+    function.app.automation = temp
+
+
+def test_initConfig_3(function):
+    function.app.automation.installPath = 'test'
+    suc = function.initConfig()
+    assert suc
+    assert function.installPath == 'test'
+
+
 def test_storeConfig_1(function):
     function.thread = None
     suc = function.storeConfig()
@@ -64,7 +80,6 @@ def test_storeConfig_1(function):
 def test_setupIERSSourceURLsDropDown(function):
     suc = function.setupIERSSourceURLsDropDown()
     assert suc
-
 
 
 def test_progEarthRotationGUI_1(function):

@@ -86,7 +86,7 @@ class MainWindow(
     MinorPlanet,
     Relay,
     Power,
-    ToolsRename,
+    Rename,
     IERSTime,
     Analysis,
     SettDevice,

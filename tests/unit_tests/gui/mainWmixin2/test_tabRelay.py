@@ -20,7 +20,7 @@ import pytest
 # external packages
 
 # local import
-from gui.mainWmixin.tabSettRelay import SettRelay
+from gui.mainWmixin.tabSett_Relay import SettRelay
 from gui.mainWmixin.tabRelay import Relay
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget

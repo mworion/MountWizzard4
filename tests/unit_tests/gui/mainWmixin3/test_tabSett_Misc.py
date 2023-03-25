@@ -290,7 +290,7 @@ def test_workerGameController_3(function):
     with mock.patch.object(hid,
                            'device',
                            return_value=Gamepad()):
-        with mock.patch.object(gui.mainWmixin.tabSettMisc,
+        with mock.patch.object(gui.mainWmixin.tabSett_Misc,
                                'sleepAndEvents'):
             suc = function.workerGameController()
             assert suc
@@ -325,7 +325,7 @@ def test_workerGameController_4(function):
     with mock.patch.object(hid,
                            'device',
                            return_value=Gamepad()):
-        with mock.patch.object(gui.mainWmixin.tabSettMisc,
+        with mock.patch.object(gui.mainWmixin.tabSett_Misc,
                                'sleepAndEvents'):
             with mock.patch.object(function,
                                    'sendGameControllerSignals'):
@@ -799,7 +799,7 @@ def test_playSound_3(function):
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_1(function):
-    with mock.patch.object(gui.mainWmixin.tabSettMisc,
+    with mock.patch.object(gui.mainWmixin.tabSett_Misc,
                            'checkAutomation',
                            return_value=False):
         suc = function.setAutomationSpeed()
@@ -808,7 +808,7 @@ def test_setAutomationSpeed_1(function):
 
 @pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
 def test_setAutomationSpeed_2(function):
-    with mock.patch.object(gui.mainWmixin.tabSettMisc,
+    with mock.patch.object(gui.mainWmixin.tabSett_Misc,
                            'checkAutomation',
                            return_value=True):
         suc = function.setAutomationSpeed()

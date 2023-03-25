@@ -60,14 +60,14 @@ from gui.mainWmixin.tabTools_Rename import Rename
 from gui.mainWmixin.tabTools_IERSTime import IERSTime
 from gui.mainWmixin.tabAnalysis import Analysis
 from gui.mainWmixin.tabPower import Power
-from gui.mainWmixin.tabSettDevice import SettDevice
-from gui.mainWmixin.tabSettMount import SettMount
+from gui.mainWmixin.tabSett_Device import SettDevice
+from gui.mainWmixin.tabSett_Mount import SettMount
+from gui.mainWmixin.tabSett_Dome import SettDome
+from gui.mainWmixin.tabSett_ParkPos import SettParkPos
+from gui.mainWmixin.tabSett_Relay import SettRelay
+from gui.mainWmixin.tabSett_Misc import SettMisc
 from gui.mainWmixin.tabImage_Manage import ImageManage
 from gui.mainWmixin.tabImage_Stats import ImagsStats
-from gui.mainWmixin.tabSettDome import SettDome
-from gui.mainWmixin.tabSettParkPos import SettParkPos
-from gui.mainWmixin.tabSettRelay import SettRelay
-from gui.mainWmixin.tabSettMisc import SettMisc
 from logic.profiles.profile import loadProfile, saveProfile, blendProfile
 
 

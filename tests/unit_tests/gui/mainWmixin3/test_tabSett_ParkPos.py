@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabSettParkPos import SettParkPos
+from gui.mainWmixin.tabSett_ParkPos import SettParkPos
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 

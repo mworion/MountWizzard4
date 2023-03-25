@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import QPushButton
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabSettDevice import SettDevice
+from gui.mainWmixin.tabSett_Device import SettDevice
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 

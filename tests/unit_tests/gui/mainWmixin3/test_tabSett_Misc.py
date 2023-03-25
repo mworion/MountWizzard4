@@ -31,8 +31,8 @@ import hid
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabSettMisc import SettMisc
-import gui.mainWmixin.tabSettMisc
+from gui.mainWmixin.tabSett_Misc import SettMisc
+import gui.mainWmixin.tabSett_Misc
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging

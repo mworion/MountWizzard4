@@ -52,8 +52,8 @@ from gui.mainWmixin.tabModel import Model
 from gui.mainWmixin.runBasic import BasicRun
 from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.mainWmixin.tabManageModel import ManageModel
-from gui.mainWmixin.tabSatSearch import SatSearch
-from gui.mainWmixin.tabSatTrack import SatTrack
+from gui.mainWmixin.tabSat_Search import SatSearch
+from gui.mainWmixin.tabSat_Track import SatTrack
 from gui.mainWmixin.tabMinorPlanet import MinorPlanet
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools_Rename import Rename

@@ -34,8 +34,8 @@ import numpy as np
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabSatSearch import SatSearch
-from gui.mainWmixin.tabSatTrack import  SatTrack
+from gui.mainWmixin.tabSat_Search import SatSearch
+from gui.mainWmixin.tabSat_Track import  SatTrack
 from logic.databaseProcessing.dataWriter import DataWriter
 
 

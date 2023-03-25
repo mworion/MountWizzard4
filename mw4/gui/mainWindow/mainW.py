@@ -54,9 +54,10 @@ from gui.mainWmixin.tabBuildPoints import BuildPoints
 from gui.mainWmixin.tabManageModel import ManageModel
 from gui.mainWmixin.tabSatSearch import SatSearch
 from gui.mainWmixin.tabSatTrack import SatTrack
-from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
+from gui.mainWmixin.tabMinorPlanet import MinorPlanet
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools import Tools
+from gui.mainWmixin.tabTools_IERSTime import IERSTime
 from gui.mainWmixin.tabAnalysis import Analysis
 from gui.mainWmixin.tabPower import Power
 from gui.mainWmixin.tabSettDevice import SettDevice
@@ -82,10 +83,11 @@ class MainWindow(
     ManageModel,
     SatSearch,
     SatTrack,
-    MinorPlanetTime,
+    MinorPlanet,
     Relay,
     Power,
     Tools,
+    IERSTime,
     Analysis,
     SettDevice,
     SettMount,

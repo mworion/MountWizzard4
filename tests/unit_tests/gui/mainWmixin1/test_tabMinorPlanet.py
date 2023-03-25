@@ -29,14 +29,14 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 import gui.utilities
-from gui.mainWmixin.tabMinorPlanetTime import MinorPlanetTime
+from gui.mainWmixin.tabMinorPlanet import MinorPlanet
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, MinorPlanetTime):
+    class Mixin(MWidget, MinorPlanet):
         def __init__(self):
             super().__init__()
             self.app = App()
@@ -45,7 +45,7 @@ def function(qapp):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            MinorPlanetTime.__init__(self)
+            MinorPlanet.__init__(self)
 
     window = Mixin()
     yield window
@@ -88,11 +88,6 @@ def test_storeConfig_1(function):
 
 def test_setupMinorPlanetSourceURLsDropDown(function):
     suc = function.setupMinorPlanetSourceURLsDropDown()
-    assert suc
-
-
-def test_setupIERSSourceURLsDropDown(function):
-    suc = function.setupIERSSourceURLsDropDown()
     assert suc
 
 
@@ -157,7 +152,7 @@ def test_setupMinorPlanetNameList_2(function):
 
 
 def test_processSourceData_1(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
@@ -178,7 +173,7 @@ def test_processSourceData_1(function):
 
 
 def test_processSourceData_2(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
@@ -199,7 +194,7 @@ def test_processSourceData_2(function):
 
 
 def test_processSourceData_3(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
@@ -238,7 +233,7 @@ def test_loadMPCDataFromSourceURLs_2(function):
 
 
 def test_loadMPCDataFromSourceURLs_3(function):
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
+    with mock.patch.object(gui.mainWmixin.tabMinorPlanet,
                            'DownloadPopup'):
         with mock.patch.object(os.path,
                                'isfile',
@@ -250,116 +245,6 @@ def test_loadMPCDataFromSourceURLs_3(function):
             function.ui.isOnline.setChecked(True)
             suc = function.loadMPCDataFromSourceURLs()
             assert suc
-
-
-def test_progEarthRotationGUI_1(function):
-    with mock.patch.object(function,
-                           'checkUpdaterOK',
-                           return_value=False):
-        suc = function.progEarthRotationGUI()
-        assert not suc
-
-
-def test_progEarthRotationGUI_2(function):
-    with mock.patch.object(function,
-                           'checkUpdaterOK',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=False):
-            suc = function.progEarthRotationGUI()
-            assert not suc
-
-
-def test_progEarthRotationGUI_3(function):
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'checkUpdaterOK',
-                               return_value=True):
-            suc = function.progEarthRotationGUI()
-            assert suc
-
-
-def test_progEarthRotationData_1(function):
-    with mock.patch.object(function,
-                           'progEarthRotationGUI',
-                           return_value=False):
-        suc = function.progEarthRotationData()
-        assert not suc
-
-
-def test_progEarthRotationData_2(function):
-    with mock.patch.object(function,
-                           'progEarthRotationGUI',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeEarthRotationData',
-                               return_value=False):
-                suc = function.progEarthRotationData()
-                assert not suc
-
-
-def test_progEarthRotationData_3(function):
-    with mock.patch.object(function,
-                           'progEarthRotationGUI',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeEarthRotationData',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadEarthRotationData',
-                                   return_value=False):
-                suc = function.progEarthRotationData()
-                assert not suc
-
-
-def test_progEarthRotationData_4(function):
-    with mock.patch.object(function,
-                           'progEarthRotationGUI',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'writeEarthRotationData',
-                               return_value=True):
-            with mock.patch.object(function.app.automation,
-                                   'uploadEarthRotationData',
-                                   return_value=True):
-                suc = function.progEarthRotationData()
-                assert suc
-
-
-def test_startProgEarthRotationDataToMount_1(function):
-    function.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
-                           'DownloadPopup'):
-        suc = function.startProgEarthRotationDataToMount()
-        assert suc
-
-
-def test_startProgEarthRotationDataToMount_2(function):
-    function.ui.isOnline.setChecked(False)
-    with mock.patch.object(function,
-                           'progEarthRotationData',
-                           return_value=True):
-        suc = function.startProgEarthRotationDataToMount()
-        assert not suc
-
-
-def test_loadTimeDataFromSourceURLs_1(function):
-    function.ui.isOnline.setChecked(False)
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
-                           'DownloadPopup'):
-        suc = function.loadTimeDataFromSourceURLs()
-        assert not suc
-
-
-def test_loadTimeDataFromSourceURLs_2(function):
-    function.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.mainWmixin.tabMinorPlanetTime,
-                           'DownloadPopup'):
-        suc = function.loadTimeDataFromSourceURLs()
-        assert suc
 
 
 def test_progMinorPlanets_1(function):

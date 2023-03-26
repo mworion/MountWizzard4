@@ -20,7 +20,7 @@ import platform
 
 releaseNotes = """
 - add: support for aarch64 on raspi for python 3.8 - 3.10
-- add: support for ASTAP new databases
+- add: support for ASTAP new databases D50, D20, D05
 - improve: speedup launch if INDI server not ready
 - fix: download sources IERS 
 - fix: seeing entries visibility upon startup
@@ -31,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.1.0b3',
+    version='3.1.0b4',
     packages=[
         'mw4',
         'mw4.base',

@@ -35,11 +35,11 @@ class ImagsStats:
         (0.8, 360): 'Passes 0-7 (watneyqdb-00-07)',
     })
     ASTAP = RangeKeyDict({
-        (0, 0.25): 'H18, D50 (exp. 10s - 20s)',
-        (0.25, 0.5): 'H18, D20 (exp. 10s - 20s)',
-        (0.5, 1): 'H18, D05 (exp. 10s - 20s)',
-        (1, 10): 'H18, H17, D05 (exp. 3s - 10s)',
-        (10, 20): 'V17, D05 (exp. 1s - 3s)',
+        (0, 0.25): 'D50, H18 (exp. 10s - 20s)',
+        (0.25, 0.5): 'D20, H18 (exp. 10s - 20s)',
+        (0.5, 1): 'D05, H18 (exp. 10s - 20s)',
+        (1, 10): 'D05, H18, H17 (exp. 3s - 10s)',
+        (10, 20): 'D05, V17 (exp. 1s - 3s)',
         (20, 360): 'W08 (epx. 1s - 3s)',
     })
     ASTROMETRY = RangeKeyDict({

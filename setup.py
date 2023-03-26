@@ -19,9 +19,10 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for aarch64 on raspi for python 3.8 - 3.10
+- add: support for aarch64 on raspi for python 3.8 - 3.10 (needs installer 3.1)
 - add: support for ASTAP new databases D50, D20, D05
 - improve: speedup launch if INDI server not ready
+- improve: support for catalina
 - fix: download sources IERS 
 - fix: seeing entries visibility upon startup
 """

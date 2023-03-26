@@ -515,8 +515,8 @@ class IndiClass:
         messages. then it checks, if the device type fits to the search type
         desired. if they match, the device name is added to the list.
 
-        unfortunately the indi definitions are not well defined. so for example
-        SQM reports only aux general. this is value '0'. So i have to treat all
+        unfortunately the indi definitions are not well-defined. so for example
+        SQM reports only aux general. this is value '0'. So I have to treat all
         devices reporting device type '0' as devices which could be used for
         everything.
 
@@ -554,7 +554,7 @@ class IndiClass:
         to this server. Then it connects a subroutine for collecting the right
         device names and waits a certain amount of time. the data collection
         takes place as long as the model dialog is open. when the user closes
-        this dialog, the collected data is written to the drop down list.
+        this dialog, the collected data is written to the drop-down list.
 
         :param deviceType: device type of discovered indi devices
         :return: success

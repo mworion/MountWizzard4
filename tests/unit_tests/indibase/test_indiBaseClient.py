@@ -85,8 +85,13 @@ def test_watchDevice_2(function):
 
 def test_connectServer_1(function):
     function._host = None
-    suc = function.connectServer()
-    assert not suc
+    with mock.patch.object(function.socket,
+                           'connectToHost'):
+        with mock.patch.object(function.socket,
+                               'waitForConnected',
+                               return_value=True):
+            suc = function.connectServer()
+            assert not suc
 
 
 def test_connectServer_2(function):
@@ -101,8 +106,25 @@ def test_connectServer_3(function):
     function.connected = False
     with mock.patch.object(function.socket,
                            'connectToHost'):
-        suc = function.connectServer()
-        assert suc
+        with mock.patch.object(function.socket,
+                               'waitForConnected',
+                               return_value=False):
+            suc = function.connectServer()
+            assert not suc
+            assert not function.connected
+
+
+def test_connectServer_4(function):
+    function._host = ('localhost', 7624)
+    function.connected = False
+    with mock.patch.object(function.socket,
+                           'connectToHost'):
+        with mock.patch.object(function.socket,
+                               'waitForConnected',
+                               return_value=True):
+            suc = function.connectServer()
+            assert suc
+            assert function.connected
 
 
 def test_clearDevices_1(function):
@@ -1093,15 +1115,3 @@ def test_handleError_2(function):
                            'disconnectServer'):
         suc = function._handleError('')
         assert suc
-
-
-def test_handleHostFound_1(function):
-    suc = function._handleHostFound()
-    assert suc
-
-
-def test_handleConnected_1(function):
-    function.connected = False
-    suc = function._handleConnected()
-    assert suc
-    assert function.connected

@@ -235,7 +235,7 @@ class Client(QObject):
     AUX_INTERFACE = (1 << 15)
 
     DEFAULT_PORT = 7624
-    CONNECTION_TIMEOUT = 3000
+    CONNECTION_TIMEOUT = 1000
 
     def __init__(self,
                  host=None,

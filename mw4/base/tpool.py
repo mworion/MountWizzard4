@@ -45,7 +45,7 @@ class WorkerSignals(QObject):
 class Worker(QRunnable):
     """
     The Worker class offers a generic interface to allow any function to be executed as
-    a thread in an threadpool
+    a thread in a threadpool
     """
 
     __all__ = ['Worker']

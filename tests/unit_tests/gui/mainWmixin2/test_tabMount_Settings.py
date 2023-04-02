@@ -28,12 +28,12 @@ from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabMountSett import MountSett
+from gui.mainWmixin.tabMount_Settings import MountSettings
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, MountSett):
+    class Mixin(MWidget, MountSettings):
         def __init__(self):
             super().__init__()
             self.app = App()
@@ -41,90 +41,10 @@ def function(qapp):
             self.deviceStat = self.app.deviceStat
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            MountSett.__init__(self)
+            MountSettings.__init__(self)
 
     window = Mixin()
     yield window
-
-
-def test_updatePointGui_alt(function):
-    value = Angle(degrees=45)
-    function.app.mount.obsSite.Alt = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '45.00' == function.ui.ALT.text()
-    value = None
-    function.app.mount.obsSite.Alt = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.ALT.text()
-
-
-def test_updatePointGui_az(function):
-    value = Angle(degrees=45)
-    function.app.mount.obsSite.Az = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '45.00' == function.ui.AZ.text()
-    value = None
-    function.app.mount.obsSite.Az = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.AZ.text()
-
-
-def test_updatePointGui_ra(function):
-    function.ui.coordsJ2000.setChecked(True)
-    function.app.mount.obsSite.raJNow = Angle(hours=0)
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '23:58:53' == function.ui.RA.text()
-
-
-def test_updatePointGui_dec_1(function):
-    function.ui.coordsJ2000.setChecked(True)
-    function.app.mount.obsSite.decJNow = Angle(degrees=0)
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-00:07:13' == function.ui.DEC.text()
-
-
-def test_updatePointGui_dec_2(function):
-    function.app.mount.obsSite.decJNow = None
-    function.ui.coordsJ2000.setChecked(False)
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.DEC.text()
-
-
-def test_updatePointGui_pierside(function):
-    value = 'W'
-    function.app.mount.obsSite.pierside = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert 'WEST' == function.ui.pierside.text()
-
-
-def test_updatePointGui_ha_1(function):
-    value = Angle(hours=12)
-    function.app.mount.obsSite.haJNow = value
-    function.app.mount.obsSite.timeSidereal = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '12:00:00' == function.ui.HA.text()
-
-
-def test_updatePointGui_ha_2(function):
-    value = None
-    function.app.mount.obsSite.timeSidereal = value
-    function.app.mount.obsSite.haJNow = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.HA.text()
-
-
-def test_updatePointGUI_sidereal_1(function):
-    value = Angle(hours=12)
-    function.app.mount.obsSite.timeSidereal = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '12:00:00' == function.ui.timeSidereal.text()
-
-
-def test_updatePointGUI_sidereal_2(function):
-    value = None
-    function.app.mount.obsSite.timeSidereal = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.timeSidereal.text()
 
 
 def test_updateSetting_slewRate(function):
@@ -1472,15 +1392,6 @@ def test_setWOL_4(function, qtbot):
                                    return_value=True):
                 suc = function.setWOL()
                 assert suc
-
-
-def test_updatePointGui_ra_j2000(function):
-    function.ui.coordsJ2000.setChecked(True)
-    value = Angle(hours=45)
-    function.app.mount.obsSite.raJNow = value
-    value = Angle(degrees=45)
-    function.app.mount.obsSite.decJNow = value
-    function.updatePointGUI(function.app.mount.obsSite)
 
 
 def test_showOffset_1(function):

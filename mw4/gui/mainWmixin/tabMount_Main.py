@@ -19,11 +19,25 @@
 # external packages
 
 # local import
+from base import transform
 
 
 class MountMain:
     """
     """
+
+    def __init__(self):
+        ms = self.app.mount.signals
+        ms.pointDone.connect(self.updatePointGUI)
+        self.ui.park.clicked.connect(self.changePark)
+        self.ui.flipMount.clicked.connect(self.flipMount)
+        self.ui.tracking.clicked.connect(self.changeTracking)
+        self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
+        self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
+        self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
+        self.ui.stop.clicked.connect(self.stop)
+        self.app.virtualStop.connect(self.stop)
+
     def initConfig(self):
         """
         :return: True for test purpose
@@ -31,7 +45,6 @@ class MountMain:
         config = self.app.config.get('mainW', {})
         self.ui.coordsJ2000.setChecked(config.get('coordsJ2000', False))
         self.ui.coordsJNow.setChecked(config.get('coordsJNow', False))
-        self.updateLocGUI(self.app.mount.obsSite)
         return True
 
     def storeConfig(self):
@@ -41,6 +54,33 @@ class MountMain:
         config = self.app.config['mainW']
         config['coordsJ2000'] = self.ui.coordsJ2000.isChecked()
         config['coordsJNow'] = self.ui.coordsJNow.isChecked()
+        return True
+
+    def updatePointGUI(self, obs):
+        """
+        :param obs:
+        :return:    True if ok for testing
+        """
+        isJ2000 = self.ui.coordsJ2000.isChecked()
+        isValid = obs.raJNow is not None
+        isValid = isValid and obs.decJNow is not None
+        isValid = isValid and obs.timeJD is not None
+        if isJ2000 and isValid:
+            ra, dec = transform.JNowToJ2000(obs.raJNow, obs.decJNow, obs.timeJD)
+        else:
+            ra = obs.raJNow
+            dec = obs.decJNow
+
+        self.guiSetText(self.ui.RA, 'HSTR', ra)
+        self.guiSetText(self.ui.RAfloat, 'H5.5f', ra)
+        self.guiSetText(self.ui.DEC, 'DSTR', dec)
+        self.guiSetText(self.ui.DECfloat, 'D5.5f', dec)
+        self.guiSetText(self.ui.HA, 'HSTR', obs.haJNow)
+        self.guiSetText(self.ui.HAfloat, 'H5.5f', obs.haJNow)
+        self.guiSetText(self.ui.ALT, 'D5.2f', obs.Alt)
+        self.guiSetText(self.ui.AZ, 'D5.2f', obs.Az)
+        self.guiSetText(self.ui.pierside, 's', obs.pierside)
+        self.guiSetText(self.ui.timeSidereal, 'HSTR', obs.timeSidereal)
         return True
 
     def checkMount(self):

@@ -22,7 +22,6 @@ from PyQt5.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import wgs84
 
 # local import
-from base import transform
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
 
@@ -39,7 +38,6 @@ class MountSettings:
 
         ms = self.app.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
-        ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
         self.app.update1s.connect(self.showOffset)
         self.ui.park.clicked.connect(self.changePark)
@@ -64,33 +62,6 @@ class MountSettings:
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
-
-    def updatePointGUI(self, obs):
-        """
-        :param obs:
-        :return:    True if ok for testing
-        """
-        isJ2000 = self.ui.coordsJ2000.isChecked()
-        isValid = obs.raJNow is not None
-        isValid = isValid and obs.decJNow is not None
-        isValid = isValid and obs.timeJD is not None
-        if isJ2000 and isValid:
-            ra, dec = transform.JNowToJ2000(obs.raJNow, obs.decJNow, obs.timeJD)
-        else:
-            ra = obs.raJNow
-            dec = obs.decJNow
-
-        self.guiSetText(self.ui.RA, 'HSTR', ra)
-        self.guiSetText(self.ui.RAfloat, 'H5.5f', ra)
-        self.guiSetText(self.ui.DEC, 'DSTR', dec)
-        self.guiSetText(self.ui.DECfloat, 'D5.5f', dec)
-        self.guiSetText(self.ui.HA, 'HSTR', obs.haJNow)
-        self.guiSetText(self.ui.HAfloat, 'H5.5f', obs.haJNow)
-        self.guiSetText(self.ui.ALT, 'D5.2f', obs.Alt)
-        self.guiSetText(self.ui.AZ, 'D5.2f', obs.Az)
-        self.guiSetText(self.ui.pierside, 's', obs.pierside)
-        self.guiSetText(self.ui.timeSidereal, 'HSTR', obs.timeSidereal)
-        return True
 
     def updateSettingGUI(self, sett):
         """

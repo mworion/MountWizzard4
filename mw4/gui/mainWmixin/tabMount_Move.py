@@ -69,10 +69,6 @@ class MountMove(SlewInterface):
         self.targetAlt = None
         self.targetAz = None
         self.slewSpeedSelected = None
-        self.app.gameABXY.connect(self.changeParkGameController)
-        self.app.gameABXY.connect(self.stopGameController)
-        self.app.gameABXY.connect(self.changeTrackingGameController)
-        self.app.gameABXY.connect(self.flipMountGameController)
         self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
         self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeed)
         self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
@@ -89,7 +85,6 @@ class MountMove(SlewInterface):
         self.app.mount.signals.slewFinished.connect(self.moveAltAzDefault)
         self.app.gameDirection.connect(self.moveAltAzGameController)
         self.app.game_sR.connect(self.moveClassicGameController)
-        self.setupGuiMount()
 
     def initConfig(self):
         """

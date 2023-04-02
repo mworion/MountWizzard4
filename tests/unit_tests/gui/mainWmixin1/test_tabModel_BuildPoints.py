@@ -26,7 +26,7 @@ from astroquery.simbad import Simbad
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabBuildPoints import BuildPoints
+from gui.mainWmixin.tabModel_BuildPoints import BuildPoints
 
 
 @pytest.fixture(autouse=True, scope='module')

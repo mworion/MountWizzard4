@@ -30,7 +30,7 @@ from mountcontrol.modelStar import ModelStar
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabManageModel import ManageModel
+from gui.mainWmixin.tabModel_Manage import ManageModel
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 

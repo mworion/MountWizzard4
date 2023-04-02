@@ -23,14 +23,14 @@ import webbrowser
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWmixin.tabImage_Stats import ImagsStats
+from gui.mainWmixin.tabImage_Stats import ImageStats
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function(qapp):
-    class Mixin(MWidget, ImagsStats):
+    class Mixin(MWidget, ImageStats):
         def __init__(self):
             super().__init__()
             self.app = App()
@@ -39,7 +39,7 @@ def function(qapp):
             self.threadPool = self.app.threadPool
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            ImagsStats.__init__(self)
+            ImageStats.__init__(self)
 
     window = Mixin()
     yield window

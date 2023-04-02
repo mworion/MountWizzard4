@@ -176,7 +176,10 @@ class DataWriter:
         centConvert = {'18': 'I',
                        '19': 'J',
                        '20': 'K',
-                       '21': 'L'}
+                       '21': 'L',
+                       '22': 'M',
+                       '23': 'N',
+                       }
 
         centuryP = centConvert.get(century, ' ')
 

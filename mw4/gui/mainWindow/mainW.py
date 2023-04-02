@@ -45,13 +45,16 @@ from gui.extWindows.videoW3 import VideoWindow3
 from gui.extWindows.videoW4 import VideoWindow4
 from gui.extWindows.bigPopupW import BigPopup
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabMount import Mount
+from gui.mainWmixin.tabMount_Main import MountMain
+from gui.mainWmixin.tabMount_Settings import MountSettings
+from gui.mainWmixin.tabMount_Move import MountMove
+from gui.mainWmixin.tabMount_Terminal import MountTerminal
 from gui.mainWmixin.tabEnviron import Environ
 from gui.mainWmixin.tabAlmanac import Almanac
-from gui.mainWmixin.tabModel import Model
+from gui.mainWmixin.tabModel_Run import Model
 from gui.mainWmixin.runBasic import BasicRun
-from gui.mainWmixin.tabBuildPoints import BuildPoints
-from gui.mainWmixin.tabManageModel import ManageModel
+from gui.mainWmixin.tabModel_BuildPoints import BuildPoints
+from gui.mainWmixin.tabModel_Manage import ManageModel
 from gui.mainWmixin.tabSat_Search import SatSearch
 from gui.mainWmixin.tabSat_Track import SatTrack
 from gui.mainWmixin.tabMinorPlanet import MinorPlanet
@@ -67,14 +70,17 @@ from gui.mainWmixin.tabSett_ParkPos import SettParkPos
 from gui.mainWmixin.tabSett_Relay import SettRelay
 from gui.mainWmixin.tabSett_Misc import SettMisc
 from gui.mainWmixin.tabImage_Manage import ImageManage
-from gui.mainWmixin.tabImage_Stats import ImagsStats
+from gui.mainWmixin.tabImage_Stats import ImageStats
 from logic.profiles.profile import loadProfile, saveProfile, blendProfile
 
 
 class MainWindow(
     MWidget,
     SettMisc,
-    Mount,
+    MountMain,
+    MountSettings,
+    MountMove,
+    MountTerminal,
     Environ,
     Almanac,
     Model,
@@ -92,7 +98,7 @@ class MainWindow(
     SettDevice,
     SettMount,
     ImageManage,
-    ImagsStats,
+    ImageStats,
     SettDome,
     SettParkPos,
     SettRelay,
@@ -411,7 +417,6 @@ class MainWindow(
 
         # minor planets
         self.wIcon(self.ui.progMinorPlanetsFull, 'run')
-        self.wIcon(self.ui.progMinorPlanetsFiltered, 'run')
         self.wIcon(self.ui.progMinorPlanetsSelected, 'run')
         self.wIcon(self.ui.progEarthRotationData, 'run')
         self.wIcon(self.ui.downloadIERS, 'run')

@@ -15,15 +15,14 @@
 #
 ###########################################################
 # standard libraries
-import json
-import os
+import requests
 
 # external packages
-from PyQt5.QtWidgets import QListView
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QTableWidgetItem
 
 # local import
 from logic.databaseProcessing.dataWriter import DataWriter
-from gui.extWindows.downloadPopupW import DownloadPopup
 
 
 class MinorPlanet:
@@ -34,27 +33,40 @@ class MinorPlanet:
         self.installPath = ''
         self.databaseProcessing = DataWriter(self.app)
         self.minorPlanets = {}
-        self.minorPlanet = None
         self.listMinorPlanetNamesProxy = None
 
-        self.mpcPrefix = 'https://www.minorplanetcenter.net/Extended_Files/'
-        self.minorPlanetSourceURLs = {
-            'Please select': '',
-            'Comets Current': 'cometels.json.gz',
-            # 'Asteroids MPC5000 (large! >100 MB)': 'mpcorb_extended.json.gz',
-            'Asteroids Daily': 'daily_extended.json.gz',
-            'Asteroids Near Earth Position': 'nea_extended.json.gz',
-            'Asteroids Potential Hazardous': 'pha_extended.json.gz',
-            'Asteroids TNO, Centaurus, SDO': 'distant_extended.json.gz',
-            'Asteroids Unusual e>0.5 or q>6 au': 'unusual_extended.json.gz',
-        }
+        self.mpcUrl = 'https://minorplanetcenter.net/web_service/search_orbits'
+        self.tableForm = [
+            {'parameter': 'name',
+             'header': 'Name',
+             'width': 100,
+             'format': '40s'},
+            {'parameter': 'number',
+             'header': 'Number',
+             'width': 80,
+             'format': '15s'},
+            {'parameter': 'epoch',
+             'header': 'Epoch',
+             'width': 100,
+             'format': '40s'},
+            {'parameter': 'period',
+             'header': 'Period\n[years]',
+             'width': 60,
+             'format': '10s'},
+            {'parameter': 'eccentricity',
+             'header': 'Eccent\n[0..1]',
+             'width': 80,
+             'format': '30s'},
+            {'parameter': 'mean_anomaly',
+             'header': 'Mean\nAnomaly',
+             'width': 80,
+             'format': '30s'},
+        ]
 
         self.ui.progMinorPlanetsSelected.clicked.connect(self.progMinorPlanetsSelected)
         self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
-        self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
-        self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
-        self.ui.minorPlanetSource.currentIndexChanged.connect(self.loadMPCDataFromSourceURLs)
-        self.ui.isOnline.stateChanged.connect(self.loadMPCDataFromSourceURLs)
+        self.ui.mpcName.editingFinished.connect(self.fetchMinorPlanets)
+        # self.ui.isOnline.stateChanged.connect(self.loadMPCDataFromSourceURLs)
 
     def initConfig(self):
         """
@@ -65,14 +77,13 @@ class MinorPlanet:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
-        self.setupMinorPlanetSourceURLsDropDown()
         if not self.app.automation:
             self.installPath = self.app.mwGlob['dataDir']
         elif self.app.automation.installPath:
             self.installPath = self.app.automation.installPath
         else:
             self.installPath = self.app.mwGlob['dataDir']
+        self.prepareMPCTable()
         return True
 
     def storeConfig(self):
@@ -80,120 +91,6 @@ class MinorPlanet:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['filterMinorPlanet'] = self.ui.filterMinorPlanet.text()
-        return True
-
-    def setupMinorPlanetSourceURLsDropDown(self):
-        """
-        setupMinorPlanetSourceURLsDropDown handles the dropdown list for the
-        satellite data online sources. therefore we add the necessary entries to
-        populate the list.
-
-        :return: success for test
-        """
-        self.ui.minorPlanetSource.clear()
-        self.ui.minorPlanetSource.setView(QListView())
-        for name in self.minorPlanetSourceURLs:
-            self.ui.minorPlanetSource.addItem(name)
-        return True
-
-    def filterMinorPlanetNamesList(self):
-        """
-        :return: true for test purpose
-        """
-        listMinorPlanet = self.ui.listMinorPlanetNames
-        filterStr = self.ui.filterMinorPlanet.text()
-        for row in range(listMinorPlanet.model().rowCount()):
-            listItemText = listMinorPlanet.model().index(row).data().lower()
-            isFound = filterStr.lower() in listItemText
-            isVisible = isFound or not filterStr
-            if isVisible:
-                listMinorPlanet.setRowHidden(row, False)
-
-            else:
-                listMinorPlanet.setRowHidden(row, True)
-        return True
-
-    @staticmethod
-    def generateName(index, mp):
-        """
-        :param index:
-        :param mp:
-        :return:
-        """
-        if 'Designation_and_name' in mp:
-            name = f'{index:5d}: {mp["Designation_and_name"]}'
-        elif 'Name' in mp and 'Principal_desig' in mp:
-            name = f'{index:5d}: {mp["Principal_desig"]} - {mp["Name"]} {mp["Number"]}'
-        elif 'Principal_desig' in mp:
-            name = f'{index:5d}: {mp["Principal_desig"]}'
-        elif 'Name' in mp:
-            name = f'{index:5d}: {mp["Name"]} {mp["Number"]}'
-        else:
-            name = ''
-
-        return name[:40]
-
-    def setupMinorPlanetNameList(self):
-        """
-        :return: success for test
-        """
-        self.ui.listMinorPlanetNames.clear()
-        for index, mp in enumerate(self.minorPlanets):
-            text = self.generateName(index, mp)
-            if not text:
-                continue
-
-            self.ui.listMinorPlanetNames.addItem(text)
-
-        self.ui.listMinorPlanetNames.sortItems()
-        self.ui.listMinorPlanetNames.update()
-        self.filterMinorPlanetNamesList()
-        return True
-
-    def processSourceData(self):
-        """
-        :return:
-        """
-        source = self.ui.minorPlanetSource.currentText()
-        dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
-        dest = os.path.normpath(dest)
-        destUnzip = dest[:-3]
-
-        if not os.path.isfile(destUnzip):
-            self.msg.emit(2, 'MPC', 'Data error', f'{source}')
-            return False
-
-        with open(destUnzip) as inFile:
-            try:
-                self.minorPlanets = json.load(inFile)
-            except Exception:
-                self.minorPlanets = {}
-
-            self.msg.emit(1, 'MPC', 'Data loaded', f'{source}')
-
-        self.setupMinorPlanetNameList()
-        return True
-
-    def loadMPCDataFromSourceURLs(self):
-        """
-        :return: success
-        """
-        source = self.ui.minorPlanetSource.currentText()
-        if source not in self.minorPlanetSourceURLs:
-            return False
-        if source == 'Please select':
-            return False
-
-        self.ui.listMinorPlanetNames.clear()
-
-        url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
-        dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
-
-        isOnline = self.ui.isOnline.isChecked()
-        if isOnline:
-            self.msg.emit(1, 'MPC', 'Download', f'{source}')
-            DownloadPopup(self, url=url, dest=dest, callBack=self.processSourceData)
         return True
 
     def progMinorPlanets(self, mpc):
@@ -221,30 +118,65 @@ class MinorPlanet:
             self.msg.emit(1, 'MPC', 'Program', 'Successful uploaded')
         return suc
 
-    def mpcFilter(self, mpcRaw):
+    def prepareMPCTable(self):
         """
-        :param mpcRaw:
         :return:
         """
-        filterStr = self.ui.filterMinorPlanet.text().lower()
-        filtered = []
-        for index, mp in enumerate(mpcRaw):
-            text = self.generateName(index, mp)
 
-            if filterStr.lower() not in text.lower():
-                continue
+        mpcTab = self.ui.listMPCNames
+        mpcTab.setRowCount(0)
+        mpcTab.setColumnCount(len(self.tableForm))
+        headerLabels = [x['header'] for x in self.tableForm]
+        mpcTab.setHorizontalHeaderLabels(headerLabels)
+        for i, header in enumerate(self.tableForm):
+            mpcTab.setColumnWidth(i, header['width'])
+        mpcTab.verticalHeader().setDefaultSectionSize(16)
+        return True
 
-            filtered.append(mp)
-        return filtered
+    def mpcSearch(self, params):
+        """
+        :return:
+        """
+        params['json'] = '1'
+        params['limit'] = '20'
+        params['order_by'] = 'name'
+        data = requests.get(self.mpcUrl, params,
+                            auth=('mpc_ws', 'mpc!!ws'), timeout=30)
+        return data.json()
+
+    def fillMPCTable(self, data):
+        """
+        :param data:
+        :return:
+        """
+        self.prepareMPCTable()
+        for i, dataPoint in enumerate(data):
+            self.ui.listMPCNames.insertRow(i)
+            for j, val in enumerate(self.tableForm):
+                entry = QTableWidgetItem(str(dataPoint[val['parameter']]))
+                entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                self.ui.listMPCNames.setItem(i, j, entry)
+            print()
+
+        return True
+
+    def fetchMinorPlanets(self):
+        """
+        :return:
+        """
+        self.msg.emit(0, 'MPC', 'Fetch', 'Fetching data from MPC')
+        params = {'name_min': self.ui.mpcName.text(),
+                  }
+        data = self.mpcSearch(params)
+        self.fillMPCTable(data)
+        self.msg.emit(0, 'MPC', 'Fetch', 'Data fetched')
+        return True
 
     def mpcGUI(self):
         """
         :return:
         """
         source = self.ui.minorPlanetSource.currentText()
-        if source.startswith('Please'):
-            return False
-
         suc = self.checkUpdaterOK()
         if not suc:
             return False
@@ -278,18 +210,6 @@ class MinorPlanet:
             index = entry.row()
             mpcSelected.append(self.minorPlanets[index])
         self.progMinorPlanets(mpcSelected)
-        return True
-
-    def progMinorPlanetsFiltered(self):
-        """
-        :return: success
-        """
-        suc = self.mpcGUI()
-        if not suc:
-            return False
-
-        mpcFiltered = self.mpcFilter(self.minorPlanets)
-        self.progMinorPlanets(mpcFiltered)
         return True
 
     def progMinorPlanetsFull(self):

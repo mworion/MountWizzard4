@@ -97,6 +97,7 @@ class MountMove(SlewInterface):
         self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
         self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
+        self.setupGuiMount()
         return True
 
     def storeConfig(self):

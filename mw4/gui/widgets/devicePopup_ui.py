@@ -1095,7 +1095,7 @@ class Ui_DevicePopup(object):
         self.selectAstapAppPath.setToolTip(_translate("DevicePopup", "Select the directory of the astrometry.net index files"))
         self.selectAstapAppPath.setText(_translate("DevicePopup", "Select"))
         self.astapDeviceList.setToolTip(_translate("DevicePopup", "Select the device."))
-        self.label_mountIP_18.setText(_translate("DevicePopup", "Folder astrometry index"))
+        self.label_mountIP_18.setText(_translate("DevicePopup", "Folder star index"))
         self.label_mountIP_19.setText(_translate("DevicePopup", "Folder application"))
         self.tab.setTabText(self.tab.indexOf(self.astap), _translate("DevicePopup", "ASTAP"))
         self.label_323.setText(_translate("DevicePopup", "Search radius"))

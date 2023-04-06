@@ -1797,7 +1797,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Folder astrometry index</string>
+      <string>Folder star index</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_mountIP_19">

@@ -23,7 +23,9 @@ releaseNotes = """
 - add: support for ASTAP new databases D50, D20, D05
 - improve: speedup launch if INDI server not ready
 - improve: support for catalina
+- improve: ParkPos with 2 digits precision
 - fix: download sources IERS 
+- fix: switching UTC / local times
 - fix: seeing entries visibility upon startup
 """
 
@@ -32,7 +34,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.1.0b5',
+    version='3.1.0b7',
     packages=[
         'mw4',
         'mw4.base',

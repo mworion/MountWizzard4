@@ -606,11 +606,12 @@ class SatTrack(object):
         """
         :return: success for test purpose
         """
-        if params is None:
-            return False
         self.ui.trajectoryProgress.setValue(0)
         title = 'Satellite tracking ' + self.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
+
+        if params is None or isinstance(params, bool):
+            return False
 
         if params.jdStart is not None and self.satOrbits:
             t = self.convertTime(params.jdStart, '%d %b  %H:%M:%S')

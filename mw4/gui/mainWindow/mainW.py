@@ -270,9 +270,10 @@ class MainWindow(
         self.setTabAndIndex(self.ui.settingsTabWidget, config, 'orderSettings')
         self.setTabAndIndex(self.ui.toolsTabWidget, config, 'orderTools')
         self.setTabAndIndex(self.ui.satTabWidget, config, 'orderSatellite')
+
+        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.smartTabGui()
         self.enableTabsMovable()
-        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         self.setupIcons()
         self.show()
         return True

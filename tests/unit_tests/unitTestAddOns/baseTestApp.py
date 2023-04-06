@@ -675,6 +675,7 @@ class Mount(QObject):
             azimuth = None
 
         tleParams = Name()
+        trajectoryParams = Name()
 
         @staticmethod
         def setTLE(line0='', line1='', line2=''):
@@ -686,6 +687,10 @@ class Mount(QObject):
 
         @staticmethod
         def calcTLE():
+            return
+
+        @staticmethod
+        def calcTrajectory():
             return
 
         @staticmethod
@@ -901,8 +906,8 @@ class Mount(QObject):
         alert = pyqtSignal()
         namesDone = pyqtSignal()
         slewFinished = pyqtSignal()
-        calcTrajectoryDone = pyqtSignal()
-        trajectoryProgress = pyqtSignal()
+        calcTrajectoryDone = pyqtSignal(object)
+        trajectoryProgress = pyqtSignal(object)
 
     class MountObsSite:
         Alt = Angle(degrees=0)

@@ -26410,7 +26410,7 @@ Next point in time when satellite settles.</string>
         <rect>
          <x>5</x>
          <y>15</y>
-         <width>366</width>
+         <width>386</width>
          <height>376</height>
         </rect>
        </property>
@@ -26423,7 +26423,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_243">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>200</y>
           <width>16</width>
           <height>21</height>
@@ -26449,7 +26449,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_262">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>260</y>
           <width>16</width>
           <height>21</height>
@@ -26475,7 +26475,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_250">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>80</y>
           <width>16</width>
           <height>21</height>
@@ -26501,7 +26501,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_244">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>50</y>
           <width>16</width>
           <height>21</height>
@@ -26652,7 +26652,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_93">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>50</y>
           <width>16</width>
           <height>21</height>
@@ -26716,7 +26716,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_257">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>230</y>
           <width>16</width>
           <height>21</height>
@@ -26742,7 +26742,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_261">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>260</y>
           <width>16</width>
           <height>21</height>
@@ -26893,7 +26893,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_249">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>140</y>
           <width>16</width>
           <height>21</height>
@@ -26942,7 +26942,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_247">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>170</y>
           <width>16</width>
           <height>21</height>
@@ -26968,7 +26968,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_131">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>170</y>
           <width>16</width>
           <height>21</height>
@@ -26994,7 +26994,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_258">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>230</y>
           <width>16</width>
           <height>21</height>
@@ -27043,7 +27043,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_209">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>140</y>
           <width>16</width>
           <height>21</height>
@@ -27130,7 +27130,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_246">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>110</y>
           <width>16</width>
           <height>21</height>
@@ -27156,7 +27156,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_251">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>200</y>
           <width>16</width>
           <height>21</height>
@@ -27246,7 +27246,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_245">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>80</y>
           <width>16</width>
           <height>21</height>
@@ -27338,7 +27338,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_248">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>110</y>
           <width>16</width>
           <height>21</height>
@@ -27428,7 +27428,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave0">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>50</y>
           <width>46</width>
           <height>21</height>
@@ -27444,7 +27444,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave1">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>80</y>
           <width>46</width>
           <height>21</height>
@@ -27460,7 +27460,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave2">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>110</y>
           <width>46</width>
           <height>21</height>
@@ -27476,7 +27476,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave3">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>140</y>
           <width>46</width>
           <height>21</height>
@@ -27492,7 +27492,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave4">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>170</y>
           <width>46</width>
           <height>21</height>
@@ -27508,7 +27508,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave5">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>200</y>
           <width>46</width>
           <height>21</height>
@@ -27524,7 +27524,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave6">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>230</y>
           <width>46</width>
           <height>21</height>
@@ -27540,7 +27540,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave7">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>260</y>
           <width>46</width>
           <height>21</height>
@@ -27684,7 +27684,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_263">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>290</y>
           <width>16</width>
           <height>21</height>
@@ -27710,7 +27710,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_264">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>290</y>
           <width>16</width>
           <height>21</height>
@@ -27736,7 +27736,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave8">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>290</y>
           <width>46</width>
           <height>21</height>
@@ -27752,7 +27752,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_265">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>310</x>
           <y>320</y>
           <width>16</width>
           <height>21</height>
@@ -27778,7 +27778,7 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_267">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>230</x>
           <y>320</y>
           <width>16</width>
           <height>21</height>
@@ -27804,7 +27804,7 @@ Next point in time when satellite settles.</string>
        <widget class="QPushButton" name="posSave9">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>320</y>
           <width>46</width>
           <height>21</height>
@@ -27822,7 +27822,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>50</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -27830,7 +27830,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -27845,9 +27845,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz0">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>50</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -27855,7 +27855,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -27870,9 +27870,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz1">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>80</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -27880,7 +27880,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -27897,7 +27897,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>80</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -27905,7 +27905,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -27920,9 +27920,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz2">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>110</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -27930,7 +27930,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -27947,7 +27947,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>110</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -27955,7 +27955,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -27970,9 +27970,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz3">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>140</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -27980,7 +27980,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -27997,7 +27997,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>140</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28005,7 +28005,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -28020,9 +28020,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz4">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>170</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28030,7 +28030,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -28047,7 +28047,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>170</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28055,7 +28055,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -28070,9 +28070,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz5">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>200</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28080,7 +28080,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -28097,7 +28097,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>200</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28105,7 +28105,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -28120,9 +28120,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz6">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>230</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28130,7 +28130,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -28147,7 +28147,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>230</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28155,7 +28155,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -28170,9 +28170,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz7">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>260</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28180,7 +28180,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -28197,7 +28197,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>260</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28205,7 +28205,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -28220,9 +28220,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz8">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>290</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28230,7 +28230,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -28247,7 +28247,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>290</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28255,7 +28255,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -28270,9 +28270,9 @@ Next point in time when satellite settles.</string>
        <widget class="QDoubleSpinBox" name="posAz9">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>250</x>
           <y>320</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28280,7 +28280,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -28297,7 +28297,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>170</x>
           <y>320</y>
-          <width>51</width>
+          <width>61</width>
           <height>21</height>
          </rect>
         </property>
@@ -28305,7 +28305,7 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="minimum">
          <double>-5.000000000000000</double>

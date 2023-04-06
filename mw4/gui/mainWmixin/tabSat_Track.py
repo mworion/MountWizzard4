@@ -72,6 +72,9 @@ class SatTrack(object):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
 
+        self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
+        self.ui.unitTimeUTC.toggled.connect(self.updateSatelliteTrackGui)
+
         self.app.update1s.connect(self.updateOrbit)
         self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
@@ -98,7 +101,7 @@ class SatTrack(object):
             self.installPath = self.app.automation.installPath
         else:
             self.installPath = self.app.mwGlob['dataDir']
-        self.ui.unitTimeUTC.clicked.connect(self.showSatPasses)
+        self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
         return True
 
     def storeConfig(self):
@@ -313,10 +316,11 @@ class SatTrack(object):
         """
         :return: True for test purpose
         """
-        if not self.satellite:
-            return False
         title = 'Satellite passes ' + self.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
+
+        if not self.satellite:
+            return False
 
         self.clearTrackingParameters()
         obsSite = self.app.mount.obsSite

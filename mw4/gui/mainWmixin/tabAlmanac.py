@@ -53,13 +53,11 @@ class Almanac:
         self.twilightEvents = None
         self.colors = None
         self.setColors()
-        self.app.start1s.connect(self.showTwilightDataList)
-        self.app.start5s.connect(self.showTwilightDataPlot)
         self.app.update1h.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.colorChangeAlmanac)
-        self.ui.almanacDark.clicked.connect(self.showMoonPhase)
-        self.ui.unitTimeUTC.clicked.connect(self.showTwilightDataList)
-        self.ui.unitTimeUTC.clicked.connect(self.showMoonPhase)
+        self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataList)
+        self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataPlot)
+        self.ui.unitTimeUTC.toggled.connect(self.showMoonPhase)
 
     def initConfig(self):
         """
@@ -68,7 +66,6 @@ class Almanac:
         config = self.app.config['mainW']
         self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
         self.ui.almanacPrediction.currentIndexChanged.connect(self.showTwilightDataPlot)
-        self.showMoonPhase()
         return True
 
     def storeConfig(self):
@@ -97,9 +94,9 @@ class Almanac:
         """
         self.setColors()
         self.ui.twilight.colorChange()
+        self.showTwilightDataList()
         self.showTwilightDataPlot()
         self.showMoonPhase()
-        self.showTwilightDataList()
         return True
 
     def plotTwilightData(self, result):
@@ -223,7 +220,8 @@ class Almanac:
         index = self.ui.almanacPrediction.currentIndex()
         text = self.ui.almanacPrediction.currentText()
         timeWindow = timeWindowParam[index]
-        t = f'Twilight passes for: {text} (time is local)'
+
+        t = f'Twilight passes for: {text} {self.timeZoneString()}'
         self.ui.almanacGroup.setTitle(t)
 
         ts = self.app.mount.obsSite.ts

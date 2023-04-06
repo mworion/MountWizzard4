@@ -177,6 +177,7 @@ class SettMisc(object):
         self.setupIERS()
         self.setAddProfileGUI()
         self.showUpdates()
+        self.ui.unitTimeUTC.toggled.emit(True)
         return True
 
     def storeConfig(self):

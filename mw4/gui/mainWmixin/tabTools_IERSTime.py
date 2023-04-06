@@ -31,7 +31,7 @@ class IERSTime:
         self.installPath = ''
 
         self.iersSourceURLs = {
-            'Datacenter from IERS': 'https://datacenter.iers.org/data/',
+            'Datacenter from IERS': 'https://datacenter.iers.org/products/eop/rapid/standard/',
             'Maia from usno.navy.mil': 'https://maia.usno.navy.mil/ser7/',
         }
 
@@ -136,7 +136,6 @@ class IERSTime:
         urlMain = self.iersSourceURLs[sourceURL]
 
         source = 'finals.data'
-        sourcePre = '8/' if sourceURL.startswith('Data') else ''
         url = urlMain + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
@@ -156,15 +155,13 @@ class IERSTime:
         urlMain = self.iersSourceURLs[sourceURL]
 
         source = 'finals2000A.all'
-        sourcePre = '9/' if sourceURL.startswith('Data') else ''
-        url = urlMain + sourcePre + source
+        url = urlMain + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)
 
         source = 'finals.data'
-        sourcePre = '8/' if sourceURL.startswith('Data') else ''
-        url = urlMain + sourcePre + source
+        url = urlMain + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'{source}')
         DownloadPopup(self, url=url, dest=dest, unzip=False)

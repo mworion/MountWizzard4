@@ -73,7 +73,7 @@ jobs:
             python3 --version
             ls /root/support/*.*
             cd /root/support/3.0
-            python3 startup.pyz --no-start --version 3.1.0b0
+            python3 startup.pyz --no-start --version 3.1.0
             touch test.run
             xvfb-run python3 startup.pyz
             cat startup*.log
@@ -130,7 +130,7 @@ jobs:
             python3 --version
             ls /root/support/*.*
             cd /root/support/3.0
-            python3 startup.pyz --no-start --version 3.1.0b0
+            python3 startup.pyz --no-start --version 3.1.0
             touch test.run
             xvfb-run python3 startup.pyz
             cat startup*.log

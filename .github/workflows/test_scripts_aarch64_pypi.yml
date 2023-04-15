@@ -23,11 +23,8 @@ on:
 jobs:
   
   install_package_aarch64_2004:
-    needs: [ build_widgets_resource ]
-    # The host should always be linux
-    runs-on: ubuntu-latest
+    runs-on: 'ubuntu-20.04'
     name: install_${{ matrix.distro }}_${{ matrix.arch }}
-    # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
         include:

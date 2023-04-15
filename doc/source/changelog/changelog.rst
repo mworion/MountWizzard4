@@ -11,11 +11,13 @@ Version 3.0
 
 Version 3.1 brings aarch64 support for arm back if using the new installer 3.1
 
-- add: support for aarch64 on raspi for python 3.8 - 3.10
+- add: support for aarch64 on raspi for python 3.8 - 3.10 (needs installer 3.1)
 - add: support for ASTAP new databases D50, D20, D05
 - improve: speedup launch if INDI server not ready
 - improve: support for catalina
+- improve: ParkPos with 2 digits precision
 - fix: download sources IERS
+- fix: switching UTC / local times
 - fix: seeing entries visibility upon startup
 
 3.0.1

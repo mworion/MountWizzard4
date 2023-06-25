@@ -19,14 +19,6 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for aarch64 on raspi for python 3.8 - 3.10 (needs installer 3.1)
-- add: support for ASTAP new databases D50, D20, D05
-- improve: speedup launch if INDI server not ready
-- improve: support for catalina
-- improve: ParkPos with 2 digits precision
-- fix: download sources IERS 
-- fix: switching UTC / local times
-- fix: seeing entries visibility upon startup
 """
 
 with open('notes.txt', 'w') as f:
@@ -34,7 +26,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.1.0',
+    version='3.1.1b0',
     packages=[
         'mw4',
         'mw4.base',
@@ -81,7 +73,7 @@ setup(
         'pyqtgraph==0.13.3',
         'qimage2ndarray==1.10.0',
         'skyfield==1.46',
-        'sgp4==2.21',
+        'sgp4==2.22',
         'requests==2.28.2',
         'requests_toolbelt==0.10.1',
         'importlib_metadata==6.3.0',
@@ -89,15 +81,15 @@ setup(
         'deepdiff==6.3.0',
         'wakeonlan==3.0.0',
         'pybase64==1.2.3',
-        'websocket-client==1.5.1',
-        'hidapi==0.13.1',
+        'websocket-client==1.6.1',
+        'hidapi==0.14',
         'range-key-dict==1.1.0',
         'ndicts==0.3.0',
         'packaging==23.1',
         'lz4==4.3.2',
         'xisf==0.9.0',
     ]
-    + (['pywin32==305'] if platform.system() == "Windows" else [])
+    + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt5==5.15.9'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt3D==5.15.6'] if platform.machine() not in ['armv7l',

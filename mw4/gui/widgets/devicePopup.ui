@@ -1426,7 +1426,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Select the directory of the astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory of the astrometry.net application&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -1644,7 +1644,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap star database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap index files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -1737,7 +1737,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Select the directory of the astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory of the astap index files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -1762,7 +1762,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Select the directory of the astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory of the astap application&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -1978,7 +1978,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to watney application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -2109,7 +2109,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to astap star database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to watney star database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -2200,7 +2200,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Select the directory of the astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory of the watney application&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Select</string>

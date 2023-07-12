@@ -41,6 +41,7 @@ class SettMount(object):
         self.app.mount.signals.settingDone.connect(self.setMountMAC)
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.ui.settleTimeMount.valueChanged.connect(self.setMountSettlingTime)
+        self.ui.settleTimeMountFlip.valueChanged.connect(self.setMountSettlingTimeFlip)
         self.app.update30s.connect(self.syncClock)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
@@ -61,6 +62,7 @@ class SettMount(object):
         self.ui.mountWolPort.setText(config.get('mountWolPort', '9'))
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
+        self.ui.settleTimeMountFlip.setValue(config.get('settleTimeMountFlip', 0))
         self.ui.automaticTelescope.setChecked(config.get('automaticTelescope', False))
         self.ui.automaticWOL.setChecked(config.get('automaticWOL', False))
         self.ui.syncTimeNone.setChecked(config.get('syncTimeNone', True))
@@ -84,6 +86,7 @@ class SettMount(object):
         config['mountWolPort'] = self.ui.mountWolPort.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
         config['settleTimeMount'] = self.ui.settleTimeMount.value()
+        config['settleTimeMountFlip'] = self.ui.settleTimeMountFlip.value()
         config['port3492'] = self.ui.port3492.isChecked()
         config['automaticTelescope'] = self.ui.automaticTelescope.isChecked()
         config['automaticWOL'] = self.ui.automaticWOL.isChecked()
@@ -185,6 +188,13 @@ class SettMount(object):
         :return: true for test purpose
         """
         self.app.mount.settlingTime = self.ui.settleTimeMount.value()
+        return True
+
+    def setMountSettlingTimeFlip(self):
+        """
+        :return: true for test purpose
+        """
+        self.app.mount.settlingTimeFlip = self.ui.settleTimeMountFlip.value()
         return True
 
     def updateFwGui(self, fw):

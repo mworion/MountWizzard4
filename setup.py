@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: second settling time used after meridian flip
 """
 
 with open('notes.txt', 'w') as f:

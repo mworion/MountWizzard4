@@ -24368,7 +24368,7 @@ Next point in time when satellite settles.</string>
          <x>400</x>
          <y>135</y>
          <width>366</width>
-         <height>51</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -24394,7 +24394,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Waiting time after mount finished slew</string>
+         <string>Waiting time after slew</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_295">
@@ -24453,6 +24453,84 @@ Next point in time when satellite settles.</string>
         </property>
         <property name="value">
          <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_67">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>45</y>
+          <width>276</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Waiting time after pier flip and slew</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="settleTimeMountFlip">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>45</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Sets the time to wait after mount stop before imaging</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>300.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_300">
+        <property name="geometry">
+         <rect>
+          <x>340</x>
+          <y>45</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>s</string>
         </property>
        </widget>
       </widget>
@@ -24811,7 +24889,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>200</y>
+         <y>225</y>
          <width>366</width>
          <height>76</height>
         </rect>

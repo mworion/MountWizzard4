@@ -180,6 +180,11 @@ def test_setMountSettlingTime_1(function):
     assert suc
 
 
+def test_setMountSettlingTimeFlip_1(function):
+    suc = function.setMountSettlingTimeFlip()
+    assert suc
+
+
 def test_updateFwGui_productName(function):
     value = 'Test1234'
     function.app.mount.firmware.product = value

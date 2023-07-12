@@ -100,6 +100,7 @@ class Mount(mountcontrol.mount.Mount):
         self.threadPool = threadPool
         self.mountUp = False
         self._settlingTime = 0
+        self._settlingTimeFlip = 0
         self.statusAlert = False
         self.statusSlew = True
         self.signals = MountSignals()
@@ -130,6 +131,14 @@ class Mount(mountcontrol.mount.Mount):
     @settlingTime.setter
     def settlingTime(self, value):
         self._settlingTime = value * 1000
+
+    @property
+    def settlingTimeFlip(self):
+        return self._settlingTimeFlip / 1000
+
+    @settlingTimeFlip.setter
+    def settlingTimeFlip(self, value):
+        self._settlingTimeFlip = value * 1000
 
     def waitSettlingAndEmit(self):
         """
@@ -263,9 +272,14 @@ class Mount(mountcontrol.mount.Mount):
         else:
             self.statusAlert = False
 
+        if self.obsSite.flipped:
+            settleWait = self._settlingTimeFlip
+        else:
+            settleWait = self._settlingTime
+
         if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:
-                self.settlingWait.start(int(self._settlingTime))
+                self.settlingWait.start(int(settleWait))
             self.statusSlew = True
         else:
             self.statusSlew = False

@@ -91,6 +91,7 @@ class ObsSite(object):
         self.verbose = verbose
         self.loader = None
         self.AzDirection = None
+        self.flipped = False
         self.lastAz = None
         self._location = None
         self.ts = None
@@ -667,6 +668,7 @@ class ObsSite(object):
             else:
                 slewTypes['keep'] = ':MA#'
 
+        self.flipped = self._piersideTarget != self.pierside
         conn = Connection(self.host)
 
         commandString = ':PO#' + slewTypes[slewType]

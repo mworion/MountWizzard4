@@ -302,7 +302,7 @@
        <property name="geometry">
         <rect>
          <x>535</x>
-         <y>110</y>
+         <y>135</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -325,7 +325,7 @@
        <property name="geometry">
         <rect>
          <x>675</x>
-         <y>110</y>
+         <y>135</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -375,7 +375,7 @@
        <property name="geometry">
         <rect>
          <x>725</x>
-         <y>60</y>
+         <y>85</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -477,7 +477,7 @@
        <property name="geometry">
         <rect>
          <x>725</x>
-         <y>85</y>
+         <y>110</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -526,7 +526,7 @@
        <property name="geometry">
         <rect>
          <x>675</x>
-         <y>85</y>
+         <y>110</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -602,8 +602,8 @@
        <property name="geometry">
         <rect>
          <x>295</x>
-         <y>160</y>
-         <width>106</width>
+         <y>110</y>
+         <width>66</width>
          <height>21</height>
         </rect>
        </property>
@@ -615,7 +615,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Connection is:</string>
+        <string>Connection</string>
        </property>
       </widget>
       <widget class="QLabel" name="clockOffset">
@@ -642,7 +642,7 @@
        <property name="geometry">
         <rect>
          <x>535</x>
-         <y>85</y>
+         <y>110</y>
          <width>131</width>
          <height>21</height>
         </rect>
@@ -719,7 +719,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Pierside is</string>
+        <string>Pierside</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="siteElevation">
@@ -728,9 +728,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>645</x>
+         <x>675</x>
          <y>185</y>
-         <width>81</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -817,32 +817,6 @@
        </property>
        <property name="input" stdset="0">
         <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_105">
-       <property name="geometry">
-        <rect>
-         <x>730</x>
-         <y>160</y>
-         <width>31</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>DMS</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_130">
@@ -988,7 +962,7 @@
        <property name="geometry">
         <rect>
          <x>730</x>
-         <y>110</y>
+         <y>135</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -1060,7 +1034,7 @@
        <property name="geometry">
         <rect>
          <x>415</x>
-         <y>185</y>
+         <y>160</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1107,7 +1081,7 @@
        <property name="geometry">
         <rect>
          <x>675</x>
-         <y>60</y>
+         <y>85</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1179,8 +1153,8 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
-         <y>110</y>
+         <x>675</x>
+         <y>60</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1227,9 +1201,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_6">
        <property name="geometry">
         <rect>
-         <x>535</x>
-         <y>135</y>
-         <width>101</width>
+         <x>295</x>
+         <y>185</y>
+         <width>66</width>
          <height>21</height>
         </rect>
        </property>
@@ -1241,7 +1215,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </font>
        </property>
        <property name="text">
-        <string>Site Latitude</string>
+        <string>Site Lat</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_20">
@@ -1379,7 +1353,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>415</x>
-         <y>160</y>
+         <y>110</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1478,8 +1452,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_74">
        <property name="geometry">
         <rect>
-         <x>295</x>
-         <y>110</y>
+         <x>535</x>
+         <y>60</y>
          <width>116</width>
          <height>21</height>
         </rect>
@@ -1681,9 +1655,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_12">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>615</x>
          <y>185</y>
-         <width>101</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -1695,7 +1669,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </font>
        </property>
        <property name="text">
-        <string>Site Elevation</string>
+        <string>Site Elev</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_151">
@@ -1722,7 +1696,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>535</x>
-         <y>60</y>
+         <y>85</y>
          <width>131</width>
          <height>21</height>
         </rect>
@@ -1741,9 +1715,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
-         <x>535</x>
-         <y>160</y>
-         <width>101</width>
+         <x>460</x>
+         <y>185</y>
+         <width>61</width>
          <height>21</height>
         </rect>
        </property>
@@ -1755,14 +1729,14 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         </font>
        </property>
        <property name="text">
-        <string>Site Longitude</string>
+        <string>Site Lon</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_mountMAC_4">
        <property name="geometry">
         <rect>
          <x>295</x>
-         <y>185</y>
+         <y>160</y>
          <width>106</width>
          <height>21</height>
         </rect>
@@ -1784,8 +1758,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>645</x>
-         <y>135</y>
+         <x>350</x>
+         <y>185</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -1898,8 +1872,8 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>645</x>
-         <y>160</y>
+         <x>515</x>
+         <y>185</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -1963,32 +1937,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>hPa</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_106">
-       <property name="geometry">
-        <rect>
-         <x>730</x>
-         <y>135</y>
-         <width>31</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>DMS</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLineEdit" name="statusRefraction">
@@ -2197,6 +2145,105 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>H:M:S</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="settleTimeMount">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>675</x>
+         <y>160</y>
+         <width>51</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set slew rate for the mount.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="text">
+        <string>-</string>
+       </property>
+       <property name="cursorPosition">
+        <number>1</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_mountMAC_7">
+       <property name="geometry">
+        <rect>
+         <x>535</x>
+         <y>160</y>
+         <width>106</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Settling Time</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_83">
+       <property name="geometry">
+        <rect>
+         <x>725</x>
+         <y>160</y>
+         <width>21</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>s</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
        </property>
       </widget>
      </widget>
@@ -22631,7 +22678,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -24366,13 +24413,13 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>135</y>
+         <y>140</y>
          <width>366</width>
-         <height>71</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
-        <string>Settle time</string>
+        <string>Mount wait time while modeling</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -24381,7 +24428,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>276</width>
           <height>21</height>
          </rect>
@@ -24394,14 +24441,14 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Waiting time after slew</string>
+         <string>Additional wait time after slew and settle</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_295">
         <property name="geometry">
          <rect>
-          <x>340</x>
-          <y>20</y>
+          <x>345</x>
+          <y>25</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -24417,11 +24464,11 @@ Next point in time when satellite settles.</string>
          <string>s</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="settleTimeMount">
+       <widget class="QDoubleSpinBox" name="waitTimeMount">
         <property name="geometry">
          <rect>
-          <x>295</x>
-          <y>20</y>
+          <x>300</x>
+          <y>25</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -24434,7 +24481,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount stop before imaging while modeling&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -24459,8 +24506,8 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
-          <width>276</width>
+          <y>50</y>
+          <width>291</width>
           <height>21</height>
          </rect>
         </property>
@@ -24472,14 +24519,14 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Waiting time after pier flip and slew</string>
+         <string>Additional wait time after pier flip, slew and settle</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="settleTimeMountFlip">
+       <widget class="QDoubleSpinBox" name="waitTimeMountFlip">
         <property name="geometry">
          <rect>
-          <x>295</x>
-          <y>45</y>
+          <x>300</x>
+          <y>50</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -24492,7 +24539,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount stop before imaging while modeling and after a meridian flip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -24516,8 +24563,8 @@ Next point in time when satellite settles.</string>
        <widget class="QLabel" name="label_300">
         <property name="geometry">
          <rect>
-          <x>340</x>
-          <y>45</y>
+          <x>345</x>
+          <y>50</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -24889,7 +24936,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>225</y>
+         <y>235</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -32573,7 +32620,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>syncTimeNone</tabstop>
   <tabstop>syncTimeCont</tabstop>
   <tabstop>syncTimeNotTrack</tabstop>
-  <tabstop>settleTimeMount</tabstop>
+  <tabstop>waitTimeMount</tabstop>
   <tabstop>focalLength</tabstop>
   <tabstop>aperture</tabstop>
   <tabstop>automaticTelescope</tabstop>

@@ -56,7 +56,7 @@ def test_settlingTime_2(function):
 
 
 def test_waitSettlingTime(function):
-    suc = function.waitSettlingAndEmit()
+    suc = function.waitAfterSettlingAndEmit()
     assert suc
 
 

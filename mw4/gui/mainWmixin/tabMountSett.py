@@ -64,6 +64,7 @@ class MountSett:
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
+        self.clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
 
     def updatePointGUI(self, obs):
         """
@@ -149,6 +150,7 @@ class MountSett:
         self.guiSetText(self.ui.meridianLimitSlew, '3.0f', sett.meridianLimitSlew)
         self.guiSetText(self.ui.horizonLimitLow, '3.0f', sett.horizonLimitLow)
         self.guiSetText(self.ui.horizonLimitHigh, '3.0f', sett.horizonLimitHigh)
+        self.guiSetText(self.ui.settleTimeMount, '3.0f', sett.settleTime)
 
         # todo: this might be a little bit too slow
         if self.app.mount.obsSite.status is None:
@@ -723,6 +725,32 @@ class MountSett:
             self.msg.emit(2, 'Mount', 'Setting',
                           'Refraction correction cannot be set')
         return suc
+
+    def setSettleTimeMount(self):
+        """
+        :return: true for test purpose
+        """
+        if not self.checkMount():
+            return False
+
+        sett = self.app.mount.setting
+        actValue = int(sett.settleTime)
+        dlg = QInputDialog()
+        value, ok = dlg.getInt(
+            self, 'Set Settle Time', 'Value (0-999):', actValue, 0, 999, 1)
+
+        if not ok:
+            return False
+        if sett.setSettleTime(value):
+            self.msg.emit(0, 'Mount', 'Setting',
+                          f'Settle Time: [{value}]')
+            return True
+        else:
+            self.msg.emit(2, 'Mount', 'Setting',
+                          'Settle Time cannot be set')
+            return False
+
+        return True
 
     def showOffset(self):
         """

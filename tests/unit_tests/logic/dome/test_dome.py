@@ -107,7 +107,7 @@ def test_stopCommunication_3(function):
 
 
 def test_waitSettlingAndEmit(function):
-    suc = function.waitSettlingAndEmit()
+    suc = function.waitAfterSettlingAndEmit()
     assert suc
 
 

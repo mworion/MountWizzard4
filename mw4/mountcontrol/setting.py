@@ -74,6 +74,7 @@ class Setting(object):
         self._weatherAge = None
         self._trackingRate = None
         self._webInterfaceStat = None
+        self._settleTime = None
 
     @property
     def slewRate(self):
@@ -338,6 +339,14 @@ class Setting(object):
         else:
             self._webInterfaceStat = bool(value)
 
+    @property
+    def settleTime(self):
+        return self._settleTime
+
+    @settleTime.setter
+    def settleTime(self, value):
+        self._settleTime = valueToFloat(value)
+
     def parseSetting(self, response, numberOfChunks):
         """
         Parsing the polling med command.
@@ -382,6 +391,7 @@ class Setting(object):
         self.weatherDewPoint = response[20].split(',')[0]
         self.trackingRate = response[21]
         self.webInterfaceStat = response[22]
+        self.settleTime = response[23]
         return True
 
     def pollSetting(self):
@@ -395,7 +405,7 @@ class Setting(object):
         conn = Connection(self.host)
         cs1 = ':U2#:GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#'
         cs2 = ':GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#'
-        cs3 = ':WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#'
+        cs3 = ':WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#'
         commandString = cs1 + cs2 + cs3
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -801,6 +811,19 @@ class Setting(object):
         """
         conn = Connection(self.host)
         commandString = ':NTSweb{0:1d}#'.format(1 if status else 0)
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return False
+        if response[0] != '1':
+            return False
+        return True
+
+    def setSettleTime(self, time):
+        """
+        :return:    success
+        """
+        conn = Connection(self.host)
+        commandString = f':Sstm{time:8.3f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False

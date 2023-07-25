@@ -71,6 +71,7 @@ class Connection(object):
                 ':Ga', ':GaE', ':GaXa', ':GaXb',
                 ':Gd', ':Gdat', ':Gev', ':Gg', ':Gh', ':GINQ', ':Ginfo', ':Glms',
                 ':Glmt', ':Gmte', ':Go', ':Gr', ':Gt', ':gtg', ':GTsid',
+                ':Gstm',
                 ':Guaf', ':Gz',
                 ':MA', ':MS', ':MSao', ':MSap',
                 ':MaX', ':Me', ':Mn', ':Ms', ':Mw',
@@ -83,6 +84,7 @@ class Connection(object):
                 ':SDAr', ':SREF', ':SRPRS', ':SRTMP', ':STOP', ':SWOL',
                 ':Sa', ':SaXa', ':SaXb', ':Sd',
                 ':Sdat', ':Sev', ':Sev', ':Sg', ':Sg', ':Sh', ':Slms', ':Slmt',
+                ':Sstm',
                 ':So', ':Sr', ':St', ':Suaf', ':Sw', ':Sz',
                 ':TLEG', ':TLEL0', ':TLEGAZ', ':TLEGEQ', ':TLEP', ':TLES',
                 ':TLESCK', ':TROFFADD', ':TROFFCLR', ':TROFFGET', ':TROFFSET',
@@ -122,6 +124,7 @@ class Connection(object):
                  ':SREF', ':SRPRS', ':Sa', ':Sev', ':Sr',
                  ':SRTMP', ':Slmt', ':Slms', ':St', ':Sg', ':Sw', ':Sz',
                  ':Sdat', ':Gdat',
+                 ':Sstm',
                  ':GTsid', ':So', ':Sh', ':Sd', ':MSap', ':MSao', ':MS',
                  ':WSS', ':SWOL'
                  ]

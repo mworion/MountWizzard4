@@ -99,8 +99,8 @@ class Mount(mountcontrol.mount.Mount):
 
         self.threadPool = threadPool
         self.mountUp = False
-        self._settlingTime = 0
-        self._settlingTimeFlip = 0
+        self._waitTime = 0
+        self._waitTimeFlip = 0
         self.statusAlert = False
         self.statusSlew = True
         self.signals = MountSignals()
@@ -122,25 +122,25 @@ class Mount(mountcontrol.mount.Mount):
         self.timerMountUp.timeout.connect(self.cycleCheckMountUp)
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
-        self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
+        self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
 
     @property
-    def settlingTime(self):
-        return self._settlingTime / 1000
+    def waitTime(self):
+        return self._waitTime / 1000
 
-    @settlingTime.setter
-    def settlingTime(self, value):
-        self._settlingTime = value * 1000
+    @waitTime.setter
+    def waitTime(self, value):
+        self._waitTime = value * 1000
 
     @property
-    def settlingTimeFlip(self):
-        return self._settlingTimeFlip / 1000
+    def waitTimeFlip(self):
+        return self._waitTimeFlip / 1000
 
-    @settlingTimeFlip.setter
-    def settlingTimeFlip(self, value):
-        self._settlingTimeFlip = value * 1000
+    @waitTimeFlip.setter
+    def waitTimeFlip(self, value):
+        self._waitTimeFlip = value * 1000
 
-    def waitSettlingAndEmit(self):
+    def waitAfterSettlingAndEmit(self):
         """
         :return: true for test purpose
         """
@@ -260,7 +260,7 @@ class Mount(mountcontrol.mount.Mount):
 
     def clearCyclePointing(self):
         """
-        the cyclic or long lasting tasks for getting date from the mount should
+        the cyclic or long-lasting tasks for getting date from the mount should
         not run twice for the same data at the same time.
 
         :return: true for test purpose
@@ -273,9 +273,9 @@ class Mount(mountcontrol.mount.Mount):
             self.statusAlert = False
 
         if self.obsSite.flipped:
-            settleWait = self._settlingTimeFlip
+            settleWait = self._waitTimeFlip
         else:
-            settleWait = self._settlingTime
+            settleWait = self._waitTime
 
         if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:

@@ -19,7 +19,9 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: second settling time used after meridian flip
+- add: editable mount settling time for 10micron box
+- add: second waiting time used after meridian flip
+- improve: some refactoring for speed
 """
 
 with open('notes.txt', 'w') as f:

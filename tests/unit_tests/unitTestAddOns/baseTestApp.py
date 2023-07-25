@@ -792,6 +792,7 @@ class Mount(QObject):
         weatherDewPoint = 0.0
         weatherHumidity = 50
         weatherAge = 1
+        settleTime = 0
 
         @staticmethod
         def timeToMeridian():
@@ -887,6 +888,10 @@ class Mount(QObject):
 
         @staticmethod
         def setDirectWeatherUpdateType(a):
+            return True
+
+        @staticmethod
+        def setSettleTime(a):
             return True
 
         @staticmethod

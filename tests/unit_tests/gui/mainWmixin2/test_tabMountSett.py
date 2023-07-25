@@ -1483,6 +1483,56 @@ def test_updatePointGui_ra_j2000(function):
     function.updatePointGUI(function.app.mount.obsSite)
 
 
+def test_setSettleTimeMount_1(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=False):
+        suc = function.setSettleTimeMount()
+        assert not suc
+
+
+def test_setSettleTimeMount_2(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = function.setSettleTimeMount()
+            assert not suc
+
+
+def test_setSettleTimeMount_3(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setSettleTime',
+                                   return_value=False):
+                suc = function.setSettleTimeMount()
+                assert not suc
+
+
+def test_setSettleTimeMount_4(function, qtbot):
+    with mock.patch.object(function,
+                           'checkMount',
+                           return_value=True):
+        function.app.mount.setting.slewRate = 10
+        with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            with mock.patch.object(function.app.mount.setting,
+                                   'setSettleTime',
+                                   return_value=True):
+                suc = function.setSettleTimeMount()
+                assert suc
+
+
 def test_showOffset_1(function):
     function.ui.clockSync.setChecked(False)
     suc = function.showOffset()

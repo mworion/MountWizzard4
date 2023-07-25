@@ -21,6 +21,7 @@ import platform
 releaseNotes = """
 - add: editable mount settling time for 10micron box
 - add: second waiting time used after meridian flip
+- fix: update procedure for config files v2 to v3.1
 - improve: some refactoring for speed
 """
 

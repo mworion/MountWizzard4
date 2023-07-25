@@ -45,14 +45,24 @@ def test_mountSignals(function):
     MountSignals()
 
 
-def test_settlingTime_1(function):
-    function.settlingTime = 1
-    assert function._settlingTime == 1000
+def test_waitTime_1(function):
+    function.waitTime = 1
+    assert function._waitTime == 1000
 
 
-def test_settlingTime_2(function):
-    function._settlingTime = 2000
-    assert function.settlingTime == 2
+def test_waitTime_2(function):
+    function._waitTime = 2000
+    assert function.waitTime == 2
+
+
+def test_waitTimeFlip_1(function):
+    function.waitTimeFlip = 1
+    assert function._waitTimeFlip == 1000
+
+
+def test_waitTimeFlip_2(function):
+    function._waitTimeFlip = 2000
+    assert function.waitTimeFlip == 2
 
 
 def test_waitSettlingTime(function):

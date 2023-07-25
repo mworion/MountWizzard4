@@ -676,6 +676,7 @@ class Mount(QObject):
 
         tleParams = Name()
         trajectoryParams = Name()
+        settlingTime = 0
 
         @staticmethod
         def setTLE(line0='', line1='', line2=''):

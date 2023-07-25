@@ -7,6 +7,13 @@ Released versions of MW4
 ------------------------
 Version 3.0
 ^^^^^^^^^^^
+3.2.0
+
+- add: editable mount settling time for 10micron box
+- add: second waiting time used after meridian flip
+- fix: update procedure for config files v2 to v3.1
+- improve: some refactoring for speed
+
 3.1.0
 
 Version 3.1 brings aarch64 support for arm back if using the new installer 3.1

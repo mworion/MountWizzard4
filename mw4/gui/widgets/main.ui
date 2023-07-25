@@ -24507,7 +24507,7 @@ Next point in time when satellite settles.</string>
          <double>300.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>5.000000000000000</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="value">
          <double>0.000000000000000</double>

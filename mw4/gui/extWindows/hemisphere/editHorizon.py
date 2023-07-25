@@ -123,7 +123,6 @@ class EditHorizon:
     def setTerrainFile(self, fileName):
         """
         :param fileName:
-        :param ext:
         :return:
         """
         self.ui.terrainFileName.setText(fileName)

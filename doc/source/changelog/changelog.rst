@@ -7,6 +7,10 @@ Released versions of MW4
 ------------------------
 Version 3.0
 ^^^^^^^^^^^
+3.1.1
+
+- fix: connectivity to NINA 3 nightly
+
 3.1.0
 
 Version 3.1 brings aarch64 support for arm back if using the new installer 3.1

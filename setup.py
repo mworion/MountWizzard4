@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: connectivity to NINA 3 nightls
+- fix: connectivity to NINA 3 nightly
 """
 
 with open('notes.txt', 'w') as f:

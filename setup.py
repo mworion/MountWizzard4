@@ -19,14 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for aarch64 on raspi for python 3.8 - 3.10 (needs installer 3.1)
-- add: support for ASTAP new databases D50, D20, D05
-- improve: speedup launch if INDI server not ready
-- improve: support for catalina
-- improve: ParkPos with 2 digits precision
-- fix: download sources IERS 
-- fix: switching UTC / local times
-- fix: seeing entries visibility upon startup
+- fix: connectivity to NINA 3 nightls
 """
 
 with open('notes.txt', 'w') as f:
@@ -34,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.1.0',
+    version='3.1.1',
     packages=[
         'mw4',
         'mw4.base',

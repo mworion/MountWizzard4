@@ -750,8 +750,6 @@ class MountSett:
                           'Settle Time cannot be set')
             return False
 
-        return True
-
     def showOffset(self):
         """
         :return:

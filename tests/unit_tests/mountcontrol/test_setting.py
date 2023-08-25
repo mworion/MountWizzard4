@@ -277,6 +277,12 @@ class TestConfigData(unittest.TestCase):
         self.assertEqual(1, sett.weatherAge)
         self.assertEqual(1, sett.weatherAge)
 
+    def test_Setting_settleTime(self):
+        sett = Setting()
+        sett.settleTime = '1'
+        self.assertEqual(1, sett.settleTime)
+        self.assertEqual(1, sett._settleTime)
+
     #
     #
     # testing pollSetting med

@@ -167,11 +167,13 @@ def test_errorCyclePointing_1(function):
 
 
 def test_clearCyclePointing_1(function):
+    function.obsSite.flipped = False
     suc = function.clearCyclePointing()
     assert suc
 
 
 def test_clearCyclePointing_2(function):
+    function.obsSite.flipped = True
     function.obsSite.status = 1
     function.statusAlert = False
     suc = function.clearCyclePointing()

@@ -19,8 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: editable mount settling time for 10micron box
-- add: second waiting time used after meridian flip
+- add: editable mount settling time for 10micron box (UI change!)
+- add: two waiting times used w/o  meridian flip
 - improve: some refactoring for speed
 """
 

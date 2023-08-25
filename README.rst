@@ -120,7 +120,7 @@ CS Michel
     :target: https://github.com/mworion/MountWizzard4/issues
 
 .. |COMMITS_MASTER| image::
-    https://img.shields.io/github/commits-since/mworion/mountwizzard4/3.0.0
+    https://img.shields.io/github/commits-since/mworion/mountwizzard4/3.1.0
     :target: https://github.com/mworion/MountWizzard4/commits/master
 
 .. |COMMITS_WEEK| image::
@@ -138,10 +138,10 @@ CS Michel
     :alt: MountWizzard4's PyPI Status
     
 .. |DownLoadsAbs| image::
-    https://pepy.tech/badge/mountwizzard4
+    https://static.pepy.tech/badge/mountwizzard4
     :target: https://pepy.tech/project/mountwizzard4
 
 .. |DownLoadsMonth| image::
-    https://pepy.tech/badge/mountwizzard4/month
+    https://static.pepy.tech/badge/mountwizzard4/month
     :target: https://pepy.tech/project/mountwizzard4
 

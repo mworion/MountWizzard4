@@ -257,7 +257,7 @@ class SettDevice:
 
         :return: success for test
         """
-        dropDowns = list(self.drivers[driver]['uiDropDown'] for driver in self.drivers)
+        dropDowns = [self.drivers[driver]['uiDropDown'] for driver in self.drivers]
         for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
@@ -294,9 +294,9 @@ class SettDevice:
         if not driver:
             return False
         if self.popupUi.returnValues.get('indiCopyConfig', False):
-            self.copyConfig(driver=driver, framework='indi')
+            self.copyConfig(driverOrig=driver, framework='indi')
         if self.popupUi.returnValues.get('alpacaCopyConfig', False):
-            self.copyConfig(driver=driver, framework='alpaca')
+            self.copyConfig(driverOrig=driver, framework='alpaca')
 
         selectedFramework = self.driversData[driver]['framework']
         index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
@@ -314,37 +314,37 @@ class SettDevice:
         self.startDriver(driver=driver)
         return True
 
-    def copyConfig(self, driver='', framework=''):
+    def copyConfig(self, driverOrig='', framework=''):
         """
         copyConfig transfers all information of the actual driver to all other
         drivers of the same framework. if done so, all other drivers running on
         the same framework have to be stopped, copied parameters, initialized and
         started, too.
 
-        :param driver:
+        :param driverOrig:
         :param framework:
         :return: True for test purpose
         """
-        for driverLoop in self.drivers:
-            if driverLoop == driver:
+        for driverDest in self.drivers:
+            if driverDest == driverOrig:
                 # not copy on the same driver
                 continue
 
-            driverClass = self.drivers[driverLoop]['class']
+            driverClass = self.drivers[driverDest]['class']
 
             if driverClass.framework == framework:
-                self.stopDriver(driver=driver)
-            if driverLoop not in self.driversData:
+                self.stopDriver(driver=driverOrig)
+            if driverDest not in self.driversData:
                 continue
-            if framework not in self.driversData[driverLoop]['frameworks']:
+            if framework not in self.driversData[driverDest]['frameworks']:
                 continue
-            for param in self.driversData[driverLoop]['frameworks'][framework]:
+            for param in self.driversData[driverDest]['frameworks'][framework]:
                 # no local information should be copied
                 if param in ['deviceList', 'deviceName']:
                     continue
 
-                source = self.driversData[driver]['frameworks'][framework][param]
-                self.driversData[driverLoop]['frameworks'][framework][param] = source
+                source = self.driversData[driverOrig]['frameworks'][framework][param]
+                self.driversData[driverDest]['frameworks'][framework][param] = source
         return True
 
     def callPopup(self, driver):

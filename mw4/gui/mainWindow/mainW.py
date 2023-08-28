@@ -946,7 +946,7 @@ class MainWindow(
         :return:
         """
         self.closeExtendedWindows()
-        # self.stopDrivers()
+        self.stopDrivers()
         self.app.config = config
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo

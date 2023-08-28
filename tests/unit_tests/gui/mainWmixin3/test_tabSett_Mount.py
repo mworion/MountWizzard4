@@ -175,11 +175,6 @@ def test_setMountMAC_6(function):
     assert suc
 
 
-def test_setWaitTime_1(function):
-    suc = function.setWaitTime()
-    assert suc
-
-
 def test_setWaitTimeFlip_1(function):
     suc = function.setWaitTimeFlip()
     assert suc

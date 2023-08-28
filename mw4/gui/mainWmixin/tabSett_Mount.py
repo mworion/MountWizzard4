@@ -36,7 +36,6 @@ class SettMount(object):
         self.ui.port3490.clicked.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
-        self.ui.waitTimeMount.valueChanged.connect(self.setWaitTime)
         self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
@@ -61,7 +60,6 @@ class SettMount(object):
                                                    '255.255.255.255'))
         self.ui.mountWolPort.setText(config.get('mountWolPort', '9'))
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
-        self.ui.waitTimeMount.setValue(config.get('waitTime', 0))
         self.ui.waitTimeMountFlip.setValue(config.get('waitTimeFlip', 0))
         self.ui.automaticTelescope.setChecked(config.get('automaticTelescope', False))
         self.ui.automaticWOL.setChecked(config.get('automaticWOL', False))
@@ -85,7 +83,6 @@ class SettMount(object):
         config['mountWolAddress'] = self.ui.mountWolAddress.text()
         config['mountWolPort'] = self.ui.mountWolPort.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
-        config['waitTime'] = self.ui.waitTimeMount.value()
         config['waitTimeFlip'] = self.ui.waitTimeMountFlip.value()
         config['port3492'] = self.ui.port3492.isChecked()
         config['automaticTelescope'] = self.ui.automaticTelescope.isChecked()
@@ -181,13 +178,6 @@ class SettMount(object):
 
         self.app.mount.MAC = sett.addressLanMAC
         self.ui.mountMAC.setText(self.app.mount.MAC)
-        return True
-
-    def setWaitTime(self):
-        """
-        :return: true for test purpose
-        """
-        self.app.mount.waitTime = self.ui.waitTimeMount.value()
         return True
 
     def setWaitTimeFlip(self):

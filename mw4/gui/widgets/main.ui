@@ -24413,9 +24413,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>140</y>
+         <y>150</y>
          <width>366</width>
-         <height>76</height>
+         <height>51</height>
         </rect>
        </property>
        <property name="title">
@@ -24424,89 +24424,11 @@ Next point in time when satellite settles.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QLabel" name="label_40">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>25</y>
-          <width>276</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Additional wait time after slew and settle</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_295">
-        <property name="geometry">
-         <rect>
-          <x>345</x>
-          <y>25</y>
-          <width>16</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>s</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="waitTimeMount">
-        <property name="geometry">
-         <rect>
-          <x>300</x>
-          <y>25</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount settle before exposing the next image while modeling&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_67">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>25</y>
           <width>291</width>
           <height>21</height>
          </rect>
@@ -24526,7 +24448,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>300</x>
-          <y>50</y>
+          <y>25</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -24564,7 +24486,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>345</x>
-          <y>50</y>
+          <y>25</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -24936,7 +24858,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>235</y>
+         <y>225</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -32620,7 +32542,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>syncTimeNone</tabstop>
   <tabstop>syncTimeCont</tabstop>
   <tabstop>syncTimeNotTrack</tabstop>
-  <tabstop>waitTimeMount</tabstop>
   <tabstop>focalLength</tabstop>
   <tabstop>aperture</tabstop>
   <tabstop>automaticTelescope</tabstop>

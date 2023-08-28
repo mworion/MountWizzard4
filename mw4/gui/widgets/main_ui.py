@@ -11084,6 +11084,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MountWizzard4 (C) MW 2018"))
+        self.mountTabWidget.setToolTip(_translate("MainWindow", "<html><head/><body><p>The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.</p></body></html>"))
         self.UTCExpire.setToolTip(_translate("MainWindow", "Shows the expiration date of UTC timetable in the mount computer. If it\'s happening within 1 month, the frame turns to yellow. If expired, the frame will turn to red. "))
         self.UTCExpire.setText(_translate("MainWindow", "-"))
         self.label_152.setText(_translate("MainWindow", "DeltaT expires"))

@@ -16,10 +16,13 @@
 ###########################################################
 # standard libraries
 import logging
+
 # external packages
 from PyQt5.QtCore import QObject
 from PyQt5 import QtNetwork
+
 # local imports
+from base.driverDataClass import Signals
 
 
 class Remote(QObject):
@@ -31,13 +34,14 @@ class Remote(QObject):
 
     def __init__(self, app=None):
         super().__init__()
+        self.signals = Signals()
         self.app = app
         self.data = {}
         self.defaultConfig = {'framework': '',
-                              'frameworks': {'internal': {'deviceName': 'TCP'}}}
+                              'frameworks': {'tcp': {'deviceName': 'TCP'}}}
         self.framework = ''
         self.run = {
-            'internal': self
+            'tcp': self
         }
         self.deviceName = ''
         self.clientConnection = None
@@ -47,11 +51,8 @@ class Remote(QObject):
         """
         :return: success
         """
-        if self.tcpServer is not None:
-            return False
-
         self.tcpServer = QtNetwork.QTcpServer(self)
-        hostAddress = QtNetwork.QHostAddress('127.0.0.1')
+        hostAddress = QtNetwork.QHostAddress('localhost')
         if not self.tcpServer.listen(hostAddress, 3490):
             self.log.info('Port already in use')
             self.tcpServer = None
@@ -59,16 +60,16 @@ class Remote(QObject):
         else:
             self.log.info('Remote access enabled')
             self.tcpServer.newConnection.connect(self.addConnection)
+            self.signals.deviceConnected.emit('TCP')
             return True
 
     def stopCommunication(self):
         """
         :return: true for test purpose
         """
-        if self.clientConnection is not None:
-            self.clientConnection.close()
-        if self.tcpServer is not None:
-            self.tcpServer = None
+        if self.tcpServer.isListening():
+            self.tcpServer.close()
+        self.signals.deviceDisconnected.emit('TCP')
         return True
 
     def addConnection(self):
@@ -79,7 +80,7 @@ class Remote(QObject):
             return False
 
         self.clientConnection = self.tcpServer.nextPendingConnection()
-        if self.clientConnection == 0:
+        if not self.clientConnection:
             self.log.warning('Cannot establish incoming connection')
             return False
 

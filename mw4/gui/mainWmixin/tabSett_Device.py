@@ -327,7 +327,6 @@ class SettDevice:
         """
         for driverDest in self.drivers:
             if driverDest == driverOrig:
-                # not copy on the same driver
                 continue
 
             driverClass = self.drivers[driverDest]['class']
@@ -339,7 +338,6 @@ class SettDevice:
             if framework not in self.driversData[driverDest]['frameworks']:
                 continue
             for param in self.driversData[driverDest]['frameworks'][framework]:
-                # no local information should be copied
                 if param in ['deviceList', 'deviceName']:
                     continue
 
@@ -373,8 +371,7 @@ class SettDevice:
         """
         :return: True for test purpose
         """
-        sender = self.sender()
-        driver = self.returnDriver(sender, self.drivers, addKey='uiSetup')
+        driver = self.returnDriver(self.sender(), self.drivers, addKey='uiSetup')
 
         if driver:
             self.callPopup(driver=driver)
@@ -441,7 +438,7 @@ class SettDevice:
         """
         startDriver checks if a framework has been set and starts the driver with
         its startCommunication method. Normally the driver would report it's
-        connection, but for internal driver this has to be done separately.
+        connection.
 
         as the configuration is stored in the config, start also stores the
         selected framework in the framework attribute of the driver's class. this
@@ -466,12 +463,7 @@ class SettDevice:
         updateRate = data['frameworks'][framework].get('updateRate', 1000)
         driverClass.updateRate = updateRate
         driverClass.loadConfig = loadConfig
-
         driverClass.framework = framework
-        isInternal = framework == 'internal'
-        if isInternal:
-            self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
-                                    'active', True)
 
         self.configDriver(driver=driver)
         if autoStart:

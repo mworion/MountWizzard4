@@ -387,7 +387,7 @@ class SettDevice:
 
         self.deviceStat[driver] = None
         framework = self.drivers[driver]['class'].framework
-        if not framework:
+        if framework not in self.drivers[driver]['class'].run:
             return False
 
         driverClass = self.drivers[driver]['class']
@@ -425,7 +425,7 @@ class SettDevice:
 
         self.deviceStat[driver] = False
         framework = self.driversData[driver]['framework']
-        if not framework:
+        if framework not in self.drivers[driver]['class'].run:
             return False
 
         frameworkConfig = self.driversData[driver]['frameworks'][framework]
@@ -454,7 +454,7 @@ class SettDevice:
 
         data = self.driversData[driver]
         framework = data['framework']
-        if not framework:
+        if framework not in self.drivers[driver]['class'].run:
             return False
 
         driverClass = self.drivers[driver]['class']

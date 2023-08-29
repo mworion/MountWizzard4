@@ -19,7 +19,6 @@
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-from deepdiff import DeepDiff
 
 # local import
 from gui.extWindows.devicePopupW import DevicePopup
@@ -186,33 +185,40 @@ class SettDevice:
         self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
 
-    def checkStructureDriversData(self, driver, config):
-        """
-        checkStructureDriversData
-        :param driver:
-        :param config:
-        :return:
-        """
-        defaultConfig = self.drivers[driver]['class'].defaultConfig
-        res = DeepDiff(defaultConfig, config['driversData'][driver])
-
-        if 'dictionary_item_added' in res or 'dictionary_item_removed' in res:
-            config['driversData'][driver] = defaultConfig
-            self.log.info(f'Config for {[driver]} updated to default')
-            return False
-
-        return True
-
     def setDefaultData(self, driver, config):
         """
         :param driver:
         :param config:
         :return:
         """
-        config['driversData'][driver] = {}
+        config[driver] = {}
         defaultConfig = self.drivers[driver]['class'].defaultConfig
-        config['driversData'][driver].update(defaultConfig)
+        config[driver].update(defaultConfig)
         return True
+
+    def loadDriversDataFromConfig(self, config):
+        """
+        :param config:
+        :return:
+        """
+        if 'driversData' in config:
+            config = config['driversData']
+        else:
+            config = {}
+
+        self.driversData.clear()
+
+        # adding default for missing drivers
+        for driver in self.drivers:
+            if driver not in config:
+                self.setDefaultData(driver, config)
+
+        # remove unknown drivers from data
+        for driver in config:
+            if driver not in self.drivers:
+                del config[driver]
+
+        self.driversData.update(config)
 
     def initConfig(self):
         """
@@ -220,21 +226,8 @@ class SettDevice:
         """
         config = self.app.config['mainW']
         configD = self.app.config
-        if 'driversData' not in configD:
-            configD['driversData'] = {}
 
-        # adding default for missing drivers
-        for driver in self.drivers:
-            if driver not in configD['driversData']:
-                self.setDefaultData(driver, configD)
-
-        # remove unknown drivers from data
-        for driver in list(configD['driversData'].keys()):
-            if driver not in self.drivers:
-                del configD['driversData'][driver]
-
-        self.driversData.clear()
-        self.driversData.update(configD.get('driversData', {}))
+        self.loadDriversDataFromConfig(configD)
         self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()

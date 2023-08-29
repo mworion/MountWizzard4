@@ -46,37 +46,6 @@ def function(qapp):
     window.threadPool.waitForDone(1000)
 
 
-def test_checkStructureDriversData_1(function):
-    config = {
-        'driversData': {
-            'cover': {}
-        }
-    }
-    with mock.patch('deepdiff.DeepDiff', return_value={}):
-        suc = function.checkStructureDriversData('cover', config)
-        assert not suc
-
-
-def test_checkStructureDriversData_2(function):
-    class Test:
-        defaultConfig = {}
-
-    config = {
-        'driversData': {
-            'cover': {}
-        }
-    }
-    function.drivers = {
-        'cover': {
-            'class': Test()
-        }
-    }
-    with mock.patch('deepdiff.DeepDiff',
-                    return_value={'dictionary_item_added'}):
-        suc = function.checkStructureDriversData('cover', config)
-        assert suc
-
-
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
     with mock.patch.object(function,

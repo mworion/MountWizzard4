@@ -81,7 +81,6 @@ setup(
         'requests_toolbelt==1.0.0',
         'importlib_metadata==6.8.0',
         'python-dateutil==2.8.2',
-        'deepdiff==6.3.1',
         'wakeonlan==3.0.0',
         'pybase64==1.2.3',
         'websocket-client==1.6.1',

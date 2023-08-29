@@ -46,52 +46,31 @@ def function(qapp):
     window.threadPool.waitForDone(1000)
 
 
+def test_setDefaultData(function):
+    config = {'camera': {}}
+    function.setDefaultData('camera', config)
+
+
+def test_loadDriversDataFromConfig_1(function):
+    config = {}
+    function.loadDriversDataFromConfig(config)
+
+
+def test_loadDriversDataFromConfig_2(function):
+    config = {'driversData': {'test': ''}}
+    function.loadDriversDataFromConfig(config)
+
+
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
     with mock.patch.object(function,
                            'setupDeviceGui'):
         with mock.patch.object(function,
                                'startDrivers'):
-            suc = function.initConfig()
-            assert suc
-
-
-def test_initConfig_2(function):
-    function.drivers = {'cover': {}}
-    function.app.config['mainW'] = {
-        'driversData': {
-            'cover': {}
-        }
-    }
-    with mock.patch.object(function,
-                           'setupDeviceGui'):
-        with mock.patch.object(function,
-                               'startDrivers'):
             with mock.patch.object(function,
-                                   'checkStructureDriversData'):
-                with mock.patch.object(function,
-                                       'setDefaultData'):
-                    suc = function.initConfig()
-                    assert suc
-
-
-def test_initConfig_3(function):
-    function.drivers = {'cover': {}}
-    function.app.config['mainW'] = {
-        'driversData': {
-            'camera': {}
-        }
-    }
-    with mock.patch.object(function,
-                           'setupDeviceGui'):
-        with mock.patch.object(function,
-                               'startDrivers'):
-            with mock.patch.object(function,
-                                   'checkStructureDriversData'):
-                with mock.patch.object(function,
-                                       'setDefaultData'):
-                    suc = function.initConfig()
-                    assert suc
+                                   'loadDriversDataFromConfig'):
+                suc = function.initConfig()
+                assert suc
 
 
 def test_storeConfig_1(function):

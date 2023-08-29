@@ -214,7 +214,7 @@ class SettDevice:
                 self.setDefaultData(driver, config)
 
         # remove unknown drivers from data
-        for driver in config:
+        for driver in list(config):
             if driver not in self.drivers:
                 del config[driver]
 

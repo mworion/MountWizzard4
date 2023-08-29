@@ -526,54 +526,24 @@ def test_startDriver_3(function):
         assert suc
 
 
-def test_startDriver_3(function):
-    function.driversData = {
-        'telescope': {
-            'framework': 'internal',
-            'frameworks': {
-                'internal': {
-                    'deviceName': ''}
-            }
-        }
-    }
-    with mock.patch.object(function,
-                           'configDriver'):
-        suc = function.startDriver('telescope')
-        assert suc
-
-
 def test_startDriver_4(function):
     function.driversData = {
-        'camera': {
-            'framework': 'sgpro',
+        'telescope': {
+            'framework': 'indi',
             'frameworks': {
-                'sgpro': {
-                    'deviceName': 'controlled'
-                }
+                'indi': {
+                    'deviceName': 'astap',
+                    'deviceList': ['test', 'test1'],
+                },
             }
         }
     }
     with mock.patch.object(function,
                            'configDriver'):
-        suc = function.startDriver('camera')
-        assert suc
-
-
-def test_startDriver_5(function):
-    function.driversData = {
-        'camera': {
-            'framework': 'sgpro',
-            'frameworks': {
-                'sgpro': {
-                    'deviceName': 'test'
-                }
-            }
-        }
-    }
-    with mock.patch.object(function,
-                           'configDriver'):
-        suc = function.startDriver('camera')
-        assert suc
+        with mock.patch.object(function,
+                               'configDriver'):
+            suc = function.startDriver('telescope', True)
+            assert suc
 
 
 def test_startDrivers_1(function):

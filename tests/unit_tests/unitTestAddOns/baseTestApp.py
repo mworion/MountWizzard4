@@ -85,6 +85,8 @@ class Camera:
         exposed = pyqtSignal()
         downloaded = pyqtSignal()
 
+    run = {'indi': 'dummy'}
+
     @staticmethod
     def expose(imagePath=None,
                expTime=None,

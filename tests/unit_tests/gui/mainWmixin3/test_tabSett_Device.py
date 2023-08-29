@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -408,6 +408,20 @@ def test_callPopup_1(function):
                     return_value=Pop()):
         suc = function.callPopup('cover')
         assert suc
+
+
+def test_returnDriver_1(function):
+    sender = QWidget()
+    searchDict = {}
+    driver = function.returnDriver(sender, searchDict)
+    assert driver == ''
+
+
+def test_returnDriver_2(function):
+    sender = QWidget()
+    searchDict = {}
+    driver = function.returnDriver(sender, searchDict, addKey='test')
+    assert driver == ''
 
 
 def test_dispatchPopup(function):

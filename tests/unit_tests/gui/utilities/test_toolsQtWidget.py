@@ -771,20 +771,6 @@ def test_guiSetStyle_4(function):
     assert suc
 
 
-def test_returnDriver_1(function):
-    sender = QWidget()
-    searchDict = {}
-    driver = function.returnDriver(sender, searchDict)
-    assert driver == ''
-
-
-def test_returnDriver_2(function):
-    sender = QWidget()
-    searchDict = {}
-    driver = function.returnDriver(sender, searchDict, addKey='test')
-    assert driver == ''
-
-
 def test_checkUpdaterOK_0(function):
     function.app.automation = None
     with mock.patch.object(platform,

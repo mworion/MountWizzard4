@@ -20,7 +20,8 @@ import platform
 
 releaseNotes = """
 - add: editable mount settling time for 10micron box (UI change!)
-- add: two waiting times used w/o  meridian flip
+- add: waiting time used w/o  meridian flip
+- add: bring back "keep scale" when doing exposeN
 - improve: some refactoring for speed
 """
 
@@ -29,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.0b1',
+    version='3.2.0b2',
     packages=[
         'mw4',
         'mw4.base',

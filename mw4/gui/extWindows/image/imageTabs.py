@@ -41,7 +41,9 @@ class ImageTabs:
         self.ui.groupMouseCoord.setVisible(self.fileHandler.hasCelestial)
         self.ui.slewCenter.setEnabled(self.fileHandler.hasCelestial)
         self.imageSourceRange = None
-        self.ui.image.setImage(imageDisp=self.fileHandler.image)
+        updateGeometry = not self.deviceStat['exposeN']
+        self.ui.image.setImage(imageDisp=self.fileHandler.image,
+                               updateGeometry=updateGeometry)
         self.setBarColor()
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)

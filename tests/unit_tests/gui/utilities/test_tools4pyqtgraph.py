@@ -33,6 +33,7 @@ from gui.utilities.tools4pyqtgraph import ImageBar
 from gui.utilities.tools4pyqtgraph import Measure
 from gui.utilities.tools4pyqtgraph import TimeMeasure
 from gui.utilities.tools4pyqtgraph import CustomViewBox
+from gui.utilities.tools4pyqtgraph import Hemisphere
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -956,6 +957,13 @@ def test_ImageBar_setImage_2():
     assert suc
 
 
+def test_ImageBar_setImage_3():
+    function = ImageBar()
+    img = np.random.rand(100, 100)
+    suc = function.setImage(img, False)
+    assert suc
+
+
 def test_ImageBar_showCrosshair():
     function = ImageBar()
     function.lx = QWidget()
@@ -987,7 +995,11 @@ def test_TimeMeasure():
 def test_TimeMeasure_tickStrings():
     values = [-1, 0, 1]
     TimeMeasure(orientation='left').tickStrings(values, 0, 0)
-    
+
 
 def test_Measure():
     Measure()
+
+
+def test_Hemisphere():
+    Hemisphere()

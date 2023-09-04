@@ -5,3 +5,5 @@ Ideas for the future
 - data exchange to EKOS SQLite for Location and horizon through SQLite interface
 - satellite scheduler
 - adding simple model feature for rainbow 135
+- simple MPC data like satellites
+

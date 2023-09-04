@@ -772,9 +772,10 @@ class ImageBar(PlotBase):
         self.barItem.setColorMap(cMap)
         return True
 
-    def setImage(self, imageDisp):
+    def setImage(self, imageDisp, updateGeometry=True):
         """
         :param imageDisp:
+        :param updateGeometry:
         :return:
         """
         self.constructPlot()
@@ -786,7 +787,8 @@ class ImageBar(PlotBase):
         yMinR = max(yMax / 100, 100)
         self.p[0].setLimits(xMin=0, xMax=xMax, yMin=0, yMax=yMax,
                             minXRange=xMinR, minYRange=yMinR)
-        self.p[0].getViewBox().rightMouseRange()
+        if updateGeometry:
+            self.p[0].getViewBox().rightMouseRange()
 
         med = np.median(imageDisp)
         minB = 1.5 * med

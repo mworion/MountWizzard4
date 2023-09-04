@@ -161,7 +161,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
     def showWindow(self):
         """
         showWindow prepares all data for showing the window, plots the image and
-        show it. afterwards all necessary signal / slot connections will be
+        show it. Afterward all necessary signal / slot connections will be
         established.
 
         :return: true for test purpose

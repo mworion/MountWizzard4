@@ -251,9 +251,10 @@ class Watney(object):
         else:
             sucProgram = True
 
-        sucInd = sum('.qdb' in s for s in glob.glob(self.indexPath + '/*.*')) == 407
-        if not sucInd:
+        sucIndex = (sum('.qdb' in s for s in glob.glob(self.indexPath + '/*.*')) == 407)
+        if not sucIndex:
             self.log.info('No index files found')
 
-        self.log.info(f'Watney OK, app: [{program}], index: [{self.indexPath}]')
-        return sucProgram, sucInd
+        if sucIndex and sucProgram:
+            self.log.info(f'Watney OK, app: [{program}], index: [{self.indexPath}]')
+        return sucProgram, sucIndex

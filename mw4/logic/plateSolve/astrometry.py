@@ -377,5 +377,6 @@ class Astrometry(object):
         else:
             sucIndex = True
 
-        self.log.info(f'astrometry.net OK, app:{program} index:{index}')
+        if sucIndex and sucProgram:
+            self.log.info(f'astrometry.net OK, app:{program} index:{index}')
         return sucProgram, sucIndex

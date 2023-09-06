@@ -263,7 +263,8 @@ class ASTAP(object):
         else:
             sucIndex = True
 
-        self.log.info(f'ASTAP OK, app: [{program}], index: [{self.indexPath}]')
-        self.log.info(f'ASTAP Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
-        self.log.info(f'ASTAP Index D50:{isD50}, D20:{isD20}, D05:{isD05}')
+        if sucIndex and sucProgram:
+            self.log.info(f'ASTAP OK, app: [{program}], index: [{self.indexPath}]')
+            self.log.info(f'ASTAP Index G17:{isG17}, G18:{isG18}, H17:{isH17}, H18:{isH18}')
+            self.log.info(f'ASTAP Index D50:{isD50}, D20:{isD20}, D05:{isD05}')
         return sucProgram, sucIndex

@@ -23,6 +23,7 @@ releaseNotes = """
 - add: waiting time used w/o  meridian flip
 - add: bring back "keep scale" when doing exposeN
 - improve: some refactoring for speed
+- improve: watney checking allows for multiple sets in one directory
 """
 
 with open('notes.txt', 'w') as f:
@@ -30,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.0b2',
+    version='3.2.0b3',
     packages=[
         'mw4',
         'mw4.base',

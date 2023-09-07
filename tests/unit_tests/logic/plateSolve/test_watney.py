@@ -239,3 +239,37 @@ def test_checkAvailability_4(function):
                                        return_value='Linux'):
                     suc = function.checkAvailability(appPath='test', indexPath='test')
                     assert suc == (True, True)
+
+
+def test_checkAvailability_5(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'sum',
+                                   return_value=814):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Linux'):
+                    suc = function.checkAvailability(appPath='test', indexPath='test')
+                    assert suc == (True, True)
+
+
+def test_checkAvailability_6(function):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value='.290'):
+            with mock.patch.object(builtins,
+                                   'sum',
+                                   return_value=0):
+                with mock.patch.object(platform,
+                                       'system',
+                                       return_value='Linux'):
+                    suc = function.checkAvailability(appPath='test', indexPath='test')
+                    assert suc == (True, False)

@@ -26,12 +26,13 @@ import builtins
 
 # external packages
 from skyfield.api import Angle
-from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.plateSolve.plateSolve import PlateSolve
 from logic.plateSolve.watney import Watney
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -226,7 +227,7 @@ def test_checkAvailability_3(function):
 def test_checkAvailability_4(function):
     with mock.patch.object(os.path,
                            'isfile',
-                           return_value=False):
+                           return_value=True):
         with mock.patch.object(glob,
                                'glob',
                                return_value='.290'):
@@ -237,4 +238,4 @@ def test_checkAvailability_4(function):
                                        'system',
                                        return_value='Linux'):
                     suc = function.checkAvailability(appPath='test', indexPath='test')
-                    assert suc == (False, True)
+                    assert suc == (True, True)

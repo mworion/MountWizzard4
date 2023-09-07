@@ -31,6 +31,8 @@ from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.plateSolve.plateSolve import PlateSolve
 from logic.plateSolve.astap import ASTAP
+from base.loggerMW import setupLogging
+setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='function')

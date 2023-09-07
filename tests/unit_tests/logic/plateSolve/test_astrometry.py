@@ -24,14 +24,13 @@ import shutil
 import subprocess
 
 # external packages
-from PyQt5.QtCore import QThreadPool
-from astropy.io import fits
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.plateSolve import PlateSolve
-
+from base.loggerMW import setupLogging
+setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function():

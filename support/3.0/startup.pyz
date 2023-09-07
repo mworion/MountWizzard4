@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.1'
+version = '3.2'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -492,17 +492,26 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
     isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
     version = getVersion(isTest, updateBeta, version)
     isV2 = version < Version('2.100')
+    is32bit = platform.architecture()[0] == '32bit'
+    isArm64bit = platform.machine() == 'aarch64'
+    isArm32bit = platform.machine() == 'armv7'
+    isWindows = platform.system() == 'Windows'
     compatibleV2 = Version(platform.python_version()) < Version('3.10')
 
     if isV2 and not compatibleV2:
         prt('MountWizzard4 v2.x needs python 3.7-3.9')
         return ''
 
-    if platform.machine() == 'aarch64':
+    elif not isV2 and isWindows and is32bit:
+        prt('MountWizzard4 v3.x needs python 64bit')
+        return ''
+
+    elif isArm64bit:
         suc = downloadAndInstallWheels(venvContext, version=version)
         if not suc:
             return ''
-    elif platform.machine() == 'armv7':
+
+    elif isArm32bit:
         return ''
 
     suc = install(venvContext, version=version, isTest=isTest)
@@ -542,6 +551,7 @@ def main(options):
         prt('needs python 3.7-3.9 for version 2.x')
         prt('needs python 3.8-3.10 for version 3.x')
         prt('no support for ARM7')
+        prt('no support for Windows 32bit')
         prt(f'you are running {platform.python_version()}')
         prt('Closing application')
         prt('-' * 45)

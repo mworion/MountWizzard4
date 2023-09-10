@@ -29,9 +29,8 @@ For being fully operational, MW4 needs either:
 
 -   For the core devices there is native ASCOM support (Windows platform only).
     Please be reminded, that ASCOM has 32bit and 64bit driver implementations
-    and MW4 could also be installed in 32bit or 64 bit python environment. They
-    could be not be mixed! 32bit python supports only 32bit drivers and vice versa
-    . Normally this should not be an issue...
+    and MW4 v3.x should **not** be installed in 32bit as it causes in some
+    environments troubles. Please stay with a 64 bit python environment.
 
 -   In addition an internet connection is used for some services which might be
     very helpful.

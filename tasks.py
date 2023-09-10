@@ -428,7 +428,6 @@ def make_pdf(c):
     with c.cd('doc'):
         runMW(c, 'make latexpdf')
     runMW(c, 'mv ./doc/build/latex/mountwizzard4.pdf ./mw4/resource/data')
-    runMW(c, 'open ./mw4/resource/data/mountwizzard4.pdf')
     printMW('Generation finished\n')
 
 
@@ -450,12 +449,10 @@ def make_html(c):
         runMW(c, 'mv html/* ../../docs')
         runMW(c, 'mv html/.nojekyll ../../docs')
         runMW(c, 'mv html/.buildinfo ../../docs')
-    with c.cd('docs'):
-        runMW(c, 'open ./index.html')
     printMW('Generation finished\n')
 
 
-@task(pre=[build_resource, build_widgets])
+@task(pre=[build_resource, build_widgets, make_html, make_pdf])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):
@@ -470,14 +467,17 @@ def build_mw(c):
     for line in tmp:
         rn += line
     printMW('building dist mountwizzard4 finished\n')
-
-
-@task(pre=[make_pdf, make_html])
-def make_doc(c):
     printMW('generating documentation')
 
 
-@task(pre=[version_doc, make_doc, build_mw])
+@task(pre=[make_pdf, make_html])
+def show_doc(c):
+    with c.cd('docs'):
+        runMW(c, 'open ./index.html')
+    runMW(c, 'open ./mw4/resource/data/mountwizzard4.pdf')
+
+
+@task(pre=[version_doc, build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
     with c.cd('./dist'):

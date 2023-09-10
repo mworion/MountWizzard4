@@ -41,7 +41,8 @@ to get the content. You will find three files:
 - mw4.png -> icon for mountwizzard4.desktop
 - mw4.ico -> icon to customize the link in windows for running the script
 
-https://github.com/mworion/MountWizzard4/blob/master/support/3.0/startupPackage.zip
+https://github.com/mworion/mountwizzard4/blob/master/support/3.0/startupPackage.zip?raw=true
+
 
 On windows you should be able to start the script just be double click on it,
 in all other platforms you start it with:
@@ -61,48 +62,6 @@ On windows please use the command:
     This is valid also for the support of MW4 v3.x
     If you need support other platforms, please use the actual scripts 2.x. and
     MW4 v2.x versions.
-
-
-Windows 10/11:
---------------
-Version 2.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Windows_Scripts.zip
-
-
-MacOSx (please use Rosetta for M1 Macs):
-----------------------------------------
-Version 2.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/2.0/MacOSx_Scripts.zip
-
-
-Ubuntu:
--------
-Version 2.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Ubuntu_Scripts.zip
-
-
-UbuntuMate ARM64 (64bit):
--------------------------
-Version 2.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Mate_Scripts.zip
-
-
-StellarMate ARM64 (64bit):
---------------------------
-Version 2.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/2.0/StellarMate64_Scripts.zip
-
-
-UbuntuMate Astroberry ARM7 (32bit):
------------------------------------
-Version 2.x:
-
-https://github.com/mworion/MountWizzard4/blob/master/support/2.0/Astroberry_Scripts.zip
 
 
 Downloading the zip files

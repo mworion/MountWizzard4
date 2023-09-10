@@ -472,7 +472,12 @@ def build_mw(c):
     printMW('building dist mountwizzard4 finished\n')
 
 
-@task(pre=[version_doc, make_pdf, make_html, build_mw])
+@task(pre=[make_pdf, make_html])
+def make_doc(c):
+    printMW('generating documentation')
+
+
+@task(pre=[version_doc, make_doc, build_mw])
 def upload_mw(c):
     printMW('uploading dist mountwizzard4')
     with c.cd('./dist'):

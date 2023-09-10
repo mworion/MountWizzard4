@@ -9,10 +9,11 @@ Version 3.0
 ^^^^^^^^^^^
 3.2.0
 
-- add: editable mount settling time for 10micron box
-- add: second waiting time used after meridian flip
-- fix: update procedure for config files v2 to v3.1
+- add: editable mount settling time for 10micron box (UI change!)
+- add: waiting time used w/o  meridian flip
+- add: bring "keep scale" when doing exposeN
 - improve: some refactoring for speed
+- improve: watney checking allows for multiple sets in one directory
 
 3.1.0
 

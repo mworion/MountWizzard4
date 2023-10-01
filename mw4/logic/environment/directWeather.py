@@ -84,8 +84,8 @@ class DirectWeather:
 
         value1 = sett.weatherTemperature
         value2 = sett.weatherPressure
-        value3 = sett.weatherHumidity
-        value4 = sett.weatherDewPoint
+        value3 = sett.weatherDewPoint
+        value4 = sett.weatherHumidity
         value5 = sett.weatherAge
         isValid = None not in [value1, value2, value3, value4, value5]
 

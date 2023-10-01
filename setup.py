@@ -19,11 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: editable mount settling time for 10micron box (UI change!)
-- add: waiting time used w/o  meridian flip
-- add: bring "keep scale" when doing exposeN
-- improve: some refactoring for speed
-- improve: watney checking allows for multiple sets in one directory
+- fix: change humidity and dewpoint value in driver as there were mixed up
 """
 
 with open('notes.txt', 'w') as f:
@@ -31,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.0',
+    version='3.2.1',
     packages=[
         'mw4',
         'mw4.base',

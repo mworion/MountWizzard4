@@ -229,11 +229,13 @@ class Environ:
             temp = self.app.sensorWeather.data.get(key)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
             press = self.app.sensorWeather.data.get(key)
+
         elif self.refractionSource == 'onlineWeather':
             key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
             temp = self.app.onlineWeather.data.get(key)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
             press = self.app.onlineWeather.data.get(key)
+
         else:
             temp = None
             press = None
@@ -309,15 +311,19 @@ class Environ:
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.guiSetText(self.ui.sensorWeatherTemp, '4.1f', value)
+
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_PRESSURE')
         self.guiSetText(self.ui.sensorWeatherPress, '4.1f', value)
+
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.guiSetText(self.ui.sensorWeatherDewPoint, '4.1f', value)
+
         value = self.app.sensorWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
         self.guiSetText(self.ui.sensorWeatherHumidity, '3.0f', value)
+
         return True
 
     def clearSensorWeatherGui(self, deviceName=''):
@@ -337,8 +343,10 @@ class Environ:
         """
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS')
         self.guiSetText(self.ui.skymeterSQR, '5.2f', value)
+
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE')
         self.guiSetText(self.ui.skymeterTemp, '4.1f', value)
+
         return True
 
     def clearSkymeterGui(self, deviceName=''):
@@ -359,10 +367,13 @@ class Environ:
         """
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.guiSetText(self.ui.powerTemp, '4.1f', value)
+
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY')
         self.guiSetText(self.ui.powerHumidity, '3.0f', value)
+
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.guiSetText(self.ui.powerDewPoint, '4.1f', value)
+
         return True
 
     def clearPowerWeatherGui(self):
@@ -381,16 +392,22 @@ class Environ:
         """
         value = self.app.onlineWeather.data.get('temperature')
         self.guiSetText(self.ui.onlineWeatherTemp, '4.1f', value)
+
         value = self.app.onlineWeather.data.get('pressure')
         self.guiSetText(self.ui.onlineWeatherPress, '5.1f', value)
+
         value = self.app.onlineWeather.data.get('humidity')
         self.guiSetText(self.ui.onlineWeatherHumidity, '3.0f', value)
+
         value = self.app.onlineWeather.data.get('dewPoint')
         self.guiSetText(self.ui.onlineWeatherDewPoint, '4.1f', value)
+
         value = self.app.onlineWeather.data.get('cloudCover')
         self.guiSetText(self.ui.onlineWeatherCloudCover, '3.0f', value)
+
         value = self.app.onlineWeather.data.get('rain')
         self.guiSetText(self.ui.onlineWeatherRainVol, '5.2f', value)
+
         return True
 
     def clearOnlineWeatherGui(self):
@@ -410,15 +427,19 @@ class Environ:
         value = self.app.directWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.guiSetText(self.ui.directWeatherTemp, '4.1f', value)
+
         value = self.app.directWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_PRESSURE')
         self.guiSetText(self.ui.directWeatherPress, '4.1f', value)
+
         value = self.app.directWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.guiSetText(self.ui.directWeatherDewPoint, '4.1f', value)
+
         value = self.app.directWeather.data.get(
             'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
         self.guiSetText(self.ui.directWeatherHumidity, '3.0f', value)
+
         return True
 
     def clearDirectWeatherGui(self):

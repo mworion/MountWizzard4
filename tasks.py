@@ -452,7 +452,7 @@ def make_html(c):
     printMW('Generation finished\n')
 
 
-@task(pre=[build_resource, build_widgets, make_html, make_pdf])
+@task(pre=[make_html, make_pdf, build_resource, build_widgets])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):

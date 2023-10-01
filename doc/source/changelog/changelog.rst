@@ -7,6 +7,9 @@ Released versions of MW4
 ------------------------
 Version 3.0
 ^^^^^^^^^^^
+3.2.1
+- fix: change humidity and dewpoint value in driver as there were mixed up
+
 3.2.0
 
 - add: editable mount settling time for 10micron box (UI change!)

@@ -131,35 +131,28 @@ class OnlineWeather():
             self.log.warning(f'Cannot load data file, error: {e}')
             return False
 
-        if 'list' not in data:
-            self.data.clear()
-            return False
+        self.log.trace(f'onlineWeatherData:[{data}]')
 
-        if len(data['list']) == 0:
-            self.data.clear()
-            return False
-
-        val = data['list'][0]
-        self.log.trace(f'onlineWeatherData:[{val}]')
-
-        if 'main' in val:
-            self.data['temperature'] = val['main']['temp'] - 273.15
-            self.data['pressure'] = val['main']['grnd_level']
-            self.data['humidity'] = val['main']['humidity']
+        if 'main' in data:
+            self.data['temperature'] = data['main']['temp'] - 273.15
+            self.data['pressure'] = data['main']['pressure']
+            self.data['humidity'] = data['main']['humidity']
             self.data['dewPoint'] = self.getDewPoint(self.data['temperature'],
                                                      self.data['humidity'])
             self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.data['temperature']
             self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.data['pressure']
+        else:
+            return False
 
-        if 'clouds' in val:
-            self.data['cloudCover'] = val['clouds']['all']
+        if 'clouds' in data:
+            self.data['cloudCover'] = data['clouds']['all']
 
-        if 'wind' in val:
-            self.data['windSpeed'] = val['wind']['speed']
-            self.data['windDir'] = val['wind']['deg']
+        if 'wind' in data:
+            self.data['windSpeed'] = data['wind']['speed']
+            self.data['windDir'] = data['wind']['deg']
 
-        if 'rain' in val:
-            self.data['rain'] = val['rain']['3h']
+        if 'rain' in data:
+            self.data['rain'] = data['rain']['3h']
         else:
             self.data['rain'] = 0
         return True
@@ -252,7 +245,7 @@ class OnlineWeather():
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
 
-        webSite = f'http://{self.hostaddress}/data/2.5/forecast'
+        webSite = f'http://{self.hostaddress}/data/2.5/weather'
         url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.apiKey}'
         self.getOpenWeatherMapData(url=url)
         self.log.debug(f'{url}')

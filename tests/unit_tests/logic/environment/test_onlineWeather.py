@@ -112,22 +112,22 @@ def test_processOpenWeatherMapData_1(function):
 def test_processOpenWeatherMapData_2(function):
     with mock.patch.object(json,
                            'load',
-                           return_value={}):
-        suc = function.processOpenWeatherMapData()
-        assert not suc
-
-
-def test_processOpenWeatherMapData_2b(function):
-    with mock.patch.object(json,
-                           'load',
                            return_value={},
                            side_effect=Exception):
         suc = function.processOpenWeatherMapData()
         assert not suc
 
 
-def test_processOpenWeatherMapData_3(function):
-    data = {'list': []}
+def test_processOpenWeatherMapData_2a(function):
+    data = {'test': {'temp': 290,
+                     'pressure': 1000,
+                     'humidity': 50},
+            'clouds': {'all': 100},
+            'wind': {'speed': 10,
+                     'deg': 260},
+            'rain': {'3h': 10}
+            }
+
     with mock.patch.object(json,
                            'load',
                            return_value=data):
@@ -135,16 +135,16 @@ def test_processOpenWeatherMapData_3(function):
         assert not suc
 
 
-def test_processOpenWeatherMapData_4(function):
-    entry = {'main': {'temp': 290,
-                      'grnd_level': 1000,
-                      'humidity': 50},
-             'clouds': {'all': 100},
-             'wind': {'speed': 10,
-                      'deg': 260},
-             'rain': {'3h': 10}
-             }
-    data = {'list': [entry]}
+def test_processOpenWeatherMapData_3(function):
+    data = {'main': {'temp': 290,
+                     'pressure': 1000,
+                     'humidity': 50},
+            'clouds': {'all': 100},
+            'wind': {'speed': 10,
+                     'deg': 260},
+            'rain': {'3h': 10}
+            }
+
     with mock.patch.object(json,
                            'load',
                            return_value=data):
@@ -152,15 +152,15 @@ def test_processOpenWeatherMapData_4(function):
         assert suc
 
 
-def test_processOpenWeatherMapData_5(function):
-    entry = {'main': {'temp': 290,
-                      'grnd_level': 1000,
-                      'humidity': 50},
-             'clouds': {'all': 100},
-             'wind': {'speed': 10,
-                      'deg': 260},
-             }
-    data = {'list': [entry]}
+def test_processOpenWeatherMapData_4(function):
+    data = {'main': {'temp': 290,
+                     'pressure': 1000,
+                     'humidity': 50},
+            'clouds': {'all': 100},
+            'wind': {'speed': 10,
+                     'deg': 260},
+            }
+
     with mock.patch.object(json,
                            'load',
                            return_value=data):

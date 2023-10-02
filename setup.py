@@ -19,7 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- fix: change humidity and dewpoint value in driver as there were mixed up
+- change: switch from forecast to weather api on openweathermap
 """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.1',
+    version='3.2.2',
     packages=[
         'mw4',
         'mw4.base',

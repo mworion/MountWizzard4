@@ -123,8 +123,6 @@ class CustomViewBox(pg.ViewBox):
         data = self.plotDataItem.getData()
         if data[0] is None or data[1] is None:
             return 0
-        if len(data[0]) == 0:
-            return 0
         x = data[0]
         y = data[1]
         d = np.sqrt((x - pos.x()) ** 2 / 4 + (y - pos.y()) ** 2)

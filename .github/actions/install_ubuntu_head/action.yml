@@ -15,6 +15,14 @@ runs:
     - name: install #1
       run: sudo apt-get upgrade
       shell: bash
+      
+    - name: install grub
+      run: apt-get install grub-efi
+      shell: bash
+      
+    - name: update grub
+      run: update-grub
+      shell: bash
 
     - name: install #2
       run: sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4

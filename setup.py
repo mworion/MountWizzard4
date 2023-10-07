@@ -19,7 +19,8 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- change: switch from forecast to weather api on openweathermap
+- fix: correct editing points, when slew path is not selected
+- improve: sort horizon points when loading a file
 """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +28,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.2',
+    version='3.2.3',
     packages=[
         'mw4',
         'mw4.base',

@@ -603,6 +603,7 @@ class DataPoint(object):
             return False
 
         self.horizonP = value
+        self.horizonP.sort(key=lambda x: x[1])
 
         # backup solution
         if csv:

@@ -605,7 +605,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         """
         :return:
         """
-        bp = [(y, x, True) for x, y in zip(x, y)]
+        bp = [(y, x, True) for y, x in zip(y, x)]
         self.app.data.buildP = bp
         self.drawModelPoints()
         self.drawModelText()

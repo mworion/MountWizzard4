@@ -120,7 +120,9 @@ class CustomViewBox(pg.ViewBox):
         :param pos:
         :return: index or none
         """
-        data = self.plotDataItem.curve.getData()
+        data = self.plotDataItem.getData()
+        if data[0] is None or data[1] is None:
+            return 0
         if len(data[0]) == 0:
             return 0
         x = data[0]

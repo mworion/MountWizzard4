@@ -256,8 +256,11 @@ class EditHorizon:
         """
         :return:
         """
+        hp = [(y, x) for y, x in zip(y, x)]
+        hp.sort(key=lambda x: x[1])
+        x = [x[1] for x in hp]
+        y = [x[0] for x in hp]
         self.horizonPlot.setData(x=x, y=y)
-        hp = [(y, x) for x, y in zip(x, y)]
         self.app.data.horizonP = hp
         self.app.redrawHorizon.emit()
         return True

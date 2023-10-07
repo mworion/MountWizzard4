@@ -7,10 +7,17 @@ Released versions of MW4
 ------------------------
 Version 3.0
 ^^^^^^^^^^^
+3.2.3
+
+- fix: correct editing points, when slew path is not selected
+- improve: sort horizon points when loading a file
+
 3.2.2
+
 - change: switch from forecast to weather api on openweathermap
 
 3.2.1
+
 - fix: change humidity and dewpoint value in driver as there were mixed up
 
 3.2.0

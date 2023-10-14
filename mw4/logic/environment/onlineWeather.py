@@ -134,9 +134,9 @@ class OnlineWeather():
         self.log.trace(f'onlineWeatherData:[{data}]')
 
         if 'main' in data:
-            self.data['temperature'] = data['main']['temp'] - 273.15
-            self.data['pressure'] = data['main']['pressure']
-            self.data['humidity'] = data['main']['humidity']
+            self.data['temperature'] = data['main'].get('temp', 273.15) - 273.15
+            self.data['pressure'] = data['main'].get('pressure', 0)
+            self.data['humidity'] = data['main'].get('humidity', 0)
             self.data['dewPoint'] = self.getDewPoint(self.data['temperature'],
                                                      self.data['humidity'])
             self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.data['temperature']
@@ -145,14 +145,14 @@ class OnlineWeather():
             return False
 
         if 'clouds' in data:
-            self.data['cloudCover'] = data['clouds']['all']
+            self.data['cloudCover'] = data['clouds'].get('all', 0)
 
         if 'wind' in data:
-            self.data['windSpeed'] = data['wind']['speed']
-            self.data['windDir'] = data['wind']['deg']
+            self.data['windSpeed'] = data['wind'].get('speed', 0)
+            self.data['windDir'] = data['wind'].get('deg', 0)
 
         if 'rain' in data:
-            self.data['rain'] = data['rain']['3h']
+            self.data['rain'] = data['rain'].get('3h', 0)
         else:
             self.data['rain'] = 0
         return True

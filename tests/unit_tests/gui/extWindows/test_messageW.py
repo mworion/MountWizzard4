@@ -27,7 +27,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.messageW import MessageWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     func = MessageWindow(app=App())
     yield func

@@ -187,16 +187,16 @@ class CameraSupport:
             data = np.array(tmp, dtype=np.uint16).transpose()
         return data
 
-    def waitExposed(self, function, param, expTime):
+    def waitExposedAscom(self, expTime):
         """
-        :param function:
-        :param param:
         :param expTime:
         :return:
         """
         timeLeft = expTime
-        while not function(param):
+        while True:
             if self.abortExpose:
+                break
+            if self.getAscomProperty('ImageReady'):
                 break
             text = f'expose {timeLeft:3.0f} s'
             sleepAndEvents(100)
@@ -205,6 +205,30 @@ class CameraSupport:
                 timeLeft -= 0.1
             else:
                 timeLeft = 0
+            if self.getAscomProperty('CameraState') not in [1, 2]:
+                break
+        return True
+
+    def waitExposedAlpaca(self, expTime):
+        """
+        :param expTime:
+        :return:
+        """
+        timeLeft = expTime
+        while True:
+            if self.abortExpose:
+                break
+            if self.getAlpacaProperty('imageready'):
+                break
+            text = f'expose {timeLeft:3.0f} s'
+            sleepAndEvents(100)
+            self.signals.message.emit(text)
+            if timeLeft >= 0.1:
+                timeLeft -= 0.1
+            else:
+                timeLeft = 0
+            if self.getAlpacaProperty('camerastate') not in [1, 2]:
+                break
         return True
 
     def waitStart(self):

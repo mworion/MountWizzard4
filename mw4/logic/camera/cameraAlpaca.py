@@ -126,9 +126,8 @@ class CameraAlpaca(AlpacaClass, CameraSupport):
         self.setAlpacaProperty('starty', StartY=int(posY / binning))
         self.setAlpacaProperty('numx', NumX=int(width / binning))
         self.setAlpacaProperty('numy', NumY=int(height / binning))
-
         self.setAlpacaProperty('startexposure', Duration=expTime, Light=True)
-        self.waitExposed(self.getAlpacaProperty, 'imageready', expTime)
+        self.waitExposedAlpaca(expTime)
         self.signals.exposed.emit()
         data = self.retrieveFits(self.getAlpacaProperty, 'imagearray')
         self.signals.downloaded.emit()

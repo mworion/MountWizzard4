@@ -26,6 +26,8 @@ import numpy as np
 # local import
 from logic.camera.cameraSupport import CameraSupport
 import logic.camera.cameraSupport
+from logic.camera.cameraAscom import CameraAscom
+from logic.camera.cameraAlpaca import CameraAlpaca
 from base.driverDataClass import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -123,7 +125,7 @@ def test_saveFits_2(function):
                         with mock.patch.object(function,
                                                'writeHeaderFocus'):
                             with mock.patch.object(fits.PrimaryHDU,
-                                               'writeto'):
+                                                   'writeto'):
                                 val = function.saveFits('', data, 1, 1, 1)
                                 assert val == ''
 
@@ -152,41 +154,132 @@ def test_retrieveFits_3(function):
     assert len(val) == 3
 
 
-def test_waitExposed_1(function):
-    def func(p):
-        return False
+def test_waitExposedAscom_1(function):
+    func = CameraAscom(app=App(), data={})
+    func.signals = Signals()
 
-    function.abortExpose = True
-    suc = function.waitExposed(func, 'test', 1)
+    def prop(a):
+        if a == 'ImageReady':
+            return True
+        elif a == 'CameraState':
+            return 2
+
+    func.getAscomProperty = prop
+    func.abortExpose = True
+    suc = func.waitExposedAscom(1)
     assert suc
 
 
-def test_waitExposed_2(function):
-    function.start = True
+def test_waitExposedAscom_2(function):
+    func = CameraAscom(app=App(), data={})
+    func.signals = Signals()
 
-    def func(p):
-        function.start = not function.start
-        return function.start
+    def prop(a):
+        if a == 'ImageReady':
+            return True
+        elif a == 'CameraState':
+            return 3
 
-    function.abortExpose = False
-    with mock.patch.object(logic.camera.cameraSupport,
-                           'sleepAndEvents'):
-        suc = function.waitExposed(func, 'test', 0)
-        assert suc
+    func.getAscomProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAscom(1)
+    assert suc
 
 
-def test_waitExposed_3(function):
-    function.start = True
+def test_waitExposedAscom_3(function):
+    func = CameraAscom(app=App(), data={})
+    func.signals = Signals()
 
-    def func(p):
-        function.start = not function.start
-        return function.start
+    def prop(a):
+        if a == 'ImageReady':
+            return False
+        elif a == 'CameraState':
+            return 3
 
-    function.abortExpose = False
-    with mock.patch.object(logic.camera.cameraSupport,
-                           'sleepAndEvents'):
-        suc = function.waitExposed(func, 'test', 1)
-        assert suc
+    func.getAscomProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAscom(1)
+    assert suc
+
+
+def test_waitExposedAscom_4(function):
+    func = CameraAscom(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        if a == 'ImageReady':
+            return False
+        elif a == 'CameraState':
+            return 3
+
+    func.getAscomProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAscom(0)
+    assert suc
+
+
+def test_waitExposedAlpaca_1(function):
+    func = CameraAlpaca(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        if a == 'imageready':
+            return True
+        elif a == 'camerastate':
+            return 2
+
+    func.getAlpacaProperty = prop
+    func.abortExpose = True
+    suc = func.waitExposedAlpaca(1)
+    assert suc
+
+
+def test_waitExposedAlpaca_2(function):
+    func = CameraAlpaca(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        if a == 'imageready':
+            return True
+        elif a == 'camerastate':
+            return 3
+
+    func.getAlpacaProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAlpaca(1)
+    assert suc
+
+
+def test_waitExposedAlpaca_3(function):
+    func = CameraAlpaca(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        if a == 'imageready':
+            return False
+        elif a == 'camerastate':
+            return 3
+
+    func.getAlpacaProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAlpaca(1)
+    assert suc
+
+
+def test_waitExposedAlpaca_4(function):
+    func = CameraAlpaca(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        if a == 'imageready':
+            return False
+        elif a == 'camerastate':
+            return 3
+
+    func.getAlpacaProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAlpaca(0)
+    assert suc
 
 
 def test_waitStart_1(function):

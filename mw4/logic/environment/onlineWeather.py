@@ -246,7 +246,7 @@ class OnlineWeather():
         lon = self.location.longitude.degrees
 
         webSite = f'http://{self.hostaddress}/data/2.5/weather'
-        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.apiKey}'
-        self.getOpenWeatherMapData(url=url)
+        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}'
+        self.getOpenWeatherMapData(url=url + f'&APPID={self.apiKey}')
         self.log.debug(f'{url}')
         return True

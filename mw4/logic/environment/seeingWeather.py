@@ -212,6 +212,7 @@ class SeeingWeather():
         lon = self.location.longitude.degrees
 
         webSite = f'http://{self.hostaddress}/feed/seeing_json'
-        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&apikey={self.b}&tz=utc'
-        self.getSeeingData(url=url)
+        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&tz=utc'
+        self.getSeeingData(url=url + f'&apikey={self.b}')
+        self.log.debug(f'{url}')
         return True

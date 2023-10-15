@@ -34,13 +34,22 @@ class SensorWeatherAscom(AscomClass):
         """
         :return: true for test purpose
         """
-        self.getAndStoreAscomProperty('temperature', 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
-        self.getAndStoreAscomProperty('pressure', 'WEATHER_PARAMETERS.WEATHER_PRESSURE')
-        self.getAndStoreAscomProperty('dewpoint', 'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
-        self.getAndStoreAscomProperty('humidity', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
-        self.getAndStoreAscomProperty('skyquality', 'SKY_QUALITY.SKY_BRIGHTNESS')
-        self.getAndStoreAscomProperty('cloudcover', 'cloudCover')
-        self.getAndStoreAscomProperty('rainrate', 'rain')
-        self.getAndStoreAscomProperty('winddirection', 'windDir')
-        self.getAndStoreAscomProperty('windspeed', 'windSpeed')
+        self.getAndStoreAscomProperty('temperature',
+                                      'WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
+        self.getAndStoreAscomProperty('pressure',
+                                      'WEATHER_PARAMETERS.WEATHER_PRESSURE')
+        self.getAndStoreAscomProperty('dewpoint',
+                                      'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
+        self.getAndStoreAscomProperty('humidity',
+                                      'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
+        self.getAndStoreAscomProperty('skyquality',
+                                      'SKY_QUALITY.SKY_BRIGHTNESS')
+        self.getAndStoreAscomProperty('cloudcover',
+                                      'cloudCover')
+        self.getAndStoreAscomProperty('rainrate',
+                                      'rain')
+        self.getAndStoreAscomProperty('winddirection',
+                                      'windDir')
+        self.getAndStoreAscomProperty('windspeed',
+                                      'windSpeed')
         return True

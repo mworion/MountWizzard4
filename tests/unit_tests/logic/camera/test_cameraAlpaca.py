@@ -99,7 +99,7 @@ def test_workerExpose_1(function):
         with mock.patch.object(function,
                                'setAlpacaProperty'):
             with mock.patch.object(function,
-                                   'waitExposed'):
+                                   'waitExposedAlpaca'):
                 with mock.patch.object(function,
                                        'retrieveFits'):
                     with mock.patch.object(function,

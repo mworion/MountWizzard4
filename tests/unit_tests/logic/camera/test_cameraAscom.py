@@ -118,7 +118,7 @@ def test_workerExpose_1(function):
         with mock.patch.object(function,
                                'setAscomProperty'):
             with mock.patch.object(function,
-                                   'waitExposed'):
+                                   'waitExposedAscom'):
                 with mock.patch.object(function,
                                        'retrieveFits'):
                     with mock.patch.object(function,

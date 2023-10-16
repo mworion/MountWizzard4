@@ -31,7 +31,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.satelliteW import SatelliteWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(scope='module')
 def function(qapp):
     with mock.patch.object(pickle,
                            'load'):

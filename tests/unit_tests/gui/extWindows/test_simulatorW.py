@@ -30,11 +30,10 @@ from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.simulator import tools
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def function(qapp):
     func = SimulatorWindow(app=App())
     yield func
-    del func
 
 
 def test_initConfig_1(function):

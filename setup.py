@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: support for astap D80 database
 - improve: more robust implementation against touptek drivers
 - improve: add more information to the log file seeing
 - improve: openweathermap data handling (API) 
@@ -29,7 +30,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.4b0',
+    version='3.2.4b1',
     packages=[
         'mw4',
         'mw4.base',

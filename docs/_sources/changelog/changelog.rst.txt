@@ -7,6 +7,13 @@ Released versions of MW4
 ------------------------
 Version 3.0
 ^^^^^^^^^^^
+3.2.4
+
+- add: support for astap D80 database
+- improve: more robust implementation against touptek drivers
+- improve: add more information to the log file seeing
+- improve: openweathermap data handling (API)
+
 3.2.3
 
 - fix: correct editing points, when slew path is not selected

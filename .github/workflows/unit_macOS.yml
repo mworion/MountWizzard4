@@ -54,7 +54,7 @@ jobs:
   run_tests_macos_2:
     #
     needs: build_package
-    runs-on: macos-11
+    runs-on: macos-13
     
     steps:
       - uses: actions/checkout@v3.3.0

@@ -30,7 +30,7 @@ from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.simulator import tools
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func,

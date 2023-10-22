@@ -51,7 +51,7 @@ jobs:
           pytest tests/unit_tests/zMainApp
           pytest tests/unit_tests/gui/mainWindow
 
-  run_tests_macos_2:
+  run_tests_macos_2a:
     #
     needs: build_package
     runs-on: macos-latest

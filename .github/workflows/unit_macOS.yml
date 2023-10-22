@@ -71,6 +71,22 @@ jobs:
           pytest tests/unit_tests/mountcontrol
           pytest tests/unit_tests/indibase
           pytest tests/unit_tests/gui/utilities
+
+  run_tests_macos_2b:
+    #
+    needs: build_package
+    runs-on: macos-latest
+    
+    steps:
+      - uses: actions/checkout@v3.3.0
+        with:
+          ref: ${{env.branch}}
+  
+      - name: install package
+        uses: ./.github/actions/setup_test
+
+      - name: running_unit_tests
+        run: |
           pytest tests/unit_tests/gui/extWindows
 
   run_tests_macos_3:

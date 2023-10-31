@@ -83,14 +83,14 @@ setup(
         'importlib_metadata==6.8.0',
         'python-dateutil==2.8.2',
         'wakeonlan==3.0.0',
-        'pybase64==1.2.3',
-        'websocket-client==1.6.1',
+        'pybase64==1.3.1',
+        'websocket-client==1.6.4',
         'hidapi==0.14.0',
         'range-key-dict==1.1.0',
         'ndicts==0.3.0',
-        'packaging==23.1',
+        'packaging==23.2',
         'lz4==4.3.2',
-        'xisf==0.9.0',
+        'xisf==0.9.3',
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])

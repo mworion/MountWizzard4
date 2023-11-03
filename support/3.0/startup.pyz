@@ -84,11 +84,11 @@ def installBasicPackages():
     prt('... adding basic packages')
     command = [py, '-m', 'pip', 'install', 'pip', '-U']
     run(command)
-    command = [py, '-m', 'pip', 'install', 'requests', '-U']
-    run(command)
     command = [py, '-m', 'pip', 'install', 'wheel', '-U']
     run(command)
     command = [py, '-m', 'pip', 'install', 'packaging', '-U']
+    run(command)
+    command = [py, '-m', 'pip', 'install', 'requests', '-U']
     run(command)
 
 
@@ -96,7 +96,10 @@ try:
     import requests
 except ImportError:
     installBasicPackages()
-    import requests
+except ModuleNotFoundError:
+    installBasicPackages()
+
+import requests
 
 try:
     from packaging.utils import Version

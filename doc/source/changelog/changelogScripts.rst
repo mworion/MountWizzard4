@@ -8,6 +8,14 @@ Unreleased versions of scripts
 
 Released versions of scripts
 ----------------------------
+3.3
+
+- adding verbose option to get outputs during install
+
+3.2
+
+- remove support for win32
+
 3.1
 
 - enable back aarch64 support for arm

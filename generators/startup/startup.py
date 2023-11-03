@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.2'
+version = '3.3'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -57,8 +57,10 @@ def run(command):
                                    stderr=subprocess.STDOUT,
                                    text=True)
         for stdout_line in iter(process.stdout.readline, ""):
-            if stdout_line:
-                log.info(stdout_line.strip('\n'))
+            line = stdout_line.strip('\n')
+            if options.verbose:
+                prt(line[:40] + ' ...' if len(line) > 40 else line[:40])
+            log.info(line)
         output = process.communicate(timeout=60)[0]
 
     except subprocess.TimeoutExpired as e:
@@ -79,7 +81,7 @@ def installBasicPackages():
     """
     :return:
     """
-    prt('...adding basic packages')
+    prt('... adding basic packages')
     command = [py, '-m', 'pip', 'install', 'pip', '-U']
     run(command)
     command = [py, '-m', 'pip', 'install', 'requests', '-U']
@@ -224,7 +226,7 @@ def cleanSystem():
     :return:
     """
     prt('Clean system site-packages')
-    prt('...takes some time')
+    prt('... takes some time')
     ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
     prt(ret)
     ret = os.popen(f'{py} -m pip uninstall -y -r clean.txt').read()
@@ -357,16 +359,16 @@ def downloadAndInstallWheels(venvContext, version=None):
         log.info('Path version 2.x.y')
     else:
         log.info('No actual supported version')
-        prt('...no supported version')
+        prt('... no supported version')
         return False
 
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
     for item in wheels[versionKey][ver]:
-        prt(f'...{item.split("-")[0]}-{item.split("-")[1]}')
+        prt(f'... {item.split("-")[0]}-{item.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
         suc = runPythonInVenv(venvContext, command)
         if not suc:
-            prt('...error install precompiled packages')
+            prt('... error install precompiled packages')
             return False
     prt('Precompiled packages ready')
     return True
@@ -443,9 +445,9 @@ def install(venvContext, version='', isTest=False):
     :param isTest:
     :return:
     """
-    command = ['-m', 'pip', 'install', 'wheel']
-    runPythonInVenv(venvContext, command)
     command = ['-m', 'pip', 'install', 'pip', '-U']
+    runPythonInVenv(venvContext, command)
+    command = ['-m', 'pip', 'install', 'wheel']
     runPythonInVenv(venvContext, command)
 
     if isTest:
@@ -455,7 +457,7 @@ def install(venvContext, version='', isTest=False):
         prt(f'Install version {version}')
         command = ['-m', 'pip', 'install', f'mountwizzard4=={version}']
 
-    prt('...this will take some time')
+    prt('... this will take some time')
     suc = runPythonInVenv(venvContext, command)
     return suc
 
@@ -575,10 +577,12 @@ def main(options):
         version=options.version)
 
     if not options.noStart and loaderPath:
-        prt('MountWizzard4 starting')
+        prt('MountWizzard4 starting ...')
         suc = runPythonInVenv(venvContext, loaderPath)
         if not suc:
-            prt('...failed to start MountWizzard4')
+            prt('... failed to start MountWizzard4')
+        else:
+            prt('... stopping MountWizzard4')
     elif not loaderPath:
         prt('Install failed')
 
@@ -599,6 +603,9 @@ def readOptions():
     parser.add_argument(
         '-n', '--no-start', default=False, action='store_true', dest='noStart',
         help='Running script without starting MountWizzard4')
+    parser.add_argument(
+        '--verbose', default=False, action='store_true', dest='verbose',
+        help='setting verbose output')
     parser.add_argument(
         '-s', '--scale', default=1, type=float, dest='scale',
         help='Setting Qt DPI scale factor (+scale = +size, default=1)')
@@ -627,6 +634,6 @@ if __name__ == '__main__':
     options = readOptions()
     main(options)
     prt('-' * 45)
-    prt('Closing application')
+    prt('Closing startup/install script')
     prt('-' * 45)
     prt()

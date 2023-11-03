@@ -303,10 +303,11 @@ def venvCreate(venvPath, upgrade=False):
     return venvBuilder.context
 
 
-def downloadAndInstallWheels(venvContext, version=None):
+def downloadAndInstallWheels(venvContext, version=None, verbose=False):
     """
     :param venvContext:
     :param version:
+    :param verbose:
     :return:
     """
     preRepo = 'https://github.com/mworion/MountWizzard4'
@@ -371,7 +372,7 @@ def downloadAndInstallWheels(venvContext, version=None):
     for item in wheels[versionKey][ver]:
         prt(f'... {item.split("-")[0]}-{item.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
-        suc = runPythonInVenv(venvContext, command)
+        suc = runPythonInVenv(venvContext, command, verbose=verbose)
         if not suc:
             prt('... error install precompiled packages')
             return False
@@ -443,17 +444,18 @@ def getVersion(isTest, updateBeta, version):
     return version
 
 
-def install(venvContext, version='', isTest=False):
+def install(venvContext, version='', isTest=False, verbose=False):
     """
     :param venvContext:
     :param version:
     :param isTest:
+    :param verbose:
     :return:
     """
     command = ['-m', 'pip', 'install', 'pip', '-U']
-    runPythonInVenv(venvContext, command)
+    runPythonInVenv(venvContext, command, verbose=verbose)
     command = ['-m', 'pip', 'install', 'wheel']
-    runPythonInVenv(venvContext, command)
+    runPythonInVenv(venvContext, command, verbose=verbose)
 
     if isTest:
         prt('Install local package mountwizzard4.tar.gz')
@@ -463,7 +465,7 @@ def install(venvContext, version='', isTest=False):
         command = ['-m', 'pip', 'install', f'mountwizzard4=={version}']
 
     prt('... this will take some time')
-    suc = runPythonInVenv(venvContext, command)
+    suc = runPythonInVenv(venvContext, command, verbose=verbose)
     return suc
 
 
@@ -516,7 +518,7 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version='',
         return ''
 
     elif isArm64bit:
-        suc = downloadAndInstallWheels(venvContext, version=version)
+        suc = downloadAndInstallWheels(venvContext, version=version, verbose=verbose)
         if not suc:
             return ''
 

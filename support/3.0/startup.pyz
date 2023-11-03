@@ -46,9 +46,10 @@ def prt(*args):
     print('    ', *args)
 
 
-def run(command):
+def run(command, verbose=False):
     """
     :param command:
+    :param verbose:
     :return:
     """
     try:
@@ -58,7 +59,7 @@ def run(command):
                                    text=True)
         for stdout_line in iter(process.stdout.readline, ""):
             line = stdout_line.strip('\n')
-            if options.verbose:
+            if verbose:
                 prt(line[:40] + ' ...' if len(line) > 40 else line[:40])
             log.info(line)
         output = process.communicate(timeout=60)[0]
@@ -237,14 +238,15 @@ def cleanSystem():
     prt('Clean finished')
 
 
-def runPythonInVenv(venvContext, command):
+def runPythonInVenv(venvContext, command, verbose=False):
     """
     :param venvContext:
     :param command:
+    :param verbose:
     :return:
     """
     command = [venvContext.env_exe] + command
-    return run(command)
+    return run(command, verbose=verbose)
 
 
 def runBinInVenv(venvContext, command):
@@ -482,12 +484,14 @@ def checkIfInstalled(venvContext):
     return isInstalled, loaderPath
 
 
-def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
+def prepareInstall(venvContext, update=False, updateBeta=False, version='',
+                   verbose=False):
     """
     :param venvContext:
     :param update:
     :param updateBeta:
     :param version:
+    :param verbose:
     :return:
     """
     isInstalled, loaderPath = checkIfInstalled(venvContext)
@@ -519,7 +523,7 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
     elif isArm32bit:
         return ''
 
-    suc = install(venvContext, version=version, isTest=isTest)
+    suc = install(venvContext, version=version, isTest=isTest, verbose=verbose)
     if not suc:
         return ''
 
@@ -577,7 +581,8 @@ def main(options):
         venvContext,
         update=options.update,
         updateBeta=options.updateBeta,
-        version=options.version)
+        version=options.version,
+        verbose=options.verbose)
 
     if not options.noStart and loaderPath:
         prt('MountWizzard4 starting ...')

@@ -127,85 +127,61 @@ def test_startRetry_1(function):
 def test_startRetry_2(function):
     function.deviceName = 'test'
     function.device = Device()
-    function.data = {}
-    suc = function.startRetry()
-    assert not suc
+    function.client.connected = True
+    with mock.patch.object(function.client,
+                           'connectServer',
+                           return_value=True):
+        suc = function.startRetry()
+        assert not suc
 
 
 def test_startRetry_3(function):
-    function.deviceConnected = False
     function.deviceName = 'test'
     function.device = Device()
-    function.data = {}
+    function.client.connected = False
     with mock.patch.object(function.client,
                            'connectServer',
                            return_value=True):
         suc = function.startRetry()
         assert suc
-        assert not function.deviceConnected
-
-
-def test_startRetry_4(function):
-    function.deviceConnected = False
-    function.deviceName = 'test'
-    function.device = Device()
-    function.data = {'test': 1}
-    with mock.patch.object(function.client,
-                           'connectServer',
-                           return_value=False):
-        suc = function.startRetry()
-        assert suc
-        assert function.deviceConnected
 
 
 def test_startCommunication_1(function):
     function.data = {}
     with mock.patch.object(function.client,
-                           'startTimers',
+                           'connectServer',
                            return_value=False):
-        with mock.patch.object(function.client,
-                               'connectServer',
-                               return_value=False):
-            with mock.patch.object(function.timerRetry,
-                                   'start'):
-                suc = function.startCommunication()
-                assert not suc
+        with mock.patch.object(function.timerRetry,
+                               'start'):
+            suc = function.startCommunication()
+            assert suc
 
 
 def test_startCommunication_2(function):
     function.data = {}
     with mock.patch.object(function.client,
-                           'startTimers',
-                           return_value=False):
-        with mock.patch.object(function.client,
-                               'connectServer',
-                               return_value=True):
-            with mock.patch.object(function.timerRetry,
-                                   'start'):
-                suc = function.startCommunication()
-                assert suc
+                           'connectServer',
+                           return_value=True):
+        with mock.patch.object(function.timerRetry,
+                               'start'):
+            suc = function.startCommunication()
+            assert suc
 
 
 def test_stopCommunication_1(function):
     with mock.patch.object(function.client,
-                           'stopTimers',
+                           'disconnectServer',
                            return_value=False):
-        with mock.patch.object(function.client,
-                               'disconnectServer',
-                               return_value=False):
-            suc = function.stopCommunication()
-            assert not suc
+        suc = function.stopCommunication()
+        assert not suc
 
 
 def test_stopCommunication_2(function):
     with mock.patch.object(function.client,
-                           'stopTimers',
-                           return_value=False):
-        with mock.patch.object(function.client,
-                               'disconnectServer',
-                               return_value=True):
-            suc = function.stopCommunication()
-            assert suc
+                           'disconnectServer',
+                           return_value=True):
+        suc = function.stopCommunication()
+        assert suc
 
 
 def test_connectDevice1(function):

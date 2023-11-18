@@ -22,7 +22,7 @@ from PyQt5.QtCore import QTimer
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from indibase.qtIndiBase import Client
+from indibase.indiBase import Client
 from base.driverDataClass import Signals
 
 
@@ -106,7 +106,7 @@ class IndiClass:
         self.msg = app.msg
         self.data = data
         self.threadPool = app.threadPool
-        self.client = Client(host=None, threadPool=app.threadPool)
+        self.client = Client(host=None)
 
         clientSig = self.client.signals
         selfSig = self.signals
@@ -121,7 +121,6 @@ class IndiClass:
         self._hostaddress = None
         self._host = None
         self._port = None
-        self.retryCounter = 0
         self.discoverType = None
         self.discoverList = None
         self.isINDIGO = False
@@ -249,43 +248,27 @@ class IndiClass:
 
         :return: True for test purpose
         """
+        self.timerRetry.start(self.RETRY_DELAY)
         if not self.deviceName:
             return False
-        if self.data:
-            self.deviceConnected = True
-            return True
+        if self.client.connected:
+            return False
 
-        self.retryCounter += 1
-        suc = self.client.connectServer()
-        if suc:
-            return True
-
-        t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
-        self.log.debug(t)
-        if self.retryCounter < self.NUMBER_RETRY:
-            self.timerRetry.start(self.RETRY_DELAY)
-        return False
+        self.client.connectServer()
+        return True
 
     def startCommunication(self):
         """
         :return: success of reconnecting to server
         """
         self.data.clear()
-        self.retryCounter = 0
-        self.client.startTimers()
-        suc = self.client.connectServer()
-        if not suc:
-            t = f'Cannot start: [{self.deviceName}] retries: [{self.retryCounter}]'
-            self.log.debug(t)
-        else:
-            self.timerRetry.start(self.RETRY_DELAY)
-        return suc
+        self.timerRetry.start(self.RETRY_DELAY)
+        return True
 
     def stopCommunication(self):
         """
         :return: success of reconnecting to server
         """
-        self.client.stopTimers()
         suc = self.client.disconnectServer(self.deviceName)
         self.deviceName = ''
         self.deviceConnected = False

@@ -20,7 +20,7 @@ import logging
 # external packages
 import PyQt5
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
+from PyQt5.QtNetwork import QTcpSocket
 import xml.etree.ElementTree as ETree
 
 # local import
@@ -66,11 +66,6 @@ class Device(object):
     Device implements an INDI Device. it relies on PyQt5 and it's signalling scheme.
     there might be not all capabilities implemented right now. all the data, properties
     and attributes are stored in a device dict.
-
-        >>> indiDevice = Device(
-        >>>                     name=''
-        >>>                     )
-
     """
 
     __all__ = ['Device']
@@ -204,16 +199,11 @@ class Device(object):
 
 class Client(QObject):
     """
-    Client implements an INDI Base Client for INDI servers. it rely on PyQt5 and it's
-    signalling scheme. there might be not all capabilities implemented right now. all
-    the data, properties and attributes are stored in a the devices dict.
-    The reading and parsing of the XML data is done in a streaming way, so for xml the
-    xml.parse.feed() mechanism is used.
-
-        >>> indiClient = Client(
-        >>>                     host=host
-        >>>                     )
-
+    Client implements an INDI Base Client for INDI servers. it relies on PyQt5
+    and it's signalling scheme. there might be not all capabilities implemented
+    right now. all the data, properties and attributes are stored in a device
+    dict. The reading and parsing of the XML data is done in a streaming way,
+    so for xml the xml.parse.feed() mechanism is used.
     """
 
     __all__ = ['Client']
@@ -237,9 +227,7 @@ class Client(QObject):
     DEFAULT_PORT = 7624
     CONNECTION_TIMEOUT = 1000
 
-    def __init__(self,
-                 host=None,
-                 ):
+    def __init__(self, host=None):
         super().__init__()
 
         self.host = host
@@ -250,9 +238,10 @@ class Client(QObject):
         self.curDepth = 0
         self.parser = None
         self.socket = QTcpSocket()
-        self.socket.readyRead.connect(self._handleReadyRead)
-        self.socket.error.connect(self._handleError)
+        self.socket.readyRead.connect(self.handleReadyRead)
+        self.socket.errorOccurred.connect(self.handleError)
         self.socket.disconnected.connect(self.handleDisconnected)
+        self.socket.connected.connect(self.handleConnected)
         self.clearParser()
 
     @property
@@ -337,15 +326,13 @@ class Client(QObject):
         if self._host is None:
             return False
         if self.connected:
-            return True
-
-        self.socket.connectToHost(*self._host)
-        if not self.socket.waitForConnected(self.CONNECTION_TIMEOUT * 1000):
-            self.connected = False
             return False
 
-        self.connected = True
-        self.signals.serverConnected.emit()
+        self.connected = False
+        if self.socket.state() != QTcpSocket.UnconnectedState:
+            self.socket.abort()
+
+        self.socket.connectToHost(*self._host)
         return True
 
     def clearDevices(self, deviceName=''):
@@ -380,15 +367,6 @@ class Client(QObject):
         self.clearDevices(deviceName)
         self.signals.serverDisconnected.emit(self.devices)
         self.socket.abort()
-        return True
-
-    @PyQt5.QtCore.pyqtSlot()
-    def handleDisconnected(self):
-        """
-        :return: nothing
-        """
-        self.connected = False
-        self.log.info('INDI client disconnected')
         return True
 
     def isServerConnected(self):
@@ -980,8 +958,7 @@ class Client(QObject):
         self.log.error(f'Unknown vectors: [{chunk}]')
         return False
 
-    @PyQt5.QtCore.pyqtSlot()
-    def _handleReadyRead(self):
+    def handleReadyRead(self):
         """
         _handleReadyRead gets the date in buffer signal and starts to read data
         from the network. as long as data is streaming, it feeds to the xml
@@ -1020,15 +997,28 @@ class Client(QObject):
 
         return True
 
-    @PyQt5.QtCore.pyqtSlot(QAbstractSocket.SocketError)
-    def _handleError(self, socketError):
+    def handleConnected(self):
+        """
+        :return:
+        """
+        self.connected = True
+        self.signals.serverConnected.emit()
+        return True
+
+    def handleDisconnected(self):
+        """
+        :return: nothing
+        """
+        self.connected = False
+        self.signals.serverDisconnected.emit(self._host)
+        self.log.info('INDI client disconnected')
+        return True
+
+    def handleError(self, socketError):
         """
         :param socketError: the error from socket library
         :return: nothing
         """
-        if not self.connected:
-            return False
-
-        self.log.error(f'INDI connection fault, error: [{socketError}]')
+        self.log.error(f'INDI error: [{socketError}]')
         self.disconnectServer()
         return True

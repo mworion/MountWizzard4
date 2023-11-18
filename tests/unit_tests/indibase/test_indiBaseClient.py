@@ -98,7 +98,7 @@ def test_connectServer_2(function):
     function._host = ('localhost', 7624)
     function.connected = True
     suc = function.connectServer()
-    assert suc
+    assert not suc
 
 
 def test_connectServer_3(function):
@@ -107,24 +107,13 @@ def test_connectServer_3(function):
     with mock.patch.object(function.socket,
                            'connectToHost'):
         with mock.patch.object(function.socket,
-                               'waitForConnected',
-                               return_value=False):
-            suc = function.connectServer()
-            assert not suc
-            assert not function.connected
-
-
-def test_connectServer_4(function):
-    function._host = ('localhost', 7624)
-    function.connected = False
-    with mock.patch.object(function.socket,
-                           'connectToHost'):
-        with mock.patch.object(function.socket,
-                               'waitForConnected',
-                               return_value=True):
-            suc = function.connectServer()
-            assert suc
-            assert function.connected
+                               'state',
+                               return_value=1):
+            with mock.patch.object(function.socket,
+                                   'abort'):
+                suc = function.connectServer()
+                assert suc
+                assert not function.connected
 
 
 def test_clearDevices_1(function):
@@ -150,13 +139,6 @@ def test_disconnectServer(function):
                                    'abort'):
                 suc = function.disconnectServer()
                 assert suc
-
-
-def test_handleDisconnected(function):
-    function.connected = True
-    suc = function.handleDisconnected()
-    assert suc
-    assert not function.connected
 
 
 def test_isServerConnected_1(function):
@@ -1029,7 +1011,7 @@ def test_handleReadyRead_1(function):
             with mock.patch.object(function.parser,
                                    'read_events',
                                    side_effect=Exception):
-                suc = function._handleReadyRead()
+                suc = function.handleReadyRead()
                 assert not suc
                 assert function.curDepth == 0
 
@@ -1044,7 +1026,7 @@ def test_handleReadyRead_2(function):
             with mock.patch.object(function.parser,
                                    'read_events',
                                    return_value=[('end', elem)]):
-                suc = function._handleReadyRead()
+                suc = function.handleReadyRead()
                 assert suc
                 assert function.curDepth == -1
 
@@ -1059,7 +1041,7 @@ def test_handleReadyRead_3(function):
             with mock.patch.object(function.parser,
                                    'read_events',
                                    return_value=[('start', elem)]):
-                suc = function._handleReadyRead()
+                suc = function.handleReadyRead()
                 assert suc
                 assert function.curDepth == 1
 
@@ -1074,7 +1056,7 @@ def test_handleReadyRead_4(function):
             with mock.patch.object(function.parser,
                                    'read_events',
                                    return_value=[('test', elem)]):
-                suc = function._handleReadyRead()
+                suc = function.handleReadyRead()
                 assert suc
                 assert function.curDepth == 0
 
@@ -1098,20 +1080,28 @@ def test_handleReadyRead_5(function):
                                        '_parseCmd'):
                     with mock.patch.object(indiXML,
                                            'parseETree'):
-                        suc = function._handleReadyRead()
+                        suc = function.handleReadyRead()
                         assert suc
                         assert function.curDepth == 0
 
 
+def test_handleConnected(function):
+    function.connected = True
+    suc = function.handleConnected()
+    assert suc
+    assert function.connected
+
+
+def test_handleDisconnected(function):
+    function.connected = True
+    suc = function.handleDisconnected()
+    assert suc
+    assert not function.connected
+
+
 def test_handleError_1(function):
-    function.connected = False
-    suc = function._handleError('')
-    assert not suc
-
-
-def test_handleError_2(function):
     function.connected = True
     with mock.patch.object(function,
                            'disconnectServer'):
-        suc = function._handleError('')
+        suc = function.handleError('')
         assert suc

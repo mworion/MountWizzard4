@@ -197,6 +197,7 @@ class IndiClass:
             suc = self.client.watchDevice(self.deviceName)
             self.log.info(f'INDI watch: [{self.deviceName}], result: [{suc}]')
             return suc
+        self.client.watchDevice()
         return False
 
     def serverDisconnected(self, devices):
@@ -546,7 +547,6 @@ class IndiClass:
         self.discoverType = self.INDI_TYPES.get(deviceType, 0)
         self.client.signals.defText.connect(self.addDiscoveredDevice)
         self.client.connectServer()
-        self.client.watchDevice()
         sleepAndEvents(2000)
         self.client.signals.defText.disconnect(self.addDiscoveredDevice)
         self.client.disconnectServer()

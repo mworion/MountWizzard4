@@ -57,7 +57,7 @@ def test_startCommunication_1(function):
 def test_startCommunication_2(function):
     function.framework = 'indi'
     suc = function.startCommunication()
-    assert not suc
+    assert suc
 
 
 def test_stopCommunication_1(function):

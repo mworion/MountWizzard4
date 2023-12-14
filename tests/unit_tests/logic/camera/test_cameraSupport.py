@@ -161,8 +161,6 @@ def test_waitExposedAscom_1(function):
     def prop(a):
         if a == 'ImageReady':
             return True
-        elif a == 'CameraState':
-            return 2
 
     func.getAscomProperty = prop
     func.abortExpose = True
@@ -177,44 +175,10 @@ def test_waitExposedAscom_2(function):
     def prop(a):
         if a == 'ImageReady':
             return True
-        elif a == 'CameraState':
-            return 3
 
     func.getAscomProperty = prop
     func.abortExpose = False
     suc = func.waitExposedAscom(1)
-    assert suc
-
-
-def test_waitExposedAscom_3(function):
-    func = CameraAscom(app=App(), data={})
-    func.signals = Signals()
-
-    def prop(a):
-        if a == 'ImageReady':
-            return False
-        elif a == 'CameraState':
-            return 3
-
-    func.getAscomProperty = prop
-    func.abortExpose = False
-    suc = func.waitExposedAscom(1)
-    assert suc
-
-
-def test_waitExposedAscom_4(function):
-    func = CameraAscom(app=App(), data={})
-    func.signals = Signals()
-
-    def prop(a):
-        if a == 'ImageReady':
-            return False
-        elif a == 'CameraState':
-            return 3
-
-    func.getAscomProperty = prop
-    func.abortExpose = False
-    suc = func.waitExposedAscom(0)
     assert suc
 
 
@@ -241,44 +205,10 @@ def test_waitExposedAlpaca_2(function):
     def prop(a):
         if a == 'imageready':
             return True
-        elif a == 'camerastate':
-            return 3
 
     func.getAlpacaProperty = prop
     func.abortExpose = False
     suc = func.waitExposedAlpaca(1)
-    assert suc
-
-
-def test_waitExposedAlpaca_3(function):
-    func = CameraAlpaca(app=App(), data={})
-    func.signals = Signals()
-
-    def prop(a):
-        if a == 'imageready':
-            return False
-        elif a == 'camerastate':
-            return 3
-
-    func.getAlpacaProperty = prop
-    func.abortExpose = False
-    suc = func.waitExposedAlpaca(1)
-    assert suc
-
-
-def test_waitExposedAlpaca_4(function):
-    func = CameraAlpaca(app=App(), data={})
-    func.signals = Signals()
-
-    def prop(a):
-        if a == 'imageready':
-            return False
-        elif a == 'camerastate':
-            return 3
-
-    func.getAlpacaProperty = prop
-    func.abortExpose = False
-    suc = func.waitExposedAlpaca(0)
     assert suc
 
 

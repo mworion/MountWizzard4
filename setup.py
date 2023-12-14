@@ -19,7 +19,6 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- improve: more robust implementation against touptek drivers
 - improve: add more information to the log file seeing
 - improve: openweathermap data handling (API) 
 """

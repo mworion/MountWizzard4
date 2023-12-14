@@ -205,8 +205,6 @@ class CameraSupport:
                 timeLeft -= 0.1
             else:
                 timeLeft = 0
-            if self.getAscomProperty('CameraState') not in [1, 2]:
-                break
         return True
 
     def waitExposedAlpaca(self, expTime):
@@ -227,8 +225,6 @@ class CameraSupport:
                 timeLeft -= 0.1
             else:
                 timeLeft = 0
-            if self.getAlpacaProperty('camerastate') not in [1, 2]:
-                break
         return True
 
     def waitStart(self):

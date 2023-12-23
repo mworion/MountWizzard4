@@ -40,10 +40,10 @@ class WeatherUPBIndi(IndiClass):
         if not super().setUpdateConfig(deviceName):
             return False
 
-        update = self.device.getNumber('POLLING')
-        update['PERIOD'] = self.updateRate
+        update = self.device.getNumber('POLLING_PERIOD')
+        update['PERIOD_MS'] = self.updateRate
         suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING',
+                                        propertyName='POLLING_PERIOD',
                                         elements=update)
         self.log.info(f'Polling [{deviceName}] success: [{suc}]')
         return suc

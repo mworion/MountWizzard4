@@ -36,7 +36,7 @@ class IndiClass:
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
 
-    SHOW_COMM = True
+    SHOW_COMM = False
 
     INDIGO = {
         # numbers

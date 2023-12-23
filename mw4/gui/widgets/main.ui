@@ -22651,7 +22651,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Power</string>
+         <string>Pegasus</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_46">
@@ -23450,7 +23450,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Power</string>
+         <string>Pegasus</string>
         </property>
        </widget>
        <widget class="QComboBox" name="powerWeatherDevice">

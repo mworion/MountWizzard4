@@ -19,8 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- improve: add more information to the log file seeing
-- improve: openweathermap data handling (API) 
+- improve: add support for pegasus uranus meteo sensor
 """
 
 with open('notes.txt', 'w') as f:
@@ -28,7 +27,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.5',
+    version='3.2.6b0',
     packages=[
         'mw4',
         'mw4.base',

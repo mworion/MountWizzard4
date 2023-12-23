@@ -47,3 +47,18 @@ class WeatherUPBIndi(IndiClass):
                                         elements=update)
         self.log.info(f'Polling [{deviceName}] success: [{suc}]')
         return suc
+
+    def updateNumber(self, deviceName, propertyName, elements):
+        """
+        adding the data from pegasus uranus meteo sensor to dicts
+        :param deviceName:
+        :param propertyName:
+        :param elements:
+        :return:
+        """
+        super().updateNumber(deviceName, propertyName, elements)
+        if propertyName == 'SENSORS.AbsolutePressure':
+            self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = elements['VALUE']
+        elif propertyName == 'SENSORS.DewPoint':
+            self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = elements['VALUE']
+        return True

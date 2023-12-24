@@ -182,6 +182,36 @@ def test_waitExposedAscom_2(function):
     assert suc
 
 
+def test_waitExposedAscom_3(function):
+    func = CameraAscom(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        func.abortExpose = True
+        if a == 'ImageReady':
+            return False
+
+    func.getAscomProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAscom(1)
+    assert suc
+
+
+def test_waitExposedAscom_4(function):
+    func = CameraAscom(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        func.abortExpose = True
+        if a == 'ImageReady':
+            return False
+
+    func.getAscomProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAscom(0.05)
+    assert suc
+
+
 def test_waitExposedAlpaca_1(function):
     func = CameraAlpaca(app=App(), data={})
     func.signals = Signals()
@@ -209,6 +239,36 @@ def test_waitExposedAlpaca_2(function):
     func.getAlpacaProperty = prop
     func.abortExpose = False
     suc = func.waitExposedAlpaca(1)
+    assert suc
+
+
+def test_waitExposedAlpaca_3(function):
+    func = CameraAlpaca(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        func.abortExpose = True
+        if a == 'imageready':
+            return False
+
+    func.getAlpacaProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAlpaca(1)
+    assert suc
+
+
+def test_waitExposedAlpaca_4(function):
+    func = CameraAlpaca(app=App(), data={})
+    func.signals = Signals()
+
+    def prop(a):
+        func.abortExpose = True
+        if a == 'imageready':
+            return False
+
+    func.getAlpacaProperty = prop
+    func.abortExpose = False
+    suc = func.waitExposedAlpaca(0.05)
     assert suc
 
 

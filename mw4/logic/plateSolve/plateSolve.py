@@ -194,9 +194,7 @@ class PlateSolve:
         fitsHeader.append(('MIRRORED', solve['mirroredS'], 'MW4 - solved'))
         fitsHeader.append(('COMMENT', 'There was a cleanup of parameters'))
 
-        fitsHeader.extend(wcsHeader,
-                          unique=True,
-                          update=True)
+        fitsHeader.extend(wcsHeader, unique=True, update=True)
 
         # remove polynomial coefficients keys if '-SIP' is not selected in
         # CTYPE1 and CTYPE2 this might occur, if you solve a fits file a second

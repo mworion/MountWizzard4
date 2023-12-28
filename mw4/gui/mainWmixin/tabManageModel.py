@@ -204,6 +204,7 @@ class ManageModel:
         model = self.app.mount.model
         altitude = np.array([x.alt.degrees for x in model.starList])
         if len(altitude) == 0:
+            self.ui.modelPositions.p[0].clear()
             return False
         azimuth = np.array([x.az.degrees for x in model.starList])
         error = np.array([x.errorRMS for x in model.starList])
@@ -227,8 +228,8 @@ class ManageModel:
         model = self.app.mount.model
         error = np.array([star.errorRMS for star in model.starList])
         if len(error) == 0:
+            self.ui.errorAscending.p[0].clear()
             return False
-
         index = np.array([star.number for star in model.starList])
         self.ui.errorAscending.p[0].setLabel('bottom', 'Starcount')
         self.ui.errorAscending.p[0].setLabel('left', 'Error per Star [arcsec]')
@@ -246,6 +247,7 @@ class ManageModel:
         model = self.app.mount.model
         error = np.array([x.errorRMS for x in model.starList])
         if len(error) == 0:
+            self.ui.errorDistribution.p[0].clear()
             return False
         errorAngle = np.array([x.errorAngle.degrees for x in model.starList])
         self.ui.errorDistribution.plot(

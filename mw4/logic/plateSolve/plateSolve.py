@@ -180,21 +180,19 @@ class PlateSolve:
             'mirroredS': mirrored,
         }
 
-        if 'RA' not in fitsHeader:
-            fitsHeader.append(('RA', wcsHeader['CRVAL1'],
-                               'MW4 - solved parameters'))
-        if 'DEC' not in fitsHeader:
-            fitsHeader.append(('DEC', wcsHeader['CRVAL2'],
-                               'MW4 - solved parameters'))
-
         if not updateFits:
             return solve, fitsHeader
 
-        fitsHeader.append(('SCALE', solve['scaleS'], 'MW4 - solved parameters'))
-        fitsHeader.append(('PIXSCALE', solve['scaleS'], 'MW4 - solved parameters'))
-        fitsHeader.append(('ANGLE', solve['angleS'], 'MW4 - solved parameters'))
-        fitsHeader.append(('MIRRORED', solve['mirroredS'], 'MW4 - solved parameters'))
-        fitsHeader.append(('COMMENT', 'There was a cleanup of parameters as well'))
+        if 'RA' not in fitsHeader:
+            fitsHeader.append(('RA', wcsHeader['CRVAL1'], 'MW4 - solved'))
+        if 'DEC' not in fitsHeader:
+            fitsHeader.append(('DEC', wcsHeader['CRVAL2'], 'MW4 - solved'))
+
+        fitsHeader.append(('SCALE', solve['scaleS'], 'MW4 - solved'))
+        fitsHeader.append(('PIXSCALE', solve['scaleS'], 'MW4 - solved'))
+        fitsHeader.append(('ANGLE', solve['angleS'], 'MW4 - solved'))
+        fitsHeader.append(('MIRRORED', solve['mirroredS'], 'MW4 - solved'))
+        fitsHeader.append(('COMMENT', 'There was a cleanup of parameters'))
 
         fitsHeader.extend(wcsHeader,
                           unique=True,

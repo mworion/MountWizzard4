@@ -19,7 +19,9 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- fix: typos and some minor bugs
 - improve: add support for pegasus uranus meteo sensor
+- improve: logging for NINA controlled cameras
 """
 
 with open('notes.txt', 'w') as f:
@@ -27,7 +29,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.6b1',
+    version='3.2.6b2',
     packages=[
         'mw4',
         'mw4.base',

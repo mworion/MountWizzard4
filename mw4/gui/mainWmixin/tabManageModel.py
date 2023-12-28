@@ -485,7 +485,7 @@ class ManageModel:
         else:
             text = f'Point: {wIndex + 1:3.0f}, RMS of {error:5.1f}'
             text += ' arcsec deleted.'
-            self.msg.emit(0, 'Model', 'Manage error', text)
+            self.msg.emit(0, 'Model', 'Manage', text)
             self.refreshModel()
 
         return True

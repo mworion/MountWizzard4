@@ -206,10 +206,12 @@ class CameraSGPro(SGProClass, CameraSupport):
 
         suc, response = self.sgCaptureImage(params=params)
         if not suc:
+            self.log.debug(f'No capture image. {response}')
             return False
 
         receipt = response.get('Receipt', '')
         if not receipt:
+            self.log.debug(f'No receipt received. {response}')
             return False
 
         self.waitStart()

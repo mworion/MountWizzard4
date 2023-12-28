@@ -18,6 +18,7 @@
 import queue
 import shutil
 import os
+import copy
 
 # external packages
 from mountcontrol.convert import convertToHMS, convertToDMS
@@ -80,7 +81,7 @@ class BasicRun:
             return False
 
         self.log.debug('Processing plate solving result')
-        mPoint = self.resultQueue.get()
+        mPoint = copy.copy(self.resultQueue.get())
         self.log.debug(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
 
         lenSequence = mPoint["lenSequence"]
@@ -160,7 +161,7 @@ class BasicRun:
             return False
 
         self.log.info('Solving started')
-        mPoint = self.solveQueue.get()
+        mPoint = copy.copy(self.solveQueue.get())
         self.app.showImage.emit(mPoint["imagePath"])
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
@@ -199,7 +200,7 @@ class BasicRun:
             return False
 
         self.log.info('Imaging started')
-        mPoint = self.imageQueue.get()
+        mPoint = copy.copy(self.imageQueue.get())
         self.collector.resetSignals()
         waitTime = 2 * mPoint.get('waitTime', 0)
         self.log.info(f'Waiting time is {mPoint.get("waitTime", 0)}')
@@ -253,7 +254,7 @@ class BasicRun:
             return False
 
         self.log.info('Slew started')
-        mPoint = self.slewQueue.get()
+        mPoint = copy.copy(self.slewQueue.get())
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'])
         if not suc:

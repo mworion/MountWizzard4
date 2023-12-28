@@ -1010,7 +1010,7 @@ class Client(QObject):
         :return: nothing
         """
         self.connected = False
-        self.signals.serverDisconnected.emit(self._host)
+        self.signals.serverDisconnected.emit(self.devices)
         self.log.info('INDI client disconnected')
         return True
 

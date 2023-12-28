@@ -202,13 +202,13 @@ class SettMount(object):
         """
         :return:
         """
-        enableSync = self.ui.clockSync.isChecked()
-        self.ui.syncTimeNone.setEnabled(enableSync)
-        self.ui.syncTimeCont.setEnabled(enableSync)
-        self.ui.syncTimeNotTrack.setEnabled(enableSync)
-        self.ui.clockOffset.setEnabled(enableSync)
-        self.ui.clockOffsetMS.setEnabled(enableSync)
-        if enableSync:
+        enableSyncTimer = self.ui.clockSync.isChecked()
+        self.ui.syncTimeNone.setEnabled(enableSyncTimer)
+        self.ui.syncTimeCont.setEnabled(enableSyncTimer)
+        self.ui.syncTimeNotTrack.setEnabled(enableSyncTimer)
+        self.ui.clockOffset.setEnabled(enableSyncTimer)
+        self.ui.clockOffsetMS.setEnabled(enableSyncTimer)
+        if enableSyncTimer:
             self.app.mount.startClockTimer()
         else:
             self.app.mount.stopClockTimer()
@@ -218,8 +218,8 @@ class SettMount(object):
         """
         :return:
         """
-        noSync = self.ui.syncTimeNone.isChecked()
-        if noSync:
+        syncTimeNone = self.ui.syncTimeNone.isChecked()
+        if syncTimeNone:
             return False
         if not self.deviceStat['mount']:
             return False

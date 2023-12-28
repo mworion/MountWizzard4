@@ -53,17 +53,18 @@ def getCoordinates(header=None):
     if hasDecimal:
         ra = convertToAngle(header['RA'], isHours=True)
         dec = convertToAngle(header['DEC'], isHours=False)
+        log.debug('Decimal coordinates used')
     elif hasSexagesimal:
         ra = convertRaToAngle(header['OBJCTRA'])
         dec = convertDecToAngle(header['OBJCTDEC'])
+        log.debug('Sexagesimal coordinates used')
     else:
         ra = Angle(hours=0)
         dec = Angle(degrees=0)
+        log.debug('No coordinates found')
 
-    log.trace(f'HasFloat: [{hasDecimal}], HasDeg: [{hasSexagesimal}], '
-              f'Header:[{header}]')
-    log.debug(f'HasFloat: [{hasDecimal}], HasDeg: [{hasSexagesimal}]')
-    log.debug(f'Ra:[{ra}][{ra.hours}], Dec: [{dec}][{dec.degrees}]')
+    log.trace(f'Header:[{header}]')
+    log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
 
     return ra, dec
 

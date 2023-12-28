@@ -482,7 +482,8 @@ class Model:
 
         self.msg.emit(0, 'Model', 'Run',
                       f'Programming {index + 1} model(s) to mount')
-        suc = self.programModelToMount(modelJSON)
+        self.model = modelJSON
+        suc = self.programModelToMount()
 
         if suc:
             self.msg.emit(0, 'Model', 'Run',

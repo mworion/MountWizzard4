@@ -200,9 +200,7 @@ class Watney(object):
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
                                                     wcsHeader=wcsHeader,
                                                     updateFits=updateFits)
-            self.log.trace(f'Header: [{header}]')
-            self.log.debug(f'Header RA: [{header["RA"]}]'
-                           f'DEC: [{header["DEC"]}')
+            self.log.debug(f'Header: [{header}]')
             self.log.debug(f'Solve : [{solve}]')
             fitsHDU[0].header = header
 

@@ -243,9 +243,9 @@ class PlateSolve:
             return False
 
         solver = self.run[self.framework]
-        self.mutexSolve.unlock()
         self.signals.done.emit(solver.result)
         self.signals.message.emit('')
+        self.mutexSolve.unlock()
         self.log.debug('Finished clear thread for solving')
         return True
 
@@ -275,11 +275,11 @@ class PlateSolve:
             return False
 
         if not self.mutexSolve.tryLock():
-            self.log.warning('overrun in solve threading')
+            self.log.warning('Overrun in solve threading')
             self.signals.done.emit(solver.result)
             return False
 
-        self.log.debug('Start thread for solving')
+        self.log.debug(f'Start thread for solving: {fitsPath}')
         self.signals.message.emit('solving')
         worker = tpool.Worker(solver.solve,
                               fitsPath=fitsPath,

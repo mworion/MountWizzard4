@@ -700,9 +700,6 @@ class PolarScatter(NormalScatter):
         :param kwargs:
         :return:
         """
-        if len(x) == 0:
-            super().plot([], [], limits=False)
-            return False
         x = np.radians(90 - x)
         if kwargs.get('reverse', False):
             posX = (90 - y) * np.cos(x)

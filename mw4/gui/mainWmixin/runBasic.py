@@ -80,10 +80,7 @@ class BasicRun:
             self.cancelRun()
             return False
 
-        self.log.debug('Processing plate solving result')
         mPoint = copy.copy(self.resultQueue.get())
-        self.log.debug(f'Result from queue [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         lenSequence = mPoint["lenSequence"]
         count = mPoint["countSequence"]
         pointNumber = mPoint["pointNumber"]
@@ -160,8 +157,10 @@ class BasicRun:
             self.cancelRun()
             return False
 
-        self.log.info('Solving started')
         mPoint = copy.copy(self.solveQueue.get())
+        text = f'Solving  image-{mPoint["countSequence"]:03d}:'
+        self.log.info(text)
+
         self.app.showImage.emit(mPoint["imagePath"])
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
@@ -199,8 +198,10 @@ class BasicRun:
             self.cancelRun()
             return False
 
-        self.log.info('Imaging started')
         mPoint = copy.copy(self.imageQueue.get())
+        text = f'Exposing image-{mPoint["countSequence"]:03d}'
+        self.log.info(text)
+
         self.collector.resetSignals()
         waitTime = 2 * mPoint.get('waitTime', 0)
         self.log.info(f'Waiting time is {mPoint.get("waitTime", 0)}')

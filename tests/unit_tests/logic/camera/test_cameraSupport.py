@@ -136,7 +136,7 @@ def test_saveFits_2(function):
                 with mock.patch.object(function,
                                        'writeHeaderOptical'):
                     with mock.patch.object(function,
-                                           'writeHeaderSite'):
+                                           'writeHeaderCoordSite'):
                         with mock.patch.object(function,
                                                'writeHeaderFocus'):
                             with mock.patch.object(fits.PrimaryHDU,

@@ -22,6 +22,7 @@ import unittest.mock as mock
 from astropy.io import fits
 from skyfield.api import Angle
 import numpy as np
+import shutil
 
 # local import
 from logic.camera.cameraSupport import CameraSupport
@@ -104,6 +105,15 @@ def test_writeHeaderFocus(function):
 def test_updateFits_1(function):
     suc = function.updateFits('test')
     assert not suc
+
+
+def test_updateFits_2(function):
+    imagePath = 'tests/workDir/image/m51.fit'
+    shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
+    function.raJ2000 = Angle(hours=0)
+    function.decJ2000 = Angle(degrees=0)
+    suc = function.updateFits(imagePath)
+    assert suc
 
 
 def test_saveFits_1(function):

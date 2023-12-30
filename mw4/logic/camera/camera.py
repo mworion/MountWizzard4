@@ -170,7 +170,7 @@ class Camera:
                fastReadout=True,
                focalLength=1,
                ra=None,
-               dec=None,):
+               dec=None):
         """
         :param imagePath:
         :param expTime:
@@ -178,6 +178,8 @@ class Camera:
         :param subFrame:
         :param fastReadout:
         :param focalLength:
+        :param ra:
+        :param dec:
         :return: success
         """
         if self.framework not in self.run.keys():

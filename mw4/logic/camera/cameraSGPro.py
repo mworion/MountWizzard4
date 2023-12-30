@@ -23,6 +23,7 @@ import os
 from base.sgproClass import SGProClass
 from base.tpool import Worker
 from logic.camera.cameraSupport import CameraSupport
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class CameraSGPro(SGProClass, CameraSupport):
@@ -222,12 +223,12 @@ class CameraSGPro(SGProClass, CameraSupport):
         self.waitSave()
         self.waitFinish(self.sgGetImagePath, receipt)
 
-        if not self.abortExpose:
+        if self.abortExpose:
+            imagePath = ''
+        else:
             pre, ext = os.path.splitext(imagePath)
             os.rename(pre + '.fit', imagePath)
-        else:
-            imagePath = ''
-        if imagePath:
+            sleepAndEvents(500)
             self.updateFits(imagePath)
 
         self.signals.saved.emit(imagePath)

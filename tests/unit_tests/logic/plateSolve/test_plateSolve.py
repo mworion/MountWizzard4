@@ -142,8 +142,6 @@ def test_getSolutionFromWCS_2(function):
     header = hdu[0].header
     header.set('CRVAL1', 180.0)
     header.set('CRVAL2', 60.0)
-    header.set('RA', 180.0)
-    header.set('DEC', 60.0)
     solve, header = function.getSolutionFromWCS(fitsHeader=header,
                                                 wcsHeader=header,
                                                 updateFits=True)

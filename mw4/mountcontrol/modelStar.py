@@ -109,7 +109,7 @@ class ModelStar(object):
             ha = stringToDegree(ha)
             dec = stringToDegree(dec)
 
-            if not ha or not dec:
+            if ha is None or dec is None:
                 self.log.warning('Malformed value: {0}'.format(value))
                 return
             self._coord = Star(ra_hours=ha, dec_degrees=dec)

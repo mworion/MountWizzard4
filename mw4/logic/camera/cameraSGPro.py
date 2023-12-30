@@ -227,6 +227,8 @@ class CameraSGPro(SGProClass, CameraSupport):
             os.rename(pre + '.fit', imagePath)
         else:
             imagePath = ''
+        if imagePath:
+            self.updateFits(imagePath)
 
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()

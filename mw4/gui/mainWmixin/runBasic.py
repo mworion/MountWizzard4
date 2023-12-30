@@ -228,11 +228,13 @@ class BasicRun:
                                binning=mPoint['binning'],
                                subFrame=mPoint['subFrame'],
                                fastReadout=mPoint['fastReadout'],
-                               focalLength=mPoint['focalLength'])
+                               focalLength=mPoint['focalLength'],
+                               ra=mPoint['raJ2000M'],
+                               dec=mPoint['decJ2000M'])
 
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
+        self.log.debug(f'{mPoint["raJ2000M"]}, {mPoint["decJ2000M"]}')
         text = f'Exposing image-{mPoint["countSequence"]:03d}'
         self.msg.emit(0, self.runType, 'Imaging', text)
         return True

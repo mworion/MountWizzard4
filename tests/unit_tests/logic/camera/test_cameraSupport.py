@@ -101,6 +101,11 @@ def test_writeHeaderFocus(function):
     assert suc
 
 
+def test_updateFits_1(function):
+    suc = function.updateFits('test')
+    assert not suc
+
+
 def test_saveFits_1(function):
     data = np.array([])
     function.abortExpose = True

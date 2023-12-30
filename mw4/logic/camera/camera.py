@@ -168,7 +168,9 @@ class Camera:
                binning=1,
                subFrame=100,
                fastReadout=True,
-               focalLength=1):
+               focalLength=1,
+               ra=None,
+               dec=None,):
         """
         :param imagePath:
         :param expTime:
@@ -182,6 +184,13 @@ class Camera:
             return False
         if not imagePath:
             return False
+        if subFrame != 100 and not self.canSubFrame(subFrame=subFrame):
+            subFrame = 100
+        if binning != 1 and not self.canBinning(binning=binning):
+            binning = 1
+        result = self.calcSubFrame(subFrame=subFrame)
+
+        posX, posY, width, height = result
         raJNow = self.app.mount.obsSite.raJNow
         decJNow = self.app.mount.obsSite.decJNow
         timeJD = self.app.mount.obsSite.timeJD
@@ -190,13 +199,6 @@ class Camera:
         else:
             raJ2000 = None
             decJ2000 = None
-        if subFrame != 100 and not self.canSubFrame(subFrame=subFrame):
-            subFrame = 100
-        if binning != 1 and not self.canBinning(binning=binning):
-            binning = 1
-        result = self.calcSubFrame(subFrame=subFrame)
-
-        posX, posY, width, height = result
 
         t = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
         t += f', width:{width}, height:{height}, fast:{fastReadout}'

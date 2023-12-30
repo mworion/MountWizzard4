@@ -22,6 +22,7 @@
 from base.ninaClass import NINAClass
 from base.tpool import Worker
 from logic.camera.cameraSupport import CameraSupport
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class CameraNINA(NINAClass, CameraSupport):
@@ -221,6 +222,9 @@ class CameraNINA(NINAClass, CameraSupport):
 
         if self.abortExpose:
             imagePath = ''
+        else:
+            sleepAndEvents(500)
+            self.updateFits(imagePath)
 
         self.signals.saved.emit(imagePath)
         self.signals.exposeReady.emit()

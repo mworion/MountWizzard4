@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import logging
+import os
 
 # external packages
 from astropy.io import fits
@@ -142,6 +143,23 @@ class CameraSupport:
         """
         pos = focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         header.append(('FOCUSPOS', pos, 'Actual focuser position'))
+        return True
+
+    def updateFits(self, imagePath):
+        """
+        :param imagePath:
+        :return:
+        """
+        hasCoordinate = self.raJ2000 is not None and self.decJ2000 is not None
+        if not os.path.isfile(imagePath):
+            self.log.debug(f'{imagePath}, {self.raJ2000}, {self.decJ2000}')
+            return False
+
+        with fits.open(imagePath, 'update') as hdul:
+            header = hdul[0].header
+            if hasCoordinate:
+                header.append(('RA', self.raJ2000._degrees, 'Float value in degree'))
+                header.append(('DEC', self.decJ2000.degrees, 'Float value in degree'))
         return True
 
     def saveFits(self, imagePath, data, expTime, binning, focalLength):

@@ -492,7 +492,9 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
                                      binning=self.binning,
                                      subFrame=subFrame,
                                      fastReadout=fastReadout,
-                                     focalLength=focalLength
+                                     focalLength=focalLength,
+                                     ra=None,
+                                     dec=None
                                      )
         if not suc:
             self.abortExpose()

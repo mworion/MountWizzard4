@@ -234,7 +234,6 @@ class BasicRun:
 
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-        self.log.debug(f'{mPoint["raJ2000M"]}, {mPoint["decJ2000M"]}')
         text = f'Exposing image-{mPoint["countSequence"]:03d}'
         self.msg.emit(0, self.runType, 'Imaging', text)
         return True

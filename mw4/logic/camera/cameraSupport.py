@@ -111,7 +111,7 @@ class CameraSupport:
                        self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor))
         return True
 
-    def writeHeaderSite(self, header, obs):
+    def writeHeaderCoordSite(self, header, obs):
         """
         :param header:
         :param obs:
@@ -181,7 +181,7 @@ class CameraSupport:
         self.writeHeaderCamera(hdu.header, expTime, binning)
         self.writeHeaderTime(hdu.header, obs)
         self.writeHeaderOptical(hdu.header, binning, focalLength)
-        self.writeHeaderSite(hdu.header, obs)
+        self.writeHeaderCoordSite(hdu.header, obs)
         self.writeHeaderFocus(hdu.header, self.app.focuser)
         hdu.writeto(imagePath, overwrite=True, output_verify='silentfix+warn')
         self.log.info(f'Saved Image: [{imagePath}]')

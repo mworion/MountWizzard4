@@ -83,14 +83,14 @@ def test_writeHeaderOptical_2(function):
     assert not suc
 
 
-def test_writeHeaderSite_1(function):
+def test_writeHeaderCoordSite_1(function):
     header = fits.PrimaryHDU(data=np.array([])).header
     obs = function.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
     function.raJ2000 = Angle(hours=0)
     function.decJ2000 = Angle(degrees=0)
-    suc = function.writeHeaderSite(header, obs)
+    suc = function.writeHeaderCoordSite(header, obs)
     assert suc
     assert header['SITELAT'] == '+20:00:00'
 

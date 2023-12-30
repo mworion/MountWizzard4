@@ -93,7 +93,9 @@ class Camera:
                binning=None,
                subFrame=None,
                fastReadout=None,
-               focalLength=None):
+               focalLength=None,
+               ra=None,
+               dec=None):
         return
 
     @staticmethod

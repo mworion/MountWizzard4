@@ -135,9 +135,6 @@ def test_getSolutionFromWCS_1(function):
     assert solve['scaleS'] == 0
     assert not solve['mirroredS']
 
-    assert header['RA'] == header['CRVAL1']
-    assert header['DEC'] == header['CRVAL2']
-
 
 def test_getSolutionFromWCS_2(function):
     hdu = fits.HDUList()

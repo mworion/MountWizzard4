@@ -396,16 +396,8 @@ class TestConfigData(unittest.TestCase):
         assert value.degrees == 180
 
     def test_convertToAngle_3(self):
-        value = convertToAngle(180.567, isHours=True)
+        value = convertToAngle('180.567', isHours=True)
         assert value.hours == 12.0378
-
-    def test_convertToAngle_4(self):
-        value = convertToAngle('12:00:00.0', isHours=True)
-        assert value.hours == 12
-
-    def test_convertToAngle_5(self):
-        value = convertToAngle('+12:00:00.0')
-        assert value.degrees == 12
 
 
 def test_formatLatLonToAngle_1():

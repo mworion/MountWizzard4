@@ -271,7 +271,8 @@ class PlateSolve:
 
         solver = self.run[self.framework]
         if not os.path.isfile(fitsPath):
-            self.signals.done.emit(solver.result)
+            self.log.warning(f'Image file not found: {fitsPath}')
+            self.signals.done.emit({})
             return False
 
         if not self.mutexSolve.tryLock():

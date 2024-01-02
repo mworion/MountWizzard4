@@ -98,10 +98,11 @@ class BasicRun:
                                             mPoint['julianDate'])
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
+            self.app.data.setStatusBuildP(pointNumber - 1, 0)
+
+            self.modelQueue.put(mPoint)
             t = f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]'
             self.log.debug(t)
-            self.modelQueue.put(mPoint)
-            self.app.data.setStatusBuildP(pointNumber - 1, 0)
 
             text = f'RA: {convertToHMS(mPoint["raJ2000S"])} '
             text += f'({result["raJ2000S"].hours:4.3f}), '
@@ -117,10 +118,10 @@ class BasicRun:
             self.msg.emit(0, '', '', text)
 
         else:
+            self.app.data.setStatusBuildP(pointNumber - 1, 2)
+            self.retryQueue.put(mPoint)
             text = f'Solving failed for image-{count:03d}'
             self.msg.emit(2, self.runType, 'Solving error', text)
-            self.retryQueue.put(mPoint)
-            self.app.data.setStatusBuildP(pointNumber - 1, 2)
 
         self.app.updatePointMarker.emit()
         self.runProgressCB(mPoint)
@@ -158,14 +159,14 @@ class BasicRun:
             return False
 
         mPoint = self.solveQueue.get()
-        text = f'Solving  image-{mPoint["countSequence"]:03d}:'
+        text = f'Solving image-{mPoint["countSequence"]:03d}:'
         self.log.info(text)
 
         self.app.showImage.emit(mPoint["imagePath"])
-        self.resultQueue.put(mPoint)
-        self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'],
                                            updateFits=False)
+        self.resultQueue.put(mPoint)
+        self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Solving  image-{mPoint["countSequence"]:03d}:'
         self.msg.emit(0, self.runType, 'Solving', text)
         return True
@@ -275,7 +276,6 @@ class BasicRun:
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
         self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
-
         text = f'Point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
         text += f'azimuth: {mPoint["azimuth"]:3.0f}'

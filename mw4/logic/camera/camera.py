@@ -183,8 +183,10 @@ class Camera:
         :return: success
         """
         if self.framework not in self.run.keys():
+            self.log.warning('no camera framework selected')
             return False
         if not imagePath:
+            self.log.warning('no image path given')
             return False
         if subFrame != 100 and not self.canSubFrame(subFrame=subFrame):
             subFrame = 100

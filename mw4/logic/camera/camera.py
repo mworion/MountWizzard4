@@ -172,6 +172,7 @@ class Camera:
                ra=None,
                dec=None):
         """
+
         :param imagePath:
         :param expTime:
         :param binning:
@@ -180,7 +181,7 @@ class Camera:
         :param focalLength:
         :param ra:
         :param dec:
-        :return: success
+        :return:
         """
         if self.framework not in self.run.keys():
             self.log.warning('no camera framework selected')
@@ -195,15 +196,6 @@ class Camera:
         result = self.calcSubFrame(subFrame=subFrame)
 
         posX, posY, width, height = result
-        raJNow = self.app.mount.obsSite.raJNow
-        decJNow = self.app.mount.obsSite.decJNow
-        timeJD = self.app.mount.obsSite.timeJD
-        if raJNow is not None and decJNow is not None and timeJD is not None:
-            raJ2000, decJ2000 = JNowToJ2000(raJNow, decJNow, timeJD)
-        else:
-            raJ2000 = None
-            decJ2000 = None
-
         t = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
         t += f', width:{width}, height:{height}, fast:{fastReadout}'
         self.log.debug(t)
@@ -217,8 +209,8 @@ class Camera:
                                               width=width,
                                               height=height,
                                               focalLength=focalLength,
-                                              ra=raJ2000,
-                                              dec=decJ2000)
+                                              ra=ra,
+                                              dec=dec)
         return suc
 
     def abort(self):

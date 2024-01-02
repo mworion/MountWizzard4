@@ -224,15 +224,18 @@ class BasicRun:
                                                               mPoint['decJNowM'],
                                                               mPoint['julianDate'])
 
-        self.app.camera.expose(imagePath=mPoint['imagePath'],
-                               expTime=mPoint['exposureTime'],
-                               binning=mPoint['binning'],
-                               subFrame=mPoint['subFrame'],
-                               fastReadout=mPoint['fastReadout'],
-                               focalLength=mPoint['focalLength'],
-                               ra=mPoint['raJ2000M'],
-                               dec=mPoint['decJ2000M'])
-
+        suc = self.app.camera.expose(imagePath=mPoint['imagePath'],
+                                     expTime=mPoint['exposureTime'],
+                                     binning=mPoint['binning'],
+                                     subFrame=mPoint['subFrame'],
+                                     fastReadout=mPoint['fastReadout'],
+                                     focalLength=mPoint['focalLength'],
+                                     ra=mPoint['raJ2000M'],
+                                     dec=mPoint['decJ2000M'])
+        if not suc:
+            self.log.error('Cannot start imaging')
+            self.msg.emit(2, self.runType, 'Imaging error', 'Image not taken')
+            return False
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Exposing image-{mPoint["countSequence"]:03d}'

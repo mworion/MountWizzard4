@@ -791,6 +791,10 @@ class Client(QObject):
             return False
 
         iProperty = chunk.attr['name']
+
+        self.log.trace(f'DEL: Device:{device.name}, '
+                       f'Property: {iProperty}')
+
         if hasattr(device, iProperty):
             delattr(device, iProperty)
             self.signals.removeProperty.emit(deviceName, iProperty)
@@ -814,6 +818,10 @@ class Client(QObject):
                              chunk=chunk,
                              elementList=elementList,
                              defVector=False)
+
+        self.log.trace(f'SET: Device:{device.name}, '
+                       f'Property: {iProperty}, '
+                       f'Elements: {elementList}')
 
         if isinstance(chunk, indiXML.SetBLOBVector):
             self.signals.newBLOB.emit(deviceName, iProperty)
@@ -844,7 +852,9 @@ class Client(QObject):
                              chunk=chunk,
                              elementList=elementList,
                              defVector=True)
-
+        self.log.trace(f'DEF: Device:{device.name}, '
+                       f'Property: {iProperty}, '
+                       f'Elements: {elementList}')
         self.signals.newProperty.emit(deviceName, iProperty)
         if isinstance(chunk, indiXML.DefBLOBVector):
             self.signals.defBLOB.emit(deviceName, iProperty)
@@ -858,16 +868,14 @@ class Client(QObject):
             self.signals.defLight.emit(deviceName, iProperty)
         return True
 
-    @staticmethod
-    def _getProperty(chunk=None, device=None, deviceName=None):
+    def _getProperty(self, chunk=None, device=None, deviceName=None):
         """
         :param chunk:   xml element from INDI
         :param device:  device class
         :param deviceName: device name
         :return: success
         """
-        # todo: there is actually no implementation for this type. check if it
-        #  is relevant get property is for snooping other devices
+        self.log.trace(f'GET: Device:{device.name}')
         return True
 
     def _message(self, chunk=None, deviceName=None):
@@ -889,7 +897,6 @@ class Client(QObject):
         :param chunk: raw indi XML element
         :return: success if it could be parsed
         """
-        self.log.trace(f'ReceiveCommand: [{chunk}]')
         if not self.connected:
             return False
 
@@ -1019,6 +1026,7 @@ class Client(QObject):
         :param socketError: the error from socket library
         :return: nothing
         """
-        self.log.error(f'INDI error: [{socketError}]')
+        if socketError != QTcpSocket.UnknownSocketError:
+            self.log.error(f'INDI error: [{socketError}]')
         self.disconnectServer()
         return True

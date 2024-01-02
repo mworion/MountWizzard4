@@ -31,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.6b5',
+    version='3.2.6b6',
     packages=[
         'mw4',
         'mw4.base',
@@ -93,7 +93,6 @@ setup(
         'lz4==4.3.2',
         'xisf==0.9.3',
     ]
-    + (['PyQt5-sip==12.12.2'])
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt5==5.15.9'] if platform.machine() not in ['armv7l'] else [])

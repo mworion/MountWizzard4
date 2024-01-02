@@ -183,7 +183,7 @@ class ASTAP(object):
 
         if not os.path.isfile(wcsPath):
             self.result['message'] = 'Solve failed'
-            self.log.warning(f'Solve files for [{wcsPath}] missing')
+            self.log.warning(f'Solve files [{wcsPath}] for [{fitsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:

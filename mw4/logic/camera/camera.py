@@ -198,7 +198,8 @@ class Camera:
         posX, posY, width, height = result
         t = f'Image bin:{binning}, posX:{posX}, posY:{posY}'
         t += f', width:{width}, height:{height}, fast:{fastReadout}'
-        self.log.debug(t)
+        t += f', path: {imagePath}'
+        self.log.info(t)
         self.signals.message.emit('exposing')
         suc = self.run[self.framework].expose(imagePath=imagePath,
                                               expTime=expTime,

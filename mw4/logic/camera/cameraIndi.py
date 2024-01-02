@@ -284,7 +284,7 @@ class CameraIndi(IndiClass, CameraSupport):
         :return: success
         """
         if not self.device:
-            self.log.error('Expose, but no device present')
+            self.log.warning('No camera connected')
             return False
 
         self.raJ2000 = ra

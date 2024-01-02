@@ -253,6 +253,7 @@ class CameraSGPro(SGProClass, CameraSupport):
         :return: success
         """
         if not self.deviceConnected:
+            self.log.warning('No camera connected')
             return False
         self.raJ2000 = ra
         self.decJ2000 = dec

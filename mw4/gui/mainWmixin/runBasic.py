@@ -234,7 +234,8 @@ class BasicRun:
                                      dec=mPoint['decJ2000M'])
         if not suc:
             self.log.error('Cannot start imaging')
-            self.msg.emit(2, self.runType, 'Imaging error', 'Image not taken')
+            text = f'image-{mPoint["countSequence"]:03d} not taken'
+            self.msg.emit(2, self.runType, 'Imaging error', text)
             return False
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')

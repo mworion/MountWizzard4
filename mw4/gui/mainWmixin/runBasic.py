@@ -18,7 +18,7 @@
 import queue
 import shutil
 import os
-import copy
+
 
 # external packages
 from mountcontrol.convert import convertToHMS, convertToDMS
@@ -80,7 +80,7 @@ class BasicRun:
             self.cancelRun()
             return False
 
-        mPoint = copy.copy(self.resultQueue.get())
+        mPoint = self.resultQueue.get()
         lenSequence = mPoint["lenSequence"]
         count = mPoint["countSequence"]
         pointNumber = mPoint["pointNumber"]
@@ -157,7 +157,7 @@ class BasicRun:
             self.cancelRun()
             return False
 
-        mPoint = copy.copy(self.solveQueue.get())
+        mPoint = self.solveQueue.get()
         text = f'Solving  image-{mPoint["countSequence"]:03d}:'
         self.log.info(text)
 
@@ -198,7 +198,7 @@ class BasicRun:
             self.cancelRun()
             return False
 
-        mPoint = copy.copy(self.imageQueue.get())
+        mPoint = self.imageQueue.get()
         text = f'Exposing image-{mPoint["countSequence"]:03d}'
         self.log.info(text)
 
@@ -256,7 +256,7 @@ class BasicRun:
             return False
 
         self.log.info('Slew started')
-        mPoint = copy.copy(self.slewQueue.get())
+        mPoint = self.slewQueue.get()
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'])
         if not suc:

@@ -190,7 +190,7 @@ class Watney(object):
 
         if not os.path.isfile(wcsPath):
             self.result['message'] = 'Solve failed'
-            self.log.info(f'Solve files for [{wcsPath}] missing')
+            self.log.warning(f'Solve files for [{wcsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:

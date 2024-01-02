@@ -875,7 +875,7 @@ def test_defProperty_5(function):
 
 
 def test_getProperty(function):
-    suc = function._getProperty()
+    suc = function._getProperty(device=Device(name='test'))
     assert suc
 
 

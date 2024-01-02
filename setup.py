@@ -19,9 +19,9 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- add: support for INDI Pegasus Uranus Meteo sensor
 - change: writing pointing coordinates to fits header from MW4 now
 - improve: add waiting time for image file save for NINA and SGPro 
-- improve: add support for pegasus uranus meteo sensor
 - improve: logging for NINA / SGPro controlled cameras
 - fix: typos and some minor bugs
 """

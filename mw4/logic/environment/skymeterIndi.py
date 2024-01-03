@@ -48,16 +48,19 @@ class SkymeterIndi(IndiClass):
         self.log.info(f'Polling [{deviceName}] success: [{suc}]')
         return suc
 
-    def updateNumber(self, propertyName, elements):
+    def updateNumber(self, deviceName, propertyName):
         """
         adding the data from pegasus uranus meteo sensor to dicts
+        :param deviceName:
         :param propertyName:
-        :param elements:
         :return:
         """
-        super().updateNumber(propertyName, elements)
-        if propertyName == 'CLOUDS.CloudSkyTemperature':
-            self.data['SKY_QUALITY.SKY_TEMPERATURE'] = elements['VALUE']
-        elif propertyName == 'SKY_QUALITY.MPAS':
-            self.data['SKY_QUALITY.SKY_BRIGHTNESS'] = elements['VALUE']
+        super().updateNumber(deviceName, propertyName)
+        for element, value in self.device.getNumber(propertyName).items():
+            key = propertyName + '.' + element
+            key = self.convertIndigoProperty(key)
+            if key == 'CLOUDS.CloudSkyTemperature':
+                self.data['SKY_QUALITY.SKY_TEMPERATURE'] = float(value)
+            elif key == 'SKYQUALITY.MPAS':
+                self.data['SKY_QUALITY.SKY_BRIGHTNESS'] = float(value)
         return True

@@ -368,6 +368,9 @@ class Environ:
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE')
         self.guiSetText(self.ui.powerTemp, '4.1f', value)
 
+        value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE')
+        self.guiSetText(self.ui.powerPress, '4.1f', value)
+
         value = self.app.powerWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY')
         self.guiSetText(self.ui.powerHumidity, '3.0f', value)
 

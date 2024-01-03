@@ -33,31 +33,31 @@ class EnvironWeather:
         self.seeingEnabled = False
 
         self.refractionSources = {
-            'sensor1Weather': {'group': self.ui.sensor1Group,
-                               'data': self.app.sensor1Weather.data,
-                               'signals': self.app.sensor1Weather.signals,
-                               'uiPost': '1',
-                               },
-            'sensor2Weather': {'group': self.ui.sensor2Group,
-                               'data': self.app.sensor2Weather.data,
-                               'signals': self.app.sensor2Weather.signals,
-                               'uiPost': '2',
-                               },
-            'sensor3Weather': {'group': self.ui.sensor3Group,
-                               'data': self.app.sensor3Weather.data,
-                               'signals': self.app.sensor3Weather.signals,
-                               'uiPost': '3',
-                               },
-            'onlineWeather': {'group': self.ui.onlineGroup,
-                              'data': self.app.onlineWeather.data,
-                              'signals': self.app.onlineWeather.signals,
-                              'uiPost': 'Online',
-                              },
-            'directWeather': {'group': self.ui.directGroup,
-                              'data': self.app.directWeather.data,
-                              'signals': self.app.directWeather.signals,
-                              'uiPost': 'Direct',
-                              },
+            'sensor1': {'group': self.ui.sensor1Group,
+                        'data': self.app.sensorWeather.data,
+                        'signals': self.app.sensorWeather.signals,
+                        'uiPost': '1',
+                        },
+            'sensor2': {'group': self.ui.sensor2Group,
+                        'data': self.app.powerWeather.data,
+                        'signals': self.app.powerWeather.signals,
+                        'uiPost': '2',
+                        },
+            'sensor3': {'group': self.ui.sensor3Group,
+                        'data': self.app.skymeter.data,
+                        'signals': self.app.skymeter.signals,
+                        'uiPost': '3',
+                        },
+            'online': {'group': self.ui.onlineGroup,
+                       'data': self.app.onlineWeather.data,
+                       'signals': self.app.onlineWeather.signals,
+                       'uiPost': 'Online',
+                       },
+            'direct': {'group': self.ui.directGroup,
+                       'data': self.app.directWeather.data,
+                       'signals': self.app.directWeather.signals,
+                       'uiPost': 'Direct',
+                       },
         }
 
         for source in self.refractionSources:
@@ -146,6 +146,7 @@ class EnvironWeather:
 
         for source in self.refractionSources:
             stat = self.deviceStat.get(source, None)
+            stat = True
             group = self.refractionSources[source]['group']
             if stat is None:
                 group.setFixedWidth(0)

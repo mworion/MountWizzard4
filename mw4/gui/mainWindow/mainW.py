@@ -577,12 +577,12 @@ class MainWindow(
         :return: true for test purpose
         """
         if setting.weatherTemperature is None and setting.weatherPressure is None:
-            self.deviceStat['directWeather'] = None
+            self.deviceStat['direct'] = None
         else:
             if setting.weatherStatus is None:
-                self.deviceStat['directWeather'] = False
+                self.deviceStat['direct'] = False
             else:
-                self.deviceStat['directWeather'] = True
+                self.deviceStat['direct'] = True
         return True
 
     def smartFunctionGui(self):

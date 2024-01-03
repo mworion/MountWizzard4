@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -24070,10 +24070,10 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor 2</string>
+         <string>Skymeter</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="sensor1WeatherDevice">
+       <widget class="QComboBox" name="sensorWeatherDevice">
         <property name="geometry">
          <rect>
           <x>86</x>
@@ -24112,7 +24112,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor 1</string>
+         <string>Sensor</string>
         </property>
        </widget>
        <widget class="QLabel" name="env_2">
@@ -24199,7 +24199,7 @@ Next point in time when satellite settles.</string>
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="sensor1WeatherSetup">
+       <widget class="QPushButton" name="sensorWeatherSetup">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -24241,10 +24241,10 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor 3</string>
+         <string>Pegasus</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="sensor3WeatherDevice">
+       <widget class="QComboBox" name="powerWeatherDevice">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -24263,7 +24263,7 @@ Next point in time when satellite settles.</string>
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="sensor3WeatherSetup">
+       <widget class="QPushButton" name="powerWeatherSetup">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -24301,7 +24301,7 @@ Next point in time when satellite settles.</string>
          <string>Set</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="sensor2WeatherSetup">
+       <widget class="QPushButton" name="skymeterSetup">
         <property name="geometry">
          <rect>
           <x>309</x>
@@ -24317,7 +24317,7 @@ Next point in time when satellite settles.</string>
          <string>Set</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="sensor2WeatherDevice">
+       <widget class="QComboBox" name="skymeterDevice">
         <property name="geometry">
          <rect>
           <x>85</x>
@@ -24539,7 +24539,7 @@ Next point in time when satellite settles.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>localhost</string>
+         <string>127.0.0.1</string>
         </property>
         <property name="maxLength">
          <number>50</number>
@@ -25108,9 +25108,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>140</y>
+         <y>150</y>
          <width>366</width>
-         <height>76</height>
+         <height>51</height>
         </rect>
        </property>
        <property name="title">
@@ -25123,7 +25123,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>291</width>
           <height>21</height>
          </rect>
@@ -25143,7 +25143,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>300</x>
-          <y>20</y>
+          <y>25</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -25156,7 +25156,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount settle before exposing the next image while modeling and after a meridian flip. Exposing will start after signal slew finisehd as the wait time is included before sending the signal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount settle before exposing the next image while modeling and after a meridian flip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -25181,85 +25181,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>345</x>
-          <y>20</y>
-          <width>16</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>s</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_69">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>291</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Additional wait time before exposure</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="waitTimeExposure">
-        <property name="geometry">
-         <rect>
-          <x>300</x>
-          <y>45</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount settle before exposing the next image while modeling and after a meridian flip. This time is added after the slew is finished.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>300.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_301">
-        <property name="geometry">
-         <rect>
-          <x>345</x>
-          <y>45</y>
+          <y>25</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -25631,7 +25553,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>235</y>
+         <y>225</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -26247,16 +26169,16 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
-         <double>0.800000000000000</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>8.000000000000000</double>
+         <double>5.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <double>8.000000000000000</double>
+         <double>1.250000000000000</double>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeNorthOffset">
@@ -33358,12 +33280,12 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>plateSolveSetup</tabstop>
   <tabstop>domeDevice</tabstop>
   <tabstop>domeSetup</tabstop>
-  <tabstop>sensor1WeatherDevice</tabstop>
-  <tabstop>sensor1WeatherSetup</tabstop>
-  <tabstop>sensor2WeatherDevice</tabstop>
-  <tabstop>sensor2WeatherSetup</tabstop>
-  <tabstop>sensor3WeatherDevice</tabstop>
-  <tabstop>sensor3WeatherSetup</tabstop>
+  <tabstop>sensorWeatherDevice</tabstop>
+  <tabstop>sensorWeatherSetup</tabstop>
+  <tabstop>skymeterDevice</tabstop>
+  <tabstop>skymeterSetup</tabstop>
+  <tabstop>powerWeatherDevice</tabstop>
+  <tabstop>powerWeatherSetup</tabstop>
   <tabstop>onlineWeatherDevice</tabstop>
   <tabstop>onlineWeatherSetup</tabstop>
   <tabstop>seeingWeatherDevice</tabstop>

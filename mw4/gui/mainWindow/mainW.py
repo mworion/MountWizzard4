@@ -46,7 +46,8 @@ from gui.extWindows.videoW4 import VideoWindow4
 from gui.extWindows.bigPopupW import BigPopup
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
-from gui.mainWmixin.tabEnviron import Environ
+from gui.mainWmixin.tabEnvironWeather import EnvironWeather
+from gui.mainWmixin.tabEnvironSeeing import EnvironSeeing
 from gui.mainWmixin.tabAlmanac import Almanac
 from gui.mainWmixin.tabModel import Model
 from gui.mainWmixin.runBasic import BasicRun
@@ -75,7 +76,8 @@ class MainWindow(
     MWidget,
     SettMisc,
     Mount,
-    Environ,
+    EnvironWeather,
+    EnvironSeeing,
     Almanac,
     Model,
     BasicRun,

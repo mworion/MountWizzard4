@@ -249,31 +249,15 @@ class Dome:
         return
 
 
-class Skymeter:
-    class SkymeterSignals(QObject):
-        version = pyqtSignal()
+class SensorWeather:
+    class SensorWeatherSignals(QObject):
         message = pyqtSignal(object)
         serverConnected = pyqtSignal()
         serverDisconnected = pyqtSignal(object)
         deviceConnected = pyqtSignal(object)
         deviceDisconnected = pyqtSignal(object)
 
-    signals = SkymeterSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class DirectWeather:
-    class DirectWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = DirectWeatherSignals()
+    signals = SensorWeatherSignals()
     data = {}
     framework = None
     defaultConfig = {'framework': '',
@@ -294,6 +278,21 @@ class OnlineWeather:
     data = {}
 
 
+class DirectWeather:
+    class DirectWeatherSignals(QObject):
+        message = pyqtSignal(object)
+        serverConnected = pyqtSignal()
+        serverDisconnected = pyqtSignal(object)
+        deviceConnected = pyqtSignal(object)
+        deviceDisconnected = pyqtSignal(object)
+
+    signals = DirectWeatherSignals()
+    data = {}
+    framework = None
+    defaultConfig = {'framework': '',
+                     'frameworks': {}}
+
+
 class SeeingWeather:
     class SeeingWeatherSignals(QObject):
         serverConnected = pyqtSignal()
@@ -307,36 +306,6 @@ class SeeingWeather:
     defaultConfig = {'framework': '',
                      'frameworks': {}}
     data = {}
-
-
-class SensorWeather:
-    class SensorWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = SensorWeatherSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
-
-
-class PowerWeather:
-    class PowerWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-
-    signals = PowerWeatherSignals()
-    data = {}
-    framework = None
-    defaultConfig = {'framework': '',
-                     'frameworks': {}}
 
 
 class Filter:
@@ -1180,20 +1149,20 @@ class App(QObject):
     cover = Cover()
 
     data = Data()
-    directWeather = DirectWeather()
     filter = Filter()
     focuser = Focuser()
     measure = Measure()
     mount = Mount()
+    sensor1Weather = SensorWeather()
+    sensor2Weather = SensorWeather()
+    sensor3Weather = SensorWeather()
     onlineWeather = OnlineWeather()
+    directWeather = DirectWeather()
     seeingWeather = SeeingWeather()
     power = Power()
-    powerWeather = PowerWeather()
     dome = Dome()
     relay = Relay()
     remote = Remote()
-    sensorWeather = SensorWeather()
-    skymeter = Skymeter()
     telescope = Telescope()
     hipparcos = Hipparcos()
 

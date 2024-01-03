@@ -25,7 +25,7 @@ from base.packageConfig import checkAutomation
 if checkAutomation():
     from logic.automation.automateWindows import AutomateWindows
 
-from PyQt6.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
+from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
 
@@ -128,12 +128,12 @@ class MountWizzard4(QObject):
             'camera': None,
             'plateSolve': None,
             'refraction': None,
-            'sensor1Weather': None,
-            'sensor2Weather': None,
-            'sensor3Weather': None,
-            'onlineWeather': None,
-            'directWeather': None,
-            'seeingWeather': None,
+            'sensor1': None,
+            'sensor2': None,
+            'sensor3': None,
+            'online': None,
+            'direct': None,
+            'seeing': None,
             'cover': None,
             'telescope': None,
             'power': None,
@@ -148,7 +148,7 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, 'System', 'Profile', f'Base: {profile}'))
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
-        self.mount = qtmount.Mount(host='localhost',
+        self.mount = qtmount.Mount(host='127.0.0.1',
                                    MAC='00.c0.08.87.35.db',
                                    threadPool=self.threadPool,
                                    pathToData=pathToData,
@@ -203,7 +203,6 @@ class MountWizzard4(QObject):
         the windows' automation with pywinauto has a serious bug in python lib.
         the bugfix is done from python 3.8.2 onwards. so to enable this work,
         we have to check the python version used and set the topic adequately.
-        unfortunately from python 3.12, pywinauto is not supported anymore.
 
         :return:
         """

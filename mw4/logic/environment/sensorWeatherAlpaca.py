@@ -49,10 +49,8 @@ class SensorWeatherAlpaca(AlpacaClass):
                                        'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.getAndStoreAlpacaProperty('humidity',
                                        'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
-        self.getAndStoreAlpacaProperty('cloudcover',
-                                       'WEATHER_PARAMETERS.CloudCover')
-        self.getAndStoreAlpacaProperty('rainrate',
-                                       'WEATHER_PARAMETERS.RainVol')
+        self.getAndStoreAlpacaProperty('temperature',
+                                       'SKY_QUALITY.SKY_TEMPERATURE')
         self.getAndStoreAlpacaProperty('skyquality',
                                        'SKY_QUALITY.SKY_BRIGHTNESS')
         return True

@@ -92,29 +92,3 @@ def test_setUpdateConfig_5(function):
                                return_value=True):
             suc = function.setUpdateConfig('test')
             assert suc
-
-
-def test_updateNumber_1(function):
-    function.deviceName = ''
-    function.device = None
-    suc = function.updateNumber('test', {})
-    assert suc
-    assert function.data == {}
-
-
-def test_updateNumber_2(function):
-    function.deviceName = ''
-    function.device = None
-    elements = {'VALUE': 1}
-    suc = function.updateNumber('CLOUDS.CloudSkyTemperature', elements)
-    assert suc
-    assert function.data['SKY_QUALITY.SKY_TEMPERATURE'] == 1
-
-
-def test_updateNumber_3(function):
-    function.deviceName = ''
-    function.device = None
-    elements = {'VALUE': 1}
-    suc = function.updateNumber('SKY_QUALITY.MPAS', elements)
-    assert suc
-    assert function.data['SKY_QUALITY.SKY_BRIGHTNESS'] == 1

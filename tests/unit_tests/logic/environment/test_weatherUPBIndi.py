@@ -93,30 +93,3 @@ def test_setUpdateConfig_5(function):
                                return_value=True):
             suc = function.setUpdateConfig('test')
             assert suc
-
-
-def test_updateNumber_1(function):
-    function.deviceName = ''
-    function.device = None
-    suc = function.updateNumber('test', {})
-    assert suc
-    assert function.data == {}
-
-
-def test_updateNumber_2(function):
-    function.deviceName = ''
-    function.device = None
-    elements = {'VALUE': 1}
-    suc = function.updateNumber('SENSORS.AbsolutePressure', elements)
-    assert suc
-    assert function.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] == 1
-
-
-def test_updateNumber_3(function):
-    function.deviceName = ''
-    function.device = None
-    elements = {'VALUE': 1}
-    suc = function.updateNumber('SENSORS.DewPoint', elements)
-    assert suc
-    assert function.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] == 1
-

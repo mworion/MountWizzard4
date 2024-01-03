@@ -52,4 +52,8 @@ class SensorWeatherAscom(AscomClass):
                                       'windDir')
         self.getAndStoreAscomProperty('windspeed',
                                       'windSpeed')
+        self.getAndStoreAscomProperty('temperature',
+                                      'SKY_QUALITY.SKY_TEMPERATURE')
+        self.getAndStoreAscomProperty('skyquality',
+                                      'SKY_QUALITY.SKY_BRIGHTNESS')
         return True

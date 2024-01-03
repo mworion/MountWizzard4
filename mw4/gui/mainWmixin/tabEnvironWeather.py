@@ -33,31 +33,31 @@ class EnvironWeather:
         self.seeingEnabled = False
 
         self.refractionSources = {
-            'sensor1Weather': {'group': self.ui.sensor1Group,
-                               'data': self.app.sensor1Weather.data,
-                               'signals': self.app.sensor1Weather.signals,
-                               'uiPost': '1',
-                               },
-            'sensor2Weather': {'group': self.ui.sensor2Group,
-                               'data': self.app.sensor2Weather.data,
-                               'signals': self.app.sensor2Weather.signals,
-                               'uiPost': '2',
-                               },
-            'sensor3Weather': {'group': self.ui.sensor3Group,
-                               'data': self.app.sensor3Weather.data,
-                               'signals': self.app.sensor3Weather.signals,
-                               'uiPost': '3',
-                               },
-            'onlineWeather': {'group': self.ui.onlineGroup,
-                              'data': self.app.onlineWeather.data,
-                              'signals': self.app.onlineWeather.signals,
-                              'uiPost': 'Online',
-                              },
-            'directWeather': {'group': self.ui.directGroup,
-                              'data': self.app.directWeather.data,
-                              'signals': self.app.directWeather.signals,
-                              'uiPost': 'Direct',
-                              },
+            'sensor1': {'group': self.ui.sensor1Group,
+                        'data': self.app.sensorWeather.data,
+                        'signals': self.app.sensorWeather.signals,
+                        'uiPost': '1',
+                        },
+            'sensor2': {'group': self.ui.sensor2Group,
+                        'data': self.app.powerWeather.data,
+                        'signals': self.app.powerWeather.signals,
+                        'uiPost': '2',
+                        },
+            'sensor3': {'group': self.ui.sensor3Group,
+                        'data': self.app.skymeter.data,
+                        'signals': self.app.skymeter.signals,
+                        'uiPost': '3',
+                        },
+            'online': {'group': self.ui.onlineGroup,
+                       'data': self.app.onlineWeather.data,
+                       'signals': self.app.onlineWeather.signals,
+                       'uiPost': 'Online',
+                       },
+            'direct': {'group': self.ui.directGroup,
+                       'data': self.app.directWeather.data,
+                       'signals': self.app.directWeather.signals,
+                       'uiPost': 'Direct',
+                       },
         }
 
         for source in self.refractionSources:
@@ -73,7 +73,7 @@ class EnvironWeather:
             },
             'pressure': {
                 'valueKey': 'WEATHER_PARAMETERS.WEATHER_PRESSURE',
-                'format': '4.0f',
+                'format': '4.1f',
             },
             'humidity': {
                 'valueKey': 'WEATHER_PARAMETERS.WEATHER_HUMIDITY',
@@ -92,7 +92,7 @@ class EnvironWeather:
                 'format': '5.2f',
             },
             'SQR': {
-                'valueKey': 'SKY_QUALITY.SKY_BRIGHTNESS',
+                'valueKey': 'SKY_QUALITY.SKY_TEMPERATURE',
                 'format': '4.1f',
             }
         }
@@ -146,6 +146,7 @@ class EnvironWeather:
 
         for source in self.refractionSources:
             stat = self.deviceStat.get(source, None)
+            stat = True
             group = self.refractionSources[source]['group']
             if stat is None:
                 group.setFixedWidth(0)
@@ -162,7 +163,7 @@ class EnvironWeather:
         """
         :return: success
         """
-        if self.refractionSource != 'directWeather':
+        if self.refractionSource != 'direct':
             return False
 
         setting = self.app.mount.setting
@@ -183,7 +184,7 @@ class EnvironWeather:
         """
         if not self.ui.showTabEnviron.isChecked():
             return False
-        if self.refractionSource != 'directWeather':
+        if self.refractionSource != 'direct':
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
             return suc
 
@@ -244,12 +245,11 @@ class EnvironWeather:
 
         :return:
         """
-        if self.refractionSource in ['sensor1Weather', 'sensor2Weather',
-                                     'sensor3Weather', 'onlineWeather']:
+        if self.refractionSource in ['sensor1', 'sensor2', 'sensor3', 'online']:
             key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
-            temp = self.refractionSources[self.refractionSource]['data'].get(key)
+            temp = self.refractionSources[self.refractionSource].get(key)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
-            press = self.refractionSources[self.refractionSource]['data'].get(key)
+            press = self.refractionSources[self.refractionSource].get(key)
 
         else:
             temp = None
@@ -296,7 +296,7 @@ class EnvironWeather:
 
         :return: success if update happened
         """
-        if self.refractionSource == 'directWeather':
+        if self.refractionSource == 'direct':
             return False
         if not self.deviceStat['mount']:
             return False

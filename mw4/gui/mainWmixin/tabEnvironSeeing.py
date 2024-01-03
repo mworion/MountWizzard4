@@ -20,9 +20,9 @@ import webbrowser
 
 # external packages
 import numpy as np
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
-from PyQt6.QtWidgets import QTableWidgetItem
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QTableWidgetItem
 
 # local import
 
@@ -97,7 +97,7 @@ class EnvironSeeing:
             for j, field in enumerate(fields):
                 t = f'{data[field][i]}'
                 item = QTableWidgetItem()
-                item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
+                item.setTextAlignment(Qt.AlignHCenter)
                 item.setForeground(QColor(self.M_BLUE))
 
                 if j == 0:
@@ -187,7 +187,7 @@ class EnvironSeeing:
             seeTab.setRowCount(14)
         seeTab.setColumnCount(96)
         seeTab.setVerticalHeaderLabels(vl)
-        seeTab.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        seeTab.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         seeTab.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()
         seeTab.resizeColumnsToContents()

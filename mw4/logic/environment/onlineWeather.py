@@ -134,27 +134,30 @@ class OnlineWeather():
         self.log.trace(f'onlineWeatherData:[{data}]')
 
         if 'main' in data:
-            self.data['temperature'] = data['main'].get('temp', 273.15) - 273.15
-            self.data['pressure'] = data['main'].get('pressure', 0)
-            self.data['humidity'] = data['main'].get('humidity', 0)
-            self.data['dewPoint'] = self.getDewPoint(self.data['temperature'],
-                                                     self.data['humidity'])
-            self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = self.data['temperature']
-            self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = self.data['pressure']
+            val = data['main'].get('temp', 273.15) - 273.15
+            self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = val
+            val = data['main'].get('pressure', 0)
+            self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = val
+            val = data['main'].get('humidity', 0)
+            self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = val
+            val = self.getDewPoint(self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'],
+                                   self.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'])
+            self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = val
+
         else:
             return False
 
         if 'clouds' in data:
-            self.data['cloudCover'] = data['clouds'].get('all', 0)
+            self.data['WEATHER_PARAMETERS.CloudCover'] = data['clouds'].get('all', 0)
 
         if 'wind' in data:
-            self.data['windSpeed'] = data['wind'].get('speed', 0)
-            self.data['windDir'] = data['wind'].get('deg', 0)
+            self.data['WEATHER_PARAMETERS.WindSpeed'] = data['wind'].get('speed', 0)
+            self.data['WEATHER_PARAMETERS.WindDir'] = data['wind'].get('deg', 0)
 
         if 'rain' in data:
-            self.data['rain'] = data['rain'].get('3h', 0)
+            self.data['WEATHER_PARAMETERS.RainVol'] = data['rain'].get('3h', 0)
         else:
-            self.data['rain'] = 0
+            self.data['WEATHER_PARAMETERS.RainVol'] = 0
         return True
 
     def workerGetOpenWeatherMapData(self, url):

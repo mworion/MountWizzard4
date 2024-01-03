@@ -94,10 +94,28 @@ class SettDevice:
                 'class': self.app.focuser,
                 'deviceType': 'focuser',
             },
-            'sensorWeather': {
-                'uiDropDown': self.ui.sensorWeatherDevice,
-                'uiSetup': self.ui.sensorWeatherSetup,
-                'class': self.app.sensorWeather,
+            'sensor1Weather': {
+                'uiDropDown': self.ui.sensor1WeatherDevice,
+                'uiSetup': self.ui.sensor1WeatherSetup,
+                'class': self.app.sensor1Weather,
+                'deviceType': 'observingconditions',
+            },
+            'sensor2Weather': {
+                'uiDropDown': self.ui.sensor2WeatherDevice,
+                'uiSetup': self.ui.sensor2WeatherSetup,
+                'class': self.app.sensor2Weather,
+                'deviceType': 'observingconditions',
+            },
+            'sensor3Weather': {
+                'uiDropDown': self.ui.sensor3WeatherDevice,
+                'uiSetup': self.ui.sensor3WeatherSetup,
+                'class': self.app.sensor3Weather,
+                'deviceType': 'observingconditions',
+            },
+            'onlineWeather': {
+                'uiDropDown': self.ui.onlineWeatherDevice,
+                'uiSetup': self.ui.onlineWeatherSetup,
+                'class': self.app.onlineWeather,
                 'deviceType': 'observingconditions',
             },
             'directWeather': {
@@ -106,28 +124,10 @@ class SettDevice:
                 'class': self.app.directWeather,
                 'deviceType': None,
             },
-            'onlineWeather': {
-                'uiDropDown': self.ui.onlineWeatherDevice,
-                'uiSetup': self.ui.onlineWeatherSetup,
-                'class': self.app.onlineWeather,
-                'deviceType': 'observingconditions',
-            },
             'seeingWeather': {
                 'uiDropDown': self.ui.seeingWeatherDevice,
                 'uiSetup': self.ui.seeingWeatherSetup,
                 'class': self.app.seeingWeather,
-                'deviceType': 'observingconditions',
-            },
-            'skymeter': {
-                'uiDropDown': self.ui.skymeterDevice,
-                'uiSetup': self.ui.skymeterSetup,
-                'class': self.app.skymeter,
-                'deviceType': 'observingconditions',
-            },
-            'powerWeather': {
-                'uiDropDown': self.ui.powerWeatherDevice,
-                'uiSetup': self.ui.powerWeatherSetup,
-                'class': self.app.powerWeather,
                 'deviceType': 'observingconditions',
             },
             'telescope': {

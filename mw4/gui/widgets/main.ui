@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -24070,10 +24070,10 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor 2</string>
+         <string>Skymeter</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="sensor1WeatherDevice">
+       <widget class="QComboBox" name="sensorWeatherDevice">
         <property name="geometry">
          <rect>
           <x>86</x>
@@ -24112,7 +24112,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor 1</string>
+         <string>Sensor</string>
         </property>
        </widget>
        <widget class="QLabel" name="env_2">
@@ -24199,7 +24199,7 @@ Next point in time when satellite settles.</string>
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="sensor1WeatherSetup">
+       <widget class="QPushButton" name="sensorWeatherSetup">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -24241,10 +24241,10 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor 3</string>
+         <string>Pegasus</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="sensor3WeatherDevice">
+       <widget class="QComboBox" name="powerWeatherDevice">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -24263,7 +24263,7 @@ Next point in time when satellite settles.</string>
          </size>
         </property>
        </widget>
-       <widget class="QPushButton" name="sensor3WeatherSetup">
+       <widget class="QPushButton" name="powerWeatherSetup">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -24301,7 +24301,7 @@ Next point in time when satellite settles.</string>
          <string>Set</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="sensor2WeatherSetup">
+       <widget class="QPushButton" name="skymeterSetup">
         <property name="geometry">
          <rect>
           <x>309</x>
@@ -24317,7 +24317,7 @@ Next point in time when satellite settles.</string>
          <string>Set</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="sensor2WeatherDevice">
+       <widget class="QComboBox" name="skymeterDevice">
         <property name="geometry">
          <rect>
           <x>85</x>
@@ -33280,12 +33280,12 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>plateSolveSetup</tabstop>
   <tabstop>domeDevice</tabstop>
   <tabstop>domeSetup</tabstop>
-  <tabstop>sensor1WeatherDevice</tabstop>
-  <tabstop>sensor1WeatherSetup</tabstop>
-  <tabstop>sensor2WeatherDevice</tabstop>
-  <tabstop>sensor2WeatherSetup</tabstop>
-  <tabstop>sensor3WeatherDevice</tabstop>
-  <tabstop>sensor3WeatherSetup</tabstop>
+  <tabstop>sensorWeatherDevice</tabstop>
+  <tabstop>sensorWeatherSetup</tabstop>
+  <tabstop>skymeterDevice</tabstop>
+  <tabstop>skymeterSetup</tabstop>
+  <tabstop>powerWeatherDevice</tabstop>
+  <tabstop>powerWeatherSetup</tabstop>
   <tabstop>onlineWeatherDevice</tabstop>
   <tabstop>onlineWeatherSetup</tabstop>
   <tabstop>seeingWeatherDevice</tabstop>

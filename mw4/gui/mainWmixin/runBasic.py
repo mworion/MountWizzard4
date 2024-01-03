@@ -99,7 +99,7 @@ class BasicRun:
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
             self.app.data.setStatusBuildP(pointNumber - 1, 0)
-
+            self.app.showImage.emit(mPoint["imagePath"])
             self.modelQueue.put(mPoint)
             t = f'Queued to model [{mPoint["countSequence"]:03d}]: [{mPoint}]'
             self.log.debug(t)
@@ -162,9 +162,13 @@ class BasicRun:
         text = f'Solving image-{mPoint["countSequence"]:03d}:'
         self.log.info(text)
 
-        self.app.showImage.emit(mPoint["imagePath"])
-        self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'],
-                                           updateFits=False)
+        suc = self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'])
+        if not suc:
+            self.log.error('Cannot start solving')
+            text = f'image-{mPoint["countSequence"]:03d} not solved'
+            self.msg.emit(2, self.runType, 'Solving error', text)
+            return False
+
         self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Solving  image-{mPoint["countSequence"]:03d}:'
@@ -237,6 +241,7 @@ class BasicRun:
             text = f'image-{mPoint["countSequence"]:03d} not taken'
             self.msg.emit(2, self.runType, 'Imaging error', text)
             return False
+
         self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Exposing image-{mPoint["countSequence"]:03d}'
@@ -257,7 +262,7 @@ class BasicRun:
 
         """
         if self.slewQueue.empty():
-            self.log.info('Empty slew queue- model sequence finished')
+            self.log.info('Empty slew queue - model sequence finished')
             return False
 
         self.log.info('Slew started')

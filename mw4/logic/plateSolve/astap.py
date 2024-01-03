@@ -148,11 +148,6 @@ class ASTAP(object):
         self.result = {'success': False,
                        'message': 'Internal error'}
 
-        if not os.path.isfile(fitsPath):
-            self.result['message'] = 'Image missing'
-            self.log.warning('Image missing for solving')
-            return False
-
         tempFile = os.path.normpath(self.tempDir + '/temp')
         wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
         if os.path.isfile(wcsPath):

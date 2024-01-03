@@ -270,13 +270,14 @@ class PlateSolve:
             return False
 
         solver = self.run[self.framework]
-        if not os.path.isfile(fitsPath):
-            self.log.warning(f'Image file not found: {fitsPath}')
-            self.signals.done.emit({})
-            return False
 
         if not self.mutexSolve.tryLock():
             self.log.warning('Overrun in solve threading')
+            self.signals.done.emit({})
+            return False
+
+        if not os.path.isfile(fitsPath):
+            self.log.warning(f'Image file not found: {fitsPath}')
             self.signals.done.emit({})
             return False
 

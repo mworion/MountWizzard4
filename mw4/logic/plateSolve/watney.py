@@ -139,11 +139,6 @@ class Watney(object):
         jsonPath = os.path.normpath(self.tempDir + '/solve.json')
         wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
 
-        if not os.path.isfile(fitsPath):
-            self.result['message'] = 'Image missing'
-            self.log.warning('Image missing for solving')
-            return False
-
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 

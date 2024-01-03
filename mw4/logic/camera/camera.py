@@ -21,7 +21,6 @@ import platform
 # external packages
 
 # local imports
-from base.transform import JNowToJ2000
 from base.driverDataClass import Signals
 from logic.camera.cameraIndi import CameraIndi
 from logic.camera.cameraAlpaca import CameraAlpaca
@@ -184,7 +183,7 @@ class Camera:
         :return:
         """
         if self.framework not in self.run.keys():
-            self.log.warning('no camera framework selected')
+            self.log.warning('no valid camera framework selected')
             return False
         if not imagePath:
             self.log.warning('no image path given')

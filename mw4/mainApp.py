@@ -41,11 +41,9 @@ from logic.camera.camera import Camera
 from logic.filter.filter import Filter
 from logic.focuser.focuser import Focuser
 from logic.environment.sensorWeather import SensorWeather
-from logic.environment.skymeter import Skymeter
 from logic.environment.onlineWeather import OnlineWeather
-from logic.environment.seeingWeather import SeeingWeather
 from logic.environment.directWeather import DirectWeather
-from logic.environment.weatherUPB import WeatherUPB
+from logic.environment.seeingWeather import SeeingWeather
 from logic.cover.cover import Cover
 from logic.telescope.telescope import Telescope
 from logic.powerswitch.pegasusUPB import PegasusUPB
@@ -130,12 +128,12 @@ class MountWizzard4(QObject):
             'camera': None,
             'plateSolve': None,
             'refraction': None,
-            'sensorWeather': None,
-            'directWeather': None,
-            'onlineWeather': None,
-            'seeingWeather': None,
-            'powerWeather': None,
-            'skymeter': None,
+            'sensor1': None,
+            'sensor2': None,
+            'sensor3': None,
+            'online': None,
+            'direct': None,
+            'seeing': None,
             'cover': None,
             'telescope': None,
             'power': None,
@@ -162,18 +160,18 @@ class MountWizzard4(QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
         self.ephemeris = self.mount.obsSite.loader('de440_mw4.bsp')
         self.relay = KMRelay()
-        self.sensorWeather = SensorWeather(self)
+        self.sensor1Weather = SensorWeather(self)
+        self.sensor2Weather = SensorWeather(self)
+        self.sensor3Weather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
-        self.seeingWeather = SeeingWeather(self)
         self.directWeather = DirectWeather(self)
-        self.powerWeather = WeatherUPB(self)
+        self.seeingWeather = SeeingWeather(self)
         self.cover = Cover(self)
         self.dome = Dome(self)
         self.camera = Camera(self)
         self.filter = Filter(self)
         self.focuser = Focuser(self)
         self.telescope = Telescope(self)
-        self.skymeter = Skymeter(self)
         self.power = PegasusUPB(self)
         self.data = DataPoint(self)
         self.loadHorizonData()

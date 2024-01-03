@@ -96,22 +96,26 @@ def test_setUpdateConfig_5(function):
 
 def test_updateNumber_1(function):
     function.deviceName = ''
-    suc = function.updateNumber('test', 'test')
-    assert not suc
+    function.device = None
+    suc = function.updateNumber('test', {})
+    assert suc
+    assert function.data == {}
 
 
 def test_updateNumber_2(function):
     function.deviceName = ''
-    function.device = Device()
-    suc = function.updateNumber('test', 'test')
-    assert not suc
+    function.device = None
+    elements = {'VALUE': 1}
+    suc = function.updateNumber('SENSORS.AbsolutePressure', elements)
+    assert suc
+    assert function.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] == 1
 
 
 def test_updateNumber_3(function):
-    function.deviceName = 'test'
-    function.device = Device()
-    with mock.patch.object(function.device,
-                           'getNumber',
-                           return_value={'WEATHER_BAROMETER': 1}):
-        suc = function.updateNumber('test', 'WEATHER_BAROMETER')
-        assert suc
+    function.deviceName = ''
+    function.device = None
+    elements = {'VALUE': 1}
+    suc = function.updateNumber('SENSORS.DewPoint', elements)
+    assert suc
+    assert function.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] == 1
+

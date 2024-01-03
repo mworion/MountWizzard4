@@ -128,12 +128,12 @@ class MountWizzard4(QObject):
             'camera': None,
             'plateSolve': None,
             'refraction': None,
-            'sensor1Weather': None,
-            'sensor2Weather': None,
-            'sensor3Weather': None,
-            'onlineWeather': None,
-            'directWeather': None,
-            'seeingWeather': None,
+            'sensor1': None,
+            'sensor2': None,
+            'sensor3': None,
+            'online': None,
+            'direct': None,
+            'seeing': None,
             'cover': None,
             'telescope': None,
             'power': None,
@@ -148,7 +148,7 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, 'System', 'Profile', f'Base: {profile}'))
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
-        self.mount = qtmount.Mount(host='localhost',
+        self.mount = qtmount.Mount(host='127.0.0.1',
                                    MAC='00.c0.08.87.35.db',
                                    threadPool=self.threadPool,
                                    pathToData=pathToData,

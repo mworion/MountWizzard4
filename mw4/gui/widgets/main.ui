@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -6326,7 +6326,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </size>
         </property>
         <property name="toolTip">
-         <string>iIf UPB power is present, show its values</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select sensor device as source for refraction updates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="title">
          <string>Sens2</string>
@@ -6761,7 +6761,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </size>
         </property>
         <property name="toolTip">
-         <string>iIf skymeter is present, show its values</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select sensor device as source for refraction updates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="title">
          <string>Sens1</string>
@@ -24276,7 +24276,7 @@ Next point in time when satellite settles.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the observing conditions part of the power device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the external sensor device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -24311,7 +24311,7 @@ Next point in time when satellite settles.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the skymeter device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the external sensor device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>

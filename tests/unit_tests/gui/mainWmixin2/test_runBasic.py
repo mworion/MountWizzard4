@@ -114,6 +114,7 @@ def test_runSolveDone_2(function):
 def test_runSolveDone_3(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 2,
+              'imagePath': '',
               'pointNumber': 1}
     function.resultQueue.put(mPoint)
     function.app.data.buildP = [(0, 0, True), (1, 1, True), (2, 2, True)]
@@ -155,6 +156,7 @@ def test_runSolveDone_3(function):
 def test_runSolveDone_4(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 2,
+              'imagePath': '',
               'pointNumber': 1}
 
     result = {'raJ2000S': Angle(hours=0),
@@ -202,7 +204,23 @@ def test_runSolve_2(function):
               }
     function.solveQueue.put(mPoint)
     with mock.patch.object(function.app.plateSolve,
-                           'solveThreading'):
+                           'solveThreading', return_value=False):
+        suc = function.runSolve()
+        assert not suc
+
+
+def test_runSolve_3(function):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'searchRadius': 1,
+              'solveTimeout': 10,
+              'raJNowM': 10,
+              'decJNowM': 10,
+              }
+    function.solveQueue.put(mPoint)
+    with mock.patch.object(function.app.plateSolve,
+                           'solveThreading', return_value=True):
         suc = function.runSolve()
         assert suc
 
@@ -242,7 +260,32 @@ def test_runImage_2(function):
     function.imageQueue.put(mPoint)
 
     with mock.patch.object(function.app.camera,
-                           'expose'):
+                           'expose', return_value=False):
+        suc = function.runImage()
+        assert not suc
+
+
+def test_runImage_3(function):
+    def qWaitBreak(a):
+        function.ui.pauseModel.setProperty('pause', False)
+
+    gui.mainWmixin.runBasic.sleepAndEvents = qWaitBreak
+    function.ui.pauseModel.setProperty('pause', True)
+    function
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'focalLength': 1,
+              }
+
+    function.imageQueue.put(mPoint)
+
+    with mock.patch.object(function.app.camera,
+                           'expose', return_value=True):
         suc = function.runImage()
         assert suc
 

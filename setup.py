@@ -19,10 +19,11 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for python 3.11 and 3.12
-- change: moving PyQt5 to 5.15.10
-- change: moving libraries to latest versions
-- fix: typos
+- add: support for INDI Pegasus Uranus Meteo sensor
+- change: writing pointing coordinates to fits header from MW4 now
+- improve: add waiting time for image file save for NINA and SGPro 
+- improve: logging for NINA / SGPro controlled cameras
+- fix: typos and some minor bugs
 """
 
 with open('notes.txt', 'w') as f:
@@ -73,7 +74,7 @@ setup(
         'astropy==6.0.0',
         'pyerfa==2.0.1.1',
         'astroquery==0.4.6',
-        'sep_mw4==1.2.1.1',
+        'sep_mw4==1.2.1',
         'pyqtgraph==0.13.3',
         'qimage2ndarray==1.10.0',
         'skyfield==1.46',

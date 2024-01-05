@@ -92,7 +92,7 @@ class EnvironWeather:
                 'format': '5.2f',
             },
             'SQR': {
-                'valueKey': 'SKY_QUALITY.SKY_TEMPERATURE',
+                'valueKey': 'SKY_QUALITY.SKY_BRIGHTNESS',
                 'format': '4.1f',
             }
         }

@@ -19,11 +19,10 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for INDI Pegasus Uranus Meteo sensor
-- change: writing pointing coordinates to fits header from MW4 now
-- improve: add waiting time for image file save for NINA and SGPro 
-- improve: logging for NINA / SGPro controlled cameras
-- fix: typos and some minor bugs
+- add: support for python 3.11 and 3.12
+- change: moving PyQt5 to 5.15.10
+- change: moving libraries to latest versions
+- fix: typos
 """
 
 with open('notes.txt', 'w') as f:

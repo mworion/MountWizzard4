@@ -74,7 +74,7 @@ setup(
         'astropy==6.0.0',
         'pyerfa==2.0.1.1',
         'astroquery==0.4.6',
-        'sep_mw4==1.2.1',
+        'sep_mw4==1.2.1.1',
         'pyqtgraph==0.13.3',
         'qimage2ndarray==1.10.0',
         'skyfield==1.46',

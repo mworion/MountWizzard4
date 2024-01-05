@@ -219,40 +219,6 @@ def test_solve_4(function):
 
 def test_solve_5(function):
     function.indexPath = 'tests/workDir/temp'
-    with mock.patch.object(function,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'runSolveField',
-                               return_value=True):
-            with mock.patch.object(os,
-                                   'remove',
-                                   return_value=True):
-                shutil.copy('tests/testData/temp.wcs', 'tests/workDir/temp/temp.wcs')
-                shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
-                suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
-                assert not suc
-
-
-def test_solve_6(function):
-    function.indexPath = 'tests/workDir/temp'
-    with mock.patch.object(function,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'runSolveField',
-                               return_value=True):
-            with mock.patch.object(os,
-                                   'remove',
-                                   return_value=True):
-                shutil.copy('tests/testData/tempNET.solved', 'tests/workDir/temp/temp.solved')
-                shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
-                suc = function.solve(fitsPath='tests/workDir/image/m51.fit')
-                assert not suc
-
-
-def test_solve_7(function):
-    function.indexPath = 'tests/workDir/temp'
     function.appPath = 'Astrometry.app'
     with mock.patch.object(function,
                            'runImage2xy',

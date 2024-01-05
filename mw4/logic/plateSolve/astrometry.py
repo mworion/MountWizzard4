@@ -208,8 +208,8 @@ class Astrometry(object):
               fovHint=None, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to
-        use an offline solving capability, so we need a installed instance. As we
-        go multi platform and we need to focus on MW function, we use the
+        use an offline solving capability, so we need an installed instance. As we
+        go multi-platform, and we need to focus on MW function, we use the
         astrometry.net package which is distributed with KStars / EKOS. Many
         thanks to them providing such a nice package.
         As we go using astrometry.net we focus on the minimum feature set possible
@@ -233,14 +233,8 @@ class Astrometry(object):
         self.result = {'success': False,
                        'message': 'Internal error'}
 
-        if not os.path.isfile(fitsPath):
-            self.result['message'] = 'image missing'
-            self.log.warning('Image missing for solving')
-            return False
-
         tempPath = os.path.normpath(self.tempDir + '/temp.xy')
         configPath = os.path.normpath(self.tempDir + '/astrometry.cfg')
-        solvedPath = os.path.normpath(self.tempDir + '/temp.solved')
         wcsPath = os.path.normpath(self.tempDir + '/temp.wcs')
         binPathImage2xy = os.path.normpath(self.appPath + '/image2xy')
         binPathSolveField = os.path.normpath(self.appPath + '/solve-field')
@@ -250,8 +244,7 @@ class Astrometry(object):
 
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                tempPath=tempPath,
-                               fitsPath=fitsPath,
-                               )
+                               fitsPath=fitsPath)
         if not suc:
             self.log.warning(f'IMAGE2XY error in [{fitsPath}]')
             self.result['message'] = 'image2xy failed'

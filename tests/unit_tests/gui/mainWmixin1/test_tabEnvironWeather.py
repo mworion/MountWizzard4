@@ -60,11 +60,11 @@ def test_storeConfig_1(function):
 
 
 def test_smartEnvironGui_1(function):
-    function.deviceStat['sensor1'] = False
-    function.deviceStat['sensor2'] = False
-    function.deviceStat['sensor3'] = False
-    function.deviceStat['online'] = False
-    function.deviceStat['direct'] = False
+    function.deviceStat['sensor1Weather'] = False
+    function.deviceStat['sensor2Weather'] = False
+    function.deviceStat['sensor3Weather'] = False
+    function.deviceStat['onlineWeather'] = False
+    function.deviceStat['directWeather'] = False
     suc = function.smartEnvironGui()
     assert suc
     assert not function.ui.sensor1Group.isEnabled()
@@ -75,11 +75,11 @@ def test_smartEnvironGui_1(function):
 
 
 def test_smartEnvironGui_2(function):
-    function.deviceStat['sensor1'] = True
-    function.deviceStat['sensor2'] = True
-    function.deviceStat['sensor3'] = True
-    function.deviceStat['online'] = True
-    function.deviceStat['direct'] = True
+    function.deviceStat['sensor1Weather'] = True
+    function.deviceStat['sensor2Weather'] = True
+    function.deviceStat['sensor3Weather'] = True
+    function.deviceStat['onlineWeather'] = True
+    function.deviceStat['directWeather'] = True
     suc = function.smartEnvironGui()
     assert suc
     assert function.ui.sensor1Group.isEnabled()
@@ -90,11 +90,11 @@ def test_smartEnvironGui_2(function):
 
 
 def test_smartEnvironGui_3(function):
-    function.deviceStat['sensor1'] = None
-    function.deviceStat['sensor2'] = None
-    function.deviceStat['sensor3'] = None
-    function.deviceStat['online'] = None
-    function.deviceStat['direct'] = False
+    function.deviceStat['sensor1Weather'] = None
+    function.deviceStat['sensor2Weather'] = None
+    function.deviceStat['sensor3Weather'] = None
+    function.deviceStat['onlineWeather'] = None
+    function.deviceStat['directWeather'] = False
     suc = function.smartEnvironGui()
     assert suc
     assert not function.ui.sensor1Group.isEnabled()
@@ -251,79 +251,80 @@ def test_selectRefractionSource_3(function):
 
 def test_updateFilterRefractionParameters_1(function):
     function.refractionSource = 'online'
-    function.app.onlineWeather.data = {}
+    function.app.onlineWeather.data.clear()
     suc = function.updateFilterRefractionParameters()
     assert not suc
 
 
 def test_updateFilterRefractionParameters_2(function):
     function.refractionSource = 'weather'
-    function.app.onlineWeather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-                                       'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
+    function.app.onlineWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    function.app.onlineWeather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert not suc
 
 
 def test_updateFilterRefractionParameters_3(function):
-    function.refractionSource = 'online'
-    function.app.onlineWeather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-                                       'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
+    function.refractionSource = 'onlineWeather'
+    function.app.onlineWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    function.app.onlineWeather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert suc
 
 
 def test_updateFilterRefractionParameters_4(function):
-    function.refractionSource = 'sensor1'
+    function.refractionSource = 'sensor1Weather'
+    function.app.onlineWeather.data.clear()
     suc = function.updateFilterRefractionParameters()
     assert not suc
 
 
 def test_updateFilterRefractionParameters_5(function):
-    function.refractionSource = 'sensor1'
-    function.app.sensor1Weather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-                                        'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
+    function.refractionSource = 'sensor1Weather'
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert suc
 
 
 def test_updateFilterRefractionParameters_6(function):
-    function.refractionSource = 'sensor1'
+    function.refractionSource = 'sensor1Weather'
     function.filteredTemperature = None
-    function.app.sensor1Weather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-                                        'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert suc
 
 
 def test_updateFilterRefractionParameters_7(function):
-    function.refractionSource = 'sensor1'
+    function.refractionSource = 'sensor1Weather'
     function.filteredPressure = None
-    function.app.sensor1Weather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-                                        'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert suc
 
 
 def test_updateFilterRefractionParameters_8(function):
-    function.refractionSource = 'sensor1'
+    function.refractionSource = 'sensor1Weather'
     function.filteredTemperature = np.full(100, 10)
-    function.app.sensor1Weather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-                                        'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert suc
 
 
 def test_updateFilterRefractionParameters_9(function):
-    function.refractionSource = 'sensor1'
+    function.refractionSource = 'sensor1Weather'
     function.filteredPressure = np.full(100, 1000)
-    function.app.sensor1Weather.data = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-                                        'WEATHER_PARAMETERS.WEATHER_PRESSURE': 1000}
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     suc = function.updateFilterRefractionParameters()
     assert suc
 
 
 def test_movingAverageRefractionParameters_1(function):
-    function.app.sensor1Weather.data = {}
+    function.app.sensor1Weather.data.clear()
     function.filteredPressure = None
     function.filteredTemperature = None
     v1, v2 = function.movingAverageRefractionParameters()
@@ -429,28 +430,12 @@ def test_clearEnvironGui_1(function):
 
 
 def test_updateEnvironGui_1(function):
-    function.app.sensor1Weather.name = 'test'
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10.5
-    function.updateSourceGui()
-    assert function.ui.temperature1.text() == '10.5'
-
-
-def test_updateEnvironGui_2(function):
-    function.app.sensor1Weather.name = 'test'
-    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 10.5
-    function.updateSourceGui()
-    assert function.ui.pressure1.text() == '10.5'
-
-
-def test_updateEnvironGui_3(function):
-    function.app.sensor1Weather.name = 'test'
+    function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = 10.5
-    function.updateSourceGui()
-    assert function.ui.dewPoint1.text() == '10.5'
-
-
-def test_updateEnvironGui_4(function):
-    function.app.sensor1Weather.name = 'test'
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = 10
     function.updateSourceGui()
+    assert function.ui.temperature1.text() == '10.5'
+    assert function.ui.pressure1.text() == '1000'
+    assert function.ui.dewPoint1.text() == '10.5'
     assert function.ui.humidity1.text() == ' 10'

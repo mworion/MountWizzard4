@@ -44,8 +44,8 @@ def function():
 
 
 def test_properties_1(function):
-    function.host = ('localhost', 11111)
-    function.hostaddress = 'localhost'
+    function.host = ('127.0.0.1', 11111)
+    function.hostaddress = '127.0.0.1'
     function.port = 11111
     function.deviceName = 'test'
     function.deviceName = 'test:2'
@@ -55,8 +55,8 @@ def test_properties_1(function):
 
 def test_properties_2(function):
     host = function.host
-    assert host == ('localhost', 11111)
-    assert function.hostaddress == 'localhost'
+    assert host == ('127.0.0.1', 11111)
+    assert function.hostaddress == '127.0.0.1'
     assert function.port == 11111
     assert function.deviceName == ''
     assert function.apiVersion == 1
@@ -73,7 +73,7 @@ def test_properties_3(function):
 def test_baseUrl_1(function):
     function.deviceName = 'test:camera:3'
     val = function.generateBaseUrl()
-    assert val == 'http://localhost:11111/api/v1/camera/3'
+    assert val == 'http://127.0.0.1:11111/api/v1/camera/3'
 
 
 def test_discoverAPIVersion_1(function):

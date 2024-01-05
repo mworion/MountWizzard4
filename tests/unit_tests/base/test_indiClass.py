@@ -51,10 +51,10 @@ def function():
 def test_properties(function):
     function.deviceName = 'test'
     assert function.deviceName == 'test'
-    function.host = ('localhost', 7624)
-    assert function.host == ('localhost', 7624)
-    function.hostaddress = 'localhost'
-    assert function.hostaddress == 'localhost'
+    function.host = ('127.0.0.1', 7624)
+    assert function.host == ('127.0.0.1', 7624)
+    function.hostaddress = '127.0.0.1'
+    assert function.hostaddress == '127.0.0.1'
     function.port = 7624
     assert function.port == 7624
 

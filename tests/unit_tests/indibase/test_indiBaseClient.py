@@ -35,8 +35,8 @@ def function():
 
 
 def test_properties_1(function):
-    function.host = 'localhost'
-    assert function.host == ('localhost', 7624)
+    function.host = '127.0.0.1'
+    assert function.host == ('127.0.0.1', 7624)
 
 
 def test_properties_2(function):
@@ -57,10 +57,10 @@ def test_setServer_1(function):
 
 def test_setServer_2(function):
     function.connected = True
-    suc = function.setServer('localhost')
+    suc = function.setServer('127.0.0.1')
     assert suc
     assert not function.connected
-    assert function.host == ('localhost', 7624)
+    assert function.host == ('127.0.0.1', 7624)
 
 
 def test_watchDevice_1(function):
@@ -95,14 +95,14 @@ def test_connectServer_1(function):
 
 
 def test_connectServer_2(function):
-    function._host = ('localhost', 7624)
+    function._host = ('127.0.0.1', 7624)
     function.connected = True
     suc = function.connectServer()
     assert not suc
 
 
 def test_connectServer_3(function):
-    function._host = ('localhost', 7624)
+    function._host = ('127.0.0.1', 7624)
     function.connected = False
     with mock.patch.object(function.socket,
                            'connectToHost'):
@@ -338,9 +338,9 @@ def test_getHost_1(function):
 
 
 def test_getHost_2(function):
-    function._host = ('localhost', 7624)
+    function._host = ('127.0.0.1', 7624)
     val = function.getHost()
-    assert val == 'localhost'
+    assert val == '127.0.0.1'
 
 
 def test_getPort_1(function):
@@ -350,7 +350,7 @@ def test_getPort_1(function):
 
 
 def test_getPort_2(function):
-    function._host = ('localhost', 7624)
+    function._host = ('127.0.0.1', 7624)
     val = function.getPort()
     assert val == 7624
 

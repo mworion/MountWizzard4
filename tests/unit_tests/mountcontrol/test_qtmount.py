@@ -154,7 +154,7 @@ def test_cycleCheckMountUp_1(function):
 
 
 def test_cycleCheckMountUp_2(function):
-    function.host = ('localhost', 80)
+    function.host = ('127.0.0.1', 80)
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.cycleCheckMountUp()

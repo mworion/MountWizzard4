@@ -39,7 +39,7 @@ def module_setup_teardown():
 
     class Test(QObject):
         data = Test1()
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
+        mount = Mount(host='127.0.0.1', MAC='00:00:00:00:00:00', verbose=False,
                       pathToData='tests/workDir/data')
         mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
                                               longitude_degrees=10,

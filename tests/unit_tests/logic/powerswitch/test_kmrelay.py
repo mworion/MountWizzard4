@@ -46,7 +46,7 @@ def test_startCommunication_1(function):
 
 
 def test_startCommunications_2(function):
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     with mock.patch.object(function.timerTask,
                            'start'):
         suc = function.startCommunication()
@@ -84,7 +84,7 @@ def test_getRelay_1(function):
 
 
 def test_getRelay_2(function):
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     function.mutexPoll.lock()
     suc = function.getRelay()
     assert suc is None
@@ -92,7 +92,7 @@ def test_getRelay_2(function):
 
 
 def test_getRelay_3(function):
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
@@ -102,7 +102,7 @@ def test_getRelay_3(function):
 
 
 def test_getRelay_4(function):
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
@@ -112,7 +112,7 @@ def test_getRelay_4(function):
 
 
 def test_getRelay_5(function):
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     with mock.patch.object(requests,
                            'get',
                            return_value=None,
@@ -164,7 +164,7 @@ def test_checkConnected_4(function):
 def test_cyclePolling_1(function):
     function.user = 'test'
     function.password = 'test'
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     with mock.patch.object(function,
                            'getRelay'):
         with mock.patch.object(function,
@@ -181,7 +181,7 @@ def test_cyclePolling_2(function):
 
     function.user = 'test'
     function.password = 'test'
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     with mock.patch.object(function,
                            'getRelay',
                            return_value=Test()):
@@ -199,7 +199,7 @@ def test_cyclePolling_3(function):
 
     function.user = 'test'
     function.password = 'test'
-    function.hostaddress = 'localhost'
+    function.hostaddress = '127.0.0.1'
     with mock.patch.object(function,
                            'getRelay',
                            return_value=Test()):

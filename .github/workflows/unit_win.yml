@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  branch: 'refactor-environment'
+  branch: 'refactor_environment'
   cov: '--cov=mw4/ --cov-append'
 
 on:

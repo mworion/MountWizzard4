@@ -42,18 +42,10 @@ class SensorWeatherAscom(AscomClass):
                                       'WEATHER_PARAMETERS.WEATHER_DEWPOINT')
         self.getAndStoreAscomProperty('humidity',
                                       'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
-        self.getAndStoreAscomProperty('skyquality',
-                                      'SKY_QUALITY.SKY_BRIGHTNESS')
         self.getAndStoreAscomProperty('cloudcover',
-                                      'cloudCover')
+                                      'WEATHER_PARAMETERS.CloudCover')
         self.getAndStoreAscomProperty('rainrate',
-                                      'rain')
-        self.getAndStoreAscomProperty('winddirection',
-                                      'windDir')
-        self.getAndStoreAscomProperty('windspeed',
-                                      'windSpeed')
-        self.getAndStoreAscomProperty('temperature',
-                                      'SKY_QUALITY.SKY_TEMPERATURE')
+                                      'WEATHER_PARAMETERS.RainVol')
         self.getAndStoreAscomProperty('skyquality',
                                       'SKY_QUALITY.SKY_BRIGHTNESS')
         return True

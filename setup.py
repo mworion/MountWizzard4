@@ -19,10 +19,11 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
-- add: support for python 3.11 and 3.12
-- change: moving PyQt5 to major version 6
-- change: moving libraries to latest versions
-- fix: typos
+- add: support for INDI Pegasus Uranus Meteo sensor
+- change: writing pointing coordinates to fits header from MW4 now
+- improve: add waiting time for image file save for NINA and SGPro 
+- improve: logging for NINA / SGPro controlled cameras
+- fix: typos and some minor bugs
 """
 
 with open('notes.txt', 'w') as f:
@@ -73,7 +74,7 @@ setup(
         'astropy==6.0.0',
         'pyerfa==2.0.1.1',
         'astroquery==0.4.6',
-        'sep_mw4==1.2.2',
+        'sep_mw4==1.2.1',
         'pyqtgraph==0.13.3',
         'qimage2ndarray==1.10.0',
         'skyfield==1.46',
@@ -94,10 +95,10 @@ setup(
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt6==6.6.1'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt6-3D==6.6.0'] if platform.machine() not in ['armv7l',
-                                                         'aarch64'] else []),
-    keywords=['6.6.1'],
+    + (['PyQt5==5.15.10'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==5.15.6'] if platform.machine() not in ['armv7l',
+                                                        'aarch64'] else []),
+    keywords=['5.15.10'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

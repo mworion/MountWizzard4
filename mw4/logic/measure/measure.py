@@ -108,20 +108,16 @@ class MeasureData:
         self.data['errorAngularPosRA'] = np.empty(shape=[0, 1])
         self.data['errorAngularPosDEC'] = np.empty(shape=[0, 1])
         self.data['status'] = np.empty(shape=[0, 1])
-        self.data['sensorWeatherTemp'] = np.empty(shape=[0, 1])
-        self.data['sensorWeatherHum'] = np.empty(shape=[0, 1])
-        self.data['sensorWeatherPress'] = np.empty(shape=[0, 1])
-        self.data['sensorWeatherDew'] = np.empty(shape=[0, 1])
-        self.data['onlineWeatherTemp'] = np.empty(shape=[0, 1])
-        self.data['onlineWeatherHum'] = np.empty(shape=[0, 1])
-        self.data['onlineWeatherPress'] = np.empty(shape=[0, 1])
-        self.data['onlineWeatherDew'] = np.empty(shape=[0, 1])
+        for source in ['sensor1Weather', 'sensor2Weather', 'sensor3Weather',
+                       'onlineWeather']:
+            for value in ['Temp', 'Hum', 'Press', 'Dew', 'Cloud', 'Rain', 'Sky']:
+                self.data[source + value] = np.empty(shape=[0, 1])
+
         self.data['directWeatherTemp'] = np.empty(shape=[0, 1])
         self.data['directWeatherHum'] = np.empty(shape=[0, 1])
         self.data['directWeatherPress'] = np.empty(shape=[0, 1])
         self.data['directWeatherDew'] = np.empty(shape=[0, 1])
-        self.data['skyTemp'] = np.empty(shape=[0, 1])
-        self.data['skySQR'] = np.empty(shape=[0, 1])
+
         self.data['filterNumber'] = np.empty(shape=[0, 1])
         self.data['focusPosition'] = np.empty(shape=[0, 1])
         self.data['powCurr1'] = np.empty(shape=[0, 1])
@@ -130,9 +126,6 @@ class MeasureData:
         self.data['powCurr4'] = np.empty(shape=[0, 1])
         self.data['powVolt'] = np.empty(shape=[0, 1])
         self.data['powCurr'] = np.empty(shape=[0, 1])
-        self.data['powHum'] = np.empty(shape=[0, 1])
-        self.data['powTemp'] = np.empty(shape=[0, 1])
-        self.data['powDew'] = np.empty(shape=[0, 1])
         self.data['cameraTemp'] = np.empty(shape=[0, 1])
         self.data['cameraPower'] = np.empty(shape=[0, 1])
         self.data['timeDiff'] = np.empty(shape=[0, 1])
@@ -245,10 +238,10 @@ class MeasureData:
 
     def measureTask(self):
         """
-        measureTask runs all necessary pre processing and collecting task to assemble a
-        large dict of lists, where all measurement data is stored. the intention later on
-        would be to store and export this data.
-        the time object is related to the time held in mount computer and is in utc timezone.
+        measureTask runs all necessary pre-processing and collecting task to
+        assemble a large dict of lists, where all measurement data is stored. the
+        intention later on would be to store and export this data. the time
+        object is related to the time held in mount computer and is in utc timezone.
 
         data sources are:
             environment
@@ -275,35 +268,30 @@ class MeasureData:
         dat['errorAngularPosDEC'] = np.append(dat['errorAngularPosDEC'], errAngPosDECD)
         dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)
 
-        sens = self.app.sensorWeather
-        sensorWeatherTemp = sens.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
-        sensorWeatherPress = sens.data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE', 0)
-        sensorWeatherDew = sens.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
-        sensorWeatherHum = sens.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
-        dat['sensorWeatherTemp'] = np.append(dat['sensorWeatherTemp'], sensorWeatherTemp)
-        dat['sensorWeatherHum'] = np.append(dat['sensorWeatherHum'], sensorWeatherHum)
-        dat['sensorWeatherPress'] = np.append(dat['sensorWeatherPress'], sensorWeatherPress)
-        dat['sensorWeatherDew'] = np.append(dat['sensorWeatherDew'], sensorWeatherDew)
+        for source in ['sensor1Weather', 'sensor2Weather', 'sensor3Weather',
+                       'onlineWeather']:
+            data = eval(f'self.app.{source}.data')
+            Temp = data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
+            Press = data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE', 0)
+            Dew = data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
+            Hum = data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
+            Cloud = data.get('WEATHER_PARAMETERS.CloudCov', 0)
+            Rain = data.get('WEATHER_PARAMETERS.RainVol', 0)
+            Sky = data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
 
-        onlineWeatherTemp = self.app.onlineWeather.data.get('temperature', 0)
-        onlineWeatherPress = self.app.onlineWeather.data.get('pressure', 0)
-        onlineWeatherDew = self.app.onlineWeather.data.get('dewPoint', 0)
-        onlineWeatherHum = self.app.onlineWeather.data.get('humidity', 0)
-        dat['onlineWeatherTemp'] = np.append(dat['onlineWeatherTemp'], onlineWeatherTemp)
-        dat['onlineWeatherHum'] = np.append(dat['onlineWeatherHum'], onlineWeatherHum)
-        dat['onlineWeatherPress'] = np.append(dat['onlineWeatherPress'], onlineWeatherPress)
-        dat['onlineWeatherDew'] = np.append(dat['onlineWeatherDew'], onlineWeatherDew)
+            dat[source + 'Temp'] = np.append(dat[source + 'Temp'], Temp)
+            dat[source + 'Hum'] = np.append(dat[source + 'Hum'], Hum)
+            dat[source + 'Press'] = np.append(dat[source + 'Press'], Press)
+            dat[source + 'Dew'] = np.append(dat[source + 'Dew'], Dew)
+            dat[source + 'Cloud'] = np.append(dat[source + 'Cloud'], Cloud)
+            dat[source + 'Rain'] = np.append(dat[source + 'Rain'], Rain)
+            dat[source + 'Sky'] = np.append(dat[source + 'Sky'], Sky)
 
         temp, press, dew, hum = self.getDirectWeather()
         dat['directWeatherTemp'] = np.append(dat['directWeatherTemp'], temp)
         dat['directWeatherHum'] = np.append(dat['directWeatherHum'], hum)
         dat['directWeatherPress'] = np.append(dat['directWeatherPress'], press)
         dat['directWeatherDew'] = np.append(dat['directWeatherDew'], dew)
-
-        skySQR = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
-        skyTemp = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
-        dat['skySQR'] = np.append(dat['skySQR'], skySQR)
-        dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
 
         filterNo = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 0)
         dat['filterNumber'] = np.append(dat['filterNumber'], filterNo)
@@ -317,18 +305,13 @@ class MeasureData:
         powCurr4 = self.app.power.data.get('POWER_CURRENT.POWER_CURRENT_4', 0)
         powVolt = self.app.power.data.get('POWER_SENSORS.SENSOR_VOLTAGE', 0)
         powCurr = self.app.power.data.get('POWER_SENSORS.SENSOR_CURRENT', 0)
-        powTemp = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
-        powDew = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
-        powHum = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
+
         dat['powCurr1'] = np.append(dat['powCurr1'], powCurr1)
         dat['powCurr2'] = np.append(dat['powCurr2'], powCurr2)
         dat['powCurr3'] = np.append(dat['powCurr3'], powCurr3)
         dat['powCurr4'] = np.append(dat['powCurr4'], powCurr4)
         dat['powCurr'] = np.append(dat['powCurr'], powCurr)
         dat['powVolt'] = np.append(dat['powVolt'], powVolt)
-        dat['powTemp'] = np.append(dat['powTemp'], powTemp)
-        dat['powDew'] = np.append(dat['powDew'], powDew)
-        dat['powHum'] = np.append(dat['powHum'], powHum)
 
         ccd = self.app.camera
         temp = ccd.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)

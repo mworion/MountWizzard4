@@ -40,8 +40,8 @@ copyright = '2023, mworion'
 author = 'Michael Würtenberger'
 
 # The full version, including alpha/beta/rc tags
-version = '3.2.6b12'
-release = '3.2.6b12'
+version = '3.2.6b11'
+release = '3.2.6b11'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

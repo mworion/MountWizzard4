@@ -73,7 +73,7 @@ class EnvironWeather:
             },
             'pressure': {
                 'valueKey': 'WEATHER_PARAMETERS.WEATHER_PRESSURE',
-                'format': '4.1f',
+                'format': '4.0f',
             },
             'humidity': {
                 'valueKey': 'WEATHER_PARAMETERS.WEATHER_HUMIDITY',
@@ -244,11 +244,12 @@ class EnvironWeather:
 
         :return:
         """
-        if self.refractionSource in ['sensor1', 'sensor2', 'sensor3', 'online']:
+        if self.refractionSource in ['sensor1Weather', 'sensor2Weather',
+                                     'sensor3Weather', 'onlineWeather']:
             key = 'WEATHER_PARAMETERS.WEATHER_TEMPERATURE'
-            temp = self.refractionSources[self.refractionSource].get(key)
+            temp = self.refractionSources[self.refractionSource]['data'].get(key)
             key = 'WEATHER_PARAMETERS.WEATHER_PRESSURE'
-            press = self.refractionSources[self.refractionSource].get(key)
+            press = self.refractionSources[self.refractionSource]['data'].get(key)
 
         else:
             temp = None

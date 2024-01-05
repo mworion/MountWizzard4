@@ -34,7 +34,7 @@ class NINAClass(DriverData, QObject):
     log = logging.getLogger(__name__)
 
     NINA_TIMEOUT = 3
-    HOST_ADDR = 'localhost'
+    HOST_ADDR = '127.0.0.1'
     PORT = 59590
     PROTOCOL = 'http'
     BASE_URL = f'{PROTOCOL}://{HOST_ADDR}:{PORT}'

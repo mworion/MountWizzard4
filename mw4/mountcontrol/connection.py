@@ -53,7 +53,7 @@ class Connection(object):
 
     log = logging.getLogger(__name__)
 
-    # I don't want so wait to long for a response. In average I see values
+    # I don't want so wait to long for a response. In average, I see values
     # shorter than 0.5 sec, so 2 seconds should be good
     SOCKET_TIMEOUT = 5
 
@@ -359,7 +359,6 @@ class Connection(object):
                                          numberOfChunks=numberOfChunks,
                                          minBytes=minBytes)
         self.closeClientHard(client)
-        del client
 
         return suc, response, numberOfChunks
 

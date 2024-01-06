@@ -55,7 +55,7 @@ jobs:
         run: mv .coverage c1a.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c1a.dat'
@@ -81,7 +81,7 @@ jobs:
         run: mv .coverage c1b.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c1b.dat'
@@ -134,7 +134,7 @@ jobs:
         run: mv .coverage c2a.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c2a.dat'
@@ -161,7 +161,7 @@ jobs:
         run: mv .coverage c2b.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c2b.dat'
@@ -187,7 +187,7 @@ jobs:
         run: mv .coverage c3a.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c3a.dat'
@@ -213,7 +213,7 @@ jobs:
         run: mv .coverage c3b.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c3b.dat'
@@ -239,7 +239,7 @@ jobs:
         run: mv .coverage c3c.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c3c.dat'
@@ -265,7 +265,7 @@ jobs:
         run: mv .coverage c4.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c4.dat'
@@ -291,7 +291,7 @@ jobs:
         run: mv .coverage c5.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c5.dat'
@@ -317,7 +317,7 @@ jobs:
         run: mv .coverage c6.dat
         
       - name: upload_coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: './c6.dat'
@@ -338,7 +338,7 @@ jobs:
         ref: ${{env.branch}}
     
     - name: collecting_data
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v3
       with:
         name: coverage
         path: '.'

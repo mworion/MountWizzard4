@@ -162,7 +162,7 @@ class EnvironWeather:
         """
         :return: success
         """
-        if self.refractionSource != 'direct':
+        if self.refractionSource != 'directWeather':
             return False
 
         setting = self.app.mount.setting
@@ -183,7 +183,7 @@ class EnvironWeather:
         """
         if not self.ui.showTabEnviron.isChecked():
             return False
-        if self.refractionSource != 'direct':
+        if self.refractionSource != 'directWeather':
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
             return suc
 
@@ -296,7 +296,7 @@ class EnvironWeather:
 
         :return: success if update happened
         """
-        if self.refractionSource == 'direct':
+        if self.refractionSource == 'directWeather':
             return False
         if not self.deviceStat['mount']:
             return False

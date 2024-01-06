@@ -113,14 +113,14 @@ def test_updateRefractionUpdateType_1(function):
 
 def test_updateRefractionUpdateType_2(function):
     function.app.mount.setting.weatherStatus = 3
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     suc = function.updateRefractionUpdateType()
     assert not suc
 
 
 def test_updateRefractionUpdateType_3(function):
     function.app.mount.setting.weatherStatus = 0
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     function.ui.refracManual.setChecked(False)
     suc = function.updateRefractionUpdateType()
     assert suc
@@ -129,7 +129,7 @@ def test_updateRefractionUpdateType_3(function):
 
 def test_updateRefractionUpdateType_4(function):
     function.app.mount.setting.weatherStatus = 1
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     function.ui.refracNoTrack.setChecked(False)
     suc = function.updateRefractionUpdateType()
     assert suc
@@ -137,7 +137,7 @@ def test_updateRefractionUpdateType_4(function):
 
 def test_updateRefractionUpdateType_5(function):
     function.app.mount.setting.weatherStatus = 2
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     function.ui.refracCont.setChecked(False)
     suc = function.updateRefractionUpdateType()
     assert suc
@@ -162,7 +162,7 @@ def test_setRefractionUpdateType_1(function):
 def test_setRefractionUpdateType_2(function):
     function.ui.showTabEnviron.setChecked(True)
     function.app.mount.setting.weatherStatus = 1
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     function.ui.refracManual.setChecked(True)
     with mock.patch.object(function.app.mount.setting,
                            'setDirectWeatherUpdateType',
@@ -173,7 +173,7 @@ def test_setRefractionUpdateType_2(function):
 
 def test_setRefractionUpdateType_3(function):
     function.ui.showTabEnviron.setChecked(True)
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     function.app.mount.setting.weatherStatus = 1
     function.ui.refracNoTrack.setChecked(True)
     with mock.patch.object(function.app.mount.setting,
@@ -185,7 +185,7 @@ def test_setRefractionUpdateType_3(function):
 
 def test_setRefractionUpdateType_4(function):
     function.ui.showTabEnviron.setChecked(True)
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     function.app.mount.setting.weatherStatus = 0
     function.ui.refracCont.setChecked(True)
     with mock.patch.object(function.app.mount.setting,
@@ -238,7 +238,7 @@ def test_selectRefractionSource_3(function):
     def Sender():
         return function.ui.onlineGroup
 
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
     function.ui.onlineGroup.setChecked(True)
     function.sender = Sender
     with mock.patch.object(function,
@@ -341,7 +341,7 @@ def test_movingAverageRefractionParameters_2(function):
 
 
 def test_updateRefractionParameters_1(function):
-    function.refractionSource = 'direct'
+    function.refractionSource = 'directWeather'
 
     suc = function.updateRefractionParameters()
     assert not suc

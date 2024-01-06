@@ -65,8 +65,11 @@ class CameraSupport:
         header.append(('OBSERVER', 'MW4'))
         header.append(('CCD-TEMP',
                        self.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)))
-        header.append(('SQM',
-                       self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)))
+
+        val1 = self.app.sensor1Weather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+        val2 = self.app.sensor2Weather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+        val3 = self.app.sensor3Weather.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+        header.append(('SQM', max(val1, val2, val3)))
         header.append(('FOCPOS',
                        self.app.focuser.data.get(
                            'ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)))

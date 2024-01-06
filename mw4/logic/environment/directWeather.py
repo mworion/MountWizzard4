@@ -60,7 +60,7 @@ class DirectWeather:
         :return: success
         """
         self.enabled = True
-        self.app.deviceStat['direct'] = False
+        self.app.deviceStat['directWeather'] = False
         return True
 
     def stopCommunication(self):
@@ -69,7 +69,7 @@ class DirectWeather:
         """
         self.enabled = False
         self.running = False
-        self.app.deviceStat['direct'] = None
+        self.app.deviceStat['directWeather'] = None
         self.data.clear()
         self.signals.deviceDisconnected.emit('DirectWeather')
         return True
@@ -96,7 +96,7 @@ class DirectWeather:
             self.signals.deviceConnected.emit('DirectWeather')
             self.running = True
 
-        self.app.deviceStat['direct'] = isValid
+        self.app.deviceStat['directWeather'] = isValid
         self.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = value1
         self.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = value2
         self.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = value3

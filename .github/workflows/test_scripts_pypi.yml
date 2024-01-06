@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.12'
       
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1
@@ -55,7 +55,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.12'
       - name: Install Head
         run: |
           sudo apt-get update
@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.12'
 
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1

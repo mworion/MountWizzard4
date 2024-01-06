@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c1a.dat
+          path: './c1a.dat'
 
   run_tests_windows_1b:
     #
@@ -84,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c1b.dat
+          path: './c1b.dat'
 
   run_tests_windows_1c:
     #
@@ -110,7 +110,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage
-          path: ./c1c.dat
+          path: './c1c.dat'
 
   run_tests_windows_2a:
     #
@@ -137,7 +137,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c2a.dat
+          path: './c2a.dat'
 
   run_tests_windows_2b:
     #
@@ -164,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c2b.dat
+          path: './c2b.dat'
 
   run_tests_windows_3a:
     #
@@ -190,7 +190,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c3a.dat
+          path: './c3a.dat'
 
   run_tests_windows_3b:
     #
@@ -216,7 +216,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c3b.dat
+          path: './c3b.dat'
 
   run_tests_windows_3c:
     #
@@ -242,7 +242,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c3c.dat
+          path: './c3c.dat'
 
   run_tests_windows_4:
     #
@@ -268,7 +268,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c4.dat
+          path: './c4.dat'
 
   run_tests_windows_5:
     #
@@ -294,7 +294,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c5.dat
+          path: './c5.dat'
 
   run_tests_windows_6:
     #
@@ -320,7 +320,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: ./c6.dat
+          path: './c6.dat'
 
   coverage:
     #
@@ -341,7 +341,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: coverage
-        path: .
+        path: '.'
         
     - name: combining_data
       run: |

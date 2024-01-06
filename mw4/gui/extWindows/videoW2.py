@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal
 
 # local import
 from gui.extWindows.videoW import VideoWindow

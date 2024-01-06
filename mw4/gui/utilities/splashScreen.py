@@ -18,9 +18,9 @@
 
 # external packages
 import numpy as np
-from PyQt5.QtCore import QObject, Qt, QRectF
-from PyQt5.QtGui import QPixmap, QColor
-from PyQt5.QtWidgets import QApplication, QSplashScreen
+from PyQt6.QtCore import QObject, Qt, QRectF
+from PyQt6.QtGui import QPixmap, QColor
+from PyQt6.QtWidgets import QApplication, QSplashScreen
 
 # local import
 
@@ -31,7 +31,7 @@ class SplashScreen(QObject):
     set in the progress bar. Need the app and the icon as parameter
 
     Part from Maurizio D'Addona <mauritiusdadd@gmail.com> under license APL2.0
-    Ported from PyQt4 to PyQt5
+    Ported from PyQt4 to PyQt6
 
     Agreement for License (email from 04.07.2018):
     Hi Michel,
@@ -50,7 +50,8 @@ class SplashScreen(QObject):
         self.y = y
         self._pxm = QPixmap(':/icon/mw4.png')
 
-        flags = (Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint)
+        flags = (Qt.WindowType.WindowStaysOnTopHint |
+                 Qt.WindowType.X11BypassWindowManagerHint)
         self.qss = QSplashScreen(self._pxm, flags)
         h = self.qss.height()
         w = self.qss.width()
@@ -92,13 +93,13 @@ class SplashScreen(QObject):
         painter.setBrush(QColor(0, 0, 0, 128))
         painter.drawRect(10, h - 64, w - 20, 19)
 
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
         painter.setBrush(QColor(32, 144, 192, 128))
         painter.drawRect(13, h - 61, int((w - 24) * self.cval / self.maxv), 14)
 
-        painter.setPen(Qt.white)
+        painter.setPen(Qt.GlobalColor.white)
         rect = QRectF(10, h - 61, w - 20, 15)
-        painter.drawText(rect, Qt.AlignCenter, str(self.msg))
+        painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, str(self.msg))
         painter.setPen(QColor(43, 192, 255))
         painter.drawLine(0, 0, w, 0)
         painter.drawLine(0, h, 0, 0)

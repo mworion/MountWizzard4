@@ -17,9 +17,9 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtGui import QVector3D
-from PyQt5.Qt3DCore import QEntity
-from PyQt5.Qt3DExtras import QCylinderMesh
+from PyQt6.QtGui import QVector3D
+from PyQt6.Qt3DCore import QEntity
+from PyQt6.Qt3DExtras import QCylinderMesh
 from skyfield import functions
 import numpy as np
 

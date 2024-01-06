@@ -20,7 +20,7 @@ import re
 import time
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QMutex, QTimer
+from PyQt6.QtCore import pyqtSignal, QMutex, QTimer
 import requests
 
 # local imports

@@ -18,8 +18,8 @@
 import socket
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+import PyQt6.QtCore
+import PyQt6.QtWidgets
 import wakeonlan
 import numpy as np
 
@@ -33,7 +33,7 @@ __all__ = ['Mount',
            ]
 
 
-class MountSignals(PyQt5.QtCore.QObject):
+class MountSignals(PyQt6.QtCore.QObject):
     """
     The MountSignals class offers a list of signals to be used and instantiated by
     the Mount class to get signals for triggers for finished tasks to
@@ -45,21 +45,21 @@ class MountSignals(PyQt5.QtCore.QObject):
 
     __all__ = ['MountSignals']
 
-    pointDone = PyQt5.QtCore.pyqtSignal(object)
-    domeDone = PyQt5.QtCore.pyqtSignal(object)
-    settingDone = PyQt5.QtCore.pyqtSignal(object)
-    alignDone = PyQt5.QtCore.pyqtSignal(object)
-    namesDone = PyQt5.QtCore.pyqtSignal(object)
-    firmwareDone = PyQt5.QtCore.pyqtSignal(object)
-    locationDone = PyQt5.QtCore.pyqtSignal(object)
-    calcTLEdone = PyQt5.QtCore.pyqtSignal(object)
-    statTLEdone = PyQt5.QtCore.pyqtSignal(object)
-    getTLEdone = PyQt5.QtCore.pyqtSignal(object)
-    trajectoryProgress = PyQt5.QtCore.pyqtSignal(object)
-    calcTrajectoryDone = PyQt5.QtCore.pyqtSignal(object)
-    mountUp = PyQt5.QtCore.pyqtSignal(object)
-    slewFinished = PyQt5.QtCore.pyqtSignal()
-    alert = PyQt5.QtCore.pyqtSignal()
+    pointDone = PyQt6.QtCore.pyqtSignal(object)
+    domeDone = PyQt6.QtCore.pyqtSignal(object)
+    settingDone = PyQt6.QtCore.pyqtSignal(object)
+    alignDone = PyQt6.QtCore.pyqtSignal(object)
+    namesDone = PyQt6.QtCore.pyqtSignal(object)
+    firmwareDone = PyQt6.QtCore.pyqtSignal(object)
+    locationDone = PyQt6.QtCore.pyqtSignal(object)
+    calcTLEdone = PyQt6.QtCore.pyqtSignal(object)
+    statTLEdone = PyQt6.QtCore.pyqtSignal(object)
+    getTLEdone = PyQt6.QtCore.pyqtSignal(object)
+    trajectoryProgress = PyQt6.QtCore.pyqtSignal(object)
+    calcTrajectoryDone = PyQt6.QtCore.pyqtSignal(object)
+    mountUp = PyQt6.QtCore.pyqtSignal(object)
+    slewFinished = PyQt6.QtCore.pyqtSignal()
+    alert = PyQt6.QtCore.pyqtSignal()
 
 
 class Mount(mountcontrol.mount.Mount):
@@ -105,22 +105,22 @@ class Mount(mountcontrol.mount.Mount):
         self.statusSlew = True
         self.signals = MountSignals()
 
-        self.timerPointing = PyQt5.QtCore.QTimer()
+        self.timerPointing = PyQt6.QtCore.QTimer()
         self.timerPointing.setSingleShot(False)
         self.timerPointing.timeout.connect(self.cyclePointing)
-        self.timerDome = PyQt5.QtCore.QTimer()
+        self.timerDome = PyQt6.QtCore.QTimer()
         self.timerDome.setSingleShot(False)
         self.timerDome.timeout.connect(self.cycleDome)
-        self.timerClock = PyQt5.QtCore.QTimer()
+        self.timerClock = PyQt6.QtCore.QTimer()
         self.timerClock.setSingleShot(False)
         self.timerClock.timeout.connect(self.cycleClock)
-        self.timerSetting = PyQt5.QtCore.QTimer()
+        self.timerSetting = PyQt6.QtCore.QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
-        self.timerMountUp = PyQt5.QtCore.QTimer()
+        self.timerMountUp = PyQt6.QtCore.QTimer()
         self.timerMountUp.setSingleShot(False)
         self.timerMountUp.timeout.connect(self.cycleCheckMountUp)
-        self.settlingWait = PyQt5.QtCore.QTimer()
+        self.settlingWait = PyQt6.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
 

@@ -25,7 +25,7 @@ from base.packageConfig import checkAutomation
 if checkAutomation():
     from logic.automation.automateWindows import AutomateWindows
 
-from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
+from PyQt6.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
 

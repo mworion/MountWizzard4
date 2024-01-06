@@ -19,7 +19,7 @@ import pickle
 from io import BytesIO
 
 # external packages
-from PyQt5.QtCore import QObject, QFile, Qt, pyqtSignal
+from PyQt6.QtCore import QObject, QFile, Qt, pyqtSignal
 import numpy as np
 from skyfield.api import wgs84
 import pyqtgraph as pg
@@ -58,11 +58,12 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.pens = []
         for color in self.colors:
             self.pens.append(pg.mkPen(color=color, width=2))
-            self.pens.append(pg.mkPen(color=color, width=2, style=Qt.DotLine))
+            self.pens.append(pg.mkPen(color=color, width=2,
+                                      style=Qt.PenStyle.DotLine))
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
         stream = QFile(':/data/worldmap.dat')
-        stream.open(QFile.ReadOnly)
+        stream.open(QFile.OpenModeFlag.ReadOnly)
         pickleData = stream.readAll()
         stream.close()
         self.world = pickle.load(BytesIO(pickleData))

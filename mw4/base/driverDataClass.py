@@ -18,7 +18,7 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt6.QtCore import pyqtSignal, QObject
 
 
 class Signals(QObject):

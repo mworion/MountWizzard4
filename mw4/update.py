@@ -157,10 +157,10 @@ class UpdateGUI:
     def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):
         self.version = version
 
-        from PyQt5.QtCore import Qt
-        from PyQt5.QtGui import QIcon, QPixmap, QColor, QPainter
-        from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout
-        from PyQt5.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
+        from PyQt6.QtCore import Qt
+        from PyQt6.QtGui import QIcon, QPixmap, QColor, QPainter
+        from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout
+        from PyQt6.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
         import resource.resources as res
         res.qInitResources()
         from gui.utilities.stylesQtCss import Styles
@@ -189,7 +189,8 @@ class UpdateGUI:
         self.updateButt = QPushButton('Start Update')
         self.updateButt.setFixedHeight(25)
         self.textBrow = QTextBrowser()
-        self.textBrow.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.textBrow.setVerticalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.updateButt.clicked.connect(self.runUpdate)
         self.cancelButt.clicked.connect(self.runCancel)
 
@@ -208,12 +209,12 @@ class UpdateGUI:
 
         img = QPixmap(':/icon/question.svg')
         qp = QPainter(img)
-        qp.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
         qp.fillRect(img.rect(), QColor(self.style.M_BLUE))
         qp.end()
         pixmap = QPixmap(img).scaled(32, 32)
         question.setPixmap(pixmap)
-        question.setAlignment(Qt.AlignRight)
+        question.setAlignment(Qt.AlignmentFlag.AlignRight)
         layoutHeader.addWidget(question)
         layoutButtons.addWidget(self.cancelButt)
         layoutButtons.addWidget(self.updateButt)
@@ -232,8 +233,8 @@ class UpdateGUI:
         :param color:
         :return:
         """
-        from PyQt5.QtGui import QTextCursor
-        from PyQt5.QtWidgets import QApplication
+        from PyQt6.QtGui import QTextCursor
+        from PyQt6.QtWidgets import QApplication
 
         self.textBrow.setTextColor(self.mColor[color])
         self.textBrow.insertPlainText(text + '\n')

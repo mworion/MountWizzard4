@@ -18,7 +18,7 @@
 import datetime
 
 # external packages
-from PyQt5.QtWidgets import QInputDialog, QLineEdit
+from PyQt6.QtWidgets import QInputDialog, QLineEdit
 from skyfield.api import wgs84
 
 # local import

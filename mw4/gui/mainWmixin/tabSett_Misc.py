@@ -24,7 +24,7 @@ from packaging.utils import Version
 # external packages
 from pkg_resources import working_set
 if pConf.isAvailable:
-    from PyQt5.QtMultimedia import QSound
+    from PyQt6.QtMultimedia import QSoundEffect
 import requests
 import importlib_metadata
 from astropy.utils import iers, data
@@ -539,7 +539,7 @@ class SettMisc(object):
             self.log.trace(f'{response["info"]}')
 
         targetPyQt5 = response['info']['keywords'].split(',')[0]
-        actPyQt5 = importlib_metadata.version('PyQt5')
+        actPyQt5 = importlib_metadata.version('PyQt6')
         self.log.debug(f'target: [{targetPyQt5}], actual: [{actPyQt5}]')
         return targetPyQt5 == actPyQt5
 
@@ -667,7 +667,7 @@ class SettMisc(object):
 
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            QSound.play(self.audioSignalsSet[sound])
+            QSoundEffect.play(self.audioSignalsSet[sound])
             return True
 
         else:

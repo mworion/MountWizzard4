@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtWidgets import QInputDialog
+from PyQt6.QtWidgets import QInputDialog
 
 # local import
 

@@ -20,9 +20,9 @@ from datetime import datetime as dt
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QFont, QTransform, QPainterPath
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor, QFont, QTransform, QPainterPath
+from PyQt6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 
@@ -229,7 +229,7 @@ class CustomViewBox(pg.ViewBox):
             super().mouseDragEvent(ev)
             return
 
-        if ev.button() != Qt.LeftButton:
+        if ev.button() != Qt.MouseButton.LeftButton:
             ev.ignore()
             return
 
@@ -267,7 +267,7 @@ class CustomViewBox(pg.ViewBox):
         :param ev:
         :return:
         """
-        if self.plotDataItem is None and ev.button() == Qt.RightButton:
+        if self.plotDataItem is None and ev.button() == Qt.MouseButton.RightButton:
             self.rightMouseRange()
             ev.accept()
             return
@@ -279,7 +279,7 @@ class CustomViewBox(pg.ViewBox):
         pos = self.mapSceneToView(posScene)
         spot = self.plotDataItem.scatter.pointsAt(pos)
 
-        if ev.button() == Qt.RightButton:
+        if ev.button() == Qt.MouseButton.RightButton:
             if len(spot) == 0:
                 self.rightMouseRange()
             else:
@@ -289,7 +289,7 @@ class CustomViewBox(pg.ViewBox):
             ev.accept()
             return
 
-        if ev.button() == Qt.LeftButton:
+        if ev.button() == Qt.MouseButton.LeftButton:
             posScene = ev.scenePos()
             pos = self.mapSceneToView(posScene)
             index = self.getCurveIndex(pos)

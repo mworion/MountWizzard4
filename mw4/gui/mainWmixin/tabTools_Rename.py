@@ -19,7 +19,7 @@ import os
 from pathlib import Path
 
 # external packages
-from PyQt5.QtWidgets import QListView, QApplication
+from PyQt6.QtWidgets import QListView, QApplication
 from astropy.io import fits
 
 # local import

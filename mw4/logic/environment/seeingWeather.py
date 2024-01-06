@@ -20,7 +20,7 @@ import json
 import os
 
 # external packages
-from PyQt5.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal
 import requests
 
 # local imports

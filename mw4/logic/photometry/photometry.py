@@ -20,7 +20,7 @@ import logging
 # external packages
 import numpy as np
 import sep
-from PyQt5.QtCore import pyqtSignal, QObject, QMutex
+from PyQt6.QtCore import pyqtSignal, QObject, QMutex
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 

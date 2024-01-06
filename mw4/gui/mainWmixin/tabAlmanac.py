@@ -18,8 +18,8 @@
 from dateutil.tz import tzlocal
 
 # external packages
-from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
-from PyQt5.QtCore import Qt, QPointF
+from PyQt6.QtGui import QPixmap, QPainter, QPen, QColor
+from PyQt6.QtCore import Qt, QPointF
 import pyqtgraph as pg
 from skyfield import almanac
 from skyfield.trigonometry import position_angle_of
@@ -323,7 +323,7 @@ class Almanac:
         moonMask.fill(QColor('transparent'))
 
         maskPainter = QPainter(moonMask)
-        maskPainter.setBrush(Qt.SolidPattern)
+        maskPainter.setBrush(Qt.BrushStyle.SolidPattern)
         maskPainter.setBrush(colFree)
         maskPainter.setPen(penFrame)
 
@@ -412,7 +412,7 @@ class Almanac:
         moonMask = self.generateMoonMask(moon, mpDegree)
 
         m = QPainter(moon)
-        m.setCompositionMode(QPainter.CompositionMode_SourceOver)
+        m.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceOver)
         m.drawPixmap(0, 0, moonMask)
         m.end()
 

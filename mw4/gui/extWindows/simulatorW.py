@@ -17,14 +17,14 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import QMutex
-from PyQt5.QtGui import QColor
-from PyQt5.QtGui import QVector3D
-from PyQt5.QtWidgets import QWidget
-from PyQt5.Qt3DExtras import Qt3DWindow
-from PyQt5.Qt3DExtras import QOrbitCameraController
-from PyQt5.Qt3DRender import QPointLight
-from PyQt5.Qt3DCore import QEntity, QTransform
+from PyQt6.QtCore import QMutex
+from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QVector3D
+from PyQt6.QtWidgets import QWidget
+from PyQt6.Qt3DExtras import Qt3DWindow
+from PyQt6.Qt3DExtras import QOrbitCameraController
+from PyQt6.Qt3DRender import QPointLight
+from PyQt6.Qt3DCore import QEntity, QTransform
 
 # local import
 from gui.utilities import toolsQtWidget

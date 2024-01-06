@@ -106,7 +106,7 @@ def test_smartEnvironGui_3(function):
 
 def test_updateRefractionUpdateType_1(function):
     function.app.mount.setting.weatherStatus = 3
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     suc = function.updateRefractionUpdateType()
     assert not suc
 
@@ -151,7 +151,7 @@ def test_setRefractionUpdateType_0(function):
 
 def test_setRefractionUpdateType_1(function):
     function.ui.showTabEnviron.setChecked(True)
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     with mock.patch.object(function.app.mount.setting,
                            'setDirectWeatherUpdateType',
                            return_value=True):
@@ -201,7 +201,7 @@ def test_setRefractionSourceGui_1(function):
 
 
 def test_setRefractionSourceGui_2(function):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     suc = function.setRefractionSourceGui()
     assert suc
 
@@ -224,7 +224,7 @@ def test_selectRefractionSource_2(function):
         return function.ui.onlineGroup
 
     function.ui.onlineGroup.setChecked(False)
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.sender = Sender
     with mock.patch.object(function,
                            'setRefractionSourceGui'):
@@ -250,7 +250,7 @@ def test_selectRefractionSource_3(function):
 
 
 def test_updateFilterRefractionParameters_1(function):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.app.onlineWeather.data.clear()
     suc = function.updateFilterRefractionParameters()
     assert not suc
@@ -348,7 +348,7 @@ def test_updateRefractionParameters_1(function):
 
 
 def test_updateRefractionParameters_2(function):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = False
 
     suc = function.updateRefractionParameters()
@@ -356,7 +356,7 @@ def test_updateRefractionParameters_2(function):
 
 
 def test_updateRefractionParameters_3(function):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
@@ -366,7 +366,7 @@ def test_updateRefractionParameters_3(function):
 
 
 def test_updateRefractionParameters_4(function):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     function.ui.refracManual.setChecked(True)
     with mock.patch.object(function,
@@ -377,7 +377,7 @@ def test_updateRefractionParameters_4(function):
 
 
 def test_updateRefractionParameters_5(function):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     function.ui.refracManual.setChecked(False)
     function.ui.refracNoTrack.setChecked(True)
@@ -390,7 +390,7 @@ def test_updateRefractionParameters_5(function):
 
 
 def test_updateRefractionParameters_6(function):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
@@ -406,7 +406,7 @@ def test_updateRefractionParameters_6(function):
 
 
 def test_updateRefractionParameters_7(function, qtbot):
-    function.refractionSource = 'online'
+    function.refractionSource = 'onlineWeather'
     function.deviceStat['mount'] = True
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1

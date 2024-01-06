@@ -108,10 +108,10 @@ class MessageWindow(toolsQtWidget.MWidget):
                           QColor(self.M_RED),
                           ]
         fontFam = self.window().font().family()
-        self.messFont = [QFont(fontFam, weight=QFont.Weight.Normal),
-                         QFont(fontFam, weight=QFont.Weight.Bold),
-                         QFont(fontFam, weight=QFont.Weight.Normal),
-                         QFont(fontFam, weight=QFont.Weight.Normal),
+        self.messFont = [QFont(fontFam, weight=QFont.Style.Normal),
+                         QFont(fontFam, weight=QFont.Style.Bold),
+                         QFont(fontFam, weight=QFont.Style.Normal),
+                         QFont(fontFam, weight=QFont.Style.Normal),
                          ]
         return True
 

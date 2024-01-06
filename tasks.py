@@ -174,7 +174,7 @@ def build_resource(c):
                 f.write(f'{os.path.basename(file)} {t}\n')
     runMW(c, f'pyside6-rcc -o {resourceDir}res.py {resourceDir}resources.qrc')
     with open(resourceDir + 'res.py', 'r') as f:
-        with open(resourceDir + 'resources.py', 'w') as g:
+        with open(resourceDir + 'resource.py', 'w') as g:
             text = f.read()
             if 'from PySide6 import QtCore' in text:
                 text = text.replace('from PySide6 import QtCore',

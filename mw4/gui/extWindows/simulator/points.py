@@ -18,11 +18,11 @@
 
 # external packages
 import numpy as np
-from PyQt5.QtGui import QFont
-from PyQt5.QtGui import QVector3D
-from PyQt5.Qt3DExtras import QSphereMesh
-from PyQt5.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
-from PyQt5.Qt3DCore import QEntity, QTransform
+from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QVector3D
+from PyQt6.Qt3DExtras import QSphereMesh
+from PyQt6.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
+from PyQt6.Qt3DCore import QEntity, QTransform
 from skyfield import functions
 
 # local import

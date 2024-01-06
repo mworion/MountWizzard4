@@ -18,8 +18,8 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5 import QtNetwork
+from PyQt6.QtCore import QObject
+from PyQt6 import QtNetwork
 
 # local imports
 from base.driverDataClass import Signals

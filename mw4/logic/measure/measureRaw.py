@@ -18,12 +18,12 @@
 import logging
 
 # external packages
-import PyQt5
+import PyQt6
 
 # local imports
 
 
-class MeasureDataRaw(PyQt5.QtCore.QObject):
+class MeasureDataRaw(PyQt6.QtCore.QObject):
     """
     the class MeasureData inherits all information and handling of data management and
     storage
@@ -59,7 +59,7 @@ class MeasureDataRaw(PyQt5.QtCore.QObject):
         }
 
     # time for measurement
-        self.timerTask = PyQt5.QtCore.QTimer()
+        self.timerTask = PyQt6.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 

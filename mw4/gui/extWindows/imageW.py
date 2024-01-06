@@ -19,8 +19,8 @@ import os
 
 # external packages
 import pyqtgraph as pg
-from PyQt5.QtCore import pyqtSignal, QObject, Qt
-from PyQt5.QtGui import QFont, QGuiApplication, QCursor
+from PyQt6.QtCore import pyqtSignal, QObject, Qt
+from PyQt6.QtGui import QFont, QGuiApplication, QCursor
 from skyfield.api import Angle
 
 # local import
@@ -712,13 +712,13 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.guiSetText(self.ui.raMouseFloat, '2.5f', ra.hours)
             self.guiSetText(self.ui.decMouse, 'DSTR', dec)
             self.guiSetText(self.ui.decMouseFloat, '2.5f', dec.degrees)
-            QGuiApplication.setOverrideCursor(QCursor(Qt.CrossCursor))
+            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
         else:
             self.ui.raMouse.setText('')
             self.ui.raMouseFloat.setText('')
             self.ui.decMouse.setText('')
             self.ui.decMouseFloat.setText('')
-            QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
         return True
 
     def mouseDoubleClick(self, ev, mousePoint):

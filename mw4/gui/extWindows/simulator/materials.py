@@ -17,9 +17,9 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtGui import QColor
-from PyQt5.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
-from PyQt5.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
+from PyQt6.QtGui import QColor
+from PyQt6.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
+from PyQt6.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
 
 # local import
 from gui.utilities.stylesQtCss import Styles

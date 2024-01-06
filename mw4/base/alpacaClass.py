@@ -19,7 +19,7 @@ import logging
 import uuid
 
 # external packages
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 import requests
 
 # local imports

@@ -17,9 +17,9 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QSizePolicy, QInputDialog, QLineEdit
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QSizePolicy, QInputDialog, QLineEdit
 import cv2
 import qimage2ndarray
 

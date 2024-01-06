@@ -18,8 +18,8 @@
 import os
 
 # external packages
-from PyQt5.QtWidgets import QListView
-from PyQt5.QtCore import QMutex
+from PyQt6.QtWidgets import QListView
+from PyQt6.QtCore import QMutex
 import pyqtgraph as pg
 
 # local import

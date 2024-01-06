@@ -19,7 +19,7 @@ import os
 import logging
 
 # external packages
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt6.QtCore import pyqtSignal, QObject
 import numpy as np
 import cv2
 from astropy.io import fits

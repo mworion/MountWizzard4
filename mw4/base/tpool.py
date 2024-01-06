@@ -20,7 +20,7 @@ import sys
 import os
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal, QRunnable, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtSignal, QRunnable, pyqtSlot
 
 # local imports
 

@@ -17,12 +17,12 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QVector3D, QFont
-from PyQt5.Qt3DExtras import QCuboidMesh, QSphereMesh
-from PyQt5.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
-from PyQt5.Qt3DRender import QMesh
-from PyQt5.Qt3DCore import QEntity, QTransform
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QVector3D, QFont
+from PyQt6.Qt3DExtras import QCuboidMesh, QSphereMesh
+from PyQt6.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
+from PyQt6.Qt3DRender import QMesh
+from PyQt6.Qt3DCore import QEntity, QTransform
 
 # local import
 

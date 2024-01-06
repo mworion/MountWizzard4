@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+import PyQt6.QtCore
+import PyQt6.QtWidgets
 
 # local import
 
@@ -124,7 +124,7 @@ class SettRelay(object):
 
         for dropDown in self.relayDropDowns:
             dropDown.clear()
-            dropDown.setView(PyQt5.QtWidgets.QListView())
+            dropDown.setView(PyQt6.QtWidgets.QListView())
             dropDown.addItem('Switch - Toggle')
             dropDown.addItem('Pulse 0.5 sec')
         return True

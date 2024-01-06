@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QGuiApplication, QCursor
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np
 import cv2
 import pyqtgraph as pg
@@ -196,11 +196,11 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         if vr[0][0] < x < vr[0][1] and vr[1][0] < y < vr[1][1]:
             self.ui.azimuth.setText(f'{x:3.1f}')
             self.ui.altitude.setText(f'{y:3.1f}')
-            QGuiApplication.setOverrideCursor(QCursor(Qt.CrossCursor))
+            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
         else:
             self.ui.azimuth.setText('')
             self.ui.altitude.setText('')
-            QGuiApplication.setOverrideCursor(QCursor(Qt.ArrowCursor))
+            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
         return True
 
     def mouseMovedHemisphere(self, pos):
@@ -618,7 +618,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         """
         for i, plotItem in enumerate(self.ui.hemisphere.p):
             if self.ui.showSlewPath.isChecked():
-                pen = pg.mkPen(color=self.M_GREEN, style=Qt.DashLine)
+                pen = pg.mkPen(color=self.M_GREEN, style=Qt.PenStyle.DashLine)
             else:
                 pen = None
 

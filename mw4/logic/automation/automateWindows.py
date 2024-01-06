@@ -20,7 +20,7 @@ import logging
 import platform
 
 # external packages
-from PyQt5.QtCore import QObject
+from PyQt6.QtCore import QObject
 from pywinauto.findwindows import find_windows
 from pywinauto import application
 from pywinauto.application import AppStartError, Application, Timings

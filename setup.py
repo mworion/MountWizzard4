@@ -20,7 +20,7 @@ import platform
 
 releaseNotes = """
 - add: support for python 3.11 and 3.12
-- change: moving PyQt5 to 5.15.10
+- change: moving PyQt5 to major version 6
 - change: moving libraries to latest versions
 - fix: typos
 """
@@ -94,10 +94,10 @@ setup(
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
-    + (['PyQt5==5.15.10'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt3D==5.15.6'] if platform.machine() not in ['armv7l',
-                                                        'aarch64'] else []),
-    keywords=['5.15.10'],
+    + (['PyQt5==6.6.1'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt6-3D==6.6.0'] if platform.machine() not in ['armv7l',
+                                                         'aarch64'] else []),
+    keywords=['6.6.1'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+import PyQt6.QtCore
+import PyQt6.QtWidgets
 
 # local import
 from gui.extWindows.devicePopupW import DevicePopup
@@ -253,7 +253,7 @@ class SettDevice:
         dropDowns = [self.drivers[driver]['uiDropDown'] for driver in self.drivers]
         for dropDown in dropDowns:
             dropDown.clear()
-            dropDown.setView(PyQt5.QtWidgets.QListView())
+            dropDown.setView(PyQt6.QtWidgets.QListView())
             dropDown.addItem('device disabled')
 
         for driver in self.driversData:

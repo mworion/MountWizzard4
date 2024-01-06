@@ -18,9 +18,9 @@
 import logging
 
 # external packages
-import PyQt5
-from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtNetwork import QTcpSocket
+import PyQt6
+from PyQt6.QtCore import pyqtSignal, QObject
+from PyQt6.QtNetwork import QTcpSocket
 import xml.etree.ElementTree as ETree
 
 # local import
@@ -63,7 +63,7 @@ class INDISignals(QObject):
 
 class Device(object):
     """
-    Device implements an INDI Device. it relies on PyQt5 and it's signalling scheme.
+    Device implements an INDI Device. it relies on PyQt6 and it's signalling scheme.
     there might be not all capabilities implemented right now. all the data, properties
     and attributes are stored in a device dict.
     """
@@ -199,7 +199,7 @@ class Device(object):
 
 class Client(QObject):
     """
-    Client implements an INDI Base Client for INDI servers. it relies on PyQt5
+    Client implements an INDI Base Client for INDI servers. it relies on PyQt6
     and it's signalling scheme. there might be not all capabilities implemented
     right now. all the data, properties and attributes are stored in a device
     dict. The reading and parsing of the XML data is done in a streaming way,
@@ -329,7 +329,7 @@ class Client(QObject):
             return False
 
         self.connected = False
-        if self.socket.state() != QTcpSocket.UnconnectedState:
+        if self.socket.state() != QTcpSocket.SocketState.UnconnectedState:
             self.socket.abort()
 
         self.socket.connectToHost(*self._host)
@@ -1026,7 +1026,7 @@ class Client(QObject):
         :param socketError: the error from socket library
         :return: nothing
         """
-        if socketError != QTcpSocket.UnknownSocketError:
+        if socketError != QTcpSocket.SocketError.UnknownSocketError:
             self.log.error(f'INDI error: [{socketError}]')
         self.disconnectServer()
         return True

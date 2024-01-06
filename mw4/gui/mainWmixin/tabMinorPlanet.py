@@ -19,7 +19,7 @@ import json
 import os
 
 # external packages
-from PyQt5.QtWidgets import QListView
+from PyQt6.QtWidgets import QListView
 
 # local import
 from logic.databaseProcessing.dataWriter import DataWriter

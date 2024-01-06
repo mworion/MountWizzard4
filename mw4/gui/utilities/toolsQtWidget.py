@@ -22,13 +22,13 @@ import platform
 from dateutil.tz import tzlocal
 
 # external packages
-from PyQt5.QtWidgets import QWidget, QDesktopWidget, QFileDialog, QMessageBox
-from PyQt5.QtWidgets import QTableWidgetItem
-from PyQt5.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
-from PyQt5.QtGui import QPainterPath, QTransform
-from PyQt5.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
-from PyQt5.QtCore import Qt, QSize, QEvent
-from PyQt5.QtTest import QTest
+from PyQt6.QtWidgets import QWidget, QFileDialog, QMessageBox
+from PyQt6.QtWidgets import QTableWidgetItem
+from PyQt6.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
+from PyQt6.QtGui import QPainterPath, QTransform, QGuiApplication
+from PyQt6.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
+from PyQt6.QtCore import Qt, QSize, QEvent
+from PyQt6.QtTest import QTest
 import numpy as np
 from qimage2ndarray import rgb_view, array2qimage
 
@@ -116,12 +116,12 @@ class QCustomTableWidgetItem(QTableWidgetItem):
 
     def __lt__(self, other):
         if (isinstance(other, QCustomTableWidgetItem)):
-            selfData = self.data(Qt.EditRole)
+            selfData = self.data(Qt.ItemDataRole.EditRole)
             if selfData == '':
                 selfDataValue = 99
             else:
                 selfDataValue = float(selfData)
-            otherData = other.data(Qt.EditRole)
+            otherData = other.data(Qt.ItemDataRole.EditRole)
             if otherData == '':
                 otherDataValue = 99
             else:
@@ -154,15 +154,17 @@ class MWidget(QWidget, Styles):
 
         self.palette = QPalette()
         self.initUI()
-        self.screenSizeX = QDesktopWidget().screenGeometry().width()
-        self.screenSizeY = QDesktopWidget().screenGeometry().height()
-        self.setAttribute(Qt.WA_DeleteOnClose, True)
+        self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
+        self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
 
-        newFlag = Qt.CustomizeWindowHint | Qt.WindowSystemMenuHint
-        newFlag = newFlag | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint
+        newFlag = (Qt.WindowType.CustomizeWindowHint |
+                   Qt.WindowType.WindowSystemMenuHint)
+        newFlag = (newFlag | Qt.WindowType.WindowMinimizeButtonHint |
+                   Qt.WindowType.WindowMaximizeButtonHint)
         self.setWindowFlags(self.windowFlags() | newFlag)
         self.setWindowIcon(QIcon(':/icon/mw4.png'))
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     @staticmethod
     def findIndexValue(ui, searchString, relaxed=False):
@@ -235,7 +237,7 @@ class MWidget(QWidget, Styles):
         :return:
         """
         image = QImage(img)
-        image.convertToFormat(QImage.Format_RGB32)
+        image.convertToFormat(QImage.Format.Format_RGB32)
         imgArr = rgb_view(image)
         if detect is not None and color is not None:
             detect = self.hex2rgb(detect)
@@ -254,7 +256,7 @@ class MWidget(QWidget, Styles):
         """
         img = QPixmap(svg)
         qp = QPainter(img)
-        qp.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
         qp.fillRect(img.rect(), QColor(color))
         qp.end()
         return img
@@ -430,9 +432,9 @@ class MWidget(QWidget, Styles):
         :return: OK
         """
         msg = QMessageBox()
-        msg.setWindowModality(Qt.ApplicationModal)
+        msg.setWindowModality(Qt.WindowModality.ApplicationModal)
         msg.setStyleSheet(self.mw4Style)
-        msg.setTextFormat(Qt.AutoText)
+        msg.setTextFormat(Qt.TextFormat.AutoText)
         msg.setWindowTitle(title)
         icons = [':/icon/question.svg', ':/icon/information.svg',
                  ':/icon/warning.svg', ':/icon/question.svg']
@@ -574,10 +576,10 @@ class MWidget(QWidget, Styles):
             return '', '', ''
 
         dlg = self.prepareFileDialog(window=window, enableDir=True)
-        dlg.setAcceptMode(QFileDialog.AcceptOpen)
+        dlg.setAcceptMode(QFileDialog.FileMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setDirectory(folder)
-        dlg.setFileMode(QFileDialog.DirectoryOnly)
+        dlg.setFileMode(QFileDialog.FileMode.DirectoryOnly)
         result = self.runDialog(dlg)
         if not result:
             return '', '', ''
@@ -605,11 +607,11 @@ class MWidget(QWidget, Styles):
             clicked = pyqtSignal(object)
 
             def eventFilter(self, obj, event):
-                if event.type() not in [QEvent.MouseButtonRelease,
-                                        QEvent.FocusIn]:
+                if event.type() not in [QEvent.Type.MouseButtonRelease,
+                                        QEvent.Type.FocusIn]:
                     return False
 
-                if event.type() == QEvent.MouseButtonRelease:
+                if event.type() == QEvent.Type.MouseButtonRelease:
                     if obj.rect().contains(event.pos()):
                         self.clicked.emit(widget)
                         return True

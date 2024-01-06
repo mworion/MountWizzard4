@@ -18,9 +18,9 @@
 import platform
 
 # external packages
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QListView, QComboBox, QLineEdit
-from PyQt5.QtWidgets import QCheckBox, QDoubleSpinBox
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QListView, QComboBox, QLineEdit
+from PyQt6.QtWidgets import QCheckBox, QDoubleSpinBox
 
 if platform.system() == 'Windows':
     import win32com.client
@@ -56,7 +56,7 @@ class DevicePopup(toolsQtWidget.MWidget):
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
-        self.setWindowModality(Qt.ApplicationModal)
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)

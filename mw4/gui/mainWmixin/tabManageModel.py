@@ -20,8 +20,8 @@ import json
 import os
 
 # external packages
-from PyQt5.QtWidgets import QLineEdit, QInputDialog
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QLineEdit, QInputDialog
+from PyQt6.QtCore import Qt
 import numpy as np
 
 # local import

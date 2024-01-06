@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtWidgets import QListView
+from PyQt6.QtWidgets import QListView
 
 # local import
 from gui.extWindows.downloadPopupW import DownloadPopup

@@ -18,7 +18,7 @@
 import os
 
 # external packages
-from PyQt5.QtCore import QPointF
+from PyQt6.QtCore import QPointF
 import numpy as np
 import cv2
 import pyqtgraph as pg

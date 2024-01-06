@@ -18,7 +18,7 @@
 import logging
 
 # external packages
-from PyQt5.QtCore import QMutex
+from PyQt6.QtCore import QMutex
 import numpy as np
 
 # noinspection PyProtectedMember

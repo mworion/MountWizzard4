@@ -21,8 +21,8 @@ from datetime import datetime
 import time
 
 # external packages
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QTransform
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QTransform
 from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import
@@ -119,7 +119,7 @@ class MainWindow(
         self.threadPool = app.threadPool
         self.deviceStat = app.deviceStat
         self.uiWindows = app.uiWindows
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.satStatus = False
@@ -539,7 +539,7 @@ class MainWindow(
         # environment
         pixmap = self.svg2pixmap(':/icon/meteoblue.svg', '#124673')
         pixmap = pixmap.transformed(QTransform().rotate(-90))
-        pixmap = pixmap.scaled(37, 128, 1)
+        pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.meteoblueIcon.setPixmap(pixmap)
         self.ui.meteoblueIcon.setVisible(False)
         self.ui.meteoblueSeeing.setVisible(False)

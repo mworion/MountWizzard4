@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt5.QtGui import QVector3D
-from PyQt5.Qt3DCore import QEntity
+from PyQt6.QtGui import QVector3D
+from PyQt6.Qt3DCore import QEntity
 
 # local import
 from gui.extWindows.simulator.materials import Materials

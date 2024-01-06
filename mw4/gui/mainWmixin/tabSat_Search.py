@@ -18,10 +18,10 @@
 import os
 
 # external packages
-import PyQt5
-from PyQt5.QtCore import Qt, QRect, QPoint, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QAbstractItemView
-from PyQt5.QtWidgets import QTableWidgetItem
+import PyQt6
+from PyQt6.QtCore import Qt, QRect, QPoint, pyqtSignal
+from PyQt6.QtWidgets import QApplication, QAbstractItemView
+from PyQt6.QtWidgets import QTableWidgetItem
 import numpy as np
 from skyfield import almanac
 
@@ -128,7 +128,7 @@ class SatSearch(object):
         """
         config = self.app.config['mainW']
         self.ui.satelliteSource.clear()
-        self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
+        self.ui.satelliteSource.setView(PyQt6.QtWidgets.QListView())
         for name in self.satelliteSourceURLs.keys():
             self.ui.satelliteSource.addItem(name)
         self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
@@ -330,19 +330,23 @@ class SatSearch(object):
         :return:
         """
         entry = QTableWidgetItem(f'{satParam[0]:5.0f}')
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                               Qt.AlignmentFlag.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 2, entry)
 
         entry = QTableWidgetItem(f'{satParam[1]:+2.2f}')
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                               Qt.AlignmentFlag.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 3, entry)
 
         entry = QTableWidgetItem(f'{satParam[2]:+2.2f}')
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                               Qt.AlignmentFlag.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 4, entry)
 
         entry = QTableWidgetItem(f'{satParam[3]:+2.2f}')
-        entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                               Qt.AlignmentFlag.AlignVCenter)
         self.sigSetSatTableEntry.emit(row, 5, entry)
 
         if isUp is not None:
@@ -352,7 +356,8 @@ class SatSearch(object):
                 t = ''
 
             entry = QTableWidgetItem(t)
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                                   Qt.AlignmentFlag.AlignVCenter)
             self.sigSetSatTableEntry.emit(row, 6, entry)
 
         if isSunlit is not None:
@@ -362,12 +367,14 @@ class SatSearch(object):
                 value = ''
 
             entry = QCustomTableWidgetItem(value)
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                               Qt.AlignmentFlag.AlignVCenter)
             self.sigSetSatTableEntry.emit(row, 7, entry)
 
         if twilight is not None:
             entry = QTableWidgetItem(f'{twilight:1.0f}')
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                               Qt.AlignmentFlag.AlignVCenter)
             self.sigSetSatTableEntry.emit(row, 8, entry)
 
         return True
@@ -422,15 +429,13 @@ class SatSearch(object):
         :param satName:
         :return:
         """
-        result = satTab.findItems(satName, Qt.MatchExactly)
+        result = satTab.findItems(satName, Qt.MatchFlag.MatchExactly)
         if len(result) == 0:
             return False
         item = result[0]
         index = satTab.row(item)
         satTab.selectRow(index)
-        satTab.scrollToItem(item,
-                            QAbstractItemView.PositionAtCenter
-                            | QAbstractItemView.EnsureVisible)
+        satTab.scrollToItem(item, QAbstractItemView.ScrollHint.EnsureVisible)
         return True
 
     def filterSatelliteNamesList(self):
@@ -603,10 +608,12 @@ class SatSearch(object):
             row = satTab.rowCount()
             satTab.insertRow(row)
             entry = QTableWidgetItem(f'{number:5d}')
-            entry.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
+                                   Qt.AlignmentFlag.AlignVCenter)
             satTab.setItem(row, 0, entry)
             entry = QTableWidgetItem(name)
-            entry.setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
+                                   Qt.AlignmentFlag.AlignVCenter)
             satTab.setItem(row, 1, entry)
 
         self.filterSatelliteNamesList()

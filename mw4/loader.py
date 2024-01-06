@@ -26,7 +26,7 @@ import sys
 import traceback
 import warnings
 
-# the following lines should avoid errors messages from OLE Automation with PyQt5
+# the following lines should avoid errors messages from OLE Automation with PyQt6
 # see
 # https://stackoverflow.com/questions/51284268/
 #         windowscontext-oleinitialize-failed-com-error-0x80010106-rpc-e-changed-mode
@@ -37,10 +37,10 @@ sys.coinit_flags = 2
 
 # external packages
 import astropy
-from PyQt5.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
-from PyQt5.QtGui import QMouseEvent, QIcon
-from PyQt5.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
-from PyQt5.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
+from PyQt6.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
+from PyQt6.QtGui import QMouseEvent, QIcon
+from PyQt6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
+from PyQt6.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
 import pyqtgraph as pg
 from importlib_metadata import version
 
@@ -105,7 +105,8 @@ class QAwesomeTooltipEventFilter(QObject):
         """
         Tooltip-specific event filter handling the passed Qt object and event.
         """
-        if event.type() in [QEvent.ToolTipChange, QEvent.ToolTip]:
+        return super().eventFilter(widget, event)
+        if event.type() in [QEvent.Type.ToolTipChange, QEvent.Type.ToolTip]:
             if isinstance(widget, pg.ViewBox):
                 return True
 
@@ -119,7 +120,7 @@ class QAwesomeTooltipEventFilter(QObject):
                 widget.setToolTip(None)
                 return True
 
-            elif tooltip and not Qt.mightBeRichText(tooltip):
+            elif tooltip:
                 tooltip = '<qt>{}</qt>'.format(html.escape(tooltip))
                 widget.setToolTip(tooltip)
 
@@ -130,7 +131,7 @@ class QAwesomeTooltipEventFilter(QObject):
 class MyApp(QApplication):
     """
     MyApp implements a custom notify handler to log errors, when C++ classes
-    and python wrapper in PyQt5 environment mismatch. mostly this relates to the
+    and python wrapper in PyQt6 environment mismatch. mostly this relates to the
     situation when a C++ object is already deleted, but the python wrapper still
     exists. so far I know that's the only chance to log this issues.
 
@@ -206,7 +207,7 @@ class MyApp(QApplication):
             return returnValue
         if not event.button():
             return returnValue
-        if event.type() == QEvent.MouseButtonRelease:
+        if event.type() == QEvent.Type.MouseButtonRelease:
             return returnValue
         returnValue = self.handleButtons(obj, returnValue)
         return returnValue
@@ -303,7 +304,7 @@ def writeSystemInfo(mwGlob=None):
     log.header(f'release          : {platform.release()}')
     log.header(f'python           : {platform.python_version()}')
     log.header(f'python runtime   : {platform.architecture()[0]}')
-    log.header(f'PyQt5 / Qt       : {PYQT_VERSION_STR} / {QT_VERSION_STR}')
+    log.header(f'PyQt6 / Qt       : {PYQT_VERSION_STR} / {QT_VERSION_STR}')
     log.header(f'node / hostname  : {platform.node()} / {socket.gethostname()}')
     log.header(f'run as admin     : {checkIsAdmin()}')
     log.header('-' * 100)
@@ -358,7 +359,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
     }
 
     content = QFile(':/data/content.txt')
-    content.open(QFile.ReadOnly)
+    content.open(QFile.OpenModeFlag.ReadOnly)
     lines = content.readAll().data().decode().splitlines()
     content.close()
     for line in lines:
@@ -452,7 +453,7 @@ def main():
     splashW.showMessage('Finishing loading')
     splashW.setValue(100)
     splashW.close()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

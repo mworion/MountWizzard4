@@ -20,7 +20,7 @@ import gzip
 import shutil
 
 # external packages
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal
 import requests
 
 # local import
@@ -58,7 +58,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.worker = None
-        self.setWindowModality(Qt.ApplicationModal)
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)

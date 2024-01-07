@@ -35,7 +35,7 @@ def test_WorkerSignals():
     assert a.result
 
 
-def test_clearPrintErrorStack(qtbot):
+def test_clearPrintErrorStack():
     def testFunc():
         raise Exception
         return 'test'

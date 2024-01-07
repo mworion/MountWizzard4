@@ -20,7 +20,7 @@ import sys
 import os
 
 # external packages
-from PyQt6.QtCore import QObject, pyqtSignal, QRunnable, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtSignal, QRunnable
 
 # local imports
 
@@ -76,7 +76,6 @@ class Worker(QRunnable):
         eStr = f'fn: [{fnName}], file: [{file}], line: {line} '
         return eStr
 
-    @pyqtSlot()
     def run(self):
         """
         runs an arbitrary methods with it's parameters and catches the result

@@ -25,8 +25,7 @@ from PyQt6.QtCore import QObject, pyqtSignal, QRunnable
 # local imports
 
 
-__all__ = ['Worker',
-           ]
+__all__ = ['Worker']
 
 
 class WorkerSignals(QObject):

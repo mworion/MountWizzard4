@@ -42,7 +42,7 @@ def module(qapp):
     yield
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(module):
 
     window = MWidget()
@@ -407,7 +407,7 @@ def test_prepareFileDialog_3(function):
 def test_runDialog_1(function):
     dialog = QFileDialog()
     with mock.patch.object(QFileDialog,
-                           'exec_',
+                           'exec',
                            return_value=0):
         val = function.runDialog(dialog)
         assert val == 0
@@ -417,12 +417,12 @@ def test_messageDialog_1(function):
     widget = QWidget()
     with mock.patch.object(QMessageBox,
                            'question',
-                           return_value=QMessageBox.No):
+                           return_value=QMessageBox.StandardButton.No):
         with mock.patch.object(QMessageBox,
                                'show'):
             with mock.patch.object(function,
                                    'runDialog',
-                                   return_value=QMessageBox.No):
+                                   return_value=QMessageBox.StandardButton.No):
                 suc = function.messageDialog(widget, 'test', 'test')
                 assert not suc
 
@@ -431,12 +431,12 @@ def test_messageDialog_2(function):
     widget = QWidget()
     with mock.patch.object(QMessageBox,
                            'question',
-                           return_value=QMessageBox.Yes):
+                           return_value=QMessageBox.StandardButton.Yes):
         with mock.patch.object(QMessageBox,
                                'show'):
             with mock.patch.object(function,
                                    'runDialog',
-                                   return_value=QMessageBox.Yes):
+                                   return_value=QMessageBox.StandardButton.Yes):
                 suc = function.messageDialog(widget, 'test', 'test')
                 assert suc
 
@@ -445,12 +445,12 @@ def test_messageDialog_3(function):
     widget = QWidget()
     with mock.patch.object(QMessageBox,
                            'question',
-                           return_value=QMessageBox.Yes):
+                           return_value=QMessageBox.StandardButton.Yes):
         with mock.patch.object(QMessageBox,
                                'show'):
             with mock.patch.object(function,
                                    'runDialog',
-                                   return_value=QMessageBox.Yes):
+                                   return_value=QMessageBox.StandardButton.Yes):
                 suc = function.messageDialog(widget, 'test', 'test', ['A', 'B'])
                 assert suc
 
@@ -645,13 +645,13 @@ def test_clickable_2(function):
 def test_clickable_3(function):
     widget = QLineEdit()
     function.clickable(widget=widget)
-    QTest.mouseRelease(widget, Qt.LeftButton)
+    QTest.mouseRelease(widget, Qt.MouseButton.LeftButton)
 
 
 def test_clickable_4(function):
     widget = QLineEdit()
     function.clickable(widget=widget)
-    QTest.mouseRelease(widget, Qt.LeftButton, pos=QPoint(0, 0))
+    QTest.mouseRelease(widget, Qt.MouseButton.LeftButton, pos=QPoint(0, 0))
 
 
 def test_guiSetText_1(function):
@@ -772,30 +772,36 @@ def test_guiSetStyle_4(function):
 
 
 def test_checkUpdaterOK_0(function):
+    temp = function.app.automation
     function.app.automation = None
     with mock.patch.object(platform,
                            'system',
                            return_value='Linux'):
         suc = function.checkUpdaterOK()
         assert not suc
+    function.app.automation = temp
 
 
 def test_checkUpdaterOK_1(function):
+    temp = function.app.automation
     function.app.automation = None
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
         suc = function.checkUpdaterOK()
         assert not suc
+    function.app.automation = temp
 
 
 def test_checkUpdaterOK_2(function):
+    temp = function.app.automation
     function.app.automation.installPath = None
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
         suc = function.checkUpdaterOK()
         assert not suc
+    function.app.automation = temp
 
 
 def test_checkUpdaterOK_3(function):
@@ -836,7 +842,7 @@ def test_timeZoneString_1(function):
 
 
 def test_timeZoneString_2(function):
-    function.ui.unitTimeUTC.setChecked(False)
+    function.ui.unitTimeLocal.setChecked(True)
     val = function.timeZoneString()
     assert val == '(time is local)'
 

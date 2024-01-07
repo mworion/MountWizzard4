@@ -197,7 +197,8 @@ class VideoWindow(toolsQtWidget.MWidget):
             return False
 
         pixmap = pixmap.scaled(self.ui.video.width(), self.ui.video.height())
-        self.ui.video.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.ui.video.setSizePolicy(QSizePolicy.Policy.Ignored,
+                                    QSizePolicy.Policy.Ignored)
         self.ui.video.setPixmap(pixmap)
         return True
 
@@ -215,9 +216,10 @@ class VideoWindow(toolsQtWidget.MWidget):
         """
         dlg = QInputDialog()
         value1, ok1 = dlg.getText(
-            self, 'Get authentication', 'Username: ', QLineEdit.Normal, self.user)
+            self, 'Get authentication', 'Username: ', QLineEdit.EchoMode.Normal, self.user)
         value2, ok2 = dlg.getText(
-            self, 'Get authentication', 'Password: ', QLineEdit.Normal, self.password)
+            self, 'Get authentication', 'Password: ', QLineEdit.EchoMode.Normal,
+            self.password)
         if not ok1 or not ok2:
             return False
         self.user = value1

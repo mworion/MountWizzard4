@@ -60,7 +60,7 @@ class FileSortProxyModel(QSortFilterProxyModel):
     will be on top. This is done by just overwriting the sort method
     """
     def sort(self, column, order):
-        self.sourceModel().sort(0, Qt.DescendingOrder)
+        self.sourceModel().sort(0, Qt.SortOrder.DescendingOrder)
 
 
 class QMultiWait(QObject):
@@ -388,18 +388,18 @@ class MWidget(QWidget, Styles):
             return None
 
         dlg = QFileDialog()
-        dlg.setOptions(QFileDialog.DontUseNativeDialog)
+        dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
         dlg.setWindowIcon(QIcon(':/mw4.ico'))
         dlg.setStyleSheet(self.mw4Style)
-        dlg.setViewMode(QFileDialog.List)
+        dlg.setViewMode(QFileDialog.ViewMode.List)
         dlg.setModal(True)
         if reverseOrder:
             dlg.setProxyModel(FileSortProxyModel(self))
 
         if enableDir:
-            dlg.setFilter(QDir.Files | QDir.AllDirs)
+            dlg.setFilter(QDir.Filter.Files | QDir.Filter.AllDirs)
         else:
-            dlg.setFilter(QDir.Files)
+            dlg.setFilter(QDir.Filter.Files)
 
         width = 600
         height = 400
@@ -420,7 +420,7 @@ class MWidget(QWidget, Styles):
         :param dlg:
         :return: result
         """
-        return dlg.exec_()
+        return dlg.exec()
 
     def messageDialog(self, parentWidget, title, question, buttons=None, iconType=0):
         """
@@ -442,12 +442,12 @@ class MWidget(QWidget, Styles):
         msg.setIconPixmap(pixmap)
         msg.setText(question)
         if buttons is None:
-            msg.setStandardButtons(msg.Yes | msg.No)
-            msg.setDefaultButton(msg.No)
+            msg.setStandardButtons(msg.StandardButton.Yes | msg.StandardButton.No)
+            msg.setDefaultButton(msg.StandardButton.No)
         else:
             for button in buttons:
-                msg.addButton(button, QMessageBox.AcceptRole)
-            msg.setDefaultButton(QMessageBox.Cancel)
+                msg.addButton(button, QMessageBox.ButtonRole.AcceptRole)
+            msg.setDefaultButton(QMessageBox.StandardButton.Cancel)
         msg.show()
         x = parentWidget.x() + int((parentWidget.width() - msg.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - msg.height()) / 2)
@@ -455,7 +455,7 @@ class MWidget(QWidget, Styles):
         reply = self.runDialog(msg)
 
         if buttons is None:
-            if reply != msg.Yes:
+            if reply != msg.StandardButton.Yes:
                 return False
             else:
                 return True
@@ -496,15 +496,15 @@ class MWidget(QWidget, Styles):
         dlg = self.prepareFileDialog(window=window,
                                      enableDir=enableDir,
                                      reverseOrder=reverseOrder)
-        dlg.setAcceptMode(QFileDialog.AcceptOpen)
+        dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
 
         if multiple:
-            dlg.setFileMode(QFileDialog.ExistingFiles)
+            dlg.setFileMode(QFileDialog.FileMode.ExistingFiles)
         else:
-            dlg.setFileMode(QFileDialog.ExistingFile)
+            dlg.setFileMode(QFileDialog.FileMode.ExistingFile)
 
         result = self.runDialog(dlg)
         if not result:
@@ -542,7 +542,7 @@ class MWidget(QWidget, Styles):
             return '', '', ''
 
         dlg = self.prepareFileDialog(window, enableDir)
-        dlg.setAcceptMode(QFileDialog.AcceptSave)
+        dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
@@ -559,7 +559,7 @@ class MWidget(QWidget, Styles):
                 title='',
                 folder=''):
         """
-        openFile handles a single file select with filter in a non native format.
+        openFile handles a single file select with filter in a non-native format.
 
         :param window:      parent window class
         :param title:       title for the file dialog
@@ -576,10 +576,10 @@ class MWidget(QWidget, Styles):
             return '', '', ''
 
         dlg = self.prepareFileDialog(window=window, enableDir=True)
-        dlg.setAcceptMode(QFileDialog.FileMode.AcceptOpen)
+        dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setDirectory(folder)
-        dlg.setFileMode(QFileDialog.FileMode.DirectoryOnly)
+        dlg.setFileMode(QFileDialog.FileMode.Directory)
         result = self.runDialog(dlg)
         if not result:
             return '', '', ''

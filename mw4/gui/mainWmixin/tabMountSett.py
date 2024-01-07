@@ -533,7 +533,7 @@ class MountSett:
                                 'Set Site Longitude',
                                 'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
                                 'positive',
-                                QLineEdit.Normal,
+                                QLineEdit.EchoMode.Normal,
                                 self.ui.siteLongitude.text())
         if not ok:
             return False
@@ -554,7 +554,7 @@ class MountSett:
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
                                 'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
-                                QLineEdit.Normal,
+                                QLineEdit.EchoMode.Normal,
                                 self.ui.siteLatitude.text())
         if not ok:
             return False

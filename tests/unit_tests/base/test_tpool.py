@@ -38,7 +38,6 @@ def test_WorkerSignals():
 def test_clearPrintErrorStack():
     def testFunc():
         raise Exception
-        return 'test'
 
     a = tpool.Worker(testFunc)
     a.run()

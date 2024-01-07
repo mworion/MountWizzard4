@@ -23,6 +23,11 @@ import pytest
 from base import tpool
 
 
+@pytest.fixture(scope="session")
+def qapp():
+    yield
+
+
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
     pass

@@ -32,11 +32,7 @@ def test_main_1():
     class App:
 
         @staticmethod
-        def installEventFilter(a):
-            return
-
-        @staticmethod
-        def exec_():
+        def exec():
             return 0
 
         @staticmethod
@@ -90,6 +86,4 @@ def test_main_1():
                                                        'exit'):
                                     with mock.patch.object(sys,
                                                            'excepthook'):
-                                        with mock.patch.object(loader,
-                                                               'QAwesomeTooltipEventFilter'):
-                                            loader.main()
+                                        loader.main()

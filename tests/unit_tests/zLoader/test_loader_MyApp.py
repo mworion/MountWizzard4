@@ -22,7 +22,7 @@ import os
 # external packages
 import pytest
 import PyQt6
-from PyQt6.QtCore import QEvent, QPoint, Qt
+from PyQt6.QtCore import QEvent, QPointF, Qt
 from PyQt6.QtGui import QMouseEvent
 from PyQt6 import QtWidgets
 
@@ -133,14 +133,14 @@ def test_handleButtons_10():
 
 def test_notify_1():
     ui = QtWidgets.QLineEdit()
-    event = QEvent(QEvent.ToolTipChange)
+    event = QEvent(QEvent.Type.ToolTipChange)
     suc = app.notify(obj=ui, event=event)
     assert not suc
 
 
 def test_notify_2():
     ui = QtWidgets.QLineEdit()
-    event = QEvent(QEvent.MouseButtonPress)
+    event = QEvent(QEvent.Type.MouseButtonPress)
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True,
@@ -151,11 +151,11 @@ def test_notify_2():
 
 def test_notify_3():
     ui = QtWidgets.QLineEdit()
-    event = QMouseEvent(QEvent.MouseButtonRelease,
-                        QPoint(100, 100),
-                        Qt.NoButton,
-                        Qt.NoButton,
-                        Qt.NoModifier,
+    event = QMouseEvent(QEvent.Type.MouseButtonRelease,
+                        QPointF(100, 100),
+                        Qt.MouseButton.NoButton,
+                        Qt.MouseButton.NoButton,
+                        Qt.KeyboardModifier.NoModifier,
                         )
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
@@ -166,11 +166,11 @@ def test_notify_3():
 
 def test_notify_4():
     ui = QtWidgets.QLineEdit()
-    event = QMouseEvent(QEvent.MouseButtonRelease,
-                        QPoint(100, 100),
-                        Qt.LeftButton,
-                        Qt.LeftButton,
-                        Qt.NoModifier,
+    event = QMouseEvent(QEvent.Type.MouseButtonRelease,
+                        QPointF(100, 100),
+                        Qt.MouseButton.LeftButton,
+                        Qt.MouseButton.LeftButton,
+                        Qt.KeyboardModifier.NoModifier,
                         )
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
@@ -184,11 +184,11 @@ def test_notify_4():
 
 def test_notify_5():
     ui = QtWidgets.QLineEdit()
-    event = QMouseEvent(QEvent.MouseButtonPress,
-                        QPoint(100, 100),
-                        Qt.LeftButton,
-                        Qt.LeftButton,
-                        Qt.NoModifier,
+    event = QMouseEvent(QEvent.Type.MouseButtonPress,
+                        QPointF(100, 100),
+                        Qt.MouseButton.LeftButton,
+                        Qt.MouseButton.LeftButton,
+                        Qt.KeyboardModifier.NoModifier,
                         )
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',

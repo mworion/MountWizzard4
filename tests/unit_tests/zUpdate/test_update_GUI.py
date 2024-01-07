@@ -37,7 +37,7 @@ def app():
         with mock.patch.object(sys,
                                'exit'):
             with mock.patch.object(QApplication,
-                                   'exec_'):
+                                   'exec'):
                 app = UpdateGUI(runnable='python', version='1.2.3')
                 yield app
 

@@ -167,7 +167,7 @@ class UpdateGUI:
 
         self.update = Update(runnable=runnable, writer=self.writeText)
 
-        QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
+        QApplication.setAttribute(Qt.ApplicationAttribute.AA_ShareOpenGLContexts)
         self.app = QApplication(sys.argv)
         self.style = Styles()
         self.style.colorSet = colorSet
@@ -225,7 +225,7 @@ class UpdateGUI:
         self.window.show()
 
     def run(self):
-        sys.exit(self.app.exec_())
+        sys.exit(self.app.exec())
 
     def writeText(self, text, color):
         """
@@ -238,7 +238,7 @@ class UpdateGUI:
 
         self.textBrow.setTextColor(self.mColor[color])
         self.textBrow.insertPlainText(text + '\n')
-        self.textBrow.moveCursor(QTextCursor.End)
+        self.textBrow.moveCursor(QTextCursor.MoveOperation.End)
         self.log.ui(f'Updater window: [{text}]')
         QApplication.processEvents()
         return True

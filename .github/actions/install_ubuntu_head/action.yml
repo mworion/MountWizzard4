@@ -33,5 +33,4 @@ runs:
       shell: bash
 
     - name: install #6
-      run: sudo apt-get install -y libxcb-keysyms1
-      shell: bash
+      run: sudo apt-get install -y libxcb-keysyms1 libegl1

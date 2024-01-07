@@ -20,7 +20,7 @@ import unittest.mock as mock
 import csv
 
 # external packages
-import PyQt5
+import PyQt6
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -38,7 +38,7 @@ def function():
         def measureTask():
             return True
 
-    with mock.patch.object(PyQt5.QtCore.QTimer,
+    with mock.patch.object(PyQt6.QtCore.QTimer,
                            'start'):
         func = MeasureDataCSV(app=App(), parent=Test1())
         yield func

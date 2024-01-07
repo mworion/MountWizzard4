@@ -22,8 +22,8 @@ import shutil
 import builtins
 
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QWidget
+from PyQt6.QtCore import QThreadPool
+from PyQt6.QtWidgets import QWidget
 import requests
 
 # local import

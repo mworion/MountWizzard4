@@ -18,7 +18,7 @@
 import pytest
 
 # external packages
-from PyQt5.Qt3DCore import QEntity
+from PyQt6.Qt3DCore import QEntity
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

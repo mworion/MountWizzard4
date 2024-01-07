@@ -18,10 +18,10 @@
 import pytest
 
 # external packages
-from PyQt5.QtWidgets import QDoubleSpinBox
-from PyQt5.Qt3DCore import QEntity, QTransform
-from PyQt5.QtCore import QObject
-from PyQt5.Qt3DExtras import QCuboidMesh
+from PyQt6.QtWidgets import QDoubleSpinBox
+from PyQt6.Qt3DCore import QEntity, QTransform
+from PyQt6.QtCore import QObject
+from PyQt6.Qt3DExtras import QCuboidMesh
 from mountcontrol.mount import Mount
 from skyfield.api import wgs84
 

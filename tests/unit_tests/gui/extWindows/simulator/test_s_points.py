@@ -19,9 +19,9 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt5.Qt3DCore import QEntity, QTransform
-from PyQt5.Qt3DExtras import QExtrudedTextMesh
-from PyQt5.QtCore import QObject
+from PyQt6.Qt3DCore import QEntity, QTransform
+from PyQt6.Qt3DExtras import QExtrudedTextMesh
+from PyQt6.QtCore import QObject
 from mountcontrol.mount import Mount
 from skyfield.api import wgs84
 import numpy as np

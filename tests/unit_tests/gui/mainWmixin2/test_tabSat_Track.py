@@ -20,10 +20,10 @@ from unittest import mock
 
 # external packages
 import skyfield.timelib
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt6.QtCore import QObject
+from PyQt6.QtCore import QThreadPool
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle, wgs84
 from sgp4.exporter import export_tle

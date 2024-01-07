@@ -18,7 +18,7 @@
 import pytest
 
 # external packages
-from PyQt5.Qt3DCore import QEntity, QTransform
+from PyQt6.Qt3DCore import QEntity, QTransform
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

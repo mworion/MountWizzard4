@@ -23,8 +23,8 @@ import platform
 import shutil
 
 # external packages
-from PyQt5.QtCore import QTimer, QBasicTimer, QCoreApplication
-from PyQt5.QtWidgets import QWidget
+from PyQt6.QtCore import QTimer, QBasicTimer, QCoreApplication
+from PyQt6.QtWidgets import QWidget
 
 # local import
 from base.packageConfig import checkAutomation

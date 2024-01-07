@@ -21,8 +21,8 @@ import pytest
 from random import randint
 
 # external packages
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QThreadPool
+from PyQt6.QtCore import Qt
+from PyQt6.QtCore import QThreadPool
 import numpy as np
 
 # local import

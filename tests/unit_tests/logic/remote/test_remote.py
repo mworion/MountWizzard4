@@ -19,9 +19,9 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5 import QtNetwork
-from PyQt5.QtCore import pyqtSignal
+from PyQt6.QtCore import QObject
+from PyQt6 import QtNetwork
+from PyQt6.QtCore import pyqtSignal
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

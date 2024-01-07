@@ -20,7 +20,7 @@ import time
 import pytest
 
 # external packages
-import PyQt5
+import PyQt6
 import requests
 
 # local import
@@ -31,7 +31,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    with mock.patch.object(PyQt5.QtCore.QTimer,
+    with mock.patch.object(PyQt6.QtCore.QTimer,
                            'start'):
         func = KMRelay()
         yield func

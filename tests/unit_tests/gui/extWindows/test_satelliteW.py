@@ -20,7 +20,7 @@ import unittest.mock as mock
 import pickle
 
 # external packages
-from PyQt5.QtGui import QCloseEvent
+from PyQt6.QtGui import QCloseEvent
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
 import pyqtgraph as pg

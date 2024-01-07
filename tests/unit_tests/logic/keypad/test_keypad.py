@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSignal
 from websocket import WebSocketApp
 
 # local import

@@ -19,8 +19,8 @@ from unittest import mock
 
 # external packages
 import PyQt6
-import pytest
 from PyQt6.QtCore import QTimer
+import pytest
 import requests
 
 # local import

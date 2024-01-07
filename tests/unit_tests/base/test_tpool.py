@@ -23,8 +23,8 @@ import pytest
 from base import tpool
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown():
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown(qtbot, qapp):
     pass
 
 
@@ -35,9 +35,10 @@ def test_WorkerSignals():
     assert a.result
 
 
-def test_clearPrintErrorStack():
+def test_clearPrintErrorStack(qtbot):
     def testFunc():
         raise Exception
+        return 'test'
 
     a = tpool.Worker(testFunc)
     a.run()

@@ -322,7 +322,7 @@ class ManageModel:
         dlg = QInputDialog()
         modelName, ok = dlg.getText(self,
                                     'Save model', 'New model name',
-                                    QLineEdit.Normal, '')
+                                    QLineEdit.EchoMode.Normal, '')
         if modelName is None or not modelName:
             self.msg.emit(2, 'Model', 'Manage error',
                           'No model name given')

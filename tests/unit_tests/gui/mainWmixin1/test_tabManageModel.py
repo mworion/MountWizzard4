@@ -24,6 +24,7 @@ import os
 
 # external packages
 import PyQt6
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget
 from skyfield.api import Star, Angle
 from mountcontrol.modelStar import ModelStar
@@ -46,7 +47,7 @@ def module(qapp):
     yield
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(module):
     class Mixin(MWidget, ManageModel):
         def __init__(self):
@@ -804,7 +805,7 @@ def test_pointClicked_1(function):
     class Event:
         @staticmethod
         def button():
-            return 1
+            return Qt.MouseButton.LeftButton
 
         @staticmethod
         def double():
@@ -818,7 +819,7 @@ def test_pointClicked_2(function):
     class Event:
         @staticmethod
         def button():
-            return 2
+            return Qt.MouseButton.RightButton
 
         @staticmethod
         def double():
@@ -832,7 +833,7 @@ def test_pointClicked_3(function):
     class Event:
         @staticmethod
         def button():
-            return 1
+            return Qt.MouseButton.LeftButton
 
         @staticmethod
         def double():
@@ -852,7 +853,7 @@ def test_pointClicked_4(function):
     class Event:
         @staticmethod
         def button():
-            return 1
+            return Qt.MouseButton.LeftButton
 
         @staticmethod
         def double():
@@ -886,7 +887,7 @@ def test_pointClicked_5(function):
     class Event:
         @staticmethod
         def button():
-            return 1
+            return Qt.MouseButton.LeftButton
 
         @staticmethod
         def double():
@@ -922,7 +923,7 @@ def test_pointClicked_6(function):
     class Event:
         @staticmethod
         def button():
-            return 1
+            return Qt.MouseButton.LeftButton
 
         @staticmethod
         def double():

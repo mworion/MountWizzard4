@@ -203,6 +203,7 @@ class MountWizzard4(QObject):
         the windows' automation with pywinauto has a serious bug in python lib.
         the bugfix is done from python 3.8.2 onwards. so to enable this work,
         we have to check the python version used and set the topic adequately.
+        unfortunately from python 3.12, pywinauto is not supported anymore.
 
         :return:
         """

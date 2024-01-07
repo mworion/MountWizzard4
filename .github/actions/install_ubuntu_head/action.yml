@@ -7,7 +7,7 @@ description: installs headless setup for ubuntu
 runs:
   using: 'composite'
   steps:
-    -
+
     - name: install #0
       run: sudo apt-get update
       shell: bash
@@ -15,6 +15,22 @@ runs:
     - name: install #1
       run: sudo apt-get upgrade
       shell: bash
-      
+
     - name: install #2
-      uses: tlambert03/setup-qt-libs@v1
+      run: sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
+      shell: bash
+
+    - name: install #3
+      run: sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
+      shell: bash
+
+    - name: install #4
+      run: sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
+      shell: bash
+
+    - name: install #5
+      run: sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
+      shell: bash
+
+    - name: install #6
+      run: sudo apt-get install -y libxcb-keysyms1 libegl1

@@ -24,7 +24,7 @@ from base import tpool
 
 
 @pytest.fixture(scope="session")
-def qapp():
+def qapp_cls():
     yield
 
 

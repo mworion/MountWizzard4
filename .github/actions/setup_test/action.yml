@@ -35,7 +35,7 @@ runs:
       shell: bash
     
     - name: install #4
-      run: python -m pip install pytest-qt==4.0.1
+      run: python -m pip install pytest-qt
       shell: bash
     
     - name: install #5

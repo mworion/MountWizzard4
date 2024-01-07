@@ -1,12 +1,23 @@
 Beta versions of MW4
 --------------------
 
-- none so far
+- add: support for python 3.11 and 3.12
+- change: moving PyQt5 to major version 6
+- change: moving libraries to latest versions
+- fix: typos
+
 
 Released versions of MW4
 ------------------------
 Version 3.0
 ^^^^^^^^^^^
+3.2.6
+
+
+3.2.5
+
+-
+
 3.2.4
 
 - add: support for astap D80 database

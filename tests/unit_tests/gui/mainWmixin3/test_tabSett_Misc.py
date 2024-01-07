@@ -512,6 +512,7 @@ def test_versionPackage_4(function):
 
 def test_showUpdates_1(function):
     function.ui.isOnline.setChecked(False)
+    function.ui.versionReleaseNotes.setChecked(False)
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.8'):
@@ -521,6 +522,7 @@ def test_showUpdates_1(function):
 
 def test_showUpdates_2(function):
     function.ui.isOnline.setChecked(True)
+    function.ui.versionReleaseNotes.setChecked(False)
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.8'):
@@ -533,6 +535,7 @@ def test_showUpdates_2(function):
 
 def test_showUpdates_3(function):
     function.ui.isOnline.setChecked(True)
+    function.ui.versionReleaseNotes.setChecked(False)
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.10'):
@@ -545,6 +548,7 @@ def test_showUpdates_3(function):
 
 def test_showUpdates_4(function):
     function.ui.isOnline.setChecked(True)
+    function.ui.versionReleaseNotes.setChecked(False)
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.8'):

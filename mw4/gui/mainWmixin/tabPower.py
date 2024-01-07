@@ -17,7 +17,8 @@
 # standard libraries
 
 # external packages
-import PyQt6
+from PyQt6.QtWidgets import QInputDialog
+from PyQt6.QtCore import Qt
 from mountcontrol.convert import valueToInt
 
 # local import
@@ -196,7 +197,7 @@ class Power(object):
             if actValue is None:
                 return False
 
-            dlg = PyQt6.QtWidgets.QInputDialog()
+            dlg = QInputDialog()
             value, ok = dlg.getInt(self,
                                    f'Set dew PWM {name}',
                                    'Value (0-100):',
@@ -276,17 +277,9 @@ class Power(object):
 
         actValue = float(self.ui.adjustableOutput.text())
 
-        dlg = PyQt6.QtWidgets.QInputDialog()
-        value, ok = dlg.getDouble(self,
-                                  'Set Voltage Output',
-                                  'Value (3-12):',
-                                  actValue,
-                                  3,
-                                  12,
-                                  1,
-                                  PyQt6.QtCore.Qt.WindowFlags(),
-                                  0.1,
-                                  )
+        dlg = QInputDialog()
+        value, ok = dlg.getDouble(self, 'Set Voltage Output', 'Value (3-12):',
+                                  actValue, 3, 12, 1)
 
         if not ok:
             return False

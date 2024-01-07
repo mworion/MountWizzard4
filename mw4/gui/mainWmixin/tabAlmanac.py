@@ -340,7 +340,8 @@ class Almanac:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            maskPainter.setCompositionMode(QPainter.CompositionMode_Clear)
+            maskPainter.setCompositionMode(
+                QPainter.CompositionMode.CompositionMode_Clear)
             r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
             maskPainter.setPen(colFree)
@@ -350,7 +351,8 @@ class Almanac:
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, - 90 * 16, 180 * 16)
 
-            maskPainter.setCompositionMode(QPainter.CompositionMode_Clear)
+            maskPainter.setCompositionMode(
+                QPainter.CompositionMode.CompositionMode_Clear)
             r = np.cos(np.radians(mpDegree)) * w2
             maskPainter.setBrush(colFree)
             maskPainter.setPen(penFree)

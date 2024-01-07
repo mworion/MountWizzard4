@@ -24,7 +24,7 @@ import os
 import webbrowser
 
 # external packages
-from PyQt6.QtMultimedia import QSound
+from PyQt6.QtMultimedia import QSoundEffect
 import requests
 import importlib_metadata
 import hid
@@ -39,7 +39,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     class Mixin(MWidget, SettMisc):
         def __init__(self):
@@ -401,9 +401,11 @@ def test_populateGameControllerList_4(function):
 
 
 def test_setWeatherOnline_1(function):
+    temp = function.app.onlineWeather
     function.app.onlineWeather = None
     suc = function.setWeatherOnline()
     assert not suc
+    function.app.onlineWeather = temp
 
 
 def test_setWeatherOnline_2(function):
@@ -412,9 +414,11 @@ def test_setWeatherOnline_2(function):
 
 
 def test_setSeeingOnline_1(function):
+    temp = function.app.seeingWeather
     function.app.seeingWeather = None
     suc = function.setSeeingOnline()
     assert not suc
+    function.app.seeingWeather = temp
 
 
 def test_setSeeingOnline_2(function):
@@ -507,6 +511,7 @@ def test_versionPackage_4(function):
 
 
 def test_showUpdates_1(function):
+    function.ui.isOnline.setChecked(False)
     with mock.patch.object(importlib_metadata,
                            'version',
                            return_value='0.148.8'):
@@ -739,28 +744,28 @@ def test_setLoggingLevel3(function, qtbot):
 
 
 def test_playAudioDomeSlewFinished_1(function):
-    with mock.patch.object(QSound,
+    with mock.patch.object(QSoundEffect,
                            'play'):
         suc = function.playSound('DomeSlew')
         assert not suc
 
 
 def test_playAudioMountSlewFinished_1(function):
-    with mock.patch.object(QSound,
+    with mock.patch.object(QSoundEffect,
                            'play'):
         suc = function.playSound('MountSlew')
         assert not suc
 
 
 def test_playAudioMountAlert_1(function):
-    with mock.patch.object(QSound,
+    with mock.patch.object(QSoundEffect,
                            'play'):
         suc = function.playSound('MountAlert')
         assert not suc
 
 
 def test_playAudioModelFinished_1(function):
-    with mock.patch.object(QSound,
+    with mock.patch.object(QSoundEffect,
                            'play'):
         suc = function.playSound('ModelFinished')
         assert not suc
@@ -779,8 +784,9 @@ def test_playSound_1(function):
 def test_playSound_2(function):
     function.audioSignalsSet['Pan1'] = 'test'
     function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
+    function.guiAudioList['MountSlew'].clear()
     function.guiAudioList['MountSlew'].addItem('Pan1')
-    with mock.patch.object(QSound,
+    with mock.patch.object(QSoundEffect,
                            'play'):
         suc = function.playSound('MountSlew')
         assert suc
@@ -789,9 +795,10 @@ def test_playSound_2(function):
 def test_playSound_3(function):
     function.audioSignalsSet['Pan1'] = 'test'
     function.guiAudioList['MountSlew'] = function.ui.soundMountSlewFinished
+    function.guiAudioList['MountSlew'].clear()
     function.guiAudioList['MountSlew'].addItem('Pan5')
 
-    with mock.patch.object(QSound,
+    with mock.patch.object(QSoundEffect,
                            'play'):
         suc = function.playSound('MountSlew')
         assert not suc

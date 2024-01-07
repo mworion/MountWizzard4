@@ -480,7 +480,7 @@ class Mount(SlewInterface, MountSett):
                                 'Set Site Longitude',
                                 'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
                                 'positive',
-                                QLineEdit.Normal,
+                                QLineEdit.EchoMode.Normal,
                                 self.ui.siteLongitude.text())
         if not ok:
             return False
@@ -501,7 +501,7 @@ class Mount(SlewInterface, MountSett):
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
                                 'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
-                                QLineEdit.Normal,
+                                QLineEdit.EchoMode.Normal,
                                 self.ui.siteLatitude.text())
         if not ok:
             return False
@@ -890,7 +890,7 @@ class Mount(SlewInterface, MountSett):
                                 'Set telescope RA',
                                 'Format: <dd[H] mm ss.s> in hours or <[+]d.d> in '
                                 'degrees',
-                                QLineEdit.Normal,
+                                QLineEdit.EchoMode.Normal,
                                 self.ui.moveCoordinateRa.text(),
                                 )
         if not ok:
@@ -914,7 +914,7 @@ class Mount(SlewInterface, MountSett):
         value, ok = dlg.getText(self,
                                 'Set telescope DEC',
                                 'Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees',
-                                QLineEdit.Normal,
+                                QLineEdit.EchoMode.Normal,
                                 self.ui.moveCoordinateDec.text(),
                                 )
         if not ok:
@@ -990,5 +990,5 @@ class Mount(SlewInterface, MountSett):
             self.ui.commandStatus.insertPlainText(t)
 
         self.ui.commandOutput.insertPlainText(val + '\n')
-        self.ui.commandOutput.moveCursor(QTextCursor.End)
+        self.ui.commandOutput.moveCursor(QTextCursor.MoveOperation.End)
         return True

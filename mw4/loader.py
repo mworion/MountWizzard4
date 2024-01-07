@@ -56,78 +56,6 @@ astropy.utils.data.conf.allow_internet = False
 log = logging.getLogger()
 
 
-class QAwesomeTooltipEventFilter(QObject):
-    """
-    Tooltip-specific event filter dramatically improving the tooltips of all
-    widgets for which this filter is installed.
-
-    Motivation
-    ----------
-    **Rich text tooltips** (i.e., tooltips containing one or more HTML-like
-    tags) are implicitly wrapped by Qt to the width of their parent windows and
-    hence typically behave as expected.
-
-    **Plaintext tooltips** (i.e., tooltips containing no such tags), however,
-    are not. For unclear reasons, plaintext tooltips are implicitly truncated to
-    the width of their parent windows. The only means of circumventing this
-    obscure constraint is to manually inject newlines at the appropriate
-    80-character boundaries of such tooltips -- which has the distinct
-    disadvantage of failing to scale to edge-case display and device
-    environments (e.g., high-DPI). Such tooltips *cannot* be guaranteed to be
-    legible in the general case and hence are blatantly broken under *all* Qt
-    versions to date. This is a `well-known long-standing issue <issue_>`__ for
-    which no official resolution exists.
-
-    This filter globally addresses this issue by implicitly converting *all*
-    intercepted plaintext tooltips into rich text tooltips in a general-purpose
-    manner, thus wrapping the former exactly like the latter. To do so, this
-    filter (in order):
-
-    #. Auto-detects whether the:
-
-       * Current event is a :class:`QEvent.ToolTipChange` event.
-       * Current widget has a **non-empty plaintext tooltip**.
-
-    #. When these conditions are satisfied:
-
-       #. Escapes all HTML syntax in this tooltip (e.g., converting all ``&``
-          characters to ``&amp;`` substrings).
-       #. Embeds this tooltip in the Qt-specific ``<qt>...</qt>`` tag, thus
-          implicitly converting this plaintext tooltip into a rich text tooltip.
-
-    .. _issue:
-        https://bugreports.qt.io/browse/QTBUG-41051
-    """
-
-    log = logging.getLogger(__name__)
-
-    def eventFilter(self, widget, event):
-        """
-        Tooltip-specific event filter handling the passed Qt object and event.
-        """
-        return super().eventFilter(widget, event)
-        if event.type() in [QEvent.Type.ToolTipChange, QEvent.Type.ToolTip]:
-            if isinstance(widget, pg.ViewBox):
-                return True
-
-            if not isinstance(widget, QWidget):
-                self.log.warning('QObject "{}" not a widget.'.format(widget))
-                return False
-
-            tooltip = widget.toolTip()
-
-            if tooltip == '<html><head/><body><p><br/></p></body></html>':
-                widget.setToolTip(None)
-                return True
-
-            elif tooltip:
-                tooltip = '<qt>{}</qt>'.format(html.escape(tooltip))
-                widget.setToolTip(tooltip)
-
-                return True
-        return super().eventFilter(widget, event)
-
-
 class MyApp(QApplication):
     """
     MyApp implements a custom notify handler to log errors, when C++ classes
@@ -447,7 +375,6 @@ def main():
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(QIcon(':/icon/mw4.ico'))
-    app.installEventFilter(QAwesomeTooltipEventFilter(app))
     MountWizzard4(mwGlob=mwGlob, application=app)
 
     splashW.showMessage('Finishing loading')

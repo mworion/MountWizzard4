@@ -21,10 +21,10 @@ import os
 
 # external packages
 import pytest
-import PyQt5
-from PyQt5.QtCore import QEvent, QPoint, Qt
-from PyQt5.QtGui import QMouseEvent
-from PyQt5 import QtWidgets
+import PyQt6
+from PyQt6.QtCore import QEvent, QPoint, Qt
+from PyQt6.QtGui import QMouseEvent
+from PyQt6 import QtWidgets
 
 # local import
 from loader import MyApp
@@ -141,7 +141,7 @@ def test_notify_1():
 def test_notify_2():
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.MouseButtonPress)
-    with mock.patch.object(PyQt5.QtWidgets.QApplication,
+    with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True,
                            side_effect=Exception()):
@@ -157,7 +157,7 @@ def test_notify_3():
                         Qt.NoButton,
                         Qt.NoModifier,
                         )
-    with mock.patch.object(PyQt5.QtWidgets.QApplication,
+    with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         suc = app.notify(obj=ui, event=event)
@@ -172,7 +172,7 @@ def test_notify_4():
                         Qt.LeftButton,
                         Qt.NoModifier,
                         )
-    with mock.patch.object(PyQt5.QtWidgets.QApplication,
+    with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         with mock.patch.object(app,
@@ -190,7 +190,7 @@ def test_notify_5():
                         Qt.LeftButton,
                         Qt.NoModifier,
                         )
-    with mock.patch.object(PyQt5.QtWidgets.QApplication,
+    with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         with mock.patch.object(app,

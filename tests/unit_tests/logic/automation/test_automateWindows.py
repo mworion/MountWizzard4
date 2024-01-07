@@ -21,7 +21,7 @@ import platform
 from unittest import mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool, QObject
+from PyQt6.QtCore import QThreadPool, QObject
 from skyfield.api import load
 
 # local import

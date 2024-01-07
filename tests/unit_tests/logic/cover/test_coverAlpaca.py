@@ -19,8 +19,8 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-import PyQt5
-from PyQt5.QtCore import QThreadPool
+import PyQt6
+from PyQt6.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -30,7 +30,7 @@ from base.driverDataClass import Signals
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    with mock.patch.object(PyQt5.QtCore.QTimer,
+    with mock.patch.object(PyQt6.QtCore.QTimer,
                            'start'):
         func = CoverAlpaca(app=App(), signals=Signals(), data={})
         yield func

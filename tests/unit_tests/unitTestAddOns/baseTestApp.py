@@ -18,7 +18,7 @@
 from queue import Queue
 
 # external packages
-from PyQt5.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
+from PyQt6.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84, load, Loader, Angle
 import numpy as np
 

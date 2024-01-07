@@ -19,8 +19,8 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtGui import QCloseEvent, QPixmap
-from PyQt5.QtWidgets import QInputDialog
+from PyQt6.QtGui import QCloseEvent, QPixmap
+from PyQt6.QtWidgets import QInputDialog
 import numpy as np
 import cv2
 

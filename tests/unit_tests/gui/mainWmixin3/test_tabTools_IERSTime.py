@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool
+from PyQt6.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

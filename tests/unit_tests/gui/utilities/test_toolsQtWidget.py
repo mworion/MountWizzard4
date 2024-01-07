@@ -21,11 +21,11 @@ import os
 import platform
 
 # external packages
-from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
-from PyQt5.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
-from PyQt5.QtCore import pyqtSignal, QObject, Qt, QPoint
-from PyQt5.QtGui import QIcon, QPixmap, QPainterPath
-from PyQt5.QtTest import QTest
+from PyQt6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
+from PyQt6.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
+from PyQt6.QtCore import pyqtSignal, QObject, Qt, QPoint
+from PyQt6.QtGui import QIcon, QPixmap, QPainterPath
+from PyQt6.QtTest import QTest
 from skyfield.api import Angle, load
 import numpy as np
 

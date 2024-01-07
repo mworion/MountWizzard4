@@ -25,10 +25,10 @@ import logging
 import builtins
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5.QtGui import QCloseEvent
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QPushButton, QWidget
+from PyQt6.QtCore import QObject
+from PyQt6.QtGui import QCloseEvent
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QPushButton, QWidget
 from skyfield.api import wgs84
 
 # local import

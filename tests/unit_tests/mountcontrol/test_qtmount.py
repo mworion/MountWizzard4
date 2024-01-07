@@ -22,7 +22,7 @@ import socket
 
 # external packages
 import wakeonlan
-from PyQt5.QtCore import QThreadPool, QTimer
+from PyQt6.QtCore import QThreadPool, QTimer
 
 # local imports
 from mountcontrol.qtmount import MountSignals

@@ -19,7 +19,7 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-import PyQt5
+import PyQt6
 
 # local import
 from logic.measure.measureRaw import MeasureDataRaw
@@ -36,7 +36,7 @@ def function():
         def measureTask():
             return True
 
-    with mock.patch.object(PyQt5.QtCore.QTimer,
+    with mock.patch.object(PyQt6.QtCore.QTimer,
                            'start'):
         func = MeasureDataRaw(parent=Test1())
         yield func

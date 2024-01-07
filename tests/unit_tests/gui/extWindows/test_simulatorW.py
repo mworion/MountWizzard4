@@ -19,8 +19,8 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtGui import QCloseEvent
-from PyQt5.Qt3DCore import QTransform, QEntity
+from PyQt6.QtGui import QCloseEvent
+from PyQt6.Qt3DCore import QTransform, QEntity
 from skyfield.api import Angle
 
 # local import
@@ -91,7 +91,7 @@ def test_colorChange(function):
 
 
 def test_limitPositionZ_1(function):
-    from PyQt5.QtGui import QVector3D
+    from PyQt6.QtGui import QVector3D
 
     function.camera.setPosition(QVector3D(1, 1, 1))
     suc = function.limitPositionZ()
@@ -100,7 +100,7 @@ def test_limitPositionZ_1(function):
 
 
 def test_limitPositionZ_2(function):
-    from PyQt5.QtGui import QVector3D
+    from PyQt6.QtGui import QVector3D
 
     function.camera.setPosition(QVector3D(1, -10, 1))
     suc = function.limitPositionZ()

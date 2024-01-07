@@ -17,7 +17,6 @@
 # standard libraries
 from unittest import mock
 import platform
-import builtins
 import pytest
 
 if not platform.system() == 'Windows':

@@ -24,7 +24,7 @@ from base import tpool
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def module_setup_teardown(qtbot, qapp):
     pass
 
 

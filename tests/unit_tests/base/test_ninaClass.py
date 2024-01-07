@@ -18,10 +18,10 @@
 from unittest import mock
 
 # external packages
-import pytest
-import requests
 import PyQt6
+import pytest
 from PyQt6.QtCore import QTimer
+import requests
 
 # local import
 from base.ninaClass import NINAClass

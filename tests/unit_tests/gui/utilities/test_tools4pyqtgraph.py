@@ -21,7 +21,7 @@ import builtins
 
 # external packages
 from PyQt6.QtWidgets import QWidget, QApplication
-from PyQt6.QtCore import QPointF, Qt
+from PyQt6.QtCore import QPointF
 import numpy as np
 import pyqtgraph as pg
 
@@ -395,7 +395,7 @@ def test_CustomViewBox_mouseDragEvent_2():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.NoButton
+            return 0
 
         @staticmethod
         def ignore():
@@ -411,7 +411,7 @@ def test_CustomViewBox_mouseDragEvent_3():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.LeftButton
+            return 1
 
         @staticmethod
         def ignore():
@@ -438,7 +438,7 @@ def test_CustomViewBox_mouseDragEvent_4():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.LeftButton
+            return 1
 
         @staticmethod
         def accept():
@@ -472,7 +472,7 @@ def test_CustomViewBox_mouseDragEvent_5():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.LeftButton
+            return 1
 
         @staticmethod
         def accept():
@@ -499,7 +499,7 @@ def test_CustomViewBox_mouseDragEvent_6():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.LeftButton
+            return 1
 
         @staticmethod
         def ignore():
@@ -526,7 +526,7 @@ def test_CustomViewBox_mouseClickEvent_1():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.RightButton
+            return 2
 
         @staticmethod
         def accept():
@@ -541,7 +541,7 @@ def test_CustomViewBox_mouseClickEvent_2():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.LeftButton
+            return 1
 
         @staticmethod
         def accept():
@@ -558,7 +558,7 @@ def test_CustomViewBox_mouseClickEvent_3():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.RightButton
+            return 2
 
         @staticmethod
         def accept():
@@ -585,7 +585,7 @@ def test_CustomViewBox_mouseClickEvent_4():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.RightButton
+            return 2
 
         @staticmethod
         def accept():
@@ -612,7 +612,7 @@ def test_CustomViewBox_mouseClickEvent_5():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.LeftButton
+            return 1
 
         @staticmethod
         def accept():
@@ -639,7 +639,7 @@ def test_CustomViewBox_mouseClickEvent_6():
     class EV:
         @staticmethod
         def button():
-            return Qt.MouseButton.LeftButton
+            return 1
 
         @staticmethod
         def accept():

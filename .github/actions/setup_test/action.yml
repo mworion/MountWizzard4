@@ -16,7 +16,7 @@ runs:
     - name: setup python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.12'
     
     - name: install #0
       run: python -m pip install pip --upgrade
@@ -35,7 +35,7 @@ runs:
       shell: bash
     
     - name: install #4
-      run: python -m pip install pytest-qt
+      run: python -m pip install pytest-qt==4.0.1
       shell: bash
     
     - name: install #5

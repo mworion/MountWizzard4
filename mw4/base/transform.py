@@ -41,9 +41,9 @@ mutex = QMutex()
 
 def JNowToJ2000(ra, dec, timeJD):
     """
-    JNowToJ2000 uses the ERFA library which actually is included in the astropy package for
-    doing the transform. If future releases of astropy this might be a separate package and
-    will be imported and used adequately.
+    JNowToJ2000 uses the ERFA library which actually is included in the astropy
+    package for doing the transform. If future releases of astropy this might be
+    a separate package and will be imported and used adequately.
 
     :param ra:
     :param dec:
@@ -69,9 +69,9 @@ def JNowToJ2000(ra, dec, timeJD):
 
 def J2000ToJNow(ra, dec, timeJD):
     """
-    J2000ToJNow uses the ERFA library which actually is included in the astropy package for
-    doing the transform. If future releases of astropy this might be a separate package and
-    will be imported and used adequately.
+    J2000ToJNow uses the ERFA library which actually is included in the astropy
+    package for doing the transform. If future releases of astropy this might be
+    a separate package and will be imported and used adequately.
 
     :param ra:
     :param dec:
@@ -97,12 +97,12 @@ def J2000ToJNow(ra, dec, timeJD):
 
 def J2000ToAltAz(ra, dec, timeJD, location):
     """
-    J2000ToAltAz uses the ERFA library which actually is included in the astropy package for
-    doing the transform. If future releases of astropy this might be a separate package and
-    will be imported and used adequately.
+    J2000ToAltAz uses the ERFA library which actually is included in the astropy
+    package for doing the transform. If future releases of astropy this might be
+    a separate package and will be imported and used adequately.
 
-    Please be aware, that all refraction corrections are made in the mount itself, so all
-    parameters which are related to RC are set to zero.
+    Please be aware, that all refraction corrections are made in the mount itself,
+    so all parameters which are related to RC are set to zero.
 
     :param ra:
     :param dec:

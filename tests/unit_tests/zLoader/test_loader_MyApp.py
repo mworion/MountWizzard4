@@ -37,119 +37,115 @@ def qapp():
 
 @pytest.fixture(autouse=True, scope="function")
 def setup_teardown(qapp):
-    global app
-
-    app = qapp
-
     files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:
         os.remove(f)
 
-    yield
+    yield qapp
 
 
-def test_handleButtons_1():
+def test_handleButtons_1(qapp):
     ui = QtWidgets.QTabBar()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_2():
+def test_handleButtons_2(qapp):
     ui = QtWidgets.QComboBox()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_3():
+def test_handleButtons_3(qapp):
     ui = QtWidgets.QPushButton()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_3b():
+def test_handleButtons_3b(qapp):
     ui = QtWidgets.QPushButton()
     ui.setObjectName('test')
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_4():
+def test_handleButtons_4(qapp):
     ui = QtWidgets.QRadioButton()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_5():
+def test_handleButtons_5(qapp):
     ui = QtWidgets.QGroupBox()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_6():
+def test_handleButtons_6(qapp):
     ui = QtWidgets.QCheckBox()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_7():
+def test_handleButtons_7(qapp):
     ui = QtWidgets.QLineEdit()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_8():
+def test_handleButtons_8(qapp):
     ui = QtWidgets.QLCDNumber()
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_8a():
+def test_handleButtons_8a(qapp):
     ui = QtWidgets.QLCDNumber()
     ui.setObjectName('qt_scrollarea_viewport')
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_8b():
+def test_handleButtons_8b(qapp):
     ui = QtWidgets.QLCDNumber()
     ui.setObjectName('test')
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_9():
+def test_handleButtons_9(qapp):
     ui = QtWidgets.QLineEdit()
-    app.last = ui
-    val = app.handleButtons(obj=ui, returnValue=10)
+    qapp.last = ui
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_10():
+def test_handleButtons_10(qapp):
     ui = QtWidgets.QLineEdit()
     ui.setObjectName('MainWindowWindow')
-    val = app.handleButtons(obj=ui, returnValue=10)
+    val = qapp.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_notify_1():
+def test_notify_1(qapp):
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.Type.ToolTipChange)
-    suc = app.notify(obj=ui, event=event)
+    suc = qapp.notify(obj=ui, event=event)
     assert not suc
 
 
-def test_notify_2():
+def test_notify_2(qapp):
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.Type.MouseButtonPress)
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True,
                            side_effect=Exception()):
-        suc = app.notify(obj=ui, event=event)
+        suc = qapp.notify(obj=ui, event=event)
         assert not suc
 
 
-def test_notify_3():
+def test_notify_3(qapp):
     ui = QtWidgets.QLineEdit()
     event = QMouseEvent(QEvent.Type.MouseButtonRelease,
                         QPointF(100, 100),
@@ -160,11 +156,11 @@ def test_notify_3():
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
-        suc = app.notify(obj=ui, event=event)
+        suc = qapp.notify(obj=ui, event=event)
         assert suc
 
 
-def test_notify_4():
+def test_notify_4(qapp):
     ui = QtWidgets.QLineEdit()
     event = QMouseEvent(QEvent.Type.MouseButtonRelease,
                         QPointF(100, 100),
@@ -175,14 +171,14 @@ def test_notify_4():
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
-        with mock.patch.object(app,
+        with mock.patch.object(qapp,
                                'handleButtons',
                                return_value=True):
-            suc = app.notify(obj=ui, event=event)
+            suc = qapp.notify(obj=ui, event=event)
             assert suc
 
 
-def test_notify_5():
+def test_notify_5(qapp):
     ui = QtWidgets.QLineEdit()
     event = QMouseEvent(QEvent.Type.MouseButtonPress,
                         QPointF(100, 100),
@@ -193,8 +189,8 @@ def test_notify_5():
     with mock.patch.object(PyQt6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
-        with mock.patch.object(app,
+        with mock.patch.object(qapp,
                                'handleButtons',
                                return_value=True):
-            suc = app.notify(obj=ui, event=event)
+            suc = qapp.notify(obj=ui, event=event)
             assert suc

@@ -31,8 +31,9 @@ __all__ = ['Worker',
 
 class WorkerSignals(QObject):
     """
-    The WorkerSignals class offers a list of signals to be used and instantiated by the Worker
-    class to get signals for error, finished and result to be transferred to the caller back
+    The WorkerSignals class offers a list of signals to be used and instantiated
+    by the Worker class to get signals for error, finished and result to be
+    transferred to the caller back
     """
 
     __all__ = ['WorkerSignals']
@@ -44,8 +45,8 @@ class WorkerSignals(QObject):
 
 class Worker(QRunnable):
     """
-    The Worker class offers a generic interface to allow any function to be executed as
-    a thread in a threadpool
+    The Worker class offers a generic interface to allow any function to be
+    executed as a thread in a threadpool
     """
 
     __all__ = ['Worker']
@@ -78,7 +79,7 @@ class Worker(QRunnable):
 
     def run(self):
         """
-        runs an arbitrary methods with it's parameters and catches the result
+        runs an arbitrary methods with its parameters and catches the result
 
         :return: nothing, but sends results and status as signals
         """

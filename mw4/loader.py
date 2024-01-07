@@ -37,11 +37,10 @@ sys.coinit_flags = 2
 
 # external packages
 import astropy
-from PyQt6.QtCore import QFile, QEvent, Qt, QObject, PYQT_VERSION_STR, QT_VERSION_STR
+from PyQt6.QtCore import QFile, QEvent, PYQT_VERSION_STR, QT_VERSION_STR
 from PyQt6.QtGui import QMouseEvent, QIcon
 from PyQt6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
-from PyQt6.QtWidgets import QWidget, QApplication, QTabBar, QComboBox, QPushButton
-import pyqtgraph as pg
+from PyQt6.QtWidgets import QApplication, QTabBar, QComboBox, QPushButton
 from importlib_metadata import version
 
 # local import

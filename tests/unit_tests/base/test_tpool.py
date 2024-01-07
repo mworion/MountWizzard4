@@ -23,8 +23,8 @@ import pytest
 from base import tpool
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot, qapp):
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
     pass
 
 

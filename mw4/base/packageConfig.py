@@ -24,11 +24,11 @@ isReference = False
 isWindows = platform.system() == 'Windows'
 isLinux = platform.system() == 'Linux'
 isMac = platform.system() == 'Darwin'
-enableAutomation = True
 
 
 def checkAutomation():
-    verResult = Version('3.8.2') <= Version(platform.python_version())
+    verIsHigher = Version('3.8.2') <= Version(platform.python_version())
+    verIsLower = Version('3.12.0') > Version(platform.python_version())
     winResult = platform.system() == 'Windows'
-    result = verResult and winResult
-    return result and enableAutomation
+    result = verIsHigher and verIsLower and winResult
+    return result

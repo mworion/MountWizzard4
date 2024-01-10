@@ -52,7 +52,7 @@ class Remote(QObject):
         :return: success
         """
         self.tcpServer = QtNetwork.QTcpServer(self)
-        hostAddress = QtNetwork.QHostAddress('127.0.0.1')
+        hostAddress = QtNetwork.QHostAddress('localhost')
         if not self.tcpServer.listen(hostAddress, 3490):
             self.log.info('Port already in use')
             self.tcpServer = None

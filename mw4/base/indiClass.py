@@ -136,7 +136,7 @@ class IndiClass:
         self.defaultConfig = {
             'deviceName': '',
             'deviceList': [],
-            'hostaddress': '127.0.0.1',
+            'hostaddress': 'localhost',
             'port': 7624,
             'loadConfig': False,
             'messages': False,

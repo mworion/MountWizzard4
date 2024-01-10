@@ -42,7 +42,7 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_3(function):
     server = QtNetwork.QTcpServer(function)
-    hostAddress = QtNetwork.QHostAddress('127.0.0.1')
+    hostAddress = QtNetwork.QHostAddress('localhost')
     server.listen(hostAddress, 3490)
     suc = function.startCommunication()
     assert not suc

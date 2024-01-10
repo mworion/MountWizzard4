@@ -43,7 +43,7 @@ class Connection(object):
     with the mount.
 
         >>> command = Connection(
-        >>>                   host=('127.0.0.1', 3492),
+        >>>                   host=('localhost', 3492),
         >>>                   )
 
     """

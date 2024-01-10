@@ -327,14 +327,14 @@ def test_workerWebsocket_3(function):
             return
 
     function.ws = WS()
-    suc = function.workerWebsocket(host=('127.0.0.1', 8000))
+    suc = function.workerWebsocket(host=('localhost', 8000))
     assert not suc
 
 
 def test_workerWebsocket_4(function):
     with mock.patch.object(WebSocketApp,
                            'run_forever'):
-        suc = function.workerWebsocket(host=('127.0.0.1', 8000))
+        suc = function.workerWebsocket(host=('localhost', 8000))
         assert suc
 
 

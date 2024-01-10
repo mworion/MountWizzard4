@@ -46,13 +46,13 @@ def function():
 def test_properties_1(function):
     function.framework = 'test'
 
-    function.host = ('127.0.0.1', 7624)
+    function.host = ('localhost', 7624)
     function.apiKey = 'test'
     function.indexPath = 'test'
     function.deviceName = 'test'
     function.timeout = 30
     function.searchRadius = 20
-    assert function.host == ('127.0.0.1', 7624)
+    assert function.host == ('localhost', 7624)
     assert function.apiKey == 'test'
     assert function.indexPath == 'test'
     assert function.deviceName == 'test'
@@ -63,13 +63,13 @@ def test_properties_1(function):
 def test_properties_2(function):
     function.framework = 'astap'
 
-    function.host = ('127.0.0.1', 7624)
+    function.host = ('localhost', 7624)
     function.apiKey = 'test'
     function.indexPath = 'test'
     function.deviceName = 'test'
     function.timeout = 30
     function.searchRadius = 20
-    assert function.host == ('127.0.0.1', 7624)
+    assert function.host == ('localhost', 7624)
     assert function.apiKey == 'test'
     assert function.indexPath == 'test'
     assert function.deviceName == 'test'

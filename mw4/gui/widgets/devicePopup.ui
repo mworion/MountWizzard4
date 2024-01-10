@@ -209,7 +209,7 @@
       <enum>Qt::RightToLeft</enum>
      </property>
      <property name="text">
-      <string>127.0.0.1</string>
+      <string>localhost</string>
      </property>
      <property name="maxLength">
       <number>50</number>
@@ -761,7 +761,7 @@
       <enum>Qt::RightToLeft</enum>
      </property>
      <property name="text">
-      <string>127.0.0.1</string>
+      <string>localhost</string>
      </property>
      <property name="maxLength">
       <number>50</number>

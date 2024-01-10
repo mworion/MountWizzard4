@@ -34,7 +34,7 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='function')
 def function():
-    m = Mount(host='127.0.0.1',
+    m = Mount(host='localhost',
               pathToData=os.getcwd() + '/data',
               verbose=False,
               threadPool=QThreadPool())
@@ -154,7 +154,7 @@ def test_cycleCheckMountUp_1(function):
 
 
 def test_cycleCheckMountUp_2(function):
-    function.host = ('127.0.0.1', 80)
+    function.host = ('localhost', 80)
     with mock.patch.object(function.threadPool,
                            'start'):
         suc = function.cycleCheckMountUp()

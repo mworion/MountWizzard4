@@ -30,15 +30,15 @@ from mountcontrol.mount import checkFormatMAC
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global m
-    m = Mount(host='127.0.0.1',
+    m = Mount(host='localhost',
               pathToData=os.getcwd() + '/data',
               verbose=True)
     yield
 
 
 def test_properties():
-    m.host = '127.0.0.1'
-    assert m.host == ('127.0.0.1', 3492)
+    m.host = 'localhost'
+    assert m.host == ('localhost', 3492)
 
     m.MAC = '00:00:00:00:00:00'
     assert m.MAC == '00:00:00:00:00:00'
@@ -55,13 +55,13 @@ def test_checkFormatHost_2():
 
 
 def test_checkFormatHost_3():
-    val = m.checkFormatHost('127.0.0.1')
-    assert val == ('127.0.0.1', 3492)
+    val = m.checkFormatHost('localhost')
+    assert val == ('localhost', 3492)
 
 
 def test_checkFormatHost_4():
-    val = m.checkFormatHost(('127.0.0.1', 3492))
-    assert val == ('127.0.0.1', 3492)
+    val = m.checkFormatHost(('localhost', 3492))
+    assert val == ('localhost', 3492)
 
 
 def test_checkFormatMAC_1():

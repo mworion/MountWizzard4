@@ -174,7 +174,7 @@ def test_workerGetOpenWeatherMapData_1(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData('http://127.0.0.1')
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
         assert not suc
 
 
@@ -185,7 +185,7 @@ def test_workerGetOpenWeatherMapData_3(function):
                            'get',
                            side_effect=Exception(),
                            return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData('http://127.0.0.1')
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
         assert not suc
 
 
@@ -196,7 +196,7 @@ def test_workerGetOpenWeatherMapData_4(function):
                            'get',
                            side_effect=TimeoutError(),
                            return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData('http://127.0.0.1')
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
         assert not suc
 
 
@@ -211,7 +211,7 @@ def test_workerGetOpenWeatherMapData_5(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = function.workerGetOpenWeatherMapData('http://127.0.0.1')
+        suc = function.workerGetOpenWeatherMapData('http://localhost')
         assert suc
 
 

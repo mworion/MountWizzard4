@@ -48,9 +48,9 @@ class AlpacaClass(DriverData):
         self.loadConfig = False
         self.propertyExceptions = []
 
-        self._host = ('127.0.0.1', 11111)
+        self._host = ('localhost', 11111)
         self._port = 11111
-        self._hostaddress = '127.0.0.1'
+        self._hostaddress = 'localhost'
         self.protocol = 'http'
         self.apiVersion = 1
         self._deviceName = ''
@@ -60,7 +60,7 @@ class AlpacaClass(DriverData):
         self.defaultConfig = {
             'deviceName': '',
             'deviceList': [],
-            'hostaddress': '127.0.0.1',
+            'hostaddress': 'localhost',
             'port': 11111,
             'apiVersion': 1,
             'user': '',

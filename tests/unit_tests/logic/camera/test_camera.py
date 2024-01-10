@@ -33,8 +33,8 @@ def function():
 
 def test_properties(function):
     function.framework = 'indi'
-    function.host = ('127.0.0.1', 7624)
-    assert function.host == ('127.0.0.1', 7624)
+    function.host = ('localhost', 7624)
+    assert function.host == ('localhost', 7624)
 
     function.deviceName = 'test'
     assert function.deviceName == 'test'

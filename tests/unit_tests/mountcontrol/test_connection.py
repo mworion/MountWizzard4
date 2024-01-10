@@ -219,9 +219,9 @@ class TestConnection(unittest.TestCase):
     def test_ok(self):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
-            m_socket.return_value.connect.assert_called_with(('127.0.0.1', 3492))
+            m_socket.return_value.connect.assert_called_with(('localhost', 3492))
             m_socket.return_value.sendall.assert_called_with(':GVN#'.encode())
         self.assertEqual(True, suc)
         self.assertEqual('10micron GM1000HPS', response[0])
@@ -237,7 +237,7 @@ class TestConnection(unittest.TestCase):
     def test_no_port_defined(self):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
-            conn = Connection(host='127.0.0.1')
+            conn = Connection(host='localhost')
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
         self.assertEqual('', response)
@@ -245,7 +245,7 @@ class TestConnection(unittest.TestCase):
     def test_no_response(self):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate('')
         self.assertEqual(True, suc)
         self.assertEqual('', response)
@@ -253,7 +253,7 @@ class TestConnection(unittest.TestCase):
     def test_no_chunk(self):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = ''.encode
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate('')
         self.assertEqual(True, suc)
         self.assertEqual('', response)
@@ -262,7 +262,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.connect.side_effect = socket.timeout
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -270,7 +270,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.sendall.side_effect = socket.timeout
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -278,7 +278,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.recv.side_effect = socket.timeout
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -286,7 +286,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.connect.side_effect = socket.error
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -294,7 +294,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.sendall.side_effect = socket.error
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -302,7 +302,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.recv.side_effect = socket.error
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -310,7 +310,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.connect.side_effect = Exception('Test')
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -318,7 +318,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.sendall.side_effect = Exception('Test')
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 
@@ -326,7 +326,7 @@ class TestConnection(unittest.TestCase):
         with mock.patch('socket.socket') as m_socket:
             m_socket.return_value.recv.return_value = '10micron GM1000HPS#'.encode()
             m_socket.return_value.recv.side_effect = Exception('Test')
-            conn = Connection(host=('127.0.0.1', 3492))
+            conn = Connection(host=('localhost', 3492))
             suc, response, chunks = conn.communicate(':GVN#')
         self.assertEqual(False, suc)
 

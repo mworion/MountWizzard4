@@ -108,7 +108,7 @@ def test_workerGetSeeingData_1(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = function.workerGetSeeingData('http://127.0.0.1')
+        suc = function.workerGetSeeingData('http://localhost')
         assert not suc
 
 
@@ -119,7 +119,7 @@ def test_workerGetSeeingData_3(function):
                            'get',
                            side_effect=Exception(),
                            return_value=Test()):
-        suc = function.workerGetSeeingData('http://127.0.0.1')
+        suc = function.workerGetSeeingData('http://localhost')
         assert not suc
 
 
@@ -130,7 +130,7 @@ def test_workerGetSeeingData_4(function):
                            'get',
                            side_effect=TimeoutError(),
                            return_value=Test()):
-        suc = function.workerGetSeeingData('http://127.0.0.1')
+        suc = function.workerGetSeeingData('http://localhost')
         assert not suc
 
 
@@ -145,7 +145,7 @@ def test_workerGetSeeingData_5(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = function.workerGetSeeingData('http://127.0.0.1')
+        suc = function.workerGetSeeingData('http://localhost')
         assert suc
 
 

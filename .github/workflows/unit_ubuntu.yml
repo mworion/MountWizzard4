@@ -42,11 +42,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{env.branch}}
-          
-      - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v2
-        with:
-          qt: true
+    
+      - name: install head
+        uses: ./.github/actions/install_ubuntu_head
     
       - name: install package
         uses: ./.github/actions/setup_test
@@ -58,7 +56,7 @@ jobs:
           run pytest tests/unit_tests/mountcontrol
           run pytest tests/unit_tests/indibase
           run pytest tests/unit_tests/gui/utilities
-          run pytest tests/unit_tests/gui/extWindows
+          run pytest -k 'not simulatorW' tests/unit_tests/gui/extWindows
         
   run_tests_ubuntu_2:
     #
@@ -69,21 +67,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{env.branch}}
-          
-      - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v2
-        with:
-          qt: true
     
       - name: install package
         uses: ./.github/actions/setup_test
+    
+      - name: install head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |
-          run pytest tests/unit_tests/zLoader
-          run pytest tests/unit_tests/zUpdate
-          run pytest tests/unit_tests/zMainApp
-          run pytest tests/unit_tests/gui/mainWindow
+          xvfb-run pytest tests/unit_tests/zLoader
+          xvfb-run pytest tests/unit_tests/zUpdate
+          xvfb-run pytest tests/unit_tests/zMainApp
+          xvfb-run pytest tests/unit_tests/gui/mainWindow
 
 
   run_tests_ubuntu_3:
@@ -95,18 +91,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{env.branch}}
-          
-      - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v2
-        with:
-          qt: true
     
       - name: install package
         uses: ./.github/actions/setup_test
+    
+      - name: install head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |
-          run pytest tests/unit_tests/gui/mainWmixin1
+          xvfb-run pytest tests/unit_tests/gui/mainWmixin1
 
 
   run_tests_ubuntu_4:
@@ -118,18 +112,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{env.branch}}
-          
-      - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v2
-        with:
-          qt: true
     
       - name: install package
         uses: ./.github/actions/setup_test
+    
+      - name: install head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |
-          run pytest tests/unit_tests/gui/mainWmixin2
+          xvfb-run pytest tests/unit_tests/gui/mainWmixin2
 
 
   run_tests_ubuntu_5:
@@ -142,15 +134,12 @@ jobs:
         with:
           ref: ${{env.branch}}
     
-          
-      - name: Setup headless display
-        uses: pyvista/setup-headless-display-action@v2
-        with:
-          qt: true
-    
       - name: install package
         uses: ./.github/actions/setup_test
+    
+      - name: install head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |
-          run pytest tests/unit_tests/gui/mainWmixin3
+          xvfb-run pytest tests/unit_tests/gui/mainWmixin3

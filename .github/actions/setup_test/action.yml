@@ -39,5 +39,9 @@ runs:
       shell: bash
     
     - name: install #5
+      run: python -m pip install pytest-xvfb
+      shell: bash
+    
+    - name: install #6
       run: python -m pip install pytest-pythonpath
       shell: bash

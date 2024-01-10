@@ -28,7 +28,7 @@ isMac = platform.system() == 'Darwin'
 
 def checkAutomation():
     verIsHigher = Version('3.8.2') <= Version(platform.python_version())
-    verIsLower = Version('3.12.0') > Version(platform.python_version())
+    verIsLower = Version('3.13.0') > Version(platform.python_version())
     winResult = platform.system() == 'Windows'
     result = verIsHigher and verIsLower and winResult
     return result

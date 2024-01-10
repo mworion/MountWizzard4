@@ -58,7 +58,7 @@ jobs:
           run pytest tests/unit_tests/mountcontrol
           run pytest tests/unit_tests/indibase
           run pytest tests/unit_tests/gui/utilities
-          run pytest -k 'not simulatorW' tests/unit_tests/gui/extWindows
+          run pytest tests/unit_tests/gui/extWindows
         
   run_tests_ubuntu_2:
     #

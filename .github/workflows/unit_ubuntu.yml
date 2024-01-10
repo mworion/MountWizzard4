@@ -51,12 +51,12 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/base
-          xvfb-run pytest tests/unit_tests/logic
-          xvfb-run pytest tests/unit_tests/mountcontrol
-          xvfb-run pytest tests/unit_tests/indibase
-          xvfb-run pytest tests/unit_tests/gui/utilities
-          xvfb-run pytest -k 'not simulatorW' tests/unit_tests/gui/extWindows
+          run pytest tests/unit_tests/base
+          run pytest tests/unit_tests/logic
+          run pytest tests/unit_tests/mountcontrol
+          run pytest tests/unit_tests/indibase
+          run pytest tests/unit_tests/gui/utilities
+          run pytest -k 'not simulatorW' tests/unit_tests/gui/extWindows
         
   run_tests_ubuntu_2:
     #
@@ -76,10 +76,10 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/zLoader
-          xvfb-run pytest tests/unit_tests/zUpdate
-          xvfb-run pytest tests/unit_tests/zMainApp
-          xvfb-run pytest tests/unit_tests/gui/mainWindow
+          run pytest tests/unit_tests/zLoader
+          run pytest tests/unit_tests/zUpdate
+          run pytest tests/unit_tests/zMainApp
+          run pytest tests/unit_tests/gui/mainWindow
 
 
   run_tests_ubuntu_3:
@@ -100,7 +100,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/gui/mainWmixin1
+          run pytest tests/unit_tests/gui/mainWmixin1
 
 
   run_tests_ubuntu_4:
@@ -121,7 +121,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/gui/mainWmixin2
+          run pytest tests/unit_tests/gui/mainWmixin2
 
 
   run_tests_ubuntu_5:
@@ -142,4 +142,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          xvfb-run pytest tests/unit_tests/gui/mainWmixin3
+          run pytest tests/unit_tests/gui/mainWmixin3

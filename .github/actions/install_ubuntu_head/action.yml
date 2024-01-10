@@ -15,3 +15,6 @@ runs:
     - name: install #1
       run: sudo apt-get upgrade
       shell: bash
+      
+    - name: install #2
+      uses: tlambert03/setup-qt-libs@v1

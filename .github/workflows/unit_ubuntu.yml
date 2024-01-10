@@ -51,6 +51,7 @@ jobs:
 
       - name: running_unit_tests
         run: |
+        uses: coactions/setup-xvfb@v1
           run pytest tests/unit_tests/base
           run pytest tests/unit_tests/logic
           run pytest tests/unit_tests/mountcontrol
@@ -76,6 +77,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
+        uses: coactions/setup-xvfb@v1
           run pytest tests/unit_tests/zLoader
           run pytest tests/unit_tests/zUpdate
           run pytest tests/unit_tests/zMainApp
@@ -100,6 +102,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
+        uses: coactions/setup-xvfb@v1
           run pytest tests/unit_tests/gui/mainWmixin1
 
 
@@ -120,6 +123,7 @@ jobs:
         uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
+        uses: coactions/setup-xvfb@v1
         run: |
           run pytest tests/unit_tests/gui/mainWmixin2
 
@@ -142,4 +146,5 @@ jobs:
   
       - name: running_unit_tests
         run: |
+        uses: coactions/setup-xvfb@v1
           run pytest tests/unit_tests/gui/mainWmixin3

@@ -15,6 +15,3 @@ runs:
     - name: install #1
       run: sudo apt-get upgrade
       shell: bash
-      
-    - name: install #3
-      uses: coactions/setup-xvfb@v1

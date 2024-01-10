@@ -15,6 +15,4 @@ runs:
     - name: install #1
       run: sudo apt-get upgrade
       shell: bash
-
-    - name: setup qt
-      uses: coactions/setup-xvfb@v1
+      

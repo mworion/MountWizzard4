@@ -267,6 +267,8 @@ class PlateSolve:
         :return: success
         """
         if self.framework not in self.run:
+            self.log.warning(f'Framework for solver not found: {self.framework}')
+            self.signals.done.emit({})
             return False
 
         solver = self.run[self.framework]

@@ -7,6 +7,20 @@ Released versions of MW4
 ------------------------
 Version 3.0
 ^^^^^^^^^^^
+3.2.6
+
+- add: support for INDI Pegasus Uranus Meteo sensor
+- change: writing pointing coordinates to fits header from MW4 now
+- improve: add waiting time for image file save for NINA and SGPro
+- improve: logging for NINA / SGPro controlled cameras
+- fix: typos and some minor bugs
+
+3.2.5
+
+- improve: add more information to the log file seeing
+- improve: openweathermap data handling (API)
+- improve: add support for pegasus uranus meteo sensor
+
 3.2.4
 
 - add: support for astap D80 database

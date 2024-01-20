@@ -148,7 +148,7 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, 'System', 'Profile', f'Base: {profile}'))
         # initialize commands to mount
         pathToData = self.mwGlob['dataDir']
-        self.mount = qtmount.Mount(host='127.0.0.1',
+        self.mount = qtmount.Mount(host='localhost',
                                    MAC='00.c0.08.87.35.db',
                                    threadPool=self.threadPool,
                                    pathToData=pathToData,

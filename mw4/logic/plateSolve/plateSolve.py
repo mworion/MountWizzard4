@@ -24,8 +24,8 @@ from astropy.io import fits
 import numpy as np
 
 # local imports
-from mountcontrol.convert import convertToAngle
-from base.fitsHeader import getCoordinates, getScale
+from base.fitsHeader import getCoordinates, getScale, calcAngleScaleFromWCS
+from base.fitsHeader import getCoordinatesWCS
 from base import tpool
 from logic.plateSolve.astrometry import Astrometry
 from logic.plateSolve.astap import ASTAP
@@ -85,6 +85,10 @@ class PlateSolve:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
         self.mutexSolve = PyQt6.QtCore.QMutex()
+        self.raHint = None
+        self.decHint = None
+        self.scaleHint = None
+        self.fovHint = None
 
     def readFitsData(self, fitsPath):
         """
@@ -105,30 +109,6 @@ class PlateSolve:
         self.log.debug(f'Header RA: {raHint}, DEC: {decHint}, scale: {scaleHint}')
 
         return raHint, decHint, scaleHint
-
-    @staticmethod
-    def calcAngleScaleFromWCS(wcsHeader=None):
-        """
-        calcAngleScaleFromWCS as the name says. important is to use the numpy
-        arctan2 function, because it handles the zero points and extend the
-        calculation back to the full range from -pi to pi
-
-        :return: angle in degrees and scale in arc second per pixel (app) and
-                 status if image is mirrored (not rotated for 180 degrees because
-                 of the mount flip)
-        """
-        CD11 = wcsHeader.get('CD1_1', 0)
-        CD12 = wcsHeader.get('CD1_2', 0)
-        CD21 = wcsHeader.get('CD2_1', 0)
-        CD22 = wcsHeader.get('CD2_2', 0)
-
-        mirrored = (CD11 * CD22 - CD12 * CD21) < 0
-
-        angleRad = np.arctan2(CD12, CD11)
-        angle = np.degrees(angleRad)
-        scale = CD11 / np.cos(angleRad) * 3600
-
-        return angle, scale, mirrored
 
     def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
         """
@@ -160,10 +140,9 @@ class PlateSolve:
         self.log.trace(f'wcs header: [{wcsHeader}]')
         self.log.debug(f'wcs RA: [{wcsHeader["CRVAL1"]}] '
                        f'DEC: [{wcsHeader["CRVAL2"]}]')
-        raJ2000 = convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
-        decJ2000 = convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
-        angle, scale, mirrored = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+        angle, scale, mirrored = calcAngleScaleFromWCS(wcsHeader=wcsHeader)
         raMount, decMount = getCoordinates(header=fitsHeader)
+        raJ2000, decJ2000 = getCoordinatesWCS(header=wcsHeader)
 
         deltaRA = (raJ2000._degrees - raMount._degrees) * 3600
         deltaDEC = (decJ2000.degrees - decMount.degrees) * 3600
@@ -266,11 +245,6 @@ class PlateSolve:
                            original file
         :return: success
         """
-        if self.framework not in self.run:
-            self.log.warning(f'Framework for solver not found: {self.framework}')
-            self.signals.done.emit({})
-            return False
-
         solver = self.run[self.framework]
 
         if not self.mutexSolve.tryLock():
@@ -301,9 +275,6 @@ class PlateSolve:
         """
         :return:
         """
-        if self.framework not in self.run:
-            return False
-
         solver = self.run[self.framework]
         suc = solver.abort()
         return suc
@@ -322,13 +293,19 @@ class PlateSolve:
         """
         :return: True for test purpose
         """
-        self.signals.serverConnected.emit()
-        sucApp, sucIndex = self.checkAvailability()
-        name = self.run[self.framework].deviceName
-        if sucApp and sucIndex:
-            self.signals.deviceConnected.emit(name)
-            self.msg.emit(0, 'System', 'Plate Solver found', f'{name}')
+        if self.framework not in self.run:
+            self.log.warning(f'Framework for solver not found: {self.framework}')
+            return False
 
+        sucApp, sucIndex = self.checkAvailability()
+        if not sucApp or not sucIndex:
+            self.log.warning(f'App or Index for solver not found: {self.framework}')
+            return False
+
+        name = self.run[self.framework].deviceName
+        self.signals.deviceConnected.emit(name)
+        self.signals.serverConnected.emit()
+        self.msg.emit(0, 'System', 'Plate Solver found', f'{name}')
         self.log.debug(f'Framework: [{self.framework}], {sucApp}, {sucIndex}')
         return True
 

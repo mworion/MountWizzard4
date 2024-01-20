@@ -22,6 +22,7 @@ import pytest
 # local import
 from base.loggerMW import setupLogging
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
+from base.fitsHeader import getCoordinatesWCS
 setupLogging()
 
 
@@ -54,6 +55,26 @@ def test_getCoordinates_3():
     ra, dec = getCoordinates()
     assert ra.hours == 0
     assert dec.degrees == 0
+
+
+def test_getCoordinatesWCS_1():
+    header = {
+        'CRVAL1': '180',
+        'CRVAL2': '180.5',
+    }
+    ra, dec = getCoordinatesWCS(header=header)
+    assert ra.hours == 12.0
+    assert dec.degrees == 180.5
+
+
+def test_getCoordinatesWCS_2():
+    header = {
+        'CRVAL1': 180,
+        'CRVAL2': 180.5,
+    }
+    ra, dec = getCoordinatesWCS(header=header)
+    assert ra.hours == 12.0
+    assert dec.degrees == 180.5
 
 
 def test_getSQM_0():

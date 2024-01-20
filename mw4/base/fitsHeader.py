@@ -18,6 +18,7 @@
 import logging
 
 # external packages
+import numpy as np
 from skyfield.api import Angle
 
 # local import
@@ -65,6 +66,17 @@ def getCoordinates(header=None):
 
     log.trace(f'Header:[{header}]')
     log.debug(f'Ra:[{ra}][{ra.hours}][{ra._degrees}], Dec: [{dec}][{dec.degrees}]')
+
+    return ra, dec
+
+
+def getCoordinatesWCS(header=None):
+    """
+    :param header:
+    :return:
+    """
+    ra = Angle(hours=float(header.get('CRVAL1')) * 24 / 360)
+    dec = Angle(degrees=float(header.get('CRVAL2')))
 
     return ra, dec
 
@@ -129,3 +141,27 @@ def getScale(header=None):
         scale = None
 
     return scale
+
+
+def calcAngleScaleFromWCS(wcsHeader=None):
+    """
+    calcAngleScaleFromWCS as the name says. important is to use the numpy
+    arctan2 function, because it handles the zero points and extend the
+    calculation back to the full range from -pi to pi
+
+    :return: angle in degrees and scale in arc second per pixel (app) and
+             status if image is mirrored (not rotated for 180 degrees because
+             of the mount flip)
+    """
+    CD11 = wcsHeader.get('CD1_1', 0)
+    CD12 = wcsHeader.get('CD1_2', 0)
+    CD21 = wcsHeader.get('CD2_1', 0)
+    CD22 = wcsHeader.get('CD2_2', 0)
+
+    mirrored = (CD11 * CD22 - CD12 * CD21) < 0
+
+    angleRad = np.arctan2(CD12, CD11)
+    angle = np.degrees(angleRad)
+    scale = CD11 / np.cos(angleRad) * 3600
+
+    return angle, scale, mirrored

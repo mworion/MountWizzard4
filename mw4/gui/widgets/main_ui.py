@@ -12551,7 +12551,7 @@ class Ui_MainWindow(object):
         self.settingsTabWidget.setTabText(self.settingsTabWidget.indexOf(self.Devices), _translate("MainWindow", "Devices"))
         self.GroupMountConnectivity.setTitle(_translate("MainWindow", "Mount connectivity"))
         self.mountHost.setToolTip(_translate("MainWindow", "<html><head/><body><p>IP address of mount, ip address and host names!</p><p>Please look closely to malformed explressions like 190.001.004.128. There should be no leading zero\'s in the ip address. Ideally you use a formal address like mount.fritz.box if your environmen supports it.</p></body></html>"))
-        self.mountHost.setText(_translate("MainWindow", "127.0.0.1"))
+        self.mountHost.setText(_translate("MainWindow", "localhost"))
         self.label_mountIP.setText(_translate("MainWindow", "IP Address"))
         self.label_mountMAC.setText(_translate("MainWindow", "MAC Address"))
         self.mountMAC.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:400;\">MAC address of the mount</span></p></body></html>"))

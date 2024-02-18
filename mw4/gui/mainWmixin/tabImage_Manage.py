@@ -144,7 +144,9 @@ class ImageManage:
         offsetList = self.app.camera.data.get('CCD_OFFSET.OFFSET_LIST')
         if offsetList is not None and actValue is not None:
             offsetList = list(offsetList)
-            self.guiSetText(self.ui.offsetCam, 's', offsetList[actValue])
+            if len(offsetList) == 0:
+                offsetList = [0]
+            self.guiSetText(self.ui.offsetCam, 's', offsetList.get(actValue, 0))
         else:
             self.guiSetText(self.ui.offsetCam, '3.0f', actValue)
 
@@ -152,7 +154,9 @@ class ImageManage:
         gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
         if gainList is not None and actValue is not None:
             gainList = list(gainList)
-            self.guiSetText(self.ui.gainCam, 's', gainList[actValue])
+            if len(gainList) == 0:
+                gainList = [1]
+            self.guiSetText(self.ui.gainCam, 's', gainList.get(actValue, 0))
         else:
             self.guiSetText(self.ui.gainCam, '3.0f', actValue)
 

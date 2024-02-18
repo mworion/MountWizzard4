@@ -23,6 +23,7 @@ releaseNotes = """
 - change: writing pointing coordinates to fits header from MW4 now
 - improve: add waiting time for image file save for NINA and SGPro 
 - improve: logging for NINA / SGPro controlled cameras
+- improve: gain handling when missing values in camera settings
 - fix: typos and some minor bugs
 """
 
@@ -31,7 +32,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.6b13',
+    version='3.2.6b14',
     packages=[
         'mw4',
         'mw4.base',

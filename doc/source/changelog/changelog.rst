@@ -13,6 +13,7 @@ Version 3.0
 - change: writing pointing coordinates to fits header from MW4 now
 - improve: add waiting time for image file save for NINA and SGPro
 - improve: logging for NINA / SGPro controlled cameras
+- improve: gain handling when missing values in camera settings
 - fix: typos and some minor bugs
 
 3.2.5

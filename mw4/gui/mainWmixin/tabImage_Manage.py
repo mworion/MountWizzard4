@@ -164,7 +164,7 @@ class ImageManage:
                 actValue = len(gainList)
             elif actValue < 0:
                 actValue = 0
-            self.guiSetText(self.ui.gainCam, 's', gainList.get(actValue, 0))
+            self.guiSetText(self.ui.gainCam, 's', gainList[actValue])
         else:
             self.guiSetText(self.ui.gainCam, '3.0f', actValue)
 

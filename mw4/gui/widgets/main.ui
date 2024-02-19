@@ -25378,16 +25378,16 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
-         <double>1.000000000000000</double>
+         <double>0.800000000000000</double>
         </property>
         <property name="maximum">
-         <double>5.000000000000000</double>
+         <double>8.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <double>1.250000000000000</double>
+         <double>8.000000000000000</double>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeNorthOffset">

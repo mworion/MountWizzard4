@@ -144,6 +144,7 @@ class ImageManage:
         offsetList = self.app.camera.data.get('CCD_OFFSET.OFFSET_LIST')
         if offsetList is not None and actValue is not None:
             offsetList = list(offsetList)
+            self.log.debug(f'Index: [{actValue}], List: [{offsetList}]')
             if len(offsetList) == 0:
                 offsetList = [0]
             if actValue > len(offsetList):
@@ -158,6 +159,7 @@ class ImageManage:
         gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
         if gainList is not None and actValue is not None:
             gainList = list(gainList)
+            self.log.debug(f'Index: [{actValue}], List: [{gainList}]')
             if len(gainList) == 0:
                 gainList = [1]
             if actValue > len(gainList):

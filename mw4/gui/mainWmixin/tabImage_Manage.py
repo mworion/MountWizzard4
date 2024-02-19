@@ -146,7 +146,11 @@ class ImageManage:
             offsetList = list(offsetList)
             if len(offsetList) == 0:
                 offsetList = [0]
-            self.guiSetText(self.ui.offsetCam, 's', offsetList.get(actValue, 0))
+            if actValue > len(offsetList):
+                actValue = len(offsetList)
+            elif actValue < 0:
+                actValue = 0
+            self.guiSetText(self.ui.offsetCam, 's', offsetList[actValue])
         else:
             self.guiSetText(self.ui.offsetCam, '3.0f', actValue)
 
@@ -156,6 +160,10 @@ class ImageManage:
             gainList = list(gainList)
             if len(gainList) == 0:
                 gainList = [1]
+            if actValue > len(gainList):
+                actValue = len(gainList)
+            elif actValue < 0:
+                actValue = 0
             self.guiSetText(self.ui.gainCam, 's', gainList.get(actValue, 0))
         else:
             self.guiSetText(self.ui.gainCam, '3.0f', actValue)

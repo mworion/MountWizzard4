@@ -61,21 +61,59 @@ def test_checkEnableCameraUI(function):
     assert suc
 
 
-def test_updateGainOffset_1(function):
-    function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
-    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
-    function.app.camera.data['CCD_GAIN.GAIN'] = 0
-    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
-    suc = function.updateGainOffset()
+def test_updateOffset_1(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = None
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = None
+    suc = function.updateOffset()
     assert suc
 
 
-def test_updateGainOffset_2(function):
-    function.app.camera.data['CCD_OFFSET.OFFSET'] = None
-    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = None
+def test_updateOffset_2(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    suc = function.updateOffset()
+    assert suc
+
+
+def test_updateOffset_3(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 1
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = []
+    suc = function.updateOffset()
+    assert suc
+
+
+def test_updateOffset_4(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = -1
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    suc = function.updateOffset()
+    assert suc
+
+
+def test_updateGain_1(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = None
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = None
-    suc = function.updateGainOffset()
+    suc = function.updateGain()
+    assert suc
+
+
+def test_updateGain_2(function):
+    function.app.camera.data['CCD_GAIN.GAIN'] = 0
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
+    suc = function.updateGain()
+    assert suc
+
+
+def test_updateGain_3(function):
+    function.app.camera.data['CCD_GAIN.GAIN'] = 1
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = []
+    suc = function.updateGain()
+    assert suc
+
+
+def test_updateGain_4(function):
+    function.app.camera.data['CCD_GAIN.GAIN'] = -1
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
+    suc = function.updateGain()
     assert suc
 
 
@@ -102,11 +140,27 @@ def test_updateFocuser(function):
 
 
 def test_updateImagingParam_1(function):
-    suc = function.updateImagingParam()
-    assert suc
+    with mock.patch.object(function,
+                           'checkEnableCameraUI'):
+        with mock.patch.object(function,
+                               'updateOffset'):
+            with mock.patch.object(function,
+                                   'updateGain'):
+                with mock.patch.object(function,
+                                       'updateCooler'):
+                    with mock.patch.object(function,
+                                           'updateFilter'):
+                        with mock.patch.object(function,
+                                               'updateFocuser'):
+                            suc = function.updateImagingParam()
+                            assert suc
 
 
 def test_updateImagingParam_2(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    function.app.camera.data['CCD_GAIN.GAIN'] = 0
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
@@ -118,6 +172,10 @@ def test_updateImagingParam_2(function):
 
 
 def test_updateImagingParam_3(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    function.app.camera.data['CCD_GAIN.GAIN'] = 0
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
@@ -131,6 +189,10 @@ def test_updateImagingParam_3(function):
 
 
 def test_updateImagingParam_4(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    function.app.camera.data['CCD_GAIN.GAIN'] = 0
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 4000
@@ -145,6 +207,10 @@ def test_updateImagingParam_4(function):
 
 
 def test_updateImagingParam_5(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    function.app.camera.data['CCD_GAIN.GAIN'] = 0
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1000
@@ -159,6 +225,10 @@ def test_updateImagingParam_5(function):
 
 
 def test_updateImagingParam_6(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    function.app.camera.data['CCD_GAIN.GAIN'] = 0
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 8000

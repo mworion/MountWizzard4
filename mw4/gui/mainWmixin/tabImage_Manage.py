@@ -136,7 +136,7 @@ class ImageManage:
         self.ui.subFrame.setEnabled(enable)
         return True
 
-    def updateGainOffset(self):
+    def updateOffset(self):
         """
         :return:
         """
@@ -146,27 +146,32 @@ class ImageManage:
             offsetList = list(offsetList)
             self.log.debug(f'Index: [{actValue}], List: [{offsetList}]')
             if len(offsetList) == 0:
-                offsetList = [0]
+                offsetList = ['0']
             if actValue > len(offsetList):
                 actValue = len(offsetList)
             elif actValue < 0:
                 actValue = 0
-            self.guiSetText(self.ui.offsetCam, 's', offsetList[actValue])
+            self.guiSetText(self.ui.offsetCam, 's', offsetList[actValue - 1])
         else:
             self.guiSetText(self.ui.offsetCam, '3.0f', actValue)
+        return True
 
+    def updateGain(self):
+        """
+        :return:
+        """
         actValue = self.app.camera.data.get('CCD_GAIN.GAIN')
         gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
         if gainList is not None and actValue is not None:
             gainList = list(gainList)
             self.log.debug(f'Index: [{actValue}], List: [{gainList}]')
             if len(gainList) == 0:
-                gainList = [1]
+                gainList = ['1']
             if actValue > len(gainList):
                 actValue = len(gainList)
             elif actValue < 0:
                 actValue = 0
-            self.guiSetText(self.ui.gainCam, 's', gainList[actValue])
+            self.guiSetText(self.ui.gainCam, 's', gainList[actValue - 1])
         else:
             self.guiSetText(self.ui.gainCam, '3.0f', actValue)
 
@@ -216,7 +221,8 @@ class ImageManage:
         :return: true for test purpose
         """
         self.checkEnableCameraUI()
-        self.updateGainOffset()
+        self.updateOffset()
+        self.updateGain()
         self.updateCooler()
         self.updateFilter()
         self.updateFocuser()

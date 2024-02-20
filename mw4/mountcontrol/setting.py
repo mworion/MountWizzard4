@@ -823,7 +823,7 @@ class Setting(object):
         :return:    success
         """
         conn = Connection(self.host)
-        commandString = f':Sstm{time:8.3f}#'
+        commandString = f':Sstm{time:08.3f}#'
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False

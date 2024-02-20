@@ -10,6 +10,7 @@ Version 3.0
 3.2.6
 
 - add: support for INDI Pegasus Uranus Meteo sensor
+- add: wait time after slew finished before exposing
 - change: writing pointing coordinates to fits header from MW4 now
 - improve: add waiting time for image file save for NINA and SGPro
 - improve: logging for NINA / SGPro controlled cameras

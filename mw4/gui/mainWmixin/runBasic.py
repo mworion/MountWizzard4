@@ -215,6 +215,7 @@ class BasicRun:
             color = '' if waitTime % 2 else 'yellow'
             self.changeStyleDynamic(self.ui.pauseModel, 'color', color)
             sleepAndEvents(500)
+            self.app.camera.signals.message.emit(f'wait {waitTime / 2:1.1f} s')
             waitTime -= 1
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow

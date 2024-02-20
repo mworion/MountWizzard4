@@ -20,6 +20,7 @@ import platform
 
 releaseNotes = """
 - add: support for INDI Pegasus Uranus Meteo sensor
+- add: wait time after slew finished before exposing
 - change: writing pointing coordinates to fits header from MW4 now
 - improve: add waiting time for image file save for NINA and SGPro 
 - improve: logging for NINA / SGPro controlled cameras
@@ -33,7 +34,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.2.6b16',
+    version='3.2.6b17',
     packages=[
         'mw4',
         'mw4.base',

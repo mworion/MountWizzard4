@@ -59,6 +59,7 @@ class Model:
         self.ui.numberBuildRetries.setValue(config.get('numberBuildRetries', 0))
         self.ui.progressiveTiming.setChecked(config.get('progressiveTiming', False))
         self.ui.normalTiming.setChecked(config.get('normalTiming', False))
+        self.ui.normalTiming.setChecked(config.get('normalTiming', False))
         self.ui.conservativeTiming.setChecked(config.get('conservativeTiming', True))
 
         return True
@@ -415,8 +416,10 @@ class Model:
                 continue
             data.append(point)
 
+        waitTimeExposure = self.ui.waitTimeExposure.value()
         modelPoints = self.setupRunPoints(data=data, imgDir=imgDir,
-                                          name=self.modelName, waitTime=0)
+                                          name=self.modelName,
+                                          waitTime=waitTimeExposure)
         if not modelPoints:
             self.msg.emit(2, 'Model', 'Run error',
                           'Modeling cancelled, no valid points')

@@ -125,14 +125,6 @@ class Mount(mountcontrol.mount.Mount):
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
 
     @property
-    def waitTime(self):
-        return self._waitTime / 1000
-
-    @waitTime.setter
-    def waitTime(self, value):
-        self._waitTime = value * 1000
-
-    @property
     def waitTimeFlip(self):
         return self._waitTimeFlip / 1000
 
@@ -275,7 +267,7 @@ class Mount(mountcontrol.mount.Mount):
         if self.obsSite.flipped:
             settleWait = self._waitTimeFlip
         else:
-            settleWait = self._waitTime
+            settleWait = 0
 
         if self.obsSite.status not in [2, 6]:
             if not self.statusSlew:

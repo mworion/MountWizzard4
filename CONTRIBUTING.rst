@@ -39,7 +39,7 @@ is just some examples of what a developer can do.
 
 1. Created a Fork in my own github space.
 2. Cloned my Forks master branch.
- * git clone git@github.com:ozialien/mountwizzard4.git
+ * git clone git@github.com:mworion/mountwizzard4.git
 3. Add skyfield reference to my local git repo.
  * git remote add skyfield git@github.com:mworion/mountwizzard4.git
  * git fetch mountwizzard4

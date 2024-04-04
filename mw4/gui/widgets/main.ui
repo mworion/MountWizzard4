@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -23373,7 +23373,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -25108,9 +25108,9 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>150</y>
+         <y>145</y>
          <width>366</width>
-         <height>51</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -25143,7 +25143,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>300</x>
-          <y>25</y>
+          <y>20</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -25156,7 +25156,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount settle before exposing the next image while modeling and after a meridian flip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount settle before exposing the next image while modeling and after a meridian flip. Exposing will start after signal slew finisehd as the wait time is included before sending the signal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -25181,7 +25181,85 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>345</x>
-          <y>25</y>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>s</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_69">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>45</y>
+          <width>291</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Additional wait time before exposure</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="waitTimeExposure">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>45</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount settle before exposing the next image while modeling and after a meridian flip. This time is added after the slew is finished.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>300.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_301">
+        <property name="geometry">
+         <rect>
+          <x>345</x>
+          <y>45</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -25553,7 +25631,7 @@ Next point in time when satellite settles.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>225</y>
+         <y>230</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -26169,10 +26247,10 @@ Next point in time when satellite settles.</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
-         <double>1.000000000000000</double>
+         <double>0.800000000000000</double>
         </property>
         <property name="maximum">
-         <double>5.000000000000000</double>
+         <double>8.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>

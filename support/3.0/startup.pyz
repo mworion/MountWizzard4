@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.3'
+version = '3.1'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -46,10 +46,9 @@ def prt(*args):
     print('    ', *args)
 
 
-def run(command, verbose=False):
+def run(command):
     """
     :param command:
-    :param verbose:
     :return:
     """
     try:
@@ -58,10 +57,8 @@ def run(command, verbose=False):
                                    stderr=subprocess.STDOUT,
                                    text=True)
         for stdout_line in iter(process.stdout.readline, ""):
-            line = stdout_line.strip('\n')
-            if verbose:
-                prt(line[:40] + ' ...' if len(line) > 40 else line[:40])
-            log.info(line)
+            if stdout_line:
+                log.info(stdout_line.strip('\n'))
         output = process.communicate(timeout=60)[0]
 
     except subprocess.TimeoutExpired as e:
@@ -82,14 +79,14 @@ def installBasicPackages():
     """
     :return:
     """
-    prt('... adding basic packages')
+    prt('...adding basic packages')
     command = [py, '-m', 'pip', 'install', 'pip', '-U']
+    run(command)
+    command = [py, '-m', 'pip', 'install', 'requests', '-U']
     run(command)
     command = [py, '-m', 'pip', 'install', 'wheel', '-U']
     run(command)
     command = [py, '-m', 'pip', 'install', 'packaging', '-U']
-    run(command)
-    command = [py, '-m', 'pip', 'install', 'requests', '-U']
     run(command)
 
 
@@ -97,10 +94,7 @@ try:
     import requests
 except ImportError:
     installBasicPackages()
-except ModuleNotFoundError:
-    installBasicPackages()
-
-import requests
+    import requests
 
 try:
     from packaging.utils import Version
@@ -230,7 +224,7 @@ def cleanSystem():
     :return:
     """
     prt('Clean system site-packages')
-    prt('... takes some time')
+    prt('...takes some time')
     ret = os.popen(f'{py} -m pip freeze > clean.txt').read()
     prt(ret)
     ret = os.popen(f'{py} -m pip uninstall -y -r clean.txt').read()
@@ -238,15 +232,14 @@ def cleanSystem():
     prt('Clean finished')
 
 
-def runPythonInVenv(venvContext, command, verbose=False):
+def runPythonInVenv(venvContext, command):
     """
     :param venvContext:
     :param command:
-    :param verbose:
     :return:
     """
     command = [venvContext.env_exe] + command
-    return run(command, verbose=verbose)
+    return run(command)
 
 
 def runBinInVenv(venvContext, command):
@@ -303,11 +296,10 @@ def venvCreate(venvPath, upgrade=False):
     return venvBuilder.context
 
 
-def downloadAndInstallWheels(venvContext, version=None, verbose=False):
+def downloadAndInstallWheels(venvContext, version=None):
     """
     :param venvContext:
     :param version:
-    :param verbose:
     :return:
     """
     preRepo = 'https://github.com/mworion/MountWizzard4'
@@ -343,15 +335,15 @@ def downloadAndInstallWheels(venvContext, version=None, verbose=False):
         '3.1.0': {
             '3.8': [
                 'PyQt5_sip-12.11.1-cp38-cp38-linux_aarch64.whl',
-                'PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl',
+                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
             ],
             '3.9': [
                 'PyQt5_sip-12.11.1-cp39-cp39-linux_aarch64.whl',
-                'PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl',
+                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
             ],
             '3.10': [
                 'PyQt5_sip-12.11.1-cp310-cp310-linux_aarch64.whl',
-                'PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl',
+                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
             ],
         },
     }
@@ -365,16 +357,16 @@ def downloadAndInstallWheels(venvContext, version=None, verbose=False):
         log.info('Path version 2.x.y')
     else:
         log.info('No actual supported version')
-        prt('... no supported version')
+        prt('...no supported version')
         return False
 
     ver = f'{sys.version_info[0]}.{sys.version_info[1]}'
     for item in wheels[versionKey][ver]:
-        prt(f'... {item.split("-")[0]}-{item.split("-")[1]}')
+        prt(f'...{item.split("-")[0]}-{item.split("-")[1]}')
         command = ['-m', 'pip', 'install', preRepo + preSource + item + postRepo]
-        suc = runPythonInVenv(venvContext, command, verbose=verbose)
+        suc = runPythonInVenv(venvContext, command)
         if not suc:
-            prt('... error install precompiled packages')
+            prt('...error install precompiled packages')
             return False
     prt('Precompiled packages ready')
     return True
@@ -444,18 +436,17 @@ def getVersion(isTest, updateBeta, version):
     return version
 
 
-def install(venvContext, version='', isTest=False, verbose=False):
+def install(venvContext, version='', isTest=False):
     """
     :param venvContext:
     :param version:
     :param isTest:
-    :param verbose:
     :return:
     """
-    command = ['-m', 'pip', 'install', 'pip', '-U']
-    runPythonInVenv(venvContext, command, verbose=verbose)
     command = ['-m', 'pip', 'install', 'wheel']
-    runPythonInVenv(venvContext, command, verbose=verbose)
+    runPythonInVenv(venvContext, command)
+    command = ['-m', 'pip', 'install', 'pip', '-U']
+    runPythonInVenv(venvContext, command)
 
     if isTest:
         prt('Install local package mountwizzard4.tar.gz')
@@ -464,8 +455,8 @@ def install(venvContext, version='', isTest=False, verbose=False):
         prt(f'Install version {version}')
         command = ['-m', 'pip', 'install', f'mountwizzard4=={version}']
 
-    prt('... this will take some time')
-    suc = runPythonInVenv(venvContext, command, verbose=verbose)
+    prt('...this will take some time')
+    suc = runPythonInVenv(venvContext, command)
     return suc
 
 
@@ -486,14 +477,12 @@ def checkIfInstalled(venvContext):
     return isInstalled, loaderPath
 
 
-def prepareInstall(venvContext, update=False, updateBeta=False, version='',
-                   verbose=False):
+def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
     """
     :param venvContext:
     :param update:
     :param updateBeta:
     :param version:
-    :param verbose:
     :return:
     """
     isInstalled, loaderPath = checkIfInstalled(venvContext)
@@ -503,29 +492,20 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version='',
     isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
     version = getVersion(isTest, updateBeta, version)
     isV2 = version < Version('2.100')
-    is32bit = platform.architecture()[0] == '32bit'
-    isArm64bit = platform.machine() == 'aarch64'
-    isArm32bit = platform.machine() == 'armv7'
-    isWindows = platform.system() == 'Windows'
     compatibleV2 = Version(platform.python_version()) < Version('3.10')
 
     if isV2 and not compatibleV2:
         prt('MountWizzard4 v2.x needs python 3.7-3.9')
         return ''
 
-    elif not isV2 and isWindows and is32bit:
-        prt('MountWizzard4 v3.x needs python 64bit')
-        return ''
-
-    elif isArm64bit:
-        suc = downloadAndInstallWheels(venvContext, version=version, verbose=verbose)
+    if platform.machine() == 'aarch64':
+        suc = downloadAndInstallWheels(venvContext, version=version)
         if not suc:
             return ''
-
-    elif isArm32bit:
+    elif platform.machine() == 'armv7':
         return ''
 
-    suc = install(venvContext, version=version, isTest=isTest, verbose=verbose)
+    suc = install(venvContext, version=version, isTest=isTest)
     if not suc:
         return ''
 
@@ -562,7 +542,6 @@ def main(options):
         prt('needs python 3.7-3.9 for version 2.x')
         prt('needs python 3.8-3.10 for version 3.x')
         prt('no support for ARM7')
-        prt('no support for Windows 32bit')
         prt(f'you are running {platform.python_version()}')
         prt('Closing application')
         prt('-' * 45)
@@ -583,16 +562,13 @@ def main(options):
         venvContext,
         update=options.update,
         updateBeta=options.updateBeta,
-        version=options.version,
-        verbose=options.verbose)
+        version=options.version)
 
     if not options.noStart and loaderPath:
-        prt('MountWizzard4 starting ...')
+        prt('MountWizzard4 starting')
         suc = runPythonInVenv(venvContext, loaderPath)
         if not suc:
-            prt('... failed to start MountWizzard4')
-        else:
-            prt('... stopping MountWizzard4')
+            prt('...failed to start MountWizzard4')
     elif not loaderPath:
         prt('Install failed')
 
@@ -613,9 +589,6 @@ def readOptions():
     parser.add_argument(
         '-n', '--no-start', default=False, action='store_true', dest='noStart',
         help='Running script without starting MountWizzard4')
-    parser.add_argument(
-        '--verbose', default=False, action='store_true', dest='verbose',
-        help='setting verbose output')
     parser.add_argument(
         '-s', '--scale', default=1, type=float, dest='scale',
         help='Setting Qt DPI scale factor (+scale = +size, default=1)')
@@ -644,6 +617,6 @@ if __name__ == '__main__':
     options = readOptions()
     main(options)
     prt('-' * 45)
-    prt('Closing startup/install script')
+    prt('Closing application')
     prt('-' * 45)
     prt()

@@ -39,7 +39,6 @@ def test_startCommunication_1(function):
     with mock.patch.object(function.tcpServer,
                            'isListening',
                            return_value=True):
-        function.tcpServer = 1
         suc = function.startCommunication()
         assert suc
 
@@ -49,7 +48,6 @@ def test_startCommunication_2(function):
     with mock.patch.object(function.tcpServer,
                            'isListening',
                            return_value=False):
-        function.tcpServer = 1
         suc = function.startCommunication()
         assert not suc
 

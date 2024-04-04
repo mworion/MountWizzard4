@@ -19,9 +19,9 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt6.QtCore import QObject
-from PyQt6 import QtNetwork
-from PyQt6.QtCore import pyqtSignal
+from PyQt5.QtCore import QObject
+from PyQt5 import QtNetwork
+from PyQt5.QtCore import pyqtSignal
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -35,9 +35,21 @@ def function():
 
 
 def test_startCommunication_1(function):
-    function.tcpServer = 1
-    suc = function.startCommunication()
-    assert suc
+    function.tcpServer = QtNetwork.QTcpServer(function)
+    with mock.patch.object(function.tcpServer,
+                           'isListening',
+                           return_value=True):
+        suc = function.startCommunication()
+        assert suc
+
+
+def test_startCommunication_2(function):
+    function.tcpServer = QtNetwork.QTcpServer(function)
+    with mock.patch.object(function.tcpServer,
+                           'isListening',
+                           return_value=False):
+        suc = function.startCommunication()
+        assert not suc
 
 
 def test_startCommunication_3(function):

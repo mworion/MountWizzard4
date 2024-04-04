@@ -80,8 +80,7 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c1b.dat
         
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: ./c1b.dat
@@ -105,12 +104,6 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c1c.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c1c.dat
 
   run_tests_windows_2a:
     #
@@ -132,12 +125,6 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c2a.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c2a.dat
 
   run_tests_windows_2b:
     #
@@ -159,12 +146,6 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c2b.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c2b.dat
 
   run_tests_windows_3a:
     #
@@ -185,12 +166,6 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c3a.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c3a.dat
 
   run_tests_windows_3b:
     #
@@ -211,12 +186,6 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c3b.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c3b.dat
 
   run_tests_windows_3c:
     #
@@ -237,12 +206,6 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c3c.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c3c.dat
 
   run_tests_windows_4:
     #
@@ -263,12 +226,6 @@ jobs:
 
       - name: rename_coveragefile
         run: mv .coverage c4.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c4.dat
 
   run_tests_windows_5:
     #
@@ -289,12 +246,6 @@ jobs:
 
       - name: rename_coveragefile
         run: mv .coverage c5.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c5.dat
 
   run_tests_windows_6:
     #
@@ -315,12 +266,6 @@ jobs:
 
       - name: rename_coveragefile
         run: mv .coverage c6.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: ./c6.dat
 
   coverage:
     #
@@ -336,13 +281,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: ${{env.branch}}
-    
-    - name: collecting_data
-      uses: actions/download-artifact@v4
-      with:
-        name: coverage
-        path: .
-        
+
     - name: combining_data
       run: |
         dir

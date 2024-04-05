@@ -283,15 +283,14 @@ def venvCreate(venvPath, upgrade=False):
 
     if upgrade:
         prt('Update virtual environment')
-        EnvBuilder(with_pip=True, upgrade=upgrade)
 
+    venvBuilder = EnvBuilder(with_pip=True, upgrade=upgrade)
     existInstall = os.path.isdir('venv')
     if existInstall:
         prt('Activate virtual environment')
     else:
         prt('Install and activate virtual environment')
 
-    venvBuilder = EnvBuilder(with_pip=True)
     venvBuilder.create(venvPath)
     return venvBuilder.context
 

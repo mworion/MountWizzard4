@@ -32,7 +32,7 @@ jobs:
             distro: ubuntu20.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact
@@ -89,7 +89,7 @@ jobs:
             distro: ubuntu22.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact

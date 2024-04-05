@@ -28,7 +28,7 @@ jobs:
   build_widgets_resource:
     runs-on: 'ubuntu-22.04'
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Cache node modules
       uses: actions/cache@v3
@@ -69,7 +69,7 @@ jobs:
         mv dist/mountwizzard4*.* dist/mountwizzard4.tar.gz
 
     - name: upload_package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist
@@ -83,20 +83,20 @@ jobs:
         python-version: [3.9]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
   
       - name: setup_python_windows ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
   
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
 
       - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1
+        uses: suisei-cn/actions-download-file@v1.6
         with:
           url: ${{ env.gh }}3.0/startupPackage.zip
           target: dist/
@@ -133,7 +133,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
   
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
@@ -149,7 +149,7 @@ jobs:
           sudo apt-get install -y libxcb-keysyms1
 
       - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1
+        uses: suisei-cn/actions-download-file@v1.6
         with:
           url: ${{ env.gh }}3.0/startupPackage.zip
           target: dist/
@@ -178,19 +178,19 @@ jobs:
         python-version: [3.9]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: setup_python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
   
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
 
       - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1
+        uses: suisei-cn/actions-download-file@v1.6
         with:
           url: ${{ env.gh }}3.0/startupPackage.zip
           target: dist/
@@ -223,9 +223,9 @@ jobs:
             distro: ubuntu20.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist
           path: support/3.0

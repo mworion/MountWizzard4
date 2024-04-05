@@ -53,14 +53,10 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c1a.dat
-      
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c1a.dat
 
   run_tests_windows_1b:
@@ -83,13 +79,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c1b.dat
 
-      - name: check file
-        run: dir
-        
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c1b.dat
 
   run_tests_windows_1c:
@@ -112,13 +104,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c1c.dat
 
-      - name: check file
-        run: dir
-        
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c1c.dat
 
   run_tests_windows_2a:
@@ -142,13 +130,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c2a.dat
         
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c2a.dat
 
   run_tests_windows_2b:
@@ -172,13 +156,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c2b.dat
         
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c2b.dat
 
   run_tests_windows_3a:
@@ -201,13 +181,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c3a.dat
         
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c3a.dat
 
   run_tests_windows_3b:
@@ -230,13 +206,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c3b.dat
         
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c3b.dat
 
   run_tests_windows_3c:
@@ -259,13 +231,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c3c.dat
         
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c3c.dat
 
   run_tests_windows_4:
@@ -288,13 +256,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c4.dat
         
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c4.dat
 
   run_tests_windows_5:
@@ -317,13 +281,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c5.dat
         
-      - name: check file
-        run: dir
-      
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c5.dat
 
   run_tests_windows_6:
@@ -346,10 +306,9 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c6.dat
         
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          overwrite: true
           path: c6.dat
 
   coverage:
@@ -363,9 +322,9 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
       with:
-        ref: ${{env.branch}}
+        name: coverage
 
     - name: combining_data
       run: |

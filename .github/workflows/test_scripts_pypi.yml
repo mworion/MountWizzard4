@@ -30,7 +30,7 @@ jobs:
           python-version: '3.9'
       
       - name: Install Script Run
-        uses: suisei-cn/actions-download-file@v1.6
+        uses: suisei-cn/actions-download-file@v1.6.0
         with:
           url: ${{ env.gh }}startupPackage.zip
           target: .
@@ -67,7 +67,7 @@ jobs:
           sudo apt-get install -y libxcb-keysyms1
         
       - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1.6
+        uses: suisei-cn/actions-download-file@v1.6.0
         with:
           url: ${{ env.gh }}startupPackage.zip
           target: .
@@ -93,7 +93,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install Script Install
-        uses: suisei-cn/actions-download-file@v1.6
+        uses: suisei-cn/actions-download-file@v1.6.0
         with:
           url: ${{ env.gh }}startupPackage.zip
           target: .

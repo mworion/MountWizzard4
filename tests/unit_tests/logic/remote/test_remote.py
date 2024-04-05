@@ -35,8 +35,7 @@ def function():
 
 
 def test_startCommunication_1(function):
-    function.tcpServer = QtNetwork.QTcpServer(function)
-    with mock.patch.object(function.tcpServer,
+    with mock.patch.object(QtNetwork.QTcpServer,
                            'isListening',
                            return_value=True):
         suc = function.startCommunication()
@@ -44,8 +43,7 @@ def test_startCommunication_1(function):
 
 
 def test_startCommunication_2(function):
-    function.tcpServer = QtNetwork.QTcpServer(function)
-    with mock.patch.object(function.tcpServer,
+    with mock.patch.object(QtNetwork.QTcpServer,
                            'isListening',
                            return_value=False):
         suc = function.startCommunication()
@@ -53,15 +51,13 @@ def test_startCommunication_2(function):
 
 
 def test_startCommunication_3(function):
-    server = QtNetwork.QTcpServer(function)
     hostAddress = QtNetwork.QHostAddress('localhost')
-    server.listen(hostAddress, 3490)
     suc = function.startCommunication()
     assert not suc
 
 
 def test_stopCommunication_1(function):
-    function.tcpServer = QtNetwork.QTcpServer(function)
+    function.tcpServer = QtNetwork.QTcpServer()
     with mock.patch.object(function.tcpServer,
                            'isListening',
                            return_value=True):

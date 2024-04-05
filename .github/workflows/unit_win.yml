@@ -54,8 +54,7 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c1a.dat
         
-      - name: upload_coverage
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
           overwrite: true

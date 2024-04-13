@@ -89,7 +89,7 @@ jobs:
           name: c2
           path: c2.dat
 
-  run_tests_windows_3a:
+  run_tests_windows_3:
     #
     needs: build_package
     runs-on: windows-latest

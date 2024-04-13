@@ -4,7 +4,7 @@
 name: unit_win
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
+  group: "${{ github.ref }}-${{ github.workflow }}"
   cancel-in-progress: true
 
 env:
@@ -199,42 +199,42 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{env.branch}}
-    
-    - uses: actions/download-artifact@v4
-      with:
-        name: c1
-    - uses: actions/download-artifact@v4
-      with:
-        name: c2
-    - uses: actions/download-artifact@v4
-      with:
-        name: c3
-    - uses: actions/download-artifact@v4
-      with:
-        name: c4
-    - uses: actions/download-artifact@v4
-      with:
-        name: c5
-    - uses: actions/download-artifact@v4
-      with:
-        name: c6
-        
-    - name: combining_data
-      run: |
-        dir
-        python -m pip install coverage
-        python -m coverage combine c1.dat c2.dat c3.dat c4.dat c5.dat c6.dat
-        python -m coverage xml
-
-    - name: upload
-      uses: codecov/codecov-action@v3
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        env_vars: OS,PYTHON
-        override_branch: ${{env.branch}}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{env.branch}}
+      
+      - uses: actions/download-artifact@v4
+        with:
+          name: c1
+      - uses: actions/download-artifact@v4
+        with:
+          name: c2
+      - uses: actions/download-artifact@v4
+        with:
+          name: c3
+      - uses: actions/download-artifact@v4
+        with:
+          name: c4
+      - uses: actions/download-artifact@v4
+        with:
+          name: c5
+      - uses: actions/download-artifact@v4
+        with:
+          name: c6
+          
+      - name: combining_data
+        run: |
+          dir
+          python -m pip install coverage
+          python -m coverage combine c1.dat c2.dat c3.dat c4.dat c5.dat c6.dat
+          python -m coverage xml
+  
+      - name: upload
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          env_vars: OS,PYTHON
+          override_branch: ${{env.branch}}

@@ -32,7 +32,7 @@ jobs:
           ref: ${{env.branch}}
           
       - name: build package
-        uses: .github/actions/build_package
+        uses: ./.github/actions/build_package
 
   run_tests_windows_1:
     #
@@ -45,7 +45,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: .github/actions/setup_test_cov
+        uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -72,7 +72,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: .github/actions/setup_test_cov
+        uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -100,7 +100,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: .github/actions/setup_test_cov
+        uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -127,7 +127,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: .github/actions/setup_test_cov
+        uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -152,7 +152,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: .github/actions/setup_test_cov
+        uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -177,7 +177,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: .github/actions/setup_test_cov
+        uses: ./.github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |

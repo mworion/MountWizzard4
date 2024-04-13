@@ -31,7 +31,7 @@ jobs:
           ref: ${{env.branch}}
           
       - name: build package
-        uses: .github/actions/build_package
+        uses: ./.github/actions/build_package
         
   run_tests_ubuntu_1:
     #
@@ -44,10 +44,10 @@ jobs:
           ref: ${{env.branch}}
     
       - name: install head
-        uses: .github/actions/install_ubuntu_head
+        uses: ./.github/actions/install_ubuntu_head
     
       - name: install package
-        uses: .github/actions/setup_test
+        uses: ./.github/actions/setup_test
 
       - name: running_unit_tests
         run: |
@@ -69,10 +69,10 @@ jobs:
           ref: ${{env.branch}}
     
       - name: install package
-        uses: .github/actions/setup_test
+        uses: ./.github/actions/setup_test
     
       - name: install head
-        uses: .github/actions/install_ubuntu_head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |
@@ -93,10 +93,10 @@ jobs:
           ref: ${{env.branch}}
     
       - name: install package
-        uses: .github/actions/setup_test
+        uses: ./.github/actions/setup_test
     
       - name: install head
-        uses: .github/actions/install_ubuntu_head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |
@@ -114,10 +114,10 @@ jobs:
           ref: ${{env.branch}}
     
       - name: install package
-        uses: .github/actions/setup_test
+        uses: ./.github/actions/setup_test
     
       - name: install head
-        uses: .github/actions/install_ubuntu_head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |
@@ -135,10 +135,10 @@ jobs:
           ref: ${{env.branch}}
     
       - name: install package
-        uses: .github/actions/setup_test
+        uses: ./.github/actions/setup_test
     
       - name: install head
-        uses: .github/actions/install_ubuntu_head
+        uses: ./.github/actions/install_ubuntu_head
   
       - name: running_unit_tests
         run: |

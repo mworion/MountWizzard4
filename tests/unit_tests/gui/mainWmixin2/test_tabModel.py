@@ -11,7 +11,7 @@
 # GUI with PyQT5 for python !
 
 #
-# written in python3, (c) 2019-2023 by mworion
+# written in python3, (c) 2019-2024 by mworion
 # Licence APL2.0
 #
 ###########################################################

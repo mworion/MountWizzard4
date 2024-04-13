@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python3
 #
-# written in python3, (c) 2019-2023 by mworion
+# written in python3, (c) 2019-2024 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -21,8 +21,9 @@ import platform
 releaseNotes = """
 - this is a major release !
 - add: support for python 3.11 and 3.12
-- change: moving PyQt5 to major version 6
+- change: moving PyQt5 to major version PyQt6
 - change: moving libraries to latest versions
+- refactoring environment devices (now 3 generic ones)
 - fix: typos
 """
 

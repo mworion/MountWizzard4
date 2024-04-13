@@ -32,7 +32,7 @@ jobs:
           ref: ${{env.branch}}
           
       - name: build package
-        uses: ./.github/actions/build_package
+        uses: .github/actions/build_package
 
   run_tests_windows_1:
     #
@@ -45,7 +45,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/setup_test_cov
+        uses: .github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -55,12 +55,11 @@ jobs:
           
       - name: rename_coveragefile
         run: mv .coverage c1.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact/merge@v4
+
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: './c1.dat'
+          name: c1
+          path: c1.dat
 
   run_tests_windows_2:
     #
@@ -73,7 +72,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/setup_test_cov
+        uses: .github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -85,11 +84,10 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c2.dat
         
-      - name: upload_coverage
-        uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: './c2.dat'
+          name: c2
+          path: c2.dat
 
   run_tests_windows_3a:
     #
@@ -102,47 +100,21 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/setup_test_cov
+        uses: .github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
           pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
           pytest tests/unit_tests/gui/extWindows ${{env.cov}}
-          
-      - name: rename_coveragefile
-        run: mv .coverage c3a.dat
-        
-      - name: upload_coverage
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: coverage
-          path: './c3a.dat'
-
-  run_tests_windows_3b:
-    #
-    needs: build_package
-    runs-on: windows-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test_cov
-  
-      - name: running_unit_tests
-        run: |
           pytest tests/unit_tests/gui/utilities ${{env.cov}}
-          
+         
       - name: rename_coveragefile
-        run: mv .coverage c3b.dat
+        run: mv .coverage c3.dat
         
-      - name: upload_coverage
-        uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: './c3b.dat'
+          name: c3
+          path: c3.dat
 
   run_tests_windows_4:
     #
@@ -155,7 +127,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/setup_test_cov
+        uses: .github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -164,11 +136,10 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c4.dat
         
-      - name: upload_coverage
-        uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: './c4.dat'
+          name: c4
+          path: c4.dat
 
   run_tests_windows_5:
     #
@@ -181,7 +152,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/setup_test_cov
+        uses: .github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -190,11 +161,10 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c5.dat
         
-      - name: upload_coverage
-        uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: './c5.dat'
+          name: c5
+          path: c5.dat
 
   run_tests_windows_6:
     #
@@ -207,7 +177,7 @@ jobs:
           ref: ${{env.branch}}
   
       - name: install package
-        uses: ./.github/actions/setup_test_cov
+        uses: .github/actions/setup_test_cov
   
       - name: running_unit_tests
         run: |
@@ -216,18 +186,16 @@ jobs:
       - name: rename_coveragefile
         run: mv .coverage c6.dat
         
-      - name: upload_coverage
-        uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: './c6.dat'
+          name: c6
+          path: c6.dat
 
   coverage:
     #
     needs: [ run_tests_windows_1, run_tests_windows_2,
-             run_tests_windows_3a, run_tests_windows_3b,
-             run_tests_windows_4, run_tests_windows_5,
-             run_tests_windows_6]
+             run_tests_windows_3, run_tests_windows_4,
+             run_tests_windows_5, run_tests_windows_6]
     runs-on: windows-latest
     
     steps:
@@ -235,17 +203,30 @@ jobs:
       with:
         ref: ${{env.branch}}
     
-    - name: collecting_data
-      uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v4
       with:
-        name: coverage
-        path: '.'
+        name: c1
+    - uses: actions/download-artifact@v4
+      with:
+        name: c2
+    - uses: actions/download-artifact@v4
+      with:
+        name: c3
+    - uses: actions/download-artifact@v4
+      with:
+        name: c4
+    - uses: actions/download-artifact@v4
+      with:
+        name: c5
+    - uses: actions/download-artifact@v4
+      with:
+        name: c6
         
     - name: combining_data
       run: |
         dir
         python -m pip install coverage
-        python -m coverage combine c1.dat c2.dat c3a.dat c3b.dat c4.dat c5.dat c6.dat
+        python -m coverage combine c1.dat c2.dat c3.dat c4.dat c5.dat c6.dat
         python -m coverage xml
 
     - name: upload

@@ -10,7 +10,7 @@
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
 #
-# written in python3, (c) 2019-2023 by mworion
+# written in python3, (c) 2019-2024 by mworion
 # Licence APL2.0
 #
 ###########################################################
@@ -19,9 +19,9 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QObject
-from PyQt5 import QtNetwork
-from PyQt5.QtCore import pyqtSignal
+from PyQt6.QtCore import QObject
+from PyQt6 import QtNetwork
+from PyQt6.QtCore import pyqtSignal
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

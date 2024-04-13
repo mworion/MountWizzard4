@@ -19,6 +19,7 @@ from pathlib import Path
 import platform
 
 releaseNotes = """
+- this is a major release !
 - add: support for python 3.11 and 3.12
 - change: moving PyQt5 to major version 6
 - change: moving libraries to latest versions
@@ -30,7 +31,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='3.3.0a0',
+    version='4.0.0a0',
     packages=[
         'mw4',
         'mw4.base',
@@ -67,30 +68,30 @@ setup(
     ],
     python_requires='>=3.9.0, <3.13',
     install_requires=[
-        'numpy==1.26.3',
+        'numpy==1.26.4',
         'opencv-python-headless==4.9.0.80',
-        'scipy==1.11.4',
-        'astropy==6.0.0',
-        'pyerfa==2.0.1.1',
-        'astroquery==0.4.6',
+        'scipy==1.13.0',
+        'astropy==6.0.1',
+        'pyerfa==2.0.1.4',
+        'astroquery==0.4.7',
         'sep_mw4==1.2.2',
-        'pyqtgraph==0.13.3',
+        'pyqtgraph==0.13.4',
         'qimage2ndarray==1.10.0',
-        'skyfield==1.46',
+        'skyfield==1.48',
         'sgp4==2.23',
         'requests==2.31.0',
         'requests_toolbelt==1.0.0',
-        'importlib_metadata==7.0.1',
-        'python-dateutil==2.8.2',
+        'importlib_metadata==7.1.0',
+        'python-dateutil==2.9.0.post0',
         'wakeonlan==3.1.0',
         'pybase64==1.3.2',
         'websocket-client==1.7.0',
         'hidapi==0.14.0',
         'range-key-dict==1.1.0',
         'ndicts==0.3.0',
-        'packaging==23.2',
+        'packaging==24.0',
         'lz4==4.3.3',
-        'xisf==0.9.3',
+        'xisf==0.9.5',
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])

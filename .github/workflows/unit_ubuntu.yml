@@ -51,12 +51,12 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          run pytest tests/unit_tests/base
-          run pytest tests/unit_tests/logic
-          run pytest tests/unit_tests/mountcontrol
-          run pytest tests/unit_tests/indibase
-          run pytest tests/unit_tests/gui/utilities
-          run pytest tests/unit_tests/gui/extWindows
+          xvfb-run pytest tests/unit_tests/base
+          xvfb-run pytest tests/unit_tests/logic
+          xvfb-run pytest tests/unit_tests/mountcontrol
+          xvfb-run pytest tests/unit_tests/indibase
+          xvfb-run pytest tests/unit_tests/gui/utilities
+          xvfb-run pytest tests/unit_tests/gui/extWindows
         
   run_tests_ubuntu_2:
     #

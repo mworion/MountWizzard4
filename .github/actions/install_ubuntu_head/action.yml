@@ -20,3 +20,4 @@ runs:
       
     - name: install #3
       run: sudo apt-get install libpulse-dev
+      shell: bash

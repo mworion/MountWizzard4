@@ -658,10 +658,11 @@ class Mount(mountcontrol.mount.Mount):
         self.calcTrajectory(replay=sim)
         return True
 
-    def workerProgTrajectory(self, alt=None, az=None):
+    def workerProgTrajectory(self, alt=None, az=None, sim=False):
         """
         :param alt:
         :param az:
+        :param sim:
         :return:
         """
         factor = int(len(alt) / 32)
@@ -675,13 +676,14 @@ class Mount(mountcontrol.mount.Mount):
             self.satellite.progTrajectory(alt=altitude, az=azimuth)
             self.signals.trajectoryProgress.emit(min((i + 1) / chunks * 100, 100))
         self.signals.trajectoryProgress.emit(100)
-        return True
+        return sim
 
-    def progTrajectory(self, start, alt=None, az=None):
+    def progTrajectory(self, start, alt=None, az=None, sim=False):
         """
         :param start:
         :param alt:
         :param az:
+        :param sim:
         :return:
         """
         if not self.mountUp:
@@ -689,7 +691,7 @@ class Mount(mountcontrol.mount.Mount):
 
         self.satellite.startProgTrajectory(julD=start)
 
-        worker = Worker(self.workerProgTrajectory, alt=alt, az=az)
+        worker = Worker(self.workerProgTrajectory, alt=alt, az=az, sim=sim)
         worker.signals.result.connect(self.clearProgTrajectory)
         worker.signals.error.connect(self.errorProgTrajectory)
         self.threadPool.start(worker)

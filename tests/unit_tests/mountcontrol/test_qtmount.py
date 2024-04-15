@@ -558,6 +558,15 @@ def test_workerProgTrajectory_2(function):
     with mock.patch.object(function.satellite,
                            'progTrajectory'):
         suc = function.workerProgTrajectory(alt, az)
+        assert not suc
+
+
+def test_workerProgTrajectory_3(function):
+    alt = [10, 20, 30]
+    az = [10, 20, 30]
+    with mock.patch.object(function.satellite,
+                           'progTrajectory'):
+        suc = function.workerProgTrajectory(alt, az, True)
         assert suc
 
 

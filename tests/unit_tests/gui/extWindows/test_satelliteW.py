@@ -182,8 +182,20 @@ def test_updatePositions_7(function):
             assert suc
 
 
-def test_unlinkWrap(function):
+def test_unlinkWrap_1(function):
     data = [1, 2, 3, 170, 180, -180, -100, 3, 4]
+    for slc in function.unlinkWrap(data):
+        a = slc
+
+
+def test_unlinkWrap_2(function):
+    data = None
+    for slc in function.unlinkWrap(data):
+        a = slc
+
+
+def test_unlinkWrap_3(function):
+    data = []
     for slc in function.unlinkWrap(data):
         a = slc
 

@@ -105,8 +105,8 @@ def redirectSTD():
     :return:
     """
     # transfer all sys outputs to logging
-    # sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
-    # sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
+    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
+    sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
     return True
 
 
@@ -121,7 +121,7 @@ def setupLogging(redirect=True):
         os.mkdir('./log')
 
     logging.Formatter.converter = time.gmtime
-    timeTag = datetime.datetime.now(datetime.UTC).strftime('%Y-%m-%d')
+    timeTag = datetime.datetime.utcnow().strftime('%Y-%m-%d')
     logFile = f'./log/mw4-{timeTag}.log'
     logHandler = RotatingFileHandler(logFile, mode='a', maxBytes=100 * 1024 * 1024,
                                      backupCount=100, encoding=None, delay=False)

@@ -409,7 +409,7 @@ def minimizeStartTerminal():
     """
     if platform.system() == 'Windows':
         import ctypes
-        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
+        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
 def main():
@@ -457,3 +457,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    minimizeStartTerminal()

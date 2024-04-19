@@ -21,10 +21,6 @@ import sys
 from queue import Queue
 
 # external packages
-from base.packageConfig import checkAutomation
-if checkAutomation():
-    from logic.automation.automateWindows import AutomateWindows
-
 from PyQt6.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
 from skyfield.api import wgs84
 from importlib_metadata import version
@@ -179,7 +175,6 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.plateSolve = PlateSolve(self)
-        self.automation = self.checkAndSetAutomation()
 
         self.uiWindows = {}
         self.mainW = MainWindow(self)
@@ -197,29 +192,6 @@ class MountWizzard4(QObject):
 
         if len(sys.argv) > 1:
             self.messageQueue.put((1, 'System', 'Arguments', sys.argv[1]))
-
-    def checkAndSetAutomation(self):
-        """
-        the windows' automation with pywinauto has a serious bug in python lib.
-        the bugfix is done from python 3.8.2 onwards. so to enable this work,
-        we have to check the python version used and set the topic adequately.
-        unfortunately from python 3.12, pywinauto is not supported anymore.
-
-        :return:
-        """
-        if not checkAutomation():
-            return None
-
-        automation = AutomateWindows(self)
-        if automation.updaterApp != '':
-            path = automation.installPath
-            app = automation.updaterApp
-            t = f'{path}{app}'
-            self.messageQueue.put((1, 'System', '10micron updater', t))
-        else:
-            self.messageQueue.put((2, 'System', '10micron updater',
-                                  'Not available !'))
-        return automation
 
     def storeStatusOperationRunning(self, status):
         """

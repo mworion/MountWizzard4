@@ -21,8 +21,10 @@ import platform
 releaseNotes = """
 - this is a major release !
 - add: support for python 3.11 and 3.12
+- add: support automation with 10micron webservices
 - change: moving PyQt5 to major version PyQt6
 - change: moving libraries to latest versions
+- change: remove old windows automation
 - refactoring environment devices (now 3 generic ones)
 - fix: typos
 """
@@ -46,7 +48,6 @@ setup(
         'mw4.gui.mainWindow',
         'mw4.gui.utilities',
         'mw4.gui.widgets',
-        'mw4.logic.automation',
         'mw4.logic.camera',
         'mw4.logic.cover',
         'mw4.logic.databaseProcessing',
@@ -94,8 +95,6 @@ setup(
         'lz4==4.3.3',
         'xisf==0.9.5',
     ]
-    + (['pywin32==306'] if platform.system() == "Windows" else [])
-    + (['pywinauto==0.6.8'] if platform.system() == "Windows" else [])
     + (['PyQt6==6.6.1'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt6-3D==6.6.0'] if platform.machine() not in ['armv7l',
                                                          'aarch64'] else []),

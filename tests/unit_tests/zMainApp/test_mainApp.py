@@ -27,9 +27,6 @@ from PyQt6.QtCore import QTimer, QBasicTimer, QCoreApplication
 from PyQt6.QtWidgets import QWidget
 
 # local import
-from base.packageConfig import checkAutomation
-if checkAutomation():
-    from logic.automation.automateWindows import AutomateWindows
 from mainApp import MountWizzard4
 from base.loggerMW import setupLogging
 import resource.resources as res
@@ -75,40 +72,6 @@ def module_setup_teardown_func(app):
     if os.path.isfile('tests/workDir/config/profile'):
         os.remove('tests/workDir/config/profile')
     yield
-
-
-def test_checkAndSetAutomation_1(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        val = app.checkAndSetAutomation()
-        assert val is None
-
-
-@pytest.mark.skipif(platform.system() != 'Windows',
-                    reason="requires windows")
-def test_checkAndSetAutomation_2(app):
-    with mock.patch.object(AutomateWindows,
-                           'findAppSetup',
-                           return_value=(False, '', '', '')):
-        with mock.patch.object(platform,
-                               'system',
-                               return_value='Windows'):
-            val = app.checkAndSetAutomation()
-            assert val is not None
-
-
-@pytest.mark.skipif(platform.system() != 'Windows',
-                    reason="requires windows")
-def test_checkAndSetAutomation_3(app):
-    with mock.patch.object(AutomateWindows,
-                           'findAppSetup',
-                           return_value=(True, '', '', 'Test')):
-        with mock.patch.object(platform,
-                               'system',
-                               return_value='Windows'):
-            val = app.checkAndSetAutomation()
-            assert val is not None
 
 
 def test_storeStatusOperationRunning(app):

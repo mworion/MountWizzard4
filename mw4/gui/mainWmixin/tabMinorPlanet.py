@@ -67,12 +67,6 @@ class MinorPlanet:
         config = self.app.config['mainW']
         self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
         self.setupMinorPlanetSourceURLsDropDown()
-        if not self.app.automation:
-            self.installPath = self.app.mwGlob['dataDir']
-        elif self.app.automation.installPath:
-            self.installPath = self.app.automation.installPath
-        else:
-            self.installPath = self.app.mwGlob['dataDir']
         return True
 
     def storeConfig(self):

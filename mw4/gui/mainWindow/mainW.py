@@ -58,7 +58,6 @@ from gui.mainWmixin.tabSat_Track import SatTrack
 from gui.mainWmixin.tabMinorPlanet import MinorPlanet
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools_Rename import Rename
-from gui.mainWmixin.tabTools_IERSTime import IERSTime
 from gui.mainWmixin.tabAnalysis import Analysis
 from gui.mainWmixin.tabPower import Power
 from gui.mainWmixin.tabSett_Device import SettDevice
@@ -89,7 +88,6 @@ class MainWindow(
     Relay,
     Power,
     Rename,
-    IERSTime,
     Analysis,
     SettDevice,
     SettMount,
@@ -416,8 +414,6 @@ class MainWindow(
         self.wIcon(self.ui.progMinorPlanetsFull, 'run')
         self.wIcon(self.ui.progMinorPlanetsFiltered, 'run')
         self.wIcon(self.ui.progMinorPlanetsSelected, 'run')
-        self.wIcon(self.ui.progEarthRotationData, 'run')
-        self.wIcon(self.ui.downloadIERS, 'run')
 
         # satellite
         self.wIcon(self.ui.stopSatelliteTracking, 'cross-circle')

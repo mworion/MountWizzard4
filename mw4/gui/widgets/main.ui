@@ -20480,98 +20480,6 @@ Next point in time when satellite settles.</string>
      <property name="movable">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="timeTables">
-      <attribute name="title">
-       <string>IERS Time</string>
-      </attribute>
-      <widget class="QGroupBox" name="groupBox_36">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>10</y>
-         <width>371</width>
-         <height>136</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Earth rotation data</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QPushButton" name="downloadIERS">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>60</y>
-          <width>351</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Downloads new databases from IERS service finals2000a.all to update the buildin ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Download IERS data</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="progEarthRotationData">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>351</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals.data and the actual tai-utc.dat. it downloads the data first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Download IERS data and program to mount</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="iersSource">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>100</y>
-          <width>271</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the minor planets database from where the minor planet list should be loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_296">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>100</y>
-          <width>81</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Source URL:</string>
-        </property>
-       </widget>
-      </widget>
-     </widget>
      <widget class="QWidget" name="FileRenaming">
       <attribute name="title">
        <string>File Renaming</string>
@@ -30788,119 +30696,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <attribute name="title">
        <string>User Interface</string>
       </attribute>
-      <widget class="QGroupBox" name="automateGroup">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>340</y>
-         <width>366</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="title">
-        <string>Windows automation</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_98">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>76</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Timings:</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="automateSlow">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>20</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Slow</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="automateFast">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Minimum logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Fast</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="automateNormal">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>20</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
-        </property>
-        <property name="text">
-         <string>Normal</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="GroupGuiAddOns">
        <property name="geometry">
         <rect>
@@ -33083,7 +32878,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>moveCoordinateRa</tabstop>
   <tabstop>tabDomeExplain</tabstop>
   <tabstop>moveCoordinateDec</tabstop>
-  <tabstop>automateNormal</tabstop>
   <tabstop>moveCoordinateDecFloat</tabstop>
   <tabstop>moveCoordinateRaFloat</tabstop>
   <tabstop>moveRaDecAbsolute</tabstop>
@@ -33319,8 +33113,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>renameInputSelect</tabstop>
   <tabstop>newObjectName</tabstop>
   <tabstop>rename1</tabstop>
-  <tabstop>automateSlow</tabstop>
-  <tabstop>automateFast</tabstop>
   <tabstop>rename2</tabstop>
   <tabstop>rename3</tabstop>
   <tabstop>rename4</tabstop>

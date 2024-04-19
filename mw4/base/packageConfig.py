@@ -15,7 +15,6 @@
 #
 ###########################################################
 import platform
-from packaging.utils import Version
 
 excludedPlatforms = ['armv7l', 'aarch64']
 isAvailable = platform.machine() not in excludedPlatforms

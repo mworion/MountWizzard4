@@ -33,7 +33,6 @@ import webbrowser
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
-from base.packageConfig import checkAutomation
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 
@@ -87,9 +86,6 @@ class SettMisc(object):
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
-        self.ui.automateSlow.clicked.connect(self.setAutomationSpeed)
-        self.ui.automateFast.clicked.connect(self.setAutomationSpeed)
-        self.ui.automateNormal.clicked.connect(self.setAutomationSpeed)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setSeeingOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
@@ -132,9 +128,6 @@ class SettMisc(object):
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.ui.tabsMovable.setChecked(config.get('tabsMovable', False))
         self.ui.resetTabOrder.setChecked(config.get('resetTabOrder', False))
-        self.ui.automateFast.setChecked(config.get('automateFast', False))
-        self.ui.automateNormal.setChecked(config.get('automateSlow', True))
-        self.ui.automateSlow.setChecked(config.get('automateSlow', True))
         self.ui.unitTimeUTC.setChecked(config.get('unitTimeUTC', True))
         self.ui.unitTimeLocal.setChecked(config.get('unitTimeLocal', False))
         self.ui.addProfileGroup.setChecked(config.get('addProfileGroup', False))
@@ -168,10 +161,8 @@ class SettMisc(object):
             'gameControllerList', 0))
 
         isWindows = platform.system() == 'Windows'
-        self.ui.automateGroup.setVisible(isWindows)
         self.minimizeGUI()
         self.populateGameControllerList()
-        self.setAutomationSpeed()
         self.setWeatherOnline()
         self.setSeeingOnline()
         self.setupIERS()
@@ -188,9 +179,6 @@ class SettMisc(object):
         config['loglevelTrace'] = self.ui.loglevelTrace.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
-        config['automateFast'] = self.ui.automateFast.isChecked()
-        config['automateNormal'] = self.ui.automateNormal.isChecked()
-        config['automateSlow'] = self.ui.automateSlow.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['tabsMovable'] = self.ui.tabsMovable.isChecked()
         config['resetTabOrder'] = self.ui.resetTabOrder.isChecked()
@@ -672,17 +660,6 @@ class SettMisc(object):
 
         else:
             return False
-
-    def setAutomationSpeed(self):
-        """
-        :return:
-        """
-        if not checkAutomation():
-            return False
-
-        self.app.automation.automateFast = self.ui.automateFast.isChecked()
-        self.app.automation.automateSlow = self.ui.automateSlow.isChecked()
-        return True
 
     def openPDF(self):
         """

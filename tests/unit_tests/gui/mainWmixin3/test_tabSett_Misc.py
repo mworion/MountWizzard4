@@ -808,24 +808,6 @@ def test_playSound_3(function):
         assert not suc
 
 
-@pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_setAutomationSpeed_1(function):
-    with mock.patch.object(gui.mainWmixin.tabSett_Misc,
-                           'checkAutomation',
-                           return_value=False):
-        suc = function.setAutomationSpeed()
-        assert not suc
-
-
-@pytest.mark.skipif(platform.system() != 'Windows', reason="need windows")
-def test_setAutomationSpeed_2(function):
-    with mock.patch.object(gui.mainWmixin.tabSett_Misc,
-                           'checkAutomation',
-                           return_value=True):
-        suc = function.setAutomationSpeed()
-        assert suc
-
-
 def test_openPDF_1(function):
     with mock.patch.object(webbrowser,
                            'open',

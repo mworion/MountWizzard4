@@ -143,13 +143,6 @@ class SatSearch(object):
         self.ui.satIsUp.setChecked(config.get('satIsUp', False))
         self.ui.satUpTimeWindow.setValue(config.get('satUpTimeWindow', 2))
         self.ui.satAltitudeMin.setValue(config.get('satAltitudeMin', 30))
-
-        if not self.app.automation:
-            self.installPath = self.app.mwGlob['dataDir']
-        elif self.app.automation.installPath:
-            self.installPath = self.app.automation.installPath
-        else:
-            self.installPath = self.app.mwGlob['dataDir']
         return True
 
     def storeConfig(self):

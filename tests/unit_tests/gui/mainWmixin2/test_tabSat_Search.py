@@ -65,33 +65,8 @@ def test_sources(function):
 
 
 def test_initConfig_1(function):
-    class Test:
-        installPath = ''
-
-    temp = function.app.automation
-    function.app.automation = Test()
     suc = function.initConfig()
     assert suc
-    assert function.installPath == 'tests/workDir/data'
-    function.app.automation = temp
-
-
-def test_initConfig_2(function):
-    temp = function.app.automation
-    function.app.automation = None
-    suc = function.initConfig()
-    assert suc
-    assert function.installPath == 'tests/workDir/data'
-    function.app.automation = temp
-
-
-def test_initConfig_3(function):
-    temp = function.app.automation.installPath
-    function.app.automation.installPath = 'test'
-    suc = function.initConfig()
-    assert suc
-    assert function.installPath == 'test'
-    function.app.automation.installPath = temp
 
 
 def test_storeConfig_1(function):

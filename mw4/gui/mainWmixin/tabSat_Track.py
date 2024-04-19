@@ -94,13 +94,6 @@ class SatTrack(object):
         self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
         self.ui.avoidHorizon.setChecked(config.get('avoidHorizon', False))
         self.ui.trackingSim.setChecked(config.get('trackingSim', False))
-
-        if not self.app.automation:
-            self.installPath = self.app.mwGlob['dataDir']
-        elif self.app.automation.installPath:
-            self.installPath = self.app.automation.installPath
-        else:
-            self.installPath = self.app.mwGlob['dataDir']
         self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
         return True
 

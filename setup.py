@@ -25,6 +25,7 @@ releaseNotes = """
 - change: moving PyQt5 to major version PyQt6
 - change: moving libraries to latest versions
 - change: remove old windows automation
+- change: remove embedded documentation and replace with online link
 - refactoring environment devices (now 3 generic ones)
 - fix: typos
 """

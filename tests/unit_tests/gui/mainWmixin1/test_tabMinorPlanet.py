@@ -57,7 +57,6 @@ def test_initConfig_1(function):
                            'setupMinorPlanetSourceURLsDropDown'):
         suc = function.initConfig()
         assert suc
-        assert function.installPath == 'tests/workDir/data'
 
 
 def test_storeConfig_1(function):

@@ -35,7 +35,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a1',
+    version='4.0.0a2',
     packages=[
         'mw4',
         'mw4.base',
@@ -96,9 +96,10 @@ setup(
         'lz4==4.3.3',
         'xisf==0.9.5',
     ]
-    + (['PyQt6==6.6.1'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt6-3D==6.6.0'] if platform.machine() not in ['armv7l',
-                                                         'aarch64'] else []),
+    + (['pywin32==306'] if platform.system() == "Windows" else [])
+    + (['PyQt5==6.6.1'] if platform.machine() not in ['armv7l'] else [])
+    + (['PyQt3D==6.6.0'] if platform.machine() not in ['armv7l',
+                                                       'aarch64'] else []),
     keywords=['6.6.1'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

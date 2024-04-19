@@ -665,9 +665,7 @@ class SettMisc(object):
         """
         :return:
         """
-        fileName = './data/mountwizzard4.pdf'
-        filePath = os.path.abspath(fileName)
-        url = f'file://{filePath}'
+        url = 'https://mworion.github.io/MountWizzard4/'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Setting Misc', 'Browser failed')
         else:

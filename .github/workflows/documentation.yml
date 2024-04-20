@@ -30,17 +30,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
+      
+      - name: drawio
+        run: |
+          sudo apt update
+          sudo apt install snapd
+          sudo snap install drawio
+      
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme alabaster rst2pdf sphinx-copybutton
           pip install sphinxcontrib-drawio
+      
       - name: Sphinx build
         run: |
           sphinx-build doc doc/build
+      
       - name: check files
         run: |
           ls -la
           ls -la doc/build
+      
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.event_name == 'push'}}

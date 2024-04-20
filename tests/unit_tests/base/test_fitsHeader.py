@@ -22,7 +22,7 @@ import pytest
 # local import
 from base.loggerMW import setupLogging
 from base.fitsHeader import getCoordinates, getSQM, getExposure, getScale
-from base.fitsHeader import getCoordinatesWCS
+from base.fitsHeader import getCoordinatesWCS, calcAngleScaleFromWCS
 setupLogging()
 
 
@@ -201,3 +201,16 @@ def test_getScale_5():
     }
     scale = getScale(header=header)
     assert scale is None
+
+
+def test_calcAngleScaleFromWCS_1():
+    header = {
+        'CD1_1': 0.0002777777777777778,
+        'CD1_2': 0,
+        'CD2_1': 0,
+        'CD2_2': -0.0002777777777777778,
+    }
+    angle, scale, mirrored = calcAngleScaleFromWCS(wcsHeader=header)
+    assert angle == 0
+    assert scale == 1
+    assert mirrored

@@ -10,7 +10,7 @@ local sidereal time (LST) is used. In this case MW4 just stores the value and fe
 it back when the model is programmed. That's the reason why you should not change
 time during model run.
 
-.. image:: image/time.png
+.. image:: image/time.drawio
     :align: center
 
 One important difference between MW4 and Mount exists. As I use skyfield as on of

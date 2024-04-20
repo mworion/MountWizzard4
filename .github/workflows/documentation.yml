@@ -33,6 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme alabaster rst2pdf sphinx-copybutton
+          pip install sphinxcontrib-drawio
       - name: Sphinx build
         run: |
           sphinx-build doc doc/build

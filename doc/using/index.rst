@@ -7,7 +7,6 @@ Using functions
     almanac/index
     environment/index
     buildpoints/index
-    iers/index
     minorplanets/index
     modeling/index
     satellite/index

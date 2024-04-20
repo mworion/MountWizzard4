@@ -12,7 +12,7 @@ time during model run.
 
 .. drawio-image:: image/time.drawio
     :align: center
-    :export-scale: 100
+    :export-scale: 71
 
 One important difference between MW4 and Mount exists. As I use skyfield as on of
 the frameworks with it's units for Angle, Coords, Time etc. I have to take the

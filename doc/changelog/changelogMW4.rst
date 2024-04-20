@@ -1,7 +1,5 @@
 Beta versions of MW4
 --------------------
-Version 4.0
-^^^^^^^^^^^
 4.0.0b0
 
 - add: support for python 3.11 and 3.12
@@ -9,8 +7,6 @@ Version 4.0
 - change: moving libraries to latest versions
 - fix: typos
 
-Version 3.0
-^^^^^^^^^^^
 3.2.6
 
 - add: support for INDI Pegasus Uranus Meteo sensor

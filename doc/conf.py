@@ -36,7 +36,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'MountWizzard4'
-copyright = '2023, mworion'
+copyright = '2024, mworion'
 author = 'Michael Würtenberger'
 
 # The full version, including alpha/beta/rc tags
@@ -49,11 +49,9 @@ master_doc = 'index'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['rst2pdf.pdfbuilder', 'sphinx.ext.autosectionlabel',
-              'sphinx.ext.githubpages', 'sphinxcontrib.drawio']
-
-# drawio_binary_path = '/Applications/draw.io.app/Contents/MacOS/draw.io'
-# diagrams_exporter_path = './'
+extensions = ['sphinx.ext.autosectionlabel',
+              'sphinx.ext.githubpages', 'sphinxcontrib.drawio',
+              'sphinx_simplepdf']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -77,9 +75,6 @@ html_static_path = ['_static']
 
 pdf_documents = [('index', u'MountWizzard4', u'MountWizzard4', u'mworion')]
 # index - master document
-# rst2pdf - name of the generated pdf
-# Sample rst2pdf doc - title of the pdf
-# Your Name - author name in the pdf
 
 html_theme_options = {
     'logo': 'mw4.png',
@@ -91,10 +86,17 @@ html_theme_options = {
     'base_text': '#FFFFFFFF',
     'body_bg': '#FFFFFFFF',
 }
-
-latex_logo = '_static/mw4.png'
-latex_show_urls = 'inline'
-latex_show_pagerefs = True
-latex_elements = {
-    'papersize': 'a4paper',
+simplepdf_use_weasyprint_api = True
+simplepdf_weasyprint_flags = ['-v']
+simplepdf_vars = {
+    'primary': 'rgb(32, 128, 208)',
+    'primary_opaque': '#186098',
+    'secondary': '#186098',
+    'cover': '#ffffff',
+    'white': '#ffffff',
+    'links': 'rgb(32, 128, 208)',
+    'cover-bg': 'url(mw4.png) no-repeat center',
+    'cover-overlay': 'rgba(32, 128, 208, 0.25)',
+    'top-left-content': 'counter(page)',
+    'bottom-center-content': 'version',
 }

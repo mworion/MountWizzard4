@@ -11,4 +11,4 @@ ethernet connection and two 12 V power supply wires to the telescope.
 
 .. drawio-image:: image/setup.drawio
     :align: center
-    :export-scale: 100
+    :export-scale: 71

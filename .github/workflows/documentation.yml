@@ -31,21 +31,23 @@ jobs:
         with:
           python-version: 3.12
       
-      - name: drawio
+      - name: install drawio package
         run: |
           sudo apt update
           sudo apt install snapd
           sudo snap install drawio
       
-      - name: Install dependencies
+      - name: Install python dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme alabaster rst2pdf sphinx-copybutton
-          pip install sphinxcontrib-drawio
+          pip install sphinx sphinx_rtd_theme alabaster sphinx-copybutton
+          pip install sphinxcontrib-drawio sphinx-simplepdf
       
       - name: Sphinx build
         run: |
-          sphinx-build doc doc/build
-      
+          sphinx-build doc doc/html
+          sphinx-build -M simplepdf doc doc/pdf
+          mv doc/pdf/simplepdf/*.pdf doc/html/
+          
       - name: check files
         run: |
           ls -la
@@ -57,5 +59,5 @@ jobs:
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: doc/build
+          publish_dir: doc/html
           force_orphan: true

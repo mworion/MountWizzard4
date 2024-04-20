@@ -18,7 +18,7 @@ for the user by using the command protocol provided by 10micron.
 
 .. drawio-image:: image/overview.drawio
     :align: center
-    :export-scale: 100
+    :export-scale: 71
 
 The basic idea is that MW4 will try to generate "digital twin" for the mount. All
 parameter changes for the mount will be sent to it and changes of it's state are

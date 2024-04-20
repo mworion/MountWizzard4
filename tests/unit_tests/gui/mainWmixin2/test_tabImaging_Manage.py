@@ -89,6 +89,13 @@ def test_updateOffset_4(function):
     assert suc
 
 
+def test_updateOffset_5(function):
+    function.app.camera.data['CCD_OFFSET.OFFSET'] = 2
+    function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
+    suc = function.updateOffset()
+    assert suc
+
+
 def test_updateGain_1(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = None
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = None
@@ -112,6 +119,13 @@ def test_updateGain_3(function):
 
 def test_updateGain_4(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = -1
+    function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
+    suc = function.updateGain()
+    assert suc
+
+
+def test_updateGain_5(function):
+    function.app.camera.data['CCD_GAIN.GAIN'] = 2
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
     suc = function.updateGain()
     assert suc

@@ -1123,6 +1123,38 @@ def test_openCommandProtocol_2(function):
         assert suc
 
 
+def test_openUpdateTimeDelta_1(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openUpdateTimeDelta()
+        assert suc
+
+
+def test_openUpdateTimeDelta_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openUpdateTimeDelta()
+        assert suc
+
+
+def test_openUpdateFirmware_1(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openUpdateFirmware()
+        assert suc
+
+
+def test_openUpdateFirmware_2(function):
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openUpdateFirmware()
+        assert suc
+
+
 def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
     with mock.patch.object(gui.mainWmixin.tabMount,

@@ -2,9 +2,10 @@ Welcome to MountWizzard4!
 =========================
 MW4 is a general utility for 10micron users for improving the workflow for astronomy
 work. It runs on Windows11, Windows10 (Win7 should be fine, but it will be not
-tested), Mac OSX (beginning from 10.12 to 11.x) including M1 variants if Rosetta is
-used and Linux (Ubuntu from 16.04 to 20.04). If you have some knowledge around
-Raspberry Pi's and other SOC, you might be able to install MW4 on a RPi3+, RPi4.
+tested), Mac OSX (beginning from 10.12 to 14.x) including Mx variants if Rosetta is
+used and Linux (Ubuntu from 16.04 to 22.04). If you have some knowledge around
+Raspberry Pi's and other SOC, you might be able to install MW4 on a RPi3+, RPi4,
+an RPi5.
 
 Before starting
 ---------------
@@ -15,9 +16,9 @@ mounts also support a serial line, please be reminded MW4 does not! Many of the
 features are handled on the mount computer itself and MW4 does the GUI frontend
 for the user by using the command protocol provided by 10micron.
 
-.. image:: image/overview.drawio
+.. drawio-image:: image/overview.drawio
     :align: center
-    :scale: 71%
+    :export-scale: 100
 
 The basic idea is that MW4 will try to generate "digital twin" for the mount. All
 parameter changes for the mount will be sent to it and changes of it's state are
@@ -35,7 +36,7 @@ and in addition Sequence Generator Pro and N.I.N.A. as camera device.
 
 Known limitations
 -----------------
-MW4 does support python 3.8 - 3.10 right now. The reason for that is the
+MW4 does support python 3.9 - 3.12 right now. The reason for that is the
 lack of precompiled packages. Some features are limited to windows as they need
 the original 10micron updater program for execution.
 

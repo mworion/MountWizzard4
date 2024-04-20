@@ -1,24 +1,32 @@
 Beta versions of MW4
 --------------------
+Version 4.0
+^^^^^^^^^^^
+4.0.0b0
 
 - add: support for python 3.11 and 3.12
 - change: moving PyQt5 to major version 6
 - change: moving libraries to latest versions
 - fix: typos
 
-
-Released versions of MW4
-------------------------
 Version 3.0
 ^^^^^^^^^^^
 3.2.6
 
 - add: support for INDI Pegasus Uranus Meteo sensor
+- add: wait time after slew finished before exposing
 - change: writing pointing coordinates to fits header from MW4 now
 - improve: add waiting time for image file save for NINA and SGPro
 - improve: logging for NINA / SGPro controlled cameras
+- improve: gain handling when missing values in camera settings
+- improve: lower the dome radius to 0.8m
 - fix: typos and some minor bugs
 
+Released versions of MW4
+------------------------
+
+Version 3.0
+^^^^^^^^^^^
 3.2.5
 
 - improve: add more information to the log file seeing

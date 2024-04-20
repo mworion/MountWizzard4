@@ -9,5 +9,6 @@ needed for attaching the silver box to the mount.
 All other components are located directly on the telescope, so the is only an
 ethernet connection and two 12 V power supply wires to the telescope.
 
-.. image:: image/setup.png
+.. drawio-image:: image/setup.drawio
     :align: center
+    :export-scale: 100

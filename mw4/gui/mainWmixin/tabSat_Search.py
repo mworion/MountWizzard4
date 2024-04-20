@@ -65,6 +65,7 @@ class SatSearch(object):
         self.satTableBaseValid = False
         self.satTableDynamicValid = False
         self.databaseProcessing = DataWriter(self.app)
+        self.tempDir = self.app.mwGlob['tempDir']
 
         baseUrl = 'http://www.celestrak.org/NORAD/elements/'
         self.satelliteSourceURLs = {
@@ -667,7 +668,7 @@ class SatSearch(object):
         :param satellites:
         :return:
         """
-        suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.mwGlob['tempDir'])
+        suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.tempDir)
         if not suc:
             self.msg.emit(2, 'TLE', 'Data error',
                           'Data could not be exported - stopping')

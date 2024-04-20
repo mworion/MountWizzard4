@@ -35,6 +35,7 @@ class MinorPlanet:
         self.minorPlanets = {}
         self.minorPlanet = None
         self.listMinorPlanetNamesProxy = None
+        self.tempDir = self.app.mwGlob['tempDir']
 
         self.mpcPrefix = 'https://www.minorplanetcenter.net/Extended_Files/'
         self.minorPlanetSourceURLs = {
@@ -196,9 +197,9 @@ class MinorPlanet:
         """
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         if isComet:
-            suc = self.databaseProcessing.writeCometMPC(mpc, self.mwGlob['tempDir'])
+            suc = self.databaseProcessing.writeCometMPC(mpc, self.tempDir)
         else:
-            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.mwGlob['tempDir'])
+            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.tempDir)
 
         if not suc:
             self.msg.emit(2, 'MPC', 'Data',

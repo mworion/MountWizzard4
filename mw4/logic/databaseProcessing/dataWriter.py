@@ -38,35 +38,6 @@ class DataWriter:
         super().__init__()
         self.app = app
 
-    def writeEarthRotationData(self, installPath='', updaterApp=''):
-        """
-        :param installPath:
-        :param updaterApp:
-        :return:
-        """
-        sourceDir = self.app.mwGlob['dataDir'] + '/'
-        destDir = installPath + '/'
-
-        if destDir == sourceDir:
-            return False
-        if not os.path.isfile(sourceDir + 'CDFLeapSeconds.txt'):
-            return False
-        if not os.path.isfile(sourceDir + 'finals.data'):
-            return False
-        if not os.path.isfile(sourceDir + 'tai-utc.dat'):
-            return False
-
-        if updaterApp == 'tenmicron_v2.exe':
-            shutil.copy(os.path.normpath(sourceDir + 'CDFLeapSeconds.txt'),
-                        os.path.normpath(destDir + 'CDFLeapSeconds.txt'))
-        else:
-            shutil.copy(os.path.normpath(sourceDir + 'tai-utc.dat'),
-                        os.path.normpath(destDir + 'tai-utc.dat'))
-
-        shutil.copy(os.path.normpath(sourceDir + 'finals.data'),
-                    os.path.normpath(destDir + 'finals.data'))
-        return True
-
     @staticmethod
     def writeCometMPC(datas=None, installPath=''):
         """

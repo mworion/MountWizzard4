@@ -20,7 +20,7 @@ import platform
 
 releaseNotes = """
 - this is a major release !
-- add: support for python 3.11 and 3.12
+- add: support for python 3.11 and 3.12, remove 3.7 and 3.8
 - add: support automation with 10micron webservices
 - change: moving PyQt5 to major version PyQt6
 - change: moving libraries to latest versions
@@ -99,7 +99,7 @@ setup(
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['PyQt6==6.6.1'] if platform.machine() not in ['armv7l'] else [])
     + (['PyQt6-3D==6.6.0'] if platform.machine() not in ['armv7l',
-                                                       'aarch64'] else []),
+                                                         'aarch64'] else []),
     keywords=['6.6.1'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

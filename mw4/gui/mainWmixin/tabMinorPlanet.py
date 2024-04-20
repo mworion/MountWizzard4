@@ -31,7 +31,6 @@ class MinorPlanet:
     """
 
     def __init__(self):
-        self.installPath = ''
         self.databaseProcessing = DataWriter(self.app)
         self.minorPlanets = {}
         self.minorPlanet = None
@@ -197,9 +196,9 @@ class MinorPlanet:
         """
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         if isComet:
-            suc = self.databaseProcessing.writeCometMPC(mpc, self.installPath)
+            suc = self.databaseProcessing.writeCometMPC(mpc, self.mwGlob['tempDir'])
         else:
-            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.installPath)
+            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.mwGlob['tempDir'])
 
         if not suc:
             self.msg.emit(2, 'MPC', 'Data',
@@ -207,7 +206,7 @@ class MinorPlanet:
             return False
 
         self.msg.emit(0, 'MPC', 'Program', 'Uploading to mount')
-        suc = self.app.automation.uploadMPCData(comets=isComet)
+        # todo uploader
         if not suc:
             self.msg.emit(2, 'MPC', 'Program error',
                           'Uploading error but files available')
@@ -237,21 +236,6 @@ class MinorPlanet:
         """
         source = self.ui.minorPlanetSource.currentText()
         if source.startswith('Please'):
-            return False
-
-        suc = self.checkUpdaterOK()
-        if not suc:
-            return False
-
-        question = '<b>Filtered MPC Data programming</b>'
-        question += '<br><br>The 10micron updater will be used.'
-        question += '<br>Selected source: '
-        question += f'<font color={self.M_BLUE}>{source}</font>'
-        question += '<br>Would you like to start?<br>'
-        question += f'<br><i><font color={self.M_YELLOW}>'
-        question += 'Please wait until updater is closed!</font></i>'
-        suc = self.messageDialog(self, 'Program with 10micron Updater', question)
-        if not suc:
             return False
 
         self.msg.emit(1, 'MPC', 'Program', f'{source}')

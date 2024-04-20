@@ -65,7 +65,6 @@ class SatSearch(object):
         self.satTableBaseValid = False
         self.satTableDynamicValid = False
         self.databaseProcessing = DataWriter(self.app)
-        self.installPath = ''
 
         baseUrl = 'http://www.celestrak.org/NORAD/elements/'
         self.satelliteSourceURLs = {
@@ -668,14 +667,14 @@ class SatSearch(object):
         :param satellites:
         :return:
         """
-        suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.installPath)
+        suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.mwGlob['tempDir'])
         if not suc:
             self.msg.emit(2, 'TLE', 'Data error',
                           'Data could not be exported - stopping')
             return False
 
         self.msg.emit(0, 'TLE', 'Program', 'Uploading to mount')
-        suc = self.app.automation.uploadTLEData()
+        # todo uploader
         if not suc:
             self.msg.emit(2, 'TLE', 'Program error',
                           'Uploading error but files available')
@@ -703,22 +702,7 @@ class SatSearch(object):
         """
         :return:
         """
-        suc = self.checkUpdaterOK()
-        if not suc:
-            return False
-
         source = self.ui.satelliteSource.currentText()
-        question = '<b>Filtered MPC Data programming</b>'
-        question += '<br><br>The 10micron updater will be used.'
-        question += '<br>Selected source: '
-        question += f'<font color={self.M_BLUE}>{source}</font>'
-        question += '<br>Would you like to start?<br>'
-        question += f'<br><i><font color={self.M_YELLOW}>'
-        question += 'Please wait until updater is closed!</font></i>'
-        suc = self.messageDialog(self, 'Program with 10micron Updater', question)
-        if not suc:
-            return False
-
         self.msg.emit(1, 'TLE', 'Program', f'{source}')
         self.msg.emit(1, '', '', 'Exporting TLE data')
         return True

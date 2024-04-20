@@ -40,46 +40,6 @@ def function(qapp):
     yield window
 
 
-def test_writeEarthRotationData_1(function):
-    suc = function.writeEarthRotationData(installPath='tests/workDir/data')
-    assert not suc
-
-
-def test_writeEarthRotationData_2(function):
-    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
-    assert not suc
-
-
-def test_writeEarthRotationData_3(function):
-    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
-    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
-    assert not suc
-
-
-def test_writeEarthRotationData_4(function):
-    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
-    shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
-    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
-    assert not suc
-
-
-def test_writeEarthRotationData_5(function):
-    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
-    shutil.copy('tests/testData/tai-utc.dat', 'tests/workDir/data/tai-utc.dat')
-    shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
-    suc = function.writeEarthRotationData(installPath='tests/workDir/temp',
-                                          updaterApp='tenmicron_v2.exe')
-    assert suc
-
-
-def test_writeEarthRotationData_6(function):
-    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
-    shutil.copy('tests/testData/tai-utc.dat', 'tests/workDir/data/tai-utc.dat')
-    shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
-    suc = function.writeEarthRotationData(installPath='tests/workDir/temp')
-    assert suc
-
-
 def test_writeCometMPC_1(function):
     suc = function.writeCometMPC()
     assert not suc

@@ -78,6 +78,8 @@ class Mount(SlewInterface, MountSett):
         MountSett.__init__(self)
 
         self.ui.mountCommandTable.clicked.connect(self.openCommandProtocol)
+        self.ui.mountUpdateTimeDelta.clicked.connect(self.openUpdateTimeDelta)
+        self.ui.mountUpdateFirmware.clicked.connect(self.openUpdateFirmware)
         self.app.gameABXY.connect(self.changeParkGameController)
         self.app.gameABXY.connect(self.stopGameController)
         self.app.gameABXY.connect(self.changeTrackingGameController)
@@ -707,6 +709,28 @@ class Mount(SlewInterface, MountSett):
         :return:
         """
         url = 'http://' + self.ui.mountHost.text() + '/manuals/command-protocol.pdf'
+        if not webbrowser.open(url, new=0):
+            self.msg.emit(2, 'System', 'Mount', 'Browser failed')
+        else:
+            self.msg.emit(0, 'System', 'Mount', '10micron opened')
+        return True
+
+    def openUpdateTimeDelta(self):
+        """
+        :return:
+        """
+        url = 'http://' + self.ui.mountHost.text() + '/updatetime.html'
+        if not webbrowser.open(url, new=0):
+            self.msg.emit(2, 'System', 'Mount', 'Browser failed')
+        else:
+            self.msg.emit(0, 'System', 'Mount', '10micron opened')
+        return True
+
+    def openUpdateFirmware(self):
+        """
+        :return:
+        """
+        url = 'http://' + self.ui.mountHost.text() + '/updatefirmware.html'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Mount', 'Browser failed')
         else:

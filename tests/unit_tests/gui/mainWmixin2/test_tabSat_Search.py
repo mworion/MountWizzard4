@@ -51,6 +51,7 @@ def function(qapp):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
+            self.mwGlob = {'tempDir': ''}
             SatSearch.__init__(self)
             SatTrack.__init__(self)
 
@@ -853,24 +854,8 @@ def test_progSatellites_2(function):
     with mock.patch.object(function.databaseProcessing,
                            'writeSatelliteTLE',
                            return_value=True):
-        with mock.patch.object(function.app.automation,
-                               'uploadTLEData',
-                               return_value=False):
-            suc = function.progSatellites(raw)
-            assert not suc
-
-
-def test_progSatellites_3(function):
-    raw = 'test'
-
-    with mock.patch.object(function.databaseProcessing,
-                           'writeSatelliteTLE',
-                           return_value=True):
-        with mock.patch.object(function.app.automation,
-                               'uploadTLEData',
-                               return_value=True):
-            suc = function.progSatellites(raw)
-            assert suc
+        suc = function.progSatellites(raw)
+        assert suc
 
 
 def test_satelliteFilter_1(function):
@@ -892,33 +877,7 @@ def test_satelliteGUI_1(function):
                            'checkUpdaterOK',
                            return_value=False):
         suc = function.satelliteGUI()
-        assert not suc
-
-
-def test_satelliteGUI_2(function):
-    with mock.patch.object(function,
-                           'checkUpdaterOK',
-                           return_value=True):
-        with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=False):
-            suc = function.satelliteGUI()
-            assert not suc
-
-
-def test_satelliteGUI_3(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-
-    with mock.patch.object(function,
-                           'checkUpdaterOK',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=True):
-            suc = function.satelliteGUI()
-            assert suc
+        assert suc
 
 
 def test_progSatellitesFiltered_1(function):

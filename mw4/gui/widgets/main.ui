@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>7</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -20568,6 +20568,98 @@ Next point in time when satellite settles.</string>
      <property name="movable">
       <bool>false</bool>
      </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Seite</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_36">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>10</y>
+         <width>371</width>
+         <height>136</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Earth rotation data</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="downloadIERS">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>351</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Downloads new databases from IERS service finals2000a.all to update the buildin ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Download IERS data</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="progEarthRotationData">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>351</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals.data and the actual tai-utc.dat. it downloads the data first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Download IERS data and program to mount</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="iersSource">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>100</y>
+          <width>271</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the minor planets database from where the minor planet list should be loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_296">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Source URL:</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
      <widget class="QWidget" name="FileRenaming">
       <attribute name="title">
        <string>File Renaming</string>

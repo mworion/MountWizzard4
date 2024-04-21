@@ -46,12 +46,13 @@ jobs:
         run: |
           sphinx-build doc doc/html
           sphinx-build -M simplepdf doc doc/pdf
-          mv doc/pdf/simplepdf/*.pdf doc/html/
+          mv doc/pdf/simplepdf/*.pdf doc/html
           
       - name: check files
         run: |
           ls -la
-          ls -la doc/build
+          ls -la doc/pdf
+          ls -la doc/html
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

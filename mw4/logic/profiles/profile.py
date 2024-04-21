@@ -113,17 +113,29 @@ def convertProfileData(data):
     try:
         d['driversData'] = d['mainW', 'driversData']
         del d['mainW']['driversData']
+
         d['driversData', 'plateSolve'] = d['driversData', 'astrometry']
         del d['driversData']['astrometry']
+
         d['driversData', 'plateSolve', 'frameworks', 'watney'] = watney
         d['hemisphereW', 'horizonMaskFileName'] = d['mainW', 'horizonFileName']
         del d['mainW']['horizonFileName']
+
         t = d['driversData', 'directWeather', 'frameworks', 'internal']
         d['driversData', 'directWeather', 'frameworks', 'directWeather'] = t
         del d['driversData']['directWeather']['frameworks']['internal']
+
         d['driversData', 'directWeather', 'frameworks', 'directWeather',
           'deviceName'] = 'On Mount'
         d['version'] = profileVersion
+
+        d['driversData', 'sensor1Weather'] = d['driversData', 'sensorWeather']
+        d['driversData', 'sensor2Weather'] = d['driversData', 'powerWeather']
+        d['driversData', 'sensor3Weather'] = d['driversData', 'skymeter']
+        del d['driversData']['sensorWeather']
+        del d['driversData']['powerWeather']
+        del d['driversData']['skymeter']
+
     except Exception as e:
         log.error(f'Failed conversion, keep old structure: {e}')
     else:

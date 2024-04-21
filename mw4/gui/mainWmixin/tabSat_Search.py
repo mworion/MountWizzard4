@@ -676,7 +676,7 @@ class SatSearch(object):
             return False
 
         self.msg.emit(0, 'TLE', 'Program', 'Uploading to mount')
-        suc = self.databaseProcessing.progDataToMount(dataType=['tle'],
+        suc = self.databaseProcessing.progDataToMount(dataTypes=['tle'],
                                                       dataFilePath=self.tempDir)
         if not suc:
             self.msg.emit(2, 'TLE', 'Program error',

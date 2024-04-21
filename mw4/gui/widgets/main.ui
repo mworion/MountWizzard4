@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -20568,7 +20568,7 @@ Next point in time when satellite settles.</string>
      <property name="movable">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="IERS">
+     <widget class="QWidget" name="timeTables">
       <attribute name="title">
        <string>IERS Time</string>
       </attribute>

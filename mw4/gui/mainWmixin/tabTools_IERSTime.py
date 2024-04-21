@@ -79,7 +79,7 @@ class IERSTime:
         :return: success
         """
         self.msg.emit(1, 'IERS', 'Program', 'Earth rotation data')
-        self.msg.emit(1, '', '', 'finals.data, tai-utc.dat')
+        self.msg.emit(1, '', '', 'finals.data, CDFLeapSeconds.txt')
 
         suc = self.databaseProcessing.writeEarthRotationData(self.tempDir)
         if not suc:

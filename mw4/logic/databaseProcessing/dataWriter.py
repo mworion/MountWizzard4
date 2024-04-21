@@ -400,18 +400,23 @@ class DataWriter:
                 return False
             fullDataFilePath = os.path.join(dataFilePath, dataNames[dataType])
             files[dataType] = (dataNames[dataType], open(fullDataFilePath, 'r'))
+        self.log.debug(f'File: {files} added')
 
         if self.app.mount.host is None:
-            return False
-        baseURL = self.app.mount.host[0]
-        url = f'{baseURL}/bin/uploadst'
-        r = requests.delete(url)
-        if r.status_code != 200:
+            self.log.info('No mount connected')
             return False
 
-        url = f'{baseURL}/bin/upload'
+        baseURL = self.app.mount.host[0]
+        url = f'http://{baseURL}/bin/uploadst'
+        r = requests.delete(url)
+        if r.status_code != 200:
+            self.log.debug(f'Error deleting files: {r.status_code}')
+            return False
+
+        url = f'http://{baseURL}/bin/upload'
         r = requests.post(url, files=files)
         if r.status_code != 202:
+            self.log.debug(f'Error uploading files: {r.status_code}')
             return False
 
         return True

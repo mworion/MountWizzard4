@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  branch: 'refactor_environment'
+  branch: 'main'
   cov: '--cov=mw4/ --cov-append'
 
 on:

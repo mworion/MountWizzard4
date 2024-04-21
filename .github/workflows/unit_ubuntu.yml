@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  branch: 'refactor_environment'
+  branch: 'main'
 
 on:
   push:

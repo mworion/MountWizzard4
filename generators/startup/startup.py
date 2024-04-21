@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.1'
+version = '3.2'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -490,12 +490,21 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
         return loaderPath
 
     isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
-    version = getVersion(isTest, updateBeta, version)
-    isV2 = version < Version('2.100')
-    compatibleV2 = Version(platform.python_version()) < Version('3.10')
+    verMW4 = getVersion(isTest, updateBeta, version)
+    verPy = Version(platform.python_version())
+
+    isV2 = verMW4 < Version('2.100')
+    isV3 = Version('3.100') > verMW4 >= Version('2.0')
+
+    compatibleV2 = verPy < Version('3.10')
+    compatibleV3 = Version('3.8') <= verPy < Version('3.11')
 
     if isV2 and not compatibleV2:
         prt('MountWizzard4 v2.x needs python 3.7-3.9')
+        return ''
+
+    if isV3 and not compatibleV3:
+        prt('MountWizzard4 v3.x needs python 3.8-3.10')
         return ''
 
     if platform.machine() == 'aarch64':
@@ -518,9 +527,7 @@ def checkBaseCompatibility():
     :return:
     """
     compatible = True
-    if sys.version_info < (3, 8) or sys.version_info >= (3, 11):
-        compatible = False
-    elif not hasattr(sys, 'base_prefix'):
+    if not hasattr(sys, 'base_prefix'):
         compatible = False
     if platform.machine() in ['armv7l']:
         compatible = False
@@ -541,6 +548,7 @@ def main(options):
         prt('MountWizzard4 startup - no compatible environment')
         prt('needs python 3.7-3.9 for version 2.x')
         prt('needs python 3.8-3.10 for version 3.x')
+        prt('needs python 3.9-3.12 for version 4.x')
         prt('no support for ARM7')
         prt(f'you are running {platform.python_version()}')
         prt('Closing application')

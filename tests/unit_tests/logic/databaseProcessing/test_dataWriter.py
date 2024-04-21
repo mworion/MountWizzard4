@@ -353,51 +353,51 @@ def test_progDataToMount_2(function):
 
 
 def test_progDataToMount_3(function):
-    class Test_200:
+    class Test200:
         status_code = 404
 
     function.app.mount.host = ('127.0.0.1', 1234)
     with mock.patch.object(requests,
                            'delete',
-                           return_value=Test_200):
+                           return_value=Test200):
         suc = function.progDataToMount(dataType='asteroid',
                                        dataFilePath='tests/workDir/temp')
         assert not suc
 
 
 def test_progDataToMount_4(function):
-    class Test_200:
+    class Test200:
         status_code = 200
 
-    class Test_202:
+    class Test202:
         status_code = 404
 
     function.app.mount.host = ('127.0.0.1', 1234)
     with mock.patch.object(requests,
                            'delete',
-                           return_value=Test_200):
+                           return_value=Test200):
         with mock.patch.object(requests,
                                'post',
-                               return_value=Test_202):
+                               return_value=Test202):
             suc = function.progDataToMount(dataType='asteroid',
                                            dataFilePath='tests/workDir/temp')
             assert not suc
 
 
 def test_progDataToMount_5(function):
-    class Test_200:
+    class Test200:
         status_code = 200
 
-    class Test_202:
+    class Test202:
         status_code = 202
 
     function.app.mount.host = ('127.0.0.1', 1234)
     with mock.patch.object(requests,
                            'delete',
-                           return_value=Test_200):
+                           return_value=Test200):
         with mock.patch.object(requests,
                                'post',
-                               return_value=Test_202):
+                               return_value=Test202):
             suc = function.progDataToMount(dataType='asteroid',
                                            dataFilePath='tests/workDir/temp')
             assert suc

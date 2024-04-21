@@ -669,7 +669,7 @@ class MainWindow(
 
         tabIndex = self.getTabIndex(self.ui.imagingTabWidget, 'reference')
         self.ui.imagingTabWidget.setTabVisible(tabIndex, packageConfig.isReference)
-        tabIndex = self.getTabIndex(self.ui.imagingTabWidget, 'AnalyseFlexure')
+        tabIndex = self.getTabIndex(self.ui.toolsTabWidget, 'AnalyseFlexure')
         self.ui.toolsTabWidget.setTabVisible(tabIndex, packageConfig.isAnalyse)
 
         # redraw tabs only when a change occurred. this is necessary, because

@@ -46,7 +46,6 @@ jobs:
         run: |
           sphinx-build doc doc/html
           sphinx-build -M simplepdf doc doc/pdf
-          rm doc/html/mountwizzard4.pdf
           mv doc/pdf/simplepdf/*.pdf doc/html
           mv doc/pdf/simplepdf/*.pdf doc/html/mountwizzard4.pdf
           

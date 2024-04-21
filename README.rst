@@ -64,11 +64,11 @@ Test coverage:
 
 Commit status:
 ^^^^^^^^^^^^^^
-|COMMITS_WEEK| |COMMITS_MASTER|
+|COMMITS_WEEK| |COMMITS_MAIN|
 
 Changelog:
 
-https://raw.githubusercontent.com/mworion/MountWizzard4/master/docs/source/changelog.rst
+https://raw.githubusercontent.com/mworion/MountWizzard4/main/docs/source/changelog.rst
 
 And there are some videos available for explanation in Youtube channel:
 
@@ -98,20 +98,20 @@ CS Michel
     https://img.shields.io/pypi/pyversions/mountwizzard4.svg
 
 .. |PYTEST macOS| image::
-    https://github.com/mworion/MountWizzard4/workflows/unit_macOS/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/unit_macOS/badge.svg?branch=main
 
 .. |PYTEST Windows| image::
-    https://github.com/mworion/MountWizzard4/workflows/unit_win/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/unit_win/badge.svg?branch=main
 
 .. |PYTEST Ubuntu| image::
-    https://github.com/mworion/MountWizzard4/workflows/unit_ubuntu/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/unit_ubuntu/badge.svg?branch=main
 
 .. |CODECOV| image::
-    https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
+    https://codecov.io/gh/mworion/MountWizzard4/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
 
 .. |CODECOV_CHART| image::
-    https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg
+    https://codecov.io/gh/mworion/MountWizzard4/branch/main/graphs/icicle.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
     :width: 80%
     :align: top
@@ -120,18 +120,18 @@ CS Michel
     https://img.shields.io/github/issues-raw/mworion/mountwizzard4
     :target: https://github.com/mworion/MountWizzard4/issues
 
-.. |COMMITS_MASTER| image::
+.. |COMMITS_MAIN| image::
     https://img.shields.io/github/commits-since/mworion/mountwizzard4/3.1.0
-    :target: https://github.com/mworion/MountWizzard4/commits/master
+    :target: https://github.com/mworion/MountWizzard4/commits/main
 
 .. |COMMITS_WEEK| image::
     https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
 .. |TEST_SCRIPTS_PYPI| image::
-    https://github.com/mworion/MountWizzard4/workflows/test_scripts_pypi/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/test_scripts_pypi/badge.svg?branch=main
 
 .. |TEST_SCRIPTS_PACKAGES| image::
-    https://github.com/mworion/MountWizzard4/workflows/test_scripts_packages/badge.svg?branch=master
+    https://github.com/mworion/MountWizzard4/workflows/test_scripts_packages/badge.svg?branch=main
 
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg

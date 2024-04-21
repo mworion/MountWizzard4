@@ -19,7 +19,7 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - 'mw4/**'
       - 'setup.py'

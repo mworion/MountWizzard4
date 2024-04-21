@@ -424,41 +424,7 @@ def test_macVentura(c):
     printMW('test Ventura install finished\n')
 
 
-@task(pre=[version_doc])
-def make_pdf(c):
-    drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
-    printMW('Generate PDF for distro')
-    for fullFilePath in glob.glob('./doc/**/**.drawio', recursive=True):
-        output = fullFilePath[:-6] + 'png'
-        command = f'{drawio} -x -f png -o {output} {fullFilePath}'
-        runMW(c, command)
-    with c.cd('doc'):
-        runMW(c, 'make latexpdf')
-    printMW('Generation finished\n')
-
-
-@task(pre=[version_doc])
-def make_html(c):
-    drawio = '/Applications/draw.io.app/Contents/MacOS/draw.io'
-    printMW('Generate HTML for distro')
-    for fullFilePath in glob.glob('./doc/**/**.drawio', recursive=True):
-        output = fullFilePath[:-6] + 'png'
-        command = f'{drawio} -x -f png -o {output} {fullFilePath}'
-        runMW(c, command)
-    with c.cd('doc'):
-        runMW(c, 'make html')
-    with c.cd('docs'):
-        runMW(c, 'rm -rf *')
-        runMW(c, 'rm -rf .nojekyll')
-        runMW(c, 'rm -rf .buildinfo')
-    with c.cd('doc/build'):
-        runMW(c, 'mv html/* ../../docs')
-        runMW(c, 'mv html/.nojekyll ../../docs')
-        runMW(c, 'mv html/.buildinfo ../../docs')
-    printMW('Generation finished\n')
-
-
-@task(pre=[make_html, make_pdf, build_resource, build_widgets])
+@task(pre=[build_resource, build_widgets])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):
@@ -472,13 +438,6 @@ def build_mw(c):
 
     printMW('building dist mountwizzard4 finished\n')
     printMW('generating documentation')
-
-
-@task(pre=[make_pdf, make_html])
-def show_doc(c):
-    with c.cd('docs'):
-        runMW(c, 'open ./index.html')
-    runMW(c, 'open ./mw4/resource/data/mountwizzard4.pdf')
 
 
 @task(pre=[version_doc, build_mw])

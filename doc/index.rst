@@ -8,7 +8,8 @@ Raspberry Pi's and other SOC, you might be able to install MW4 on a RPi3+, RPi4,
 an RPi5.
 
 PDF Documentation:
-https://mworion.github.io/MountWizzard4//MountWizzard4.pdf
+
+https://mworion.github.io/MountWizzard4/MountWizzard4.pdf
 
 Before starting
 ---------------

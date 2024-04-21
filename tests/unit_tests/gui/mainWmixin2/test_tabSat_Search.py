@@ -51,7 +51,6 @@ def function(qapp):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            self.mwGlob = {'tempDir': ''}
             SatSearch.__init__(self)
             SatTrack.__init__(self)
 

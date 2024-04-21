@@ -52,23 +52,13 @@ def function(qapp):
 def test_initConfig_1(function):
     suc = function.initConfig()
     assert suc
-    assert function.dataFilePath == 'tests/workDir/data'
+    assert function.tempDir == 'tests/workDir/temp'
 
 
 def test_initConfig_2(function):
-    temp = function.app.automation
-    function.app.automation = None
     suc = function.initConfig()
     assert suc
-    assert function.dataFilePath == 'tests/workDir/data'
-    function.app.automation = temp
-
-
-def test_initConfig_3(function):
-    function.app.automation.dataFilePath = 'test'
-    suc = function.initConfig()
-    assert suc
-    assert function.dataFilePath == 'test'
+    assert function.tempDir == 'tests/workDir/temp'
 
 
 def test_storeConfig_1(function):
@@ -82,42 +72,7 @@ def test_setupIERSSourceURLsDropDown(function):
     assert suc
 
 
-def test_progEarthRotationGUI_1(function):
-    with mock.patch.object(function,
-                           'checkUpdaterOK',
-                           return_value=False):
-        suc = function.progEarthRotationGUI()
-        assert not suc
-
-
-def test_progEarthRotationGUI_2(function):
-    with mock.patch.object(function,
-                           'checkUpdaterOK',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'messageDialog',
-                               return_value=False):
-            suc = function.progEarthRotationGUI()
-            assert not suc
-
-
-def test_progEarthRotationGUI_3(function):
-    with mock.patch.object(function,
-                           'messageDialog',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'checkUpdaterOK',
-                               return_value=True):
-            suc = function.progEarthRotationGUI()
-            assert suc
-
-
 def test_progEarthRotationData_1(function):
-    suc = function.progEarthRotationData()
-    assert not suc
-
-
-def test_progEarthRotationData_2(function):
     with mock.patch.object(function.databaseProcessing,
                            'writeEarthRotationData',
                            return_value=False):
@@ -125,23 +80,23 @@ def test_progEarthRotationData_2(function):
         assert not suc
 
 
-def test_progEarthRotationData_3(function):
+def test_progEarthRotationData_2(function):
     with mock.patch.object(function.databaseProcessing,
                            'writeEarthRotationData',
                            return_value=True):
-        with mock.patch.object(function.app.automation,
-                               'uploadEarthRotationData',
+        with mock.patch.object(function.databaseProcessing,
+                               'progDataToMount',
                                return_value=False):
             suc = function.progEarthRotationData()
             assert not suc
 
 
-def test_progEarthRotationData_4(function):
+def test_progEarthRotationData_3(function):
     with mock.patch.object(function.databaseProcessing,
                            'writeEarthRotationData',
                            return_value=True):
-        with mock.patch.object(function.app.automation,
-                               'uploadEarthRotationData',
+        with mock.patch.object(function.databaseProcessing,
+                               'progDataToMount',
                                return_value=True):
             suc = function.progEarthRotationData()
             assert suc

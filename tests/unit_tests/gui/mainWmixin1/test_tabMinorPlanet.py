@@ -45,7 +45,6 @@ def function(qapp):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            self.mwGlob = {'tempDir': ''}
             MinorPlanet.__init__(self)
 
     window = Mixin()

@@ -135,7 +135,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -20568,9 +20568,9 @@ Next point in time when satellite settles.</string>
      <property name="movable">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="IERS">
       <attribute name="title">
-       <string>Seite</string>
+       <string>IERS Time</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_36">
        <property name="geometry">

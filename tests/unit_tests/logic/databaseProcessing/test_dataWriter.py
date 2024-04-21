@@ -20,6 +20,7 @@ import unittest.mock as mock
 import os
 import json
 import requests
+import shutil
 
 # external packages
 from skyfield.api import EarthSatellite
@@ -38,6 +39,29 @@ def function(qapp):
 
     window = DataWriter(app=App())
     yield window
+
+
+def test_writeEarthRotationData_1(function):
+    suc = function.writeEarthRotationData(dataFilePath='tests/workDir/data')
+    assert not suc
+
+
+def test_writeEarthRotationData_2(function):
+    suc = function.writeEarthRotationData(dataFilePath='tests/workDir/temp')
+    assert not suc
+
+
+def test_writeEarthRotationData_3(function):
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
+    suc = function.writeEarthRotationData(dataFilePath='tests/workDir/temp')
+    assert not suc
+
+
+def test_writeEarthRotationData_4(function):
+    shutil.copy('tests/testData/CDFLeapSeconds.txt', 'tests/workDir/data/CDFLeapSeconds.txt')
+    shutil.copy('tests/testData/finals.data', 'tests/workDir/data/finals.data')
+    suc = function.writeEarthRotationData(dataFilePath='tests/workDir/temp')
+    assert suc
 
 
 def test_writeCometMPC_1(function):
@@ -339,15 +363,9 @@ def t_writeSatelliteTLE_4(function):
     assert tle[2] == refLines[2].strip('\n')
 
 
-def test_progDataToMount_1(function):
-    function.app.mount.host = None
-    suc = function.progDataToMount()
-    assert not suc
-
-
 def test_progDataToMount_2(function):
     function.app.mount.host = None
-    suc = function.progDataToMount(dataType='asteroid',
+    suc = function.progDataToMount(dataTypes=['asteroid'],
                                    dataFilePath='tests/workDir/temp')
     assert not suc
 
@@ -360,7 +378,7 @@ def test_progDataToMount_3(function):
     with mock.patch.object(requests,
                            'delete',
                            return_value=Test200):
-        suc = function.progDataToMount(dataType='asteroid',
+        suc = function.progDataToMount(dataTypes=['asteroid'],
                                        dataFilePath='tests/workDir/temp')
         assert not suc
 
@@ -379,7 +397,7 @@ def test_progDataToMount_4(function):
         with mock.patch.object(requests,
                                'post',
                                return_value=Test202):
-            suc = function.progDataToMount(dataType='asteroid',
+            suc = function.progDataToMount(dataTypes=['asteroid'],
                                            dataFilePath='tests/workDir/temp')
             assert not suc
 
@@ -398,6 +416,25 @@ def test_progDataToMount_5(function):
         with mock.patch.object(requests,
                                'post',
                                return_value=Test202):
-            suc = function.progDataToMount(dataType='asteroid',
+            suc = function.progDataToMount(dataTypes=['asteroid'],
                                            dataFilePath='tests/workDir/temp')
             assert suc
+
+
+def test_progDataToMount_6(function):
+    class Test200:
+        status_code = 200
+
+    class Test202:
+        status_code = 202
+
+    function.app.mount.host = ('127.0.0.1', 1234)
+    with mock.patch.object(requests,
+                           'delete',
+                           return_value=Test200):
+        with mock.patch.object(requests,
+                               'post',
+                               return_value=Test202):
+            suc = function.progDataToMount(dataTypes=['asteroid', 'test'],
+                                           dataFilePath='tests/workDir/temp')
+            assert not suc

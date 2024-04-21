@@ -18,6 +18,7 @@
 import os
 import requests
 import logging
+import shutil
 
 # external packages
 from sgp4.exporter import export_tle
@@ -35,6 +36,27 @@ class DataWriter:
     def __init__(self, app):
         super().__init__()
         self.app = app
+
+    def writeEarthRotationData(self, dataFilePath=''):
+        """
+        :param dataFilePath:
+        :return:
+        """
+        sourceDir = self.app.mwGlob['dataDir'] + '/'
+        destDir = dataFilePath + '/'
+
+        if destDir == sourceDir:
+            return False
+        if not os.path.isfile(sourceDir + 'CDFLeapSeconds.txt'):
+            return False
+        if not os.path.isfile(sourceDir + 'finals.data'):
+            return False
+
+        shutil.copy(os.path.normpath(sourceDir + 'CDFLeapSeconds.txt'),
+                    os.path.normpath(destDir + 'CDFLeapSeconds.txt'))
+        shutil.copy(os.path.normpath(sourceDir + 'finals.data'),
+                    os.path.normpath(destDir + 'finals.data'))
+        return True
 
     @staticmethod
     def writeCometMPC(datas=None, dataFilePath=''):
@@ -360,23 +382,25 @@ class DataWriter:
 
         return True
 
-    def progDataToMount(self, dataType='', dataFilePath=''):
+    def progDataToMount(self, dataTypes=[], dataFilePath=''):
         """
-        :param dataType:
+        :param dataTypes:
         :param dataFilePath:
         :return:
         """
         dataNames = {'comet': 'minorPlanets.mpc',
                      'tle': 'satellites.tle',
-                     'asteroid': 'minorPlanets.mpc'}
+                     'asteroid': 'minorPlanets.mpc',
+                     'leapsec': 'CDFLeapSeconds.txt',
+                     'finalsdata': 'finals.data'}
 
-        if dataType not in dataNames:
-            return False
+        files = {}
+        for dataType in dataTypes:
+            if dataType not in dataNames:
+                return False
+            fullDataFilePath = os.path.join(dataFilePath, dataNames[dataType])
+            files[dataType] = (dataNames[dataType], open(fullDataFilePath, 'r'))
 
-        fullDataFilePath = os.path.join(dataFilePath, dataNames[dataType])
-        files = {
-            dataType: (dataNames[dataType], open(fullDataFilePath, 'r'))
-        }
         if self.app.mount.host is None:
             return False
         baseURL = self.app.mount.host[0]

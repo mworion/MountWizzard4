@@ -22,6 +22,8 @@ releaseNotes = """
 - this is a major release !
 - add: support for python 3.11 and 3.12, remove 3.7 and 3.8
 - add: support automation with 10micron webservices
+- add: support uploading mechanism for databases for macos and linux
+- change: faster and more reliable uploading mechanism for databases
 - change: moving PyQt5 to major version PyQt6
 - change: moving libraries to latest versions
 - change: remove old windows automation

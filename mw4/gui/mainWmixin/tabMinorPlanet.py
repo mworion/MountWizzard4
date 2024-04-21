@@ -211,7 +211,7 @@ class MinorPlanet:
             return False
 
         self.msg.emit(0, 'MPC', 'Program', f'Uploading {dataType} to mount')
-        suc = self.databaseProcessing.progDataToMount(dataType=dataType,
+        suc = self.databaseProcessing.progDataToMount(dataType=[dataType],
                                                       dataFilePath=self.tempDir)
         if not suc:
             self.msg.emit(2, 'MPC', 'Program error',

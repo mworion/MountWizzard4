@@ -68,7 +68,7 @@ Commit status:
 
 Changelog:
 
-https://raw.githubusercontent.com/mworion/MountWizzard4/main/docs/source/changelog.rst
+https://mworion.github.io/MountWizzard4/changelog/index.html
 
 And there are some videos available for explanation in Youtube channel:
 

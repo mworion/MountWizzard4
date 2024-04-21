@@ -7,6 +7,9 @@ used and Linux (Ubuntu from 16.04 to 22.04). If you have some knowledge around
 Raspberry Pi's and other SOC, you might be able to install MW4 on a RPi3+, RPi4,
 an RPi5.
 
+PDF Documentation:
+https://mworion.github.io/MountWizzard4//MountWizzard4.pdf
+
 Before starting
 ---------------
 First let us have a look to the basic architecture: MW4 is an application

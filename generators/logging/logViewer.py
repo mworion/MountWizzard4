@@ -19,18 +19,17 @@ import sys
 import os
 
 # external packages
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
-from PyQt5.QtWidgets import QGridLayout, QPushButton, QFileDialog
-from PyQt5.QtWidgets import QListWidget, QListWidgetItem, QApplication
-from PyQt5.QtWidgets import QAbstractItemView
-from PyQt5.QtCore import QDir, Qt
-from PyQt5.QtGui import QFont
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
+from PyQt6.QtWidgets import QGridLayout, QPushButton, QFileDialog
+from PyQt6.QtWidgets import QListWidget, QListWidgetItem, QApplication
+from PyQt6.QtWidgets import QAbstractItemView
+from PyQt6.QtCore import QDir, Qt
+from PyQt6.QtGui import QFont
 
 
 class QCustomListWidget(QListWidget):
     def __init__(self):
         QListWidget.__init__(self)
-        self.setSizeAdjustPolicy(QListWidget.AdjustToContents)
 
 
 class QCustomListWidgetItem(QListWidgetItem):
@@ -79,8 +78,7 @@ class Categories(QTabWidget):
                                                 Qt.MatchFlag.MatchExactly)
         if len(res) == 0:
             return
-        mode = (QAbstractItemView.ScrollHint.PositionAtCenter |
-                QAbstractItemView.ScrollHint.EnsureVisible)
+        mode = (QAbstractItemView.ScrollHint.PositionAtCenter)
         self.qLists['Full Log'].setCurrentItem(res[0])
         self.qLists['Full Log'].scrollToItem(res[0], mode)
         self.setCurrentIndex(0)
@@ -95,8 +93,7 @@ class Categories(QTabWidget):
         if len(res) == 0:
             return
 
-        mode = (QAbstractItemView.ScrollHint.PositionAtCenter |
-                QAbstractItemView.ScrollHint.EnsureVisible)
+        mode = (QAbstractItemView.ScrollHint.PositionAtCenter)
         qList.setCurrentItem(res[0])
         qList.scrollToItem(res[0], mode)
         self.setCurrentIndex(list(self.qLists.keys()).index(key))
@@ -209,15 +206,15 @@ class Window(QWidget):
 
     def selectFile(self):
         dlg = QFileDialog()
-        dlg.setViewMode(QFileDialog.List)
+        dlg.setViewMode(QFileDialog.ViewMode.List)
         dlg.setModal(True)
-        dlg.setFilter(QDir.Files)
+        dlg.setFilter(QDir.Filter.Files)
         dlg.setWindowTitle('Please select log file for inspection')
         dlg.setNameFilter('log files (*.log)')
         dlg.setDirectory(os.getcwd())
-        dlg.setFileMode(QFileDialog.ExistingFile)
+        dlg.setFileMode(QFileDialog.FileMode.ExistingFiles)
 
-        if not dlg.exec_():
+        if not dlg.exec():
             return
 
         fileName = dlg.selectedFiles()[0]
@@ -266,7 +263,7 @@ def main():
     screen = Window()
     screen.resize(1600, 1000)
     screen.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__ == '__main__':

@@ -28,7 +28,7 @@ from base.loggerMW import setupLogging
 
 setupLogging()
 log = logging.getLogger()
-profileVersion = '4.1'
+profileVersion = '4.2'
 
 
 def replaceKeys(oldDict, keyDict):

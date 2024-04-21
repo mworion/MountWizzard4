@@ -197,17 +197,22 @@ class MinorPlanet:
         """
         isComet = self.ui.minorPlanetSource.currentText().startswith('Comet')
         if isComet:
-            suc = self.databaseProcessing.writeCometMPC(mpc, self.tempDir)
+            dataType = 'comet'
+            suc = self.databaseProcessing.writeCometMPC(mpc,
+                                                        dataFilePath=self.tempDir)
         else:
-            suc = self.databaseProcessing.writeAsteroidMPC(mpc, self.tempDir)
+            dataType = 'asteroid'
+            suc = self.databaseProcessing.writeAsteroidMPC(mpc,
+                                                           dataFilePath=self.tempDir)
 
         if not suc:
             self.msg.emit(2, 'MPC', 'Data',
                           'Data could not be exported - stopping')
             return False
 
-        self.msg.emit(0, 'MPC', 'Program', 'Uploading to mount')
-        # todo uploader
+        self.msg.emit(0, 'MPC', 'Program', f'Uploading {dataType} to mount')
+        suc = self.databaseProcessing.progDataToMount(dataType=dataType,
+                                                      dataFilePath=self.tempDir)
         if not suc:
             self.msg.emit(2, 'MPC', 'Program error',
                           'Uploading error but files available')

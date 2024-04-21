@@ -840,7 +840,6 @@ def test_loadDataFromSourceURLs_3(function):
 
 def test_progSatellites_1(function):
     raw = 'test'
-
     with mock.patch.object(function.databaseProcessing,
                            'writeSatelliteTLE',
                            return_value=False):
@@ -850,12 +849,26 @@ def test_progSatellites_1(function):
 
 def test_progSatellites_2(function):
     raw = 'test'
-
     with mock.patch.object(function.databaseProcessing,
                            'writeSatelliteTLE',
                            return_value=True):
-        suc = function.progSatellites(raw)
-        assert suc
+        with mock.patch.object(function.databaseProcessing,
+                               'progDataToMount',
+                               return_value=False):
+            suc = function.progSatellites(raw)
+            assert not suc
+
+
+def test_progSatellites_3(function):
+    raw = 'test'
+    with mock.patch.object(function.databaseProcessing,
+                           'writeSatelliteTLE',
+                           return_value=True):
+        with mock.patch.object(function.databaseProcessing,
+                               'progDataToMount',
+                               return_value=True):
+            suc = function.progSatellites(raw)
+            assert suc
 
 
 def test_satelliteFilter_1(function):

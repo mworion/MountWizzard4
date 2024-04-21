@@ -262,8 +262,27 @@ def test_progMinorPlanets_3(function):
     with mock.patch.object(function.databaseProcessing,
                            'writeCometMPC',
                            return_value=True):
-        suc = function.progMinorPlanets(raw)
-        assert suc
+        with mock.patch.object(function.databaseProcessing,
+                               'progDataToMount',
+                               return_value=False):
+            suc = function.progMinorPlanets(raw)
+            assert not suc
+
+
+def test_progMinorPlanets_4(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Comet')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    raw = 'test'
+
+    with mock.patch.object(function.databaseProcessing,
+                           'writeCometMPC',
+                           return_value=True):
+        with mock.patch.object(function.databaseProcessing,
+                               'progDataToMount',
+                               return_value=True):
+            suc = function.progMinorPlanets(raw)
+            assert suc
 
 
 def test_mpcFilter_1(function):
@@ -280,6 +299,14 @@ def test_mpcGUI_1(function):
     function.ui.minorPlanetSource.setCurrentIndex(0)
     suc = function.mpcGUI()
     assert not suc
+
+
+def test_mpcGUI_2(function):
+    function.ui.minorPlanetSource.clear()
+    function.ui.minorPlanetSource.addItem('Test')
+    function.ui.minorPlanetSource.setCurrentIndex(0)
+    suc = function.mpcGUI()
+    assert suc
 
 
 def test_progMinorPlanetsSelected_1(function):

@@ -19,7 +19,7 @@ import pytest
 import unittest.mock as mock
 import os
 import json
-import shutil
+import requests
 
 # external packages
 from skyfield.api import EarthSatellite
@@ -48,14 +48,14 @@ def test_writeCometMPC_1(function):
 def test_writeCometMPC_2(function):
     data = {'test': 'test'}
 
-    suc = function.writeCometMPC(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeCometMPC(datas=data, dataFilePath='tests/workDir/temp')
     assert not suc
 
 
 def test_writeCometMPC_3(function):
     data = [{'test': 'test'}]
 
-    suc = function.writeCometMPC(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeCometMPC(datas=data, dataFilePath='tests/workDir/temp')
     assert suc
     assert os.path.isfile('tests/workDir/temp/minorPlanets.mpc')
 
@@ -66,7 +66,7 @@ def test_writeCometMPC_4(function):
 
     testData = [data[0]]
 
-    suc = function.writeCometMPC(datas=testData, installPath='tests/workDir/temp')
+    suc = function.writeCometMPC(datas=testData, dataFilePath='tests/workDir/temp')
     assert suc
 
 
@@ -76,7 +76,7 @@ def test_writeCometMPC_5(function):
 
     testData = [data[0]]
 
-    suc = function.writeCometMPC(datas=testData, installPath='tests/workDir/temp')
+    suc = function.writeCometMPC(datas=testData, dataFilePath='tests/workDir/temp')
     assert suc
 
     with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
@@ -194,14 +194,14 @@ def test_writeAsteroidMPC_1(function):
 def test_writeAsteroidMPC_2(function):
     data = {'Principal_desig': '2016 NU22'}
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
     assert not suc
 
 
 def test_writeAsteroidMPC_3(function):
     data = [{}]
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
     assert suc
     assert os.path.isfile('tests/workDir/temp/minorPlanets.mpc')
 
@@ -212,7 +212,7 @@ def test_writeAsteroidMPC_4(function):
 
     testData = [data[0]]
 
-    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/workDir/temp')
+    suc = function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
     assert suc
 
 
@@ -222,7 +222,7 @@ def test_writeAsteroidMPC_5(function):
 
     testData = [data[0]]
 
-    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/workDir/temp')
+    suc = function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
     assert suc
 
     with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
@@ -238,7 +238,7 @@ def test_writeAsteroidMPC_6(function):
     with open('tests/testData/mpc_asteroid_test.json') as f:
         data = json.load(f)
 
-    suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
     assert suc
 
     with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
@@ -258,7 +258,7 @@ def test_writeAsteroidMPC_7(function):
 
     testData = [data[0]]
 
-    suc = function.writeAsteroidMPC(datas=testData, installPath='tests/workDir/temp')
+    suc = function.writeAsteroidMPC(datas=testData, dataFilePath='tests/workDir/temp')
     assert suc
 
     with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
@@ -277,7 +277,7 @@ def test_writeAsteroidMPC_8(function):
     with mock.patch.object(function,
                            'generateEpochPacked',
                            return_value=' 1985'):
-        suc = function.writeAsteroidMPC(datas=data, installPath='tests/workDir/temp')
+        suc = function.writeAsteroidMPC(datas=data, dataFilePath='tests/workDir/temp')
         assert suc
 
     with open('tests/workDir/temp/minorPlanets.mpc', 'r') as f:
@@ -297,13 +297,13 @@ def test_writeAsteroidMPC_8(function):
 
 def test_writeSatelliteTLE_1(function):
     data = None
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
     assert not suc
 
 
 def test_writeSatelliteTLE_2(function):
     data = 'test'
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
     assert not suc
 
 
@@ -312,7 +312,7 @@ def test_writeSatelliteTLE_3(function):
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     data = {'NOAA 8': EarthSatellite(tle[1], tle[2],  name=tle[0])}
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
     assert suc
 
     with open('tests/workDir/temp/satellites.tle', 'r') as f:
@@ -328,7 +328,7 @@ def t_writeSatelliteTLE_4(function):
            "1 44542U 19061A   21180.78220369 -.00000015  00000-0 -66561+1 0  9997",
            "2 44542  54.7025 244.1098 0007981 318.8601 283.5781  1.86231125 12011"]
     data = {'BEIDOU-3 M23': EarthSatellite(tle[1], tle[2],  name=tle[0])}
-    suc = function.writeSatelliteTLE(datas=data, installPath='tests/workDir/temp')
+    suc = function.writeSatelliteTLE(datas=data, dataFilePath='tests/workDir/temp')
     assert suc
 
     with open('tests/workDir/temp/satellites.tle', 'r') as f:
@@ -337,3 +337,67 @@ def t_writeSatelliteTLE_4(function):
     assert tle[0] == refLines[0].strip('\n')
     assert tle[1] == refLines[1].strip('\n')
     assert tle[2] == refLines[2].strip('\n')
+
+
+def test_progDataToMount_1(function):
+    function.app.mount.host = None
+    suc = function.progDataToMount()
+    assert not suc
+
+
+def test_progDataToMount_2(function):
+    function.app.mount.host = None
+    suc = function.progDataToMount(dataType='asteroid',
+                                   dataFilePath='tests/workDir/temp')
+    assert not suc
+
+
+def test_progDataToMount_3(function):
+    class Test_200:
+        status_code = 404
+
+    function.app.mount.host = ('127.0.0.1', 1234)
+    with mock.patch.object(requests,
+                           'delete',
+                           return_value=Test_200):
+        suc = function.progDataToMount(dataType='asteroid',
+                                       dataFilePath='tests/workDir/temp')
+        assert not suc
+
+
+def test_progDataToMount_4(function):
+    class Test_200:
+        status_code = 200
+
+    class Test_202:
+        status_code = 404
+
+    function.app.mount.host = ('127.0.0.1', 1234)
+    with mock.patch.object(requests,
+                           'delete',
+                           return_value=Test_200):
+        with mock.patch.object(requests,
+                               'post',
+                               return_value=Test_202):
+            suc = function.progDataToMount(dataType='asteroid',
+                                           dataFilePath='tests/workDir/temp')
+            assert not suc
+
+
+def test_progDataToMount_5(function):
+    class Test_200:
+        status_code = 200
+
+    class Test_202:
+        status_code = 202
+
+    function.app.mount.host = ('127.0.0.1', 1234)
+    with mock.patch.object(requests,
+                           'delete',
+                           return_value=Test_200):
+        with mock.patch.object(requests,
+                               'post',
+                               return_value=Test_202):
+            suc = function.progDataToMount(dataType='asteroid',
+                                           dataFilePath='tests/workDir/temp')
+            assert suc

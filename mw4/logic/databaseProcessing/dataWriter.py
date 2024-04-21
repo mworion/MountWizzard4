@@ -15,9 +15,9 @@
 #
 ###########################################################
 # standard libraries
-import logging
-import shutil
 import os
+import requests
+import logging
 
 # external packages
 from sgp4.exporter import export_tle
@@ -27,10 +27,8 @@ from sgp4.exporter import export_tle
 
 class DataWriter:
     """
-
     """
-    __all__ = ['DataWriter',
-               ]
+    __all__ = ['DataWriter']
 
     log = logging.getLogger(__name__)
 
@@ -39,13 +37,13 @@ class DataWriter:
         self.app = app
 
     @staticmethod
-    def writeCometMPC(datas=None, installPath=''):
+    def writeCometMPC(datas=None, dataFilePath=''):
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
 
         :param datas:
-        :param installPath:
+        :param dataFilePath:
         :return:
         """
         if not datas:
@@ -54,7 +52,7 @@ class DataWriter:
         if not isinstance(datas, list):
             return False
 
-        dest = installPath + '/minorPlanets.mpc'
+        dest = dataFilePath + '/minorPlanets.mpc'
 
         with open(dest, 'w') as f:
             for data in datas:
@@ -232,7 +230,7 @@ class DataWriter:
 
         return designationPacked
 
-    def writeAsteroidMPC(self, datas=None, installPath=''):
+    def writeAsteroidMPC(self, datas=None, dataFilePath=''):
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
@@ -241,7 +239,7 @@ class DataWriter:
         have the ley 'Number' in json, new style not.
 
         :param datas:
-        :param installPath:
+        :param dataFilePath:
         :return:
         """
         if not datas:
@@ -250,7 +248,7 @@ class DataWriter:
         if not isinstance(datas, list):
             return False
 
-        dest = installPath + '/minorPlanets.mpc'
+        dest = dataFilePath + '/minorPlanets.mpc'
 
         with open(dest, 'w') as f:
             for data in datas:
@@ -337,12 +335,12 @@ class DataWriter:
         return True
 
     @staticmethod
-    def writeSatelliteTLE(datas=None, installPath=''):
+    def writeSatelliteTLE(datas=None, dataFilePath=''):
         """
         data format of TLE and file description in
 
         :param datas:
-        :param installPath:
+        :param dataFilePath:
         :return:
         """
         if not datas:
@@ -351,7 +349,7 @@ class DataWriter:
         if not isinstance(datas, dict):
             return False
 
-        dest = installPath + '/satellites.tle'
+        dest = dataFilePath + '/satellites.tle'
 
         with open(dest, 'w') as f:
             for name in datas:
@@ -359,5 +357,37 @@ class DataWriter:
                 f.write(name + '\n')
                 f.write(line1 + '\n')
                 f.write(line2 + '\n')
+
+        return True
+
+    def progDataToMount(self, dataType='', dataFilePath=''):
+        """
+        :param dataType:
+        :param dataFilePath:
+        :return:
+        """
+        dataNames = {'comet': 'minorPlanets.mpc',
+                     'tle': 'satellites.tle',
+                     'asteroid': 'minorPlanets.mpc'}
+
+        if dataType not in dataNames:
+            return False
+
+        fullDataFilePath = os.path.join(dataFilePath, dataNames[dataType])
+        files = {
+            dataType: (dataNames[dataType], open(fullDataFilePath, 'r'))
+        }
+        if self.app.mount.host is None:
+            return False
+        baseURL = self.app.mount.host[0]
+        url = f'{baseURL}/bin/uploadst'
+        r = requests.delete(url)
+        if r.status_code != 200:
+            return False
+
+        url = f'{baseURL}/bin/upload'
+        r = requests.post(url, files=files)
+        if r.status_code != 202:
+            return False
 
         return True

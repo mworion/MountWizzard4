@@ -668,14 +668,16 @@ class SatSearch(object):
         :param satellites:
         :return:
         """
-        suc = self.databaseProcessing.writeSatelliteTLE(satellites, self.tempDir)
+        suc = self.databaseProcessing.writeSatelliteTLE(satellites,
+                                                        dataFilePath=self.tempDir)
         if not suc:
             self.msg.emit(2, 'TLE', 'Data error',
                           'Data could not be exported - stopping')
             return False
 
         self.msg.emit(0, 'TLE', 'Program', 'Uploading to mount')
-        # todo uploader
+        suc = self.databaseProcessing.progDataToMount(dataType='tle',
+                                                      dataFilePath=self.tempDir)
         if not suc:
             self.msg.emit(2, 'TLE', 'Program error',
                           'Uploading error but files available')

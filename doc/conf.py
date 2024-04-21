@@ -86,6 +86,8 @@ html_theme_options = {
     'base_text': '#FFFFFFFF',
     'body_bg': '#FFFFFFFF',
 }
+
+simplepdf_file_name = 'mountwizzard4-' + version + '.pdf'
 simplepdf_use_weasyprint_api = True
 simplepdf_weasyprint_flags = ['-v']
 simplepdf_vars = {

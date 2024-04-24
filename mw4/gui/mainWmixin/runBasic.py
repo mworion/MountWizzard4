@@ -26,7 +26,8 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
 from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
-
+from base.packageConfig import isSimulationMount
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 class BasicRun:
     """
@@ -152,7 +153,8 @@ class BasicRun:
 
         if noSolvesLeft and stillToWork:
             t = f'Slews left: [{self.slewQueue.qsize()}] '
-            t += f'Images left: [{self.imageQueue.qsize()}] '
+            t += f' Images left: [{self.imageQueue.qsize()}] '
+            t += f' Solves left: [{self.solveQueue.qsize()}] '
             self.log.error(f'Empty solve queue: {t}')
             self.msg.emit(2, self.runType, 'Build error', 'Out of sync exception')
             self.cancelRun()
@@ -162,6 +164,7 @@ class BasicRun:
         text = f'Solving image-{mPoint["countSequence"]:03d}:'
         self.log.info(text)
 
+        self.resultQueue.put(mPoint)
         suc = self.app.plateSolve.solveThreading(fitsPath=mPoint['imagePath'])
         if not suc:
             self.log.error('Cannot start solving')
@@ -169,7 +172,6 @@ class BasicRun:
             self.msg.emit(2, self.runType, 'Solving error', text)
             return False
 
-        self.resultQueue.put(mPoint)
         self.log.debug(f'Queued to result [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Solving  image-{mPoint["countSequence"]:03d}:'
         self.msg.emit(0, self.runType, 'Solving', text)
@@ -197,7 +199,8 @@ class BasicRun:
         slewsLeft = not self.slewQueue.empty()
 
         if noImagesLeft and slewsLeft:
-            t = f'Slews left: [{self.slewQueue.qsize()}] '
+            t = f'Slews left: [{self.slewQueue.qsize()}]'
+            t += f' Images left:[{self.imageQueue.qsize()}]'
             self.log.error(f'Empty image queue: {t}')
             self.msg.emit(2, self.runType, 'Build error', 'Out of sync exception')
             self.cancelRun()
@@ -229,6 +232,7 @@ class BasicRun:
                                                               mPoint['decJNowM'],
                                                               mPoint['julianDate'])
 
+        self.solveQueue.put(mPoint)
         suc = self.app.camera.expose(imagePath=mPoint['imagePath'],
                                      expTime=mPoint['exposureTime'],
                                      binning=mPoint['binning'],
@@ -243,7 +247,6 @@ class BasicRun:
             self.msg.emit(2, self.runType, 'Imaging error', text)
             return False
 
-        self.solveQueue.put(mPoint)
         self.log.debug(f'Queued to solve [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Exposing image-{mPoint["countSequence"]:03d}'
         self.msg.emit(0, self.runType, 'Imaging', text)
@@ -283,8 +286,11 @@ class BasicRun:
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
             self.msg.emit(0, self.runType, 'Slewing dome', text)
 
-        self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
+        if isSimulationMount:
+            self.app.mount.signals.slewFinished.emit()
+        else:
+            self.app.mount.obsSite.startSlewing()
         self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '

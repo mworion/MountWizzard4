@@ -80,7 +80,7 @@ setup(
         'pyerfa==2.0.1.4',
         'astroquery==0.4.7',
         'sep_mw4==1.2.2',
-        'pyqtgraph==0.13.5',
+        'pyqtgraph==0.13.6',
         'qimage2ndarray==1.10.0',
         'skyfield==1.48',
         'sgp4==2.23',

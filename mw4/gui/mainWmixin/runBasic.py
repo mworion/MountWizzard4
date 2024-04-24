@@ -26,6 +26,7 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
 from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
+from base.packageConfig import isSimulationMount
 
 
 class BasicRun:
@@ -283,7 +284,10 @@ class BasicRun:
             text += ', az: {azimuthT:3.1f} delta: {delta:3.1f}'
             self.msg.emit(0, self.runType, 'Slewing dome', text)
 
-        self.app.mount.obsSite.startSlewing()
+        if isSimulationMount:
+            self.app.mount.signals.emit()
+        else:
+            self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
         self.log.debug(f'Queued to image [{mPoint["countSequence"]:03d}]: [{mPoint}]')
         text = f'Point: {mPoint["countSequence"]:03d}, '

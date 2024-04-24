@@ -12858,9 +12858,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <property name="geometry">
           <rect>
-           <x>265</x>
+           <x>245</x>
            <y>110</y>
-           <width>86</width>
+           <width>106</width>
            <height>21</height>
           </rect>
          </property>
@@ -13340,9 +13340,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <property name="geometry">
           <rect>
-           <x>85</x>
+           <x>65</x>
            <y>110</y>
-           <width>86</width>
+           <width>106</width>
            <height>21</height>
           </rect>
          </property>

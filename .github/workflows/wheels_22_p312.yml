@@ -15,41 +15,33 @@
 #
 ###########################################################
 
-name: test_scripts_aarch64_pypi
+name: wheels_22_312
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
-env:
-  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/main/support/3.0/'
-
 on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/test_scripts_aarch64_pypi.yml'
-      - 'support/**'
-      - 'setup.py'
+      - '.github/workflows/wheels_22_p310.yml'
 
 jobs:
-  
-  install_package_aarch64:
-    runs-on: ubuntu-latest
-    name: install_${{ matrix.distro }}_${{ matrix.arch }}
+  build_job:
+    # The host should always be linux
+    runs-on: ubuntu-22.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    # Run steps on a matrix of 3 arch/distro combinations
     strategy:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu20.04
-          - arch: aarch64
             distro: ubuntu22.04
-          - arch: aarch64
-            distro: bullseye
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact
         id: build
@@ -62,7 +54,8 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            -v "${PWD}/support":/root/support
+            -v "${PWD}/support/wheels/${{matrix.distro}}":/root/wheels
+            --stop-timeout -1
 
           # The shell to run commands with in the container
           shell: /bin/bash
@@ -76,21 +69,37 @@ jobs:
           install: |
             apt-get update -y
             apt-get upgrade -y
-            apt-get -y install python3-dev python3-pip python3-venv python3-wheel
-            apt-get -y install python3-pyqt6
-            apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
-            apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
-            apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
-            apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
-            apt-get install -y libxcb-keysyms1
-
+            apt-get install -y apt-utils
+            
+            apt-get -y install pyqt6-dev pyqt6-dev-tools qt6-qmake qtbase6-dev
+            apt-get -y install python3.12-venv python3-pip build-essential
+            apt-get -y install python3.12-dev autoconf libtool qtwayland6
+            apt-get install -y python3-pyqt6
+            
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            python3 --version
-            ls /root/support/*.*
-            cd /root/support/3.0
-            python3 startup.pyz --no-start --version 4.0.0a2
-            touch test.run
-            xvfb-run python3 startup.pyz
-            cat log/mw*.log
-            ls -la
+            python3.12 -m venv venv
+            source venv/bin/activate
+
+            python --version
+            python -m pip install pip --upgrade
+            pip install setuptools --upgrade
+            pip install wheel --upgrade
+            pip install PyQt-builder==1.14.1
+            pip install packaging setuptools toml wheel
+
+            cd "${PWD}"
+            pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp310-cp310-linux_aarch64.whl"
+            # pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
+
+      - name: Update changes in GitHub repository
+        continue-on-error: true
+        run:  |
+          rm build-log.txt
+          git config --global user.name 'mworion'
+          git config --global user.email 'michael@wuertenberger.org'
+          git add -A "${PWD}/support/wheels/*.whl"
+          git pull
+          git diff-index --quiet HEAD || git commit -m '[automated commit]'
+          git push --force

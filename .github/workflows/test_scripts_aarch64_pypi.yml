@@ -8,6 +8,7 @@ name: test_scripts_aarch64_pypi
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
+  continue-on-error: true
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/3.0/'

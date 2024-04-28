@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.2'
+version = '3.3'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -164,11 +164,11 @@ class LoggerWriter:
 
 
 def addLoggingLevel(levelName, levelNum, methodName=None):
-    """    
-    :param levelName: 
-    :param levelNum: 
-    :param methodName: 
-    :return: 
+    """
+    :param levelName:
+    :param levelNum:
+    :param methodName:
+    :return:
     """
     if not methodName:
         methodName = levelName.lower()
@@ -199,7 +199,7 @@ def setupLogging():
         os.mkdir('./log')
 
     logging.Formatter.converter = time.gmtime
-    timeTag = datetime.datetime.utcnow().strftime('%Y-%m-%d')
+    timeTag = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
     logFile = f'./log/mw4-{timeTag}.log'
     logHandler = RotatingFileHandler(logFile, mode='a', maxBytes=100 * 1024 * 1024,
                                      backupCount=100, encoding=None, delay=False)
@@ -283,14 +283,15 @@ def venvCreate(venvPath, upgrade=False):
 
     if upgrade:
         prt('Update virtual environment')
+        EnvBuilder(with_pip=True, upgrade=upgrade)
 
-    venvBuilder = EnvBuilder(with_pip=True, upgrade=upgrade)
     existInstall = os.path.isdir('venv')
     if existInstall:
         prt('Activate virtual environment')
     else:
         prt('Install and activate virtual environment')
 
+    venvBuilder = EnvBuilder(with_pip=True)
     venvBuilder.create(venvPath)
     return venvBuilder.context
 
@@ -369,31 +370,6 @@ def downloadAndInstallWheels(venvContext, version=None):
             return False
     prt('Precompiled packages ready')
     return True
-
-
-def versionScriptLocal():
-    """
-    :return:
-    """
-    return Version(version)
-
-
-def versionScriptOnline():
-    """
-    :return:
-    """
-    url = 'https://github.com/mworion/MountWizzard4/tree/main/support/3.0/startup.py'
-    try:
-        response = requests.get(url)
-    except Exception as e:
-        log.error(f'Cannot determine script version: {e}')
-        return Version('0.0.0')
-
-    for line in response.text.split('\n'):
-        if line.startswith('version ='):
-            version = line.split('=')[1].strip().strip('\'')
-            return Version(version)
-    return Version('0.0.0')
 
 
 def versionOnline(updateBeta):
@@ -514,12 +490,21 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
         return loaderPath
 
     isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
-    version = getVersion(isTest, updateBeta, version)
-    isV2 = version < Version('2.100')
-    compatibleV2 = Version(platform.python_version()) < Version('3.10')
+    verMW4 = getVersion(isTest, updateBeta, version)
+    verPy = Version(platform.python_version())
+
+    isV2 = verMW4 < Version('2.100')
+    isV3 = Version('3.100') > verMW4 >= Version('2.0')
+
+    compatibleV2 = verPy < Version('3.10')
+    compatibleV3 = Version('3.8') <= verPy < Version('3.11')
 
     if isV2 and not compatibleV2:
         prt('MountWizzard4 v2.x needs python 3.7-3.9')
+        return ''
+
+    if isV3 and not compatibleV3:
+        prt('MountWizzard4 v3.x needs python 3.8-3.10')
         return ''
 
     if platform.machine() == 'aarch64':
@@ -542,13 +527,47 @@ def checkBaseCompatibility():
     :return:
     """
     compatible = True
-    if sys.version_info < (3, 8) or sys.version_info >= (3, 11):
-        compatible = False
-    elif not hasattr(sys, 'base_prefix'):
+    if not hasattr(sys, 'base_prefix'):
         compatible = False
     if platform.machine() in ['armv7l']:
         compatible = False
     return compatible
+
+
+def versionScriptLocal():
+    """
+    :return:
+    """
+    return Version(version)
+
+
+def versionScriptOnline():
+    """
+    :return:
+    """
+    url = 'https://github.com/mworion/MountWizzard4/tree/main/support/3.0/startup.py'
+    try:
+        response = requests.get(url)
+    except Exception as e:
+        log.error(f'Cannot determine script version: {e}')
+        return Version('0.0.0')
+
+    for line in response.text.split('\n'):
+        if line.startswith('version ='):
+            version = line.split('=')[1].strip().strip('\'')
+            return Version(version)
+    return Version('0.0.0')
+
+
+def checkScriptActuality():
+    """
+    :return:
+    """
+    if versionScriptOnline() > versionScriptLocal():
+        prt()
+        prt('-' * 45)
+        prt('Newer version of startup script available')
+        prt('-' * 45)
 
 
 def main(options):
@@ -558,6 +577,7 @@ def main(options):
     """
     setupLogging()
     addLoggingLevel('HEADER', 55)
+    checkScriptActuality()
     compatible = checkBaseCompatibility()
     if not compatible:
         prt()
@@ -565,6 +585,7 @@ def main(options):
         prt('MountWizzard4 startup - no compatible environment')
         prt('needs python 3.7-3.9 for version 2.x')
         prt('needs python 3.8-3.10 for version 3.x')
+        prt('needs python 3.9-3.12 for version 4.x')
         prt('no support for ARM7')
         prt(f'you are running {platform.python_version()}')
         prt('Closing application')
@@ -638,12 +659,6 @@ def readOptions():
 
 
 if __name__ == '__main__':
-
-    prt(versionScriptLocal())
-    prt(versionScriptOnline())
-
-    sys.exit(0)
-
     options = readOptions()
     main(options)
     prt('-' * 45)

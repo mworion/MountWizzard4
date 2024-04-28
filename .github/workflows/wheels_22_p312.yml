@@ -87,7 +87,7 @@ jobs:
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel --upgrade
-            pip install PyQt-builder
+            pip install PyQt-builder==1.14.1
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"

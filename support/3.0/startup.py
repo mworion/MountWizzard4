@@ -477,7 +477,7 @@ def checkIfInstalled(venvContext):
     return isInstalled, loaderPath
 
 
-def prepareInstall(venvContext, update=False, updateBeta=False, version=version):
+def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
     """
     :param venvContext:
     :param update:

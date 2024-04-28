@@ -477,7 +477,7 @@ def checkIfInstalled(venvContext):
     return isInstalled, loaderPath
 
 
-def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
+def prepareInstall(venvContext, update=False, updateBeta=False, version=version):
     """
     :param venvContext:
     :param update:
@@ -490,6 +490,7 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
         return loaderPath
 
     isTest = os.path.isfile('mountwizzard4.tar.gz') and not version
+
     verMW4 = getVersion(isTest, updateBeta, version)
     verPy = Version(platform.python_version())
 
@@ -508,13 +509,13 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
         return ''
 
     if platform.machine() == 'aarch64':
-        suc = downloadAndInstallWheels(venvContext, version=version)
+        suc = downloadAndInstallWheels(venvContext, version=verMW4)
         if not suc:
             return ''
     elif platform.machine() == 'armv7':
         return ''
 
-    suc = install(venvContext, version=version, isTest=isTest)
+    suc = install(venvContext, version=verMW4, isTest=isTest)
     if not suc:
         return ''
 
@@ -607,7 +608,7 @@ def main(options):
         venvContext,
         update=options.update,
         updateBeta=options.updateBeta,
-        version=Version(options.version))
+        version=options.version)
 
     if not options.noStart and loaderPath:
         prt('MountWizzard4 starting')

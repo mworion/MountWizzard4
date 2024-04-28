@@ -607,7 +607,7 @@ def main(options):
         venvContext,
         update=options.update,
         updateBeta=options.updateBeta,
-        version=options.version)
+        version=Version(options.version))
 
     if not options.noStart and loaderPath:
         prt('MountWizzard4 starting')

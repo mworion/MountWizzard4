@@ -8,7 +8,6 @@ name: test_scripts_packages
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
-  continue-on-error: true
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/'
@@ -103,6 +102,7 @@ jobs:
           target: dist/
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         shell: cmd
         run: |
           cd dist

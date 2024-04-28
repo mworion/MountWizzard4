@@ -8,7 +8,6 @@ name: test_scripts_pypi
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
-  continue-on-error: true
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/master/support/3.0/'
@@ -74,6 +73,7 @@ jobs:
           target: .
           
       - name: MountWizzard4 Install
+        continue-on-error: true
         run: |
           python3 -m zipfile -e startupPackage.zip .
           python3 startup.pyz --no-start

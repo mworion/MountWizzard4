@@ -70,9 +70,10 @@ jobs:
             apt-get update -y
             apt-get upgrade -y
             apt-get install -y apt-utils
+            apt-get install -y software-properties-common
             add-apt-repository ppa:deadsnakes/ppa
             apt-get update -y
-            apt-get install python3.12
+            apt-get install -y python3.12
             
             apt-get -y install pyqt6-dev pyqt6-dev-tools qt6-qmake qtbase6-dev
             apt-get -y install python3.12-venv python3-pip build-essential

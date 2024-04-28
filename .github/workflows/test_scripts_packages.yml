@@ -106,6 +106,7 @@ jobs:
         shell: cmd
         run: |
           cd dist
+          python -m pip install --upgrade pip
           python -m zipfile -e startupPackage.zip .
           python startup.pyz --no-start
           dir
@@ -158,6 +159,7 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
+          python3 -m pip install --upgrade pip
           python3 -m zipfile -e startupPackage.zip .
           python3 startup.pyz --no-start
           ls -la
@@ -199,6 +201,7 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
+          python3 -m pip install --upgrade pip
           python3 -m zipfile -e startupPackage.zip .
           python3 startup.pyz --no-start
           ls -la
@@ -257,6 +260,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             python3 --version
+            python3 -m pip install --upgrade pip
             cd /root/support/3.0
             python3 -m zipfile -e startupPackage.zip .
             python3 startup.pyz --no-start

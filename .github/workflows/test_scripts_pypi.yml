@@ -38,6 +38,7 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
+          python -m pip install --upgrade pip
           python -m zipfile -e startupPackage.zip .
           python startup.pyz --no-start
           dir
@@ -73,8 +74,8 @@ jobs:
           target: .
           
       - name: MountWizzard4 Install
-        continue-on-error: true
         run: |
+          python3 -m pip install --upgrade pip
           python3 -m zipfile -e startupPackage.zip .
           python3 startup.pyz --no-start
           ls -la
@@ -101,6 +102,7 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
+          python3 -m pip install --upgrade pip
           python3 -m zipfile -e startupPackage.zip .
           python3 startup.pyz --no-start
           ls -la

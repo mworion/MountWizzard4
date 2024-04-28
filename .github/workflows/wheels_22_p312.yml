@@ -75,9 +75,9 @@ jobs:
             apt-get update -y
             apt-get install -y python3.12
             
-            # apt-get -y install pyqt6-dev pyqt6-dev-tools qt6-qmake qtbase6-dev
+            apt-get -y install qmake6 qt6-base-dev
             apt-get -y install python3.12-venv python3-pip build-essential
-            apt-get -y install python3.12-dev autoconf libtool qtwayland6
+            apt-get -y install python3.12-dev autoconf libtool qt6-wayland
             apt-get install -y python3-pyqt6
             
           # Produce a binary artifact and place it in the mounted volume

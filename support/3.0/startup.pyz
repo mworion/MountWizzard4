@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.2'
+version = '3.3'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -372,31 +372,6 @@ def downloadAndInstallWheels(venvContext, version=None):
     return True
 
 
-def versionScriptLocal():
-    """
-    :return:
-    """
-    return Version(version)
-
-
-def versionScriptOnline():
-    """
-    :return:
-    """
-    url = 'https://github.com/mworion/MountWizzard4/tree/main/support/3.0/startup.py'
-    try:
-        response = requests.get(url)
-    except Exception as e:
-        log.error(f'Cannot determine script version: {e}')
-        return Version('0.0.0')
-
-    for line in response.text.split('\n'):
-        if line.startswith('version ='):
-            version = line.split('=')[1].strip().strip('\'')
-            return Version(version)
-    return Version('0.0.0')
-
-
 def versionOnline(updateBeta):
     """
     :param updateBeta:
@@ -559,6 +534,42 @@ def checkBaseCompatibility():
     return compatible
 
 
+def versionScriptLocal():
+    """
+    :return:
+    """
+    return Version(version)
+
+
+def versionScriptOnline():
+    """
+    :return:
+    """
+    url = 'https://github.com/mworion/MountWizzard4/tree/main/support/3.0/startup.py'
+    try:
+        response = requests.get(url)
+    except Exception as e:
+        log.error(f'Cannot determine script version: {e}')
+        return Version('0.0.0')
+
+    for line in response.text.split('\n'):
+        if line.startswith('version ='):
+            version = line.split('=')[1].strip().strip('\'')
+            return Version(version)
+    return Version('0.0.0')
+
+
+def checkScriptActuality():
+    """
+    :return:
+    """
+    if versionScriptOnline() > versionScriptLocal():
+        prt()
+        prt('-' * 45)
+        prt('Newer version of startup script available')
+        prt('-' * 45)
+
+
 def main(options):
     """
     :param options:
@@ -566,6 +577,7 @@ def main(options):
     """
     setupLogging()
     addLoggingLevel('HEADER', 55)
+    checkScriptActuality()
     compatible = checkBaseCompatibility()
     if not compatible:
         prt()
@@ -647,12 +659,6 @@ def readOptions():
 
 
 if __name__ == '__main__':
-
-    prt(versionScriptLocal())
-    prt(versionScriptOnline())
-
-    sys.exit(0)
-
     options = readOptions()
     main(options)
     prt('-' * 45)

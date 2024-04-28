@@ -29,7 +29,7 @@ import argparse
 import tarfile
 
 log = logging.getLogger()
-version = '3.1'
+version = '3.2'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 if platform.system() == 'Windows':
@@ -334,15 +334,15 @@ def downloadAndInstallWheels(venvContext, version=None):
         '3.1.0': {
             '3.8': [
                 'PyQt5_sip-12.11.1-cp38-cp38-linux_aarch64.whl',
-                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
+                'PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl',
             ],
             '3.9': [
                 'PyQt5_sip-12.11.1-cp39-cp39-linux_aarch64.whl',
-                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
+                'PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl',
             ],
             '3.10': [
                 'PyQt5_sip-12.11.1-cp310-cp310-linux_aarch64.whl',
-                'PyQt5-5.15.9-cp37-abi3-manylinux_2_17_aarch64.whl',
+                'PyQt5-5.15.9-cp38.cp39.cp310-abi3-manylinux_2_17_aarch64.whl',
             ],
         },
     }
@@ -369,6 +369,31 @@ def downloadAndInstallWheels(venvContext, version=None):
             return False
     prt('Precompiled packages ready')
     return True
+
+
+def versionScriptLocal():
+    """
+    :return:
+    """
+    return Version(version)
+
+
+def versionScriptOnline():
+    """
+    :return:
+    """
+    url = 'https://github.com/mworion/MountWizzard4/tree/main/support/3.0/startup.py'
+    try:
+        response = requests.get(url)
+    except Exception as e:
+        log.error(f'Cannot determine script version: {e}')
+        return Version('0.0.0')
+
+    for line in response.text.split('\n'):
+        if line.startswith('version ='):
+            version = line.split('=')[1].strip().strip('\'')
+            return Version(version)
+    return Version('0.0.0')
 
 
 def versionOnline(updateBeta):
@@ -613,6 +638,12 @@ def readOptions():
 
 
 if __name__ == '__main__':
+
+    prt(versionScriptLocal())
+    prt(versionScriptOnline())
+
+    sys.exit(0)
+
     options = readOptions()
     main(options)
     prt('-' * 45)

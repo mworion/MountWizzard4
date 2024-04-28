@@ -15,7 +15,7 @@
 #
 ###########################################################
 
-name: wheels_20_38
+name: wheels_22_311
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -25,12 +25,12 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/wheels_20_p38.yml'
+      - '.github/workflows/wheels_22_p311.yml'
 
 jobs:
   build_job:
     # The host should always be linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     # Run steps on a matrix of 3 arch/distro combinations
@@ -38,10 +38,10 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu20.04
+            distro: ubuntu22.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact
         id: build
@@ -70,15 +70,18 @@ jobs:
             apt-get update -y
             apt-get upgrade -y
             apt-get install -y apt-utils
-            
-            apt-get -y install pyqt5-dev pyqt5-dev-tools qt5-qmake qtbase5-dev
-            apt-get -y install python3.8-venv python3-pip build-essential
-            apt-get -y install python3.8-dev autoconf libtool qtwayland5
-            apt-get install -y python3-pyqt5
+            apt-get install -y software-properties-common
+            add-apt-repository ppa:deadsnakes/ppa
+            apt-get update -y
+            apt-get install -y python3.11
+            apt-get -y install qmake6 qt6-base-dev
+            apt-get -y install python3.11-venv python3-pip build-essential
+            apt-get -y install python3.11-dev autoconf libtool qt6-wayland
+
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            python3.8 -m venv venv
+            python3.11 -m venv venv
             source venv/bin/activate
 
             python --version
@@ -89,8 +92,9 @@ jobs:
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"
-            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp39-cp39-linux_aarch64.whl"
-            pip wheel pyqt5-sip -w "/root/wheels"
+            pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp311-cp311-linux_aarch64.whl"
+            # pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
       - name: Update changes in GitHub repository
         continue-on-error: true

@@ -270,5 +270,8 @@ jobs:
             cd /root/support/3.0
             python3 -m zipfile -e startupPackage.zip .
             python3 startup.pyz --no-start
-            cat ./log/mw4*.log
-            ls -la
+            
+      - name: check results
+        run: |
+          ls -la
+          cat log/mw*.log

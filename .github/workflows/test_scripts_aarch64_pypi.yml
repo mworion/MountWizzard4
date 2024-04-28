@@ -147,4 +147,9 @@ jobs:
             xvfb-run python3 startup.pyz
             cat log/mw*.log
             ls -la
+            
+      - name: check results
+        run: |
+          ls -la
+          cat log/mw*.log
 

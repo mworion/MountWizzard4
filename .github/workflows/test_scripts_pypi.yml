@@ -114,11 +114,14 @@ jobs:
         run: |
           python3 -m zipfile -e startupPackage.zip .
           python3 startup.pyz --no-start
-          ls -la
           
       - name: Run MountWizzard4
         run: |
           touch test.run
           touch test.txt
           python3 startup.pyz
+          
+      - name: check results
+        run: |
           ls -la
+          cat log/mw*.log

@@ -215,7 +215,7 @@ def setupLogging():
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     # transfer all sys outputs to logging
-    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
+    # sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
     return True
 
 
@@ -508,13 +508,13 @@ def prepareInstall(venvContext, update=False, updateBeta=False, version=''):
         return ''
 
     if platform.machine() == 'aarch64':
-        suc = downloadAndInstallWheels(venvContext, version=version)
+        suc = downloadAndInstallWheels(venvContext, version=verMW4)
         if not suc:
             return ''
     elif platform.machine() == 'armv7':
         return ''
 
-    suc = install(venvContext, version=version, isTest=isTest)
+    suc = install(venvContext, version=verMW4, isTest=isTest)
     if not suc:
         return ''
 

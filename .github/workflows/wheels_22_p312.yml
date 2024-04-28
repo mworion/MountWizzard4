@@ -25,7 +25,7 @@ on:
   push:
     # Run this action on the trigger event when specific files are touched
     paths:
-      - '.github/workflows/wheels_22_p310.yml'
+      - '.github/workflows/wheels_22_p312.yml'
 
 jobs:
   build_job:

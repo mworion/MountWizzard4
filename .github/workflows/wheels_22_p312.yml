@@ -30,7 +30,7 @@ on:
 jobs:
   build_job:
     # The host should always be linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     # Run steps on a matrix of 3 arch/distro combinations
@@ -38,7 +38,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu22.04
+            distro: ubuntu20.04
 
     steps:
       - uses: actions/checkout@v4
@@ -87,7 +87,7 @@ jobs:
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel --upgrade
-            pip install PyQt-builder==1.14.1
+            pip install PyQt-builder
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"

@@ -56,7 +56,7 @@ Unit tests:
 
 Test install / run scripts:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|TEST_SCRIPTS_PYPI| |TEST_SCRIPTS_PACKAGES|
+|TEST_SCRIPTS_PYPI| |TEST_SCRIPTS_PACKAGES| |TEST_SCRIPTS_AARCH64|
 
 Test coverage:
 ^^^^^^^^^^^^^^
@@ -98,13 +98,13 @@ CS Michel
     https://img.shields.io/pypi/pyversions/mountwizzard4.svg
 
 .. |PYTEST macOS| image::
-    https://github.com/mworion/MountWizzard4/workflows/unit_macOS/badge.svg?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_macOS.yml?branch=main&label=Test%20MacOS
 
 .. |PYTEST Windows| image::
-    https://github.com/mworion/MountWizzard4/workflows/unit_win/badge.svg?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_win.yml?branch=main&label=Test%20Win
 
 .. |PYTEST Ubuntu| image::
-    https://github.com/mworion/MountWizzard4/workflows/unit_ubuntu/badge.svg?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/unit_ubuntu.yml?branch=main&label=Test%20Ubuntu
 
 .. |CODECOV| image::
     https://codecov.io/gh/mworion/MountWizzard4/branch/main/graph/badge.svg
@@ -128,10 +128,14 @@ CS Michel
     https://img.shields.io/github/commit-activity/w/mworion/mountwizzard4
 
 .. |TEST_SCRIPTS_PYPI| image::
-    https://github.com/mworion/MountWizzard4/workflows/test_scripts_pypi/badge.svg?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/test_scripts_pypi.yml?branch=main&label=PyPI
 
 .. |TEST_SCRIPTS_PACKAGES| image::
-    https://github.com/mworion/MountWizzard4/workflows/test_scripts_packages/badge.svg?branch=main
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/test_scripts_packages.yml?branch=main&label=Packages
+
+.. |TEST_SCRIPTS_AARCH64| image::
+    https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/test_scripts_aarch64_pypi.yml?branch=main&label=PyPI%20aarch64
+
 
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg

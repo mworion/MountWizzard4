@@ -75,7 +75,7 @@ jobs:
             apt-get update -y
             apt-get install -y python3.12
             
-            apt-get -y install pyqt6-dev pyqt6-dev-tools qt6-qmake qtbase6-dev
+            # apt-get -y install pyqt6-dev pyqt6-dev-tools qt6-qmake qtbase6-dev
             apt-get -y install python3.12-venv python3-pip build-essential
             apt-get -y install python3.12-dev autoconf libtool qtwayland6
             apt-get install -y python3-pyqt6
@@ -94,7 +94,7 @@ jobs:
 
             cd "${PWD}"
             pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
-            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp310-cp310-linux_aarch64.whl"
+            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp312-cp312-linux_aarch64.whl"
             # pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
       - name: Update changes in GitHub repository

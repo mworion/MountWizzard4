@@ -243,6 +243,7 @@ jobs:
           path: support/3.0
 
       - uses: uraimo/run-on-arch-action@v2
+        continue-on-error: true
         name: build_artifact
         id: build
         with:

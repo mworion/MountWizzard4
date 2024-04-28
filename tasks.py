@@ -239,6 +239,7 @@ def build_startup(c):
                           target='./support/3.0/startup.pyz',
                           compressed=True,
                           main='startup:main')
+    runMW(c, 'cp ./generators/startup/startup.py ./support/3.0')
     os.chdir('./support/3.0')
     with zipfile.ZipFile('startupPackage.zip', 'w') as myzip:
         myzip.write('startup.pyz')

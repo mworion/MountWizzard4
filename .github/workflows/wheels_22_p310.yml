@@ -88,7 +88,7 @@ jobs:
 
             cd "${PWD}"
             # pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
-            pip install "${PWD}/support/wheels/PyQt5_sip-13.6.0-cp310-cp310-linux_aarch64.whl"
+            pip install "${PWD}/support/wheels/PyQt6_sip-13.6.0-cp310-cp310-linux_aarch64.whl"
             pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
       - name: Update changes in GitHub repository

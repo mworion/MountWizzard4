@@ -59,7 +59,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.event_name == 'push'}}
         with:
-          publish_branch: gh-pages-main
+          publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: doc/html
           force_orphan: true

@@ -88,13 +88,13 @@ jobs:
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
             pip install wheel --upgrade
-            pip install PyQt-builder==1.14.1
+            pip install PyQt-builder
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"
-            pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
-            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp311-cp311-linux_aarch64.whl"
-            # pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
+            # pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
+            pip install "${PWD}/support/wheels/PyQt6_sip-13.6.0-cp311-cp311-linux_aarch64.whl"
+            pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
       - name: Update changes in GitHub repository
         continue-on-error: true

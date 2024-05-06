@@ -139,7 +139,6 @@ CS Michel
 .. |TEST_SCRIPTS_AARCH64| image::
     https://img.shields.io/github/actions/workflow/status/mworion/mountwizzard4/test_scripts_aarch64_pypi.yml?branch=main&label=PyPI%20aarch64
 
-
 .. |PYPI_VERSION| image::
     https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4

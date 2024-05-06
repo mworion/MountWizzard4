@@ -77,6 +77,9 @@ jobs:
             apt-get -y install qmake6 qt6-base-dev
             apt-get -y install python3.9-venv python3-pip build-essential
             apt-get -y install python3.9-dev autoconf libtool qt6-wayland
+            
+            #apt-get -y install autoconf qmake6 qt6-base-dev libtool qt6-wayland build-essential python3.10-dev python3.10-venv
+
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
@@ -86,14 +89,13 @@ jobs:
             python --version
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
-            pip install wheel --upgrade
+            pip install wheel toml --upgrade
             pip install PyQt-builder
-            pip install packaging setuptools toml wheel
 
             cd "${PWD}"
-            pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
-            # pip install "${PWD}/support/wheels/PyQt5_sip-12.11.1-cp39-cp39-linux_aarch64.whl"
-            # pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
+            # pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
+            pip install "${PWD}/support/wheels/PyQt6_sip-13.6.0-cp39-cp39-linux_aarch64.whl"
+            pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
       - name: Update changes in GitHub repository
         continue-on-error: true

@@ -4,7 +4,8 @@ MountWizzard4
 Documentation:
 --------------
 There is a documentation available for MW4:
-https://mworion.github.io/MountWizzard4/index.html
+
+https://github.com/mworion/MountWizzard4/blob/master/docs/index.html
 
 PLEASE download and use the new 3.3 installer script as it adds verbose mode
 during installation, which makes it easier follow installation steps.

@@ -101,7 +101,7 @@ def test_convertProfileData_3():
         },
     }
     val = convertProfileData(data)
-    assert val['version'] == '4.1'
+    assert val['version'] == '4.2'
     assert 'driversData' in val
     assert 'driversData' not in val['mainW']
     assert 'astrometry' not in val['driversData']

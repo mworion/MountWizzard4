@@ -1,5 +1,9 @@
 Beta versions of MW4
 --------------------
+
+Version 4.x
+^^^^^^^^^^^
+
 4.0.0b0
 
 - this is a major release !
@@ -28,7 +32,7 @@ Beta versions of MW4
 Released versions of MW4
 ------------------------
 
-Version 3.0
+Version 3.x
 ^^^^^^^^^^^
 3.2.5
 
@@ -164,8 +168,9 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - remove: testing support for OSx Mojave and OSx Catalina (still should work)
 - fix: drivers: device selection tab was not properly positioned in device popup
 
-Version 2.2
+Version 2.x
 ^^^^^^^^^^^
+
 2.2.9
 
 - fix: internal updater shows only alpha versions instead of betas
@@ -253,9 +258,6 @@ Version 2.2
 - upgrade websocket-client library to 1.2.3
 - fix: simulator in southern hemisphere
 
-
-Version 2.1
-^^^^^^^^^^^
 2.1.7
 
 - add: 12 build point option for model generation
@@ -321,8 +323,6 @@ Version 2.1
 - remove: push time from mount to computer: in reliable and unstable
 - fix: segfault in qt5lib on ubuntu
 
-Version 2.0
-^^^^^^^^^^^
 2.0.6
 
 - fixes
@@ -392,7 +392,7 @@ Version 2.0
 - fix plate solve sync function
 
 
-Version 1.1
+Version 1.x
 ^^^^^^^^^^^
 1.1.1
 

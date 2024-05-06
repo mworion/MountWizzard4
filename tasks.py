@@ -233,25 +233,6 @@ def test_mw(c):
 
 
 @task(pre=[])
-def build_startup(c):
-    printMW('...make zip archive')
-    zipapp.create_archive('./generators/startup/startup.py',
-                          target='./support/3.0/startup.pyz',
-                          compressed=True,
-                          main='startup:main')
-    runMW(c, 'cp ./generators/startup/startup.py ./support/3.0')
-    os.chdir('./support/3.0')
-    with zipfile.ZipFile('startupPackage.zip', 'w') as myzip:
-        myzip.write('startup.pyz')
-        myzip.write('MountWizzard4.desktop')
-        myzip.write('mw4.ico')
-        myzip.write('mw4.png')
-    runMW(c, 'cp startup.pyz ../../work')
-    os.chdir('../../')
-    printMW('...copy install script to test dir')
-
-
-@task(pre=[])
 def pypiCleanup(c):
     printMW('...clean pypi from alpha versions')
     regex = '1\\.\\w*\\.\\d\\D\\d*$'
@@ -315,7 +296,7 @@ def test_mac(c, user, work, scp):
         runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_win1032old(c):
     printMW('test windows10 32 old install')
     user = client['win10-32-old']['user']
@@ -325,7 +306,7 @@ def test_win1032old(c):
     printMW('test windows10 install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_win1064old(c):
     printMW('test windows10 64 old install')
     user = client['win10-64-old']['user']
@@ -335,7 +316,7 @@ def test_win1064old(c):
     printMW('test windows10 install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_win1032(c):
     printMW('test windows10 32 install')
     user = client['win10-32']['user']
@@ -345,7 +326,7 @@ def test_win1032(c):
     printMW('test windows10 install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_win1064(c):
     printMW('test windows10 64 install')
     user = client['win10-64']['user']
@@ -355,7 +336,7 @@ def test_win1064(c):
     printMW('test windows10 install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_win11(c):
     printMW('test windows11 install')
     user = client['win11']['user']
@@ -365,7 +346,7 @@ def test_win11(c):
     printMW('test windows11 install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_ubuntu_20(c):
     printMW('test ubuntu install')
     user = client['ubuntu-20']['user']
@@ -375,7 +356,7 @@ def test_ubuntu_20(c):
     printMW('test ubuntu install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_ubuntu_22(c):
     printMW('test ubuntu install')
     user = client['ubuntu-22']['user']
@@ -385,7 +366,7 @@ def test_ubuntu_22(c):
     printMW('test ubuntu install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_comp(c):
     printMW('test ubuntu rig install')
     user = client['ubuntuRig']['user']
@@ -395,7 +376,7 @@ def test_comp(c):
     printMW('test ubuntu rig install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_macBigsur(c):
     printMW('test BigSur install')
     user = client['macBigsur']['user']
@@ -405,7 +386,7 @@ def test_macBigsur(c):
     printMW('test BigSur install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_macMonterey(c):
     printMW('test Monterey install')
     user = client['macMonterey']['user']
@@ -415,7 +396,7 @@ def test_macMonterey(c):
     printMW('test Monterey install finished\n')
 
 
-@task(pre=[build_startup])
+@task(pre=[])
 def test_macVentura(c):
     printMW('test Monterey install')
     user = client['macVentura']['user']

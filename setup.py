@@ -28,7 +28,8 @@ releaseNotes = """
 - change: moving libraries to latest versions
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link
-- refactoring environment devices (now 3 generic ones)
+- refactoring: environment devices (now 3 generic ones)
+- refactoring: remove installer to separate repo (InstallerMW4)
 - fix: typos
 """
 
@@ -76,11 +77,11 @@ setup(
         'numpy==1.26.4',
         'opencv-python-headless==4.9.0.80',
         'scipy==1.13.0',
-        'astropy==6.0.1',
+        'astropy==6.1.0',
         'pyerfa==2.0.1.4',
         'astroquery==0.4.7',
         'sep_mw4==1.2.2',
-        'pyqtgraph==0.13.6',
+        'pyqtgraph==0.13.7',
         'qimage2ndarray==1.10.0',
         'skyfield==1.48',
         'sgp4==2.23',
@@ -100,8 +101,7 @@ setup(
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['PyQt6==6.7.0'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt6-3D==6.7.0'] if platform.machine() not in ['armv7l',
-                                                         'aarch64'] else []),
+    + (['PyQt6-3D==6.7.0'] if platform.machine() not in ['armv7l', 'aarch64'] else[]),
     keywords=['6.7.0'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

@@ -90,8 +90,7 @@ issues on GitHub.
     :maxdepth: 2
 
     features
-    install/index
     config/index
     using/index
     architecture/index
-    changelog/index
+    changelog/changelogMW4

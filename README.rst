@@ -6,8 +6,10 @@ Documentation:
 There is a documentation available for MW4:
 https://mworion.github.io/MountWizzard4/index.html
 
-PLEASE download and use the new 3.3 installer script as it adds verbose mode
+PLEASE download and use the new InstallerMW4 script as it adds verbose mode
 during installation, which makes it easier follow installation steps.
+
+https://mworion.github.io/InstallerMW4/index.html
 
 Welcome to MountWizzard4 is a utility for 10micron users for improving the
 workflow for astronomy work and imaging runs on Windows (10 and 11), OSx (Big Sur

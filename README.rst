@@ -4,6 +4,7 @@ MountWizzard4
 Documentation:
 --------------
 There is a documentation available for MW4:
+
 https://mworion.github.io/MountWizzard4/index.html
 
 PLEASE download and use the new InstallerMW4 script as it adds verbose mode

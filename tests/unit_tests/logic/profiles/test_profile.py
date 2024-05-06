@@ -129,7 +129,7 @@ def test_blendProfile():
 def test_defaultConfig():
     val = defaultConfig()
     assert val['profileName'] == 'config'
-    assert val['version'] == '4.1'
+    assert val['version'] == '4.2'
 
 
 def test_checkResetTabOrder_1():
@@ -152,7 +152,7 @@ def test_checkResetTabOrder_2():
 
 def test_loadProfile_1():
     val = loadProfile(configDir='tests/workDir/config')
-    assert val == {'profileName': 'config', 'version': '4.1'}
+    assert val == {'profileName': 'config', 'version': '4.2'}
 
 
 def test_loadProfile_2():
@@ -165,7 +165,7 @@ def test_loadProfile_2():
         json.dump(config, outfile)
 
     val = loadProfile(configDir='tests/workDir/config')
-    assert val == {'profileName': 'config', 'version': '4.1', 'mainW': {}}
+    assert val == {'profileName': 'config', 'version': '4.2', 'mainW': {}}
 
 
 def test_loadProfile_3():
@@ -173,7 +173,7 @@ def test_loadProfile_3():
         outfile.write('config')
 
     val = loadProfile(configDir='tests/workDir/config', name='config')
-    assert val == {'profileName': 'config', 'version': '4.1'}
+    assert val == {'profileName': 'config', 'version': '4.2'}
 
 
 def test_loadProfile_4():
@@ -188,7 +188,7 @@ def test_loadProfile_4():
                            'load',
                            side_effect=Exception()):
         val = loadProfile(configDir='tests/workDir/config', name='config')
-        assert val == {'profileName': 'config', 'version': '4.1'}
+        assert val == {'profileName': 'config', 'version': '4.2'}
 
 
 def test_loadProfile_5():

@@ -5,7 +5,10 @@ Documentation:
 --------------
 There is a documentation available for MW4:
 
-https://github.com/mworion/MountWizzard4/blob/master/docs/index.html
+New fork because the old project is abandoned;
+The URLs are now (htmlpreview -> html-preview):
+
+https://html-preview.github.io/?url=https://github.com/mworion/MountWizzard4/blob/master/docs/index.html
 
 PLEASE download and use the new 3.3 installer script as it adds verbose mode
 during installation, which makes it easier follow installation steps.

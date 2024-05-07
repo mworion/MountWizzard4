@@ -1,12 +1,12 @@
 Precision of internal calculations
 ==================================
 
-MW4 is using for all calculations the skyfield (https://rhodesmill.org/skyfield/)
-from Brandon Rhodes. As for the new command set offered with 10microns FW3.x it
-needs to calculate the alt/az coordinates for a satellite track each second for
-the entire track. As you would like to follow the as precise as possible I made
-some comparisons between the internal calculations done in 10micron mount and the
-results provided by skyfield.
+MountWizzard4 is using for all calculations the skyfield 
+(https://rhodesmill.org/skyfield/) from Brandon Rhodes. As for the new command 
+set offered with 10microns FW3.x it needs to calculate the alt/az coordinates 
+for a satellite track each second for the entire track. As you would like to 
+follow the as precise as possible I made some comparisons between the internal 
+calculations done in 10micron mount and the results provided by skyfield.
 
 In skyfield there is a chapter about satellite calculations and precision:
 https://rhodesmill.org/skyfield/earth-satellites.html#avoid-calling-the-observe-method

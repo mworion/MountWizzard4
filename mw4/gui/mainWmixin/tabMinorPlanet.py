@@ -225,9 +225,9 @@ class MinorPlanet:
         self.msg.emit(0, 'MPC', 'Program', f'Uploading {dataType} to mount')
 
         url = self.app.mount.host[0]
-        self.uploadPopup = UploadPopup(self, url=url, dataTypes=['comet'],
+        self.uploadPopup = UploadPopup(self, url=url, dataTypes=[dataType],
                                        dataFilePath=self.tempDir)
-        self.uploadPopup.worker.signals.finished.connect(
+        self.uploadPopup.workerStatus.signals.finished.connect(
             self.finishProgMinorPlanets)
         return suc
 

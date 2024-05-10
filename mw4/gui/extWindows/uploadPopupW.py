@@ -110,7 +110,7 @@ class UploadPopup(toolsQtWidget.MWidget):
             fullDataFilePath = os.path.join(self.dataFilePath, dataNames[dataType])
             files[dataType] = (dataNames[dataType], open(fullDataFilePath, 'r'))
 
-        self.log.debug(f'Data: {files} added')
+        self.log.debug(f'Data: {files.keys()} added')
         url = f'http://{self.url}/bin/uploadst'
         returnValues = requests.delete(url)
         if returnValues.status_code != 200:
@@ -139,7 +139,7 @@ class UploadPopup(toolsQtWidget.MWidget):
         """
         :return:
         """
-        timeoutCounter = 20
+        timeoutCounter = 10
         self.signalStatus.emit('Uploading data to mount...')
         while self.pollStatusRunState:
             url = f'http://{self.url}/bin/uploadst'
@@ -152,7 +152,7 @@ class UploadPopup(toolsQtWidget.MWidget):
 
             tRaw = returnValues.text
             text = tRaw.strip('\n').split('\n')
-            print(f'>{text}< [{tRaw}]')
+            # print(f'>{text}< [{tRaw}]')
             single = len(text) == 1
             multiple = len(text) > 1
 
@@ -168,8 +168,22 @@ class UploadPopup(toolsQtWidget.MWidget):
                 self.signalStatus.emit(text[-1])
                 self.returnValues['successMount'] = False
 
+            elif multiple and text[-1].endswith('file failed'):
+                self.pollStatusRunState = False
+                self.sendProgressValue('100')
+                self.signalStatus.emit(text[-1])
+                self.returnValues['successMount'] = False
+
             elif multiple and text[-1].endswith('elements saved.'):
                 self.returnValues['successMount'] = True
+                self.returnValues['success'] = True
+                self.sendProgressValue('100')
+                self.signalStatus.emit(text[-1])
+                self.pollStatusRunState = False
+
+            elif multiple and text[-1].endswith('data updated.'):
+                self.returnValues['successMount'] = True
+                self.returnValues['success'] = True
                 self.sendProgressValue('100')
                 self.signalStatus.emit(text[-1])
                 self.pollStatusRunState = False
@@ -182,11 +196,8 @@ class UploadPopup(toolsQtWidget.MWidget):
                 if timeoutCounter < 0:
                     self.pollStatusRunState = False
                     self.returnValues['successMount'] = False
-                print(f'{tRaw}, {timeoutCounter}')
 
-                self.signalStatus.emit(text[-1])
-
-            sleepAndEvents(250)
+            sleepAndEvents(500)
 
     def closePopup(self, result):
         """
@@ -204,6 +215,7 @@ class UploadPopup(toolsQtWidget.MWidget):
                 self.signalProgressBarColor.emit('green')
             else:
                 self.signalProgressBarColor.emit('red')
+                sleepAndEvents(2000)
 
         sleepAndEvents(1000)
         self.close()

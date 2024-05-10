@@ -691,6 +691,8 @@ class SatSearch(object):
         url = self.app.mount.host[0]
         self.uploadPopup = UploadPopup(self, url=url, dataTypes=['tle'],
                                        dataFilePath=self.tempDir)
+        self.uploadPopup.workerStatus.signals.finished.connect(
+            self.finishProgSatellites)
         return suc
 
     def satelliteFilter(self, satellitesRaw):

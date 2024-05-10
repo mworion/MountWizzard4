@@ -105,7 +105,7 @@ class IERSTime:
         self.msg.emit(0, 'IERS', 'Program', 'Uploading to mount')
         self.uploadPopup = UploadPopup(self, url=url, dataTypes=dataTypes,
                                        dataFilePath=self.tempDir)
-        self.uploadPopup.worker.signals.finished.connect(
+        self.uploadPopup.workerStatus.signals.finished.connect(
             self.finishProgEarthRotationData)
         return True
 

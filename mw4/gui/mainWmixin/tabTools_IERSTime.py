@@ -21,6 +21,7 @@ from PyQt6.QtWidgets import QListView
 
 # local import
 from gui.extWindows.downloadPopupW import DownloadPopup
+from gui.extWindows.uploadPopupW import UploadPopup
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
@@ -87,16 +88,11 @@ class IERSTime:
                           'Data could not be exported - stopping')
             return False
 
+        dataTypes = ['finalsdata', 'leapsec']
         self.msg.emit(0, 'IERS', 'Program', 'Uploading to mount')
-        suc = self.databaseProcessing.progDataToMount(
-            dataTypes=['leapsec', 'finalsdata'],
-            dataFilePath=self.tempDir)
-        if not suc:
-            self.msg.emit(2, 'IERS', 'Program error',
-                          'Uploading error but files available')
-        else:
-            self.msg.emit(1, 'IERS', 'Program', 'Successful uploaded')
-        return suc
+        UploadPopup(self, dataTypes=dataTypes, dataFilePath=self.tempDir)
+        self.msg.emit(1, 'IERS', 'Program', 'Successfully uploaded')
+        return True
 
     def loadTimeDataFromSourceURLs(self):
         """

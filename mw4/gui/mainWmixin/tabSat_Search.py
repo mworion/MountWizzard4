@@ -29,6 +29,7 @@ from skyfield import almanac
 from base.tpool import Worker
 from logic.databaseProcessing.dataWriter import DataWriter
 from gui.utilities.toolsQtWidget import QCustomTableWidgetItem
+from gui.extWindows.uploadPopupW import UploadPopup
 
 
 class SatSearch(object):
@@ -676,13 +677,8 @@ class SatSearch(object):
             return False
 
         self.msg.emit(0, 'TLE', 'Program', 'Uploading to mount')
-        suc = self.databaseProcessing.progDataToMount(dataTypes=['tle'],
-                                                      dataFilePath=self.tempDir)
-        if not suc:
-            self.msg.emit(2, 'TLE', 'Program error',
-                          'Uploading error but files available')
-        else:
-            self.msg.emit(1, 'TLE', 'Program', 'Successful uploaded')
+        UploadPopup(self, dataTypes=['tle'], dataFilePath=self.tempDir)
+        self.msg.emit(1, 'TLE', 'Program', 'Successful uploaded')
         return suc
 
     def satelliteFilter(self, satellitesRaw):

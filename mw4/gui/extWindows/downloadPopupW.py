@@ -42,13 +42,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
     signalProgress = pyqtSignal(object)
     signalProgressBarColor = pyqtSignal(object)
 
-    def __init__(self,
-                 parentWidget,
-                 url='',
-                 dest='',
-                 unzip=True,
-                 ):
-
+    def __init__(self, parentWidget, url='', dest='', unzip=True):
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
@@ -67,8 +61,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.threadPool = parentWidget.threadPool
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
-        self.downloadFile(url, dest, unzip=unzip)
         self.show()
+        self.downloadFile(url, dest, unzip=unzip)
 
     def setProgressBarColor(self, color):
         """

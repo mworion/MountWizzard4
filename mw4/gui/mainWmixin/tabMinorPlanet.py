@@ -24,6 +24,7 @@ from PyQt6.QtWidgets import QListView
 # local import
 from logic.databaseProcessing.dataWriter import DataWriter
 from gui.extWindows.downloadPopupW import DownloadPopup
+from gui.extWindows.uploadPopupW import UploadPopup
 
 
 class MinorPlanet:
@@ -187,7 +188,7 @@ class MinorPlanet:
         isOnline = self.ui.isOnline.isChecked()
         if isOnline:
             self.msg.emit(1, 'MPC', 'Download', f'{source}')
-            DownloadPopup(self, url=url, dest=dest, callBack=self.processSourceData)
+            DownloadPopup(self, url=url, dest=dest)
         return True
 
     def progMinorPlanets(self, mpc):
@@ -211,13 +212,9 @@ class MinorPlanet:
             return False
 
         self.msg.emit(0, 'MPC', 'Program', f'Uploading {dataType} to mount')
-        suc = self.databaseProcessing.progDataToMount(dataTypes=[dataType],
-                                                      dataFilePath=self.tempDir)
-        if not suc:
-            self.msg.emit(2, 'MPC', 'Program error',
-                          'Uploading error but files available')
-        else:
-            self.msg.emit(1, 'MPC', 'Program', 'Successful uploaded')
+
+        UploadPopup(self, dataTypes=[dataType], dataFilePath=self.tempDir)
+        self.msg.emit(1, 'MPC', 'Program', 'Successful uploaded')
         return suc
 
     def mpcFilter(self, mpcRaw):

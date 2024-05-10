@@ -46,7 +46,6 @@ class UploadPopup(toolsQtWidget.MWidget):
         self.ui.setupUi(self)
         self.returnValues = {'success': False}
         self.parentWidget = parentWidget
-        self.msg = parentWidget.app.msg
         self.worker = None
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
@@ -121,7 +120,7 @@ class UploadPopup(toolsQtWidget.MWidget):
 
         self.setProgressBarToValue(20)
         url = f'http://{baseURL}/bin/upload'
-        r = requests.post(url, files=monitor)
+        r = requests.post(url, files=files)
         if r.status_code != 202:
             self.log.debug(f'Error uploading data: {r.status_code}')
             self.setProgressBarToValue(100)

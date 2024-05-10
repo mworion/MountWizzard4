@@ -232,7 +232,7 @@ class Model:
     def saveModelFinish(self):
         """
         saveModelFinish is the callback after the new model data is loaded from
-        the mount computer. first is disables the signals. New we have the
+        the mount computer. first is disabling the signals. New we have the
         original model build data which was programmed to the mount and the
         retrieved model data after the mount optimized the model. retrofitModel()
         combines this data to a signal data structure. after that it saves the

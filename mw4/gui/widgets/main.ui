@@ -135,7 +135,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -20591,7 +20591,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>60</y>
+          <y>25</y>
           <width>351</width>
           <height>26</height>
          </rect>
@@ -20607,7 +20607,7 @@ Next point in time when satellite settles.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>60</y>
           <width>351</width>
           <height>26</height>
          </rect>
@@ -20616,7 +20616,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual in /data existing earth rotation data to the mount computer. Therefore MW4 uses the built in databases from IERS service finals.data and the actual tai-utc.dat. it downloads the data first.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Download IERS data and program to mount</string>
+         <string>Program IERS to mount</string>
         </property>
        </widget>
        <widget class="QComboBox" name="iersSource">

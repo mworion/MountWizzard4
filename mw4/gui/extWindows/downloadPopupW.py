@@ -47,14 +47,12 @@ class DownloadPopup(toolsQtWidget.MWidget):
                  url='',
                  dest='',
                  unzip=True,
-                 callBack=None,
                  ):
 
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
         self.returnValues = {'success': False}
-        self.callBack = callBack
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.worker = None
@@ -174,9 +172,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :return:
         """
         self.setVisible(False)
-        if result:
-            self.callBack()
-
         self.close()
         return True
 
@@ -187,12 +182,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param unzip:
         :return:
         """
-        self.worker = Worker(self.downloadFileWorker, url=url, dest=dest,
-                             unzip=unzip)
-        if self.callBack:
-            self.worker.signals.result.connect(self.processResult)
-        else:
-            self.worker.signals.result.connect(self.close)
-
+        self.worker = Worker(self.downloadFileWorker,
+                             url=url, dest=dest, unzip=unzip)
+        self.worker.signals.result.connect(self.close)
         self.threadPool.start(self.worker)
         return True

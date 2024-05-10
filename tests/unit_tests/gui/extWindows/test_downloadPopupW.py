@@ -42,7 +42,6 @@ def function(qapp):
         window = DownloadPopup(parentWidget=widget,
                                url='',
                                dest='',
-                               callBack=None,
                                )
     yield window
 

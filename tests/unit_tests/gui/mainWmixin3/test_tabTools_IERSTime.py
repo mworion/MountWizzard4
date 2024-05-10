@@ -102,23 +102,6 @@ def test_progEarthRotationData_3(function):
             assert suc
 
 
-def test_startProgEarthRotationDataToMount_1(function):
-    function.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
-                           'DownloadPopup'):
-        suc = function.startProgEarthRotationDataToMount()
-        assert suc
-
-
-def test_startProgEarthRotationDataToMount_2(function):
-    function.ui.isOnline.setChecked(False)
-    with mock.patch.object(function,
-                           'progEarthRotationData',
-                           return_value=True):
-        suc = function.startProgEarthRotationDataToMount()
-        assert not suc
-
-
 def test_loadTimeDataFromSourceURLs_1(function):
     function.ui.isOnline.setChecked(False)
     with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,

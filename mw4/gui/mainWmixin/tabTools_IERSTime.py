@@ -36,7 +36,7 @@ class IERSTime:
             'Maia from usno.navy.mil': 'https://maia.usno.navy.mil/ser7/',
         }
 
-        self.ui.progEarthRotationData.clicked.connect(self.startProgEarthRotationDataToMount)
+        self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationData)
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
 
     def initConfig(self):
@@ -97,25 +97,6 @@ class IERSTime:
         else:
             self.msg.emit(1, 'IERS', 'Program', 'Successful uploaded')
         return suc
-
-    def startProgEarthRotationDataToMount(self):
-        """
-        :return:
-        """
-        isOnline = self.ui.isOnline.isChecked()
-        if not isOnline:
-            return False
-
-        sourceURL = self.ui.iersSource.currentText()
-        urlMain = self.iersSourceURLs[sourceURL]
-
-        source = 'finals.data'
-        url = urlMain + source
-        dest = self.app.mwGlob['dataDir'] + '/' + source
-        self.msg.emit(1, 'IERS', 'Download', f'{source}')
-        DownloadPopup(self, url=url, dest=dest, unzip=False,
-                      callBack=self.progEarthRotationData)
-        return True
 
     def loadTimeDataFromSourceURLs(self):
         """

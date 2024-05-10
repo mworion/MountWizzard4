@@ -46,6 +46,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {'success': False}
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
@@ -136,19 +137,11 @@ class DownloadPopup(toolsQtWidget.MWidget):
                 raise FileNotFoundError
         except TimeoutError:
             self.msg.emit(2, 'Download', 'Timeout', f'{url}')
-            self.signalProgressBarColor.emit('red')
-            sleepAndEvents(1000)
             return False
         except Exception as e:
             self.msg.emit(2, 'Download', 'Error', f'{url}')
             self.log.warning(f'General error [{url}], {e}')
-            self.signalProgressBarColor.emit('red')
-            sleepAndEvents(1000)
             return False
-        else:
-            self.signalProgressBarColor.emit('green')
-        finally:
-            sleepAndEvents(1000)
 
         if not unzip:
             return True
@@ -161,11 +154,18 @@ class DownloadPopup(toolsQtWidget.MWidget):
             return False
         return True
 
-    def processResult(self, result):
+    def closePopup(self, result):
         """
         :return:
         """
-        self.setVisible(False)
+        self.signalProgress.emit(100)
+        if result:
+            self.signalProgressBarColor.emit('green')
+        else:
+            self.signalProgressBarColor.emit('red')
+
+        self.returnValues['success'] = result
+        sleepAndEvents(1000)
         self.close()
         return True
 
@@ -178,6 +178,6 @@ class DownloadPopup(toolsQtWidget.MWidget):
         """
         self.worker = Worker(self.downloadFileWorker,
                              url=url, dest=dest, unzip=unzip)
-        self.worker.signals.result.connect(self.close)
+        self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)
         return True

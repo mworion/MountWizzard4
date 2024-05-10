@@ -40,25 +40,27 @@ class UploadPopup(toolsQtWidget.MWidget):
     signalProgress = pyqtSignal(object)
     signalProgressBarColor = pyqtSignal(object)
 
-    def __init__(self, parentWidget, dataTypes, dataFilePath):
+    def __init__(self, parentWidget, url, dataTypes, dataFilePath):
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {'success': False}
         self.parentWidget = parentWidget
+        self.url = url
+        self.dataTypes = dataTypes
+        self.dataFilePath = dataFilePath
         self.worker = None
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
-
         self.setWindowTitle('Uploading to mount')
-
         self.threadPool = parentWidget.threadPool
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.show()
-        self.uploadFile(dataTypes=dataTypes, dataFilePath=dataFilePath)
+        self.uploadFile()
 
     def setProgressBarColor(self, color):
         """
@@ -85,10 +87,8 @@ class UploadPopup(toolsQtWidget.MWidget):
         self.setProgressBarToValue(100)
         return True
 
-    def uploadFileWorker(self, dataTypes, dataFilePath):
+    def uploadFileWorker(self):
         """
-        :param dataTypes:
-        :param dataFilePath:
         :return:
         """
         dataNames = {'comet': 'minorPlanets.mpc',
@@ -98,53 +98,51 @@ class UploadPopup(toolsQtWidget.MWidget):
                      'finalsdata': 'finals.data'}
 
         files = {}
-        for dataType in dataTypes:
+        for dataType in self.dataTypes:
             if dataType not in dataNames:
                 return False
-            fullDataFilePath = os.path.join(dataFilePath, dataNames[dataType])
+            fullDataFilePath = os.path.join(self.dataFilePath, dataNames[dataType])
             files[dataType] = (dataNames[dataType], open(fullDataFilePath, 'r'))
         self.log.debug(f'Data: {files} added')
 
         multipartE = MultipartEncoder(fields=files)
         monitor = MultipartEncoderMonitor(multipartE, self.setMultipartProgressBar)
 
-        baseURL = self.app.mount.host[0]
-        url = f'http://{baseURL}/bin/uploadst'
-        self.setProgressBarToValue(0)
+        url = f'http://{self.url}/bin/uploadst'
         r = requests.delete(url)
         if r.status_code != 200:
             self.log.debug(f'Error deleting files: {r.status_code}')
-            self.setProgressBarToValue(100)
-            self.setProgressBarColor('red')
             return False
 
-        self.setProgressBarToValue(20)
-        url = f'http://{baseURL}/bin/upload'
+        self.signalProgress.emit(20)
+        url = f'http://{self.url}/bin/upload'
         r = requests.post(url, files=files)
         if r.status_code != 202:
             self.log.debug(f'Error uploading data: {r.status_code}')
-            self.setProgressBarToValue(100)
-            self.setProgressBarColor('red')
             return False
-
-        self.setProgressBarToValue(100)
         return True
 
-    def closePopup(self):
+    def closePopup(self, result):
         """
+        :param result:
         :return:
         """
-        sleepAndEvents(2000)
+        self.signalProgress.emit(100)
+        if result:
+            self.signalProgressBarColor.emit('green')
+        else:
+            self.signalProgressBarColor.emit('red')
+
+        self.returnValues['success'] = result
+        sleepAndEvents(1000)
         self.close()
         return True
 
-    def uploadFile(self, dataTypes, dataFilePath):
+    def uploadFile(self):
         """
-        :param dataTypes:
-        :param dataFilePath:
         :return:
         """
-        self.worker = Worker(self.uploadFileWorker, dataTypes, dataFilePath)
+        self.worker = Worker(self.uploadFileWorker)
         self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)
         return True

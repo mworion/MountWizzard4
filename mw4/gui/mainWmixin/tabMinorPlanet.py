@@ -35,6 +35,7 @@ class MinorPlanet:
         self.databaseProcessing = DataWriter(self.app)
         self.minorPlanets = {}
         self.minorPlanet = None
+        self.uploadPopup = None
         self.listMinorPlanetNamesProxy = None
         self.tempDir = self.app.mwGlob['tempDir']
 
@@ -191,6 +192,16 @@ class MinorPlanet:
             DownloadPopup(self, url=url, dest=dest)
         return True
 
+    def finishProgMinorPlanets(self):
+        """
+        :return:
+        """
+        if self.uploadPopup.returnValues['success']:
+            self.msg.emit(1, 'MPC', 'Program', 'Successful uploaded')
+        else:
+            self.msg.emit(2, 'MPC', 'Program', 'Upload failed')
+        return True
+
     def progMinorPlanets(self, mpc):
         """
         :param mpc:
@@ -213,8 +224,11 @@ class MinorPlanet:
 
         self.msg.emit(0, 'MPC', 'Program', f'Uploading {dataType} to mount')
 
-        UploadPopup(self, dataTypes=[dataType], dataFilePath=self.tempDir)
-        self.msg.emit(1, 'MPC', 'Program', 'Successful uploaded')
+        url = self.app.mount.host[0]
+        self.uploadPopup = UploadPopup(self, url=url, dataTypes=[dataType],
+                                       dataFilePath=self.tempDir)
+        self.uploadPopup.worker.signals.finished.connect(
+            self.finishProgMinorPlanets)
         return suc
 
     def mpcFilter(self, mpcRaw):

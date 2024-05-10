@@ -67,6 +67,7 @@ class SatSearch(object):
         self.satTableDynamicValid = False
         self.databaseProcessing = DataWriter(self.app)
         self.tempDir = self.app.mwGlob['tempDir']
+        self.uploadPopup = None
 
         baseUrl = 'http://www.celestrak.org/NORAD/elements/'
         self.satelliteSourceURLs = {
@@ -664,6 +665,16 @@ class SatSearch(object):
         self.threadPool.start(worker)
         return True
 
+    def finishProgSatellites(self):
+        """
+        :return:
+        """
+        if self.uploadPopup.returnValues['success']:
+            self.msg.emit(1, 'TLE', 'Program', 'Successful uploaded')
+        else:
+            self.msg.emit(1, 'TLE', 'Program', 'Upload failed')
+        return True
+
     def progSatellites(self, satellites):
         """
         :param satellites:
@@ -677,8 +688,9 @@ class SatSearch(object):
             return False
 
         self.msg.emit(0, 'TLE', 'Program', 'Uploading to mount')
-        UploadPopup(self, dataTypes=['tle'], dataFilePath=self.tempDir)
-        self.msg.emit(1, 'TLE', 'Program', 'Successful uploaded')
+        url = self.app.mount.host[0]
+        self.uploadPopup = UploadPopup(self, url=url, dataTypes=['tle'],
+                                       dataFilePath=self.tempDir)
         return suc
 
     def satelliteFilter(self, satellitesRaw):

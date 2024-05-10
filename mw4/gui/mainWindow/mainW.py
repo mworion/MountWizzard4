@@ -624,10 +624,14 @@ class MainWindow(
             self.ui.refractionGroup.setEnabled(True)
             self.ui.dsoGroup.setEnabled(True)
             self.ui.mountCommandTable.setEnabled(True)
+            self.ui.mountUpdateTimeDelta.setEnabled(True)
+            self.ui.mountUpdateFirmware.setEnabled(True)
         else:
             self.ui.dsoGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
             self.ui.mountCommandTable.setEnabled(False)
+            self.ui.mountUpdateTimeDelta.setEnabled(False)
+            self.ui.mountUpdateFirmware.setEnabled(False)
 
         if isDomeReady and isMountReady:
             self.ui.useDomeAz.setEnabled(True)

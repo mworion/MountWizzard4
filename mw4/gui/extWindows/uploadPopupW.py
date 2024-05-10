@@ -16,17 +16,17 @@
 ###########################################################
 # standard libraries
 import os
+import re
 
 # external packages
 from PyQt6.QtCore import Qt, pyqtSignal
 import requests
-from requests_toolbelt import MultipartEncoder, MultipartEncoderMonitor
 
 # local import
 from gui.utilities import toolsQtWidget
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
-from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
+from gui.widgets.uploadPopup_ui import Ui_UploadPopup
 
 
 class UploadPopup(toolsQtWidget.MWidget):
@@ -34,29 +34,35 @@ class UploadPopup(toolsQtWidget.MWidget):
     the DevicePopup window class handles
 
     """
+    PROGRESS_DONE = 100
+    CYCLES_WAIT = 20
 
     __all__ = ['UploadPopup']
 
     signalProgress = pyqtSignal(object)
+    signalStatus = pyqtSignal(object)
     signalProgressBarColor = pyqtSignal(object)
 
     def __init__(self, parentWidget, url, dataTypes, dataFilePath):
         super().__init__()
-        self.ui = Ui_DownloadPopup()
+        self.ui = Ui_UploadPopup()
         self.ui.setupUi(self)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
-        self.returnValues = {'success': False}
+        self.returnValues = {'success': False, 'successMount': False}
         self.parentWidget = parentWidget
         self.url = url
         self.dataTypes = dataTypes
         self.dataFilePath = dataFilePath
         self.worker = None
+        self.workerStatus = None
+        self.pollStatusRunState = False
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
         self.setWindowTitle('Uploading to mount')
         self.threadPool = parentWidget.threadPool
+        self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.show()
@@ -79,12 +85,12 @@ class UploadPopup(toolsQtWidget.MWidget):
         self.ui.progressBar.setValue(progressPercent)
         return True
 
-    def setMultipartProgressBar(self, monitor):
+    def setStatusTextToValue(self, statusText):
         """
-        :param monitor:
-        :return:
+        :param statusText:
+        :return: True for test purpose
         """
-        self.setProgressBarToValue(100)
+        self.ui.statusText.setText(statusText)
         return True
 
     def uploadFileWorker(self):
@@ -103,37 +109,102 @@ class UploadPopup(toolsQtWidget.MWidget):
                 return False
             fullDataFilePath = os.path.join(self.dataFilePath, dataNames[dataType])
             files[dataType] = (dataNames[dataType], open(fullDataFilePath, 'r'))
+
         self.log.debug(f'Data: {files} added')
-
-        multipartE = MultipartEncoder(fields=files)
-        monitor = MultipartEncoderMonitor(multipartE, self.setMultipartProgressBar)
-
         url = f'http://{self.url}/bin/uploadst'
-        r = requests.delete(url)
-        if r.status_code != 200:
-            self.log.debug(f'Error deleting files: {r.status_code}')
+        returnValues = requests.delete(url)
+        if returnValues.status_code != 200:
+            self.log.debug(f'Error deleting files: {returnValues.status_code}')
             return False
 
-        self.signalProgress.emit(20)
+        self.pollStatusRunState = True
+        self.threadPool.start(self.workerStatus)
         url = f'http://{self.url}/bin/upload'
-        r = requests.post(url, files=files)
-        if r.status_code != 202:
-            self.log.debug(f'Error uploading data: {r.status_code}')
+        returnValues = requests.post(url, files=files)
+        if returnValues.status_code != 202:
+            self.log.debug(f'Error uploading data: {returnValues.status_code}')
             return False
+
         return True
+
+    def sendProgressValue(self, text):
+        """
+        :param text:
+        :return:
+        """
+        progressValue = int(re.search(r'\d+', text).group())
+        self.signalProgress.emit(progressValue)
+
+    def pollStatus(self):
+        """
+        :return:
+        """
+        timeoutCounter = 20
+        self.signalStatus.emit('Uploading data to mount...')
+        while self.pollStatusRunState:
+            url = f'http://{self.url}/bin/uploadst'
+            returnValues = requests.get(url)
+            if returnValues.status_code != 200:
+                self.log.debug(f'Error status: {returnValues.status_code}')
+                self.pollStatusRunState = False
+                self.returnValues['successMount'] = False
+                return False
+
+            tRaw = returnValues.text
+            text = tRaw.strip('\n').split('\n')
+            print(f'>{text}< [{tRaw}]')
+            single = len(text) == 1
+            multiple = len(text) > 1
+
+            if single and text[0].startswith('Uploading'):
+                self.signalStatus.emit(text[0])
+
+            elif single and text[0].startswith('Processing'):
+                self.signalStatus.emit(text[0])
+
+            elif multiple and text[-1].endswith('elements file.'):
+                self.pollStatusRunState = False
+                self.sendProgressValue('100')
+                self.signalStatus.emit(text[-1])
+                self.returnValues['successMount'] = False
+
+            elif multiple and text[-1].endswith('elements saved.'):
+                self.returnValues['successMount'] = True
+                self.sendProgressValue('100')
+                self.signalStatus.emit(text[-1])
+                self.pollStatusRunState = False
+
+            elif multiple and text[-1][0].isdigit():
+                self.sendProgressValue(text[-1])
+
+            else:
+                timeoutCounter -= 1
+                if timeoutCounter < 0:
+                    self.pollStatusRunState = False
+                    self.returnValues['successMount'] = False
+                print(f'{tRaw}, {timeoutCounter}')
+
+                self.signalStatus.emit(text[-1])
+
+            sleepAndEvents(250)
 
     def closePopup(self, result):
         """
         :param result:
         :return:
         """
-        self.signalProgress.emit(100)
-        if result:
-            self.signalProgressBarColor.emit('green')
-        else:
-            self.signalProgressBarColor.emit('red')
-
         self.returnValues['success'] = result
+        if not result:
+            self.pollStatusRunState = False
+            self.signalProgressBarColor.emit('red')
+        else:
+            while self.pollStatusRunState:
+                sleepAndEvents(250)
+            if self.returnValues['successMount']:
+                self.signalProgressBarColor.emit('green')
+            else:
+                self.signalProgressBarColor.emit('red')
+
         sleepAndEvents(1000)
         self.close()
         return True
@@ -145,4 +216,5 @@ class UploadPopup(toolsQtWidget.MWidget):
         self.worker = Worker(self.uploadFileWorker)
         self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)
+        self.workerStatus = Worker(self.pollStatus)
         return True

@@ -36,6 +36,7 @@ class MinorPlanet:
         self.minorPlanets = {}
         self.minorPlanet = None
         self.uploadPopup = None
+        self.downloadPopup = None
         self.listMinorPlanetNamesProxy = None
         self.tempDir = self.app.mwGlob['tempDir']
 
@@ -186,10 +187,9 @@ class MinorPlanet:
         url = self.mpcPrefix + self.minorPlanetSourceURLs[source]
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
 
-        isOnline = self.ui.isOnline.isChecked()
-        if isOnline:
-            self.msg.emit(1, 'MPC', 'Download', f'{source}')
-            DownloadPopup(self, url=url, dest=dest)
+        self.msg.emit(1, 'MPC', 'Download', f'{source}')
+        self.downloadPopup = DownloadPopup(self, url=url, dest=dest)
+        self.downloadPopup.worker.signals.finished.connect(self.processSourceData)
         return True
 
     def finishProgMinorPlanets(self):
@@ -225,7 +225,7 @@ class MinorPlanet:
         self.msg.emit(0, 'MPC', 'Program', f'Uploading {dataType} to mount')
 
         url = self.app.mount.host[0]
-        self.uploadPopup = UploadPopup(self, url=url, dataTypes=[dataType],
+        self.uploadPopup = UploadPopup(self, url=url, dataTypes=['comet'],
                                        dataFilePath=self.tempDir)
         self.uploadPopup.worker.signals.finished.connect(
             self.finishProgMinorPlanets)

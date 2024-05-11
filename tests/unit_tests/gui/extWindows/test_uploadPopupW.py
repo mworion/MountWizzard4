@@ -61,6 +61,70 @@ def test_setStatusTextToValue(function):
     assert function.ui.statusText.text() == 'test'
 
 
+def test_uploadFileWorker_1(function):
+    function.dataTypes = ['test']
+    suc = function.uploadFileWorker()
+    assert not suc
+
+
+def test_uploadFileWorker_2(function):
+    class Test:
+        status_code = 202
+
+    function.dataTypes = ['comet']
+    with mock.patch.object(builtins,
+                           'open'):
+        with mock.patch.object(requests,
+                               'delete',
+                               return_value=Test()):
+            suc = function.uploadFileWorker()
+            assert not suc
+
+
+def test_uploadFileWorker_3(function):
+    class Test:
+        status_code = 200
+
+    class Test1:
+        status_code = 404
+
+    function.dataTypes = ['comet']
+    with mock.patch.object(builtins,
+                           'open'):
+        with mock.patch.object(requests,
+                               'delete',
+                               return_value=Test()):
+            with mock.patch.object(function.threadPool,
+                                   'start'):
+                with mock.patch.object(requests,
+                                       'post',
+                                       return_value=Test1()):
+                    suc = function.uploadFileWorker()
+                    assert not suc
+
+
+def test_uploadFileWorker_4(function):
+    class Test:
+        status_code = 200
+
+    class Test1:
+        status_code = 202
+
+    function.dataTypes = ['comet']
+    with mock.patch.object(builtins,
+                           'open'):
+        with mock.patch.object(requests,
+                               'delete',
+                               return_value=Test()):
+            with mock.patch.object(function.threadPool,
+                                   'start'):
+                with mock.patch.object(requests,
+                                       'post',
+                                       return_value=Test1()):
+                    suc = function.uploadFileWorker()
+                    assert suc
+
+
 def test_sendProgressValue(function):
     suc = function.sendProgressValue('12')
     assert suc

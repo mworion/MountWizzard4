@@ -132,7 +132,7 @@ def version_doc(c):
             _, number, _ = line.split("'")
 
     # reading configuration file
-    with open('./doc/source/conf.py', 'r') as conf:
+    with open('./doc/conf.py', 'r') as conf:
         text = conf.readlines()
     textNew = list()
 
@@ -147,7 +147,7 @@ def version_doc(c):
         textNew.append(line)
 
     # writing configuration file
-    with open('./doc/source/conf.py', 'w+') as conf:
+    with open('./doc/conf.py', 'w+') as conf:
         conf.writelines(textNew)
     printMW('changing the version number to setup.py finished\n')
 

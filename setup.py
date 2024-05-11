@@ -91,7 +91,7 @@ setup(
         'python-dateutil==2.9.0.post0',
         'wakeonlan==3.1.0',
         'pybase64==1.3.2',
-        'websocket-client==1.7.0',
+        'websocket-client==1.8.0',
         'hidapi==0.14.0',
         'range-key-dict==1.1.0',
         'ndicts==0.3.0',

@@ -189,7 +189,7 @@ class Dome(object):
         """
         if azimuth is None:
             return False
-        if type(azimuth) == Angle:
+        if isinstance(azimuth, Angle):
             azimuth = azimuth.degrees
 
         azimuth = azimuth % 360

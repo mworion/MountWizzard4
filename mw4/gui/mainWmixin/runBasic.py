@@ -19,15 +19,15 @@ import queue
 import shutil
 import os
 
-
 # external packages
 from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
-from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
+from gui.utilities.toolsQtWidget import QMultiWait
 from base.packageConfig import isSimulationMount
 from gui.utilities.toolsQtWidget import sleepAndEvents
+
 
 class BasicRun:
     """

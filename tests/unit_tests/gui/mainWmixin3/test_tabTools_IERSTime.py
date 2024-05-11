@@ -25,6 +25,7 @@ from PyQt6.QtCore import QThreadPool
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.extWindows.uploadPopupW import UploadPopup
 import gui.utilities
 from gui.mainWmixin.tabTools_IERSTime import IERSTime
 from logic.databaseProcessing.dataWriter import DataWriter
@@ -72,34 +73,78 @@ def test_setupIERSSourceURLsDropDown(function):
     assert suc
 
 
+def test_finishProgEarthRotationData_1(function):
+    class Test:
+        returnValues = {'success': False}
+    function.uploadPopup = Test()
+    suc = function.finishProgEarthRotationData()
+    assert suc
+
+
+def test_finishProgEarthRotationData_2(function):
+    class Test:
+        returnValues = {'success': True}
+    function.uploadPopup = Test()
+    suc = function.finishProgEarthRotationData()
+    assert suc
+
+
 def test_progEarthRotationData_1(function):
+    function.app.mount.host = ('127.0.0.1', 3294)
     with mock.patch.object(function.databaseProcessing,
                            'writeEarthRotationData',
                            return_value=False):
-        suc = function.progEarthRotationData()
-        assert not suc
-
-
-def test_progEarthRotationData_2(function):
-    with mock.patch.object(function.databaseProcessing,
-                           'writeEarthRotationData',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'progDataToMount',
-                               return_value=False):
+        with mock.patch.object(UploadPopup,
+                               'show'):
             suc = function.progEarthRotationData()
             assert not suc
 
 
-def test_progEarthRotationData_3(function):
+def test_progEarthRotationData_2(function):
+    function.app.mount.host = ('127.0.0.1', 3294)
     with mock.patch.object(function.databaseProcessing,
                            'writeEarthRotationData',
                            return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'progDataToMount',
-                               return_value=True):
+        with mock.patch.object(UploadPopup,
+                               'show'):
             suc = function.progEarthRotationData()
             assert suc
+
+
+def test_finishLoadTimeDataFromSourceURLs_1(function):
+    class Test:
+        returnValues = {'success': False}
+    function.downloadPopup = Test()
+    suc = function.finishLoadTimeDataFromSourceURLs()
+    assert suc
+
+
+def test_finishLoadTimeDataFromSourceURLs_2(function):
+    class Test:
+        returnValues = {'success': True}
+    function.downloadPopup = Test()
+    suc = function.finishLoadTimeDataFromSourceURLs()
+    assert suc
+
+
+def test_finishLoadFinalsFromSourceURLs_1(function):
+    class Test:
+        returnValues = {'success': False}
+    function.downloadPopup = Test()
+    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+                           'DownloadPopup'):
+        suc = function.finishLoadFinalsFromSourceURLs()
+        assert not suc
+
+
+def test_finishLoadFinalsFromSourceURLs_2(function):
+    class Test:
+        returnValues = {'success': True}
+    function.downloadPopup = Test()
+    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+                           'DownloadPopup'):
+        suc = function.finishLoadFinalsFromSourceURLs()
+        assert suc
 
 
 def test_loadTimeDataFromSourceURLs_1(function):

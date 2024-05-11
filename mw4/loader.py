@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import html
 import json
 import locale
 import logging

@@ -405,13 +405,13 @@ class SatSearch(object):
 
             entry = QCustomTableWidgetItem(value)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
-                               Qt.AlignmentFlag.AlignVCenter)
+                                   Qt.AlignmentFlag.AlignVCenter)
             self.sigSetSatTableEntry.emit(row, 7, entry)
 
         if twilight is not None:
             entry = QTableWidgetItem(f'{twilight:1.0f}')
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
-                               Qt.AlignmentFlag.AlignVCenter)
+                                   Qt.AlignmentFlag.AlignVCenter)
             self.sigSetSatTableEntry.emit(row, 8, entry)
 
         return True

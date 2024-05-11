@@ -28,6 +28,7 @@ from PyQt6.QtCore import QThreadPool
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.extWindows.uploadPopupW import UploadPopup
 import gui.utilities
 from gui.mainWmixin.tabMinorPlanet import MinorPlanet
 from logic.databaseProcessing.dataWriter import DataWriter
@@ -226,6 +227,22 @@ def test_loadMPCDataFromSourceURLs_3(function):
             assert suc
 
 
+def test_finishProgMinorPlanets_1(function):
+    class Test:
+        returnValues = {'success': False}
+    function.uploadPopup = Test()
+    suc = function.finishProgMinorPlanets()
+    assert suc
+
+
+def test_finishProgMinorPlanets2(function):
+    class Test:
+        returnValues = {'success': True}
+    function.uploadPopup = Test()
+    suc = function.finishProgMinorPlanets()
+    assert suc
+
+
 def test_progMinorPlanets_1(function):
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
@@ -253,6 +270,7 @@ def test_progMinorPlanets_2(function):
 
 
 def test_progMinorPlanets_3(function):
+    function.app.mount.host = ('127.0.0.1', 3294)
     function.ui.minorPlanetSource.clear()
     function.ui.minorPlanetSource.addItem('Comet')
     function.ui.minorPlanetSource.setCurrentIndex(0)
@@ -261,25 +279,8 @@ def test_progMinorPlanets_3(function):
     with mock.patch.object(function.databaseProcessing,
                            'writeCometMPC',
                            return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'progDataToMount',
-                               return_value=False):
-            suc = function.progMinorPlanets(raw)
-            assert not suc
-
-
-def test_progMinorPlanets_4(function):
-    function.ui.minorPlanetSource.clear()
-    function.ui.minorPlanetSource.addItem('Comet')
-    function.ui.minorPlanetSource.setCurrentIndex(0)
-    raw = 'test'
-
-    with mock.patch.object(function.databaseProcessing,
-                           'writeCometMPC',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'progDataToMount',
-                               return_value=True):
+        with mock.patch.object(UploadPopup,
+                               'show'):
             suc = function.progMinorPlanets(raw)
             assert suc
 

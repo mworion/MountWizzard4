@@ -18,7 +18,6 @@
 import logging
 
 # external packages
-import PyQt6
 from PyQt6.QtCore import pyqtSignal, QObject
 from PyQt6.QtNetwork import QTcpSocket
 import xml.etree.ElementTree as ETree

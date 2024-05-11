@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import os
-import requests
 import logging
 import shutil
 

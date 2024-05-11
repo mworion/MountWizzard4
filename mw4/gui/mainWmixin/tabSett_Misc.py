@@ -160,7 +160,6 @@ class SettMisc(object):
         self.ui.gameControllerList.setCurrentIndex(config.get(
             'gameControllerList', 0))
 
-        isWindows = platform.system() == 'Windows'
         self.minimizeGUI()
         self.populateGameControllerList()
         self.setWeatherOnline()

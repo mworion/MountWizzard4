@@ -31,7 +31,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.extWindows.uploadPopupW import UploadPopup
 from gui.mainWmixin.tabSat_Search import SatSearch
-from gui.mainWmixin.tabSat_Track import  SatTrack
+from gui.mainWmixin.tabSat_Track import SatTrack
 from logic.databaseProcessing.dataWriter import DataWriter
 
 

@@ -24,6 +24,7 @@ runs:
         python -m pip install pyqt3d-qt5==5.15.2
         python -m pip install pyqt5-qt5==5.15.2
         python -m pip install pyqt5-sip==12.12.2
+        python -m pip install pyqt5==5.15.9
         python -m pip install dist/mountwizzard4.tar.gz
         python -m pip install pytest
         python -m pip install pytest-qt

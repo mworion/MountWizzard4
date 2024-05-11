@@ -22,6 +22,7 @@ releaseNotes = """
 - add: support for INDI Pegasus Uranus Meteo sensor
 - add: wait time after slew finished before exposing
 - change: writing pointing coordinates to fits header from MW4 now
+- change: celestrak interface url's and retrieval strategy
 - improve: add waiting time for image file save for NINA and SGPro 
 - improve: logging for NINA / SGPro controlled cameras
 - improve: gain handling when missing values in camera settings

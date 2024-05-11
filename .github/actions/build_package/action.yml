@@ -16,7 +16,7 @@ runs:
     - name: install #1
       run: |
         python -m pip install setuptools wheel
-        python -m pip install pyqt5-sip==12.12.2
+        # python -m pip install pyqt5-sip==12.12.2
       shell: bash
       
     - name: install #2

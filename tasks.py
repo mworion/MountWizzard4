@@ -83,6 +83,11 @@ client = {
         'work': 'test',
         'scp': 'mw@astro-mac-ventura.fritz.box:/Users/mw/test',
     },
+    'macSonoma': {
+        'user': 'mw@astro-mac-sonoma.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-mac-sonoma.fritz.box:/Users/mw/test',
+    },
 }
 
 
@@ -410,12 +415,22 @@ def test_macMonterey(c):
 
 @task(pre=[build_startup])
 def test_macVentura(c):
-    printMW('test Monterey install')
+    printMW('test Ventura install')
     user = client['macVentura']['user']
     work = client['macVentura']['work']
     scp = client['macVentura']['scp']
     test_mac(c, user, work, scp)
     printMW('test Ventura install finished\n')
+
+
+@task(pre=[build_startup])
+def test_macSonoma(c):
+    printMW('test Sonoma install')
+    user = client['macSonoma']['user']
+    work = client['macSonoma']['work']
+    scp = client['macSonoma']['scp']
+    test_mac(c, user, work, scp)
+    printMW('test Sonoma install finished\n')
 
 
 @task(pre=[version_doc])

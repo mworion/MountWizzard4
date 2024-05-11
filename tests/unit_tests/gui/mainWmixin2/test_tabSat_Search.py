@@ -20,20 +20,16 @@ from unittest import mock
 import os
 
 # external packages
-import skyfield.timelib
-from PyQt6.QtCore import QObject
 from PyQt6.QtCore import QThreadPool, QRect
-from PyQt6.QtCore import pyqtSignal, QModelIndex
 from PyQt6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite, Angle, wgs84
-from skyfield.units import Distance, Velocity, AngleRate, Rate
-from sgp4.exporter import export_tle
 import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
+from gui.extWindows.uploadPopupW import UploadPopup
 from gui.mainWmixin.tabSat_Search import SatSearch
 from gui.mainWmixin.tabSat_Track import  SatTrack
 from logic.databaseProcessing.dataWriter import DataWriter
@@ -780,29 +776,8 @@ def test_setupSatelliteNameList_2(function):
 
 
 def test_workerLoadDataFromSourceURLs_1(function):
-    with mock.patch.object(function.app.mount.obsSite.loader,
-                           'tle_file',
-                           return_value={}):
-        suc = function.workerLoadDataFromSourceURLs()
-        assert not suc
-
-
-def test_workerLoadDataFromSourceURLs_2(function):
-    source = 'test'
-    with mock.patch.object(function.app.mount.obsSite.loader,
-                           'tle_file',
-                           return_value={}):
-        with mock.patch.object(os.path,
-                               'isfile',
-                               return_value=False):
-            suc = function.workerLoadDataFromSourceURLs(source=source,
-                                                        isOnline=False)
-            assert not suc
-
-
-def test_workerLoadDataFromSourceURLs_3(function):
-    source = 'test'
     function.satSourceValid = False
+    function.ui.isOnline.setChecked(True)
     with mock.patch.object(function.app.mount.obsSite.loader,
                            'tle_file',
                            return_value={}):
@@ -811,11 +786,27 @@ def test_workerLoadDataFromSourceURLs_3(function):
                                return_value=True):
             with mock.patch.object(function.app.mount.obsSite.loader,
                                    'days_old',
-                                   return_value=5):
-                suc = function.workerLoadDataFromSourceURLs(source=source,
-                                                            isOnline=True)
+                                   return_value=0.5):
+                suc = function.workerLoadDataFromSourceURLs()
                 assert suc
                 assert function.satSourceValid
+
+
+def test_workerLoadDataFromSourceURLs_2(function):
+    function.satSourceValid = False
+    function.ui.isOnline.setChecked(False)
+    with mock.patch.object(function.app.mount.obsSite.loader,
+                           'tle_file',
+                           return_value={}):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(function.app.mount.obsSite.loader,
+                                   'days_old',
+                                   return_value=2):
+                suc = function.workerLoadDataFromSourceURLs()
+                assert not suc
+                assert not function.satSourceValid
 
 
 def test_loadDataFromSourceURLs_1(function):
@@ -837,6 +828,22 @@ def test_loadDataFromSourceURLs_3(function):
     assert suc
 
 
+def test_finishProgSatellites_1(function):
+    class Test:
+        returnValues = {'success': False}
+    function.uploadPopup = Test()
+    suc = function.finishProgSatellites()
+    assert suc
+
+
+def test_finishProgSatellites_2(function):
+    class Test:
+        returnValues = {'success': True}
+    function.uploadPopup = Test()
+    suc = function.finishProgSatellites()
+    assert suc
+
+
 def test_progSatellites_1(function):
     raw = 'test'
     with mock.patch.object(function.databaseProcessing,
@@ -848,24 +855,12 @@ def test_progSatellites_1(function):
 
 def test_progSatellites_2(function):
     raw = 'test'
+    function.app.mount.host=('127.0.0.1', 3294)
     with mock.patch.object(function.databaseProcessing,
                            'writeSatelliteTLE',
                            return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'progDataToMount',
-                               return_value=False):
-            suc = function.progSatellites(raw)
-            assert not suc
-
-
-def test_progSatellites_3(function):
-    raw = 'test'
-    with mock.patch.object(function.databaseProcessing,
-                           'writeSatelliteTLE',
-                           return_value=True):
-        with mock.patch.object(function.databaseProcessing,
-                               'progDataToMount',
-                               return_value=True):
+        with mock.patch.object(UploadPopup,
+                               'show'):
             suc = function.progSatellites(raw)
             assert suc
 

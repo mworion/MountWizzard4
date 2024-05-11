@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  branch: 'master'
+  branch: '3.2.0'
   
 on:
   push:

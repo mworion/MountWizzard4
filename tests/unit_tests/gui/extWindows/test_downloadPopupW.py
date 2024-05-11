@@ -39,10 +39,7 @@ def function(qapp):
     widget.threadPool = QThreadPool()
     with mock.patch.object(DownloadPopup,
                            'show'):
-        window = DownloadPopup(parentWidget=widget,
-                               url='',
-                               dest='',
-                               )
+        window = DownloadPopup(parentWidget=widget, url='', dest='')
     yield window
 
 
@@ -223,13 +220,30 @@ def test_downloadFileWorker_9(function):
                 assert not suc
 
 
-def test_processResult(function):
+def test_closePopup_1(function):
     def test():
         return
 
     function.callBack = test
-    suc = function.processResult(True)
-    assert suc
+    with mock.patch.object(function,
+                           'close'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
+            suc = function.closePopup(True)
+            assert suc
+
+
+def test_closePopup_2(function):
+    def test():
+        return
+
+    function.callBack = test
+    with mock.patch.object(function,
+                           'close'):
+        with mock.patch.object(gui.extWindows.downloadPopupW,
+                               'sleepAndEvents'):
+            suc = function.closePopup(False)
+            assert suc
 
 
 def test_downloadFile_1(function):

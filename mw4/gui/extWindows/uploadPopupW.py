@@ -56,6 +56,7 @@ class UploadPopup(toolsQtWidget.MWidget):
         self.worker = None
         self.workerStatus = None
         self.pollStatusRunState = False
+        self.timeoutCounter = 0
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
@@ -134,12 +135,60 @@ class UploadPopup(toolsQtWidget.MWidget):
         """
         progressValue = int(re.search(r'\d+', text).group())
         self.signalProgress.emit(progressValue)
+        return True
+
+    def pollDispatcher(self, text):
+        """
+        :param text:
+        :return:
+        """
+        single = len(text) == 1
+        multiple = len(text) > 1
+
+        if single and text[0].startswith('Uploading'):
+            self.signalStatus.emit(text[0])
+
+        elif single and text[0].startswith('Processing'):
+            self.signalStatus.emit(text[0])
+
+        elif multiple and text[-1].endswith('elements file.'):
+            self.pollStatusRunState = False
+            self.sendProgressValue('100')
+            self.signalStatus.emit(text[-1])
+            self.returnValues['successMount'] = False
+
+        elif multiple and text[-1].endswith('file failed'):
+            self.pollStatusRunState = False
+            self.sendProgressValue('100')
+            self.signalStatus.emit(text[-1])
+            self.returnValues['successMount'] = False
+
+        elif multiple and text[-1].endswith('elements saved.'):
+            self.returnValues['successMount'] = True
+            self.returnValues['success'] = True
+            self.sendProgressValue('100')
+            self.signalStatus.emit(text[-1])
+            self.pollStatusRunState = False
+
+        elif multiple and text[-1].endswith('data updated.'):
+            self.returnValues['successMount'] = True
+            self.returnValues['success'] = True
+            self.sendProgressValue('100')
+            self.signalStatus.emit(text[-1])
+            self.pollStatusRunState = False
+
+        elif multiple and text[-1][0].isdigit():
+            self.sendProgressValue(text[-1])
+
+        else:
+            return False
+        return True
 
     def pollStatus(self):
         """
         :return:
         """
-        timeoutCounter = 10
+        self.timeoutCounter = 10
         self.signalStatus.emit('Uploading data to mount...')
         while self.pollStatusRunState:
             url = f'http://{self.url}/bin/uploadst'
@@ -152,52 +201,15 @@ class UploadPopup(toolsQtWidget.MWidget):
 
             tRaw = returnValues.text
             text = tRaw.strip('\n').split('\n')
-            # print(f'>{text}< [{tRaw}]')
-            single = len(text) == 1
-            multiple = len(text) > 1
 
-            if single and text[0].startswith('Uploading'):
-                self.signalStatus.emit(text[0])
-
-            elif single and text[0].startswith('Processing'):
-                self.signalStatus.emit(text[0])
-
-            elif multiple and text[-1].endswith('elements file.'):
-                self.pollStatusRunState = False
-                self.sendProgressValue('100')
-                self.signalStatus.emit(text[-1])
-                self.returnValues['successMount'] = False
-
-            elif multiple and text[-1].endswith('file failed'):
-                self.pollStatusRunState = False
-                self.sendProgressValue('100')
-                self.signalStatus.emit(text[-1])
-                self.returnValues['successMount'] = False
-
-            elif multiple and text[-1].endswith('elements saved.'):
-                self.returnValues['successMount'] = True
-                self.returnValues['success'] = True
-                self.sendProgressValue('100')
-                self.signalStatus.emit(text[-1])
-                self.pollStatusRunState = False
-
-            elif multiple and text[-1].endswith('data updated.'):
-                self.returnValues['successMount'] = True
-                self.returnValues['success'] = True
-                self.sendProgressValue('100')
-                self.signalStatus.emit(text[-1])
-                self.pollStatusRunState = False
-
-            elif multiple and text[-1][0].isdigit():
-                self.sendProgressValue(text[-1])
-
-            else:
-                timeoutCounter -= 1
-                if timeoutCounter < 0:
+            if not self.pollDispatcher(text):
+                self.timeoutCounter -= 1
+                if self.timeoutCounter < 0:
                     self.pollStatusRunState = False
                     self.returnValues['successMount'] = False
 
             sleepAndEvents(500)
+        return True
 
     def closePopup(self, result):
         """

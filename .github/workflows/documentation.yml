@@ -23,7 +23,7 @@ on:
     paths:
       - 'doc/**'
       - '.github/actions/documentation.yml'
-j
+
 permissions:
   contents: write
 

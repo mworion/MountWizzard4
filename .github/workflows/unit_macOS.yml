@@ -47,6 +47,7 @@ jobs:
       - name: running_unit_tests
         run: |
           python -m pip install pyqt5-qt5==5.15.2
+          python -m pip install pyqt3d-qt5==5.15.2
           pytest tests/unit_tests/zLoader
           pytest tests/unit_tests/zUpdate
           pytest tests/unit_tests/zMainApp
@@ -67,6 +68,7 @@ jobs:
 
       - name: running_unit_tests
         run: |
+          python -m pip install pyqt3d-qt5==5.15.2
           python -m pip install pyqt5-qt5==5.15.2
           pytest tests/unit_tests/base
           pytest tests/unit_tests/logic
@@ -90,6 +92,7 @@ jobs:
       - name: running_unit_tests
         run: |
           python -m pip install pyqt5-qt5==5.15.2
+          python -m pip install pyqt3d-qt5==5.15.2
           pytest tests/unit_tests/gui/extWindows
 
   run_tests_macos_3:
@@ -108,6 +111,7 @@ jobs:
       - name: running_unit_tests
         run: |
           python -m pip install pyqt5-qt5==5.15.2
+          python -m pip install pyqt3d-qt5==5.15.2
           pytest tests/unit_tests/gui/mainWmixin1
 
   run_tests_macos_4:
@@ -126,6 +130,7 @@ jobs:
       - name: running_unit_tests
         run: |
           python -m pip install pyqt5-qt5==5.15.2
+          python -m pip install pyqt3d-qt5==5.15.2
           pytest tests/unit_tests/gui/mainWmixin2
 
   run_tests_macos_5:
@@ -144,4 +149,5 @@ jobs:
       - name: running_unit_tests
         run: |
           python -m pip install pyqt5-qt5==5.15.2
+          python -m pip install pyqt3d-qt5==5.15.2
           pytest tests/unit_tests/gui/mainWmixin3

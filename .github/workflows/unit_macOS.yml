@@ -30,6 +30,7 @@ on:
       - 'mw4/**'
       - 'tests/unit_tests/**'
       - 'setup.py'
+      - 'tox.ini'
       - '.github/workflows/unit_macOS.yml'
       - '.github/actions/build_package/action.yml'
       - '.github/actions/setup_test/action.yml'

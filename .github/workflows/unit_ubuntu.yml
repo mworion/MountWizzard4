@@ -30,6 +30,7 @@ on:
       - 'mw4/**'
       - 'tests/unit_tests/**'
       - 'setup.py'
+      - 'tox.ini'
       - '.github/workflows/unit_ubuntu.yml'
       - '.github/actions/install_ubuntu_head/action.yml'
       - '.github/actions/build_package/action.yml'

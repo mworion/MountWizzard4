@@ -67,23 +67,66 @@ class SatSearch(object):
         self.databaseProcessing = DataWriter(self.app)
         self.installPath = ''
 
-        baseUrl = 'http://www.celestrak.org/NORAD/elements/'
+        baseUrl = 'http://www.celestrak.org/NORAD/elements/gp.php?'
         self.satelliteSourceURLs = {
-            '100 brightest': baseUrl + 'visual.txt',
-            'Active': baseUrl + 'active.txt',
-            'Space Stations': baseUrl + 'stations.txt',
-            'NOAA': baseUrl + 'noaa.txt',
-            'GEOS': baseUrl + 'goes.txt',
-            'Weather': baseUrl + 'weather.txt',
-            'Earth Resources': baseUrl + 'resource.txt',
-            'TDRSS Tracking & Data Relay': baseUrl + 'tdrss.txt',
-            'ARGOS': baseUrl + 'argos.txt',
-            'Amateur Radio': baseUrl + 'amateur.txt',
-            'Space & Earth Science': baseUrl + 'science.txt',
-            'Engineering': baseUrl + 'engineering.txt',
-            'Last 30 days launch': baseUrl + 'tle-new.txt',
-            'Custom': 'custom.txt',
+            '100 brightest': {
+                'url': baseUrl + 'GROUP=visual&FORMAT=tle',
+                'file': 'visual.txt'
+            },
+            'Active': {
+                'url': baseUrl + 'GROUP=active&FORMAT=tle',
+                'file': 'active.txt'
+            },
+            'Space Stations': {
+                'url': baseUrl + 'GROUP=stations&FORMAT=tle',
+                'file': 'stations.txt'
+            },
+            'NOAA': {
+                'url': baseUrl + 'GROUP=noaa&FORMAT=tle',
+                'file': 'noaa.txt'
+            },
+            'GEOS': {
+                'url': baseUrl + 'GROUP=geo&FORMAT=tle',
+                'file': 'geos.txt'
+            },
+            'Weather': {
+                'url': baseUrl + 'GROUP=weather&FORMAT=tle',
+                'file': 'weather.txt'
+            },
+            'Earth Resources': {
+                'url': baseUrl + 'GROUP=resource&FORMAT=tle',
+                'file': 'resource.txt'
+            },
+            'TDRSS Tracking & Data Relay': {
+                'url': baseUrl + 'GROUP=tdrss&FORMAT=tle',
+                'file': 'tdrss.txt'
+            },
+            'ARGOS': {
+                'url': baseUrl + 'GROUP=argos&FORMAT=tle',
+                'file': 'argos.txt'
+            },
+            'Amateur Radio': {
+                'url': baseUrl + 'GROUP=amateur&FORMAT=tle',
+                'file': 'amateur.txt'
+            },
+            'Space & Earth Science': {
+                'url': baseUrl + 'GROUP=science&FORMAT=tle',
+                'file': 'science.txt'
+            },
+            'Engineering': {
+                'url': baseUrl + 'GROUP=engineering&FORMAT=tle',
+                'file': 'engineering.txt'
+            },
+            'Last 30 days launch': {
+                'url': baseUrl + 'GROUP=last-30-days&FORMAT=tle',
+                'file': 'tle-new.txt'
+            },
+            'Custom': {
+                'url': 'custom.txt',
+                'file': 'custom.txt'
+            },
         }
+
 
         self.passUI = {
             0: {'rise': self.ui.satRise_1,
@@ -616,25 +659,35 @@ class SatSearch(object):
         self.satCalcTable()
         return True
 
-    def workerLoadDataFromSourceURLs(self, source='', isOnline=False):
+    def workerLoadDataFromSourceURLs(self, source='', fileName=''):
         """
-        :return: success
+        :param source:
+        :param fileName:
+        :return:
         """
         loader = self.app.mount.obsSite.loader
-        fileName = os.path.basename(source)
+
         dirPath = self.app.mwGlob['dataDir']
         filePath = os.path.normpath(f'{dirPath}/{fileName}')
-        if not isOnline:
+        localSourceAvailable = os.path.isfile(filePath)
+        isOnline = self.ui.isOnline.isChecked()
+
+        if localSourceAvailable:
+            daysOld = loader.days_old(filePath)
+
+        if localSourceAvailable and daysOld < 1:
             source = filePath
-        satellites = loader.tle_file(source, reload=isOnline)
-        self.satellites = {sat.name: sat for sat in satellites}
-        if not os.path.isfile(filePath):
+            self.ui.satSourceGroup.setTitle(f'Satellite data - age: {daysOld:2.1f}d')
+        elif not isOnline:
+            self.msg.emit(2, 'TLE', 'Data error', 'No online access')
+            self.ui.satSourceGroup.setTitle('Satellite data - age: n/a')
             return False
 
-        daysOld = loader.days_old(filePath)
-        self.ui.satSourceGroup.setTitle(f'Satellite data - age: {daysOld:2.1f}d')
-        self.satSourceValid = True
-        return True
+        satellites = loader.tle_file(source, filename=filePath)
+        self.satellites = {sat.name: sat for sat in satellites}
+        localSourceAvailable = os.path.isfile(filePath)
+        self.satSourceValid = localSourceAvailable
+        return localSourceAvailable
 
     def loadDataFromSourceURLs(self):
         """
@@ -653,12 +706,11 @@ class SatSearch(object):
         key = self.ui.satelliteSource.currentText()
         if key not in self.satelliteSourceURLs:
             return False
-        source = self.satelliteSourceURLs[key]
+        source = self.satelliteSourceURLs[key]['url']
+        fileName = self.satelliteSourceURLs[key]['file']
         self.ui.listSatelliteNames.setRowCount(0)
-        isOnline = self.ui.isOnline.isChecked()
         worker = Worker(self.workerLoadDataFromSourceURLs,
-                        source=source,
-                        isOnline=isOnline)
+                        source=source, fileName=fileName)
         worker.signals.finished.connect(self.setupSatelliteNameList)
         self.threadPool.start(worker)
         return True

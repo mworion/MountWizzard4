@@ -81,11 +81,11 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/base
-          pytest tests/unit_tests/logic
-          pytest tests/unit_tests/mountcontrol
-          pytest tests/unit_tests/indibase
-          pytest tests/unit_tests/gui/utilities
+          pytest base
+          pytest logic
+          pytest mountcontrol
+          pytest indibase
+          pytest gui/utilities
 
   run_tests_macos_2b:
     #

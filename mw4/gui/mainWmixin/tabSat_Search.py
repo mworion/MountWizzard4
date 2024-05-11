@@ -678,6 +678,7 @@ class SatSearch(object):
         if localSourceAvailable and daysOld < 1:
             source = filePath
             self.ui.satSourceGroup.setTitle(f'Satellite data - age: {daysOld:2.1f}d')
+
         elif not isOnline:
             self.msg.emit(2, 'TLE', 'Data error', 'No online access')
             self.ui.satSourceGroup.setTitle('Satellite data - age: n/a')

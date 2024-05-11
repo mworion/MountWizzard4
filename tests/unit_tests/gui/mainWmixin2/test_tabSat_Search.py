@@ -805,29 +805,8 @@ def test_setupSatelliteNameList_2(function):
 
 
 def test_workerLoadDataFromSourceURLs_1(function):
-    with mock.patch.object(function.app.mount.obsSite.loader,
-                           'tle_file',
-                           return_value={}):
-        suc = function.workerLoadDataFromSourceURLs()
-        assert not suc
-
-
-def test_workerLoadDataFromSourceURLs_2(function):
-    source = 'test'
-    with mock.patch.object(function.app.mount.obsSite.loader,
-                           'tle_file',
-                           return_value={}):
-        with mock.patch.object(os.path,
-                               'isfile',
-                               return_value=False):
-            suc = function.workerLoadDataFromSourceURLs(source=source,
-                                                        isOnline=False)
-            assert not suc
-
-
-def test_workerLoadDataFromSourceURLs_3(function):
-    source = 'test'
     function.satSourceValid = False
+    function.ui.isOnline.setChecked(True)
     with mock.patch.object(function.app.mount.obsSite.loader,
                            'tle_file',
                            return_value={}):
@@ -836,11 +815,27 @@ def test_workerLoadDataFromSourceURLs_3(function):
                                return_value=True):
             with mock.patch.object(function.app.mount.obsSite.loader,
                                    'days_old',
-                                   return_value=5):
-                suc = function.workerLoadDataFromSourceURLs(source=source,
-                                                            isOnline=True)
+                                   return_value=0.5):
+                suc = function.workerLoadDataFromSourceURLs()
                 assert suc
                 assert function.satSourceValid
+
+
+def test_workerLoadDataFromSourceURLs_2(function):
+    function.satSourceValid = False
+    function.ui.isOnline.setChecked(False)
+    with mock.patch.object(function.app.mount.obsSite.loader,
+                           'tle_file',
+                           return_value={}):
+        with mock.patch.object(os.path,
+                               'isfile',
+                               return_value=True):
+            with mock.patch.object(function.app.mount.obsSite.loader,
+                                   'days_old',
+                                   return_value=2):
+                suc = function.workerLoadDataFromSourceURLs()
+                assert not suc
+                assert not function.satSourceValid
 
 
 def test_loadDataFromSourceURLs_1(function):

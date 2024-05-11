@@ -19,8 +19,6 @@ from PIL import Image
 import glob
 import time
 import os
-import zipapp
-import zipfile
 
 rn = ''
 #

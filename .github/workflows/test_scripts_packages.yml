@@ -63,6 +63,7 @@ jobs:
         python -m pip install PyQt5
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
+        ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.wid}}uploadPopup_ui.py
         ${{env.uic}} ${{env.wid}}hemisphere.ui -o ${{env.wid}}hemisphere_ui.py
         ${{env.uic}} ${{env.wid}}image.ui -o ${{env.wid}}image_ui.py
         ${{env.uic}} ${{env.wid}}keypad.ui -o ${{env.wid}}keypad_ui.py

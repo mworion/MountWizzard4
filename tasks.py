@@ -190,8 +190,7 @@ def build_widgets(c):
     widgets = [
         'analyse', 'devicePopup', 'downloadPopup', 'hemisphere', 'image',
         'keypad', 'main', 'measure', 'message', 'satellite', 'simulator',
-        'video', 'bigPopup', 'uploadPopup'
-    ]
+        'video', 'bigPopup', 'uploadPopup']
     for widget in widgets:
         name = widgetDir + widget
         runMW(c, f'python -m PyQt6.uic.pyuic -x {name}.ui -o {name}_ui.py')

@@ -86,7 +86,7 @@ def convertKeyData(data):
     return data
 
 
-def convertProfileData(data):
+def convertProfileData40to41(data):
     """
     convertDate tries to convert data from an older or newer version of the
     config file to the actual needed one.
@@ -95,12 +95,12 @@ def convertProfileData(data):
     :return:    data: config data as dict
     """
     actVer = Version(data.get('version', '0.0'))
-    if actVer >= Version(profileVersion):
+    if actVer >= Version('4.1'):
         return data
     if 'mainW' not in data:
         return data
 
-    log.info(f'Conversion from [{data.get("version")}] to [{profileVersion}]')
+    log.info(f'Conversion from [{data.get("version")}] to [4.1]')
     watney = {
         'deviceName': 'Watney',
         'deviceList': ['Watney'],
@@ -127,14 +127,37 @@ def convertProfileData(data):
 
         d['driversData', 'directWeather', 'frameworks', 'directWeather',
           'deviceName'] = 'On Mount'
-        d['version'] = profileVersion
+        d['version'] = '4.1'
 
-        d['driversData', 'sensor1Weather'] = d['driversData', 'sensorWeather']
-        d['driversData', 'sensor2Weather'] = d['driversData', 'powerWeather']
-        d['driversData', 'sensor3Weather'] = d['driversData', 'skymeter']
-        del d['driversData']['sensorWeather']
-        del d['driversData']['powerWeather']
-        del d['driversData']['skymeter']
+    except Exception as e:
+        log.error(f'Failed conversion, keep old structure: {e}')
+    else:
+        data = d.to_dict()
+    return data
+
+
+def convertProfileData41to42(data):
+    """
+    :param      data: config data as dict
+    :return:    data: config data as dict
+    """
+    actVer = Version(data.get('version', '0.0'))
+    if actVer >= Version('4.2'):
+        return data
+
+    log.info(f'Conversion from [{data.get("version")}] to [4.2]')
+    d = NestedDict(data)
+    try:
+        if 'sensorWeather' in d['driversData']:
+            d['driversData', 'sensor1Weather'] = d['driversData', 'sensorWeather']
+            del d['driversData']['sensorWeather']
+        if 'powerWeather' in d['driversData']:
+            d['driversData', 'sensor2Weather'] = d['driversData', 'powerWeather']
+            del d['driversData']['powerWeather']
+        if 'skymeter' in d['driversData']:
+            d['driversData', 'sensor3Weather'] = d['driversData', 'skymeter']
+            del d['driversData']['skymeter']
+        d['version'] = '4.2'
 
     except Exception as e:
         log.error(f'Failed conversion, keep old structure: {e}')
@@ -209,7 +232,8 @@ def loadProfile(configDir=None, name=None):
         return defaultConfig()
 
     configData['profileName'] = name
-    profile = convertProfileData(configData)
+    profile = convertProfileData40to41(configData)
+    profile = convertProfileData41to42(profile)
     resetOrder = profile['mainW'].get('resetTabOrder', False)
     if resetOrder:
         log.info('Resetting tab order upon start')

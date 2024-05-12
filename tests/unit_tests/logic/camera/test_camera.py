@@ -240,10 +240,6 @@ def test_expose_6(function):
 
 
 def test_expose_7(function):
-    def qWaitBreak(a):
-        function.exposing = False
-
-    sleepAndEvents = qWaitBreak
     function.exposing = True
     function.framework = 'indi'
     function.data = {'CCD_INFO.CCD_MAX_X': 1000,

@@ -24,7 +24,8 @@ import unittest.mock as mock
 # external packages
 
 # local import
-from logic.profiles.profile import convertProfileData, blendProfile, defaultConfig
+from logic.profiles.profile import convertProfileData40to41, blendProfile
+from logic.profiles.profile import convertProfileData41to42, defaultConfig
 from logic.profiles.profile import loadProfile, saveProfile
 from logic.profiles.profile import convertKeyData, replaceKeys, checkResetTabOrder
 
@@ -57,29 +58,23 @@ def test_convertKeyData():
     assert 'autoConnectASCOM' in r
 
 
-def test_convertProfileData_0():
-    data = {}
-    val = convertProfileData(data)
-    assert 'version' not in val
-
-
-def test_convertProfileData_1():
+def test_convertProfileData40to41_1():
     data = {
         'version': '4.1'
     }
-    val = convertProfileData(data)
+    val = convertProfileData40to41(data)
     assert val['version'] == '4.1'
 
 
-def test_convertProfileData_2():
+def test_convertProfileData40to41_2():
     data = {
         'version': '4.0'
     }
-    val = convertProfileData(data)
+    val = convertProfileData40to41(data)
     assert val['version'] == '4.0'
 
 
-def test_convertProfileData_3():
+def test_convertProfileData40to41_3():
     data = {
         'version': '4.0',
         'hemisphereW': {},
@@ -100,8 +95,8 @@ def test_convertProfileData_3():
             }
         },
     }
-    val = convertProfileData(data)
-    assert val['version'] == '4.2'
+    val = convertProfileData40to41(data)
+    assert val['version'] == '4.1'
     assert 'driversData' in val
     assert 'driversData' not in val['mainW']
     assert 'astrometry' not in val['driversData']
@@ -113,11 +108,64 @@ def test_convertProfileData_3():
     assert 'Direct' not in t['directWeather']['deviceName']
 
 
-def test_convertProfileData_4():
+def test_convertProfileData41to42_1():
+    data = {
+        'version': '4.2'
+    }
+    val = convertProfileData41to42(data)
+    assert val['version'] == '4.2'
+
+
+def test_convertProfileData41to42_2():
+    data = {
+        'version': '4.1'
+    }
+    val = convertProfileData41to42(data)
+    assert val['version'] == '4.1'
+
+
+def test_convertProfileData41to42_3():
+    data = {
+        'version': '4.1',
+        'driversData': {
+            'sensorWeather': {
+                'frameworks': {
+                    'internal': {
+                        'deviceName': 'Direct'
+                    }
+                }
+            },
+            'powerWeather': {
+                'frameworks': {
+                    'internal': {
+                        'deviceName': 'Direct'
+                    }
+                }
+            },
+            'skymeter': {
+                'frameworks': {
+                    'internal': {
+                        'deviceName': 'Direct'
+                    }
+                }
+            },
+        }
+    }
+    val = convertProfileData41to42(data)
+    assert val['version'] == '4.2'
+    assert 'sensorWeather' not in val['driversData']
+    assert 'powerWeather' not in val['driversData']
+    assert 'skymeter' not in val['driversData']
+    assert 'sensor1Weather' in val['driversData']
+    assert 'sensor2Weather' in val['driversData']
+    assert 'sensor3Weather' in val['driversData']
+
+
+def test_convertProfileData40to41_4():
     data = {
         'mainW': '4.0'
     }
-    val = convertProfileData(data)
+    val = convertProfileData40to41(data)
     assert val['mainW'] == '4.0'
 
 

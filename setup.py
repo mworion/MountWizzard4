@@ -31,6 +31,8 @@ releaseNotes = """
 - change: remove embedded documentation and replace with online link
 - refactoring: environment devices (now 3 generic ones)
 - refactoring: remove installer to separate repo (InstallerMW4)
+- improve: reduced size of app
+- remove: automation of 10micron installer
 - fix: typos
 """
 
@@ -39,7 +41,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a2',
+    version='4.0.0a3',
     packages=[
         'mw4',
         'mw4.base',

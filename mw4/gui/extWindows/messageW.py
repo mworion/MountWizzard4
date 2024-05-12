@@ -115,13 +115,24 @@ class MessageWindow(toolsQtWidget.MWidget):
                          ]
         return True
 
+    def updateListColors(self):
+        """
+        :return:
+        """
+        for row in range(self.ui.messageTable.rowCount()):
+            for col in range(self.ui.messageTable.columnCount()):
+                item = self.ui.messageTable.item(row, col)
+                item.setForeground(self.messColor[0])
+                item.setFont(self.messFont[0])
+        return True
+
     def colorChange(self):
         """
         :return:
         """
         self.setStyleSheet(self.mw4Style)
         self.setupMessage()
-        self.clearMessageTable()
+        self.updateListColors()
         return True
 
     def showWindow(self):

@@ -10946,8 +10946,8 @@ class Ui_MainWindow(object):
         self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
-        self.toolsTabWidget.setCurrentIndex(0)
-        self.settingsTabWidget.setCurrentIndex(1)
+        self.toolsTabWidget.setCurrentIndex(4)
+        self.settingsTabWidget.setCurrentIndex(0)
         self.tabDomeExplain.setCurrentIndex(9)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.mountConnected, self.refractionConnected)
@@ -12847,7 +12847,7 @@ class Ui_MainWindow(object):
         self.versionReleaseNotes.setText(_translate("MainWindow", "Show release notes"))
         self.openPDF.setToolTip(_translate("MainWindow", "<html><head/><body><p>Opens the actual PDF documentation for MW4</p></body></html>"))
         self.openPDF.setText(_translate("MainWindow", "Show documentation"))
-        self.CopyrightGroup_2.setTitle(_translate("MainWindow", "MountWizzard4 (C) 2019-2023 MWORION"))
+        self.CopyrightGroup_2.setTitle(_translate("MainWindow", "MountWizzard4 (C) 2019-2024 MWORION"))
         self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -12855,7 +12855,7 @@ class Ui_MainWindow(object):
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">astropy, deepdiff, hdiapi, importlib_metadata, pyqt6, pywin32, pywinauto, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4</p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">astropy, deepdiff, hdiapi, importlib_metadata, pyqt6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4</p></body></html>"))
         self.LoglevelGroup.setTitle(_translate("MainWindow", "Logging"))
         self.loglevelDebug.setToolTip(_translate("MainWindow", "Debug logging will be stored in log file."))
         self.loglevelDebug.setText(_translate("MainWindow", "Debug"))

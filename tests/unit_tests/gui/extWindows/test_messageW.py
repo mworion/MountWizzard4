@@ -62,6 +62,13 @@ def test_closeEvent_1(function):
             function.closeEvent(QCloseEvent)
 
 
+def test_updateListColors(function):
+    function.app.messageQueue.put((0, 'test', 'test', 'test'))
+    function.writeMessage()
+    suc = function.updateListColors()
+    assert suc
+
+
 def test_colorChange(function):
     with mock.patch.object(function,
                            'setupMessage'):

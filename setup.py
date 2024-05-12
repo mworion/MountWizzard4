@@ -20,6 +20,8 @@ import platform
 
 releaseNotes = """
 - this is a major release !
+  please try out in a separate work folder for test!
+  
 - add: support for python 3.11 and 3.12, remove 3.7 and 3.8
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
@@ -32,6 +34,7 @@ releaseNotes = """
 - refactoring: environment devices (now 3 generic ones)
 - refactoring: remove installer to separate repo (InstallerMW4)
 - improve: reduced size of app
+- improved: don't delete message list when color change
 - remove: automation of 10micron installer
 - fix: typos
 """

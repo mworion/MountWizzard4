@@ -30,32 +30,15 @@ runs:
     - name: setup python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.12'
     
     - name: install #1
-      run: python -m pip install cython wheel
-      shell: bash
-
-    - name: install #2
-      run: python -m pip install dist/mountwizzard4.tar.gz
-      shell: bash
-
-    - name: install #3
-      run:  python -m pip install comtypes==1.2.1
-      shell: bash
-
-    - name: install #4
-      run:  python -m pip install pytest
-      shell: bash
-
-    - name: install #5
-      run:  python -m pip install pytest-qt
-      shell: bash
-
-    - name: install #6
-      run:  python -m pip install pytest-cov
-      shell: bash
-
-    - name: install #7
-      run:  python -m pip install pytest-pythonpath
+      run: |
+        python -m pip install cython wheel
+        python -m pip install dist/mountwizzard4.tar.gz
+        python -m pip install comtypes==1.2.1
+        python -m pip install pytest
+        python -m pip install pytest-qt
+        python -m pip install pytest-cov
+        python -m pip install pytest-pythonpath
       shell: bash

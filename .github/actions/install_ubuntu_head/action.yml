@@ -22,16 +22,11 @@ runs:
   using: 'composite'
   steps:
     - name: install #0
-      run: sudo apt-get update
-      shell: bash
-
-    - name: install #1
-      run: sudo apt-get upgrade
+      run: |
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install libpulse-dev
       shell: bash
       
     - name: install #2
       uses: tlambert03/setup-qt-libs@v1.6
-      
-    - name: install #3
-      run: sudo apt-get install libpulse-dev
-      shell: bash

@@ -93,7 +93,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-        python-version: [3.9]
+        python-version: [3.9, 3.12]
 
     steps:
       - uses: actions/checkout@v4
@@ -111,7 +111,7 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1.6.0
         with:
-          url: ${{ env.gh }}3.0/startupPackage.zip
+          url: ${{ env.gh }}startupPackage.zip
           target: dist/
           
       - name: MountWizzard4 Install
@@ -135,8 +135,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04]
-        python-version: [3.9]
+        os: [ubuntu-20.04, ubuntu-22.04]
+        python-version: [3.9, 3.12]
 
     steps:
       - uses: actions/checkout@v4
@@ -164,7 +164,7 @@ jobs:
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1.6.0
         with:
-          url: ${{ env.gh }}3.0/startupPackage.zip
+          url: ${{ env.gh }}startupPackage.zip
           target: dist/
           
       - name: MountWizzard4 Install
@@ -188,7 +188,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13, macos-latest]
-        python-version: [3.9]
+        python-version: [3.9, 3.12]
 
     steps:
       - uses: actions/checkout@v4
@@ -205,7 +205,7 @@ jobs:
       - name: Install Script Run
         uses: suisei-cn/actions-download-file@v1.6.0
         with:
-          url: ${{ env.gh }}3.0/startupPackage.zip
+          url: ${{ env.gh }}startupPackage.zip
           target: dist/
           
       - name: MountWizzard4 Install

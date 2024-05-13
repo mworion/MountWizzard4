@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/main/support/'
+  gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
 
 on:
   push:

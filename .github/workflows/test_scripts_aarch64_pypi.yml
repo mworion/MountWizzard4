@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  gh: 'https://raw.githubusercontent.com/mworion/MountWizzard4/main/support/'
+  gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
 
 on:
   push:
@@ -88,7 +88,7 @@ jobs:
           run: |
             python3 --version
             ls /root/support/*.*
-            cd /root/support/3.0
+            cd /root/support
             python3 startup.pyz --no-start --version 4.0.0a2
             touch test.run
             xvfb-run python3 startup.pyz

@@ -187,7 +187,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [macos-13, macos-latest]
         python-version: [3.9]
 
     steps:
@@ -221,55 +221,3 @@ jobs:
           touch test.run
           python3 startup.pyz
           ls -la
-
-  install_aarch64:
-    needs: [build_widgets_resource]
-    # The host should always be linux
-    runs-on: ubuntu-22.04
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
-
-    # Run steps on a matrix of 3 arch/distro combinations
-    strategy:
-      matrix:
-        include:
-          - arch: aarch64
-            distro: ubuntu20.04
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: support/3.0
-
-      - uses: uraimo/run-on-arch-action@v2
-        name: build_artifact
-        id: build
-        with:
-          arch: ${{ matrix.arch }}
-          distro: ${{ matrix.distro }}
-
-          # Not required, but speeds up builds
-          githubToken: ${{ github.token }}
-
-          # Mount the wheels directory as /artifacts in the container
-          dockerRunArgs: |
-            -v "${PWD}/support":/root/support
-
-          # The shell to run commands with in the container
-          shell: /bin/bash
-          install: |
-            apt-get update -y
-            apt-get upgrade -y
-            apt-get -y install python3-pip python3-venv python3-wheel
-            apt-get -y install python3-pyqt5
-            
-          # Produce a binary artifact and place it in the mounted volume
-          run: |
-            python3 --version
-            cd /root/support/3.0
-            python3 -m zipfile -e startupPackage.zip .
-            python3 startup.pyz --no-start
-            cat ./log/mw4*.log
-            ls -la

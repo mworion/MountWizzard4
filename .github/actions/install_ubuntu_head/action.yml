@@ -25,7 +25,7 @@ runs:
       run: |
         sudo apt-get update
         sudo apt-get upgrade
-        sudo apt-get install libpulse-dev
+        sudo apt-get install libpulse-dev ffmpeg libsm6 libxext6
       shell: bash
       
     - name: install #2

@@ -97,8 +97,33 @@ jobs:
           xvfb-run python3 startup.pyz
           ls -la
           
-  install_macOS:
+  install_macOS_native:
     runs-on: macos-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Script Install
+        uses: suisei-cn/actions-download-file@v1.6.0
+        with:
+          url: ${{ env.gh }}startupPackage.zip
+          target: .
+          
+      - name: MountWizzard4 Install
+        run: |
+          python3 -m zipfile -e startupPackage.zip .
+          python3 startup.pyz --no-start
+          
+      - name: Run MountWizzard4
+        run: |
+          touch test.run
+          touch test.txt
+          python3 startup.pyz
+          ls -la
+          
+  install_macOS_intel:
+    runs-on: macos-13
     steps:
       - uses: actions/setup-python@v5
         with:

@@ -55,7 +55,7 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          python startup.pyz --no-start
+          python startup.pyz --no-start --version 4.0.0a4
           dir
       
       - name: Run MountWizzard4
@@ -96,7 +96,7 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python3 startup.pyz --no-start
+          python startup.pyz --no-start --version 4.0.0a4
           ls -la
   
       - name: Run MountWizzard4
@@ -126,7 +126,7 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python3 startup.pyz --no-start
+          python startup.pyz --no-start --version 4.0.0a4
           
       - name: Run MountWizzard4
         run: |

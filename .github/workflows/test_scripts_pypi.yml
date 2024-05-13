@@ -63,7 +63,7 @@ jobs:
         run: |
           touch test.run
           touch test.txt
-          python startup.pyz
+          python startup.pyz --version 4.0.0a4
           dir
   
   install_ubuntu:
@@ -103,7 +103,7 @@ jobs:
         run: |
           touch test.run
           touch test.txt
-          xvfb-run python3 startup.pyz
+          xvfb-run python3 startup.pyz --version 4.0.0a4
           ls -la
           
   install_macOS:

@@ -22,7 +22,8 @@ releaseNotes = """
 - this is a major release !
   please try out in a separate work folder for test!
   
-- add: support for python 3.11 and 3.12, remove 3.7 and 3.8
+- add: support for python 3.11 and 3.12, remove 3.7, 3.8 and 3.9
+- add native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
 - change: faster and more reliable uploading mechanism for databases
@@ -78,7 +79,7 @@ setup(
         'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.9.0, <3.13',
+    python_requires='>=3.10.0, <3.13',
     install_requires=[
         'numpy==1.26.4',
         'opencv-python-headless==4.9.0.80',
@@ -129,7 +130,6 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Environment :: MacOS X',
         'Environment :: Other Environment',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',

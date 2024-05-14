@@ -75,6 +75,7 @@ jobs:
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
         ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
         sed -i -e 's/from PySide6 import QtCore/from PyQt6 import QtCore/g' ${{env.res}}resources.py
+        head -10 ${{env.res}}resources.py
 
     - name: build_package
       run: |

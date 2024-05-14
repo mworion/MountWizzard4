@@ -74,7 +74,7 @@ jobs:
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
         ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
-        sed -i -e 's/PySide6/PyQt6' ${{env.res}}resources.py
+        sed -i -e 's/PySide6/PyQt6/g' ${{env.res}}resources.py
 
     - name: build_package
       run: |

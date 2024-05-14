@@ -21,10 +21,7 @@ name: wheels_22_312
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
-  
-env:
-  gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/'
-  sip: 'support/wheels/PyQt6_sip-13.6.0-cp312-cp312-linux_aarch64.whl'
+
 
 on:
   push:
@@ -96,8 +93,7 @@ jobs:
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"
-            # pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
-            pip install ${{env.gh}}${{env.sip}}
+            pip install pyqt6-sip
             pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
 

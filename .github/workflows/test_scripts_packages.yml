@@ -25,7 +25,7 @@ env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
   wid: 'mw4/gui/widgets/'
   uic: 'python -m PyQt6.uic.pyuic'
-  ucc: 'PySide6-rcc'
+  ucc: 'pyside6-rcc'
   res: 'mw4/resource/'
 
 on:
@@ -60,8 +60,7 @@ jobs:
 
     - name: build_widgets_resource
       run: |
-        python -m pip install PyQt6
-        python -m pip install PySide6
+        python -m pip install PyQt6 PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
         ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.wid}}uploadPopup_ui.py

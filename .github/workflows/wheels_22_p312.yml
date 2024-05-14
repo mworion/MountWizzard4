@@ -97,7 +97,7 @@ jobs:
 
             cd "${PWD}"
             # pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
-            pip install "${{env.gh}}${{env.sip}}
+            pip install ${{env.gh}}${{env.sip}}
             pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
 

@@ -73,6 +73,7 @@ jobs:
             apt-get upgrade -y
             apt-get install -y apt-utils
             apt-get install -y software-properties-common
+            add-apt-repository universe
             add-apt-repository ppa:deadsnakes/ppa
             apt-get update -y
             apt-get install -y python3.12

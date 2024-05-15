@@ -40,7 +40,7 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu22.04
+            distro: ubuntu24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -89,9 +89,6 @@ jobs:
             source venv/bin/activate
             qtchooser -l
             qtchooser -install qt6 $(which qmake6)
-            mv ~/.config/qtchooser/qt6.conf /usr/share/qtchooser/qt6.conf
-            echo "Retry"
-            qtchooser -l
 
             echo "Preparing Install"
             python --version

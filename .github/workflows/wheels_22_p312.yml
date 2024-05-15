@@ -84,9 +84,10 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            cd /usr/lib/x86_64-linux-gnu/qtchoose
-            echo "/usr/lib/qt6/bin" > qt6.conf
-            echo "/usr/lib/x86_64-linux-gnu" >> qt6.conf
+            ls -la /usr/lib
+            #cd /usr/lib/x86_64-linux-gnu/qtchoose
+            #echo "/usr/lib/qt6/bin" > qt6.conf
+            #echo "/usr/lib/x86_64-linux-gnu" >> qt6.conf
 
             cd "${PWD}"
             echo "Start Run 1"

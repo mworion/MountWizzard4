@@ -84,7 +84,7 @@ jobs:
           run: |
             python3.12 -m venv venv
             source venv/bin/activate
-            sudo qtchooser -install qt6 $(which qmake6)
+            qtchooser -install qt6 $(which qmake6)
 
             python --version
             python -m pip install pip --upgrade

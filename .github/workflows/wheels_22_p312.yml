@@ -78,7 +78,7 @@ jobs:
             apt-get update -y
             apt-get install -y python3.12
             apt-get -y install qmake6 qt6-base-dev 
-            apt-get -y install qtcreator qtbase6-dev qt6-qmake cmake
+            apt-get -y install qtcreator
             apt-get -y install python3.12-venv python3-pip build-essential
             apt-get -y install python3.12-dev autoconf libtool qt6-wayland
             

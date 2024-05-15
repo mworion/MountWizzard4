@@ -81,6 +81,9 @@ jobs:
             apt-get -y install python3.12-dev autoconf libtool qt6-wayland
             apt-get -y install qmake6 qt6-base-dev 
             apt-get -y install qtcreator
+            cd /usr/lib/x86_64-linux-gnu/qtchoose
+            echo "/usr/lib/qt6/bin" > qt6.conf
+            echo "/usr/lib/x86_64-linux-gnu" >> qt6.conf
             
           # Produce a binary artifact and place it in the mounted volume
           run: |

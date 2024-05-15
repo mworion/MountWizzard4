@@ -76,17 +76,21 @@ jobs:
             add-apt-repository ppa:deadsnakes/ppa
             apt-get update -y
             apt-get install -y python3.12
-            apt-get -y install qmake6 qt6-base-dev
+            apt-get -y install qmake6 qt6-base-dev 
+            apt-get -y install qtcreator qtbase6-dev qt6-qmake cmake
             apt-get -y install python3.12-venv python3-pip build-essential
             apt-get -y install python3.12-dev autoconf libtool qt6-wayland
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            echo "Start Run"
+            echo "Start Run 1"
             python3.12 -m venv venv
             source venv/bin/activate
             qtchooser -l
             qtchooser -install qt6 $(which qmake6)
+            mv ~/.config/qtchooser/qt6.conf /usr/share/qtchooser/qt6.conf
+            echo "Retry"
+            qtchooser -l
 
             echo "Preparing Install"
             python --version

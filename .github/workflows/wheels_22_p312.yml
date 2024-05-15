@@ -82,10 +82,13 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
+            echo "Start Run"
             python3.12 -m venv venv
             source venv/bin/activate
+            qtchooser -l
             qtchooser -install qt6 $(which qmake6)
 
+            echo "Preparing Install"
             python --version
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
@@ -94,6 +97,7 @@ jobs:
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"
+            echo "Start Building Wheels"
             pip install pyqt6-sip
             pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 

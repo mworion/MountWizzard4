@@ -1,5 +1,5 @@
-Using functions
-===============
+Using functions in MountWizzard4
+================================
 
 .. toctree::
     :maxdepth: 2

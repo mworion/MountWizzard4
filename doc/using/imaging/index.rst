@@ -1,5 +1,5 @@
-Imaging with MW4
-================
+Imaging
+=======
 
 The imaging window shows FITS files loaded from disk or images exposed manually
 or during model build. It is split in different areas to work with.

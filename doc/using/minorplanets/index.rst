@@ -1,2 +1,2 @@
-Use Minor Planet data
-=====================
+Minor Planets
+=============

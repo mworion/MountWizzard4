@@ -1,2 +1,2 @@
-Use Almanac
-===========
+Almanac
+=======

@@ -1,5 +1,5 @@
-Configuring dome geometry
-=========================
+Dome geometry
+=============
 If you using dome, you should set up the parameters to get a good
 performance of the slew calculations. To use the calculations, please check the
 "Enable dome geometry offset calculations". If checked, MW4 will calculate th

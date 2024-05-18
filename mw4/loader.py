@@ -179,7 +179,7 @@ def setupWorkDirs(mwGlob):
     mwGlob['logDir'] = mwGlob['workDir'] + '/log'
 
     for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir',
-                    'tempDir', 'modelDir', 'measureDir', 'log']:
+                    'tempDir', 'modelDir', 'measureDir', 'logDir']:
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
 

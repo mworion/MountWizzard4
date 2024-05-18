@@ -102,7 +102,7 @@ jobs:
             cd "${PWD}"
             echo "Start Building Wheels"
             pip install pyqt6-sip
-            pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
+            pip wheel pyqt6 --config-settings --confirm-license= --verbose
 
 
       - name: Update changes in GitHub repository

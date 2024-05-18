@@ -10,3 +10,4 @@ Using functions
     minorplanets/index
     modeling/index
     satellite/index
+    dome/index

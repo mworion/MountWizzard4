@@ -10,7 +10,7 @@ calculations done in 10micron mount and the results provided by skyfield.
 
 In skyfield there is a chapter about satellite calculations and precision:
 https://rhodesmill.org/skyfield/earth-satellites.html#avoid-calling-the-observe-method
-Despite the fact that the observe method is expensive the difference in calulation
+Despite the fact that the observe method is expensive the difference in calculation
 time for a 900 step track is on my computer 120ms (using more precise observe
 method) to 7ms (using the less precise difference).
 

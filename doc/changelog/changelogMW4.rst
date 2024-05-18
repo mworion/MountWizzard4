@@ -1,14 +1,13 @@
 Beta versions of MW4
 --------------------
-
 Version 4.x
-^^^^^^^^^^^
+===========
 4.0.0b0
 
 - this is a major release !
   please try out in a separate work folder for test!
 
-- add: support for python 3.11 and 3.12, remove 3.7 and 3.8
+- add: support for python 3.11 and 3.12, remove 3.7, 3.8 and 3.9
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
 - change: faster and more reliable uploading mechanism for databases
@@ -28,7 +27,7 @@ Version 4.x
 Released versions of MW4
 ------------------------
 Version 3.x
-^^^^^^^^^^^
+===========
 3.2.6
 
 - add: support for INDI Pegasus Uranus Meteo sensor
@@ -176,7 +175,7 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - fix: drivers: device selection tab was not properly positioned in device popup
 
 Version 2.x
-^^^^^^^^^^^
+===========
 
 2.2.9
 
@@ -400,7 +399,7 @@ Version 2.x
 
 
 Version 1.x
-^^^^^^^^^^^
+===========
 1.1.1
 
 - adding fix for INDI cameras sending two times BUSY, EXP=0

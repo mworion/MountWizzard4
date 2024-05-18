@@ -73,9 +73,8 @@ jobs:
             apt-get upgrade -y
             apt-get install -y apt-utils
             apt-get install -y software-properties-common
-            # add-apt-repository universe
-            # add-apt-repository ppa:deadsnakes/ppa
-            # apt-get update -y
+            add-apt-repository ppa:deadsnakes/ppa
+            apt-get update -y
             apt-get install -y python3.12
             apt-get -y install python3-venv python3-pip build-essential
             apt-get -y install python3-dev autoconf libtool

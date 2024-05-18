@@ -130,7 +130,7 @@ jobs:
             echo "Start building wheels"
             echo "--------------------------------------------------"
             pip install pyqt6-sip --upgrade
-            pip wheel pyqt6 -w "wheels" --config-settings --confirm-license= --verbose
+            pip wheel pyqt6==6.5.3 -w "wheels" -C --confirm-license=  --verbose
 
 
       - name: Update changes in GitHub repository

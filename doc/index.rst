@@ -96,4 +96,4 @@ issues on GitHub.
     using/index
     help/index
     architecture/index
-    changelog/changelogMW4
+    changelog/changelog

@@ -196,7 +196,7 @@ class MWidget(QWidget, Styles):
         name = window.windowTitle().replace(' ', '_')
         timeTrigger = datetime.datetime.now(datetime.timezone.utc)
         timeTag = timeTrigger.strftime('%Y-%m-%d-%H-%M-%S')
-        path = self.app.mwGlob['workDir']
+        path = self.app.mwGlob['logDir']
         fullFileName = f'{path}/{timeTag}-{name}.png'
         self.log.info(f'Screenshot: [{fullFileName}]')
         window.grab().save(fullFileName)

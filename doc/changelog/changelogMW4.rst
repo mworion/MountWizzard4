@@ -1,7 +1,7 @@
 Beta versions of MW4
---------------------
+====================
 Version 4.x
-===========
+^^^^^^^^^^^
 4.0.0b0
 
 - this is a major release !
@@ -25,9 +25,9 @@ Version 4.x
 
 
 Released versions of MW4
-------------------------
+========================
 Version 3.x
-===========
+^^^^^^^^^^^
 3.2.6
 
 - add: support for INDI Pegasus Uranus Meteo sensor
@@ -175,7 +175,7 @@ No ARM7 support / ARM64 only Python 3.8 - 3.9
 - fix: drivers: device selection tab was not properly positioned in device popup
 
 Version 2.x
-===========
+^^^^^^^^^^^
 
 2.2.9
 
@@ -391,7 +391,7 @@ Version 2.x
 - update debug standard moved from WARN to INFO
 - update underlying libraries
 - update GUI improvements
-- fix for INDI cameras sending two times busy and exposure=0
+- fix for INDI cameras sending two times busy and exposure^0
 - fix slewing message dome when disconnected
 - fix retry mechanism for failed build points
 - fix using builtins for skyfield and rotation update
@@ -399,10 +399,10 @@ Version 2.x
 
 
 Version 1.x
-===========
+^^^^^^^^^^^
 1.1.1
 
-- adding fix for INDI cameras sending two times BUSY, EXP=0
+- adding fix for INDI cameras sending two times BUSY, EXP^0
 
 1.1.0
 

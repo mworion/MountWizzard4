@@ -85,6 +85,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             echo "Start Run 1"
+            apt-get install -y python3-pyqt6
             python3 -m venv venv
             source venv/bin/activate
             qtchooser -l

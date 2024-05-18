@@ -2,7 +2,7 @@ Using functions
 ===============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     almanac/index
     buildpoints/index

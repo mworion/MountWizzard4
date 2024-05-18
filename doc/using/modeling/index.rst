@@ -63,6 +63,8 @@ Detailed description: :ref:`Managing mount models`
     :scale: 50%
 
 
+The following sections describe each step in detail.
+
 .. toctree::
     :maxdepth: 1
 

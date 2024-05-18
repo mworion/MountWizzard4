@@ -98,8 +98,6 @@ jobs:
             ls -la /usr/lib/aarch64-linux-gnu/qtchooser
             ls -la /usr/share/qtchooser
             qtchooser -l
-            qtchooser -install qt6 $(which qmake6)
-            qtchooser -l
 
             echo " "
             echo "Start Virtual Environment"

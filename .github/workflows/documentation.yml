@@ -52,7 +52,7 @@ jobs:
           sphinx-build doc doc/html
           sphinx-build -M simplepdf doc doc/pdf
           cp doc/pdf/simplepdf/*.pdf doc/html
-          mv doc/pdf/simplepdf/*.pdf doc/html/mountwizzard4.pdf
+          mv doc/pdf/simplepdf/*.pdf doc/html/MountWizzard4.pdf
           
       - name: check files
         run: |

@@ -90,8 +90,8 @@ jobs:
 
 
             cd /usr/lib/aarch64-linux-gnu/qtchooser
-            ln -s /usr/share/qtchooser/qt6-aarch64-linux-gnu.conf qt6.conf
-            ln -s /usr/share/qtchooser/qt6-aarch64-linux-gnu.conf 5.conf
+            ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf qt6.conf
+            ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf 6.conf
             
             echo " "
             echo "Check qt6"

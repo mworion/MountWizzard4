@@ -1,5 +1,5 @@
-Configuration MountWizzard4
-===========================
+Configuration
+=============
 
 .. toctree::
     :maxdepth: 2

@@ -1,5 +1,5 @@
-Changelog MountWizzard4
------------------------
+Changelog
+---------
 
 Beta versions
 =============

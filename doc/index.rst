@@ -94,5 +94,6 @@ issues on GitHub.
     features
     config/index
     using/index
+    help/index
     architecture/index
     changelog/changelogMW4

@@ -89,9 +89,9 @@ jobs:
             qtchooser -l
             
             echo "Check qt6"
-            ls -la /usr/lib
-            ls -la /usr/lib/qt6/bin
-            ls -la /usr/lib/aarch64-linux-gnu
+            ls -la /usr/lib/aarch64-linux-gnu/qtchooser
+            ldd --version
+            apt-get install -y pyqt6-qt6
             
             #cd /usr/lib/aarch64-linux-gnu/qtchooser
             #echo "/usr/lib/qt6/bin" > qt6.conf

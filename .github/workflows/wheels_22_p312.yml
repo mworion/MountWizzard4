@@ -95,13 +95,16 @@ jobs:
             cd /usr/lib/aarch64-linux-gnu/qtchooser
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf qt6.conf
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf 6.conf
+            rm /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
+            ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
             
             echo "--------------------------------------------------"
             echo "Check chooser"
             echo "--------------------------------------------------"
             ls -la /usr/lib/aarch64-linux-gnu/qtchooser
-            ls -la /usr/lib/aarch64-linux-gnu/qt-default/qtchooser
-            cat /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
+            
+            ls -la /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
+            
             ls -la /usr/share/qtchooser
             qtchooser -l
 

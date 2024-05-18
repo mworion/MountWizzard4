@@ -4,5 +4,8 @@ Configuring
 .. toctree::
     :maxdepth: 2
 
-    mount/index
+    camera/index
     dome/index
+    mount/index
+    terrain/index
+    themes/index

@@ -58,7 +58,11 @@ jobs:
           dockerRunArgs: |
             -v "${PWD}/support/wheels/${{matrix.distro}}":/root/wheels
             --stop-timeout -1
-
+            
+          # Setting qt6 as Qt package version
+          env: |
+            QT_SELECT = qt6
+            
           # The shell to run commands with in the container
           shell: /bin/bash
 
@@ -81,32 +85,34 @@ jobs:
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            echo " "
+            echo "--------------------------------------------------"
             echo "Install qtchooser"
+            echo "--------------------------------------------------"
             cd /usr/lib/aarch64-linux-gnu/qtchooser
             cd /usr/share/qtchooser
             echo "/usr/lib/qt6/bin" > qt6-aarch64-linux-gnu.conf
             echo "/usr/lib/aarch_64-linux-gnu" >> qt6-aarch64-linux-gnu.conf
-
-
             cd /usr/lib/aarch64-linux-gnu/qtchooser
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf qt6.conf
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf 6.conf
             
-            echo " "
-            echo "Check qt6"
+            echo "--------------------------------------------------"
+            echo "Check chooser"
+            echo "--------------------------------------------------"
             ls -la /usr/lib/aarch64-linux-gnu/qtchooser
             ls -la /usr/share/qtchooser
             qtchooser -l
 
-            echo " "
+            echo "--------------------------------------------------"
             echo "Start Virtual Environment"
+            echo "--------------------------------------------------"
             cd "${PWD}"
             python3 -m venv venv
             source venv/bin/activate
             
-            echo " "
+            echo "--------------------------------------------------"
             echo "Preparing Install"
+            echo "--------------------------------------------------"
             python --version
             python -m pip install pip --upgrade
             pip install setuptools --upgrade
@@ -115,7 +121,9 @@ jobs:
             pip install packaging setuptools toml wheel
 
             cd "${PWD}"
+            echo "--------------------------------------------------"
             echo "Start Building Wheels"
+            echo "--------------------------------------------------"
             pip install pyqt6-sip
             pip wheel pyqt6 --config-settings --confirm-license= --verbose
 

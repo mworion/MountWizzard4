@@ -97,7 +97,7 @@ jobs:
             cd /usr/lib/aarch64-linux-gnu/qtchooser
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf qt6.conf
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf 6.conf
-            rm /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
+            # rm /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
             
             echo "--------------------------------------------------"

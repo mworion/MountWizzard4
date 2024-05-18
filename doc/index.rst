@@ -9,7 +9,7 @@ MountWizzard4 on a RPi3+, RPi4 or RPi5.
 
 PDF Documentation:
 
-https://mworion.github.io/MountWizzard4/MountWizzard4.pdf
+https://mworion.github.io/MountWizzard4/mountwizzard4.pdf
 
 Before starting
 ---------------

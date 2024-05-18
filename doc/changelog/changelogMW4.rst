@@ -1,5 +1,9 @@
-Beta versions of MW4
-====================
+Changelog MountWizzard4
+-----------------------
+
+Beta versions
+=============
+
 Version 4.x
 ^^^^^^^^^^^
 4.0.0b0
@@ -24,8 +28,8 @@ Version 4.x
 - fix: typos
 
 
-Released versions of MW4
-========================
+Released versions
+=================
 Version 3.x
 ^^^^^^^^^^^
 3.2.6

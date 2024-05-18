@@ -42,7 +42,7 @@ and in addition Sequence Generator Pro and N.I.N.A. as camera device.
 
 Known limitations
 -----------------
-MountWizzard4 does support python 3.9 - 3.12 right now. The reason for that 
+MountWizzard4 does support python 3.10 - 3.12 right now. The reason for that
 is the lack of precompiled packages. Some features are limited to windows as 
 they need the original 10micron updater program for execution.
 
@@ -87,6 +87,8 @@ and zipped causes more work.
 If changes are made due to a feedback, new releases will have a link to the closed
 issues on GitHub.
 
+Table of contents
+-----------------
 
 .. toctree::
     :maxdepth: 2

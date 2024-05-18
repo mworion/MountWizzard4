@@ -86,7 +86,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             echo "--------------------------------------------------"
-            echo "Install qtchooser"
+            echo "Install qtchooser for qt6"
             echo "--------------------------------------------------"
             cd /usr/lib/aarch64-linux-gnu/qtchooser
             cd /usr/share/qtchooser
@@ -99,24 +99,22 @@ jobs:
             ln -s ../../../share/qtchooser/qt6-aarch64-linux-gnu.conf /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
             
             echo "--------------------------------------------------"
-            echo "Check chooser"
+            echo "Check chooser if qt6 is available"
             echo "--------------------------------------------------"
             ls -la /usr/lib/aarch64-linux-gnu/qtchooser
-            
             ls -la /usr/lib/aarch64-linux-gnu/qt-default/qtchooser/default.conf
-            
             ls -la /usr/share/qtchooser
             qtchooser -l
 
             echo "--------------------------------------------------"
-            echo "Start Virtual Environment"
+            echo "Start virtual environment"
             echo "--------------------------------------------------"
             cd "${PWD}"
             python3 -m venv venv
             source venv/bin/activate
             
             echo "--------------------------------------------------"
-            echo "Preparing Install"
+            echo "Preparing install"
             echo "--------------------------------------------------"
             python --version
             python -m pip install pip --upgrade
@@ -127,10 +125,10 @@ jobs:
 
             cd "${PWD}"
             echo "--------------------------------------------------"
-            echo "Start Building Wheels"
+            echo "Start building wheels"
             echo "--------------------------------------------------"
-            pip install pyqt6-sip
-            pip wheel pyqt6 --config-settings --confirm-license= --verbose
+            pip install pyqt6-sip --upgrade
+            pip wheel pyqt6 --upgrade --config-settings --confirm-license= --verbose
 
 
       - name: Update changes in GitHub repository

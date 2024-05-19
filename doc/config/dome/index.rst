@@ -20,16 +20,19 @@ are in meters. It starts with the radius
 
 .. image:: image/radius.png
     :align: center
+    :scale: 71%
 
 followed by the displacement of the mount in north and east direction. A
 displacement to the north is treated positive as well as a displacement to
 the east.
 
 .. image:: image/north.png
-    :align: center
+    :align: left
+    :scale: 50%
 
 .. image:: image/east.png
-    :align: center
+    :align: right
+    :scale: 50%
 
 For the vertical displacement you have to take car about different definitions
 of how to measure this value. A common way many ASCOM drivers do is measuring
@@ -41,10 +44,12 @@ value is mostly negative, because the mount base level is on lower height than
 the dome center.
 
 .. image:: image/z_10micron.png
-    :align: center
+    :align: left
+    :scale: 50%
 
 .. image:: image/z_ascom.png
-    :align: center
+    :align: right
+    :scale: 50%
 
 
 If you have mor than one telescope mounted, you will experience a lateral
@@ -54,6 +59,7 @@ taken from base plate of the mount to the OTA axis. Displacement to the right
 
 .. image:: image/lat.png
     :align: center
+    :scale: 50%
 
 Area 2: dome settle time
 ------------------------

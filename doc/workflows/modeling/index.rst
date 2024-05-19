@@ -70,7 +70,7 @@ The following sections describe each step in detail.
 .. toctree::
     :maxdepth: 1
 
-    model_polar_align
-    model_points
+    polar_align
+    build_points
     model_build
     manage_model

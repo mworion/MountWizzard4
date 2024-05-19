@@ -34,7 +34,7 @@ chart shows each basic step.
 
 Step 1: Polar alignment
 -----------------------
-Detailed description: :doc:`Polar align your mount <polar_align>`
+Detailed description: :doc:`Polar align your mount <./polar_align.rst>`
 
 .. image:: image/polar_align.png
     :align: center
@@ -42,7 +42,7 @@ Detailed description: :doc:`Polar align your mount <polar_align>`
 
 Step 2: Selecting model points
 ------------------------------
-Detailed description: :doc:`Selecting build points <build_points>`
+Detailed description: :doc:`Selecting build points <./build_points.rst>`
 
 .. image:: image/build_points1.png
     :align: center
@@ -50,7 +50,7 @@ Detailed description: :doc:`Selecting build points <build_points>`
 
 Step 3: Running the model build
 -------------------------------
-Detailed description: :doc:`Build a model <model_build>`
+Detailed description: :doc:`Build a model <./model_build.rst>`
 
 .. image:: image/model_build.png
     :align: center
@@ -58,7 +58,7 @@ Detailed description: :doc:`Build a model <model_build>`
 
 Step 4: Managing mount models
 -----------------------------
-Detailed description: :doc:`Managing mount models <manage_model>`
+Detailed description: :doc:`Managing mount models <./manage_model.rst>`
 
 .. image:: image/manage_model.png
     :align: center

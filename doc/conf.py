@@ -49,7 +49,7 @@ master_doc = 'index'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autosectionlabel',
+extensions = ['sphinx.ext.autosectionlabel', 'sphinx.ext.intersphinx',
               'sphinx.ext.githubpages', 'sphinxcontrib.drawio',
               'sphinx_simplepdf']
 

@@ -36,7 +36,7 @@ Step 1: Polar alignment
 -----------------------
 Detailed description: :doc:`Polar align your mount <polar_align>`
 
-.. image:: image/model_polar_align.png
+.. image:: image/polar_align.png
     :align: center
     :scale: 50%
 
@@ -44,7 +44,7 @@ Step 2: Selecting model points
 ------------------------------
 Detailed description: :doc:`Selecting build points <build_points>`
 
-.. image:: image/model_points.png
+.. image:: image/build_points1.png
     :align: center
     :scale: 50%
 

@@ -23,7 +23,7 @@ using few stars, how the stars are chosen is critical.
 .. note::   MountWizzard4 helps here by automating the spread of points to avoid
             the problems listed through its various point layout patterns.
 
-.. image:: image/model_polar_align.png
+.. image:: image/polar_align.png
         :align: center
         :scale: 71%
 

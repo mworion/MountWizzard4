@@ -1,18 +1,16 @@
 Polar align your mount
 ======================
-
 All credits for explaining the following section go to 10micron and many experts
 using the mount.
 
 Initial alignment
 -----------------
-
-Initial 3 star alignment insufficient to get a good polar alignment error (PAE)
-value. A 2 star alignment can only give a poor PAE estimate as the cone error
-correction is missing, can be many arc minutes off true value Minimum that can be
-used is 3 stars but they recommend at least 5 and ideally 10 points (ideally
-based on experiments say that 12 to 20 points have better convergence without
-spending too much effort).
+Initial three star alignment insufficient to get a good polar alignment error
+(PAE) value. A two star alignment can only give a poor PAE estimate as the cone
+error correction is missing, can be many arc minutes off true value Minimum that
+can be used is 3 stars but they recommend at least 5 and ideally 10 points
+(ideally based on experiments say that 12 to 20 points have better convergence
+without spending too much effort).
 
 .. note::   20 points in MountWizzard4 using the fast ASTAP plate solver will do
             20 points in around 7 minutes - not too onerous for a good PAE
@@ -25,11 +23,13 @@ using few stars, how the stars are chosen is critical.
 .. note::   MountWizzard4 helps here by automating the spread of points to avoid
             the problems listed through its various point layout patterns.
 
-          .. image:: image/model_polar_align.png
-            :align: center
-            :scale: 71%
+.. image:: image/model_polar_align.png
+        :align: center
+        :scale: 71%
 
-          showing different colors and sizes for selecting the right stars.
+The hemisphere window is showing different colors and sizes for selecting the
+right stars once the Polar/Ortho mode is selected. You need a valid first model
+in the mount to use this feature!
 
 As you add stars, more and more model terms will be added um of either
 (# points - 1) or 11 terms for a single all sky model - 11 terms meaning all
@@ -55,7 +55,7 @@ where the manual movements have no effect. Avoid the zenith (this is where the
 azimuth knob has no effect). Avoid the East-West axis (this is where the
 altitude adjustment knob has no effect)
 
-.. note::   MountWizzard4 sill help you selecting the right location by marking
+.. note::   MountWizzard4 will help you selecting the right location by marking
             the right regions and tight stars. In addition you don't need to use
             the handpad for selecting the stars: in MountWizzard4 you could
             select the reference star with a mouse click and start the polar
@@ -72,7 +72,6 @@ to center the selected reference star in you image.
 
 Should I deactivate the dual axis tracking?
 -------------------------------------------
-
 If you have the dual axis tracking active, the mount will track using the model
 built in the initial phase (the initial 3 points generates a minimum model with
 2 terms - its not a good model).

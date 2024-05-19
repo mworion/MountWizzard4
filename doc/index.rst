@@ -95,7 +95,7 @@ Table of contents
 
     features
     config/index
-    using/index
+    workflows/index
     help/index
     architecture/index
     changelog/changelog

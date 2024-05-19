@@ -1,11 +1,11 @@
-Running a model build
-=====================
+Build a model
+=============
 
-After you have selected you model points, MountWizzard4 could automatically run
-through the points and generate the data to build a model. These are steps you
-could basically all manual as the final model calculation itself is done in the
-mount computer! There are two different ways offered from 10micron to build a
-model:
+After you have selected you build points, MountWizzard4 could automatically run
+through the points and generate the data to generate a model. These are steps
+you could basically all manual as the final model calculation itself is done in
+the mount computer! There are two different ways offered from 10micron to build
+a model:
 
 .. hlist::
     :columns: 1
@@ -29,8 +29,8 @@ automatic handling of point data.
     :align: center
     :scale: 71%
 
-In the model build tab on the left, that actual model spec from the mount
-computer is shown. If you are in an early stage of your setup, you might use
+In the "model build and program" tab, that actual model spec from
+the mount computer is shown. If you are in an early stage of your setup, you might use
 some of the hints given to refine and tune your mechanical setup before building
 your final model for imaging.
 

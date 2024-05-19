@@ -120,8 +120,6 @@ jobs:
             echo "--------------------------------------------------"
             python --version
             python -m pip install pip --upgrade
-            pip install setuptools --upgrade
-            pip install wheel --upgrade
             pip install PyQt-builder --upgrade
             pip install --upgrade packaging setuptools toml wheel
 
@@ -129,7 +127,7 @@ jobs:
             echo "--------------------------------------------------"
             echo "Start building wheels"
             echo "--------------------------------------------------"
-            pip install pyqt6-sip --upgrade
+            pip install pyqt6-sip
             pip wheel pyqt6==6.5.3 -w "wheels" -C --confirm-license=  --verbose
 
 

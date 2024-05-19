@@ -1,8 +1,8 @@
 Terrain image & horizon mask
 ============================
 For an optimal use of model points, slew path etc. it is necessary to define a
-horizon mask for the use in MW4. There are several way to define and use a mask
-based on your actual environment
+horizon mask for the use in MountWizzard4. There are several way to define and
+use a mask based on your actual environment
 
 .. hint:: See also on youtube: https://youtu.be/EqDNNMNMS0w
 
@@ -20,20 +20,20 @@ If you finished the image and transferred it to you computer it might look like:
     :align: center
     :scale: 71%
 
-Please put this image to you config dir in your MW4 working folder. The file
-format output from streetview is 4096 X 2048 pixel color as JPG. The horizon for
-altitude 0 degree cuts the image in an upper and lower half. MW4 uses only the
-upper half of the image as it expects the image to be taken at the height of the
-horizon line.
+Please put this image to you config dir in your MountWizzard4 working folder.
+The file format output from streetview is 4096 X 2048 pixel color as JPG. The
+horizon for altitude 0 degree cuts the image in an upper and lower half.
+MountWizzard4 uses only the upper half of the image as it expects the image to
+be taken at the height of the horizon line.
 
-.. note:: The image file has to be named to: **terrain.jpg** and should be in JPG
-          format.
+.. note:: The image file has to be named to: **terrain.jpg** and should be in
+          JPG format.
 
-MW4 will use the image as greyscale image. You could play around how you prepare
-the image before you copy it to the config directory. Good ideas of improving the
-image are: make the sky transparent, equalize gamma / lightness settings to avoid
-highlights in the image, etc. Once you open the hemisphere window you see the
-setups for the terrain background.
+MountWizzard4 will use the image as greyscale image. You could play around how
+you prepare the image before you copy it to the config directory. Good ideas of
+improving the image are: make the sky transparent, equalize gamma / lightness
+settings to avoid highlights in the image, etc. Once you open the hemisphere
+window you see the setups for the terrain background.
 
 .. image:: image/terrain_setup.png
     :align: center

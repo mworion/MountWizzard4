@@ -6,6 +6,7 @@ Configuration
 
     camera/index
     dome/index
+    gui/index
     mount/index
     terrain/index
     themes/index

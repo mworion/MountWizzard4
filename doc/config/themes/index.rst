@@ -1,13 +1,14 @@
 Configuring themes
 ==================
-MW4 supports now 3 different color sets. These could be selected in settings:
+MountWizzard4 supports now 3 different color sets. These could be selected in
+settings:
 
 .. image:: image/theme_selector.png
     :align: center
     :scale: 71%
 
-and will be persisted after closing the application. They could be changed during
-runtime.
+and will be persisted after closing the application. They could be changed
+during runtime.
 
 Main theme
 ----------

@@ -1,5 +1,5 @@
-Using functions
-===============
+Workflows and functions
+=======================
 
 .. toctree::
     :maxdepth: 3

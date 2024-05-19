@@ -8,7 +8,7 @@ enable the mount connectivity. In the settings tab goto Mount and enter under
 Mount connectivity the IP address of you mount (1). Boot the mount manually and
 wait until the mount computer is ready.
 
-.. image:: image/mount_01.png
+.. image:: image/mount1.png
     :align: center
     :scale: 71%
 
@@ -34,6 +34,7 @@ which could be also set and altered through 10micron tools.
 
 .. image:: image/mountSettlingTime.png
     :align: center
+    :scale: 71%
 
 This settling time is valid for all slews and movements of your mount once set.
 Please have a look to the 10micron spec where this behaviour has to be taken into
@@ -44,6 +45,7 @@ be  set under the mount parameters:
 
 .. image:: image/waitingTime.png
     :align: center
+    :scale: 71%
 
 The working principle is as follows: MountWizzard4 initiates a slew. This
 command is run by the mount computer and takes the internal settling time into

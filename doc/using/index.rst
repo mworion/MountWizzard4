@@ -5,7 +5,6 @@ Using functions
     :maxdepth: 3
 
     almanac/index
-    buildpoints/index
     dome/index
     environment/index
     imaging/index

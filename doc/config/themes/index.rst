@@ -1,5 +1,5 @@
-Configuring themes
-==================
+Themes selection
+================
 MountWizzard4 supports now 3 different color sets. These could be selected in
 settings:
 

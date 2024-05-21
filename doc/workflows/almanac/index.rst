@@ -1,7 +1,7 @@
 Almanac
 =======
 
-MountWizzard4 provides some basic informations about twilight (1), (2) and moon
+MountWizzard4 provides some basic information about twilight (1), (2) and moon
 (3) phases.
 
 .. image:: image/almanac1.png

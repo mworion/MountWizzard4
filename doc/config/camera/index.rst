@@ -43,7 +43,7 @@ save when leaving MountWizzard4 with Save/Quit button or just when saving the
 profile. You can add or change any config later on at any time.
 
 Using SGPro or N.I.N.A. as camera
-=================================
+---------------------------------
 In addition to the standard frameworks to interface to devices, MountWizzard4
 could use Sequence Generator Pro (SGPro) an Nighttime Imaging (N.I.N.A.) as a
 camera driver for devices attached to them. Unfortunately they support only a

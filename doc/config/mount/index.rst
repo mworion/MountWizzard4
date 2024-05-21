@@ -1,7 +1,7 @@
-Mount config
-------------
+Mount setup
+===========
 Basic connectivity
-==================
+------------------
 
 With the first start you have a clean installation. First step should be to
 enable the mount connectivity. In the settings tab goto Mount and enter under
@@ -25,7 +25,7 @@ any config later on at any time.
 
 
 Settling Time / Waiting Time
-============================
+----------------------------
 
 To accommodate several different use cases MountWizzard4 implements additional
 waiting times to the core settling time, which is implemented and user directly

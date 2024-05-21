@@ -1,4 +1,4 @@
-Configuring GUI
+GUI adaptations
 ===============
 The GUI of MountWizzard4 could be configured to your needs in many ways. You
 could reorder your tabs (1) or disable not needed menu parts to get a much

@@ -1,5 +1,5 @@
 Selecting build points
-======================
+----------------------
 The first step for building a model is the selection of the desired model
 points. Handling you horizon is an important step as MountWizzard4 helps you
 could in finding points, which were not covered through obstacles in your
@@ -36,7 +36,7 @@ to store them in a file and reload them whenever you want. You could store as
 many files as you want.
 
 Sorting build points
---------------------
+^^^^^^^^^^^^^^^^^^^^
 MountWizzard4 does a default sorting for you. If the default does not fit to
 your setup, you could tweak the order and additional constraints like you want.
 These settings are stored persistent in your profile.
@@ -63,7 +63,7 @@ from mount the resulting dome azimuth with all geometry corrections and sorts
 afterwards the build points that you get ascending azimuth for the dome.
 
 Build points specials
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 In addition you could also mix different types of model point generation by
 checking
 

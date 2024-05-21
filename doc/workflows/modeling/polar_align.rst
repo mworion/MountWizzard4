@@ -1,10 +1,10 @@
 Polar align your mount
-======================
+----------------------
 All credits for explaining the following section go to 10micron and many experts
 using the mount.
 
 Initial alignment
------------------
+^^^^^^^^^^^^^^^^^
 Initial three star alignment insufficient to get a good polar alignment error
 (PAE) value. A two star alignment can only give a poor PAE estimate as the cone
 error correction is missing, can be many arc minutes off true value Minimum that
@@ -43,7 +43,7 @@ exposure with a 10 arc minute (1/6 degree) PAE will not show field rotation on a
 large full frame sensor up to latitude 60 north or south)
 
 How polar align works
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 The polar align function works in a really easy way. It removes the polar axis
 error from the model before pointing at the star, so when you center the star
 with the azimuth/altitude movements the right ascension axis will be
@@ -71,7 +71,7 @@ to center the selected reference star in you image.
             the region around the crosshair center to improve the precision.
 
 Should I deactivate the dual axis tracking?
--------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If you have the dual axis tracking active, the mount will track using the model
 built in the initial phase (the initial 3 points generates a minimum model with
 2 terms - its not a good model).
@@ -87,7 +87,7 @@ procedure.
     :scale: 71%
 
 Effects of polar misalignment
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Even if your mount is wildly away from a correct polar alignment, when you make
 a model the correction of the polar misalignment will be performed exactly when
 Dual Axis Tracking is activated. This means that the pointing error and the

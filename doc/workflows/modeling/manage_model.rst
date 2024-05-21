@@ -1,6 +1,5 @@
 Managing mount models
-=====================
-
+---------------------
 Managing your models is a central task especially if you image in a mobile
 environment. MountWizzard4 supports this in the Manage Model Tab in the main
 window. All functions there are related to the actual mount model or the models
@@ -54,7 +53,7 @@ In all graphs you will see the pink lines which show the value of the Target
 cut-off value for automatic model point removal.
 
 Optimizing the model
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 I some cases you will discover that some model points and their errors are
 outside a reasonable area. In that case three different model optimization
@@ -81,10 +80,7 @@ selected threshold (5). Please note that this will lead to a different Model
 RMS (2).
 
 Explanation of optimization of process:
----------------------------------------
-
-Model optimization
-------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Yes you could remove bad points from the model. But does it help ? Again from
 mathematics: you bend an error curve like a metal plate over a rough surface to
 equalize it. If the is a single stone under this plate -> approximation might be

@@ -1,6 +1,5 @@
 Build a model
-=============
-
+-------------
 After you have selected you build points, MountWizzard4 could automatically run
 through the points and generate the data to generate a model. These are steps
 you could basically all manual as the final model calculation itself is done in
@@ -42,7 +41,7 @@ your final model for imaging.
 .. warning::    Any changes in your mechanical setup invalidates the model!
 
 Explanation model build process:
---------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The model correct for error. Some could be removed exactly, some not. The way is
 a mathematically optimization method. In max the mount could calculate 22 terms
 (which means two models of a set of 11 terms, one for WEST and one for EAST
@@ -53,7 +52,7 @@ is the goal of this task. For sure you would like to remove as much of the
 alignment error to be able to get unguided images.
 
 Modeling automatics
--------------------
+^^^^^^^^^^^^^^^^^^^
 The automation process is explained by the next drawing. It is quite simple, but
 there are some important topic, which you should care about.
 
@@ -95,7 +94,7 @@ build. For this situation you could enable a retry mechanism for the
 the missed ones N times and will add their data if possible afterwards.
 
 Using model datafiles
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 MountWizzard4 stores for each model build run all data (and some more for
 analyse) to build a mount model. With this data you could rebuild at any time
 you mount model from scratch if you for example deleted to much points during
@@ -111,7 +110,7 @@ setups lead into an invalid model. Rebuilding a model from old data when
 mechanical changes were made result also in an incorrect model.
 
 Fast Align
-----------
+^^^^^^^^^^
 There is a way to adjust an existing model to a certain sphere position. If you
 choose fast align, MountWizzard4 will do for the actual position an image, plate
 solve it an align the model to the solved coordinates. This means the whole

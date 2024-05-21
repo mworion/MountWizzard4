@@ -36,6 +36,7 @@ releaseNotes = """
 - refactoring: remove installer to separate repo (InstallerMW4)
 - improve: reduced size of app
 - improved: don't delete message list when color change
+- improved: rewrite of the online documentation
 - remove: automation of 10micron installer
 - fix: typos
 """

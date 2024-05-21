@@ -9,3 +9,7 @@ some specialities.
 
 Sorting there are some optimizations to be set in MountWizzard4. Default ist
 without dome and it sorts for minimum mount slews distance.
+
+.. image:: image/dome1.png
+    :align: center
+    :scale: 71%

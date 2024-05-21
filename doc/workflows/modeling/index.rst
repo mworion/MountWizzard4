@@ -1,5 +1,7 @@
 Modeling
 ========
+Overview
+--------
 I only focus on model building with tool support, so no words about manual model
 building. I don't know the internal algorithms of the 10micron mount how the
 calculate their corrections. So many of the hints derive from pure logical or
@@ -24,22 +26,14 @@ think of 2-3 iterations of the whole procedure. In my setup I normally need 2
 iterations for doing an alignment which is good for 20-30 min exposures and have
 round stars.
 
-The following sections describe each step in detail.
-
-.. toctree::
-    :maxdepth: 1
-
-    polar_align
-    build_points
-    model_build
-    manage_model
-
 As Overview: MountWizzard4 has a straight forward approach for building models.
 The following chart shows each basic step.
 
 .. drawio-image:: image/workflow.drawio
     :align: center
     :scale: 71%
+
+The following sections describe each step in detail:
 
 Step 1: Polar alignment
 -----------------------

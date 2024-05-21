@@ -10,4 +10,7 @@ Workflows and functions
     imaging/index
     minorplanets/index
     modeling/index
+    profile/index
     satellite/index
+    tools/index
+    update/index

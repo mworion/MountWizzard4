@@ -1,2 +1,2 @@
-Minor Planets
-=============
+Updating the app
+================

@@ -154,7 +154,6 @@ def version_doc(c):
 def update_builtins(c):
     printMW('updating builtins')
     runMW(c, 'cp ./work/data/de440_mw4.bsp ./mw4/resource/data/de440_mw4.bsp')
-    runMW(c, 'cp ./work/data/visual.txt ./mw4/resource/data/visual.txt')
     runMW(c, 'cp ./work/data/finals2000A.all ./mw4/resource/data/finals2000A.all')
     runMW(c, 'cp ./work/data/finals.data ./mw4/resource/data/finals.data')
     runMW(c, 'cp ./work/data/CDFLeapSeconds.txt ./mw4/resource/data/CDFLeapSeconds.txt')

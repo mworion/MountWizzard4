@@ -1174,6 +1174,7 @@ class App(QObject):
               'measureDir': 'tests/workDir/measure',
               'tempDir': 'tests/workDir/temp',
               'configDir': 'tests/workDir/config',
+              'logDir': 'tests/workDir/log',
               }
     uiWindows = {}
     mainW = MainW()

@@ -277,7 +277,6 @@ def extractDataFiles(mwGlob=None, splashW=None):
 
     files = {
         'de440_mw4.bsp': 0,
-        'visual.txt': 0,
         'CDFLeapSeconds.txt': 0,
         'tai-utc.dat': 0,
         'finals2000A.all': 0,

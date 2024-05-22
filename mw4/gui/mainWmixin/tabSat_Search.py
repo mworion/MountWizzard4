@@ -667,7 +667,6 @@ class SatSearch(object):
         :return:
         """
         loader = self.app.mount.obsSite.loader
-
         dirPath = self.app.mwGlob['dataDir']
         filePath = os.path.normpath(f'{dirPath}/{fileName}')
         localSourceAvailable = os.path.isfile(filePath)
@@ -684,7 +683,7 @@ class SatSearch(object):
             self.ui.satSourceGroup.setTitle('Satellite data - age: n/a')
             return False
 
-        satellites = loader.tle_file(source, filename=filePath)
+        satellites = loader.tle_file(source, filename=filePath, reload=True)
         self.satellites = {sat.name: sat for sat in satellites}
         localSourceAvailable = os.path.isfile(filePath)
         self.satSourceValid = localSourceAvailable

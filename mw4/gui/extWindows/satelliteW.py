@@ -191,6 +191,9 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param thresh:
         :return:
         """
+        if np.isnan(dat).any():
+            yield []
+
         jump = np.nonzero(np.abs(np.diff(dat)) > ((limits[1] - limits[0]) * thresh))[0]
         lastIndex = 0
         for ind in jump:

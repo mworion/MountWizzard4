@@ -97,8 +97,8 @@ def test_calcPassEvents_1(function):
     obsSite = function.app.mount.obsSite
     function.app.mount.setting.horizonLimitLow = None
     t, e = function.calcPassEvents(obsSite)
-    assert type(t) == skyfield.timelib.Time
-    assert type(e) == np.ndarray
+    assert isinstance(t, skyfield.timelib.Time)
+    assert isinstance(e, np.ndarray)
 
 
 def test_calcPassEvents_2(function):

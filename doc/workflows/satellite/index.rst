@@ -15,45 +15,53 @@ satellite database works similar) to do tracking.
             marks them red. Older than 3 days may work, MountWizzard4 marks them
             yellow. Ideal is to get them right in time.
 
-You could select different databases on the left part of the satellite tab. Once
-selected and online enabled, MountWizzard4 will download the newest data and
-offers the list of included satellites. For finding the satellite of your choice
-you could use the search field to reduce the list. The string is *not* case
-sensitive and will be stored persistent.
+You could select different databases on the right upper part of "Searching
+Database" tab {1}. Once selected and online enabled, MountWizzard4 will download
+the newest data and offers the list of included satellites. For finding the
+satellite of your choice you could use the search field (2) to reduce the list.
+The string is *not* case sensitive and will be stored persistent.
 
 .. image:: image/sat_classic.png
+    :align: center
+    :scale: 71%
+
+There are many more selection criteria available to filter the list of
+satellites with real-time calculations of some properties like velocity,
+distance and a glimpse of the apparent magnitude. This calculation takes some
+time and you will see a yellow frame and progress counter in the filter area.
+
+.. image:: image/sat_calc.png
     :align: center
     :scale: 71%
 
 Once you choose a satellite with double click, data is programmed to mount
 controller, parameters are displayed, MountWizzard4 calculated the next 3 orbits
 of the satellite with rise / culminate / settle and if it occurs the flip time
-when crossing the meridian. After the mount has done it's calculations as well,
-the result will be shown in the **Trajectory starts** and **Trajectory ends**
-fields and a possible flip will be announced.
-
-As soon as a valid tracking path is present in the mount, the **Start satellite
-tracking** and **Stop satellite tracking** button are enabled. Once started,
-the mount will slew to the begin of the tracking path and wait for the satellite
-to rise. Selecting partial tracks and respecting constraints is not possible.
-
-From version 2.1 on, MountWizzard4 will split the gui in two tabs and extend the
-features. The sat search tab will help you now in a sortable and filterable list
-of satellites with real-time calculations of some properties like velocity,
-distance and a glimpse of the apparent magnitude.
+when crossing the meridian.
 
 .. image:: image/sat_search.png
     :align: center
     :scale: 71%
 
-On the tracking tab, MountWizzard4 offers now (need Firmware 3.x) some
-adjustments for centering the satellites in you imaging FOV.
+The selected satellite will also be shown in the **Satellite** window:
+
+.. image:: image/sat_selected.png
+    :align: center
+    :scale: 71%
+
+After the mount has done it's calculations as well, the result will be shown in
+the **Trajectory starts** and **Trajectory ends** fields and a possible flip
+will be announced on the "Run Tracking" tab, MountWizzard4 offers now (need
+Firmware 3.x) some adjustments for centering the satellites in you imaging FOV.
 
 .. image:: image/sat_track.png
     :align: center
     :scale: 71%
 
-.. note:: All explanations done for the 2.0 version are still valid!
+As soon as a valid tracking path is present in the mount, the **Start satellite
+tracking** and **Stop satellite tracking** button are enabled. Once started,
+the mount will slew to the begin of the tracking path and wait for the satellite
+to rise. Selecting partial tracks and respecting constraints is not possible.
 
 Since FW 3.x the command protocol offers the programming of a custom satellite
 track. This offers the capability of takings care of avoiding flips, respect
@@ -71,13 +79,13 @@ enabling, additional elements will be enabled.
 As the calculation now happens outside the mount, we could take a look to the
 difference between tracks calculated by the 10micron mount and MountWizzard4
 based on the same satellite TLE data! You will find some comparison under the
-architecture / math section: :ref:`precision of internal calculations`.
+architecture / math section:
+:doc:`precision of internal calculations <../../architecture/calculations>`.
 
 If you are using the internal math as well as classic mode, you could open the
-satellite window and choose the **Earth and Horizon Maps** tab. There you
-could see the next three orbits and for internal math the resulting satellite
-track with an white underlay. If you change any setup, MountWizzard4 will
-recalculate all data and updates the plots accordingly.
+satellite window. There you could see the next three orbits and for internal
+math the resulting satellite track with an white underlay. If you change any
+setup, MountWizzard4 will recalculate all data and updates the plots accordingly.
 
 .. note::   The solid line shows the track before meridian transit, the dotted
             line the track after meridian transit. The resulting white

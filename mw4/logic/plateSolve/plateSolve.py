@@ -35,7 +35,6 @@ from logic.plateSolve.watney import Watney
 class PlateSolveSignals(PyQt6.QtCore.QObject):
     """
     """
-
     __all__ = ['PlateSolveSignals']
 
     done = PyQt6.QtCore.pyqtSignal(object)
@@ -50,17 +49,10 @@ class PlateSolveSignals(PyQt6.QtCore.QObject):
 
 class PlateSolve:
     """
-    the class PlateSolve inherits all information and handling of astrometry.net
-    handling
-
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
-
-        >>> plateSolve = PlateSolveSignals(app=None)
     """
-
-    __all__ = ['PlateSolve',
-               ]
+    __all__ = ['PlateSolve']
 
     log = logging.getLogger(__name__)
 

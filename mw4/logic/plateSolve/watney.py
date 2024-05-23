@@ -31,8 +31,8 @@ from astropy.io import fits
 class Watney(object):
     """
     """
-
     __all__ = ['Watney']
+
     log = logging.getLogger(__name__)
 
     returnCodes = {0: 'No errors',

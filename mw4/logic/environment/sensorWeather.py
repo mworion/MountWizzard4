@@ -31,8 +31,8 @@ if platform.system() == 'Windows':
 class SensorWeather:
     """
     """
-
     __all__ = ['SensorWeather']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

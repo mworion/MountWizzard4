@@ -55,7 +55,6 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.msg = app.msg
         self.threadPool = app.threadPool

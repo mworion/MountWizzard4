@@ -28,7 +28,8 @@ from logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 
 
 class PegasusUPB:
-
+    """
+    """
     __all__ = ['PegasusUPB']
 
     log = logging.getLogger(__name__)

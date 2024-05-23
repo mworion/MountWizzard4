@@ -25,7 +25,6 @@ from base.ascomClass import AscomClass
 class DomeAscom(AscomClass):
     """
     """
-
     __all__ = ['DomeAscom']
 
     shutterStates = ['Open', 'Closed', 'Opening', 'Closing', 'Error']

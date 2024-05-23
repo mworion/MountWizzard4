@@ -31,14 +31,8 @@ class Hipparcos(object):
     other attributes. this includes data about the alignment stars defined in
     generateAlignStars, their ra dec coordinates, proper motion, parallax and
     radial velocity and the calculation of data for display and slew commands
-
-        >>> hip = Hipparcos(
-        >>>                 app=app
-        >>>                 )
     """
-
-    __all__ = ['Hipparcos',
-               ]
+    __all__ = ['Hipparcos']
 
     log = logging.getLogger(__name__)
 

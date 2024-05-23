@@ -28,9 +28,9 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 class CameraNINA(NINAClass, CameraSupport):
     """
     """
-    DEVICE_TYPE = 'Camera'
-
     __all__ = ['CameraNINA']
+
+    DEVICE_TYPE = 'Camera'
 
     def __init__(self, app=None, signals=None, data=None, parent=None):
         super().__init__(app=app, data=data)

@@ -23,7 +23,8 @@ from base.ascomClass import AscomClass
 
 
 class SensorWeatherAscom(AscomClass):
-
+    """
+    """
     __all__ = ['SensorWeatherAscom']
 
     def __init__(self, app=None, signals=None, data=None):

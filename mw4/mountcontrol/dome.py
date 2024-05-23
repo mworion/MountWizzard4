@@ -27,10 +27,9 @@ from mountcontrol.convert import valueToInt, valueToFloat
 
 class Dome(object):
     """
-        >>> fw = Dome(host='')
     """
-    __all__ = ['Dome',
-               ]
+    __all__ = ['Dome']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, host=None):

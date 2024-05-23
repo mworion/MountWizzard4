@@ -30,12 +30,12 @@ from gui.widgets.uploadPopup_ui import Ui_UploadPopup
 
 
 class UploadPopup(toolsQtWidget.MWidget):
+    """
+    """
+    __all__ = ['UploadPopup']
 
     PROGRESS_DONE = 100
     CYCLES_WAIT = 20
-
-    __all__ = ['UploadPopup']
-
     signalProgress = pyqtSignal(object)
     signalStatus = pyqtSignal(object)
     signalProgressBarColor = pyqtSignal(object)

@@ -30,7 +30,6 @@ from logic.camera.cameraSupport import CameraSupport
 class CameraIndi(IndiClass, CameraSupport):
     """
     """
-
     __all__ = ['CameraIndi']
 
     def __init__(self, app=None, signals=None, data=None):

@@ -29,16 +29,12 @@ from gui.widgets import message_ui
 
 class MessageWindow(toolsQtWidget.MWidget):
     """
-    the message window class handles
-
     """
-
     __all__ = ['MessageWindow',
                ]
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)

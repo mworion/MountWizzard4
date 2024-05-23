@@ -28,8 +28,7 @@ from gui.extWindows.simulator.materials import Materials
 
 class SimulatorHorizon:
 
-    __all__ = ['SimulatorHorizon',
-               ]
+    __all__ = ['SimulatorHorizon']
 
     def __init__(self, app):
         self.app = app

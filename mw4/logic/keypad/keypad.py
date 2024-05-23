@@ -28,6 +28,7 @@ class KeyPad:
     """
     """
     __all__ = ['KeyPad']
+
     log = logging.getLogger(__name__)
 
     keyCodesA = {

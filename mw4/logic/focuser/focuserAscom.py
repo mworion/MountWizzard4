@@ -25,7 +25,6 @@ from base.ascomClass import AscomClass
 class FocuserAscom(AscomClass):
     """
     """
-
     __all__ = ['FocuserAscom']
 
     def __init__(self, app=None, signals=None, data=None):

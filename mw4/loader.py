@@ -62,7 +62,7 @@ class MyApp(QApplication):
     exists. so far I know that's the only chance to log this issues.
 
     in addition it writes mouse pressed and key pressed events in debug level
-    to log including event and object name to be analyse the input methods.
+    to log including event and object name to be analysed the input methods.
     """
 
     log = logging.getLogger(__name__)
@@ -141,9 +141,9 @@ class MyApp(QApplication):
 
 def except_hook(typeException, valueException, tbackException):
     """
-    except_hook implements a wrapper around except hook to log uncatched exceptions
-    to the log file. so during user phase I get all the exceptions and logs
-    catched in the file.
+    except_hook implements a wrapper around except hook to log uncatched
+    exceptions to the log file. so during user phase I get all the exceptions
+    and logs catched in the file.
 
     :param typeException:
     :param valueException:
@@ -163,7 +163,8 @@ def except_hook(typeException, valueException, tbackException):
 
 def setupWorkDirs(mwGlob):
     """
-    setupWorkDirs defines the necessary work dirs and checks if they are writable
+    setupWorkDirs defines the necessary work dirs and checks if they are
+    writable
 
     :param mwGlob:
     :return: mwGlob

@@ -31,8 +31,8 @@ if platform.system() == 'Windows':
 class Telescope:
     """
     """
-
     __all__ = ['Telescope']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

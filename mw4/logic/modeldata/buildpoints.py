@@ -31,8 +31,7 @@ from scipy.spatial import distance
 from base import transform
 
 __all__ = ['HaDecToAltAz',
-           'DataPoint',
-           ]
+           'DataPoint']
 
 
 def HaDecToAltAz(ha, dec, lat):

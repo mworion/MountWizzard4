@@ -31,7 +31,6 @@ from astropy.io import fits
 class ASTAP(object):
     """
     """
-
     __all__ = ['ASTAP']
 
     returnCodes = {0: 'No errors',

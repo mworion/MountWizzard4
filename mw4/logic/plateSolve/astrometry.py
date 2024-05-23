@@ -32,7 +32,6 @@ from mountcontrol import convert
 class Astrometry(object):
     """
     """
-
     __all__ = ['Astrometry']
 
     log = logging.getLogger(__name__)

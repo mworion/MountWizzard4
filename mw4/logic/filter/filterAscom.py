@@ -24,18 +24,13 @@ from base.ascomClass import AscomClass
 
 class FilterAscom(AscomClass):
     """
-    the class filter inherits all information and handling of the filter device.
     """
-
-    __all__ = ['FilterAscom',
-               ]
+    __all__ = ['FilterAscom']
 
     CYCLE_POLL_DATA = 1000
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
-        # as we have in the base class only the base client there, we will get more
-        # specialized with Dome (which is derived from the base class)
         self.signals = signals
 
     def workerGetInitialConfig(self):

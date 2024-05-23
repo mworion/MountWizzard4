@@ -27,8 +27,7 @@ from gui.extWindows.simulator import tools
 
 class SimulatorDome:
 
-    __all__ = ['SimulatorDome',
-               ]
+    __all__ = ['SimulatorDome']
 
     def __init__(self, app):
         super().__init__()

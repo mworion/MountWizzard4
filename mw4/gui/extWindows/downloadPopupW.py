@@ -31,7 +31,8 @@ from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 
 class DownloadPopup(toolsQtWidget.MWidget):
-
+    """
+    """
     __all__ = ['DownloadPopup']
 
     signalProgress = pyqtSignal(object)

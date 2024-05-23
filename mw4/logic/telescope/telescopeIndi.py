@@ -25,7 +25,6 @@ from base.indiClass import IndiClass
 class TelescopeIndi(IndiClass):
     """
     """
-
     __all__ = ['TelescopeIndi']
 
     def __init__(self, app=None, signals=None, data=None):

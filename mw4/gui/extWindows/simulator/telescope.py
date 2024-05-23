@@ -28,12 +28,10 @@ from gui.extWindows.simulator import tools
 
 class SimulatorTelescope:
 
-    __all__ = ['SimulatorTelescope',
-               ]
+    __all__ = ['SimulatorTelescope']
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.model = {}
         self.modelRoot = None

@@ -25,9 +25,7 @@ from gui.extWindows.videoW import VideoWindow
 
 class VideoWindow3(VideoWindow):
     """
-    the message window class handles
     """
-
     __all__ = ['VideoWindow3']
 
     pixmapReady = pyqtSignal(object)

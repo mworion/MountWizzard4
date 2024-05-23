@@ -29,8 +29,6 @@ from gui.widgets import analyse_ui
 
 class AnalyseWindow(toolsQtWidget.MWidget):
     """
-    the analysis window class handles
-
     """
     __all__ = ['AnalyseWindow']
 

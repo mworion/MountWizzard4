@@ -25,18 +25,9 @@ import PyQt6
 
 class MeasureDataRaw(PyQt6.QtCore.QObject):
     """
-    the class MeasureData inherits all information and handling of data management and
-    storage
-
-        >>> measure = MeasureDataRaw(
-        >>>             app=None,
-        >>>             parent=None,
-        >>>             data=None,
-        >>>                 )
     """
 
-    __all__ = ['MeasureDataRaw',
-               ]
+    __all__ = ['MeasureDataRaw']
 
     log = logging.getLogger(__name__)
 

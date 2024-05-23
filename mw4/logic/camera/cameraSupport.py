@@ -31,6 +31,7 @@ class CameraSupport:
     """
     """
     __all__ = ['CameraSupport']
+
     log = logging.getLogger(__name__)
     raJ2000 = None
     decJ2000 = None

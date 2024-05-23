@@ -29,8 +29,10 @@ if platform.system() == 'Windows':
 
 
 class Cover:
-
+    """
+    """
     __all__ = ['Cover']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

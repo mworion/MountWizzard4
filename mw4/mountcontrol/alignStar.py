@@ -27,31 +27,19 @@ from mountcontrol.convert import stringToAngle
 
 class AlignStar(object):
     """
-    The class AlignStar inherits all information and handling of the coordinates of
-    a pointing direction of the nominal mount coordinates and the plate solved
-    coordinates, which were derived from a taken image at the scope
-    the coordinates both are in JNow topocentric
+    The class AlignStar inherits all information and handling of the coordinates
+    of a pointing direction of the nominal mount coordinates and the plate solved
+    coordinates, which were derived from a taken image at the scope the
+    coordinates both are in JNow topocentric
 
-        >>> settings = AlignStar(
-        >>>                     )
-
-    coordinates could be from type skyfield.api.Star or just a tuple of (ha, dec) where
-    the format should be float or the 10micron string format.
-
+    coordinates could be from type skyfield.api.Star or just a tuple of (
+    ha, dec) where the format should be float or the 10micron string format.
     """
-
-    __all__ = ['AlignStar',
-               ]
+    __all__ = ['AlignStar']
 
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 mCoord=None,
-                 pierside=None,
-                 sCoord=None,
-                 sidereal=None,
-                 ):
-
+    def __init__(self, mCoord=None, pierside=None, sCoord=None, sidereal=None):
         self.mCoord = mCoord
         self.pierside = pierside
         self.sCoord = sCoord

@@ -25,9 +25,11 @@ from skyfield.api import Angle
 from mountcontrol.convert import convertToAngle, convertRaToAngle, convertDecToAngle
 
 __all__ = ['getCoordinates',
+           'getCoordinatesWCS',
            'getSQM',
            'getExposure',
            'getScale',
+           'calcAngleScaleFromWCS',
            ]
 
 log = logging.getLogger()

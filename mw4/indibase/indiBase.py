@@ -28,10 +28,9 @@ from indibase import indiXML
 
 class INDISignals(QObject):
     """
-    The INDISignals class offers a list of signals to be used and instantiated by the
-    IndiBase class to get signals for indi events.
+    The INDISignals class offers a list of signals to be used and instantiated
+    by the IndiBase class to get signals for indi events.
     """
-
     __all__ = ['INDISignals']
 
     newDevice = pyqtSignal(str)
@@ -62,12 +61,12 @@ class INDISignals(QObject):
 
 class Device(object):
     """
-    Device implements an INDI Device. it relies on PyQt6 and it's signalling scheme.
-    there might be not all capabilities implemented right now. all the data, properties
-    and attributes are stored in a device dict.
+    Device implements an INDI Device. it relies on PyQt6 and it's signalling
+    scheme. there might be not all capabilities implemented right now. all the
+    data, properties and attributes are stored in a device dict.
     """
-
     __all__ = ['Device']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, name=''):

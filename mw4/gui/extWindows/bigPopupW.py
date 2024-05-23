@@ -25,10 +25,7 @@ from gui.widgets.bigPopup_ui import Ui_BigPopup
 
 class BigPopup(toolsQtWidget.MWidget):
     """
-    the StopPopup window class handles
-
     """
-
     __all__ = ['BigPopup']
 
     def __init__(self, app):

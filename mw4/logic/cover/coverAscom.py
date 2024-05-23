@@ -25,8 +25,8 @@ from base.ascomClass import AscomClass
 class CoverAscom(AscomClass):
     """
     """
-
     __all__ = ['CoverAscom']
+
     coverStates = ['NotPresent', 'Closed', 'Moving', 'Open', 'Unknown', 'Error']
 
     def __init__(self, app=None, signals=None, data=None):

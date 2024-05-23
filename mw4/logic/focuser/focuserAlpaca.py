@@ -24,13 +24,11 @@ from base.alpacaClass import AlpacaClass
 
 class FocuserAlpaca(AlpacaClass):
     """
-    the class focuser inherits all information and handling of the focuser device.
     """
     __all__ = ['FocuserAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
-
         self.signals = signals
         self.data = data
 

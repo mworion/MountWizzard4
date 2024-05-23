@@ -29,7 +29,6 @@ from PyQt6.Qt3DCore import QEntity, QTransform
 
 def linkSource(currMod):
     """
-
     :param currMod:
     :return: mesh
     """
@@ -100,7 +99,6 @@ def linkTransform(currMod):
 
 def linkMaterial(currMod):
     """
-
     :param currMod:
     :return: material
     """
@@ -111,7 +109,6 @@ def linkMaterial(currMod):
 
 def linkModel(model, name, rEntity):
     """
-
     :param model:
     :param name:
     :param rEntity:

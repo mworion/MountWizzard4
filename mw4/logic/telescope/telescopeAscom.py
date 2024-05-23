@@ -25,7 +25,6 @@ from base.ascomClass import AscomClass
 class TelescopeAscom(AscomClass):
     """
     """
-
     __all__ = ['TelescopeAscom']
 
     def __init__(self, app=None, signals=None, data=None):

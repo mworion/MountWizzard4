@@ -72,15 +72,6 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
     http://stackoverflow.com/q/2183233/2988730, especially
     http://stackoverflow.com/a/13638084/2988730
 
-    Example
-    -------
-    >>> addLoggingLevel('TRACE', logging.DEBUG - 5)
-    >>> logging.getLogger(__name__).setLevel("TRACE")
-    >>> logging.getLogger(__name__).trace('that worked')
-    >>> logging.trace('so did this')
-    >>> logging.TRACE
-    5
-
     """
     if not methodName:
         methodName = levelName.lower()

@@ -28,8 +28,8 @@ from base.driverDataClass import Signals
 class Remote(QObject):
     """
     """
-
     __all__ = ['Remote']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app=None):

@@ -30,20 +30,12 @@ class Setting(object):
     The class Setting inherits all information and handling of setting
     attributes of the connected mount and provides the abstracted interface
     to a 10 micron mount.
-
-        >>> setting = Setting(host='')
-
     """
-
-    __all__ = ['Setting',
-               ]
+    __all__ = ['Setting']
 
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 host=None,
-                 ):
-
+    def __init__(self, host=None):
         self.host = host
         self._slewRate = None
         self._slewRateMin = None

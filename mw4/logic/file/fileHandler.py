@@ -35,6 +35,7 @@ class FileHandlerSignals(QObject):
     """
     """
     __all__ = ['FileHandlerSignals']
+
     imageLoaded = pyqtSignal()
 
 
@@ -42,6 +43,7 @@ class FileHandler:
     """
     """
     __all__ = ['FileHandler']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app, imagePath='', flipH=False, flipV=False):

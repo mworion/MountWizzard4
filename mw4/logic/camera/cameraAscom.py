@@ -26,7 +26,6 @@ from logic.camera.cameraSupport import CameraSupport
 class CameraAscom(AscomClass, CameraSupport):
     """
     """
-
     __all__ = ['CameraAscom']
 
     def __init__(self, app=None, signals=None, data=None):

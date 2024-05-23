@@ -25,7 +25,6 @@ from base.alpacaClass import AlpacaClass
 class CoverAlpaca(AlpacaClass):
     """
     """
-
     __all__ = ['CoverAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):

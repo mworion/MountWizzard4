@@ -25,12 +25,10 @@ from base.alpacaClass import AlpacaClass
 class SensorWeatherAlpaca(AlpacaClass):
     """
     """
-
     __all__ = ['SensorWeatherAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
-
         self.signals = signals
         self.data = data
 

@@ -24,13 +24,8 @@ from base.indiClass import IndiClass
 
 class PegasusUPBIndi(IndiClass):
     """
-    the class PegasusUPBIndi inherits all information and handling of the PegasusUPB device
-
-        >>> power = PegasusUPBIndi(app=None)
     """
-
-    __all__ = ['PegasusUPBIndi',
-               ]
+    __all__ = ['PegasusUPBIndi']
 
     def __init__(self, app=None, signals=None, data=None):
         self.signals = signals

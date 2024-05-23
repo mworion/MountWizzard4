@@ -25,7 +25,6 @@ from base.alpacaClass import AlpacaClass
 class DomeAlpaca(AlpacaClass):
     """
     """
-
     __all__ = ['DomeAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):

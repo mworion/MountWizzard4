@@ -27,7 +27,6 @@ from logic.camera.cameraSupport import CameraSupport
 class CameraAlpaca(AlpacaClass, CameraSupport):
     """
     """
-
     __all__ = ['CameraAlpaca']
 
     def __init__(self, app=None, signals=None, data=None, parent=None):

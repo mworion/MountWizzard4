@@ -29,8 +29,7 @@ import mountcontrol.mount
 
 
 __all__ = ['Mount',
-           'MountSignals',
-           ]
+           'MountSignals']
 
 
 class MountSignals(PyQt6.QtCore.QObject):
@@ -42,7 +41,6 @@ class MountSignals(PyQt6.QtCore.QObject):
     This has to be done in a separate class as the signals have to be subclassed from
     QObject and the Mount class itself is subclassed from object
     """
-
     __all__ = ['MountSignals']
 
     pointDone = PyQt6.QtCore.pyqtSignal(object)

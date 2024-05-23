@@ -30,6 +30,8 @@ from logic.keypad.keypad import KeyPad
 
 
 class KeypadSignals(QObject):
+    """
+    """
     __all__ = ['KeypadSignals']
 
     textRow = pyqtSignal(object, object)
@@ -45,10 +47,7 @@ class KeypadSignals(QObject):
 
 class KeypadWindow(toolsQtWidget.MWidget):
     """
-    the KeypadWindow window class handles
-
     """
-
     __all__ = ['KeypadWindow']
 
     def __init__(self, app):

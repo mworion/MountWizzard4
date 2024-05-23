@@ -29,10 +29,7 @@ from gui.widgets import measure_ui
 
 class MeasureWindow(toolsQtWidget.MWidget):
     """
-    the measure window class handles
-
     """
-
     __all__ = ['MeasureWindow']
 
     NUMBER_POINTS = 250

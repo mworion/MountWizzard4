@@ -32,6 +32,7 @@ class PhotometrySignals(QObject):
     """
     """
     __all__ = ['PhotometrySignals']
+
     hfr = pyqtSignal()
     hfrSquare = pyqtSignal()
     hfrTriangle = pyqtSignal()
@@ -46,6 +47,7 @@ class Photometry:
     """
     """
     __all__ = ['Photometry']
+
     log = logging.getLogger(__name__)
 
     ABERRATION_SIZE = 250

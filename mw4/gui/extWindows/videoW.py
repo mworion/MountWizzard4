@@ -32,10 +32,9 @@ from gui.utilities.toolsQtWidget import sleepAndEvents
 
 class VideoWindow(toolsQtWidget.MWidget):
     """
-    the message window class handles
     """
-
     __all__ = ['VideoWindow']
+
     pixmapReady = pyqtSignal(object)
 
     def __init__(self, app):

@@ -35,7 +35,6 @@ def generateAlignStars():
     [name, hip no, ra, dec, ra proper motion, dec proper motion, parallax,
     radial velocity] based on J2000 epoch. the units are fitting erfa needs:
     [str, int, radians, radians, radians / year, radians/year, arc sec, km /s]
-
     """
 
     star = dict()

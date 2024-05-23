@@ -36,8 +36,8 @@ class RelaySignals(Signals):
 class KMRelay:
     """
     """
-
     __all__ = ['KMRelay']
+
     log = logging.getLogger(__name__)
 
     CYCLE_POLLING = 1000

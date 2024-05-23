@@ -31,8 +31,7 @@ from gui.extWindows.simulator.materials import Materials
 
 class SimulatorBuildPoints:
 
-    __all__ = ['SimulatorBuildPoints',
-               ]
+    __all__ = ['SimulatorBuildPoints']
 
     def __init__(self, app):
         self.app = app

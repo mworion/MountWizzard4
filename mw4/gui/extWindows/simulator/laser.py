@@ -30,12 +30,10 @@ from gui.extWindows.simulator import tools
 
 class SimulatorLaser:
 
-    __all__ = ['SimulatorLaser',
-               ]
+    __all__ = ['SimulatorLaser']
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.model = {}
         self.modelRoot = None

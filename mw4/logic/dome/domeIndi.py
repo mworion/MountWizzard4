@@ -25,7 +25,6 @@ from base.indiClass import IndiClass
 class DomeIndi(IndiClass):
     """
     """
-
     __all__ = ['DomeIndi']
 
     def __init__(self, app=None, signals=None, data=None):

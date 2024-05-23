@@ -69,7 +69,6 @@ Notes:
 
 class INDIBase(object):
     """
-    INDI command base classes.
     """
     log = logging.getLogger(__name__)
 

@@ -35,15 +35,6 @@ class ModelStar(object):
     the alignment model used by the mount and the data in the mount and provides
     the abstracted interface to a 10 micron mount.
     The coordinates are in JNow topocentric
-
-        >>> settings = ModelStar(
-        >>>                     coord=None,
-        >>>                     errorRMS=0,
-        >>>                     errorAngle=0,
-        >>>                     number=0,
-        >>>                     obsSite=None,
-        >>>                     )
-
     point could be from type skyfield.api.Star or just a tuple of (ha, dec) where
     the format should be float or the 10micron string format.
 
@@ -57,20 +48,12 @@ class ModelStar(object):
     equatorial system in degrees from 0 to 359 (0 towards the north pole,
     90 towards east).
     """
-
-    __all__ = ['ModelStar',
-               ]
+    __all__ = ['ModelStar']
 
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 coord=None,
-                 errorRMS=None,
-                 errorAngle=None,
-                 number=None,
-                 obsSite=None,
-                 ):
-
+    def __init__(self, coord=None, errorRMS=None, errorAngle=None,
+                 number=None, obsSite=None):
         self.obsSite = obsSite
         self.coord = coord
         self.errorRMS = errorRMS

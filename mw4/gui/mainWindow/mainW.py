@@ -105,12 +105,9 @@ class MainWindow(
     will be linked to this class. therefore, window classes will have a threadpool
     for managing async processing if needed.
     """
-
     __all__ = ['MainWindow']
 
     def __init__(self, app):
-        # has to be put before super to adjust the color before the stylesheet
-        # on the parent classes is drawn first
         colSet = app.config.get('colorSet', 0)
         Styles.colorSet = colSet
         super().__init__()

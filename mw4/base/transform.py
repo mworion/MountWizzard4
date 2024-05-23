@@ -122,24 +122,9 @@ def J2000ToAltAz(ra, dec, timeJD, location):
     lon = location.longitude.radians
     elevation = location.elevation.m
 
-    aob, zob, hob, dob, rob, eo = erfa.atco13(ra,
-                                              dec,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              timeJD.ut1,
-                                              0.0,
-                                              0,
-                                              lon,
-                                              lat,
-                                              elevation,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              0.0,
-                                              0.0)
+    v = erfa.atco13(ra, dec, 0.0, 0.0, 0.0, 0.0, timeJD.ut1, 0.0, 0,
+                    lon, lat, elevation, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    aob, zob, hob, dob, rob, eo = v
     decConv = np.pi / 2 - zob
 
     azimuth = Angle(radians=aob, preference='degrees')

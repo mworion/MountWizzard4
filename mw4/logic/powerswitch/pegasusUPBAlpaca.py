@@ -25,13 +25,10 @@ from base.alpacaClass import AlpacaClass
 class PegasusUPBAlpaca(AlpacaClass):
     """
     """
-
-    __all__ = ['PegasusUPBAlpaca',
-               ]
+    __all__ = ['PegasusUPBAlpaca']
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app, data=data)
-
         self.signals = signals
         self.data = data
 

@@ -37,16 +37,10 @@ from gui.widgets.devicePopup_ui import Ui_DevicePopup
 class DevicePopup(toolsQtWidget.MWidget):
     """
     """
-
     __all__ = ['DevicePopup']
 
-    def __init__(self,
-                 parentWidget,
-                 app=None,
-                 driver=None,
-                 deviceType=None,
+    def __init__(self, parentWidget, app=None, driver=None, deviceType=None,
                  data=None):
-
         super().__init__()
         self.app = app
         self.data = data

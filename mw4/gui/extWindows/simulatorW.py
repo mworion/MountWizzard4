@@ -40,9 +40,9 @@ from gui.extWindows.simulator.laser import SimulatorLaser
 
 
 class SimulatorWindow(toolsQtWidget.MWidget):
-
-    __all__ = ['SimulatorWindow',
-               ]
+    """
+    """
+    __all__ = ['SimulatorWindow']
 
     def __init__(self, app):
         super().__init__()

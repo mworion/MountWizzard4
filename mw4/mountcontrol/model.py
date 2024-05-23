@@ -38,20 +38,12 @@ class Model(object):
     The class Model inherits all information and handling of the actual
     alignment model used by the mount and the data, which models are stored
     in the mount and provides the abstracted interface to a 10 micron mount.
-
-        >>> settings = Model(host='')
-
     """
-
     __all__ = ['Model']
 
     log = logging.getLogger(__name__)
 
-    def __init__(self,
-                 parent=None,
-                 host=None,
-                 ):
-
+    def __init__(self, parent=None, host=None):
         self.host = host
         self.parent = parent
         self.numberNames = None

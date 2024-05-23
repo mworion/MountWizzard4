@@ -29,8 +29,10 @@ if platform.system() == 'Windows':
 
 
 class Focuser:
-
+    """
+    """
     __all__ = ['Focuser']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app):

@@ -47,19 +47,10 @@ class ObsSite(object):
     from mount based on utc and the value delta utc, ut1 also given from the
     mount.
 
-        >>> site = ObsSite(
-        >>>             host=host,
-        >>>             pathToData=pathToData,
-        >>>             verbose=verbose,
-        >>>             location=(0, 0, 0),
-        >>>             )
-
     The Site class needs as parameter a ts object from skyfield.api to
     be able to make all the necessary calculations about time from and to mount
     """
-
-    __all__ = ['ObsSite',
-               ]
+    __all__ = ['ObsSite']
 
     log = logging.getLogger(__name__)
 

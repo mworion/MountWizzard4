@@ -30,22 +30,15 @@ class Geometry(object):
     The class Geometry contains all necessary geometric calculations and
     parameters for mount orientation, dome slit correction or 3D animation of
     telescope.
-
-        >>> geometry = Geometry()
-
     transformations are defined as homogeneous matrices to be able to calculate
     translations and rotation in the same manner. therefore the system has 4
     dimensions
-
     for the transformation between homogeneous vectors (vh) and kartesian vectors
     (vk):
     vk = vh[0:2]/vh[3]
     vh = [vk, 1]
-
     """
-
-    __all__ = ['Geometry',
-               ]
+    __all__ = ['Geometry']
 
     log = logging.getLogger(__name__)
 

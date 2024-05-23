@@ -37,13 +37,12 @@ class SeeingWeatherSignals(Signals):
 class SeeingWeather():
     """
     """
-
     __all__ = ['SeeingWeather']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app=None):
         super().__init__()
-
         self.app = app
         self.threadPool = app.threadPool
         self.signals = SeeingWeatherSignals()

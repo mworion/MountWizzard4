@@ -31,13 +31,12 @@ from base.driverDataClass import Signals
 class OnlineWeather():
     """
     """
-
     __all__ = ['OnlineWeather']
+
     log = logging.getLogger(__name__)
 
     def __init__(self, app=None):
         super().__init__()
-
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()

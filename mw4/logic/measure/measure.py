@@ -30,8 +30,8 @@ from logic.measure.measureCSV import MeasureDataCSV
 class MeasureData:
     """
     """
-
     __all__ = ['MeasureData']
+
     log = logging.getLogger(__name__)
 
     # maximum size of measurement task

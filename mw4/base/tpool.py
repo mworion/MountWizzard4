@@ -53,23 +53,28 @@ class Worker(QRunnable):
     log = logging.getLogger(__name__)
 
     def __init__(self, fn, *args, **kwargs):
-        super(Worker, self).__init__()
+        """
+        the worker signal must not be a class variable, but instance otherwise
+        we get trouble when having multiple threads running
+        Store constructor arguments (re-used for processing)
 
-        # Store constructor arguments (re-used for processing)
+        :param fn:
+        :param args:
+        :param kwargs:
+        """
+        super(Worker, self).__init__()
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
-
-        # the worker signal must not be a class variable, but instance otherwise
-        # we get trouble when having multiple threads running
         self.signals = WorkerSignals()
 
     def clearPrintErrorStack(self, tb):
         """
+        getting data out for processing
+
         :param tb:
         :return:
         """
-        # getting data out for processing
         file = os.path.basename(tb.tb_frame.f_code.co_filename)
         line = tb.tb_frame.f_lineno
         fnName = self.fn.__name__

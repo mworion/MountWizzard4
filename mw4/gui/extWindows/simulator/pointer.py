@@ -28,12 +28,10 @@ from gui.extWindows.simulator import tools
 
 class SimulatorPointer:
 
-    __all__ = ['SimulatorPointer',
-               ]
+    __all__ = ['SimulatorPointer']
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.model = {}
         self.modelRoot = None

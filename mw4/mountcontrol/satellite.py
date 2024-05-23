@@ -32,12 +32,8 @@ class TLEParams(object):
     The class TLEParams inherits all information and handling of TLE tracking
     and managing attributes of the connected mount and provides the abstracted
     interface to a 10 micron mount.
-
-        >>> tleParams = TLEParams(host='')
     """
-
-    __all__ = ['TLEParams',
-               ]
+    __all__ = ['TLEParams']
 
     log = logging.getLogger(__name__)
 

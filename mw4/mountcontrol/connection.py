@@ -26,14 +26,15 @@ import uuid
 
 class Connection(object):
     """
-    The class Connection provides the command and reply interface to a 10 micron mount.
-    There should be all commands and their return values be sent to the mount via
-    IP and the responses.
+    The class Connection provides the command and reply interface to a 10 micron
+    mount. There should be all commands and their return values be sent to the
+    mount via IP and the responses.
 
-    Define the number of chunks for the return bytes in case of not having them in
-    bulk mode this is needed, because the mount computer  doesn't support a
-    transaction base like number of chunks to be expected. It's just plain data and
-    I have to find out myself how much it is. there are three types of commands:
+    Define the number of chunks for the return bytes in case of not having them
+    in bulk mode this is needed, because the mount computer  doesn't support a
+    transaction base like number of chunks to be expected. It's just plain data
+    and I have to find out myself how much it is. there are three types of
+    commands:
 
           a) no reply               this is ok -> COMMAND_A
           b) reply without '#'      this is the bad part, don't like it -> COMMAND_B
@@ -41,15 +42,8 @@ class Connection(object):
 
     The class itself need parameters for the host and port to be able to interact
     with the mount.
-
-        >>> command = Connection(
-        >>>                   host=('localhost', 3492),
-        >>>                   )
-
     """
-
-    __all__ = ['Connection',
-               ]
+    __all__ = ['Connection']
 
     log = logging.getLogger(__name__)
 

@@ -26,18 +26,9 @@ import PyQt6
 
 class MeasureDataCSV(PyQt6.QtCore.QObject):
     """
-    the class MeasureDataCSV inherits all information and handling of data management and
-    storage
-
-        >>> measure = MeasureDataCSV(
-        >>>             app=None,
-        >>>             parent=None,
-        >>>             data=None,
-        >>>                 )
     """
 
-    __all__ = ['MeasureDataCSV',
-               ]
+    __all__ = ['MeasureDataCSV']
 
     log = logging.getLogger(__name__)
 

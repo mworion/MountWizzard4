@@ -29,10 +29,7 @@ class Firmware(object):
     The class Firmware inherits all information and handling of firmware
     attributes of the connected mount and provides the abstracted interface
     to a 10 micron mount.
-
-        >>> fw = Firmware(host='')
     """
-
     __all__ = ['Firmware']
 
     log = logging.getLogger(__name__)

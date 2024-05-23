@@ -24,13 +24,8 @@ from base.indiClass import IndiClass
 
 class FilterIndi(IndiClass):
     """
-    the class FilterIndi inherits all information and handling of the FilterWheel device
-
-        >>> f = FilterIndi(app=None)
     """
-
-    __all__ = ['FilterIndi',
-               ]
+    __all__ = ['FilterIndi']
 
     UPDATE_RATE = 1
 

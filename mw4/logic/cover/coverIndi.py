@@ -25,7 +25,6 @@ from base.indiClass import IndiClass
 class CoverIndi(IndiClass):
     """
     """
-
     __all__ = ['CoverIndi']
 
     def __init__(self, app=None, signals=None, data=None):

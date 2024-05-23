@@ -31,6 +31,9 @@ log = logging.getLogger()
 
 
 class Update:
+    """
+    """
+
     log = logging.getLogger(__name__)
 
     def __init__(self, runnable=None, writer=None):

@@ -22,11 +22,12 @@ import os
 # external packages
 from PyQt6.QtCore import QThreadPool, QRect
 from PyQt6.QtWidgets import QTableWidgetItem
-from skyfield.api import EarthSatellite, Angle, wgs84
+from skyfield.api import EarthSatellite
 import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+import gui
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.extWindows.uploadPopupW import UploadPopup
@@ -134,108 +135,6 @@ def test_getSatelliteDataFromDatabase_1(function):
     assert not suc
 
 
-def test_findSunlit(function):
-    class SAT:
-        class FRAME:
-            def __init__(self, x):
-                pass
-
-            @staticmethod
-            def is_sunlit(x):
-                return True
-
-        at = FRAME
-
-    sat = SAT()
-    eph = None
-    tEv = None
-    val = function.findSunlit(sat, eph, tEv)
-    assert val
-
-
-def test_findSatUp_1(function):
-    class SAT:
-        @staticmethod
-        def find_events(x, y, z, altitude_degrees):
-            return [], []
-
-    sat = SAT()
-    val = function.findSatUp(sat, 0, 0, 0, alt=0)
-    assert not val[0]
-    assert not len(val[1])
-
-
-def test_findSatUp_2(function):
-    class SAT:
-        @staticmethod
-        def find_events(x, y, z, altitude_degrees):
-            return np.array([5, 7, 7]), np.array([1, 0, 0])
-
-    sat = SAT()
-    val = function.findSatUp(sat, 0, 0, 0, alt=0)
-    assert val[0]
-    assert val[1] == [5]
-
-
-def test_checkTwilight_1(function):
-    ephemeris = function.app.ephemeris
-    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
-    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
-    val = function.checkTwilight(ephemeris, loc, [False, tEv])
-    assert val == 4
-
-
-def test_checkTwilight_2(function):
-    ephemeris = function.app.ephemeris
-    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
-    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
-    val = function.checkTwilight(ephemeris, loc, [True, [tEv]])
-    assert val == 0
-
-
-def test_findRangeRate(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
-    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
-    val = function.findRangeRate(sat, loc, tEv)
-    assert round(val[0], 3) == 5694.271
-    assert round(val[1], 3) == -0.678
-    assert round(val[2], 3) == 0.004
-    assert round(val[3], 3) == 0.079
-
-
-def test_calcSatSunPhase_1(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
-    ephemeris = function.app.ephemeris
-    tEv = function.app.mount.obsSite.ts.tt_jd(2459215.5)
-    val = function.calcSatSunPhase(sat, loc, ephemeris, tEv)
-    assert round(val.degrees, 3) == 129.843
-
-
-def test_calcAppMag_1(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
-    ephemeris = function.app.ephemeris
-    satRange = 483
-    phase = Angle(degrees=113)
-    tEv = function.app.mount.obsSite.ts.now()
-    with mock.patch.object(function,
-                           'calcSatSunPhase',
-                           return_value=phase):
-        val = function.calcAppMag(sat, loc, ephemeris, satRange, tEv)
-        assert round(val, 4) == -2.0456
-
-
 def test_setSatTableEntry(function):
     function.ui.listSatelliteNames.setRowCount(0)
     function.ui.listSatelliteNames.insertRow(0)
@@ -323,10 +222,10 @@ def test_satCalcDynamicTable_5(function):
     with mock.patch.object(QRect,
                            'intersects',
                            return_value=False):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'calcAppMag',
                                return_value=10):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
                 suc = function.satCalcDynamicTable()
@@ -342,10 +241,10 @@ def test_satCalcDynamicTable_6(function):
     entry = QTableWidgetItem('test')
     function.ui.listSatelliteNames.setItem(0, 0, entry)
     function.ui.listSatelliteNames.setRowHidden(0, True)
-    with mock.patch.object(function,
+    with mock.patch.object(gui.mainWmixin.tabSat_Search,
                            'findSunlit',
                            return_value=True):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'calcAppMag',
                                return_value=10):
             with mock.patch.object(QRect,
@@ -373,10 +272,10 @@ def test_satCalcDynamicTable_7(function):
     function.satellites = {'NOAA 8': sat}
     with mock.patch.object(function,
                            'updateTableEntries'):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'findRangeRate',
                                return_value=[1, 2, 3]):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSunlit',
                                    return_value=False):
                 with mock.patch.object(QRect,
@@ -404,13 +303,13 @@ def test_satCalcDynamicTable_8(function):
     function.satellites = {'NOAA 8': sat}
     with mock.patch.object(function,
                            'updateTableEntries'):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'findRangeRate',
                                return_value=[1, 2, 3]):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
-                with mock.patch.object(function,
+                with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                        'calcAppMag',
                                        return_value=10):
                     with mock.patch.object(QRect,
@@ -438,13 +337,13 @@ def test_satCalcDynamicTable_9(function):
     function.satellites = {'NOAA 8': sat}
     with mock.patch.object(function,
                            'updateTableEntries'):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'findRangeRate',
                                return_value=[np.nan, 2, 3]):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
-                with mock.patch.object(function,
+                with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                        'calcAppMag',
                                        return_value=10):
                     with mock.patch.object(QRect,
@@ -550,12 +449,12 @@ def test_workerSatCalcTable_2(function):
     function.satTableBaseValid = False
     function.satTableDynamicValid = False
     function.ui.satUpTimeWindow.setValue(0)
-    with mock.patch.object(function,
+    with mock.patch.object(gui.mainWmixin.tabSat_Search,
                            'findRangeRate'):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'findSunlit',
                                return_value=False):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSatUp'):
                 with mock.patch.object(function,
                                        'updateTableEntries'):
@@ -607,26 +506,24 @@ def test_workerSatCalcTable_3b(function):
     with mock.patch.object(function,
                            'checkSatOk',
                            return_value=True):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'findRangeRate',
                                return_value=(0, 0, 0, 0)):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSunlit',
                                    return_value=False):
-                with mock.patch.object(function,
+                with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                        'findSatUp'):
-                    with mock.patch.object(function,
-                                           'findSatUp'):
-                        with mock.patch.object(function,
-                                               'checkTwilight'):
+                    with mock.patch.object(gui.mainWmixin.tabSat_Search,
+                                           'checkTwilight'):
+                        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+                                               'calcAppMag',
+                                               return_value=0):
                             with mock.patch.object(function,
-                                                   'calcAppMag',
-                                                   return_value=0):
-                                with mock.patch.object(function,
-                                                       'updateTableEntries'):
-                                    suc = function.workerSatCalcTable()
-                                    assert suc
-                                    assert function.satTableDynamicValid
+                                                   'updateTableEntries'):
+                                suc = function.workerSatCalcTable()
+                                assert suc
+                                assert function.satTableDynamicValid
 
 
 def test_workerSatCalcTable_4(function):
@@ -649,18 +546,18 @@ def test_workerSatCalcTable_4(function):
     with mock.patch.object(function,
                            'checkSatOk',
                            return_value=True):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'findRangeRate'):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
-                with mock.patch.object(function,
+                with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                        'findSatUp'):
-                    with mock.patch.object(function,
+                    with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                            'checkTwilight'):
                         with mock.patch.object(function,
-                                           'updateTableEntries'):
-                            with mock.patch.object(function,
+                                               'updateTableEntries'):
+                            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                                    'calcAppMag',
                                                    return_value=0):
                                 suc = function.workerSatCalcTable()
@@ -688,17 +585,17 @@ def test_workerSatCalcTable_5(function):
     with mock.patch.object(function,
                            'checkSatOk',
                            return_value=True):
-        with mock.patch.object(function,
+        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                'findRangeRate',
                                return_value=[np.nan]):
-            with mock.patch.object(function,
+            with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
-                with mock.patch.object(function,
+                with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                        'findSatUp'):
                     with mock.patch.object(function,
                                            'updateTableEntries'):
-                        with mock.patch.object(function,
+                        with mock.patch.object(gui.mainWmixin.tabSat_Search,
                                                'calcAppMag',
                                                return_value=0):
                             suc = function.workerSatCalcTable()

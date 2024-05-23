@@ -31,13 +31,8 @@ from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 
 class DownloadPopup(toolsQtWidget.MWidget):
-    """
-    the DevicePopup window class handles
 
-    """
-
-    __all__ = ['DownloadPopup',
-               ]
+    __all__ = ['DownloadPopup']
 
     signalProgress = pyqtSignal(object)
     signalProgressBarColor = pyqtSignal(object)

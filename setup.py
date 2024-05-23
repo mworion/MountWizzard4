@@ -75,6 +75,7 @@ setup(
         'mw4.logic.powerswitch',
         'mw4.logic.profiles',
         'mw4.logic.remote',
+        'mw4.logic.satellites',
         'mw4.logic.telescope',
         'mw4.logic.keypad',
         'mw4.mountcontrol',

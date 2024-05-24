@@ -135,7 +135,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -3847,7 +3847,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>385</x>
-         <y>45</y>
+         <y>75</y>
          <width>241</width>
          <height>25</height>
         </rect>
@@ -3891,7 +3891,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>385</x>
-         <y>75</y>
+         <y>105</y>
          <width>241</width>
          <height>25</height>
         </rect>
@@ -3929,6 +3929,50 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="text">
         <string>Opens Update Firmware in Browser</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="mountDocumentation">
+       <property name="geometry">
+        <rect>
+         <x>385</x>
+         <y>45</y>
+         <width>241</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Needs to have mount online and IP connected. Open a webbrowser page from 10 micron mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Opens Mount Documentation in Browser</string>
        </property>
       </widget>
      </widget>

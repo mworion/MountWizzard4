@@ -80,6 +80,7 @@ class Mount(SlewInterface, MountSett):
         self.ui.mountCommandTable.clicked.connect(self.openCommandProtocol)
         self.ui.mountUpdateTimeDelta.clicked.connect(self.openUpdateTimeDelta)
         self.ui.mountUpdateFirmware.clicked.connect(self.openUpdateFirmware)
+        self.ui.mountDocumentation.clicked.connect(self.openMountDocumentation)
         self.app.gameABXY.connect(self.changeParkGameController)
         self.app.gameABXY.connect(self.stopGameController)
         self.app.gameABXY.connect(self.changeTrackingGameController)
@@ -712,7 +713,7 @@ class Mount(SlewInterface, MountSett):
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Mount', 'Browser failed')
         else:
-            self.msg.emit(0, 'System', 'Mount', '10micron opened')
+            self.msg.emit(0, 'System', 'Mount', 'command protocol opened')
         return True
 
     def openUpdateTimeDelta(self):
@@ -723,7 +724,7 @@ class Mount(SlewInterface, MountSett):
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Mount', 'Browser failed')
         else:
-            self.msg.emit(0, 'System', 'Mount', '10micron opened')
+            self.msg.emit(0, 'System', 'Mount', 'update time delta opened')
         return True
 
     def openUpdateFirmware(self):
@@ -734,7 +735,24 @@ class Mount(SlewInterface, MountSett):
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Mount', 'Browser failed')
         else:
-            self.msg.emit(0, 'System', 'Mount', '10micron opened')
+            self.msg.emit(0, 'System', 'Mount', 'update firmware opened')
+        return True
+
+    def openMountDocumentation(self):
+        """
+        :return:
+        """
+        mountStrings = self.app.mount.firmware.product.split()
+        if len(mountStrings) != 2:
+            self.msg.emit(2, 'System', 'Mount', 'Browser failed')
+            return False
+        mountType = mountStrings[1]
+        host = self.ui.mountHost.text()
+        url = f'http://{host}/manuals/{mountType}-en.pdf'
+        if not webbrowser.open(url, new=0):
+            self.msg.emit(2, 'System', 'Mount', 'Browser failed')
+        else:
+            self.msg.emit(0, 'System', 'Mount', 'mount manual opened')
         return True
 
     def stopMoveAll(self):

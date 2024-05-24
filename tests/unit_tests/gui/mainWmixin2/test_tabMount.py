@@ -1155,6 +1155,33 @@ def test_openUpdateFirmware_2(function):
         assert suc
 
 
+def test_openMountDocumentation_1(function):
+    function.app.mount.firmware.product = 'tester'
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=True):
+        suc = function.openMountDocumentation()
+        assert not suc
+
+
+def test_openMountDocumentation_2(function):
+    function.app.mount.firmware.product = '10micron GM1000HPS'
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openMountDocumentation()
+        assert suc
+
+
+def test_openMountDocumentation_3(function):
+    function.app.mount.firmware.product = '10micron GM1000HPS'
+    with mock.patch.object(webbrowser,
+                           'open',
+                           return_value=False):
+        suc = function.openMountDocumentation()
+        assert suc
+
+
 def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
     with mock.patch.object(gui.mainWmixin.tabMount,

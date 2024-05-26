@@ -149,14 +149,14 @@ class SettDome(object):
             self.ui.picDome2.setPixmap(pixmap)
             pixmap = self.img2pixmap(':/dome/east.png')
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.img2pixmap(':/dome/z_10micron.png')
+            pixmap = self.img2pixmap(':/dome/vert.png')
             self.ui.picDome4.setPixmap(pixmap)
         else:
-            pixmap = self.img2pixmap(':/dome/north.png')
+            pixmap = self.img2pixmap(':/dome/northGEM.png')
             self.ui.picDome2.setPixmap(pixmap)
-            pixmap = self.img2pixmap(':/dome/east.png')
+            pixmap = self.img2pixmap(':/dome/eastGEM.png')
             self.ui.picDome3.setPixmap(pixmap)
-            pixmap = self.img2pixmap(':/dome/z_gem.png')
+            pixmap = self.img2pixmap(':/dome/vertGEM.png')
             self.ui.picDome4.setPixmap(pixmap)
 
         pixmap = self.img2pixmap(':/dome/gem.png')

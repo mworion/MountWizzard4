@@ -174,18 +174,19 @@ class SimulatorTelescope:
 
     def updateSettings(self):
         """
-        updateSettings resize parts depending on the setting made in the dome tab. likewise
-        some transformations have to be reverted as they are propagated through entity linking.
+        updateSettings resize parts depending on the setting made in the dome
+        tab. likewise some transformations have to be reverted as they are
+        propagated through entity linking.
 
         :return:
         """
-
         if not self.model:
             return False
 
         north = self.app.mount.geometry.offNorth * 1000
         east = self.app.mount.geometry.offEast * 1000
         vertical = self.app.mount.geometry.offVert * 1000
+
         self.model['mountBase']['t'].setTranslation(QVector3D(north, -east, 1000 + vertical))
 
         if self.app.mount.obsSite.location:

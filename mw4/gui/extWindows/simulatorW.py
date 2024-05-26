@@ -74,7 +74,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
         self.pL0 = QPointLight(self.pL0E)
-        self.pL0.setIntensity(1.5)
+        self.pL0.setIntensity(1.0)
         self.setRootEntity()
 
     def initConfig(self):
@@ -149,6 +149,7 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
+        self.ui.lightIntensity.valueChanged.connect(self.setLightIntensity)
         self.app.update1s.connect(self.dome.updatePositions)
         self.app.dome.signals.deviceConnected.connect(self.createScene)
         self.app.dome.signals.deviceDisconnected.connect(self.createScene)
@@ -243,20 +244,16 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def topView(self):
         """
-        move the camera to top view position
-
         :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
-        self.camera.setPosition(QVector3D(0.0, 5.0, 0.0))
+        self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
         return True
 
     def topEastView(self):
         """
-        moves the camera to top east position
-
         :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
@@ -267,8 +264,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def topWestView(self):
         """
-        moves the camera to top west position
-
         :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
@@ -279,8 +274,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def eastView(self):
         """
-        moves the camera to east position
-
         :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
@@ -291,14 +284,19 @@ class SimulatorWindow(toolsQtWidget.MWidget):
 
     def westView(self):
         """
-        moves the camera to west position
-
         :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+        return True
+
+    def setLightIntensity(self):
+        """
+        :return: True for test purpose
+        """
+        self.pL0.setIntensity(self.ui.lightIntensity.value())
         return True
 
     def createWorld(self, rEntity):

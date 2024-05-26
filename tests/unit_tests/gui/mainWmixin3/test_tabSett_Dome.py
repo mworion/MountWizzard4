@@ -25,6 +25,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSett_Dome import SettDome
+from resource import resources
+resources.qInitResources()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -79,19 +81,23 @@ def test_tab9(function):
     function.tab9()
 
 
-def test_tab10(function):
-    function.tab10()
-
-
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(function,
+                           'setupIconsDome'):
+        with mock.patch.object(function,
+                               'setUseGeometry'):
+            suc = function.initConfig()
+            assert suc
 
 
 def test_initConfig_2(function):
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(function,
+                           'setupIconsDome'):
+        with mock.patch.object(function,
+                               'setUseGeometry'):
+            suc = function.initConfig()
+            assert suc
 
 
 def test_storeConfig_1(function):
@@ -99,23 +105,27 @@ def test_storeConfig_1(function):
     assert suc
 
 
-def test_setZoffGEMInMount(function):
-    suc = function.setZoffGEMInMount()
+def test_setupIconsDome_1(function):
+    function.ui.use10micronDef.setChecked(True)
+    suc = function.setupIconsDome()
     assert suc
 
 
-def test_setZoff10micronInMount(function):
-    suc = function.setZoff10micronInMount()
+def test_setupIconsDome_2(function):
+    function.ui.use10micronDef.setChecked(False)
+    suc = function.setupIconsDome()
     assert suc
 
 
 def test_setUseGeometry_1(function):
+    function.ui.use10micronDef.setChecked(False)
     function.ui.automaticDome.setChecked(False)
     suc = function.setUseGeometry()
     assert suc
 
 
 def test_setUseGeometry_2(function):
+    function.ui.use10micronDef.setChecked(True)
     function.ui.automaticDome.setChecked(True)
     with mock.patch.object(function,
                            'updateDomeGeometryToGui'):

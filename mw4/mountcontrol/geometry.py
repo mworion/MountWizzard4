@@ -33,10 +33,8 @@ class Geometry(object):
     transformations are defined as homogeneous matrices to be able to calculate
     translations and rotation in the same manner. therefore the system has 4
     dimensions
-    for the transformation between homogeneous vectors (vh) and kartesian vectors
-    (vk):
-    vk = vh[0:2]/vh[3]
-    vh = [vk, 1]
+    for the transformation between homogeneous vectors (vh) and Cartesian
+    vectors (vk): vk = vh[0:2]/vh[3], vh = [vk, 1]
     """
     __all__ = ['Geometry']
 
@@ -85,9 +83,12 @@ class Geometry(object):
         self.azAdj = 0
 
         self._offNorth = 0
+        self._offNorthGEM = 0
         self._offEast = 0
+        self._offEastGEM = 0
         self._offVert = 0
         self._offVertGEM = 0
+
         self._domeRadius = 1
         self._offGEM = 0
         self._offLAT = 0
@@ -111,6 +112,16 @@ class Geometry(object):
     @offNorth.setter
     def offNorth(self, value):
         self._offNorth = valueToFloat(value)
+        self._offNorthGEM = 0
+
+    @property
+    def offNorthGEM(self):
+        return self._offNorthGEM
+
+    @offNorthGEM.setter
+    def offNorthGEM(self, value):
+        self._offNorthGEM = valueToFloat(value)
+        self._offNorth = 0
 
     @property
     def offEast(self):
@@ -119,6 +130,16 @@ class Geometry(object):
     @offEast.setter
     def offEast(self, value):
         self._offEast = valueToFloat(value)
+        self._offEastGEM = 0
+
+    @property
+    def offEastGEM(self):
+        return self._offEastGEM
+
+    @offEastGEM.setter
+    def offEastGEM(self, value):
+        self._offEastGEM = valueToFloat(value)
+        self._offEast = 0
 
     @property
     def offVert(self):
@@ -127,14 +148,7 @@ class Geometry(object):
     @offVert.setter
     def offVert(self, value):
         self._offVert = valueToFloat(value)
-        if self.parent.obsSite.location is None:
-            self.log.debug('offVert called without lat')
-            return
-
-        lat = self.parent.obsSite.location.latitude.radians
-        val = valueToFloat(value) + self.offBaseAltAxisZ
-        val += np.sin(abs(lat)) * self.offAltAxisGemX
-        self._offVertGEM = val
+        self._offVertGEM = 0
 
     @property
     def offVertGEM(self):
@@ -142,15 +156,8 @@ class Geometry(object):
 
     @offVertGEM.setter
     def offVertGEM(self, value):
-        self._offVertGEM = valueToFloat(value)
-        if self.parent.obsSite.location is None:
-            self.log.debug('offVertGEM called without lat')
-            return
-
-        lat = self.parent.obsSite.location.latitude.radians
-        val = valueToFloat(value) - self.offBaseAltAxisZ
-        val -= np.sin(abs(lat)) * self.offAltAxisGemX
-        self._offVert = val
+        self._offVert = valueToFloat(value)
+        self._offVert = 0
 
     @property
     def offGEM(self):
@@ -187,11 +194,9 @@ class Geometry(object):
         :param mountType: string from mount
         :return: success
         """
-
         if mountType not in self.geometryData:
             self.log.error(f'[{mountType}] not in database')
             return False
-
         else:
             self.log.debug(f'using [{mountType}] geometry')
 
@@ -318,8 +323,10 @@ class Geometry(object):
         # zero point for coordinate system.
         P0 = np.array([0, 0, 0, 1])
 
-        # next adjustment if the position of the base of mount in relation to
-        # the offset in north is x and the offset in east is -y. in vertical
+        # next adjustment if the position of the base of mount in relation dome
+        # sphere. This measurement is according the 10micron definition. In case
+        # we use e ASCOM definition, this values will be 0.
+        # The offset in north is x and the offset in east is -y. in vertical
         # direction up is positive, which means the mount is above the middle
         # point of dome
         vec0 = [self.offNorth,
@@ -336,38 +343,48 @@ class Geometry(object):
         T1 = np.dot(T0, self.transformRotZ(rotBase))
         P2 = np.dot(T1, P0)
 
-        # next we have the translation between the base plate and the rotation
-        # axis for the altitude adjustment. the axis is normally above the plate (
-        # positive z) and sometime shifted. shift north mean positive x
+        # next we have the translation between the baseplate and the rotation
+        # axis for the altitude adjustment. the axis is normally above the plate
+        # (positive z) and sometime shifted. shift north mean positive x
         vec2 = [self.offBaseAltAxisX,
                 0,
                 self.offBaseAltAxisZ]
         T2 = np.dot(T1, self.transformTranslate(vec2))
         P3 = np.dot(T2, P0)
 
-        # next step is the rotation around y axis for compensation of latitude.
+        # next step is the rotation around y-axis for compensation of latitude.
         # the adjustment angle compensates the latitude. for lat = 0 we have 0
-        # degree correction and below north pole there is 90 deg correction needed.
-        # so phi = -lat because it's a turn counterclockwise around Y, all angles
-        # are in radians
+        # degree correction and below the North Pole there is 90 deg correction
+        # needed. so phi = -lat because it's a turn counterclockwise around Y,
+        # all angles are in radians
         self.altAdj = -abs(lat)
         T3 = np.dot(T2, self.transformRotY(self.altAdj))
         P4 = np.dot(T3, P0)
 
-        # next is the translation fom the rotation axis of the lat compensation of
-        # the mount to the GEM point of the mount. GEM means the crossing of the
-        # ra and dec axis of the german equatorial mount basically there should be
-        # a translation in x/z plane up and forward (to north)
+        # next is the translation fom the rotation axis of the lat compensation
+        # of the mount to the GEM point of the mount. GEM means the crossing of
+        # the ra and dec axis of the german equatorial mount basically there
+        # should be a translation in x/z plane up and forward (to north)
         vec4 = [self.offAltAxisGemX,
                 0,
                 self.offAltAxisGemZ]
         T4 = np.dot(T3, self.transformTranslate(vec4))
         P5 = np.dot(T4, P0)
 
+        # for the definition of ASCOM, we have to add the X/Y/Z displacement of
+        # the mount GEM center to the dome sphere center. this is a translation
+        # in x/y/z direction
+
+        vec4GEM = [self.offNorthGEM,
+                   -self.offEastGEM,
+                   self.offVertGEM]
+        T4GEM = self.transformTranslate(vec4GEM)
+        P5GEM = np.dot(T4GEM, P5)
+
         # next is the rotation around the ra axis of the mount, this is rotation
-        # around x this should be (as we don't track) measured in HA, where HA = 6
-        # / 18 h is North depending of the pierside the direction is clockwise,
-        # turning to west over time
+        # around x this should be (as we don't track) measured in HA, where
+        # HA = 6 / 18 h is North depending on the pierside the direction is
+        # clockwise, turning to west over time
         #
         # using the definition of ASCOM about the pierEAST state
         # Normal state:
@@ -386,11 +403,11 @@ class Geometry(object):
         else:
             value = - ha + np.radians(18 / 24 * 360)
 
-        T5 = np.dot(T4, self.transformRotX(value))
+        T5 = np.dot(T4GEM, self.transformRotX(value))
         P6 = np.dot(T5, P0)
 
-        # the rotation around dec axis of the mount is next step. this rotation is
-        # around z axis. dec = 0 means rectangular directing scope. direction
+        # the rotation around dec axis of the mount is next step. this rotation
+        # is around z axis. dec = 0 means rectangular directing scope. direction
         # changes due to position of the mount and pierside
         #
         # using the definition of ASCOM about the pierEAST state
@@ -409,10 +426,10 @@ class Geometry(object):
         P7 = np.dot(T6, P0)
 
         # the translation from GEM to the center of the ota, this should be a
-        # translation in z. it consists of two parts: the user OTA measures and the
-        # distance from GEM to base plate, which is depending on mount type and is
-        # fixed and secondly the distance between the mount plate and the OTA line
-        # of sight axis
+        # translation in z. it consists of two parts: the user OTA measures and
+        # the distance from GEM to baseplate, which is depending on mount type
+        # and is fixed and secondly the distance between the mount plate and
+        # the OTA line of sight axis
         vec6 = [0,
                 0,
                 self.offPlateOTA + self.offGemPlate]
@@ -429,8 +446,8 @@ class Geometry(object):
         T8 = np.dot(T7, self.transformTranslate(vec7))
         P9 = np.dot(T8, P0)
 
-        # calculating the direction of OTA for dome geometry. pointing direction is
-        # in x axis, length is standard 1. P10 would be the head of the vector,
+        # calculating the direction of OTA for dome geometry. pointing direction
+        # is in x-axis, length is standard 1. P10 would be the head of the vector,
         # P9 is the base of the vector. subtracting gives the resulting direction
         # of the vector which is in PD
         vec9 = [1, 0, 0]
@@ -461,8 +478,8 @@ class Geometry(object):
         t1 = - p / 2 + np.sqrt(p * p / 4 - q)
         # t2 = - p / 2 - np.sqrt(p * p / 4 - q)
 
-        # we choose the positive solution as we look in the positive direction and
-        # can omit the view to the back
+        # we choose the positive solution as we look in the positive direction
+        # and can omit the view to the back
         intersect = PB + np.dot(t1, PD)
 
         # simplify the names and calculate the geometry angles based on the
@@ -470,7 +487,7 @@ class Geometry(object):
         # hemisphere. as we have y to the left because of the right turning
         # homogeneous coordinate system, we have to negate the angle of azimuth.
         # we use arctan2 for getting the full quadrants and shifting
-        # the angle in an value range from 0 .. 2pi
+        # the angle in a value range from 0 ... 2pi
 
         x = intersect[0]
         y = intersect[1]
@@ -482,10 +499,10 @@ class Geometry(object):
 
         altDome = Angle(radians=np.arctan2(z, base))
 
-        self.transMatrix = [T0, T1, T2, T3, T4, T5, T6, T7, T8, T9]
+        self.transMatrix = [T0, T1, T2, T3, T4, T4GEM, T5, T6, T7, T8, T9]
         self.transVector = [P0[:-1], P1[:-1], P2[:-1], P3[:-1], P4[:-1],
-                            P5[:-1], P6[:-1], P7[:-1], P8[:-1], P9[:-1],
-                            P10[:-1]]
+                            P5[:-1], P5GEM[:-1], P6[:-1], P7[:-1], P8[:-1],
+                            P9[:-1], P10[:-1]]
 
         self.log.trace(f'az:{azDome}, alt:{altDome}')
 

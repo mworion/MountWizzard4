@@ -31,8 +31,7 @@ class SettDome(object):
         self.ui.offLAT.valueChanged.connect(self.setUseGeometry)
         self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometry)
         self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometry)
-        self.ui.domeZoffGEM.valueChanged.connect(self.setZoffGEMInMount)
-        self.ui.domeZoff10micron.valueChanged.connect(self.setZoff10micronInMount)
+        self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometry)
         self.ui.domeClearOpening.valueChanged.connect(self.setUseGeometry)
         self.ui.domeOpeningHysteresis.valueChanged.connect(self.setUseGeometry)
         self.ui.domeClearanceZenith.valueChanged.connect(self.setUseGeometry)
@@ -42,18 +41,18 @@ class SettDome(object):
         self.ui.useDynamicFollowing.clicked.connect(self.setUseGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometry)
-        self.app.mount.signals.firmwareDone.connect(self.setZoffGEMInMount)
 
         self.ui.domeRadius.valueChanged.connect(self.tab1)
         self.ui.domeNorthOffset.valueChanged.connect(self.tab2)
         self.ui.domeEastOffset.valueChanged.connect(self.tab3)
-        self.ui.domeZoffGEM.valueChanged.connect(self.tab4)
-        self.ui.domeZoff10micron.valueChanged.connect(self.tab5)
-        self.ui.offGEM.valueChanged.connect(self.tab6)
-        self.ui.offLAT.valueChanged.connect(self.tab7)
-        self.ui.domeClearOpening.valueChanged.connect(self.tab8)
-        self.ui.domeOpeningHysteresis.valueChanged.connect(self.tab9)
-        self.ui.domeClearanceZenith.valueChanged.connect(self.tab10)
+        self.ui.domeVerticalOffset.valueChanged.connect(self.tab4)
+        self.ui.offGEM.valueChanged.connect(self.tab5)
+        self.ui.offLAT.valueChanged.connect(self.tab6)
+        self.ui.domeClearOpening.valueChanged.connect(self.tab7)
+        self.ui.domeOpeningHysteresis.valueChanged.connect(self.tab8)
+        self.ui.domeClearanceZenith.valueChanged.connect(self.tab9)
+        self.ui.use10micronDef.clicked.connect(self.setUseGeometry)
+        self.ui.use10micronDef.clicked.connect(self.setupIconsDome)
 
     def tab1(self):
         self.ui.tabDomeExplain.setCurrentIndex(0)
@@ -82,9 +81,6 @@ class SettDome(object):
     def tab9(self):
         self.ui.tabDomeExplain.setCurrentIndex(8)
 
-    def tab10(self):
-        self.ui.tabDomeExplain.setCurrentIndex(9)
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -101,7 +97,8 @@ class SettDome(object):
         self.ui.useOvershoot.setChecked(config.get('useOvershoot', False))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
-        self.ui.domeZoffGEM.setValue(config.get('domeZoffGEM', 0))
+        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
+        self.ui.use10micronDef.setChecked(config.get('use10micronDef', False))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offLAT.setValue(config.get('offLAT', 0))
         self.ui.domeRadius.setValue(config.get('domeRadius', 1.5))
@@ -109,6 +106,7 @@ class SettDome(object):
         self.ui.automaticDome.setChecked(config.get('automaticDome', False))
         self.ui.useDynamicFollowing.setChecked(config.get('useDynamicFollowing', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
+        self.setupIconsDome()
         self.setUseGeometry()
         return True
 
@@ -128,7 +126,8 @@ class SettDome(object):
         config['useOvershoot'] = self.ui.useOvershoot.isChecked()
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
-        config['domeZoffGEM'] = self.ui.domeZoffGEM.value()
+        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
+        config['use10micronDef'] = self.ui.use10micronDef.isChecked()
         config['offGEM'] = self.ui.offGEM.value()
         config['offLAT'] = self.ui.offLAT.value()
         config['useDomeGeometry'] = self.ui.useDomeGeometry.isChecked()
@@ -137,51 +136,44 @@ class SettDome(object):
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
         return True
 
-    def setZoffGEMInMount(self):
+    def setupIconsDome(self):
         """
         :return:
         """
-        self.app.mount.geometry.offVertGEM = self.ui.domeZoffGEM.value()
-        self.ui.domeZoff10micron.setValue(self.app.mount.geometry.offVert)
-        self.app.updateDomeSettings.emit()
-        return True
+        pixmap = self.img2pixmap(':/dome/radius.png')
+        self.ui.picDome1.setPixmap(pixmap)
 
-    def setZoff10micronInMount(self):
-        """
-        :return:
-        """
-        self.app.mount.geometry.offVert = self.ui.domeZoff10micron.value()
-        self.ui.domeZoffGEM.setValue(self.app.mount.geometry.offVertGEM)
-        self.app.updateDomeSettings.emit()
-        return True
+        is10Micron = self.ui.use10micronDef.isChecked()
+        if is10Micron:
+            pixmap = self.img2pixmap(':/dome/north.png')
+            self.ui.picDome2.setPixmap(pixmap)
+            pixmap = self.img2pixmap(':/dome/east.png')
+            self.ui.picDome3.setPixmap(pixmap)
+            pixmap = self.img2pixmap(':/dome/z_10micron.png')
+            self.ui.picDome4.setPixmap(pixmap)
+        else:
+            pixmap = self.img2pixmap(':/dome/north.png')
+            self.ui.picDome2.setPixmap(pixmap)
+            pixmap = self.img2pixmap(':/dome/east.png')
+            self.ui.picDome3.setPixmap(pixmap)
+            pixmap = self.img2pixmap(':/dome/z_gem.png')
+            self.ui.picDome4.setPixmap(pixmap)
 
-    def setUseGeometry(self):
-        """
-        setUseGeometry updates the mount class with the new setting if use
-        geometry for dome calculation should be used or not.
+        pixmap = self.img2pixmap(':/dome/gem.png')
+        self.ui.picDome5.setPixmap(pixmap)
+        pixmap = self.img2pixmap(':/dome/lat.png')
+        self.ui.picDome6.setPixmap(pixmap)
+        pixmap = self.img2pixmap(':/dome/shutter.png')
+        self.ui.picDome7.setPixmap(pixmap)
+        pixmap = self.img2pixmap(':/dome/hysteresis.png')
+        self.ui.picDome8.setPixmap(pixmap)
+        pixmap = self.img2pixmap(':/dome/zenith.png')
+        self.ui.picDome9.setPixmap(pixmap)
 
-        :return: true for test purpose
-        """
-        if self.ui.automaticDome.isChecked():
-            self.updateDomeGeometryToGui()
-
-        self.app.mount.geometry.domeRadius = self.ui.domeRadius.value()
-        self.app.dome.radius = self.ui.domeRadius.value()
-        self.app.mount.geometry.offGEM = self.ui.offGEM.value()
-        self.app.mount.geometry.offLAT = self.ui.offLAT.value()
-        self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
-        self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
-        clearOpening = self.ui.domeClearOpening.value()
-        self.app.dome.clearOpening = clearOpening
-        self.ui.domeOpeningHysteresis.setMaximum(clearOpening / 2.1)
-        self.app.dome.openingHysteresis = self.ui.domeOpeningHysteresis.value()
-        self.app.dome.clearanceZenith = self.ui.domeClearanceZenith.value()
-        useGeometry = self.ui.useDomeGeometry.isChecked()
-        self.app.dome.useGeometry = useGeometry
-        useDynamicFollowing = self.ui.useDynamicFollowing.isChecked()
-        self.app.dome.useDynamicFollowing = useDynamicFollowing
-        self.app.dome.overshoot = self.ui.useOvershoot.isChecked()
-        self.app.updateDomeSettings.emit()
+        self.wIcon(self.ui.copyFromDomeDriver, 'copy')
+        self.wIcon(self.ui.domeCloseShutter, 'exit-down')
+        self.wIcon(self.ui.domeOpenShutter, 'exit-up')
+        self.wIcon(self.ui.domeAbortSlew, 'bolt-alt')
         return True
 
     def updateDomeGeometryToGui(self):
@@ -204,7 +196,44 @@ class SettDome(object):
         self.ui.domeEastOffset.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
-        self.ui.domeZoffGEM.setValue(value)
+        self.ui.domeVerticalOffset.setValue(value)
+        return True
+
+    def setUseGeometry(self):
+        """
+        :return: true for test purpose
+        """
+        if self.ui.automaticDome.isChecked():
+            self.updateDomeGeometryToGui()
+
+        self.app.mount.geometry.domeRadius = self.ui.domeRadius.value()
+        self.app.dome.radius = self.ui.domeRadius.value()
+        self.app.mount.geometry.offGEM = self.ui.offGEM.value()
+        self.app.mount.geometry.offLAT = self.ui.offLAT.value()
+
+        is10Micron = self.ui.use10micronDef.isChecked()
+        if is10Micron:
+            self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
+            self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
+            self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
+        else:
+            self.app.mount.geometry.offNorthGEM = self.ui.domeNorthOffset.value()
+            self.app.mount.geometry.offEastGEM = self.ui.domeEastOffset.value()
+            self.app.mount.geometry.offVertGEM = self.ui.domeVerticalOffset.value()
+
+        clearOpening = self.ui.domeClearOpening.value()
+        self.app.dome.clearOpening = clearOpening
+        self.ui.domeOpeningHysteresis.setMaximum(clearOpening / 2.1)
+        self.app.dome.openingHysteresis = self.ui.domeOpeningHysteresis.value()
+        self.app.dome.clearanceZenith = self.ui.domeClearanceZenith.value()
+
+        useGeometry = self.ui.useDomeGeometry.isChecked()
+        self.app.dome.useGeometry = useGeometry
+
+        useDynamicFollowing = self.ui.useDynamicFollowing.isChecked()
+        self.app.dome.useDynamicFollowing = useDynamicFollowing
+        self.app.dome.overshoot = self.ui.useOvershoot.isChecked()
+        self.app.updateDomeSettings.emit()
         return True
 
     def setDomeSettlingTime(self):

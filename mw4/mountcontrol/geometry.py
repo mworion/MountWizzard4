@@ -112,7 +112,15 @@ class Geometry(object):
     @offNorth.setter
     def offNorth(self, value):
         self._offNorth = valueToFloat(value)
-        self._offNorthGEM = 0
+        if self.parent.obsSite.location is None:
+            self.log.debug('offVert called without lat')
+            return
+
+        lat = self.parent.obsSite.location.latitude.radians
+        val = valueToFloat(value) + self.offBaseAltAxisX
+        val += np.cos(abs(lat)) * self.offAltAxisGemX
+        val -= np.sin(abs(lat)) * self.offAltAxisGemZ
+        self._offNorthGEM = val
 
     @property
     def offNorthGEM(self):
@@ -121,7 +129,15 @@ class Geometry(object):
     @offNorthGEM.setter
     def offNorthGEM(self, value):
         self._offNorthGEM = valueToFloat(value)
-        self._offNorth = 0
+        if self.parent.obsSite.location is None:
+            self.log.debug('offVert called without lat')
+            return
+
+        lat = self.parent.obsSite.location.latitude.radians
+        val = valueToFloat(value) - self.offBaseAltAxisX
+        val -= np.cos(abs(lat)) * self.offAltAxisGemX
+        val += np.sin(abs(lat)) * self.offAltAxisGemZ
+        self._offNorth = val
 
     @property
     def offEast(self):
@@ -130,7 +146,7 @@ class Geometry(object):
     @offEast.setter
     def offEast(self, value):
         self._offEast = valueToFloat(value)
-        self._offEastGEM = 0
+        self._offEastGEM = valueToFloat(value)
 
     @property
     def offEastGEM(self):
@@ -139,7 +155,7 @@ class Geometry(object):
     @offEastGEM.setter
     def offEastGEM(self, value):
         self._offEastGEM = valueToFloat(value)
-        self._offEast = 0
+        self._offEast = valueToFloat(value)
 
     @property
     def offVert(self):
@@ -148,7 +164,15 @@ class Geometry(object):
     @offVert.setter
     def offVert(self, value):
         self._offVert = valueToFloat(value)
-        self._offVertGEM = 0
+        if self.parent.obsSite.location is None:
+            self.log.debug('offVert called without lat')
+            return
+
+        lat = self.parent.obsSite.location.latitude.radians
+        val = valueToFloat(value) + self.offBaseAltAxisZ
+        val += np.sin(abs(lat)) * self.offAltAxisGemX
+        val += np.cos(abs(lat)) * self.offAltAxisGemZ
+        self._offVertGEM = val
 
     @property
     def offVertGEM(self):
@@ -156,8 +180,16 @@ class Geometry(object):
 
     @offVertGEM.setter
     def offVertGEM(self, value):
-        self._offVert = valueToFloat(value)
-        self._offVert = 0
+        self._offVertGEM = valueToFloat(value)
+        if self.parent.obsSite.location is None:
+            self.log.debug('offVertGEM called without lat')
+            return
+
+        lat = self.parent.obsSite.location.latitude.radians
+        val = valueToFloat(value) - self.offBaseAltAxisZ
+        val -= np.sin(abs(lat)) * self.offAltAxisGemX
+        val -= np.cos(abs(lat)) * self.offAltAxisGemZ
+        self._offVert = val
 
     @property
     def offGEM(self):
@@ -371,16 +403,6 @@ class Geometry(object):
         T4 = np.dot(T3, self.transformTranslate(vec4))
         P5 = np.dot(T4, P0)
 
-        # for the definition of ASCOM, we have to add the X/Y/Z displacement of
-        # the mount GEM center to the dome sphere center. this is a translation
-        # in x/y/z direction
-
-        vec4GEM = [self.offNorthGEM,
-                   -self.offEastGEM,
-                   self.offVertGEM]
-        T4GEM = self.transformTranslate(vec4GEM)
-        P5GEM = np.dot(T4GEM, P5)
-
         # next is the rotation around the ra axis of the mount, this is rotation
         # around x this should be (as we don't track) measured in HA, where
         # HA = 6 / 18 h is North depending on the pierside the direction is
@@ -403,7 +425,7 @@ class Geometry(object):
         else:
             value = - ha + np.radians(18 / 24 * 360)
 
-        T5 = np.dot(T4GEM, self.transformRotX(value))
+        T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)
 
         # the rotation around dec axis of the mount is next step. this rotation
@@ -499,10 +521,10 @@ class Geometry(object):
 
         altDome = Angle(radians=np.arctan2(z, base))
 
-        self.transMatrix = [T0, T1, T2, T3, T4, T4GEM, T5, T6, T7, T8, T9]
+        self.transMatrix = [T0, T1, T2, T3, T4, T5, T6, T7, T8, T9]
         self.transVector = [P0[:-1], P1[:-1], P2[:-1], P3[:-1], P4[:-1],
-                            P5[:-1], P5GEM[:-1], P6[:-1], P7[:-1], P8[:-1],
-                            P9[:-1], P10[:-1]]
+                            P5[:-1], P6[:-1], P7[:-1], P8[:-1], P9[:-1],
+                            P10[:-1]]
 
         self.log.trace(f'az:{azDome}, alt:{altDome}')
 

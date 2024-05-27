@@ -136,12 +136,12 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         """
         :return: True for test purpose
         """
-        self.ui.checkDomeTransparent.clicked.connect(self.createScene)
         self.ui.checkShowBuildPoints.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowNumbers.clicked.connect(self.buildPointsCreate)
         self.ui.checkShowSlewPath.clicked.connect(self.buildPointsCreate)
         self.app.updatePointMarker.connect(self.buildPointsCreate)
         self.ui.checkShowHorizon.clicked.connect(self.createScene)
+        self.ui.checkDomeTransparent.clicked.connect(lambda x: self.dome.setTransparency(x))
         self.ui.checkShowPointer.clicked.connect(self.pointerCreate)
         self.ui.checkShowLaser.clicked.connect(self.laserCreate)
         self.ui.topView.clicked.connect(self.topView)
@@ -151,8 +151,8 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.ui.westView.clicked.connect(self.westView)
         self.ui.lightIntensity.valueChanged.connect(self.setLightIntensity)
         self.app.update1s.connect(self.dome.updatePositions)
-        self.app.dome.signals.deviceConnected.connect(self.createScene)
-        self.app.dome.signals.deviceDisconnected.connect(self.createScene)
+        self.app.dome.signals.deviceConnected.connect(lambda: self.dome.showEnable(True))
+        self.app.dome.signals.deviceDisconnected.connect(lambda: self.dome.showEnable(False))
         self.app.updateDomeSettings.connect(self.updateSettings)
         self.app.updateDomeSettings.connect(self.telescope.updateSettings)
         self.app.updateDomeSettings.connect(self.dome.updateSettings)
@@ -382,13 +382,14 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         lat = self.app.mount.obsSite.location.latitude.degrees
         self.createWorld(self.rootEntity)
         self.telescope.create(self.world['ref']['e'], True, lat)
-        self.dome.create(self.world['ref']['e'], dome, isDomeTransparent)
+        self.dome.create(self.world['ref']['e'], isDomeTransparent)
         self.pointer.create(self.world['ref']['e'], pointer)
         self.laser.create(self.world['ref']['e'], laser)
         self.buildPoints.create(self.world['ref1000']['e'], points, numbers, path)
         self.horizon.create(self.world['ref1000']['e'], horizon)
 
         self.updateSettings()
+        self.dome.showEnable(dome)
         self.dome.updateSettings()
         self.dome.updatePositions()
         self.telescope.updateSettings()

@@ -117,6 +117,18 @@ def test_setupIconsDome_2(function):
     assert suc
 
 
+def test_switchGeometryDefinition_1(function):
+    function.ui.use10micronDef.setChecked(True)
+    suc = function.switchGeometryDefinition()
+    assert suc
+
+
+def test_switchGeometryDefinition_2(function):
+    function.ui.use10micronDef.setChecked(False)
+    suc = function.switchGeometryDefinition()
+    assert suc
+
+
 def test_setUseGeometry_1(function):
     function.ui.use10micronDef.setChecked(False)
     function.ui.automaticDome.setChecked(False)

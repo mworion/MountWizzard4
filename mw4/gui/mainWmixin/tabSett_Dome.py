@@ -41,7 +41,6 @@ class SettDome(object):
         self.ui.useDynamicFollowing.clicked.connect(self.setUseGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
         self.app.mount.signals.firmwareDone.connect(self.setUseGeometry)
-
         self.ui.domeRadius.valueChanged.connect(self.tab1)
         self.ui.domeNorthOffset.valueChanged.connect(self.tab2)
         self.ui.domeEastOffset.valueChanged.connect(self.tab3)
@@ -51,7 +50,7 @@ class SettDome(object):
         self.ui.domeClearOpening.valueChanged.connect(self.tab7)
         self.ui.domeOpeningHysteresis.valueChanged.connect(self.tab8)
         self.ui.domeClearanceZenith.valueChanged.connect(self.tab9)
-        self.ui.use10micronDef.clicked.connect(self.setUseGeometry)
+        self.ui.use10micronDef.clicked.connect(self.switchGeometryDefinition)
         self.ui.use10micronDef.clicked.connect(self.setupIconsDome)
 
     def tab1(self):
@@ -197,6 +196,27 @@ class SettDome(object):
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
         self.ui.domeVerticalOffset.setValue(value)
+        return True
+
+    def switchGeometryDefinition(self):
+        """
+        :return:
+        """
+        self.ui.domeEastOffset.valueChanged.disconnect(self.setUseGeometry)
+        self.ui.domeNorthOffset.valueChanged.disconnect(self.setUseGeometry)
+        self.ui.domeVerticalOffset.valueChanged.disconnect(self.setUseGeometry)
+        is10Micron = self.ui.use10micronDef.isChecked()
+        if is10Micron:
+            self.ui.domeNorthOffset.setValue(self.app.mount.geometry.offNorth)
+            self.ui.domeEastOffset.setValue(self.app.mount.geometry.offEast)
+            self.ui.domeVerticalOffset.setValue(self.app.mount.geometry.offVert)
+        else:
+            self.ui.domeNorthOffset.setValue(self.app.mount.geometry.offNorthGEM)
+            self.ui.domeEastOffset.setValue(self.app.mount.geometry.offEastGEM)
+            self.ui.domeVerticalOffset.setValue(self.app.mount.geometry.offVertGEM)
+        self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometry)
+        self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometry)
+        self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometry)
         return True
 
     def setUseGeometry(self):

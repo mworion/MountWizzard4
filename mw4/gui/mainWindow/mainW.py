@@ -604,6 +604,7 @@ class MainWindow(
             self.ui.progMinorPlanetsFiltered.setEnabled(True)
             self.ui.progMinorPlanetsSelected.setEnabled(True)
             self.ui.progEarthRotationData.setEnabled(True)
+            self.ui.use10micronDef.setEnabled(True)
         else:
             self.ui.dsoGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
@@ -617,6 +618,7 @@ class MainWindow(
             self.ui.progMinorPlanetsFiltered.setEnabled(False)
             self.ui.progMinorPlanetsSelected.setEnabled(False)
             self.ui.progEarthRotationData.setEnabled(False)
+            self.ui.use10micronDef.setEnabled(False)
 
         if isDomeReady and isMountReady:
             self.ui.useDomeAz.setEnabled(True)

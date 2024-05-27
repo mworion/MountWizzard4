@@ -33,23 +33,19 @@ class SimulatorDome:
         super().__init__()
         self.app = app
         self.model = {}
-        self.modelRoot = None
+        self.modelRootEntity = None
 
-    def create(self, rEntity, show, trans):
+    def create(self, rEntity, trans):
         """
         :param rEntity:
-        :param show:
         :param trans:
         :return:
         """
         if self.model:
-            self.modelRoot.setParent(None)
+            self.modelRootEntity.setParent(None)
 
         self.model.clear()
-        if not show:
-            return False
-
-        self.modelRoot = QEntity(rEntity)
+        self.modelRootEntity = QEntity(rEntity)
         self.model = {
             'domeFloor': {
                 'parent': 'ref',
@@ -95,8 +91,24 @@ class SimulatorDome:
             },
         }
         for name in self.model:
-            tools.linkModel(self.model, name, self.modelRoot)
+            tools.linkModel(self.model, name, self.modelRootEntity)
         self.updatePositions()
+        return True
+
+    def setTransparency(self, showTransparent):
+        """
+        :param showTransparent:
+        :return:
+        """
+        print('received transparency', showTransparent)
+        return True
+
+    def showEnable(self, show):
+        """
+        :param show:
+        :return:
+        """
+        self.modelRootEntity.setEnabled(show)
         return True
 
     def updateSettings(self):

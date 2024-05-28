@@ -143,10 +143,12 @@ def test_create_2(function):
     function.parent.entityModel['ref1000'] = QEntity()
     function.app.data.buildP = [(0, 0, True), (10, 10, True)]
     with mock.patch.object(function,
-                           'loopCreate'):
+                           'clear'):
         with mock.patch.object(function,
-                               'updatePositions'):
+                               'loopCreate'):
             with mock.patch.object(function,
-                                   'showEnable'):
-                suc = function.create()
-        assert suc
+                                   'updatePositions'):
+                with mock.patch.object(function,
+                                       'showEnable'):
+                    suc = function.create()
+                    assert suc

@@ -66,5 +66,11 @@ def test_create_1(function):
 def test_create_2(function):
     function.parent.entityModel['ref1000'] = QEntity()
     function.app.data.horizonP = [(0, 0), (10, 10)]
-    suc = function.create()
-    assert suc
+    with mock.patch.object(function,
+                           'clear'):
+        with mock.patch.object(function,
+                               'createWall'):
+            with mock.patch.object(function,
+                                   'showEnable'):
+                suc = function.create()
+                assert suc

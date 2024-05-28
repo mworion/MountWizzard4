@@ -56,23 +56,6 @@ class SimulatorWorld:
 
     def create(self):
         """
-        first transformation is from fusion360 to Qt3D fusion360 (x is north,
-        y is west, z is up), scale in mm Qt3D (-z is north, x is east, y is up)
-        scale is m and set as reference. from there on we are in the fusion
-        coordinate system
-
-        'ref' is the fusion360 coordinate system, please be aware that rotations
-        around the z axis for azimuth is clockwise and not counterclockwise as a
-        right-handed coordinate system would propose.
-
-        for the sake of simplifying there is another reference, which only has
-        the corrections in coordinates and not for scaling, this is called
-        'ref1000'
-
-        beside defining the references, createWorld build the foundation for the
-        positioning of a raw telescope column and a compass rose.
-
-        :return:
         """
         model = {
             'environ': {

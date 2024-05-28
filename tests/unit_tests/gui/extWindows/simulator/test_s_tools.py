@@ -19,7 +19,7 @@ import pytest
 # external packages
 from PyQt6.Qt3DExtras import QSphereMesh, QCuboidMesh
 from PyQt6.Qt3DCore import QEntity
-from PyQt6.Qt3DExtras import QPhongMaterial, QCylinderMesh, QExtrudedTextMesh
+from PyQt6.Qt3DExtras import QPhongAlphaMaterial, QCylinderMesh, QExtrudedTextMesh
 from PyQt6.Qt3DCore import QTransform
 from PyQt6.Qt3DRender import QMesh
 
@@ -29,6 +29,9 @@ from gui.extWindows.simulator.tools import linkModel
 from gui.extWindows.simulator.tools import linkMaterial
 from gui.extWindows.simulator.tools import linkSource
 from gui.extWindows.simulator.tools import linkTransform
+from gui.extWindows.simulator.tools import getTransformation
+from gui.extWindows.simulator.tools import getMaterial
+from gui.extWindows.simulator.tools import getMesh
 from gui.extWindows.simulator.materials import Materials
 
 
@@ -125,15 +128,15 @@ def test_linkTransform_4(qtbot):
 
 def test_linkMaterial_1(qtbot):
     model = {'parent': None,
-             'mat': Materials().pointer,
+             'mat': Materials().dome1,
              }
 
     mat = linkMaterial(model)
-    assert isinstance(mat, QPhongMaterial)
+    assert isinstance(mat, QPhongAlphaMaterial)
 
 
 def test_linkModel_1(qtbot):
-    e = QEntity()
+    entityModel = {'root': QEntity()}
     model = {
         'pointer':
             {'parent': None,
@@ -142,8 +145,56 @@ def test_linkModel_1(qtbot):
              'mat': Materials().pointer,
              }
     }
+    linkModel(model, entityModel)
 
-    for name in model:
-        linkModel(model, name, e)
 
-    assert 't' in model['pointer']
+def test_linkModel_2(qtbot):
+    entityModel = {'root': QEntity()}
+    model = {
+        'pointer':
+            {'parent': 'root',
+             'source': [QSphereMesh(), 50, 30, 30],
+             'scale': [1, 1, 1],
+             'mat': Materials().pointer,
+             }
+    }
+    linkModel(model, entityModel)
+
+
+def test_getTransformation_1(qtbot):
+    entity = None
+    val = getTransformation(entity)
+    assert val is None
+
+
+def test_getTransformation_2(qtbot):
+    entity = QEntity()
+    entity.addComponent(QTransform())
+    val = getTransformation(entity)
+    assert isinstance(val, QTransform)
+
+
+def test_getMaterial_1(qtbot):
+    entity = None
+    val = getMaterial(entity)
+    assert val is None
+
+
+def test_getMaterial_2(qtbot):
+    entity = QEntity()
+    entity.addComponent(QPhongAlphaMaterial())
+    val = getMaterial(entity)
+    assert isinstance(val, QPhongAlphaMaterial)
+
+
+def test_getMesh_1(qtbot):
+    entity = None
+    val = getMesh(entity)
+    assert val is None
+
+
+def test_getMesh_2(qtbot):
+    entity = QEntity()
+    entity.addComponent(QCuboidMesh())
+    val = getMesh(entity)
+    assert isinstance(val, QCuboidMesh)

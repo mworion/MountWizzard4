@@ -26,19 +26,19 @@ from PyQt6.Qt3DRender import QPointLight
 from PyQt6.Qt3DCore import QEntity, QTransform
 
 # local import
-from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import simulator_ui
 from gui.extWindows.simulator.dome import SimulatorDome
 from gui.extWindows.simulator.telescope import SimulatorTelescope
 from gui.extWindows.simulator.horizon import SimulatorHorizon
-from gui.extWindows.simulator.points import SimulatorBuildPoints
+from gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
 from gui.extWindows.simulator.pointer import SimulatorPointer
 from gui.extWindows.simulator.laser import SimulatorLaser
 from gui.extWindows.simulator.world import SimulatorWorld
 from gui.extWindows.simulator.tools import linkModel
 
 
-class SimulatorWindow(toolsQtWidget.MWidget):
+class SimulatorWindow(MWidget):
     """
     """
     __all__ = ['SimulatorWindow']
@@ -71,44 +71,6 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.setupCamera(self.entityModel['root'])
         self.setupLight(self.entityModel['root'])
         self.setupScene()
-
-    def setupLight(self, parentEntity):
-        """
-        :param parentEntity:
-        :return:
-        """
-        self.entityModel['lightsNode'] = QEntity(parentEntity)
-        lightEntity = QEntity(self.entityModel['lightsNode'])
-        pointLight = QPointLight(lightEntity)
-        pointLight.setIntensity(1.0)
-        lightEntity.addComponent(pointLight)
-        transform = QTransform()
-        transform.setTranslation(QVector3D(5, 20, 5))
-        lightEntity.addComponent(transform)
-
-    def setLightIntensity(self):
-        """
-        """
-        intensity = self.ui.lightIntensity.value()
-        for lightEntity in self.entityModel['lightsNode'].childNodes():
-            for component in lightEntity.components():
-                if isinstance(component, (QPointLight)):
-                    component.setIntensity(intensity)
-
-    def setupCamera(self, parentEntity):
-        """
-        :param parentEntity:
-        :return:
-        """
-        self.camera = self.view.camera()
-        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 1000.0)
-        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
-        self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
-        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-        self.cameraController = QOrbitCameraController(parentEntity)
-        self.cameraController.setCamera(self.camera)
-        self.cameraController.setLinearSpeed(5.0)
-        self.cameraController.setLookSpeed(90)
 
     def initConfig(self):
         """
@@ -173,6 +135,44 @@ class SimulatorWindow(toolsQtWidget.MWidget):
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.colorChange.connect(self.colorChange)
         self.show()
+
+    def setupLight(self, parentEntity):
+        """
+        :param parentEntity:
+        :return:
+        """
+        self.entityModel['lightsNode'] = QEntity(parentEntity)
+        lightEntity = QEntity(self.entityModel['lightsNode'])
+        pointLight = QPointLight(lightEntity)
+        pointLight.setIntensity(1.0)
+        lightEntity.addComponent(pointLight)
+        transform = QTransform()
+        transform.setTranslation(QVector3D(5, 20, 5))
+        lightEntity.addComponent(transform)
+
+    def setLightIntensity(self):
+        """
+        """
+        intensity = self.ui.lightIntensity.value()
+        for lightEntity in self.entityModel['lightsNode'].childNodes():
+            for component in lightEntity.components():
+                if isinstance(component, (QPointLight)):
+                    component.setIntensity(intensity)
+
+    def setupCamera(self, parentEntity):
+        """
+        :param parentEntity:
+        :return:
+        """
+        self.camera = self.view.camera()
+        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 1000.0)
+        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
+        self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
+        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+        self.cameraController = QOrbitCameraController(parentEntity)
+        self.cameraController.setCamera(self.camera)
+        self.cameraController.setLinearSpeed(5.0)
+        self.cameraController.setLookSpeed(90)
 
     def colorChange(self):
         """

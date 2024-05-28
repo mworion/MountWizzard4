@@ -37,6 +37,14 @@ class SimulatorPointer:
         self.app.mount.signals.pointDone.connect(self.updatePositions)
         self.parent.ui.showPointer.checkStateChanged.connect(self.showEnable)
 
+    def showEnable(self):
+        """
+        """
+        isVisible = self.parent.ui.showPointer.isChecked()
+        entity = self.parent.entityModel.get('pointer')
+        if entity:
+            entity.setEnabled(isVisible)
+
     def updatePositions(self):
         """
         """
@@ -53,14 +61,6 @@ class SimulatorPointer:
             nodeT.setTranslation(QVector3D(intersect[0], intersect[1], intersect[2]))
 
         return True
-
-    def showEnable(self):
-        """
-        """
-        isVisible = self.parent.ui.showPointer.isChecked()
-        entity = self.parent.entityModel.get('pointer')
-        if entity:
-            entity.setEnabled(isVisible)
 
     def create(self):
         """

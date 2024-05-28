@@ -20,82 +20,91 @@ import unittest.mock as mock
 
 # external packages
 from PyQt6.QtGui import QCloseEvent
-from PyQt6.Qt3DCore import QTransform, QEntity
-from skyfield.api import Angle
+from PyQt6.Qt3DCore import QEntity
+from PyQt6.Qt3DRender import QPointLight
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.simulatorW import SimulatorWindow
+from gui.extWindows.simulator.telescope import SimulatorTelescope
+from gui.extWindows.simulator.laser import SimulatorLaser
 from gui.extWindows.simulator import tools
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    func = SimulatorWindow(app=App())
+    with mock.patch.object(SimulatorTelescope,
+                           'updatePositions'):
+        with mock.patch.object(SimulatorLaser,
+                               'updatePositions'):
+            func = SimulatorWindow(app=App())
+
     with mock.patch.object(func,
                            'show'):
         yield func
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
-def test_initConfig_5(function):
+def test_initConfig_2(function):
     function.app.config['simulatorW'] = {}
     function.app.config['simulatorW']['winPosX'] = 100
     function.app.config['simulatorW']['winPosY'] = 100
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     if 'simulatorW' in function.app.config:
         del function.app.config['simulatorW']
 
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.app.config['simulatorW'] = {}
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function,
-                           'createScene'):
-        with mock.patch.object(MWidget,
-                               'closeEvent'):
-            function.showWindow()
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(MWidget,
+                           'closeEvent'):
+        function.showWindow()
+        function.closeEvent(QCloseEvent)
 
 
 def test_showWindow(function):
     with mock.patch.object(function,
-                           'createScene'):
-        with mock.patch.object(function,
-                               'show'):
-            suc = function.showWindow()
-            assert suc
+                           'show'):
+        function.showWindow()
+
+
+def test_setupLight_1(function):
+    function.setupLight(QEntity())
+
+
+def test_setLightIntensity_1(function):
+    function.entityModel['lightsNode'] = QEntity()
+    a = QEntity(function.entityModel['lightsNode'])
+    a.addComponent(QPointLight())
+    function.setLightIntensity()
+
+
+def test_setupCamera_1(function):
+    function.setupCamera(QEntity())
 
 
 def test_colorChange(function):
-    with mock.patch.object(function,
-                           'createScene'):
-        suc = function.colorChange()
-        assert suc
+    function.colorChange()
 
 
 def test_limitPositionZ_1(function):
     from PyQt6.QtGui import QVector3D
 
     function.camera.setPosition(QVector3D(1, 1, 1))
-    suc = function.limitPositionZ()
-    assert suc
+    function.limitPositionZ()
     assert function.camera.position()[1] == 1
 
 
@@ -103,153 +112,52 @@ def test_limitPositionZ_2(function):
     from PyQt6.QtGui import QVector3D
 
     function.camera.setPosition(QVector3D(1, -10, 1))
-    suc = function.limitPositionZ()
-    assert suc
+    function.limitPositionZ()
     assert function.camera.position()[1] == 0
 
 
-def test_buildPointsCreate_1(function):
-    function.world = {
-        'ref1000': {
-            'parent': None,
-            'rot': [-90, 90, 0],
-            'e': QEntity(),
-        },
-        'ref': {
-            'parent': 'ref1000',
-            'scale': [0.001, 0.001, 0.001],
-            'e': QEntity(),
-        }
-    }
-    suc = function.buildPointsCreate()
-    assert suc
-
-
-def test_horizonCreate_1(function):
-    function.world = {
-        'ref1000': {
-            'parent': None,
-            'rot': [-90, 90, 0],
-            'e': QEntity(),
-        },
-        'ref': {
-            'parent': 'ref1000',
-            'scale': [0.001, 0.001, 0.001],
-            'e': QEntity(),
-        }
-    }
-    suc = function.horizonCreate()
-    assert suc
-
-
-def test_pointerCreate_1(function):
-    function.world = {
-        'ref1000': {
-            'parent': None,
-            'rot': [-90, 90, 0],
-            'e': QEntity(),
-        },
-        'ref': {
-            'parent': 'ref1000',
-            'scale': [0.001, 0.001, 0.001],
-            'e': QEntity(),
-        }
-    }
-    suc = function.pointerCreate()
-    assert suc
-
-
-def test_laserCreate_1(function):
-    function.world = {
-        'ref1000': {
-            'parent': None,
-            'rot': [-90, 90, 0],
-            'e': QEntity(),
-        },
-        'ref': {
-            'parent': 'ref1000',
-            'scale': [0.001, 0.001, 0.001],
-            'e': QEntity(),
-        }
-    }
-    suc = function.laserCreate()
-    assert suc
-
-
 def test_topView_1(function):
-    suc = function.topView()
-    assert suc
+    function.topView()
 
 
 def test_topEastView_1(function):
-    suc = function.topEastView()
-    assert suc
+    function.topEastView()
 
 
 def test_topWestView_1(function):
-    suc = function.topWestView()
-    assert suc
+    function.topWestView()
 
 
 def test_eastView_1(function):
-    suc = function.eastView()
-    assert suc
+    function.eastView()
 
 
 def test_westView_1(function):
-    suc = function.westView()
-    assert suc
+    function.westView()
 
 
-def test_createWorld_1(function):
+def test_createReference_1(function):
+    function.entityModel['root'] = QEntity()
     with mock.patch.object(tools,
                            'linkModel'):
-        function.createWorld(QEntity())
-        assert 'environ' in function.world
+        function.createReference()
 
 
-def test_createScene_1(function):
-    function.createMutex.lock()
-    suc = function.createScene()
-    assert not suc
-    function.createMutex.unlock()
-
-
-def test_createScene_2(function):
-    function.app.deviceStat['dome'] = True
-    function.app.mount.obsSite.location.latitude = Angle(degrees=10)
-    function.ui.checkShowNumbers.setChecked(True)
-    function.ui.checkShowSlewPath.setChecked(True)
-    function.ui.checkShowPointer.setChecked(True)
-    function.ui.checkShowHorizon.setChecked(True)
-    function.ui.checkShowBuildPoints.setChecked(True)
-    suc = function.createScene()
-    assert suc
-
-
-def test_createScene_3(function):
-    function.app.deviceStat['dome'] = False
-    function.app.mount.obsSite.location.latitude = Angle(degrees=10)
-    function.ui.checkShowNumbers.setChecked(True)
-    function.ui.checkShowSlewPath.setChecked(True)
-    function.ui.checkShowPointer.setChecked(True)
-    function.ui.checkShowHorizon.setChecked(True)
-    function.ui.checkShowBuildPoints.setChecked(True)
-    suc = function.createScene()
-    assert suc
-
-
-def test_updateSettings_1(function):
-    function.world = None
-    suc = function.updateSettings()
-    assert not suc
-
-
-def test_updateSettings_2(function):
-    function.world = {
-        'domeColumn': {'t': QTransform()},
-        'domeCompassRose': {'t': QTransform()},
-        'domeCompassRoseChar': {'t': QTransform()},
-    }
-    suc = function.updateSettings()
-    assert suc
+def test_setupScene_1(function):
+    with mock.patch.object(function,
+                           'createReference'):
+        with mock.patch.object(function.telescope,
+                               'create'):
+            with mock.patch.object(function.laser,
+                                   'create'):
+                with mock.patch.object(function.pointer,
+                                       'create'):
+                    with mock.patch.object(function.world,
+                                           'create'):
+                        with mock.patch.object(function.horizon,
+                                               'create'):
+                            with mock.patch.object(function.dome,
+                                                   'create'):
+                                with mock.patch.object(function.buildPoints,
+                                                       'create'):
+                                    function.setupScene()

@@ -16,19 +16,46 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 
 # external packages
 from PyQt6.Qt3DCore import QEntity
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.extWindows.simulator.horizon import SimulatorHorizon
+from gui.extWindows.simulatorW import SimulatorWindow
+from gui.extWindows.simulator.telescope import SimulatorTelescope
+from gui.extWindows.simulator.laser import SimulatorLaser
 
 
-@pytest.fixture(autouse=True, scope='function')
-def function():
-    func = SimulatorHorizon(app=App())
-    yield func
+@pytest.fixture(autouse=True, scope='module')
+def function(qapp):
+    with mock.patch.object(SimulatorTelescope,
+                           'updatePositions'):
+        with mock.patch.object(SimulatorLaser,
+                               'updatePositions'):
+            func = SimulatorWindow(app=App())
+
+    with mock.patch.object(func,
+                           'show'):
+        yield func.horizon
+
+
+def test_showEnable_1(function):
+    function.parent.entityModel['horizon'] = QEntity()
+    function.showEnable(True)
+
+
+def test_clear_1(function):
+    function.parent.entityModel = {}
+    suc = function.clear()
+    assert not suc
+
+
+def test_clear_2(function):
+    function.parent.entityModel['horizon'] = QEntity()
+    suc = function.clear()
+    assert suc
 
 
 def test_createWall_1(function):
@@ -37,36 +64,14 @@ def test_createWall_1(function):
 
 
 def test_create_1(function):
-    e = QEntity()
-    suc = function.create(e, False)
+    function.parent.entityModel['ref1000'] = QEntity()
+    function.app.data.horizonP = None
+    suc = function.create()
     assert not suc
 
 
 def test_create_2(function):
-    e = QEntity()
-    function.modelRoot = e
-    function.model = {'test': {'e': e}}
-    suc = function.create(e, False)
-    assert not suc
-
-
-def test_create_3(function):
-    e = QEntity()
-    function.app.data.horizonP = None
-    function.modelRoot = e
-    function.model = {'test': {'e': e}}
-    suc = function.create(e, True)
-    assert not suc
-
-
-def test_create_4(function):
-    function.horizon = [
-        {'e': QEntity()},
-    ]
+    function.parent.entityModel['ref1000'] = QEntity()
     function.app.data.horizonP = [(0, 0), (10, 10)]
-    function.horizonRoot = QEntity()
-    e = QEntity()
-    function.modelRoot = e
-    function.model = {'test': {'e': e}}
-    suc = function.create(e, True)
+    suc = function.create()
     assert suc

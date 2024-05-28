@@ -739,6 +739,7 @@ class Mount(QObject):
         offNorth = 0
         offEast = 0
         offVert = 0
+        offPlateOTA = 0
         domeRadius = 0
         offGemPlate = 0
         domeRadius = 100

@@ -126,9 +126,10 @@ def test_createAnnotation_3(function):
 def test_loopCreation_1(function):
     function.parent.ui.showNumbers.setChecked(True)
     function.parent.ui.showSlewPath.setChecked(True)
+    function.app.data.buildP = [(0, 0, True), (10, 10, True)]
     function.points = []
     function.loopCreation(QEntity())
-    assert not function.points
+    assert function.points
 
 
 def test_create_1(function):

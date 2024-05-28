@@ -30,25 +30,45 @@ class SimulatorHorizon:
 
     __all__ = ['SimulatorHorizon']
 
-    def __init__(self, app):
+    def __init__(self, parent, app):
+        super().__init__()
+        self.parent = parent
         self.app = app
-        self.horizon = []
-        self.horizonRoot = None
+        self.parent.ui.showHorizon.checkStateChanged.connect(self.showEnable)
+
+    def showEnable(self):
+        """
+        """
+        isVisible = self.parent.ui.showHorizon.isChecked()
+        entity = self.parent.entityModel.get('horizon')
+        if entity:
+            entity.setEnabled(isVisible)
+
+    def clear(self):
+        """
+        """
+        horizonEntity = self.parent.entityModel.get('horizon')
+        if horizonEntity is None:
+            return False
+        horizonEntity.setParent(None)
+        del self.parent.entityModel['horizon']
+        del horizonEntity
+        return True
 
     @staticmethod
-    def createWall(rEntity, alt, az, space):
+    def createWall(parentEntity, alt, az, space):
         """
         createWall draw a plane in radius distance to show the horizon. spacing
         is the angular spacing between this planes
 
-        :param rEntity:
+        :param parentEntity:
         :param alt:
         :param az:
         :param space:
         :return: entity
         """
         radius = 4
-        e1 = QEntity(rEntity)
+        e1 = QEntity(parentEntity)
         trans1 = QTransform()
         trans1.setRotationZ(-az)
         e1.addComponent(trans1)
@@ -71,26 +91,14 @@ class SimulatorHorizon:
         e3.addComponent(Materials().horizon)
         return e3
 
-    def create(self, rEntity, show):
+    def create(self):
         """
         createHorizon draws a horizon "wall" by circling over the horizon points
         and putting cuboid meshed around a circle with defined radius. the space
         is the angle width of a plane in degrees
-
-        :return: success
         """
-        if self.horizon:
-            self.horizonRoot.setParent(None)
-
-        self.horizon.clear()
-
-        if not show:
-            return False
-
         if not self.app.data.horizonP:
             return False
-
-        self.horizonRoot = QEntity(rEntity)
 
         space = 5
         horizonAz = np.linspace(0, 360 - space, int(360 / space))
@@ -98,8 +106,14 @@ class SimulatorHorizon:
         az = [x[1] for x in self.app.data.horizonP]
         horizonAlt = np.interp(horizonAz, az, alt)
 
+        self.clear()
+        horizonEntity = QEntity()
+        parent = self.parent.entityModel['ref1000']
+        horizonEntity.setParent(parent)
+        self.parent.entityModel['horizon'] = horizonEntity
+
         for alt, az in zip(horizonAlt, horizonAz):
-            e = self.createWall(self.horizonRoot, alt, az, space)
-            element = {'e': e}
-            self.horizon.append(element)
+            self.createWall(horizonEntity, alt, az, space)
+        self.showEnable()
         return True
+

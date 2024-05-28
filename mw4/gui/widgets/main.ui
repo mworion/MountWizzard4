@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -23505,7 +23505,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -26400,6 +26400,9 @@ Next point in time when satellite settles.</string>
           <height>22</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the north offset of the mount center in relation to the dome center.&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -26422,6 +26425,9 @@ Next point in time when satellite settles.</string>
           <height>22</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the east offset of the mount center in relation to the dome center.&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -26443,6 +26449,9 @@ Next point in time when satellite settles.</string>
           <width>56</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the vertical offset of the mount center in relation to the dome center.&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -26850,7 +26859,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will try to slew the dome to the maximum azimuth possible without obstructing the telescope view.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the used definition of geometries,when entering data or takeover from driver&lt;/p&gt;&lt;p&gt;There are two different definitions (10micron and ASCOM) in place, please beware of that !&lt;/p&gt;&lt;p&gt;MW4 calculates the other ones only upon change and if the mount is online as it needs the latitude of the mount.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
@@ -26970,7 +26979,7 @@ Next point in time when satellite settles.</string>
         <enum>QTabWidget::North</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideNone</enum>

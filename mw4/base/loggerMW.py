@@ -96,7 +96,7 @@ def redirectSTD():
     :return:
     """
     # transfer all sys outputs to logging
-    sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
+    # sys.stderr = LoggerWriter(logging.getLogger().error, 'STDERR', sys.stderr)
     # sys.stdout = LoggerWriter(logging.getLogger().info, 'STDOUT', sys.stdout)
     return True
 

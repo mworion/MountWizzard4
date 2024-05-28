@@ -27,27 +27,75 @@ from skyfield import functions
 
 # local import
 from gui.extWindows.simulator.materials import Materials
+from gui.extWindows.simulator.tools import getTransformation
 
 
 class SimulatorBuildPoints:
 
     __all__ = ['SimulatorBuildPoints']
+    LINE_RADIUS = 0.02
+    POINT_ACTIVE_RADIUS = 0.07
+    POINT_RADIUS = 0.05
+    FONT_SIZE = 40
 
-    def __init__(self, app):
+    def __init__(self, parent, app):
+        super().__init__()
+        self.parent = parent
         self.app = app
         self.points = []
-        self.refPoints = None
-        self.pointRoot = None
-        self.transformPointRoot = None
+        self.parent.ui.showBuildPoints.checkStateChanged.connect(self.showEnable)
+        self.parent.ui.showNumbers.checkStateChanged.connect(self.create)
+        self.parent.ui.showSlewPath.checkStateChanged.connect(self.create)
+        self.app.updatePointMarker.connect(self.create)
+        self.app.mount.signals.pointDone.connect(self.updatePositions)
+        self.app.drawBuildPoints.connect(self.create)
 
-    @staticmethod
-    def createLine(rEntity, dx, dy, dz):
+    def showEnable(self):
         """
-        create line draw a line between two point or better along dx, dy, dz. Therefore three
-        transformations are made and the resulting vector has to be translated half the
-        length, because is will be drawn symmetrically to the starting point.
+        """
+        isVisible = self.parent.ui.showBuildPoints.isChecked()
+        entity = self.parent.entityModel.get('buildPoints')
+        if entity:
+            entity.setEnabled(isVisible)
 
-        :param rEntity:
+    def clear(self):
+        """
+        """
+        buildPointEntity = self.parent.entityModel.get('buildPoints')
+        if buildPointEntity is None:
+            return False
+        buildPointEntity.setParent(None)
+        del self.parent.entityModel['buildPoints']
+        del buildPointEntity
+        self.points = []
+        return True
+
+    def updatePositions(self):
+        """
+        """
+        if not self.app.mount.obsSite.haJNow:
+            return False
+
+        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
+
+        if PB is None or PD is None:
+            return False
+        PB[2] += 1
+
+        nodeT = getTransformation(self.parent.entityModel.get('buildPoints'))
+        if nodeT:
+            nodeT.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+
+        return True
+
+    def createLine(self, parentEntity, dx, dy, dz):
+        """
+        create line draw a line between two point or better along dx, dy, dz.
+        Therefore, three transformations are made and the resulting vector has
+        to be translated half the length, because is will be drawn symmetrically
+        to the starting point.
+
+        :param parentEntity:
         :param dx:
         :param dy:
         :param dz:
@@ -57,7 +105,7 @@ class SimulatorBuildPoints:
         az = np.degrees(az)
         alt = np.degrees(alt)
 
-        e1 = QEntity(rEntity)
+        e1 = QEntity(parentEntity)
         trans1 = QTransform()
         trans1.setRotationZ(az + 90)
         e1.addComponent(trans1)
@@ -69,7 +117,7 @@ class SimulatorBuildPoints:
 
         e3 = QEntity(e2)
         mesh = QCylinderMesh()
-        mesh.setRadius(0.03)
+        mesh.setRadius(self.LINE_RADIUS)
         mesh.setLength(radius)
         trans3 = QTransform()
         trans3.setTranslation(QVector3D(0, radius / 2, 0))
@@ -79,26 +127,25 @@ class SimulatorBuildPoints:
 
         return e3
 
-    @staticmethod
-    def createPoint(rEntity, alt, az, active):
+    def createPoint(self, parentEntity, alt, az, active):
         """
-        the point is located in a distance of radius meters from the ota axis and
-        positioned in azimuth and altitude correctly. it's representation is a small
-        small ball mesh.
+        the point is located in a distance of radius meters from the ota axis
+        and positioned in azimuth and altitude correctly. its representation
+        is a small ball mesh.
 
-        :param rEntity:
+        :param parentEntity:
         :param alt:
         :param az:
         :param active:
         :return: entity, x, y, z coordinates
         """
         radius = 4
-        entity = QEntity(rEntity)
+        entity = QEntity(parentEntity)
         mesh = QSphereMesh()
         if active:
-            mesh.setRadius(0.07)
+            mesh.setRadius(self.POINT_ACTIVE_RADIUS)
         else:
-            mesh.setRadius(0.05)
+            mesh.setRadius(self.POINT_RADIUS)
         mesh.setRings(30)
         mesh.setSlices(30)
         trans = QTransform()
@@ -113,18 +160,18 @@ class SimulatorBuildPoints:
 
         return entity, x, y, z
 
-    @staticmethod
-    def createAnnotation(rEntity, alt, az, text, active, faceIn=False):
+    def createAnnotation(self, parentEntity, alt, az, text, active, faceIn=False):
         """
-        the annotation - basically the number of the point - is positioned relative to the
-        build point in its local coordinate system. to face the text to the viewer (azimuth),
-        the text is first rotated to be upright and secondly to turn is fac according to
-        the altitude of the viewer.
-        it is done in two entities to simplify the rotations as they are in this case
-        relative to each other.
-        faceIn changes the behaviour to have the text readable from inside or outside.
+        the annotation - basically the number of the point - is positioned
+        relative to the build point in its local coordinate system. to face the
+        text to the viewer (azimuth), the text is first rotated to be upright
+        and secondly to turn is fac according to the altitude of the viewer.
+        it is done in two entities to simplify the rotations as they are in
+        this case relative to each other.
+        faceIn changes the behaviour to have the text readable from inside or
+        outside.
 
-        :param rEntity:
+        :param parentEntity:
         :param alt:
         :param az:
         :param text:
@@ -132,7 +179,7 @@ class SimulatorBuildPoints:
         :param faceIn: direction of the text face (looking from inside or outside)
         :return: entity
         """
-        e1 = QEntity(rEntity)
+        e1 = QEntity(parentEntity)
         trans1 = QTransform()
         if faceIn:
             trans1.setRotationZ(az - 90)
@@ -149,7 +196,7 @@ class SimulatorBuildPoints:
         mesh = QExtrudedTextMesh()
         mesh.setText(text)
         mesh.setDepth(0.05)
-        mesh.setFont(QFont('Arial', 36))
+        mesh.setFont(QFont('Arial', self.FONT_SIZE))
         trans2 = QTransform()
         if faceIn:
             trans2.setRotationX(90 + alt)
@@ -165,71 +212,58 @@ class SimulatorBuildPoints:
 
         return e2
 
-    def create(self, rEntity, show, numbers=False, path=False):
+    def loopCreation(self, buildPointEntity):
         """
-        buildPointsCreate show the point in the sky if checked, in addition if selected the
-        slew path between the points and in addition if checked the point numbers
-        as the azimuth (second element in tuple) is turning clockwise, it's opposite to the
-        right turning coordinate system (z is upwards), which means angle around z
-        (which is azimuth) turns counterclockwise. so we have to set - azimuth for coordinate
-        calculation
-
-        :return: success
+        :param buildPointEntity:
+        :return:
         """
-        if self.points:
-            self.pointRoot.setParent(None)
-
-        self.points.clear()
-        if not show:
-            return False
-        if not self.app.data.buildP:
-            return False
-
-        self.refPoints = QEntity(rEntity)
-        self.pointRoot = QEntity(self.refPoints)
-        self.transformPointRoot = QTransform()
-        self.pointRoot.addComponent(self.transformPointRoot)
+        isNumber = self.parent.ui.showNumbers.isChecked()
+        isSlewPath = self.parent.ui.showSlewPath.isChecked()
 
         for index, point in enumerate(self.app.data.buildP):
             active = point[2]
-            e, x, y, z = self.createPoint(self.pointRoot,
+            e, x, y, z = self.createPoint(buildPointEntity,
                                           np.radians(point[0]),
                                           np.radians(-point[1]),
                                           active)
 
-            if numbers:
-                a = self.createAnnotation(e, point[0], -point[1],
-                                          f'{index + 1:02d}', active)
-            else:
-                a = None
+            if isNumber:
+                self.createAnnotation(e, point[0], -point[1],
+                                      f'{index + 1:02d}', active)
 
-            if index and path:
+            if index and isSlewPath:
                 x0 = self.points[-1]['x']
                 y0 = self.points[-1]['y']
                 z0 = self.points[-1]['z']
                 dx = x - x0
                 dy = y - y0
                 dz = z - z0
-                li = self.createLine(e, dx, dy, dz)
-            else:
-                li = None
-
-            element = {'e': e, 'a': a, 'li': li, 'x': x, 'y': y, 'z': z}
+                self.createLine(e, dx, dy, dz)
+            element = {'x': x, 'y': y, 'z': z}
             self.points.append(element)
 
+    def create(self):
+        """
+        buildPointsCreate show the point in the sky if checked, in addition if
+        selected the slew path between the points and in addition if checked
+        the point numbers as the azimuth (second element in tuple) is turning
+        clockwise, it's opposite to the right turning coordinate system (z is
+        upwards), which means angle around z (which is azimuth) turns
+        counterclockwise. so we have to set - azimuth for coordinate calculation
+
+        :return: success
+        """
+        if not self.app.data.buildP:
+            return False
+
+        self.clear()
+        buildPointEntity = QEntity()
+        parent = self.parent.entityModel['ref1000']
+        buildPointEntity.setParent(parent)
+        buildPointEntity.addComponent(QTransform())
+        self.parent.entityModel['buildPoints'] = buildPointEntity
+
+        self.loopCreation(buildPointEntity)
         self.updatePositions()
-        return True
-
-    def updatePositions(self):
-        """
-        :return:
-        """
-        if not self.pointRoot:
-            return False
-        if not self.app.mount.obsSite.haJNow:
-            return False
-
-        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
-        PB[2] += 1
-        self.transformPointRoot.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+        self.showEnable()
         return True

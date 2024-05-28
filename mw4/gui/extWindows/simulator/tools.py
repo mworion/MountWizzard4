@@ -21,19 +21,19 @@ from PyQt6.QtCore import QUrl
 from PyQt6.QtGui import QVector3D, QFont
 from PyQt6.Qt3DExtras import QCuboidMesh, QSphereMesh
 from PyQt6.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
+from PyQt6.Qt3DExtras import QPhongAlphaMaterial
 from PyQt6.Qt3DRender import QMesh
 from PyQt6.Qt3DCore import QEntity, QTransform
 
 # local import
 
 
-def linkSource(currMod):
+def linkSource(node):
     """
-    :param currMod:
+    :param node:
     :return: mesh
     """
-
-    source = currMod.get('source', None)
+    source = node.get('source')
     if source:
         if isinstance(source, str):
             mesh = QMesh()
@@ -67,16 +67,14 @@ def linkSource(currMod):
     return mesh
 
 
-def linkTransform(currMod):
+def linkTransform(node):
     """
-
-    :param currMod:
+    :param node:
     :return: transform
     """
-
-    trans = currMod.get('trans', None)
-    rot = currMod.get('rot', None)
-    scale = currMod.get('scale', None)
+    trans = node.get('trans')
+    rot = node.get('rot')
+    scale = node.get('scale')
 
     if trans or rot or scale:
         transform = QTransform()
@@ -97,45 +95,78 @@ def linkTransform(currMod):
     return transform
 
 
-def linkMaterial(currMod):
+def linkMaterial(node):
     """
-    :param currMod:
+    :param node:
     :return: material
     """
-
-    mat = currMod.get('mat', None)
+    mat = node.get('mat')
     return mat
 
 
-def linkModel(model, name, rEntity):
+def linkModel(model, entityModel):
     """
     :param model:
-    :param name:
-    :param rEntity:
+    :param entityModel:
     :return: true for test purpose
     """
+    for node in model:
+        parent = model[node]['parent']
+        if not parent:
+            continue
 
-    currMod = model[name]
+        newEntity = QEntity()
+        newEntity.setParent(entityModel[parent])
+        entityModel[node] = newEntity
 
-    parent = currMod.get('parent', None)
-    if parent and model.get(parent, None):
-        currMod['e'] = QEntity(model[parent]['e'])
-    else:
-        currMod['e'] = QEntity(rEntity)
+        mesh = linkSource(model[node])
+        if mesh:
+            newEntity.addComponent(mesh)
 
-    mesh = linkSource(currMod)
-    if mesh:
-        currMod['e'].addComponent(mesh)
-        currMod['m'] = mesh
+        transform = linkTransform(model[node])
+        if transform:
+            newEntity.addComponent(transform)
 
-    transform = linkTransform(currMod)
-    if transform:
-        currMod['e'].addComponent(transform)
-        currMod['t'] = transform
+        material = linkMaterial(model[node])
+        if material:
+            newEntity.addComponent(material)
 
-    material = linkMaterial(currMod)
-    if material:
-        currMod['mat'] = material
-        currMod['e'].addComponent(material)
 
-    return True
+def getTransformation(entity):
+    """
+    :param entity:
+    :return:
+    """
+    if entity is None:
+        return None
+    components = entity.components()
+    for component in components:
+        if isinstance(component, QTransform):
+            return component
+
+
+def getMaterial(entity):
+    """
+    :param entity:
+    :return:
+    """
+    if entity is None:
+        return None
+    components = entity.components()
+    for component in components:
+        if isinstance(component, (QPhongAlphaMaterial)):
+            return component
+
+
+def getMesh(entity):
+    """
+    :param entity:
+    :return:
+    """
+    if entity is None:
+        return None
+    components = entity.components()
+    for component in components:
+        if isinstance(component, (QCuboidMesh, QSphereMesh,
+                                  QExtrudedTextMesh, QCylinderMesh)):
+            return component

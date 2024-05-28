@@ -108,7 +108,7 @@
          <number>4</number>
         </property>
         <item>
-         <widget class="QCheckBox" name="checkDomeTransparent">
+         <widget class="QCheckBox" name="domeTransparent">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -136,7 +136,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkShowPointer">
+         <widget class="QCheckBox" name="showPointer">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -158,7 +158,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkShowLaser">
+         <widget class="QCheckBox" name="showLaser">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -174,7 +174,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkShowBuildPoints">
+         <widget class="QCheckBox" name="showBuildPoints">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -196,7 +196,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkShowNumbers">
+         <widget class="QCheckBox" name="showNumbers">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -218,7 +218,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkShowSlewPath">
+         <widget class="QCheckBox" name="showSlewPath">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -240,7 +240,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkShowHorizon">
+         <widget class="QCheckBox" name="showHorizon">
           <property name="minimumSize">
            <size>
             <width>0</width>

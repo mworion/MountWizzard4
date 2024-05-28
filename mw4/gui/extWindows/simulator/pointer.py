@@ -23,68 +23,59 @@ from PyQt6.Qt3DExtras import QSphereMesh
 
 # local import
 from gui.extWindows.simulator.materials import Materials
-from gui.extWindows.simulator import tools
+from gui.extWindows.simulator.tools import linkModel, getTransformation
 
 
 class SimulatorPointer:
 
     __all__ = ['SimulatorPointer']
 
-    def __init__(self, app):
+    def __init__(self, parent, app):
         super().__init__()
+        self.parent = parent
         self.app = app
-        self.model = {}
-        self.modelRoot = None
+        self.app.mount.signals.pointDone.connect(self.updatePositions)
+        self.parent.ui.showPointer.checkStateChanged.connect(self.showEnable)
 
-    def create(self, rEntity, show):
+    def updatePositions(self):
         """
-        dict {'name of model': {'parent': }}
-
-        :param rEntity: root of the 3D models
-        :param show: root of the 3D models
-        :return: success
         """
-        if self.model:
-            self.modelRoot.setParent(None)
+        _, _, intersect, _, _ = self.app.mount.calcTransformationMatricesActual()
 
-        self.model.clear()
-        if not show:
+        if intersect is None:
             return False
 
-        self.modelRoot = QEntity(rEntity)
+        intersect *= 1000
+        intersect[2] += 1000
 
-        self.model = {
+        nodeT = getTransformation(self.parent.entityModel.get('pointerDot'))
+        if nodeT:
+            nodeT.setTranslation(QVector3D(intersect[0], intersect[1], intersect[2]))
+
+        return True
+
+    def showEnable(self):
+        """
+        """
+        isVisible = self.parent.ui.showPointer.isChecked()
+        entity = self.parent.entityModel.get('pointer')
+        if entity:
+            entity.setEnabled(isVisible)
+
+    def create(self):
+        """
+        """
+        model = {
             'pointer': {
-                'parent': None,
+                'parent': 'ref',
+            },
+            'pointerDot': {
+                'parent': 'pointer',
                 'source': [QSphereMesh(), 50, 30, 30],
                 'scale': [1, 1, 1],
                 'mat': Materials().pointer,
             },
         }
-        for name in self.model:
-            tools.linkModel(self.model, name, self.modelRoot)
-
+        linkModel(model, self.parent.entityModel)
         self.updatePositions()
-        return True
-
-    def updatePositions(self):
-        """
-        updatePositions calculates the crossing point of the actual telescope view and the
-        dome if present.
-
-        :return:
-        """
-        if not self.model:
-            return False
-        if not self.app.mount.obsSite.haJNow:
-            return False
-
-        _, _, intersect, _, _ = self.app.mount.calcTransformationMatricesActual()
-        intersect *= 1000
-        intersect[2] += 1000
-
-        self.model['pointer']['t'].setTranslation(
-            QVector3D(intersect[0],
-                      intersect[1],
-                      intersect[2]))
-        return True
+        self.showEnable()

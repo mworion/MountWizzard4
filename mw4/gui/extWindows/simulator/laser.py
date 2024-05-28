@@ -18,85 +18,88 @@
 
 # external packages
 from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DCore import QEntity
 from PyQt6.Qt3DExtras import QCylinderMesh
 from skyfield import functions
 import numpy as np
 
 # local import
 from gui.extWindows.simulator.materials import Materials
-from gui.extWindows.simulator import tools
+from gui.extWindows.simulator.tools import linkModel, getTransformation
 
 
 class SimulatorLaser:
 
     __all__ = ['SimulatorLaser']
 
-    def __init__(self, app):
+    def __init__(self, parent, app):
         super().__init__()
+        self.parent = parent
         self.app = app
-        self.model = {}
-        self.modelRoot = None
+        self.app.mount.signals.pointDone.connect(self.updatePositions)
+        self.parent.ui.showLaser.checkStateChanged.connect(self.showEnable)
 
-    def create(self, rEntity, show):
+    def updatePositions(self):
         """
-        dict {'name of model': {'parent': }}
-
-        :param rEntity: root of the 3D models
-        :param show: root of the 3D models
-        :return: success
         """
-        if self.model:
-            self.modelRoot.setParent(None)
+        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
 
-        self.model.clear()
-        if not show:
+        if PB is None or PD is None:
             return False
 
-        self.modelRoot = QEntity(rEntity)
+        PB *= 1000
+        PB[2] += 1000
+        radius, alt, az = functions.to_spherical(-PD)
+        az = np.degrees(az)
+        alt = np.degrees(alt)
 
-        self.model = {
-            'ref': {
-                'parent': None,
+        nodeT = getTransformation(self.parent.entityModel.get('displacement'))
+        if nodeT:
+            nodeT.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+
+        nodeT = getTransformation(self.parent.entityModel.get('az'))
+        if nodeT:
+            nodeT.setRotationZ(az + 90)
+
+        nodeT = getTransformation(self.parent.entityModel.get('alt'))
+        if nodeT:
+            nodeT.setRotationX(-alt)
+
+        return True
+
+    def showEnable(self):
+        """
+        """
+        isVisible = self.parent.ui.showLaser.isChecked()
+        entity = self.parent.entityModel.get('laser')
+        if entity:
+            entity.setEnabled(isVisible)
+
+    def create(self):
+        """
+        """
+        model = {
+            'laser': {
+                'parent': 'ref',
+            },
+            'displacement': {
+                'parent': 'laser',
                 'scale': [1, 1, 1],
             },
             'az': {
-                'parent': 'ref',
+                'parent': 'displacement',
                 'scale': [1, 1, 1],
             },
             'alt': {
                 'parent': 'az',
                 'scale': [1, 1, 1],
             },
-            'laser': {
+            'laserBeam': {
                 'parent': 'alt',
                 'source': [QCylinderMesh(), 4500, 10, 20, 20],
                 'trans': [0, 2250, 0],
                 'mat': Materials().laser,
             },
         }
-        for name in self.model:
-            tools.linkModel(self.model, name, self.modelRoot)
-
+        linkModel(model, self.parent.entityModel)
         self.updatePositions()
-        return True
-
-    def updatePositions(self):
-        """
-        :return:
-        """
-        if not self.model:
-            return False
-        if not self.app.mount.obsSite.haJNow:
-            return False
-
-        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
-        PB *= 1000
-        PB[2] += 1000
-        radius, alt, az = functions.to_spherical(-PD)
-        az = np.degrees(az)
-        alt = np.degrees(alt)
-        self.model['ref']['t'].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
-        self.model['az']['t'].setRotationZ(az + 90)
-        self.model['alt']['t'].setRotationX(-alt)
-        return True
+        self.showEnable()

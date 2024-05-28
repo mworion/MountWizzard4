@@ -123,17 +123,16 @@ def test_createAnnotation_3(function):
         assert isinstance(val, QEntity)
 
 
-def test_loopCreation_1(function):
+def test_loopCreate_1(function):
     function.parent.ui.showNumbers.setChecked(True)
     function.parent.ui.showSlewPath.setChecked(True)
     function.app.data.buildP = [(0, 0, True), (10, 10, True)]
     function.points = []
-    function.loopCreation(QEntity())
+    function.loopCreate(QEntity())
     assert function.points
 
 
 def test_create_1(function):
-    function.parent.entityModel['ref1000'] = QEntity()
     function.app.data.buildP = None
     suc = function.create()
     assert not suc
@@ -143,7 +142,7 @@ def test_create_2(function):
     function.parent.entityModel['ref1000'] = QEntity()
     function.app.data.buildP = [(0, 0, True)]
     with mock.patch.object(function,
-                           'loopCreation'):
+                           'loopCreate'):
         with mock.patch.object(function,
                                'updatePositions'):
             with mock.patch.object(function,

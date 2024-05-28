@@ -212,7 +212,7 @@ class SimulatorBuildPoints:
 
         return e2
 
-    def loopCreation(self, buildPointEntity):
+    def loopCreate(self, buildPointEntity):
         """
         :param buildPointEntity:
         :return:
@@ -263,7 +263,7 @@ class SimulatorBuildPoints:
         buildPointEntity.addComponent(QTransform())
         self.parent.entityModel['buildPoints'] = buildPointEntity
 
-        self.loopCreation(buildPointEntity)
+        self.loopCreate(buildPointEntity)
         self.updatePositions()
         self.showEnable()
         return True

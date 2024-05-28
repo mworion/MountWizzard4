@@ -133,12 +133,6 @@ def test_loopCreation_1(function):
 
 
 def test_create_1(function):
-    e = QEntity()
-    suc = function.create(e, False)
-    assert not suc
-
-
-def test_create_1(function):
     function.parent.entityModel['ref1000'] = QEntity()
     function.app.data.buildP = None
     suc = function.create()

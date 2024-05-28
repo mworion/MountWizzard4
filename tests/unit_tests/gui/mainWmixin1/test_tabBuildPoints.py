@@ -333,14 +333,14 @@ def test_genBuildGoldenSpiral_1(function):
         function.app.data.buildP = [1] * 20
 
     function.ui.numberSpiral.setValue(15)
-    t = function.processPoints
-    function.processPoints = test
+    t = function.autoDeletePoints
+    function.autoDeletePoints = test
     with mock.patch.object(function.app.data,
                            'generateGoldenSpiral',
                            return_value=True):
         suc = function.genBuildGoldenSpiral()
         assert suc
-    function.processPoints = t
+    function.autoDeletePoints = t
 
 
 def test_genBuildGoldenSpiral_2(function):

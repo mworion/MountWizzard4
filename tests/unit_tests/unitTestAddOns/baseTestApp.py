@@ -1070,7 +1070,8 @@ class Mount(QObject):
 
     @staticmethod
     def calcTransformationMatricesActual():
-        return 1, 1, [0, 0, 0], [0, 0, 0], [0, 0, 0]
+        return (1, 1, np.array([0, 0, 0]),
+                np.array([0, 0, 0]), np.array([0, 0, 0]))
 
     @staticmethod
     def syncPositionToTarget():
@@ -1096,7 +1097,17 @@ class MainW:
             def setChecked(self, value):
                 self.checked = value
 
+        class LineEdit:
+            valueFloat = 0
+
+            def value(self):
+                return self.valueFloat
+
+            def setValue(self, value):
+                self.valueFloat = value
+
         tabsMovable = CheckBox()
+        offLAT = LineEdit()
     ui = Test()
 
 

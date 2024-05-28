@@ -38,6 +38,14 @@ class SimulatorLaser:
         self.app.mount.signals.pointDone.connect(self.updatePositions)
         self.parent.ui.showLaser.checkStateChanged.connect(self.showEnable)
 
+    def showEnable(self):
+        """
+        """
+        isVisible = self.parent.ui.showLaser.isChecked()
+        entity = self.parent.entityModel.get('laser')
+        if entity:
+            entity.setEnabled(isVisible)
+
     def updatePositions(self):
         """
         """
@@ -65,14 +73,6 @@ class SimulatorLaser:
             nodeT.setRotationX(-alt)
 
         return True
-
-    def showEnable(self):
-        """
-        """
-        isVisible = self.parent.ui.showLaser.isChecked()
-        entity = self.parent.entityModel.get('laser')
-        if entity:
-            entity.setEnabled(isVisible)
 
     def create(self):
         """

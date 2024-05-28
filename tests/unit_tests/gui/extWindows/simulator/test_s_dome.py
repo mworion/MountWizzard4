@@ -25,18 +25,11 @@ from PyQt6.Qt3DCore import QEntity, QTransform
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.simulatorW import SimulatorWindow
 from gui.extWindows.simulator.materials import Materials
-from gui.extWindows.simulator.telescope import SimulatorTelescope
-from gui.extWindows.simulator.laser import SimulatorLaser
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    with mock.patch.object(SimulatorTelescope,
-                           'updatePositions'):
-        with mock.patch.object(SimulatorLaser,
-                               'updatePositions'):
-            func = SimulatorWindow(app=App())
-
+    func = SimulatorWindow(app=App())
     with mock.patch.object(func,
                            'show'):
         yield func.dome

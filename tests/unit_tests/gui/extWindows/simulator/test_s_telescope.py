@@ -16,161 +16,76 @@
 ###########################################################
 # standard libraries
 import pytest
+from unittest import mock
 
 # external packages
-from PyQt6.QtWidgets import QDoubleSpinBox
 from PyQt6.Qt3DCore import QEntity, QTransform
-from PyQt6.QtCore import QObject
-from PyQt6.Qt3DExtras import QCuboidMesh
-from mountcontrol.mount import Mount
-from skyfield.api import wgs84
+from skyfield.api import Angle
 
 # local import
-from gui.extWindows.simulator.telescope import SimulatorTelescope
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.extWindows.simulatorW import SimulatorWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-
-    class Test2:
-        domeRadius = QDoubleSpinBox()
-        domeRadius.setValue(1)
-        domeShutterWidth = QDoubleSpinBox()
-        domeShutterWidth.setValue(40)
-        domeNorthOffset = QDoubleSpinBox()
-        domeNorthOffset.setValue(40)
-        domeEastOffset = QDoubleSpinBox()
-        domeEastOffset.setValue(40)
-        domeVerticalOffset = QDoubleSpinBox()
-        domeVerticalOffset.setValue(40)
-        offLAT = QDoubleSpinBox()
-        offLAT.setValue(40)
-
-    class Test1:
-        ui = Test2()
-
-    class Test(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        mwGlob = {'modelDir': 'tests/workDir/model',
-                  'imageDir': 'tests/workDir/image'}
-        uiWindows = {'showImageW': {'classObj': None}}
-        mainW = Test1()
-
-    app = SimulatorTelescope(app=Test())
-    yield
+@pytest.fixture(autouse=True, scope='module')
+def function(qapp):
+    func = SimulatorWindow(app=App())
+    with mock.patch.object(func,
+                           'show'):
+        yield func.telescope
 
 
-def test_create_1(qtbot):
-    e = QEntity()
-    suc = app.create(e, False)
+def test_updatePositions_1(function):
+    function.parent.entityModel['mountBase'] = QEntity()
+    function.parent.entityModel['mountBase'].addComponent(QTransform())
+    function.parent.entityModel['lat'] = QEntity()
+    function.parent.entityModel['lat'].addComponent(QTransform())
+    function.parent.entityModel['gem'] = QEntity()
+    function.parent.entityModel['gem'].addComponent(QTransform())
+    function.parent.entityModel['gemCorr'] = QEntity()
+    function.parent.entityModel['gemCorr'].addComponent(QTransform())
+    function.parent.entityModel['otaRing'] = QEntity()
+    function.parent.entityModel['otaRing'].addComponent(QTransform())
+    function.parent.entityModel['otaTube'] = QEntity()
+    function.parent.entityModel['otaTube'].addComponent(QTransform())
+    function.parent.entityModel['otaImagetrain'] = QEntity()
+    function.parent.entityModel['otaImagetrain'].addComponent(QTransform())
+
+    function.updatePositions()
+
+
+def test_updateRotation_1(function):
+    function.app.mount.obsSite.angularPosRA = None
+    function.app.mount.obsSite.angularPosDEC = None
+    suc = function.updateRotation()
     assert not suc
 
 
-def test_create_2(qtbot):
-    e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
-    suc = app.create(e, False)
-    assert not suc
-
-
-def test_create_3(qtbot):
-    e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
-    suc = app.create(e, True)
+def test_updateRotation_2(function):
+    function.app.mount.obsSite.angularPosRA = Angle(degrees=10)
+    function.app.mount.obsSite.angularPosDEC = Angle(degrees=10)
+    function.parent.entityModel['ra'] = QEntity()
+    function.parent.entityModel['ra'].addComponent(QTransform())
+    function.parent.entityModel['dec'] = QEntity()
+    function.parent.entityModel['dec'].addComponent(QTransform())
+    suc = function.updateRotation()
     assert suc
 
 
-def test_create_4(qtbot):
-    e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
-    suc = app.create(e, True, -10)
-    assert suc
+def test_create_1(function):
+    function.app.mount.obsSite.location.latitude = Angle(degrees=10)
+    with mock.patch.object(function,
+                           'updatePositions'):
+        with mock.patch.object(function,
+                               'updateRotation'):
+            function.create()
 
 
-def test_updateSettings_1(qtbot):
-    suc = app.updateSettings()
-    assert not suc
+def test_create_2(function):
+    function.app.mount.obsSite.location.latitude = Angle(degrees=-10)
+    with mock.patch.object(function,
+                           'updatePositions'):
+        with mock.patch.object(function,
+                               'updateRotation'):
+            function.create()
 
-
-def test_updateSettings_2(qtbot):
-    app.model = {
-        'mountBase': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'lat': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'gem': {
-            'm': QCuboidMesh(),
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'gemCorr': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'otaRing': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'otaTube': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'otaImagetrain': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
-    app.app.mount.geometry.offGemPlate = 10
-    suc = app.updateSettings()
-    assert suc
-
-
-def test_updatePositions_1(qtbot):
-    suc = app.updatePositions()
-    assert not suc
-
-
-def test_updatePositions_2(qtbot):
-    app.model = {
-        'ra': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'dec': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
-    suc = app.updatePositions()
-    assert not suc
-
-
-def test_updatePositions_3(qtbot):
-    app.model = {
-        'ra': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'dec': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-    app.app.mount.obsSite.angularPosRA = 10
-    app.app.mount.obsSite.angularPosDEC = 10
-    suc = app.updatePositions()
-    assert suc

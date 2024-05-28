@@ -20,100 +20,54 @@ from unittest import mock
 
 # external packages
 from PyQt6.Qt3DCore import QEntity, QTransform
-from PyQt6.QtCore import QObject
-from mountcontrol.mount import Mount
-from skyfield.api import wgs84
 import numpy as np
 
 # local import
-from gui.extWindows.simulator.laser import SimulatorLaser
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.extWindows.simulatorW import SimulatorWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-
-    class Test(QObject):
-        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', verbose=False,
-                      pathToData='tests/workDir/data')
-        mount.obsSite.location = wgs84.latlon(latitude_degrees=20,
-                                              longitude_degrees=10,
-                                              elevation_m=500)
-        mwGlob = {'modelDir': 'tests/workDir/model',
-                  'imageDir': 'tests/workDir/image'}
-        uiWindows = {'showImageW': {'classObj': None}}
-
-    app = SimulatorLaser(app=Test())
-    yield
+@pytest.fixture(autouse=True, scope='module')
+def function(qapp):
+    func = SimulatorWindow(app=App())
+    with mock.patch.object(func,
+                           'show'):
+        yield func.laser
 
 
-def test_create_1(qtbot):
-    e = QEntity()
-    suc = app.create(e, False)
-    assert not suc
+def test_showEnable_1(function):
+    function.parent.entityModel['laser'] = QEntity()
+    function.showEnable()
 
 
-def test_create_2(qtbot):
-    e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
-    suc = app.create(e, False)
-    assert not suc
+def test_updatePositions_1(function):
+    with mock.patch.object(function.app.mount,
+                           'calcTransformationMatricesActual',
+                           return_value=(0, 0, None, None, None)):
+        suc = function.updatePositions()
+        assert not suc
 
 
-def test_create_3(qtbot):
-    e = QEntity()
-    app.modelRoot = e
-    app.model = {'test': {'e': e}}
-    suc = app.create(e, True)
-    assert suc
-
-
-def test_updatePositions_1(qtbot):
-    suc = app.updatePositions()
-    assert not suc
-
-
-def test_updatePositions_2(qtbot):
-    app.model = {
-        'laser': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
-    suc = app.updatePositions()
-    assert not suc
-
-
-def test_updatePositions_3(qtbot):
-    app.model = {
-        'laser': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'ref': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'alt': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-        'az': {
-            'e': QEntity(),
-            't': QTransform()
-        },
-    }
-
-    app.app.mount.obsSite.raJNow = 10
-    app.app.mount.obsSite.timeSidereal = '10:10:10'
-
-    with mock.patch.object(app.app.mount,
+def test_updatePositions_2(function):
+    function.parent.entityModel['displacement'] = QEntity()
+    function.parent.entityModel['displacement'].addComponent(QTransform())
+    function.parent.entityModel['az'] = QEntity()
+    function.parent.entityModel['az'].addComponent(QTransform())
+    function.parent.entityModel['alt'] = QEntity()
+    function.parent.entityModel['alt'].addComponent(QTransform())
+    with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0,
                                          np.array([1, 1, 1]),
                                          np.array([1, 1, 1]),
                                          np.array([1, 1, 1]))):
-        suc = app.updatePositions()
+        suc = function.updatePositions()
         assert suc
+
+
+def test_create_1(function):
+    with mock.patch.object(function,
+                           'updatePositions'):
+        with mock.patch.object(function,
+                               'showEnable'):
+            function.create()

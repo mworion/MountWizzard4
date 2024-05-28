@@ -27,7 +27,6 @@ from gui.extWindows.simulator.materials import Materials
 def module_setup_teardown():
     global app
     app = Materials()
-
     yield
 
 

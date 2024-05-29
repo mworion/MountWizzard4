@@ -136,7 +136,7 @@ def test_linkMaterial_1(qtbot):
 
 
 def test_linkModel_1(qtbot):
-    entityModel = {'root': QEntity()}
+    entityModel = {'root_qt3d': QEntity()}
     model = {
         'pointer':
             {'parent': None,
@@ -149,10 +149,10 @@ def test_linkModel_1(qtbot):
 
 
 def test_linkModel_2(qtbot):
-    entityModel = {'root': QEntity()}
+    entityModel = {'root_qt3d': QEntity()}
     model = {
         'pointer':
-            {'parent': 'root',
+            {'parent': 'root_qt3d',
              'source': [QSphereMesh(), 50, 30, 30],
              'scale': [1, 1, 1],
              'mat': Materials().pointer,

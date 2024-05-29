@@ -258,7 +258,7 @@ class SimulatorBuildPoints:
 
         self.clear()
         buildPointEntity = QEntity()
-        parent = self.parent.entityModel['ref1000']
+        parent = self.parent.entityModel['ref_fusion']
         buildPointEntity.setParent(parent)
         buildPointEntity.addComponent(QTransform())
         self.parent.entityModel['buildPoints'] = buildPointEntity

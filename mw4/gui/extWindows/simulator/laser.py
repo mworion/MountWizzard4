@@ -79,7 +79,7 @@ class SimulatorLaser:
         """
         model = {
             'laser': {
-                'parent': 'ref',
+                'parent': 'ref_fusion_m',
             },
             'displacement': {
                 'parent': 'laser',

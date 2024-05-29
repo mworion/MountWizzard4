@@ -18,7 +18,6 @@
 
 # external packages
 from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DCore import QEntity
 from PyQt6.Qt3DExtras import QSphereMesh
 
 # local import
@@ -67,7 +66,7 @@ class SimulatorPointer:
         """
         model = {
             'pointer': {
-                'parent': 'ref',
+                'parent': 'ref_fusion_m',
             },
             'pointerDot': {
                 'parent': 'pointer',

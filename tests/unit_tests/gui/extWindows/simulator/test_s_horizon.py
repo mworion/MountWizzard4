@@ -57,14 +57,14 @@ def test_createWall_1(function):
 
 
 def test_create_1(function):
-    function.parent.entityModel['ref1000'] = QEntity()
+    function.parent.entityModel['ref_fusion'] = QEntity()
     function.app.data.horizonP = None
     suc = function.create()
     assert not suc
 
 
 def test_create_2(function):
-    function.parent.entityModel['ref1000'] = QEntity()
+    function.parent.entityModel['ref_fusion'] = QEntity()
     function.app.data.horizonP = [(0, 0), (10, 10)]
     with mock.patch.object(function,
                            'clear'):

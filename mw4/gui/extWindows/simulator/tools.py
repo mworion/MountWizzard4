@@ -23,9 +23,40 @@ from PyQt6.Qt3DExtras import QCuboidMesh, QSphereMesh
 from PyQt6.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
 from PyQt6.Qt3DExtras import QPhongAlphaMaterial
 from PyQt6.Qt3DRender import QMesh
+from PyQt6.Qt3DRender import QPointLight, QDirectionalLight, QSpotLight
 from PyQt6.Qt3DCore import QEntity, QTransform
 
 # local import
+
+
+def linkLight(node):
+    """
+    :param node:
+    :return:
+    """
+    light = node.get('light')
+    if light:
+        if isinstance(light[0], QPointLight):
+            lightSource = light[0]
+            lightSource.setIntensity(light[1])
+            lightSource.setColor(light[2])
+        elif isinstance(light[0], QDirectionalLight):
+            lightSource = light[0]
+            lightSource.setIntensity(light[1])
+            lightSource.setColor(light[2])
+            lightSource.setWorldDirection(light[3])
+        elif isinstance(light[0], QSpotLight):
+            lightSource = light[0]
+            lightSource.setIntensity(light[1])
+            lightSource.setColor(light[2])
+            lightSource.setCutOffAngle(light[3])
+            lightSource.setLocalDirection(light[4])
+        else:
+            lightSource = None
+    else:
+        lightSource = None
+
+    return lightSource
 
 
 def linkSource(node):
@@ -111,8 +142,8 @@ def linkModel(model, entityModel):
     :return: true for test purpose
     """
     for node in model:
-        parent = model[node]['parent']
-        if not parent:
+        parent = model[node].get('parent')
+        if parent is None:
             continue
 
         newEntity = QEntity()
@@ -130,6 +161,10 @@ def linkModel(model, entityModel):
         material = linkMaterial(model[node])
         if material:
             newEntity.addComponent(material)
+
+        light = linkLight(model[node])
+        if light:
+            newEntity.addComponent(light)
 
 
 def getTransformation(entity):
@@ -169,4 +204,18 @@ def getMesh(entity):
     for component in components:
         if isinstance(component, (QCuboidMesh, QSphereMesh,
                                   QExtrudedTextMesh, QCylinderMesh)):
+            return component
+
+
+def getLight(entity):
+    """
+    :param entity:
+    :return:
+    """
+    if entity is None:
+        return None
+    components = entity.components()
+    for component in components:
+        if isinstance(component, (QPointLight, QDirectionalLight,
+                                  QSpotLight)):
             return component

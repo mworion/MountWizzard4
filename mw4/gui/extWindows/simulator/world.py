@@ -59,7 +59,7 @@ class SimulatorWorld:
         """
         model = {
             'environ': {
-                'parent': 'ref',
+                'parent': 'ref_fusion_m',
             },
             'domeBase': {
                 'parent': 'environ',

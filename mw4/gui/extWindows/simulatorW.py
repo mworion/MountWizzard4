@@ -22,8 +22,7 @@ from PyQt6.QtGui import QVector3D
 from PyQt6.QtWidgets import QWidget
 from PyQt6.Qt3DExtras import Qt3DWindow
 from PyQt6.Qt3DExtras import QOrbitCameraController
-from PyQt6.Qt3DRender import QPointLight
-from PyQt6.Qt3DCore import QEntity, QTransform
+from PyQt6.Qt3DCore import QEntity
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -35,6 +34,7 @@ from gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
 from gui.extWindows.simulator.pointer import SimulatorPointer
 from gui.extWindows.simulator.laser import SimulatorLaser
 from gui.extWindows.simulator.world import SimulatorWorld
+from gui.extWindows.simulator.light import SimulatorLight
 from gui.extWindows.simulator.tools import linkModel
 
 
@@ -48,9 +48,10 @@ class SimulatorWindow(MWidget):
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
-        self.entityModel = {'root': QEntity()}
+        self.entityModel = {'root_qt3d': QEntity()}
 
         self.world = SimulatorWorld(self, self.app)
+        self.light = SimulatorLight(self, self.app)
         self.dome = SimulatorDome(self, self.app)
         self.telescope = SimulatorTelescope(self, self.app)
         self.laser = SimulatorLaser(self, self.app)
@@ -65,11 +66,10 @@ class SimulatorWindow(MWidget):
         self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
         container = QWidget.createWindowContainer(self.view)
         self.ui.simulator.addWidget(container)
-        self.view.setRootEntity(self.entityModel['root'])
+        self.view.setRootEntity(self.entityModel['root_qt3d'])
 
-        self.setupCamera(self.entityModel['root'])
-        self.setupLight(self.entityModel['root'])
-        self.setupScene()
+        self.setupCamera(self.entityModel['root_qt3d'])
+        self.createScene()
 
     def initConfig(self):
         """
@@ -130,33 +130,9 @@ class SimulatorWindow(MWidget):
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
-        self.ui.lightIntensity.valueChanged.connect(self.setLightIntensity)
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.colorChange.connect(self.colorChange)
         self.show()
-
-    def setupLight(self, parentEntity):
-        """
-        :param parentEntity:
-        :return:
-        """
-        self.entityModel['lightsNode'] = QEntity(parentEntity)
-        lightEntity = QEntity(self.entityModel['lightsNode'])
-        pointLight = QPointLight(lightEntity)
-        pointLight.setIntensity(1.0)
-        lightEntity.addComponent(pointLight)
-        transform = QTransform()
-        transform.setTranslation(QVector3D(10, 40, 10))
-        lightEntity.addComponent(transform)
-
-    def setLightIntensity(self):
-        """
-        """
-        intensity = self.ui.lightIntensity.value()
-        for lightEntity in self.entityModel['lightsNode'].childNodes():
-            for component in lightEntity.components():
-                if isinstance(component, (QPointLight)):
-                    component.setIntensity(intensity)
 
     def setupCamera(self, parentEntity):
         """
@@ -237,41 +213,44 @@ class SimulatorWindow(MWidget):
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
-    def createReference(self):
+    def setupReference(self):
         """
-        first transformation is from fusion360 to Qt3D fusion360 (x is north,
-        y is west, z is up), scale in mm Qt3D (-z is north, x is east, y is up)
-        scale is m and set as reference. from there on we are in the fusion
-        coordinate system
+        Coordinate Systems:
+        - fusion360 (x is north, y is west, z is up), scale in mm
+        - Qt3D (x is east, y is up, -z is north), scale in m
 
-        'ref' is the fusion360 coordinate system, please be aware that rotations
-        around the z axis for azimuth is clockwise and not counterclockwise as a
-        right-handed coordinate system would propose.
+        First transformation is from fusion360 to Qt3D.
+        From there on we are in the Qt3D coordinate system.
+
+        'ref_fusion_m' is the fusion360 coordinate system, please be aware that
+        rotations around the z axis for azimuth is clockwise and not
+        counterclockwise as a right-handed coordinate system would propose.
 
         for the sake of simplifying there is another reference, which only has
         the corrections in coordinates and not for scaling, this is called
-        'ref1000'
+        'ref_fusion'
         """
         model = {
-            'ref1000': {
-                'parent': 'root',
+            'ref_fusion': {
+                'parent': 'root_qt3d',
                 'rot': [-90, 90, 0],
             },
-            'ref': {
-                'parent': 'ref1000',
+            'ref_fusion_m': {
+                'parent': 'ref_fusion',
                 'scale': [0.001, 0.001, 0.001],
             },
         }
         linkModel(model, self.entityModel)
 
-    def setupScene(self):
+    def createScene(self):
         """
         SetupScene initially builds all 3d models and collects them to Qt3D
         scene graph. The scene graph is stored parallel in the dict
         'entityModel'. The dict is used to link the models please look
         closely which references are used.
         """
-        self.createReference()
+        self.setupReference()
+        self.light.create()
         self.telescope.create()
         self.laser.create()
         self.pointer.create()

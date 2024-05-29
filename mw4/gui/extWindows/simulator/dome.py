@@ -129,7 +129,7 @@ class SimulatorDome:
         """
         model = {
             'dome': {
-                'parent': 'ref',
+                'parent': 'ref_fusion_m',
             },
             'domeFloor': {
                 'parent': 'dome',

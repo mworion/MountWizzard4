@@ -108,7 +108,7 @@ class SimulatorHorizon:
 
         self.clear()
         horizonEntity = QEntity()
-        parent = self.parent.entityModel['ref1000']
+        parent = self.parent.entityModel['ref_fusion']
         horizonEntity.setParent(parent)
         self.parent.entityModel['horizon'] = horizonEntity
 

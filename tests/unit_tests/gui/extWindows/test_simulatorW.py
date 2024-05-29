@@ -130,7 +130,7 @@ def test_westView_1(function):
 
 
 def test_createReference_1(function):
-    function.entityModel['root'] = QEntity()
+    function.entityModel['root_qt3d'] = QEntity()
     with mock.patch.object(tools,
                            'linkModel'):
         function.createReference()
@@ -153,4 +153,4 @@ def test_setupScene_1(function):
                                                    'create'):
                                 with mock.patch.object(function.buildPoints,
                                                        'create'):
-                                    function.setupScene()
+                                    function.createScene()

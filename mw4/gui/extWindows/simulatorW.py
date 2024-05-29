@@ -146,7 +146,7 @@ class SimulatorWindow(MWidget):
         pointLight.setIntensity(1.0)
         lightEntity.addComponent(pointLight)
         transform = QTransform()
-        transform.setTranslation(QVector3D(5, 20, 5))
+        transform.setTranslation(QVector3D(10, 40, 10))
         lightEntity.addComponent(transform)
 
     def setLightIntensity(self):
@@ -175,12 +175,17 @@ class SimulatorWindow(MWidget):
 
     def colorChange(self):
         """
+        We change the color of the background and the style of the window but
+        not for the 3D scene itself during runtime.
         """
         self.setStyleSheet(self.mw4Style)
         self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
 
     def limitPositionZ(self):
         """
+        Here we limit the position of the camera to the z=0 plane. This helps
+        to keep the camera from going below the horizon and looking up into the
+        sky.
         """
         pos = self.camera.position()
         if pos[1] < 0:
@@ -192,6 +197,8 @@ class SimulatorWindow(MWidget):
 
     def topView(self):
         """
+        The position vector in not 0,0,0 as the precision leads to a black
+        screen.
         """
         self.changeStyleDynamic(self.ui.telescopeView, 'running', False)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
@@ -259,10 +266,10 @@ class SimulatorWindow(MWidget):
 
     def setupScene(self):
         """
-        setupScene initially builds all 3d models and collects them to a scene.
-        please look closely which references are used-
-
-        :return:
+        SetupScene initially builds all 3d models and collects them to Qt3D
+        scene graph. The scene graph is stored parallel in the dict
+        'entityModel'. The dict is used to link the models please look
+        closely which references are used.
         """
         self.createReference()
         self.telescope.create()

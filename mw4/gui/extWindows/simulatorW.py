@@ -61,7 +61,6 @@ class SimulatorWindow(MWidget):
         self.camera = None
         self.cameraController = None
 
-        self.entityModel = {'root': QEntity()}
         self.view = Qt3DWindow()
         self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
         container = QWidget.createWindowContainer(self.view)

@@ -52,8 +52,8 @@ class Materials(Styles):
         self.aluminiumB.setDiffuse(QColor(64, 64, 128))
 
         self.aluminiumR = QDiffuseSpecularMaterial()
-        self.aluminiumR.setAmbient(QColor(192, 64, 64))
-        self.aluminiumR.setDiffuse(QColor(192, 64, 64))
+        self.aluminiumR.setAmbient(QColor(255, 64, 64))
+        self.aluminiumR.setDiffuse(QColor(255, 64, 64))
 
         self.environ1 = QDiffuseSpecularMaterial()
         self.environ1.setAmbient(QColor(self.M_BLUE4))
@@ -96,13 +96,13 @@ class Materials(Styles):
 
         self.pointsActive = QPhongMaterial()
         self.pointsActive.setAmbient(QColor(self.M_GREEN))
-        self.pointsActive.setDiffuse(QColor(self.M_BLUE2))
-        self.pointsActive.setSpecular(QColor(self.M_GREY1))
+        self.pointsActive.setDiffuse(QColor(self.M_BLUE1))
+        self.pointsActive.setSpecular(QColor(self.M_BLUE1))
         self.pointsActive.setShininess(64)
 
         self.points = QPhongMaterial()
         self.points.setAmbient(QColor(self.M_YELLOW))
-        self.points.setDiffuse(QColor(self.M_BLUE2))
+        self.points.setDiffuse(QColor(self.M_GREY1))
         self.points.setSpecular(QColor(self.M_GREY1))
         self.points.setShininess(64)
 
@@ -110,7 +110,7 @@ class Materials(Styles):
         self.lines.setAmbient(QColor(self.M_GREY1))
         self.lines.setDiffuse(QColor(self.M_GREY1))
         self.lines.setSpecular(QColor(self.M_GREY1))
-        self.lines.setShininess(255)
+        self.lines.setShininess(64)
 
         self.numbers = QPhongMaterial()
         self.numbers.setAmbient(QColor(self.M_YELLOW))

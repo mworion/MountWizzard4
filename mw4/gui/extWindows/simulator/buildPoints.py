@@ -26,7 +26,6 @@ from PyQt6.Qt3DCore import QEntity, QTransform
 from skyfield import functions
 
 # local import
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.tools import getTransformation
 
 
@@ -123,7 +122,7 @@ class SimulatorBuildPoints:
         trans3.setTranslation(QVector3D(0, radius / 2, 0))
         e3.addComponent(mesh)
         e3.addComponent(trans3)
-        e3.addComponent(Materials().lines)
+        e3.addComponent(self.parent.materials.lines)
 
         return e3
 
@@ -154,9 +153,9 @@ class SimulatorBuildPoints:
         entity.addComponent(mesh)
         entity.addComponent(trans)
         if active:
-            entity.addComponent(Materials().pointsActive)
+            entity.addComponent(self.parent.materials.pointsActive)
         else:
-            entity.addComponent(Materials().points)
+            entity.addComponent(self.parent.materials.points)
 
         return entity, x, y, z
 
@@ -206,9 +205,9 @@ class SimulatorBuildPoints:
         e2.addComponent(mesh)
         e2.addComponent(trans2)
         if active:
-            e2.addComponent(Materials().numbersActive)
+            e2.addComponent(self.parent.materials.numbersActive)
         else:
-            e2.addComponent(Materials().numbers)
+            e2.addComponent(self.parent.materials.numbers)
 
         return e2
 

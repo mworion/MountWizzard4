@@ -21,7 +21,6 @@ from PyQt6.QtGui import QVector3D
 from PyQt6.Qt3DExtras import QCuboidMesh
 
 # local import
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.tools import linkModel, getTransformation, getMesh
 
 
@@ -121,12 +120,12 @@ class SimulatorTelescope:
                 'parent': 'mount',
                 'source': 'mount-base.stl',
                 'trans': [0, 0, 1000],
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.mountBlack,
             },
             'mountKnobs': {
                 'parent': 'mountBase',
                 'source': 'mount-base-knobs.stl',
-                'mat': Materials().aluminium,
+                'mat': self.parent.materials.aluKnobs,
             },
             'lat': {
                 'parent': 'mountBase',
@@ -137,7 +136,7 @@ class SimulatorTelescope:
                 'parent': 'lat',
                 'source': 'mount-ra.stl',
                 'trans': [0, 0, -70],
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.mountBlack,
             },
             'ra': {
                 'parent': 'mountRa',
@@ -147,19 +146,19 @@ class SimulatorTelescope:
                 'parent': 'ra',
                 'source': 'mount-dec.stl',
                 'trans': [0, 0, -190],
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.mountBlack,
             },
             'mountDecKnobs': {
                 'parent': 'ra',
                 'source': 'mount-dec-knobs.stl',
                 'trans': [0, 0, -190],
-                'mat': Materials().aluminium,
+                'mat': self.parent.materials.aluKnobs,
             },
             'mountDecWeights': {
                 'parent': 'ra',
                 'source': 'mount-dec-weights.stl',
                 'trans': [0, 0, -190],
-                'mat': Materials().stainless,
+                'mat': self.parent.materials.stainless,
             },
             'dec': {
                 'parent': 'mountDec',
@@ -169,19 +168,19 @@ class SimulatorTelescope:
                 'parent': 'dec',
                 'source': 'mount-head.stl',
                 'trans': [-159, 0, -190],
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.mountBlack,
             },
             'mountHeadKnobs': {
                 'parent': 'dec',
                 'source': 'mount-head-knobs.stl',
                 'trans': [-159, 0, -190],
-                'mat': Materials().aluminium,
+                'mat': self.parent.materials.aluKnobs,
             },
             'gem': {
                 'parent': 'mountHead',
                 'source': [QCuboidMesh(), 100, 60, 10],
                 'trans': [159, 0, 338.5],
-                'mat': Materials().aluminiumB,
+                'mat': self.parent.materials.aluCCD,
             },
             'gemCorr': {
                 'parent': 'gem',
@@ -190,40 +189,40 @@ class SimulatorTelescope:
             'otaPlate': {
                 'parent': 'gemCorr',
                 'source': 'ota-plate.stl',
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.mountBlack,
             },
             'otaRing': {
                 'parent': 'otaPlate',
                 'source': 'ota-ring-s.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.mountBlack,
             },
             'otaTube': {
                 'parent': 'otaPlate',
                 'source': 'ota-tube-s.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().white,
+                'mat': self.parent.materials.white,
             },
             'otaImagetrain': {
                 'parent': 'gemCorr',
                 'source': 'ota-imagetrain.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.mountBlack,
             },
             'otaCCD': {
                 'parent': 'otaImagetrain',
                 'source': 'ota-ccd.stl',
-                'mat': Materials().aluminiumB,
+                'mat': self.parent.materials.aluCCD,
             },
             'otaFocus': {
                 'parent': 'otaImagetrain',
                 'source': 'ota-focus.stl',
-                'mat': Materials().aluminiumR,
+                'mat': self.parent.materials.aluRed,
             },
             'otaFocusTop': {
                 'parent': 'otaImagetrain',
                 'source': 'ota-focus-top.stl',
-                'mat': Materials().white,
+                'mat': self.parent.materials.white,
             },
         }
         if lat < 0:

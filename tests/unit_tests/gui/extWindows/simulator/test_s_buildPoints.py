@@ -28,7 +28,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.simulatorW import SimulatorWindow
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def function(qapp):
     func = SimulatorWindow(app=App())
     with mock.patch.object(func,

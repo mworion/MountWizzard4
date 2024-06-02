@@ -21,7 +21,6 @@ from PyQt6.QtGui import QVector3D
 from PyQt6.Qt3DExtras import QSphereMesh
 
 # local import
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.tools import linkModel, getTransformation
 
 
@@ -72,7 +71,7 @@ class SimulatorPointer:
                 'parent': 'pointer',
                 'source': [QSphereMesh(), 50, 30, 30],
                 'scale': [1, 1, 1],
-                'mat': Materials().pointer,
+                'mat': self.parent.materials.pointer,
             },
         }
         linkModel(model, self.parent.entityModel)

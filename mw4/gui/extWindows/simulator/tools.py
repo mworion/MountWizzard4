@@ -21,7 +21,8 @@ from PyQt6.QtCore import QUrl
 from PyQt6.QtGui import QVector3D, QFont
 from PyQt6.Qt3DExtras import QCuboidMesh, QSphereMesh
 from PyQt6.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
-from PyQt6.Qt3DExtras import QPhongAlphaMaterial
+from PyQt6.Qt3DExtras import QMetalRoughMaterial, QDiffuseSpecularMaterial
+from PyQt6.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
 from PyQt6.Qt3DRender import QMesh
 from PyQt6.Qt3DRender import QPointLight, QDirectionalLight, QSpotLight
 from PyQt6.Qt3DCore import QEntity, QTransform
@@ -189,7 +190,10 @@ def getMaterial(entity):
         return None
     components = entity.components()
     for component in components:
-        if isinstance(component, (QPhongAlphaMaterial)):
+        if isinstance(component, (QMetalRoughMaterial,
+                                  QDiffuseSpecularMaterial,
+                                  QPhongAlphaMaterial,
+                                  QPhongMaterial)):
             return component
 
 

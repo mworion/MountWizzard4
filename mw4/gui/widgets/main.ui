@@ -104,7 +104,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -23505,7 +23505,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>7</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -31493,6 +31493,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <bool>true</bool>
         </property>
        </widget>
+      </widget>
+      <widget class="QPushButton" name="material">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>330</y>
+         <width>166</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Collects all open windows to the upper left corner with the startdard size 800x600 pixel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Material Window</string>
+       </property>
       </widget>
      </widget>
     </widget>

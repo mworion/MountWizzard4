@@ -24,7 +24,6 @@ from PyQt6.Qt3DCore import QEntity, QTransform
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.simulatorW import SimulatorWindow
-from gui.extWindows.simulator.materials import Materials
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -37,7 +36,7 @@ def function(qapp):
 
 def test_setTransparency_1(function):
     function.parent.entityModel['domeWall'] = QEntity()
-    mat = Materials().dome2
+    mat = function.parent.materials.domeDoor
     function.parent.entityModel['domeWall'].addComponent(mat)
     function.setTransparency()
 

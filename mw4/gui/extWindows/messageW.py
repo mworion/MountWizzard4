@@ -30,8 +30,7 @@ from gui.widgets import message_ui
 class MessageWindow(toolsQtWidget.MWidget):
     """
     """
-    __all__ = ['MessageWindow',
-               ]
+    __all__ = ['MessageWindow']
 
     def __init__(self, app):
         super().__init__()

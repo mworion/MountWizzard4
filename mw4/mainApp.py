@@ -61,6 +61,7 @@ class MountWizzard4(QObject):
 
     log = logging.getLogger(__name__)
 
+    material = pyqtSignal(object, object)
     msg = pyqtSignal(object, object, object, object)
     messageQueue = Queue()
     tabsMovable = pyqtSignal(object)
@@ -87,7 +88,6 @@ class MountWizzard4(QObject):
     gameDirection = pyqtSignal(object)
     game_sL = pyqtSignal(object, object)
     game_sR = pyqtSignal(object, object)
-
     update0_1s = pyqtSignal()
     update1s = pyqtSignal()
     update3s = pyqtSignal()

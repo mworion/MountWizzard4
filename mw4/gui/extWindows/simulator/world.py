@@ -20,7 +20,6 @@
 from PyQt6.QtGui import QVector3D
 
 # local import
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.tools import linkModel, getTransformation
 
 
@@ -61,29 +60,29 @@ class SimulatorWorld:
             'environ': {
                 'parent': 'ref_fusion_m',
             },
-            'domeBase': {
+            'ground': {
                 'parent': 'environ',
                 'source': 'dome-base.stl',
-                'scale': [2, 2, 1],
-                'mat': Materials().environ1,
+                'scale': [1, 1, 1],
+                'mat': self.parent.materials.environ1,
             },
             'domeColumn': {
                 'parent': 'environ',
                 'source': 'dome-column.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumS,
+                'mat': self.parent.materials.domeColumn,
             },
             'domeCompassRose': {
                 'parent': 'environ',
                 'source': 'dome-rose.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumR,
+                'mat': self.parent.materials.aluRed,
             },
             'domeCompassRoseChar': {
                 'parent': 'environ',
                 'source': 'dome-rose-char.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().white,
+                'mat': self.parent.materials.white,
             },
         }
         linkModel(model, self.parent.entityModel)

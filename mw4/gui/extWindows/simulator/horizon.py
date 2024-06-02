@@ -22,8 +22,7 @@ from PyQt6.QtGui import QVector3D
 from PyQt6.Qt3DExtras import QCuboidMesh
 from PyQt6.Qt3DCore import QEntity, QTransform
 
-# local import
-from gui.extWindows.simulator.materials import Materials
+# local imports
 
 
 class SimulatorHorizon:
@@ -55,8 +54,7 @@ class SimulatorHorizon:
         del horizonEntity
         return True
 
-    @staticmethod
-    def createWall(parentEntity, alt, az, space):
+    def createWall(self, parentEntity, alt, az, space):
         """
         createWall draw a plane in radius distance to show the horizon. spacing
         is the angular spacing between this planes
@@ -88,7 +86,7 @@ class SimulatorHorizon:
         trans3.setTranslation(QVector3D(0, 0, height / 2))
         e3.addComponent(mesh)
         e3. addComponent(trans3)
-        e3.addComponent(Materials().horizon)
+        e3.addComponent(self.parent.materials.horizon)
         return e3
 
     def create(self):

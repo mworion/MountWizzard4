@@ -535,8 +535,8 @@ class MainWindow(
             self.ui.mountConnected.setText('Mount')
         elif not status and hasSim:
             self.ui.mountConnected.setText('Mount')
-            if self.uiWindows['showSimulatorW']['classObj']:
-                self.uiWindows['showSimulatorW']['classObj'].close()
+            #if self.uiWindows['showSimulatorW']['classObj']:
+            #    self.uiWindows['showSimulatorW']['classObj'].close()
         return True
 
     def updateMountWeatherStat(self, setting):

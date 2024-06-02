@@ -20,7 +20,6 @@
 from PyQt6.QtGui import QVector3D
 
 # local import
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.tools import linkModel, getMaterial, getTransformation
 
 
@@ -135,46 +134,47 @@ class SimulatorDome:
                 'parent': 'dome',
                 'source': 'dome-floor.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().aluminiumGrey,
+                'mat': self.parent.materials.aluminiumGrey,
             },
             'domeWall': {
                 'parent': 'dome',
                 'source': 'dome-wall.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().walls,
+                'mat': self.parent.materials.walls,
             },
             'domeSphere': {
                 'parent': 'dome',
                 'source': 'dome-sphere.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome1,
+                'mat': self.parent.materials.domeSphere,
             },
             'domeSlit1': {
                 'parent': 'domeSphere',
                 'source': 'dome-slit1.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': self.parent.materials.domeSlit,
             },
             'domeSlit2': {
                 'parent': 'domeSphere',
                 'source': 'dome-slit2.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': self.parent.materials.domeSlit,
             },
             'domeDoor1': {
                 'parent': 'domeSphere',
                 'source': 'dome-door1.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': self.parent.materials.domeDoor,
             },
             'domeDoor2': {
                 'parent': 'domeSphere',
                 'source': 'dome-door2.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().dome2,
+                'mat': self.parent.materials.domeDoor,
             },
         }
         linkModel(model, self.parent.entityModel)
+        self.showEnable(self.app.deviceStat['dome'] is True)
         self.updateAzimuth()
         self.updateShutter()
         self.updateSize()

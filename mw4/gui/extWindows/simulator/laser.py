@@ -23,7 +23,6 @@ from skyfield import functions
 import numpy as np
 
 # local import
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.tools import linkModel, getTransformation
 
 
@@ -97,7 +96,7 @@ class SimulatorLaser:
                 'parent': 'alt',
                 'source': [QCylinderMesh(), 4500, 10, 20, 20],
                 'trans': [0, 2250, 0],
-                'mat': Materials().laser,
+                'mat': self.parent.materials.laser,
             },
         }
         linkModel(model, self.parent.entityModel)

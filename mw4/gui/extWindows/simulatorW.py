@@ -23,10 +23,13 @@ from PyQt6.QtWidgets import QWidget
 from PyQt6.Qt3DExtras import Qt3DWindow
 from PyQt6.Qt3DExtras import QOrbitCameraController
 from PyQt6.Qt3DCore import QEntity
+from PyQt6.Qt3DRender import QObjectPicker
+import PyQt6
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import simulator_ui
+from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.dome import SimulatorDome
 from gui.extWindows.simulator.telescope import SimulatorTelescope
 from gui.extWindows.simulator.horizon import SimulatorHorizon
@@ -36,6 +39,7 @@ from gui.extWindows.simulator.laser import SimulatorLaser
 from gui.extWindows.simulator.world import SimulatorWorld
 from gui.extWindows.simulator.light import SimulatorLight
 from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.materialW import MaterialWindow
 
 
 class SimulatorWindow(MWidget):
@@ -58,6 +62,10 @@ class SimulatorWindow(MWidget):
         self.pointer = SimulatorPointer(self, self.app)
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
+        self.materials = Materials()
+        self.materialWindow = MaterialWindow(self.app)
+        self.materialWindow.initConfig()
+        self.materialWindow.showWindow()
 
         self.camera = None
         self.cameraController = None
@@ -68,8 +76,26 @@ class SimulatorWindow(MWidget):
         self.ui.simulator.addWidget(container)
         self.view.setRootEntity(self.entityModel['root_qt3d'])
 
+        self.picker = QObjectPicker()
+        self.entityModel['root_qt3d'].addComponent(self.picker)
+        self.view.renderSettings().pickingSettings().setPickMethod(
+            PyQt6.Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
+        self.view.renderSettings().pickingSettings().setPickResultMode(
+            PyQt6.Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
+        self.view.renderSettings().pickingSettings().setFaceOrientationPickingMode(
+            PyQt6.Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
+        self.view.renderSettings().pickingSettings().setWorldSpaceTolerance(0.0001)
+        self.picker.clicked.connect(self.clicked)
+
         self.setupCamera(self.entityModel['root_qt3d'])
         self.createScene()
+
+    def clicked(self, pickEntity):
+        """
+        """
+        for key, value in self.entityModel.items():
+            if value == pickEntity.entity():
+                self.app.material.emit(pickEntity.entity(), key)
 
     def initConfig(self):
         """
@@ -119,6 +145,8 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.entityModel.clear()
+        self.materialWindow.storeConfig()
+        self.materialWindow.close()
         self.storeConfig()
         super().closeEvent(closeEvent)
 
@@ -140,7 +168,7 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.camera = self.view.camera()
-        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 1000.0)
+        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 10000.0)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))

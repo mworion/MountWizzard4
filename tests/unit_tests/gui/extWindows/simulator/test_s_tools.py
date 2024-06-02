@@ -128,7 +128,7 @@ def test_linkTransform_4(qtbot):
 
 def test_linkMaterial_1(qtbot):
     model = {'parent': None,
-             'mat': Materials().dome1,
+             'mat': Materials().domeSphere,
              }
 
     mat = linkMaterial(model)

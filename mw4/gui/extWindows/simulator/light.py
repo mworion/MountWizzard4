@@ -52,18 +52,20 @@ class SimulatorLight:
             },
             'main': {
                 'parent': 'lights',
-                'light': [QPointLight(), 1.0, QColor(255, 0, 0)],
+                'light': [QPointLight(), 1.0, QColor(255, 255, 255)],
                 'trans': [10, 40, 10],
             },
+
             'dir': {
                 'parent': 'lights',
-                'light': [QDirectionalLight(), 0.1, QColor(0, 255, 0), QVector3D(1, 0, 1)],
+                'light': [QDirectionalLight(), 0, QColor(0, 255, 0), QVector3D(1, 0, 1)],
                 'trans': [-10, 1, -10],
             },
             'spot': {
                 'parent': 'lights',
-                'light': [QSpotLight(), 1, QColor(0, 255, 255), 5, QVector3D(1, 0, -1)],
+                'light': [QSpotLight(), 0, QColor(0, 255, 255), 5, QVector3D(1, 0, -1)],
                 'trans': [-5, 1, 5],
             },
         }
         linkModel(model, self.parent.entityModel)
+        self.app.material.emit(self.parent.entityModel['main'], 'main')

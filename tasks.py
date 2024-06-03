@@ -190,7 +190,7 @@ def build_widgets(c):
         'video', 'bigPopup', 'uploadPopup', 'material']
     for widget in widgets:
         name = widgetDir + widget
-        runMW(c, f'PySide6-uic.exe {name}.ui > {name}_ui.py')
+        runMW(c, f'pyside6-uic {name}.ui > {name}_ui.py')
     printMW('building widgets finished\n')
 
 

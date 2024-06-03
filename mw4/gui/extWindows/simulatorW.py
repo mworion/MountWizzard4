@@ -51,8 +51,6 @@ class SimulatorWindow(MWidget):
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
-        self.entityModel = {'root_qt3d': Qt3DCore.QEntity()}
-
         self.world = SimulatorWorld(self, self.app)
         self.light = SimulatorLight(self, self.app)
         self.dome = SimulatorDome(self, self.app)
@@ -68,7 +66,7 @@ class SimulatorWindow(MWidget):
         self.materialWindow.initConfig()
         self.materialWindow.showWindow()
         """
-
+        self.entityModel = {'root_qt3d': Qt3DCore.QEntity()}
         self.camera = None
         self.cameraController = None
 
@@ -92,7 +90,15 @@ class SimulatorWindow(MWidget):
 
         self.picker.clicked.connect(self.clicked)
         self.setupCamera(self.entityModel['root_qt3d'])
-        self.createScene()
+
+        light = Qt3DCore.QEntity(self.entityModel['root_qt3d'])
+        light.addComponent(Qt3DRender.QPointLight())
+        corpus = Qt3DCore.QEntity(self.entityModel['root_qt3d'])
+        mesh = Qt3DExtras.QSphereMesh()
+        mesh.setRadius(5)
+        corpus.addComponent(mesh)
+
+        # self.createScene()
 
     def clicked(self, pickEntity):
         """
@@ -172,7 +178,7 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.camera = self.view.camera()
-        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 10000.0)
+        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 10000)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))

@@ -20,7 +20,7 @@ import logging
 import time
 from logging.handlers import RotatingFileHandler
 import datetime
-import sys
+# import sys
 
 # external packages
 

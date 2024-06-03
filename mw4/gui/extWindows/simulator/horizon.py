@@ -114,4 +114,3 @@ class SimulatorHorizon:
             self.createWall(horizonEntity, alt, az, space)
         self.showEnable()
         return True
-

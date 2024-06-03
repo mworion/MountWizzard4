@@ -62,9 +62,12 @@ class SimulatorWindow(MWidget):
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
         self.materials = Materials()
+
+        """
         self.materialWindow = MaterialWindow(self.app)
         self.materialWindow.initConfig()
         self.materialWindow.showWindow()
+        """
 
         self.camera = None
         self.cameraController = None
@@ -77,15 +80,17 @@ class SimulatorWindow(MWidget):
 
         self.picker = Qt3DRender.QObjectPicker()
         self.entityModel['root_qt3d'].addComponent(self.picker)
-        self.view.renderSettings().pickingSettings().setPickMethod(
-            PySide6.Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
-        self.view.renderSettings().pickingSettings().setPickResultMode(
-            PySide6.Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
-        self.view.renderSettings().pickingSettings().setFaceOrientationPickingMode(
-            PySide6.Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
-        self.view.renderSettings().pickingSettings().setWorldSpaceTolerance(0.0001)
-        self.picker.clicked.connect(self.clicked)
 
+        pickSett = self.view.renderSettings().pickingSettings()
+        pickSett.setPickMethod(
+            Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
+        pickSett.setPickResultMode(
+            Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
+        pickSett.setFaceOrientationPickingMode(
+            Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
+        pickSett.setWorldSpaceTolerance(0.0001)
+
+        self.picker.clicked.connect(self.clicked)
         self.setupCamera(self.entityModel['root_qt3d'])
         self.createScene()
 
@@ -191,11 +196,11 @@ class SimulatorWindow(MWidget):
         sky.
         """
         pos = self.camera.position()
-        if pos[1] < 0:
-            z = 0
+        if pos.y() < 0:
+            y = 0
         else:
-            z = pos[1]
-        posNew = QVector3D(pos[0], z, pos[2])
+            y = pos.y()
+        posNew = QVector3D(pos.x(), y, pos.z())
         self.camera.setPosition(posNew)
 
     def topView(self):
@@ -277,11 +282,11 @@ class SimulatorWindow(MWidget):
         closely which references are used.
         """
         self.setupReference()
+        self.world.create()
         self.light.create()
         self.telescope.create()
         self.laser.create()
         self.pointer.create()
-        self.world.create()
         self.horizon.create()
         self.dome.create()
         self.buildPoints.create()

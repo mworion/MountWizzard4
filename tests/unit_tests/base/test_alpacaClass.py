@@ -18,9 +18,9 @@
 from unittest import mock
 
 # external packages
-import PyQt6
+import PySide6
 import pytest
-from PyQt6.QtCore import QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool, QTimer
 import requests
 
 # local import
@@ -469,7 +469,7 @@ def test_startTimer(function):
 
 
 def test_stopTimer(function):
-    with mock.patch.object(PyQt6.QtCore.QTimer,
+    with mock.patch.object(PySide6.QtCore.QTimer,
                            'stop'):
         suc = function.stopTimer()
         assert suc

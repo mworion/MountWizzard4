@@ -20,8 +20,8 @@ import unittest.mock as mock
 import platform
 
 # external packages
-import PyQt6
-from PyQt6.QtCore import QThreadPool
+import PySide6
+from PySide6.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -43,7 +43,7 @@ def function():
         DriverVersion = '1'
         DriverInfo = 'test1'
 
-    with mock.patch.object(PyQt6.QtCore.QTimer,
+    with mock.patch.object(PySide6.QtCore.QTimer,
                            'start'):
         func = TelescopeAscom(app=App(), signals=Signals(), data={})
         func.client = Test1()

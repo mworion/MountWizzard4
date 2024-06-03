@@ -175,7 +175,7 @@ def build_resource(c):
             text = f.read()
             if 'from PySide6 import QtCore' in text:
                 text = text.replace('from PySide6 import QtCore',
-                                    'from PyQt6 import QtCore')
+                                    'from PySide6 import QtCore')
             g.write(text)
     printMW('building resources finished\n')
 
@@ -190,7 +190,7 @@ def build_widgets(c):
         'video', 'bigPopup', 'uploadPopup', 'material']
     for widget in widgets:
         name = widgetDir + widget
-        runMW(c, f'python -m PyQt6.uic.pyuic -x {name}.ui -o {name}_ui.py')
+        runMW(c, f'PySide6-uic.exe {name}.ui > {name}_ui.py')
     printMW('building widgets finished\n')
 
 

@@ -16,7 +16,7 @@ Welcome to MountWizzard4 is a utility for 10micron users for improving the
 workflow for astronomy work and imaging runs on Windows (10 and 11), OSx (Big Sur
 - Sonoma), Linux (Ubuntu 18.04 - 22.04) and some Linux ARM64 distributions
 (Astroberry and StellarMate - both 64 bit). As a python application, it should
-run in all environments supporting python 3.10-3.12 and PyQt6 6 as a GUI
+run in all environments supporting python 3.10-3.12 and PySide6 6 as a GUI
 framework.
 
 For being fully operational, MountWizzard4 needs either:

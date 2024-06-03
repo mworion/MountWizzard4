@@ -23,8 +23,8 @@ if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 # external packages
-import PyQt6
-from PyQt6.QtCore import QThreadPool, QTimer
+import PySide6
+from PySide6.QtCore import QThreadPool, QTimer
 import win32com.client
 
 # local import
@@ -48,14 +48,14 @@ def function():
 
 
 def test_startTimer(function):
-    with mock.patch.object(PyQt6.QtCore.QTimer,
+    with mock.patch.object(PySide6.QtCore.QTimer,
                            'start'):
         suc = function.startTimer()
         assert suc
 
 
 def test_stopTimer(function):
-    with mock.patch.object(PyQt6.QtCore.QTimer,
+    with mock.patch.object(PySide6.QtCore.QTimer,
                            'stop'):
         suc = function.stopTimer()
         assert suc

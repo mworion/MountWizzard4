@@ -20,9 +20,9 @@ from datetime import datetime as dt
 # external packages
 import numpy as np
 import pyqtgraph as pg
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QFont, QTransform, QPainterPath
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QFont, QTransform, QPainterPath
+from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 

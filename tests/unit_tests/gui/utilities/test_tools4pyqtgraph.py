@@ -20,8 +20,8 @@ import unittest.mock as mock
 import builtins
 
 # external packages
-from PyQt6.QtWidgets import QWidget, QApplication
-from PyQt6.QtCore import QPointF, Qt
+from PySide6.QtWidgets import QWidget, QApplication
+from PySide6.QtCore import QPointF, Qt
 import numpy as np
 import pyqtgraph as pg
 

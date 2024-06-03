@@ -18,9 +18,9 @@
 import time
 
 # external packages
-from PyQt6.QtGui import QColor, QFont
-from PyQt6.QtWidgets import QTableWidgetItem
-from PyQt6.QtCore import Qt
+from PySide6.QtGui import QColor, QFont
+from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtCore import Qt
 
 # local import
 from gui.utilities import toolsQtWidget

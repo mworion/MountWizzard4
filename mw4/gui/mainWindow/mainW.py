@@ -21,8 +21,8 @@ from datetime import datetime
 import time
 
 # external packages
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QTransform
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QTransform
 from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import

@@ -21,8 +21,8 @@ import os
 import shutil
 
 # external packages
-from PyQt6.QtCore import QPointF
-from PyQt6.QtGui import QCloseEvent
+from PySide6.QtCore import QPointF
+from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle, wgs84
 import numpy as np
 import pyqtgraph as pg

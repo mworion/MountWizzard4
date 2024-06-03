@@ -20,7 +20,7 @@ import gzip
 import shutil
 
 # external packages
-from PyQt6.QtCore import Qt, pyqtSignal
+from PySide6.QtCore import Qt, Signal
 import requests
 
 # local import
@@ -35,8 +35,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
     """
     __all__ = ['DownloadPopup']
 
-    signalProgress = pyqtSignal(object)
-    signalProgressBarColor = pyqtSignal(object)
+    signalProgress = Signal(object)
+    signalProgressBarColor = Signal(object)
 
     def __init__(self, parentWidget, url='', dest='', unzip=True):
         super().__init__()

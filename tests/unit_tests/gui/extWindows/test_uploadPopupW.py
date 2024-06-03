@@ -20,8 +20,8 @@ import pytest
 import builtins
 
 # external packages
-from PyQt6.QtCore import QThreadPool
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtCore import QThreadPool
+from PySide6.QtWidgets import QWidget
 import requests
 
 # local import

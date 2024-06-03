@@ -18,8 +18,8 @@
 import logging
 
 # external packages
-from PyQt6.QtCore import pyqtSignal, QObject
-from PyQt6.QtNetwork import QTcpSocket
+from PySide6.QtCore import Signal, QObject
+from PySide6.QtNetwork import QTcpSocket
 import xml.etree.ElementTree as ETree
 
 # local import
@@ -33,35 +33,35 @@ class INDISignals(QObject):
     """
     __all__ = ['INDISignals']
 
-    newDevice = pyqtSignal(str)
-    removeDevice = pyqtSignal(str)
-    newProperty = pyqtSignal(str, str)
-    removeProperty = pyqtSignal(str, str)
+    newDevice = Signal(str)
+    removeDevice = Signal(str)
+    newProperty = Signal(str, str)
+    removeProperty = Signal(str, str)
 
-    newBLOB = pyqtSignal(str, str)
-    newSwitch = pyqtSignal(str, str)
-    newNumber = pyqtSignal(str, str)
-    newText = pyqtSignal(str, str)
-    newLight = pyqtSignal(str, str)
+    newBLOB = Signal(str, str)
+    newSwitch = Signal(str, str)
+    newNumber = Signal(str, str)
+    newText = Signal(str, str)
+    newLight = Signal(str, str)
 
-    defBLOB = pyqtSignal(str, str)
-    defSwitch = pyqtSignal(str, str)
-    defNumber = pyqtSignal(str, str)
-    defText = pyqtSignal(str, str)
-    defLight = pyqtSignal(str, str)
+    defBLOB = Signal(str, str)
+    defSwitch = Signal(str, str)
+    defNumber = Signal(str, str)
+    defText = Signal(str, str)
+    defLight = Signal(str, str)
 
-    newMessage = pyqtSignal(str, str)
-    serverConnected = pyqtSignal()
-    serverDisconnected = pyqtSignal(object)
-    deviceConnected = pyqtSignal(str)
-    deviceDisconnected = pyqtSignal(str)
+    newMessage = Signal(str, str)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(str)
+    deviceDisconnected = Signal(str)
 
-    serverAlive = pyqtSignal(bool)
+    serverAlive = Signal(bool)
 
 
 class Device(object):
     """
-    Device implements an INDI Device. it relies on PyQt6 and it's signalling
+    Device implements an INDI Device. it relies on PySide6 and it's signalling
     scheme. there might be not all capabilities implemented right now. all the
     data, properties and attributes are stored in a device dict.
     """
@@ -197,7 +197,7 @@ class Device(object):
 
 class Client(QObject):
     """
-    Client implements an INDI Base Client for INDI servers. it relies on PyQt6
+    Client implements an INDI Base Client for INDI servers. it relies on PySide6
     and it's signalling scheme. there might be not all capabilities implemented
     right now. all the data, properties and attributes are stored in a device
     dict. The reading and parsing of the XML data is done in a streaming way,

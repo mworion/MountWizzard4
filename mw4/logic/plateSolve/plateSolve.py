@@ -19,7 +19,7 @@ import logging
 import os
 
 # external packages
-import PyQt6
+import PySide6
 from astropy.io import fits
 import numpy as np
 
@@ -32,19 +32,19 @@ from logic.plateSolve.astap import ASTAP
 from logic.plateSolve.watney import Watney
 
 
-class PlateSolveSignals(PyQt6.QtCore.QObject):
+class PlateSolveSignals(PySide6.QtCore.QObject):
     """
     """
     __all__ = ['PlateSolveSignals']
 
-    done = PyQt6.QtCore.pyqtSignal(object)
-    result = PyQt6.QtCore.pyqtSignal(object)
-    message = PyQt6.QtCore.pyqtSignal(object)
+    done = PySide6.QtCore.Signal(object)
+    result = PySide6.QtCore.Signal(object)
+    message = PySide6.QtCore.Signal(object)
 
-    serverConnected = PyQt6.QtCore.pyqtSignal()
-    serverDisconnected = PyQt6.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt6.QtCore.pyqtSignal(object)
-    deviceDisconnected = PyQt6.QtCore.pyqtSignal(object)
+    serverConnected = PySide6.QtCore.Signal()
+    serverDisconnected = PySide6.QtCore.Signal(object)
+    deviceConnected = PySide6.QtCore.Signal(object)
+    deviceDisconnected = PySide6.QtCore.Signal(object)
 
 
 class PlateSolve:
@@ -76,7 +76,7 @@ class PlateSolve:
         for fw in self.run:
             self.defaultConfig['frameworks'].update(self.run[fw].defaultConfig)
 
-        self.mutexSolve = PyQt6.QtCore.QMutex()
+        self.mutexSolve = PySide6.QtCore.QMutex()
 
     def readFitsData(self, fitsPath):
         """

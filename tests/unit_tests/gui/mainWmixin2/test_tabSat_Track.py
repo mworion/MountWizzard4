@@ -20,10 +20,10 @@ from unittest import mock
 
 # external packages
 import skyfield.timelib
-from PyQt6.QtCore import QObject
-from PyQt6.QtCore import QThreadPool
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QTableWidgetItem
+from PySide6.QtCore import QObject
+from PySide6.QtCore import QThreadPool
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle, wgs84
 from sgp4.exporter import export_tle
@@ -400,8 +400,8 @@ def test_sendSatelliteData_2(function):
 
 def test_sendSatelliteData_3(function):
     class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-        show = pyqtSignal(object, object, object, object, object)
+        update = Signal(object, object, object)
+        show = Signal(object, object, object, object, object)
 
     class Test(QObject):
         signals = Test1()
@@ -726,7 +726,7 @@ def test_updateOrbit_3(function):
 
 def test_updateOrbit_4(function):
     class Test1(QObject):
-        update = pyqtSignal(object, object)
+        update = Signal(object, object)
 
     class Test(QObject):
         signals = Test1()

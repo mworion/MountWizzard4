@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QCylinderMesh
+from PySide6.QtGui import QVector3D
+from PySide6.Qt3DExtras import Qt3DExtras
 from skyfield import functions
 import numpy as np
 
@@ -94,7 +94,7 @@ class SimulatorLaser:
             },
             'laserBeam': {
                 'parent': 'alt',
-                'source': [QCylinderMesh(), 4500, 10, 20, 20],
+                'source': [Qt3DExtras.QCylinderMesh(), 4500, 10, 20, 20],
                 'trans': [0, 2250, 0],
                 'mat': self.parent.materials.laser,
             },

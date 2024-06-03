@@ -20,8 +20,8 @@ from unittest import mock
 import os
 
 # external packages
-from PyQt6.QtCore import QThreadPool, QRect
-from PyQt6.QtWidgets import QTableWidgetItem
+from PySide6.QtCore import QThreadPool, QRect
+from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 import numpy as np
 

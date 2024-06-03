@@ -19,9 +19,9 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt6.QtGui import QCloseEvent
-from PyQt6.Qt3DCore import QEntity
-from PyQt6.Qt3DRender import QPointLight
+from PySide6.QtGui import QCloseEvent
+from PySide6.Qt3DCore import QEntity
+from PySide6.Qt3DRender import QPointLight
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -94,7 +94,7 @@ def test_colorChange(function):
 
 
 def test_limitPositionZ_1(function):
-    from PyQt6.QtGui import QVector3D
+    from PySide6.QtGui import QVector3D
 
     function.camera.setPosition(QVector3D(1, 1, 1))
     function.limitPositionZ()
@@ -102,7 +102,7 @@ def test_limitPositionZ_1(function):
 
 
 def test_limitPositionZ_2(function):
-    from PyQt6.QtGui import QVector3D
+    from PySide6.QtGui import QVector3D
 
     function.camera.setPosition(QVector3D(1, -10, 1))
     function.limitPositionZ()

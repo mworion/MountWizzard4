@@ -16,7 +16,7 @@ Version 4.x
 - add: support uploading mechanism for databases for macos and linux
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
-- change: moving PyQt5 to major version PyQt6
+- change: moving PyQt5 to major version PySide6
 - change: moving libraries to latest versions
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link

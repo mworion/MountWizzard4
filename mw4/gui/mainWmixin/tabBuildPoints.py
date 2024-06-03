@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtCore import QMutex
+from PySide6.QtCore import QMutex
 from astroquery.simbad import Simbad
 
 # local import

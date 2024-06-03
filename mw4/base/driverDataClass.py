@@ -18,30 +18,30 @@
 import logging
 
 # external packages
-from PyQt6.QtCore import pyqtSignal, QObject
+from PySide6.QtCore import Signal, QObject
 
 
 class Signals(QObject):
     __all__ = ['Signals']
 
-    serverConnected = pyqtSignal()
-    serverDisconnected = pyqtSignal(object)
-    deviceConnected = pyqtSignal(str)
-    deviceDisconnected = pyqtSignal(str)
+    serverConnected = Signal()
+    serverDisconnected = Signal(object)
+    deviceConnected = Signal(str)
+    deviceDisconnected = Signal(str)
 
-    exposed = pyqtSignal()
-    downloaded = pyqtSignal()
-    saved = pyqtSignal(object)
-    exposeReady = pyqtSignal()
-    azimuth = pyqtSignal(object)
-    slewFinished = pyqtSignal()
-    message = pyqtSignal(object)
-    version = pyqtSignal(int)
+    exposed = Signal()
+    downloaded = Signal()
+    saved = Signal(object)
+    exposeReady = Signal()
+    azimuth = Signal(object)
+    slewFinished = Signal()
+    message = Signal(object)
+    version = Signal(int)
 
 
 class RemoteDeviceShutdown(QObject):
     __all__ = ['RemoteDeviceShutdown']
-    signalRemoteShutdown = pyqtSignal()
+    signalRemoteShutdown = Signal()
 
 
 class DriverData:

@@ -128,7 +128,7 @@ def setupLogging(redirect=True):
 
     # setting different log level for imported packages to avoid unnecessary data
     # urllib3 is used by requests, so we have to add this as well
-    logging.getLogger('PyQt6').setLevel(logging.WARNING)
+    logging.getLogger('PySide6').setLevel(logging.WARNING)
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('astropy').setLevel(logging.WARNING)

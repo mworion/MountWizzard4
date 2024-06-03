@@ -19,12 +19,12 @@ import sys
 import os
 
 # external packages
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
-from PyQt6.QtWidgets import QGridLayout, QPushButton, QFileDialog
-from PyQt6.QtWidgets import QListWidget, QListWidgetItem, QApplication
-from PyQt6.QtWidgets import QAbstractItemView
-from PyQt6.QtCore import QDir, Qt
-from PyQt6.QtGui import QFont
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
+from PySide6.QtWidgets import QGridLayout, QPushButton, QFileDialog
+from PySide6.QtWidgets import QListWidget, QListWidgetItem, QApplication
+from PySide6.QtWidgets import QAbstractItemView
+from PySide6.QtCore import QDir, Qt
+from PySide6.QtGui import QFont
 
 
 class QCustomListWidget(QListWidget):

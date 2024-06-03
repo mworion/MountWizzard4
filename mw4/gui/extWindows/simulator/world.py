@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QVector3D
+from PySide6.QtGui import QVector3D
 
 # local import
 from gui.extWindows.simulator.tools import linkModel, getTransformation

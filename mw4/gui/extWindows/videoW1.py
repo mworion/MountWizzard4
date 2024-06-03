@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtCore import pyqtSignal
+from PySide6.QtCore import Signal
 
 # local import
 from gui.extWindows.videoW import VideoWindow
@@ -28,7 +28,7 @@ class VideoWindow1(VideoWindow):
     """
     __all__ = ['VideoWindow1']
 
-    pixmapReady = pyqtSignal(object)
+    pixmapReady = Signal(object)
 
     def __init__(self, app):
         super().__init__(app=app)

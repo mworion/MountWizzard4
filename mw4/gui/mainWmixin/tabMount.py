@@ -19,8 +19,8 @@ import webbrowser
 import time
 
 # external packages
-from PyQt6.QtWidgets import QInputDialog, QLineEdit
-from PyQt6.QtGui import QTextCursor
+from PySide6.QtWidgets import QInputDialog, QLineEdit
+from PySide6.QtGui import QTextCursor
 from skyfield.api import wgs84
 
 # local import

@@ -25,7 +25,7 @@ import sys
 import traceback
 import warnings
 
-# the following lines should avoid errors messages from OLE Automation with PyQt6
+# the following lines should avoid errors messages from OLE Automation with PySide6
 # see
 # https://stackoverflow.com/questions/51284268/
 #         windowscontext-oleinitialize-failed-com-error-0x80010106-rpc-e-changed-mode
@@ -36,10 +36,10 @@ sys.coinit_flags = 2
 
 # external packages
 import astropy
-from PyQt6.QtCore import QFile, QEvent, PYQT_VERSION_STR, QT_VERSION_STR
-from PyQt6.QtGui import QMouseEvent, QIcon
-from PyQt6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
-from PyQt6.QtWidgets import QApplication, QTabBar, QComboBox, QPushButton
+from PySide6.QtCore import QFile, QEvent, __version__, qVersion
+from PySide6.QtGui import QMouseEvent, QIcon
+from PySide6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
+from PySide6.QtWidgets import QApplication, QTabBar, QComboBox, QPushButton
 from importlib_metadata import version
 
 # local import
@@ -57,7 +57,7 @@ log = logging.getLogger()
 class MyApp(QApplication):
     """
     MyApp implements a custom notify handler to log errors, when C++ classes
-    and python wrapper in PyQt6 environment mismatch. mostly this relates to the
+    and python wrapper in PySide6 environment mismatch. mostly this relates to the
     situation when a C++ object is already deleted, but the python wrapper still
     exists. so far I know that's the only chance to log this issues.
 
@@ -232,7 +232,7 @@ def writeSystemInfo(mwGlob=None):
     log.header(f'release          : {platform.release()}')
     log.header(f'python           : {platform.python_version()}')
     log.header(f'python runtime   : {platform.architecture()[0]}')
-    log.header(f'PyQt6 / Qt       : {PYQT_VERSION_STR} / {QT_VERSION_STR}')
+    log.header(f'PySide6 / Qt     : {__version__} / {qVersion()}')
     log.header(f'node / hostname  : {platform.node()} / {socket.gethostname()}')
     log.header(f'run as admin     : {checkIsAdmin()}')
     log.header('-' * 100)

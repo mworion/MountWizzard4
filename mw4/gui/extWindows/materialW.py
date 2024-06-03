@@ -17,9 +17,9 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QColor
-from PyQt6.Qt3DRender import QPointLight, QDirectionalLight, QSpotLight
-from PyQt6.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
+from PySide6.QtGui import QColor
+from PySide6.Qt3DRender import Qt3DRender
+from PySide6.Qt3DExtras import Qt3DExtras
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -182,15 +182,15 @@ class MaterialWindow(MWidget):
         self.setMaterial()
 
     def getValues(self, entity, name):
-        if isinstance(getLight(entity), QPointLight):
+        if isinstance(getLight(entity), Qt3DRender.QPointLight):
             self.getPointLight(getLight(entity))
-        elif isinstance(getLight(entity), QDirectionalLight):
+        elif isinstance(getLight(entity), Qt3DRender.QDirectionalLight):
             self.getDirectionalLight(getLight(entity))
-        elif isinstance(getLight(entity), QSpotLight):
+        elif isinstance(getLight(entity), Qt3DRender.QSpotLight):
             self.getSpotLight(getLight(entity))
-        elif isinstance(getMaterial(entity), QMetalRoughMaterial):
+        elif isinstance(getMaterial(entity), Qt3DExtras.QMetalRoughMaterial):
             self.getMetalRoughMaterial(getMaterial(entity), name)
-        elif isinstance(getMaterial(entity), QDiffuseSpecularMaterial):
+        elif isinstance(getMaterial(entity), Qt3DExtras.QDiffuseSpecularMaterial):
             self.getDiffuseSpecularMaterial(getMaterial(entity), name)
 
     def setPointLight(self):
@@ -211,7 +211,7 @@ class MaterialWindow(MWidget):
         self.pointLight.setQuadraticAttenuation(self.ui.t4_s3.value() / 1000)
 
     def setMaterial(self):
-        if isinstance(self.materialType, QMetalRoughMaterial):
+        if isinstance(self.materialType, Qt3DExtras.QMetalRoughMaterial):
             self.ui.mtr0.setText(f'{self.ui.mr0.value():03d}')
             self.ui.mtg0.setText(f'{self.ui.mg0.value():03d}')
             self.ui.mtb0.setText(f'{self.ui.mb0.value():03d}')
@@ -224,7 +224,7 @@ class MaterialWindow(MWidget):
             self.ui.mt1.setText(f'{self.ui.ms1.value() / 1000:1.3f}')
             self.materialType.setRoughness(self.ui.ms1.value() / 1000)
 
-        elif isinstance(self.materialType, QDiffuseSpecularMaterial):
+        elif isinstance(self.materialType, Qt3DExtras.QDiffuseSpecularMaterial):
             self.ui.mtr0.setText(f'{self.ui.mr0.value():03d}')
             self.ui.mtg0.setText(f'{self.ui.mg0.value():03d}')
             self.ui.mtb0.setText(f'{self.ui.mb0.value():03d}')

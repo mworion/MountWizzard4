@@ -18,11 +18,10 @@
 
 # external packages
 import numpy as np
-from PyQt6.QtGui import QFont
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QSphereMesh
-from PyQt6.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
-from PyQt6.Qt3DCore import QEntity, QTransform
+from PySide6.QtGui import QFont
+from PySide6.QtGui import QVector3D
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.Qt3DCore import Qt3DCore
 from skyfield import functions
 
 # local import
@@ -104,21 +103,21 @@ class SimulatorBuildPoints:
         az = np.degrees(az)
         alt = np.degrees(alt)
 
-        e1 = QEntity(parentEntity)
-        trans1 = QTransform()
+        e1 = Qt3DCore.QEntity(parentEntity)
+        trans1 = Qt3DCore.QTransform()
         trans1.setRotationZ(az + 90)
         e1.addComponent(trans1)
 
-        e2 = QEntity(e1)
-        trans2 = QTransform()
+        e2 = Qt3DCore.QEntity(e1)
+        trans2 = Qt3DCore.QTransform()
         trans2.setRotationX(-alt)
         e2.addComponent(trans2)
 
-        e3 = QEntity(e2)
-        mesh = QCylinderMesh()
+        e3 = Qt3DCore.QEntity(e2)
+        mesh = Qt3DExtras.QCylinderMesh()
         mesh.setRadius(self.LINE_RADIUS)
         mesh.setLength(radius)
-        trans3 = QTransform()
+        trans3 = Qt3DCore.QTransform()
         trans3.setTranslation(QVector3D(0, radius / 2, 0))
         e3.addComponent(mesh)
         e3.addComponent(trans3)
@@ -139,15 +138,15 @@ class SimulatorBuildPoints:
         :return: entity, x, y, z coordinates
         """
         radius = 4
-        entity = QEntity(parentEntity)
-        mesh = QSphereMesh()
+        entity = Qt3DCore.QEntity(parentEntity)
+        mesh = Qt3DExtras.QSphereMesh()
         if active:
             mesh.setRadius(self.POINT_ACTIVE_RADIUS)
         else:
             mesh.setRadius(self.POINT_RADIUS)
         mesh.setRings(30)
         mesh.setSlices(30)
-        trans = QTransform()
+        trans = Qt3DCore.QTransform()
         x, y, z = functions.from_spherical(radius, alt, az)
         trans.setTranslation(QVector3D(x, y, z))
         entity.addComponent(mesh)
@@ -178,25 +177,25 @@ class SimulatorBuildPoints:
         :param faceIn: direction of the text face (looking from inside or outside)
         :return: entity
         """
-        e1 = QEntity(parentEntity)
-        trans1 = QTransform()
+        e1 = Qt3DCore.QEntity(parentEntity)
+        trans1 = Qt3DCore.QTransform()
         if faceIn:
             trans1.setRotationZ(az - 90)
         else:
             trans1.setRotationZ(az + 90)
         e1.addComponent(trans1)
 
-        e3 = QEntity(e1)
-        trans3 = QTransform()
+        e3 = Qt3DCore.QEntity(e1)
+        trans3 = Qt3DCore.QTransform()
         trans3.setTranslation(QVector3D(0.05, 0.0, 0.05))
         e3.addComponent(trans3)
 
-        e2 = QEntity(e3)
-        mesh = QExtrudedTextMesh()
+        e2 = Qt3DCore.QEntity(e3)
+        mesh = Qt3DExtras.QExtrudedTextMesh()
         mesh.setText(text)
         mesh.setDepth(0.05)
         mesh.setFont(QFont('Arial', self.FONT_SIZE))
-        trans2 = QTransform()
+        trans2 = Qt3DCore.QTransform()
         if faceIn:
             trans2.setRotationX(90 + alt)
         else:
@@ -256,10 +255,10 @@ class SimulatorBuildPoints:
             return False
 
         self.clear()
-        buildPointEntity = QEntity()
+        buildPointEntity = Qt3DCore.QEntity()
         parent = self.parent.entityModel['ref_fusion']
         buildPointEntity.setParent(parent)
-        buildPointEntity.addComponent(QTransform())
+        buildPointEntity.addComponent(Qt3DCore.QTransform())
         self.parent.entityModel['buildPoints'] = buildPointEntity
 
         self.loopCreate(buildPointEntity)

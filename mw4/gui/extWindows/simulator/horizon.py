@@ -18,9 +18,9 @@
 
 # external packages
 import numpy as np
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QCuboidMesh
-from PyQt6.Qt3DCore import QEntity, QTransform
+from PySide6.QtGui import QVector3D
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.Qt3DCore import Qt3DCore
 
 # local imports
 
@@ -66,23 +66,23 @@ class SimulatorHorizon:
         :return: entity
         """
         radius = 4
-        e1 = QEntity(parentEntity)
-        trans1 = QTransform()
+        e1 = Qt3DCore.QEntity(parentEntity)
+        trans1 = Qt3DCore.QTransform()
         trans1.setRotationZ(-az)
         e1.addComponent(trans1)
 
-        e2 = QEntity(e1)
-        trans2 = QTransform()
+        e2 = Qt3DCore.QEntity(e1)
+        trans2 = Qt3DCore.QTransform()
         trans2.setTranslation(QVector3D(radius, 0, 0))
         e2.addComponent(trans2)
 
-        e3 = QEntity(e2)
+        e3 = Qt3DCore.QEntity(e2)
         height = radius * np.tan(np.radians(alt)) + 1.35
-        mesh = QCuboidMesh()
+        mesh = Qt3DExtras.QCuboidMesh()
         mesh.setXExtent(0.01)
         mesh.setYExtent(radius * np.tan(np.radians(space)))
         mesh.setZExtent(height)
-        trans3 = QTransform()
+        trans3 = Qt3DCore.QTransform()
         trans3.setTranslation(QVector3D(0, 0, height / 2))
         e3.addComponent(mesh)
         e3. addComponent(trans3)
@@ -105,7 +105,7 @@ class SimulatorHorizon:
         horizonAlt = np.interp(horizonAz, az, alt)
 
         self.clear()
-        horizonEntity = QEntity()
+        horizonEntity = Qt3DCore.QEntity()
         parent = self.parent.entityModel['ref_fusion']
         horizonEntity.setParent(parent)
         self.parent.entityModel['horizon'] = horizonEntity

@@ -23,7 +23,7 @@ if platform.system() == 'Windows':
     from win32com import client
 
 # external packages
-from PyQt6.QtCore import QTimer, QMutex
+from PySide6.QtCore import QTimer, QMutex
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
@@ -243,7 +243,7 @@ class AscomClass(DriverData):
         """
         callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
         longer to end and should not slow down the gui thread itself. All called
-        functions run in PyQt6 threadPool and could have callback after result is
+        functions run in PySide6 threadPool and could have callback after result is
         processed or the thread task is finished. It does not call directly the
         defined function, but the callerInitUnInit method, which does the necessary
         pythoncom.Initialize() before running win32 functions in another thread

@@ -18,7 +18,7 @@
 import logging
 
 # external packages
-from PyQt6.QtCore import QMutex
+from PySide6.QtCore import QMutex
 import numpy as np
 
 # local imports

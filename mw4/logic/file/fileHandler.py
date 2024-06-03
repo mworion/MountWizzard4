@@ -19,7 +19,7 @@ import os
 import logging
 
 # external packages
-from PyQt6.QtCore import pyqtSignal, QObject
+from PySide6.QtCore import Signal, QObject
 import numpy as np
 import cv2
 from astropy.io import fits
@@ -36,7 +36,7 @@ class FileHandlerSignals(QObject):
     """
     __all__ = ['FileHandlerSignals']
 
-    imageLoaded = pyqtSignal()
+    imageLoaded = Signal()
 
 
 class FileHandler:

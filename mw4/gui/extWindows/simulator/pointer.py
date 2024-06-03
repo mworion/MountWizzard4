@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QSphereMesh
+from PySide6.QtGui import QVector3D
+from PySide6.Qt3DExtras import Qt3DExtras
 
 # local import
 from gui.extWindows.simulator.tools import linkModel, getTransformation
@@ -69,7 +69,7 @@ class SimulatorPointer:
             },
             'pointerDot': {
                 'parent': 'pointer',
-                'source': [QSphereMesh(), 50, 30, 30],
+                'source': [Qt3DExtras.QSphereMesh(), 50, 30, 30],
                 'scale': [1, 1, 1],
                 'mat': self.parent.materials.pointer,
             },

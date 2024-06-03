@@ -21,10 +21,10 @@ import os
 
 # external packages
 import pytest
-import PyQt6
-from PyQt6.QtCore import QEvent, QPointF, Qt
-from PyQt6.QtGui import QMouseEvent
-from PyQt6 import QtWidgets
+import PySide6
+from PySide6.QtCore import QEvent, QPointF, Qt
+from PySide6.QtGui import QMouseEvent
+from PySide6 import QtWidgets
 
 # local import
 from loader import MyApp
@@ -137,7 +137,7 @@ def test_notify_1(qapp):
 def test_notify_2(qapp):
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.Type.MouseButtonPress)
-    with mock.patch.object(PyQt6.QtWidgets.QApplication,
+    with mock.patch.object(PySide6.QtWidgets.QApplication,
                            'notify',
                            return_value=True,
                            side_effect=Exception()):
@@ -153,7 +153,7 @@ def test_notify_3(qapp):
                         Qt.MouseButton.NoButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(PyQt6.QtWidgets.QApplication,
+    with mock.patch.object(PySide6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         suc = qapp.notify(obj=ui, event=event)
@@ -168,7 +168,7 @@ def test_notify_4(qapp):
                         Qt.MouseButton.LeftButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(PyQt6.QtWidgets.QApplication,
+    with mock.patch.object(PySide6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         with mock.patch.object(qapp,
@@ -186,7 +186,7 @@ def test_notify_5(qapp):
                         Qt.MouseButton.LeftButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(PyQt6.QtWidgets.QApplication,
+    with mock.patch.object(PySide6.QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         with mock.patch.object(qapp,

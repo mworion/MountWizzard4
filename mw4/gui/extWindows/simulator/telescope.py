@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QCuboidMesh
+from PySide6.QtGui import QVector3D
+from PySide6.Qt3DExtras import Qt3DExtras
 
 # local import
 from gui.extWindows.simulator.tools import linkModel, getTransformation, getMesh
@@ -178,7 +178,7 @@ class SimulatorTelescope:
             },
             'gem': {
                 'parent': 'mountHead',
-                'source': [QCuboidMesh(), 100, 60, 10],
+                'source': [Qt3DExtras.QCuboidMesh(), 100, 60, 10],
                 'trans': [159, 0, 338.5],
                 'mat': self.parent.materials.aluCCD,
             },

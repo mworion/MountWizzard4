@@ -21,11 +21,11 @@ import os
 import platform
 
 # external packages
-from PyQt6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
-from PyQt6.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
-from PyQt6.QtCore import pyqtSignal, QObject, Qt, QPoint
-from PyQt6.QtGui import QIcon, QPixmap, QPainterPath
-from PyQt6.QtTest import QTest
+from PySide6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
+from PySide6.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
+from PySide6.QtCore import Signal, QObject, Qt, QPoint
+from PySide6.QtGui import QIcon, QPixmap, QPainterPath
+from PySide6.QtTest import QTest
 from skyfield.api import Angle, load
 import numpy as np
 
@@ -59,7 +59,7 @@ def test_FileSortProxyModel_1():
 
 def test_QMultiWait_1():
     class Test(QObject):
-        a = pyqtSignal()
+        a = Signal()
     w = QMultiWait()
     A = Test()
     w.addWaitableSignal(A.a)
@@ -67,7 +67,7 @@ def test_QMultiWait_1():
 
 def test_QMultiWait_2():
     class Test(QObject):
-        a = pyqtSignal()
+        a = Signal()
     w = QMultiWait()
     A = Test()
     w.addWaitableSignal(A.a)
@@ -81,7 +81,7 @@ def test_QMultiWait_3():
 
 def test_QMultiWait_4():
     class Test(QObject):
-        a = pyqtSignal()
+        a = Signal()
     w = QMultiWait()
     A = Test()
     w.addWaitableSignal(A.a)

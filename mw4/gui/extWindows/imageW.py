@@ -19,8 +19,8 @@ import os
 
 # external packages
 import pyqtgraph as pg
-from PyQt6.QtCore import pyqtSignal, QObject, Qt
-from PyQt6.QtGui import QFont, QGuiApplication, QCursor
+from PySide6.QtCore import Signal, QObject, Qt
+from PySide6.QtGui import QFont, QGuiApplication, QCursor
 from skyfield.api import Angle
 
 # local import
@@ -38,7 +38,7 @@ class ImageWindowSignals(QObject):
     """
     """
     __all__ = ['ImageWindowSignals']
-    solveImage = pyqtSignal(object)
+    solveImage = Signal(object)
 
 
 class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):

@@ -20,7 +20,7 @@ import logging
 # external packages
 import numpy as np
 import sep_mw4 as sep
-from PyQt6.QtCore import pyqtSignal, QObject, QMutex
+from PySide6.QtCore import Signal, QObject, QMutex
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 
@@ -33,14 +33,14 @@ class PhotometrySignals(QObject):
     """
     __all__ = ['PhotometrySignals']
 
-    hfr = pyqtSignal()
-    hfrSquare = pyqtSignal()
-    hfrTriangle = pyqtSignal()
-    aberration = pyqtSignal()
-    roundness = pyqtSignal()
-    background = pyqtSignal()
-    backgroundRMS = pyqtSignal()
-    sepFinished = pyqtSignal()
+    hfr = Signal()
+    hfrSquare = Signal()
+    hfrTriangle = Signal()
+    aberration = Signal()
+    roundness = Signal()
+    background = Signal()
+    backgroundRMS = Signal()
+    sepFinished = Signal()
 
 
 class Photometry:

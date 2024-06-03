@@ -20,7 +20,7 @@ import json
 import os
 
 # external packages
-from PyQt6.QtCore import pyqtSignal
+from PySide6.QtCore import Signal
 import requests
 
 # local imports
@@ -31,7 +31,7 @@ from base.driverDataClass import Signals
 class SeeingWeatherSignals(Signals):
     """
     """
-    update = pyqtSignal()
+    update = Signal()
 
 
 class SeeingWeather():

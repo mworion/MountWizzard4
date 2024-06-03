@@ -83,7 +83,7 @@ jobs:
             apt-get -y install python3.12-venv python3-pip build-essential
             apt-get -y install python3.12-dev autoconf libtool
             apt-get -y install qmake6 qt6-base-dev qt6-base-dev-tools
-            apt-get -y install qtcreator qt6-wayland python3-pyqt6.sip
+            apt-get -y install qtcreator qt6-wayland python3-PySide6.sip
             
           # Produce a binary artifact and place it in the mounted volume
           run: |
@@ -127,8 +127,8 @@ jobs:
             echo "--------------------------------------------------"
             echo "Start building wheels"
             echo "--------------------------------------------------"
-            pip install pyqt6-sip
-            pip wheel pyqt6==6.5.3 -w "wheels" -C --confirm-license=  --verbose
+            pip install PySide6-sip
+            pip wheel PySide6==6.5.3 -w "wheels" -C --confirm-license=  --verbose
 
 
       - name: Update changes in GitHub repository

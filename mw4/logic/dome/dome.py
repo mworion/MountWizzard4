@@ -19,7 +19,7 @@ import logging
 import platform
 
 # external packages
-import PyQt6
+import PySide6
 import numpy as np
 
 # local imports
@@ -72,7 +72,7 @@ class Dome:
         self.clearOpening = None
         self.counterStartSlewing = -1
         self.settlingTime = 0
-        self.settlingWait = PyQt6.QtCore.QTimer()
+        self.settlingWait = PySide6.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
 

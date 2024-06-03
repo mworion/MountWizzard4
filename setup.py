@@ -28,7 +28,7 @@ releaseNotes = """
 - add: support uploading mechanism for databases for macos and linux
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
-- change: moving PyQt5 to major version PyQt6
+- change: moving PyQt5 to major version PySide6
 - change: moving libraries to latest versions
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link
@@ -109,9 +109,8 @@ setup(
         'xisf==0.9.5',
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
-    + (['PyQt6==6.7.0'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt6-3D==6.7.0'] if platform.machine() not in ['armv7l', 'aarch64'] else[]),
-    keywords=['6.7.0'],
+    + (['PySide6==6.7.1'] if platform.machine() not in ['armv7l'] else []),
+    keywords=['6.7.1'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

@@ -17,11 +17,11 @@
 # standard libraries
 import pytest
 # external packages
-from PyQt6.Qt3DExtras import QSphereMesh, QCuboidMesh
-from PyQt6.Qt3DCore import QEntity
-from PyQt6.Qt3DExtras import QPhongAlphaMaterial, QCylinderMesh, QExtrudedTextMesh
-from PyQt6.Qt3DCore import QTransform
-from PyQt6.Qt3DRender import QMesh
+from PySide6.Qt3DExtras import QSphereMesh, QCuboidMesh
+from PySide6.Qt3DCore import QEntity
+from PySide6.Qt3DExtras import QPhongAlphaMaterial, QCylinderMesh, QExtrudedTextMesh
+from PySide6.Qt3DCore import QTransform
+from PySide6.Qt3DRender import QMesh
 
 
 # local import

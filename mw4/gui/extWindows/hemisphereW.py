@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QGuiApplication, QCursor
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont, QGuiApplication, QCursor
 import numpy as np
 import cv2
 import pyqtgraph as pg

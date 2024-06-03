@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt6.Qt3DCore import QEntity
+from PySide6.Qt3DCore import QEntity
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

@@ -160,10 +160,10 @@ class UpdateGUI:
     def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):
         self.version = version
 
-        from PyQt6.QtCore import Qt
-        from PyQt6.QtGui import QIcon, QPixmap, QColor, QPainter
-        from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout
-        from PyQt6.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
+        from PySide6.QtCore import Qt
+        from PySide6.QtGui import QIcon, QPixmap, QColor, QPainter
+        from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout
+        from PySide6.QtWidgets import QHBoxLayout, QWidget, QTextBrowser, QLabel
         import resource.resources as res
         res.qInitResources()
         from gui.utilities.stylesQtCss import Styles
@@ -236,8 +236,8 @@ class UpdateGUI:
         :param color:
         :return:
         """
-        from PyQt6.QtGui import QTextCursor
-        from PyQt6.QtWidgets import QApplication
+        from PySide6.QtGui import QTextCursor
+        from PySide6.QtWidgets import QApplication
 
         self.textBrow.setTextColor(self.mColor[color])
         self.textBrow.insertPlainText(text + '\n')

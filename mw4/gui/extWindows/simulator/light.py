@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QColor, QVector3D
-from PyQt6.Qt3DRender import QPointLight, QDirectionalLight, QSpotLight
+from PySide6.QtGui import QColor, QVector3D
+from PySide6.Qt3DRender import Qt3DRender
 
 # local import
 from gui.extWindows.simulator.tools import linkModel, getLight
@@ -52,18 +52,20 @@ class SimulatorLight:
             },
             'main': {
                 'parent': 'lights',
-                'light': [QPointLight(), 1.0, QColor(255, 255, 255)],
+                'light': [Qt3DRender.QPointLight(), 1.0, QColor(255, 255, 255)],
                 'trans': [10, 40, 10],
             },
 
             'dir': {
                 'parent': 'lights',
-                'light': [QDirectionalLight(), 0, QColor(0, 255, 0), QVector3D(1, 0, 1)],
+                'light': [Qt3DRender.QDirectionalLight(), 0, QColor(0, 255, 0),
+                          QVector3D(1, 0, 1)],
                 'trans': [-10, 1, -10],
             },
             'spot': {
                 'parent': 'lights',
-                'light': [QSpotLight(), 0, QColor(0, 255, 255), 5, QVector3D(1, 0, -1)],
+                'light': [Qt3DRender.QSpotLight(), 0, QColor(0, 255, 255), 5,
+                          QVector3D(1, 0, -1)],
                 'trans': [-5, 1, 5],
             },
         }

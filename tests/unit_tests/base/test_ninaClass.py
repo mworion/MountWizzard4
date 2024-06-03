@@ -20,8 +20,8 @@ from unittest import mock
 # external packages
 import pytest
 import requests
-import PyQt6
-from PyQt6.QtCore import QTimer
+import PySide6
+from PySide6.QtCore import QTimer
 
 # local import
 from base.ninaClass import NINAClass
@@ -245,7 +245,7 @@ def test_startTimer(function):
 
 
 def test_stopTimer(function):
-    with mock.patch.object(PyQt6.QtCore.QTimer,
+    with mock.patch.object(PySide6.QtCore.QTimer,
                            'stop'):
         suc = function.stopTimer()
         assert suc

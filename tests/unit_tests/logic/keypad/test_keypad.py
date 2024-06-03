@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt6.QtCore import QObject, pyqtSignal
+from PySide6.QtCore import QObject, Signal
 from websocket import WebSocketApp
 
 # local import
@@ -29,15 +29,15 @@ from logic.keypad.keypad import KeyPad
 @pytest.fixture(autouse=True, scope='function')
 def function():
     class Signals(QObject):
-        textRow = pyqtSignal(object, object)
-        imgChunk = pyqtSignal(object, object, object)
-        keyPressed = pyqtSignal(object)
-        keyUp = pyqtSignal(object)
-        keyDown = pyqtSignal(object)
-        mousePressed = pyqtSignal(object)
-        mouseReleased = pyqtSignal(object)
-        cursorPos = pyqtSignal(object, object)
-        clearCursor = pyqtSignal()
+        textRow = Signal(object, object)
+        imgChunk = Signal(object, object, object)
+        keyPressed = Signal(object)
+        keyUp = Signal(object)
+        keyDown = Signal(object)
+        mousePressed = Signal(object)
+        mouseReleased = Signal(object)
+        cursorPos = Signal(object, object)
+        clearCursor = Signal()
 
     func = KeyPad(signals=Signals())
     yield func

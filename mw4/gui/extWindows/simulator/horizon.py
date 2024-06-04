@@ -112,10 +112,8 @@ class SimulatorHorizon:
         horizonEntity.setParent(parent)
         self.parent.entityModel['horizon'] = horizonEntity
 
-        i=0
         for alt, az in zip(horizonAlt, horizonAz):
-            print(i, alt, az)
-            i +=1
-            self.createWall(horizonEntity, alt, az)
+            # self.createWall(horizonEntity, alt, az)
+            pass
         self.showEnable()
         return True

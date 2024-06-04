@@ -171,7 +171,7 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.camera = self.window3D.camera()
-        self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 1000)
+        self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 10000)
         self.camera.setViewCenter(QVector3D(0, 1.5, 0))
         self.camera.setPosition(QVector3D(5, 15, 3))
         self.camera.setUpVector(QVector3D(0, 1, 0))

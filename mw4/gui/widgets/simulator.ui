@@ -66,23 +66,13 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QGridLayout" name="gridLayout" columnstretch="0,1">
+    <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <property name="leftMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1" rowspan="2">
-      <layout class="QHBoxLayout" name="simulator">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
-       </property>
-      </layout>
-     </item>
      <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
@@ -280,10 +270,16 @@
      <item row="0" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>1</verstretch>
         </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
        </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
@@ -476,6 +472,16 @@ Moves the camera so that entire scene is visible in the camera viewport.&lt;/p&g
         </item>
        </layout>
       </widget>
+     </item>
+     <item row="0" column="1" rowspan="2">
+      <layout class="QHBoxLayout" name="simulator" stretch="">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
+       </property>
+      </layout>
      </item>
     </layout>
    </item>

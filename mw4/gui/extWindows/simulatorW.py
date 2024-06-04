@@ -66,20 +66,21 @@ class SimulatorWindow(MWidget):
         self.materialWindow.initConfig()
         self.materialWindow.showWindow()
         """
-        self.entityModel = {'root_qt3d': Qt3DCore.QEntity()}
         self.camera = None
         self.cameraController = None
 
-        self.view = Qt3DExtras.Qt3DWindow()
-        self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
-        container = QWidget.createWindowContainer(self.view)
+        self.window3D = Qt3DExtras.Qt3DWindow()
+        self.entityModel = {'root_qt3d': Qt3DCore.QEntity()}
+        self.window3D.setRootEntity(self.entityModel['root_qt3d'])
+        self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
+
+        container = QWidget.createWindowContainer(self.window3D)
         self.ui.simulator.addWidget(container)
-        self.view.setRootEntity(self.entityModel['root_qt3d'])
 
         self.picker = Qt3DRender.QObjectPicker()
         self.entityModel['root_qt3d'].addComponent(self.picker)
 
-        pickSett = self.view.renderSettings().pickingSettings()
+        pickSett = self.window3D.renderSettings().pickingSettings()
         pickSett.setPickMethod(
             Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
         pickSett.setPickResultMode(
@@ -177,7 +178,7 @@ class SimulatorWindow(MWidget):
         :param parentEntity:
         :return:
         """
-        self.camera = self.view.camera()
+        self.camera = self.window3D.camera()
         self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 10000)
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
@@ -193,7 +194,7 @@ class SimulatorWindow(MWidget):
         not for the 3D scene itself during runtime.
         """
         self.setStyleSheet(self.mw4Style)
-        self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
+        self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
 
     def limitPositionZ(self):
         """

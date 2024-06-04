@@ -46,13 +46,6 @@ class Ui_SimulatorDialog(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.gridLayout.setContentsMargins(0, -1, -1, -1)
-        self.simulator = QHBoxLayout()
-        self.simulator.setSpacing(0)
-        self.simulator.setObjectName(u"simulator")
-        self.simulator.setSizeConstraint(QLayout.SetDefaultConstraint)
-
-        self.gridLayout.addLayout(self.simulator, 0, 1, 2, 1)
-
         self.groupBox_2 = QGroupBox(SimulatorDialog)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.groupBox_2.setProperty("large", True)
@@ -119,11 +112,12 @@ class Ui_SimulatorDialog(object):
 
         self.groupBox = QGroupBox(SimulatorDialog)
         self.groupBox.setObjectName(u"groupBox")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(1)
         sizePolicy1.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy1)
+        self.groupBox.setMaximumSize(QSize(150, 16777215))
         self.groupBox.setProperty("large", True)
         self.verticalLayout = QVBoxLayout(self.groupBox)
         self.verticalLayout.setSpacing(4)
@@ -193,7 +187,13 @@ class Ui_SimulatorDialog(object):
 
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
 
-        self.gridLayout.setColumnStretch(1, 1)
+        self.simulator = QHBoxLayout()
+        self.simulator.setSpacing(0)
+        self.simulator.setObjectName(u"simulator")
+        self.simulator.setSizeConstraint(QLayout.SetMinimumSize)
+
+        self.gridLayout.addLayout(self.simulator, 0, 1, 2, 1)
+
 
         self.horizontalLayout.addLayout(self.gridLayout)
 

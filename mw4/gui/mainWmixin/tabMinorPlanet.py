@@ -144,7 +144,6 @@ class MinorPlanet:
             self.ui.listMinorPlanetNames.addItem(text)
 
         self.ui.listMinorPlanetNames.sortItems()
-        self.ui.listMinorPlanetNames.update()
         self.filterMinorPlanetNamesList()
         return True
 

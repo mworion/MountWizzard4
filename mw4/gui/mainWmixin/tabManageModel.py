@@ -109,7 +109,6 @@ class ManageModel:
         for name in model.nameList:
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
-        # self.ui.nameList.update()
         return True
 
     @staticmethod

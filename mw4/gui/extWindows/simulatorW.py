@@ -61,17 +61,19 @@ class SimulatorWindow(MWidget):
         self.buildPoints = SimulatorBuildPoints(self, self.app)
         self.materials = Materials()
 
+        """
         self.materialWindow = MaterialWindow(self.app)
         self.materialWindow.initConfig()
         self.materialWindow.showWindow()
+        """
 
         self.window3D = Qt3DExtras.Qt3DWindow()
         self.entityModel = {'root_qt3d': Qt3DCore.QEntity()}
         self.window3D.setRootEntity(self.entityModel['root_qt3d'])
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
 
-        container = QWidget.createWindowContainer(self.window3D)
-        self.ui.simulator.addWidget(container)
+        self.container = QWidget.createWindowContainer(self.window3D)
+        self.ui.simulator.addWidget(self.container)
 
         self.camera = None
         self.cameraController = None
@@ -88,8 +90,7 @@ class SimulatorWindow(MWidget):
             Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
         pickSett.setFaceOrientationPickingMode(
             Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
-        # pickSett.setWorldSpaceTolerance(0.0001)
-
+        pickSett.setWorldSpaceTolerance(0.0001)
         self.createScene()
 
     def clicked(self, pickEntity):
@@ -147,8 +148,8 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.entityModel.clear()
-        self.materialWindow.storeConfig()
-        self.materialWindow.close()
+        # self.materialWindow.storeConfig()
+        # self.materialWindow.close()
         self.storeConfig()
         super().closeEvent(closeEvent)
 
@@ -281,10 +282,11 @@ class SimulatorWindow(MWidget):
         """
         self.setupReference()
         self.light.create()
+        self.world.create()
+        self.horizon.create()
+        self.dome.create()
         self.telescope.create()
         self.laser.create()
         self.pointer.create()
         self.horizon.create()
-        self.world.create()
-        self.dome.create()
         self.buildPoints.create()

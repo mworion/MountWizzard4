@@ -66,6 +66,8 @@ def linkSource(node):
         if isinstance(source, str):
             mesh = Qt3DRender.QMesh()
             mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
+            mesh.sourceChanged.connect(lambda: print(f'{mesh.meshName}: {mesh.status}'))
+
         elif isinstance(source[0], Qt3DExtras.QCuboidMesh):
             mesh = source[0]
             mesh.setXExtent(source[1])

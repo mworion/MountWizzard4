@@ -73,4 +73,4 @@ class SimulatorLight:
             },
         }
         linkModel(model, self.parent.entityModel)
-        self.app.material.emit(self.parent.entityModel['main'], 'main')
+        # self.app.material.emit(self.parent.entityModel['main'], 'main')

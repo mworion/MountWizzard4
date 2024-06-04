@@ -100,12 +100,14 @@ class Materials(Styles):
         self.glass.setAlphaBlendingEnabled(True)
         self.glass.setShininess(128)
 
+        """
         self.stainless = Qt3DExtras.QDiffuseSpecularMaterial()
         self.stainless.setAmbient(QColor(192, 192, 192))
         self.stainless.setDiffuse(QColor(128, 128, 128))
         self.stainless.setSpecular(QColor(255, 255, 255, 255))
-        self.glass.setAlphaBlendingEnabled(False)
+        self.stainless.setAlphaBlendingEnabled(False)
         self.stainless.setShininess(255)
+        """
 
         self.domeSphere = Qt3DExtras.QPhongAlphaMaterial()
         self.domeSphere.setAmbient(QColor(self.M_BLUE2))
@@ -180,6 +182,6 @@ class Materials(Styles):
         self.horizon = Qt3DExtras.QPhongAlphaMaterial()
         self.horizon.setAmbient(QColor(self.M_BLUE4))
         self.horizon.setDiffuse(QColor(self.M_YELLOW))
-        self.walls.setSpecular(QColor(self.M_YELLOW))
+        self.horizon.setSpecular(QColor(self.M_YELLOW))
         self.horizon.setAlpha(0.35)
         self.horizon.setShininess(64)

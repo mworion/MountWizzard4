@@ -28,6 +28,8 @@ from PySide6.Qt3DCore import Qt3DCore
 class SimulatorHorizon:
 
     __all__ = ['SimulatorHorizon']
+    WALL_RADIUS = 4
+    WALL_SPACE = 5
 
     def __init__(self, parent, app):
         super().__init__()
@@ -54,7 +56,7 @@ class SimulatorHorizon:
         del horizonEntity
         return True
 
-    def createWall(self, parentEntity, alt, az, space):
+    def createWall(self, parentEntity, alt, az):
         """
         createWall draw a plane in radius distance to show the horizon. spacing
         is the angular spacing between this planes
@@ -62,30 +64,31 @@ class SimulatorHorizon:
         :param parentEntity:
         :param alt:
         :param az:
-        :param space:
         :return: entity
         """
-        radius = 4
-        e1 = Qt3DCore.QEntity(parentEntity)
+        e1 = Qt3DCore.QEntity()
+        e1.setParent(parentEntity)
         trans1 = Qt3DCore.QTransform()
         trans1.setRotationZ(-az)
         e1.addComponent(trans1)
 
-        e2 = Qt3DCore.QEntity(e1)
+        e2 = Qt3DCore.QEntity()
+        e2.setParent(e1)
         trans2 = Qt3DCore.QTransform()
-        trans2.setTranslation(QVector3D(radius, 0, 0))
+        trans2.setTranslation(QVector3D(self.WALL_RADIUS, 0, 0))
         e2.addComponent(trans2)
 
-        e3 = Qt3DCore.QEntity(e2)
-        height = radius * np.tan(np.radians(alt)) + 1.35
+        e3 = Qt3DCore.QEntity()
+        e3.setParent(e2)
+        height = self.WALL_RADIUS * np.tan(np.radians(alt)) + 1.35
         mesh = Qt3DExtras.QCuboidMesh()
         mesh.setXExtent(0.01)
-        mesh.setYExtent(radius * np.tan(np.radians(space)))
+        mesh.setYExtent(self.WALL_RADIUS * np.tan(np.radians(self.WALL_SPACE)))
         mesh.setZExtent(height)
+        e3.addComponent(mesh)
         trans3 = Qt3DCore.QTransform()
         trans3.setTranslation(QVector3D(0, 0, height / 2))
-        e3.addComponent(mesh)
-        e3. addComponent(trans3)
+        e3.addComponent(trans3)
         e3.addComponent(self.parent.materials.horizon)
         return e3
 
@@ -98,8 +101,7 @@ class SimulatorHorizon:
         if not self.app.data.horizonP:
             return False
 
-        space = 5
-        horizonAz = np.linspace(0, 360 - space, int(360 / space))
+        horizonAz = np.linspace(0, 360 - self.WALL_SPACE, int(360 / self.WALL_SPACE))
         alt = [x[0] for x in self.app.data.horizonP]
         az = [x[1] for x in self.app.data.horizonP]
         horizonAlt = np.interp(horizonAz, az, alt)
@@ -110,7 +112,10 @@ class SimulatorHorizon:
         horizonEntity.setParent(parent)
         self.parent.entityModel['horizon'] = horizonEntity
 
+        i=0
         for alt, az in zip(horizonAlt, horizonAz):
-            self.createWall(horizonEntity, alt, az, space)
+            print(i, alt, az)
+            i +=1
+            self.createWall(horizonEntity, alt, az)
         self.showEnable()
         return True

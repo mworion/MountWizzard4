@@ -52,19 +52,22 @@ class SimulatorLight:
             },
             'main': {
                 'parent': 'lights',
-                'light': [Qt3DRender.QPointLight(), 1.0, QColor(255, 255, 255)],
+                'light': [Qt3DRender.QPointLight(), 1.0,
+                          QColor(255, 255, 255)],
                 'trans': [10, 40, 10],
             },
 
             'dir': {
                 'parent': 'lights',
-                'light': [Qt3DRender.QDirectionalLight(), 0, QColor(0, 255, 0),
+                'light': [Qt3DRender.QDirectionalLight(), 1,
+                          QColor(0, 255, 0),
                           QVector3D(1, 0, 1)],
                 'trans': [-10, 1, -10],
             },
             'spot': {
                 'parent': 'lights',
-                'light': [Qt3DRender.QSpotLight(), 0, QColor(0, 255, 255), 5,
+                'light': [Qt3DRender.QSpotLight(), 1,
+                          QColor(0, 255, 255), 5,
                           QVector3D(1, 0, -1)],
                 'trans': [-5, 1, 5],
             },

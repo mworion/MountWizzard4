@@ -61,13 +61,9 @@ class SimulatorWindow(MWidget):
         self.buildPoints = SimulatorBuildPoints(self, self.app)
         self.materials = Materials()
 
-        """
         self.materialWindow = MaterialWindow(self.app)
         self.materialWindow.initConfig()
         self.materialWindow.showWindow()
-        """
-        self.camera = None
-        self.cameraController = None
 
         self.window3D = Qt3DExtras.Qt3DWindow()
         self.entityModel = {'root_qt3d': Qt3DCore.QEntity()}
@@ -77,8 +73,13 @@ class SimulatorWindow(MWidget):
         container = QWidget.createWindowContainer(self.window3D)
         self.ui.simulator.addWidget(container)
 
+        self.camera = None
+        self.cameraController = None
+        self.setupCamera(self.entityModel['root_qt3d'])
+
         self.picker = Qt3DRender.QObjectPicker()
         self.entityModel['root_qt3d'].addComponent(self.picker)
+        self.picker.clicked.connect(self.clicked)
 
         pickSett = self.window3D.renderSettings().pickingSettings()
         pickSett.setPickMethod(
@@ -87,19 +88,9 @@ class SimulatorWindow(MWidget):
             Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
         pickSett.setFaceOrientationPickingMode(
             Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
-        pickSett.setWorldSpaceTolerance(0.0001)
+        # pickSett.setWorldSpaceTolerance(0.0001)
 
-        self.picker.clicked.connect(self.clicked)
-        self.setupCamera(self.entityModel['root_qt3d'])
-
-        light = Qt3DCore.QEntity(self.entityModel['root_qt3d'])
-        light.addComponent(Qt3DRender.QPointLight())
-        corpus = Qt3DCore.QEntity(self.entityModel['root_qt3d'])
-        mesh = Qt3DExtras.QSphereMesh()
-        mesh.setRadius(5)
-        corpus.addComponent(mesh)
-
-        # self.createScene()
+        self.createScene()
 
     def clicked(self, pickEntity):
         """
@@ -179,10 +170,10 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.camera = self.window3D.camera()
-        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 10000)
-        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
-        self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
-        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
+        self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 1000)
+        self.camera.setViewCenter(QVector3D(0, 1.5, 0))
+        self.camera.setPosition(QVector3D(5, 15, 3))
+        self.camera.setUpVector(QVector3D(0, 1, 0))
         self.cameraController = Qt3DExtras.QOrbitCameraController(parentEntity)
         self.cameraController.setCamera(self.camera)
         self.cameraController.setLinearSpeed(5.0)
@@ -289,11 +280,11 @@ class SimulatorWindow(MWidget):
         closely which references are used.
         """
         self.setupReference()
-        self.world.create()
         self.light.create()
         self.telescope.create()
         self.laser.create()
         self.pointer.create()
         self.horizon.create()
+        self.world.create()
         self.dome.create()
         self.buildPoints.create()

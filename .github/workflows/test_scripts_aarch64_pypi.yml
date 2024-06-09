@@ -51,6 +51,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: pyside
+            
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1.6.0
+        with:
+          url: ${{ env.gh }}startup.pyz
+          target: .
 
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact
@@ -64,7 +70,7 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            -v "${PWD}/support":/root/support
+            -v "${PWD}":/root
 
           # The shell to run commands with in the container
           shell: /bin/bash
@@ -88,8 +94,8 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             python3 --version
-            ls /root/support/*.*
-            cd /root/support
+            ls /root/*.*
+            cd /root
             python3 startup.pyz --no-start --version 4.0.0a6
             touch test.run
             xvfb-run python3 startup.pyz

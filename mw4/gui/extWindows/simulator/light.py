@@ -46,11 +46,11 @@ class SimulatorLight:
         """
         """
         model = {
-            'lights': {
+            'lightRoot': {
                 'parent': 'root',
             },
             'main': {
-                'parent': 'lights',
+                'parent': 'lightRoot',
                 'light': ['point', 1.0, [255, 255, 255]],
                 'trans': [5, 20, 5],
             },
@@ -61,12 +61,12 @@ class SimulatorLight:
 """
 
             'dir': {
-                'parent': 'lights',
+                'parent': 'lightRoot',
                 'light': ['direction', 1, [0, 255, 0], [1, 0, 1]],
                 'trans': [-10, 1, -10],
             },
             'spot': {
-                'parent': 'lights',
+                'parent': 'lightRoot',
                 'light': ['spot', 1, [0, 255, 255], 5, [1, 0, -1]],
                 'trans': [-5, 1, 5],
             },

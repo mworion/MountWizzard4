@@ -39,7 +39,7 @@ class SimulatorPointer:
         """
         """
         isVisible = self.parent.ui.showPointer.isChecked()
-        entity = self.parent.entityModel.get('pointer')
+        entity = self.parent.entityModel.get('pointerRoot')
         if entity:
             entity.setEnabled(isVisible)
 
@@ -64,11 +64,11 @@ class SimulatorPointer:
         """
         """
         model = {
-            'pointer': {
+            'pointerRoot': {
                 'parent': 'ref_fusion_m',
             },
             'pointerDot': {
-                'parent': 'pointer',
+                'parent': 'pointerRoot',
                 'source': [Qt3DExtras.QSphereMesh(), 50, 30, 30],
                 'mat': self.parent.materials.pointer,
             },

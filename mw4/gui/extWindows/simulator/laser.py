@@ -41,7 +41,7 @@ class SimulatorLaser:
         """
         """
         isVisible = self.parent.ui.showLaser.isChecked()
-        entity = self.parent.entityModel.get('laser')
+        entity = self.parent.entityModel.get('laserRoot')
         if entity:
             entity.setEnabled(isVisible)
 
@@ -77,11 +77,11 @@ class SimulatorLaser:
         """
         """
         model = {
-            'laser': {
+            'laserRoot': {
                 'parent': 'ref_fusion_m',
             },
             'displacement': {
-                'parent': 'laser',
+                'parent': 'laserRoot',
             },
             'az': {
                 'parent': 'displacement',

@@ -57,26 +57,26 @@ class SimulatorWorld:
         """
         """
         model = {
-            'environ': {
+            'environRoot': {
                 'parent': 'ref_fusion_m',
             },
             'ground': {
-                'parent': 'environ',
+                'parent': 'environRoot',
                 'source': 'dome-base.stl',
 #                'mat': self.parent.materials.environ1,
             },
             'domeColumn': {
-                'parent': 'environ',
+                'parent': 'environRoot',
                 'source': 'dome-column.stl',
 #                'mat': self.parent.materials.domeColumn,
             },
             'domeCompassRose': {
-                'parent': 'environ',
+                'parent': 'environRoot',
                 'source': 'dome-rose.stl',
 #                'mat': self.parent.materials.aluRed,
             },
             'domeCompassRoseChar': {
-                'parent': 'environ',
+                'parent': 'environRoot',
                 'source': 'dome-rose-char.stl',
 #                'mat': self.parent.materials.white,
             },

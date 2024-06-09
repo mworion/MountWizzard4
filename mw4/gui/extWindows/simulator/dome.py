@@ -56,7 +56,7 @@ class SimulatorDome:
         :param show:
         :return:
         """
-        entity = self.parent.entityModel.get('dome')
+        entity = self.parent.entityModel.get('domeRoot')
         if entity:
             entity.setEnabled(show)
 
@@ -128,21 +128,21 @@ class SimulatorDome:
         :return:
         """
         model = {
-            'dome': {
+            'domeRoot': {
                 'parent': 'ref_fusion_m',
             },
             'domeFloor': {
-                'parent': 'dome',
+                'parent': 'domeRoot',
                 'source': 'dome-floor.stl',
                 'mat': Materials().aluminiumGrey,
             },
             'domeWall': {
-                'parent': 'dome',
+                'parent': 'domeRoot',
                 'source': 'dome-wall.stl',
                 'mat': Materials().walls,
             },
             'domeSphere': {
-                'parent': 'dome',
+                'parent': 'domeRoot',
                 'source': 'dome-sphere.stl',
                 'mat': Materials().domeSphere,
             },

@@ -113,11 +113,11 @@ class SimulatorTelescope:
         """
         lat = self.app.mount.obsSite.location.latitude.degrees
         model = {
-            'mount': {
+            'mountRoot': {
                 'parent': 'ref_fusion_m',
             },
             'mountBase': {
-                'parent': 'mount',
+                'parent': 'mountRoot',
                 'source': 'mount-base.stl',
                 'trans': [0, 0, 1000],
                 'mat': self.parent.materials.mountBlack,

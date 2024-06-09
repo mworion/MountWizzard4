@@ -41,18 +41,18 @@ class SimulatorHorizon:
         """
         """
         isVisible = self.parent.ui.showHorizon.isChecked()
-        entity = self.parent.entityModel.get('horizon')
+        entity = self.parent.entityModel.get('horizonRoot')
         if entity:
             entity.setEnabled(isVisible)
 
     def clear(self):
         """
         """
-        horizonEntity = self.parent.entityModel.get('horizon')
+        horizonEntity = self.parent.entityModel.get('horizonRoot')
         if horizonEntity is None:
             return False
         horizonEntity.setParent(None)
-        del self.parent.entityModel['horizon']
+        del self.parent.entityModel['horizonRoot']
         del horizonEntity
         return True
 
@@ -110,7 +110,7 @@ class SimulatorHorizon:
         horizonEntity = Qt3DCore.QEntity()
         parent = self.parent.entityModel['ref_fusion']
         horizonEntity.setParent(parent)
-        self.parent.entityModel['horizon'] = horizonEntity
+        self.parent.entityModel['horizonRoot'] = horizonEntity
 
         for alt, az in zip(horizonAlt, horizonAz):
             # self.createWall(horizonEntity, alt, az)

@@ -62,6 +62,7 @@ class SimulatorWindow(MWidget):
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
         self.materials = Materials()
+        self.iterDepth = 0
 
         if isMaterialW:
             self.materialWindow = MaterialWindow(self.app)
@@ -71,6 +72,7 @@ class SimulatorWindow(MWidget):
         self.window3D = Qt3DExtras.Qt3DWindow()
         self.entityModel = {'root': Qt3DCore.QEntity()}
         self.window3D.setRootEntity(self.entityModel['root'])
+        self.entityModel['root'].setObjectName('root')
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
         self.createScene()
         self.container = QWidget.createWindowContainer(self.window3D)
@@ -294,11 +296,18 @@ class SimulatorWindow(MWidget):
             self.pointer.create()
             self.horizon.create()
             self.buildPoints.create()
+
+        print(f'->{self.entityModel['root'].objectName()}<-')
         self.showChildren(self.entityModel['root'])
+        print('end')
 
     def showChildren(self, node):
         """
         """
         for child in node.children():
+            self.iterDepth += 1
+            for i in range(self.iterDepth):
+                print('----', end='')
             print(f'->{child.objectName()}<-')
             self.showChildren(child)
+        self.iterDepth -= 1

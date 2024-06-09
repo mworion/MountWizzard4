@@ -39,6 +39,8 @@ from gui.extWindows.simulator.world import SimulatorWorld
 from gui.extWindows.simulator.light import SimulatorLight
 from gui.extWindows.simulator.tools import linkModel
 from gui.extWindows.materialW import MaterialWindow
+from base.packageConfig import isPyside6
+from base.packageConfig import isMaterialW
 
 
 class SimulatorWindow(MWidget):
@@ -61,37 +63,36 @@ class SimulatorWindow(MWidget):
         self.buildPoints = SimulatorBuildPoints(self, self.app)
         self.materials = Materials()
 
-        """
-        self.materialWindow = MaterialWindow(self.app)
-        self.materialWindow.initConfig()
-        self.materialWindow.showWindow()
-        """
+        if isMaterialW:
+            self.materialWindow = MaterialWindow(self.app)
+            self.materialWindow.initConfig()
+            self.materialWindow.showWindow()
 
         self.window3D = Qt3DExtras.Qt3DWindow()
-        self.entityModel = {'root_qt3d': Qt3DCore.QEntity()}
-        self.window3D.setRootEntity(self.entityModel['root_qt3d'])
+        self.entityModel = {'root': Qt3DCore.QEntity()}
+        self.window3D.setRootEntity(self.entityModel['root'])
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
-
+        self.createScene()
         self.container = QWidget.createWindowContainer(self.window3D)
         self.ui.simulator.addWidget(self.container)
 
         self.camera = None
         self.cameraController = None
-        self.setupCamera(self.entityModel['root_qt3d'])
+        self.setupCamera(self.entityModel['root'])
 
-        self.picker = Qt3DRender.QObjectPicker()
-        self.entityModel['root_qt3d'].addComponent(self.picker)
-        self.picker.clicked.connect(self.clicked)
+        if not isPyside6:
+            self.picker = Qt3DRender.QObjectPicker()
+            self.entityModel['root'].addComponent(self.picker)
+            self.picker.clicked.connect(self.clicked)
 
-        pickSett = self.window3D.renderSettings().pickingSettings()
-        pickSett.setPickMethod(
-            Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
-        pickSett.setPickResultMode(
-            Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
-        pickSett.setFaceOrientationPickingMode(
-            Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
-        pickSett.setWorldSpaceTolerance(0.0001)
-        self.createScene()
+            pickSett = self.window3D.renderSettings().pickingSettings()
+            pickSett.setPickMethod(
+                Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
+            pickSett.setPickResultMode(
+                Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
+            pickSett.setFaceOrientationPickingMode(
+                Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
+            pickSett.setWorldSpaceTolerance(0.0001)
 
     def clicked(self, pickEntity):
         """
@@ -148,21 +149,23 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.entityModel.clear()
-        # self.materialWindow.storeConfig()
-        # self.materialWindow.close()
+        if isMaterialW:
+            self.materialWindow.storeConfig()
+            self.materialWindow.close()
         self.storeConfig()
         super().closeEvent(closeEvent)
 
     def showWindow(self):
         """
         """
-        self.ui.topView.clicked.connect(self.topView)
-        self.ui.topEastView.clicked.connect(self.topEastView)
-        self.ui.topWestView.clicked.connect(self.topWestView)
-        self.ui.eastView.clicked.connect(self.eastView)
-        self.ui.westView.clicked.connect(self.westView)
-        self.camera.positionChanged.connect(self.limitPositionZ)
-        self.app.colorChange.connect(self.colorChange)
+        if not isPyside6:
+            self.ui.topView.clicked.connect(self.topView)
+            self.ui.topEastView.clicked.connect(self.topEastView)
+            self.ui.topWestView.clicked.connect(self.topWestView)
+            self.ui.eastView.clicked.connect(self.eastView)
+            self.ui.westView.clicked.connect(self.westView)
+            self.app.colorChange.connect(self.colorChange)
+            self.camera.positionChanged.connect(self.limitPositionZ)
         self.show()
 
     def setupCamera(self, parentEntity):
@@ -263,7 +266,7 @@ class SimulatorWindow(MWidget):
         """
         model = {
             'ref_fusion': {
-                'parent': 'root_qt3d',
+                'parent': 'root',
                 'rot': [-90, 90, 0],
             },
             'ref_fusion_m': {
@@ -283,10 +286,19 @@ class SimulatorWindow(MWidget):
         self.setupReference()
         self.light.create()
         self.world.create()
-        self.horizon.create()
-        self.dome.create()
-        self.telescope.create()
-        self.laser.create()
-        self.pointer.create()
-        self.horizon.create()
-        self.buildPoints.create()
+        if not isPyside6:
+            self.dome.create()
+            self.telescope.create()
+            self.horizon.create()
+            self.laser.create()
+            self.pointer.create()
+            self.horizon.create()
+            self.buildPoints.create()
+        self.showChildren(self.entityModel['root'])
+
+    def showChildren(self, node):
+        """
+        """
+        for child in node.children():
+            print(f'->{child.objectName()}<-')
+            self.showChildren(child)

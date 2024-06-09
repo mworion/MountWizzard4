@@ -194,19 +194,16 @@ class SimulatorTelescope:
             'otaRing': {
                 'parent': 'otaPlate',
                 'source': 'ota-ring-s.stl',
-                'scale': [1, 1, 1],
                 'mat': self.parent.materials.mountBlack,
             },
             'otaTube': {
                 'parent': 'otaPlate',
                 'source': 'ota-tube-s.stl',
-                'scale': [1, 1, 1],
                 'mat': self.parent.materials.white,
             },
             'otaImagetrain': {
                 'parent': 'gemCorr',
                 'source': 'ota-imagetrain.stl',
-                'scale': [1, 1, 1],
                 'mat': self.parent.materials.mountBlack,
             },
             'otaCCD': {

@@ -21,6 +21,7 @@ from PySide6.QtGui import QVector3D
 
 # local import
 from gui.extWindows.simulator.tools import linkModel, getMaterial, getTransformation
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorDome:
@@ -133,44 +134,37 @@ class SimulatorDome:
             'domeFloor': {
                 'parent': 'dome',
                 'source': 'dome-floor.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.aluminiumGrey,
+                'mat': Materials().aluminiumGrey,
             },
             'domeWall': {
                 'parent': 'dome',
                 'source': 'dome-wall.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.walls,
+                'mat': Materials().walls,
             },
             'domeSphere': {
                 'parent': 'dome',
                 'source': 'dome-sphere.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.domeSphere,
+                'mat': Materials().domeSphere,
             },
             'domeSlit1': {
                 'parent': 'domeSphere',
                 'source': 'dome-slit1.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.domeSlit,
+                'mat': Materials().domeSlit,
             },
             'domeSlit2': {
                 'parent': 'domeSphere',
                 'source': 'dome-slit2.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.domeSlit,
+                'mat': Materials().domeSlit,
             },
             'domeDoor1': {
                 'parent': 'domeSphere',
                 'source': 'dome-door1.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.domeDoor,
+                'mat': Materials().domeDoor,
             },
             'domeDoor2': {
                 'parent': 'domeSphere',
                 'source': 'dome-door2.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.domeDoor,
+                'mat': Materials().domeDoor,
             },
         }
         linkModel(model, self.parent.entityModel)

@@ -63,26 +63,22 @@ class SimulatorWorld:
             'ground': {
                 'parent': 'environ',
                 'source': 'dome-base.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.environ1,
+#                'mat': self.parent.materials.environ1,
             },
             'domeColumn': {
                 'parent': 'environ',
                 'source': 'dome-column.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.domeColumn,
+#                'mat': self.parent.materials.domeColumn,
             },
             'domeCompassRose': {
                 'parent': 'environ',
                 'source': 'dome-rose.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.aluRed,
+#                'mat': self.parent.materials.aluRed,
             },
             'domeCompassRoseChar': {
                 'parent': 'environ',
                 'source': 'dome-rose-char.stl',
-                'scale': [1, 1, 1],
-                'mat': self.parent.materials.white,
+#                'mat': self.parent.materials.white,
             },
         }
         linkModel(model, self.parent.entityModel)

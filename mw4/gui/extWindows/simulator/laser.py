@@ -82,15 +82,12 @@ class SimulatorLaser:
             },
             'displacement': {
                 'parent': 'laser',
-                'scale': [1, 1, 1],
             },
             'az': {
                 'parent': 'displacement',
-                'scale': [1, 1, 1],
             },
             'alt': {
                 'parent': 'az',
-                'scale': [1, 1, 1],
             },
             'laserBeam': {
                 'parent': 'alt',

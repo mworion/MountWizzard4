@@ -70,7 +70,6 @@ class SimulatorPointer:
             'pointerDot': {
                 'parent': 'pointer',
                 'source': [Qt3DExtras.QSphereMesh(), 50, 30, 30],
-                'scale': [1, 1, 1],
                 'mat': self.parent.materials.pointer,
             },
         }

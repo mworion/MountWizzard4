@@ -18,10 +18,10 @@
 
 # external packages
 from PySide6.QtGui import QVector3D
-from PySide6.Qt3DExtras import Qt3DExtras
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getTransformation
+from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorPointer:
@@ -39,9 +39,12 @@ class SimulatorPointer:
         """
         """
         isVisible = self.parent.ui.showPointer.isChecked()
-        entity = self.parent.entityModel.get('pointerRoot')
-        if entity:
-            entity.setEnabled(isVisible)
+        node = self.parent.entityModel.get('pointerRoot')
+        if not node:
+            return False
+
+        node['entity'].setEnabled(isVisible)
+        return True
 
     def updatePositions(self):
         """
@@ -54,10 +57,15 @@ class SimulatorPointer:
         intersect *= 1000
         intersect[2] += 1000
 
-        nodeT = getTransformation(self.parent.entityModel.get('pointerDot'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(intersect[0], intersect[1], intersect[2]))
+        node = self.parent.entityModel.get('pointerDot')
+        if not node:
+            return False
 
+        nodeT = node.get('trans')
+        if not node:
+            return False
+
+        nodeT.setTranslation(QVector3D(intersect[0], intersect[1], intersect[2]))
         return True
 
     def create(self):
@@ -69,8 +77,9 @@ class SimulatorPointer:
             },
             'pointerDot': {
                 'parent': 'pointerRoot',
-                'source': [Qt3DExtras.QSphereMesh(), 50, 30, 30],
-                'mat': self.parent.materials.pointer,
+                'source': ['sphere', 50, 30, 30],
+                'scale': [1, 1, 1],
+                'mat': Materials().pointer,
             },
         }
         linkModel(model, self.parent.entityModel)

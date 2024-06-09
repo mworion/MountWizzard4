@@ -20,7 +20,8 @@
 from PySide6.QtGui import QVector3D
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getTransformation
+from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorWorld:
@@ -45,13 +46,12 @@ class SimulatorWorld:
         translation = QVector3D(north, -east, 0)
 
         for node in ['domeColumn', 'domeCompassRose', 'domeCompassRoseChar']:
-            nodeT = getTransformation(self.parent.entityModel.get(node))
-            if nodeT:
-                nodeT.setTranslation(translation)
 
-        nodeT = getTransformation(self.parent.entityModel.get('domeColumn'))
-        if nodeT:
-            nodeT.setScale3D(QVector3D(1, 1, scale))
+            nodeT = self.parent.entityModel[node]['trans']
+            nodeT.setTranslation(translation)
+
+        nodeT = self.parent.entityModel['domeColumn']['trans']
+        nodeT.setScale3D(QVector3D(1, 1, scale))
 
     def create(self):
         """
@@ -63,22 +63,26 @@ class SimulatorWorld:
             'ground': {
                 'parent': 'environRoot',
                 'source': 'dome-base.stl',
-#                'mat': self.parent.materials.environ1,
+                'scale': [1, 1, 1],
+                'mat': Materials().environ1,
             },
             'domeColumn': {
                 'parent': 'environRoot',
                 'source': 'dome-column.stl',
-#                'mat': self.parent.materials.domeColumn,
+                'scale': [1, 1, 1],
+                'mat': Materials().domeColumn,
             },
             'domeCompassRose': {
                 'parent': 'environRoot',
                 'source': 'dome-rose.stl',
-#                'mat': self.parent.materials.aluRed,
+                'scale': [1, 1, 1],
+                'mat': Materials().aluRed,
             },
             'domeCompassRoseChar': {
                 'parent': 'environRoot',
                 'source': 'dome-rose-char.stl',
-#                'mat': self.parent.materials.white,
+                'scale': [1, 1, 1],
+                'mat': Materials().white,
             },
         }
         linkModel(model, self.parent.entityModel)

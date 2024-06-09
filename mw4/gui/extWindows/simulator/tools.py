@@ -27,7 +27,7 @@ from PySide6.Qt3DCore import Qt3DCore
 
 
 lightTypes = {'point': Qt3DRender.QPointLight(),
-              'dir': Qt3DRender.QDirectionalLight(),
+              'direction': Qt3DRender.QDirectionalLight(),
               'spot': Qt3DRender.QSpotLight()
               }
 
@@ -56,7 +56,6 @@ def linkLight(node):
             lightSource = None
     else:
         lightSource = None
-
     return lightSource
 
 
@@ -73,30 +72,29 @@ def linkSource(node):
     """
     source = node.get('source')
     if source:
-        if source[0].endswith('.stl'):
+        if isinstance(source, str):
             mesh = Qt3DRender.QMesh()
             mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
             mesh.setMeshName(source)
-            mesh.statusChanged.connect(lambda: print(f'{mesh.meshName()}: {mesh.status()}'))
 
         elif source[0] == 'cuboid':
-            mesh = source[0]
+            mesh = sourceTypes[source[0]]
             mesh.setXExtent(source[1])
             mesh.setYExtent(source[2])
             mesh.setZExtent(source[3])
         elif source[0] == 'sphere':
-            mesh = source[0]
+            mesh = sourceTypes[source[0]]
             mesh.setRadius(source[1])
             mesh.setRings(source[2])
             mesh.setSlices(source[3])
         elif source[0] == 'cylinder':
-            mesh = source[0]
+            mesh = sourceTypes[source[0]]
             mesh.setLength(source[1])
             mesh.setRadius(source[2])
             mesh.setRings(source[3])
             mesh.setSlices(source[4])
         elif source[0] == 'text':
-            mesh = source[0]
+            mesh = sourceTypes[source[0]]
             mesh.setDepth(source[1])
             mesh.setFont(QFont())
             mesh.setText(source[3])
@@ -149,39 +147,29 @@ def linkModel(model, entityModel):
         if parent is None:
             continue
 
-        newEntity = Qt3DCore.QEntity()
+        newEntity = Qt3DCore.QEntity(entityModel[parent]['entity'])
         newEntity.setObjectName(node)
-        newEntity.setParent(entityModel[parent])
-        entityModel[node] = newEntity
-
-        print(f'node: {node:15s} link: {model[node]}')
+        entityModel[node] = {'entity': newEntity}
 
         mesh = linkSource(model[node])
         if mesh:
             newEntity.addComponent(mesh)
+            entityModel[node]['mesh'] = mesh
 
         transform = linkTransform(model[node])
         if transform:
             newEntity.addComponent(transform)
+            entityModel[node]['trans'] = transform
 
         material = linkMaterial(model[node])
         if material:
             newEntity.addComponent(material)
+            entityModel[node]['material'] = material
 
         light = linkLight(model[node])
         if light:
             newEntity.addComponent(light)
-
-
-def getTransformation(entity):
-    """
-    """
-    if entity is None:
-        return None
-    components = entity.components()
-    for component in components:
-        if isinstance(component, Qt3DCore.QTransform):
-            return component
+            entityModel[node]['light'] = light
 
 
 def getMaterial(entity):
@@ -195,20 +183,6 @@ def getMaterial(entity):
                                   Qt3DExtras.QDiffuseSpecularMaterial,
                                   Qt3DExtras.QPhongAlphaMaterial,
                                   Qt3DExtras.QPhongMaterial)):
-            return component
-
-
-def getMesh(entity):
-    """
-    """
-    if entity is None:
-        return None
-    components = entity.components()
-    for component in components:
-        if isinstance(component, (Qt3DExtras.QCuboidMesh,
-                                  Qt3DExtras.QSphereMesh,
-                                  Qt3DExtras.QExtrudedTextMesh,
-                                  Qt3DExtras.QCylinderMesh)):
             return component
 
 

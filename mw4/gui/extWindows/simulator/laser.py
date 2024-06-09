@@ -18,12 +18,12 @@
 
 # external packages
 from PySide6.QtGui import QVector3D
-from PySide6.Qt3DExtras import Qt3DExtras
 from skyfield import functions
 import numpy as np
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getTransformation
+from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorLaser:
@@ -41,9 +41,12 @@ class SimulatorLaser:
         """
         """
         isVisible = self.parent.ui.showLaser.isChecked()
-        entity = self.parent.entityModel.get('laserRoot')
-        if entity:
-            entity.setEnabled(isVisible)
+        node = self.parent.entityModel.get('laserRoot')
+        if not node:
+            return False
+
+        node['entity'].setEnabled(isVisible)
+        return True
 
     def updatePositions(self):
         """
@@ -59,17 +62,14 @@ class SimulatorLaser:
         az = np.degrees(az)
         alt = np.degrees(alt)
 
-        nodeT = getTransformation(self.parent.entityModel.get('displacement'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+        nodeT = self.parent.entityModel['displacement']['trans']
+        nodeT.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
-        nodeT = getTransformation(self.parent.entityModel.get('az'))
-        if nodeT:
-            nodeT.setRotationZ(az + 90)
+        nodeT = self.parent.entityModel['az']['trans']
+        nodeT.setRotationZ(az + 90)
 
-        nodeT = getTransformation(self.parent.entityModel.get('alt'))
-        if nodeT:
-            nodeT.setRotationX(-alt)
+        nodeT = self.parent.entityModel['alt']['trans']
+        nodeT.setRotationX(-alt)
 
         return True
 
@@ -82,18 +82,21 @@ class SimulatorLaser:
             },
             'displacement': {
                 'parent': 'laserRoot',
+                'scale': [1, 1, 1],
             },
             'az': {
                 'parent': 'displacement',
+                'scale': [1, 1, 1],
             },
             'alt': {
                 'parent': 'az',
+                'scale': [1, 1, 1],
             },
             'laserBeam': {
                 'parent': 'alt',
-                'source': [Qt3DExtras.QCylinderMesh(), 4500, 10, 20, 20],
+                'source': ['cylinder', 4500, 10, 20, 20],
                 'trans': [0, 2250, 0],
-                'mat': self.parent.materials.laser,
+                'mat': Materials().laser,
             },
         }
         linkModel(model, self.parent.entityModel)

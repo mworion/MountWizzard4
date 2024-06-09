@@ -18,10 +18,10 @@
 
 # external packages
 from PySide6.QtGui import QVector3D
-from PySide6.Qt3DExtras import Qt3DExtras
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getTransformation, getMesh
+from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorTelescope:
@@ -47,46 +47,38 @@ class SimulatorTelescope:
         east = self.app.mount.geometry.offEast * 1000
         vertical = self.app.mount.geometry.offVert * 1000
 
-        nodeT = getTransformation(self.parent.entityModel.get('mountBase'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(north, -east, 1000 + vertical))
+        nodeT = self.parent.entityModel['mountBase']['trans']
+        nodeT.setTranslation(QVector3D(north, -east, 1000 + vertical))
 
         latitude = self.app.mount.obsSite.location.latitude.degrees
-        nodeT = getTransformation(self.parent.entityModel.get('lat'))
-        if nodeT:
-            nodeT.setRotationY(- abs(latitude))
+        nodeT = self.parent.entityModel['lat']['trans']
+        nodeT.setRotationY(- abs(latitude))
 
         offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
         lat = - self.app.mainW.ui.offLAT.value() * 1000
 
-        nodeM = getMesh(self.parent.entityModel.get('gem'))
-        if nodeM:
-            nodeM.setYExtent(abs(lat) + 80)
+        nodeM = self.parent.entityModel['gem']['mesh']
+        nodeM.setYExtent(abs(lat) + 80)
 
-        nodeT = getTransformation(self.parent.entityModel.get('gem'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(159.0, lat / 2, 338.5))
+        nodeT = self.parent.entityModel['gem']['trans']
+        nodeT.setTranslation(QVector3D(159.0, lat / 2, 338.5))
 
-        nodeT = getTransformation(self.parent.entityModel.get('gemCorr'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(0.0, lat / 2, 0.0))
+        nodeT = self.parent.entityModel['gemCorr']['trans']
+        nodeT.setTranslation(QVector3D(0.0, lat / 2, 0.0))
 
         scaleRad = (offPlateOTA - 25) / 55
         scaleRad = max(scaleRad, 1)
 
-        nodeT = getTransformation(self.parent.entityModel.get('otaRing'))
-        if nodeT:
-            nodeT.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-            nodeT.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        nodeT = self.parent.entityModel['otaRing']['trans']
+        nodeT.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+        nodeT.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
 
-        nodeT = getTransformation(self.parent.entityModel.get('otaTube'))
-        if nodeT:
-            nodeT.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-            nodeT.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        nodeT = self.parent.entityModel['otaTube']['trans']
+        nodeT.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+        nodeT.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
 
-        nodeT = getTransformation(self.parent.entityModel.get('otaImagetrain'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(0, 0, 65 * (scaleRad - 1)))
+        nodeT = self.parent.entityModel['otaImagetrain']['trans']
+        nodeT.setTranslation(QVector3D(0, 0, 65 * (scaleRad - 1)))
 
     def updateRotation(self):
         """
@@ -99,13 +91,11 @@ class SimulatorTelescope:
         if not (angRA and angDEC):
             return False
 
-        nodeT = getTransformation(self.parent.entityModel.get('ra'))
-        if nodeT:
-            nodeT.setRotationX(- angRA.degrees + 90)
+        nodeT = self.parent.entityModel['ra']['trans']
+        nodeT.setRotationX(- angRA.degrees + 90)
 
-        nodeT = getTransformation(self.parent.entityModel.get('dec'))
-        if nodeT:
-            nodeT.setRotationZ(- angDEC.degrees)
+        nodeT = self.parent.entityModel['dec']['trans']
+        nodeT.setRotationZ(- angDEC.degrees)
         return True
 
     def create(self):
@@ -120,12 +110,12 @@ class SimulatorTelescope:
                 'parent': 'mountRoot',
                 'source': 'mount-base.stl',
                 'trans': [0, 0, 1000],
-                'mat': self.parent.materials.mountBlack,
+                'mat': Materials().mountBlack,
             },
             'mountKnobs': {
                 'parent': 'mountBase',
                 'source': 'mount-base-knobs.stl',
-                'mat': self.parent.materials.aluKnobs,
+                'mat': Materials().aluKnobs,
             },
             'lat': {
                 'parent': 'mountBase',
@@ -136,7 +126,7 @@ class SimulatorTelescope:
                 'parent': 'lat',
                 'source': 'mount-ra.stl',
                 'trans': [0, 0, -70],
-                'mat': self.parent.materials.mountBlack,
+                'mat': Materials().mountBlack,
             },
             'ra': {
                 'parent': 'mountRa',
@@ -146,19 +136,19 @@ class SimulatorTelescope:
                 'parent': 'ra',
                 'source': 'mount-dec.stl',
                 'trans': [0, 0, -190],
-                'mat': self.parent.materials.mountBlack,
+                'mat': Materials().mountBlack,
             },
             'mountDecKnobs': {
                 'parent': 'ra',
                 'source': 'mount-dec-knobs.stl',
                 'trans': [0, 0, -190],
-                'mat': self.parent.materials.aluKnobs,
+                'mat': Materials().aluKnobs,
             },
             'mountDecWeights': {
                 'parent': 'ra',
                 'source': 'mount-dec-weights.stl',
                 'trans': [0, 0, -190],
-                'mat': self.parent.materials.stainless,
+                'mat': Materials().stainless,
             },
             'dec': {
                 'parent': 'mountDec',
@@ -168,19 +158,19 @@ class SimulatorTelescope:
                 'parent': 'dec',
                 'source': 'mount-head.stl',
                 'trans': [-159, 0, -190],
-                'mat': self.parent.materials.mountBlack,
+                'mat': Materials().mountBlack,
             },
             'mountHeadKnobs': {
                 'parent': 'dec',
                 'source': 'mount-head-knobs.stl',
                 'trans': [-159, 0, -190],
-                'mat': self.parent.materials.aluKnobs,
+                'mat': Materials().aluKnobs,
             },
             'gem': {
                 'parent': 'mountHead',
-                'source': [Qt3DExtras.QCuboidMesh(), 100, 60, 10],
+                'source': ['cuboid', 100, 60, 10],
                 'trans': [159, 0, 338.5],
-                'mat': self.parent.materials.aluCCD,
+                'mat': Materials().aluCCD,
             },
             'gemCorr': {
                 'parent': 'gem',
@@ -189,37 +179,40 @@ class SimulatorTelescope:
             'otaPlate': {
                 'parent': 'gemCorr',
                 'source': 'ota-plate.stl',
-                'mat': self.parent.materials.mountBlack,
+                'mat': Materials().mountBlack,
             },
             'otaRing': {
                 'parent': 'otaPlate',
                 'source': 'ota-ring-s.stl',
-                'mat': self.parent.materials.mountBlack,
+                'scale': [1, 1, 1],
+                'mat': Materials().mountBlack,
             },
             'otaTube': {
                 'parent': 'otaPlate',
                 'source': 'ota-tube-s.stl',
-                'mat': self.parent.materials.white,
+                'scale': [1, 1, 1],
+                'mat': Materials().white,
             },
             'otaImagetrain': {
                 'parent': 'gemCorr',
                 'source': 'ota-imagetrain.stl',
-                'mat': self.parent.materials.mountBlack,
+                'scale': [1, 1, 1],
+                'mat': Materials().mountBlack,
             },
             'otaCCD': {
                 'parent': 'otaImagetrain',
                 'source': 'ota-ccd.stl',
-                'mat': self.parent.materials.aluCCD,
+                'mat': Materials().aluCCD,
             },
             'otaFocus': {
                 'parent': 'otaImagetrain',
                 'source': 'ota-focus.stl',
-                'mat': self.parent.materials.aluRed,
+                'mat': Materials().aluRed,
             },
             'otaFocusTop': {
                 'parent': 'otaImagetrain',
                 'source': 'ota-focus-top.stl',
-                'mat': self.parent.materials.white,
+                'mat': Materials().white,
             },
         }
         if lat < 0:

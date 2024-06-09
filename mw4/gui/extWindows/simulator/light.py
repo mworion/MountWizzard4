@@ -17,7 +17,6 @@
 # standard libraries
 
 # external packages
-from PySide6.Qt3DRender import Qt3DRender
 
 # local import
 from gui.extWindows.simulator.tools import linkModel, getLight
@@ -37,10 +36,9 @@ class SimulatorLight:
         """
         """
         intensity = self.parent.ui.lightIntensity.value()
-        for light in ['main', 'dir', 'spot']:
-            nodeL = getLight(self.parent.entityModel.get(light))
-            if nodeL:
-                nodeL.setIntensity(intensity)
+        for node in ['main', 'dir', 'spot']:
+            nodeL = self.parent.entityModel[node]['light']
+            nodeL.setIntensity(intensity)
 
     def create(self):
         """
@@ -52,14 +50,13 @@ class SimulatorLight:
             'main': {
                 'parent': 'lightRoot',
                 'light': ['point', 1.0, [255, 255, 255]],
-                'trans': [5, 20, 5],
+                'trans': (5, 40, 5),
             },
         }
         linkModel(model, self.parent.entityModel)
-        # self.app.material.emit(self.parent.entityModel['main'], 'main')
+        self.app.material.emit(self.parent.entityModel['main']['entity'], 'main')
 
 """
-
             'dir': {
                 'parent': 'lightRoot',
                 'light': ['direction', 1, [0, 255, 0], [1, 0, 1]],
@@ -67,8 +64,9 @@ class SimulatorLight:
             },
             'spot': {
                 'parent': 'lightRoot',
-                'light': ['spot', 1, [0, 255, 255], 5, [1, 0, -1]],
+                'light': ['spot', 1, [255, 0, 255], 5, [1, 0, -1]],
                 'trans': [-5, 1, 5],
             },
-
+        self.app.material.emit(self.parent.entityModel['dir']['entity'], 'dir')
+        self.app.material.emit(self.parent.entityModel['spot']['entity'], 'spot')
 """

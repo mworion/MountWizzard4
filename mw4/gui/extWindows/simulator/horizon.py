@@ -23,6 +23,7 @@ from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DCore import Qt3DCore
 
 # local imports
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorHorizon:
@@ -41,19 +42,23 @@ class SimulatorHorizon:
         """
         """
         isVisible = self.parent.ui.showHorizon.isChecked()
-        entity = self.parent.entityModel.get('horizonRoot')
-        if entity:
-            entity.setEnabled(isVisible)
+        node = self.parent.entityModel.get('horizonRoot')
+        if not node:
+            return False
+
+        node['entity'].setEnabled(isVisible)
+        return True
 
     def clear(self):
         """
         """
-        horizonEntity = self.parent.entityModel.get('horizonRoot')
-        if horizonEntity is None:
+        node = self.parent.entityModel.get('horizonRoot')
+        if not node:
             return False
-        horizonEntity.setParent(None)
+
+        node['entity'].setParent(None)
+        del self.parent.entityModel['horizonRoot']['entity']
         del self.parent.entityModel['horizonRoot']
-        del horizonEntity
         return True
 
     def createWall(self, parentEntity, alt, az):
@@ -89,7 +94,7 @@ class SimulatorHorizon:
         trans3 = Qt3DCore.QTransform()
         trans3.setTranslation(QVector3D(0, 0, height / 2))
         e3.addComponent(trans3)
-        e3.addComponent(self.parent.materials.horizon)
+        e3.addComponent(Materials().horizon)
         return e3
 
     def create(self):
@@ -108,12 +113,11 @@ class SimulatorHorizon:
 
         self.clear()
         horizonEntity = Qt3DCore.QEntity()
-        parent = self.parent.entityModel['ref_fusion']
+        parent = self.parent.entityModel['ref_fusion']['entity']
         horizonEntity.setParent(parent)
-        self.parent.entityModel['horizonRoot'] = horizonEntity
+        self.parent.entityModel['horizonRoot'] = {'entity': horizonEntity}
 
         for alt, az in zip(horizonAlt, horizonAz):
-            # self.createWall(horizonEntity, alt, az)
-            pass
+            self.createWall(horizonEntity, alt, az)
         self.showEnable()
         return True

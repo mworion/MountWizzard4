@@ -28,7 +28,6 @@ import PySide6
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import simulator_ui
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.dome import SimulatorDome
 from gui.extWindows.simulator.telescope import SimulatorTelescope
 from gui.extWindows.simulator.horizon import SimulatorHorizon
@@ -39,7 +38,6 @@ from gui.extWindows.simulator.world import SimulatorWorld
 from gui.extWindows.simulator.light import SimulatorLight
 from gui.extWindows.simulator.tools import linkModel
 from gui.extWindows.materialW import MaterialWindow
-from base.packageConfig import isPyside6
 from base.packageConfig import isMaterialW
 
 
@@ -61,7 +59,6 @@ class SimulatorWindow(MWidget):
         self.pointer = SimulatorPointer(self, self.app)
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
-        self.materials = Materials()
         self.iterDepth = 0
 
         if isMaterialW:
@@ -70,9 +67,9 @@ class SimulatorWindow(MWidget):
             self.materialWindow.showWindow()
 
         self.window3D = Qt3DExtras.Qt3DWindow()
-        self.entityModel = {'root': Qt3DCore.QEntity()}
-        self.window3D.setRootEntity(self.entityModel['root'])
-        self.entityModel['root'].setObjectName('root')
+        self.entityModel = {'root': {'entity': Qt3DCore.QEntity()}}
+        self.window3D.setRootEntity(self.entityModel['root']['entity'])
+        self.entityModel['root']['entity'].setObjectName('root')
         self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
         self.createScene()
         self.container = QWidget.createWindowContainer(self.window3D)
@@ -80,11 +77,11 @@ class SimulatorWindow(MWidget):
 
         self.camera = None
         self.cameraController = None
-        self.setupCamera(self.entityModel['root'])
+        self.setupCamera(self.entityModel['root']['entity'])
 
-        if not isPyside6:
+        if isMaterialW:
             self.picker = Qt3DRender.QObjectPicker()
-            self.entityModel['root'].addComponent(self.picker)
+            self.entityModel['root']['entity'].addComponent(self.picker)
             self.picker.clicked.connect(self.clicked)
 
             pickSett = self.window3D.renderSettings().pickingSettings()
@@ -100,7 +97,7 @@ class SimulatorWindow(MWidget):
         """
         """
         for key, value in self.entityModel.items():
-            if value == pickEntity.entity():
+            if value['entity'] == pickEntity.entity():
                 self.app.material.emit(pickEntity.entity(), key)
 
     def initConfig(self):
@@ -160,14 +157,13 @@ class SimulatorWindow(MWidget):
     def showWindow(self):
         """
         """
-        if not isPyside6:
-            self.ui.topView.clicked.connect(self.topView)
-            self.ui.topEastView.clicked.connect(self.topEastView)
-            self.ui.topWestView.clicked.connect(self.topWestView)
-            self.ui.eastView.clicked.connect(self.eastView)
-            self.ui.westView.clicked.connect(self.westView)
-            self.app.colorChange.connect(self.colorChange)
-            self.camera.positionChanged.connect(self.limitPositionZ)
+        self.ui.topView.clicked.connect(self.topView)
+        self.ui.topEastView.clicked.connect(self.topEastView)
+        self.ui.topWestView.clicked.connect(self.topWestView)
+        self.ui.eastView.clicked.connect(self.eastView)
+        self.ui.westView.clicked.connect(self.westView)
+        self.app.colorChange.connect(self.colorChange)
+        self.camera.positionChanged.connect(self.limitPositionZ)
         self.show()
 
     def setupCamera(self, parentEntity):
@@ -288,26 +284,25 @@ class SimulatorWindow(MWidget):
         self.setupReference()
         self.light.create()
         self.world.create()
-        if not isPyside6:
-            self.dome.create()
-            self.telescope.create()
-            self.horizon.create()
-            self.laser.create()
-            self.pointer.create()
-            self.horizon.create()
-            self.buildPoints.create()
+        self.dome.create()
+        self.telescope.create()
+        self.horizon.create()
+        self.laser.create()
+        self.pointer.create()
+        self.horizon.create()
+        self.buildPoints.create()
 
-        print(f'->{self.entityModel['root'].objectName()}<-')
-        self.showChildren(self.entityModel['root'])
-        print('end')
+        #print(f'->{self.entityModel['root']['entity'].objectName()}<-')
+        #self.showChildren(self.entityModel['root']['entity'])
 
     def showChildren(self, node):
         """
         """
         for child in node.children():
             self.iterDepth += 1
-            for i in range(self.iterDepth):
-                print('----', end='')
-            print(f'->{child.objectName()}<-')
+            if child.objectName() != '':
+                for i in range(self.iterDepth):
+                    print('----', end='')
+                print(f'{child.objectName():15s}: {child.components()}')
             self.showChildren(child)
         self.iterDepth -= 1

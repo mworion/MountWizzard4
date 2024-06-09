@@ -29,7 +29,6 @@ from gui.extWindows.simulator.tools import linkModel
 from gui.extWindows.simulator.tools import linkMaterial
 from gui.extWindows.simulator.tools import linkSource
 from gui.extWindows.simulator.tools import linkTransform
-from gui.extWindows.simulator.tools import getTransformation
 from gui.extWindows.simulator.tools import getMaterial
 from gui.extWindows.simulator.tools import getMesh
 from gui.extWindows.simulator.materials import Materials
@@ -159,19 +158,6 @@ def test_linkModel_2(qtbot):
              }
     }
     linkModel(model, entityModel)
-
-
-def test_getTransformation_1(qtbot):
-    entity = None
-    val = getTransformation(entity)
-    assert val is None
-
-
-def test_getTransformation_2(qtbot):
-    entity = QEntity()
-    entity.addComponent(QTransform())
-    val = getTransformation(entity)
-    assert isinstance(val, QTransform)
 
 
 def test_getMaterial_1(qtbot):

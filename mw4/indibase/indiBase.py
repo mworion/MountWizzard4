@@ -1024,7 +1024,7 @@ class Client(QObject):
         :param socketError: the error from socket library
         :return: nothing
         """
-        if socketError != QTcpSocket.SocketError.UnknownSocketError:
+        if socketError != QTcpSocket.SocketError.ConnectionRefusedError:
             self.log.error(f'INDI error: [{socketError}]')
         self.disconnectServer()
         return True

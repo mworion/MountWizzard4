@@ -26,28 +26,22 @@ from PySide6.Qt3DCore import Qt3DCore
 # local import
 
 
-lightTypes = {'point': Qt3DRender.QPointLight(),
-              'direction': Qt3DRender.QDirectionalLight(),
-              'spot': Qt3DRender.QSpotLight()
-              }
-
-
 def linkLight(node):
     """
     """
     light = node.get('light')
     if light:
         if light[0] == 'point':
-            lightSource = lightTypes[light[0]]
+            lightSource = Qt3DRender.QPointLight()
             lightSource.setIntensity(light[1])
             lightSource.setColor(QColor(*light[2]))
         elif light[0] == 'direction':
-            lightSource = lightTypes[light[0]]
+            lightSource = Qt3DRender.QDirectionalLight()
             lightSource.setIntensity(light[1])
             lightSource.setColor(QColor(*light[2]))
             lightSource.setWorldDirection(QVector3D(*light[3]))
         elif light[0] == 'spot':
-            lightSource = lightTypes[light[0]]
+            lightSource = Qt3DRender.QSpotLight()
             lightSource.setIntensity(light[1])
             lightSource.setColor(QColor(*light[2]))
             lightSource.setCutOffAngle(light[3])
@@ -57,14 +51,6 @@ def linkLight(node):
     else:
         lightSource = None
     return lightSource
-
-
-sourceTypes = {'mesh': Qt3DRender.QMesh(),
-               'cuboid': Qt3DExtras.QCuboidMesh(),
-               'sphere': Qt3DExtras.QSphereMesh(),
-               'cylinder': Qt3DExtras.QCylinderMesh(),
-               'text': Qt3DExtras.QExtrudedTextMesh(),
-               }
 
 
 def linkSource(node):
@@ -78,23 +64,23 @@ def linkSource(node):
             mesh.setMeshName(source)
 
         elif source[0] == 'cuboid':
-            mesh = sourceTypes[source[0]]
+            mesh = Qt3DExtras.QCuboidMesh()
             mesh.setXExtent(source[1])
             mesh.setYExtent(source[2])
             mesh.setZExtent(source[3])
         elif source[0] == 'sphere':
-            mesh = sourceTypes[source[0]]
+            mesh = Qt3DExtras.QSphereMesh()
             mesh.setRadius(source[1])
             mesh.setRings(source[2])
             mesh.setSlices(source[3])
         elif source[0] == 'cylinder':
-            mesh = sourceTypes[source[0]]
+            mesh = Qt3DExtras.QCylinderMesh()
             mesh.setLength(source[1])
             mesh.setRadius(source[2])
             mesh.setRings(source[3])
             mesh.setSlices(source[4])
         elif source[0] == 'text':
-            mesh = sourceTypes[source[0]]
+            mesh = Qt3DExtras.QExtrudedTextMesh()
             mesh.setDepth(source[1])
             mesh.setFont(QFont())
             mesh.setText(source[3])

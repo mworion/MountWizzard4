@@ -19,7 +19,8 @@
 # external packages
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getLight
+from gui.extWindows.simulator.tools import linkModel
+from base.packageConfig import isMaterialW
 
 
 class SimulatorLight:
@@ -32,13 +33,25 @@ class SimulatorLight:
         self.app = app
         self.parent.ui.lightIntensity.valueChanged.connect(self.setIntensity)
 
+    def clear(self):
+        """
+        """
+        node = self.parent.entityModel.get('lightRoot')
+        if not node:
+            return
+
+        node['entity'].setParent(None)
+        del self.parent.entityModel['lightRoot']['entity']
+        del self.parent.entityModel['lightRoot']
+
     def setIntensity(self):
         """
         """
         intensity = self.parent.ui.lightIntensity.value()
         for node in ['main', 'dir', 'spot']:
-            nodeL = self.parent.entityModel[node]['light']
-            nodeL.setIntensity(intensity)
+            nodeL = self.parent.entityModel.get(node)
+            if nodeL:
+                nodeL['light'].setIntensity(intensity)
 
     def create(self):
         """
@@ -54,7 +67,8 @@ class SimulatorLight:
             },
         }
         linkModel(model, self.parent.entityModel)
-        self.app.material.emit(self.parent.entityModel['main']['entity'], 'main')
+        if isMaterialW:
+            self.app.material.emit(self.parent.entityModel['main']['entity'], 'main')
 
 """
             'dir': {

@@ -54,47 +54,36 @@ class SimulatorBuildPoints:
         """
         isVisible = self.parent.ui.showBuildPoints.isChecked()
         node = self.parent.entityModel.get('buildPoints')
-        if not node:
-            return False
-
-        node['entity'].setEnabled(isVisible)
-        return True
+        if node:
+            node['entity'].setEnabled(isVisible)
 
     def clear(self):
         """
         """
         node = self.parent.entityModel.get('buildPoints')
         if not node:
-            return False
+            return
 
         node['entity'].setParent(None)
         del self.parent.entityModel['buildPoints']['entity']
         del self.parent.entityModel['buildPoints']
         self.points = []
-        return True
 
     def updatePositions(self):
         """
         """
         if not self.app.mount.obsSite.haJNow:
-            return False
+            return
 
         _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
 
         if PB is None or PD is None:
-            return False
+            return
         PB[2] += 1
 
         node = self.parent.entityModel.get('buildPoints')
-        if not node:
-            return False
-
-        nodeT = node.get('trans')
-        if not node:
-            return False
-
-        nodeT.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
-        return True
+        if node:
+            node['trans'].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
     def createLine(self, parentEntity, dx, dy, dz):
         """
@@ -124,16 +113,17 @@ class SimulatorBuildPoints:
         e2.addComponent(trans2)
 
         e3 = Qt3DCore.QEntity(e2)
-        mesh = Qt3DExtras.QCylinderMesh()
-        mesh.setRadius(self.LINE_RADIUS)
-        mesh.setLength(radius)
+        mesh3 = Qt3DExtras.QCylinderMesh()
+        mesh3.setRadius(self.LINE_RADIUS)
+        mesh3.setLength(radius)
         trans3 = Qt3DCore.QTransform()
         trans3.setTranslation(QVector3D(0, radius / 2, 0))
-        e3.addComponent(mesh)
+        e3.addComponent(mesh3)
         e3.addComponent(trans3)
-        e3.addComponent(Materials().lines)
+        mat3 = Materials().lines
+        e3.addComponent(mat3)
 
-        return (e1, trans1, e2, trans2, e3, trans3, mesh)
+        return (e1, trans1, e2, trans2, e3, trans3, mesh3, mat3)
 
     def createPoint(self, parentEntity, alt, az, active):
         """
@@ -202,17 +192,17 @@ class SimulatorBuildPoints:
         e3.addComponent(trans3)
 
         e2 = Qt3DCore.QEntity(e3)
-        mesh = Qt3DExtras.QExtrudedTextMesh()
-        mesh.setText(text)
-        mesh.setDepth(0.05)
-        mesh.setFont(QFont('Arial', self.FONT_SIZE))
+        mesh2 = Qt3DExtras.QExtrudedTextMesh()
+        mesh2.setText(text)
+        mesh2.setDepth(0.05)
+        mesh2.setFont(QFont('Arial', self.FONT_SIZE))
         trans2 = Qt3DCore.QTransform()
         if faceIn:
             trans2.setRotationX(90 + alt)
         else:
             trans2.setRotationX(90 - alt)
         trans2.setScale(0.15)
-        e2.addComponent(mesh)
+        e2.addComponent(mesh2)
         e2.addComponent(trans2)
         if active:
             mat2 = Materials().numbersActive
@@ -220,7 +210,7 @@ class SimulatorBuildPoints:
             mat2 = Materials().numbers
         e2.addComponent(mat2)
 
-        return (e1, trans1, e2, trans2, mat2, e3, trans3)
+        return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)
 
     def loopCreate(self, buildPointEntity):
         """

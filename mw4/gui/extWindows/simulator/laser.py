@@ -42,11 +42,8 @@ class SimulatorLaser:
         """
         isVisible = self.parent.ui.showLaser.isChecked()
         node = self.parent.entityModel.get('laserRoot')
-        if not node:
-            return False
-
-        node['entity'].setEnabled(isVisible)
-        return True
+        if node:
+            node['entity'].setEnabled(isVisible)
 
     def updatePositions(self):
         """
@@ -54,7 +51,7 @@ class SimulatorLaser:
         _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
 
         if PB is None or PD is None:
-            return False
+            return
 
         PB *= 1000
         PB[2] += 1000
@@ -62,16 +59,17 @@ class SimulatorLaser:
         az = np.degrees(az)
         alt = np.degrees(alt)
 
-        nodeT = self.parent.entityModel['displacement']['trans']
-        nodeT.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+        node = self.parent.entityModel.get('displacement')
+        if node:
+            node['trans'].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
-        nodeT = self.parent.entityModel['az']['trans']
-        nodeT.setRotationZ(az + 90)
+        node = self.parent.entityModel.get('az')
+        if node:
+            node['trans'].setRotationZ(az + 90)
 
-        nodeT = self.parent.entityModel['alt']['trans']
-        nodeT.setRotationX(-alt)
-
-        return True
+        node = self.parent.entityModel.get('alt')
+        if node:
+            node['trans'].setRotationX(-alt)
 
     def create(self):
         """

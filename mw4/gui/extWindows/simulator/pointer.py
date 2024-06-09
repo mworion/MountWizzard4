@@ -40,11 +40,8 @@ class SimulatorPointer:
         """
         isVisible = self.parent.ui.showPointer.isChecked()
         node = self.parent.entityModel.get('pointerRoot')
-        if not node:
-            return False
-
-        node['entity'].setEnabled(isVisible)
-        return True
+        if node:
+            node['entity'].setEnabled(isVisible)
 
     def updatePositions(self):
         """
@@ -52,21 +49,15 @@ class SimulatorPointer:
         _, _, intersect, _, _ = self.app.mount.calcTransformationMatricesActual()
 
         if intersect is None:
-            return False
+            return
 
         intersect *= 1000
         intersect[2] += 1000
 
         node = self.parent.entityModel.get('pointerDot')
-        if not node:
-            return False
-
-        nodeT = node.get('trans')
-        if not node:
-            return False
-
-        nodeT.setTranslation(QVector3D(intersect[0], intersect[1], intersect[2]))
-        return True
+        if node:
+            vec = QVector3D(intersect[0], intersect[1], intersect[2])
+            node['trans'].setTranslation(vec)
 
     def create(self):
         """

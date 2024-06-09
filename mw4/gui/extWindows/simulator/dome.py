@@ -47,8 +47,9 @@ class SimulatorDome:
         alpha = 0.5 if showTransparent else 1
         for node in ['domeWall', 'domeSphere', 'domeSlit1', 'domeSlit2',
                      'domeDoor1', 'domeDoor2']:
-            nodeM = self.parent.entityModel[node]['material']
-            nodeM.setAlpha(alpha)
+            nodeM = self.parent.entityModel.get(node)
+            if nodeM:
+                nodeM['material'].setAlpha(alpha)
 
     def showEnable(self, show):
         """
@@ -56,11 +57,8 @@ class SimulatorDome:
         :return:
         """
         node = self.parent.entityModel.get('domeRoot')
-        if not node:
-            return False
-
-        node['entity'].setEnabled(show)
-        return True
+        if node:
+            node['entity'].setEnabled(show)
 
     def updateSize(self):
         """
@@ -90,8 +88,9 @@ class SimulatorDome:
             return
 
         az = self.app.dome.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION']
-        nodeT = self.parent.entityModel['domeSphere']['trans']
-        nodeT.setRotationZ(-az)
+        node = self.parent.entityModel.get('domeSphere')
+        if node:
+            node['trans'].setRotationZ(-az)
 
     def updateShutter(self):
         """
@@ -108,16 +107,19 @@ class SimulatorDome:
         shiftShutter = width / 2 / scale if isOpen else 0
 
         for node in ['domeSlit1', 'domeSlit2']:
-            nodeT = self.parent.entityModel[node]['trans']
-            nodeT.setScale3D(QVector3D(1, scaleSlit, 1))
+            node = self.parent.entityModel.get(node)
+            if node:
+                node['trans'].setScale3D(QVector3D(1, scaleSlit, 1))
 
         for node in ['domeDoor1']:
-            nodeT = self.parent.entityModel[node]['trans']
-            nodeT.setTranslation(QVector3D(0, shiftShutter, 0))
+            node = self.parent.entityModel.get(node)
+            if node:
+                node['trans'].setTranslation(QVector3D(0, shiftShutter, 0))
 
         for node in ['domeDoor2']:
-            nodeT = self.parent.entityModel[node]['trans']
-            nodeT.setTranslation(QVector3D(0, -shiftShutter, 0))
+            node = self.parent.entityModel.get(node)
+            if node:
+                node['trans'].setTranslation(QVector3D(0, -shiftShutter, 0))
 
     def create(self):
         """

@@ -43,23 +43,19 @@ class SimulatorHorizon:
         """
         isVisible = self.parent.ui.showHorizon.isChecked()
         node = self.parent.entityModel.get('horizonRoot')
-        if not node:
-            return False
-
-        node['entity'].setEnabled(isVisible)
-        return True
+        if node:
+            node['entity'].setEnabled(isVisible)
 
     def clear(self):
         """
         """
         node = self.parent.entityModel.get('horizonRoot')
         if not node:
-            return False
+            return
 
         node['entity'].setParent(None)
         del self.parent.entityModel['horizonRoot']['entity']
         del self.parent.entityModel['horizonRoot']
-        return True
 
     def createWall(self, parentEntity, alt, az):
         """

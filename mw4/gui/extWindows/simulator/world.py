@@ -44,14 +44,14 @@ class SimulatorWorld:
         scale = (960 + vertical) / 960
 
         translation = QVector3D(north, -east, 0)
-
         for node in ['domeColumn', 'domeCompassRose', 'domeCompassRoseChar']:
+            node = self.parent.entityModel.get(node)
+            if node:
+                node['trans'].setTranslation(translation)
 
-            nodeT = self.parent.entityModel[node]['trans']
-            nodeT.setTranslation(translation)
-
-        nodeT = self.parent.entityModel['domeColumn']['trans']
-        nodeT.setScale3D(QVector3D(1, 1, scale))
+        node = self.parent.entityModel.get('domeColumn')
+        if node:
+            node['trans'].setScale3D(QVector3D(1, 1, scale))
 
     def create(self):
         """

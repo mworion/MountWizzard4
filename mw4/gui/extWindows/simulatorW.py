@@ -173,8 +173,8 @@ class SimulatorWindow(MWidget):
         """
         self.camera = self.window3D.camera()
         self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 10000)
-        self.camera.setViewCenter(QVector3D(0, 1.5, 0))
-        self.camera.setPosition(QVector3D(5, 15, 3))
+        self.camera.setViewCenter(QVector3D(0, 1, 0))
+        self.camera.setPosition(QVector3D(3, 10, 3))
         self.camera.setUpVector(QVector3D(0, 1, 0))
         self.cameraController = Qt3DExtras.QOrbitCameraController(parentEntity)
         self.cameraController.setCamera(self.camera)

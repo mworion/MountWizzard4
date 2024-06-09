@@ -47,38 +47,46 @@ class SimulatorTelescope:
         east = self.app.mount.geometry.offEast * 1000
         vertical = self.app.mount.geometry.offVert * 1000
 
-        nodeT = self.parent.entityModel['mountBase']['trans']
-        nodeT.setTranslation(QVector3D(north, -east, 1000 + vertical))
+        node = self.parent.entityModel.get('mountBase')
+        if node:
+            node['trans'].setTranslation(QVector3D(north, -east, 1000 + vertical))
 
         latitude = self.app.mount.obsSite.location.latitude.degrees
-        nodeT = self.parent.entityModel['lat']['trans']
-        nodeT.setRotationY(- abs(latitude))
+        node = self.parent.entityModel.get('lat')
+        if node:
+            node['trans'].setRotationY(- abs(latitude))
 
         offPlateOTA = self.app.mount.geometry.offPlateOTA * 1000
         lat = - self.app.mainW.ui.offLAT.value() * 1000
 
-        nodeM = self.parent.entityModel['gem']['mesh']
-        nodeM.setYExtent(abs(lat) + 80)
+        node = self.parent.entityModel.get('gem')
+        if node:
+            node['mesh'].setYExtent(abs(lat) + 80)
 
-        nodeT = self.parent.entityModel['gem']['trans']
-        nodeT.setTranslation(QVector3D(159.0, lat / 2, 338.5))
+        node = self.parent.entityModel.get('gem')
+        if node:
+            node['trans'].setTranslation(QVector3D(159.0, lat / 2, 338.5))
 
-        nodeT = self.parent.entityModel['gemCorr']['trans']
-        nodeT.setTranslation(QVector3D(0.0, lat / 2, 0.0))
+        node = self.parent.entityModel.get('gemCorr')
+        if node:
+            node['trans'].setTranslation(QVector3D(0.0, lat / 2, 0.0))
 
         scaleRad = (offPlateOTA - 25) / 55
         scaleRad = max(scaleRad, 1)
 
-        nodeT = self.parent.entityModel['otaRing']['trans']
-        nodeT.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-        nodeT.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        node = self.parent.entityModel.get('otaRing')
+        if node:
+            node['trans'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            node['trans'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
 
-        nodeT = self.parent.entityModel['otaTube']['trans']
-        nodeT.setScale3D(QVector3D(1.0, scaleRad, scaleRad))
-        nodeT.setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
+        node = self.parent.entityModel.get('otaTube')
+        if node:
+            node['trans'].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
+            node['trans'].setTranslation(QVector3D(0.0, 0.0, - 10 * scaleRad + 10))
 
-        nodeT = self.parent.entityModel['otaImagetrain']['trans']
-        nodeT.setTranslation(QVector3D(0, 0, 65 * (scaleRad - 1)))
+        node = self.parent.entityModel.get('otaImagetrain')
+        if node:
+            node['trans'].setTranslation(QVector3D(0, 0, 65 * (scaleRad - 1)))
 
     def updateRotation(self):
         """
@@ -89,14 +97,15 @@ class SimulatorTelescope:
         angRA = self.app.mount.obsSite.angularPosRA
         angDEC = self.app.mount.obsSite.angularPosDEC
         if not (angRA and angDEC):
-            return False
+            return
 
-        nodeT = self.parent.entityModel['ra']['trans']
-        nodeT.setRotationX(- angRA.degrees + 90)
+        node = self.parent.entityModel.get('ra')
+        if node:
+            node['trans'].setRotationX(- angRA.degrees + 90)
 
-        nodeT = self.parent.entityModel['dec']['trans']
-        nodeT.setRotationZ(- angDEC.degrees)
-        return True
+        node = self.parent.entityModel.get('dec')
+        if node:
+            node['trans'].setRotationZ(- angDEC.degrees)
 
     def create(self):
         """

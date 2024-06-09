@@ -828,6 +828,7 @@ class MainWindow(
         for window in self.uiWindows:
             if self.uiWindows[window]['name'] != widget.objectName():
                 continue
+            del self.uiWindows[window]['classObj']
             self.uiWindows[window]['classObj'] = None
 
         return True

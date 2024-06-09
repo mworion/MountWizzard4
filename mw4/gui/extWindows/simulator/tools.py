@@ -18,7 +18,7 @@
 
 # external packages
 from PySide6.QtCore import QUrl
-from PySide6.QtGui import QVector3D, QFont
+from PySide6.QtGui import QVector3D, QFont, QColor
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
 from PySide6.Qt3DCore import Qt3DCore
@@ -28,26 +28,28 @@ from PySide6.Qt3DCore import Qt3DCore
 
 def linkLight(node):
     """
-    :param node:
-    :return:
     """
+    lightTypes = {'point': Qt3DRender.QPointLight(),
+                  'dir': Qt3DRender.QDirectionalLight(),
+                  'spot': Qt3DRender.QSpotLight()
+                  }
     light = node.get('light')
     if light:
-        if isinstance(light[0], Qt3DRender.QPointLight):
-            lightSource = light[0]
+        if light[0] == 'point':
+            lightSource = lightTypes[light[0]]
             lightSource.setIntensity(light[1])
-            lightSource.setColor(light[2])
-        elif isinstance(light[0], Qt3DRender.QDirectionalLight):
-            lightSource = light[0]
+            lightSource.setColor(QColor(*light[2]))
+        elif light[0] == 'direction':
+            lightSource = lightTypes[light[0]]
             lightSource.setIntensity(light[1])
-            lightSource.setColor(light[2])
-            lightSource.setWorldDirection(light[3])
-        elif isinstance(light[0], Qt3DRender.QSpotLight):
-            lightSource = light[0]
+            lightSource.setColor(QColor(*light[2]))
+            lightSource.setWorldDirection(QVector3D(*light[3]))
+        elif light[0] == 'spot':
+            lightSource = lightTypes[light[0]]
             lightSource.setIntensity(light[1])
-            lightSource.setColor(light[2])
+            lightSource.setColor(QColor(*light[2]))
             lightSource.setCutOffAngle(light[3])
-            lightSource.setLocalDirection(light[4])
+            lightSource.setLocalDirection(QVector3D(*light[4]))
         else:
             lightSource = None
     else:
@@ -58,15 +60,14 @@ def linkLight(node):
 
 def linkSource(node):
     """
-    :param node:
-    :return: mesh
     """
     source = node.get('source')
     if source:
         if isinstance(source, str):
             mesh = Qt3DRender.QMesh()
             mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
-            mesh.sourceChanged.connect(lambda: print(f'{mesh.meshName}: {mesh.status}'))
+            mesh.setMeshName(source)
+            mesh.statusChanged.connect(lambda: print(f'{mesh.meshName()}: {mesh.status()}'))
 
         elif isinstance(source[0], Qt3DExtras.QCuboidMesh):
             mesh = source[0]
@@ -99,8 +100,6 @@ def linkSource(node):
 
 def linkTransform(node):
     """
-    :param node:
-    :return: transform
     """
     trans = node.get('trans')
     rot = node.get('rot')
@@ -127,8 +126,6 @@ def linkTransform(node):
 
 def linkMaterial(node):
     """
-    :param node:
-    :return: material
     """
     mat = node.get('mat')
     return mat
@@ -136,9 +133,6 @@ def linkMaterial(node):
 
 def linkModel(model, entityModel):
     """
-    :param model:
-    :param entityModel:
-    :return: true for test purpose
     """
     for node in model:
         parent = model[node].get('parent')
@@ -146,8 +140,11 @@ def linkModel(model, entityModel):
             continue
 
         newEntity = Qt3DCore.QEntity()
+        newEntity.setObjectName(node)
         newEntity.setParent(entityModel[parent])
         entityModel[node] = newEntity
+
+        print(f'node: {node} link: {model[node]}')
 
         mesh = linkSource(model[node])
         if mesh:
@@ -168,8 +165,6 @@ def linkModel(model, entityModel):
 
 def getTransformation(entity):
     """
-    :param entity:
-    :return:
     """
     if entity is None:
         return None
@@ -181,8 +176,6 @@ def getTransformation(entity):
 
 def getMaterial(entity):
     """
-    :param entity:
-    :return:
     """
     if entity is None:
         return None
@@ -197,8 +190,6 @@ def getMaterial(entity):
 
 def getMesh(entity):
     """
-    :param entity:
-    :return:
     """
     if entity is None:
         return None
@@ -213,8 +204,6 @@ def getMesh(entity):
 
 def getLight(entity):
     """
-    :param entity:
-    :return:
     """
     if entity is None:
         return None

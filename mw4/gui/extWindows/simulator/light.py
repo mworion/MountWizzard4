@@ -17,7 +17,6 @@
 # standard libraries
 
 # external packages
-from PySide6.QtGui import QColor, QVector3D
 from PySide6.Qt3DRender import Qt3DRender
 
 # local import
@@ -48,29 +47,28 @@ class SimulatorLight:
         """
         model = {
             'lights': {
-                'parent': 'root_qt3d',
+                'parent': 'root',
             },
             'main': {
                 'parent': 'lights',
-                'light': [Qt3DRender.QPointLight(), 1.0,
-                          QColor(255, 255, 255)],
-                'trans': [10, 40, 10],
-            },
-
-            'dir': {
-                'parent': 'lights',
-                'light': [Qt3DRender.QDirectionalLight(), 1,
-                          QColor(0, 255, 0),
-                          QVector3D(1, 0, 1)],
-                'trans': [-10, 1, -10],
-            },
-            'spot': {
-                'parent': 'lights',
-                'light': [Qt3DRender.QSpotLight(), 1,
-                          QColor(0, 255, 255), 5,
-                          QVector3D(1, 0, -1)],
-                'trans': [-5, 1, 5],
+                'light': ['point', 1.0, [255, 255, 255]],
+                'trans': [5, 20, 5],
             },
         }
         linkModel(model, self.parent.entityModel)
         # self.app.material.emit(self.parent.entityModel['main'], 'main')
+
+"""
+
+            'dir': {
+                'parent': 'lights',
+                'light': ['direction', 1, [0, 255, 0], [1, 0, 1]],
+                'trans': [-10, 1, -10],
+            },
+            'spot': {
+                'parent': 'lights',
+                'light': ['spot', 1, [0, 255, 255], 5, [1, 0, -1]],
+                'trans': [-5, 1, 5],
+            },
+
+"""

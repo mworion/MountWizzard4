@@ -94,11 +94,11 @@ jobs:
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            python3 --version
+            python3.10 --version
             ls /root/*.*
             cd /root
-            python3 startup.pyz --no-start --version 4.0.0a6
+            python3.10 startup.pyz --no-start --version 4.0.0a6
             touch test.run
-            xvfb-run python3 startup.pyz
+            xvfb-run python3.10 startup.pyz
             cat log/mw*.log
             ls -la

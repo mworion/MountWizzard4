@@ -55,14 +55,14 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          python startup.pyz --no-start --version 4.0.0a4
+          python startup.pyz --no-start --version 4.0.0a6
           dir
       
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.run
-          python startup.pyz --version 4.0.0a4
+          python startup.pyz --version 4.0.0a6
           dir
   
   install_ubuntu:

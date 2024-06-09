@@ -49,6 +49,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: pyside
 
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact

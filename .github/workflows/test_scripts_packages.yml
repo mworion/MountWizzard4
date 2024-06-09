@@ -212,12 +212,12 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
-          python startup.pyz --no-start --version 4.0.0a4
+          python startup.pyz --no-start --version 4.0.0a6
           ls -la
           
       - name: Run MountWizzard4
         run: |
           cd dist
           touch test.run
-          python3 startup.pyz --version 4.0.0a4
+          python3 startup.pyz --version 4.0.0a6
           ls -la

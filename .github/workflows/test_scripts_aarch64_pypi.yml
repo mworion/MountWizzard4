@@ -89,7 +89,7 @@ jobs:
             python3 --version
             ls /root/support/*.*
             cd /root/support
-            python3 startup.pyz --no-start --version 4.0.0a2
+            python3 startup.pyz --no-start --version 4.0.0a6
             touch test.run
             xvfb-run python3 startup.pyz
             cat log/mw*.log

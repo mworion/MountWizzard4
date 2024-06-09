@@ -24,4 +24,4 @@ isWindows = platform.system() == 'Windows'
 isLinux = platform.system() == 'Linux'
 isMac = platform.system() == 'Darwin'
 isSimulationMount = False
-isMaterialW = False
+isMaterialW = True

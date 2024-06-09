@@ -33,17 +33,6 @@ class SimulatorLight:
         self.app = app
         self.parent.ui.lightIntensity.valueChanged.connect(self.setIntensity)
 
-    def clear(self):
-        """
-        """
-        node = self.parent.entityModel.get('lightRoot')
-        if not node:
-            return
-
-        node['entity'].setParent(None)
-        del self.parent.entityModel['lightRoot']['entity']
-        del self.parent.entityModel['lightRoot']
-
     def setIntensity(self):
         """
         """
@@ -63,7 +52,7 @@ class SimulatorLight:
             'main': {
                 'parent': 'lightRoot',
                 'light': ['point', 1.0, [255, 255, 255]],
-                'trans': (5, 40, 5),
+                'trans': [5, 20, 5],
             },
         }
         linkModel(model, self.parent.entityModel)

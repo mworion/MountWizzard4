@@ -48,11 +48,11 @@ class Materials(Styles):
         self.aluminiumGrey.setMetalness(0.3)
         self.aluminiumGrey.setRoughness(0.5)
 
-        self.environ1 = Qt3DExtras.QMetalRoughMaterial()
-        self.environ1.setBaseColor(QColor(self.M_BLUE2))
-        self.environ1.setAmbientOcclusion(0.5)
-        self.environ1.setMetalness(0.3)
-        self.environ1.setRoughness(0.5)
+        self.environ = Qt3DExtras.QMetalRoughMaterial()
+        self.environ.setBaseColor(QColor(self.M_BLUE2))
+        self.environ.setAmbientOcclusion(0.0)
+        self.environ.setMetalness(0.1)
+        self.environ.setRoughness(0.0)
 
         self.stainless = Qt3DExtras.QMetalRoughMaterial()
         self.stainless.setBaseColor(QColor(255, 255, 255))

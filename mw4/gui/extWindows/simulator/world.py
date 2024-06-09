@@ -64,7 +64,7 @@ class SimulatorWorld:
                 'parent': 'environRoot',
                 'source': 'dome-base.stl',
                 'scale': [1, 1, 1],
-                'mat': Materials().environ1,
+                'mat': Materials().environ,
             },
             'domeColumn': {
                 'parent': 'environRoot',

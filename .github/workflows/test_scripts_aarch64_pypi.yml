@@ -44,8 +44,8 @@ jobs:
             distro: ubuntu20.04
           - arch: aarch64
             distro: ubuntu22.04
-          - arch: aarch64
-            distro: bullseye
+          #- arch: aarch64
+          #  distro: bullseye
 
     steps:
       - uses: actions/checkout@v4

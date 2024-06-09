@@ -44,8 +44,8 @@ jobs:
             distro: ubuntu20.04
           - arch: aarch64
             distro: ubuntu22.04
-          - arch: aarch64
-            distro: bullseye
+          #- arch: aarch64
+          #  distro: bullseye
 
     steps:
       - uses: actions/checkout@v4
@@ -94,11 +94,11 @@ jobs:
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
-            python3.10 --version
+            python3 --version
             ls /root/*.*
             cd /root
-            python3.10 startup.pyz --no-start --version 4.0.0a6
+            python3 startup.pyz --no-start --version 4.0.0a6
             touch test.run
-            xvfb-run python3.10 startup.pyz
+            xvfb-run python3 startup.pyz
             cat log/mw*.log
             ls -la

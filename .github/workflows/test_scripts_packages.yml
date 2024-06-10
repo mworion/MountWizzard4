@@ -27,7 +27,7 @@ env:
   uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
   res: 'mw4/resource/'
-  version: '-v 4.0.0a7'
+  version: '-v 4.0.0a9'
 
 on:
   push:

@@ -23,7 +23,7 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
-  version: '-v 4.0.0a7'
+  version: '-v 4.0.0a9'
 
 on:
   push:
@@ -42,11 +42,9 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu20.04
-          - arch: aarch64
             distro: ubuntu22.04
-          #- arch: aarch64
-          #  distro: bullseye
+          - arch: aarch64
+            distro: bullseye
 
     steps:
       - uses: actions/checkout@v4
@@ -99,6 +97,6 @@ jobs:
             cd /root
             python3 startup.pyz --no-start ${{ env.version }}
             touch test.run
-            xvfb-run python3 startup.pyz
+            xvfb-run python3 startup.pyz ${{ env.version }}
             cat log/mw*.log
             ls -la

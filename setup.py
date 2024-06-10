@@ -22,7 +22,7 @@ releaseNotes = """
 - this is a major release !
   please try out in a separate work folder for test!
   
-- add: support for python 3.11 and 3.12, remove 3.7, 3.8 and 3.9
+- add: support for python 3.11 and 3.12, remove 3.7, 3.8
 - add native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
@@ -46,7 +46,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a6',
+    version='4.0.0a8',
     packages=[
         'mw4',
         'mw4.base',
@@ -81,12 +81,12 @@ setup(
         'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.10.0, <3.13',
+    python_requires='>=3.9.0, <3.13',
     install_requires=[
         'numpy==1.26.4',
-        'opencv-python-headless==4.9.0.80',
-        'scipy==1.13.0',
-        'astropy==6.1.0',
+        'opencv-python-headless==4.9.0.82',
+        'scipy==1.13.1',
+        'astropy==5.3.4',
         'pyerfa==2.0.1.4',
         'astroquery==0.4.7',
         'sep_mw4==1.2.2',
@@ -94,7 +94,7 @@ setup(
         'qimage2ndarray==1.10.0',
         'skyfield==1.48',
         'sgp4==2.23',
-        'requests==2.31.0',
+        'requests==2.32.2',
         'requests_toolbelt==1.0.0',
         'importlib_metadata==7.1.0',
         'python-dateutil==2.9.0.post0',
@@ -104,7 +104,7 @@ setup(
         'hidapi==0.14.0',
         'range-key-dict==1.1.0',
         'ndicts==0.3.0',
-        'packaging==24.0',
+        'packaging==24.1',
         'lz4==4.3.3',
         'xisf==0.9.5',
     ]
@@ -131,6 +131,7 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Environment :: MacOS X',
         'Environment :: Other Environment',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',

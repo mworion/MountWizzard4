@@ -23,6 +23,7 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
+  version: '-v 4.0.0a7'
 
 on:
   push:
@@ -55,14 +56,14 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          python startup.pyz --no-start --version 4.0.0a6
+          python startup.pyz --no-start ${{ env.version }}
           dir
       
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.run
-          python startup.pyz --version 4.0.0a6
+          python startup.pyz ${{ env.version }}
           dir
   
   install_ubuntu:
@@ -96,13 +97,13 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python startup.pyz --no-start --version 4.0.0a6
+          python startup.pyz --no-start ${{ env.version }}
           ls -la
   
       - name: Run MountWizzard4
         run: |
           touch test.run
-          xvfb-run python3 startup.pyz --version 4.0.0a6
+          xvfb-run python3 startup.pyz ${{ env.version }}
           ls -la
           
   install_macOS:
@@ -125,5 +126,7 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python startup.pyz --no-start --version 4.0.0a6
+          touch test.run
+          python startup.pyz --no-start ${{ env.version }}
+          ls -la
           

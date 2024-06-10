@@ -23,6 +23,7 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
+  version: '-v 4.0.0a7'
 
 on:
   push:
@@ -96,7 +97,7 @@ jobs:
             python3 --version
             ls /root/*.*
             cd /root
-            python3 startup.pyz --no-start --version 4.0.0a6
+            python3 startup.pyz --no-start ${{ env.version }}
             touch test.run
             xvfb-run python3 startup.pyz
             cat log/mw*.log

@@ -27,6 +27,7 @@ env:
   uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
   res: 'mw4/resource/'
+  version: '-v 4.0.0a7'
 
 on:
   push:
@@ -112,14 +113,14 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1.6.0
         with:
-          url: ${{ env.gh }}startup.pyz
+          url: ${{ env.gh }}startup.pyz ${{ env.version }}
           target: dist/
           
       - name: MountWizzard4 Install
         shell: cmd
         run: |
           cd dist
-          python startup.pyz --no-start
+          python startup.pyz --no-start ${{ env.version }}
           dir
           
       - name: Run MountWizzard4
@@ -171,14 +172,14 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
-          python startup.pyz --no-start
+          python startup.pyz --no-start ${{ env.version }}
           ls -la
           
       - name: Run MountWizzard4
         run: |
           cd dist
           touch test.run
-          xvfb-run python3 startup.pyz
+          xvfb-run python3 startup.pyz ${{ env.version }}
           ls -la
 
 
@@ -211,12 +212,12 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
-          python startup.pyz --no-start
+          python startup.pyz --no-start ${{ env.version }}
           ls -la
           
       - name: Run MountWizzard4
         run: |
           cd dist
           touch test.run
-          python3 startup.pyz
+          python3 startup.pyz ${{ env.version }}
           ls -la

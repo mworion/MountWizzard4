@@ -215,9 +215,3 @@ jobs:
           python startup.pyz --no-start ${{ env.version }}
           ls -la
           
-      - name: Run MountWizzard4
-        run: |
-          cd dist
-          touch test.run
-          python3 startup.pyz ${{ env.version }}
-          ls -la

@@ -44,8 +44,6 @@ jobs:
           - arch: aarch64
             distro: ubuntu22.04
           - arch: aarch64
-            distro: ubuntu20.04
-          - arch: aarch64
             distro: bullseye
 
     steps:
@@ -60,7 +58,6 @@ jobs:
           target: .
 
       - uses: uraimo/run-on-arch-action@v2
-        continue-on-error: True
         name: build_artifact
         id: build
         with:
@@ -99,4 +96,3 @@ jobs:
             ls /root/*.*
             cd /root
             python3 startup.pyz --no-start ${{ env.version }}
-            python3 startup.pyz ${{ env.version }}

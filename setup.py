@@ -26,6 +26,7 @@ releaseNotes = """
 - add native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
+- add: show free disk space of work dir in the status bar 
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major version PySide6

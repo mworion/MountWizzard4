@@ -130,3 +130,11 @@ jobs:
           python startup.pyz --no-start ${{ env.version }}
           ls -la
           
+      - name: MountWizzard4 Run
+        continue-on-error: True
+        run: |
+          touch test.run
+          python startup.pyz ${{ env.version }}
+          ls -la
+          cat log/mw*.log
+          

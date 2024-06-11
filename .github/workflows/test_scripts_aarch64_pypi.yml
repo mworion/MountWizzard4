@@ -45,6 +45,8 @@ jobs:
             distro: ubuntu22.04
           - arch: aarch64
             distro: bullseye
+          - arch: aarch64
+            distro: bookworm
 
     steps:
       - uses: actions/checkout@v4
@@ -96,3 +98,8 @@ jobs:
             ls /root/*.*
             cd /root
             python3 startup.pyz --no-start ${{ env.version }}
+            
+            echo "..."
+            echo "run"
+            echo "..."
+            xvfb-run python3 startup.pyz ${{ env.version }}

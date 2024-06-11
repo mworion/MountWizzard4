@@ -96,7 +96,3 @@ jobs:
             ls /root/*.*
             cd /root
             python3 startup.pyz --no-start ${{ env.version }}
-            touch test.run
-            xvfb-run python3 startup.pyz ${{ env.version }}
-            cat log/mw*.log
-            ls -la

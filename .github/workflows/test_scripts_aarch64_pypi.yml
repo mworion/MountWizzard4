@@ -101,5 +101,3 @@ jobs:
             ls /root/*.*
             cd /root
             python3 startup.pyz --no-start ${{ env.version }}
-            echo ""
-            xvfb-run python3 startup.pyz ${{ env.version }}

@@ -19,8 +19,7 @@ import unittest.mock as mock
 import pytest
 
 # external packages
-from PySide6 import sip
-from PySide6.QtGui import QCloseEvent, QKeyEvent
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QPushButton
 import numpy as np
 

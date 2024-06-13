@@ -19,7 +19,6 @@ import pytest
 import os
 import unittest.mock as mock
 import logging
-import platform
 import shutil
 
 # external packages
@@ -48,6 +47,10 @@ def app(qapp):
     shutil.copy('tests/testData/de440_mw4.bsp', 'tests/workDir/data/de440_mw4.bsp')
     shutil.copy('tests/testData/test.run', 'tests/workDir/test.run')
 
+    class Test:
+        def emit(self):
+            return
+
     with mock.patch.object(QWidget,
                            'show'):
         with mock.patch.object(QTimer,
@@ -56,22 +59,11 @@ def app(qapp):
                                    'start'):
                 app = MountWizzard4(mwGlob=mwGlob, application=qapp)
                 app.log = logging.getLogger()
+                app.update1s = Test()
                 with mock.patch.object(app.mainW,
                                        'setupSatelliteNameList'):
                     yield app
                     app.threadPool.waitForDone(5000)
-
-
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown_func(app):
-
-    if os.path.isfile('tests/workDir/config/config.cfg'):
-        os.remove('tests/workDir/config/config.cfg')
-    if os.path.isfile('tests/workDir/config/new.cfg'):
-        os.remove('tests/workDir/config/new.cfg')
-    if os.path.isfile('tests/workDir/config/profile'):
-        os.remove('tests/workDir/config/profile')
-    yield
 
 
 def test_storeStatusOperationRunning(app):
@@ -151,10 +143,8 @@ def test_sendStart_5(app):
 
 def test_sendCyclic_1(app):
     app.timerCounter = 0
-    with mock.patch.object(app.update1s,
-                           'emit'):
-        suc = app.sendCyclic()
-        assert suc
+    suc = app.sendCyclic()
+    assert suc
 
 
 def test_sendCyclic_2(app):
@@ -177,10 +167,8 @@ def test_sendCyclic_4(app):
 
 def test_sendCyclic_5(app):
     app.timerCounter = 574
-    with mock.patch.object(app.update1s,
-                           'emit'):
-        suc = app.sendCyclic()
-        assert suc
+    suc = app.sendCyclic()
+    assert suc
 
 
 def test_sendCyclic_6(app):
@@ -203,10 +191,8 @@ def test_sendCyclic_8(app):
 
 def test_sendCyclic_9(app):
     app.timerCounter = 36000 - 15 - 1
-    with mock.patch.object(app.update1s,
-                           'emit'):
-        suc = app.sendCyclic()
-        assert suc
+    suc = app.sendCyclic()
+    assert suc
 
 
 def test_quit_1(app):

@@ -35,32 +35,29 @@ def function(qapp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel['horizon'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['horizonRoot'] = {'entity': Qt3DCore.QEntity()}
     function.showEnable()
 
 
 def test_clear_1(function):
     function.parent.entityModel = {}
-    suc = function.clear()
-    assert not suc
+    function.clear()
 
 
 def test_clear_2(function):
-    function.parent.entityModel['horizon'] = {'entity': Qt3DCore.QEntity()}
-    suc = function.clear()
-    assert suc
+    function.parent.entityModel['horizonRoot'] = {'entity': Qt3DCore.QEntity()}
+    function.clear()
 
 
 def test_createWall_1(function):
-    val = function.createWall(Qt3DCore.QEntity(), 0, 0, 10)
+    val = function.createWall(Qt3DCore.QEntity(), 0, 0)
     assert isinstance(val, Qt3DCore.QEntity)
 
 
 def test_create_1(function):
     function.parent.entityModel['ref_fusion'] = {'entity': Qt3DCore.QEntity()}
     function.app.data.horizonP = None
-    suc = function.create()
-    assert not suc
+    function.create()
 
 
 def test_create_2(function):
@@ -72,5 +69,4 @@ def test_create_2(function):
                                'createWall'):
             with mock.patch.object(function,
                                    'showEnable'):
-                suc = function.create()
-                assert suc
+                function.create()

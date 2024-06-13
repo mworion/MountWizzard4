@@ -38,8 +38,7 @@ def test_updatePositions_1(function):
     with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0, None, None, None)):
-        suc = function.updatePositions()
-        assert not suc
+        function.updatePositions()
 
 
 def test_updatePositions_2(function):

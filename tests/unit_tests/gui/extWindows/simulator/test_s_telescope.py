@@ -20,6 +20,7 @@ from unittest import mock
 
 # external packages
 from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DExtras import Qt3DExtras
 from skyfield.api import Angle
 
 # local import
@@ -37,19 +38,42 @@ def function(qapp):
 
 def test_updatePositions_1(function):
     function.parent.entityModel['mountBase'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['mountBase'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['mountBase']['trans'] = t
+    function.parent.entityModel['mountBase']['entity'].addComponent(t)
+
     function.parent.entityModel['lat'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['lat'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['lat']['trans'] = t
+    function.parent.entityModel['lat']['entity'].addComponent(t)
+
     function.parent.entityModel['gem'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['gem'].addComponent(Qt3DCore.QTransform())
+    m = Qt3DExtras.QCuboidMesh()
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['gem']['mesh'] = m
+    function.parent.entityModel['gem']['trans'] = t
+    function.parent.entityModel['gem']['entity'].addComponent(m)
+    function.parent.entityModel['gem']['entity'].addComponent(t)
+
     function.parent.entityModel['gemCorr'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['gemCorr'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['gemCorr']['trans'] = t
+    function.parent.entityModel['gemCorr']['entity'].addComponent(t)
+
     function.parent.entityModel['otaRing'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['otaRing'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['otaRing']['trans'] = t
+    function.parent.entityModel['otaRing']['entity'].addComponent(t)
+
     function.parent.entityModel['otaTube'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['otaTube'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['otaTube']['trans'] = t
+    function.parent.entityModel['otaTube']['entity'].addComponent(t)
+
     function.parent.entityModel['otaImagetrain'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['otaImagetrain'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['otaImagetrain']['trans'] = t
+    function.parent.entityModel['otaImagetrain']['entity'].addComponent(t)
 
     function.updatePositions()
 
@@ -57,19 +81,22 @@ def test_updatePositions_1(function):
 def test_updateRotation_1(function):
     function.app.mount.obsSite.angularPosRA = None
     function.app.mount.obsSite.angularPosDEC = None
-    suc = function.updateRotation()
-    assert not suc
+    function.updateRotation()
 
 
 def test_updateRotation_2(function):
     function.app.mount.obsSite.angularPosRA = Angle(degrees=10)
     function.app.mount.obsSite.angularPosDEC = Angle(degrees=10)
     function.parent.entityModel['ra'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['ra'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['ra']['entity'].addComponent(t)
+    function.parent.entityModel['ra']['trans'] = t
+
     function.parent.entityModel['dec'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['dec'].addComponent(Qt3DCore.QTransform())
-    suc = function.updateRotation()
-    assert suc
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['dec']['entity'].addComponent(t)
+    function.parent.entityModel['dec']['trans'] = t
+    function.updateRotation()
 
 
 def test_create_1(function):

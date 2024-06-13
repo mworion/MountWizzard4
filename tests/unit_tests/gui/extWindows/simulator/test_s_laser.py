@@ -50,19 +50,26 @@ def test_updatePositions_1(function):
 
 def test_updatePositions_2(function):
     function.parent.entityModel['displacement'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['displacement'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['displacement']['entity'].addComponent(t)
+    function.parent.entityModel['displacement']['trans'] = t
+
     function.parent.entityModel['az'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['az'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['az']['trans'] = t
+    function.parent.entityModel['az']['entity'].addComponent(t)
+
     function.parent.entityModel['alt'] = {'entity': Qt3DCore.QEntity()}
-    function.parent.entityModel['alt'].addComponent(Qt3DCore.QTransform())
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['alt']['trans'] = t
+    function.parent.entityModel['alt']['entity'].addComponent(t)
     with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0,
                                          np.array([1, 1, 1]),
                                          np.array([1, 1, 1]),
                                          np.array([1, 1, 1]))):
-        suc = function.updatePositions()
-        assert suc
+        function.updatePositions()
 
 
 def test_create_1(function):

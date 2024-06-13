@@ -28,13 +28,39 @@ from gui.extWindows.simulator.tools import linkModel
 from gui.extWindows.simulator.tools import linkMaterial
 from gui.extWindows.simulator.tools import linkSource
 from gui.extWindows.simulator.tools import linkTransform
+from gui.extWindows.simulator.tools import linkLight
 from gui.extWindows.simulator.tools import getMaterial
+from gui.extWindows.simulator.tools import getLight
 from gui.extWindows.simulator.materials import Materials
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     yield
+
+
+def test_linkLight_1(qtbot):
+    model = {'parent': None,
+             'light': ['point', 1.0, [255, 255, 255]],
+             }
+    light = linkLight(model)
+    assert isinstance(light, Qt3DRender.QPointLight)
+
+
+def test_linkLight_2(qtbot):
+    model = {'parent': None,
+             'light': ['spot', 0.1, [255, 255, 255], 15, [1, 0, -1]],
+             }
+    light = linkLight(model)
+    assert isinstance(light, Qt3DRender.QSpotLight)
+
+
+def test_linkLight_3(qtbot):
+    model = {'parent': None,
+             'light': ['direction', 0.1, [255, 255, 255], [1, 0, 1]],
+             }
+    light = linkLight(model)
+    assert isinstance(light, Qt3DRender.QDirectionalLight)
 
 
 def test_linkSource_1(qtbot):
@@ -159,6 +185,18 @@ def test_linkModel_2(qtbot):
     linkModel(model, entityModel)
 
 
+def test_linkModel_3(qtbot):
+    entityModel = {'root_qt3d': {'entity': Qt3DCore.QEntity()}}
+    model = {
+        'pointer':
+            {'parent': 'root_qt3d',
+             'light': ['point', 1.0, [255, 255, 255]],
+             'scale': [1, 1, 1],
+             }
+    }
+    linkModel(model, entityModel)
+
+
 def test_getMaterial_1(qtbot):
     entity = None
     val = getMaterial(entity)
@@ -171,4 +209,18 @@ def test_getMaterial_2(qtbot):
     entity.addComponent(mat)
     val = getMaterial(entity)
     assert isinstance(val, Qt3DExtras.QPhongAlphaMaterial)
+
+
+def test_getLight_1(qtbot):
+    entity = None
+    val = getLight(entity)
+    assert val is None
+
+
+def test_ggetLight_2(qtbot):
+    entity = Qt3DCore.QEntity()
+    mat = Qt3DRender.QSpotLight()
+    entity.addComponent(mat)
+    val = getLight(entity)
+    assert isinstance(val, Qt3DRender.QSpotLight)
 

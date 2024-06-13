@@ -55,7 +55,6 @@ class SimulatorWindow(MWidget):
         self.pointer = SimulatorPointer(self, self.app)
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
-        self.iterDepth = 0
 
         self.window3D = Qt3DExtras.Qt3DWindow()
         self.entityModel = {'root': {'entity': Qt3DCore.QEntity()}}
@@ -69,13 +68,6 @@ class SimulatorWindow(MWidget):
         self.camera = None
         self.cameraController = None
         self.setupCamera(self.entityModel['root']['entity'])
-
-    def clicked(self, pickEntity):
-        """
-        """
-        for key, value in self.entityModel.items():
-            if value['entity'] == pickEntity.entity():
-                self.app.material.emit(pickEntity.entity(), key)
 
     def initConfig(self):
         """
@@ -219,7 +211,7 @@ class SimulatorWindow(MWidget):
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
-    def setupReference(self):
+    def createReference(self):
         """
         Coordinate Systems:
         - fusion360 (x is north, y is west, z is up), scale in mm
@@ -255,7 +247,7 @@ class SimulatorWindow(MWidget):
         'entityModel'. The dict is used to link the models please look
         closely which references are used.
         """
-        self.setupReference()
+        self.createReference()
         self.light.create()
         self.world.create()
         self.dome.create()

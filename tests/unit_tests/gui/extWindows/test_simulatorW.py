@@ -20,8 +20,8 @@ import unittest.mock as mock
 
 # external packages
 from PySide6.QtGui import QCloseEvent
-from PySide6.Qt3DCore import QEntity
-from PySide6.Qt3DRender import QPointLight
+from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DRender import Qt3DRender
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -74,19 +74,8 @@ def test_showWindow(function):
         function.showWindow()
 
 
-def test_setupLight_1(function):
-    function.setupLight(QEntity())
-
-
-def test_setLightIntensity_1(function):
-    function.entityModel['lightsNode'] = Qt3DCore.QEntity()
-    a = QEntity(function.entityModel['lightsNode'])
-    a.addComponent(QPointLight())
-    function.setLightIntensity()
-
-
 def test_setupCamera_1(function):
-    function.setupCamera(QEntity())
+    function.setupCamera(Qt3DCore.QEntity())
 
 
 def test_colorChange(function):
@@ -98,7 +87,7 @@ def test_limitPositionZ_1(function):
 
     function.camera.setPosition(QVector3D(1, 1, 1))
     function.limitPositionZ()
-    assert function.camera.position()[1] == 1
+    assert function.camera.position().y() == 1
 
 
 def test_limitPositionZ_2(function):
@@ -106,7 +95,7 @@ def test_limitPositionZ_2(function):
 
     function.camera.setPosition(QVector3D(1, -10, 1))
     function.limitPositionZ()
-    assert function.camera.position()[1] == 0
+    assert function.camera.position().y() == 0
 
 
 def test_topView_1(function):
@@ -130,13 +119,14 @@ def test_westView_1(function):
 
 
 def test_createReference_1(function):
-    function.entityModel['root_qt3d'] = Qt3DCore.QEntity()
+    function.entityModel['root'] = {'entity': Qt3DCore.QEntity()}
     with mock.patch.object(tools,
                            'linkModel'):
         function.createReference()
 
 
-def test_setupScene_1(function):
+def test_createScene_1(function):
+    function.entityModel['root'] = {'entity': Qt3DCore.QEntity()}
     with mock.patch.object(function,
                            'createReference'):
         with mock.patch.object(function.telescope,

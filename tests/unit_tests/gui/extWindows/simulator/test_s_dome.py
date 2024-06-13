@@ -24,6 +24,7 @@ from PySide6.Qt3DCore import Qt3DCore
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.simulatorW import SimulatorWindow
+
 from gui.extWindows.simulator.materials import Materials
 
 

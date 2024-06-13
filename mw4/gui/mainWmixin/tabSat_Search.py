@@ -155,7 +155,7 @@ class SatSearch(object):
 
         self.ui.progSatellitesFull.clicked.connect(self.progSatellitesFull)
         self.ui.progSatellitesFiltered.clicked.connect(self.progSatellitesFiltered)
-        self.ui.listSatelliteNames.doubleClicked.connect(self.chooseSatellite)
+        self.ui.listSatelliteNames.itemDoubleClicked.connect(self.chooseSatellite)
         self.ui.satelliteSource.activated.connect(self.loadDataFromSourceURLs)
         self.ui.filterSatellite.textChanged.connect(self.filterSatelliteNamesList)
         self.ui.satIsSunlit.clicked.connect(self.filterSatelliteNamesList)

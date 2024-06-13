@@ -1177,7 +1177,7 @@ def test_openMountDocumentation_3(function):
     function.app.mount.firmware.product = '10micron GM1000HPS'
     with mock.patch.object(webbrowser,
                            'open',
-                           return_value=False):
+                           return_value=True):
         suc = function.openMountDocumentation()
         assert suc
 

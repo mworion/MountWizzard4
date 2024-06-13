@@ -73,6 +73,15 @@ def test_properties_4(function):
     assert val == 0.1 + function.geometry.offGemPlate
 
 
+def test_properties_5(function):
+    function.obsSite.location = None
+    function.geometry.initializeGeometry('10micron GM1000HPS')
+    function.geometry.offNorthGEM = 0.0
+    function.geometry.offVertGEM = 0.0
+    function.geometry.offNorth = 0.0
+    function.geometry.offVert = 0.0
+
+
 def test_initializeGeometry_1(function):
     suc = function.geometry.initializeGeometry('')
     assert not suc

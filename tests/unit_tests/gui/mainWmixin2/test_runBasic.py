@@ -364,6 +364,31 @@ def test_runSlew_4(function):
             assert suc
 
 
+@mock.patch('gui.mainWmixin.runBasic.isSimulationMount', True)
+def test_runSlew_5(function):
+    function.deviceStat['dome'] = True
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
+    function.slewQueue.put(mPoint)
+    function.ui.useDomeGeometry.setChecked(True)
+    with mock.patch.object(function.app.dome,
+                           'slewDome',
+                           return_value=0):
+        with mock.patch.object(function.app.mount.obsSite,
+                               'setTargetAltAz',
+                               return_value=True):
+            suc = function.runSlew()
+            assert suc
+
+
 def test_clearQueues(function):
     suc = function.clearQueues()
     assert suc

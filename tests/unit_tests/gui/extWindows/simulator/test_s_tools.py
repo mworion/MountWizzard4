@@ -63,6 +63,14 @@ def test_linkLight_3(qtbot):
     assert isinstance(light, Qt3DRender.QDirectionalLight)
 
 
+def test_linkLight_4(qtbot):
+    model = {'parent': None,
+             'light': ['test', 0.1, [255, 255, 255], [1, 0, 1]],
+             }
+    light = linkLight(model)
+    assert light is None
+
+
 def test_linkSource_1(qtbot):
     model = {'parent': None,
              'source': 'mount-ra.stl',

@@ -521,6 +521,8 @@ class SatSearch(object):
         satTab.setColumnWidth(7, 45)
         satTab.setColumnWidth(8, 0)
         satTab.verticalHeader().setDefaultSectionSize(16)
+        satTab.setSelectionBehavior(QAbstractItemView.SelectRows)
+        satTab.setSelectionMode(QAbstractItemView.SingleSelection)
         return True
 
     def setupSatelliteNameList(self):

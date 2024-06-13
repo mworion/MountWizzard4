@@ -19,7 +19,7 @@ import json
 import os
 
 # external packages
-from PySide6.QtWidgets import QListView
+from PySide6.QtWidgets import QListView, QAbstractItemView
 
 # local import
 from logic.databaseProcessing.dataWriter import DataWriter
@@ -136,6 +136,9 @@ class MinorPlanet:
         :return: success for test
         """
         self.ui.listMinorPlanetNames.clear()
+        self.ui.listMinorPlanetNames.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.ui.listMinorPlanetNames.setSelectionMode(QAbstractItemView.MultiSelection)
+
         for index, mp in enumerate(self.minorPlanets):
             text = self.generateName(index, mp)
             if not text:

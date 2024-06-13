@@ -321,10 +321,7 @@ def test_progMinorPlanetsSelected_2(function):
     function.ui.listMinorPlanetNames.clear()
     function.ui.listMinorPlanetNames.addItem('0:test')
     function.minorPlanets = ['test']
-
-    model = function.ui.listMinorPlanetNames.model()
-    ind = model.index(0)
-    function.ui.listMinorPlanetNames.setCurrentIndex(ind)
+    function.ui.listMinorPlanetNames.selectAll()
 
     with mock.patch.object(function,
                            'mpcGUI',

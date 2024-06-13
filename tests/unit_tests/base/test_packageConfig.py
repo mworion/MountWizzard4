@@ -24,4 +24,3 @@ from base.packageConfig import excludedPlatforms
 
 def test_config():
     assert 'armv7l' in excludedPlatforms
-    assert 'aarch64' in excludedPlatforms

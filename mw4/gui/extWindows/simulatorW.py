@@ -22,7 +22,6 @@ from PySide6.QtGui import QVector3D
 from PySide6.QtWidgets import QWidget
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DCore import Qt3DCore
-from PySide6.Qt3DRender import Qt3DRender
 import PySide6
 
 # local import
@@ -37,8 +36,6 @@ from gui.extWindows.simulator.laser import SimulatorLaser
 from gui.extWindows.simulator.world import SimulatorWorld
 from gui.extWindows.simulator.light import SimulatorLight
 from gui.extWindows.simulator.tools import linkModel
-from gui.extWindows.materialW import MaterialWindow
-from base.packageConfig import isMaterialW
 
 
 class SimulatorWindow(MWidget):
@@ -61,11 +58,6 @@ class SimulatorWindow(MWidget):
         self.buildPoints = SimulatorBuildPoints(self, self.app)
         self.iterDepth = 0
 
-        if isMaterialW:
-            self.materialWindow = MaterialWindow(self.app)
-            self.materialWindow.initConfig()
-            self.materialWindow.showWindow()
-
         self.window3D = Qt3DExtras.Qt3DWindow()
         self.entityModel = {'root': {'entity': Qt3DCore.QEntity()}}
         self.window3D.setRootEntity(self.entityModel['root']['entity'])
@@ -78,20 +70,6 @@ class SimulatorWindow(MWidget):
         self.camera = None
         self.cameraController = None
         self.setupCamera(self.entityModel['root']['entity'])
-
-        if isMaterialW:
-            self.picker = Qt3DRender.QObjectPicker()
-            self.entityModel['root']['entity'].addComponent(self.picker)
-            self.picker.clicked.connect(self.clicked)
-
-            pickSett = self.window3D.renderSettings().pickingSettings()
-            pickSett.setPickMethod(
-                Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
-            pickSett.setPickResultMode(
-                Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
-            pickSett.setFaceOrientationPickingMode(
-                Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
-            pickSett.setWorldSpaceTolerance(0.0001)
 
     def clicked(self, pickEntity):
         """
@@ -148,9 +126,6 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.entityModel.clear()
-        if isMaterialW:
-            self.materialWindow.storeConfig()
-            self.materialWindow.close()
         self.storeConfig()
         super().closeEvent(closeEvent)
 

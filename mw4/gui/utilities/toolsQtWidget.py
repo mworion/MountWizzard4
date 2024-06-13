@@ -22,13 +22,13 @@ import platform
 from dateutil.tz import tzlocal
 
 # external packages
-from PyQt6.QtWidgets import QWidget, QFileDialog, QMessageBox
-from PyQt6.QtWidgets import QTableWidgetItem
-from PyQt6.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
-from PyQt6.QtGui import QPainterPath, QTransform, QGuiApplication
-from PyQt6.QtCore import QSortFilterProxyModel, QDir, QObject, pyqtSignal
-from PyQt6.QtCore import Qt, QSize, QEvent
-from PyQt6.QtTest import QTest
+from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox
+from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
+from PySide6.QtGui import QPainterPath, QTransform, QGuiApplication
+from PySide6.QtCore import QSortFilterProxyModel, QDir, QObject, Signal
+from PySide6.QtCore import Qt, QSize, QEvent
+from PySide6.QtTest import QTest
 import numpy as np
 from qimage2ndarray import rgb_view, array2qimage
 
@@ -73,7 +73,7 @@ class QMultiWait(QObject):
 
     in addition, all received signals could be reset
     """
-    ready = pyqtSignal()
+    ready = Signal()
     log = logging.getLogger(__name__)
 
     def __init__(self):
@@ -604,7 +604,7 @@ class MWidget(QWidget, Styles):
             return None
 
         class MouseClickEventFilter(QObject):
-            clicked = pyqtSignal(object)
+            clicked = Signal(object)
 
             def eventFilter(self, obj, event):
                 if event.type() not in [QEvent.Type.MouseButtonRelease,

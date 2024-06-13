@@ -6,11 +6,13 @@ use a mask based on your actual environment
 
 .. hint:: See also on youtube: https://youtu.be/EqDNNMNMS0w
 
-Using terrain image from streetview app
----------------------------------------
-Please use streeview app to generate a 360 degrees image around your mount rig.
+Using terrain image from Teleport: 360 app
+------------------------------------------
+Please use Teleport: 360 app to generate a 360 degrees image around your mount
+rig. You can save as a .jpeg then rename it to terrain.jpg. I then had to adjust
+the azimuth paying attention to high points using compass readings.
 
-.. image:: image/streetviewapp.png
+.. image:: image/teleport360.png
     :align: center
     :scale: 33%
 

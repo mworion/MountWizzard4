@@ -18,11 +18,11 @@
 import logging
 
 # external packages
-from PyQt6.QtCore import QTimer
+from PySide6.QtCore import QTimer
 
 # local imports
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from indibase.indiBase import Client
+from indibase.indiClient import Client
 from base.driverDataClass import Signals
 
 

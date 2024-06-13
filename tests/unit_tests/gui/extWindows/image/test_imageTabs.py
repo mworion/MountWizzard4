@@ -19,7 +19,7 @@ import unittest.mock as mock
 import pytest
 
 # external packages
-from PyQt6.QtCore import QRectF
+from PySide6.QtCore import QRectF
 import pyqtgraph as pg
 from astropy import wcs
 import numpy as np

@@ -21,8 +21,8 @@ import glob
 import os
 
 # external packages
-import PyQt6
-from PyQt6.QtCore import QObject
+import PySide6
+from PySide6.QtCore import QObject
 
 # local import
 from mw4 import loader
@@ -65,9 +65,9 @@ def test_main_1():
               'workDir': 'mw4/tests/workDir',
               'modeldata': '4.0',
               }
-    with mock.patch.object(PyQt6.QtCore.QBasicTimer,
+    with mock.patch.object(PySide6.QtCore.QBasicTimer,
                            'start'):
-        with mock.patch.object(PyQt6.QtCore.QTimer,
+        with mock.patch.object(PySide6.QtCore.QTimer,
                                'start'):
             with mock.patch.object(loader,
                                    'QIcon'):

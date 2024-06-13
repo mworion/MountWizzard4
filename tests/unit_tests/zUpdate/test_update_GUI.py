@@ -21,7 +21,7 @@ import pytest
 import platform
 
 # external packages
-from PyQt6.QtWidgets import QApplication, QWidget
+from PySide6.QtWidgets import QApplication, QWidget
 
 # local import
 from mw4.update import UpdateGUI, Update

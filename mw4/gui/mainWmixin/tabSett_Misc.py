@@ -24,7 +24,7 @@ from packaging.utils import Version
 # external packages
 from pkg_resources import working_set
 if pConf.isAvailable:
-    from PyQt6.QtMultimedia import QSoundEffect
+    from PySide6.QtMultimedia import QSoundEffect
 import requests
 import importlib_metadata
 from astropy.utils import iers, data
@@ -526,7 +526,7 @@ class SettMisc(object):
             self.log.trace(f'{response["info"]}')
 
         targetPyQt5 = response['info']['keywords'].split(',')[0]
-        actPyQt5 = importlib_metadata.version('PyQt6')
+        actPyQt5 = importlib_metadata.version('PySide6')
         self.log.debug(f'target: [{targetPyQt5}], actual: [{actPyQt5}]')
         return targetPyQt5 == actPyQt5
 

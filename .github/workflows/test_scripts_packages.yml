@@ -24,9 +24,10 @@ concurrency:
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
   wid: 'mw4/gui/widgets/'
-  uic: 'python -m PyQt6.uic.pyuic'
+  uic: 'pyside6-uic'
   ucc: 'pyside6-rcc'
   res: 'mw4/resource/'
+  version: '-v 4.0.0a10'
 
 on:
   push:
@@ -60,7 +61,7 @@ jobs:
 
     - name: build_widgets_resource
       run: |
-        python -m pip install PyQt6 PySide6
+        python -m pip install PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.wid}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.wid}}downloadPopup_ui.py
         ${{env.uic}} ${{env.wid}}uploadPopup.ui -o ${{env.wid}}uploadPopup_ui.py
@@ -73,8 +74,8 @@ jobs:
         ${{env.uic}} ${{env.wid}}satellite.ui -o ${{env.wid}}satellite_ui.py
         ${{env.uic}} ${{env.wid}}analyse.ui -o ${{env.wid}}analyse_ui.py
         ${{env.uic}} ${{env.wid}}simulator.ui -o ${{env.wid}}simulator_ui.py
-        #${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
-        #sed -i -e 's/from PySide6 import QtCore/from PyQt6 import QtCore/g' ${{env.res}}resources.py
+        # ${{env.uic}} ${{env.wid}}material.ui -o ${{env.wid}}material_ui.py
+        ${{env.ucc}} ${{env.res}}resources.qrc -o ${{env.res}}resources.py
 
     - name: build_package
       run: |
@@ -94,7 +95,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-        python-version: [ '3.10', '3.12' ]
+        python-version: [ '3.9', '3.12' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -112,14 +113,14 @@ jobs:
       - name: Install Script Install
         uses: suisei-cn/actions-download-file@v1.6.0
         with:
-          url: ${{ env.gh }}startup.pyz
+          url: ${{ env.gh }}startup.pyz ${{ env.version }}
           target: dist/
           
       - name: MountWizzard4 Install
         shell: cmd
         run: |
           cd dist
-          python startup.pyz --no-start --version 4.0.0a4
+          python startup.pyz --no-start ${{ env.version }}
           dir
           
       - name: Run MountWizzard4
@@ -127,7 +128,7 @@ jobs:
         run: |
           cd dist
           touch test.run
-          python startup.pyz --version 4.0.0a4
+          python startup.pyz
           dir
 
   install_package_ubuntu:
@@ -136,7 +137,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04]
-        python-version: [ '3.10', '3.12' ]
+        python-version: [ '3.9', '3.12' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -171,14 +172,14 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
-          python startup.pyz --no-start --version 4.0.0a4
+          python startup.pyz --no-start ${{ env.version }}
           ls -la
           
       - name: Run MountWizzard4
         run: |
           cd dist
           touch test.run
-          xvfb-run python3 startup.pyz --version 4.0.0a4
+          xvfb-run python3 startup.pyz ${{ env.version }}
           ls -la
 
 
@@ -188,7 +189,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13, macos-latest]
-        python-version: [ '3.10', '3.12' ]
+        python-version: [ '3.9', '3.12' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -211,12 +212,6 @@ jobs:
       - name: MountWizzard4 Install
         run: |
           cd dist
-          python startup.pyz --no-start --version 4.0.0a4
+          python startup.pyz --no-start ${{ env.version }}
           ls -la
           
-      - name: Run MountWizzard4
-        run: |
-          cd dist
-          touch test.run
-          python3 startup.pyz --version 4.0.0a4
-          ls -la

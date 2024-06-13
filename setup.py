@@ -22,19 +22,22 @@ releaseNotes = """
 - this is a major release !
   please try out in a separate work folder for test!
   
-- add: support for python 3.11 and 3.12, remove 3.7, 3.8 and 3.9
+- add: support for python 3.11 and 3.12, remove 3.7, 3.8
 - add native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
+- add: show free disk space of work dir in the status bar 
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
-- change: moving PyQt5 to major version PyQt6
+- change: moving PyQt5 to major version PySide6
 - change: moving libraries to latest versions
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link
 - refactoring: environment devices (now 3 generic ones)
 - refactoring: remove installer to separate repo (InstallerMW4)
 - improve: reduced size of app
+- improve: faster startup time
+- improve: optimizing material look & feel
 - improved: don't delete message list when color change
 - improved: rewrite of the online documentation
 - remove: automation of 10micron installer
@@ -46,7 +49,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a4',
+    version='4.0.0a10',
     packages=[
         'mw4',
         'mw4.base',
@@ -81,12 +84,12 @@ setup(
         'mw4.mountcontrol',
         'mw4.resource',
     ],
-    python_requires='>=3.10.0, <3.13',
+    python_requires='>=3.9.0, <3.13',
     install_requires=[
         'numpy==1.26.4',
-        'opencv-python-headless==4.9.0.80',
-        'scipy==1.13.0',
-        'astropy==6.1.0',
+        'opencv-python-headless==4.10.0.82',
+        'scipy==1.13.1',
+        'astropy==5.3.4',
         'pyerfa==2.0.1.4',
         'astroquery==0.4.7',
         'sep_mw4==1.2.2',
@@ -94,7 +97,7 @@ setup(
         'qimage2ndarray==1.10.0',
         'skyfield==1.48',
         'sgp4==2.23',
-        'requests==2.31.0',
+        'requests==2.32.2',
         'requests_toolbelt==1.0.0',
         'importlib_metadata==7.1.0',
         'python-dateutil==2.9.0.post0',
@@ -104,14 +107,13 @@ setup(
         'hidapi==0.14.0',
         'range-key-dict==1.1.0',
         'ndicts==0.3.0',
-        'packaging==24.0',
+        'packaging==24.1',
         'lz4==4.3.3',
         'xisf==0.9.5',
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
-    + (['PyQt6==6.7.0'] if platform.machine() not in ['armv7l'] else [])
-    + (['PyQt6-3D==6.7.0'] if platform.machine() not in ['armv7l', 'aarch64'] else[]),
-    keywords=['6.7.0'],
+    + (['PySide6==6.7.1'] if platform.machine() not in ['armv7l'] else []),
+    keywords=['6.7.1'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',
@@ -132,6 +134,7 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Environment :: MacOS X',
         'Environment :: Other Environment',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',

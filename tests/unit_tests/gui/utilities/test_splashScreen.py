@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtWidgets import QWidget
-from PyQt6.QtGui import QPainter, QPixmap
+from PySide6.QtWidgets import QWidget
+from PySide6.QtGui import QPainter, QPixmap
 import pytest
 import unittest.mock as mock
 

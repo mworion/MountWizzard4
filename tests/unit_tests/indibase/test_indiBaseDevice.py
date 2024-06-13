@@ -19,7 +19,7 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt6.QtCore import QThreadPool, QObject, pyqtSignal
+from PySide6.QtCore import QThreadPool, QObject, Signal
 
 # local import
 from indibase.indiBase import Device

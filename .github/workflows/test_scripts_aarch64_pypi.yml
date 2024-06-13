@@ -23,6 +23,7 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
+  version: '-v 4.0.0a10'
 
 on:
   push:
@@ -41,14 +42,20 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu20.04
-          - arch: aarch64
             distro: ubuntu22.04
           - arch: aarch64
             distro: bullseye
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: pyside
+            
+      - name: Install Script Run
+        uses: suisei-cn/actions-download-file@v1.6.0
+        with:
+          url: ${{ env.gh }}startup.pyz
+          target: .
 
       - uses: uraimo/run-on-arch-action@v2
         name: build_artifact
@@ -62,7 +69,7 @@ jobs:
 
           # Mount the wheels directory as /artifacts in the container
           dockerRunArgs: |
-            -v "${PWD}/support":/root/support
+            -v "${PWD}":/root
 
           # The shell to run commands with in the container
           shell: /bin/bash
@@ -77,7 +84,6 @@ jobs:
             apt-get update -y
             apt-get upgrade -y
             apt-get -y install python3-dev python3-pip python3-venv python3-wheel
-            apt-get -y install python3-pyqt6
             apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
             apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
             apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
@@ -87,10 +93,6 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             python3 --version
-            ls /root/support/*.*
-            cd /root/support
-            python3 startup.pyz --no-start --version 4.0.0a2
-            touch test.run
-            xvfb-run python3 startup.pyz
-            cat log/mw*.log
-            ls -la
+            ls /root/*.*
+            cd /root
+            python3 startup.pyz --no-start ${{ env.version }}

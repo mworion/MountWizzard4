@@ -169,14 +169,7 @@ def build_resource(c):
             for file in glob.glob(resourceDir + 'data/*.*'):
                 t = os.stat(file).st_mtime
                 f.write(f'{os.path.basename(file)} {t}\n')
-    runMW(c, f'pyside6-rcc -o {resourceDir}res.py {resourceDir}resources.qrc')
-    with open(resourceDir + 'res.py', 'r') as f:
-        with open(resourceDir + 'resources.py', 'w') as g:
-            text = f.read()
-            if 'from PySide6 import QtCore' in text:
-                text = text.replace('from PySide6 import QtCore',
-                                    'from PyQt6 import QtCore')
-            g.write(text)
+    runMW(c, f'pyside6-rcc -o {resourceDir}resources.py {resourceDir}resources.qrc')
     printMW('building resources finished\n')
 
 
@@ -190,7 +183,7 @@ def build_widgets(c):
         'video', 'bigPopup', 'uploadPopup', 'material']
     for widget in widgets:
         name = widgetDir + widget
-        runMW(c, f'python -m PyQt6.uic.pyuic -x {name}.ui -o {name}_ui.py')
+        runMW(c, f'pyside6-uic {name}.ui > {name}_ui.py')
     printMW('building widgets finished\n')
 
 

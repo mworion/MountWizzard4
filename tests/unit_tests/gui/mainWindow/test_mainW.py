@@ -25,10 +25,10 @@ import logging
 import builtins
 
 # external packages
-from PyQt6.QtCore import QObject
-from PyQt6.QtGui import QCloseEvent
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QPushButton, QWidget
+from PySide6.QtCore import QObject
+from PySide6.QtGui import QCloseEvent
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QPushButton, QWidget
 from skyfield.api import wgs84
 
 # local import
@@ -530,7 +530,7 @@ def test_refreshColorSet(function):
 
 def test_buildWindow_1(function):
     class Test(QObject):
-        destroyed = pyqtSignal()
+        destroyed = Signal()
 
         @staticmethod
         def initConfig():
@@ -565,7 +565,7 @@ def test_toggleWindow_2(function):
 
 def test_toggleWindow_3(function):
     class Test(QObject):
-        destroyed = pyqtSignal()
+        destroyed = Signal()
 
         @staticmethod
         def close():

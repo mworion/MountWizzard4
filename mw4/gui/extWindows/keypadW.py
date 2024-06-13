@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtCore import pyqtSignal, QObject, QMutex
-from PyQt6.QtGui import QPixmap
+from PySide6.QtCore import Signal, QObject, QMutex
+from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
 import numpy as np
 
@@ -34,15 +34,15 @@ class KeypadSignals(QObject):
     """
     __all__ = ['KeypadSignals']
 
-    textRow = pyqtSignal(object, object)
-    imgChunk = pyqtSignal(object, object, object)
-    keyPressed = pyqtSignal(object)
-    keyUp = pyqtSignal(object)
-    keyDown = pyqtSignal(object)
-    mousePressed = pyqtSignal(object)
-    mouseReleased = pyqtSignal(object)
-    cursorPos = pyqtSignal(object, object)
-    clearCursor = pyqtSignal()
+    textRow = Signal(object, object)
+    imgChunk = Signal(object, object, object)
+    keyPressed = Signal(object)
+    keyUp = Signal(object)
+    keyDown = Signal(object)
+    mousePressed = Signal(object)
+    mouseReleased = Signal(object)
+    cursorPos = Signal(object, object)
+    clearCursor = Signal()
 
 
 class KeypadWindow(toolsQtWidget.MWidget):

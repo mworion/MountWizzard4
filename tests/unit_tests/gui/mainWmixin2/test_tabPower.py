@@ -17,7 +17,7 @@
 # standard libraries
 import pytest
 from unittest import mock
-from PyQt6.QtWidgets import QInputDialog
+from PySide6.QtWidgets import QInputDialog
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

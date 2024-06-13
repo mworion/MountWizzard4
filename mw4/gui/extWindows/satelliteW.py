@@ -19,7 +19,7 @@ import pickle
 from io import BytesIO
 
 # external packages
-from PyQt6.QtCore import QObject, QFile, Qt, pyqtSignal
+from PySide6.QtCore import QObject, QFile, Qt, Signal
 import numpy as np
 from skyfield.api import wgs84
 import pyqtgraph as pg
@@ -33,8 +33,8 @@ class SatelliteWindowSignals(QObject):
     """
     """
     __all__ = ['SatelliteWindowSignals']
-    show = pyqtSignal(object, object, object, object, object)
-    update = pyqtSignal(object, object)
+    show = Signal(object, object, object, object, object)
+    update = Signal(object, object)
 
 
 class SatelliteWindow(toolsQtWidget.MWidget):

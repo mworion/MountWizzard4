@@ -20,8 +20,8 @@ import json
 import os
 
 # external packages
-from PyQt6.QtWidgets import QLineEdit, QInputDialog
-from PyQt6.QtCore import Qt
+from PySide6.QtWidgets import QLineEdit, QInputDialog
+from PySide6.QtCore import Qt
 import numpy as np
 
 # local import
@@ -109,7 +109,6 @@ class ManageModel:
         for name in model.nameList:
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
-        self.ui.nameList.update()
         return True
 
     @staticmethod

@@ -17,77 +17,70 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtCore import QUrl
-from PyQt6.QtGui import QVector3D, QFont
-from PyQt6.Qt3DExtras import QCuboidMesh, QSphereMesh
-from PyQt6.Qt3DExtras import QExtrudedTextMesh, QCylinderMesh
-from PyQt6.Qt3DExtras import QMetalRoughMaterial, QDiffuseSpecularMaterial
-from PyQt6.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
-from PyQt6.Qt3DRender import QMesh
-from PyQt6.Qt3DRender import QPointLight, QDirectionalLight, QSpotLight
-from PyQt6.Qt3DCore import QEntity, QTransform
+from PySide6.QtCore import QUrl
+from PySide6.QtGui import QVector3D, QFont, QColor
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.Qt3DRender import Qt3DRender
+from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 
 
 def linkLight(node):
     """
-    :param node:
-    :return:
     """
     light = node.get('light')
     if light:
-        if isinstance(light[0], QPointLight):
-            lightSource = light[0]
+        if light[0] == 'point':
+            lightSource = Qt3DRender.QPointLight()
             lightSource.setIntensity(light[1])
-            lightSource.setColor(light[2])
-        elif isinstance(light[0], QDirectionalLight):
-            lightSource = light[0]
+            lightSource.setColor(QColor(*light[2]))
+        elif light[0] == 'direction':
+            lightSource = Qt3DRender.QDirectionalLight()
             lightSource.setIntensity(light[1])
-            lightSource.setColor(light[2])
-            lightSource.setWorldDirection(light[3])
-        elif isinstance(light[0], QSpotLight):
-            lightSource = light[0]
+            lightSource.setColor(QColor(*light[2]))
+            lightSource.setWorldDirection(QVector3D(*light[3]))
+        elif light[0] == 'spot':
+            lightSource = Qt3DRender.QSpotLight()
             lightSource.setIntensity(light[1])
-            lightSource.setColor(light[2])
+            lightSource.setColor(QColor(*light[2]))
             lightSource.setCutOffAngle(light[3])
-            lightSource.setLocalDirection(light[4])
+            lightSource.setLocalDirection(QVector3D(*light[4]))
         else:
             lightSource = None
     else:
         lightSource = None
-
     return lightSource
 
 
 def linkSource(node):
     """
-    :param node:
-    :return: mesh
     """
     source = node.get('source')
     if source:
         if isinstance(source, str):
-            mesh = QMesh()
+            mesh = Qt3DRender.QMesh()
             mesh.setSource(QUrl(f'qrc:/model3D/{source}'))
-        elif isinstance(source[0], QCuboidMesh):
-            mesh = source[0]
+            mesh.setMeshName(source)
+
+        elif source[0] == 'cuboid':
+            mesh = Qt3DExtras.QCuboidMesh()
             mesh.setXExtent(source[1])
             mesh.setYExtent(source[2])
             mesh.setZExtent(source[3])
-        elif isinstance(source[0], QSphereMesh):
-            mesh = source[0]
+        elif source[0] == 'sphere':
+            mesh = Qt3DExtras.QSphereMesh()
             mesh.setRadius(source[1])
             mesh.setRings(source[2])
             mesh.setSlices(source[3])
-        elif isinstance(source[0], QCylinderMesh):
-            mesh = source[0]
+        elif source[0] == 'cylinder':
+            mesh = Qt3DExtras.QCylinderMesh()
             mesh.setLength(source[1])
             mesh.setRadius(source[2])
             mesh.setRings(source[3])
             mesh.setSlices(source[4])
-        elif isinstance(source[0], QExtrudedTextMesh):
-            mesh = source[0]
+        elif source[0] == 'text':
+            mesh = Qt3DExtras.QExtrudedTextMesh()
             mesh.setDepth(source[1])
             mesh.setFont(QFont())
             mesh.setText(source[3])
@@ -101,15 +94,13 @@ def linkSource(node):
 
 def linkTransform(node):
     """
-    :param node:
-    :return: transform
     """
     trans = node.get('trans')
     rot = node.get('rot')
     scale = node.get('scale')
 
     if trans or rot or scale:
-        transform = QTransform()
+        transform = Qt3DCore.QTransform()
 
         if trans and isinstance(trans, list) and len(trans) == 3:
             transform.setTranslation(QVector3D(*trans))
@@ -129,8 +120,6 @@ def linkTransform(node):
 
 def linkMaterial(node):
     """
-    :param node:
-    :return: material
     """
     mat = node.get('mat')
     return mat
@@ -138,88 +127,59 @@ def linkMaterial(node):
 
 def linkModel(model, entityModel):
     """
-    :param model:
-    :param entityModel:
-    :return: true for test purpose
     """
     for node in model:
         parent = model[node].get('parent')
         if parent is None:
             continue
 
-        newEntity = QEntity()
-        newEntity.setParent(entityModel[parent])
-        entityModel[node] = newEntity
+        newEntity = Qt3DCore.QEntity(entityModel[parent]['entity'])
+        newEntity.setObjectName(node)
+        entityModel[node] = {'entity': newEntity}
 
         mesh = linkSource(model[node])
         if mesh:
             newEntity.addComponent(mesh)
+            entityModel[node]['mesh'] = mesh
 
         transform = linkTransform(model[node])
         if transform:
             newEntity.addComponent(transform)
+            entityModel[node]['trans'] = transform
 
         material = linkMaterial(model[node])
         if material:
             newEntity.addComponent(material)
+            entityModel[node]['material'] = material
 
         light = linkLight(model[node])
         if light:
             newEntity.addComponent(light)
-
-
-def getTransformation(entity):
-    """
-    :param entity:
-    :return:
-    """
-    if entity is None:
-        return None
-    components = entity.components()
-    for component in components:
-        if isinstance(component, QTransform):
-            return component
+            entityModel[node]['light'] = light
 
 
 def getMaterial(entity):
     """
-    :param entity:
-    :return:
     """
     if entity is None:
         return None
     components = entity.components()
     for component in components:
-        if isinstance(component, (QMetalRoughMaterial,
-                                  QDiffuseSpecularMaterial,
-                                  QPhongAlphaMaterial,
-                                  QPhongMaterial)):
-            return component
-
-
-def getMesh(entity):
-    """
-    :param entity:
-    :return:
-    """
-    if entity is None:
-        return None
-    components = entity.components()
-    for component in components:
-        if isinstance(component, (QCuboidMesh, QSphereMesh,
-                                  QExtrudedTextMesh, QCylinderMesh)):
+        if isinstance(component, (Qt3DExtras.QMetalRoughMaterial,
+                                  Qt3DExtras.QDiffuseSpecularMaterial,
+                                  Qt3DExtras.QPhongAlphaMaterial,
+                                  Qt3DExtras.QPhongMaterial)):
             return component
 
 
 def getLight(entity):
     """
-    :param entity:
-    :return:
     """
     if entity is None:
         return None
     components = entity.components()
     for component in components:
-        if isinstance(component, (QPointLight, QDirectionalLight,
-                                  QSpotLight)):
+        if isinstance(component, (Qt3DRender.QPointLight,
+                                  Qt3DRender.QDirectionalLight,
+                                  Qt3DRender.QSpotLight)):
             return component

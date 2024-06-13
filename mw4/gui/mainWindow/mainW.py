@@ -14,18 +14,18 @@
 # Licence APL2.0
 #
 ###########################################################
-from base import packageConfig
-
 # standard libraries
-from datetime import datetime
 import time
+from datetime import datetime
+import shutil
 
 # external packages
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QTransform
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QTransform
 from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import
+from base import packageConfig
 if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
 
@@ -102,8 +102,8 @@ class MainWindow(
     """
     the main window class handles the main menu as well as the show and no show
     part of any other window. all necessary processing for functions of that gui
-    will be linked to this class. therefore, window classes will have a threadpool
-    for managing async processing if needed.
+    will be linked to this class. therefore, window classes will have a
+    threadpool for managing async processing if needed.
     """
     __all__ = ['MainWindow']
 
@@ -359,7 +359,7 @@ class MainWindow(
         :return:    True if success for test
         """
         # main window
-        self.wIcon(self.ui.saveConfigAs, 'save')
+        # self.wIcon(self.ui.saveConfigAs, 'save')
         self.wIcon(self.ui.loadFrom, 'load')
         self.wIcon(self.ui.addFrom, 'load')
         self.wIcon(self.ui.saveConfig, 'save')
@@ -535,8 +535,8 @@ class MainWindow(
             self.ui.mountConnected.setText('Mount')
         elif not status and hasSim:
             self.ui.mountConnected.setText('Mount')
-            #if self.uiWindows['showSimulatorW']['classObj']:
-            #    self.uiWindows['showSimulatorW']['classObj'].close()
+            # if self.uiWindows['showSimulatorW']['classObj']:
+            #     self.uiWindows['showSimulatorW']['classObj'].close()
         return True
 
     def updateMountWeatherStat(self, setting):
@@ -772,7 +772,12 @@ class MainWindow(
         twilight = TWILIGHTS[int(f(self.app.mount.obsSite.ts.now()))]
 
         activeCount = self.threadPool.activeThreadCount()
-        t = f'{mode} - {twilight} - Moon: {moon}% - Threads:{activeCount:2d} / 30'
+
+        diskUsage = shutil.disk_usage(self.app.mwGlob['workDir'])
+        free = int(diskUsage[2] / diskUsage[0] * 100)
+
+        t = f'{mode} - {twilight} - Moon: {moon}%'
+        t += f' - Threads:{activeCount:2d} / 30 - Disk free: {free}%'
         self.ui.statusOnline.setTitle(t)
         return True
 
@@ -828,6 +833,7 @@ class MainWindow(
         for window in self.uiWindows:
             if self.uiWindows[window]['name'] != widget.objectName():
                 continue
+            del self.uiWindows[window]['classObj']
             self.uiWindows[window]['classObj'] = None
 
         return True

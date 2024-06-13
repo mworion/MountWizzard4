@@ -22,7 +22,7 @@ import json
 import builtins
 
 # external packages
-from PyQt6.QtCore import QThreadPool
+from PySide6.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

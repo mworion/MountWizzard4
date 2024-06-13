@@ -19,8 +19,8 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt6.Qt3DCore import QEntity
-from PyQt6.Qt3DExtras import QExtrudedTextMesh
+from PySide6.Qt3DCore import QEntity
+from PySide6.Qt3DExtras import QExtrudedTextMesh
 import numpy as np
 
 # local import

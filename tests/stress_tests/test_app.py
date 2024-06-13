@@ -20,8 +20,8 @@ import glob
 
 # external packages
 import pytest
-from PyQt6.QtCore import Qt
-from PyQt6.QtCore import QThreadPool
+from PySide6.QtCore import Qt
+from PySide6.QtCore import QThreadPool
 
 # local import
 from mainApp import MountWizzard4

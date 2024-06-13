@@ -19,7 +19,7 @@ import os
 import re
 
 # external packages
-from PyQt6.QtCore import Qt, pyqtSignal
+from PySide6.QtCore import Qt, Signal
 import requests
 
 # local import
@@ -36,9 +36,9 @@ class UploadPopup(toolsQtWidget.MWidget):
 
     PROGRESS_DONE = 100
     CYCLES_WAIT = 20
-    signalProgress = pyqtSignal(object)
-    signalStatus = pyqtSignal(object)
-    signalProgressBarColor = pyqtSignal(object)
+    signalProgress = Signal(object)
+    signalStatus = Signal(object)
+    signalProgressBarColor = Signal(object)
 
     def __init__(self, parentWidget, url, dataTypes, dataFilePath):
         super().__init__()

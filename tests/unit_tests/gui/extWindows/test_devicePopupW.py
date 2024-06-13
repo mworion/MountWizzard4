@@ -21,8 +21,8 @@ import platform
 import logging
 
 # external packages
-from PyQt6.QtGui import QCloseEvent
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtGui import QCloseEvent
+from PySide6.QtWidgets import QWidget
 if platform.system() == 'Windows':
     import win32com.client
 

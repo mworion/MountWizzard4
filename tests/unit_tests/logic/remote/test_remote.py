@@ -19,9 +19,9 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt6.QtCore import QObject
-from PyQt6 import QtNetwork
-from PyQt6.QtCore import pyqtSignal
+from PySide6.QtCore import QObject
+from PySide6 import QtNetwork
+from PySide6.QtCore import Signal
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -80,9 +80,9 @@ def test_addConnection_2(function):
 def test_addConnection_3(function):
     class Test(QObject):
         nextBlockSize = 0
-        readyRead = pyqtSignal()
-        disconnected = pyqtSignal()
-        error = pyqtSignal()
+        readyRead = Signal()
+        disconnected = Signal()
+        error = Signal()
 
         @staticmethod
         def peerAddress():

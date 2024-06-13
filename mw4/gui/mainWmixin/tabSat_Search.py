@@ -18,10 +18,10 @@
 import os
 
 # external packages
-import PyQt6
-from PyQt6.QtCore import Qt, QRect, QPoint, pyqtSignal
-from PyQt6.QtWidgets import QApplication, QAbstractItemView
-from PyQt6.QtWidgets import QTableWidgetItem
+import PySide6
+from PySide6.QtCore import Qt, QRect, QPoint, Signal
+from PySide6.QtWidgets import QApplication, QAbstractItemView
+from PySide6.QtWidgets import QTableWidgetItem
 import numpy as np
 
 # local import
@@ -59,7 +59,7 @@ class SatSearch(object):
     5. If a mount upload is chosen (only available on windows) if prepares the
     data in the necessary mount format and calls the updater.
     """
-    sigSetSatTableEntry = pyqtSignal(int, int, object)
+    sigSetSatTableEntry = Signal(int, int, object)
 
     def __init__(self):
         self.satellites = dict()
@@ -174,7 +174,7 @@ class SatSearch(object):
         """
         config = self.app.config['mainW']
         self.ui.satelliteSource.clear()
-        self.ui.satelliteSource.setView(PyQt6.QtWidgets.QListView())
+        self.ui.satelliteSource.setView(PySide6.QtWidgets.QListView())
         for name in self.satelliteSourceURLs.keys():
             self.ui.satelliteSource.addItem(name)
         self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))

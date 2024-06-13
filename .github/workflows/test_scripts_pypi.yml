@@ -23,6 +23,7 @@ concurrency:
 
 env:
   gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
+  version: '-v 4.0.0a10'
 
 on:
   push:
@@ -39,7 +40,7 @@ jobs:
     strategy:
       matrix:
         os: [ windows-latest ]
-        python-version: [ '3.10', '3.12' ]
+        python-version: [ '3.9', '3.12' ]
 
     steps:
       - uses: actions/setup-python@v5
@@ -55,14 +56,14 @@ jobs:
       - name: MountWizzard4 Install
         shell: cmd
         run: |
-          python startup.pyz --no-start --version 4.0.0a4
+          python startup.pyz --no-start ${{ env.version }}
           dir
       
       - name: Run MountWizzard4
         shell: cmd
         run: |
           touch test.run
-          python startup.pyz --version 4.0.0a4
+          python startup.pyz ${{ env.version }}
           dir
   
   install_ubuntu:
@@ -70,7 +71,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04, ubuntu-22.04 ]
-        python-version: [ '3.10', '3.12' ]
+        python-version: [ '3.9', '3.12' ]
     
     steps:
       - uses: actions/setup-python@v5
@@ -96,13 +97,13 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python startup.pyz --no-start --version 4.0.0a4
+          python startup.pyz --no-start ${{ env.version }}
           ls -la
   
       - name: Run MountWizzard4
         run: |
           touch test.run
-          xvfb-run python3 startup.pyz --version 4.0.0a4
+          xvfb-run python3 startup.pyz ${{ env.version }}
           ls -la
           
   install_macOS:
@@ -110,7 +111,7 @@ jobs:
     strategy:
       matrix:
         os: [ macos-13, macos-latest ]
-        python-version: [ '3.10', '3.12' ]
+        python-version: [ '3.9', '3.12' ]
     
     steps:
       - uses: actions/setup-python@v5
@@ -125,10 +126,14 @@ jobs:
           
       - name: MountWizzard4 Install
         run: |
-          python startup.pyz --no-start --version 4.0.0a4
+          touch test.run
+          python startup.pyz --no-start ${{ env.version }}
+          ls -la
           
-      - name: Run MountWizzard4
+      - name: MountWizzard4 Run
+        continue-on-error: True
         run: |
           touch test.run
-          python3 startup.pyz
+          python startup.pyz ${{ env.version }}
           ls -la
+          

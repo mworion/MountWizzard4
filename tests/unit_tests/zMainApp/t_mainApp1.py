@@ -23,7 +23,7 @@ import glob
 import pytest
 
 # external packages
-import PyQt6
+import PySide6
 
 # local import
 from mainApp import MountWizzard4
@@ -50,11 +50,11 @@ def test_start_parameters_1(qapp):
     with open(mwGlob['workDir'] + '/test.run', 'w+') as test:
         test.write('test')
 
-    with mock.patch.object(PyQt6.QtWidgets.QWidget,
+    with mock.patch.object(PySide6.QtWidgets.QWidget,
                            'show'):
-        with mock.patch.object(PyQt6.QtCore.QTimer,
+        with mock.patch.object(PySide6.QtCore.QTimer,
                                'start'):
-            with mock.patch.object(PyQt6.QtCore.QBasicTimer,
+            with mock.patch.object(PySide6.QtCore.QBasicTimer,
                                    'start'):
                 with mock.patch.object(MountWizzard4,
                                        'checkAndSetAutomation',
@@ -74,11 +74,11 @@ def test_start_parameters_2(qapp):
     with open(mwGlob['workDir'] + '/test.run', 'w+') as test:
         test.write('test')
 
-    with mock.patch.object(PyQt6.QtWidgets.QWidget,
+    with mock.patch.object(PySide6.QtWidgets.QWidget,
                            'show'):
-        with mock.patch.object(PyQt6.QtCore.QTimer,
+        with mock.patch.object(PySide6.QtCore.QTimer,
                                'start'):
-            with mock.patch.object(PyQt6.QtCore.QBasicTimer,
+            with mock.patch.object(PySide6.QtCore.QBasicTimer,
                                    'start'):
                 with mock.patch.object(MountWizzard4,
                                        'checkAndSetAutomation',

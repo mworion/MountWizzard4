@@ -17,7 +17,7 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtWidgets import QInputDialog
+from PySide6.QtWidgets import QInputDialog
 from mountcontrol.convert import valueToInt
 
 # local import

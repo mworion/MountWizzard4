@@ -17,13 +17,13 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QCylinderMesh
+from PySide6.QtGui import QVector3D
 from skyfield import functions
 import numpy as np
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getTransformation
+from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorLaser:
@@ -41,9 +41,9 @@ class SimulatorLaser:
         """
         """
         isVisible = self.parent.ui.showLaser.isChecked()
-        entity = self.parent.entityModel.get('laser')
-        if entity:
-            entity.setEnabled(isVisible)
+        node = self.parent.entityModel.get('laserRoot')
+        if node:
+            node['entity'].setEnabled(isVisible)
 
     def updatePositions(self):
         """
@@ -51,7 +51,7 @@ class SimulatorLaser:
         _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
 
         if PB is None or PD is None:
-            return False
+            return
 
         PB *= 1000
         PB[2] += 1000
@@ -59,29 +59,27 @@ class SimulatorLaser:
         az = np.degrees(az)
         alt = np.degrees(alt)
 
-        nodeT = getTransformation(self.parent.entityModel.get('displacement'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(PB[0], PB[1], PB[2]))
+        node = self.parent.entityModel.get('displacement')
+        if node:
+            node['trans'].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
-        nodeT = getTransformation(self.parent.entityModel.get('az'))
-        if nodeT:
-            nodeT.setRotationZ(az + 90)
+        node = self.parent.entityModel.get('az')
+        if node:
+            node['trans'].setRotationZ(az + 90)
 
-        nodeT = getTransformation(self.parent.entityModel.get('alt'))
-        if nodeT:
-            nodeT.setRotationX(-alt)
-
-        return True
+        node = self.parent.entityModel.get('alt')
+        if node:
+            node['trans'].setRotationX(-alt)
 
     def create(self):
         """
         """
         model = {
-            'laser': {
+            'laserRoot': {
                 'parent': 'ref_fusion_m',
             },
             'displacement': {
-                'parent': 'laser',
+                'parent': 'laserRoot',
                 'scale': [1, 1, 1],
             },
             'az': {
@@ -94,9 +92,9 @@ class SimulatorLaser:
             },
             'laserBeam': {
                 'parent': 'alt',
-                'source': [QCylinderMesh(), 4500, 10, 20, 20],
+                'source': ['cylinder', 4500, 10, 20, 20],
                 'trans': [0, 2250, 0],
-                'mat': self.parent.materials.laser,
+                'mat': Materials().laser,
             },
         }
         linkModel(model, self.parent.entityModel)

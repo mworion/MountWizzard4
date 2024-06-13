@@ -20,7 +20,7 @@ import threading
 from unittest import mock
 
 # external packages
-from PyQt6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap
 from skyfield.api import wgs84
 import numpy as np
 

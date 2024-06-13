@@ -17,11 +17,11 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QSphereMesh
+from PySide6.QtGui import QVector3D
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getTransformation
+from gui.extWindows.simulator.tools import linkModel
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorPointer:
@@ -39,9 +39,9 @@ class SimulatorPointer:
         """
         """
         isVisible = self.parent.ui.showPointer.isChecked()
-        entity = self.parent.entityModel.get('pointer')
-        if entity:
-            entity.setEnabled(isVisible)
+        node = self.parent.entityModel.get('pointerRoot')
+        if node:
+            node['entity'].setEnabled(isVisible)
 
     def updatePositions(self):
         """
@@ -49,29 +49,28 @@ class SimulatorPointer:
         _, _, intersect, _, _ = self.app.mount.calcTransformationMatricesActual()
 
         if intersect is None:
-            return False
+            return
 
         intersect *= 1000
         intersect[2] += 1000
 
-        nodeT = getTransformation(self.parent.entityModel.get('pointerDot'))
-        if nodeT:
-            nodeT.setTranslation(QVector3D(intersect[0], intersect[1], intersect[2]))
-
-        return True
+        node = self.parent.entityModel.get('pointerDot')
+        if node:
+            vec = QVector3D(intersect[0], intersect[1], intersect[2])
+            node['trans'].setTranslation(vec)
 
     def create(self):
         """
         """
         model = {
-            'pointer': {
+            'pointerRoot': {
                 'parent': 'ref_fusion_m',
             },
             'pointerDot': {
-                'parent': 'pointer',
-                'source': [QSphereMesh(), 50, 30, 30],
+                'parent': 'pointerRoot',
+                'source': ['sphere', 50, 30, 30],
                 'scale': [1, 1, 1],
-                'mat': self.parent.materials.pointer,
+                'mat': Materials().pointer,
             },
         }
         linkModel(model, self.parent.entityModel)

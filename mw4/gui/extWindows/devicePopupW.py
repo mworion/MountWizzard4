@@ -18,9 +18,9 @@
 import platform
 
 # external packages
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QListView, QComboBox, QLineEdit
-from PyQt6.QtWidgets import QCheckBox, QDoubleSpinBox
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QListView, QComboBox, QLineEdit
+from PySide6.QtWidgets import QCheckBox, QDoubleSpinBox
 
 if platform.system() == 'Windows':
     import win32com.client

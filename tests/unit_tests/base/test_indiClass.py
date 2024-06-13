@@ -21,7 +21,7 @@ from unittest import mock
 # external packages
 
 # local import
-from PyQt6.QtCore import QTimer
+from PySide6.QtCore import QTimer
 from indibase.indiBase import Device
 from base.indiClass import IndiClass
 import base.indiClass

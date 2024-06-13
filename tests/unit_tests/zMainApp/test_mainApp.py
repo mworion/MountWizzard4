@@ -23,8 +23,8 @@ import platform
 import shutil
 
 # external packages
-from PyQt6.QtCore import QTimer, QBasicTimer, QCoreApplication
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtCore import QTimer, QBasicTimer, QCoreApplication
+from PySide6.QtWidgets import QWidget
 
 # local import
 from mainApp import MountWizzard4

@@ -21,8 +21,8 @@ import shutil
 import os
 
 # external packages
-from PyQt6.QtGui import QCloseEvent
-from PyQt6.QtCore import QPointF
+from PySide6.QtGui import QCloseEvent
+from PySide6.QtCore import QPointF
 from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle

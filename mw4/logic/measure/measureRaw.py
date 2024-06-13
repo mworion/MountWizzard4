@@ -18,12 +18,12 @@
 import logging
 
 # external packages
-import PyQt6
+import PySide6
 
 # local imports
 
 
-class MeasureDataRaw(PyQt6.QtCore.QObject):
+class MeasureDataRaw(PySide6.QtCore.QObject):
     """
     """
 
@@ -50,7 +50,7 @@ class MeasureDataRaw(PyQt6.QtCore.QObject):
         }
 
     # time for measurement
-        self.timerTask = PyQt6.QtCore.QTimer()
+        self.timerTask = PySide6.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 

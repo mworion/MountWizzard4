@@ -24,7 +24,7 @@ import os
 import webbrowser
 
 # external packages
-from PyQt6.QtMultimedia import QSoundEffect
+from PySide6.QtMultimedia import QSoundEffect
 import requests
 import importlib_metadata
 import hid

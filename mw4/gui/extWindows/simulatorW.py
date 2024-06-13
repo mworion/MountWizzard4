@@ -17,19 +17,15 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QColor
-from PyQt6.QtGui import QVector3D
-from PyQt6.QtWidgets import QWidget
-from PyQt6.Qt3DExtras import Qt3DWindow
-from PyQt6.Qt3DExtras import QOrbitCameraController
-from PyQt6.Qt3DCore import QEntity
-from PyQt6.Qt3DRender import QObjectPicker
-import PyQt6
+from PySide6.QtGui import QColor
+from PySide6.QtGui import QVector3D
+from PySide6.QtWidgets import QWidget
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets import simulator_ui
-from gui.extWindows.simulator.materials import Materials
 from gui.extWindows.simulator.dome import SimulatorDome
 from gui.extWindows.simulator.telescope import SimulatorTelescope
 from gui.extWindows.simulator.horizon import SimulatorHorizon
@@ -39,7 +35,6 @@ from gui.extWindows.simulator.laser import SimulatorLaser
 from gui.extWindows.simulator.world import SimulatorWorld
 from gui.extWindows.simulator.light import SimulatorLight
 from gui.extWindows.simulator.tools import linkModel
-from gui.extWindows.materialW import MaterialWindow
 
 
 class SimulatorWindow(MWidget):
@@ -52,8 +47,6 @@ class SimulatorWindow(MWidget):
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self)
-        self.entityModel = {'root_qt3d': QEntity()}
-
         self.world = SimulatorWorld(self, self.app)
         self.light = SimulatorLight(self, self.app)
         self.dome = SimulatorDome(self, self.app)
@@ -62,39 +55,26 @@ class SimulatorWindow(MWidget):
         self.pointer = SimulatorPointer(self, self.app)
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
-        self.materials = Materials()
-        self.materialWindow = MaterialWindow(self.app)
-        self.materialWindow.initConfig()
-        self.materialWindow.showWindow()
+        self.iterDepth = 0
+
+        self.window3D = Qt3DExtras.Qt3DWindow()
+        self.entityModel = {'root': {'entity': Qt3DCore.QEntity()}}
+        self.window3D.setRootEntity(self.entityModel['root']['entity'])
+        self.entityModel['root']['entity'].setObjectName('root')
+        self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
+        self.createScene()
+        self.container = QWidget.createWindowContainer(self.window3D)
+        self.ui.simulator.addWidget(self.container)
 
         self.camera = None
         self.cameraController = None
-
-        self.view = Qt3DWindow()
-        self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
-        container = QWidget.createWindowContainer(self.view)
-        self.ui.simulator.addWidget(container)
-        self.view.setRootEntity(self.entityModel['root_qt3d'])
-
-        self.picker = QObjectPicker()
-        self.entityModel['root_qt3d'].addComponent(self.picker)
-        self.view.renderSettings().pickingSettings().setPickMethod(
-            PyQt6.Qt3DRender.QPickingSettings.PickMethod.TrianglePicking)
-        self.view.renderSettings().pickingSettings().setPickResultMode(
-            PyQt6.Qt3DRender.QPickingSettings.PickResultMode.NearestPick)
-        self.view.renderSettings().pickingSettings().setFaceOrientationPickingMode(
-            PyQt6.Qt3DRender.QPickingSettings.FaceOrientationPickingMode.FrontAndBackFace)
-        self.view.renderSettings().pickingSettings().setWorldSpaceTolerance(0.0001)
-        self.picker.clicked.connect(self.clicked)
-
-        self.setupCamera(self.entityModel['root_qt3d'])
-        self.createScene()
+        self.setupCamera(self.entityModel['root']['entity'])
 
     def clicked(self, pickEntity):
         """
         """
         for key, value in self.entityModel.items():
-            if value == pickEntity.entity():
+            if value['entity'] == pickEntity.entity():
                 self.app.material.emit(pickEntity.entity(), key)
 
     def initConfig(self):
@@ -145,8 +125,6 @@ class SimulatorWindow(MWidget):
         :return:
         """
         self.entityModel.clear()
-        self.materialWindow.storeConfig()
-        self.materialWindow.close()
         self.storeConfig()
         super().closeEvent(closeEvent)
 
@@ -158,8 +136,8 @@ class SimulatorWindow(MWidget):
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
-        self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.colorChange.connect(self.colorChange)
+        self.camera.positionChanged.connect(self.limitPositionZ)
         self.show()
 
     def setupCamera(self, parentEntity):
@@ -167,12 +145,12 @@ class SimulatorWindow(MWidget):
         :param parentEntity:
         :return:
         """
-        self.camera = self.view.camera()
-        self.camera.lens().setPerspectiveProjection(60.0, 16.0 / 9.0, 0.1, 10000.0)
-        self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
-        self.camera.setPosition(QVector3D(5.0, 15.0, 3.0))
-        self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
-        self.cameraController = QOrbitCameraController(parentEntity)
+        self.camera = self.window3D.camera()
+        self.camera.lens().setPerspectiveProjection(60, 16 / 9, 0.1, 10000)
+        self.camera.setViewCenter(QVector3D(0, 1, 0))
+        self.camera.setPosition(QVector3D(3, 10, 3))
+        self.camera.setUpVector(QVector3D(0, 1, 0))
+        self.cameraController = Qt3DExtras.QOrbitCameraController(parentEntity)
         self.cameraController.setCamera(self.camera)
         self.cameraController.setLinearSpeed(5.0)
         self.cameraController.setLookSpeed(90)
@@ -183,7 +161,7 @@ class SimulatorWindow(MWidget):
         not for the 3D scene itself during runtime.
         """
         self.setStyleSheet(self.mw4Style)
-        self.view.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
+        self.window3D.defaultFrameGraph().setClearColor(QColor(self.M_BACK))
 
     def limitPositionZ(self):
         """
@@ -192,11 +170,11 @@ class SimulatorWindow(MWidget):
         sky.
         """
         pos = self.camera.position()
-        if pos[1] < 0:
-            z = 0
+        if pos.y() < 0:
+            y = 0
         else:
-            z = pos[1]
-        posNew = QVector3D(pos[0], z, pos[2])
+            y = pos.y()
+        posNew = QVector3D(pos.x(), y, pos.z())
         self.camera.setPosition(posNew)
 
     def topView(self):
@@ -260,7 +238,7 @@ class SimulatorWindow(MWidget):
         """
         model = {
             'ref_fusion': {
-                'parent': 'root_qt3d',
+                'parent': 'root',
                 'rot': [-90, 90, 0],
             },
             'ref_fusion_m': {
@@ -279,10 +257,11 @@ class SimulatorWindow(MWidget):
         """
         self.setupReference()
         self.light.create()
+        self.world.create()
+        self.dome.create()
         self.telescope.create()
+        self.horizon.create()
         self.laser.create()
         self.pointer.create()
-        self.world.create()
         self.horizon.create()
-        self.dome.create()
         self.buildPoints.create()

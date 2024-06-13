@@ -19,7 +19,7 @@ import logging
 import json
 
 # external packages
-from PyQt6.QtCore import QTimer, QObject
+from PySide6.QtCore import QTimer, QObject
 import requests
 
 # local imports

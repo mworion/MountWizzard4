@@ -18,11 +18,12 @@
 
 # external packages
 import numpy as np
-from PyQt6.QtGui import QVector3D
-from PyQt6.Qt3DExtras import QCuboidMesh
-from PyQt6.Qt3DCore import QEntity, QTransform
+from PySide6.QtGui import QVector3D
+from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.Qt3DCore import Qt3DCore
 
 # local imports
+from gui.extWindows.simulator.materials import Materials
 
 
 class SimulatorHorizon:
@@ -41,20 +42,20 @@ class SimulatorHorizon:
         """
         """
         isVisible = self.parent.ui.showHorizon.isChecked()
-        entity = self.parent.entityModel.get('horizon')
-        if entity:
-            entity.setEnabled(isVisible)
+        node = self.parent.entityModel.get('horizonRoot')
+        if node:
+            node['entity'].setEnabled(isVisible)
 
     def clear(self):
         """
         """
-        horizonEntity = self.parent.entityModel.get('horizon')
-        if horizonEntity is None:
-            return False
-        horizonEntity.setParent(None)
-        del self.parent.entityModel['horizon']
-        del horizonEntity
-        return True
+        node = self.parent.entityModel.get('horizonRoot')
+        if not node:
+            return
+
+        node['entity'].setParent(None)
+        del self.parent.entityModel['horizonRoot']['entity']
+        del self.parent.entityModel['horizonRoot']
 
     def createWall(self, parentEntity, alt, az):
         """
@@ -66,28 +67,30 @@ class SimulatorHorizon:
         :param az:
         :return: entity
         """
-        e1 = QEntity()
+        e1 = Qt3DCore.QEntity()
         e1.setParent(parentEntity)
-        trans1 = QTransform()
+        trans1 = Qt3DCore.QTransform()
         trans1.setRotationZ(-az)
         e1.addComponent(trans1)
 
-        e2 = QEntity(e1)
-        trans2 = QTransform()
+        e2 = Qt3DCore.QEntity()
+        e2.setParent(e1)
+        trans2 = Qt3DCore.QTransform()
         trans2.setTranslation(QVector3D(self.WALL_RADIUS, 0, 0))
         e2.addComponent(trans2)
 
-        e3 = QEntity(e2)
+        e3 = Qt3DCore.QEntity()
+        e3.setParent(e2)
         height = self.WALL_RADIUS * np.tan(np.radians(alt)) + 1.35
-        mesh = QCuboidMesh()
+        mesh = Qt3DExtras.QCuboidMesh()
         mesh.setXExtent(0.01)
         mesh.setYExtent(self.WALL_RADIUS * np.tan(np.radians(self.WALL_SPACE)))
         mesh.setZExtent(height)
-        trans3 = QTransform()
-        trans3.setTranslation(QVector3D(0, 0, height / 2))
         e3.addComponent(mesh)
-        e3. addComponent(trans3)
-        e3.addComponent(self.parent.materials.horizon)
+        trans3 = Qt3DCore.QTransform()
+        trans3.setTranslation(QVector3D(0, 0, height / 2))
+        e3.addComponent(trans3)
+        e3.addComponent(Materials().horizon)
         return e3
 
     def create(self):
@@ -105,10 +108,10 @@ class SimulatorHorizon:
         horizonAlt = np.interp(horizonAz, az, alt)
 
         self.clear()
-        horizonEntity = QEntity()
-        parent = self.parent.entityModel['ref_fusion']
+        horizonEntity = Qt3DCore.QEntity()
+        parent = self.parent.entityModel['ref_fusion']['entity']
         horizonEntity.setParent(parent)
-        self.parent.entityModel['horizon'] = horizonEntity
+        self.parent.entityModel['horizonRoot'] = {'entity': horizonEntity}
 
         for alt, az in zip(horizonAlt, horizonAz):
             self.createWall(horizonEntity, alt, az)

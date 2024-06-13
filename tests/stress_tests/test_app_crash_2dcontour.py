@@ -22,9 +22,9 @@ from random import randint
 
 # external packages
 import pytest
-from PyQt6.QtCore import Qt
-from PyQt6.QtCore import QThreadPool
-from PyQt6.QtTest import QTest
+from PySide6.QtCore import Qt
+from PySide6.QtCore import QThreadPool
+from PySide6.QtTest import QTest
 
 # local import
 from mainApp import MountWizzard4

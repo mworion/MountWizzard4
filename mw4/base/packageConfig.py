@@ -16,7 +16,7 @@
 ###########################################################
 import platform
 
-excludedPlatforms = ['armv7l', 'aarch64']
+excludedPlatforms = ['armv7l']
 isAvailable = platform.machine() not in excludedPlatforms
 isAnalyse = False
 isReference = False

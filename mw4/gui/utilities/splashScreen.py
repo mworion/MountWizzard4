@@ -18,9 +18,9 @@
 
 # external packages
 import numpy as np
-from PyQt6.QtCore import QObject, Qt, QRectF
-from PyQt6.QtGui import QPixmap, QColor
-from PyQt6.QtWidgets import QApplication, QSplashScreen
+from PySide6.QtCore import QObject, Qt, QRectF
+from PySide6.QtGui import QPixmap, QColor
+from PySide6.QtWidgets import QApplication, QSplashScreen
 
 # local import
 
@@ -31,7 +31,7 @@ class SplashScreen(QObject):
     set in the progress bar. Need the app and the icon as parameter
 
     Part from Maurizio D'Addona <mauritiusdadd@gmail.com> under license APL2.0
-    Ported from PyQt4 to PyQt6
+    Ported from PyQt4 to PySide6
 
     Agreement for License (email from 04.07.2018):
     Hi Michel,

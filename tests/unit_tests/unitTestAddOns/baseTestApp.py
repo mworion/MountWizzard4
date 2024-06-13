@@ -18,7 +18,7 @@
 from queue import Queue
 
 # external packages
-from PyQt6.QtCore import QObject, pyqtSignal, QThreadPool, QTimer
+from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer
 from skyfield.api import wgs84, load, Loader, Angle
 import numpy as np
 
@@ -46,12 +46,12 @@ class Automation:
 
 class PlateSolve:
     class PlateSolveSignals(QObject):
-        done = pyqtSignal()
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        done = Signal()
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = PlateSolveSignals()
     framework = None
@@ -75,15 +75,15 @@ class PlateSolve:
 
 class Camera:
     class CameraSignals(QObject):
-        saved = pyqtSignal()
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-        exposeReady = pyqtSignal()
-        exposed = pyqtSignal()
-        downloaded = pyqtSignal()
+        saved = Signal()
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
+        exposeReady = Signal()
+        exposed = Signal()
+        downloaded = Signal()
 
     run = {'indi': 'dummy'}
 
@@ -145,11 +145,11 @@ class Camera:
 
 class Cover:
     class CoverSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = CoverSignals()
     data = {}
@@ -184,12 +184,12 @@ class Cover:
 
 class Dome:
     class DomeSignals(QObject):
-        message = pyqtSignal(object)
-        azimuth = pyqtSignal()
-        slewFinished = pyqtSignal()
-        deviceDisconnected = pyqtSignal()
-        deviceConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal()
+        message = Signal(object)
+        azimuth = Signal()
+        slewFinished = Signal()
+        deviceDisconnected = Signal()
+        deviceConnected = Signal()
+        serverDisconnected = Signal()
 
     domeShutterWidth = 0.6
     offGEM = 0
@@ -251,11 +251,11 @@ class Dome:
 
 class SensorWeather:
     class SensorWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = SensorWeatherSignals()
     data = {}
@@ -266,10 +266,10 @@ class SensorWeather:
 
 class OnlineWeather:
     class OnlineWeatherSignals(QObject):
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = OnlineWeatherSignals()
     framework = None
@@ -280,11 +280,11 @@ class OnlineWeather:
 
 class DirectWeather:
     class DirectWeatherSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = DirectWeatherSignals()
     data = {}
@@ -295,11 +295,11 @@ class DirectWeather:
 
 class SeeingWeather:
     class SeeingWeatherSignals(QObject):
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
-        update = pyqtSignal()
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
+        update = Signal()
 
     signals = SeeingWeatherSignals()
     framework = None
@@ -310,11 +310,11 @@ class SeeingWeather:
 
 class Filter:
     class FilterSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = FilterSignals()
     data = {}
@@ -333,11 +333,11 @@ class Filter:
 
 class Focuser:
     class FocuserSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = FocuserSignals()
     framework = None
@@ -356,11 +356,11 @@ class Focuser:
 
 class Measure:
     class MeasureSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     class CSV:
         csvFilename = ''
@@ -376,12 +376,12 @@ class Measure:
 
 class Relay:
     class RelaySignals(QObject):
-        message = pyqtSignal(object)
-        statusReady = pyqtSignal()
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        statusReady = Signal()
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = RelaySignals()
     data = {}
@@ -405,11 +405,11 @@ class Relay:
 
 class Remote:
     class RemoteSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = RemoteSignals()
     framework = None
@@ -419,11 +419,11 @@ class Remote:
 
 class Telescope:
     class TelescopeSignals(QObject):
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     class Test:
         deviceName = ''
@@ -462,12 +462,12 @@ class Hipparcos:
 
 class Power:
     class PowerSignals(QObject):
-        version = pyqtSignal()
-        message = pyqtSignal(object)
-        serverConnected = pyqtSignal()
-        serverDisconnected = pyqtSignal(object)
-        deviceConnected = pyqtSignal(object)
-        deviceDisconnected = pyqtSignal(object)
+        version = Signal()
+        message = Signal(object)
+        serverConnected = Signal()
+        serverDisconnected = Signal(object)
+        deviceConnected = Signal(object)
+        deviceDisconnected = Signal(object)
 
     signals = PowerSignals()
     data = {}
@@ -875,19 +875,19 @@ class Mount(QObject):
             return True
 
     class MountSignals(QObject):
-        locationDone = pyqtSignal()
-        settingDone = pyqtSignal()
-        pointDone = pyqtSignal()
-        mountUp = pyqtSignal()
-        firmwareDone = pyqtSignal()
-        calcTLEdone = pyqtSignal()
-        getTLEdone = pyqtSignal()
-        alignDone = pyqtSignal()
-        alert = pyqtSignal()
-        namesDone = pyqtSignal()
-        slewFinished = pyqtSignal()
-        calcTrajectoryDone = pyqtSignal(object)
-        trajectoryProgress = pyqtSignal(object)
+        locationDone = Signal()
+        settingDone = Signal()
+        pointDone = Signal()
+        mountUp = Signal()
+        firmwareDone = Signal()
+        calcTLEdone = Signal()
+        getTLEdone = Signal()
+        alignDone = Signal()
+        alert = Signal()
+        namesDone = Signal()
+        slewFinished = Signal()
+        calcTrajectoryDone = Signal(object)
+        trajectoryProgress = Signal(object)
 
     class MountObsSite:
         Alt = Angle(degrees=0)
@@ -1115,44 +1115,44 @@ class App(QObject):
     config = {'mainW': {}}
     deviceStat = {'dome': False}
     statusOperationRunning = 0
-    tabsMovable = pyqtSignal(object)
-    update10s = pyqtSignal()
+    tabsMovable = Signal(object)
+    update10s = Signal()
     timer0_1s = QTimer()
-    update0_1s = pyqtSignal()
-    update1s = pyqtSignal()
-    update3s = pyqtSignal()
-    update30s = pyqtSignal(bool)
-    update10m = pyqtSignal()
-    update30m = pyqtSignal()
-    update1h = pyqtSignal()
-    start1s = pyqtSignal()
-    start3s = pyqtSignal()
-    start5s = pyqtSignal()
-    start10s = pyqtSignal()
-    hostChanged = pyqtSignal()
-    sendSatelliteData = pyqtSignal()
-    updateDomeSettings = pyqtSignal()
-    drawHorizonPoints = pyqtSignal()
-    drawBuildPoints = pyqtSignal()
-    redrawHemisphere = pyqtSignal()
-    redrawHorizon = pyqtSignal()
-    showAnalyse = pyqtSignal(object)
-    showImage = pyqtSignal(object)
-    updatePointMarker = pyqtSignal()
-    operationRunning = pyqtSignal(object)
-    colorChange = pyqtSignal()
-    virtualStop = pyqtSignal()
-    mountOff = pyqtSignal()
-    mountOn = pyqtSignal()
-    buildPointsChanged = pyqtSignal()
-    playSound = pyqtSignal(object)
-    msg = pyqtSignal(object, object, object, object)
-    remoteCommand = pyqtSignal(object)
-    gameABXY = pyqtSignal(object)
-    gamePMH = pyqtSignal(object)
-    gameDirection = pyqtSignal(object)
-    game_sL = pyqtSignal(object, object)
-    game_sR = pyqtSignal(object, object)
+    update0_1s = Signal()
+    update1s = Signal()
+    update3s = Signal()
+    update30s = Signal(bool)
+    update10m = Signal()
+    update30m = Signal()
+    update1h = Signal()
+    start1s = Signal()
+    start3s = Signal()
+    start5s = Signal()
+    start10s = Signal()
+    hostChanged = Signal()
+    sendSatelliteData = Signal()
+    updateDomeSettings = Signal()
+    drawHorizonPoints = Signal()
+    drawBuildPoints = Signal()
+    redrawHemisphere = Signal()
+    redrawHorizon = Signal()
+    showAnalyse = Signal(object)
+    showImage = Signal(object)
+    updatePointMarker = Signal()
+    operationRunning = Signal(object)
+    colorChange = Signal()
+    virtualStop = Signal()
+    mountOff = Signal()
+    mountOn = Signal()
+    buildPointsChanged = Signal()
+    playSound = Signal(object)
+    msg = Signal(object, object, object, object)
+    remoteCommand = Signal(object)
+    gameABXY = Signal(object)
+    gamePMH = Signal(object)
+    gameDirection = Signal(object)
+    game_sL = Signal(object, object)
+    game_sR = Signal(object, object)
     messageQueue = Queue()
 
     plateSolve = PlateSolve()

@@ -17,9 +17,8 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QColor
-from PyQt6.Qt3DExtras import QDiffuseSpecularMaterial, QMetalRoughMaterial
-from PyQt6.Qt3DExtras import QPhongAlphaMaterial, QPhongMaterial
+from PySide6.QtGui import QColor
+from PySide6.Qt3DExtras import Qt3DExtras
 
 # local import
 from gui.utilities.stylesQtCss import Styles
@@ -30,157 +29,154 @@ class Materials(Styles):
     __all__ = ['Materials']
 
     """
-    class Materials defines all used materials for the loaded stl models or the 
+    class Materials defines all used materials for the loaded stl models or the
     meshed build programmatically inside the simulator
     """
 
     def __init__(self):
         super().__init__()
 
-        self.mountBlack = QMetalRoughMaterial()
+        self.mountBlack = Qt3DExtras.QMetalRoughMaterial()
         self.mountBlack.setBaseColor(QColor(127, 127, 127))
-        self.mountBlack.setAmbientOcclusion(0)
-        self.mountBlack.setMetalness(0.7)
+        self.mountBlack.setMetalness(0.8)
         self.mountBlack.setRoughness(0.5)
 
-        self.aluminiumGrey = QMetalRoughMaterial()
+        self.aluminiumGrey = Qt3DExtras.QMetalRoughMaterial()
         self.aluminiumGrey.setBaseColor(QColor(164, 164, 192))
-        self.aluminiumGrey.setAmbientOcclusion(0)
         self.aluminiumGrey.setMetalness(0.3)
         self.aluminiumGrey.setRoughness(0.5)
 
-        self.environ1 = QMetalRoughMaterial()
-        self.environ1.setBaseColor(QColor(self.M_BLUE2))
-        self.environ1.setAmbientOcclusion(0.5)
-        self.environ1.setMetalness(0.3)
-        self.environ1.setRoughness(0.5)
+        self.environ = Qt3DExtras.QMetalRoughMaterial()
+        self.environ.setBaseColor(QColor(self.M_BLUE2))
+        self.environ.setMetalness(0.5)
+        self.environ.setRoughness(0.5)
 
-        self.stainless = QMetalRoughMaterial()
+        self.stainless = Qt3DExtras.QMetalRoughMaterial()
         self.stainless.setBaseColor(QColor(255, 255, 255))
-        self.stainless.setAmbientOcclusion(0)
-        self.stainless.setMetalness(1)
-        self.stainless.setRoughness(0.2)
+        self.stainless.setMetalness(0.9)
+        self.stainless.setRoughness(0.8)
 
-        self.domeColumn = QMetalRoughMaterial()
-        self.domeColumn.setBaseColor(QColor(196, 196, 196))
-        self.domeColumn.setAmbientOcclusion(0)
-        self.domeColumn.setMetalness(0.3)
-        self.domeColumn.setRoughness(0.5)
+        self.domeColumn = Qt3DExtras.QMetalRoughMaterial()
+        self.domeColumn.setBaseColor(QColor(150, 90, 50))
+        self.domeColumn.setMetalness(0)
+        self.domeColumn.setRoughness(1)
 
-        self.aluCCD = QDiffuseSpecularMaterial()
+        self.aluCCD = Qt3DExtras.QDiffuseSpecularMaterial()
         self.aluCCD.setAmbient(QColor(32, 32, 92))
         self.aluCCD.setSpecular(QColor(64, 64, 255))
         self.aluCCD.setDiffuse(QColor(32, 32, 92, 255))
         self.aluCCD.setAlphaBlendingEnabled(False)
 
-        self.aluRed = QDiffuseSpecularMaterial()
-        self.aluRed.setAmbient(QColor(96, 32, 32))
-        self.aluRed.setSpecular(QColor(255, 64, 64))
-        self.aluRed.setDiffuse(QColor(96, 32, 32, 255))
+        self.aluRed = Qt3DExtras.QDiffuseSpecularMaterial()
+        self.aluRed.setAmbient(QColor(128, 32, 32))
+        self.aluRed.setSpecular(QColor(255, 255, 255))
+        self.aluRed.setDiffuse(QColor(128, 32, 32, 255))
         self.aluRed.setAlphaBlendingEnabled(False)
-        self.aluRed.setShininess(128)
+        self.aluRed.setShininess(200)
 
-        self.aluKnobs = QDiffuseSpecularMaterial()
+        self.aluKnobs = Qt3DExtras.QDiffuseSpecularMaterial()
         self.aluKnobs.setAmbient(QColor(128, 128, 128))
         self.aluKnobs.setSpecular(QColor(255, 255, 255))
-        self.aluKnobs.setDiffuse(QColor(128, 128, 128, 255))
-        self.aluKnobs.setShininess(128)
+        self.aluKnobs.setDiffuse(QColor(64, 64, 64, 255))
+        self.aluKnobs.setShininess(64)
         self.aluKnobs.setAlphaBlendingEnabled(False)
 
-        self.white = QDiffuseSpecularMaterial()
+        self.white = Qt3DExtras.QDiffuseSpecularMaterial()
         self.white.setAmbient(QColor(224, 224, 224))
         self.white.setSpecular(QColor(224, 224, 224))
         self.white.setDiffuse(QColor(224, 224, 224, 255))
         self.white.setAlphaBlendingEnabled(False)
         self.white.setShininess(128)
 
-        self.glass = QDiffuseSpecularMaterial()
+        self.glass = Qt3DExtras.QDiffuseSpecularMaterial()
         self.glass.setAmbient(QColor(0, 0, 112))
         self.glass.setSpecular(QColor(0, 0, 112))
         self.glass.setDiffuse(QColor(128, 128, 192, 64))
         self.glass.setAlphaBlendingEnabled(True)
         self.glass.setShininess(128)
 
-        self.stainless = QDiffuseSpecularMaterial()
+        """
+        self.stainless = Qt3DExtras.QDiffuseSpecularMaterial()
         self.stainless.setAmbient(QColor(192, 192, 192))
         self.stainless.setDiffuse(QColor(128, 128, 128))
         self.stainless.setSpecular(QColor(255, 255, 255, 255))
-        self.glass.setAlphaBlendingEnabled(False)
+        self.stainless.setAlphaBlendingEnabled(False)
         self.stainless.setShininess(255)
+        """
 
-        self.domeSphere = QPhongAlphaMaterial()
+        self.domeSphere = Qt3DExtras.QPhongAlphaMaterial()
         self.domeSphere.setAmbient(QColor(self.M_BLUE2))
         self.domeSphere.setDiffuse(QColor(self.M_BLUE2))
         self.domeSphere.setSpecular(QColor(self.M_BLUE2))
         self.domeSphere.setShininess(64)
         self.domeSphere.setAlpha(1)
 
-        self.domeSlit = QPhongAlphaMaterial()
+        self.domeSlit = Qt3DExtras.QPhongAlphaMaterial()
         self.domeSlit.setAmbient(QColor(self.M_BLUE3))
         self.domeSlit.setDiffuse(QColor(self.M_BLUE3))
         self.domeSlit.setSpecular(QColor(self.M_BLUE3))
         self.domeSlit.setShininess(64)
         self.domeSlit.setAlpha(1)
 
-        self.domeDoor = QPhongAlphaMaterial()
+        self.domeDoor = Qt3DExtras.QPhongAlphaMaterial()
         self.domeDoor.setAmbient(QColor(self.M_BLUE3))
         self.domeDoor.setDiffuse(QColor(self.M_BLUE3))
         self.domeDoor.setSpecular(QColor(self.M_BLUE3))
         self.domeDoor.setShininess(64)
         self.domeDoor.setAlpha(1)
 
-        self.pointsActive = QPhongMaterial()
+        self.pointsActive = Qt3DExtras.QPhongMaterial()
         self.pointsActive.setAmbient(QColor(self.M_GREEN))
         self.pointsActive.setDiffuse(QColor(self.M_BLUE1))
         self.pointsActive.setSpecular(QColor(self.M_BLUE1))
         self.pointsActive.setShininess(64)
 
-        self.points = QPhongMaterial()
+        self.points = Qt3DExtras.QPhongMaterial()
         self.points.setAmbient(QColor(self.M_YELLOW))
         self.points.setDiffuse(QColor(self.M_GREY1))
         self.points.setSpecular(QColor(self.M_GREY1))
         self.points.setShininess(64)
 
-        self.lines = QPhongMaterial()
+        self.lines = Qt3DExtras.QPhongMaterial()
         self.lines.setAmbient(QColor(self.M_GREY1))
         self.lines.setDiffuse(QColor(self.M_GREY1))
         self.lines.setSpecular(QColor(self.M_GREY1))
         self.lines.setShininess(64)
 
-        self.numbers = QPhongMaterial()
+        self.numbers = Qt3DExtras.QPhongMaterial()
         self.numbers.setAmbient(QColor(self.M_YELLOW))
         self.numbers.setDiffuse(QColor(self.M_YELLOW))
         self.numbers.setSpecular(QColor(self.M_YELLOW))
         self.numbers.setShininess(255)
 
-        self.numbersActive = QPhongMaterial()
+        self.numbersActive = Qt3DExtras.QPhongMaterial()
         self.numbersActive.setAmbient(QColor(self.M_GREEN))
         self.numbersActive.setDiffuse(QColor(self.M_GREEN))
         self.numbersActive.setSpecular(QColor(self.M_GREEN))
         self.numbersActive.setShininess(255)
 
-        self.pointer = QPhongMaterial()
+        self.pointer = Qt3DExtras.QPhongMaterial()
         self.pointer.setAmbient(QColor(self.M_PINK1))
         self.pointer.setDiffuse(QColor(self.M_PINK1))
         self.pointer.setSpecular(QColor(self.M_PINK1))
         self.pointer.setShininess(255)
 
-        self.laser = QPhongMaterial()
+        self.laser = Qt3DExtras.QPhongMaterial()
         self.laser.setAmbient(QColor(self.M_YELLOW))
         self.laser.setDiffuse(QColor(self.M_YELLOW))
         self.laser.setSpecular(QColor(self.M_YELLOW))
         self.laser.setShininess(255)
 
-        self.walls = QPhongAlphaMaterial()
+        self.walls = Qt3DExtras.QPhongAlphaMaterial()
         self.walls.setAmbient(QColor(self.M_GREY1))
         self.walls.setDiffuse(QColor(self.M_GREY1))
         self.walls.setSpecular(QColor(self.M_GREY1))
         self.walls.setAlpha(1)
         self.walls.setShininess(64)
 
-        self.horizon = QPhongAlphaMaterial()
+        self.horizon = Qt3DExtras.QPhongAlphaMaterial()
         self.horizon.setAmbient(QColor(self.M_BLUE4))
         self.horizon.setDiffuse(QColor(self.M_YELLOW))
-        self.walls.setSpecular(QColor(self.M_YELLOW))
+        self.horizon.setSpecular(QColor(self.M_YELLOW))
         self.horizon.setAlpha(0.35)
         self.horizon.setShininess(64)

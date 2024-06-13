@@ -20,7 +20,7 @@ import re
 import time
 
 # external packages
-from PyQt6.QtCore import pyqtSignal, QMutex, QTimer
+from PySide6.QtCore import Signal, QMutex, QTimer
 import requests
 
 # local imports
@@ -30,7 +30,7 @@ from base.driverDataClass import Signals
 class RelaySignals(Signals):
     """
     """
-    statusReady = pyqtSignal()
+    statusReady = Signal()
 
 
 class KMRelay:

@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PyQt6.Qt3DCore import QEntity, QTransform
+from PySide6.Qt3DCore import QEntity, QTransform
 from skyfield.api import Angle
 
 # local import

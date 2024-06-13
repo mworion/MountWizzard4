@@ -19,7 +19,7 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PyQt6.QtGui import QCloseEvent
+from PySide6.QtGui import QCloseEvent
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

@@ -19,9 +19,9 @@ import platform
 import webbrowser
 
 # external packages
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
-from PyQt6.QtWidgets import QTableWidgetItem
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QTableWidgetItem
 
 # local import
 

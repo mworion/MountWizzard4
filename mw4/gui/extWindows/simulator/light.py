@@ -17,11 +17,9 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtGui import QColor, QVector3D
-from PyQt6.Qt3DRender import QPointLight, QDirectionalLight, QSpotLight
 
 # local import
-from gui.extWindows.simulator.tools import linkModel, getLight
+from gui.extWindows.simulator.tools import linkModel
 
 
 class SimulatorLight:
@@ -38,34 +36,33 @@ class SimulatorLight:
         """
         """
         intensity = self.parent.ui.lightIntensity.value()
-        for light in ['main', 'dir', 'spot']:
-            nodeL = getLight(self.parent.entityModel.get(light))
+        for node in ['main', 'dir', 'spot']:
+            nodeL = self.parent.entityModel.get(node)
             if nodeL:
-                nodeL.setIntensity(intensity)
+                nodeL['light'].setIntensity(intensity)
 
     def create(self):
         """
         """
         model = {
-            'lights': {
-                'parent': 'root_qt3d',
+            'lightRoot': {
+                'parent': 'root',
             },
             'main': {
-                'parent': 'lights',
-                'light': [QPointLight(), 1.0, QColor(255, 255, 255)],
-                'trans': [10, 40, 10],
+                'parent': 'lightRoot',
+                'light': ['point', 1.0, [255, 255, 255]],
+                'trans': [5, 20, 5],
             },
-
-            'dir': {
-                'parent': 'lights',
-                'light': [QDirectionalLight(), 0, QColor(0, 255, 0), QVector3D(1, 0, 1)],
+            'direct': {
+                'parent': 'lightRoot',
+                'light': ['direction', 0.1, [255, 255, 255], [1, 0, 1]],
                 'trans': [-10, 1, -10],
             },
             'spot': {
-                'parent': 'lights',
-                'light': [QSpotLight(), 0, QColor(0, 255, 255), 5, QVector3D(1, 0, -1)],
+                'parent': 'lightRoot',
+                'light': ['spot', 0.1, [255, 255, 255], 15, [1, 0, -1]],
                 'trans': [-5, 1, 5],
             },
         }
         linkModel(model, self.parent.entityModel)
-        self.app.material.emit(self.parent.entityModel['main'], 'main')
+

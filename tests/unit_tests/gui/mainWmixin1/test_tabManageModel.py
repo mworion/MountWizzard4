@@ -23,9 +23,9 @@ import shutil
 import os
 
 # external packages
-import PyQt6
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget
+import PySide6
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QWidget
 from skyfield.api import Star, Angle
 from mountcontrol.modelStar import ModelStar
 
@@ -350,7 +350,7 @@ def test_loadName_3(function):
 
 
 def test_saveName_1(function):
-    with mock.patch.object(PyQt6.QtWidgets.QInputDialog,
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('', True)):
         suc = function.saveName()
@@ -358,7 +358,7 @@ def test_saveName_1(function):
 
 
 def test_saveName_2(function):
-    with mock.patch.object(PyQt6.QtWidgets.QInputDialog,
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog,
                            'getText',
                            return_value=(None, True)):
         suc = function.saveName()
@@ -366,7 +366,7 @@ def test_saveName_2(function):
 
 
 def test_saveName_3(function):
-    with mock.patch.object(PyQt6.QtWidgets.QInputDialog,
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('test', False)):
         suc = function.saveName()
@@ -374,7 +374,7 @@ def test_saveName_3(function):
 
 
 def test_saveName_4(function):
-    with mock.patch.object(PyQt6.QtWidgets.QInputDialog,
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('test', True)):
         with mock.patch.object(function.app.mount.model,
@@ -385,7 +385,7 @@ def test_saveName_4(function):
 
 
 def test_saveName_5(function):
-    with mock.patch.object(PyQt6.QtWidgets.QInputDialog,
+    with mock.patch.object(PySide6.QtWidgets.QInputDialog,
                            'getText',
                            return_value=('test', True)):
         with mock.patch.object(function.app.mount.model,

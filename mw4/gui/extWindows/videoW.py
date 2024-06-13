@@ -17,9 +17,9 @@
 # standard libraries
 
 # external packages
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QSizePolicy, QInputDialog, QLineEdit
+from PySide6.QtCore import Signal
+from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QSizePolicy, QInputDialog, QLineEdit
 import cv2
 import qimage2ndarray
 
@@ -35,7 +35,7 @@ class VideoWindow(toolsQtWidget.MWidget):
     """
     __all__ = ['VideoWindow']
 
-    pixmapReady = pyqtSignal(object)
+    pixmapReady = Signal(object)
 
     def __init__(self, app):
         super().__init__()

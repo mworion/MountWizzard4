@@ -20,7 +20,7 @@ import pytest
 
 # external packages
 import numpy as np
-from PyQt6.QtGui import QCloseEvent
+from PySide6.QtGui import QCloseEvent
 import pyqtgraph as pg
 
 # local import

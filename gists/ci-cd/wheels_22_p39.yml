@@ -93,9 +93,9 @@ jobs:
             pip install PyQt-builder
 
             cd "${PWD}"
-            # pip wheel pyqt6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
-            pip install "${PWD}/support/wheels/PyQt6_sip-13.6.0-cp39-cp39-linux_aarch64.whl"
-            pip wheel pyqt6 -w "/root/wheels" --config-settings --confirm-license= --verbose
+            # pip wheel PySide6-sip -w "/root/wheels" --config-settings --confirm-license= --verbose
+            pip install "${PWD}/support/wheels/PySide6_sip-13.6.0-cp39-cp39-linux_aarch64.whl"
+            pip wheel PySide6 -w "/root/wheels" --config-settings --confirm-license= --verbose
 
       - name: Update changes in GitHub repository
         continue-on-error: true

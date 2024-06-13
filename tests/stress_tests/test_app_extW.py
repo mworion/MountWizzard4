@@ -20,8 +20,8 @@ import glob
 import pytest
 
 # external packages
-from PyQt6.QtCore import Qt
-from PyQt6.QtCore import QThreadPool
+from PySide6.QtCore import Qt
+from PySide6.QtCore import QThreadPool
 
 # local import
 from gui.utilities.toolsQtWidget import sleepAndEvents

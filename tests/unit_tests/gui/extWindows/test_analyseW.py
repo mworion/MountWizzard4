@@ -21,7 +21,7 @@ import json
 import os
 
 # external packages
-from PyQt6.QtGui import QCloseEvent, QResizeEvent
+from PySide6.QtGui import QCloseEvent, QResizeEvent
 import numpy as np
 
 # local import

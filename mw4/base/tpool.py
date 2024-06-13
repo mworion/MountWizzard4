@@ -20,7 +20,7 @@ import sys
 import os
 
 # external packages
-from PyQt6.QtCore import QObject, pyqtSignal, QRunnable
+from PySide6.QtCore import QObject, Signal, QRunnable
 
 # local imports
 
@@ -37,9 +37,9 @@ class WorkerSignals(QObject):
 
     __all__ = ['WorkerSignals']
 
-    finished = pyqtSignal()
-    error = pyqtSignal(object)
-    result = pyqtSignal(object)
+    finished = Signal()
+    error = Signal(object)
+    result = Signal(object)
 
 
 class Worker(QRunnable):

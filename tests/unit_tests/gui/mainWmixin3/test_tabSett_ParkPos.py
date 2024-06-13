@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 import logging
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

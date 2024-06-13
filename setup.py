@@ -36,6 +36,8 @@ releaseNotes = """
 - refactoring: environment devices (now 3 generic ones)
 - refactoring: remove installer to separate repo (InstallerMW4)
 - improve: reduced size of app
+- improve: faster startup time
+- improve: optimizing material look & feel
 - improved: don't delete message list when color change
 - improved: rewrite of the online documentation
 - remove: automation of 10micron installer

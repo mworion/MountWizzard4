@@ -151,9 +151,8 @@ def test_sendStart_5(app):
 
 def test_sendCyclic_1(app):
     app.timerCounter = 0
-    with mock.patch.object(shutil,
-                           'disk_usage',
-                           return_value=(100, 100, 100)):
+    with mock.patch.object(app.update1s,
+                           'emit'):
         suc = app.sendCyclic()
         assert suc
 
@@ -178,9 +177,8 @@ def test_sendCyclic_4(app):
 
 def test_sendCyclic_5(app):
     app.timerCounter = 574
-    with mock.patch.object(shutil,
-                           'disk_usage',
-                           return_value=(100, 100, 100)):
+    with mock.patch.object(app.update1s,
+                           'emit'):
         suc = app.sendCyclic()
         assert suc
 
@@ -205,9 +203,8 @@ def test_sendCyclic_8(app):
 
 def test_sendCyclic_9(app):
     app.timerCounter = 36000 - 15 - 1
-    with mock.patch.object(shutil,
-                           'disk_usage',
-                           return_value=(100, 100, 100)):
+    with mock.patch.object(app.update1s,
+                           'emit'):
         suc = app.sendCyclic()
         assert suc
 

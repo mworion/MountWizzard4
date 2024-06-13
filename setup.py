@@ -95,7 +95,7 @@ setup(
         'sep_mw4==1.2.2',
         'pyqtgraph==0.13.7',
         'qimage2ndarray==1.10.0',
-        'skyfield==1.48',
+        'skyfield==1.489',
         'sgp4==2.23',
         'requests==2.32.2',
         'requests_toolbelt==1.0.0',

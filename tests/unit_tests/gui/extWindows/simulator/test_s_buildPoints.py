@@ -142,7 +142,7 @@ def test_createAnnotation_3(function):
 
 
 def test_loopCreate_1(function):
-    function.parent.entityModel['ref_fusion'] = Qt3DCore.QEntity()
+    function.parent.entityModel['ref_fusion'] = {'entity': Qt3DCore.QEntity()}
     function.parent.ui.showNumbers.setChecked(True)
     function.parent.ui.showSlewPath.setChecked(True)
     function.app.data.buildP = [(0, 0, True), (10, 10, True)]

@@ -22,7 +22,7 @@ from unittest import mock
 
 # local import
 from PySide6.QtCore import QTimer
-from indibase.indiBase import Device
+from indibase.indiDevice import Device
 from base.indiClass import IndiClass
 import base.indiClass
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

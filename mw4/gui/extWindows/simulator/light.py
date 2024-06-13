@@ -20,7 +20,6 @@
 
 # local import
 from gui.extWindows.simulator.tools import linkModel
-from base.packageConfig import isMaterialW
 
 
 class SimulatorLight:
@@ -54,22 +53,16 @@ class SimulatorLight:
                 'light': ['point', 1.0, [255, 255, 255]],
                 'trans': [5, 20, 5],
             },
-        }
-        linkModel(model, self.parent.entityModel)
-        if isMaterialW:
-            self.app.material.emit(self.parent.entityModel['main']['entity'], 'main')
-
-"""
-            'dir': {
+            'direct': {
                 'parent': 'lightRoot',
-                'light': ['direction', 1, [0, 255, 0], [1, 0, 1]],
+                'light': ['direction', 0.1, [255, 255, 255], [1, 0, 1]],
                 'trans': [-10, 1, -10],
             },
             'spot': {
                 'parent': 'lightRoot',
-                'light': ['spot', 1, [255, 0, 255], 5, [1, 0, -1]],
+                'light': ['spot', 0.1, [255, 255, 255], 15, [1, 0, -1]],
                 'trans': [-5, 1, 5],
             },
-        self.app.material.emit(self.parent.entityModel['dir']['entity'], 'dir')
-        self.app.material.emit(self.parent.entityModel['spot']['entity'], 'spot')
-"""
+        }
+        linkModel(model, self.parent.entityModel)
+

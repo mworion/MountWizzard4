@@ -18,10 +18,9 @@
 import pytest
 import unittest.mock as mock
 
-from PySide6.QtCore import QThreadPool, QObject, Signal
-
 # local import
-from indibase.indiBase import Client, Device
+from indibase.indiClient import Client
+from indibase.indiDevice import Device
 from indibase import indiXML
 from indibase.indiXML import INDIBase
 from base.loggerMW import setupLogging

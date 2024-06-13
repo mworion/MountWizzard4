@@ -16,13 +16,11 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
 
 # external packages
-from PySide6.QtCore import QThreadPool, QObject, Signal
 
 # local import
-from indibase.indiBase import Device
+from indibase.indiDevice import Device
 
 
 @pytest.fixture(autouse=True, scope='function')

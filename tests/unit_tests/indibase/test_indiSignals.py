@@ -16,13 +16,11 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
 
 # external packages
-from PySide6.QtCore import QObject, Signal
 
 # local import
-from indibase.indiBase import INDISignals
+from indibase.indiSignals import INDISignals
 
 
 @pytest.fixture(autouse=True, scope='function')

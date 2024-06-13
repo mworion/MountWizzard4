@@ -19,7 +19,7 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PySide6.Qt3DCore import QEntity
+from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -35,7 +35,7 @@ def function(qapp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel['horizon'] = QEntity()
+    function.parent.entityModel['horizon'] = {'entity': Qt3DCore.QEntity()}
     function.showEnable()
 
 
@@ -46,25 +46,25 @@ def test_clear_1(function):
 
 
 def test_clear_2(function):
-    function.parent.entityModel['horizon'] = QEntity()
+    function.parent.entityModel['horizon'] = {'entity': Qt3DCore.QEntity()}
     suc = function.clear()
     assert suc
 
 
 def test_createWall_1(function):
-    val = function.createWall(QEntity(), 0, 0, 10)
-    assert isinstance(val, QEntity)
+    val = function.createWall(Qt3DCore.QEntity(), 0, 0, 10)
+    assert isinstance(val, Qt3DCore.QEntity)
 
 
 def test_create_1(function):
-    function.parent.entityModel['ref_fusion'] = QEntity()
+    function.parent.entityModel['ref_fusion'] = {'entity': Qt3DCore.QEntity()}
     function.app.data.horizonP = None
     suc = function.create()
     assert not suc
 
 
 def test_create_2(function):
-    function.parent.entityModel['ref_fusion'] = QEntity()
+    function.parent.entityModel['ref_fusion'] = {'entity': Qt3DCore.QEntity()}
     function.app.data.horizonP = [(0, 0), (10, 10)]
     with mock.patch.object(function,
                            'clear'):

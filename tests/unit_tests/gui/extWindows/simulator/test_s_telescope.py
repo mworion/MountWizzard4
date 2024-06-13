@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.Qt3DCore import QEntity, QTransform
+from PySide6.Qt3DCore import Qt3DCore
 from skyfield.api import Angle
 
 # local import
@@ -36,20 +36,20 @@ def function(qapp):
 
 
 def test_updatePositions_1(function):
-    function.parent.entityModel['mountBase'] = QEntity()
-    function.parent.entityModel['mountBase'].addComponent(QTransform())
-    function.parent.entityModel['lat'] = QEntity()
-    function.parent.entityModel['lat'].addComponent(QTransform())
-    function.parent.entityModel['gem'] = QEntity()
-    function.parent.entityModel['gem'].addComponent(QTransform())
-    function.parent.entityModel['gemCorr'] = QEntity()
-    function.parent.entityModel['gemCorr'].addComponent(QTransform())
-    function.parent.entityModel['otaRing'] = QEntity()
-    function.parent.entityModel['otaRing'].addComponent(QTransform())
-    function.parent.entityModel['otaTube'] = QEntity()
-    function.parent.entityModel['otaTube'].addComponent(QTransform())
-    function.parent.entityModel['otaImagetrain'] = QEntity()
-    function.parent.entityModel['otaImagetrain'].addComponent(QTransform())
+    function.parent.entityModel['mountBase'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['mountBase'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['lat'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['lat'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['gem'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['gem'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['gemCorr'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['gemCorr'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['otaRing'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['otaRing'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['otaTube'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['otaTube'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['otaImagetrain'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['otaImagetrain'].addComponent(Qt3DCore.QTransform())
 
     function.updatePositions()
 
@@ -64,10 +64,10 @@ def test_updateRotation_1(function):
 def test_updateRotation_2(function):
     function.app.mount.obsSite.angularPosRA = Angle(degrees=10)
     function.app.mount.obsSite.angularPosDEC = Angle(degrees=10)
-    function.parent.entityModel['ra'] = QEntity()
-    function.parent.entityModel['ra'].addComponent(QTransform())
-    function.parent.entityModel['dec'] = QEntity()
-    function.parent.entityModel['dec'].addComponent(QTransform())
+    function.parent.entityModel['ra'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['ra'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['dec'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['dec'].addComponent(Qt3DCore.QTransform())
     suc = function.updateRotation()
     assert suc
 

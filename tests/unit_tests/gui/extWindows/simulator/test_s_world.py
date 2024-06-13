@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.Qt3DCore import QEntity, QTransform
+from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -43,8 +43,7 @@ def test_updatePositions_1(function):
 
 
 def test_updatePositions_2(function):
-    function.parent.entityModel['domeColumn'] = QEntity()
-    function.parent.entityModel['domeColumn'].addComponent(QTransform())
+    function.create()
     function.updatePositions()
 
 

@@ -19,8 +19,8 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.Qt3DCore import QEntity
-from PySide6.Qt3DExtras import QExtrudedTextMesh
+from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DExtras import Qt3DExtras
 import numpy as np
 
 # local import
@@ -37,26 +37,23 @@ def function(qapp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel['buildPoints'] = QEntity()
+    function.parent.entityModel['buildPoints'] = {'entity': Qt3DCore.QEntity()}
     function.showEnable()
 
 
 def test_clear_1(function):
     function.parent.entityModel = {}
-    suc = function.clear()
-    assert not suc
+    function.clear()
 
 
 def test_clear_2(function):
-    function.parent.entityModel['buildPoints'] = QEntity()
-    suc = function.clear()
-    assert suc
+    function.parent.entityModel['buildPoints'] = {'entity': Qt3DCore.QEntity()}
+    function.clear()
 
 
 def test_updatePositions_1(function):
     function.app.mount.obsSite.haJNow = None
-    suc = function.updatePositions()
-    assert not suc
+    function.updatePositions()
 
 
 def test_updatePositions_2(function):
@@ -66,70 +63,91 @@ def test_updatePositions_2(function):
     with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0, None, None, None)):
-        suc = function.updatePositions()
-        assert not suc
+        function.updatePositions()
 
 
 def test_updatePositions_3(function):
     function.app.mount.obsSite.haJNow = 10
     function.app.mount.obsSite.timeSidereal = '10:10:10'
-    function.parent.entityModel['buildPoints'] = QEntity()
+    function.parent.entityModel['buildPoints'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['buildPoints'] = {'trans': Qt3DCore.QTransform()}
     with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0,
                                          np.array([1, 1, 1]),
                                          np.array([1, 1, 1]),
                                          np.array([1, 1, 1]))):
-        suc = function.updatePositions()
-        assert suc
+        function.updatePositions()
 
 
 def test_createLine_1(function):
-    val = function.createLine(QEntity(), 1, 1, 1)
-    assert isinstance(val, QEntity)
+    val = function.createLine(Qt3DCore.QEntity(), 1, 1, 1)
+    assert isinstance(val[0], Qt3DCore.QEntity)
+    assert isinstance(val[2], Qt3DCore.QEntity)
+    assert isinstance(val[4], Qt3DCore.QEntity)
+    assert isinstance(val[1], Qt3DCore.QTransform)
+    assert isinstance(val[3], Qt3DCore.QTransform)
+    assert isinstance(val[5], Qt3DCore.QTransform)
 
 
 def test_createPoint_1(function):
-    val = function.createPoint(QEntity(), 1, 1, True)
-    assert isinstance(val[0], QEntity)
+    val = function.createPoint(Qt3DCore.QEntity(), 1, 1, False)
+    assert isinstance(val[0][0], Qt3DCore.QEntity)
+    assert isinstance(val[0][2], Qt3DCore.QTransform)
 
 
 def test_createPoint_2(function):
-    val = function.createPoint(QEntity(), 1, 1, False)
-    assert isinstance(val[0], QEntity)
+    val = function.createPoint(Qt3DCore.QEntity(), 1, 1, False)
+    assert isinstance(val[0][0], Qt3DCore.QEntity)
+    assert isinstance(val[0][2], Qt3DCore.QTransform)
 
 
 def test_createAnnotation_1(function):
-    e = QEntity()
-    with mock.patch.object(QExtrudedTextMesh,
+    e = Qt3DCore.QEntity()
+    with mock.patch.object(Qt3DExtras.QExtrudedTextMesh,
                            'setText'):
         val = function.createAnnotation(e, 45, 45, 'test', True)
-        assert isinstance(val, QEntity)
+        assert isinstance(val[0], Qt3DCore.QEntity)
+        assert isinstance(val[1], Qt3DCore.QTransform)
+        assert isinstance(val[2], Qt3DCore.QEntity)
+        assert isinstance(val[3], Qt3DCore.QTransform)
+        assert isinstance(val[6], Qt3DCore.QEntity)
+        assert isinstance(val[7], Qt3DCore.QTransform)
 
 
 def test_createAnnotation_2(function):
-    e = QEntity()
-    with mock.patch.object(QExtrudedTextMesh,
+    e = Qt3DCore.QEntity()
+    with mock.patch.object(Qt3DExtras.QExtrudedTextMesh,
                            'setText'):
         val = function.createAnnotation(e, 45, 45, 'test', False)
-        assert isinstance(val, QEntity)
+        assert isinstance(val[0], Qt3DCore.QEntity)
+        assert isinstance(val[1], Qt3DCore.QTransform)
+        assert isinstance(val[2], Qt3DCore.QEntity)
+        assert isinstance(val[3], Qt3DCore.QTransform)
+        assert isinstance(val[6], Qt3DCore.QEntity)
+        assert isinstance(val[7], Qt3DCore.QTransform)
 
 
 def test_createAnnotation_3(function):
-    e = QEntity()
-    with mock.patch.object(QExtrudedTextMesh,
+    e = Qt3DCore.QEntity()
+    with mock.patch.object(Qt3DExtras.QExtrudedTextMesh,
                            'setText'):
         val = function.createAnnotation(e, 45, 45, 'test', True, faceIn=True)
-        assert isinstance(val, QEntity)
+        assert isinstance(val[0], Qt3DCore.QEntity)
+        assert isinstance(val[1], Qt3DCore.QTransform)
+        assert isinstance(val[2], Qt3DCore.QEntity)
+        assert isinstance(val[3], Qt3DCore.QTransform)
+        assert isinstance(val[6], Qt3DCore.QEntity)
+        assert isinstance(val[7], Qt3DCore.QTransform)
 
 
 def test_loopCreate_1(function):
-    function.parent.entityModel['ref_fusion'] = QEntity()
+    function.parent.entityModel['ref_fusion'] = Qt3DCore.QEntity()
     function.parent.ui.showNumbers.setChecked(True)
     function.parent.ui.showSlewPath.setChecked(True)
     function.app.data.buildP = [(0, 0, True), (10, 10, True)]
     function.points = []
-    function.loopCreate(QEntity())
+    function.loopCreate(Qt3DCore.QEntity())
     assert function.points
 
 
@@ -140,7 +158,7 @@ def test_create_1(function):
 
 
 def test_create_2(function):
-    function.parent.entityModel['ref_fusion'] = QEntity()
+    function.parent.entityModel['ref_fusion'] = {'entity': Qt3DCore.QEntity()}
     function.app.data.buildP = [(0, 0, True), (10, 10, True)]
     with mock.patch.object(function,
                            'clear'):

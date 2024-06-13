@@ -16,12 +16,11 @@
 ###########################################################
 # standard libraries
 import pytest
+
 # external packages
-from PySide6.Qt3DExtras import QSphereMesh, QCuboidMesh
-from PySide6.Qt3DCore import QEntity
-from PySide6.Qt3DExtras import QPhongAlphaMaterial, QCylinderMesh, QExtrudedTextMesh
-from PySide6.Qt3DCore import QTransform
-from PySide6.Qt3DRender import QMesh
+from PySide6.Qt3DCore import Qt3DCore
+from PySide6.Qt3DRender import Qt3DRender
+from PySide6.Qt3DExtras import Qt3DExtras
 
 
 # local import
@@ -30,7 +29,6 @@ from gui.extWindows.simulator.tools import linkMaterial
 from gui.extWindows.simulator.tools import linkSource
 from gui.extWindows.simulator.tools import linkTransform
 from gui.extWindows.simulator.tools import getMaterial
-from gui.extWindows.simulator.tools import getMesh
 from gui.extWindows.simulator.materials import Materials
 
 
@@ -44,39 +42,39 @@ def test_linkSource_1(qtbot):
              'source': 'mount-ra.stl',
              }
     mesh = linkSource(model)
-    assert isinstance(mesh, QMesh)
+    assert isinstance(mesh, Qt3DRender.QMesh)
 
 
 def test_linkSource_2(qtbot):
     model = {'parent': None,
-             'source': [QSphereMesh(), 50, 30, 30],
+             'source': ['sphere', 50, 30, 30],
              }
     mesh = linkSource(model)
-    assert isinstance(mesh, QSphereMesh)
+    assert isinstance(mesh, Qt3DExtras.QSphereMesh)
 
 
 def test_linkSource_3(qtbot):
     model = {'parent': None,
-             'source': [QCuboidMesh(), 50, 30, 30],
+             'source': ['cuboid', 50, 30, 30],
              }
     mesh = linkSource(model)
-    assert isinstance(mesh, QCuboidMesh)
+    assert isinstance(mesh, Qt3DExtras.QCuboidMesh)
 
 
 def test_linkSource_4(qtbot):
     model = {'parent': None,
-             'source': [QCylinderMesh(), 50, 30, 30, 1],
+             'source': ['cylinder', 50, 30, 30, 1],
              }
     mesh = linkSource(model)
-    assert isinstance(mesh, QCylinderMesh)
+    assert isinstance(mesh, Qt3DExtras.QCylinderMesh)
 
 
 def test_linkSource_5(qtbot):
     model = {'parent': None,
-             'source': [QExtrudedTextMesh(), 30, 'Arial', 'test'],
+             'source': ['text', 30, 'Arial', 'test'],
              }
     mesh = linkSource(model)
-    assert isinstance(mesh, QExtrudedTextMesh)
+    assert isinstance(mesh, Qt3DExtras.QExtrudedTextMesh)
 
 
 def test_linkSource_6(qtbot):
@@ -99,7 +97,7 @@ def test_linkTransform_1(qtbot):
              'scale': [1, 1, 1],
              }
     trans = linkTransform(model)
-    assert isinstance(trans, QTransform)
+    assert isinstance(trans, Qt3DCore.QTransform)
 
 
 def test_linkTransform_2(qtbot):
@@ -107,7 +105,7 @@ def test_linkTransform_2(qtbot):
              'trans': [1, 1, 1],
              }
     trans = linkTransform(model)
-    assert isinstance(trans, QTransform)
+    assert isinstance(trans, Qt3DCore.QTransform)
 
 
 def test_linkTransform_3(qtbot):
@@ -115,7 +113,7 @@ def test_linkTransform_3(qtbot):
              'rot': [1, 1, 1],
              }
     trans = linkTransform(model)
-    assert isinstance(trans, QTransform)
+    assert isinstance(trans, Qt3DCore.QTransform)
 
 
 def test_linkTransform_4(qtbot):
@@ -131,15 +129,16 @@ def test_linkMaterial_1(qtbot):
              }
 
     mat = linkMaterial(model)
-    assert isinstance(mat, QPhongAlphaMaterial)
+    assert isinstance(mat, Qt3DExtras.QPhongAlphaMaterial)
 
 
 def test_linkModel_1(qtbot):
-    entityModel = {'root_qt3d': QEntity()}
+    entityModel = {'root_qt3d': {'entity': Qt3DCore.QEntity()}}
+
     model = {
         'pointer':
             {'parent': None,
-             'source': [QSphereMesh(), 50, 30, 30],
+             'source': ['sphere', 50, 30, 30],
              'scale': [1, 1, 1],
              'mat': Materials().pointer,
              }
@@ -148,11 +147,11 @@ def test_linkModel_1(qtbot):
 
 
 def test_linkModel_2(qtbot):
-    entityModel = {'root_qt3d': QEntity()}
+    entityModel = {'root_qt3d': {'entity': Qt3DCore.QEntity()}}
     model = {
         'pointer':
             {'parent': 'root_qt3d',
-             'source': [QSphereMesh(), 50, 30, 30],
+             'source': ['sphere', 50, 30, 30],
              'scale': [1, 1, 1],
              'mat': Materials().pointer,
              }
@@ -167,20 +166,9 @@ def test_getMaterial_1(qtbot):
 
 
 def test_getMaterial_2(qtbot):
-    entity = QEntity()
-    entity.addComponent(QPhongAlphaMaterial())
+    entity = Qt3DCore.QEntity()
+    mat = Qt3DExtras.QPhongAlphaMaterial()
+    entity.addComponent(mat)
     val = getMaterial(entity)
-    assert isinstance(val, QPhongAlphaMaterial)
+    assert isinstance(val, Qt3DExtras.QPhongAlphaMaterial)
 
-
-def test_getMesh_1(qtbot):
-    entity = None
-    val = getMesh(entity)
-    assert val is None
-
-
-def test_getMesh_2(qtbot):
-    entity = QEntity()
-    entity.addComponent(QCuboidMesh())
-    val = getMesh(entity)
-    assert isinstance(val, QCuboidMesh)

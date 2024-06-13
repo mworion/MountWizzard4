@@ -163,6 +163,7 @@ def getMaterial(entity):
     """
     if entity is None:
         return None
+
     components = entity.components()
     for component in components:
         if isinstance(component, (Qt3DExtras.QMetalRoughMaterial,
@@ -177,6 +178,7 @@ def getLight(entity):
     """
     if entity is None:
         return None
+
     components = entity.components()
     for component in components:
         if isinstance(component, (Qt3DRender.QPointLight,

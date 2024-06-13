@@ -79,7 +79,7 @@ def test_setupLight_1(function):
 
 
 def test_setLightIntensity_1(function):
-    function.entityModel['lightsNode'] = QEntity()
+    function.entityModel['lightsNode'] = Qt3DCore.QEntity()
     a = QEntity(function.entityModel['lightsNode'])
     a.addComponent(QPointLight())
     function.setLightIntensity()
@@ -130,7 +130,7 @@ def test_westView_1(function):
 
 
 def test_createReference_1(function):
-    function.entityModel['root_qt3d'] = QEntity()
+    function.entityModel['root_qt3d'] = Qt3DCore.QEntity()
     with mock.patch.object(tools,
                            'linkModel'):
         function.createReference()

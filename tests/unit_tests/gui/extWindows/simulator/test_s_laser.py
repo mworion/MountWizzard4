@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.Qt3DCore import QEntity, QTransform
+from PySide6.Qt3DCore import Qt3DCore
 import numpy as np
 
 # local import
@@ -36,7 +36,7 @@ def function(qapp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel['laser'] = QEntity()
+    function.parent.entityModel['laser'] = {'entity': Qt3DCore.QEntity()}
     function.showEnable()
 
 
@@ -49,12 +49,12 @@ def test_updatePositions_1(function):
 
 
 def test_updatePositions_2(function):
-    function.parent.entityModel['displacement'] = QEntity()
-    function.parent.entityModel['displacement'].addComponent(QTransform())
-    function.parent.entityModel['az'] = QEntity()
-    function.parent.entityModel['az'].addComponent(QTransform())
-    function.parent.entityModel['alt'] = QEntity()
-    function.parent.entityModel['alt'].addComponent(QTransform())
+    function.parent.entityModel['displacement'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['displacement'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['az'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['az'].addComponent(Qt3DCore.QTransform())
+    function.parent.entityModel['alt'] = {'entity': Qt3DCore.QEntity()}
+    function.parent.entityModel['alt'].addComponent(Qt3DCore.QTransform())
     with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0,

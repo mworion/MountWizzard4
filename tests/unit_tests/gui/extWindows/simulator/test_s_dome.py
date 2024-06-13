@@ -19,11 +19,12 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-from PySide6.Qt3DCore import QEntity, QTransform
+from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.extWindows.simulatorW import SimulatorWindow
+from gui.extWindows.simulator.materials import Materials
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -35,48 +36,58 @@ def function(qapp):
 
 
 def test_setTransparency_1(function):
-    function.parent.entityModel['domeWall'] = QEntity()
-    mat = function.parent.materials.domeDoor
-    function.parent.entityModel['domeWall'].addComponent(mat)
+    function.parent.entityModel['domeWall'] = {'entity': Qt3DCore.QEntity()}
+    mat = Materials().walls
+    function.parent.entityModel['domeWall']['entity'].addComponent(mat)
+    function.parent.entityModel['domeWall']['material'] = mat
     function.setTransparency()
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel['dome'] = QEntity()
+    function.parent.entityModel['dome'] = {'entity': Qt3DCore.QEntity()}
     function.showEnable(True)
 
 
 def test_updateSize_1(function):
-    function.parent.entityModel['domeWall'] = QEntity()
-    t = QTransform()
-    function.parent.entityModel['domeWall'].addComponent(t)
-    function.parent.entityModel['domeSphere'] = QEntity()
-    t = QTransform()
-    function.parent.entityModel['domeSphere'].addComponent(t)
+    function.parent.entityModel['domeWall'] = {'entity': Qt3DCore.QEntity()}
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['domeWall']['entity'].addComponent(t)
+    function.parent.entityModel['domeWall']['trans'] = t
+
+    function.parent.entityModel['domeSphere'] = {'entity': Qt3DCore.QEntity()}
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['domeSphere']['entity'].addComponent(t)
+    function.parent.entityModel['domeSphere']['trans'] = t
     function.updateSize()
 
 
 def test_updateAzimuth_1(function):
     function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                               'DOME_SHUTTER.SHUTTER_OPEN': True}
-    function.parent.entityModel['domeSphere'] = QEntity()
-    t = QTransform()
-    function.parent.entityModel['domeSphere'].addComponent(t)
+    function.parent.entityModel['domeSphere'] = {'entity': Qt3DCore.QEntity()}
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['domeSphere']['entity'].addComponent(t)
+    function.parent.entityModel['domeSphere']['trans'] = t
     function.updateAzimuth()
 
 
 def test_updateShutter_1(function):
     function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 0,
                               'DOME_SHUTTER.SHUTTER_OPEN': True}
-    function.parent.entityModel['domeSlit1'] = QEntity()
-    t = QTransform()
-    function.parent.entityModel['domeSlit1'].addComponent(t)
-    function.parent.entityModel['domeDoor1'] = QEntity()
-    t = QTransform()
-    function.parent.entityModel['domeDoor1'].addComponent(t)
-    function.parent.entityModel['domeDoor2'] = QEntity()
-    t = QTransform()
-    function.parent.entityModel['domeDoor2'].addComponent(t)
+    function.parent.entityModel['domeSlit1'] = {'entity': Qt3DCore.QEntity()}
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['domeSlit1']['entity'].addComponent(t)
+    function.parent.entityModel['domeSlit1']['trans'] = t
+
+    function.parent.entityModel['domeDoor1'] = {'entity': Qt3DCore.QEntity()}
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['domeDoor1']['entity'].addComponent(t)
+    function.parent.entityModel['domeDoor1']['trans'] = t
+
+    function.parent.entityModel['domeDoor2'] = {'entity': Qt3DCore.QEntity()}
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel['domeDoor2']['entity'].addComponent(t)
+    function.parent.entityModel['domeDoor2']['trans'] = t
     function.updateShutter()
 
 

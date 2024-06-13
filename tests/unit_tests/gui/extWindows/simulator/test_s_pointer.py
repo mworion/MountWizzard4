@@ -19,7 +19,7 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.Qt3DCore import QEntity
+from PySide6.Qt3DCore import Qt3DCore
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -35,7 +35,7 @@ def function(qapp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel['pointer'] = QEntity()
+    function.parent.entityModel['pointer'] = {'entity': Qt3DCore.QEntity()}
     function.showEnable()
 
 

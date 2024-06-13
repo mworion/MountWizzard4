@@ -25,6 +25,7 @@ import xml.etree.ElementTree as ETree
 # local import
 from indibase import indiXML
 from indibase.indiSignals import INDISignals
+from indibase.indiDevice import Device
 
 
 class Client(QObject):

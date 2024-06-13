@@ -22,7 +22,6 @@ from PySide6.QtGui import QVector3D
 from PySide6.QtWidgets import QWidget
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DCore import Qt3DCore
-import PySide6
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
@@ -266,18 +265,3 @@ class SimulatorWindow(MWidget):
         self.pointer.create()
         self.horizon.create()
         self.buildPoints.create()
-
-        #print(f'->{self.entityModel['root']['entity'].objectName()}<-')
-        #self.showChildren(self.entityModel['root']['entity'])
-
-    def showChildren(self, node):
-        """
-        """
-        for child in node.children():
-            self.iterDepth += 1
-            if child.objectName() != '':
-                for i in range(self.iterDepth):
-                    print('----', end='')
-                print(f'{child.objectName():15s}: {child.components()}')
-            self.showChildren(child)
-        self.iterDepth -= 1

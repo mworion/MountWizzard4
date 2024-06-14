@@ -137,7 +137,7 @@ class MinorPlanet:
         """
         self.ui.listMinorPlanetNames.clear()
         self.ui.listMinorPlanetNames.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.ui.listMinorPlanetNames.setSelectionMode(QAbstractItemView.MultiSelection)
+        self.ui.listMinorPlanetNames.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
         for index, mp in enumerate(self.minorPlanets):
             text = self.generateName(index, mp)

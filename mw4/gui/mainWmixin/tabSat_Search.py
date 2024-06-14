@@ -522,7 +522,7 @@ class SatSearch(object):
         satTab.setColumnWidth(8, 0)
         satTab.verticalHeader().setDefaultSectionSize(16)
         satTab.setSelectionBehavior(QAbstractItemView.SelectRows)
-        satTab.setSelectionMode(QAbstractItemView.SingleSelection)
+        satTab.setSelectionMode(QAbstractItemView.ExtendedSelection)
         return True
 
     def setupSatelliteNameList(self):
@@ -663,6 +663,22 @@ class SatSearch(object):
         source = self.ui.satelliteSource.currentText()
         self.msg.emit(1, 'TLE', 'Program', f'{source}')
         self.msg.emit(1, '', '', 'Exporting TLE data')
+        return True
+
+    def progSatellitesSelected(self):
+        """
+        :return: success
+        """
+        suc = self.mpcGUI()
+        if not suc:
+            return False
+
+        satSelectedIndexes = self.ui.listSatelliteNames.selectedIndexes()
+        satSelected = []
+        for entry in satSelectedIndexes:
+            index = entry.row()
+            satSelected.append(self.satellites[index])
+        self.progMinorPlanets(satSelected)
         return True
 
     def progSatellitesFiltered(self):

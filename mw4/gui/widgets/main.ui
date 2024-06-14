@@ -107,7 +107,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -11817,7 +11817,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -17368,8 +17368,8 @@ When clicking the button, you could change the value.</string>
       <rect>
        <x>5</x>
        <y>0</y>
-       <width>781</width>
-       <height>431</height>
+       <width>776</width>
+       <height>426</height>
       </rect>
      </property>
      <property name="currentIndex">
@@ -17391,7 +17391,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>10</y>
          <width>566</width>
-         <height>381</height>
+         <height>326</height>
         </rect>
        </property>
        <property name="font">
@@ -17492,7 +17492,7 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="satSourceGroup">
        <property name="geometry">
         <rect>
-         <x>580</x>
+         <x>575</x>
          <y>5</y>
          <width>191</width>
          <height>56</height>
@@ -17508,7 +17508,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>20</y>
+          <y>25</y>
           <width>181</width>
           <height>26</height>
          </rect>
@@ -17527,9 +17527,9 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="satProgDatabaseGroup">
        <property name="geometry">
         <rect>
-         <x>580</x>
+         <x>5</x>
          <y>340</y>
-         <width>191</width>
+         <width>761</width>
          <height>51</height>
         </rect>
        </property>
@@ -17542,9 +17542,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="progSatellitesFiltered">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>145</x>
           <y>20</y>
-          <width>86</width>
+          <width>125</width>
           <height>26</height>
          </rect>
         </property>
@@ -17560,7 +17560,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>86</width>
+          <width>125</width>
           <height>26</height>
          </rect>
         </property>
@@ -17571,14 +17571,30 @@ When clicking the button, you could change the value.</string>
          <string>Complete</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="progSatellitesSelected">
+        <property name="geometry">
+         <rect>
+          <x>285</x>
+          <y>20</y>
+          <width>125</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) satellite database to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Selected</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="satSetupGroup">
        <property name="geometry">
         <rect>
-         <x>580</x>
-         <y>270</y>
+         <x>575</x>
+         <y>275</y>
          <width>191</width>
-         <height>56</height>
+         <height>61</height>
         </rect>
        </property>
        <property name="title">
@@ -17629,10 +17645,10 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="satFilterGroup">
        <property name="geometry">
         <rect>
-         <x>580</x>
+         <x>575</x>
          <y>70</y>
          <width>191</width>
-         <height>186</height>
+         <height>191</height>
         </rect>
        </property>
        <property name="title">
@@ -17706,7 +17722,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>90</y>
+          <y>95</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -17725,7 +17741,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
+          <y>45</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -17744,7 +17760,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>110</y>
+          <y>115</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -17760,7 +17776,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>65</y>
+          <y>70</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -17795,7 +17811,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>105</x>
-          <y>135</y>
+          <y>140</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -17830,7 +17846,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>105</x>
-          <y>160</y>
+          <y>165</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -17865,7 +17881,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>135</y>
+          <y>140</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -17885,7 +17901,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>160</x>
-          <y>135</y>
+          <y>140</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -17905,7 +17921,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>160</x>
-          <y>160</y>
+          <y>165</y>
           <width>21</width>
           <height>21</height>
          </rect>
@@ -17925,7 +17941,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>160</y>
+          <y>165</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -19572,185 +19588,219 @@ Next point in time when satellite settles.</string>
     <attribute name="title">
      <string>Minor Planets</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox_30">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>15</y>
-       <width>371</width>
-       <height>56</height>
+       <x>5</x>
+       <y>0</y>
+       <width>776</width>
+       <height>426</height>
       </rect>
      </property>
-     <property name="title">
-      <string>Minor planets data file</string>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QComboBox" name="minorPlanetSource">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>25</y>
-        <width>226</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the minor planets database from where the minor planet list should be loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Searching Database</string>
+      </attribute>
+      <widget class="QGroupBox" name="satFilterGroup_2">
+       <property name="geometry">
+        <rect>
+         <x>575</x>
+         <y>70</y>
+         <width>191</width>
+         <height>186</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Filter</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_303">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Search string</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="filterMinorPlanet">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QListWidget" name="listMinorPlanetNames">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>10</y>
+         <width>566</width>
+         <height>326</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of minor planets. This includes comets, asteroids and others.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::NoSelection</enum>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="satSourceGroup_2">
+       <property name="geometry">
+        <rect>
+         <x>575</x>
+         <y>5</y>
+         <width>191</width>
+         <height>56</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Minor Planets data</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QComboBox" name="minorPlanetSource">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>25</y>
+          <width>181</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the minor planets database from where the minor planet list should be loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="mpcProgDatabaseGroup">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>340</y>
+         <width>761</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Programming database</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="progMinorPlanetsFull">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>125</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Complete</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="progMinorPlanetsFiltered">
+        <property name="geometry">
+         <rect>
+          <x>145</x>
+          <y>20</y>
+          <width>125</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Filtered</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="progMinorPlanetsSelected">
+        <property name="geometry">
+         <rect>
+          <x>285</x>
+          <y>20</y>
+          <width>125</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Selected</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
-     <widget class="QLineEdit" name="filterMinorPlanet">
-      <property name="geometry">
-       <rect>
-        <x>245</x>
-        <y>30</y>
-        <width>116</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting minor planet names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-      <property name="input" stdset="0">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_270">
-      <property name="geometry">
-       <rect>
-        <x>245</x>
-        <y>10</y>
-        <width>81</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>search string</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_58">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>371</width>
-       <height>311</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>List of available minor planets (comets, asteroids)</string>
-     </property>
-     <property name="large" stdset="0">
-      <bool>true</bool>
-     </property>
-     <widget class="QListWidget" name="listMinorPlanetNames">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>25</y>
-        <width>361</width>
-        <height>281</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of minor planets. This includes comets, asteroids and others.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::NoSelection</enum>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QPushButton" name="progMinorPlanetsFull">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>400</y>
-       <width>121</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Prog complete</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="progMinorPlanetsFiltered">
-     <property name="geometry">
-      <rect>
-       <x>135</x>
-       <y>400</y>
-       <width>121</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Prog filtered</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="progMinorPlanetsSelected">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>400</y>
-       <width>121</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Programs the actual selected but filtered (with text string) minor planet database (comets or asteroids) to the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Prog selected</string>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Tools">
@@ -31911,11 +31961,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>satOffDec</tabstop>
   <tabstop>startSatelliteTracking</tabstop>
   <tabstop>stopSatelliteTracking</tabstop>
-  <tabstop>minorPlanetSource</tabstop>
-  <tabstop>filterMinorPlanet</tabstop>
-  <tabstop>listMinorPlanetNames</tabstop>
-  <tabstop>progMinorPlanetsFull</tabstop>
-  <tabstop>progMinorPlanetsFiltered</tabstop>
   <tabstop>sensorVoltage</tabstop>
   <tabstop>sensorCurrent</tabstop>
   <tabstop>sensorPower</tabstop>

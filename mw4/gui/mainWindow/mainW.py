@@ -56,6 +56,7 @@ from gui.mainWmixin.tabManageModel import ManageModel
 from gui.mainWmixin.tabSat_Search import SatSearch
 from gui.mainWmixin.tabSat_Track import SatTrack
 from gui.mainWmixin.tabComet import Comet
+from gui.mainWmixin.tabAsteroid import Asteroid
 from gui.mainWmixin.tabRelay import Relay
 from gui.mainWmixin.tabTools_Rename import Rename
 from gui.mainWmixin.tabTools_IERSTime import IERSTime
@@ -86,6 +87,7 @@ class MainWindow(
     SatSearch,
     SatTrack,
     Comet,
+    Asteroid,
     Relay,
     Power,
     Rename,

@@ -19931,7 +19931,7 @@ Next point in time when satellite settles.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="progMpcFull">
+       <widget class="QPushButton" name="progAsteroidsFull">
         <property name="geometry">
          <rect>
           <x>5</x>
@@ -19947,7 +19947,7 @@ Next point in time when satellite settles.</string>
          <string>Complete</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="progMpcFiltered">
+       <widget class="QPushButton" name="progAsteroidsFiltered">
         <property name="geometry">
          <rect>
           <x>145</x>
@@ -19963,7 +19963,7 @@ Next point in time when satellite settles.</string>
          <string>Filtered</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="progMpcSelected">
+       <widget class="QPushButton" name="progAsteroidsSelected">
         <property name="geometry">
          <rect>
           <x>285</x>
@@ -19980,7 +19980,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="satFilterGroup_3">
+      <widget class="QGroupBox" name="asteroidFilterGroup">
        <property name="geometry">
         <rect>
          <x>575</x>
@@ -20015,7 +20015,7 @@ Next point in time when satellite settles.</string>
          <string>Search string</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="mpcFilterText">
+       <widget class="QLineEdit" name="asteroidFilterText">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -20054,7 +20054,7 @@ Next point in time when satellite settles.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="mpcSourceGroup">
+      <widget class="QGroupBox" name="asteroidSourceGroup">
        <property name="geometry">
         <rect>
          <x>575</x>
@@ -20064,12 +20064,12 @@ Next point in time when satellite settles.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Minor Planets data</string>
+        <string>Asteroids</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QComboBox" name="mpcSourceList">
+       <widget class="QComboBox" name="asteroidSourceList">
         <property name="geometry">
          <rect>
           <x>5</x>

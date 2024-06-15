@@ -16,12 +16,10 @@
 ###########################################################
 # standard libraries
 import json
-import os
 
 # external packages
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QListView, QAbstractItemView
-from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 # local import
 from gui.mainWmixin.astroObjects import AstroObjects
@@ -112,23 +110,6 @@ class Comet:
             if not text:
                 continue
             self.comets.objects[text] = comet
-
-    def filterMinorPlanetNamesList(self):
-        """
-        :return: true for test purpose
-        """
-        listMinorPlanet = self.ui.listMinorPlanetNames
-        filterStr = self.ui.filterMinorPlanet.text()
-        for row in range(listMinorPlanet.model().rowCount()):
-            listItemText = listMinorPlanet.model().index(row).data().lower()
-            isFound = filterStr.lower() in listItemText
-            isVisible = isFound or not filterStr
-            if isVisible:
-                listMinorPlanet.setRowHidden(row, False)
-
-            else:
-                listMinorPlanet.setRowHidden(row, True)
-        return True
 
     def filterListComets(self):
         """

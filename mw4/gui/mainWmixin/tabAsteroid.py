@@ -98,16 +98,16 @@ class Asteroid:
         """
         with open(self.asteroids.dest) as inFile:
             try:
-                comets = json.load(inFile)
+                asteroids = json.load(inFile)
             except Exception:
-                comets = None
+                asteroids = None
         self.asteroids.objects = {}
 
-        for comet in comets:
-            text = self.generateName(comet)
+        for asteroid in asteroids:
+            text = self.generateName(asteroid)
             if not text:
                 continue
-            self.asteroids.objects[text] = comet
+            self.asteroids.objects[text] = asteroid
 
     def filterlistAsteroids(self):
         """

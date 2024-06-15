@@ -34,7 +34,7 @@ class Comet:
         self.prepareCometTable()
         self.comets = AstroObjects(self,
                                    self.app,
-                                   'Comets',
+                                   'comet',
                                    cometSourceURLs,
                                    self.ui.listComets,
                                    self.ui.cometSourceList,
@@ -44,9 +44,9 @@ class Comet:
         self.comets.dataLoaded.connect(self.fillCometListName)
         self.ui.cometFilterText.textChanged.connect(self.filterListComets)
 
-        # self.ui.progCometsSelected.clicked.connect(self.progCometsSelected)
-        # self.ui.progCometsFull.clicked.connect(self.progCometsFull)
-        # self.ui.progCometsFiltered.clicked.connect(self.progCometsFiltered)
+        self.ui.progCometSelected.clicked.connect(self.comets.progSelected)
+        self.ui.progCometFiltered.clicked.connect(self.comets.progFiltered)
+        self.ui.progCometFull.clicked.connect(self.comets.progFull)
 
     def initConfig(self):
         """
@@ -137,3 +137,4 @@ class Comet:
             entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
                                    Qt.AlignmentFlag.AlignVCenter)
             self.ui.listComets.setItem(row, 1, entry)
+        self.filterListComets()

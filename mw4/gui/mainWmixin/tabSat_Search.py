@@ -42,7 +42,7 @@ class SatSearch:
 
         self.satellites = AstroObjects(self,
                                        self.app,
-                                       'Satellite',
+                                       'satellite',
                                        satSourceURLs,
                                        self.ui.listSats,
                                        self.ui.satSourceList,
@@ -62,9 +62,9 @@ class SatSearch:
         self.app.update1s.connect(self.calcSatListDynamic)
         self.ui.unitTimeUTC.toggled.connect(self.calcSatList)
 
-        #self.ui.progSatFull.clicked.connect(self.progSatFull)
-        #self.ui.progSatFiltered.clicked.connect(self.progSatFiltered)
-        #self.ui.progSatFiltered.clicked.connect(self.progSatFiltered)
+        self.ui.progSatFull.clicked.connect(self.satellites.progFull)
+        self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
+        self.ui.progSatFiltered.clicked.connect(self.satellites.progSelected)
 
     def initConfig(self):
         """

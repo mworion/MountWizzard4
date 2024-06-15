@@ -95,9 +95,9 @@ class UploadPopup(toolsQtWidget.MWidget):
         """
         :return:
         """
-        dataNames = {'comet': 'minorPlanets.mpc',
-                     'tle': 'satellites.tle',
-                     'asteroid': 'minorPlanets.mpc',
+        dataNames = {'comet': 'comet.mpc',
+                     'satellite': 'satellites.tle',
+                     'asteroid': 'asteroid.mpc',
                      'leapsec': 'CDFLeapSeconds.txt',
                      'finalsdata': 'finals.data'}
 

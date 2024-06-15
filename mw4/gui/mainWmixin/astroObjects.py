@@ -86,6 +86,8 @@ class AstroObjects(QObject):
         """
         self.objects = None
         key = self.uiSourceList.currentText()
+        if not key:
+            return
         url = self.sourceUrls[key]['url']
         fileName = self.sourceUrls[key]['file']
         unzip = self.sourceUrls[key]['unzip']
@@ -104,8 +106,10 @@ class AstroObjects(QObject):
         self.setAge(0)
         self.msg.emit(1, self.objectText, 'Download', f'{url}')
         self.log.info(f'{self.objectText} data loaded from {url}')
-        self.downloadPopup = DownloadPopup(self.window, url=url,
-                                           dest=self.dest, unzip=unzip)
+        self.downloadPopup = DownloadPopup(self.window,
+                                           url=url,
+                                           dest=self.dest,
+                                           unzip=unzip)
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
 
     def setTableEntry(self, row, col, entry):
@@ -124,8 +128,13 @@ class AstroObjects(QObject):
     def progObjects(self, objects):
         """
         """
-        suc = self.dbProc.writeSatelliteTLE(
-            objects, dataFilePath=self.tempDir)
+        funcs = {
+            'satellite': self.dbProc.writeSatelliteTLE,
+            'asteroid': self.dbProc.writeAsteroidMPC,
+            'comet': self.dbProc.writeCometMPC,
+        }
+
+        suc = funcs[self.objectText](objects, dataFilePath=self.tempDir)
         if not suc:
             self.msg.emit(2, self.objectText, 'Data error',
                           'Data could not be exported - stopping')
@@ -133,7 +142,9 @@ class AstroObjects(QObject):
 
         self.msg.emit(0, self.objectText, 'Program', 'Uploading to mount')
         url = self.app.mount.host[0]
-        self.uploadPopup = UploadPopup(self, url=url, dataTypes=['tle'],
+        self.uploadPopup = UploadPopup(self.window,
+                                       url=url,
+                                       dataTypes=[self.objectText],
                                        dataFilePath=self.tempDir)
         self.uploadPopup.workerStatus.signals.finished.connect(
             self.finishProgObjects)
@@ -141,30 +152,39 @@ class AstroObjects(QObject):
     def progGUI(self):
         """
         """
-        source = self.ui.satelliteSource.currentText()
-        self.msg.emit(1, 'TLE', 'Program', f'{source}')
-        self.msg.emit(1, '', '', 'Exporting TLE data')
+        source = self.uiSourceList.currentText()
+        self.msg.emit(1, self.objectText, 'Program', f'{source}')
+        self.msg.emit(1, '', '', 'Exporting data')
 
-    def progObjectsSelected(self):
+    def progSelected(self):
         """
         """
         self.progGUI()
-        satSelectedIndexes = self.ui.listSatelliteNames.selectedIndexes()
-        satSelected = []
-        for entry in satSelectedIndexes:
-            index = entry.row()
-            satSelected.append(self.objects[index])
-        self.progObjects(satSelected)
+        selectedItems = self.uiObjectList.selectedItems()
+        selectedObjects = []
+        for entry in selectedItems:
+            if not entry.column() == 1:
+                continue
+            name = entry.text()
+            selectedObjects.append(self.objects[name])
+        self.progObjects(selectedObjects)
 
-    def progObjectsFiltered(self):
+    def progFiltered(self):
         """
         """
         self.progGUI()
-        filtered = self.satelliteFilter(self.objects)
-        self.progObjects(filtered)
+        filteredObjects = []
+        for row in range(self.uiObjectList.model().rowCount()):
+            entry = self.uiObjectList.model().index(row, 1)
+            if self.uiObjectList.isIndexHidden(entry):
+                continue
+            name = entry.data()
+            filteredObjects.append(self.objects[name])
+        self.progObjects(filteredObjects)
 
-    def progObjectsFull(self):
+    def progFull(self):
         """
         """
         self.progGUI()
-        self.progObjects(self.objects)
+        fullObjects = [self.objects[name] for name in self.objects]
+        self.progObjects(fullObjects)

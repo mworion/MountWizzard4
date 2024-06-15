@@ -70,10 +70,7 @@ class DataWriter:
         if not datas:
             return False
 
-        if not isinstance(datas, list):
-            return False
-
-        dest = dataFilePath + '/minorPlanets.mpc'
+        dest = dataFilePath + '/comet.mpc'
 
         with open(dest, 'w') as f:
             for data in datas:
@@ -266,10 +263,7 @@ class DataWriter:
         if not datas:
             return False
 
-        if not isinstance(datas, list):
-            return False
-
-        dest = dataFilePath + '/minorPlanets.mpc'
+        dest = dataFilePath + '/asteroid.mpc'
 
         with open(dest, 'w') as f:
             for data in datas:
@@ -367,15 +361,12 @@ class DataWriter:
         if not datas:
             return False
 
-        if not isinstance(datas, dict):
-            return False
-
         dest = dataFilePath + '/satellites.tle'
 
         with open(dest, 'w') as f:
-            for name in datas:
-                line1, line2 = export_tle(datas[name].model)
-                f.write(name + '\n')
+            for data in datas:
+                line1, line2 = export_tle(data.model)
+                f.write(data.name + '\n')
                 f.write(line1 + '\n')
                 f.write(line2 + '\n')
 

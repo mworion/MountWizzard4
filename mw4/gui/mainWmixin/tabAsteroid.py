@@ -34,7 +34,7 @@ class Asteroid:
         self.prepareAsteroidTable()
         self.asteroids = AstroObjects(self,
                                       self.app,
-                                      'Asteroids',
+                                      'asteroid',
                                       asteroidSourceURLs,
                                       self.ui.listAsteroids,
                                       self.ui.asteroidSourceList,
@@ -44,9 +44,9 @@ class Asteroid:
         self.asteroids.dataLoaded.connect(self.fillAsteroidListName)
         self.ui.asteroidFilterText.textChanged.connect(self.filterlistAsteroids)
 
-        # self.ui.progAsteroidsSelected.clicked.connect(self.progAsteroidsSelected)
-        # self.ui.progAsteroidsFull.clicked.connect(self.progAsteroidsFull)
-        # self.ui.progAsteroidsFiltered.clicked.connect(self.progAsteroidsFiltered)
+        self.ui.progAsteroidSelected.clicked.connect(self.asteroids.progSelected)
+        self.ui.progAsteroidFiltered.clicked.connect(self.asteroids.progFiltered)
+        self.ui.progAsteroidFull.clicked.connect(self.asteroids.progFull)
 
     def initConfig(self):
         """
@@ -67,7 +67,7 @@ class Asteroid:
         """
         """
         self.ui.listAsteroids.setRowCount(0)
-        hLabels = ['Num', 'As Name', 'Test\n[km]']
+        hLabels = ['Num', 'Asteroid Name', 'Test\n[km]']
         hSet = [50, 205, 20]
         self.ui.listAsteroids.setColumnCount(len(hSet))
         self.ui.listAsteroids.setHorizontalHeaderLabels(hLabels)
@@ -112,7 +112,7 @@ class Asteroid:
     def filterlistAsteroids(self):
         """
         """
-        filterStr = self.ui.cometFilterText.text().lower()
+        filterStr = self.ui.asteroidFilterText.text().lower()
 
         for row in range(self.ui.listAsteroids.model().rowCount()):
             name = self.ui.listAsteroids.model().index(row, 1).data().lower()
@@ -135,3 +135,4 @@ class Asteroid:
             entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
                                    Qt.AlignmentFlag.AlignVCenter)
             self.ui.listAsteroids.setItem(row, 1, entry)
+        self.filterlistAsteroids()

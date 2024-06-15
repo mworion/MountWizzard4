@@ -270,9 +270,6 @@ class Styles:
         QGroupBox[refraction=true] {
             border-color: $M_BLUE$;
         }
-        QGroupBox:disabled{
-            border-color: $M_RED$;
-        }
         QGroupBox::indicator:disabled {
             border-color: $M_GREY$;
             background-color: $M_BACK$;

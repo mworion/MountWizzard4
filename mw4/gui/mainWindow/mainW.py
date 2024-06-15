@@ -412,9 +412,14 @@ class MainWindow(
         self.wIcon(self.ui.refreshModel, 'reload')
 
         # minor planets
-        self.wIcon(self.ui.progMpcFull, 'run')
-        self.wIcon(self.ui.progMpcFiltered, 'run')
-        self.wIcon(self.ui.progMpcSelected, 'run')
+        self.wIcon(self.ui.progCometFull, 'run')
+        self.wIcon(self.ui.progCometFiltered, 'run')
+        self.wIcon(self.ui.progCometSelected, 'run')
+        self.wIcon(self.ui.progAsteroidFull, 'run')
+        self.wIcon(self.ui.progAsteroidFiltered, 'run')
+        self.wIcon(self.ui.progAsteroidSelected, 'run')
+
+        # tools
         self.wIcon(self.ui.progEarthRotationData, 'run')
         self.wIcon(self.ui.downloadIERS, 'run')
 
@@ -602,7 +607,8 @@ class MainWindow(
             self.ui.mountUpdateFirmware.setEnabled(True)
             self.ui.mountDocumentation.setEnabled(True)
             self.ui.satProgDatabaseGroup.setEnabled(True)
-            self.ui.mpcProgDatabaseGroup.setEnabled(True)
+            self.ui.cometProgDatabaseGroup.setEnabled(True)
+            self.ui.asteroidProgDatabaseGroup.setEnabled(True)
             self.ui.progEarthRotationData.setEnabled(True)
             self.ui.use10micronDef.setEnabled(True)
         else:
@@ -613,7 +619,8 @@ class MainWindow(
             self.ui.mountUpdateFirmware.setEnabled(False)
             self.ui.mountDocumentation.setEnabled(False)
             self.ui.satProgDatabaseGroup.setEnabled(False)
-            self.ui.mpcProgDatabaseGroup.setEnabled(False)
+            self.ui.cometProgDatabaseGroup.setEnabled(False)
+            self.ui.asteroidProgDatabaseGroup.setEnabled(False)
             self.ui.progEarthRotationData.setEnabled(False)
             self.ui.use10micronDef.setEnabled(False)
 

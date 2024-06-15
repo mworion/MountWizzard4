@@ -34,7 +34,6 @@ class MinorPlanet:
     def __init__(self):
         self.databaseProcessing = DataWriter(self.app)
         self.minorPlanets = {}
-        self.minorPlanet = None
         self.uploadPopup = None
         self.downloadPopup = None
         self.listMinorPlanetNamesProxy = None
@@ -52,11 +51,11 @@ class MinorPlanet:
             'Asteroids Unusual e>0.5 or q>6 au': 'unusual_extended.json.gz',
         }
 
-        self.ui.progMinorPlanetsSelected.clicked.connect(self.progMinorPlanetsSelected)
-        self.ui.progMinorPlanetsFull.clicked.connect(self.progMinorPlanetsFull)
-        self.ui.progMinorPlanetsFiltered.clicked.connect(self.progMinorPlanetsFiltered)
-        self.ui.filterMinorPlanet.textChanged.connect(self.filterMinorPlanetNamesList)
-        self.ui.minorPlanetSource.currentIndexChanged.connect(self.loadMPCDataFromSourceURLs)
+        self.ui.progMpcSelected.clicked.connect(self.progMinorPlanetsSelected)
+        self.ui.progMpcFull.clicked.connect(self.progMinorPlanetsFull)
+        self.ui.progMpcFiltered.clicked.connect(self.progMinorPlanetsFiltered)
+        self.ui.mpcFilterText.textChanged.connect(self.filterMinorPlanetNamesList)
+        self.ui.mpcSourceList.currentIndexChanged.connect(self.loadMPCDataFromSourceURLs)
         self.ui.isOnline.stateChanged.connect(self.loadMPCDataFromSourceURLs)
 
     def initConfig(self):
@@ -68,7 +67,7 @@ class MinorPlanet:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.filterMinorPlanet.setText(config.get('filterMinorPlanet'))
+        self.ui.mpcFilterText.setText(config.get('mpcFilterText'))
         self.setupMinorPlanetSourceURLsDropDown()
         return True
 
@@ -77,7 +76,7 @@ class MinorPlanet:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['filterMinorPlanet'] = self.ui.filterMinorPlanet.text()
+        config['mpcFilterText'] = self.ui.mpcFilterText.text()
         return True
 
     def setupMinorPlanetSourceURLsDropDown(self):
@@ -88,10 +87,10 @@ class MinorPlanet:
 
         :return: success for test
         """
-        self.ui.minorPlanetSource.clear()
-        self.ui.minorPlanetSource.setView(QListView())
+        self.ui.mpcSourceList.clear()
+        self.ui.mpcSourceList.setView(QListView())
         for name in self.minorPlanetSourceURLs:
-            self.ui.minorPlanetSource.addItem(name)
+            self.ui.mpcSourceList.addItem(name)
         return True
 
     def filterMinorPlanetNamesList(self):
@@ -178,7 +177,7 @@ class MinorPlanet:
         """
         :return: success
         """
-        source = self.ui.minorPlanetSource.currentText()
+        source = self.ui.mpcSourceList.currentText()
         if source not in self.minorPlanetSourceURLs:
             return False
         if source == 'Please select':
@@ -190,7 +189,7 @@ class MinorPlanet:
         dest = self.app.mwGlob['dataDir'] + '/' + self.minorPlanetSourceURLs[source]
 
         self.msg.emit(1, 'MPC', 'Download', f'{source}')
-        self.downloadPopup = DownloadPopup(self, url=url, dest=dest)
+        self.downloadPopup = DownloadPopup(self, url=url, dest=dest, unzip=True)
         self.downloadPopup.worker.signals.finished.connect(self.processSourceData)
         return True
 

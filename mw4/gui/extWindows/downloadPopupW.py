@@ -38,7 +38,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
     signalProgress = Signal(object)
     signalProgressBarColor = Signal(object)
 
-    def __init__(self, parentWidget, url='', dest='', unzip=True):
+    def __init__(self, parentWidget, url='', dest='', unzip=False):
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
@@ -114,7 +114,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
         return True
 
-    def downloadFileWorker(self, url, dest, unzip=True):
+    def downloadFileWorker(self, url, dest, unzip=False):
         """
         :param url:
         :param dest:
@@ -165,7 +165,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.close()
         return True
 
-    def downloadFile(self, url, dest, unzip=True):
+    def downloadFile(self, url, dest, unzip=False):
         """
         :param url:
         :param dest:

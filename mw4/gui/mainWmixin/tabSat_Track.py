@@ -80,6 +80,9 @@ class SatTrack(object):
         self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
 
+        msig = self.app.mount.signals
+        msig.firmwareDone.connect(self.enableGuiFunctions)
+
     def initConfig(self):
         """
         :return: True for test purpose
@@ -108,6 +111,21 @@ class SatTrack(object):
         config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
         config['avoidHorizon'] = self.ui.avoidHorizon.isChecked()
         config['trackingSim'] = self.ui.trackingSim.isChecked()
+        return True
+
+    def enableGuiFunctions(self):
+        """
+        :return:
+        """
+        useInternal = self.ui.useInternalSatCalc.isChecked()
+        availableInternal = self.app.mount.firmware.checkNewer(21699)
+        if availableInternal is None:
+            return False
+
+        progAvailable = availableInternal and useInternal
+        self.ui.trackingSim.setEnabled(progAvailable)
+        self.ui.trajectoryProgress.setEnabled(progAvailable)
+        self.ui.progTrajectory.setEnabled(progAvailable)
         return True
 
     def calcPassEvents(self, obsSite):
@@ -370,14 +388,12 @@ class SatTrack(object):
         :param satName: additional parameter for calling this method
         :return: success
         """
-        if not self.satTableBaseValid:
-            return False
-        satTab = self.ui.listSatelliteNames
-        if satName not in self.satellites:
+        satTab = self.ui.listSats
+        if satName not in self.satellites.objects:
             return False
 
         self.positionCursorInSatTable(satTab, satName)
-        self.satellite = self.satellites[satName]
+        self.satellite = self.satellites.objects[satName]
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
         self.ui.satelliteEpoch.setText(epochText)
@@ -404,13 +420,13 @@ class SatTrack(object):
         """
         if not satName:
             return False
-        if satName not in self.satellites:
+        if satName not in self.satellites.objects:
             return False
 
         satellite = self.app.mount.satellite
         self.msg.emit(0, 'TLE', 'Program',
                       f'Upload to mount: [{satName}]')
-        line1, line2 = export_tle(self.satellites[satName].model)
+        line1, line2 = export_tle(self.satellites.objects[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,
                                line2=line2)
@@ -436,9 +452,6 @@ class SatTrack(object):
         """
         :return: success
         """
-        if not self.satSourceValid:
-            return False
-
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)

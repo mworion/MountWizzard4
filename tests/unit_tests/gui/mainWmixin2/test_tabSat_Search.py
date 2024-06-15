@@ -71,22 +71,6 @@ def test_storeConfig_1(function):
     assert suc
 
 
-def test_enableGuiFunctions_1(function):
-    with mock.patch.object(function.app.mount.firmware,
-                           'checkNewer',
-                           return_value=None):
-        suc = function.enableGuiFunctions()
-        assert not suc
-
-
-def test_enableGuiFunctions_2(function):
-    with mock.patch.object(function.app.mount.firmware,
-                           'checkNewer',
-                           return_value=True):
-        suc = function.enableGuiFunctions()
-        assert suc
-
-
 def test_chooseSatellite_1(function):
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",

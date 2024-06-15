@@ -410,17 +410,18 @@ class MainWindow(
         self.wIcon(self.ui.refreshModel, 'reload')
 
         # minor planets
-        self.wIcon(self.ui.progMinorPlanetsFull, 'run')
-        self.wIcon(self.ui.progMinorPlanetsFiltered, 'run')
-        self.wIcon(self.ui.progMinorPlanetsSelected, 'run')
+        self.wIcon(self.ui.progMpcFull, 'run')
+        self.wIcon(self.ui.progMpcFiltered, 'run')
+        self.wIcon(self.ui.progMpcSelected, 'run')
         self.wIcon(self.ui.progEarthRotationData, 'run')
         self.wIcon(self.ui.downloadIERS, 'run')
 
         # satellite
         self.wIcon(self.ui.stopSatelliteTracking, 'cross-circle')
         self.wIcon(self.ui.startSatelliteTracking, 'start')
-        self.wIcon(self.ui.progSatellitesFull, 'run')
-        self.wIcon(self.ui.progSatellitesFiltered, 'run')
+        self.wIcon(self.ui.progSatFull, 'run')
+        self.wIcon(self.ui.progSatFiltered, 'run')
+        self.wIcon(self.ui.progSatSelected, 'run')
         self.wIcon(self.ui.progTrajectory, 'run')
 
         # analyse

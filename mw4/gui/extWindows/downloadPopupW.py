@@ -99,19 +99,17 @@ class DownloadPopup(toolsQtWidget.MWidget):
         return True
 
     @staticmethod
-    def unzipFile(dest):
+    def unzipFile(downloadDest, dest):
         """
+        :param downloadDest:
         :param dest:
         :return: True for test purpose
         """
-        destUnzip = dest[:-3]
-        with gzip.open(dest, 'rb') as f_in:
-            with open(destUnzip, 'wb') as f_out:
+        with gzip.open(downloadDest, 'rb') as f_in:
+            with open(dest, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
 
-        if os.path.isfile(dest):
-            os.remove(dest)
-
+        os.remove(downloadDest)
         return True
 
     def downloadFileWorker(self, url, dest, unzip=False):
@@ -121,14 +119,13 @@ class DownloadPopup(toolsQtWidget.MWidget):
         :param unzip:
         :return:
         """
-        dest = os.path.normpath(dest)
-        if not os.path.dirname(dest):
-            return False
-        if os.path.isfile(dest):
-            os.remove(dest)
+        if unzip:
+            downloadDest = os.path.dirname(dest) + os.path.basename(url)
+        else:
+            downloadDest = dest
 
         try:
-            suc = self.getFileFromUrl(url, dest)
+            suc = self.getFileFromUrl(url, downloadDest)
             if not suc:
                 raise FileNotFoundError
         except TimeoutError:
@@ -143,7 +140,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
             return True
 
         try:
-            self.unzipFile(dest)
+            self.unzipFile(downloadDest, dest)
         except Exception as e:
             self.msg.emit(2, 'Download', 'Unzip', f'{url}')
             self.log.warning(f'Error in unzip [{url}], {e}')

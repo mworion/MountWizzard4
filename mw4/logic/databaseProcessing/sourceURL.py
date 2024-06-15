@@ -24,59 +24,73 @@ satBaseUrl = 'http://www.celestrak.org/NORAD/elements/gp.php?'
 satSourceURLs = {
     '100 brightest': {
         'url': satBaseUrl + 'GROUP=visual&FORMAT=tle',
-        'file': 'visual.txt'
-    },
+        'file': 'visual.txt',
+        'unzip': False,
+        },
     'Active': {
         'url': satBaseUrl + 'GROUP=active&FORMAT=tle',
-        'file': 'active.txt'
+        'file': 'active.txt',
+        'unzip': False,
     },
     'Space Stations': {
         'url': satBaseUrl + 'GROUP=stations&FORMAT=tle',
-        'file': 'stations.txt'
+        'file': 'stations.txt',
+        'unzip': False,
     },
     'NOAA': {
         'url': satBaseUrl + 'GROUP=noaa&FORMAT=tle',
-        'file': 'noaa.txt'
+        'file': 'noaa.txt',
+        'unzip': False,
     },
     'GEOS': {
         'url': satBaseUrl + 'GROUP=geo&FORMAT=tle',
-        'file': 'geos.txt'
+        'file': 'geos.txt',
+        'unzip': False,
     },
     'Weather': {
         'url': satBaseUrl + 'GROUP=weather&FORMAT=tle',
-        'file': 'weather.txt'
+        'file': 'weather.txt',
+        'unzip': False,
     },
     'Earth Resources': {
         'url': satBaseUrl + 'GROUP=resource&FORMAT=tle',
-        'file': 'resource.txt'
+        'file': 'resource.txt',
+        'unzip': False,
     },
     'TDRSS Tracking & Data Relay': {
         'url': satBaseUrl + 'GROUP=tdrss&FORMAT=tle',
-        'file': 'tdrss.txt'
+        'file': 'tdrss.txt',
+        'unzip': False,
     },
     'ARGOS': {
         'url': satBaseUrl + 'GROUP=argos&FORMAT=tle',
-        'file': 'argos.txt'
+        'file': 'argos.txt',
+        'unzip': False,
     },
     'Amateur Radio': {
         'url': satBaseUrl + 'GROUP=amateur&FORMAT=tle',
-        'file': 'amateur.txt'
+        'file': 'amateur.txt',
+        'unzip': False,
     },
     'Space & Earth Science': {
         'url': satBaseUrl + 'GROUP=science&FORMAT=tle',
-        'file': 'science.txt'
+        'file': 'science.txt',
+        'unzip': False,
     },
     'Engineering': {
         'url': satBaseUrl + 'GROUP=engineering&FORMAT=tle',
-        'file': 'engineering.txt'
+        'file': 'engineering.txt',
+        'unzip': False,
     },
     'Last 30 days launch': {
         'url': satBaseUrl + 'GROUP=last-30-days&FORMAT=tle',
-        'file': 'tle-new.txt'
+        'file': 'tle-new.txt',
+        'unzip': False,
     },
     'Custom': {
         'url': 'custom.txt',
-        'file': 'custom.txt'
+        'file': 'custom.txt',
+        'unzip': False,
     },
 }
 
@@ -85,39 +99,46 @@ cometSourceURLs = {
     'Comets Current':
         {
             'url': mpcBaseUrl + 'cometels.json.gz',
-            'file': 'cometels.json.gz',
-         },
+            'file': 'cometels.json',
+            'unzip': True,
+        },
     }
 
 asteroidSourceURLs = {
     'Asteroids Daily':
         {
             'url': mpcBaseUrl + 'nea_extended.json.gz',
-            'file': 'nea_extended.json.gz',
-         },
+            'file': 'nea_extended.json',
+            'unzip': True,
+        },
     'Asteroids Near Earth Position':
         {
             'url': mpcBaseUrl + 'nea_extended.json.gz',
-            'file': 'nea_extended.json.gz',
-         },
+            'file': 'nea_extended.json',
+            'unzip': True,
+        },
     'Asteroids Potential Hazardous':
         {
             'url': mpcBaseUrl + 'pha_extended.json.gz',
-            'file': 'pha_extended.json.gz',
-         },
+            'file': 'pha_extended.json',
+            'unzip': True,
+        },
     'Asteroids TNO, Centaurus, SDO':
         {
             'url': mpcBaseUrl + 'distant_extended.json.gz',
-            'file': 'distant_extended.json.gz',
-         },
+            'file': 'distant_extended.json',
+            'unzip': True,
+        },
     'Asteroids Unusual e>0.5 or q>6 au':
         {
             'url': mpcBaseUrl + 'unusual_extended.json.gz',
-            'file': 'unusual_extended.json.gz',
+            'file': 'unusual_extended.json',
+            'unzip': True,
         },
     'Asteroids MPC5000 (large! >100 MB)':
         {
             'url': mpcBaseUrl + 'mpcorb_extended.json.gz',
-            'file': 'mpcorb_extended.json.gz',
+            'file': 'mpcorb_extended.json',
+            'unzip': True,
         },
 }

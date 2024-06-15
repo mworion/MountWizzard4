@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import os
+import logging
 
 # external packages
 from PySide6.QtCore import Signal, QObject
@@ -30,6 +31,8 @@ from gui.extWindows.uploadPopupW import UploadPopup
 class AstroObjects(QObject):
     """
     """
+    log = logging.getLogger(__name__)
+
     dataLoaded = Signal()
 
     def __init__(self, window,
@@ -85,6 +88,7 @@ class AstroObjects(QObject):
         key = self.uiSourceList.currentText()
         url = self.sourceUrls[key]['url']
         fileName = self.sourceUrls[key]['file']
+        unzip = self.sourceUrls[key]['unzip']
 
         self.dest = os.path.normpath(f'{self.dataDir}/{fileName}')
         localSourceAvailable = os.path.isfile(self.dest)
@@ -94,11 +98,14 @@ class AstroObjects(QObject):
             self.setAge(daysOld)
             if daysOld < 1:
                 self.procSourceData()
+                self.log.info(f'{self.objectText} data loaded from local source')
                 return
 
         self.setAge(0)
         self.msg.emit(1, self.objectText, 'Download', f'{url}')
-        self.downloadPopup = DownloadPopup(self.window, url=url, dest=self.dest)
+        self.log.info(f'{self.objectText} data loaded from {url}')
+        self.downloadPopup = DownloadPopup(self.window, url=url,
+                                           dest=self.dest, unzip=unzip)
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
 
     def setTableEntry(self, row, col, entry):

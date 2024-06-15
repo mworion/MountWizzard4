@@ -33,28 +33,6 @@ from logic.satellites.satellite_calculations import findRangeRate
 
 class SatSearch:
     """
-    Satellite has five parts:
-    1. When mount is connected it will automatically search for a stored
-    satellite in the mount. If so, the satellite reference is fetched, the data
-    is read out of the TLE database, the orbit data are calculate and the gui is
-    populated. If the satellite window is open, data will be sent to gui drawing
-    as well.
-
-    2. When a satellite is chosen from a drop-down list by double click, it
-    selects the corresponding TLE data, programs is to the mount and follows the
-    steps of 1.
-
-    3. If a new satellite database is selected, is downloads the database and
-    updates the drop-down menus with the satellite entries.
-
-    4. If a satellite is to be tracked, it takes the satellite TLE data, the user
-    gui input and calculates the satellite trajectory. In case of built-in
-    command it only pushes the command if explicit, it calculates the trajectory
-    with alt/az positions and programs it to the mount. afterward a tracking
-    could be started.
-
-    5. If a mount upload is chosen (only available on windows) if prepares the
-    data in the necessary mount format and calls the updater.
     """
     setSatListItem = Signal(int, int, object)
     
@@ -71,6 +49,7 @@ class SatSearch:
                                        self.ui.satSourceGroup,
                                        self.processSatellites)
         self.satellites.dataLoaded.connect(self.fillSatListName)
+
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
         self.ui.satIsSunlit.clicked.connect(self.filterListSats)
@@ -120,12 +99,12 @@ class SatSearch:
     def prepareSatTable(self):
         """
         """
-        self.ui.listSats.setRowCount(0)
         self.ui.listSats.setColumnCount(9)
         hLabels = ['Num', 'Satellite Name', 'Dist\n[km]', 'Rad v\n[km/s]',
                    'Lat v\n[deg/s]', 'Lon v\n[deg/s]',
                    'Time\n[H:M]', 'Sat\n[mag]']
         hSet = [50, 205, 50, 50, 45, 45, 50, 45, 0]
+        self.ui.listSats.setColumnCount(len(hSet))
         self.ui.listSats.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):
             self.ui.listSats.setColumnWidth(i, hs)

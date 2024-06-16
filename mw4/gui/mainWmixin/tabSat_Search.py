@@ -64,15 +64,16 @@ class SatSearch:
 
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
-        self.ui.progSatFiltered.clicked.connect(self.satellites.progSelected)
+        self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
 
     def initConfig(self):
         """
         """
         config = self.app.config['mainW']
         self.ui.satSourceList.setCurrentIndex(config.get('satSource', 0))
-        self.ui.satTwilight.setCurrentIndex(config.get('satTwilight', 4))
         self.ui.satFilterText.setText(config.get('satFilterText'))
+
+        self.ui.satTwilight.setCurrentIndex(config.get('satTwilight', 4))
         self.ui.autoSwitchTrack.setChecked(config.get('autoSwitchTrack', False))
         self.ui.satCyclicUpdates.setChecked(config.get('satCyclicUpdates', False))
         self.ui.satIsSunlit.setChecked(config.get('satIsSunlit', False))

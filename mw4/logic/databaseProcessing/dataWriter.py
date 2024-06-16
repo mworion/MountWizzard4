@@ -70,7 +70,7 @@ class DataWriter:
         if not datas:
             return False
 
-        dest = dataFilePath + '/comet.mpc'
+        dest = dataFilePath + '/comets.mpc'
 
         with open(dest, 'w') as f:
             for data in datas:
@@ -263,7 +263,7 @@ class DataWriter:
         if not datas:
             return False
 
-        dest = dataFilePath + '/asteroid.mpc'
+        dest = dataFilePath + '/asteroids.mpc'
 
         with open(dest, 'w') as f:
             for data in datas:

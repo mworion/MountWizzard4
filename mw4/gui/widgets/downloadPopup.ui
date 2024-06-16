@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>46</height>
+    <height>90</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>400</width>
-    <height>80</height>
+    <height>90</height>
    </size>
   </property>
   <property name="sizeIncrement">
@@ -52,9 +52,9 @@
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>376</width>
+     <x>95</x>
+     <y>15</y>
+     <width>291</width>
      <height>26</height>
     </rect>
    </property>
@@ -78,6 +78,29 @@
    </property>
    <property name="textDirection">
     <enum>QProgressBar::TopToBottom</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="icon">
+   <property name="geometry">
+    <rect>
+     <x>15</x>
+     <y>10</y>
+     <width>64</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="statusText">
+   <property name="geometry">
+    <rect>
+     <x>95</x>
+     <y>50</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
    </property>
   </widget>
  </widget>

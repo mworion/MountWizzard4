@@ -15,21 +15,21 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLineEdit, QProgressBar, QSizePolicy,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QProgressBar,
+    QSizePolicy, QWidget)
 
 class Ui_UploadPopup(object):
     def setupUi(self, UploadPopup):
         if not UploadPopup.objectName():
             UploadPopup.setObjectName(u"UploadPopup")
-        UploadPopup.resize(400, 80)
+        UploadPopup.resize(400, 90)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(UploadPopup.sizePolicy().hasHeightForWidth())
         UploadPopup.setSizePolicy(sizePolicy)
-        UploadPopup.setMinimumSize(QSize(400, 0))
-        UploadPopup.setMaximumSize(QSize(400, 80))
+        UploadPopup.setMinimumSize(QSize(400, 90))
+        UploadPopup.setMaximumSize(QSize(400, 90))
         UploadPopup.setSizeIncrement(QSize(10, 10))
         UploadPopup.setBaseSize(QSize(10, 10))
         font = QFont()
@@ -38,7 +38,7 @@ class Ui_UploadPopup(object):
         UploadPopup.setFont(font)
         self.progressBar = QProgressBar(UploadPopup)
         self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setGeometry(QRect(10, 10, 376, 26))
+        self.progressBar.setGeometry(QRect(95, 10, 291, 26))
         self.progressBar.setMaximum(100)
         self.progressBar.setValue(0)
         self.progressBar.setAlignment(Qt.AlignCenter)
@@ -48,7 +48,10 @@ class Ui_UploadPopup(object):
         self.progressBar.setTextDirection(QProgressBar.TopToBottom)
         self.statusText = QLineEdit(UploadPopup)
         self.statusText.setObjectName(u"statusText")
-        self.statusText.setGeometry(QRect(15, 45, 371, 21))
+        self.statusText.setGeometry(QRect(95, 45, 291, 21))
+        self.icon = QLabel(UploadPopup)
+        self.icon.setObjectName(u"icon")
+        self.icon.setGeometry(QRect(15, 10, 64, 64))
 
         self.retranslateUi(UploadPopup)
 
@@ -57,5 +60,6 @@ class Ui_UploadPopup(object):
 
     def retranslateUi(self, UploadPopup):
         UploadPopup.setWindowTitle(QCoreApplication.translate("UploadPopup", u"Device Setup", None))
+        self.icon.setText(QCoreApplication.translate("UploadPopup", u"TextLabel", None))
     # retranslateUi
 

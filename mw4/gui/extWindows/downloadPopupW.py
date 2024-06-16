@@ -36,6 +36,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
     __all__ = ['DownloadPopup']
 
     signalProgress = Signal(object)
+    signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
 
     def __init__(self, parentWidget, url='', dest='', unzip=False):
@@ -51,44 +52,47 @@ class DownloadPopup(toolsQtWidget.MWidget):
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
-
-        baseName = os.path.basename(url)
-        self.setWindowTitle(f'Downloading {baseName}')
-
+        self.setWindowTitle(f'Downloading from Web')
         self.threadPool = parentWidget.threadPool
+        self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)
+        self.setIcon()
         self.show()
         self.downloadFile(url, dest, unzip=unzip)
 
+    def setIcon(self):
+        """
+        """
+        pixmap = self.svg2pixmap(':/icon/download_pop.svg', self.M_BLUE)
+        pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
+        self.ui.icon.setPixmap(pixmap)
+
     def setProgressBarColor(self, color):
         """
-        :param color:
-        :return:
         """
         css = 'QProgressBar::chunk {background-color: ' + color + ';}'
         self.ui.progressBar.setStyleSheet(css)
-        return True
 
     def setProgressBarToValue(self, progressPercent):
         """
-        :param progressPercent:
-        :return: True for test purpose
         """
         self.ui.progressBar.setValue(progressPercent)
-        return True
+
+    def setStatusTextToValue(self, statusText):
+        """
+        """
+        self.ui.statusText.setText(statusText)
 
     def getFileFromUrl(self, url, dest):
         """
-        :param url:
-        :param dest:
-        :return:
         """
         r = requests.get(url, stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get('content-length', 1))
         if r.status_code != 200:
             return False
 
+        self.signalStatus.emit(f'Downloading {os.path.basename(url)}')
         with open(dest, 'wb') as f:
             for n, chunk in enumerate(r.iter_content(512)):
                 progressPercent = int(n * 512 / totalSizeBytes * 100)
@@ -98,26 +102,17 @@ class DownloadPopup(toolsQtWidget.MWidget):
             self.signalProgress.emit(100)
         return True
 
-    @staticmethod
-    def unzipFile(downloadDest, dest):
+    def unzipFile(self, downloadDest, dest):
         """
-        :param downloadDest:
-        :param dest:
-        :return: True for test purpose
         """
+        self.signalStatus.emit(f'Unzipping {downloadDest}')
         with gzip.open(downloadDest, 'rb') as f_in:
             with open(dest, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
-
         os.remove(downloadDest)
-        return True
 
     def downloadFileWorker(self, url, dest, unzip=False):
         """
-        :param url:
-        :param dest:
-        :param unzip:
-        :return:
         """
         if unzip:
             downloadDest = os.path.dirname(dest) + os.path.basename(url)
@@ -149,28 +144,23 @@ class DownloadPopup(toolsQtWidget.MWidget):
 
     def closePopup(self, result):
         """
-        :return:
         """
         self.signalProgress.emit(100)
         if result:
             self.signalProgressBarColor.emit('green')
+            self.signalStatus.emit('Download successful')
         else:
             self.signalProgressBarColor.emit('red')
+            self.signalStatus.emit('Download failed')
 
         self.returnValues['success'] = result
-        sleepAndEvents(1000)
+        sleepAndEvents(2500)
         self.close()
-        return True
 
     def downloadFile(self, url, dest, unzip=False):
         """
-        :param url:
-        :param dest:
-        :param unzip:
-        :return:
         """
         self.worker = Worker(self.downloadFileWorker,
                              url=url, dest=dest, unzip=unzip)
         self.worker.signals.result.connect(self.closePopup)
         self.threadPool.start(self.worker)
-        return True

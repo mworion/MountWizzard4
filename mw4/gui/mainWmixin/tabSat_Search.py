@@ -49,7 +49,6 @@ class SatSearch:
                                        self.ui.satSourceGroup,
                                        self.processSatellites)
         self.satellites.dataLoaded.connect(self.fillSatListName)
-
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
         self.ui.satIsSunlit.clicked.connect(self.filterListSats)
@@ -58,10 +57,8 @@ class SatSearch:
         self.ui.satTwilight.activated.connect(self.filterListSats)
         self.ui.satUpTimeWindow.valueChanged.connect(self.filterListSats)
         self.setSatListItem.connect(self.setListSatsEntry)
-
         self.app.update1s.connect(self.calcSatListDynamic)
         self.ui.unitTimeUTC.toggled.connect(self.calcSatList)
-
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
@@ -72,7 +69,6 @@ class SatSearch:
         config = self.app.config['mainW']
         self.ui.satSourceList.setCurrentIndex(config.get('satSource', 0))
         self.ui.satFilterText.setText(config.get('satFilterText'))
-
         self.ui.satTwilight.setCurrentIndex(config.get('satTwilight', 4))
         self.ui.autoSwitchTrack.setChecked(config.get('autoSwitchTrack', False))
         self.ui.satCyclicUpdates.setChecked(config.get('satCyclicUpdates', False))
@@ -234,8 +230,6 @@ class SatSearch:
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
                                    Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 8, entry)
-
-        return True
 
     def calcSatListDynamic(self):
         """

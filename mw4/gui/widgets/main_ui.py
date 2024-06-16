@@ -4388,7 +4388,7 @@ class Ui_MainWindow(object):
         self.satSetupGroup.setProperty("large", True)
         self.satCyclicUpdates = QCheckBox(self.satSetupGroup)
         self.satCyclicUpdates.setObjectName(u"satCyclicUpdates")
-        self.satCyclicUpdates.setEnabled(True)
+        self.satCyclicUpdates.setEnabled(False)
         self.satCyclicUpdates.setGeometry(QRect(10, 15, 176, 21))
         self.autoSwitchTrack = QCheckBox(self.satSetupGroup)
         self.autoSwitchTrack.setObjectName(u"autoSwitchTrack")
@@ -8279,7 +8279,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(0)
+        self.mainTabWidget.setCurrentIndex(5)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)

@@ -369,5 +369,4 @@ class DataWriter:
                 f.write(data.name + '\n')
                 f.write(line1 + '\n')
                 f.write(line2 + '\n')
-
         return True

@@ -42,7 +42,7 @@ class Asteroid:
                                       self.processAsteroids)
 
         self.asteroids.dataLoaded.connect(self.fillAsteroidListName)
-        self.ui.asteroidFilterText.textChanged.connect(self.filterlistAsteroids)
+        self.ui.asteroidFilterText.textChanged.connect(self.filterListAsteroids)
 
         self.ui.progAsteroidSelected.clicked.connect(self.asteroids.progSelected)
         self.ui.progAsteroidFiltered.clicked.connect(self.asteroids.progFiltered)
@@ -105,16 +105,16 @@ class Asteroid:
             try:
                 asteroids = json.load(inFile)
             except Exception:
-                asteroids = None
-        self.asteroids.objects = {}
+                asteroids = {}
 
+        self.asteroids.objects = {}
         for asteroid in asteroids:
             text = self.generateName(asteroid)
             if not text:
                 continue
             self.asteroids.objects[text] = asteroid
 
-    def filterlistAsteroids(self):
+    def filterListAsteroids(self):
         """
         """
         filterStr = self.ui.asteroidFilterText.text().lower()
@@ -169,4 +169,4 @@ class Asteroid:
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listAsteroids.setItem(row, 5, entry)
 
-        self.filterlistAsteroids()
+        self.filterListAsteroids()

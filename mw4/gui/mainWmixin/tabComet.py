@@ -103,9 +103,9 @@ class Comet:
             try:
                 comets = json.load(inFile)
             except Exception:
-                comets = None
-        self.comets.objects = {}
+                comets = []
 
+        self.comets.objects = {}
         for comet in comets:
             text = self.generateName(comet)
             if not text:

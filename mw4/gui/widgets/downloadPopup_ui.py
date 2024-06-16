@@ -38,7 +38,7 @@ class Ui_DownloadPopup(object):
         DownloadPopup.setFont(font)
         self.progressBar = QProgressBar(DownloadPopup)
         self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setGeometry(QRect(95, 10, 291, 26))
+        self.progressBar.setGeometry(QRect(95, 15, 291, 26))
         self.progressBar.setMaximum(100)
         self.progressBar.setValue(0)
         self.progressBar.setAlignment(Qt.AlignCenter)
@@ -51,7 +51,7 @@ class Ui_DownloadPopup(object):
         self.icon.setGeometry(QRect(15, 10, 64, 64))
         self.statusText = QLineEdit(DownloadPopup)
         self.statusText.setObjectName(u"statusText")
-        self.statusText.setGeometry(QRect(95, 45, 291, 21))
+        self.statusText.setGeometry(QRect(95, 50, 291, 21))
 
         self.retranslateUi(DownloadPopup)
 

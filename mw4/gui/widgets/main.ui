@@ -107,7 +107,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -17635,7 +17635,7 @@ When clicking the button, you could change the value.</string>
        </property>
        <widget class="QCheckBox" name="satCyclicUpdates">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="geometry">
          <rect>

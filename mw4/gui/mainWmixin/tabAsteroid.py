@@ -69,6 +69,11 @@ class Asteroid:
         self.ui.listAsteroids.setRowCount(0)
         hLabels = ['Num', 'Asteroid Name', 'Test\n[km]']
         hSet = [50, 205, 20]
+
+        hLabels = ['Num', 'Asteroid Name', 'Orbit\nType', 'Perihelion\nDist [AU]',
+                   'Aphelion\nDist [AU]', 'Eccentr.']
+        hSet = [50, 205, 50, 85, 85, 65]
+
         self.ui.listAsteroids.setColumnCount(len(hSet))
         self.ui.listAsteroids.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):
@@ -127,6 +132,7 @@ class Asteroid:
         for number, name in enumerate(self.asteroids.objects):
             row = self.ui.listAsteroids.rowCount()
             self.ui.listAsteroids.insertRow(row)
+
             entry = QTableWidgetItem(f'{number:5d}')
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
                                    Qt.AlignmentFlag.AlignVCenter)
@@ -135,4 +141,32 @@ class Asteroid:
             entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
                                    Qt.AlignmentFlag.AlignVCenter)
             self.ui.listAsteroids.setItem(row, 1, entry)
+
+            if 'Orbit_type' in self.asteroids.objects[name]:
+                entry = QTableWidgetItem(self.asteroids.objects[name]['Orbit_type'])
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listAsteroids.setItem(row, 2, entry)
+
+            if 'Perihelion_dist' in self.asteroids.objects[name]:
+                pdist = f'{self.asteroids.objects[name]['Perihelion_dist']:8.6f}'
+                entry = QTableWidgetItem(pdist)
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listAsteroids.setItem(row, 3, entry)
+
+            if 'Aphelion_dist' in self.asteroids.objects[name]:
+                adist = f'{self.asteroids.objects[name]['Aphelion_dist']:8.6f}'
+                entry = QTableWidgetItem(adist)
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listAsteroids.setItem(row, 4, entry)
+
+            if 'e' in self.asteroids.objects[name]:
+                e = f'{self.asteroids.objects[name]['e']:8.5f}'
+                entry = QTableWidgetItem(e)
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listAsteroids.setItem(row, 5, entry)
+
         self.filterlistAsteroids()

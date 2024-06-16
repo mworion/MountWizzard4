@@ -69,8 +69,9 @@ class Comet:
         """
         """
         self.ui.listComets.setRowCount(0)
-        hLabels = ['Num', 'Comet Name', 'Test\n[km]']
-        hSet = [50, 205, 20]
+        hLabels = ['Num', 'Comet Name', 'Orbit\nType', 'Perihelion\nDate',
+                   'Perihelion\nDist [AU]', 'Eccentr.']
+        hSet = [50, 205, 50, 85, 85, 65]
         self.ui.listComets.setColumnCount(len(hSet))
         self.ui.listComets.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):
@@ -128,13 +129,46 @@ class Comet:
         self.ui.listComets.setRowCount(0)
         for number, name in enumerate(self.comets.objects):
             row = self.ui.listComets.rowCount()
+
             self.ui.listComets.insertRow(row)
             entry = QTableWidgetItem(f'{number:5d}')
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
                                    Qt.AlignmentFlag.AlignVCenter)
             self.ui.listComets.setItem(row, 0, entry)
+
             entry = QTableWidgetItem(name)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
                                    Qt.AlignmentFlag.AlignVCenter)
             self.ui.listComets.setItem(row, 1, entry)
-        self.filterListComets()
+
+            if 'Orbit_type' in self.comets.objects[name]:
+                entry = QTableWidgetItem(self.comets.objects[name]['Orbit_type'])
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listComets.setItem(row, 2, entry)
+
+            if 'Year_of_perihelion' in self.comets.objects[name]:
+                y = self.comets.objects[name]['Year_of_perihelion']
+                m = self.comets.objects[name]['Month_of_perihelion']
+                d = self.comets.objects[name]['Day_of_perihelion']
+                date = f'{y:4d}-{m:02d}-{d:02.0f}'
+                entry = QTableWidgetItem(date)
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listComets.setItem(row, 3, entry)
+
+            if 'Perihelion_dist' in self.comets.objects[name]:
+                dist = f'{self.comets.objects[name]['Perihelion_dist']:8.6f}'
+                entry = QTableWidgetItem(dist)
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listComets.setItem(row, 4, entry)
+
+            if 'e' in self.comets.objects[name]:
+                e = f'{self.comets.objects[name]['e']:8.5f}'
+                entry = QTableWidgetItem(e)
+                entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
+                                       Qt.AlignmentFlag.AlignVCenter)
+                self.ui.listComets.setItem(row, 5, entry)
+
+            self.filterListComets()

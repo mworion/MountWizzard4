@@ -42,20 +42,21 @@ def function(qapp):
     yield window
 
 
+def set_setIcon(function):
+    function.setIcon()
+
+
 def set_setProgressBarColor(function):
-    suc = function.setProgressBarColor('red')
-    assert suc
+    function.setProgressBarColor('red')
 
 
 def test_setProgressBarToValue(function):
-    suc = function.setProgressBarToValue(0)
-    assert suc
+    function.setProgressBarToValue(0)
     assert function.ui.progressBar.value() == 0
 
 
 def test_setStatusTextToValue(function):
-    suc = function.setStatusTextToValue('test')
-    assert suc
+    function.setStatusTextToValue('test')
     assert function.ui.statusText.text() == 'test'
 
 
@@ -124,28 +125,24 @@ def test_uploadFileWorker_4(function):
 
 
 def test_sendProgressValue(function):
-    suc = function.sendProgressValue('12')
-    assert suc
+    function.sendProgressValue('12')
 
 
 def test_pollDispatcher_1(function):
     text = ['Uploading']
-    suc = function.pollDispatcher(text)
-    assert suc
+    function.pollDispatcher(text)
 
 
 def test_pollDispatcher_2(function):
     text = ['Processing']
-    suc = function.pollDispatcher(text)
-    assert suc
+    function.pollDispatcher(text)
 
 
 def test_pollDispatcher_3(function):
     text = ['Processing', 'elements file.']
     with mock.patch.object(function,
                            'sendProgressValue'):
-        suc = function.pollDispatcher(text)
-        assert suc
+        function.pollDispatcher(text)
         assert not function.returnValues['successMount']
 
 
@@ -153,8 +150,7 @@ def test_pollDispatcher_4(function):
     text = ['Processing', 'file failed']
     with mock.patch.object(function,
                            'sendProgressValue'):
-        suc = function.pollDispatcher(text)
-        assert suc
+        function.pollDispatcher(text)
         assert not function.returnValues['successMount']
 
 
@@ -162,8 +158,7 @@ def test_pollDispatcher_5(function):
     text = ['Processing', 'elements saved.']
     with mock.patch.object(function,
                            'sendProgressValue'):
-        suc = function.pollDispatcher(text)
-        assert suc
+        function.pollDispatcher(text)
         assert function.returnValues['successMount']
         assert function.returnValues['success']
         assert not function.pollStatusRunState
@@ -173,8 +168,7 @@ def test_pollDispatcher_6(function):
     text = ['Processing', 'data updated.']
     with mock.patch.object(function,
                            'sendProgressValue'):
-        suc = function.pollDispatcher(text)
-        assert suc
+        function.pollDispatcher(text)
         assert function.returnValues['successMount']
         assert function.returnValues['success']
         assert not function.pollStatusRunState
@@ -184,20 +178,17 @@ def test_pollDispatcher_7(function):
     text = ['Processing', '90']
     with mock.patch.object(function,
                            'sendProgressValue'):
-        suc = function.pollDispatcher(text)
-        assert suc
+        function.pollDispatcher(text)
 
 
 def test_pollDispatcher_8(function):
     text = ['wutwrut']
-    suc = function.pollDispatcher(text)
-    assert not suc
+    function.pollDispatcher(text)
 
 
 def test_pollStatus_1(function):
     function.pollStatusRunState = False
-    suc = function.pollStatus()
-    assert suc
+    function.pollStatus()
 
 
 def test_pollStatus_2(function):
@@ -208,8 +199,7 @@ def test_pollStatus_2(function):
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = function.pollStatus()
-        assert not suc
+        function.pollStatus()
         assert not function.pollStatusRunState
         assert not function.returnValues['successMount']
 
@@ -232,8 +222,7 @@ def test_pollStatus_3(function):
                            return_value=Test()):
         with mock.patch.object(gui.extWindows.uploadPopupW,
                                'sleepAndEvents'):
-            suc = function.pollStatus()
-            assert suc
+            function.pollStatus()
             assert not function.pollStatusRunState
             assert not function.returnValues['successMount']
     function.pollDispatcher = temp
@@ -244,8 +233,7 @@ def test_closePopup_1(function):
                            'close'):
         with mock.patch.object(gui.extWindows.uploadPopupW,
                                'sleepAndEvents'):
-            suc = function.closePopup(False)
-            assert suc
+            function.closePopup(False)
 
 
 def test_closePopup_2(function):
@@ -255,8 +243,7 @@ def test_closePopup_2(function):
                            'close'):
         with mock.patch.object(gui.extWindows.uploadPopupW,
                                'sleepAndEvents'):
-            suc = function.closePopup(True)
-            assert suc
+            function.closePopup(True)
 
 
 def test_closePopup_3(function):
@@ -266,21 +253,18 @@ def test_closePopup_3(function):
                            'close'):
         with mock.patch.object(gui.extWindows.uploadPopupW,
                                'sleepAndEvents'):
-            suc = function.closePopup(True)
-            assert suc
+            function.closePopup(True)
 
 
 def test_uploadFile_1(function):
     function.callBack = 1
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.uploadFile()
-        assert suc
+        function.uploadFile()
 
 
 def test_uploadFile_2(function):
     function.callBack = None
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.uploadFile()
-        assert suc
+        function.uploadFile()

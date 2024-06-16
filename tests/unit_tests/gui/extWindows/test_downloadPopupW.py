@@ -43,15 +43,22 @@ def function(qapp):
     yield window
 
 
+def set_setIcon(function):
+    function.setIcon()
+
+
 def set_setProgressBarColor(function):
-    suc = function.setProgressBarColor('red')
-    assert suc
+    function.setProgressBarColor('red')
 
 
 def test_setProgressBarToValue(function):
-    suc = function.setProgressBarToValue(0)
-    assert suc
+    function.setProgressBarToValue(0)
     assert function.ui.progressBar.value() == 0
+
+
+def test_setStatusTextToValue(function):
+    function.setStatusTextToValue('test')
+    assert function.ui.statusText.text() == 'test'
 
 
 def test_getFileFromUrl_1(function):
@@ -111,26 +118,17 @@ def test_getFileFromUrl_3(function):
 
 def test_unzipFile(function):
     shutil.copy('tests/testData/test.json.gz', 'tests/workDir/temp/test.json.gz')
-    suc = function.unzipFile('tests/workDir/temp/test.json.gz')
-    assert suc
+    function.unzipFile('tests/workDir/temp/test.json.gz', 'tests/workDir/temp/test.json')
     assert os.path.isfile('tests/workDir/temp/test.json')
-
-
-def test_downloadFileWorker_1(function):
-    suc = function.downloadFileWorker('', '')
-    assert not suc
 
 
 def test_downloadFileWorker_2(function):
     shutil.copy('tests/testData/visual.txt', 'tests/workDir/temp/test.txt')
     with mock.patch.object(function,
                            'getFileFromUrl',
-                           return_value=True,
-                           side_effect=TimeoutError):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            suc = function.downloadFileWorker(url='', dest='tests/workDir/temp/test.txt')
-            assert not suc
+                           return_value=False):
+        suc = function.downloadFileWorker(url='', dest='tests/workDir/temp/test.txt')
+        assert not suc
 
 
 def test_downloadFileWorker_3(function):
@@ -138,11 +136,9 @@ def test_downloadFileWorker_3(function):
                            'getFileFromUrl',
                            return_value=True,
                            side_effect=TimeoutError):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            suc = function.downloadFileWorker(url='',
-                                              dest='test/workDir/temp/test.txt')
-            assert not suc
+        suc = function.downloadFileWorker(url='',
+                                          dest='test/workDir/temp/test.txt')
+        assert not suc
 
 
 def test_downloadFileWorker_4(function):
@@ -150,48 +146,42 @@ def test_downloadFileWorker_4(function):
                            'getFileFromUrl',
                            return_value=True,
                            side_effect=Exception):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            suc = function.downloadFileWorker(url='',
-                                              dest='test/workDir/temp/test.txt')
-            assert not suc
+        suc = function.downloadFileWorker(url='',
+                                          dest='test/workDir/temp/test.txt')
+        assert not suc
 
 
 def test_downloadFileWorker_5(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            return_value=True):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            suc = function.downloadFileWorker(url='',
-                                              dest='test/workDir/temp/test.txt')
-            assert not suc
+        suc = function.downloadFileWorker(url='',
+                                          dest='test/workDir/temp/test.txt',
+                                          unzip=True)
+        assert not suc
 
 
 def test_downloadFileWorker_6(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            return_value=True,):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            suc = function.downloadFileWorker(url='',
-                                              dest='test/workDir/temp/test.txt',
-                                              unzip=False)
-            assert suc
+        suc = function.downloadFileWorker(url='',
+                                          dest='test/workDir/temp/test.txt',
+                                          unzip=False)
+        assert suc
 
 
 def test_downloadFileWorker_7(function):
     with mock.patch.object(function,
                            'getFileFromUrl',
                            return_value=True,):
-        with mock.patch.object(gui.extWindows.downloadPopupW,
-                               'sleepAndEvents'):
-            with mock.patch.object(function,
-                                   'unzipFile',
-                                   side_effect=Exception):
-                suc = function.downloadFileWorker(url='',
-                                                  dest='test/workDir/temp/test.txt')
-                assert not suc
+        with mock.patch.object(function,
+                               'unzipFile',
+                               side_effect=Exception):
+            suc = function.downloadFileWorker(url='',
+                                              dest='test/workDir/temp/test.txt',
+                                              unzip=True)
+            assert not suc
 
 
 def test_downloadFileWorker_8(function):
@@ -200,11 +190,10 @@ def test_downloadFileWorker_8(function):
                            return_value=True,):
         with mock.patch.object(function,
                                'unzipFile'):
-            with mock.patch.object(gui.extWindows.downloadPopupW,
-                                   'sleepAndEvents'):
-                suc = function.downloadFileWorker(url='',
-                                                  dest='test/workDir/temp/test.txt')
-                assert suc
+            suc = function.downloadFileWorker(url='',
+                                              dest='test/workDir/temp/test.txt',
+                                              unzip=True)
+            assert suc
 
 
 def test_downloadFileWorker_9(function):
@@ -229,8 +218,7 @@ def test_closePopup_1(function):
                            'close'):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
-            suc = function.closePopup(True)
-            assert suc
+            function.closePopup(True)
 
 
 def test_closePopup_2(function):
@@ -242,21 +230,18 @@ def test_closePopup_2(function):
                            'close'):
         with mock.patch.object(gui.extWindows.downloadPopupW,
                                'sleepAndEvents'):
-            suc = function.closePopup(False)
-            assert suc
+            function.closePopup(False)
 
 
 def test_downloadFile_1(function):
     function.callBack = 1
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.downloadFile('', '')
-        assert suc
+        function.downloadFile('', '')
 
 
 def test_downloadFile_2(function):
     function.callBack = None
     with mock.patch.object(function.threadPool,
                            'start'):
-        suc = function.downloadFile('', '')
-        assert suc
+        function.downloadFile('', '')

@@ -87,6 +87,15 @@ class AstroObjects(QObject):
         self.processFunc()
         self.dataLoaded.emit()
 
+    def runDownloadPopup(self, url, unzip):
+        """
+        """
+        self.downloadPopup = DownloadPopup(self.window,
+                                           url=url,
+                                           dest=self.dest,
+                                           unzip=unzip)
+        self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
+
     def loadSourceUrl(self):
         """
         """
@@ -112,16 +121,13 @@ class AstroObjects(QObject):
         self.setAge(0)
         self.msg.emit(1, self.objectText, 'Download', f'{url}')
         self.log.info(f'{self.objectText} data loaded from {url}')
-        self.downloadPopup = DownloadPopup(self.window,
-                                           url=url,
-                                           dest=self.dest,
-                                           unzip=unzip)
-        self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
+        self.runDownloadPopup(url, unzip)
 
-    def setTableEntry(self, row, col, entry):
+    def runUploadPopup(self, url):
         """
         """
-        self.ui.uiObjectList.setItem(row, col, entry)
+        self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
+        self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgObjects)
 
     def finishProgObjects(self):
         """
@@ -149,10 +155,7 @@ class AstroObjects(QObject):
         self.msg.emit(0, self.objectText.capitalize(), 'Program',
                       'Uploading to mount')
         url = self.app.mount.host[0]
-        self.uploadPopup = UploadPopup(
-            self.window, url, [self.objectText], self.tempDir)
-        self.uploadPopup.workerStatus.signals.finished.connect(
-            self.finishProgObjects)
+        self.runUploadPopup(url)
 
     def progGUI(self, text):
         """

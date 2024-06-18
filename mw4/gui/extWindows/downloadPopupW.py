@@ -163,4 +163,4 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.worker = Worker(self.downloadFileWorker,
                              url=url, dest=dest, unzip=unzip)
         self.worker.signals.result.connect(self.closePopup)
-        # self.threadPool.start(self.worker)
+        self.threadPool.start(self.worker)

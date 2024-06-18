@@ -90,18 +90,13 @@ class AstroObjects(QObject):
     def loadSourceUrl(self):
         """
         """
-        import inspect
-        curframe = inspect.currentframe()
-        calframe = inspect.getouterframes(curframe, 2)
-        print('caller name:', calframe[1][1], calframe[1][3])
-
         self.objects = None
-        key = self.uiSourceList.currentText()
-        if not key:
+        entry = self.uiSourceList.currentText()
+        if not entry:
             return
-        url = self.sourceUrls[key]['url']
-        fileName = self.sourceUrls[key]['file']
-        unzip = self.sourceUrls[key]['unzip']
+        url = self.sourceUrls[entry]['url']
+        fileName = self.sourceUrls[entry]['file']
+        unzip = self.sourceUrls[entry]['unzip']
 
         self.dest = os.path.normpath(f'{self.dataDir}/{fileName}')
         localSourceAvailable = os.path.isfile(self.dest)

@@ -28,8 +28,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabComet import Comet
-from gui.mainWmixin.astroObjects import AstroObjects
-from logic.databaseProcessing.sourceURL import cometSourceURLs
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -43,14 +41,6 @@ def function(qapp):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            self.comets = AstroObjects(self,
-                                       self.app,
-                                       'comet',
-                                       cometSourceURLs,
-                                       self.ui.listComets,
-                                       self.ui.cometSourceList,
-                                       self.ui.cometSourceGroup,
-                                       self.processComets)
             Comet.__init__(self)
 
     window = Mixin()

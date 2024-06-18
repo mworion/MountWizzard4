@@ -501,8 +501,8 @@ def test_showSatPasses_3(function):
 
 
 def test_extractSatelliteData_0(function):
-    function.satellites = {'NOAA 8': 'sat',
-                           'Test1': 'sat'}
+    function.satellites.objects = {'NOAA 8': 'sat',
+                                   'Test1': 'sat'}
 
     function.satTableBaseValid = False
     suc = function.extractSatelliteData(satName='Tjan')
@@ -510,8 +510,8 @@ def test_extractSatelliteData_0(function):
 
 
 def test_extractSatelliteData_1(function):
-    function.satellites = {'NOAA 8': 'sat',
-                           'Test1': 'sat'}
+    function.satellites.objects = {'NOAA 8': 'sat',
+                                   'Test1': 'sat'}
 
     function.satTableBaseValid = True
     suc = function.extractSatelliteData(satName='Tjan')
@@ -519,9 +519,9 @@ def test_extractSatelliteData_1(function):
 
 
 def test_extractSatelliteData_2(function):
-    function.ui.listSatelliteNames.clear()
-    function.satellites = {'Test0': '',
-                           'Test1': ''}
+    function.ui.listSats.clear()
+    function.satellites.objects = {'Test0': '',
+                                   'Test1': ''}
 
     function.satTableBaseValid = True
     suc = function.extractSatelliteData(satName='NOAA 8')
@@ -529,22 +529,22 @@ def test_extractSatelliteData_2(function):
 
 
 def test_extractSatelliteData_3(function):
-    function.ui.listSatelliteNames.setRowCount(0)
-    function.ui.listSatelliteNames.setColumnCount(2)
-    function.ui.listSatelliteNames.insertRow(0)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(2)
+    function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem('NOAA 8')
-    function.ui.listSatelliteNames.setItem(0, 1, entry)
-    function.ui.listSatelliteNames.insertRow(0)
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem('Test1')
-    function.ui.listSatelliteNames.setItem(0, 1, entry)
+    function.ui.listSats.setItem(0, 1, entry)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
+    function.satellites.objects = {'NOAA 8': sat,
+                                   'Test1': sat}
     function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
     with mock.patch.object(function.app.mount.obsSite.ts,
@@ -557,22 +557,22 @@ def test_extractSatelliteData_3(function):
 
 
 def test_extractSatelliteData_4(function):
-    function.ui.listSatelliteNames.setRowCount(0)
-    function.ui.listSatelliteNames.setColumnCount(2)
-    function.ui.listSatelliteNames.insertRow(0)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(2)
+    function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem('NOAA 8')
-    function.ui.listSatelliteNames.setItem(0, 1, entry)
-    function.ui.listSatelliteNames.insertRow(0)
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem('Test1')
-    function.ui.listSatelliteNames.setItem(0, 1, entry)
+    function.ui.listSats.setItem(0, 1, entry)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
+    function.satellites.objects = {'NOAA 8': sat,
+                                   'Test1': sat}
     function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
     with mock.patch.object(function.app.mount.obsSite.ts,
@@ -585,22 +585,22 @@ def test_extractSatelliteData_4(function):
 
 
 def test_extractSatelliteData_5(function):
-    function.ui.listSatelliteNames.setRowCount(0)
-    function.ui.listSatelliteNames.setColumnCount(2)
-    function.ui.listSatelliteNames.insertRow(0)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(2)
+    function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem('NOAA 8')
-    function.ui.listSatelliteNames.setItem(0, 1, entry)
-    function.ui.listSatelliteNames.insertRow(0)
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem('Test1')
-    function.ui.listSatelliteNames.setItem(0, 1, entry)
+    function.ui.listSats.setItem(0, 1, entry)
 
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    function.satellites = {'NOAA 8': sat,
-                           'Test1': sat}
+    function.satellites.objects = {'NOAA 8': sat,
+                                   'Test1': sat}
     function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
     with mock.patch.object(function.app.mount.obsSite.ts,
@@ -627,7 +627,7 @@ def test_programDataToMount_3(function):
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    function.satellites = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
+    function.satellites.objects = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
     function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
     with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
@@ -641,7 +641,7 @@ def test_programDataToMount_4(function):
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
     function.satellite = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    function.satellites = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
+    function.satellites.objects = {'TIANGONG 2': EarthSatellite(tle[1], tle[2],  name=tle[0])}
     function.app.mount.satellite.tleParams.name = 'TIANGONG 2'
     with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
@@ -653,7 +653,7 @@ def test_programDataToMount_4(function):
 
 
 def test_chooseSatellite_1(function):
-    satTab = function.ui.listSatelliteNames
+    satTab = function.ui.listSats
     function.app.deviceStat['mount'] = True
     with mock.patch.object(satTab,
                            'item'):
@@ -661,12 +661,11 @@ def test_chooseSatellite_1(function):
                                'extractSatelliteData'):
             with mock.patch.object(function,
                                    'showSatPasses'):
-                suc = function.chooseSatellite()
-                assert suc
+                function.chooseSatellite()
 
 
 def test_chooseSatellite_2(function):
-    satTab = function.ui.listSatelliteNames
+    satTab = function.ui.listSats
     function.app.deviceStat['mount'] = False
     with mock.patch.object(satTab,
                            'item'):
@@ -674,8 +673,7 @@ def test_chooseSatellite_2(function):
                                'extractSatelliteData'):
             with mock.patch.object(function,
                                    'showSatPasses'):
-                suc = function.chooseSatellite()
-                assert suc
+                function.chooseSatellite()
 
 
 def test_getSatelliteDataFromDatabase_1(function):

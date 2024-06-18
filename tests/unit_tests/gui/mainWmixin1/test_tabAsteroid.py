@@ -28,8 +28,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabAsteroid import Asteroid
-from gui.mainWmixin.astroObjects import AstroObjects
-from logic.databaseProcessing.sourceURL import asteroidSourceURLs
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -43,15 +41,6 @@ def function(qapp):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            self.asteroids = AstroObjects(self,
-                                          self.app,
-                                          'asteroid',
-                                          asteroidSourceURLs,
-                                          self.ui.listAsteroids,
-                                          self.ui.asteroidSourceList,
-                                          self.ui.asteroidSourceGroup,
-                                          self.processAsteroids)
-
             Asteroid.__init__(self)
 
     window = Mixin()

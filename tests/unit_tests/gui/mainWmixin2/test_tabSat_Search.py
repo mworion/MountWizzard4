@@ -17,7 +17,6 @@
 # standard libraries
 import pytest
 from unittest import mock
-import os
 
 # external packages
 from PySide6.QtCore import QThreadPool, QRect
@@ -32,8 +31,6 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabSat_Search import SatSearch
 from gui.mainWmixin.tabSat_Track import SatTrack
-from gui.mainWmixin.astroObjects import AstroObjects
-from logic.databaseProcessing.sourceURL import satSourceURLs
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -47,13 +44,6 @@ def function(qapp):
             self.threadPool = QThreadPool()
             self.ui = Ui_MainWindow()
             self.ui.setupUi(self)
-            self.satellites = AstroObjects(self, self.app,
-                                           'satellite',
-                                           satSourceURLs,
-                                           self.ui.listSats,
-                                           self.ui.cometSourceList,
-                                           self.ui.satSourceGroup,
-                                           self.processSatellites)
             SatSearch.__init__(self)
             SatTrack.__init__(self)
 
@@ -62,8 +52,8 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function.satellites,
-                           'loadSourceUrl'):
+    with mock.patch.object(function.ui.satSourceList,
+                           'setCurrentIndex'):
         function.initConfig()
 
 

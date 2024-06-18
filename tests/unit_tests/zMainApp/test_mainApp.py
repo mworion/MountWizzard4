@@ -27,6 +27,7 @@ from PySide6.QtWidgets import QWidget
 
 # local import
 from mainApp import MountWizzard4
+from gui.mainWmixin.astroObjects import AstroObjects
 from base.loggerMW import setupLogging
 import resource.resources as res
 res.qInitResources()
@@ -57,13 +58,12 @@ def app(qapp):
                                'start'):
             with mock.patch.object(QBasicTimer,
                                    'start'):
-                app = MountWizzard4(mwGlob=mwGlob, application=qapp)
-                app.log = logging.getLogger()
-                app.update1s = Test()
-                with mock.patch.object(app.mainW,
-                                       'setupSatelliteNameList'):
+                with mock.patch.object(AstroObjects,
+                                       'loadSourceUrl'):
+                    app = MountWizzard4(mwGlob=mwGlob, application=qapp)
+                    app.log = logging.getLogger()
+                    app.update1s = Test()
                     yield app
-                    app.threadPool.waitForDone(5000)
 
 
 def test_storeStatusOperationRunning(app):

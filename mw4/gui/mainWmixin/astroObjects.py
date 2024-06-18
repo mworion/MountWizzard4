@@ -90,6 +90,11 @@ class AstroObjects(QObject):
     def loadSourceUrl(self):
         """
         """
+        import inspect
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)
+        print('caller name:', calframe[1][1], calframe[1][3])
+
         self.objects = None
         key = self.uiSourceList.currentText()
         if not key:

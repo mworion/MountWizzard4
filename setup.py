@@ -26,7 +26,8 @@ releaseNotes = """
 - add native support for Macs with Apple silicon
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
-- add: show free disk space of work dir in the status bar 
+- add: show free disk space of work dir in the status bar
+- add: support for comet and asteroid data in extended downloads 
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major version PySide6
@@ -86,7 +87,7 @@ setup(
     ],
     python_requires='>=3.9.0, <3.13',
     install_requires=[
-        'numpy==1.26.4',
+        'numpy==2.0.0',
         'opencv-python-headless==4.10.0.82',
         'scipy==1.13.1',
         'astropy==5.3.4',

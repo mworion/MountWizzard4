@@ -149,21 +149,21 @@ class Asteroid:
                 self.ui.listAsteroids.setItem(row, 2, entry)
 
             if 'Perihelion_dist' in self.asteroids.objects[name]:
-                pdist = f'{self.asteroids.objects[name]['Perihelion_dist']:8.6f}'
+                pdist = f'{self.asteroids.objects[name]["Perihelion_dist"]:8.6f}'
                 entry = QTableWidgetItem(pdist)
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listAsteroids.setItem(row, 3, entry)
 
             if 'Aphelion_dist' in self.asteroids.objects[name]:
-                adist = f'{self.asteroids.objects[name]['Aphelion_dist']:8.6f}'
+                adist = f'{self.asteroids.objects[name]["Aphelion_dist"]:8.6f}'
                 entry = QTableWidgetItem(adist)
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listAsteroids.setItem(row, 4, entry)
 
             if 'e' in self.asteroids.objects[name]:
-                e = f'{self.asteroids.objects[name]['e']:8.5f}'
+                e = f'{self.asteroids.objects[name]["e"]:8.5f}'
                 entry = QTableWidgetItem(e)
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)

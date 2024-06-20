@@ -157,14 +157,14 @@ class Comet:
                 self.ui.listComets.setItem(row, 3, entry)
 
             if 'Perihelion_dist' in self.comets.objects[name]:
-                dist = f'{self.comets.objects[name]['Perihelion_dist']:8.6f}'
+                dist = f'{self.comets.objects[name]["Perihelion_dist"]:8.6f}'
                 entry = QTableWidgetItem(dist)
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listComets.setItem(row, 4, entry)
 
             if 'e' in self.comets.objects[name]:
-                e = f'{self.comets.objects[name]['e']:8.5f}'
+                e = f'{self.comets.objects[name]["e"]:8.5f}'
                 entry = QTableWidgetItem(e)
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)

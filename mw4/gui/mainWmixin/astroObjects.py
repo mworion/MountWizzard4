@@ -84,12 +84,16 @@ class AstroObjects(QObject):
     def procSourceData(self):
         """
         """
+        if not self.downloadPopup.returnValues['success']:
+            return
         self.processFunc()
         self.dataLoaded.emit()
 
     def runDownloadPopup(self, url, unzip):
         """
         """
+        if not self.window.ui.isOnline.isChecked():
+            return
         self.downloadPopup = DownloadPopup(self.window,
                                            url=url,
                                            dest=self.dest,
@@ -123,12 +127,6 @@ class AstroObjects(QObject):
         self.log.info(f'{self.objectText} data loaded from {url}')
         self.runDownloadPopup(url, unzip)
 
-    def runUploadPopup(self, url):
-        """
-        """
-        self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
-        self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgObjects)
-
     def finishProgObjects(self):
         """
         """
@@ -138,6 +136,12 @@ class AstroObjects(QObject):
         else:
             self.msg.emit(2, self.objectText.capitalize(), 'Program',
                           'Upload failed')
+
+    def runUploadPopup(self, url):
+        """
+        """
+        self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
+        self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgObjects)
 
     def progObjects(self, objects):
         """

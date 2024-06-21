@@ -21,12 +21,14 @@ from unittest import mock
 
 # external packages
 from PySide6.QtWidgets import QWidget, QComboBox, QTableWidget, QGroupBox
+from PySide6.QtWidgets import QTableWidgetItem
 from PySide6.QtCore import QThreadPool
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWmixin.astroObjects import AstroObjects
 import gui
+from gui.widgets.main_ui import Ui_MainWindow
 from gui.extWindows.downloadPopupW import DownloadPopup
 from gui.extWindows.uploadPopupW import UploadPopup
 
@@ -40,7 +42,7 @@ satSourceURLs = {
 }
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     def test():
@@ -49,8 +51,12 @@ def function(qapp):
     with mock.patch.object(App().mount.obsSite.loader,
                            'days_old',
                            return_value=0):
+        parent = QWidget()
+        parent.ui = Ui_MainWindow()
+        parent.ui.setupUi(parent)
+
         function = AstroObjects(
-            window=QWidget(),
+            window=parent,
             app=App(),
             objectText='test',
             sourceUrls=satSourceURLs,
@@ -77,6 +83,16 @@ def test_setAge_1(function):
 
 
 def test_runDownloadPopup_1(function):
+    function.window.ui.isOnline.setChecked(True)
+    with mock.patch.object(gui.extWindows.downloadPopupW.DownloadPopup,
+                           'show'):
+        with mock.patch.object(function.window.threadPool,
+                               'start'):
+            function.runDownloadPopup('', False)
+
+
+def test_runDownloadPopup_2(function):
+    function.window.ui.isOnline.setChecked(False)
     with mock.patch.object(gui.extWindows.downloadPopupW.DownloadPopup,
                            'show'):
         with mock.patch.object(function.window.threadPool,
@@ -114,14 +130,6 @@ def test_loadSourceUrl_3(function):
             function.loadSourceUrl()
 
 
-def test_runUploadPopup_1(function):
-    with mock.patch.object(gui.extWindows.uploadPopupW.UploadPopup,
-                           'show'):
-        with mock.patch.object(function.window.threadPool,
-                               'start'):
-            function.runUploadPopup('')
-
-
 def test_finishProgObjects_1(function):
     class Test:
         returnValues = {'success': False}
@@ -132,11 +140,129 @@ def test_finishProgObjects_1(function):
 
 def test_finishProgObjects_2(function):
     class Test:
-        returnValues = {'success': False}
+        returnValues = {'success': True}
 
     function.uploadPopup = Test()
     function.finishProgObjects()
 
 
+def test_runUploadPopup_1(function):
+    with mock.patch.object(gui.extWindows.uploadPopupW.UploadPopup,
+                           'show'):
+        with mock.patch.object(function.window.threadPool,
+                               'start'):
+            function.runUploadPopup('')
+
+
 def test_progObjects_1(function):
     function.progObjects([])
+
+
+def test_progObjects_2(function):
+    def test(objects, dataFilePath=''):
+        return False
+    function.objectText = 'comet'
+    function.funcs['comet'] = test
+    function.progObjects(['test'])
+
+
+def test_progObjects_3(function):
+    function.app.mount.host = ('localhost', 3492)
+    def test(objects, dataFilePath=''):
+        return True
+    function.objectText = 'comet'
+    function.funcs['comet'] = test
+    with mock.patch.object(function,
+                           'runUploadPopup'):
+        function.progObjects(['test'])
+
+
+def test_progGUI_1(function):
+    function.progGUI('test')
+
+
+def test_progSelected_1(function):
+    function.objects = {
+        'test': 'test'
+    }
+    class Test:
+        def column(self):
+            return 0
+        def text(self):
+            return 'test'
+
+    with mock.patch.object(function,
+                           'progGUI'):
+        with mock.patch.object(function,
+                               'progObjects'):
+            with mock.patch.object(function.uiObjectList,
+                                   'selectedItems',
+                                   return_value=[Test()]):
+                function.progSelected()
+
+
+def test_progSelected_2(function):
+    function.objects = {
+        'test': 'test'
+    }
+    class Test:
+        def column(self):
+            return 1
+        def text(self):
+            return 'test'
+
+    with mock.patch.object(function,
+                           'progGUI'):
+        with mock.patch.object(function,
+                               'progObjects'):
+            with mock.patch.object(function.uiObjectList,
+                                   'selectedItems',
+                                   return_value=[Test()]):
+                function.progSelected()
+
+
+def test_progFiltered_1(function):
+    function.objects = {
+        'test': 'test'
+    }
+
+    function.uiObjectList = QTableWidget()
+    function.uiObjectList.setRowCount(0)
+    function.uiObjectList.setColumnCount(2)
+    item = QTableWidgetItem('test')
+    function.uiObjectList.insertRow(0)
+    function.uiObjectList.setItem(0, 1, item)
+    function.uiObjectList.setRowHidden(0, True)
+
+    with mock.patch.object(function,
+                           'progGUI'):
+        with mock.patch.object(function,
+                               'progObjects'):
+            function.progFiltered()
+
+
+def test_progFiltered_2(function):
+    function.objects = {
+        'test': 'test'
+    }
+    function.uiObjectList = QTableWidget()
+    function.uiObjectList.setRowCount(0)
+    function.uiObjectList.setColumnCount(2)
+    item = QTableWidgetItem('test')
+    function.uiObjectList.insertRow(0)
+    function.uiObjectList.setItem(0, 1, item)
+    function.uiObjectList.setRowHidden(0, False)
+
+    with mock.patch.object(function,
+                           'progGUI'):
+        with mock.patch.object(function,
+                               'progObjects'):
+            function.progFiltered()
+
+
+def test_progFull_1(function):
+    with mock.patch.object(function,
+                           'progGUI'):
+        with mock.patch.object(function,
+                               'progObjects'):
+            function.progFull()

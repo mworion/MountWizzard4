@@ -1181,7 +1181,7 @@ class App(QObject):
     telescope = Telescope()
     hipparcos = Hipparcos()
 
-    ephemeris = load('tests/testData/de440_mw4.bsp')
+    ephemeris = load('tests/testData/de440_mw4.bsp', reload=False)
     mwGlob = {'modelDir': 'tests/workDir/model',
               'imageDir': 'tests/workDir/image',
               'dataDir': 'tests/workDir/data',

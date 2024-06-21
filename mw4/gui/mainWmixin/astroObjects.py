@@ -179,7 +179,7 @@ class AstroObjects(QObject):
             if not entry.column() == 1:
                 continue
             name = entry.text()
-            selectedObjects.append(self.objects[name])
+            selectedObjects.append(self.objects.get(name))
         self.progObjects(selectedObjects)
 
     def progFiltered(self) -> None:
@@ -192,12 +192,12 @@ class AstroObjects(QObject):
             if self.uiObjectList.isIndexHidden(entry):
                 continue
             name = entry.data()
-            filteredObjects.append(self.objects[name])
+            filteredObjects.append(self.objects.get(name))
         self.progObjects(filteredObjects)
 
     def progFull(self) -> None:
         """
         """
         self.progGUI('All')
-        fullObjects = [self.objects[name] for name in self.objects]
+        fullObjects = [self.objects.get(name) for name in self.objects]
         self.progObjects(fullObjects)

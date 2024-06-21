@@ -63,7 +63,8 @@ class UploadPopup(MWidget):
         },
     }
 
-    def __init__(self, parentWidget, url, dataTypes, dataFilePath):
+    def __init__(self, parentWidget: MWidget, url: str, dataTypes: str,
+                 dataFilePath: str):
         super().__init__()
         self.ui = Ui_UploadPopup()
         self.ui.setupUi(self)
@@ -90,30 +91,30 @@ class UploadPopup(MWidget):
         self.show()
         self.uploadFile()
 
-    def setIcon(self):
+    def setIcon(self) -> None:
         """
         """
         pixmap = self.svg2pixmap(':/icon/upload_pop.svg', self.M_BLUE)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
-    def setProgressBarColor(self, color):
+    def setProgressBarColor(self, color:str) -> None:
         """
         """
         css = 'QProgressBar::chunk {background-color: ' + color + ';}'
         self.ui.progressBar.setStyleSheet(css)
 
-    def setProgressBarToValue(self, progressPercent):
+    def setProgressBarToValue(self, progressPercent: int) -> None:
         """
         """
         self.ui.progressBar.setValue(progressPercent)
 
-    def setStatusTextToValue(self, statusText):
+    def setStatusTextToValue(self, statusText: str) -> None:
         """
         """
         self.ui.statusText.setText(statusText)
 
-    def uploadFileWorker(self):
+    def uploadFileWorker(self) -> bool:
         """
         """
         files = {}
@@ -141,13 +142,13 @@ class UploadPopup(MWidget):
             return False
         return True
 
-    def sendProgressValue(self, text):
+    def sendProgressValue(self, text:str) -> None:
         """:
         """
         progressValue = int(re.search(r'\d+', text).group())
         self.signalProgress.emit(progressValue)
 
-    def pollDispatcher(self, text):
+    def pollDispatcher(self, text:str) -> None:
         """
         """
         single = len(text) == 1
@@ -188,7 +189,7 @@ class UploadPopup(MWidget):
         elif multiple and text[-1][0].isdigit():
             self.sendProgressValue(text[-1])
 
-    def pollStatus(self):
+    def pollStatus(self) -> None:
         """
         """
         self.timeoutCounter = 10
@@ -213,7 +214,7 @@ class UploadPopup(MWidget):
 
             sleepAndEvents(500)
 
-    def closePopup(self, result):
+    def closePopup(self, result: dict) -> None:
         """
         """
         self.returnValues['success'] = result
@@ -231,7 +232,7 @@ class UploadPopup(MWidget):
         sleepAndEvents(2500)
         self.close()
 
-    def uploadFile(self):
+    def uploadFile(self) -> None:
         """
         """
         self.worker = Worker(self.uploadFileWorker)

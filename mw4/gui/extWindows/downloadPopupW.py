@@ -24,13 +24,13 @@ from PySide6.QtCore import Qt, Signal
 import requests
 
 # local import
-from gui.utilities import toolsQtWidget
+from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.toolsQtWidget import sleepAndEvents
 from base.tpool import Worker
 from gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 
 
-class DownloadPopup(toolsQtWidget.MWidget):
+class DownloadPopup(MWidget):
     """
     """
     __all__ = ['DownloadPopup']
@@ -39,7 +39,8 @@ class DownloadPopup(toolsQtWidget.MWidget):
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
 
-    def __init__(self, parentWidget, url='', dest='', unzip=False):
+    def __init__(self, parentWidget: MWidget, url: str = '', dest: str = '',
+                 unzip: bool = False):
         super().__init__()
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self)
@@ -61,30 +62,30 @@ class DownloadPopup(toolsQtWidget.MWidget):
         self.show()
         self.downloadFile(url, dest, unzip=unzip)
 
-    def setIcon(self):
+    def setIcon(self) -> None:
         """
         """
         pixmap = self.svg2pixmap(':/icon/download_pop.svg', self.M_BLUE)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
-    def setProgressBarColor(self, color):
+    def setProgressBarColor(self, color:str) -> None:
         """
         """
         css = 'QProgressBar::chunk {background-color: ' + color + ';}'
         self.ui.progressBar.setStyleSheet(css)
 
-    def setProgressBarToValue(self, progressPercent):
+    def setProgressBarToValue(self, progressPercent: int) -> None:
         """
         """
         self.ui.progressBar.setValue(progressPercent)
 
-    def setStatusTextToValue(self, statusText):
+    def setStatusTextToValue(self, statusText: str) -> bool:
         """
         """
         self.ui.statusText.setText(statusText)
 
-    def getFileFromUrl(self, url, dest):
+    def getFileFromUrl(self, url:str, dest:str) -> bool:
         """
         """
         r = requests.get(url, stream=True, timeout=1)
@@ -102,7 +103,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
             self.signalProgress.emit(100)
         return True
 
-    def unzipFile(self, downloadDest, dest):
+    def unzipFile(self, downloadDest: str, dest: str) -> None:
         """
         """
         self.signalStatus.emit(f'Unzipping {downloadDest}')
@@ -111,7 +112,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
                 shutil.copyfileobj(f_in, f_out)
         os.remove(downloadDest)
 
-    def downloadFileWorker(self, url, dest, unzip=False):
+    def downloadFileWorker(self, url: str, dest: str, unzip: bool = False) -> bool:
         """
         """
         if unzip:
@@ -142,7 +143,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
             return False
         return True
 
-    def closePopup(self, result):
+    def closePopup(self, result: dict) -> None:
         """
         """
         self.signalProgress.emit(100)
@@ -157,7 +158,7 @@ class DownloadPopup(toolsQtWidget.MWidget):
         sleepAndEvents(2500)
         self.close()
 
-    def downloadFile(self, url, dest, unzip=False):
+    def downloadFile(self, url: str, dest: str, unzip: bool = False) -> None:
         """
         """
         self.worker = Worker(self.downloadFileWorker,

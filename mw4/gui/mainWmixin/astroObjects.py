@@ -66,7 +66,7 @@ class AstroObjects(QObject):
             'comet': self.dbProc.writeCometMPC,
         }
 
-    def buildSourceListDropdown(self):
+    def buildSourceListDropdown(self) -> None:
         """
         """
         self.uiSourceList.clear()
@@ -75,13 +75,13 @@ class AstroObjects(QObject):
             self.uiSourceList.addItem(name)
         self.uiSourceList.setCurrentIndex(-1)
 
-    def setAge(self, age):
+    def setAge(self, age: float) -> None:
         """
         """
         t = f'{self.objectText} data - age: {age:2.1f}d'
         self.uiSourceGroup.setTitle(t)
 
-    def procSourceData(self):
+    def procSourceData(self) -> None:
         """
         """
         if not self.downloadPopup.returnValues['success']:
@@ -89,7 +89,7 @@ class AstroObjects(QObject):
         self.processFunc()
         self.dataLoaded.emit()
 
-    def runDownloadPopup(self, url, unzip):
+    def runDownloadPopup(self, url: str, unzip: bool) -> None:
         """
         """
         if not self.window.ui.isOnline.isChecked():
@@ -100,7 +100,7 @@ class AstroObjects(QObject):
                                            unzip=unzip)
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
 
-    def loadSourceUrl(self):
+    def loadSourceUrl(self) -> None:
         """
         """
         self.objects = None
@@ -127,7 +127,7 @@ class AstroObjects(QObject):
         self.log.info(f'{self.objectText} data loaded from {url}')
         self.runDownloadPopup(url, unzip)
 
-    def finishProgObjects(self):
+    def finishProgObjects(self) -> None:
         """
         """
         if self.uploadPopup.returnValues['success']:
@@ -137,13 +137,13 @@ class AstroObjects(QObject):
             self.msg.emit(2, self.objectText.capitalize(), 'Program',
                           'Upload failed')
 
-    def runUploadPopup(self, url):
+    def runUploadPopup(self, url:str) -> None:
         """
         """
         self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
         self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgObjects)
 
-    def progObjects(self, objects):
+    def progObjects(self, objects: list) -> None:
         """
         """
         if len(objects) == 0:
@@ -161,7 +161,7 @@ class AstroObjects(QObject):
         url = self.app.mount.host[0]
         self.runUploadPopup(url)
 
-    def progGUI(self, text):
+    def progGUI(self, text: str) -> None:
         """
         """
         source = self.uiSourceList.currentText()
@@ -169,7 +169,7 @@ class AstroObjects(QObject):
         self.msg.emit(1, objectType, 'Program', f'{text} from {source}')
         self.msg.emit(1, '', '', 'Exporting data')
 
-    def progSelected(self):
+    def progSelected(self) -> None:
         """
         """
         self.progGUI('Selected')
@@ -182,7 +182,7 @@ class AstroObjects(QObject):
             selectedObjects.append(self.objects[name])
         self.progObjects(selectedObjects)
 
-    def progFiltered(self):
+    def progFiltered(self) -> None:
         """
         """
         self.progGUI('Filtered')
@@ -195,7 +195,7 @@ class AstroObjects(QObject):
             filteredObjects.append(self.objects[name])
         self.progObjects(filteredObjects)
 
-    def progFull(self):
+    def progFull(self) -> None:
         """
         """
         self.progGUI('All')

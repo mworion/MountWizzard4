@@ -48,14 +48,14 @@ class Asteroid:
         self.ui.progAsteroidFiltered.clicked.connect(self.asteroids.progFiltered)
         self.ui.progAsteroidFull.clicked.connect(self.asteroids.progFull)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
         self.ui.asteroidFilterText.setText(config.get('asteroidFilterText'))
         self.ui.asteroidSourceList.setCurrentIndex(config.get('asteroidSource', 0))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
@@ -63,7 +63,7 @@ class Asteroid:
         config['asteroidFilterText'] = self.ui.asteroidFilterText.text()
         return True
 
-    def prepareAsteroidTable(self):
+    def prepareAsteroidTable(self) -> None:
         """
         """
         self.ui.listAsteroids.setRowCount(0)
@@ -83,7 +83,7 @@ class Asteroid:
         self.ui.listAsteroids.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
     @staticmethod
-    def generateName(mp):
+    def generateName(mp: dict) -> str:
         """
         """
         if 'Designation_and_name' in mp:
@@ -98,7 +98,7 @@ class Asteroid:
             name = ''
         return name
 
-    def processAsteroids(self):
+    def processAsteroids(self) -> None:
         """
         """
         with open(self.asteroids.dest) as inFile:
@@ -114,7 +114,7 @@ class Asteroid:
                 continue
             self.asteroids.objects[text] = asteroid
 
-    def filterListAsteroids(self):
+    def filterListAsteroids(self) -> None:
         """
         """
         filterStr = self.ui.asteroidFilterText.text().lower()
@@ -125,7 +125,7 @@ class Asteroid:
             show = filterStr in number + name
             self.ui.listAsteroids.setRowHidden(row, not show)
 
-    def fillAsteroidListName(self):
+    def fillAsteroidListName(self) -> None:
         """
         """
         self.ui.listAsteroids.setRowCount(0)

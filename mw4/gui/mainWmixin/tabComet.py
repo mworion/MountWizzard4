@@ -47,7 +47,7 @@ class Comet:
         self.ui.progCometFiltered.clicked.connect(self.comets.progFiltered)
         self.ui.progCometFull.clicked.connect(self.comets.progFull)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
@@ -55,7 +55,7 @@ class Comet:
         self.ui.cometSourceList.setCurrentIndex(config.get('cometSource', 0))
         self.ui.mpcTabWidget.setCurrentIndex(config.get('mpcTab', 0))
 
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
@@ -64,7 +64,7 @@ class Comet:
         config['mpcTab'] = self.ui.mpcTabWidget.currentIndex()
         return True
 
-    def prepareCometTable(self):
+    def prepareCometTable(self) -> None:
         """
         """
         self.ui.listComets.setRowCount(0)
@@ -80,7 +80,7 @@ class Comet:
         self.ui.listComets.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
     @staticmethod
-    def generateName(mp):
+    def generateName(mp: dict) -> str:
         """
         """
         if 'Designation_and_name' in mp:
@@ -95,7 +95,7 @@ class Comet:
             name = ''
         return name
 
-    def processComets(self):
+    def processComets(self) -> None:
         """
         """
         with open(self.comets.dest) as inFile:
@@ -111,7 +111,7 @@ class Comet:
                 continue
             self.comets.objects[text] = comet
 
-    def filterListComets(self):
+    def filterListComets(self) -> None:
         """
         """
         filterStr = self.ui.cometFilterText.text().lower()
@@ -122,7 +122,7 @@ class Comet:
             show = filterStr in number + name
             self.ui.listComets.setRowHidden(row, not show)
 
-    def fillCometListName(self):
+    def fillCometListName(self) -> None:
         """
         """
         self.ui.listComets.setRowCount(0)

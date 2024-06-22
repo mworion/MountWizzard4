@@ -385,28 +385,11 @@ def test_updatePasses_2(function):
 
 def test_sendSatelliteData_1(function):
     function.satellite = None
-    function.satOrbits = None
-    suc = function.signalSatelliteData()
-    assert not suc
-
-
-def test_sendSatelliteData_2(function):
-    function.app.uiWindows = {'showSatelliteW': {'classObj': None}}
-    function.satellite = 1
-    function.satOrbits = 1
     suc = function.signalSatelliteData()
     assert not suc
 
 
 def test_sendSatelliteData_3(function):
-    class Test1(QObject):
-        update = Signal(object, object, object)
-        show = Signal(object, object, object, object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
-    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
@@ -714,24 +697,9 @@ def test_updateOrbit_2(function):
     assert not suc
 
 
-def test_updateOrbit_3(function):
-    function.satSourceValid = True
-    function.satellite = 'test'
-    function.app.uiWindows['showSatelliteW'] = {}
-    suc = function.updateOrbit()
-    assert not suc
-
-
 def test_updateOrbit_4(function):
-    class Test1(QObject):
-        update = Signal(object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
     function.satSourceValid = True
     function.satellite = 'test'
-    function.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
     suc = function.updateOrbit()
     assert suc
 

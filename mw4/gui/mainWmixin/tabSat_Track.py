@@ -285,15 +285,8 @@ class SatTrack(object):
         if not self.satellite:
             return False
 
-        winObj = self.app.uiWindows['showSatelliteW']
-        if not winObj['classObj']:
-            return False
         name = self.satellite.name
-        winObj['classObj'].signals.show.emit(self.satellite,
-                                             self.satOrbits,
-                                             alt,
-                                             az,
-                                             name)
+        self.app.showSatellite.emit(self.satellite, self.satOrbits, alt, az, name)
         return True
 
     def clearTrackingParameters(self):
@@ -459,12 +452,8 @@ class SatTrack(object):
             return False
 
         now = self.app.mount.obsSite.ts.now()
-        winObj = self.extWindows.uiWindows['showSatelliteW']
-        if not winObj.get('classObj'):
-            return False
-
         location = self.app.mount.obsSite.location
-        winObj['classObj'].signals.update.emit(now, location)
+        self.app.updateSatellite.emit(now, location)
         return True
 
     def calcTrajectoryData(self, start, end):

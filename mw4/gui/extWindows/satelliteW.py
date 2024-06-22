@@ -29,14 +29,6 @@ from gui.utilities import toolsQtWidget
 from gui.widgets import satellite_ui
 
 
-class SatelliteWindowSignals(QObject):
-    """
-    """
-    __all__ = ['SatelliteWindowSignals']
-    show = Signal(object, object, object, object, object)
-    update = Signal(object, object)
-
-
 class SatelliteWindow(toolsQtWidget.MWidget):
     """
     """
@@ -48,7 +40,6 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         self.threadPool = app.threadPool
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
-        self.signals = SatelliteWindowSignals()
         self.satellite = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
@@ -67,8 +58,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         pickleData = stream.readAll()
         stream.close()
         self.world = pickle.load(BytesIO(pickleData))
-        self.signals.show.connect(self.drawSatellite)
-        self.signals.update.connect(self.updatePositions)
+        self.app.showSatellite.connect(self.drawSatellite)
+        self.app.updateSatellite.connect(self.updatePositions)
         self.app.redrawHorizon.connect(self.drawHorizon)
 
     def initConfig(self):

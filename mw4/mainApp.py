@@ -75,6 +75,8 @@ class MountWizzard4(QObject):
     drawHorizonPoints = Signal()
     updateDomeSettings = Signal()
     sendSatelliteData = Signal()
+    updateSatellite = Signal(object, object)
+    showSatellite = Signal(object, object, object, object, object)
     showImage = Signal(str)
     showAnalyse = Signal(str)
     remoteCommand = Signal(str)

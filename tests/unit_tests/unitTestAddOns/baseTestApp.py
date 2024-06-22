@@ -1134,6 +1134,8 @@ class App(QObject):
     start10s = Signal()
     hostChanged = Signal()
     sendSatelliteData = Signal()
+    updateSatellite = Signal(object, object)
+    showSatellite = Signal(object, object, object, object, object)
     updateDomeSettings = Signal()
     drawHorizonPoints = Signal()
     drawBuildPoints = Signal()

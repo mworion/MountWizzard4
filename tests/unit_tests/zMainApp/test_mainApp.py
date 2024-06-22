@@ -107,9 +107,6 @@ def test_storeConfig_2(app):
     suc = app.storeConfig()
     assert suc
 
-    if app.uiWindows['showMessageW']['classObj']:
-        del app.uiWindows['showMessageW']['classObj']
-
 
 def test_sendStart_1(app):
     app.timerCounter = 10

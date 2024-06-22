@@ -33,13 +33,12 @@ class Comet:
     def __init__(self):
         self.prepareCometTable()
         self.comets = AstroObjects(self,
-                                   self.app,
                                    'comet',
                                    cometSourceURLs,
                                    self.ui.listComets,
                                    self.ui.cometSourceList,
                                    self.ui.cometSourceGroup,
-                                   self.processComets)
+                                   self.processCometSource)
 
         self.comets.dataLoaded.connect(self.fillCometListName)
         self.ui.cometFilterText.textChanged.connect(self.filterListComets)
@@ -95,7 +94,7 @@ class Comet:
             name = ''
         return name
 
-    def processComets(self) -> None:
+    def processCometSource(self) -> None:
         """
         """
         with open(self.comets.dest) as inFile:

@@ -93,17 +93,17 @@ def test_generateName_5(function):
     assert val == 'test 123'
 
 
-def test_processComets_1(function):
+def test_processCometSource_1(function):
     function.comets.dest = 'tests/testData/mpc_comet_test.json'
     with mock.patch.object(json,
                            'load',
                            return_value='',
                            side_effect=Exception):
-        function.processComets()
+        function.processCometSource()
         assert function.comets.objects == {}
 
 
-def test_processComets_2(function):
+def test_processCometSource_2(function):
     function.comets.dest = 'tests/testData/mpc_comet_test.json'
     with mock.patch.object(json,
                            'load',
@@ -111,11 +111,11 @@ def test_processComets_2(function):
         with mock.patch.object(function,
                                'generateName',
                                return_value=''):
-            function.processComets()
+            function.processCometSource()
             assert function.comets.objects == {}
 
 
-def test_processComets_3(function):
+def test_processCometSource_3(function):
     function.comets.dest = 'tests/testData/mpc_comet_test.json'
     with mock.patch.object(json,
                            'load',
@@ -123,7 +123,7 @@ def test_processComets_3(function):
         with mock.patch.object(function,
                                'generateName',
                                return_value='albert'):
-            function.processComets()
+            function.processCometSource()
             assert function.comets.objects == {'albert': 'test'}
 
 

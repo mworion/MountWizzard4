@@ -54,16 +54,16 @@ def function(qapp):
         parent = QWidget()
         parent.ui = Ui_MainWindow()
         parent.ui.setupUi(parent)
+        parent.app = App()
 
         function = AstroObjects(
             window=parent,
-            app=App(),
             objectText='test',
             sourceUrls=satSourceURLs,
             uiObjectList=QTableWidget(),
             uiSourceList=QComboBox(),
             uiSourceGroup=QGroupBox(),
-            processFunc=test,
+            processSourceFunc=test,
         )
         function.window.app = App()
         function.window.threadPool = QThreadPool()
@@ -80,6 +80,24 @@ def test_buildSourceListDropdown_1(function):
 def test_setAge_1(function):
     function.setAge(0)
     assert function.uiSourceGroup.title() == 'test data - age: 0.0d'
+
+
+def test_procSourceData_1(function):
+    class Test:
+        returnValues = {'success': False}
+
+    function.downloadPopup = Test()
+    function.procSourceData()
+
+
+def test_procSourceData_2(function):
+    class Test:
+        returnValues = {'success': True}
+
+    function.downloadPopup = Test()
+    with mock.patch.object(function,
+                           'processSourceFunc'):
+        function.procSourceData()
 
 
 def test_runDownloadPopup_1(function):
@@ -162,16 +180,18 @@ def test_progObjects_2(function):
     def test(objects, dataFilePath=''):
         return False
     function.objectText = 'comet'
-    function.funcs['comet'] = test
+    function.dbProcFuncs['comet'] = test
     function.progObjects(['test'])
 
 
 def test_progObjects_3(function):
     function.app.mount.host = ('localhost', 3492)
+
     def test(objects, dataFilePath=''):
         return True
+
     function.objectText = 'comet'
-    function.funcs['comet'] = test
+    function.dbProcFuncs['comet'] = test
     with mock.patch.object(function,
                            'runUploadPopup'):
         function.progObjects(['test'])
@@ -185,9 +205,11 @@ def test_progSelected_1(function):
     function.objects = {
         'test': 'test'
     }
+
     class Test:
         def column(self):
             return 0
+
         def text(self):
             return 'test'
 
@@ -205,9 +227,11 @@ def test_progSelected_2(function):
     function.objects = {
         'test': 'test'
     }
+
     class Test:
         def column(self):
             return 1
+
         def text(self):
             return 'test'
 

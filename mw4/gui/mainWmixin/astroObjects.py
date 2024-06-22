@@ -36,19 +36,19 @@ class AstroObjects(QObject):
     dataLoaded = Signal()
 
     def __init__(self, window,
-                 app, objectText, sourceUrls, uiObjectList,
-                 uiSourceList, uiSourceGroup, processFunc):
+                 objectText, sourceUrls, uiObjectList,
+                 uiSourceList, uiSourceGroup, processSourceFunc):
         super().__init__()
         self.window = window
-        self.app = app
-        self.msg = app.msg
+        self.app = window.app
+        self.msg = window.app.msg
         self.dest = None
         self.objectText = objectText
         self.sourceUrls = sourceUrls
         self.uiObjectList = uiObjectList
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup
-        self.processFunc = processFunc
+        self.processSourceFunc = processSourceFunc
 
         self.objects = None
         self.uploadPopup = None
@@ -60,7 +60,7 @@ class AstroObjects(QObject):
         self.buildSourceListDropdown()
         self.uiSourceList.currentIndexChanged.connect(self.loadSourceUrl)
 
-        self.funcs = {
+        self.dbProcFuncs = {
             'satellite': self.dbProc.writeSatelliteTLE,
             'asteroid': self.dbProc.writeAsteroidMPC,
             'comet': self.dbProc.writeCometMPC,
@@ -86,7 +86,7 @@ class AstroObjects(QObject):
         """
         if not self.downloadPopup.returnValues['success']:
             return
-        self.processFunc()
+        self.processSourceFunc()
         self.dataLoaded.emit()
 
     def runDownloadPopup(self, url: str, unzip: bool) -> None:
@@ -150,7 +150,7 @@ class AstroObjects(QObject):
             self.msg.emit(2, self.objectText.capitalize(), 'Data error',
                           'No data to export - stopping')
             return
-        suc = self.funcs[self.objectText](objects, dataFilePath=self.tempDir)
+        suc = self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
         if not suc:
             self.msg.emit(2, self.objectText, 'Data error',
                           'Data could not be exported - stopping')

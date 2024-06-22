@@ -93,17 +93,17 @@ def test_generateName_5(function):
     assert val == 'test 123'
 
 
-def test_processAsteroids_1(function):
+def test_processAsteroidSource_1(function):
     function.asteroids.dest = 'tests/testData/mpc_asteroid_test.json'
     with mock.patch.object(json,
                            'load',
                            return_value='',
                            side_effect=Exception):
-        function.processAsteroids()
+        function.processAsteroidSource()
         assert function.asteroids.objects == {}
 
 
-def test_processAsteroids_2(function):
+def test_processAsteroidSource_2(function):
     function.asteroids.dest = 'tests/testData/mpc_asteroid_test.json'
     with mock.patch.object(json,
                            'load',
@@ -111,11 +111,11 @@ def test_processAsteroids_2(function):
         with mock.patch.object(function,
                                'generateName',
                                return_value=''):
-            function.processAsteroids()
+            function.processAsteroidSource()
             assert function.asteroids.objects == {}
 
 
-def test_processAsteroids_3(function):
+def test_processAsteroidSource_3(function):
     function.asteroids.dest = 'tests/testData/mpc_asteroid_test.json'
     with mock.patch.object(json,
                            'load',
@@ -123,7 +123,7 @@ def test_processAsteroids_3(function):
         with mock.patch.object(function,
                                'generateName',
                                return_value='albert'):
-            function.processAsteroids()
+            function.processAsteroidSource()
             assert function.asteroids.objects == {'albert': 'test'}
 
 

@@ -65,11 +65,11 @@ def test_prepareSatTable_1(function):
     function.prepareSatTable()
 
 
-def test_processSatellites(function):
+def test_processSatelliteSource(function):
     with mock.patch.object(function.app.mount.obsSite.loader,
                            'tle_file',
                            return_values={}):
-        function.processSatellites()
+        function.processSatelliteSource()
 
 
 def test_chooseSatellite_1(function):
@@ -105,10 +105,6 @@ def test_chooseSatellite_2(function):
                 with mock.patch.object(function,
                                        'showSatPasses'):
                     function.chooseSatellite()
-
-
-def processSatellites_1(function):
-    function.processSatellites()
 
 
 def test_positionCursorInSatTable_1(function):

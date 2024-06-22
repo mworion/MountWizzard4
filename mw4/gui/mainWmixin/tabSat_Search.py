@@ -41,13 +41,12 @@ class SatSearch:
         self.prepareSatTable()
 
         self.satellites = AstroObjects(self,
-                                       self.app,
                                        'satellite',
                                        satSourceURLs,
                                        self.ui.listSats,
                                        self.ui.satSourceList,
                                        self.ui.satSourceGroup,
-                                       self.processSatellites)
+                                       self.processSatelliteSource)
         self.satellites.dataLoaded.connect(self.fillSatListName)
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
@@ -121,7 +120,7 @@ class SatSearch:
         if self.ui.autoSwitchTrack.isChecked():
             self.ui.satTabWidget.setCurrentIndex(1)
 
-    def processSatellites(self):
+    def processSatelliteSource(self):
         """
         """
         loader = self.app.mount.obsSite.loader

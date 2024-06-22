@@ -33,13 +33,12 @@ class Asteroid:
     def __init__(self):
         self.prepareAsteroidTable()
         self.asteroids = AstroObjects(self,
-                                      self.app,
                                       'asteroid',
                                       asteroidSourceURLs,
                                       self.ui.listAsteroids,
                                       self.ui.asteroidSourceList,
                                       self.ui.asteroidSourceGroup,
-                                      self.processAsteroids)
+                                      self.processAsteroidSource)
 
         self.asteroids.dataLoaded.connect(self.fillAsteroidListName)
         self.ui.asteroidFilterText.textChanged.connect(self.filterListAsteroids)
@@ -98,7 +97,7 @@ class Asteroid:
             name = ''
         return name
 
-    def processAsteroids(self) -> None:
+    def processAsteroidSource(self) -> None:
         """
         """
         with open(self.asteroids.dest) as inFile:

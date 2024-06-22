@@ -51,7 +51,6 @@ class ExternalWindows(MWidget):
 
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
         self.uiWindows = {'showMessageW': {
             'button': self.mainW.ui.openMessageW,
             'classObj': None,

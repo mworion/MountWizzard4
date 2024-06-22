@@ -88,7 +88,7 @@ class DownloadPopup(MWidget):
     def getFileFromUrl(self, url:str, dest:str) -> bool:
         """
         """
-        r = requests.get(url, stream=True, timeout=1)
+        r = requests.get(url, stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get('content-length', 1))
         if r.status_code != 200:
             return False

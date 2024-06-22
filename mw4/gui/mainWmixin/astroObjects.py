@@ -37,7 +37,7 @@ class AstroObjects(QObject):
 
     def __init__(self, window,
                  objectText, sourceUrls, uiObjectList,
-                 uiSourceList, uiSourceGroup, processSourceFunc):
+                 uiSourceList, uiSourceGroup, processSource):
         super().__init__()
         self.window = window
         self.app = window.app
@@ -48,7 +48,7 @@ class AstroObjects(QObject):
         self.uiObjectList = uiObjectList
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup
-        self.processSourceFunc = processSourceFunc
+        self.processSource = processSource
 
         self.objects = None
         self.uploadPopup = None
@@ -81,12 +81,13 @@ class AstroObjects(QObject):
         t = f'{self.objectText} data - age: {age:2.1f}d'
         self.uiSourceGroup.setTitle(t)
 
-    def procSourceData(self) -> None:
+    def procSourceData(self, direct: bool = False) -> None:
         """
         """
-        if not self.downloadPopup.returnValues['success']:
-            return
-        self.processSourceFunc()
+        if not direct:
+            if not self.downloadPopup.returnValues['success']:
+                return
+        self.processSource()
         self.dataLoaded.emit()
 
     def runDownloadPopup(self, url: str, unzip: bool) -> None:
@@ -118,7 +119,7 @@ class AstroObjects(QObject):
             daysOld = self.loader.days_old(self.dest)
             self.setAge(daysOld)
             if daysOld < 1:
-                self.procSourceData()
+                self.procSourceData(direct=True)
                 self.log.info(f'{self.objectText} data loaded from local source')
                 return
 

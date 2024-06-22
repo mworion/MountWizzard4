@@ -26,24 +26,9 @@ from skyfield.almanac import dark_twilight_day, TWILIGHTS
 
 # local import
 from base import packageConfig
-if packageConfig.isAvailable:
-    from gui.extWindows.simulatorW import SimulatorWindow
-
-from gui.utilities.toolsQtWidget import sleepAndEvents
-from gui.extWindows.keypadW import KeypadWindow
+from gui.mainWindow.externalWindows import ExternalWindows
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsQtWidget import MWidget
-from gui.extWindows.messageW import MessageWindow
-from gui.extWindows.hemisphereW import HemisphereWindow
-from gui.extWindows.measureW import MeasureWindow
-from gui.extWindows.imageW import ImageWindow
-from gui.extWindows.satelliteW import SatelliteWindow
-from gui.extWindows.analyseW import AnalyseWindow
-from gui.extWindows.videoW1 import VideoWindow1
-from gui.extWindows.videoW2 import VideoWindow2
-from gui.extWindows.videoW3 import VideoWindow3
-from gui.extWindows.videoW4 import VideoWindow4
-from gui.extWindows.bigPopupW import BigPopup
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWmixin.tabMount import Mount
 from gui.mainWmixin.tabEnvironWeather import EnvironWeather
@@ -117,93 +102,14 @@ class MainWindow(
         self.msg = app.msg
         self.threadPool = app.threadPool
         self.deviceStat = app.deviceStat
-        self.uiWindows = app.uiWindows
+
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.extWindows = ExternalWindows(self)
         self.satStatus = False
         self.gameControllerRunning = False
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
-
-        self.uiWindows['showMessageW'] = {
-            'button': self.ui.openMessageW,
-            'classObj': None,
-            'name': 'MessageDialog',
-            'class': MessageWindow,
-        }
-        self.uiWindows['showHemisphereW'] = {
-            'button': self.ui.openHemisphereW,
-            'classObj': None,
-            'name': 'HemisphereDialog',
-            'class': HemisphereWindow,
-        }
-        self.uiWindows['showImageW'] = {
-            'button': self.ui.openImageW,
-            'classObj': None,
-            'name': 'ImageDialog',
-            'class': ImageWindow,
-        }
-        self.uiWindows['showMeasureW'] = {
-            'button': self.ui.openMeasureW,
-            'classObj': None,
-            'name': 'MeasureDialog',
-            'class': MeasureWindow,
-        }
-        self.uiWindows['showSatelliteW'] = {
-            'button': self.ui.openSatelliteW,
-            'classObj': None,
-            'name': 'SatelliteDialog',
-            'class': SatelliteWindow,
-        }
-        self.uiWindows['showAnalyseW'] = {
-            'button': self.ui.openAnalyseW,
-            'classObj': None,
-            'name': 'AnalyseDialog',
-            'class': AnalyseWindow,
-        }
-        self.uiWindows['showVideoW1'] = {
-            'button': self.ui.openV1,
-            'classObj': None,
-            'name': 'Video1',
-            'class': VideoWindow1,
-        }
-        self.uiWindows['showVideoW2'] = {
-            'button': self.ui.openV2,
-            'classObj': None,
-            'name': 'Video2',
-            'class': VideoWindow2,
-        }
-        self.uiWindows['showVideoW3'] = {
-            'button': self.ui.openV3,
-            'classObj': None,
-            'name': 'Video3',
-            'class': VideoWindow3,
-        }
-        self.uiWindows['showVideoW4'] = {
-            'button': self.ui.openV4,
-            'classObj': None,
-            'name': 'Video4',
-            'class': VideoWindow4,
-        }
-        if packageConfig.isAvailable:
-            self.uiWindows['showSimulatorW'] = {
-                'button': self.ui.mountConnected,
-                'classObj': None,
-                'name': 'SimulatorDialog',
-                'class': SimulatorWindow,
-            }
-        self.uiWindows['showKeypadW'] = {
-            'button': self.ui.openKeypadW,
-            'classObj': None,
-            'name': 'KeypadDialog',
-            'class': KeypadWindow,
-        }
-        self.uiWindows['showBigPopupW'] = {
-            'button': self.ui.big,
-            'classObj': None,
-            'name': 'BigPopup',
-            'class': BigPopup,
-        }
         self.deviceStatGui = {
             'dome': self.ui.domeConnected,
             'camera': self.ui.cameraConnected,
@@ -226,13 +132,9 @@ class MainWindow(
         self.ui.saveConfig.clicked.connect(self.saveConfig)
         self.app.seeingWeather.b = self.ui.label_b.property('a')
 
-        for window in self.uiWindows:
-            self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
-
         self.initConfig()
         self.ui.colorSet.currentIndexChanged.connect(self.refreshColorSet)
-        self.ui.collectWindows.clicked.connect(self.collectWindows)
-        self.showExtendedWindows()
+        self.extWindows.showExtendedWindows()
         self.activateWindow()
 
         self.ui.tabsMovable.clicked.connect(self.enableTabsMovable)
@@ -279,18 +181,6 @@ class MainWindow(
         self.show()
         return True
 
-    def storeConfigExtendedWindows(self):
-        """
-        :return: True for test purpose
-        """
-        config = self.app.config
-        for window in self.uiWindows:
-            config[window] = bool(self.uiWindows[window]['classObj'])
-            if config[window]:
-                self.uiWindows[window]['classObj'].storeConfig()
-
-        return True
-
     def storeConfig(self):
         """
         :return: True for test purpose
@@ -315,7 +205,7 @@ class MainWindow(
         self.getTabAndIndex(self.ui.toolsTabWidget, config, 'orderTools')
         self.getTabAndIndex(self.ui.satTabWidget, config, 'orderSatellite')
         self.mwSuper('storeConfig')
-        self.storeConfigExtendedWindows()
+        self.extWindows.storeConfigExtendedWindows()
         return True
 
     def enableTabsMovable(self):
@@ -341,7 +231,7 @@ class MainWindow(
         self.gameControllerRunning = False
         self.app.timer0_1s.stop()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
-        self.closeExtendedWindows()
+        self.extWindows.closeExtendedWindows()
         self.stopDrivers()
         self.threadPool.waitForDone(5000)
         super().closeEvent(closeEvent)
@@ -680,8 +570,8 @@ class MainWindow(
         """
         :return: True for test purpose
         """
-        for win in self.uiWindows:
-            winObj = self.uiWindows[win]
+        for win in self.extWindows.uiWindows:
+            winObj = self.extWindows.uiWindows[win]
 
             if winObj['classObj']:
                 self.changeStyleDynamic(winObj['button'], 'running', True)
@@ -827,21 +717,6 @@ class MainWindow(
 
         return True
 
-    def deleteWindowResource(self, widget=None):
-        """
-        :return: success
-        """
-        if not widget:
-            return False
-
-        for window in self.uiWindows:
-            if self.uiWindows[window]['name'] != widget.objectName():
-                continue
-            del self.uiWindows[window]['classObj']
-            self.uiWindows[window]['classObj'] = None
-
-        return True
-
     def setColorSet(self):
         """
         :return:
@@ -857,79 +732,6 @@ class MainWindow(
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
         self.app.colorChange.emit()
-        return True
-
-    def buildWindow(self, window):
-        """
-        buildWindow makes new object instance from window class. both are
-        stored in the uiWindows dict for usage.
-
-        :return: true for test purpose
-        """
-        self.uiWindows[window]['classObj'] = self.uiWindows[window]['class'](self.app)
-        self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
-        self.uiWindows[window]['classObj'].initConfig()
-        self.uiWindows[window]['classObj'].showWindow()
-        return True
-
-    def toggleWindow(self):
-        """
-        :return: true for test purpose
-        """
-        for window in self.uiWindows:
-            if self.uiWindows[window]['button'] != self.sender():
-                continue
-
-            if not self.uiWindows[window]['classObj']:
-                self.buildWindow(window)
-            else:
-                self.uiWindows[window]['classObj'].close()
-        return True
-
-    def showExtendedWindows(self):
-        """
-        showExtendedWindows opens all extended windows depending on their
-        opening status stored in the configuration dict.
-
-        :return: true for test purpose
-        """
-        for window in self.uiWindows:
-            if window == 'showSimulatorW':
-                continue
-            if not self.app.config.get(window, False):
-                continue
-
-            self.buildWindow(window)
-        return True
-
-    def waitClosedExtendedWindows(self):
-        """
-        waits until the window class is deleted
-        :return:
-        """
-        waitDeleted = True
-        while waitDeleted:
-            for window in self.uiWindows:
-                if self.uiWindows[window]['classObj']:
-                    continue
-
-                waitDeleted = False
-            sleepAndEvents(100)
-        return True
-
-    def closeExtendedWindows(self):
-        """
-        closeExtendedWindows closes all open extended windows by calling
-        close.
-
-        :return: true for test purpose
-        """
-        for window in self.uiWindows:
-            if not self.uiWindows[window]['classObj']:
-                continue
-
-            self.uiWindows[window]['classObj'].close()
-        self.waitClosedExtendedWindows()
         return True
 
     @staticmethod
@@ -948,13 +750,13 @@ class MainWindow(
         :param config:
         :return:
         """
-        self.closeExtendedWindows()
+        self.extWindows.closeExtendedWindows()
         self.stopDrivers()
         self.app.config = config
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
         self.initConfig()
-        self.showExtendedWindows()
+        self.extWindows.showExtendedWindows()
         return True
 
     def loadProfileGUI(self):
@@ -1068,17 +870,4 @@ class MainWindow(
         elif command == 'boot mount':
             self.mountBoot()
             self.msg.emit(2, 'System', 'Remote', 'Boot Mount remotely')
-        return True
-
-    def collectWindows(self):
-        """
-        :return:
-        """
-        for i, window in enumerate(self.uiWindows):
-            if self.uiWindows[window]['classObj']:
-                self.uiWindows[window]['classObj'].resize(800, 600)
-                self.uiWindows[window]['classObj'].move(i * 50 + 10, i * 50 + 10)
-                self.uiWindows[window]['classObj'].activateWindow()
-        self.move(i * 50 + 10, i * 50 + 10)
-        self.activateWindow()
         return True

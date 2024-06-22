@@ -123,6 +123,7 @@ class SatSearch:
     def processSatelliteSource(self):
         """
         """
+        self.ui.listSats.setRowCount(0)
         loader = self.app.mount.obsSite.loader
         satellites = loader.tle_file(self.satellites.dest)
         self.satellites.objects = {sat.name: sat for sat in satellites}
@@ -245,6 +246,8 @@ class SatSearch:
         timeNow = ts.now()
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
 
+        if not self.satellites.objects:
+            return
         for row in range(satTab.rowCount()):
             rect = satTab.visualRect(satTab.model().index(row, 0))
             if not viewPortRect.intersects(rect):
@@ -253,9 +256,9 @@ class SatSearch:
                 continue
 
             name = satTab.model().index(row, 1).data()
-            sat = self.satellites.objects[name]
+            sat = self.satellites.objects.get(name)
             satParam = findRangeRate(sat, loc, timeNow)
-            if not np.isnan(satParam[0]):
+            if not np.isnan(satParam[0]) and sat:
                 isSunlit = findSunlit(sat, eph, timeNow)
                 satRange = satParam[0]
                 if isSunlit:

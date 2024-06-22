@@ -97,6 +97,7 @@ class Comet:
     def processCometSource(self) -> None:
         """
         """
+        self.ui.listComets.setRowCount(0)
         with open(self.comets.dest) as inFile:
             try:
                 comets = json.load(inFile)

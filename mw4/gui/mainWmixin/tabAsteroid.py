@@ -100,6 +100,7 @@ class Asteroid:
     def processAsteroidSource(self) -> None:
         """
         """
+        self.ui.listAsteroids.setRowCount(0)
         with open(self.asteroids.dest) as inFile:
             try:
                 asteroids = json.load(inFile)

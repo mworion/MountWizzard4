@@ -63,7 +63,7 @@ def function(qapp):
             uiObjectList=QTableWidget(),
             uiSourceList=QComboBox(),
             uiSourceGroup=QGroupBox(),
-            processSourceFunc=test,
+            processSource=test,
         )
         function.window.app = App()
         function.window.threadPool = QThreadPool()
@@ -87,7 +87,7 @@ def test_procSourceData_1(function):
         returnValues = {'success': False}
 
     function.downloadPopup = Test()
-    function.procSourceData()
+    function.procSourceData(direct=False)
 
 
 def test_procSourceData_2(function):
@@ -96,8 +96,8 @@ def test_procSourceData_2(function):
 
     function.downloadPopup = Test()
     with mock.patch.object(function,
-                           'processSourceFunc'):
-        function.procSourceData()
+                           'processSource'):
+        function.procSourceData(direct=True)
 
 
 def test_runDownloadPopup_1(function):

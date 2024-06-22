@@ -175,8 +175,6 @@ class MountWizzard4(QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.plateSolve = PlateSolve(self)
-
-        self.uiWindows = {}
         self.mainW = MainWindow(self)
 
         self.mount.startTimers()

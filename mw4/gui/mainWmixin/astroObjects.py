@@ -26,6 +26,7 @@ from PySide6.QtWidgets import QListView
 from logic.databaseProcessing.dataWriter import DataWriter
 from gui.extWindows.downloadPopupW import DownloadPopup
 from gui.extWindows.uploadPopupW import UploadPopup
+from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class AstroObjects(QObject):
@@ -43,6 +44,7 @@ class AstroObjects(QObject):
         self.app = window.app
         self.msg = window.app.msg
         self.dest = None
+        self.dataValid = False
         self.objectText = objectText
         self.sourceUrls = sourceUrls
         self.uiObjectList = uiObjectList
@@ -50,7 +52,7 @@ class AstroObjects(QObject):
         self.uiSourceGroup = uiSourceGroup
         self.processSource = processSource
 
-        self.objects = None
+        self.objects = {}
         self.uploadPopup = None
         self.downloadPopup = None
         self.tempDir = self.app.mwGlob['tempDir']
@@ -87,6 +89,7 @@ class AstroObjects(QObject):
         if not direct:
             if not self.downloadPopup.returnValues['success']:
                 return
+        self.dataValid = False
         self.processSource()
         self.dataLoaded.emit()
 
@@ -104,14 +107,13 @@ class AstroObjects(QObject):
     def loadSourceUrl(self) -> None:
         """
         """
-        self.objects = None
+
         entry = self.uiSourceList.currentText()
         if not entry:
             return
         url = self.sourceUrls[entry]['url']
         fileName = self.sourceUrls[entry]['file']
         unzip = self.sourceUrls[entry]['unzip']
-
         self.dest = os.path.normpath(f'{self.dataDir}/{fileName}')
         localSourceAvailable = os.path.isfile(self.dest)
 
@@ -125,7 +127,7 @@ class AstroObjects(QObject):
 
         self.setAge(0)
         self.msg.emit(1, self.objectText, 'Download', f'{url}')
-        self.log.info(f'{self.objectText} data loaded from {url}')
+        self.log.info(f'{self.objectText} loaded {url}, {unzip}, {fileName}')
         self.runDownloadPopup(url, unzip)
 
     def finishProgObjects(self) -> None:
@@ -138,7 +140,7 @@ class AstroObjects(QObject):
             self.msg.emit(2, self.objectText.capitalize(), 'Program',
                           'Upload failed')
 
-    def runUploadPopup(self, url:str) -> None:
+    def runUploadPopup(self, url: str) -> None:
         """
         """
         self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)

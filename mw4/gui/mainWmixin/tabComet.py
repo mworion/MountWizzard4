@@ -45,14 +45,20 @@ class Comet:
         self.ui.progCometSelected.clicked.connect(self.comets.progSelected)
         self.ui.progCometFiltered.clicked.connect(self.comets.progFiltered)
         self.ui.progCometFull.clicked.connect(self.comets.progFull)
+        self.app.start3s.connect(self.initConfigDelayedComet)
 
     def initConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
         self.ui.cometFilterText.setText(config.get('cometFilterText'))
-        self.ui.cometSourceList.setCurrentIndex(config.get('cometSource', 0))
         self.ui.mpcTabWidget.setCurrentIndex(config.get('mpcTab', 0))
+
+    def initConfigDelayedComet(self):
+        """
+        """
+        config = self.app.config['mainW']
+        self.ui.cometSourceList.setCurrentIndex(config.get('cometSource', 0))
 
     def storeConfig(self) -> None:
         """
@@ -75,8 +81,8 @@ class Comet:
         for i, hs in enumerate(hSet):
             self.ui.listComets.setColumnWidth(i, hs)
         self.ui.listComets.verticalHeader().setDefaultSectionSize(16)
-        self.ui.listComets.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.ui.listComets.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.ui.listComets.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.ui.listComets.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     @staticmethod
     def generateName(mp: dict) -> str:
@@ -101,10 +107,11 @@ class Comet:
         with open(self.comets.dest) as inFile:
             try:
                 comets = json.load(inFile)
-            except Exception:
+            except Exception as e:
+                self.log.error(f'Error {e} loading from {self.comets.dest}')
                 comets = []
 
-        self.comets.objects = {}
+        self.comets.objects.clear()
         for comet in comets:
             text = self.generateName(comet)
             if not text:
@@ -115,10 +122,11 @@ class Comet:
         """
         """
         filterStr = self.ui.cometFilterText.text().lower()
+        model = self.ui.listComets.model()
 
-        for row in range(self.ui.listComets.model().rowCount()):
-            name = self.ui.listComets.model().index(row, 1).data().lower()
-            number = self.ui.listComets.model().index(row, 0).data().lower()
+        for row in range(model.rowCount()):
+            name = model.index(row, 1).data().lower()
+            number = model.index(row, 0).data().lower()
             show = filterStr in number + name
             self.ui.listComets.setRowHidden(row, not show)
 
@@ -169,5 +177,5 @@ class Comet:
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listComets.setItem(row, 5, entry)
-
+            self.comets.dataValid = True
             self.filterListComets()

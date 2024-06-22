@@ -42,16 +42,21 @@ class Asteroid:
 
         self.asteroids.dataLoaded.connect(self.fillAsteroidListName)
         self.ui.asteroidFilterText.textChanged.connect(self.filterListAsteroids)
-
         self.ui.progAsteroidSelected.clicked.connect(self.asteroids.progSelected)
         self.ui.progAsteroidFiltered.clicked.connect(self.asteroids.progFiltered)
         self.ui.progAsteroidFull.clicked.connect(self.asteroids.progFull)
+        self.app.start3s.connect(self.initConfigDelayedAsteroid)
 
     def initConfig(self) -> None:
         """
         """
         config = self.app.config['mainW']
         self.ui.asteroidFilterText.setText(config.get('asteroidFilterText'))
+
+    def initConfigDelayedAsteroid(self):
+        """
+        """
+        config = self.app.config['mainW']
         self.ui.asteroidSourceList.setCurrentIndex(config.get('asteroidSource', 0))
 
     def storeConfig(self) -> None:
@@ -66,9 +71,6 @@ class Asteroid:
         """
         """
         self.ui.listAsteroids.setRowCount(0)
-        hLabels = ['Num', 'Asteroid Name', 'Test\n[km]']
-        hSet = [50, 205, 20]
-
         hLabels = ['Num', 'Asteroid Name', 'Orbit\nType', 'Perihelion\nDist [AU]',
                    'Aphelion\nDist [AU]', 'Eccentr.']
         hSet = [50, 205, 50, 85, 85, 65]
@@ -78,8 +80,8 @@ class Asteroid:
         for i, hs in enumerate(hSet):
             self.ui.listAsteroids.setColumnWidth(i, hs)
         self.ui.listAsteroids.verticalHeader().setDefaultSectionSize(16)
-        self.ui.listAsteroids.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.ui.listAsteroids.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.ui.listAsteroids.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.ui.listAsteroids.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     @staticmethod
     def generateName(mp: dict) -> str:
@@ -104,10 +106,11 @@ class Asteroid:
         with open(self.asteroids.dest) as inFile:
             try:
                 asteroids = json.load(inFile)
-            except Exception:
-                asteroids = {}
+            except Exception as e:
+                self.log.error(f'Error {e} loading from {self.asteroids.dest}')
+                asteroids = []
 
-        self.asteroids.objects = {}
+        self.asteroids.objects.clear()
         for asteroid in asteroids:
             text = self.generateName(asteroid)
             if not text:
@@ -168,5 +171,5 @@ class Asteroid:
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listAsteroids.setItem(row, 5, entry)
-
+        self.asteroids.dataValid = True
         self.filterListAsteroids()

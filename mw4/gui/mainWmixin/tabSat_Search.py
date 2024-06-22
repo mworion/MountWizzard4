@@ -37,7 +37,7 @@ class SatSearch:
     setSatListItem = Signal(int, int, object)
     
     def __init__(self):
-        self.satellite = None
+        self.satellite = {}
         self.prepareSatTable()
 
         self.satellites = AstroObjects(self,
@@ -57,16 +57,15 @@ class SatSearch:
         self.ui.satUpTimeWindow.valueChanged.connect(self.filterListSats)
         self.setSatListItem.connect(self.setListSatsEntry)
         self.app.update1s.connect(self.calcSatListDynamic)
-        self.ui.unitTimeUTC.toggled.connect(self.calcSatList)
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
+        self.app.start3s.connect(self.initConfigDelayedSat)
 
     def initConfig(self):
         """
         """
         config = self.app.config['mainW']
-        self.ui.satSourceList.setCurrentIndex(config.get('satSource', 0))
         self.ui.satFilterText.setText(config.get('satFilterText'))
         self.ui.satTwilight.setCurrentIndex(config.get('satTwilight', 4))
         self.ui.autoSwitchTrack.setChecked(config.get('autoSwitchTrack', False))
@@ -76,6 +75,12 @@ class SatSearch:
         self.ui.satIsUp.setChecked(config.get('satIsUp', False))
         self.ui.satUpTimeWindow.setValue(config.get('satUpTimeWindow', 2))
         self.ui.satAltitudeMin.setValue(config.get('satAltitudeMin', 30))
+
+    def initConfigDelayedSat(self):
+        """
+        """
+        config = self.app.config['mainW']
+        self.ui.satSourceList.setCurrentIndex(config.get('satSource', 0))
 
     def storeConfig(self):
         """
@@ -105,8 +110,8 @@ class SatSearch:
         for i, hs in enumerate(hSet):
             self.ui.listSats.setColumnWidth(i, hs)
         self.ui.listSats.verticalHeader().setDefaultSectionSize(16)
-        self.ui.listSats.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.ui.listSats.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.ui.listSats.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     def chooseSatellite(self):
         """
@@ -126,7 +131,9 @@ class SatSearch:
         self.ui.listSats.setRowCount(0)
         loader = self.app.mount.obsSite.loader
         satellites = loader.tle_file(self.satellites.dest)
-        self.satellites.objects = {sat.name: sat for sat in satellites}
+        self.satellites.objects.clear()
+        for sat in satellites:
+            self.satellites.objects[sat.name] = sat
 
     @staticmethod
     def positionCursorInSatTable(satTab, satName):
@@ -238,6 +245,8 @@ class SatSearch:
             return
         if self.ui.mainTabWidget.currentIndex() != 5:
             return
+        if not self.satellites.dataValid:
+            return
 
         satTab = self.ui.listSats
         loc = self.app.mount.obsSite.location
@@ -246,8 +255,6 @@ class SatSearch:
         timeNow = ts.now()
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
 
-        if not self.satellites.objects:
-            return
         for row in range(satTab.rowCount()):
             rect = satTab.visualRect(satTab.model().index(row, 0))
             if not viewPortRect.intersects(rect):
@@ -256,7 +263,7 @@ class SatSearch:
                 continue
 
             name = satTab.model().index(row, 1).data()
-            sat = self.satellites.objects.get(name)
+            sat = self.satellites.objects[name]
             satParam = findRangeRate(sat, loc, timeNow)
             if not np.isnan(satParam[0]) and sat:
                 isSunlit = findSunlit(sat, eph, timeNow)
@@ -353,4 +360,5 @@ class SatSearch:
             entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft |
                                    Qt.AlignmentFlag.AlignVCenter)
             self.ui.listSats.setItem(row, 1, entry)
+        self.satellites.dataValid = True
         self.calcSatList()

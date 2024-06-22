@@ -459,7 +459,7 @@ class SatTrack(object):
             return False
 
         now = self.app.mount.obsSite.ts.now()
-        winObj = self.app.uiWindows['showSatelliteW']
+        winObj = self.extWindows.uiWindows['showSatelliteW']
         if not winObj.get('classObj'):
             return False
 

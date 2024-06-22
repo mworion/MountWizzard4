@@ -52,9 +52,13 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
+    function.initConfig()
+
+
+def test_initConfigDelayedSat_1(function):
     with mock.patch.object(function.ui.satSourceList,
                            'setCurrentIndex'):
-        function.initConfig()
+        function.initConfigDelayedSat()
 
 
 def test_storeConfig_1(function):
@@ -66,9 +70,14 @@ def test_prepareSatTable_1(function):
 
 
 def test_processSatelliteSource(function):
+    tle = ["NOAA 8",
+           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
+    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
+
     with mock.patch.object(function.app.mount.obsSite.loader,
                            'tle_file',
-                           return_values={}):
+                           return_value=[sat]):
         function.processSatelliteSource()
 
 
@@ -207,13 +216,13 @@ def test_calcSatListDynamic_2(function):
 
 
 def test_calcSatListDynamic_3(function):
-    function.satellites.objects = None
     function.ui.satTabWidget.setCurrentIndex(0)
     function.ui.mainTabWidget.setCurrentIndex(5)
     function.calcSatListDynamic()
 
 
 def test_calcSatListDynamic_4(function):
+    function.satellites.dataValid = True
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
@@ -239,6 +248,7 @@ def test_calcSatListDynamic_4(function):
 
 
 def test_calcSatListDynamic_5(function):
+    function.satellites.dataValid = True
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
@@ -265,6 +275,7 @@ def test_calcSatListDynamic_5(function):
 
 
 def test_calcSatListDynamic_6(function):
+    function.satellites.dataValid = True
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
@@ -294,6 +305,7 @@ def test_calcSatListDynamic_6(function):
 
 
 def test_calcSatListDynamic_7(function):
+    function.satellites.dataValid = True
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
@@ -326,6 +338,7 @@ def test_calcSatListDynamic_7(function):
 
 
 def test_calcSatListDynamic_8(function):
+    function.satellites.dataValid = True
     tle = ["NOAA 8",
            "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]

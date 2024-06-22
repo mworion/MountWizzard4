@@ -136,8 +136,8 @@ class Comet:
         self.ui.listComets.setRowCount(0)
         for number, name in enumerate(self.comets.objects):
             row = self.ui.listComets.rowCount()
-
             self.ui.listComets.insertRow(row)
+
             entry = QTableWidgetItem(f'{number:5d}')
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight |
                                    Qt.AlignmentFlag.AlignVCenter)
@@ -177,5 +177,6 @@ class Comet:
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listComets.setItem(row, 5, entry)
-            self.comets.dataValid = True
-            self.filterListComets()
+
+        self.comets.dataValid = True
+        self.filterListComets()

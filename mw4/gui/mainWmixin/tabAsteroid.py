@@ -171,5 +171,6 @@ class Asteroid:
                 entry.setTextAlignment(Qt.AlignmentFlag.AlignHCenter |
                                        Qt.AlignmentFlag.AlignVCenter)
                 self.ui.listAsteroids.setItem(row, 5, entry)
+
         self.asteroids.dataValid = True
         self.filterListAsteroids()

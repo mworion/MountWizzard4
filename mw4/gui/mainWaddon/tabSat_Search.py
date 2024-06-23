@@ -44,7 +44,7 @@ class SatSearch(MWidget):
         self.ui = mainW.ui
         self.prepareSatTable()
 
-        self.satellites = AstroObjects(self,
+        self.satellites = AstroObjects(self.mainW,
                                        'satellite',
                                        satSourceURLs,
                                        self.ui.listSats,
@@ -346,7 +346,7 @@ class SatSearch(MWidget):
         worker = Worker(self.workerCalcSatList)
         worker.signals.finished.connect(self.filterListSats)
         self.changeStyleDynamic(self.ui.satFilterGroup, 'running', True)
-        self.threadPool.start(worker)
+        self.mainW.threadPool.start(worker)
 
     def fillSatListName(self):
         """

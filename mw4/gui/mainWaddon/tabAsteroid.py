@@ -38,7 +38,7 @@ class Asteroid(MWidget):
         self.ui = mainW.ui
 
         self.prepareAsteroidTable()
-        self.asteroids = AstroObjects(self,
+        self.asteroids = AstroObjects(self.mainW,
                                       'asteroid',
                                       asteroidSourceURLs,
                                       self.ui.listAsteroids,

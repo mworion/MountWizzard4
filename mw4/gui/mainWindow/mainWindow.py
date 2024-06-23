@@ -31,6 +31,8 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWindow.externalWindows import ExternalWindows
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
 from logic.profiles.profile import loadProfile, saveProfile, blendProfile
+from mountcontrol.setting import Setting
+from mountcontrol.obsSite import ObsSite
 
 
 class MainWindow(MWidget):
@@ -210,15 +212,14 @@ class MainWindow(MWidget):
         super().closeEvent(closeEvent)
         self.app.quit()
 
-    def quitSave(self):
+    def quitSave(self) -> None:
         """
         """
         self.app.storeConfig()
         self.saveConfig()
         self.close()
-        return True
 
-    def updateMountConnStat(self, status):
+    def updateMountConnStat(self, status: bool) -> None:
         """
         """
         hasSim = packageConfig.isAvailable
@@ -232,7 +233,7 @@ class MainWindow(MWidget):
         elif not status and hasSim:
             self.ui.mountConnected.setText('Mount')
 
-    def updateMountWeatherStat(self, setting):
+    def updateMountWeatherStat(self, setting: Setting) -> None:
         """
         """
         if setting.weatherTemperature is None and setting.weatherPressure is None:
@@ -243,7 +244,7 @@ class MainWindow(MWidget):
             else:
                 self.app.deviceStat['directWeather'] = True
 
-    def smartFunctionGui(self):
+    def smartFunctionGui(self) -> None:
         """
         """
         isMountReady = bool(self.app.deviceStat.get('mount'))
@@ -300,7 +301,7 @@ class MainWindow(MWidget):
         else:
             self.ui.useDomeAz.setEnabled(False)
 
-    def smartTabGui(self):
+    def smartTabGui(self) -> None:
         """
         """
         tabChanged = False
@@ -326,7 +327,7 @@ class MainWindow(MWidget):
             ui = self.ui.toolsTabWidget
             ui.setStyleSheet(ui.styleSheet())
 
-    def setEnvironDeviceStats(self):
+    def setEnvironDeviceStats(self) -> None:
         """
         """
         refracOn = self.app.mount.setting.statusRefraction == 1
@@ -340,10 +341,11 @@ class MainWindow(MWidget):
             self.app.deviceStat['refraction'] = True
         else:
             self.ui.refractionConnected.setText('Refrac Auto')
-            isSource = self.app.deviceStat.get(self.refractionSource, False)
+            isSource = self.app.deviceStat.get(
+                self.mainWindowAddons.addons['EnvironWeather'].refractionSource, False)
             self.app.deviceStat['refraction'] = isSource
 
-    def updateDeviceStats(self):
+    def updateDeviceStats(self) -> None:
         """
         """
         for device, ui in self.deviceStatGui.items():
@@ -358,22 +360,22 @@ class MainWindow(MWidget):
         self.changeStyleDynamic(self.ui.mountOn, 'running', isMount)
         self.changeStyleDynamic(self.ui.mountOff, 'running', not isMount)
 
-    def updatePlateSolveStatus(self, text):
+    def updatePlateSolveStatus(self, text: str) -> None:
         """
         """
         self.ui.plateSolveText.setText(text)
 
-    def updateDomeStatus(self, text):
+    def updateDomeStatus(self, text: str) -> None:
         """
         """
         self.ui.domeText.setText(text)
 
-    def updateCameraStatus(self, text):
+    def updateCameraStatus(self, text: str) -> None:
         """
         """
         self.ui.cameraText.setText(text)
 
-    def updateControllerStatus(self):
+    def updateControllerStatus(self) -> None:
         """
         """
         gcStatus = self.gameControllerRunning
@@ -383,7 +385,7 @@ class MainWindow(MWidget):
         self.ui.controller4.setEnabled(gcStatus)
         self.ui.controller5.setEnabled(gcStatus)
 
-    def updateThreadAndOnlineStatus(self):
+    def updateThreadAndOnlineStatus(self) -> None:
         """
         """
         if self.ui.isOnline.isChecked():
@@ -405,7 +407,7 @@ class MainWindow(MWidget):
         t += f' - Threads:{activeCount:2d} / 30 - Disk free: {free}%'
         self.ui.statusOnline.setTitle(t)
 
-    def updateTime(self):
+    def updateTime(self) -> None:
         """
         """
         self.ui.timeComputer.setText(datetime.now().strftime('%H:%M:%S'))
@@ -413,7 +415,7 @@ class MainWindow(MWidget):
         t = f'TZ: {tzT}'
         self.ui.statusTime.setTitle(t)
 
-    def updateStatusGUI(self, obs):
+    def updateStatusGUI(self, obs: ObsSite) -> None:
         """
         """
         if obs.statusText() is not None:
@@ -443,25 +445,25 @@ class MainWindow(MWidget):
             self.satStatus = False
 
     @staticmethod
-    def checkExtension(filePath, ext):
+    def checkExtension(filePath: str, ext: str) -> str:
         """
         """
         if not filePath.endswith(ext):
             filePath += ext
         return filePath
 
-    def switchProfile(self, config):
+    def switchProfile(self, config: dict) -> None:
         """
         """
         self.externalWindows.closeExtendedWindows()
-        self.stopDrivers()
+        self.mainWindowAddons.addons['SettDevice'].stopDrivers()
         self.app.config = config
         topo = self.app.initConfig()
         self.app.mount.obsSite.location = topo
         self.initConfig()
         self.externalWindows.showExtendedWindows()
 
-    def loadProfileGUI(self):
+    def loadProfileGUI(self) -> bool:
         """
         """
         folder = self.app.mwGlob['configDir']
@@ -483,7 +485,7 @@ class MainWindow(MWidget):
         self.switchProfile(config)
         return True
 
-    def addProfileGUI(self):
+    def addProfileGUI(self) -> bool:
         """
         """
         config = self.app.config
@@ -513,7 +515,7 @@ class MainWindow(MWidget):
         self.switchProfile(config)
         return True
 
-    def saveConfigAs(self):
+    def saveConfigAs(self) -> bool:
         """
         """
         folder = self.app.mwGlob['configDir']
@@ -537,7 +539,7 @@ class MainWindow(MWidget):
                           f'{name}] cannot no be saved')
         return True
 
-    def saveConfig(self):
+    def saveConfig(self) -> bool:
         """
         """
         self.storeConfig()
@@ -553,7 +555,7 @@ class MainWindow(MWidget):
                           'Actual profile cannot not be saved')
         return suc
 
-    def remoteCommand(self, command):
+    def remoteCommand(self, command: str) -> None:
         """
         remoteCommand received signals from remote class and executes them.
         :param command:
@@ -563,9 +565,8 @@ class MainWindow(MWidget):
             self.quitSave()
             self.msg.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
         elif command == 'shutdown mount':
-            self.mountShutdown()
+            self.mainWindowAddons.addons['SettMount'].mountShutdown()
             self.msg.emit(2, 'System', 'Remote', 'Shutdown MW4 remotely')
         elif command == 'boot mount':
-            self.mountBoot()
+            self.mainWindowAddons.addons['SettMount'].mountBoot()
             self.msg.emit(2, 'System', 'Remote', 'Boot Mount remotely')
-        return True

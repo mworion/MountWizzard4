@@ -37,7 +37,7 @@ class Comet(MWidget):
         self.app = mainW.app
         self.ui = mainW.ui
         self.prepareCometTable()
-        self.comets = AstroObjects(self,
+        self.comets = AstroObjects(self.mainW,
                                    'comet',
                                    cometSourceURLs,
                                    self.ui.listComets,

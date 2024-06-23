@@ -44,7 +44,7 @@ def function(qapp):
     yield func
 
 
-def test_storeConfigExtendedWindows_1(function):
+def test_storeConfig_1(function):
     class Test:
         @staticmethod
         def storeConfig():
@@ -58,9 +58,18 @@ def test_storeConfigExtendedWindows_1(function):
         'class': None,
         }
     }
-    function.app.config['showSimulatorW'] = True
     function.storeConfig()
     function.uiWindows = test
+
+
+def test_updateWindowsStats_1(function):
+    function.uiWindows['showMessageW']['classObj'] = None
+    function.updateWindowsStats()
+
+
+def test_updateWindowsStats_2(function):
+    function.uiWindows['showMessageW']['classObj'] = 1
+    function.updateWindowsStats()
 
 
 def test_deleteWindowResource_1(function):
@@ -100,37 +109,24 @@ def test_buildWindow_1(function):
 
 
 def test_toggleWindow_1(function):
-    function.toggleWindow()
-
-
-def test_toggleWindow_2(function):
-    def Sender():
-        return function.mainW.ui.openImageW
-
-    function.sender = Sender
     function.uiWindows['showImageW']['classObj'] = None
 
     with mock.patch.object(function,
                            'buildWindow'):
-        function.toggleWindow()
+        function.toggleWindow('showImageW')
 
 
-def test_toggleWindow_3(function):
+def test_toggleWindow_2(function):
     class Test(QObject):
         destroyed = Signal()
 
         @staticmethod
         def close():
             return
-
-    def Sender():
-        return function.mainW.ui.openImageW
-
-    function.sender = Sender
     function.uiWindows['showImageW']['classObj'] = Test()
     with mock.patch.object(function,
                            'buildWindow'):
-        function.toggleWindow()
+        function.toggleWindow('showImageW')
 
 
 def test_showExtendedWindows_1(function):

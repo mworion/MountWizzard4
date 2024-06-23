@@ -138,9 +138,8 @@ class ExternalWindows(MWidget):
             if config[window]:
                 self.uiWindows[window]['classObj'].storeConfig()
 
-    def updateWindowsStats(self):
+    def updateWindowsStats(self) -> None:
         """
-        :return: True for test purpose
         """
         for win in self.uiWindows:
             winObj = self.uiWindows[win]
@@ -149,7 +148,6 @@ class ExternalWindows(MWidget):
                 self.changeStyleDynamic(winObj['button'], 'running', True)
             else:
                 self.changeStyleDynamic(winObj['button'], 'running', False)
-        return True
 
     def deleteWindowResource(self, widget: QWidget = None) -> bool:
         """
@@ -192,8 +190,6 @@ class ExternalWindows(MWidget):
 
     def waitClosedExtendedWindows(self) -> bool:
         """
-        waits until the window class is deleted
-        :return:
         """
         waitDeleted = True
         while waitDeleted:

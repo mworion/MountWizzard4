@@ -27,7 +27,7 @@ from PySide6.QtWidgets import QWidget
 
 # local import
 from mainApp import MountWizzard4
-from gui.mainWmixin.astroObjects import AstroObjects
+from gui.mainWaddon.astroObjects import AstroObjects
 from base.loggerMW import setupLogging
 import resource.resources as res
 res.qInitResources()

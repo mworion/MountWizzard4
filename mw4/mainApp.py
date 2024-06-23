@@ -28,7 +28,7 @@ from importlib_metadata import version
 # local import
 from base.loggerMW import setCustomLoggingLevel
 from mountcontrol import qtmount
-from gui.mainWindow.mainW import MainWindow
+from gui.mainWindow.mainWindow import MainWindow
 from logic.powerswitch.kmRelay import KMRelay
 from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.hipparcos import Hipparcos

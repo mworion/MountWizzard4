@@ -60,7 +60,7 @@ setup(
         'mw4.gui.extWindows.hemisphere',
         'mw4.gui.extWindows.image',
         'mw4.gui.extWindows.simulator',
-        'mw4.gui.mainWmixin',
+        'mw4.gui.mainWaddon',
         'mw4.gui.mainWindow',
         'mw4.gui.utilities',
         'mw4.gui.widgets',

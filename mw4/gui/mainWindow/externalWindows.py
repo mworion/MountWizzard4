@@ -26,7 +26,7 @@ from base import packageConfig
 if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
 
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from gui.extWindows.keypadW import KeypadWindow
 from gui.extWindows.messageW import MessageWindow
 from gui.extWindows.hemisphereW import HemisphereWindow
@@ -41,7 +41,7 @@ from gui.extWindows.videoW4 import VideoWindow4
 from gui.extWindows.bigPopupW import BigPopup
 
 
-class ExternalWindows:
+class ExternalWindows(MWidget):
     """
     """
 
@@ -49,9 +49,9 @@ class ExternalWindows:
 
     def __init__(self, mainW):
         super().__init__()
-
         self.mainW = mainW
         self.app = mainW.app
+
         self.uiWindows = {'showMessageW': {
             'button': self.mainW.ui.openMessageW,
             'classObj': None,
@@ -126,6 +126,7 @@ class ExternalWindows:
             self.uiWindows[window]['button'].clicked.connect(
                 partial(self.toggleWindow, window))
 
+        self.app.update1s.connect(self.updateWindowsStats)
         self.mainW.ui.collectWindows.clicked.connect(self.collectWindows)
 
     def storeConfig(self) -> None:
@@ -136,6 +137,19 @@ class ExternalWindows:
             config[window] = bool(self.uiWindows[window]['classObj'])
             if config[window]:
                 self.uiWindows[window]['classObj'].storeConfig()
+
+    def updateWindowsStats(self):
+        """
+        :return: True for test purpose
+        """
+        for win in self.uiWindows:
+            winObj = self.uiWindows[win]
+
+            if winObj['classObj']:
+                self.changeStyleDynamic(winObj['button'], 'running', True)
+            else:
+                self.changeStyleDynamic(winObj['button'], 'running', False)
+        return True
 
     def deleteWindowResource(self, widget: QWidget = None) -> bool:
         """
@@ -160,6 +174,14 @@ class ExternalWindows:
         self.uiWindows[window]['classObj'].initConfig()
         self.uiWindows[window]['classObj'].showWindow()
 
+    def showExtendedWindows(self) -> None:
+        """
+        """
+        for window in self.uiWindows:
+            if not self.app.config.get(window, False):
+                continue
+            self.buildWindow(window)
+
     def toggleWindow(self, windowName) -> None:
         """
         """
@@ -167,16 +189,6 @@ class ExternalWindows:
             self.buildWindow(windowName)
         else:
             self.uiWindows[windowName]['classObj'].close()
-
-    def showExtendedWindows(self) -> None:
-        """
-        """
-        for window in self.uiWindows:
-            if window == 'showSimulatorW':
-                continue
-            if not self.app.config.get(window, False):
-                continue
-            self.buildWindow(window)
 
     def waitClosedExtendedWindows(self) -> bool:
         """
@@ -206,7 +218,7 @@ class ExternalWindows:
     def collectWindows(self) -> None:
         """
         """
-        i=0
+        i = 0
         for i, window in enumerate(self.uiWindows):
             if self.uiWindows[window]['classObj']:
                 self.uiWindows[window]['classObj'].resize(800, 600)

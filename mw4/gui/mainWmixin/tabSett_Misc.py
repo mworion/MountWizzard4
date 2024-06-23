@@ -33,15 +33,21 @@ import webbrowser
 
 # local import
 from base.loggerMW import setCustomLoggingLevel
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from base.tpool import Worker
 
 
-class SettMisc(object):
+class SettMisc(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
+
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
         self.gameControllerList = dict()
@@ -205,6 +211,24 @@ class SettMisc(object):
         config['gameControllerList'] = self.ui.gameControllerList.currentIndex()
         return True
 
+    def setupIcons(self):
+        """
+        """
+        self.wIcon(self.ui.installVersion, 'world')
+        pixmap = self.svg2pixmap(':/icon/controller.svg', self.M_BLUE)
+        self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
+        pixmap = self.svg2pixmap(':/icon/controllerNew.svg', self.M_BLUE)
+        self.ui.controllerOverview.setPixmap(pixmap)
+        self.ui.controller1.setEnabled(False)
+        self.ui.controller2.setEnabled(False)
+        self.ui.controller3.setEnabled(False)
+        self.ui.controller4.setEnabled(False)
+        self.ui.controller5.setEnabled(False)
+
     def sendGameControllerSignals(self, act, old):
         """
         :param act:
@@ -319,7 +343,7 @@ class SettMisc(object):
         :return:
         """
         worker = Worker(self.workerGameController)
-        self.threadPool.start(worker)
+        self.mainW.threadPool.start(worker)
         return True
 
     @staticmethod
@@ -342,7 +366,7 @@ class SettMisc(object):
         """
         isController = self.ui.gameControllerGroup.isChecked()
         if not isController:
-            self.gameControllerRunning = False
+            self.app.gameControllerRunning = False
             return False
         if self.gameControllerRunning:
             return False
@@ -361,7 +385,7 @@ class SettMisc(object):
         if len(self.gameControllerList) == 0:
             return False
 
-        self.gameControllerRunning = True
+        self.app.gameControllerRunning = True
         self.startGameController()
         return True
 
@@ -554,7 +578,6 @@ class SettMisc(object):
         os.execl(pythonPath, pythonRuntime, updaterScript, versionPackage,
                  str(self.pos().x()), str(self.pos().y()), updateType,
                  str(self.colorSet))
-        return True
 
     def installVersion(self):
         """

@@ -21,14 +21,21 @@ import socket
 import wakeonlan
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.mount import checkFormatMAC
 
 
-class SettMount(object):
+class SettMount(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
+
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
@@ -223,7 +230,7 @@ class SettMount(object):
         syncTimeNone = self.ui.syncTimeNone.isChecked()
         if syncTimeNone:
             return False
-        if not self.deviceStat['mount']:
+        if not self.app.deviceStat['mount']:
             return False
 
         doSyncNotTrack = self.ui.syncTimeNotTrack.isChecked()

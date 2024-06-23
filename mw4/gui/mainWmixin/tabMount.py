@@ -17,6 +17,7 @@
 # standard libraries
 import webbrowser
 import time
+from functools import partial
 
 # external packages
 from PySide6.QtWidgets import QInputDialog, QLineEdit
@@ -24,9 +25,8 @@ from PySide6.QtGui import QTextCursor
 from skyfield.api import wgs84
 
 # local import
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from gui.utilities.slewInterface import SlewInterface
-from gui.mainWmixin.tabMountSett import MountSett
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
@@ -34,48 +34,77 @@ from mountcontrol.convert import valueToFloat
 from mountcontrol.connection import Connection
 
 
-class Mount(SlewInterface, MountSett):
+class Mount(MWidget, SlewInterface):
     """
     """
 
-    def __init__(self):
-        self.slewSpeeds = {self.ui.slewSpeedMax: self.app.mount.setting.setSlewSpeedMax,
-                           self.ui.slewSpeedHigh: self.app.mount.setting.setSlewSpeedHigh,
-                           self.ui.slewSpeedMed: self.app.mount.setting.setSlewSpeedMed,
-                           self.ui.slewSpeedLow: self.app.mount.setting.setSlewSpeedLow,
-                           }
+    def __init__(self, mainW):
+        super().__init__()
+
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
+
+        self.slewSpeeds = {
+            'max': {'button': self.ui.slewSpeedMax,
+                    'func': self.app.mount.setting.setSlewSpeedMax},
+            'high': {'button': self.ui.slewSpeedHigh,
+                     'func': self.app.mount.setting.setSlewSpeedHigh},
+            'med': {'button': self.ui.slewSpeedMed,
+                    'func': self.app.mount.setting.setSlewSpeedMed},
+            'low': {'button': self.ui.slewSpeedLow,
+                    'func': self.app.mount.setting.setSlewSpeedLow}}
+
+        self.setupMoveClassic = {
+            'N': {'button': self.ui.moveNorth,
+                  'coord': [1, 0]},
+            'NE': {'button': self.ui.moveNorthEast,
+                   'coord': [1, 1]},
+            'E': {'button': self.ui.moveEast,
+                  'coord': [0, 1]},
+            'SE': {'button': self.ui.moveSouthEast,
+                   'coord': [-1, 1]},
+            'S': {'button': self.ui.moveSouth,
+                  'coord': [-1, 0]},
+            'SW': {'button': self.ui.moveSouthWest,
+                   'coord': [-1, -1]},
+            'W': {'button': self.ui.moveWest,
+                  'coord': [0, -1]},
+            'NW': {'button': self.ui.moveNorthWest,
+                   'coord': [1, -1]},
+            'STOP': {'button': self.ui.stopMoveAll,
+                     'coord': [0, 0]}}
+
+        self.setupMoveAltAz = {
+            'N': {'button': self.ui.moveNorthAltAz,
+                  'coord': [1, 0]},
+            'NE': {'button': self.ui.moveNorthEastAltAz,
+                   'coord': [1, 1]},
+            'E': {'button': self.ui.moveEastAltAz,
+                  'coord': [0, 1]},
+            'SE': {'button': self.ui.moveSouthEastAltAz,
+                   'coord': [-1, 1]},
+            'S': {'button': self.ui.moveSouthAltAz,
+                  'coord': [-1, 0]},
+            'SW': {'button': self.ui.moveSouthWestAltAz,
+                   'coord': [-1, -1]},
+            'W': {'button': self.ui.moveWestAltAz,
+                  'coord': [-1, 0]},
+            'NW': {'button': self.ui.moveNorthWestAltAz,
+                   'coord': [1, -1]}}
+
         self.setupStepsizes = {'Stepsize 0.25°': 0.25,
                                'Stepsize 0.5°': 0.5,
                                'Stepsize 1.0°': 1,
                                'Stepsize 2.0°': 2,
                                'Stepsize 5.0°': 5,
                                'Stepsize 10°': 10,
-                               'Stepsize 20°': 20,
-                               }
-        self.setupMoveClassic = {self.ui.moveNorth: [1, 0],
-                                 self.ui.moveNorthEast: [1, 1],
-                                 self.ui.moveEast: [0, 1],
-                                 self.ui.moveSouthEast: [-1, 1],
-                                 self.ui.moveSouth: [-1, 0],
-                                 self.ui.moveSouthWest: [-1, -1],
-                                 self.ui.moveWest: [0, -1],
-                                 self.ui.moveNorthWest: [1, -1],
-                                 self.ui.stopMoveAll: [0, 0],
-                                 }
-        self.setupMoveAltAz = {self.ui.moveNorthAltAz: [1, 0],
-                               self.ui.moveNorthEastAltAz: [1, 1],
-                               self.ui.moveEastAltAz: [0, 1],
-                               self.ui.moveSouthEastAltAz: [-1, 1],
-                               self.ui.moveSouthAltAz: [-1, 0],
-                               self.ui.moveSouthWestAltAz: [-1, -1],
-                               self.ui.moveWestAltAz: [0, -1],
-                               self.ui.moveNorthWestAltAz: [1, -1],
-                               }
+                               'Stepsize 20°': 20}
+
         self.targetAlt = None
         self.targetAz = None
         self.slewSpeedSelected = None
-
-        MountSett.__init__(self)
 
         self.ui.mountCommandTable.clicked.connect(self.openCommandProtocol)
         self.ui.mountUpdateTimeDelta.clicked.connect(self.openUpdateTimeDelta)
@@ -86,10 +115,6 @@ class Mount(SlewInterface, MountSett):
         self.app.gameABXY.connect(self.changeTrackingGameController)
         self.app.gameABXY.connect(self.flipMountGameController)
         self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
-        self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
-        self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
         self.clickable(self.ui.moveCoordinateRa).connect(self.setRA)
@@ -117,7 +142,7 @@ class Mount(SlewInterface, MountSett):
         self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
         self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
-        self.updateLocGUI(self.app.mount.obsSite)
+        # todo: self.updateLocGUI(self.app.mount.obsSite)
         return True
 
     def storeConfig(self):
@@ -135,15 +160,44 @@ class Mount(SlewInterface, MountSett):
         config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
         return True
 
+    def setupIcons(self):
+        """
+        """
+        self.wIcon(self.ui.moveNorth, 'north')
+        self.wIcon(self.ui.moveEast, 'east')
+        self.wIcon(self.ui.moveSouth, 'south')
+        self.wIcon(self.ui.moveWest, 'west')
+        self.wIcon(self.ui.moveNorthEast, 'northEast')
+        self.wIcon(self.ui.moveNorthWest, 'northWest')
+        self.wIcon(self.ui.moveSouthEast, 'southEast')
+        self.wIcon(self.ui.moveSouthWest, 'southWest')
+        self.wIcon(self.ui.moveNorthAltAz, 'north')
+        self.wIcon(self.ui.moveEastAltAz, 'east')
+        self.wIcon(self.ui.moveSouthAltAz, 'south')
+        self.wIcon(self.ui.moveWestAltAz, 'west')
+        self.wIcon(self.ui.moveNorthEastAltAz, 'northEast')
+        self.wIcon(self.ui.moveNorthWestAltAz, 'northWest')
+        self.wIcon(self.ui.moveSouthEastAltAz, 'southEast')
+        self.wIcon(self.ui.moveSouthWestAltAz, 'southWest')
+        self.wIcon(self.ui.stopMoveAll, 'stop_m')
+        self.wIcon(self.ui.moveAltAzAbsolute, 'target')
+        self.wIcon(self.ui.moveRaDecAbsolute, 'target')
+
     def setupGuiMount(self):
         """
         :return: success for test
         """
-        for ui in self.setupMoveClassic:
-            ui.clicked.connect(self.moveClassicUI)
+        for direction in self.setupMoveClassic:
+            self.setupMoveClassic[direction]['button'].clicked.connect(
+                partial(self.moveClassicUI, direction))
 
-        for ui in self.setupMoveAltAz:
-            ui.clicked.connect(self.moveAltAzUI)
+        for direction in self.setupMoveAltAz:
+            self.setupMoveAltAz[direction]['button'].clicked.connect(
+                partial(self.moveAltAzUI, direction))
+
+        for speed in self.slewSpeeds:
+            self.slewSpeeds[speed]['button'].clicked.connect(
+                partial(self.setSlewSpeed, speed))
 
         self.ui.moveStepSizeAltAz.clear()
         for text in self.setupStepsizes:
@@ -154,13 +208,14 @@ class Mount(SlewInterface, MountSett):
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
+        isMount = self.app.deviceStat.get('mount', False)
         isObsSite = self.app.mount.obsSite is not None
         isSetting = self.app.mount.setting is not None
         if not isMount or not isObsSite or not isSetting:
-            self.messageDialog(self, 'Error Message',
-                               'Value cannot be set!\nMount is not connected!',
-                               buttons=['Ok'], iconType=2)
+            self.messageDialog(
+                self.mainW, 'Error Message',
+                'Value cannot be set!\nMount is not connected!',
+                buttons=['Ok'], iconType=2)
             return False
         else:
             return True
@@ -463,7 +518,7 @@ class Mount(SlewInterface, MountSett):
             self.app.mount.getLocation()
         else:
             obs.location = topo
-            self.updateLocGUI(self.app.mount.obsSite)
+            # todo: self.updateLocGUI(self.app.mount.obsSite)
 
         t = f'Location set to:     [{lat.degrees:3.2f} deg, '
         t += f'{lon.degrees:3.2f} deg, {elev:4.1f} m]'
@@ -803,16 +858,13 @@ class Mount(SlewInterface, MountSett):
             self.moveClassic(direction)
         return True
 
-    def moveClassicUI(self):
+    def moveClassicUI(self, direction):
         """
-        :return:
         """
-        if not self.deviceStat.get('mount'):
+        if not self.app.deviceStat.get('mount'):
             return False
 
-        ui = self.sender()
-        direction = self.setupMoveClassic[ui]
-        self.moveClassic(direction)
+        self.moveClassic(self.setupMoveClassic[direction]['coord'])
         return True
 
     def moveClassic(self, direction):
@@ -845,16 +897,10 @@ class Mount(SlewInterface, MountSett):
         self.moveDuration()
         return True
 
-    def setSlewSpeed(self):
+    def setSlewSpeed(self, speed):
         """
-        :return: success
         """
-        ui = self.sender()
-        if ui not in self.slewSpeeds:
-            return False
-
-        self.slewSpeeds[ui]()
-        return True
+        self.slewSpeeds[speed]['func']()
 
     def moveAltAzDefault(self):
         """
@@ -866,16 +912,14 @@ class Mount(SlewInterface, MountSett):
             self.changeStyleDynamic(ui, 'running', False)
         return True
 
-    def moveAltAzUI(self):
+    def moveAltAzUI(self, direction):
         """
         :return:
         """
-        if not self.deviceStat.get('mount'):
+        if not self.app.deviceStat.get('mount'):
             return False
 
-        ui = self.sender()
-        directions = self.setupMoveAltAz[ui]
-        self.moveAltAz(directions)
+        self.moveAltAz(self.setupMoveAltAz[direction]['coord'])
 
     def moveAltAzGameController(self, value):
         """
@@ -928,7 +972,7 @@ class Mount(SlewInterface, MountSett):
         :return:    success as bool if value could be changed
         """
         dlg = QInputDialog()
-        value, ok = dlg.getText(self,
+        value, ok = dlg.getText(self.mainW,
                                 'Set telescope RA',
                                 'Format: <dd[H] mm ss.s> in hours or <[+]d.d> in '
                                 'degrees',
@@ -953,7 +997,7 @@ class Mount(SlewInterface, MountSett):
         :return:    success as bool if value could be changed
         """
         dlg = QInputDialog()
-        value, ok = dlg.getText(self,
+        value, ok = dlg.getText(self.mainW,
                                 'Set telescope DEC',
                                 'Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees',
                                 QLineEdit.EchoMode.Normal,

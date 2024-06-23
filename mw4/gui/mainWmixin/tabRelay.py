@@ -19,13 +19,18 @@
 # external packages
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class Relay(object):
+class Relay(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.ui = mainW.ui
         self.app.relay.signals.statusReady.connect(self.updateRelayGui)
 
     def updateRelayGui(self):

@@ -21,13 +21,19 @@ from PySide6.QtWidgets import QInputDialog
 from mountcontrol.convert import valueToInt
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class Power(object):
+class Power(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.powerOnOFF = {'1': self.ui.powerPort1,
                            '2': self.ui.powerPort2,
                            '3': self.ui.powerPort3,

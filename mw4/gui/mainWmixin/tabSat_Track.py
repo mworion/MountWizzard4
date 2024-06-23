@@ -22,14 +22,21 @@ from sgp4.exporter import export_tle
 from skyfield import almanac
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class SatTrack(object):
+class SatTrack(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.satOrbits = None
+        self.satellite = {}
         self.satellitesRawTLE = {}
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
@@ -112,6 +119,16 @@ class SatTrack(object):
         config['avoidHorizon'] = self.ui.avoidHorizon.isChecked()
         config['trackingSim'] = self.ui.trackingSim.isChecked()
         return True
+
+    def setupIcons(self):
+        """
+        """
+        self.wIcon(self.ui.stopSatelliteTracking, 'cross-circle')
+        self.wIcon(self.ui.startSatelliteTracking, 'start')
+        self.wIcon(self.ui.progSatFull, 'run')
+        self.wIcon(self.ui.progSatFiltered, 'run')
+        self.wIcon(self.ui.progSatSelected, 'run')
+        self.wIcon(self.ui.progTrajectory, 'run')
 
     def enableGuiFunctions(self):
         """

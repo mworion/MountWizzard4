@@ -25,14 +25,20 @@ from PySide6.QtCore import Qt
 import numpy as np
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 from logic.modeldata.modelHandling import writeRetrofitData
 
 
-class ManageModel:
+class ManageModel(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.runningOptimize = False
         self.fittedModelPoints = []
         self.fittedModelPath = ''
@@ -85,6 +91,22 @@ class ManageModel:
         config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
         config['autoUpdateActualAnalyse'] = self.ui.autoUpdateActualAnalyse.isChecked()
         return True
+
+    def setupIcons(self) -> None:
+        """
+        """
+        self.wIcon(self.ui.runOptimize, 'start')
+        self.wIcon(self.ui.cancelOptimize, 'cross-circle')
+        self.wIcon(self.ui.deleteWorstPoint, 'circle-minus')
+        self.wIcon(self.ui.clearModel, 'trash')
+        self.wIcon(self.ui.openAnalyseW, 'bar-chart')
+        self.wIcon(self.ui.showActualModelAnalyse, 'copy')
+        self.wIcon(self.ui.showOriginalModelAnalyse, 'copy')
+        self.wIcon(self.ui.loadName, 'load')
+        self.wIcon(self.ui.saveName, 'save')
+        self.wIcon(self.ui.deleteName, 'trash')
+        self.wIcon(self.ui.refreshName, 'reload')
+        self.wIcon(self.ui.refreshModel, 'reload')
 
     def colorChangeManageModel(self):
         """

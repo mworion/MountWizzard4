@@ -20,13 +20,19 @@
 from PySide6.QtWidgets import QInputDialog
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class ImageManage:
+class ImageManage(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
@@ -102,6 +108,16 @@ class ImageManage:
         config['keepModelImages'] = self.ui.keepModelImages.isChecked()
         config['keepAnalysisImages'] = self.ui.keepAnalysisImages.isChecked()
         return True
+
+    def setupIcons(self) -> None:
+        """
+        """
+        self.wIcon(self.ui.copyFromTelescopeDriver, 'copy')
+        self.wIcon(self.ui.haltFocuser, 'bolt-alt')
+        self.wIcon(self.ui.moveFocuserIn, 'exit-down')
+        self.wIcon(self.ui.moveFocuserOut, 'exit-up')
+        self.wIcon(self.ui.coverPark, 'exit-down')
+        self.wIcon(self.ui.coverUnpark, 'exit-up')
 
     def checkEnableCameraUI(self):
         """
@@ -639,7 +655,7 @@ class ImageManage:
         """
         :return:
         """
-        if not self.deviceStat['dome']:
+        if not self.app.deviceStat['dome']:
             return False
 
         suc = self.app.dome.slewCW()
@@ -652,7 +668,7 @@ class ImageManage:
         """
         :return:
         """
-        if not self.deviceStat['dome']:
+        if not self.app.deviceStat['dome']:
             return False
 
         suc = self.app.dome.slewCCW()
@@ -665,7 +681,7 @@ class ImageManage:
         """
         :return:
         """
-        if not self.deviceStat['dome']:
+        if not self.app.deviceStat['dome']:
             return False
 
         suc = self.app.dome.abortSlew()
@@ -678,7 +694,7 @@ class ImageManage:
         """
         :return:
         """
-        if not self.deviceStat['dome']:
+        if not self.app.deviceStat['dome']:
             return False
 
         suc = self.app.dome.openShutter()
@@ -691,7 +707,7 @@ class ImageManage:
         """
         :return:
         """
-        if not self.deviceStat['dome']:
+        if not self.app.deviceStat['dome']:
             return False
 
         suc = self.app.dome.closeShutter()
@@ -706,7 +722,7 @@ class ImageManage:
         :param openVal:
         :return:
         """
-        if not self.deviceStat['dome']:
+        if not self.app.deviceStat['dome']:
             return False
 
         if turnVal < 64:

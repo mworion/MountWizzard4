@@ -23,13 +23,20 @@ from PySide6.QtWidgets import QListView, QApplication
 from astropy.io import fits
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class Rename:
+class Rename(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
+
         self.selectorsDropDowns = {'rename1': self.ui.rename1,
                                    'rename2': self.ui.rename2,
                                    'rename3': self.ui.rename3,
@@ -84,6 +91,10 @@ class Rename:
             config[name] = ui.currentIndex()
 
         return True
+
+    def setupIcons(self):
+        self.wIcon(self.ui.renameStart, 'start')
+        self.wIcon(self.ui.renameInputSelect, 'folder')
 
     def setupGuiTools(self):
         """
@@ -264,7 +275,7 @@ class Rename:
         :return: True for test purpose
         """
         folder = self.ui.renameDir.text()
-        pathDir, _, _ = self.openDir(self, 'Choose Input Dir', folder,)
+        pathDir, _, _ = self.openDir(self.mainW, 'Choose Input Dir', folder,)
         if pathDir:
             self.ui.renameDir.setText(pathDir)
             self.ui.renameProgress.setValue(0)

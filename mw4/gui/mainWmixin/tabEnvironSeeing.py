@@ -20,19 +20,24 @@ import webbrowser
 
 # external packages
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QTableWidgetItem
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class EnvironSeeing:
+class EnvironSeeing(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.seeingEnabled = False
-
         signals = self.app.seeingWeather.signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
         signals = self.app.seeingWeather.signals
@@ -45,17 +50,15 @@ class EnvironSeeing:
         self.app.colorChange.connect(self.prepareSeeingTable)
         self.app.update30m.connect(self.updateSeeingEntries)
 
-    def initConfig(self):
+    def setupIcons(self):
         """
-        :return: True for test purpose
         """
-        return True
-
-    def storeConfig(self):
-        """
-        :return: True for test purpose
-        """
-        return True
+        pixmap = self.svg2pixmap(':/icon/meteoblue.svg', '#124673')
+        pixmap = pixmap.transformed(QTransform().rotate(-90))
+        pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
+        self.ui.meteoblueIcon.setPixmap(pixmap)
+        self.ui.meteoblueIcon.setVisible(False)
+        self.ui.meteoblueSeeing.setVisible(False)
 
     def addSkyfieldTimeObject(self, data):
         """

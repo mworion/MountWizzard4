@@ -23,7 +23,7 @@ import numpy as np
 
 # local import
 from gui.mainWmixin.astroObjects import AstroObjects
-from gui.utilities.toolsQtWidget import QCustomTableWidgetItem
+from gui.utilities.toolsQtWidget import QCustomTableWidgetItem, MWidget
 from logic.databaseProcessing.sourceURL import satSourceURLs
 from base.tpool import Worker
 from logic.satellites.satellite_calculations import findSunlit, findSatUp
@@ -31,13 +31,17 @@ from logic.satellites.satellite_calculations import checkTwilight, calcAppMag
 from logic.satellites.satellite_calculations import findRangeRate
 
 
-class SatSearch:
+class SatSearch(MWidget):
     """
     """
     setSatListItem = Signal(int, int, object)
     
-    def __init__(self):
-        self.satellite = {}
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.prepareSatTable()
 
         self.satellites = AstroObjects(self,

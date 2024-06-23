@@ -79,7 +79,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.fontAnno = QFont(self.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)
 
-        self.deviceStat = {
+        self.imagingDeviceStat = {
             'expose': False,
             'exposeN': False,
             'solve': False,
@@ -262,11 +262,11 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         :return: true for test purpose
         """
-        if self.deviceStat.get('expose', False):
+        if self.imagingDeviceStat.get('expose', False):
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortExpose.setEnabled(True)
-        elif self.deviceStat.get('exposeN', False):
+        elif self.imagingDeviceStat.get('exposeN', False):
             self.ui.expose.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortExpose.setEnabled(True)
@@ -277,7 +277,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.ui.abortExpose.setEnabled(False)
 
         isPlateSolve = bool(self.app.deviceStat.get('plateSolve', False))
-        isSolving = bool(self.deviceStat.get('solve', False))
+        isSolving = bool(self.imagingDeviceStat.get('solve', False))
         isImage = self.imageFileName != ''
 
         self.ui.solve.setEnabled(isPlateSolve and isImage)
@@ -287,15 +287,15 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
 
-        if self.deviceStat.get('expose', False):
+        if self.imagingDeviceStat.get('expose', False):
             self.changeStyleDynamic(self.ui.expose, 'running', True)
-        elif self.deviceStat.get('exposeN', False):
+        elif self.imagingDeviceStat.get('exposeN', False):
             self.changeStyleDynamic(self.ui.exposeN, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.expose, 'running', False)
             self.changeStyleDynamic(self.ui.exposeN, 'running', False)
 
-        if self.deviceStat.get('solve', False):
+        if self.imagingDeviceStat.get('solve', False):
             self.changeStyleDynamic(self.ui.solve, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', False)
@@ -446,7 +446,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         :param: imagePath:
         :return:
         """
-        if self.deviceStat['expose']:
+        if self.imagingDeviceStat['expose']:
             self.ui.image.setImage(None)
             self.clearGui()
         if not imagePath:
@@ -525,7 +525,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
             self.signals.solveImage.emit(imagePath)
         self.app.showImage.emit(imagePath)
         self.app.operationRunning.emit(0)
-        self.deviceStat['expose'] = False
+        self.imagingDeviceStat['expose'] = False
         return True
 
     def exposeImage(self):
@@ -534,7 +534,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         self.expTime = self.app.camera.expTime
         self.binning = int(self.app.camera.binning)
-        self.deviceStat['expose'] = True
+        self.imagingDeviceStat['expose'] = True
         self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.app.operationRunning.emit(6)
         self.exposeRaw()
@@ -560,7 +560,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         """
         self.expTime = self.app.camera.expTimeN
         self.binning = int(self.app.camera.binningN)
-        self.deviceStat['exposeN'] = True
+        self.imagingDeviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.app.operationRunning.emit(6)
         self.exposeRaw()
@@ -571,15 +571,15 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         :return: True for test purpose
         """
         self.app.camera.abort()
-        if self.deviceStat['expose']:
+        if self.imagingDeviceStat['expose']:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-        if self.deviceStat['exposeN']:
+        if self.imagingDeviceStat['exposeN']:
             self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
 
         # last image file was not stored, so getting last valid it back
         self.imageFileName = self.imageFileNameOld
-        self.deviceStat['expose'] = False
-        self.deviceStat['exposeN'] = False
+        self.imagingDeviceStat['expose'] = False
+        self.imagingDeviceStat['exposeN'] = False
         self.msg.emit(2, 'Image', 'Expose', 'Exposing aborted')
         self.app.operationRunning.emit(0)
         return True
@@ -589,7 +589,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         :param result: result (named tuple)
         :return: success
         """
-        self.deviceStat['solve'] = False
+        self.imagingDeviceStat['solve'] = False
         self.app.plateSolve.signals.done.disconnect(self.solveDone)
 
         if not result:
@@ -635,7 +635,7 @@ class ImageWindow(toolsQtWidget.MWidget, ImageTabs, SlewInterface):
         self.app.operationRunning.emit(6)
         self.app.plateSolve.solveThreading(fitsPath=imagePath,
                                            updateFits=updateFits)
-        self.deviceStat['solve'] = True
+        self.imagingDeviceStat['solve'] = True
         t = f'{os.path.basename(imagePath)}'
         self.msg.emit(0, 'Image', 'Solving', t)
         return True

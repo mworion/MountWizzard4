@@ -19,13 +19,19 @@
 # external packages
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class SettDome(object):
+class SettDome(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometry)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometry)
         self.ui.offLAT.valueChanged.connect(self.setUseGeometry)

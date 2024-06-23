@@ -23,14 +23,19 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 # local import
 from gui.mainWmixin.astroObjects import AstroObjects
+from gui.utilities.toolsQtWidget import MWidget
 from logic.databaseProcessing.sourceURL import cometSourceURLs
 
 
-class Comet:
+class Comet(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.ui = mainW.ui
         self.prepareCometTable()
         self.comets = AstroObjects(self,
                                    'comet',
@@ -68,6 +73,13 @@ class Comet:
         config['cometFilterText'] = self.ui.cometFilterText.text()
         config['mpcTab'] = self.ui.mpcTabWidget.currentIndex()
         return True
+
+    def setupIcons(self) -> None:
+        """
+        """
+        self.wIcon(self.ui.progCometFull, 'run')
+        self.wIcon(self.ui.progCometFiltered, 'run')
+        self.wIcon(self.ui.progCometSelected, 'run')
 
     def prepareCometTable(self) -> None:
         """

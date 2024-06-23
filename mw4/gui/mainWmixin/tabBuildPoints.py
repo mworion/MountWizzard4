@@ -22,15 +22,21 @@ from astroquery.simbad import Simbad
 
 # local import
 from base.tpool import Worker
+from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import convertRaToAngle, convertDecToAngle
 from mountcontrol.convert import formatHstrToText, formatDstrToText
 
 
-class BuildPoints:
+class BuildPoints(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.sortRunning = QMutex()
         self.lastGenerator = 'none'
         self.sortedGenerators = {
@@ -148,6 +154,12 @@ class BuildPoints:
         config['ditherBuildPoints'] = self.ui.ditherBuildPoints.isChecked()
 
         return True
+
+    def setupIcons(self):
+        self.wIcon(self.ui.loadBuildPoints, 'load')
+        self.wIcon(self.ui.saveBuildPoints, 'save')
+        self.wIcon(self.ui.saveBuildPointsAs, 'save')
+        self.wIcon(self.ui.clearBuildP, 'trash')
 
     def genBuildGrid(self):
         """
@@ -485,7 +497,7 @@ class BuildPoints:
         fileTypes += ';; CSV Files (*.csv)'
         fileTypes += ';; Model Files (*.model)'
         fullFileName, fileName, ext = self.openFile(
-            self, 'Open build point file', folder, fileTypes)
+            self.mainW, 'Open build point file', folder, fileTypes)
         if not fullFileName:
             return False
 
@@ -526,11 +538,9 @@ class BuildPoints:
         :return: success
         """
         folder = self.app.mwGlob['configDir']
-        saveFilePath, fileName, ext = self.saveFile(self,
-                                                    'Save build point file',
-                                                    folder,
-                                                    'Build point files (*.bpts)',
-                                                    )
+        saveFilePath, fileName, ext = self.saveFile(
+            self.mainW, 'Save build point file', folder,
+            'Build point files (*.bpts)')
         if not saveFilePath:
             return False
 
@@ -622,7 +632,7 @@ class BuildPoints:
             return False
         worker = Worker(self.sortDomeAzWorker, points, pierside)
         worker.signals.result.connect(self.doSortDomeAzData)
-        self.threadPool.start(worker)
+        self.mainW.threadPool.start(worker)
         return True
 
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):

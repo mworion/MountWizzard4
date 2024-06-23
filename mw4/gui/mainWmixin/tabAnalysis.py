@@ -19,13 +19,20 @@
 # external packages
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class Analysis(object):
+class Analysis(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
+
         self.ui.analysisProgress.setValue(0)
         self.app.operationRunning.emit(0)
         self.imageDirAnalysis = ''
@@ -69,6 +76,11 @@ class Analysis(object):
         config['hysteresisMinAlt'] = self.ui.hysteresisMinAlt.value()
         config['hysteresisRuns'] = self.ui.hysteresisRuns.value()
         return True
+
+    def setupIcons(self):
+        self.wIcon(self.ui.runFlexure, 'start')
+        self.wIcon(self.ui.runHysteresis, 'start')
+        self.wIcon(self.ui.cancelAnalysis, 'cross-circle')
 
     def setAnalysisOperationMode(self, status):
         """

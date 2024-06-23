@@ -20,16 +20,23 @@
 from PySide6.QtWidgets import QListView
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.downloadPopupW import DownloadPopup
 from gui.extWindows.uploadPopupW import UploadPopup
 from logic.databaseProcessing.dataWriter import DataWriter
 
 
-class IERSTime:
+class IERSTime(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
+
         self.tempDir = self.app.mwGlob['tempDir']
         self.uploadPopup = None
         self.downloadPopup = None
@@ -62,6 +69,10 @@ class IERSTime:
         config = self.app.config['mainW']
         config['iersSource'] = self.ui.iersSource.currentIndex()
         return True
+
+    def setupIcons(self):
+        self.wIcon(self.ui.progEarthRotationData, 'run')
+        self.wIcon(self.ui.downloadIERS, 'run')
 
     def setupIERSSourceURLsDropDown(self):
         """
@@ -136,7 +147,7 @@ class IERSTime:
         url = urlMain + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'File: {source}')
-        self.downloadPopup = DownloadPopup(self, url=url, dest=dest, unzip=False)
+        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest, unzip=False)
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadTimeDataFromSourceURLs)
         return True
@@ -156,7 +167,7 @@ class IERSTime:
         url = urlMain + source
         dest = self.app.mwGlob['dataDir'] + '/' + source
         self.msg.emit(1, 'IERS', 'Download', f'File. {source}')
-        self.downloadPopup = DownloadPopup(self, url=url, dest=dest, unzip=False)
+        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest, unzip=False)
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadFinalsFromSourceURLs)
         return True

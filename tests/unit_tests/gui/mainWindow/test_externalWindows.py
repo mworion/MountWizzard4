@@ -59,7 +59,7 @@ def test_storeConfigExtendedWindows_1(function):
         }
     }
     function.app.config['showSimulatorW'] = True
-    function.storeConfigExtendedWindows()
+    function.storeConfig()
     function.uiWindows = test
 
 

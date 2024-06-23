@@ -26,7 +26,6 @@ from PySide6.QtWidgets import QListView
 from logic.databaseProcessing.dataWriter import DataWriter
 from gui.extWindows.downloadPopupW import DownloadPopup
 from gui.extWindows.uploadPopupW import UploadPopup
-from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
 class AstroObjects(QObject):

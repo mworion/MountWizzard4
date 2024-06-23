@@ -24,16 +24,20 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
-from gui.utilities.toolsQtWidget import QMultiWait
+from gui.utilities.toolsQtWidget import MWidget, QMultiWait, sleepAndEvents
 from base.packageConfig import isSimulationMount
-from gui.utilities.toolsQtWidget import sleepAndEvents
 
 
-class BasicRun:
+class BasicRun(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.slewQueue = queue.Queue()
         self.imageQueue = queue.Queue()
         self.solveQueue = queue.Queue()
@@ -276,7 +280,7 @@ class BasicRun:
         if not suc:
             return False
 
-        if self.deviceStat['dome']:
+        if self.app.deviceStat['dome']:
             alt = mPoint['altitude']
             az = mPoint['azimuth']
             delta = self.app.dome.slewDome(altitude=alt, azimuth=az)
@@ -326,7 +330,7 @@ class BasicRun:
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
         self.collector.addWaitableSignal(self.app.camera.signals.exposeReady)
 
-        hasDome = self.deviceStat.get('dome', False)
+        hasDome = self.app.deviceStat.get('dome', False)
         hasAzimuth = 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' in self.app.dome.data
 
         if hasDome and hasAzimuth:

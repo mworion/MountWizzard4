@@ -27,65 +27,14 @@ from skyfield.almanac import dark_twilight_day, TWILIGHTS
 # local import
 from base import packageConfig
 from gui.mainWindow.externalWindows import ExternalWindows
+from gui.mainWindow.externalMixins import ExternalMixins
 from gui.utilities.stylesQtCss import Styles
 from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.mainWmixin.tabMount import Mount
-from gui.mainWmixin.tabEnvironWeather import EnvironWeather
-from gui.mainWmixin.tabEnvironSeeing import EnvironSeeing
-from gui.mainWmixin.tabAlmanac import Almanac
-from gui.mainWmixin.tabModel import Model
-from gui.mainWmixin.runBasic import BasicRun
-from gui.mainWmixin.tabBuildPoints import BuildPoints
-from gui.mainWmixin.tabManageModel import ManageModel
-from gui.mainWmixin.tabSat_Search import SatSearch
-from gui.mainWmixin.tabSat_Track import SatTrack
-from gui.mainWmixin.tabComet import Comet
-from gui.mainWmixin.tabAsteroid import Asteroid
-from gui.mainWmixin.tabRelay import Relay
-from gui.mainWmixin.tabTools_Rename import Rename
-from gui.mainWmixin.tabTools_IERSTime import IERSTime
-from gui.mainWmixin.tabAnalysis import Analysis
-from gui.mainWmixin.tabPower import Power
-from gui.mainWmixin.tabSett_Device import SettDevice
-from gui.mainWmixin.tabSett_Mount import SettMount
-from gui.mainWmixin.tabSett_Dome import SettDome
-from gui.mainWmixin.tabSett_ParkPos import SettParkPos
-from gui.mainWmixin.tabSett_Relay import SettRelay
-from gui.mainWmixin.tabSett_Misc import SettMisc
-from gui.mainWmixin.tabImage_Manage import ImageManage
-from gui.mainWmixin.tabImage_Stats import ImagsStats
 from logic.profiles.profile import loadProfile, saveProfile, blendProfile
 
 
-class MainWindow(
-    MWidget,
-    SettMisc,
-    Mount,
-    EnvironWeather,
-    EnvironSeeing,
-    Almanac,
-    Model,
-    BasicRun,
-    BuildPoints,
-    ManageModel,
-    SatSearch,
-    SatTrack,
-    Comet,
-    Asteroid,
-    Relay,
-    Power,
-    Rename,
-    IERSTime,
-    Analysis,
-    SettDevice,
-    SettMount,
-    ImageManage,
-    ImagsStats,
-    SettDome,
-    SettParkPos,
-    SettRelay,
-):
+class MainWindow(MWidget):
     """
     the main window class handles the main menu as well as the show and no show
     part of any other window. all necessary processing for functions of that gui
@@ -101,12 +50,12 @@ class MainWindow(
         self.app = app
         self.msg = app.msg
         self.threadPool = app.threadPool
-        self.deviceStat = app.deviceStat
 
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.extWindows = ExternalWindows(self)
+        self.extMixin = ExternalMixins(self)
         self.satStatus = False
         self.gameControllerRunning = False
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
@@ -118,6 +67,7 @@ class MainWindow(
             'mount': self.ui.mountConnected,
         }
         self.mwSuper('__init__')
+        self.extMixin.initConfig()
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.settingDone.connect(self.updateMountWeatherStat)
@@ -205,7 +155,8 @@ class MainWindow(
         self.getTabAndIndex(self.ui.toolsTabWidget, config, 'orderTools')
         self.getTabAndIndex(self.ui.satTabWidget, config, 'orderSatellite')
         self.mwSuper('storeConfig')
-        self.extWindows.storeConfigExtendedWindows()
+        self.extMixin.storeConfig()
+        self.extWindows.storeConfig()
         return True
 
     def enableTabsMovable(self):
@@ -246,12 +197,10 @@ class MainWindow(
         self.close()
         return True
 
-    def setupIcons(self):
+    def setupIcons(self) -> None:
         """
-        :return:    True if success for test
         """
-        # main window
-        # self.wIcon(self.ui.saveConfigAs, 'save')
+        self.wIcon(self.ui.saveConfigAs, 'save')
         self.wIcon(self.ui.loadFrom, 'load')
         self.wIcon(self.ui.addFrom, 'load')
         self.wIcon(self.ui.saveConfig, 'save')
@@ -267,153 +216,6 @@ class MainWindow(
         self.wIcon(self.ui.setSolarTracking, 'solar')
         self.wIcon(self.ui.park, 'park')
 
-        # model points
-        self.wIcon(self.ui.loadBuildPoints, 'load')
-        self.wIcon(self.ui.saveBuildPoints, 'save')
-        self.wIcon(self.ui.saveBuildPointsAs, 'save')
-        self.wIcon(self.ui.clearBuildP, 'trash')
-
-        # model
-        self.wIcon(self.ui.plateSolveSync, 'start')
-        pixmap = self.img2pixmap(':/pics/azimuth.png').scaled(101, 101)
-        self.ui.picAZ.setPixmap(pixmap)
-        pixmap = self.img2pixmap(':/pics/altitude.png').scaled(101, 101)
-        self.ui.picALT.setPixmap(pixmap)
-
-        self.wIcon(self.ui.cancelModel, 'cross-circle')
-        self.wIcon(self.ui.runModel, 'start')
-        self.wIcon(self.ui.pauseModel, 'pause')
-        self.wIcon(self.ui.endModel, 'stop_m')
-        self.wIcon(self.ui.dataModel, 'choose')
-
-        # manage model
-        self.wIcon(self.ui.runOptimize, 'start')
-        self.wIcon(self.ui.cancelOptimize, 'cross-circle')
-        self.wIcon(self.ui.deleteWorstPoint, 'circle-minus')
-        self.wIcon(self.ui.clearModel, 'trash')
-        self.wIcon(self.ui.openAnalyseW, 'bar-chart')
-        self.wIcon(self.ui.showActualModelAnalyse, 'copy')
-        self.wIcon(self.ui.showOriginalModelAnalyse, 'copy')
-
-        self.wIcon(self.ui.loadName, 'load')
-        self.wIcon(self.ui.saveName, 'save')
-        self.wIcon(self.ui.deleteName, 'trash')
-        self.wIcon(self.ui.refreshName, 'reload')
-        self.wIcon(self.ui.refreshModel, 'reload')
-
-        # minor planets
-        self.wIcon(self.ui.progCometFull, 'run')
-        self.wIcon(self.ui.progCometFiltered, 'run')
-        self.wIcon(self.ui.progCometSelected, 'run')
-        self.wIcon(self.ui.progAsteroidFull, 'run')
-        self.wIcon(self.ui.progAsteroidFiltered, 'run')
-        self.wIcon(self.ui.progAsteroidSelected, 'run')
-
-        # tools
-        self.wIcon(self.ui.progEarthRotationData, 'run')
-        self.wIcon(self.ui.downloadIERS, 'run')
-
-        # satellite
-        self.wIcon(self.ui.stopSatelliteTracking, 'cross-circle')
-        self.wIcon(self.ui.startSatelliteTracking, 'start')
-        self.wIcon(self.ui.progSatFull, 'run')
-        self.wIcon(self.ui.progSatFiltered, 'run')
-        self.wIcon(self.ui.progSatSelected, 'run')
-        self.wIcon(self.ui.progTrajectory, 'run')
-
-        # analyse
-        self.wIcon(self.ui.runFlexure, 'start')
-        self.wIcon(self.ui.runHysteresis, 'start')
-        self.wIcon(self.ui.cancelAnalysis, 'cross-circle')
-
-        # tools
-        self.wIcon(self.ui.renameStart, 'start')
-        self.wIcon(self.ui.renameInputSelect, 'folder')
-        self.wIcon(self.ui.posButton0, 'target')
-        self.wIcon(self.ui.posButton1, 'target')
-        self.wIcon(self.ui.posButton2, 'target')
-        self.wIcon(self.ui.posButton3, 'target')
-        self.wIcon(self.ui.posButton4, 'target')
-        self.wIcon(self.ui.posButton5, 'target')
-        self.wIcon(self.ui.posButton6, 'target')
-        self.wIcon(self.ui.posButton7, 'target')
-        self.wIcon(self.ui.posButton8, 'target')
-        self.wIcon(self.ui.posButton9, 'target')
-
-        self.wIcon(self.ui.moveNorth, 'north')
-        self.wIcon(self.ui.moveEast, 'east')
-        self.wIcon(self.ui.moveSouth, 'south')
-        self.wIcon(self.ui.moveWest, 'west')
-        self.wIcon(self.ui.moveNorthEast, 'northEast')
-        self.wIcon(self.ui.moveNorthWest, 'northWest')
-        self.wIcon(self.ui.moveSouthEast, 'southEast')
-        self.wIcon(self.ui.moveSouthWest, 'southWest')
-        self.wIcon(self.ui.moveNorthAltAz, 'north')
-        self.wIcon(self.ui.moveEastAltAz, 'east')
-        self.wIcon(self.ui.moveSouthAltAz, 'south')
-        self.wIcon(self.ui.moveWestAltAz, 'west')
-        self.wIcon(self.ui.moveNorthEastAltAz, 'northEast')
-        self.wIcon(self.ui.moveNorthWestAltAz, 'northWest')
-        self.wIcon(self.ui.moveSouthEastAltAz, 'southEast')
-        self.wIcon(self.ui.moveSouthWestAltAz, 'southWest')
-        self.wIcon(self.ui.stopMoveAll, 'stop_m')
-        self.wIcon(self.ui.moveAltAzAbsolute, 'target')
-        self.wIcon(self.ui.moveRaDecAbsolute, 'target')
-
-        # driver setting
-        for driver in self.drivers:
-            if self.drivers[driver]['uiSetup'] is not None:
-                ui = self.drivers[driver]['uiSetup']
-                self.wIcon(ui, 'cogs')
-
-        self.wIcon(self.ui.ascomConnect, 'link')
-        self.wIcon(self.ui.ascomDisconnect, 'unlink')
-
-        # imaging
-        self.wIcon(self.ui.copyFromTelescopeDriver, 'copy')
-        self.wIcon(self.ui.haltFocuser, 'bolt-alt')
-        self.wIcon(self.ui.moveFocuserIn, 'exit-down')
-        self.wIcon(self.ui.moveFocuserOut, 'exit-up')
-        self.wIcon(self.ui.coverPark, 'exit-down')
-        self.wIcon(self.ui.coverUnpark, 'exit-up')
-
-        # park positions
-        self.wIcon(self.ui.posSave0, 'download')
-        self.wIcon(self.ui.posSave1, 'download')
-        self.wIcon(self.ui.posSave2, 'download')
-        self.wIcon(self.ui.posSave3, 'download')
-        self.wIcon(self.ui.posSave4, 'download')
-        self.wIcon(self.ui.posSave5, 'download')
-        self.wIcon(self.ui.posSave6, 'download')
-        self.wIcon(self.ui.posSave7, 'download')
-        self.wIcon(self.ui.posSave8, 'download')
-        self.wIcon(self.ui.posSave9, 'download')
-
-        # misc setting
-        self.wIcon(self.ui.installVersion, 'world')
-        pixmap = self.svg2pixmap(':/icon/controller.svg', self.M_BLUE)
-        self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
-        pixmap = self.svg2pixmap(':/icon/controllerNew.svg', self.M_BLUE)
-        self.ui.controllerOverview.setPixmap(pixmap)
-        self.ui.controller1.setEnabled(False)
-        self.ui.controller2.setEnabled(False)
-        self.ui.controller3.setEnabled(False)
-        self.ui.controller4.setEnabled(False)
-        self.ui.controller5.setEnabled(False)
-
-        # environment
-        pixmap = self.svg2pixmap(':/icon/meteoblue.svg', '#124673')
-        pixmap = pixmap.transformed(QTransform().rotate(-90))
-        pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
-        self.ui.meteoblueIcon.setPixmap(pixmap)
-        self.ui.meteoblueIcon.setVisible(False)
-        self.ui.meteoblueSeeing.setVisible(False)
-        return True
-
     def updateMountConnStat(self, status):
         """
         updateMountConnStat show the connection status of the mount. if status
@@ -424,7 +226,7 @@ class MainWindow(
         :return: true for test purpose
         """
         hasSim = packageConfig.isAvailable
-        self.deviceStat['mount'] = status
+        self.app.deviceStat['mount'] = status
 
         if status and hasSim:
             self.ui.mountConnected.setEnabled(status)
@@ -446,12 +248,12 @@ class MainWindow(
         :return: true for test purpose
         """
         if setting.weatherTemperature is None and setting.weatherPressure is None:
-            self.deviceStat['directWeather'] = None
+            self.app.deviceStat['directWeather'] = None
         else:
             if setting.weatherStatus is None:
-                self.deviceStat['directWeather'] = False
+                self.app.deviceStat['directWeather'] = False
             else:
-                self.deviceStat['directWeather'] = True
+                self.app.deviceStat['directWeather'] = True
         return True
 
     def smartFunctionGui(self):
@@ -465,10 +267,10 @@ class MainWindow(
 
         :return: true for test purpose
         """
-        isMountReady = bool(self.deviceStat.get('mount'))
-        isDomeReady = bool(self.deviceStat.get('dome'))
+        isMountReady = bool(self.app.deviceStat.get('mount'))
+        isDomeReady = bool(self.app.deviceStat.get('dome'))
         isModelingReady = all(
-            bool(self.deviceStat.get(x)) for x in ['mount', 'camera', 'plateSolve'])
+            bool(self.app.deviceStat.get(x)) for x in ['mount', 'camera', 'plateSolve'])
         isPause = self.ui.pauseModel.property('pause')
 
         if isModelingReady and self.app.data.buildP and not isPause:
@@ -547,7 +349,7 @@ class MainWindow(
             tabIndex = self.getTabIndex(smartTabs[key]['tab'], key)
             tabStatus = smartTabs[key]['tab'].isTabVisible(tabIndex)
 
-            stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
+            stat = bool(self.app.deviceStat.get(smartTabs[key]['statID']))
             smartTabs[key]['tab'].setTabVisible(tabIndex, stat)
             actChanged = tabStatus != stat
             tabChanged = tabChanged or actChanged
@@ -587,15 +389,15 @@ class MainWindow(
         isManual = self.ui.refracManual.isChecked()
         isTabEnabled = self.ui.showTabEnviron.isChecked()
         if not refracOn or not isTabEnabled:
-            self.deviceStat['refraction'] = None
+            self.app.deviceStat['refraction'] = None
             self.ui.refractionConnected.setText('Refraction')
         elif isManual:
             self.ui.refractionConnected.setText('Refrac Manu')
-            self.deviceStat['refraction'] = True
+            self.app.deviceStat['refraction'] = True
         else:
             self.ui.refractionConnected.setText('Refrac Auto')
-            isSource = self.deviceStat.get(self.refractionSource, False)
-            self.deviceStat['refraction'] = isSource
+            isSource = self.app.deviceStat.get(self.refractionSource, False)
+            self.app.deviceStat['refraction'] = isSource
         return True
 
     def updateDeviceStats(self):
@@ -603,14 +405,14 @@ class MainWindow(
         :return: True for test purpose
         """
         for device, ui in self.deviceStatGui.items():
-            if self.deviceStat.get(device) is None:
+            if self.app.deviceStat.get(device) is None:
                 self.changeStyleDynamic(ui, 'color', 'gray')
-            elif self.deviceStat[device]:
+            elif self.app.deviceStat[device]:
                 self.changeStyleDynamic(ui, 'color', 'green')
             else:
                 self.changeStyleDynamic(ui, 'color', 'red')
 
-        isMount = self.deviceStat.get('mount', False)
+        isMount = self.app.deviceStat.get('mount', False)
         self.changeStyleDynamic(self.ui.mountOn, 'running', isMount)
         self.changeStyleDynamic(self.ui.mountOff, 'running', not isMount)
         return True

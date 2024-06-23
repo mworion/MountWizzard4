@@ -26,15 +26,20 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base.transform import J2000ToJNow
-from gui.utilities.toolsQtWidget import sleepAndEvents
+from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modeldata.modelHandling import writeRetrofitData
 
 
-class Model:
+class Model(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.timeStartModeling = None
         self.modelName = ''
         self.model = []
@@ -76,6 +81,20 @@ class Model:
         config['normalTiming'] = self.ui.normalTiming.isChecked()
         config['conservativeTiming'] = self.ui.conservativeTiming.isChecked()
         return True
+
+    def setupIcons(self) -> None:
+        """
+        """
+        self.wIcon(self.ui.cancelModel, 'cross-circle')
+        self.wIcon(self.ui.runModel, 'start')
+        self.wIcon(self.ui.pauseModel, 'pause')
+        self.wIcon(self.ui.endModel, 'stop_m')
+        self.wIcon(self.ui.dataModel, 'choose')
+        self.wIcon(self.ui.plateSolveSync, 'start')
+        pixmap = self.img2pixmap(':/pics/azimuth.png').scaled(101, 101)
+        self.ui.picAZ.setPixmap(pixmap)
+        pixmap = self.img2pixmap(':/pics/altitude.png').scaled(101, 101)
+        self.ui.picALT.setPixmap(pixmap)
 
     def setModelOperationMode(self, status):
         """

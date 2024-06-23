@@ -20,13 +20,19 @@
 import numpy as np
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class EnvironWeather:
+class EnvironWeather(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.refractionSource = ''
         self.filteredTemperature = None
         self.filteredPressure = None
@@ -145,7 +151,7 @@ class EnvironWeather:
         """
 
         for source in self.refractionSources:
-            stat = self.deviceStat.get(source, None)
+            stat = self.app.deviceStat.get(source, None)
             group = self.refractionSources[source]['group']
             if stat is None:
                 group.setFixedWidth(0)
@@ -298,7 +304,7 @@ class EnvironWeather:
         """
         if self.refractionSource == 'directWeather':
             return False
-        if not self.deviceStat['mount']:
+        if not self.app.deviceStat['mount']:
             return False
 
         temp, press = self.movingAverageRefractionParameters()

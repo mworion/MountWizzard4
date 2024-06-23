@@ -23,14 +23,20 @@ from skyfield.api import wgs84
 
 # local import
 from base import transform
+from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import convertLatToAngle, convertLonToAngle
 from mountcontrol.convert import formatLatToText, formatLonToText
 
 
-class MountSett:
+class MountSett(MWidget):
     """
     """
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.typeConnectionTexts = ['RS-232',
                                     'GPS/RS-232',
                                     'LAN',
@@ -65,6 +71,20 @@ class MountSett:
         self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
         self.clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
+
+    def setupIcons(self) -> None:
+        """
+        """
+        self.wIcon(self.ui.posButton0, 'target')
+        self.wIcon(self.ui.posButton1, 'target')
+        self.wIcon(self.ui.posButton2, 'target')
+        self.wIcon(self.ui.posButton3, 'target')
+        self.wIcon(self.ui.posButton4, 'target')
+        self.wIcon(self.ui.posButton5, 'target')
+        self.wIcon(self.ui.posButton6, 'target')
+        self.wIcon(self.ui.posButton7, 'target')
+        self.wIcon(self.ui.posButton8, 'target')
+        self.wIcon(self.ui.posButton9, 'target')
 
     def updatePointGUI(self, obs):
         """
@@ -204,13 +224,14 @@ class MountSett:
         """
         :return:
         """
-        isMount = self.deviceStat.get('mount', False)
+        isMount = self.app.deviceStat.get('mount', False)
         isObsSite = self.app.mount.obsSite is not None
         isSetting = self.app.mount.setting is not None
         if not isMount or not isObsSite or not isSetting:
-            self.messageDialog(self, 'Error Message',
-                               'Value cannot be set!\nMount is not connected!',
-                               buttons=['Ok'], iconType=2)
+            self.messageDialog(
+                self.mainW, 'Error Message',
+                'Value cannot be set!\nMount is not connected!',
+                buttons=['Ok'], iconType=2)
             return False
         else:
             return True

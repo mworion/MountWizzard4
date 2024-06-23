@@ -21,10 +21,11 @@ import PySide6.QtCore
 import PySide6.QtWidgets
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.devicePopupW import DevicePopup
 
 
-class SettDevice:
+class SettDevice(MWidget):
     """
     devices types in self.drivers are name related to ascom definitions
 
@@ -61,7 +62,12 @@ class SettDevice:
         start new driver
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.popupUi = None
         self.drivers = {
             'dome': {
@@ -235,13 +241,22 @@ class SettDevice:
 
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         configD = self.app.config
         configD['driversData'] = self.driversData
         config['autoConnectASCOM'] = self.ui.autoConnectASCOM.isChecked()
-        return True
+
+    def setupIcons(self):
+        """
+        """
+        for driver in self.drivers:
+            if self.drivers[driver]['uiSetup'] is not None:
+                ui = self.drivers[driver]['uiSetup']
+                self.wIcon(ui, 'cogs')
+
+        self.wIcon(self.ui.ascomConnect, 'link')
+        self.wIcon(self.ui.ascomDisconnect, 'unlink')
 
     def setupDeviceGui(self):
         """
@@ -402,7 +417,7 @@ class SettDevice:
         if not driver:
             return False
 
-        self.deviceStat[driver] = None
+        self.app.deviceStat[driver] = None
         framework = self.drivers[driver]['class'].framework
         if framework not in self.drivers[driver]['class'].run:
             return False
@@ -420,7 +435,7 @@ class SettDevice:
 
         self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
                                 'active', False)
-        self.deviceStat[driver] = None
+        self.app.deviceStat[driver] = None
 
         return True
 
@@ -440,7 +455,7 @@ class SettDevice:
         if not driver:
             return False
 
-        self.deviceStat[driver] = False
+        self.app.deviceStat[driver] = False
         framework = self.driversData[driver]['framework']
         if framework not in self.drivers[driver]['class'].run:
             return False
@@ -625,7 +640,7 @@ class SettDevice:
 
             self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
                                     'active', True)
-            self.deviceStat[driver] = True
+            self.app.deviceStat[driver] = True
             self.msg.emit(0, 'Driver', 'Device connected', f'{driver}')
 
             data = self.driversData[driver]
@@ -645,6 +660,6 @@ class SettDevice:
 
             self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
                                     'active', False)
-            self.deviceStat[driver] = False
+            self.app.deviceStat[driver] = False
             self.msg.emit(0, 'Driver', 'Device disconnected', f'{driver}')
         return True

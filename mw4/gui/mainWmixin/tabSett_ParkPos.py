@@ -19,14 +19,21 @@
 # external packages
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 from mountcontrol.convert import valueToFloat
 
 
-class SettParkPos(object):
+class SettParkPos(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
+
         self.posButtons = list()
         self.posTexts = list()
         self.posAlt = list()
@@ -85,6 +92,20 @@ class SettParkPos(object):
             config[keyConfig] = textField.value()
         config['parkMountAfterSlew'] = self.ui.parkMountAfterSlew.isChecked()
         return True
+
+    def setupIcons(self):
+        """
+        """
+        self.wIcon(self.ui.posSave0, 'download')
+        self.wIcon(self.ui.posSave1, 'download')
+        self.wIcon(self.ui.posSave2, 'download')
+        self.wIcon(self.ui.posSave3, 'download')
+        self.wIcon(self.ui.posSave4, 'download')
+        self.wIcon(self.ui.posSave5, 'download')
+        self.wIcon(self.ui.posSave6, 'download')
+        self.wIcon(self.ui.posSave7, 'download')
+        self.wIcon(self.ui.posSave8, 'download')
+        self.wIcon(self.ui.posSave9, 'download')
 
     def updateParkPosButtonText(self):
         """

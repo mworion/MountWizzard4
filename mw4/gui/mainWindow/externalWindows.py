@@ -15,8 +15,10 @@
 #
 ###########################################################
 # standard libraries
+from functools import partial
 
 # external packages
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 
 # local import
@@ -25,7 +27,6 @@ if packageConfig.isAvailable:
     from gui.extWindows.simulatorW import SimulatorWindow
 
 from gui.utilities.toolsQtWidget import sleepAndEvents
-from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.keypadW import KeypadWindow
 from gui.extWindows.messageW import MessageWindow
 from gui.extWindows.hemisphereW import HemisphereWindow
@@ -40,7 +41,7 @@ from gui.extWindows.videoW4 import VideoWindow4
 from gui.extWindows.bigPopupW import BigPopup
 
 
-class ExternalWindows(MWidget):
+class ExternalWindows:
     """
     """
 
@@ -122,10 +123,12 @@ class ExternalWindows(MWidget):
             }
 
         for window in self.uiWindows:
-            self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
+            self.uiWindows[window]['button'].clicked.connect(
+                partial(self.toggleWindow, window))
+
         self.mainW.ui.collectWindows.clicked.connect(self.collectWindows)
 
-    def storeConfigExtendedWindows(self) -> None:
+    def storeConfig(self) -> None:
         """
         """
         config = self.app.config
@@ -157,17 +160,13 @@ class ExternalWindows(MWidget):
         self.uiWindows[window]['classObj'].initConfig()
         self.uiWindows[window]['classObj'].showWindow()
 
-    def toggleWindow(self) -> None:
+    def toggleWindow(self, windowName) -> None:
         """
         """
-        for window in self.uiWindows:
-            if self.uiWindows[window]['button'] != self.sender():
-                continue
-
-            if not self.uiWindows[window]['classObj']:
-                self.buildWindow(window)
-            else:
-                self.uiWindows[window]['classObj'].close()
+        if not self.uiWindows[windowName]['classObj']:
+            self.buildWindow(windowName)
+        else:
+            self.uiWindows[windowName]['classObj'].close()
 
     def showExtendedWindows(self) -> None:
         """
@@ -207,10 +206,11 @@ class ExternalWindows(MWidget):
     def collectWindows(self) -> None:
         """
         """
+        i=0
         for i, window in enumerate(self.uiWindows):
             if self.uiWindows[window]['classObj']:
                 self.uiWindows[window]['classObj'].resize(800, 600)
                 self.uiWindows[window]['classObj'].move(i * 50 + 10, i * 50 + 10)
                 self.uiWindows[window]['classObj'].activateWindow()
-        self.move(i * 50 + 10, i * 50 + 10)
-        self.activateWindow()
+        self.mainW.move(i * 50 + 10, i * 50 + 10)
+        self.mainW.activateWindow()

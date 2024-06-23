@@ -22,9 +22,10 @@ import numpy as np
 from range_key_dict import RangeKeyDict
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class ImagsStats:
+class ImagsStats(MWidget):
     """
     """
     WATNEY = RangeKeyDict({
@@ -65,7 +66,12 @@ class ImagsStats:
         (23.3, 360): 'index-4219.fits',
     })
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+        self.ui = mainW.ui
         self.ui.aperture.valueChanged.connect(self.updateImageStats)
         self.ui.focalLength.valueChanged.connect(self.updateImageStats)
         self.ui.openWatneyCatalog.clicked.connect(self.openWatneyCatalog)

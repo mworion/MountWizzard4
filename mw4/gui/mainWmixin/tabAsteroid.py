@@ -23,14 +23,20 @@ from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 # local import
 from gui.mainWmixin.astroObjects import AstroObjects
+from gui.utilities.toolsQtWidget import MWidget
 from logic.databaseProcessing.sourceURL import asteroidSourceURLs
 
 
-class Asteroid:
+class Asteroid(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.ui = mainW.ui
+
         self.prepareAsteroidTable()
         self.asteroids = AstroObjects(self,
                                       'asteroid',
@@ -66,6 +72,13 @@ class Asteroid:
         config['asteroidSource'] = self.ui.asteroidSourceList.currentIndex()
         config['asteroidFilterText'] = self.ui.asteroidFilterText.text()
         return True
+
+    def setupIcons(self) -> None:
+        """
+        """
+        self.wIcon(self.ui.progAsteroidFull, 'run')
+        self.wIcon(self.ui.progAsteroidFiltered, 'run')
+        self.wIcon(self.ui.progAsteroidSelected, 'run')
 
     def prepareAsteroidTable(self) -> None:
         """

@@ -21,13 +21,19 @@ import PySide6.QtCore
 import PySide6.QtWidgets
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class SettRelay(object):
+class SettRelay(MWidget):
     """
     """
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.ui = mainW.ui
+
         # define lists for the entries
         self.relayDropDowns = [self.ui.relayFun0,
                                self.ui.relayFun1,

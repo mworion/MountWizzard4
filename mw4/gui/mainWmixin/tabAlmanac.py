@@ -28,9 +28,10 @@ from range_key_dict import RangeKeyDict
 
 # local import
 from base.tpool import Worker
+from gui.utilities.toolsQtWidget import MWidget
 
 
-class Almanac:
+class Almanac(MWidget):
     """
     """
     phasesText = RangeKeyDict({
@@ -45,7 +46,12 @@ class Almanac:
         (99, 100): 'New moon '
     })
 
-    def __init__(self):
+    def __init__(self, mainW):
+        super().__init__()
+        self.mainW = mainW
+        self.app = mainW.app
+        self.ui = mainW.ui
+
         self.civil = None
         self.nautical = None
         self.astronomical = None
@@ -64,8 +70,8 @@ class Almanac:
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
         self.ui.almanacPrediction.currentIndexChanged.connect(self.showTwilightDataPlot)
+        self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
         return True
 
     def storeConfig(self):
@@ -228,7 +234,7 @@ class Almanac:
         self.changeStyleDynamic(self.ui.almanacGroup, 'running', True)
         worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
         worker.signals.result.connect(self.plotTwilightData)
-        self.threadPool.start(worker)
+        self.mainW.threadPool.start(worker)
         return True
 
     def showTwilightDataList(self):

@@ -23,7 +23,7 @@ from dateutil.tz import tzlocal
 
 # external packages
 from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox
-from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView
 from PySide6.QtGui import QPalette, QIcon, QPixmap, QColor, QPainter, QImage
 from PySide6.QtGui import QPainterPath, QTransform, QGuiApplication
 from PySide6.QtCore import QSortFilterProxyModel, QDir, QObject, Signal
@@ -842,3 +842,15 @@ class MWidget(QWidget, Styles):
             tab.tabBar().moveTab(tabIndex, index)
         tab.setCurrentIndex(config.get('index', 0))
         return True
+
+    @staticmethod
+    def positionCursorInTable(table, searchName):
+        """
+        """
+        result = table.findItems(searchName, Qt.MatchFlag.MatchExactly)
+        if len(result) == 0:
+            return
+        item = result[0]
+        index = table.row(item)
+        table.selectRow(index)
+        table.scrollToItem(item, QAbstractItemView.ScrollHint.EnsureVisible)

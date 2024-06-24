@@ -116,28 +116,6 @@ def test_chooseSatellite_2(function):
                     function.chooseSatellite()
 
 
-def test_positionCursorInSatTable_1(function):
-    satTab = function.ui.listSats
-    satTab.setRowCount(0)
-    satTab.setColumnCount(2)
-    satTab.insertRow(0)
-    entry = QTableWidgetItem('NOAA 8')
-    satTab.setItem(0, 1, entry)
-
-    function.positionCursorInSatTable(satTab, 'test')
-
-
-def test_positionCursorInSatTable_2(function):
-    satTab = function.ui.listSats
-    satTab.setRowCount(0)
-    satTab.setColumnCount(2)
-    satTab.insertRow(0)
-    entry = QTableWidgetItem('NOAA 8')
-    satTab.setItem(0, 1, entry)
-
-    function.positionCursorInSatTable(satTab, 'NOAA 8')
-
-
 def test_filterListSats_1(function):
     function.ui.satFilterGroup.setEnabled(True)
     function.ui.satIsUp.setEnabled(True)

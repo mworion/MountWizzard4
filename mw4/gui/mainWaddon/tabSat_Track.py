@@ -78,6 +78,7 @@ class SatTrack(MWidget):
         self.ui.useInternalSatCalc.clicked.connect(self.showSatPasses)
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
+        self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
 
         self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
         self.ui.unitTimeUTC.toggled.connect(self.updateSatelliteTrackGui)
@@ -399,11 +400,11 @@ class SatTrack(MWidget):
         :return: success
         """
         satTab = self.ui.listSats
-        if satName not in self.satellites.objects:
+        if satName not in self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects:
             return False
 
-        self.positionCursorInSatTable(satTab, satName)
-        self.satellite = self.satellites.objects[satName]
+        self.positionCursorInTable(satTab, satName)
+        self.satellite = self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects[satName]
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
         self.ui.satelliteEpoch.setText(epochText)
@@ -430,13 +431,13 @@ class SatTrack(MWidget):
         """
         if not satName:
             return False
-        if satName not in self.satellites.objects:
+        if satName not in self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects:
             return False
 
         satellite = self.app.mount.satellite
         self.msg.emit(0, 'TLE', 'Program',
                       f'Upload to mount: [{satName}]')
-        line1, line2 = export_tle(self.satellites.objects[satName].model)
+        line1, line2 = export_tle(self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,
                                line2=line2)
@@ -445,6 +446,18 @@ class SatTrack(MWidget):
             return False
         self.app.mount.getTLE()
         return True
+
+    def chooseSatellite(self):
+        """
+        """
+        satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
+        if self.app.deviceStat['mount']:
+            self.programDataToMount(satName=satName)
+        else:
+            self.extractSatelliteData(satName=satName)
+            self.showSatPasses()
+        if self.ui.autoSwitchTrack.isChecked():
+            self.ui.satTabWidget.setCurrentIndex(1)
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
         """

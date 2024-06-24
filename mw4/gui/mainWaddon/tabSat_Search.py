@@ -53,7 +53,6 @@ class SatSearch(MWidget):
                                        self.processSatelliteSource)
 
         self.satellites.dataLoaded.connect(self.fillSatListName)
-        self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
         self.ui.satIsSunlit.clicked.connect(self.filterListSats)
         self.ui.satIsUp.clicked.connect(self.filterListSats)
@@ -118,18 +117,6 @@ class SatSearch(MWidget):
         self.ui.listSats.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
-    def chooseSatellite(self):
-        """
-        """
-        satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
-        if self.app.deviceStat['mount']:
-            self.mainW.mainWindowAddons.addons['SatTrack'].programDataToMount(satName=satName)
-        else:
-            self.mainW.mainWindowAddons.addons['SatTrack'].extractSatelliteData(satName=satName)
-            self.mainW.mainWindowAddons.addons['SatTrack'].showSatPasses()
-        if self.ui.autoSwitchTrack.isChecked():
-            self.ui.satTabWidget.setCurrentIndex(1)
-
     def processSatelliteSource(self):
         """
         """
@@ -139,18 +126,6 @@ class SatSearch(MWidget):
         self.satellites.objects.clear()
         for sat in satellites:
             self.satellites.objects[sat.name] = sat
-
-    @staticmethod
-    def positionCursorInSatTable(satTab, satName):
-        """
-        """
-        result = satTab.findItems(satName, Qt.MatchFlag.MatchExactly)
-        if len(result) == 0:
-            return
-        item = result[0]
-        index = satTab.row(item)
-        satTab.selectRow(index)
-        satTab.scrollToItem(item, QAbstractItemView.ScrollHint.EnsureVisible)
 
     def filterListSats(self):
         """
@@ -184,7 +159,7 @@ class SatSearch(MWidget):
 
             self.ui.listSats.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
-        self.positionCursorInSatTable(self.ui.listSats, satName)
+        self.positionCursorInTable(self.ui.listSats, satName)
 
     def setListSatsEntry(self, row, col, entry):
         """
@@ -313,7 +288,6 @@ class SatSearch(MWidget):
 
     def workerCalcSatList(self):
         """
-        :return:
         """
         satTab = self.ui.listSats
         loc = self.app.mount.obsSite.location

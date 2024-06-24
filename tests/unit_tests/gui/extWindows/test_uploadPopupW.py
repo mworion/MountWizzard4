@@ -30,16 +30,18 @@ import gui.extWindows.uploadPopupW
 from gui.extWindows.uploadPopupW import UploadPopup
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     widget = QWidget()
     widget.app = App()
     widget.threadPool = QThreadPool()
     with mock.patch.object(UploadPopup,
                            'show'):
-        window = UploadPopup(parentWidget=widget, url='',
-                             dataTypes='', dataFilePath='')
-    yield window
+        with mock.patch.object(UploadPopup,
+                               'uploadFile'):
+            window = UploadPopup(parentWidget=widget, url='',
+                                 dataTypes='', dataFilePath='')
+            yield window
 
 
 def set_setIcon(function):

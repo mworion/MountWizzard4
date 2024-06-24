@@ -32,15 +32,17 @@ import gui.extWindows.downloadPopupW
 from gui.extWindows.downloadPopupW import DownloadPopup
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     widget = QWidget()
     widget.app = App()
     widget.threadPool = QThreadPool()
     with mock.patch.object(DownloadPopup,
                            'show'):
-        window = DownloadPopup(parentWidget=widget, url='', dest='')
-    yield window
+        with mock.patch.object(DownloadPopup,
+                               'downloadFile'):
+            window = DownloadPopup(parentWidget=widget, url='', dest='')
+        yield window
 
 
 def set_setIcon(function):

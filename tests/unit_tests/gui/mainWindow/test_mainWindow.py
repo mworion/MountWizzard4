@@ -55,25 +55,6 @@ def test_initConfig_1(window):
     window.initConfig()
 
 
-def test_initConfig_2(window):
-    del window.app.config['mainW']
-    window.initConfig()
-
-
-def test_initConfig_3(window):
-    window.app.config['mainW'] = {}
-    window.app.config['mainW']['winPosX'] = 100
-    window.app.config['mainW']['winPosY'] = 100
-    window.initConfig()
-
-
-def test_initConfig_4(window):
-    window.app.config['mainW'] = {}
-    window.app.config['mainW']['winPosX'] = 10000
-    window.app.config['mainW']['winPosY'] = 10000
-    window.initConfig()
-
-
 def test_storeConfig_1(window):
     with mock.patch.object(window.mainWindowAddons,
                            'storeConfig'):

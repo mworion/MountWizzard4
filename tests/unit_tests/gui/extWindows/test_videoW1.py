@@ -27,10 +27,12 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.videoW1 import VideoWindow1
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     func = VideoWindow1(app=App())
-    yield func
+    with mock.patch.object(func,
+                           'show'):
+        yield func
 
 
 def test_initConfig_1(function):

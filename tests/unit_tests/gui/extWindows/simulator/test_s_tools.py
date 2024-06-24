@@ -34,7 +34,7 @@ from gui.extWindows.simulator.tools import getLight
 from gui.extWindows.simulator.materials import Materials
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
     yield
 

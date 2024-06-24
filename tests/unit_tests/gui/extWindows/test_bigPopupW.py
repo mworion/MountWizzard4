@@ -28,7 +28,7 @@ from gui.extWindows.bigPopupW import BigPopup
 from gui.utilities.toolsQtWidget import MWidget
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     window = BigPopup(App())
     yield window

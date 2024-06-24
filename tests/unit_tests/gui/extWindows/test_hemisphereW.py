@@ -35,12 +35,7 @@ from gui.extWindows.hemisphereW import HemisphereWindow
 
 
 @pytest.fixture(scope='module')
-def module(qapp):
-    yield
-
-
-@pytest.fixture(scope='function')
-def function(module):
+def function(qapp):
 
     func = HemisphereWindow(app=App())
     yield func
@@ -379,6 +374,7 @@ def test_drawAlignmentStars_4(function):
 
 
 def test_drawModelPoints_1(function):
+    function.modelPoints = None
     suc = function.drawModelPoints()
     assert not suc
 

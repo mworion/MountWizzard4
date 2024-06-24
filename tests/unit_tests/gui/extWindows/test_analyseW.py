@@ -30,7 +30,7 @@ from gui.utilities.toolsQtWidget import MWidget
 from gui.extWindows.analyseW import AnalyseWindow
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     func = AnalyseWindow(app=App())
     yield func

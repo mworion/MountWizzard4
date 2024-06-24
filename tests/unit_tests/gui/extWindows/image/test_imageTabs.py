@@ -31,7 +31,7 @@ from logic.photometry.photometry import Photometry
 from logic.file.fileHandler import FileHandler
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     func = ImageWindow(app=App())

@@ -45,21 +45,7 @@ def function(qapp):
 
 
 def test_storeConfig_1(function):
-    class Test:
-        @staticmethod
-        def storeConfig():
-            return
-
-    test = function.uiWindows
-    function.uiWindows = {'showSimulatorW': {
-        'button': function.mainW.ui.mountConnected,
-        'classObj': Test(),
-        'name': 'SimulatorDialog',
-        'class': None,
-        }
-    }
     function.storeConfig()
-    function.uiWindows = test
 
 
 def test_updateWindowsStats_1(function):

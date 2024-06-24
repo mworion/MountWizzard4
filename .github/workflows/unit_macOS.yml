@@ -119,38 +119,4 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWmixin1
-
-  run_tests_macos_4:
-    #
-    needs: build_package
-    runs-on: macos-13
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/mainWmixin2
-
-  run_tests_macos_5:
-    #
-    needs: build_package
-    runs-on: macos-13
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/mainWmixin3
+          pytest tests/unit_tests/gui/mainWaddon

@@ -145,7 +145,7 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWmixin1 ${{env.cov}}
+          pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
 
       - name: rename_coveragefile
         run: mv .coverage c4.dat
@@ -155,61 +155,10 @@ jobs:
           name: c4
           path: c4.dat
 
-  run_tests_windows_5:
-    #
-    needs: build_package
-    runs-on: windows-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test_cov
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/mainWmixin2 ${{env.cov}}
-
-      - name: rename_coveragefile
-        run: mv .coverage c5.dat
-        
-      - uses: actions/upload-artifact@v4
-        with:
-          name: c5
-          path: c5.dat
-
-  run_tests_windows_6:
-    #
-    needs: build_package
-    runs-on: windows-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test_cov
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/mainWmixin3 ${{env.cov}}
-
-      - name: rename_coveragefile
-        run: mv .coverage c6.dat
-        
-      - uses: actions/upload-artifact@v4
-        with:
-          name: c6
-          path: c6.dat
-
   coverage:
     #
     needs: [ run_tests_windows_1, run_tests_windows_2,
-             run_tests_windows_3, run_tests_windows_4,
-             run_tests_windows_5, run_tests_windows_6]
+             run_tests_windows_3, run_tests_windows_4]
     runs-on: windows-latest
     
     steps:
@@ -229,18 +178,12 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: c4
-      - uses: actions/download-artifact@v4
-        with:
-          name: c5
-      - uses: actions/download-artifact@v4
-        with:
-          name: c6
           
       - name: combining_data
         run: |
           dir
           python -m pip install coverage
-          python -m coverage combine c1.dat c2.dat c3.dat c4.dat c5.dat c6.dat
+          python -m coverage combine c1.dat c2.dat c3.dat c4.dat
           python -m coverage xml
   
       - name: upload

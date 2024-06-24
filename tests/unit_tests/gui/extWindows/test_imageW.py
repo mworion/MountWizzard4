@@ -39,7 +39,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     func = ImageWindow(app=App())
@@ -103,37 +103,37 @@ def test_operationMode_2(function):
 
 
 def test_updateWindowsStats_1(function):
-    function.deviceStat['expose'] = True
-    function.deviceStat['exposeN'] = False
-    function.deviceStat['solve'] = True
+    function.imagingDeviceStat['expose'] = True
+    function.imagingDeviceStat['exposeN'] = False
+    function.imagingDeviceStat['solve'] = True
     function.app.deviceStat['camera'] = False
     function.app.deviceStat['plateSolve'] = True
-    function.deviceStat['imaging'] = True
-    function.deviceStat['plateSolve'] = True
+    function.imagingDeviceStat['imaging'] = True
+    function.imagingDeviceStat['plateSolve'] = True
 
     suc = function.updateWindowsStats()
     assert suc
 
 
 def test_updateWindowsStats_2(function):
-    function.deviceStat['expose'] = False
-    function.deviceStat['exposeN'] = True
-    function.deviceStat['solve'] = False
+    function.imagingDeviceStat['expose'] = False
+    function.imagingDeviceStat['exposeN'] = True
+    function.imagingDeviceStat['solve'] = False
     function.app.deviceStat['camera'] = True
     function.app.deviceStat['plateSolve'] = False
-    function.deviceStat['imaging'] = False
-    function.deviceStat['plateSolve'] = False
+    function.imagingDeviceStat['imaging'] = False
+    function.imagingDeviceStat['plateSolve'] = False
 
     suc = function.updateWindowsStats()
     assert suc
 
 
 def test_updateWindowsStats_3(function):
-    function.deviceStat['solve'] = False
+    function.imagingDeviceStat['solve'] = False
     function.app.deviceStat['camera'] = True
     function.app.deviceStat['plateSolve'] = False
-    function.deviceStat['imaging'] = False
-    function.deviceStat['plateSolve'] = False
+    function.imagingDeviceStat['imaging'] = False
+    function.imagingDeviceStat['plateSolve'] = False
 
     suc = function.updateWindowsStats()
     assert suc
@@ -274,7 +274,7 @@ def test_processPhotometry_2(function):
 
 
 def test_showImage_1(function):
-    function.deviceStat['expose'] = True
+    function.imagingDeviceStat['expose'] = True
     with mock.patch.object(function,
                            'clearGui'):
         suc = function.showImage()
@@ -282,13 +282,13 @@ def test_showImage_1(function):
 
 
 def test_showImage_2(function):
-    function.deviceStat['expose'] = False
+    function.imagingDeviceStat['expose'] = False
     suc = function.showImage('test')
     assert not suc
 
 
 def test_showImage_3(function):
-    function.deviceStat['expose'] = False
+    function.imagingDeviceStat['expose'] = False
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
@@ -399,8 +399,8 @@ def test_abortExpose_2(function):
 
 
 def test_abortExpose_3(function):
-    function.deviceStat['expose'] = True
-    function.deviceStat['exposeN'] = False
+    function.imagingDeviceStat['expose'] = True
+    function.imagingDeviceStat['exposeN'] = False
     function.app.camera.signals.saved.connect(function.showImage)
     function.ui.exposeN.setEnabled(False)
     function.ui.expose.setEnabled(True)
@@ -413,8 +413,8 @@ def test_abortExpose_3(function):
 
 
 def test_abortExpose_4(function):
-    function.deviceStat['expose'] = False
-    function.deviceStat['exposeN'] = True
+    function.imagingDeviceStat['expose'] = False
+    function.imagingDeviceStat['exposeN'] = True
     function.app.camera.signals.saved.connect(function.showImage)
     function.ui.exposeN.setEnabled(False)
     function.ui.expose.setEnabled(True)

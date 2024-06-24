@@ -52,7 +52,17 @@ def window(qapp):
 
 def test_initConfig_1(window):
     window.app.config['mainW'] = {}
-    window.initConfig()
+    with mock.patch.object(window.mainWindowAddons,
+                           'initConfig'):
+        with mock.patch.object(window,
+                               'smartTabGui'):
+            with mock.patch.object(window,
+                                   'enableTabsMovable'):
+                with mock.patch.object(window,
+                                       'setupIcons'):
+                    with mock.patch.object(window.externalWindows,
+                                           'showExtendedWindows'):
+                        window.initConfig()
 
 
 def test_storeConfig_1(window):
@@ -79,9 +89,13 @@ def test_setupIcons_1(window):
 
 
 def test_updateColorSet_1(window):
-    with mock.patch.object(window.mainWindowAddons,
-                           'updateColorSet'):
-        window.updateColorSet()
+    with mock.patch.object(window,
+                           'setStyleSheet'):
+        with mock.patch.object(window,
+                               'setupIcons'):
+            with mock.patch.object(window.mainWindowAddons,
+                                   'updateColorSet'):
+                window.updateColorSet()
 
 
 def test_enableTabsMovable(window):

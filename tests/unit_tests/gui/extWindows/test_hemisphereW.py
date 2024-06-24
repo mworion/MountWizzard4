@@ -374,7 +374,7 @@ def test_drawAlignmentStars_4(function):
 
 
 def test_drawModelPoints_1(function):
-    function.modelPoints = None
+    function.app.data.buildP = None
     suc = function.drawModelPoints()
     assert not suc
 

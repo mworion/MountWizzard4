@@ -518,7 +518,7 @@ class Mount(MWidget, SlewInterface):
             self.app.mount.getLocation()
         else:
             obs.location = topo
-            # todo: self.updateLocGUI(self.app.mount.obsSite)
+            self.mainW.mainWindowAddons.addons['MountSett'].updateLocGUI(self.app.mount.obsSite)
 
         t = f'Location set to:     [{lat.degrees:3.2f} deg, '
         t += f'{lon.degrees:3.2f} deg, {elev:4.1f} m]'

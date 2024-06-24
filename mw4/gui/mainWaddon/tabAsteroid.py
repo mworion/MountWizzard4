@@ -37,13 +37,13 @@ class Asteroid(MWidget):
         self.app = mainW.app
         self.ui = mainW.ui
 
-        self.prepareAsteroidTable()
         self.asteroids = AstroObjects(self.mainW,
                                       'asteroid',
                                       asteroidSourceURLs,
                                       self.ui.listAsteroids,
                                       self.ui.asteroidSourceList,
                                       self.ui.asteroidSourceGroup,
+                                      self.prepareAsteroidTable,
                                       self.processAsteroidSource)
 
         self.asteroids.dataLoaded.connect(self.fillAsteroidListName)

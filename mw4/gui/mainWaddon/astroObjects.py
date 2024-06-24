@@ -37,7 +37,7 @@ class AstroObjects(QObject):
 
     def __init__(self, window,
                  objectText, sourceUrls, uiObjectList,
-                 uiSourceList, uiSourceGroup, processSource):
+                 uiSourceList, uiSourceGroup, prepareTable, processSource):
         super().__init__()
         self.window = window
         self.app = window.app
@@ -49,6 +49,7 @@ class AstroObjects(QObject):
         self.uiObjectList = uiObjectList
         self.uiSourceList = uiSourceList
         self.uiSourceGroup = uiSourceGroup
+        self.prepareTable = prepareTable
         self.processSource = processSource
 
         self.objects = {}
@@ -59,6 +60,7 @@ class AstroObjects(QObject):
         self.loader = self.app.mount.obsSite.loader
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
+        self.prepareTable()
         self.uiSourceList.currentIndexChanged.connect(self.loadSourceUrl)
 
         self.dbProcFuncs = {

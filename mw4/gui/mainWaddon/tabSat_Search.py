@@ -42,7 +42,6 @@ class SatSearch(MWidget):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.prepareSatTable()
 
         self.satellites = AstroObjects(self.mainW,
                                        'satellite',
@@ -50,7 +49,9 @@ class SatSearch(MWidget):
                                        self.ui.listSats,
                                        self.ui.satSourceList,
                                        self.ui.satSourceGroup,
+                                       self.prepareSatTable,
                                        self.processSatelliteSource)
+
         self.satellites.dataLoaded.connect(self.fillSatListName)
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
@@ -122,10 +123,10 @@ class SatSearch(MWidget):
         """
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
         if self.app.deviceStat['mount']:
-            self.programDataToMount(satName=satName)
+            self.mainW.mainWindowAddons.addons['SatTrack'].programDataToMount(satName=satName)
         else:
-            self.extractSatelliteData(satName=satName)
-            self.showSatPasses()
+            self.mainW.mainWindowAddons.addons['SatTrack'].extractSatelliteData(satName=satName)
+            self.mainW.mainWindowAddons.addons['SatTrack'].showSatPasses()
         if self.ui.autoSwitchTrack.isChecked():
             self.ui.satTabWidget.setCurrentIndex(1)
 

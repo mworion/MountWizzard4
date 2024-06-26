@@ -18,41 +18,25 @@
 import pytest
 
 # external packages
+from PySide6.QtWidgets import QWidget
 
 # local import
-from gui.mainWaddon.tabSett_Relay import SettRelay
 from gui.mainWaddon.tabRelay import Relay
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, Relay, SettRelay):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Relay.__init__(self)
-            SettRelay.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = Relay(mainW)
     yield window
-
-
-def test_initConfig_1(function):
-    function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
-
-
-def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
 
 
 def test_updateRelayGui(function, qtbot):

@@ -19,51 +19,36 @@
 import unittest.mock as mock
 import pytest
 import time
-import os
 import shutil
-import glob
 import json
 
 # external packages
 import skyfield.api
 from skyfield.api import Angle
 from mountcontrol.modelStar import ModelStar
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabModel import Model
+from gui.mainWaddon.tabManageModel import ManageModel
 import gui.mainWaddon
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
 setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, Model):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = {}
-            self.refreshName = None
-            self.refreshModel = None
-            self.setupFilenamesAndDirectories = None
-            self.setupRunPoints = None
-            self.playSound = None
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Model.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = Model(mainW)
     yield window
-
-    files = glob.glob('tests/workDir/model/m-*.model')
-    for f in files:
-        os.remove(f)
-    for path in glob.glob('tests/workDir/image/m-*'):
-        shutil.rmtree(path)
 
 
 def test_initConfig_1(function):
@@ -257,11 +242,6 @@ def test_pauseBuild_2(function):
     assert function.ui.pauseModel.property('pause')
 
 
-def writeRFD(a, b):
-    return {}
-
-
-@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
 def test_retrofitModel_1(function):
     function.app.mount.model.starList = list()
 
@@ -275,8 +255,10 @@ def test_retrofitModel_1(function):
     mPoint = {}
     function.model = list()
     function.model.append(mPoint)
-    suc = function.retrofitModel()
-    assert suc
+    with mock.patch.object(gui.mainWaddon.tabModel,
+                           'writeRetrofitData'):
+        suc = function.retrofitModel()
+        assert suc
 
 
 def test_saveModelFinish_1(function):
@@ -358,9 +340,9 @@ def test_programModelToMount_3(function):
         with mock.patch.object(function.app.mount.model,
                                'programAlign',
                                return_value=True):
-            with mock.patch.object(function,
+            with mock.patch.object(ManageModel,
                                    'refreshName'):
-                with mock.patch.object(function,
+                with mock.patch.object(ManageModel,
                                        'refreshModel'):
                     suc = function.programModelToMount()
                     assert suc

@@ -20,12 +20,12 @@ from unittest import mock
 
 # external packages
 import numpy as np
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabEnvironWeather import EnvironWeather
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
 setupLogging()
 
@@ -33,40 +33,31 @@ setupLogging()
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, EnvironWeather):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = {}
-            self.threadPool = self.app.threadPool
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            EnvironWeather.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = EnvironWeather(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_smartEnvironGui_1(function):
-    function.deviceStat['sensor1Weather'] = False
-    function.deviceStat['sensor2Weather'] = False
-    function.deviceStat['sensor3Weather'] = False
-    function.deviceStat['onlineWeather'] = False
-    function.deviceStat['directWeather'] = False
-    suc = function.smartEnvironGui()
-    assert suc
+    function.app.deviceStat['sensor1Weather'] = False
+    function.app.deviceStat['sensor2Weather'] = False
+    function.app.deviceStat['sensor3Weather'] = False
+    function.app.deviceStat['onlineWeather'] = False
+    function.app.deviceStat['directWeather'] = False
+    function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()
     assert not function.ui.sensor3Group.isEnabled()
@@ -75,13 +66,12 @@ def test_smartEnvironGui_1(function):
 
 
 def test_smartEnvironGui_2(function):
-    function.deviceStat['sensor1Weather'] = True
-    function.deviceStat['sensor2Weather'] = True
-    function.deviceStat['sensor3Weather'] = True
-    function.deviceStat['onlineWeather'] = True
-    function.deviceStat['directWeather'] = True
-    suc = function.smartEnvironGui()
-    assert suc
+    function.app.deviceStat['sensor1Weather'] = True
+    function.app.deviceStat['sensor2Weather'] = True
+    function.app.deviceStat['sensor3Weather'] = True
+    function.app.deviceStat['onlineWeather'] = True
+    function.app.deviceStat['directWeather'] = True
+    function.smartEnvironGui()
     assert function.ui.sensor1Group.isEnabled()
     assert function.ui.sensor2Group.isEnabled()
     assert function.ui.sensor3Group.isEnabled()
@@ -90,13 +80,12 @@ def test_smartEnvironGui_2(function):
 
 
 def test_smartEnvironGui_3(function):
-    function.deviceStat['sensor1Weather'] = None
-    function.deviceStat['sensor2Weather'] = None
-    function.deviceStat['sensor3Weather'] = None
-    function.deviceStat['onlineWeather'] = None
-    function.deviceStat['directWeather'] = False
-    suc = function.smartEnvironGui()
-    assert suc
+    function.app.deviceStat['sensor1Weather'] = None
+    function.app.deviceStat['sensor2Weather'] = None
+    function.app.deviceStat['sensor3Weather'] = None
+    function.app.deviceStat['onlineWeather'] = None
+    function.app.deviceStat['directWeather'] = False
+    function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()
     assert not function.ui.sensor3Group.isEnabled()
@@ -196,57 +185,32 @@ def test_setRefractionUpdateType_4(function):
 
 
 def test_setRefractionSourceGui_1(function):
-    suc = function.setRefractionSourceGui()
-    assert suc
+    function.setRefractionSourceGui()
 
 
 def test_setRefractionSourceGui_2(function):
     function.refractionSource = 'onlineWeather'
-    suc = function.setRefractionSourceGui()
-    assert suc
+    function.setRefractionSourceGui()
 
 
 def test_selectRefractionSource_1(function):
-    def Sender():
-        return function.ui.powerPort1
-
-    function.sender = Sender
+    function.ui.onlineGroup.setChecked(False)
+    function.refractionSource = 'onlineWeather'
     with mock.patch.object(function,
                            'setRefractionSourceGui'):
         with mock.patch.object(function,
                                'setRefractionUpdateType'):
-            suc = function.selectRefractionSource()
-            assert suc
+            function.selectRefractionSource('onlineWeather')
 
 
 def test_selectRefractionSource_2(function):
-    def Sender():
-        return function.ui.onlineGroup
-
-    function.ui.onlineGroup.setChecked(False)
-    function.refractionSource = 'onlineWeather'
-    function.sender = Sender
-    with mock.patch.object(function,
-                           'setRefractionSourceGui'):
-        with mock.patch.object(function,
-                               'setRefractionUpdateType'):
-            suc = function.selectRefractionSource()
-            assert suc
-
-
-def test_selectRefractionSource_3(function):
-    def Sender():
-        return function.ui.onlineGroup
-
-    function.refractionSource = 'directWeather'
     function.ui.onlineGroup.setChecked(True)
-    function.sender = Sender
+    function.refractionSource = 'directWeather'
     with mock.patch.object(function,
                            'setRefractionSourceGui'):
         with mock.patch.object(function,
                                'setRefractionUpdateType'):
-            suc = function.selectRefractionSource()
-            assert suc
+            function.selectRefractionSource('onlineWeather')
 
 
 def test_updateFilterRefractionParameters_1(function):
@@ -349,7 +313,7 @@ def test_updateRefractionParameters_1(function):
 
 def test_updateRefractionParameters_2(function):
     function.refractionSource = 'onlineWeather'
-    function.deviceStat['mount'] = False
+    function.app.deviceStat['mount'] = False
 
     suc = function.updateRefractionParameters()
     assert not suc
@@ -357,7 +321,7 @@ def test_updateRefractionParameters_2(function):
 
 def test_updateRefractionParameters_3(function):
     function.refractionSource = 'onlineWeather'
-    function.deviceStat['mount'] = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
                            return_value=(None, None)):
@@ -367,7 +331,7 @@ def test_updateRefractionParameters_3(function):
 
 def test_updateRefractionParameters_4(function):
     function.refractionSource = 'onlineWeather'
-    function.deviceStat['mount'] = True
+    function.app.deviceStat['mount'] = True
     function.ui.refracManual.setChecked(True)
     with mock.patch.object(function,
                            'movingAverageRefractionParameters',
@@ -378,7 +342,7 @@ def test_updateRefractionParameters_4(function):
 
 def test_updateRefractionParameters_5(function):
     function.refractionSource = 'onlineWeather'
-    function.deviceStat['mount'] = True
+    function.app.deviceStat['mount'] = True
     function.ui.refracManual.setChecked(False)
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 0
@@ -391,7 +355,7 @@ def test_updateRefractionParameters_5(function):
 
 def test_updateRefractionParameters_6(function):
     function.refractionSource = 'onlineWeather'
-    function.deviceStat['mount'] = True
+    function.app.deviceStat['mount'] = True
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
 
@@ -407,7 +371,7 @@ def test_updateRefractionParameters_6(function):
 
 def test_updateRefractionParameters_7(function, qtbot):
     function.refractionSource = 'onlineWeather'
-    function.deviceStat['mount'] = True
+    function.app.deviceStat['mount'] = True
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
 
@@ -421,15 +385,7 @@ def test_updateRefractionParameters_7(function, qtbot):
             assert suc
 
 
-def test_clearEnvironGui_1(function):
-    function.clearSourceGui('test')
-    assert function.ui.temperature1.text() == '-'
-    assert function.ui.pressure1.text() == '-'
-    assert function.ui.dewPoint1.text() == '-'
-    assert function.ui.humidity1.text() == '-'
-
-
-def test_updateEnvironGui_1(function):
+def test_updateSourceGui_1(function):
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10.5
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
     function.app.sensor1Weather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = 10.5
@@ -439,3 +395,11 @@ def test_updateEnvironGui_1(function):
     assert function.ui.pressure1.text() == '1000'
     assert function.ui.dewPoint1.text() == '10.5'
     assert function.ui.humidity1.text() == ' 10'
+
+
+def test_clearSourceGui_1(function):
+    function.clearSourceGui('test')
+    assert function.ui.temperature1.text() == '-'
+    assert function.ui.pressure1.text() == '-'
+    assert function.ui.dewPoint1.text() == '-'
+    assert function.ui.humidity1.text() == '-'

@@ -25,25 +25,19 @@ from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabSett_ParkPos import SettParkPos
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, SettParkPos):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = self.app.deviceStat
-            self.threadPool = self.app.threadPool
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            SettParkPos.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = SettParkPos(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):

@@ -21,12 +21,12 @@ from unittest import mock
 
 # external packages
 from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QWidget
 from skyfield.api import wgs84
 import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabAlmanac import Almanac
 
@@ -34,18 +34,14 @@ from gui.mainWaddon.tabAlmanac import Almanac
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, Almanac):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.threadPool = self.app.threadPool
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Almanac.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = Almanac(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):
@@ -57,34 +53,29 @@ def test_initConfig_1(function):
                                    'showTwilightDataList'):
                 with mock.patch.object(function,
                                        'listTwilightData'):
-                    suc = function.initConfig()
-                    assert suc
+                    function.initConfig()
 
 
 def test_storeConfig_1(function):
     function.thread = None
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
 def test_storeConfig_2(function):
     function.thread = threading.Thread()
     with mock.patch.object(threading.Thread,
                            'join'):
-        suc = function.storeConfig()
-        assert suc
+        function.storeConfig()
 
 
 def test_setColors(function):
-    suc = function.setColors()
-    assert suc
+    function.setColors()
 
 
-def test_colorChangeAlmanac(function):
+def test_updateColorSet(function):
     with mock.patch.object(function,
                            'showTwilightDataPlot'):
-        suc = function.colorChangeAlmanac()
-        assert suc
+        function.updateColorSet()
 
 
 def test_plotTwilightData_1(function):
@@ -94,8 +85,7 @@ def test_plotTwilightData_1(function):
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
     e = np.array([1, 1])
     result = (ts, t, e)
-    suc = function.plotTwilightData(result)
-    assert suc
+    function.plotTwilightData(result)
 
 
 def test_plotTwilightData_2(function):
@@ -105,7 +95,14 @@ def test_plotTwilightData_2(function):
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
     e = np.array([1, 1])
     result = (ts, t, e)
-    suc = function.plotTwilightData(result)
+    function.plotTwilightData(result)
+
+
+def test_displayTwilightData_1(function):
+    tsNow = function.app.mount.obsSite.ts.now()
+    t = [tsNow, tsNow]
+    e = [1, 1]
+    suc = function.listTwilightData(t, e)
     assert suc
 
 
@@ -118,7 +115,7 @@ def test_calcTwilightData_1(function):
     assert val
 
 
-def test_searchTwilightWorker_1(function):
+def test_workerCalcTwilightDataPlot_1(function):
     location = wgs84.latlon(latitude_degrees=0,
                             longitude_degrees=0,
                             elevation_m=0)
@@ -133,7 +130,7 @@ def test_searchTwilightWorker_1(function):
         assert suc
 
 
-def test_searchTwilightPlot_1(function):
+def test_showTwilightDataPlot_1(function):
     function.app.mount.obsSite.location = None
     with mock.patch.object(threading.Thread,
                            'start'):
@@ -141,17 +138,17 @@ def test_searchTwilightPlot_1(function):
         assert not suc
 
 
-def test_searchTwilightPLot_2(function):
+def test_showTwilightDataPlot_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
                                                        longitude_degrees=0,
                                                        elevation_m=0)
-    with mock.patch.object(function.threadPool,
+    with mock.patch.object(function.mainW.threadPool,
                            'start'):
         suc = function.showTwilightDataPlot()
         assert suc
 
 
-def test_searchTwilightList_1(function):
+def test_showTwilightDataList_1(function):
     function.app.mount.obsSite.location = None
     with mock.patch.object(threading.Thread,
                            'start'):
@@ -159,7 +156,7 @@ def test_searchTwilightList_1(function):
         assert not suc
 
 
-def test_searchTwilightList_2(function):
+def test_showTwilightDataList_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
                                                        longitude_degrees=0,
                                                        elevation_m=0)
@@ -167,14 +164,6 @@ def test_searchTwilightList_2(function):
                            'listTwilightData'):
         suc = function.showTwilightDataList()
         assert suc
-
-
-def test_displayTwilightData_1(function):
-    tsNow = function.app.mount.obsSite.ts.now()
-    t = [tsNow, tsNow]
-    e = [1, 1]
-    suc = function.listTwilightData(t, e)
-    assert suc
 
 
 def test_calcMoonPhase_1(function):
@@ -222,5 +211,4 @@ def test_updateMoonPhase_2(function):
     with mock.patch.object(function,
                            'calcMoonPhase',
                            return_value=val):
-        suc = function.showMoonPhase()
-        assert suc
+        function.showMoonPhase()

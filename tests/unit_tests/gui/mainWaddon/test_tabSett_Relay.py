@@ -19,6 +19,7 @@ import unittest.mock as mock
 import pytest
 
 # external packages
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -27,19 +28,16 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, SettRelay):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = self.app.deviceStat
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            SettRelay.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = SettRelay(mainW)
     yield window
 
 

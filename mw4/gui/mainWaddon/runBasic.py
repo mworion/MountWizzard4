@@ -24,20 +24,15 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base.transform import JNowToJ2000, J2000ToJNow
-from gui.utilities.toolsQtWidget import MWidget, QMultiWait, sleepAndEvents
+from gui.utilities.toolsQtWidget import QMultiWait, sleepAndEvents
 from base.packageConfig import isSimulationMount
 
 
-class BasicRun(MWidget):
+class RunBasic:
     """
     """
 
-    def __init__(self, mainW):
-        super().__init__()
-        self.mainW = mainW
-        self.app = mainW.app
-        self.msg = mainW.app.msg
-        self.ui = mainW.ui
+    def __init__(self):
         self.slewQueue = queue.Queue()
         self.imageQueue = queue.Queue()
         self.solveQueue = queue.Queue()
@@ -52,9 +47,6 @@ class BasicRun(MWidget):
         self.retryCounter = 0
         self.runType = ''
         self.imageDir = ''
-
-        self.ui.cancelModel.clicked.connect(self.cancelRun)
-        self.ui.endModel.clicked.connect(self.processDataAndFinishRun)
 
     def runSolveDone(self, result):
         """

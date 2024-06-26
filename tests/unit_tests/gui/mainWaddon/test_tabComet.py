@@ -20,12 +20,10 @@ from unittest import mock
 import json
 
 # external packages
-from PySide6.QtWidgets import QTableWidgetItem
-from PySide6.QtCore import QThreadPool
+from PySide6.QtWidgets import QTableWidgetItem, QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabComet import Comet
 
@@ -33,17 +31,13 @@ from gui.mainWaddon.tabComet import Comet
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, Comet):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.threadPool = QThreadPool()
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Comet.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = Comet(mainW)
     yield window
 
 

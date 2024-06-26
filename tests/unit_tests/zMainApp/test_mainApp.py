@@ -209,9 +209,9 @@ def test_loadMountData_1(app):
                                'getFW'):
             with mock.patch.object(app.mount,
                                    'getLocation'):
-                with mock.patch.object(app.mainW,
+                with mock.patch.object(app.mainW.mainWindowAddons.addons['ManageModel'],
                                        'refreshName'):
-                    with mock.patch.object(app.mainW,
+                    with mock.patch.object(app.mainW.mainWindowAddons.addons['ManageModel'],
                                            'refreshModel'):
                         with mock.patch.object(app.mount,
                                                'getTLE'):
@@ -227,7 +227,7 @@ def test_loadMountData_2(app):
 
 def test_loadMountData_3(app):
     app.mountUp = True
-    with mock.patch.object(app.mainW,
+    with mock.patch.object(app.mainW.mainWindowAddons.addons['Almanac'],
                            'calcTwilightData',
                            return_value=([], [])):
         with mock.patch.object(app.mount,

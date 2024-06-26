@@ -19,138 +19,119 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.QtWidgets import QInputDialog
+from PySide6.QtWidgets import QInputDialog, QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabImage_Manage import ImageManage
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, ImageManage):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = {}
-            self.threadPool = self.app.threadPool
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            ImageManage.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = ImageManage(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_checkEnableCameraUI(function):
-    suc = function.checkEnableCameraUI()
-    assert suc
+    function.checkEnableCameraUI()
 
 
 def test_updateOffset_1(function):
     function.app.camera.data['CCD_OFFSET.OFFSET'] = None
     function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = None
-    suc = function.updateOffset()
-    assert suc
+    function.updateOffset()
 
 
 def test_updateOffset_2(function):
     function.app.camera.data['CCD_OFFSET.OFFSET'] = 0
     function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
-    suc = function.updateOffset()
-    assert suc
+    function.updateOffset()
 
 
 def test_updateOffset_3(function):
     function.app.camera.data['CCD_OFFSET.OFFSET'] = 1
     function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = []
-    suc = function.updateOffset()
-    assert suc
+    function.updateOffset()
 
 
 def test_updateOffset_4(function):
     function.app.camera.data['CCD_OFFSET.OFFSET'] = -1
     function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
-    suc = function.updateOffset()
-    assert suc
+    function.updateOffset()
 
 
 def test_updateOffset_5(function):
     function.app.camera.data['CCD_OFFSET.OFFSET'] = 2
     function.app.camera.data['CCD_OFFSET.OFFSET_LIST'] = ['1']
-    suc = function.updateOffset()
-    assert suc
+    function.updateOffset()
 
 
 def test_updateGain_1(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = None
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = None
-    suc = function.updateGain()
-    assert suc
+    function.updateGain()
 
 
 def test_updateGain_2(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = 0
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
-    suc = function.updateGain()
-    assert suc
+    function.updateGain()
 
 
 def test_updateGain_3(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = 1
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = []
-    suc = function.updateGain()
-    assert suc
+    function.updateGain()
 
 
 def test_updateGain_4(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = -1
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
-    suc = function.updateGain()
-    assert suc
+    function.updateGain()
 
 
 def test_updateGain_5(function):
     function.app.camera.data['CCD_GAIN.GAIN'] = 2
     function.app.camera.data['CCD_GAIN.GAIN_LIST'] = ['1']
-    suc = function.updateGain()
-    assert suc
+    function.updateGain()
 
 
 def test_updateCooler_1(function):
     function.app.camera.data['CCD_COOLER.COOLER_ON'] = False
-    suc = function.updateCooler()
-    assert suc
+    function.updateCooler()
 
 
 def test_updateCooler_2(function):
     function.app.camera.data['CCD_COOLER.COOLER_ON'] = True
-    suc = function.updateCooler()
-    assert suc
+    function.updateCooler()
 
 
 def test_updateFilter(function):
-    suc = function.updateFilter()
-    assert suc
+    function.updateFilter()
 
 
 def test_updateFocuser(function):
-    suc = function.updateFocuser()
-    assert suc
+    function.updateFocuser()
 
 
 def test_updateImagingParam_1(function):
@@ -166,8 +147,7 @@ def test_updateImagingParam_1(function):
                                            'updateFilter'):
                         with mock.patch.object(function,
                                                'updateFocuser'):
-                            suc = function.updateImagingParam()
-                            assert suc
+                            function.updateImagingParam()
 
 
 def test_updateImagingParam_2(function):
@@ -180,9 +160,7 @@ def test_updateImagingParam_2(function):
     function.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
     function.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
     function.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
-
-    suc = function.updateImagingParam()
-    assert suc
+    function.updateImagingParam()
 
 
 def test_updateImagingParam_3(function):
@@ -198,8 +176,7 @@ def test_updateImagingParam_3(function):
     function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
-    suc = function.updateImagingParam()
-    assert suc
+    function.updateImagingParam()
 
 
 def test_updateImagingParam_4(function):
@@ -215,9 +192,8 @@ def test_updateImagingParam_4(function):
     function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
-    suc = function.updateImagingParam()
+    function.updateImagingParam()
     assert function.ui.optimalBinning.text() == '2'
-    assert suc
 
 
 def test_updateImagingParam_5(function):
@@ -233,9 +209,8 @@ def test_updateImagingParam_5(function):
     function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
-    suc = function.updateImagingParam()
+    function.updateImagingParam()
     assert function.ui.optimalBinning.text() == '1'
-    assert suc
 
 
 def test_updateImagingParam_6(function):
@@ -251,9 +226,8 @@ def test_updateImagingParam_6(function):
     function.ui.automaticTelescope.setChecked(False)
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
-    suc = function.updateImagingParam()
+    function.updateImagingParam()
     assert function.ui.optimalBinning.text() == '3'
-    assert suc
 
 
 def test_setCoolerTemp_1(function):
@@ -471,59 +445,49 @@ def test_setFilterName_4(function):
 
 
 def test_setDownloadModeFast(function):
-    suc = function.setDownloadModeFast()
-    assert suc
+    function.setDownloadModeFast()
 
 
 def test_setDownloadModeSlow(function):
-    suc = function.setDownloadModeSlow()
-    assert suc
+    function.setDownloadModeSlow()
 
 
 def test_setCoolerOn_1(function):
-    suc = function.setCoolerOn()
-    assert suc
+    function.setCoolerOn()
 
 
 def test_setCoolerOff_1(function):
-    suc = function.setCoolerOff()
-    assert suc
+    function.setCoolerOff()
 
 
 def test_updateCoverStatGui_1(function):
     function.app.cover.data['CAP_PARK.PARK'] = True
-    suc = function.updateCoverStatGui()
-    assert suc
+    function.updateCoverStatGui()
 
 
 def test_updateCoverStatGui_2(function):
     function.app.cover.data['CAP_PARK.PARK'] = False
-    suc = function.updateCoverStatGui()
-    assert suc
+    function.updateCoverStatGui()
 
 
 def test_updateCoverStatGui_3(function):
     function.app.cover.data['CAP_PARK.PARK'] = None
-    suc = function.updateCoverStatGui()
-    assert suc
+    function.updateCoverStatGui()
 
 
 def test_updateCoverLightGui_1(function):
     function.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = True
-    suc = function.updateCoverLightGui()
-    assert suc
+    function.updateCoverLightGui()
 
 
 def test_updateCoverLightGui_2(function):
     function.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = False
-    suc = function.updateCoverLightGui()
-    assert suc
+    function.updateCoverLightGui()
 
 
 def test_updateCoverLightGui_3(function):
     function.app.cover.data['FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON'] = None
-    suc = function.updateCoverLightGui()
-    assert suc
+    function.updateCoverLightGui()
 
 
 def test_setCoverPark_1(function):
@@ -695,49 +659,47 @@ def test_setLightIntensity_4(function):
 def test_updateDomeGui_1(function):
     function.app.dome.data['DOME_MOTION.DOME_CW'] = True
     function.app.dome.data['DOME_MOTION.DOME_CCW'] = True
-    suc = function.updateDomeGui()
-    assert suc
+    function.updateDomeGui()
 
 
 def test_updateDomeGui_2(function):
     function.app.dome.data['DOME_MOTION.DOME_CW'] = False
     function.app.dome.data['DOME_MOTION.DOME_CCW'] = False
-    suc = function.updateDomeGui()
-    assert suc
+    function.updateDomeGui()
 
 
 def test_updateShutterStatGui_1(function):
     function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = True
     function.app.dome.data['Status.Shutter'] = 'test'
-    suc = function.updateShutterStatGui()
-    assert suc
+    function.updateShutterStatGui()
+
     assert function.ui.domeShutterStatusText.text() == 'test'
 
 
 def test_updateShutterStatGui_2(function):
     function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = False
     function.app.dome.data['Status.Shutter'] = 'test'
-    suc = function.updateShutterStatGui()
-    assert suc
+    function.updateShutterStatGui()
+
     assert function.ui.domeShutterStatusText.text() == 'test'
 
 
 def test_updateShutterStatGui_3(function):
     function.app.dome.data['DOME_SHUTTER.SHUTTER_OPEN'] = None
     function.app.dome.data['Status.Shutter'] = 'test'
-    suc = function.updateShutterStatGui()
-    assert suc
+    function.updateShutterStatGui()
+
     assert function.ui.domeShutterStatusText.text() == 'test'
 
 
 def test_domeSlewCW_0(function):
-    function.deviceStat['dome'] = False
+    function.app.deviceStat['dome'] = False
     suc = function.domeSlewCW()
     assert not suc
 
 
 def test_domeSlewCW_1(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'slewCW',
                            return_value=False):
@@ -746,7 +708,7 @@ def test_domeSlewCW_1(function):
 
 
 def test_domeSlewCW_2(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'slewCW',
                            return_value=True):
@@ -755,13 +717,13 @@ def test_domeSlewCW_2(function):
 
 
 def test_domeSlewCCW_0(function):
-    function.deviceStat['dome'] = False
+    function.app.deviceStat['dome'] = False
     suc = function.domeSlewCCW()
     assert not suc
 
 
 def test_domeSlewCCW_1(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'slewCCW',
                            return_value=False):
@@ -770,7 +732,7 @@ def test_domeSlewCCW_1(function):
 
 
 def test_domeSlewCCW_2(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'slewCCW',
                            return_value=True):
@@ -779,13 +741,13 @@ def test_domeSlewCCW_2(function):
 
 
 def test_domeAbortSlew_0(function):
-    function.deviceStat['dome'] = False
+    function.app.deviceStat['dome'] = False
     suc = function.domeAbortSlew()
     assert not suc
 
 
 def test_domeAbortSlew_1(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'abortSlew',
                            return_value=False):
@@ -794,7 +756,7 @@ def test_domeAbortSlew_1(function):
 
 
 def test_domeAbortSlew_2(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'abortSlew',
                            return_value=True):
@@ -803,13 +765,13 @@ def test_domeAbortSlew_2(function):
 
 
 def test_domeOpenShutter_0(function):
-    function.deviceStat['dome'] = False
+    function.app.deviceStat['dome'] = False
     suc = function.domeOpenShutter()
     assert not suc
 
 
 def test_domeOpenShutter_1(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'openShutter',
                            return_value=False):
@@ -818,7 +780,7 @@ def test_domeOpenShutter_1(function):
 
 
 def test_domeOpenShutter_2(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'openShutter',
                            return_value=True):
@@ -827,13 +789,13 @@ def test_domeOpenShutter_2(function):
 
 
 def test_domeCloseShutter_0(function):
-    function.deviceStat['dome'] = False
+    function.app.deviceStat['dome'] = False
     suc = function.domeCloseShutter()
     assert not suc
 
 
 def test_domeCloseShutter_1(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'closeShutter',
                            return_value=False):
@@ -842,7 +804,7 @@ def test_domeCloseShutter_1(function):
 
 
 def test_domeCloseShutter_2(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function.app.dome,
                            'closeShutter',
                            return_value=True):
@@ -851,13 +813,13 @@ def test_domeCloseShutter_2(function):
 
 
 def test_domeMoveGameController_0(function):
-    function.deviceStat['dome'] = False
+    function.app.deviceStat['dome'] = False
     suc = function.domeMoveGameController(128, 128)
     assert not suc
 
 
 def test_domeMoveGameController_1(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function,
                            'domeAbortSlew'):
         suc = function.domeMoveGameController(128, 128)
@@ -865,7 +827,7 @@ def test_domeMoveGameController_1(function):
 
 
 def test_domeMoveGameController_2(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function,
                            'domeSlewCCW'):
         with mock.patch.object(function,
@@ -875,7 +837,7 @@ def test_domeMoveGameController_2(function):
 
 
 def test_domeMoveGameController_3(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     with mock.patch.object(function,
                            'domeSlewCW'):
         with mock.patch.object(function,

@@ -19,35 +19,27 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.QtCore import QThreadPool
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.extWindows.uploadPopupW import UploadPopup
 import gui.utilities
 from gui.mainWaddon.tabTools_IERSTime import IERSTime
-from logic.databaseProcessing.dataWriter import DataWriter
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, IERSTime):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.databaseProcessing = DataWriter(self.app)
-            self.threadPool = QThreadPool()
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            IERSTime.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = IERSTime(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):

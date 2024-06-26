@@ -60,31 +60,26 @@ class Almanac(MWidget):
         self.colors = None
         self.setColors()
         self.app.update1h.connect(self.showMoonPhase)
-        self.app.colorChange.connect(self.colorChangeAlmanac)
+        self.app.colorChange.connect(self.updateColorSet)
         self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataList)
         self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataPlot)
         self.ui.unitTimeUTC.toggled.connect(self.showMoonPhase)
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.almanacPrediction.currentIndexChanged.connect(self.showTwilightDataPlot)
         self.ui.almanacPrediction.setCurrentIndex(config.get('almanacPrediction', 0))
-        return True
 
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['almanacPrediction'] = self.ui.almanacPrediction.currentIndex()
-        return True
 
     def setColors(self):
         """
-        :return:
         """
         self.ui.almanacCivil.setStyleSheet(f'background-color: {self.M_BLUE1};')
         self.ui.almanacNautical.setStyleSheet(f'background-color: {self.M_BLUE2};')
@@ -92,23 +87,18 @@ class Almanac(MWidget):
         self.ui.almanacDark.setStyleSheet(f'background-color: {self.M_BLUE4};')
         self.colors = [self.M_BLUE4, self.M_BLUE3, self.M_BLUE2, self.M_BLUE1,
                        self.M_BACK]
-        return True
 
-    def colorChangeAlmanac(self):
+    def updateColorSet(self):
         """
-        :return:
         """
         self.setColors()
         self.ui.twilight.colorChange()
         self.showTwilightDataList()
         self.showTwilightDataPlot()
         self.showMoonPhase()
-        return True
 
     def plotTwilightData(self, result):
         """
-        :param result:
-        :return: true for test purpose
         """
         ts, t, e = result
         xMin = int(t[0].tt) + 1
@@ -165,13 +155,9 @@ class Almanac(MWidget):
         plotItem.addLine(x=xNow, pen=penLine)
 
         self.changeStyleDynamic(self.ui.almanacGroup, 'running', False)
-        return True
 
     def listTwilightData(self, timeEvents, events):
         """
-        :param timeEvents:
-        :param events:
-        :return:
         """
         text = ''
         self.ui.twilightEvents.clear()
@@ -184,15 +170,9 @@ class Almanac(MWidget):
             text = '\n'
         title = 'Sun ' + self.timeZoneString()
         self.ui.sunAlmanacGroup.setTitle(title)
-        return True
 
     def calcTwilightData(self, ts, location, tWinL=0, tWinH=0):
         """
-        :param ts:
-        :param location:
-        :param tWinL:
-        :param tWinH:
-        :return:
         """
         timeJD = self.app.mount.obsSite.timeJD
         t0 = ts.tt_jd(int(timeJD.tt) - tWinL)
@@ -204,10 +184,6 @@ class Almanac(MWidget):
 
     def workerCalcTwilightDataPlot(self, ts, location, timeWindow):
         """
-        :param ts:
-        :param location:
-        :param timeWindow:
-        :return: true for test purpose
         """
         t, e = self.calcTwilightData(ts, location,
                                      tWinL=timeWindow,
@@ -216,7 +192,6 @@ class Almanac(MWidget):
 
     def showTwilightDataPlot(self):
         """
-        :return: true for test purpose
         """
         timeWindowParam = [17, 32, 47, 92, 182]
         location = self.app.mount.obsSite.location
@@ -239,7 +214,6 @@ class Almanac(MWidget):
 
     def showTwilightDataList(self):
         """
-        :return: true for test purpose
         """
         location = self.app.mount.obsSite.location
         if location is None:
@@ -253,10 +227,6 @@ class Almanac(MWidget):
 
     def calcMoonPhase(self):
         """
-        calcMoonPhase searches for moon events, moon phase and illumination
-        percentage.
-
-        :return: fraction of illumination, degree phase and percent phase
         """
         ephemeris = self.app.ephemeris
         sun = ephemeris['sun']
@@ -308,9 +278,6 @@ class Almanac(MWidget):
 
     def generateMoonMask(self, pixmap, mpDegree):
         """
-        :param pixmap:
-        :param mpDegree:
-        :return:
         """
         colCover = QColor(self.M_BACK)
         colFree = QColor('transparent')
@@ -378,10 +345,6 @@ class Almanac(MWidget):
 
     def showMoonPhase(self):
         """
-        It will also write some description for the moon phase. In addition, I
-        will show an image of the moon showing the moon phase as picture.
-
-        :return: true for test purpose
         """
         calcMoon = self.calcMoonPhase()
 
@@ -427,4 +390,3 @@ class Almanac(MWidget):
         width = self.ui.moonPic.width()
         height = self.ui.moonPic.height()
         self.ui.moonPic.setPixmap(moon.scaled(width, height))
-        return True

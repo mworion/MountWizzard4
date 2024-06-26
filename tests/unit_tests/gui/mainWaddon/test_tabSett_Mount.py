@@ -20,27 +20,25 @@ import pytest
 
 # external packages
 import wakeonlan
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
+import gui
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabSett_Mount import SettMount
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, SettMount):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = self.app.deviceStat
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            SettMount.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = SettMount(mainW)
     yield window
 
 
@@ -89,11 +87,14 @@ def test_storeConfig_1(function):
 
 
 def test_bootRackComp_1(function):
-    with mock.patch.object(wakeonlan,
-                           'send_magic_packet',
+    with mock.patch.object(gui.mainWaddon.tabSett_Mount,
+                           'checkFormatMAC',
                            return_value=False):
-        suc = function.bootRackComp()
-        assert suc
+        with mock.patch.object(wakeonlan,
+                               'send_magic_packet',
+                               return_value=False):
+            suc = function.bootRackComp()
+            assert suc
 
 
 def test_bootRackComp_2(function):

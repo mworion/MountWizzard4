@@ -19,38 +19,29 @@ import unittest.mock as mock
 import pytest
 import os
 import shutil
-import glob
 
 # external packages
 from astropy.io import fits
 import numpy as np
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabTools_Rename import Rename
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, Rename):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = self.app.deviceStat
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Rename.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = Rename(mainW)
     yield window
-
-    files = glob.glob('tests/workDir/image/*.fit*')
-    for f in files:
-        os.remove(f)
 
 
 def test_initConfig_1(function):

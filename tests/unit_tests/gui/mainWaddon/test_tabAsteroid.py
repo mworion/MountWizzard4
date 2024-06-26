@@ -20,30 +20,23 @@ from unittest import mock
 import json
 
 # external packages
-from PySide6.QtWidgets import QTableWidgetItem
-from PySide6.QtCore import QThreadPool
+from PySide6.QtWidgets import QTableWidgetItem, QWidget
+
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabAsteroid import Asteroid
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-
-    class Mixin(MWidget, Asteroid):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.threadPool = QThreadPool()
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Asteroid.__init__(self)
-
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    window = Asteroid(mainW)
     yield window
 
 

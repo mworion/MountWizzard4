@@ -27,10 +27,11 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 # local import
 from base.transform import J2000ToJNow
 from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
+from gui.mainWaddon.runBasic import RunBasic
 from logic.modeldata.modelHandling import writeRetrofitData
 
 
-class Model(MWidget):
+class Model(MWidget, RunBasic):
     """
     """
 
@@ -50,6 +51,8 @@ class Model(MWidget):
 
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
+        self.ui.cancelModel.clicked.connect(self.cancelRun)
+        self.ui.endModel.clicked.connect(self.processDataAndFinishRun)
         self.ui.dataModel.clicked.connect(self.loadProgramModel)
         self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)
         self.app.operationRunning.connect(self.setModelOperationMode)
@@ -305,8 +308,8 @@ class Model(MWidget):
 
         self.app.mount.signals.alignDone.connect(self.saveModelFinish)
         self.app.mount.model.storeName('actual')
-        self.refreshName()
-        self.refreshModel()
+        self.mainW.mainWindowAddons.addons['ManageModel'].refreshName()
+        self.mainW.mainWindowAddons.addons['ManageModel'].refreshModel()
         return True
 
     def renewHemisphereView(self):
@@ -395,7 +398,7 @@ class Model(MWidget):
                           'Actual model clearing, waiting 1s')
             sleepAndEvents(1000)
             self.msg.emit(0, '', '', 'Actual model cleared')
-            self.refreshModel()
+            self.mainW.mainWindowAddons.addons['ManageModel'].refreshModel()
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:
@@ -416,7 +419,7 @@ class Model(MWidget):
         :return: true for test purpose
         """
         prefix = 'm'
-        postfix = self.lastGenerator
+        postfix = self.mainW.mainWindowAddons.addons['BuildPoints'].lastGenerator
 
         self.modelName, imgDir = self.setupFilenamesAndDirectories(
             prefix=prefix, postfix=postfix)

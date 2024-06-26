@@ -15,6 +15,7 @@
 #
 ###########################################################
 # standard libraries
+from functools import partial
 
 # external packages
 import numpy as np
@@ -70,7 +71,7 @@ class EnvironWeather(MWidget):
             self.refractionSources[source]['signals'].deviceDisconnected.connect(
                 self.clearSourceGui)
             self.refractionSources[source]['group'].clicked.connect(
-                self.selectRefractionSource)
+                partial(self.selectRefractionSource, source))
 
         self.envFields = {
             'temperature': {
@@ -119,7 +120,6 @@ class EnvironWeather(MWidget):
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.refracManual.setChecked(config.get('refracManual', False))
@@ -127,18 +127,15 @@ class EnvironWeather(MWidget):
         self.ui.refracNoTrack.setChecked(config.get('refracNoTrack', False))
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
-        return True
 
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['refracManual'] = self.ui.refracManual.isChecked()
         config['refracCont'] = self.ui.refracCont.isChecked()
         config['refracNoTrack'] = self.ui.refracNoTrack.isChecked()
         config['refractionSource'] = self.refractionSource
-        return True
 
     def smartEnvironGui(self):
         """
@@ -147,9 +144,7 @@ class EnvironWeather(MWidget):
         synchronously, because it can't be simpler done with dynamic approach.
         all different situations in a running environment is done locally.
 
-        :return: true for test purpose
         """
-
         for source in self.refractionSources:
             stat = self.app.deviceStat.get(source, None)
             group = self.refractionSources[source]['group']
@@ -162,11 +157,9 @@ class EnvironWeather(MWidget):
             else:
                 group.setMinimumSize(75, 0)
                 group.setEnabled(False)
-        return True
 
     def updateRefractionUpdateType(self):
         """
-        :return: success
         """
         if self.refractionSource != 'directWeather':
             return False
@@ -180,12 +173,10 @@ class EnvironWeather(MWidget):
             self.ui.refracCont.setChecked(True)
         else:
             return False
-
         return True
 
     def setRefractionUpdateType(self):
         """
-        :return: success
         """
         if not self.ui.showTabEnviron.isChecked():
             return False
@@ -203,12 +194,10 @@ class EnvironWeather(MWidget):
             suc = self.app.mount.setting.setDirectWeatherUpdateType(1)
         else:
             suc = self.app.mount.setting.setDirectWeatherUpdateType(2)
-
         return suc
 
     def setRefractionSourceGui(self):
         """
-        :return: success
         """
         for source in self.refractionSources:
             if self.refractionSource == source:
@@ -219,21 +208,16 @@ class EnvironWeather(MWidget):
                 self.changeStyleDynamic(
                     self.refractionSources[source]['group'], 'refraction', False)
                 self.refractionSources[source]['group'].setChecked(False)
-        return True
 
-    def selectRefractionSource(self):
+    def selectRefractionSource(self, source):
         """
-        :return: success
         """
         old = self.refractionSource
 
-        for source in self.refractionSources:
-            if self.refractionSources[source]['group'] != self.sender():
-                continue
-            if self.refractionSources[source]['group'].isChecked():
-                self.refractionSource = source
-            else:
-                self.refractionSource = ''
+        if self.refractionSources[source]['group'].isChecked():
+            self.refractionSource = source
+        else:
+            self.refractionSource = ''
 
         if old != self.refractionSource:
             self.filteredTemperature = None
@@ -241,14 +225,9 @@ class EnvironWeather(MWidget):
 
         self.setRefractionSourceGui()
         self.setRefractionUpdateType()
-        return True
 
     def updateFilterRefractionParameters(self):
         """
-        updateFilter initializes the filter with the first values or is rolling
-        the moving average
-
-        :return:
         """
         if self.refractionSource in ['sensor1Weather', 'sensor2Weather',
                                      'sensor3Weather', 'onlineWeather']:
@@ -277,7 +256,6 @@ class EnvironWeather(MWidget):
         else:
             self.filteredPressure = np.roll(self.filteredPressure, 1)
             self.filteredPressure[0] = press
-
         return True
 
     def movingAverageRefractionParameters(self):
@@ -322,12 +300,10 @@ class EnvironWeather(MWidget):
         if not suc:
             self.msg.emit(2, 'System', 'Environment', 'No refraction update')
             return False
-
         return True
 
     def updateSourceGui(self):
         """
-        :return:    True if ok for testing
         """
         for source in self.refractionSources:
             data = self.refractionSources[source]['data']
@@ -336,16 +312,12 @@ class EnvironWeather(MWidget):
                 ui = eval('self.ui.' + field + uiPost)
                 value = data.get(self.envFields[field]['valueKey'])
                 self.guiSetText(ui, self.envFields[field]['format'], value)
-        return True
 
     def clearSourceGui(self, deviceName=''):
         """
-        :param deviceName:
-        :return: true for test purpose
         """
         for source in self.refractionSources:
             self.refractionSources[source]['data'].clear()
         self.ui.meteoblueIcon.setVisible(False)
         self.ui.meteoblueSeeing.setVisible(False)
         self.updateSourceGui()
-        return True

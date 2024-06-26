@@ -25,7 +25,7 @@ from range_key_dict import RangeKeyDict
 from gui.utilities.toolsQtWidget import MWidget
 
 
-class ImagsStats(MWidget):
+class ImageStats(MWidget):
     """
     """
     WATNEY = RangeKeyDict({
@@ -83,10 +83,6 @@ class ImagsStats(MWidget):
 
     def updateImageStats(self):
         """
-        updateImageStats reads the data from the classes and writes them to the gui.
-        if a parameter is not set (no key entry) or None, the gui will show a '-'
-
-        :return: true for test purpose
         """
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
@@ -177,31 +173,23 @@ class ImagsStats(MWidget):
         self.guiSetText(self.ui.astapIndex, 's', astapText)
         self.guiSetText(self.ui.astrometryIndex, 's', astrometryText)
 
-        return True
-
     def openWatneyCatalog(self):
         """
-        :return:
         """
         url = 'https://github.com/Jusas/WatneyAstrometry/releases/tag/watneyqdb3'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'ImageStats', 'Browser failed')
-        return True
 
     def openASTAPCatalog(self):
         """
-        :return:
         """
         url = 'https://www.hnsky.org/astap.htm'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'ImageStats', 'Browser failed')
-        return True
 
     def openAstrometryCatalog(self):
         """
-        :return:
         """
         url = 'http://data.astrometry.net/4200/'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'ImageStats', 'Browser failed')
-        return True

@@ -25,6 +25,7 @@ import webbrowser
 
 # external packages
 from PySide6.QtMultimedia import QSoundEffect
+from PySide6.QtWidgets import QWidget
 import requests
 import importlib_metadata
 import hid
@@ -34,27 +35,21 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabSett_Misc import SettMisc
 import gui.mainWaddon.tabSett_Misc
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
 setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, SettMisc):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = self.app.deviceStat
-            self.threadPool = self.app.threadPool
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            SettMisc.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = SettMisc(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):

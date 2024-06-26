@@ -91,7 +91,6 @@ class BuildPoints(MWidget):
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
 
@@ -127,11 +126,9 @@ class BuildPoints(MWidget):
         self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
         self.setupDsoGui()
-        return True
 
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['buildPFileName'] = self.ui.buildPFileName.text()
@@ -153,8 +150,6 @@ class BuildPoints(MWidget):
         config['keepGeneratedPoints'] = self.ui.keepGeneratedPoints.isChecked()
         config['ditherBuildPoints'] = self.ui.ditherBuildPoints.isChecked()
 
-        return True
-
     def setupIcons(self):
         self.wIcon(self.ui.loadBuildPoints, 'load')
         self.wIcon(self.ui.saveBuildPoints, 'save')
@@ -163,10 +158,6 @@ class BuildPoints(MWidget):
 
     def genBuildGrid(self):
         """
-        genBuildGrid generates a grid of point for model build based on gui data. the cols
-        have to be on even numbers.
-
-        :return: success
         """
         self.lastGenerator = 'grid'
         self.ui.numberGridPointsRow.setEnabled(False)
@@ -207,10 +198,6 @@ class BuildPoints(MWidget):
 
     def genBuildAlign3(self):
         """
-        genBuildAlign3 generates a grid of 3 point for model build based on gui
-        data.
-
-        :return: success
         """
         self.lastGenerator = 'align3'
         keep = self.ui.keepGeneratedPoints.isChecked()
@@ -228,10 +215,6 @@ class BuildPoints(MWidget):
 
     def genBuildAlign6(self):
         """
-        genBuildAlign6 generates a grid of 6 point for model build based on gui
-        data.
-
-        :return: success
         """
         self.lastGenerator = 'align6'
         keep = self.ui.keepGeneratedPoints.isChecked()
@@ -249,10 +232,6 @@ class BuildPoints(MWidget):
 
     def genBuildAlign9(self):
         """
-        genBuildAlign9 generates a grid of 9 point for model build based on gui
-        data.
-
-        :return: success
         """
         self.lastGenerator = 'align9'
         keep = self.ui.keepGeneratedPoints.isChecked()
@@ -270,10 +249,6 @@ class BuildPoints(MWidget):
 
     def genBuildAlign12(self):
         """
-        genBuildAlign12 generates a grid of 12 point for model build based on gui
-        data.
-
-        :return: success
         """
         self.lastGenerator = 'align12'
         keep = self.ui.keepGeneratedPoints.isChecked()
@@ -465,7 +440,8 @@ class BuildPoints(MWidget):
 
     def genBuildFile(self):
         """
-        genBuildFile tries to load a give build point file and displays it for usage.
+        genBuildFile tries to load a give build point file and displays it for
+        usage.
 
         :return: success
         """
@@ -552,7 +528,6 @@ class BuildPoints(MWidget):
         else:
             self.msg.emit(2, 'Model', 'Buildpoints',
                           f'Build file [{fileName}] cannot be saved')
-
         return True
 
     def clearBuildP(self):
@@ -582,12 +557,9 @@ class BuildPoints(MWidget):
         if self.ui.useSafetyMargin.isChecked():
             value = self.ui.safetyMarginValue.value()
             self.app.data.deleteCloseHorizonLine(value)
-        return True
 
     def doSortDomeAzData(self, result):
         """
-        :param result:
-        :return:
         """
         points, pierside = result
         self.app.data.sort(points=points,
@@ -596,13 +568,9 @@ class BuildPoints(MWidget):
         self.sortRunning.unlock()
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
-        return True
 
     def sortDomeAzWorker(self, points, pierside=None):
         """
-        :param points:
-        :param pierside:
-        :return:
         """
         pointsNew = list()
         numbAll = len(points)
@@ -624,9 +592,6 @@ class BuildPoints(MWidget):
 
     def sortDomeAz(self, points, pierside=None):
         """
-        :param points:
-        :param pierside:
-        :return:
         """
         if not self.sortRunning.tryLock():
             return False
@@ -637,11 +602,6 @@ class BuildPoints(MWidget):
 
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):
         """
-        :param points:
-        :param eastwest:
-        :param highlow:
-        :param pierside:
-        :return:
         """
         points = [(x[0], x[1], x[2], 0) for x in points]
         self.app.data.sort(points=points,
@@ -650,7 +610,6 @@ class BuildPoints(MWidget):
                            pierside=pierside)
         self.app.redrawHemisphere.emit()
         self.app.drawBuildPoints.emit()
-        return True
 
     def autoSortPoints(self):
         """
@@ -682,36 +641,28 @@ class BuildPoints(MWidget):
         else:
             self.sortMountAz(points=points, eastwest=eastwest, highlow=highlow,
                              pierside=pierside)
-
         return True
 
     def buildPointsChanged(self):
         """
-        :return:
         """
         self.lastGenerator = 'none'
-        return True
 
     def rebuildPoints(self):
         """
-        :return:
         """
         if self.lastGenerator in self.sortedGenerators:
             self.sortedGenerators[self.lastGenerator]()
         self.processPoints()
-        return True
 
     def processPoints(self):
         """
-        :return: True for test purpose
         """
         self.autoDeletePoints()
         self.autoSortPoints()
-        return True
 
     def setupDsoGui(self):
         """
-        :return:
         """
         isOnline = self.ui.isOnline.isChecked()
         self.ui.generateQuery.setEnabled(isOnline)
@@ -720,11 +671,9 @@ class BuildPoints(MWidget):
         self.ui.generateQueryText.setEnabled(isOnline)
         self.ui.generateRaText.setEnabled(isOnline)
         self.ui.generateDecText.setEnabled(isOnline)
-        return True
 
     def querySimbad(self):
         """
-        :return:
         """
         if not self.ui.isOnline.isChecked():
             self.msg.emit(2, 'Model', 'Buildpoints', 'MW4 is offline')

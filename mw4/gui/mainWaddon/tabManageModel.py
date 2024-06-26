@@ -65,11 +65,10 @@ class ManageModel(MWidget):
         self.ui.targetRMS.valueChanged.connect(self.showModelPosition)
         self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
         self.ui.targetRMS.valueChanged.connect(self.showErrorDistribution)
-        self.app.colorChange.connect(self.colorChangeManageModel)
+        self.app.colorChange.connect(self.updateColorSet)
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.targetRMS.setValue(config.get('targetRMS', 10))
@@ -79,18 +78,15 @@ class ManageModel(MWidget):
         self.showModelPosition()
         self.showErrorAscending()
         self.showErrorDistribution()
-        return True
 
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['targetRMS'] = self.ui.targetRMS.value()
         config['optimizeOverall'] = self.ui.optimizeOverall.isChecked()
         config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
         config['autoUpdateActualAnalyse'] = self.ui.autoUpdateActualAnalyse.isChecked()
-        return True
 
     def setupIcons(self) -> None:
         """
@@ -108,9 +104,8 @@ class ManageModel(MWidget):
         self.wIcon(self.ui.refreshName, 'reload')
         self.wIcon(self.ui.refreshModel, 'reload')
 
-    def colorChangeManageModel(self):
+    def updateColorSet(self):
         """
-        :return:
         """
         for plot in [self.ui.modelPositions, self.ui.errorDistribution,
                      self.ui.errorAscending]:
@@ -118,27 +113,18 @@ class ManageModel(MWidget):
         self.showModelPosition()
         self.showErrorAscending()
         self.showErrorDistribution()
-        return True
 
     def setNameList(self, model):
         """
-        setNameList populates the list of model names in the main window. before
-        adding the data, the existent list will be deleted.
-
-        :return:    True if ok for testing
         """
         self.ui.nameList.clear()
         for name in model.nameList:
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
-        return True
 
     @staticmethod
     def findKeysFromSourceInDest(buildModel, mountModel):
         """
-        :param buildModel:
-        :param mountModel:
-        :return: success
         """
         pointsIn = []
         pointsOut = []
@@ -162,9 +148,6 @@ class ManageModel(MWidget):
 
     def compareModel(self, buildModelData, mountModel):
         """
-        :param buildModelData:
-        :param mountModel:
-        :return:
         """
         buildModel = {}
         for star in buildModelData:
@@ -182,8 +165,6 @@ class ManageModel(MWidget):
         to find the fitting model run data. therefore it compares up to 5 points
         to find out. all optimized model files (containing opt in filename) are
         ignored.
-
-        :return: success
         """
         mountModel = {}
         for star in self.app.mount.model.starList:
@@ -220,7 +201,6 @@ class ManageModel(MWidget):
 
     def showModelPosition(self):
         """
-        :return:    True if ok for testing
         """
         model = self.app.mount.model
         altitude = np.array([x.alt.degrees for x in model.starList])
@@ -244,7 +224,6 @@ class ManageModel(MWidget):
 
     def showErrorAscending(self):
         """
-        :return:    True if ok for testing
         """
         model = self.app.mount.model
         error = np.array([star.errorRMS for star in model.starList])
@@ -263,7 +242,6 @@ class ManageModel(MWidget):
 
     def showErrorDistribution(self):
         """
-        :return:    True if ok for testing
         """
         model = self.app.mount.model
         error = np.array([x.errorRMS for x in model.starList])
@@ -278,7 +256,6 @@ class ManageModel(MWidget):
 
     def clearRefreshName(self):
         """
-        :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.refreshName, 'running', False)
         self.changeStyleDynamic(self.ui.modelNameGroup, 'running', False)
@@ -287,17 +264,15 @@ class ManageModel(MWidget):
         self.ui.loadName.setEnabled(True)
         self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
         self.msg.emit(0, 'Model', 'Manage', 'Model names refreshed')
-        return True
 
     def refreshName(self):
         """
-        refreshName disables interfering functions in gui and start reloading the
-        names list for model in the mount computer. it connects a link to clearRefreshNames
-        which enables the former disabled gui buttons and removes the link to the method.
-        after it triggers the refresh of names, it finished, because behaviour is event
-        driven
-
-        :return: True for test purpose
+        refreshName disables interfering functions in gui and start reloading
+        the names list for model in the mount computer. it connects a link to
+        clearRefreshNames which enables the former disabled gui buttons and
+        removes the link to the method.
+        after it triggers the refresh of names, it finished, because behaviour
+        is event driven
         """
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteName.setEnabled(False)
@@ -306,15 +281,9 @@ class ManageModel(MWidget):
         self.changeStyleDynamic(self.ui.refreshName, 'running', True)
         self.changeStyleDynamic(self.ui.modelNameGroup, 'running', True)
         self.app.mount.getNames()
-        return True
 
     def loadName(self):
         """
-        loadName take the given name and loads the stored model as the actual alignment
-        model for the mount. after that it refreshes the alignment model data in
-        mountwizzard
-
-        :return: success
         """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, 'Model', 'Manage error',
@@ -334,11 +303,6 @@ class ManageModel(MWidget):
 
     def saveName(self):
         """
-        saveName take the given name and saves the actual alignment model to the
-        model database in the mount computer. after that it refreshes the list of
-        the alignment model names in mountwizzard.
-
-        :return: success
         """
         dlg = QInputDialog()
         modelName, ok = dlg.getText(self,
@@ -364,11 +328,6 @@ class ManageModel(MWidget):
 
     def deleteName(self):
         """
-        deleteName take the given name and deletes it from the model database in
-        the mount computer. after that it refreshes the list of the alignment
-        model names in mountwizzard.
-
-        :return: success
         """
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, 'Model', 'Manage error',
@@ -394,9 +353,6 @@ class ManageModel(MWidget):
 
     def writeBuildModelOptimized(self, foundModel, pointsOut):
         """
-        :param foundModel:
-        :param pointsOut:
-        :return: true for test purpose
         """
         actPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '.model'
         newPath = self.app.mwGlob['modelDir'] + '/' + foundModel + '-opt.model'
@@ -417,12 +373,10 @@ class ManageModel(MWidget):
         newModel = writeRetrofitData(self.app.mount.model, newModel)
         with open(newPath, 'w+') as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
-
         return True
 
     def clearRefreshModel(self):
         """
-        :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.refreshModel, 'running', False)
         self.changeStyleDynamic(self.ui.modelGroup, 'running', False)
@@ -445,8 +399,6 @@ class ManageModel(MWidget):
         if self.ui.autoUpdateActualAnalyse.isChecked():
             self.showActualModelAnalyse()
 
-        return True
-
     def refreshModel(self):
         """
         refreshModel disables interfering functions in gui and start reloading
@@ -454,8 +406,6 @@ class ManageModel(MWidget):
         clearRefreshModel which enables the former disabled gui buttons and
         removes the link to the method. after it triggers the refresh of names,
         it finished, because behaviour is event driven
-
-        :return: True for test purpose
         """
         self.changeStyleDynamic(self.ui.refreshModel, 'running', True)
         self.changeStyleDynamic(self.ui.modelGroup, 'running', True)
@@ -465,11 +415,8 @@ class ManageModel(MWidget):
         self.ui.clearModel.setEnabled(False)
         self.app.mount.getAlign()
 
-        return True
-
     def clearModel(self):
         """
-        :return:
         """
         suc = self.messageDialog(
             self, 'Clear model', 'Clear actual alignment model')
@@ -489,7 +436,6 @@ class ManageModel(MWidget):
 
     def deleteWorstPoint(self):
         """
-        :return:
         """
         model = self.app.mount.model
         if not model.numberStars:
@@ -508,12 +454,10 @@ class ManageModel(MWidget):
             text += ' arcsec deleted.'
             self.msg.emit(0, 'Model', 'Manage', text)
             self.refreshModel()
-
         return True
 
     def runTargetRMS(self):
         """
-        :return: True for test purpose
         """
         mount = self.app.mount
         if mount.model.errorRMS < self.ui.targetRMS.value():
@@ -540,11 +484,9 @@ class ManageModel(MWidget):
 
         else:
             self.finishOptimize()
-        return True
 
     def runSingleRMS(self):
         """
-        :return: True for test purpose
         """
         mount = self.app.mount
         if all([star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]):
@@ -569,11 +511,9 @@ class ManageModel(MWidget):
             mount.getAlign()
         else:
             self.finishOptimize()
-        return True
 
     def runOptimize(self):
         """
-        :return: true for test purpose
         """
         self.msg.emit(1, 'Model', 'Manage', 'Start optimizing model')
         self.runningOptimize = True
@@ -589,7 +529,6 @@ class ManageModel(MWidget):
         else:
             self.app.mount.signals.alignDone.connect(self.runSingleRMS)
             self.runSingleRMS()
-        return True
 
     def finishOptimize(self):
         """
@@ -607,30 +546,23 @@ class ManageModel(MWidget):
         self.ui.cancelOptimize.setEnabled(False)
         self.msg.emit(0, 'Model', 'Manage', 'Optimizing done')
 
-        return True
-
     def cancelOptimize(self):
         """
-        :return: true for test purpose
         """
         self.runningOptimize = False
-        return True
 
     def showOriginalModelAnalyse(self):
         """
-        :return: True for test purpose
         """
         if not self.fittedModelPath:
             return False
         if not os.path.isfile(self.fittedModelPath):
             return False
-
         self.app.showAnalyse.emit(self.fittedModelPath)
         return True
 
     def showActualModelAnalyse(self):
         """
-        :return: True for test purpose
         """
         if not self.fittedModelPath:
             return False
@@ -645,10 +577,6 @@ class ManageModel(MWidget):
 
     def pointClicked(self, scatterPlotItem, points, event):
         """
-        :param scatterPlotItem:
-        :param points:
-        :param event: mouse events
-        :return: success
         """
         if event.double():
             return False

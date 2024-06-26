@@ -19,41 +19,39 @@ import pytest
 from unittest import mock
 
 # external packages
+from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 from astroquery.simbad import Simbad
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabBuildPoints import BuildPoints
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, BuildPoints):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.threadPool = self.app.threadPool
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            BuildPoints.__init__(self)
-
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    window = BuildPoints(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
+    with mock.patch.object(function,
+                           'setupDsoGui'):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_genBuildGrid_1(function):
@@ -512,16 +510,14 @@ def test_autoDeletePoints(function):
     function.ui.autoDeleteHorizon.setChecked(True)
     function.ui.autoDeleteMeridian.setChecked(True)
     function.ui.useSafetyMargin.setChecked(True)
-    suc = function.autoDeletePoints()
-    assert suc
+    function.autoDeletePoints()
 
 
 def test_doSortDomeAzData_1(function):
     function.sortRunning.lock()
     with mock.patch.object(function.app.data,
                            'sort'):
-        suc = function.doSortDomeAzData((0, 1))
-        assert suc
+        function.doSortDomeAzData((0, 1))
 
 
 def test_sortDomeAzWorker_1(function):
@@ -541,7 +537,7 @@ def test_sortDomeAzWorker_2(function):
 
 
 def test_sortDomeAz_1(function):
-    with mock.patch.object(function.threadPool,
+    with mock.patch.object(function.mainW.threadPool,
                            'start'):
         suc = function.sortDomeAz([])
         assert suc
@@ -550,7 +546,7 @@ def test_sortDomeAz_1(function):
 
 def test_sortDomeAz_2(function):
     function.sortRunning.lock()
-    with mock.patch.object(function.threadPool,
+    with mock.patch.object(function.mainW.threadPool,
                            'start'):
         suc = function.sortDomeAz([])
         assert not suc
@@ -560,8 +556,7 @@ def test_sortDomeAz_2(function):
 def test_sortMountAz(function):
     with mock.patch.object(function.app.data,
                            'sort'):
-        suc = function.sortMountAz([])
-        assert suc
+        function.sortMountAz([])
 
 
 def test_autoSortPoints_1(function):
@@ -600,8 +595,7 @@ def test_autoSortPoints_3(function):
 
 def test_buildPointsChanged(function):
     function.lastGenerator = 'test'
-    suc = function.buildPointsChanged()
-    assert suc
+    function.buildPointsChanged()
     assert function.lastGenerator == 'none'
 
 
@@ -609,8 +603,7 @@ def test_rebuildPoints_1(function):
     function.lastGenerator = 'align3'
     with mock.patch.object(function,
                            'processPoints'):
-        suc = function.rebuildPoints()
-        assert suc
+        function.rebuildPoints()
 
 
 def test_processPoints(function):
@@ -618,13 +611,11 @@ def test_processPoints(function):
                            'autoDeletePoints'):
         with mock.patch.object(function,
                                'autoSortPoints'):
-            suc = function.processPoints()
-            assert suc
+            function.processPoints()
 
 
 def test_setupDsoGui(function):
-    suc = function.setupDsoGui()
-    assert suc
+    function.setupDsoGui()
 
 
 def test_querySimbad_1(function):

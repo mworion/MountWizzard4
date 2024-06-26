@@ -31,37 +31,27 @@ from mountcontrol.modelStar import ModelStar
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+import gui
 from gui.mainWaddon.tabManageModel import ManageModel
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='module')
-def module(qapp):
+def function(qapp):
     files = glob.glob('tests/workDir/model/*.model')
     for f in files:
         os.remove(f)
     shutil.copy('tests/testData/test.model', 'tests/workDir/model/test.model')
     shutil.copy('tests/testData/test1.model', 'tests/workDir/model/test1.model')
     shutil.copy('tests/testData/test-opt.model', 'tests/workDir/model/test-opt.model')
-    yield
 
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-@pytest.fixture(autouse=True, scope='module')
-def function(module):
-    class Mixin(MWidget, ManageModel):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.widget1 = QWidget()
-            self.widget2 = QWidget()
-            self.widget3 = QWidget()
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            ManageModel.__init__(self)
-
-    window = Mixin()
+    window = ManageModel(mainW)
     yield window
 
 
@@ -78,19 +68,17 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
 
 
-def test_colorChangeManageModel(function):
+def test_updateColorSet(function):
     with mock.patch.object(function,
                            'showModelPosition'):
         with mock.patch.object(function,
                                'showErrorAscending'):
             with mock.patch.object(function,
                                    'showErrorDistribution'):
-                suc = function.colorChangeManageModel()
-                assert suc
+                function.updateColorSet()
 
 
 def test_setNameList(function):
@@ -290,25 +278,20 @@ def test_showErrorDistribution_4(function):
 
 def test_clearRefreshName(function):
     function.app.mount.signals.namesDone.connect(function.clearRefreshName)
-    suc = function.clearRefreshName()
-    assert suc
+    function.clearRefreshName()
 
 
 def test_refreshName_1(function):
     with mock.patch.object(function.app.mount,
                            'getNames',
                            return_value=True):
-        suc = function.refreshName()
-        assert suc
-        suc = function.clearRefreshName()
-        assert suc
+        function.refreshName()
+        function.clearRefreshName()
 
 
 def test_refreshName_2(function):
-    suc = function.refreshName()
-    assert suc
-    suc = function.refreshName()
-    assert suc
+    function.refreshName()
+    function.refreshName()
 
 
 def test_loadName_1(function):
@@ -454,23 +437,7 @@ def test_deleteName_4(function):
                 assert not suc
 
 
-def writeRFD(a, b):
-    return {}
-
-
-@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
 def test_writeBuildModelOptimized_1(function):
-    with mock.patch.object(json,
-                           'load',
-                           return_value=[{'errorIndex': 1}, {'errorIndex': 3}]):
-        with mock.patch.object(json,
-                               'dump'):
-            suc = function.writeBuildModelOptimized('test', [1])
-            assert suc
-
-
-@mock.patch('gui.mainWmixin.tabManageModel.writeRetrofitData', writeRFD)
-def test_writeBuildModelOptimized_2(function):
     with mock.patch.object(json,
                            'load',
                            return_value=[{'errorIndex': 1}, {'errorIndex': 3}],
@@ -479,10 +446,21 @@ def test_writeBuildModelOptimized_2(function):
         assert not suc
 
 
+def test_writeBuildModelOptimized_2(function):
+    with mock.patch.object(gui.mainWaddon.tabManageModel,
+                           'writeRetrofitData'):
+        with mock.patch.object(json,
+                               'load',
+                               return_value=[{'errorIndex': 1}, {'errorIndex': 3}]):
+            with mock.patch.object(json,
+                                   'dump'):
+                suc = function.writeBuildModelOptimized('test', [1])
+                assert suc
+
+
 def test_clearRefreshModel_1(function):
     function.app.mount.signals.alignDone.connect(function.clearRefreshModel)
-    suc = function.clearRefreshModel()
-    assert suc
+    function.clearRefreshModel()
 
 
 def test_clearRefreshModel_2(function):
@@ -495,16 +473,14 @@ def test_clearRefreshModel_2(function):
                                'writeBuildModelOptimized'):
             with mock.patch.object(function,
                                    'showActualModelAnalyse'):
-                suc = function.clearRefreshModel()
-                assert suc
+                function.clearRefreshModel()
 
 
 def test_refreshModel(function):
     function.app.mount.signals.alignDone.connect(function.clearRefreshModel)
     with mock.patch.object(function.app.mount,
                            'getAlign'):
-        suc = function.clearRefreshModel()
-        assert suc
+        function.clearRefreshModel()
 
 
 def test_clearModel_1(function):
@@ -580,8 +556,7 @@ def test_runTargetRMS_1(function):
     function.ui.optimizeSingle.setChecked(False)
     function.app.mount.signals.alignDone.connect(function.runTargetRMS)
     function.app.mount.model.errorRMS = 0.1
-    suc = function.runTargetRMS()
-    assert suc
+    function.runTargetRMS()
 
 
 def test_runTargetRMS_2(function):
@@ -605,8 +580,7 @@ def test_runTargetRMS_2(function):
                            return_value=False):
         with mock.patch.object(function.app.mount,
                                'getAlign'):
-            suc = function.runTargetRMS()
-            assert suc
+            function.runTargetRMS()
 
 
 def test_runTargetRMS_3(function):
@@ -630,8 +604,7 @@ def test_runTargetRMS_3(function):
                            return_value=True):
         with mock.patch.object(function.app.mount,
                                'getAlign'):
-            suc = function.runTargetRMS()
-            assert suc
+            function.runTargetRMS()
 
 
 def test_runTargetRMS_4(function):
@@ -642,8 +615,7 @@ def test_runTargetRMS_4(function):
     function.app.mount.model.numberStars = None
     function.runningTargetRMS = False
     function.app.mount.signals.alignDone.connect(function.runTargetRMS)
-    suc = function.runTargetRMS()
-    assert suc
+    function.runTargetRMS()
 
 
 def test_runSingleRMS_1(function):
@@ -656,8 +628,7 @@ def test_runSingleRMS_1(function):
     function.app.mount.model.starList = [star1]
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
     function.app.mount.model.errorRMS = 0.1
-    suc = function.runSingleRMS()
-    assert suc
+    function.runSingleRMS()
 
 
 def test_runSingleRMS_2(function):
@@ -681,8 +652,7 @@ def test_runSingleRMS_2(function):
                            return_value=False):
         with mock.patch.object(function.app.mount,
                                'getAlign'):
-            suc = function.runSingleRMS()
-            assert suc
+            function.runSingleRMS()
 
 
 def test_runSingleRMS_3(function):
@@ -706,8 +676,7 @@ def test_runSingleRMS_3(function):
                            return_value=True):
         with mock.patch.object(function.app.mount,
                                'getAlign'):
-            suc = function.runSingleRMS()
-            assert suc
+            function.runSingleRMS()
 
 
 def test_runSingleRMS_4(function):
@@ -721,8 +690,7 @@ def test_runSingleRMS_4(function):
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
     with mock.patch.object(function,
                            'finishOptimize'):
-        suc = function.runSingleRMS()
-        assert suc
+        function.runSingleRMS()
 
 
 def test_runOptimize_1(function):
@@ -730,8 +698,7 @@ def test_runOptimize_1(function):
     function.ui.optimizeSingle.setChecked(False)
     with mock.patch.object(function,
                            'runTargetRMS'):
-        suc = function.runOptimize()
-        assert suc
+        function.runOptimize()
 
 
 def test_runOptimize_2(function):
@@ -739,29 +706,25 @@ def test_runOptimize_2(function):
     function.ui.optimizeSingle.setChecked(True)
     with mock.patch.object(function,
                            'runSingleRMS'):
-        suc = function.runOptimize()
-        assert suc
+        function.runOptimize()
 
 
 def test_finishOptimize_1(function):
     function.ui.optimizeOverall.setChecked(False)
     function.ui.optimizeSingle.setChecked(True)
     function.app.mount.signals.alignDone.connect(function.runSingleRMS)
-    suc = function.finishOptimize()
-    assert suc
+    function.finishOptimize()
 
 
 def test_finishOptimize_2(function):
     function.ui.optimizeOverall.setChecked(True)
     function.ui.optimizeSingle.setChecked(False)
     function.app.mount.signals.alignDone.connect(function.runTargetRMS)
-    suc = function.finishOptimize()
-    assert suc
+    function.finishOptimize()
 
 
 def test_cancelOptimize_1(function):
-    suc = function.cancelOptimize()
-    assert suc
+    function.cancelOptimize()
     assert not function.runningOptimize
 
 

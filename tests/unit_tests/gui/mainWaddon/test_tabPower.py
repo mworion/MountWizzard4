@@ -17,11 +17,10 @@
 # standard libraries
 import pytest
 from unittest import mock
-from PySide6.QtWidgets import QInputDialog
+from PySide6.QtWidgets import QInputDialog, QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabPower import Power
 
@@ -29,16 +28,13 @@ from gui.mainWaddon.tabPower import Power
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, Power):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Power.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = Power(mainW)
     yield window
 
 

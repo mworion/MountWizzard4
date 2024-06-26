@@ -62,8 +62,6 @@ class EnvironSeeing(MWidget):
 
     def addSkyfieldTimeObject(self, data):
         """
-        :param data:
-        :return:
         """
         ts = self.app.mount.obsSite.ts
         data['time'] = []
@@ -71,11 +69,9 @@ class EnvironSeeing(MWidget):
         for date, hour in zip(data['date'], data['hour']):
             y, m, d = date.split('-')
             data['time'].append(ts.utc(int(y), int(m), int(d), hour, 0, 0))
-        return True
 
     def updateSeeingEntries(self):
         """
-        :return:
         """
         if 'hourly' not in self.app.seeingWeather.data:
             return False
@@ -140,13 +136,11 @@ class EnvironSeeing(MWidget):
 
     def clearSeeingEntries(self):
         """
-        :return:
         """
         self.ui.meteoblueSeeing.clear()
         self.ui.meteoblueIcon.setVisible(False)
         self.ui.meteoblueSeeing.setVisible(False)
         self.seeingEnabled = False
-        return True
 
     def enableSeeingEntries(self):
         """
@@ -161,7 +155,6 @@ class EnvironSeeing(MWidget):
 
     def prepareSeeingTable(self):
         """
-        :return:
         """
         vl = ['Date [dd mon]',
               'Hour [hh:mm]',
@@ -193,15 +186,12 @@ class EnvironSeeing(MWidget):
         seeTab.verticalHeader().setDefaultSectionSize(18)
         self.updateSeeingEntries()
         seeTab.resizeColumnsToContents()
-        return True
 
     def openMeteoblue(self):
         """
-        :return:
         """
         url = 'https://www.meteoblue.com/de/wetter/outdoorsports/seeing'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Environment', 'Browser failed')
         else:
             self.msg.emit(0, 'System', 'Environment', 'Meteoblue opened')
-        return True

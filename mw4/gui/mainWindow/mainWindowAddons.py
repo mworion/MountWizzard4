@@ -19,7 +19,6 @@
 # external packages
 
 # local import
-from gui.mainWaddon.runBasic import BasicRun
 from gui.mainWaddon.tabAlmanac import Almanac
 from gui.mainWaddon.tabAnalysis import Analysis
 from gui.mainWaddon.tabAsteroid import Asteroid
@@ -28,7 +27,7 @@ from gui.mainWaddon.tabComet import Comet
 from gui.mainWaddon.tabEnvironWeather import EnvironWeather
 from gui.mainWaddon.tabEnvironSeeing import EnvironSeeing
 from gui.mainWaddon.tabImage_Manage import ImageManage
-from gui.mainWaddon.tabImage_Stats import ImagsStats
+from gui.mainWaddon.tabImage_Stats import ImageStats
 from gui.mainWaddon.tabManageModel import ManageModel
 from gui.mainWaddon.tabModel import Model
 from gui.mainWaddon.tabMount import Mount
@@ -62,13 +61,12 @@ class MainWindowAddons:
             'Almanac': Almanac(mainW),
             'Analysis': Analysis(mainW),
             'Asteroid': Asteroid(mainW),
-            'BasicRun': BasicRun(mainW),
             'BuildPoints': BuildPoints(mainW),
             'Comet': Comet(mainW),
             'EnvironWeather': EnvironWeather(mainW),
             'EnvironSeeing': EnvironSeeing(mainW),
             'ImageMange': ImageManage(mainW),
-            'ImageStats': ImagsStats(mainW),
+            'ImageStats': ImageStats(mainW),
             'ManageModel': ManageModel(mainW),
             'Model': Model(mainW),
             'Mount': Mount(mainW),

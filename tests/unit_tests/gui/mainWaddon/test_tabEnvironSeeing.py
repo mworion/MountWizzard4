@@ -22,13 +22,12 @@ import webbrowser
 import platform
 
 # external packages
-import numpy as np
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabEnvironSeeing import EnvironSeeing
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
 setupLogging()
 
@@ -38,41 +37,18 @@ def function(qapp):
     shutil.copy('tests/testData/meteoblue.data',
                 'tests/workDir/data/meteoblue.data')
 
-    class Mixin(MWidget, EnvironSeeing):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = {}
-            self.threadPool = self.app.threadPool
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            EnvironSeeing.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = EnvironSeeing(mainW)
     yield window
-    window.threadPool.waitForDone(1000)
 
 
-def test_initConfig_1(function):
-    suc = function.initConfig()
-    assert suc
-
-
-def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
-
-
-def test_clearSeeingEntries(function):
-    suc = function.clearSeeingEntries()
-    assert suc
-
-
-def test_enableSeeingEntries_1(function):
-    function.seeingEnabled = False
-    suc = function.enableSeeingEntries()
-    assert not suc
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_addSkyfieldTimeObject(function):
@@ -81,8 +57,7 @@ def test_addSkyfieldTimeObject(function):
         'date': ['2022-01-01', '2022-01-01']
     }
 
-    suc = function.addSkyfieldTimeObject(data)
-    assert suc
+    function.addSkyfieldTimeObject(data)
     assert 'time' in data
 
 
@@ -161,33 +136,39 @@ def test_updateSeeingEntries_3(function):
         assert suc
 
 
+def test_clearSeeingEntries(function):
+    function.clearSeeingEntries()
+
+
+def test_enableSeeingEntries_1(function):
+    function.seeingEnabled = False
+    suc = function.enableSeeingEntries()
+    assert not suc
+
+
 def test_prepareSeeingTable_1(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
-        suc = function.prepareSeeingTable()
-        assert suc
+        function.prepareSeeingTable()
 
 
 def test_prepareSeeingTable_2(function):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
-        suc = function.prepareSeeingTable()
-        assert suc
+        function.prepareSeeingTable()
 
 
 def test_openMeteoblue_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
-        suc = function.openMeteoblue()
-        assert suc
+        function.openMeteoblue()
 
 
 def test_openMeteoblue_2(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=False):
-        suc = function.openMeteoblue()
-        assert suc
+        function.openMeteoblue()

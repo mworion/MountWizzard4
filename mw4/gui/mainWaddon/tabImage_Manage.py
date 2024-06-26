@@ -33,6 +33,7 @@ class ImageManage(MWidget):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+
         self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
@@ -70,9 +71,8 @@ class ImageManage(MWidget):
         self.app.update1s.connect(self.updateShutterStatGui)
         self.app.update1s.connect(self.updateImagingParam)
 
-    def initConfig(self):
+    def initConfig(self) -> None:
         """
-        :return:
         """
         config = self.app.config['mainW']
         self.ui.expTime.setValue(config.get('expTime', 1))
@@ -88,11 +88,8 @@ class ImageManage(MWidget):
         self.ui.keepModelImages.setChecked(config.get('keepModelImages', True))
         self.ui.keepAnalysisImages.setChecked(config.get('keepAnalysisImages', True))
 
-        return True
-
-    def storeConfig(self):
+    def storeConfig(self) -> None:
         """
-        :return:
         """
         config = self.app.config['mainW']
         config['expTime'] = self.ui.expTime.value()
@@ -107,7 +104,6 @@ class ImageManage(MWidget):
         config['fastDownload'] = self.ui.fastDownload.isChecked()
         config['keepModelImages'] = self.ui.keepModelImages.isChecked()
         config['keepAnalysisImages'] = self.ui.keepAnalysisImages.isChecked()
-        return True
 
     def setupIcons(self) -> None:
         """
@@ -121,7 +117,6 @@ class ImageManage(MWidget):
 
     def checkEnableCameraUI(self):
         """
-        :return:
         """
         coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
         coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE')
@@ -150,11 +145,9 @@ class ImageManage(MWidget):
         self.ui.downloadSlow.setEnabled(enable)
         enable = pixelX is not None
         self.ui.subFrame.setEnabled(enable)
-        return True
 
     def updateOffset(self):
         """
-        :return:
         """
         actValue = self.app.camera.data.get('CCD_OFFSET.OFFSET')
         offsetList = self.app.camera.data.get('CCD_OFFSET.OFFSET_LIST')
@@ -170,11 +163,9 @@ class ImageManage(MWidget):
             self.guiSetText(self.ui.offsetCam, 's', offsetList[actValue - 1])
         else:
             self.guiSetText(self.ui.offsetCam, '3.0f', actValue)
-        return True
 
     def updateGain(self):
         """
-        :return:
         """
         actValue = self.app.camera.data.get('CCD_GAIN.GAIN')
         gainList = self.app.camera.data.get('CCD_GAIN.GAIN_LIST')
@@ -191,11 +182,8 @@ class ImageManage(MWidget):
         else:
             self.guiSetText(self.ui.gainCam, '3.0f', actValue)
 
-        return True
-
     def updateCooler(self):
         """
-        :return:
         """
         coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
@@ -208,33 +196,24 @@ class ImageManage(MWidget):
         else:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', False)
             self.changeStyleDynamic(self.ui.coolerOff, 'running', True)
-        return True
 
     def updateFilter(self):
         """
-        :return:
         """
         filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
         filterName = self.app.filter.data.get(key, 'not found')
         self.guiSetText(self.ui.filterNumber, '1.0f', filterNumber)
         self.guiSetText(self.ui.filterName, 's', filterName)
-        return True
 
     def updateFocuser(self):
         """
-        :return:
         """
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         self.guiSetText(self.ui.focuserPosition, '6.0f', focus)
-        return True
 
     def updateImagingParam(self):
         """
-        updateImagingParam reads the data from the classes and writes them to the gui.
-        if a parameter is not set (no key entry) or None, the gui will show a '-'
-
-        :return: true for test purpose
         """
         self.checkEnableCameraUI()
         self.updateOffset()
@@ -280,11 +259,8 @@ class ImageManage(MWidget):
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
 
-        return True
-
     def setCoolerTemp(self):
         """
-        :return: success
         """
         canSetCCDTemp = self.app.camera.data.get('CAN_SET_CCD_TEMPERATURE', False)
         if not canSetCCDTemp:
@@ -308,7 +284,6 @@ class ImageManage(MWidget):
 
     def setOffset(self):
         """
-        :return: success
         """
         actValue = self.app.camera.data.get('CCD_OFFSET.OFFSET', None)
         if actValue is None:
@@ -343,7 +318,6 @@ class ImageManage(MWidget):
 
     def setGain(self):
         """
-        :return: success
         """
         actValue = self.app.camera.data.get('CCD_GAIN.GAIN', None)
         if actValue is None:
@@ -376,7 +350,6 @@ class ImageManage(MWidget):
 
     def setFilterNumber(self):
         """
-        :return: success
         """
         data = self.app.filter.data
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
@@ -406,7 +379,6 @@ class ImageManage(MWidget):
 
     def setFilterName(self):
         """
-        :return: success
         """
         data = self.app.filter.data
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
@@ -435,35 +407,26 @@ class ImageManage(MWidget):
 
     def setDownloadModeFast(self):
         """
-        :return:
         """
         self.app.camera.sendDownloadMode(fastReadout=True)
-        return True
 
     def setDownloadModeSlow(self):
         """
-        :return:
         """
         self.app.camera.sendDownloadMode(fastReadout=False)
-        return True
 
     def setCoolerOn(self):
         """
-        :return:
         """
         self.app.camera.sendCoolerSwitch(coolerOn=True)
-        return True
 
     def setCoolerOff(self):
         """
-        :return:
         """
         self.app.camera.sendCoolerSwitch(coolerOn=False)
-        return True
 
     def updateCoverStatGui(self):
         """
-        :return: True for test purpose
         """
         value = self.app.cover.data.get('CAP_PARK.PARK', None)
         if value:
@@ -478,11 +441,9 @@ class ImageManage(MWidget):
 
         value = self.app.cover.data.get('Status.Cover', '-')
         self.ui.coverStatusText.setText(value)
-        return True
 
     def updateCoverLightGui(self):
         """
-        :return: True for test purpose
         """
         value = self.app.cover.data.get('FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON', None)
         if value:
@@ -502,7 +463,6 @@ class ImageManage(MWidget):
 
     def setCoverPark(self):
         """
-        :return: success
         """
         suc = self.app.cover.closeCover()
         if not suc:
@@ -512,7 +472,6 @@ class ImageManage(MWidget):
 
     def setCoverUnpark(self):
         """
-        :return: success
         """
         suc = self.app.cover.openCover()
         if not suc:
@@ -522,7 +481,6 @@ class ImageManage(MWidget):
 
     def setCoverHalt(self):
         """
-        :return: success
         """
         suc = self.app.cover.haltCover()
         if not suc:
@@ -532,7 +490,6 @@ class ImageManage(MWidget):
 
     def moveFocuserIn(self):
         """
-        :return: success
         """
         pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         step = self.ui.focuserSteps.value()
@@ -545,7 +502,6 @@ class ImageManage(MWidget):
 
     def moveFocuserOut(self):
         """
-        :return: success
         """
         pos = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         step = self.ui.focuserSteps.value()
@@ -558,7 +514,6 @@ class ImageManage(MWidget):
 
     def haltFocuser(self):
         """
-        :return: success
         """
         suc = self.app.focuser.halt()
         if not suc:
@@ -568,7 +523,6 @@ class ImageManage(MWidget):
 
     def switchLightOn(self):
         """
-        :return:
         """
         suc = self.app.cover.lightOn()
         if not suc:
@@ -578,7 +532,6 @@ class ImageManage(MWidget):
 
     def switchLightOff(self):
         """
-        :return:
         """
         suc = self.app.cover.lightOff()
         if not suc:
@@ -588,7 +541,6 @@ class ImageManage(MWidget):
 
     def setLightIntensity(self):
         """
-        :return: success
         """
         actValue = self.app.cover.data.get(
             'FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE')
@@ -613,7 +565,6 @@ class ImageManage(MWidget):
 
     def updateDomeGui(self):
         """
-        :return: True for test purpose
         """
         value = self.app.dome.data.get('DOME_MOTION.DOME_CW', None)
         if value:
@@ -629,11 +580,9 @@ class ImageManage(MWidget):
 
         value = self.app.dome.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION')
         self.guiSetText(self.ui.domeAzimuth, '3.0f', value)
-        return True
 
     def updateShutterStatGui(self):
         """
-        :return: True for test purpose
         """
         value = self.app.dome.data.get('DOME_SHUTTER.SHUTTER_OPEN', None)
         if value is True:
@@ -649,7 +598,6 @@ class ImageManage(MWidget):
         value = self.app.dome.data.get('Status.Shutter', None)
         if value:
             self.ui.domeShutterStatusText.setText(value)
-        return True
 
     def domeSlewCW(self):
         """
@@ -666,7 +614,6 @@ class ImageManage(MWidget):
 
     def domeSlewCCW(self):
         """
-        :return:
         """
         if not self.app.deviceStat['dome']:
             return False
@@ -679,7 +626,6 @@ class ImageManage(MWidget):
 
     def domeAbortSlew(self):
         """
-        :return:
         """
         if not self.app.deviceStat['dome']:
             return False
@@ -692,7 +638,6 @@ class ImageManage(MWidget):
 
     def domeOpenShutter(self):
         """
-        :return:
         """
         if not self.app.deviceStat['dome']:
             return False
@@ -705,7 +650,6 @@ class ImageManage(MWidget):
 
     def domeCloseShutter(self):
         """
-        :return:
         """
         if not self.app.deviceStat['dome']:
             return False
@@ -718,9 +662,6 @@ class ImageManage(MWidget):
 
     def domeMoveGameController(self, turnVal, openVal):
         """
-        :param turnVal:
-        :param openVal:
-        :return:
         """
         if not self.app.deviceStat['dome']:
             return False

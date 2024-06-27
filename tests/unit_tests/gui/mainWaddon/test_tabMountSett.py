@@ -26,25 +26,24 @@ from skyfield.api import Angle, wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabMountSett import MountSett
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, MountSett):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = self.app.deviceStat
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            MountSett.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    window = MountSett(mainW)
     yield window
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_updatePointGui_alt(function):
@@ -230,107 +229,93 @@ def test_updateSettingGUI_statusRefraction(function):
 
 def test_updateSettingGUI_1(function):
     function.app.mount.setting.gpsSynced = True
-    suc = function.updateSettingGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert function.ui.statusGPSSynced.text() == 'ON'
-    assert suc
 
 
 def test_updateSettingGUI_2(function):
     function.app.mount.setting.gpsSynced = False
-    suc = function.updateSettingGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert function.ui.statusGPSSynced.text() == 'OFF'
-    assert suc
 
 
 def test_updateSettingGUI_3(function):
     function.app.mount.setting.gpsSynced = None
-    suc = function.updateSettingGUI(function.app.mount.setting)
+    function.updateSettingGUI(function.app.mount.setting)
     assert function.ui.statusGPSSynced.text() == '-'
-    assert suc
 
 
 def test_updateSettingGUI_4(function):
     function.app.mount.setting.typeConnection = None
     function.app.mount.setting.wakeOnLan = 'On'
-    suc = function.updateSettingGUI(function.app.mount.setting)
-    assert suc
+    function.updateSettingGUI(function.app.mount.setting)
 
 
 def test_updateSettingGUI_5(function):
     function.app.mount.setting.typeConnection = 1
     function.app.mount.setting.wakeOnLan = None
-    suc = function.updateSettingGUI(function.app.mount.setting)
-    assert suc
+    function.updateSettingGUI(function.app.mount.setting)
 
 
 def test_updateSettingGUI_6(function):
     function.app.mount.setting.typeConnection = 1
     function.app.mount.setting.wakeOnLan = 'OFF'
-    suc = function.updateSettingGUI(function.app.mount.setting)
-    assert suc
+    function.updateSettingGUI(function.app.mount.setting)
 
 
 def test_updateSettingGUI_7(function):
     function.app.mount.setting.webInterfaceStat = False
-    suc = function.updateSettingGUI(function.app.mount.setting)
-    assert suc
+    function.updateSettingGUI(function.app.mount.setting)
 
 
 def test_updateSettingGUI_8(function):
     function.app.mount.setting.webInterfaceStat = True
     suc = function.updateSettingGUI(function.app.mount.setting)
-    assert suc
 
 
 def test_updateSettingGUI_9(function):
     function.app.mount.setting.webInterfaceStat = None
-    suc = function.updateSettingGUI(function.app.mount.setting)
-    assert suc
+    function.updateSettingGUI(function.app.mount.setting)
 
 
-def test_updateSettingGUI_1(function):
+def test_updateSettingGUI_10(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
-        suc = function.updateSettingGUI(function.app.mount.setting)
-        assert suc
+        function.updateSettingGUI(function.app.mount.setting)
 
 
-def test_updateSettingGUI_2(function):
+def test_updateSettingGUI_11(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
-        suc = function.updateSettingGUI(function.app.mount.setting)
-        assert suc
+        function.updateSettingGUI(function.app.mount.setting)
 
 
-def test_updateSettingGUI_3(function):
+def test_updateSettingGUI_12(function):
     function.app.mount.obsSite.status = 1
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateSettingGUI(function.app.mount.setting)
-        assert suc
+        function.updateSettingGUI(function.app.mount.setting)
 
 
-def test_updateSettingGUI_4(function):
+def test_updateSettingGUI_13(function):
     function.app.mount.obsSite.status = 10
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateSettingGUI(function.app.mount.setting)
-        assert suc
+        function.updateSettingGUI(function.app.mount.setting)
 
 
-def test_updateSettingGUI_5(function):
+def test_updateSettingGUI_14(function):
     function.app.mount.obsSite.status = None
     with mock.patch.object(function.app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = function.updateSettingGUI(function.app.mount.setting)
-        assert suc
+        function.updateSettingGUI(function.app.mount.setting)
 
 
 def test_updateSetting_slewRate_1(function):
@@ -495,8 +480,7 @@ def test_checkMount_2(function):
 def test_changeTrackingGameController_1(function):
     with mock.patch.object(function,
                            'changeTracking'):
-        suc = function.changeTrackingGameController(4)
-        assert suc
+        function.changeTrackingGameController(4)
 
 
 def test_changeTracking_ok1(function, qtbot):
@@ -558,8 +542,7 @@ def test_changeTracking_ok5(function):
 def test_changeParkGameController_1(function):
     with mock.patch.object(function,
                            'changePark'):
-        suc = function.changeParkGameController(1)
-        assert suc
+        function.changeParkGameController(1)
 
 
 def test_changePark_ok1(function):
@@ -717,8 +700,7 @@ def test_setSolarTracking_3(function):
 def test_flipMountGameController_1(function):
     with mock.patch.object(function,
                            'flipMount'):
-        suc = function.flipMountGameController(2)
-        assert suc
+        function.flipMountGameController(2)
 
 
 def test_flipMount_1(function):
@@ -757,8 +739,7 @@ def test_flipMount_3(function, qtbot):
 def test_stopGameController_1(function):
     with mock.patch.object(function,
                            'flipMount'):
-        suc = function.stopGameController(8)
-        assert suc
+        function.stopGameController(8)
 
 
 def test_stop_1(function):

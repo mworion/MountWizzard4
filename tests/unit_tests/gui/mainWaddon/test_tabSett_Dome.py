@@ -37,7 +37,6 @@ def function(qapp):
     mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-
     window = SettDome(mainW)
     yield window
 

@@ -17,7 +17,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import datetime
 import webbrowser
 
 # external packages
@@ -27,7 +26,6 @@ from skyfield.api import Angle, wgs84
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabMount import Mount
 import gui.mainWaddon.tabMount
@@ -36,36 +34,42 @@ import mountcontrol
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, Mount):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = self.app.deviceStat
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Mount.__init__(self)
 
-    window = Mixin()
+    class TestAddOns:
+        def __init__(self):
+            self.addons = {'MountSett': mock.Mock()}
+
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    mainW.mainWindowAddons = TestAddOns()
+    window = Mount(mainW)
     yield window
 
 
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_initConfig_2(function):
     del function.app.config['mainW']
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
     function.app.config['mainW'] = {}
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
+
+
+def test_setupGuiMount_1(function):
+    function.setupGuiMount()
 
 
 def test_checkMount_1(function):
@@ -89,8 +93,7 @@ def test_checkMount_2(function):
 def test_changeTrackingGameController_1(function):
     with mock.patch.object(function,
                            'changeTracking'):
-        suc = function.changeTrackingGameController(4)
-        assert suc
+        function.changeTrackingGameController(4)
 
 
 def test_changeTracking_ok1(function, qtbot):
@@ -152,8 +155,7 @@ def test_changeTracking_ok5(function):
 def test_changeParkGameController_1(function):
     with mock.patch.object(function,
                            'changePark'):
-        suc = function.changeParkGameController(1)
-        assert suc
+        function.changeParkGameController(1)
 
 
 def test_changePark_ok1(function):
@@ -311,8 +313,7 @@ def test_setSolarTracking_3(function):
 def test_flipMountGameController_1(function):
     with mock.patch.object(function,
                            'flipMount'):
-        suc = function.flipMountGameController(2)
-        assert suc
+        function.flipMountGameController(2)
 
 
 def test_flipMount_1(function):
@@ -351,8 +352,7 @@ def test_flipMount_3(function, qtbot):
 def test_stopGameController_1(function):
     with mock.patch.object(function,
                            'flipMount'):
-        suc = function.stopGameController(8)
-        assert suc
+        function.stopGameController(8)
 
 
 def test_stop_1(function):
@@ -663,8 +663,7 @@ def test_setLocationValues_1(function):
                            'getLocation'):
         with mock.patch.object(function.app.mount.obsSite,
                                'setLocation'):
-            suc = function.setLocationValues()
-            assert suc
+            function.setLocationValues()
 
 
 def test_setLocationValues_2(function):
@@ -672,10 +671,9 @@ def test_setLocationValues_2(function):
                                                        latitude_degrees=2,
                                                        elevation_m=3)
     function.app.deviceStat['mount'] = False
-    with mock.patch.object(function,
+    with mock.patch.object(function.mainW.mainWindowAddons.addons['MountSett'],
                            'updateLocGUI'):
-        suc = function.setLocationValues()
-        assert suc
+        function.setLocationValues()
 
 
 def test_setLongitude_1(function):
@@ -1074,85 +1072,75 @@ def test_updatePointGui_ra_j2000(function):
     function.app.mount.obsSite.raJNow = value
     value = Angle(degrees=45)
     function.app.mount.obsSite.decJNow = value
-    function.updatePointGUI(function.app.mount.obsSite)
+    function.mainW.mainWindowAddons.addons['MountSett'].updatePointGUI(function.app.mount.obsSite)
 
 
 def test_showOffset_1(function):
     function.ui.clockSync.setChecked(False)
-    suc = function.showOffset()
-    assert suc
+    function.showOffset()
 
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount'
             '.obsSite.timeDiff', 0.003)
 def test_showOffset_2(function):
     function.ui.clockSync.setChecked(True)
-    suc = function.showOffset()
-    assert suc
+    function.showOffset()
 
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount'
             '.obsSite.timeDiff', 0.3)
 def test_showOffset_3(function):
     function.ui.clockSync.setChecked(True)
-    suc = function.showOffset()
-    assert suc
+    function.showOffset()
 
 
 @mock.patch('tests.unit_tests.unitTestAddOns.baseTestApp.App.mount.obsSite'
             '.timeDiff', 0.6)
 def test_showOffset_4(function):
     function.ui.clockSync.setChecked(True)
-    suc = function.showOffset()
-    assert suc
+    function.showOffset()
 
 
 def test_openCommandProtocol_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
-        suc = function.openCommandProtocol()
-        assert suc
+        function.openCommandProtocol()
 
 
 def test_openCommandProtocol_2(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=False):
-        suc = function.openCommandProtocol()
-        assert suc
+        function.openCommandProtocol()
 
 
 def test_openUpdateTimeDelta_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
-        suc = function.openUpdateTimeDelta()
-        assert suc
+        function.openUpdateTimeDelta()
 
 
 def test_openUpdateTimeDelta_2(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=False):
-        suc = function.openUpdateTimeDelta()
-        assert suc
+        function.openUpdateTimeDelta()
 
 
 def test_openUpdateFirmware_1(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=True):
-        suc = function.openUpdateFirmware()
-        assert suc
+        function.openUpdateFirmware()
 
 
 def test_openUpdateFirmware_2(function):
     with mock.patch.object(webbrowser,
                            'open',
                            return_value=False):
-        suc = function.openUpdateFirmware()
-        assert suc
+        function.openUpdateFirmware()
 
 
 def test_openMountDocumentation_1(function):
@@ -1182,9 +1170,16 @@ def test_openMountDocumentation_3(function):
         assert suc
 
 
+def test_stopMoveAll(function):
+    with mock.patch.object(function.app.mount.obsSite,
+                           'stopMoveAll',
+                           return_value=True):
+        function.stopMoveAll()
+
+
 def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(gui.mainWaddon.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1194,7 +1189,7 @@ def test_moveDuration_1(function):
 
 def test_moveDuration_2(function):
     function.ui.moveDuration.setCurrentIndex(2)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(gui.mainWaddon.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1204,7 +1199,7 @@ def test_moveDuration_2(function):
 
 def test_moveDuration_3(function):
     function.ui.moveDuration.setCurrentIndex(3)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(gui.mainWaddon.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1214,7 +1209,7 @@ def test_moveDuration_3(function):
 
 def test_moveDuration_4(function):
     function.ui.moveDuration.setCurrentIndex(4)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(gui.mainWaddon.tabMount,
                            'sleepAndEvents'):
         with mock.patch.object(function,
                                'stopMoveAll'):
@@ -1224,7 +1219,7 @@ def test_moveDuration_4(function):
 
 def test_moveDuration_5(function):
     function.ui.moveDuration.setCurrentIndex(0)
-    with mock.patch.object(gui.mainWmixin.tabMount,
+    with mock.patch.object(gui.mainWaddon.tabMount,
                            'sleepAndEvents'):
         suc = function.moveDuration()
         assert not suc
@@ -1233,95 +1228,53 @@ def test_moveDuration_5(function):
 def test_moveClassicGameController_1(function):
     with mock.patch.object(function,
                            'stopMoveAll'):
-        suc = function.moveClassicGameController(128, 128)
-        assert suc
+        function.moveClassicGameController(128, 128)
 
 
 def test_moveClassicGameController_2(function):
     with mock.patch.object(function,
                            'moveClassic'):
-        suc = function.moveClassicGameController(0, 0)
-        assert suc
+        function.moveClassicGameController(0, 0)
 
 
 def test_moveClassicGameController_3(function):
     with mock.patch.object(function,
                            'moveClassic'):
-        suc = function.moveClassicGameController(255, 255)
-        assert suc
+        function.moveClassicGameController(255, 255)
 
 
 def test_moveClassicUI_1(function):
-    def Sender():
-        return function.ui.moveNorthEast
-
-    function.deviceStat['mount'] = False
-    function.sender = Sender
-    suc = function.moveClassicUI()
+    function.app.deviceStat['mount'] = False
+    suc = function.moveClassicUI('NE')
     assert not suc
 
 
 def test_moveClassicUI_2(function):
-    def Sender():
-        return function.ui.moveNorthEast
-
-    function.deviceStat['mount'] = True
-    function.sender = Sender
-    suc = function.moveClassicUI()
+    function.app.deviceStat['mount'] = True
+    suc = function.moveClassicUI('NE')
     assert suc
 
 
 def test_moveClassic_1(function):
     with mock.patch.object(function,
                            'moveDuration'):
-        suc = function.moveClassic([1, 1])
-        assert suc
+        function.moveClassic('NE')
 
 
 def test_moveClassic_2(function):
     with mock.patch.object(function,
                            'moveDuration'):
-        suc = function.moveClassic([-1, -1])
-        assert suc
+        function.moveClassic('SW')
 
 
 def test_moveClassic_3(function):
     with mock.patch.object(function,
                            'moveDuration'):
-        suc = function.moveClassic([0, 0])
-        assert suc
-
-
-def test_stopMoveAll(function):
-    with mock.patch.object(function.app.mount.obsSite,
-                           'stopMoveAll',
-                           return_value=True):
-        suc = function.stopMoveAll()
-        assert suc
+        function.moveClassic('STOP')
 
 
 def test_setSlewSpeed_1(function):
-    def Sender():
-        return function.ui.renameStart
-
-    function.sender = Sender
-
-    suc = function.setSlewSpeed()
-    assert not suc
-
-
-def test_setSlewSpeed_2(function):
-    def Sender():
-        return function.ui.slewSpeedMax
-
-    def test():
-        return
-
-    function.slewSpeeds = {function.ui.slewSpeedMax: test}
-    function.sender = Sender
-
-    suc = function.setSlewSpeed()
-    assert suc
+    function.setSlewSpeed('max')
 
 
 def test_moveAltAzDefault(function):
@@ -1330,27 +1283,17 @@ def test_moveAltAzDefault(function):
 
 
 def test_moveAltAzUI_1(function):
-    def Sender():
-        return function.ui.moveNorthEastAltAz
-
-    function.sender = Sender
-    function.deviceStat['mount'] = False
+    function.app.deviceStat['mount'] = False
     with mock.patch.object(function,
                            'moveAltAz'):
-        suc = function.moveAltAzUI()
-        assert not suc
+        function.moveAltAzUI('NE')
 
 
 def test_moveAltAzUI_2(function):
-    def Sender():
-        return function.ui.moveNorthEastAltAz
-
-    function.sender = Sender
-    function.deviceStat['mount'] = True
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function,
                            'moveAltAz'):
-        suc = function.moveAltAzUI()
-        assert not suc
+        function.moveAltAzUI('NE')
 
 
 def test_moveAltAzGameController_1(function):
@@ -1410,7 +1353,7 @@ def test_moveAltAz_2(function):
     with mock.patch.object(function,
                            'slewTargetAltAz',
                            return_value=False):
-        suc = function.moveAltAz([1, 1])
+        suc = function.moveAltAz('NE')
         assert not suc
 
 
@@ -1423,7 +1366,7 @@ def test_moveAltAz_3(function):
     with mock.patch.object(function,
                            'slewTargetAltAz',
                            return_value=True):
-        suc = function.moveAltAz([1, 1])
+        suc = function.moveAltAz('NE')
         assert suc
 
 
@@ -1580,13 +1523,11 @@ def test_commandRaw_1(function):
     with mock.patch.object(mountcontrol.connection.Connection,
                            'communicateRaw',
                            return_value=(True, False, '')):
-        suc = function.commandRaw()
-        assert suc
+        function.commandRaw()
 
 
 def test_commandRaw_2(function):
     with mock.patch.object(mountcontrol.connection.Connection,
                            'communicateRaw',
                            return_value=(True, True, '')):
-        suc = function.commandRaw()
-        assert suc
+        function.commandRaw()

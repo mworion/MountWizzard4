@@ -131,7 +131,6 @@ class Mount(MWidget, SlewInterface):
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config.get('mainW', {})
         self.ui.coordsJ2000.setChecked(config.get('coordsJ2000', False))
@@ -142,12 +141,10 @@ class Mount(MWidget, SlewInterface):
         self.ui.slewSpeedLow.setChecked(config.get('slewSpeedLow', False))
         self.ui.moveDuration.setCurrentIndex(config.get('moveDuration', 0))
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get('moveStepSizeAltAz', 0))
-        # todo: self.updateLocGUI(self.app.mount.obsSite)
-        return True
+        self.mainW.mainWindowAddons.addons['MountSett'].updateLocGUI(self.app.mount.obsSite)
 
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['coordsJ2000'] = self.ui.coordsJ2000.isChecked()
@@ -158,7 +155,6 @@ class Mount(MWidget, SlewInterface):
         config['slewSpeedLow'] = self.ui.slewSpeedLow.isChecked()
         config['moveDuration'] = self.ui.moveDuration.currentIndex()
         config['moveStepSizeAltAz'] = self.ui.moveStepSizeAltAz.currentIndex()
-        return True
 
     def setupIcons(self):
         """
@@ -185,7 +181,6 @@ class Mount(MWidget, SlewInterface):
 
     def setupGuiMount(self):
         """
-        :return: success for test
         """
         for direction in self.setupMoveClassic:
             self.setupMoveClassic[direction]['button'].clicked.connect(
@@ -202,40 +197,16 @@ class Mount(MWidget, SlewInterface):
         self.ui.moveStepSizeAltAz.clear()
         for text in self.setupStepsizes:
             self.ui.moveStepSizeAltAz.addItem(text)
-        return True
-
-    def checkMount(self):
-        """
-        :return:
-        """
-        isMount = self.app.deviceStat.get('mount', False)
-        isObsSite = self.app.mount.obsSite is not None
-        isSetting = self.app.mount.setting is not None
-        if not isMount or not isObsSite or not isSetting:
-            self.messageDialog(
-                self.mainW, 'Error Message',
-                'Value cannot be set!\nMount is not connected!',
-                buttons=['Ok'], iconType=2)
-            return False
-        else:
-            return True
 
     def changeTrackingGameController(self, value):
         """
-        :param value:
-        :return:
         """
         if value == 0b00000100:
             self.changeTracking()
-        return True
 
     def changeTracking(self):
         """
-        :return:
         """
-        if not self.checkMount():
-            return False
-
         obs = self.app.mount.obsSite
         if obs.status == 0:
             suc = obs.stopTracking()
@@ -243,31 +214,23 @@ class Mount(MWidget, SlewInterface):
                 self.msg.emit(2, 'Mount', 'Command', 'Cannot stop tracking')
             else:
                 self.msg.emit(0, 'Mount', 'Command', 'Stopped tracking')
-
         else:
             suc = obs.startTracking()
             if not suc:
                 self.msg.emit(2, 'Mount', 'Command', 'Cannot start tracking')
             else:
                 self.msg.emit(0, 'Mount', 'Command', 'Started tracking')
-
         return True
 
     def changeParkGameController(self, value):
         """
-        :return:
         """
         if value == 0b00000001:
             self.changePark()
-        return True
 
     def changePark(self):
         """
-        :return:
         """
-        if not self.checkMount():
-            return False
-
         obs = self.app.mount.obsSite
         if obs.status == 5:
             suc = obs.unpark()
@@ -281,12 +244,10 @@ class Mount(MWidget, SlewInterface):
                 self.msg.emit(2, 'Mount', 'Command', 'Cannot park mount')
             else:
                 self.msg.emit(0, 'Mount', 'Command', 'Mount parked')
-
         return True
 
     def setLunarTracking(self):
         """
-        :return:
         """
         if not self.checkMount():
             return False
@@ -301,7 +262,6 @@ class Mount(MWidget, SlewInterface):
 
     def setSiderealTracking(self):
         """
-        :return:
         """
         if not self.checkMount():
             return False
@@ -316,11 +276,7 @@ class Mount(MWidget, SlewInterface):
 
     def setSolarTracking(self):
         """
-        :return:
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         suc = sett.setSolarTracking()
         if not suc:
@@ -331,20 +287,13 @@ class Mount(MWidget, SlewInterface):
 
     def flipMountGameController(self, value):
         """
-        :param value:
-        :return:
         """
         if value == 0b00000010:
             self.flipMount()
-        return True
 
     def flipMount(self):
         """
-        :return:
         """
-        if not self.checkMount():
-            return False
-
         obs = self.app.mount.obsSite
         suc = obs.flip()
         if not suc:
@@ -355,20 +304,13 @@ class Mount(MWidget, SlewInterface):
 
     def stopGameController(self, value):
         """
-        :param value:
-        :return:
         """
         if value == 0b00001000:
             self.stop()
-        return True
 
     def stop(self):
         """
-        :return:
         """
-        if not self.checkMount():
-            return False
-
         obs = self.app.mount.obsSite
         suc = obs.stop()
         if not suc:
@@ -377,425 +319,35 @@ class Mount(MWidget, SlewInterface):
             self.msg.emit(0, 'Mount', 'Command', 'Mount stopped')
         return suc
 
-    def setMeridianLimitTrack(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        actValue = int(sett.meridianLimitTrack)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
-            self, 'Set Meridian Limit Track', 'Value (1-30):', actValue, 1, 30, 1)
-
-        if not ok:
-            return False
-        if sett.setMeridianLimitTrack(value):
-            self.msg.emit(0, 'Mount', 'Setting',
-                          f'Meridian Lim Track: [{value}]')
-            return True
-        else:
-            self.msg.emit(2, 'Mount', 'Setting',
-                          'Meridian Limit Track cannot be set')
-            return False
-
-    def setMeridianLimitSlew(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        actValue = int(sett.meridianLimitSlew)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
-            self, 'Set Meridian Limit Slew', 'Value (0-30):', actValue, 0, 30, 1)
-
-        if not ok:
-            return False
-        if sett.setMeridianLimitSlew(value):
-            self.msg.emit(0, 'Mount', 'Setting',
-                          f'Meridian Lim Slew: [{value}]')
-            return True
-        else:
-            self.msg.emit(2, 'Mount', 'Setting',
-                          'Meridian Limit Slew cannot be set')
-            return False
-
-    def setHorizonLimitHigh(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        actValue = int(sett.horizonLimitHigh)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
-            self, 'Set Horizon Limit High', 'Value (0-90):', actValue, 0, 90, 1)
-
-        if not ok:
-            return False
-        if sett.setHorizonLimitHigh(value):
-            self.msg.emit(0, 'Mount', 'Setting',
-                          f'Horizon Limit High: [{value}]')
-            return True
-        else:
-            self.msg.emit(2, 'Mount', 'Setting',
-                          'Horizon Limit High cannot be set')
-            return False
-
-    def setHorizonLimitLow(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        actValue = int(sett.horizonLimitLow)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
-            self, 'Set Horizon Limit Low', 'Value (-5 - 90):', actValue, -5, 90, 1,)
-
-        if not ok:
-            return False
-        if sett.setHorizonLimitLow(value):
-            self.msg.emit(0, 'Mount', 'Setting', f'Horizon Limit Low: [{value}]')
-            return True
-        else:
-            self.msg.emit(2, 'Mount', 'Setting', 'Horizon Limit Low cannot be set')
-            return False
-
-    def setSlewRate(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        actValue = int(sett.slewRate)
-        minRate = int(sett.slewRateMin)
-        maxRate = int(sett.slewRateMax)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
-            self, 'Set Slew Rate', f'Value ({minRate}...{maxRate}):',
-            actValue, minRate, maxRate, 1)
-
-        if not ok:
-            return False
-        if sett.setSlewRate(value):
-            self.msg.emit(0, 'Mount', 'Setting', f'Slew Rate: [{value}]')
-            return True
-        else:
-            self.msg.emit(2, 'Mount', 'Setting', 'Slew Rate cannot be set')
-            return False
-
-    def setLocationValues(self, lat=None, lon=None, elev=None):
-        """
-        :param lat:
-        :param lon:
-        :param elev:
-        :return:
-        """
-        obs = self.app.mount.obsSite
-        loc = obs.location
-        lat = loc.latitude if lat is None else lat
-        lon = loc.longitude if lon is None else lon
-        elev = loc.elevation.m if elev is None else elev
-
-        topo = wgs84.latlon(longitude_degrees=lon.degrees,
-                            latitude_degrees=lat.degrees,
-                            elevation_m=elev)
-
-        if self.app.deviceStat['mount']:
-            obs.setLocation(topo)
-            self.app.mount.getLocation()
-        else:
-            obs.location = topo
-            self.mainW.mainWindowAddons.addons['MountSett'].updateLocGUI(self.app.mount.obsSite)
-
-        t = f'Location set to:     [{lat.degrees:3.2f} deg, '
-        t += f'{lon.degrees:3.2f} deg, {elev:4.1f} m]'
-        self.msg.emit(0, 'Mount', 'Setting', t)
-        return True
-
-    def setLongitude(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        obs = self.app.mount.obsSite
-        if obs.location is None:
-            return False
-
-        dlg = QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set Site Longitude',
-                                'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
-                                'positive',
-                                QLineEdit.EchoMode.Normal,
-                                self.ui.siteLongitude.text())
-        if not ok:
-            return False
-
-        value = convertLonToAngle(value)
-        self.setLocationValues(lon=value)
-        return True
-
-    def setLatitude(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        obs = self.app.mount.obsSite
-        if obs.location is None:
-            return False
-
-        dlg = QInputDialog()
-        value, ok = dlg.getText(self,
-                                'Set Site Latitude',
-                                'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
-                                QLineEdit.EchoMode.Normal,
-                                self.ui.siteLatitude.text())
-        if not ok:
-            return False
-
-        value = convertLatToAngle(value)
-        self.setLocationValues(lat=value)
-        return True
-
-    def setElevation(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        obs = self.app.mount.obsSite
-        if obs.location is None:
-            return False
-
-        dlg = QInputDialog()
-        value, ok = dlg.getDouble(
-            self, 'Set Site Elevation', 'Format: d.d',
-            obs.location.elevation.m, 0, 8000, 1)
-        if not ok:
-            return False
-
-        self.setLocationValues(elev=value)
-        return True
-
-    def setUnattendedFlip(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(
-            self, 'Set Unattended Flip', 'Value: On / Off',
-            ['ON', 'OFF'], 0, False)
-        if not ok:
-            return False
-        suc = sett.setUnattendedFlip(value == 'ON')
-        if suc:
-            self.msg.emit(0, 'Mount', 'Setting', f'Unattended flip: [{value}]')
-        else:
-            self.msg.emit(2, 'Mount', 'Setting', 'Unattended flip cannot be set')
-        return suc
-
-    def setDualAxisTracking(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(self,
-                                'Set Dual Axis Tracking',
-                                'Value: On / Off',
-                                ['ON', 'OFF'],
-                                0, False)
-        if not ok:
-            return False
-
-        suc = sett.setDualAxisTracking(value == 'ON')
-        if suc:
-            self.msg.emit(0, 'Mount', 'Setting', f'DualAxis tracking: [{value}]')
-        else:
-            self.msg.emit(2, 'Mount', 'Setting', 'DualAxis tracking cannot be set')
-        return suc
-
-    def setWOL(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(self,
-                                'Set Wake On Lan',
-                                'Value: On / Off',
-                                ['ON', 'OFF'],
-                                0, False)
-        if not ok:
-            return False
-
-        suc = sett.setWOL(value == 'ON')
-        if suc:
-            self.msg.emit(0, 'Mount', 'Setting', f'Wake On Lan: [{value}]')
-        else:
-            self.msg.emit(2, 'Mount', 'Setting', 'Wake On Lan cannot be set')
-        return suc
-
-    def setRefractionTemp(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        actValue = sett.refractionTemp
-        minVal = -40
-        maxVal = 75
-        dlg = QInputDialog()
-        value, ok = dlg.getDouble(
-            self, 'Set Refraction Temperature', f'Value ({minVal}...{maxVal}):',
-            actValue, minVal, maxVal, 1)
-
-        if not ok:
-            return False
-        if sett.setRefractionTemp(value):
-            self.msg.emit(0, 'Mount', 'Setting', f'Refraction Temp: [{value}]')
-            return True
-        else:
-            self.msg.emit(2, 'Mount', 'Setting', 'Refraction Temp cannot be set')
-            return False
-
-    def setRefractionPress(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        actValue = sett.refractionPress
-        minVal = 500
-        maxVal = 1300
-        dlg = QInputDialog()
-        value, ok = dlg.getDouble(
-            self, 'Set Refraction Pressure', f'Value ({minVal}...{maxVal}):',
-            actValue, minVal, maxVal, 1)
-
-        if not ok:
-            return False
-        if sett.setRefractionPress(value):
-            self.msg.emit(0, 'Mount', 'Setting', f'Refraction Press: [{value}]')
-            return True
-        else:
-            self.msg.emit(2, 'Mount', 'Setting', 'Refraction Press cannot be set')
-            return False
-
-    def setRefraction(self):
-        """
-        :return:    success as bool if value could be changed
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(self,
-                                'Set Refraction Correction',
-                                'Value: On / Off',
-                                ['ON', 'OFF'],
-                                0, False)
-        if not ok:
-            return False
-
-        suc = sett.setRefraction(value == 'ON')
-        if suc:
-            self.msg.emit(0, 'Mount', 'Setting',
-                          f'Refraction corr: [{value}]')
-        else:
-            self.msg.emit(2, 'Mount', 'Setting',
-                          'Refraction correction cannot be set')
-        return suc
-
-    def showOffset(self):
-        """
-        :return:
-        """
-        connectSync = self.ui.clockSync.isChecked()
-        delta = self.app.mount.obsSite.timeDiff * 1000
-        ui = self.ui.timeDeltaPC2Mount
-        if connectSync:
-            text = f'{delta:4.0f}'
-        else:
-            text = '-'
-        ui.setText(text)
-
-        if not connectSync:
-            self.changeStyleDynamic(ui, 'color', '')
-        elif abs(delta) < 100:
-            self.changeStyleDynamic(ui, 'color', '')
-        elif abs(delta) < 500:
-            self.changeStyleDynamic(ui, 'color', 'yellow')
-        else:
-            self.changeStyleDynamic(ui, 'color', 'red')
-
-        timeJD = self.app.mount.obsSite.timeJD
-        if timeJD is not None:
-            text = timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeUTC.setText(text)
-
-        return True
-
     def openCommandProtocol(self):
         """
-        :return:
         """
         url = 'http://' + self.ui.mountHost.text() + '/manuals/command-protocol.pdf'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Mount', 'Browser failed')
         else:
             self.msg.emit(0, 'System', 'Mount', 'command protocol opened')
-        return True
 
     def openUpdateTimeDelta(self):
         """
-        :return:
         """
         url = 'http://' + self.ui.mountHost.text() + '/updatetime.html'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Mount', 'Browser failed')
         else:
             self.msg.emit(0, 'System', 'Mount', 'update time delta opened')
-        return True
 
     def openUpdateFirmware(self):
         """
-        :return:
         """
         url = 'http://' + self.ui.mountHost.text() + '/updatefirmware.html'
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, 'System', 'Mount', 'Browser failed')
         else:
             self.msg.emit(0, 'System', 'Mount', 'update firmware opened')
-        return True
 
     def openMountDocumentation(self):
         """
-        :return:
         """
         mountStrings = self.app.mount.firmware.product.split()
         if len(mountStrings) != 2:
@@ -812,16 +364,14 @@ class Mount(MWidget, SlewInterface):
 
     def stopMoveAll(self):
         """
-        :return: success
         """
         for uiR in self.setupMoveClassic:
-            self.changeStyleDynamic(uiR, 'running', False)
+            self.changeStyleDynamic(
+                self.setupMoveClassic[uiR]['button'], 'running', False)
         self.app.mount.obsSite.stopMoveAll()
-        return True
 
     def moveDuration(self):
         """
-        :return:
         """
         if self.ui.moveDuration.currentIndex() == 1:
             sleepAndEvents(10000)
@@ -838,7 +388,6 @@ class Mount(MWidget, SlewInterface):
 
     def moveClassicGameController(self, decVal, raVal):
         """
-        :return:
         """
         dirRa = 0
         dirDec = 0
@@ -856,7 +405,6 @@ class Mount(MWidget, SlewInterface):
             self.stopMoveAll()
         else:
             self.moveClassic(direction)
-        return True
 
     def moveClassicUI(self, direction):
         """
@@ -864,38 +412,36 @@ class Mount(MWidget, SlewInterface):
         if not self.app.deviceStat.get('mount'):
             return False
 
-        self.moveClassic(self.setupMoveClassic[direction]['coord'])
+        self.moveClassic(direction)
         return True
 
     def moveClassic(self, direction):
         """
-        :return:
         """
         uiList = self.setupMoveClassic
-        for uiR in uiList:
-            self.changeStyleDynamic(uiR, 'running', False)
+        for key in uiList:
+            self.changeStyleDynamic(uiList[key]['button'], 'running', False)
 
-        key = next(key for key, value in uiList.items() if value == direction)
-        self.changeStyleDynamic(key, 'running', True)
+        self.changeStyleDynamic(uiList[direction]['button'], 'running', True)
 
-        if direction[0] == 1:
+        coord = uiList[direction]['coord']
+        if coord[0] == 1:
             self.app.mount.obsSite.moveNorth()
-        elif direction[0] == -1:
+        elif coord[0] == -1:
             self.app.mount.obsSite.moveSouth()
-        elif direction[0] == 0:
+        elif coord[0] == 0:
             self.app.mount.obsSite.stopMoveNorth()
             self.app.mount.obsSite.stopMoveSouth()
 
-        if direction[1] == 1:
+        if coord[1] == 1:
             self.app.mount.obsSite.moveEast()
-        elif direction[1] == -1:
+        elif coord[1] == -1:
             self.app.mount.obsSite.moveWest()
-        elif direction[1] == 0:
+        elif coord[1] == 0:
             self.app.mount.obsSite.stopMoveEast()
             self.app.mount.obsSite.stopMoveWest()
 
         self.moveDuration()
-        return True
 
     def setSlewSpeed(self, speed):
         """
@@ -908,23 +454,20 @@ class Mount(MWidget, SlewInterface):
         """
         self.targetAlt = None
         self.targetAz = None
-        for ui in self.setupMoveAltAz:
-            self.changeStyleDynamic(ui, 'running', False)
+        for key in self.setupMoveAltAz:
+            self.changeStyleDynamic(self.setupMoveAltAz[key]['button'], 'running', False)
         return True
 
     def moveAltAzUI(self, direction):
         """
-        :return:
         """
         if not self.app.deviceStat.get('mount'):
-            return False
+            return
 
         self.moveAltAz(self.setupMoveAltAz[direction]['coord'])
 
     def moveAltAzGameController(self, value):
         """
-        :param value:
-        :return:
         """
         if value == 0b00000000:
             direction = [1, 0]
@@ -941,8 +484,6 @@ class Mount(MWidget, SlewInterface):
 
     def moveAltAz(self, direction):
         """
-        :param direction:
-        :return:
         """
         alt = self.app.mount.obsSite.Alt
         az = self.app.mount.obsSite.Az
@@ -950,18 +491,18 @@ class Mount(MWidget, SlewInterface):
             return False
 
         uiList = self.setupMoveAltAz
-        key = next(key for key, value in uiList.items() if value == direction)
-        self.changeStyleDynamic(key, 'running', True)
+        self.changeStyleDynamic(uiList[direction]['button'], 'running', True)
 
         key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
         step = self.setupStepsizes[key]
 
+        coord = self.setupMoveAltAz[direction]['coord']
         if self.targetAlt is None or self.targetAz is None:
-            targetAlt = self.targetAlt = alt.degrees + direction[0] * step
-            targetAz = self.targetAz = az.degrees + direction[1] * step
+            targetAlt = self.targetAlt = alt.degrees + coord[0] * step
+            targetAz = self.targetAz = az.degrees + coord[1] * step
         else:
-            targetAlt = self.targetAlt = self.targetAlt + direction[0] * step
-            targetAz = self.targetAz = self.targetAz + direction[1] * step
+            targetAlt = self.targetAlt = self.targetAlt + coord[0] * step
+            targetAz = self.targetAz = self.targetAz + coord[1] * step
 
         targetAz = targetAz % 360
         suc = self.slewTargetAltAz(targetAlt, targetAz)
@@ -969,7 +510,6 @@ class Mount(MWidget, SlewInterface):
 
     def setRA(self):
         """
-        :return:    success as bool if value could be changed
         """
         dlg = QInputDialog()
         value, ok = dlg.getText(self.mainW,
@@ -994,7 +534,6 @@ class Mount(MWidget, SlewInterface):
 
     def setDEC(self):
         """
-        :return:    success as bool if value could be changed
         """
         dlg = QInputDialog()
         value, ok = dlg.getText(self.mainW,
@@ -1018,7 +557,6 @@ class Mount(MWidget, SlewInterface):
 
     def moveAltAzAbsolute(self):
         """
-        :return:
         """
         alt = self.ui.moveCoordinateAlt.text()
         alt = valueToFloat(alt)
@@ -1036,7 +574,6 @@ class Mount(MWidget, SlewInterface):
 
     def moveRaDecAbsolute(self):
         """
-        :return:
         """
         value = self.ui.moveCoordinateRa.text()
         ra = convertRaToAngle(value)
@@ -1053,7 +590,6 @@ class Mount(MWidget, SlewInterface):
 
     def commandRaw(self):
         """
-        :return:
         """
         host = self.app.mount.host
         conn = Connection(host)
@@ -1077,4 +613,3 @@ class Mount(MWidget, SlewInterface):
 
         self.ui.commandOutput.insertPlainText(val + '\n')
         self.ui.commandOutput.moveCursor(QTextCursor.MoveOperation.End)
-        return True

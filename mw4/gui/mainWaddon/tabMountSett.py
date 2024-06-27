@@ -44,14 +44,6 @@ class MountSett(MWidget):
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
         self.app.update1s.connect(self.showOffset)
-        self.ui.park.clicked.connect(self.changePark)
-        self.ui.flipMount.clicked.connect(self.flipMount)
-        self.ui.tracking.clicked.connect(self.changeTracking)
-        self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
-        self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
-        self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
-        self.ui.stop.clicked.connect(self.stop)
-        self.app.virtualStop.connect(self.stop)
         self.clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
         self.clickable(self.ui.refractionPress).connect(self.setRefractionPress)
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
@@ -84,8 +76,6 @@ class MountSett(MWidget):
 
     def updatePointGUI(self, obs):
         """
-        :param obs:
-        :return:    True if ok for testing
         """
         isJ2000 = self.ui.coordsJ2000.isChecked()
         isValid = obs.raJNow is not None
@@ -107,12 +97,9 @@ class MountSett(MWidget):
         self.guiSetText(self.ui.AZ, 'D5.2f', obs.Az)
         self.guiSetText(self.ui.pierside, 's', obs.pierside)
         self.guiSetText(self.ui.timeSidereal, 'HSTR', obs.timeSidereal)
-        return True
 
     def updateSettingGUI(self, sett):
         """
-        :param sett:
-        :return:    True if ok for testing
         """
         ui = self.ui.UTCExpire
         self.guiSetText(ui, 's', sett.UTCExpire)
@@ -198,12 +185,9 @@ class MountSett(MWidget):
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', False)
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', False)
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', True)
-        return True
 
     def updateLocGUI(self, obs):
         """
-        :param obs:
-        :return:    True if ok for testing
         """
         if obs is None:
             return False
@@ -216,191 +200,14 @@ class MountSett(MWidget):
         self.ui.siteElevation.setText(str(location.elevation.m))
         return True
 
-    def checkMount(self):
-        """
-        :return:
-        """
-        isMount = self.app.deviceStat.get('mount', False)
-        isObsSite = self.app.mount.obsSite is not None
-        isSetting = self.app.mount.setting is not None
-        if not isMount or not isObsSite or not isSetting:
-            self.messageDialog(
-                self.mainW, 'Error Message',
-                'Value cannot be set!\nMount is not connected!',
-                buttons=['Ok'], iconType=2)
-            return False
-        else:
-            return True
-
-    def changeTrackingGameController(self, value):
-        """
-        :param value:
-        :return:
-        """
-        if value == 0b00000100:
-            self.changeTracking()
-        return True
-
-    def changeTracking(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        obs = self.app.mount.obsSite
-        if obs.status == 0:
-            suc = obs.stopTracking()
-            if not suc:
-                self.msg.emit(2, 'Mount', 'Command', 'Cannot stop tracking')
-            else:
-                self.msg.emit(0, 'Mount', 'Command', 'Stopped tracking')
-
-        else:
-            suc = obs.startTracking()
-            if not suc:
-                self.msg.emit(2, 'Mount', 'Command', 'Cannot start tracking')
-            else:
-                self.msg.emit(0, 'Mount', 'Command', 'Started tracking')
-
-        return True
-
-    def changeParkGameController(self, value):
-        """
-        :return:
-        """
-        if value == 0b00000001:
-            self.changePark()
-        return True
-
-    def changePark(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        obs = self.app.mount.obsSite
-        if obs.status == 5:
-            suc = obs.unpark()
-            if not suc:
-                self.msg.emit(2, 'Mount', 'Command', 'Cannot unpark mount')
-            else:
-                self.msg.emit(0, 'Mount', 'Command', 'Mount unparked')
-        else:
-            suc = obs.park()
-            if not suc:
-                self.msg.emit(2, 'Mount', 'Command', 'Cannot park mount')
-            else:
-                self.msg.emit(0, 'Mount', 'Command', 'Mount parked')
-
-        return True
-
-    def setLunarTracking(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        suc = sett.setLunarTracking()
-        if not suc:
-            self.msg.emit(2, 'Mount', 'Command', 'Cannot set tracking to Lunar')
-        else:
-            self.msg.emit(0, 'Mount', 'Command', 'Tracking set to Lunar')
-        return suc
-
-    def setSiderealTracking(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        suc = sett.setSiderealTracking()
-        if not suc:
-            self.msg.emit(2, 'Mount', 'Command', 'Cannot set tracking to Sidereal')
-        else:
-            self.msg.emit(0, 'Mount', 'Command', 'Tracking set to Sidereal')
-        return suc
-
-    def setSolarTracking(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        sett = self.app.mount.setting
-        suc = sett.setSolarTracking()
-        if not suc:
-            self.msg.emit(2, 'Mount', 'Command', 'Cannot set tracking to Solar')
-        else:
-            self.msg.emit(0, 'Mount', 'Command', 'Tracking set to Solar')
-        return suc
-
-    def flipMountGameController(self, value):
-        """
-        :param value:
-        :return:
-        """
-        if value == 0b00000010:
-            self.flipMount()
-        return True
-
-    def flipMount(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        obs = self.app.mount.obsSite
-        suc = obs.flip()
-        if not suc:
-            self.msg.emit(2, 'Mount', 'Command', 'Cannot flip mount')
-        else:
-            self.msg.emit(0, 'Mount', 'Command', 'Mount flipped')
-        return suc
-
-    def stopGameController(self, value):
-        """
-        :param value:
-        :return:
-        """
-        if value == 0b00001000:
-            self.stop()
-        return True
-
-    def stop(self):
-        """
-        :return:
-        """
-        if not self.checkMount():
-            return False
-
-        obs = self.app.mount.obsSite
-        suc = obs.stop()
-        if not suc:
-            self.msg.emit(2, 'Mount', 'Command', 'Cannot stop mount')
-        else:
-            self.msg.emit(0, 'Mount', 'Command', 'Mount stopped')
-        return suc
-
     def setMeridianLimitTrack(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         actValue = int(sett.meridianLimitTrack)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self, 'Set Meridian Limit Track', 'Value (1-30):', actValue, 1, 30, 1)
+            self.mainW, 'Set Meridian Limit Track', 'Value (1-30):', actValue, 1, 30, 1)
 
         if not ok:
             return False
@@ -415,16 +222,12 @@ class MountSett(MWidget):
 
     def setMeridianLimitSlew(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         actValue = int(sett.meridianLimitSlew)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self, 'Set Meridian Limit Slew', 'Value (0-30):', actValue, 0, 30, 1)
+            self.mainW, 'Set Meridian Limit Slew', 'Value (0-30):', actValue, 0, 30, 1)
 
         if not ok:
             return False
@@ -439,16 +242,12 @@ class MountSett(MWidget):
 
     def setHorizonLimitHigh(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         actValue = int(sett.horizonLimitHigh)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self, 'Set Horizon Limit High', 'Value (0-90):', actValue, 0, 90, 1)
+            self.mainW, 'Set Horizon Limit High', 'Value (0-90):', actValue, 0, 90, 1)
 
         if not ok:
             return False
@@ -463,16 +262,12 @@ class MountSett(MWidget):
 
     def setHorizonLimitLow(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         actValue = int(sett.horizonLimitLow)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self, 'Set Horizon Limit Low', 'Value (-5 - 90):', actValue, -5, 90, 1,)
+            self.mainW, 'Set Horizon Limit Low', 'Value (-5 - 90):', actValue, -5, 90, 1,)
 
         if not ok:
             return False
@@ -485,18 +280,14 @@ class MountSett(MWidget):
 
     def setSlewRate(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         actValue = int(sett.slewRate)
         minRate = int(sett.slewRateMin)
         maxRate = int(sett.slewRateMax)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self, 'Set Slew Rate', f'Value ({minRate}...{maxRate}):',
+            self.mainW, 'Set Slew Rate', f'Value ({minRate}...{maxRate}):',
             actValue, minRate, maxRate, 1)
 
         if not ok:
@@ -510,10 +301,6 @@ class MountSett(MWidget):
 
     def setLocationValues(self, lat=None, lon=None, elev=None):
         """
-        :param lat:
-        :param lon:
-        :param elev:
-        :return:
         """
         obs = self.app.mount.obsSite
         loc = obs.location
@@ -535,18 +322,16 @@ class MountSett(MWidget):
         t = f'Location set to:     [{lat.degrees:3.2f} deg, '
         t += f'{lon.degrees:3.2f} deg, {elev:4.1f} m]'
         self.msg.emit(0, 'Mount', 'Setting', t)
-        return True
 
     def setLongitude(self):
         """
-        :return:    success as bool if value could be changed
         """
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
 
         dlg = QInputDialog()
-        value, ok = dlg.getText(self,
+        value, ok = dlg.getText(self.mainW,
                                 'Set Site Longitude',
                                 'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
                                 'positive',
@@ -561,14 +346,13 @@ class MountSett(MWidget):
 
     def setLatitude(self):
         """
-        :return:    success as bool if value could be changed
         """
         obs = self.app.mount.obsSite
         if obs.location is None:
             return False
 
         dlg = QInputDialog()
-        value, ok = dlg.getText(self,
+        value, ok = dlg.getText(self.mainW,
                                 'Set Site Latitude',
                                 'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
                                 QLineEdit.EchoMode.Normal,
@@ -582,7 +366,6 @@ class MountSett(MWidget):
 
     def setElevation(self):
         """
-        :return:    success as bool if value could be changed
         """
         obs = self.app.mount.obsSite
         if obs.location is None:
@@ -590,7 +373,7 @@ class MountSett(MWidget):
 
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
-            self, 'Set Site Elevation', 'Format: d.d',
+            self.mainW, 'Set Site Elevation', 'Format: d.d',
             obs.location.elevation.m, 0, 8000, 1)
         if not ok:
             return False
@@ -600,15 +383,11 @@ class MountSett(MWidget):
 
     def setUnattendedFlip(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
-            self, 'Set Unattended Flip', 'Value: On / Off',
+            self.mainW, 'Set Unattended Flip', 'Value: On / Off',
             ['ON', 'OFF'], 0, False)
         if not ok:
             return False
@@ -621,14 +400,10 @@ class MountSett(MWidget):
 
     def setDualAxisTracking(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self,
+        value, ok = dlg.getItem(self.mainW,
                                 'Set Dual Axis Tracking',
                                 'Value: On / Off',
                                 ['ON', 'OFF'],
@@ -645,14 +420,10 @@ class MountSett(MWidget):
 
     def setWOL(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self,
+        value, ok = dlg.getItem(self.mainW,
                                 'Set Wake On Lan',
                                 'Value: On / Off',
                                 ['ON', 'OFF'],
@@ -669,19 +440,15 @@ class MountSett(MWidget):
 
     def setRefractionTemp(self):
         """
-        :return:
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
-        actValue = sett.refractionTemp
-        minVal = -40
-        maxVal = 75
+        actValue = sett.refractionTemp if sett is not None else 0.0
+        minVal = -40.0
+        maxVal = 75.0
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
-            self, 'Set Refraction Temperature', f'Value ({minVal}...{maxVal}):',
-            actValue, minVal, maxVal, 1)
+            self.mainW, 'Set Refraction Temperature', f'Value ({minVal}...{maxVal}):',
+            actValue, minVal, maxVal, 1.0)
 
         if not ok:
             return False
@@ -694,18 +461,14 @@ class MountSett(MWidget):
 
     def setRefractionPress(self):
         """
-        :return:
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         actValue = sett.refractionPress
         minVal = 500
         maxVal = 1300
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
-            self, 'Set Refraction Pressure', f'Value ({minVal}...{maxVal}):',
+            self.mainW, 'Set Refraction Pressure', f'Value ({minVal}...{maxVal}):',
             actValue, minVal, maxVal, 1)
 
         if not ok:
@@ -719,14 +482,10 @@ class MountSett(MWidget):
 
     def setRefraction(self):
         """
-        :return:    success as bool if value could be changed
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self,
+        value, ok = dlg.getItem(self.mainW,
                                 'Set Refraction Correction',
                                 'Value: On / Off',
                                 ['ON', 'OFF'],
@@ -745,16 +504,12 @@ class MountSett(MWidget):
 
     def setSettleTimeMount(self):
         """
-        :return: true for test purpose
         """
-        if not self.checkMount():
-            return False
-
         sett = self.app.mount.setting
-        actValue = int(sett.settleTime)
+        actValue = int(sett.settleTime) if sett.settleTime is not None else 0
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self, 'Set Settle Time', 'Value (0-999):', actValue, 0, 999, 1)
+            self.mainW, 'Set Settle Time', 'Value (0-999):', actValue, 0, 999, 1)
 
         if not ok:
             return False
@@ -769,7 +524,6 @@ class MountSett(MWidget):
 
     def showOffset(self):
         """
-        :return:
         """
         connectSync = self.ui.clockSync.isChecked()
         delta = self.app.mount.obsSite.timeDiff * 1000
@@ -793,5 +547,3 @@ class MountSett(MWidget):
         if timeJD is not None:
             text = timeJD.utc_strftime('%H:%M:%S')
             self.ui.timeUTC.setText(text)
-
-        return True

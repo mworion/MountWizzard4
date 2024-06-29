@@ -60,9 +60,7 @@ def test_initConfig_1(window):
                                    'enableTabsMovable'):
                 with mock.patch.object(window,
                                        'setupIcons'):
-                    with mock.patch.object(window.externalWindows,
-                                           'showExtendedWindows'):
-                        window.initConfig()
+                    window.initConfig()
 
 
 def test_storeConfig_1(window):

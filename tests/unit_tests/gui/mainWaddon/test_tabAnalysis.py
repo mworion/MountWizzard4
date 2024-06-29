@@ -18,47 +18,28 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import glob
-import shutil
-import os
 
 # external packages
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabAnalysis import Analysis
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
-from base.loggerMW import setupLogging
-setupLogging()
+from gui.mainWaddon.runBasic import RunBasic
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, Analysis):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = {}
-            self.setupFilenamesAndDirectories = None
-            self.setupRunPoints = None
-            self.playSound = None
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            Analysis.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = Analysis(mainW)
     yield window
-
-    files = glob.glob('tests/workDir/model/a-*.flexure')
-    for f in files:
-        os.remove(f)
-    files = glob.glob('tests/workDir/model/a-*.hysteresis')
-    for f in files:
-        os.remove(f)
-    for path in glob.glob('tests/workDir/image/a-*'):
-        shutil.rmtree(path)
 
 
 def test_initConfig_1(function):
@@ -188,10 +169,10 @@ def test_runFlexure_2(function):
     with mock.patch.object(function,
                            'checkAnalysisConditions',
                            return_value=True):
-        with mock.patch.object(function,
+        with mock.patch.object(RunBasic,
                                'setupFilenamesAndDirectories',
                                return_value=('', '')):
-            with mock.patch.object(function,
+            with mock.patch.object(RunBasic,
                                    'setupRunPoints',
                                    return_value=[1, 2]):
                 suc = function.runFlexure()

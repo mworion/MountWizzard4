@@ -32,10 +32,9 @@ from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabModel import Model
 from gui.mainWaddon.tabManageModel import ManageModel
+from gui.mainWaddon.runBasic import RunBasic
 import gui.mainWaddon
 from gui.widgets.main_ui import Ui_MainWindow
-from base.loggerMW import setupLogging
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -340,12 +339,8 @@ def test_programModelToMount_3(function):
         with mock.patch.object(function.app.mount.model,
                                'programAlign',
                                return_value=True):
-            with mock.patch.object(gui.mainWaddon.tabManageModel,
-                                   'refreshName'):
-                with mock.patch.object(gui.mainWaddon.tabManageModel,
-                                       'refreshModel'):
-                    suc = function.programModelToMount()
-                    assert suc
+                suc = function.programModelToMount()
+                assert suc
 
 
 def test_renewHemisphereView_1(function):
@@ -476,12 +471,10 @@ def test_clearAlignAndBackup_2(function):
         with mock.patch.object(function.app.mount.model,
                                'deleteName',
                                return_value=False):
-            with mock.patch.object(function,
-                                   'refreshModel'):
-                with mock.patch.object(gui.mainWaddon.tabModel,
-                                       'sleepAndEvents'):
-                    suc = function.clearAlignAndBackup()
-                    assert suc
+            with mock.patch.object(gui.mainWaddon.tabModel,
+                                   'sleepAndEvents'):
+                suc = function.clearAlignAndBackup()
+                assert suc
 
 
 def test_clearAlignAndBackup_3(function):
@@ -491,15 +484,13 @@ def test_clearAlignAndBackup_3(function):
         with mock.patch.object(function.app.mount.model,
                                'deleteName',
                                return_value=True):
-            with mock.patch.object(function,
-                                   'refreshModel'):
-                with mock.patch.object(function.app.mount.model,
-                                       'storeName',
-                                       return_value=False):
-                    with mock.patch.object(gui.mainWaddon.tabModel,
-                                           'sleepAndEvents'):
-                        suc = function.clearAlignAndBackup()
-                        assert suc
+            with mock.patch.object(function.app.mount.model,
+                                   'storeName',
+                                   return_value=False):
+                with mock.patch.object(gui.mainWaddon.tabModel,
+                                       'sleepAndEvents'):
+                    suc = function.clearAlignAndBackup()
+                    assert suc
 
 
 def test_clearAlignAndBackup_4(function):
@@ -512,12 +503,10 @@ def test_clearAlignAndBackup_4(function):
             with mock.patch.object(function.app.mount.model,
                                    'storeName',
                                    return_value=True):
-                with mock.patch.object(function,
-                                       'refreshModel'):
-                    with mock.patch.object(gui.mainWaddon.tabModel,
-                                           'sleepAndEvents'):
-                        suc = function.clearAlignAndBackup()
-                        assert suc
+                with mock.patch.object(gui.mainWaddon.tabModel,
+                                       'sleepAndEvents'):
+                    suc = function.clearAlignAndBackup()
+                    assert suc
 
 
 def test_modelBuild_1(function):

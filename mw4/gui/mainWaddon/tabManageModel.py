@@ -66,6 +66,8 @@ class ManageModel(MWidget):
         self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
         self.ui.targetRMS.valueChanged.connect(self.showErrorDistribution)
         self.app.colorChange.connect(self.updateColorSet)
+        self.app.refreshModel.connect(self.refreshModel)
+        self.app.refreshName.connect(self.refreshName)
 
     def initConfig(self):
         """

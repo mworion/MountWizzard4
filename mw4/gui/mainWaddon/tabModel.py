@@ -306,8 +306,8 @@ class Model(MWidget, RunBasic):
 
         self.app.mount.signals.alignDone.connect(self.saveModelFinish)
         self.app.mount.model.storeName('actual')
-        self.mainW.mainWindowAddons.addons['ManageModel'].refreshName()
-        self.mainW.mainWindowAddons.addons['ManageModel'].refreshModel()
+        self.app.refreshName.emit()
+        self.app.refreshModel.emit()
         return True
 
     def renewHemisphereView(self):
@@ -396,7 +396,7 @@ class Model(MWidget, RunBasic):
                           'Actual model clearing, waiting 1s')
             sleepAndEvents(1000)
             self.msg.emit(0, '', '', 'Actual model cleared')
-            self.mainW.mainWindowAddons.addons['ManageModel'].refreshModel()
+            self.app.refreshModel.emit()
 
         suc = self.app.mount.model.deleteName('backup')
         if not suc:
@@ -416,11 +416,7 @@ class Model(MWidget, RunBasic):
 
         :return: true for test purpose
         """
-        prefix = 'm'
-        postfix = self.mainW.mainWindowAddons.addons['BuildPoints'].lastGenerator
-
-        self.modelName, imgDir = self.setupFilenamesAndDirectories(
-            prefix=prefix, postfix=postfix)
+        self.modelName, imgDir = self.setupFilenamesAndDirectories(prefix='m')
         self.msg.emit(1, 'Model', 'Run', f'Starting [{self.modelName}]')
 
         if not self.checkModelRunConditions():

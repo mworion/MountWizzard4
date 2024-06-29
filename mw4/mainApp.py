@@ -75,6 +75,8 @@ class MountWizzard4(QObject):
     drawHorizonPoints = Signal()
     updateDomeSettings = Signal()
     sendSatelliteData = Signal()
+    refreshModel = Signal()
+    refreshName = Signal()
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
     showImage = Signal(str)
@@ -85,11 +87,13 @@ class MountWizzard4(QObject):
     virtualStop = Signal()
     mountOff = Signal()
     mountOn = Signal()
+
     gameABXY = Signal(object)
     gamePMH = Signal(object)
     gameDirection = Signal(object)
     game_sL = Signal(object, object)
     game_sR = Signal(object, object)
+
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()

@@ -19,10 +19,11 @@
 # external packages
 
 # local import
+from gui.mainWaddon.runBasic import RunBasic
 from gui.utilities.toolsQtWidget import MWidget
 
 
-class Analysis(MWidget):
+class Analysis(MWidget, RunBasic):
     """
     """
 

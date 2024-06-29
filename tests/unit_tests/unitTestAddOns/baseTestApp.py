@@ -1140,6 +1140,8 @@ class App(QObject):
     drawHorizonPoints = Signal()
     drawBuildPoints = Signal()
     redrawHemisphere = Signal()
+    refreshModel = Signal()
+    refreshName = Signal()
     redrawHorizon = Signal()
     showAnalyse = Signal(object)
     showImage = Signal(object)

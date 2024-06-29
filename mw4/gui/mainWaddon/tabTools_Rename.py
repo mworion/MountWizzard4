@@ -226,7 +226,6 @@ class Rename(MWidget):
             dirName = os.path.dirname(fileName)
             newFilename = os.path.normpath(f'{dirName}/{newFilename}')
             os.rename(fileName, newFilename)
-
         return True
 
     def renameRunGUI(self):

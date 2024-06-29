@@ -59,6 +59,7 @@ def test_updatePointGui_az(function):
 def test_updatePointGui_ra(function):
     function.ui.coordsJ2000.setChecked(True)
     function.app.mount.obsSite.raJNow = Angle(hours=0)
+    function.app.mount.obsSite.decJNow = Angle(degrees=0)
     function.updatePointGUI(function.app.mount.obsSite)
     assert '23:58:53' == function.ui.RA.text()
 

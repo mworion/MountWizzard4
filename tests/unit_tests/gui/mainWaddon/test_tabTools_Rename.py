@@ -26,6 +26,7 @@ import numpy as np
 from PySide6.QtWidgets import QWidget
 
 # local import
+from gui.utilities.toolsQtWidget import MWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabTools_Rename import Rename
@@ -72,7 +73,7 @@ def test_getNumberFiles_2(function):
 
 
 def test_getNumberFiles_3(function):
-    number = function.getNumberFiles(pathDir='.', search='**/*.fit*')
+    number = function.getNumberFiles(pathDir='tests/testData', search='**/*.fit*')
     assert number > 0
 
 
@@ -188,6 +189,8 @@ def test_renameFile_1(function):
 
 
 def test_renameFile_2(function):
+    if os.path.isfile('tests/workDir/image/m51.fit'):
+        os.remove('tests/workDir/image/m51.fit')
     suc = function.renameFile('tests/workDir/image/m51.fit')
     assert not suc
 
@@ -214,7 +217,8 @@ def test_renameFile_4(function):
 def test_renameFile_5(function):
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hduList = fits.HDUList([hdu])
-    hduList.writeto('tests/workDir/image/m51.fit')
+    function.ui.newObjectName.setText('')
+    hduList.writeto('tests/workDir/image/m51.fit', overwrite=True)
 
     with mock.patch.object(os,
                            'rename'):
@@ -226,7 +230,7 @@ def test_renameFile_6(function):
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hdu.header['FILTER'] = 'test'
     hduList = fits.HDUList([hdu])
-    hduList.writeto('tests/workDir/image/m51.fit')
+    hduList.writeto('tests/workDir/image/m51.fit', overwrite=True)
 
     function.ui.rename1.clear()
     function.ui.rename1.addItem('Filter')
@@ -245,7 +249,7 @@ def test_renameRunGUI_1(function):
 
 
 def test_renameRunGUI_2(function):
-    function.ui.renameDir.setText('tests/workDir/image')
+    function.ui.renameDir.setText('tests/workDir/img')
     suc = function.renameRunGUI()
     assert not suc
 
@@ -253,13 +257,17 @@ def test_renameRunGUI_2(function):
 def test_renameRunGUI_3(function):
     function.ui.includeSubdirs.setChecked(True)
     function.ui.renameDir.setText('tests/workDir/image')
-    suc = function.renameRunGUI()
-    assert not suc
+    with mock.patch.object(function,
+                           'getNumberFiles',
+                           return_value=0):
+        suc = function.renameRunGUI()
+        assert not suc
 
 
 def test_renameRunGUI_4(function):
     shutil.copy('tests/testData/m51.fit', 'tests/workDir/image/m51.fit')
     function.ui.renameDir.setText('tests/workDir/image')
+    function.ui.includeSubdirs.setChecked(False)
     with mock.patch.object(function,
                            'renameFile',
                            return_value=True):

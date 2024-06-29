@@ -35,7 +35,6 @@ from gui.mainWaddon.tabMount import Mount
 from gui.mainWaddon.tabMountCommand import MountCommand
 from gui.mainWaddon.tabMountMove import MountMove
 from gui.mainWaddon.tabMountSett import MountSett
-from gui.mainWaddon.tabRelay import Relay
 from gui.mainWaddon.tabTools_Rename import Rename
 from gui.mainWaddon.tabSat_Search import SatSearch
 from gui.mainWaddon.tabSat_Track import SatTrack
@@ -77,7 +76,6 @@ class MainWindowAddons:
             'MountMove': MountMove(mainW),
             'MountSett': MountSett(mainW),
             'Power': Power(mainW),
-            'Relay': Relay(mainW),
             'Rename': Rename(mainW),
             'SatSearch': SatSearch(mainW),
             'SatTrack': SatTrack(mainW),

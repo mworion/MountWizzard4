@@ -135,3 +135,12 @@ def test_relayButtonPressed_2(function):
                            return_value=True):
         suc = function.relayButtonPressed()
         assert suc
+
+
+def test_updateRelayGui(function):
+    function.relayButton = list()
+    function.relayDropDown = list()
+    function.relayText = list()
+    function.app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
+    suc = function.updateRelayGui()
+    assert suc

@@ -24,16 +24,13 @@ import os
 import webbrowser
 
 # external packages
-from PySide6.QtMultimedia import QSoundEffect
 from PySide6.QtWidgets import QWidget
 import requests
 import importlib_metadata
-import hid
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.mainWaddon.tabSett_Update import SettUpdate
-import gui.mainWaddon.tabSett_Misc
 from gui.widgets.main_ui import Ui_MainWindow
 from base.loggerMW import setupLogging
 setupLogging()

@@ -114,7 +114,7 @@ class IERSTime(MWidget):
         dataTypes = ['finalsdata', 'leapsec']
         url = self.app.mount.host[0]
         self.msg.emit(0, 'IERS', 'Program', 'Uploading to mount')
-        self.uploadPopup = UploadPopup(self, url=url, dataTypes=dataTypes,
+        self.uploadPopup = UploadPopup(self.mainW, url=url, dataTypes=dataTypes,
                                        dataFilePath=self.tempDir)
         self.uploadPopup.workerStatus.signals.finished.connect(
             self.finishProgEarthRotationData)

@@ -32,6 +32,7 @@ class SettRelay(MWidget):
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app
+        self.msg = self.app.msg
         self.ui = mainW.ui
 
         # define lists for the entries
@@ -83,6 +84,7 @@ class SettRelay(MWidget):
 
         # dynamically generate the widgets
         self.setupRelayGui()
+        self.app.relay.signals.statusReady.connect(self.updateRelayGui)
 
         # make the gui signals linked to slots
         for relayButtonText in self.relayButtonTexts:
@@ -174,4 +176,18 @@ class SettRelay(MWidget):
         if not suc:
             self.msg.emit(2, 'System', 'Relay', 'Action cannot be done')
             return False
+        return True
+
+    def updateRelayGui(self):
+        """
+        updateRelayGui changes the style of the button related to the state of the relay
+
+        :return: success for test
+        """
+
+        for status, button in zip(self.app.relay.status, self.relayButtons):
+            if status:
+                self.changeStyleDynamic(button, 'running', True)
+            else:
+                self.changeStyleDynamic(button, 'running', False)
         return True

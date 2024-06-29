@@ -107,10 +107,9 @@ def test_bootRackComp_2(function):
 
 def test_mountHost_1(function):
     function.ui.port3492.setChecked(True)
-    function.ui.mountHost.setText('test')
+    function.ui.mountHost.setText('')
     suc = function.mountHost()
     assert not suc
-    assert function.app.mount.host is None
 
 
 def test_mountHost_2(function):

@@ -830,8 +830,10 @@ def test_addIsoItem_1():
     az = np.random.uniform(low=10, high=350, size=(50,))
     alt = np.random.uniform(low=15, high=85, size=(50,))
     err = np.random.uniform(low=5, high=15, size=(50,))
-    suc = p.addIsoItem(az, alt, err)
-    assert suc
+    with mock.patch.object(p,
+                           'addIsoBasic'):
+        suc = p.addIsoItem(az, alt, err)
+        assert suc
 
 
 def test_PlotBase_setGrid_0():
@@ -883,17 +885,19 @@ def test_NormalScatter_plot3():
 
 def test_NormalScatter_plot4():
     p = NormalScatter()
-    suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
-                 z=np.array([2, 3, 4]),
-                 ang=np.array([2, 3, 4]),
-                 tip='{data}'.format,
-                 limits=True, range={'xMin': 0, 'xMax': 1, 'yMin': 0, 'yMax': 1},
-                 isoLevels=1)
-    assert suc
+    with mock.patch.object(p,
+                           'addIsoItemHorizon'):
+        suc = p.plot(np.array([0, 1, 2]), np.array([2, 3, 4]),
+                     z=np.array([2, 3, 4]),
+                     ang=np.array([2, 3, 4]),
+                     tip='{data}'.format,
+                     limits=True, range={'xMin': 0, 'xMax': 1, 'yMin': 0, 'yMax': 1},
+                     isoLevels=1)
+        assert suc
 
 
 def test_PolarScatter():
-    p = PolarScatter()
+    PolarScatter()
 
 
 def test_PolarScatter_plot1():

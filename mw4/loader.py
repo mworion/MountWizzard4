@@ -35,7 +35,7 @@ warnings.filterwarnings('ignore', category=Warning, append=True)
 sys.coinit_flags = 2
 
 # external packages
-import astropy
+from astropy.utils import iers, data
 from PySide6.QtCore import QFile, QEvent, __version__, qVersion
 from PySide6.QtGui import QMouseEvent, QIcon
 from PySide6.QtWidgets import QRadioButton, QGroupBox, QCheckBox, QLineEdit
@@ -49,8 +49,8 @@ from gui.utilities.splashScreen import SplashScreen
 from mainApp import MountWizzard4
 import resource.resources as res
 res.qInitResources()
-astropy.utils.iers.conf.auto_download = False
-astropy.utils.data.conf.allow_internet = False
+iers.conf.auto_download = False
+data.conf.allow_internet = False
 log = logging.getLogger()
 
 

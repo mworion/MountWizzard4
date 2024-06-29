@@ -16,7 +16,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import os
 import unittest.mock as mock
 import logging
 import shutil
@@ -64,6 +63,8 @@ def app(qapp):
                     app.log = logging.getLogger()
                     app.update1s = Test()
                     yield app
+
+    app.threadPool.waitForDone(1000)
 
 
 def test_storeStatusOperationRunning(app):

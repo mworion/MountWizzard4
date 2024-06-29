@@ -88,6 +88,7 @@ def test_setModelOperationMode_5(function):
 
 def test_updateAlignGui_numberStars(function):
     function.app.mount.model.starList = []
+    function.app.mount.model.numberStars = 1
     function.updateAlignGUI(function.app.mount.model)
     assert ' 1' == function.ui.numberStars.text()
     assert ' 1' == function.ui.numberStars1.text()

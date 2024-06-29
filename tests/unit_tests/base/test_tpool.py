@@ -23,11 +23,6 @@ import pytest
 from base import tpool
 
 
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown():
-    pass
-
-
 def test_WorkerSignals():
     a = tpool.WorkerSignals()
     assert a.finished
@@ -53,26 +48,26 @@ def test_Worker_1():
 def test_Worker_2(qtbot):
     def testFunc():
         return 'test'
-    a = tpool.Worker(testFunc)
 
+    a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.finished):
         a.run()
 
 
 def test_Worker_3(qtbot):
     def testFunc():
-        return 'test'
-    a = tpool.Worker(testFunc)
+        return
 
+    a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.result):
         a.run()
 
 
 def test_Worker_4(qtbot):
     def testFunc():
-        return 'test'
-    a = tpool.Worker(testFunc)
+        return
 
+    a = tpool.Worker(testFunc)
     with qtbot.assertNotEmitted(a.signals.error):
         a.run()
 
@@ -82,6 +77,5 @@ def test_Worker_5(qtbot):
         raise Exception('Test')
 
     a = tpool.Worker(testFunc)
-
     with qtbot.waitSignal(a.signals.error):
         a.run()

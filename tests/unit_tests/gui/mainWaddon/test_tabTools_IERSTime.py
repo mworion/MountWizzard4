@@ -98,8 +98,10 @@ def test_progEarthRotationData_2(function):
                            return_value=True):
         with mock.patch.object(UploadPopup,
                                'show'):
-            suc = function.progEarthRotationData()
-            assert suc
+            with mock.patch.object(UploadPopup,
+                                   'show'):
+                suc = function.progEarthRotationData()
+                assert suc
 
 
 def test_finishLoadTimeDataFromSourceURLs_1(function):
@@ -122,7 +124,7 @@ def test_finishLoadFinalsFromSourceURLs_1(function):
     class Test:
         returnValues = {'success': False}
     function.downloadPopup = Test()
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime,
                            'DownloadPopup'):
         suc = function.finishLoadFinalsFromSourceURLs()
         assert not suc
@@ -132,7 +134,7 @@ def test_finishLoadFinalsFromSourceURLs_2(function):
     class Test:
         returnValues = {'success': True}
     function.downloadPopup = Test()
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime,
                            'DownloadPopup'):
         suc = function.finishLoadFinalsFromSourceURLs()
         assert suc
@@ -140,7 +142,7 @@ def test_finishLoadFinalsFromSourceURLs_2(function):
 
 def test_loadTimeDataFromSourceURLs_1(function):
     function.ui.isOnline.setChecked(False)
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime,
                            'DownloadPopup'):
         suc = function.loadTimeDataFromSourceURLs()
         assert not suc
@@ -148,7 +150,7 @@ def test_loadTimeDataFromSourceURLs_1(function):
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.setChecked(True)
-    with mock.patch.object(gui.mainWmixin.tabTools_IERSTime,
+    with mock.patch.object(gui.mainWaddon.tabTools_IERSTime,
                            'DownloadPopup'):
         suc = function.loadTimeDataFromSourceURLs()
         assert suc

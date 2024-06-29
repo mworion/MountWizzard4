@@ -364,47 +364,18 @@ def test_moveRaDecAbsolute_2(function):
 def test_moveRaDecAbsolute_3(function):
     function.ui.moveCoordinateRa.setText('12H')
     function.ui.moveCoordinateDec.setText('30 30')
-    a = function.app.mount.obsSite.timeJD
-    function.app.mount.obsSite.timeJD = None
-    suc = function.moveRaDecAbsolute()
-    assert not suc
-    function.app.mount.obsSite.timeJD = a
+    with mock.patch.object(function,
+                           'slewTargetRaDec',
+                           return_value=False):
+        suc = function.moveRaDecAbsolute()
+        assert not suc
 
 
 def test_moveRaDecAbsolute_4(function):
     function.ui.moveCoordinateRa.setText('12H')
     function.ui.moveCoordinateDec.setText('30 30')
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetRaDec'):
-        with mock.patch.object(function,
-                               'slewSelectedTargetWithDome',
-                               return_value=False):
-            suc = function.moveRaDecAbsolute()
-            assert not suc
-
-
-def test_moveRaDecAbsolute_5(function):
-    function.ui.moveCoordinateRa.setText('12H')
-    function.ui.moveCoordinateDec.setText('30 30')
-    with mock.patch.object(function.app.mount.obsSite,
-                           'setTargetRaDec'):
-        with mock.patch.object(function,
-                               'slewSelectedTargetWithDome',
-                               return_value=True):
-            suc = function.moveRaDecAbsolute()
-            assert suc
-
-
-def test_moveRaDecAbsolute_6(function):
-    function.ui.moveCoordinateRa.setText('12H')
-    function.ui.moveCoordinateDec.setText('30 30')
-    with mock.patch.object(function.app.mount.obsSite,
-                           'timeJD',
-                           return_value=None):
-        with mock.patch.object(function.app.mount.obsSite,
-                               'setTargetRaDec'):
-            with mock.patch.object(function,
-                                   'slewSelectedTargetWithDome',
-                                   return_value=False):
-                suc = function.moveRaDecAbsolute()
-                assert not suc
+    with mock.patch.object(function,
+                           'slewTargetRaDec',
+                           return_value=True):
+        suc = function.moveRaDecAbsolute()
+        assert suc

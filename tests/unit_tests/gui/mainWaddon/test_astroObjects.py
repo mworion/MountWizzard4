@@ -23,6 +23,7 @@ from unittest import mock
 from PySide6.QtWidgets import QWidget, QComboBox, QTableWidget, QGroupBox
 from PySide6.QtWidgets import QTableWidgetItem
 from PySide6.QtCore import QThreadPool
+from astropy.time import Time
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

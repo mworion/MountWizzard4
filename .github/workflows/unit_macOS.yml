@@ -19,9 +19,6 @@ name: unit_macOS
 concurrency:
   group: "${{ github.ref }}-${{ github.workflow }}"
   cancel-in-progress: true
-
-env:
-  branch: 'main'
   
 on:
   push:
@@ -40,9 +37,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-          
+      
       - name: build package
         uses: ./.github/actions/build_package
 
@@ -53,8 +48,6 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
   
       - name: install package
         uses: ./.github/actions/setup_test
@@ -65,16 +58,16 @@ jobs:
           pytest tests/unit_tests/zUpdate
           pytest tests/unit_tests/zMainApp
           pytest tests/unit_tests/gui/mainWindow
+          pytest tests/unit_tests/gui/extWindows
+          pytest tests/unit_tests/gui/mainWaddon
 
-  run_tests_macos_2a:
+  run_tests_macos_2:
     #
     needs: build_package
     runs-on: macos-13
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
   
       - name: install package
         uses: ./.github/actions/setup_test
@@ -86,37 +79,3 @@ jobs:
           pytest tests/unit_tests/mountcontrol
           pytest tests/unit_tests/indibase
           pytest tests/unit_tests/gui/utilities
-
-  run_tests_macos_2b:
-    #
-    needs: build_package
-    runs-on: macos-13
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test
-
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/extWindows
-
-  run_tests_macos_3:
-    #
-    needs: build_package
-    runs-on: macos-13
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/mainWaddon

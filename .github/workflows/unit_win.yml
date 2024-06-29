@@ -22,7 +22,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  branch: 'main'
   cov: '--cov=mw4/ --cov-append'
 
 on:
@@ -42,9 +41,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-          
+      
       - name: build package
         uses: ./.github/actions/build_package
 
@@ -55,9 +52,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
+      
       - name: install package
         uses: ./.github/actions/setup_test_cov
   
@@ -82,9 +77,6 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
       - name: install package
         uses: ./.github/actions/setup_test_cov
   
@@ -110,8 +102,6 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
   
       - name: install package
         uses: ./.github/actions/setup_test_cov
@@ -121,6 +111,7 @@ jobs:
           pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
           pytest tests/unit_tests/gui/extWindows ${{env.cov}}
           pytest tests/unit_tests/gui/utilities ${{env.cov}}
+          pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
          
       - name: rename_coveragefile
         run: mv .coverage c3.dat
@@ -130,41 +121,14 @@ jobs:
           name: c3
           path: c3.dat
 
-  run_tests_windows_4:
-    #
-    needs: build_package
-    runs-on: windows-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-  
-      - name: install package
-        uses: ./.github/actions/setup_test_cov
-  
-      - name: running_unit_tests
-        run: |
-          pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
-
-      - name: rename_coveragefile
-        run: mv .coverage c4.dat
-        
-      - uses: actions/upload-artifact@v4
-        with:
-          name: c4
-          path: c4.dat
-
   coverage:
     #
     needs: [ run_tests_windows_1, run_tests_windows_2,
-             run_tests_windows_3, run_tests_windows_4]
+             run_tests_windows_3]
     runs-on: windows-latest
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
       
       - uses: actions/download-artifact@v4
         with:
@@ -175,15 +139,12 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: c3
-      - uses: actions/download-artifact@v4
-        with:
-          name: c4
           
       - name: combining_data
         run: |
           dir
           python -m pip install coverage
-          python -m coverage combine c1.dat c2.dat c3.dat c4.dat
+          python -m coverage combine c1.dat c2.dat c3.dat
           python -m coverage xml
   
       - name: upload
@@ -194,4 +155,3 @@ jobs:
           flags: unittests
           name: codecov-umbrella
           env_vars: OS,PYTHON
-          override_branch: ${{env.branch}}

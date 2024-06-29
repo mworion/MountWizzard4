@@ -20,9 +20,6 @@ concurrency:
   group: "${{ github.ref }}-${{ github.workflow }}"
   cancel-in-progress: true
 
-env:
-  branch: 'main'
-
 on:
   push:
     # Run this action on the trigger event when specific files are touched
@@ -42,9 +39,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-          
+      
       - name: build package
         uses: ./.github/actions/build_package
         
@@ -55,9 +50,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-    
+     
       - name: install head
         uses: ./.github/actions/install_ubuntu_head
     
@@ -71,7 +64,6 @@ jobs:
           xvfb-run pytest tests/unit_tests/mountcontrol
           xvfb-run pytest tests/unit_tests/indibase
           xvfb-run pytest tests/unit_tests/gui/utilities
-          xvfb-run pytest tests/unit_tests/gui/extWindows
         
   run_tests_ubuntu_2:
     #
@@ -80,8 +72,6 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
     
       - name: install package
         uses: ./.github/actions/setup_test
@@ -95,24 +85,5 @@ jobs:
           xvfb-run pytest tests/unit_tests/zUpdate
           xvfb-run pytest tests/unit_tests/zMainApp
           xvfb-run pytest tests/unit_tests/gui/mainWindow
-
-
-  run_tests_ubuntu_3:
-    #
-    needs: build_package
-    runs-on: ubuntu-22.04
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{env.branch}}
-    
-      - name: install package
-        uses: ./.github/actions/setup_test
-    
-      - name: install head
-        uses: ./.github/actions/install_ubuntu_head
-  
-      - name: running_unit_tests
-        run: |
           xvfb-run pytest tests/unit_tests/gui/mainWaddon
+          xvfb-run pytest tests/unit_tests/gui/extWindows

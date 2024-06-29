@@ -30,8 +30,10 @@ from gui.mainWaddon.tabImage_Manage import ImageManage
 from gui.mainWaddon.tabImage_Stats import ImageStats
 from gui.mainWaddon.tabManageModel import ManageModel
 from gui.mainWaddon.tabModel import Model
-from gui.mainWaddon.tabMount import Mount
 from gui.mainWaddon.tabPower import Power
+from gui.mainWaddon.tabMount import Mount
+from gui.mainWaddon.tabMountCommand import MountCommand
+from gui.mainWaddon.tabMountMove import MountMove
 from gui.mainWaddon.tabMountSett import MountSett
 from gui.mainWaddon.tabRelay import Relay
 from gui.mainWaddon.tabTools_Rename import Rename
@@ -70,6 +72,8 @@ class MainWindowAddons:
             'ManageModel': ManageModel(mainW),
             'Model': Model(mainW),
             'Mount': Mount(mainW),
+            'MountCommand': MountCommand(mainW),
+            'MountMove': MountMove(mainW),
             'MountSett': MountSett(mainW),
             'Power': Power(mainW),
             'Relay': Relay(mainW),

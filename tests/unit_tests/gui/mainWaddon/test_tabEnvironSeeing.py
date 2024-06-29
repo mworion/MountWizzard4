@@ -46,10 +46,6 @@ def function(qapp):
     yield window
 
 
-def test_setupIcons_1(function):
-    function.setupIcons()
-
-
 def test_addSkyfieldTimeObject(function):
     data = {
         'hour': [10, 11],

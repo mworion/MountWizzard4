@@ -20,10 +20,8 @@ from unittest import mock
 
 # external packages
 import skyfield.timelib
-from PySide6.QtCore import QObject
-from PySide6.QtCore import QThreadPool
-from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtWidgets import QTableWidgetItem, QWidget, QTableWidget, QComboBox
+from PySide6.QtWidgets import QGroupBox
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle, wgs84
 from sgp4.exporter import export_tle
@@ -31,45 +29,39 @@ import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabSat_Track import SatTrack
-from gui.mainWaddon.tabSat_Search import SatSearch
-from logic.databaseProcessing.dataWriter import DataWriter
+from gui.mainWaddon.astroObjects import AstroObjects
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
-    class Mixin(MWidget, SatTrack, SatSearch):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.databaseProcessing = DataWriter(self.app)
-            self.threadPool = QThreadPool()
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            SatSearch.__init__(self)
-            SatTrack.__init__(self)
+    def test():
+        return
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+
+    window = SatTrack(mainW)
+    window.satellites = AstroObjects(mainW, 'satellite', [''], QTableWidget(),
+                                     QComboBox(), QGroupBox(), test, test)
     yield window
-    window.closing = True
-    window.threadPool.waitForDone(1000)
 
-    
+
 def test_initConfig_1(function):
-    class Test:
-        installPath = ''
-
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_enableGuiFunctions_1(function):
@@ -534,7 +526,7 @@ def test_extractSatelliteData_3(function):
                            'now',
                            return_value=ts.tt_jd(2458925.404976551)):
         with mock.patch.object(function,
-                               'positionCursorInSatTable'):
+                               'positionCursorInTable'):
             suc = function.extractSatelliteData(satName='NOAA 8')
             assert suc
 
@@ -562,7 +554,7 @@ def test_extractSatelliteData_4(function):
                            'now',
                            return_value=ts.tt_jd(2458930.404976551)):
         with mock.patch.object(function,
-                               'positionCursorInSatTable'):
+                               'positionCursorInTable'):
             suc = function.extractSatelliteData(satName='NOAA 8')
             assert suc
 
@@ -590,7 +582,7 @@ def test_extractSatelliteData_5(function):
                            'now',
                            return_value=ts.tt_jd(2458950.404976551)):
         with mock.patch.object(function,
-                               'positionCursorInSatTable'):
+                               'positionCursorInTable'):
             suc = function.extractSatelliteData(satName='NOAA 8')
             assert suc
 

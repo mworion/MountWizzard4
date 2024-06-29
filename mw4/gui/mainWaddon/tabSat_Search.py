@@ -23,6 +23,7 @@ import numpy as np
 
 # local import
 from gui.mainWaddon.astroObjects import AstroObjects
+from gui.mainWaddon.satData import SatData
 from gui.utilities.toolsQtWidget import QCustomTableWidgetItem, MWidget
 from logic.databaseProcessing.sourceURL import satSourceURLs
 from base.tpool import Worker
@@ -31,7 +32,7 @@ from logic.satellites.satellite_calculations import checkTwilight, calcAppMag
 from logic.satellites.satellite_calculations import findRangeRate
 
 
-class SatSearch(MWidget):
+class SatSearch(MWidget, SatData):
     """
     """
     setSatListItem = Signal(int, int, object)
@@ -43,14 +44,14 @@ class SatSearch(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.satellites = AstroObjects(self.mainW,
-                                       'satellite',
-                                       satSourceURLs,
-                                       self.ui.listSats,
-                                       self.ui.satSourceList,
-                                       self.ui.satSourceGroup,
-                                       self.prepareSatTable,
-                                       self.processSatelliteSource)
+        SatData.satellites = AstroObjects(self.mainW,
+                                          'satellite',
+                                          satSourceURLs,
+                                          self.ui.listSats,
+                                          self.ui.satSourceList,
+                                          self.ui.satSourceGroup,
+                                          self.prepareSatTable,
+                                          self.processSatelliteSource)
 
         self.satellites.dataLoaded.connect(self.fillSatListName)
         self.ui.satFilterText.textChanged.connect(self.filterListSats)

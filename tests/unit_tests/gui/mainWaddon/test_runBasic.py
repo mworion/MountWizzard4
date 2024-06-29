@@ -24,10 +24,11 @@ import glob
 
 # external packages
 from skyfield.api import Angle
+from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from gui.mainWaddon.runBasic import BasicRun
+from gui.mainWaddon.runBasic import RunBasic
 import gui.mainWaddon.tabModel
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.utilities.toolsQtWidget import MWidget
@@ -37,30 +38,17 @@ setupLogging()
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
-    class Mixin(MWidget, BasicRun):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.deviceStat = {}
-            self.scaleHint = None
-            self.fovHint = None
-            self.playSound = None
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            BasicRun.__init__(self)
 
-    window = Mixin()
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    window = RunBasic()
     yield window
 
-    files = glob.glob('tests/workDir/model/m-*.model')
-    for f in files:
-        os.remove(f)
-    for path in glob.glob('tests/workDir/image/m-*'):
-        shutil.rmtree(path)
 
-
-def test_runSolveDone_0(function, qtbot):
+def test_runSolveDone_0(function):
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'pointNumber': 1}

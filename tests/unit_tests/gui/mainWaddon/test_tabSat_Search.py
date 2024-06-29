@@ -19,35 +19,31 @@ import pytest
 from unittest import mock
 
 # external packages
-from PySide6.QtCore import QThreadPool, QRect
-from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtCore import QRect
+from PySide6.QtWidgets import QTableWidgetItem, QWidget
 from skyfield.api import EarthSatellite
 import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 import gui
-from gui.utilities.toolsQtWidget import MWidget
 from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWaddon.tabSat_Search import SatSearch
-from gui.mainWaddon.tabSat_Track import SatTrack
 
 
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
+    class Test:
+        objects = {}
 
-    class Mixin(MWidget, SatSearch, SatTrack):
-        def __init__(self):
-            super().__init__()
-            self.app = App()
-            self.msg = self.app.msg
-            self.threadPool = QThreadPool()
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            SatSearch.__init__(self)
-            SatTrack.__init__(self)
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.satellites = Test()
+    mainW.threadPool = mainW.app.threadPool
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
 
-    window = Mixin()
+    window = SatSearch(mainW)
     yield window
 
 
@@ -79,41 +75,6 @@ def test_processSatelliteSource(function):
                            'tle_file',
                            return_value=[sat]):
         function.processSatelliteSource()
-
-
-def test_chooseSatellite_1(function):
-    tle = ["NOAA 8",
-           "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
-           "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
-    sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
-    satTab = function.ui.listSats
-    function.satellites.objects = {'NOAA 8': sat}
-    function.ui.autoSwitchTrack.setChecked(True)
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(satTab,
-                           'item'):
-        with mock.patch.object(function,
-                               'programDataToMount'):
-            with mock.patch.object(function,
-                                   'extractSatelliteData'):
-                with mock.patch.object(function,
-                                       'showSatPasses'):
-                    function.chooseSatellite()
-
-
-def test_chooseSatellite_2(function):
-    function.ui.autoSwitchTrack.setChecked(False)
-    function.app.deviceStat['mount'] = False
-    satTab = function.ui.listSats
-    with mock.patch.object(satTab,
-                           'item'):
-        with mock.patch.object(function,
-                               'programDataToMount'):
-            with mock.patch.object(function,
-                                   'extractSatelliteData'):
-                with mock.patch.object(function,
-                                       'showSatPasses'):
-                    function.chooseSatellite()
 
 
 def test_filterListSats_1(function):
@@ -216,10 +177,10 @@ def test_calcSatListDynamic_4(function):
     with mock.patch.object(QRect,
                            'intersects',
                            return_value=False):
-        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+        with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                'calcAppMag',
                                return_value=10):
-            with mock.patch.object(gui.mainWmixin.tabSat_Search,
+            with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
                 function.calcSatListDynamic()
@@ -240,10 +201,10 @@ def test_calcSatListDynamic_5(function):
     entry = QTableWidgetItem('test')
     function.ui.listSats.setItem(0, 0, entry)
     function.ui.listSats.setRowHidden(0, True)
-    with mock.patch.object(gui.mainWmixin.tabSat_Search,
+    with mock.patch.object(gui.mainWaddon.tabSat_Search,
                            'findSunlit',
                            return_value=True):
-        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+        with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                'calcAppMag',
                                return_value=10):
             with mock.patch.object(QRect,
@@ -270,10 +231,10 @@ def test_calcSatListDynamic_6(function):
     function.satellites.objects = {'NOAA 8': sat}
     with mock.patch.object(function,
                            'updateListSats'):
-        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+        with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                'findRangeRate',
                                return_value=[1, 2, 3]):
-            with mock.patch.object(gui.mainWmixin.tabSat_Search,
+            with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                    'findSunlit',
                                    return_value=False):
                 with mock.patch.object(QRect,
@@ -300,13 +261,13 @@ def test_calcSatListDynamic_7(function):
     function.satellites.objects = {'NOAA 8': sat}
     with mock.patch.object(function,
                            'updateListSats'):
-        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+        with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                'findRangeRate',
                                return_value=[1, 2, 3]):
-            with mock.patch.object(gui.mainWmixin.tabSat_Search,
+            with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
-                with mock.patch.object(gui.mainWmixin.tabSat_Search,
+                with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                        'calcAppMag',
                                        return_value=10):
                     with mock.patch.object(QRect,
@@ -332,13 +293,13 @@ def test_calcSatListDynamic_8(function):
     function.satellites.objects = {'NOAA 8': sat}
     with mock.patch.object(function,
                            'updateListSats'):
-        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+        with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                'findRangeRate',
                                return_value=[np.nan, 2, 3]):
-            with mock.patch.object(gui.mainWmixin.tabSat_Search,
+            with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                    'findSunlit',
                                    return_value=True):
-                with mock.patch.object(gui.mainWmixin.tabSat_Search,
+                with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                        'calcAppMag',
                                        return_value=10):
                     with mock.patch.object(QRect,
@@ -375,15 +336,15 @@ def test_calcSat_1(function):
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    with mock.patch.object(gui.mainWmixin.tabSat_Search,
+    with mock.patch.object(gui.mainWaddon.tabSat_Search,
                            'findRangeRate',
                            return_value=(1, 1, 1, 1)):
-        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+        with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                'findSunlit',
                                return_value=False):
-            with mock.patch.object(gui.mainWmixin.tabSat_Search,
+            with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                    'findSatUp'):
-                with mock.patch.object(gui.mainWmixin.tabSat_Search,
+                with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                        'checkTwilight'):
                     with mock.patch.object(function,
                                            'updateListSats'):
@@ -396,17 +357,17 @@ def test_calcSat_2(function):
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    with mock.patch.object(gui.mainWmixin.tabSat_Search,
+    with mock.patch.object(gui.mainWaddon.tabSat_Search,
                            'findRangeRate',
                            return_value=(1, 1, 1, 1)):
-        with mock.patch.object(gui.mainWmixin.tabSat_Search,
+        with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                'findSunlit',
                                return_value=True):
-            with mock.patch.object(gui.mainWmixin.tabSat_Search,
+            with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                    'findSatUp'):
-                with mock.patch.object(gui.mainWmixin.tabSat_Search,
+                with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                        'checkTwilight'):
-                    with mock.patch.object(gui.mainWmixin.tabSat_Search,
+                    with mock.patch.object(gui.mainWaddon.tabSat_Search,
                                            'calcAppMag',
                                            return_value=0):
                         with mock.patch.object(function,
@@ -420,7 +381,7 @@ def test_calcSat_3(function):
            "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954"]
     sat = EarthSatellite(tle[1], tle[2],  name=tle[0])
 
-    with mock.patch.object(gui.mainWmixin.tabSat_Search,
+    with mock.patch.object(gui.mainWaddon.tabSat_Search,
                            'findRangeRate',
                            return_value=(np.nan, 0, 0, 0)):
         with mock.patch.object(function,
@@ -480,7 +441,7 @@ def test_workerCalcSatList_3(function):
 
 
 def test_calcSatList_1(function):
-    with mock.patch.object(function.threadPool,
+    with mock.patch.object(function.app.threadPool,
                            'start'):
         function.calcSatList()
 

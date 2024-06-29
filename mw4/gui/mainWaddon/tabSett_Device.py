@@ -15,6 +15,7 @@
 #
 ###########################################################
 # standard libraries
+from functools import partial
 
 # external packages
 import PySide6.QtCore
@@ -68,7 +69,8 @@ class SettDevice(MWidget):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.popupUi = None
+        self.devicePopup = None
+        
         self.drivers = {
             'dome': {
                 'uiDropDown': self.ui.domeDevice,
@@ -177,10 +179,11 @@ class SettDevice(MWidget):
         self.driversData = {}
 
         for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].activated.connect(self.dispatchDriverDropdown)
+            self.drivers[driver]['uiDropDown'].activated.connect(
+                partial(self.dispatchDriverDropdown, driver))
             if self.drivers[driver]['uiSetup'] is not None:
                 ui = self.drivers[driver]['uiSetup']
-                ui.clicked.connect(self.dispatchPopup)
+                ui.clicked.connect(partial(self.callPopup, driver))
 
             if hasattr(self.drivers[driver]['class'], 'signals'):
                 signals = self.drivers[driver]['class'].signals
@@ -193,19 +196,13 @@ class SettDevice(MWidget):
 
     def setDefaultData(self, driver, config):
         """
-        :param driver:
-        :param config:
-        :return:
         """
         config[driver] = {}
         defaultConfig = self.drivers[driver]['class'].defaultConfig
         config[driver].update(defaultConfig)
-        return True
 
     def loadDriversDataFromConfig(self, config):
         """
-        :param config:
-        :return:
         """
         if 'driversData' in config:
             config = config['driversData']
@@ -228,7 +225,6 @@ class SettDevice(MWidget):
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         configD = self.app.config
@@ -237,7 +233,6 @@ class SettDevice(MWidget):
         self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()
-        return True
 
     def storeConfig(self):
         """
@@ -296,14 +291,14 @@ class SettDevice(MWidget):
 
         :return: success if new device could be selected
         """
-        self.popupUi.ui.ok.clicked.disconnect(self.processPopupResults)
-        driver = self.popupUi.returnValues.get('driver')
+        self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
+        driver = self.devicePopup.returnValues.get('driver')
 
         if not driver:
             return False
-        if self.popupUi.returnValues.get('indiCopyConfig', False):
+        if self.devicePopup.returnValues.get('indiCopyConfig', False):
             self.copyConfig(driverOrig=driver, framework='indi')
-        if self.popupUi.returnValues.get('alpacaCopyConfig', False):
+        if self.devicePopup.returnValues.get('alpacaCopyConfig', False):
             self.copyConfig(driverOrig=driver, framework='alpaca')
 
         selectedFramework = self.driversData[driver]['framework']
@@ -350,7 +345,6 @@ class SettDevice(MWidget):
 
                 source = self.driversData[driverOrig]['frameworks'][framework][param]
                 self.driversData[driverDest]['frameworks'][framework][param] = source
-        return True
 
     def callPopup(self, driver):
         """
@@ -365,49 +359,13 @@ class SettDevice(MWidget):
         data = self.driversData[driver]
         deviceType = self.drivers[driver]['deviceType']
 
-        self.popupUi = DevicePopup(self,
-                                   app=self.app,
-                                   driver=driver,
-                                   deviceType=deviceType,
-                                   data=data)
+        self.devicePopup = DevicePopup(self,
+                                       app=self.app,
+                                       driver=driver,
+                                       deviceType=deviceType,
+                                       data=data)
 
-        self.popupUi.ui.ok.clicked.connect(self.processPopupResults)
-        return True
-
-    @staticmethod
-    def returnDriver(sender, searchDict, addKey=''):
-        """
-        returnDriver takes the sender widget from a gui interaction and compares
-        is to the widget objects of a search dicts to retrieve is original name.
-        therefore we need to swap key value pais in the search dict as we make a
-        reverse search.
-        in addition to make it more usable the search dict might have some sub
-        dicts where to find the gui elements. if given, they will be extracted on
-        the forehand.
-
-        :param sender:
-        :param searchDict:
-        :param addKey:
-        :return:
-        """
-        if addKey:
-            searchD = dict([(key, value[addKey]) for key, value in searchDict.items()])
-        else:
-            searchD = searchDict
-
-        searchD = dict([(value, key) for key, value in searchD.items()])
-        driver = searchD.get(sender, '')
-        return driver
-
-    def dispatchPopup(self):
-        """
-        :return: True for test purpose
-        """
-        driver = self.returnDriver(self.sender(), self.drivers, addKey='uiSetup')
-
-        if driver:
-            self.callPopup(driver=driver)
-        return True
+        self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 
     def stopDriver(self, driver=None):
         """
@@ -436,7 +394,6 @@ class SettDevice(MWidget):
         self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
                                 'active', False)
         self.app.deviceStat[driver] = None
-
         return True
 
     def stopDrivers(self):
@@ -557,43 +514,32 @@ class SettDevice(MWidget):
                 self.startDriver(driver=driver, autoStart=True)
         return True
 
-    def dispatchDriverDropdown(self):
+    def dispatchDriverDropdown(self, driver):
         """
         dispatchDriverDropdown maps the gui event received from signals to the
         methods doing the real stuff. this splits function and gui reaction into
         two separate tasks. if a dropDown action is taken, this means and new
         driver has been selected, so the old one has to be stopped, the new
         configured and started.
-
-        :return: true for test purpose
         """
-        sender = self.sender()
-        isDisabled = sender.currentText() == 'device disabled'
-        driver = self.returnDriver(sender, self.drivers, addKey='uiDropDown')
+        dropDownEntry = self.drivers[driver]['uiDropDown'].currentText()
+        isDisabled = dropDownEntry == 'device disabled'
 
-        if driver:
-            if isDisabled:
-                framework = ''
-            else:
-                framework = sender.currentText().split('-')[0].rstrip()
+        if isDisabled:
+            framework = ''
+        else:
+            framework = dropDownEntry.split('-')[0].rstrip()
 
-            self.driversData[driver]['framework'] = framework
-            self.stopDriver(driver=driver)
-            if framework:
-                self.startDriver(driver=driver)
-        return True
+        self.driversData[driver]['framework'] = framework
+        self.stopDriver(driver=driver)
+        if framework:
+            self.startDriver(driver=driver)
 
-    def scanValid(self, driver=None, deviceName=''):
+    def scanValid(self, driver, deviceName=''):
         """
         scanValid checks if the calling device fits to the summary of all
         devices and gives back if it should be skipped
-
-        :param deviceName:
-        :param driver:
-        :return:
         """
-        if not driver:
-            return False
         if not deviceName:
             return False
 

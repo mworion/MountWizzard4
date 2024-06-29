@@ -60,20 +60,6 @@ class MountSett(MWidget):
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
         self.clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
 
-    def setupIcons(self) -> None:
-        """
-        """
-        self.wIcon(self.ui.posButton0, 'target')
-        self.wIcon(self.ui.posButton1, 'target')
-        self.wIcon(self.ui.posButton2, 'target')
-        self.wIcon(self.ui.posButton3, 'target')
-        self.wIcon(self.ui.posButton4, 'target')
-        self.wIcon(self.ui.posButton5, 'target')
-        self.wIcon(self.ui.posButton6, 'target')
-        self.wIcon(self.ui.posButton7, 'target')
-        self.wIcon(self.ui.posButton8, 'target')
-        self.wIcon(self.ui.posButton9, 'target')
-
     def updatePointGUI(self, obs):
         """
         """
@@ -190,24 +176,24 @@ class MountSett(MWidget):
         """
         """
         if obs is None:
-            return False
+            return
         location = obs.location
         if location is None:
-            return False
+            return
 
         self.ui.siteLongitude.setText(formatLonToText(location.longitude))
         self.ui.siteLatitude.setText(formatLatToText(location.latitude))
         self.ui.siteElevation.setText(str(location.elevation.m))
-        return True
 
     def setMeridianLimitTrack(self):
         """
         """
         sett = self.app.mount.setting
-        actValue = int(sett.meridianLimitTrack)
+        actValue = 0 if sett.meridianLimitTrack is None else int(sett.meridianLimitTrack)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self.mainW, 'Set Meridian Limit Track', 'Value (1-30):', actValue, 1, 30, 1)
+            self.mainW, 'Set Meridian Limit Track', 'Value (1-30):',
+            actValue, 1, 30, 1)
 
         if not ok:
             return False
@@ -224,10 +210,11 @@ class MountSett(MWidget):
         """
         """
         sett = self.app.mount.setting
-        actValue = int(sett.meridianLimitSlew)
+        actValue = 0 if sett.meridianLimitSlew is None else int(sett.meridianLimitSlew)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self.mainW, 'Set Meridian Limit Slew', 'Value (0-30):', actValue, 0, 30, 1)
+            self.mainW, 'Set Meridian Limit Slew', 'Value (0-30):',
+            actValue, 0, 30, 1)
 
         if not ok:
             return False
@@ -244,10 +231,11 @@ class MountSett(MWidget):
         """
         """
         sett = self.app.mount.setting
-        actValue = int(sett.horizonLimitHigh)
+        actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self.mainW, 'Set Horizon Limit High', 'Value (0-90):', actValue, 0, 90, 1)
+            self.mainW, 'Set Horizon Limit High', 'Value (0-90):',
+            actValue, 0, 90, 1)
 
         if not ok:
             return False
@@ -264,10 +252,11 @@ class MountSett(MWidget):
         """
         """
         sett = self.app.mount.setting
-        actValue = int(sett.horizonLimitLow)
+        actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self.mainW, 'Set Horizon Limit Low', 'Value (-5 - 90):', actValue, -5, 90, 1,)
+            self.mainW, 'Set Horizon Limit Low', 'Value (-5 - 90):',
+            actValue, -5, 90, 1,)
 
         if not ok:
             return False
@@ -282,9 +271,9 @@ class MountSett(MWidget):
         """
         """
         sett = self.app.mount.setting
-        actValue = int(sett.slewRate)
-        minRate = int(sett.slewRateMin)
-        maxRate = int(sett.slewRateMax)
+        actValue = 0 if sett.slewRate is None else int(sett.slewRate)
+        minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
+        maxRate = 0 if sett.slewRateMax is None else int(sett.slewRateMax)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
             self.mainW, 'Set Slew Rate', f'Value ({minRate}...{maxRate}):',
@@ -331,12 +320,10 @@ class MountSett(MWidget):
             return False
 
         dlg = QInputDialog()
-        value, ok = dlg.getText(self.mainW,
-                                'Set Site Longitude',
-                                'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is '
-                                'positive',
-                                QLineEdit.EchoMode.Normal,
-                                self.ui.siteLongitude.text())
+        value, ok = dlg.getText(
+            self.mainW, 'Set Site Longitude',
+            'Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is positive',
+            QLineEdit.EchoMode.Normal, self.ui.siteLongitude.text())
         if not ok:
             return False
 
@@ -352,11 +339,10 @@ class MountSett(MWidget):
             return False
 
         dlg = QInputDialog()
-        value, ok = dlg.getText(self.mainW,
-                                'Set Site Latitude',
-                                'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
-                                QLineEdit.EchoMode.Normal,
-                                self.ui.siteLatitude.text())
+        value, ok = dlg.getText(
+            self.mainW, 'Set Site Latitude',
+            'Format: <dd[SN] mm ss.s> or <[+-]d.d>',
+            QLineEdit.EchoMode.Normal, self.ui.siteLatitude.text())
         if not ok:
             return False
 
@@ -403,11 +389,9 @@ class MountSett(MWidget):
         """
         sett = self.app.mount.setting
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self.mainW,
-                                'Set Dual Axis Tracking',
-                                'Value: On / Off',
-                                ['ON', 'OFF'],
-                                0, False)
+        value, ok = dlg.getItem(
+            self.mainW, 'Set Dual Axis Tracking', 'Value: On / Off',
+            ['ON', 'OFF'], 0, False)
         if not ok:
             return False
 
@@ -423,11 +407,9 @@ class MountSett(MWidget):
         """
         sett = self.app.mount.setting
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self.mainW,
-                                'Set Wake On Lan',
-                                'Value: On / Off',
-                                ['ON', 'OFF'],
-                                0, False)
+        value, ok = dlg.getItem(
+            self.mainW, 'Set Wake On Lan', 'Value: On / Off',
+            ['ON', 'OFF'], 0, False)
         if not ok:
             return False
 
@@ -442,13 +424,13 @@ class MountSett(MWidget):
         """
         """
         sett = self.app.mount.setting
-        actValue = sett.refractionTemp if sett is not None else 0.0
-        minVal = -40.0
-        maxVal = 75.0
+        actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
+        minVal = -40
+        maxVal = 75
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
             self.mainW, 'Set Refraction Temperature', f'Value ({minVal}...{maxVal}):',
-            actValue, minVal, maxVal, 1.0)
+            actValue, minVal, maxVal, 1)
 
         if not ok:
             return False
@@ -463,7 +445,7 @@ class MountSett(MWidget):
         """
         """
         sett = self.app.mount.setting
-        actValue = sett.refractionPress
+        actValue = 0 if sett.refractionPress is None else sett.refractionPress
         minVal = 500
         maxVal = 1300
         dlg = QInputDialog()
@@ -485,11 +467,9 @@ class MountSett(MWidget):
         """
         sett = self.app.mount.setting
         dlg = QInputDialog()
-        value, ok = dlg.getItem(self.mainW,
-                                'Set Refraction Correction',
-                                'Value: On / Off',
-                                ['ON', 'OFF'],
-                                0, False)
+        value, ok = dlg.getItem(
+            self.mainW, 'Set Refraction Correction', 'Value: On / Off',
+            ['ON', 'OFF'], 0, False)
         if not ok:
             return False
 
@@ -506,10 +486,11 @@ class MountSett(MWidget):
         """
         """
         sett = self.app.mount.setting
-        actValue = int(sett.settleTime) if sett.settleTime is not None else 0
+        actValue = 0 if sett.settleTime is None else int(sett.settleTime)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
-            self.mainW, 'Set Settle Time', 'Value (0-999):', actValue, 0, 999, 1)
+            self.mainW, 'Set Settle Time', 'Value (0-999):',
+            actValue, 0, 999, 1)
 
         if not ok:
             return False

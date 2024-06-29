@@ -23,9 +23,10 @@ from skyfield import almanac
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
+from gui.mainWaddon.satData import SatData
 
 
-class SatTrack(MWidget):
+class SatTrack(MWidget, SatData):
     """
     """
 
@@ -93,24 +94,18 @@ class SatTrack(MWidget):
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
-
-        self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat',
-                                                        False))
-        self.ui.useInternalSatCalc.setChecked(config.get('useInternalSatCalc',
-                                                         False))
+        self.ui.domeAutoFollowSat.setChecked(config.get('domeAutoFollowSat', False))
+        self.ui.useInternalSatCalc.setChecked(config.get('useInternalSatCalc', False))
         self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
         self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
         self.ui.avoidHorizon.setChecked(config.get('avoidHorizon', False))
         self.ui.trackingSim.setChecked(config.get('trackingSim', False))
         self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
-        return True
 
     def storeConfig(self):
         """
-        :return:
         """
         config = self.app.config['mainW']
         config['domeAutoFollowSat'] = self.ui.domeAutoFollowSat.isChecked()
@@ -119,7 +114,6 @@ class SatTrack(MWidget):
         config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
         config['avoidHorizon'] = self.ui.avoidHorizon.isChecked()
         config['trackingSim'] = self.ui.trackingSim.isChecked()
-        return True
 
     def setupIcons(self):
         """
@@ -133,7 +127,6 @@ class SatTrack(MWidget):
 
     def enableGuiFunctions(self):
         """
-        :return:
         """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         availableInternal = self.app.mount.firmware.checkNewer(21699)
@@ -400,11 +393,11 @@ class SatTrack(MWidget):
         :return: success
         """
         satTab = self.ui.listSats
-        if satName not in self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects:
+        if satName not in self.satellites.objects:
             return False
 
         self.positionCursorInTable(satTab, satName)
-        self.satellite = self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects[satName]
+        self.satellite = self.satellites.objects[satName]
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M')
         self.ui.satelliteEpoch.setText(epochText)
@@ -431,13 +424,13 @@ class SatTrack(MWidget):
         """
         if not satName:
             return False
-        if satName not in self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects:
+        if satName not in self.satellites.objects:
             return False
 
         satellite = self.app.mount.satellite
         self.msg.emit(0, 'TLE', 'Program',
                       f'Upload to mount: [{satName}]')
-        line1, line2 = export_tle(self.mainW.mainWindowAddons.addons['SatSearch'].satellites.objects[satName].model)
+        line1, line2 = export_tle(self.satellites.objects[satName].model)
         suc = satellite.setTLE(line0=satName,
                                line1=line1,
                                line2=line2)

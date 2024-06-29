@@ -74,7 +74,7 @@ class AstroObjects(QObject):
         """
         self.uiSourceList.clear()
         self.uiSourceList.setView(QListView())
-        for name in self.sourceUrls.keys():
+        for name in self.sourceUrls:
             self.uiSourceList.addItem(name)
         self.uiSourceList.setCurrentIndex(-1)
 

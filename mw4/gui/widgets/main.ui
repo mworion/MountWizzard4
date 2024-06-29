@@ -107,7 +107,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -126,6 +126,9 @@
      <string>Mount</string>
     </attribute>
     <widget class="QTabWidget" name="mountTabWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -371,7 +374,7 @@
       <widget class="QLabel" name="label_88">
        <property name="geometry">
         <rect>
-         <x>725</x>
+         <x>730</x>
          <y>60</y>
          <width>16</width>
          <height>20</height>
@@ -441,7 +444,7 @@
       <widget class="QLabel" name="label_91">
        <property name="geometry">
         <rect>
-         <x>465</x>
+         <x>470</x>
          <y>35</y>
          <width>31</width>
          <height>21</height>
@@ -464,7 +467,7 @@
       <widget class="QLabel" name="label_89">
        <property name="geometry">
         <rect>
-         <x>725</x>
+         <x>730</x>
          <y>85</y>
          <width>16</width>
          <height>20</height>
@@ -557,7 +560,7 @@
       <widget class="QLabel" name="label_104">
        <property name="geometry">
         <rect>
-         <x>725</x>
+         <x>730</x>
          <y>10</y>
          <width>16</width>
          <height>20</height>
@@ -812,7 +815,7 @@
       <widget class="QLabel" name="label_109">
        <property name="geometry">
         <rect>
-         <x>725</x>
+         <x>730</x>
          <y>35</y>
          <width>16</width>
          <height>20</height>
@@ -968,7 +971,7 @@
       <widget class="QLabel" name="label_82">
        <property name="geometry">
         <rect>
-         <x>725</x>
+         <x>730</x>
          <y>185</y>
          <width>21</width>
          <height>20</height>
@@ -1453,7 +1456,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_61">
        <property name="geometry">
         <rect>
-         <x>465</x>
+         <x>470</x>
          <y>10</y>
          <width>31</width>
          <height>21</height>
@@ -2037,7 +2040,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_83">
        <property name="geometry">
         <rect>
-         <x>465</x>
+         <x>470</x>
          <y>110</y>
          <width>21</width>
          <height>20</height>
@@ -2832,7 +2835,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QWidget" name="SlewRaDec">
       <attribute name="title">
-       <string>Slew Ra/Dec and Alt/az</string>
+       <string>Slew Ra/Dec and Alt/Az</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_37">
        <property name="geometry">
@@ -3941,7 +3944,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="GroupTracking">
+    <widget class="QGroupBox" name="trackingGroup">
      <property name="geometry">
       <rect>
        <x>510</x>
@@ -4108,7 +4111,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_49">
+    <widget class="QGroupBox" name="telescopePointingGroup">
      <property name="geometry">
       <rect>
        <x>5</x>

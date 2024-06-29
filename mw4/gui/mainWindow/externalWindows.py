@@ -18,7 +18,6 @@
 from functools import partial
 
 # external packages
-from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 
 # local import

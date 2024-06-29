@@ -16,13 +16,8 @@
 ###########################################################
 import base.packageConfig as pConf
 # standard libraries
-import os
-import sys
-import platform
-from packaging.utils import Version
 
 # external packages
-from pkg_resources import working_set
 if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
 import hid
@@ -221,7 +216,7 @@ class SettMisc(MWidget):
                 self.mainW.gameControllerRunning = False
                 self.log.warning(f'GameController error {e}')
                 return []
-    
+
             if len(data) == 0:
                 break
             result = data

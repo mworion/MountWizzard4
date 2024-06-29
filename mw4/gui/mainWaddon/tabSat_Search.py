@@ -36,7 +36,7 @@ class SatSearch(MWidget, SatData):
     """
     """
     setSatListItem = Signal(int, int, object)
-    
+
     def __init__(self, mainW):
         super().__init__()
         self.mainW = mainW

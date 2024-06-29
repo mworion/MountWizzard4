@@ -19,7 +19,7 @@ import pickle
 from io import BytesIO
 
 # external packages
-from PySide6.QtCore import QObject, QFile, Qt, Signal
+from PySide6.QtCore import QFile, Qt
 import numpy as np
 from skyfield.api import wgs84
 import pyqtgraph as pg
@@ -182,8 +182,8 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         :param thresh:
         :return:
         """
-        #if np.isnan(dat).any():
-        #    yield []
+        # if np.isnan(dat).any():
+        #     yield []
 
         jump = np.nonzero(np.abs(np.diff(dat)) > ((limits[1] - limits[0]) * thresh))[0]
         lastIndex = 0

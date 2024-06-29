@@ -65,4 +65,3 @@ class SimulatorLight:
             },
         }
         linkModel(model, self.parent.entityModel)
-

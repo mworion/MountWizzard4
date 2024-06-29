@@ -312,7 +312,7 @@ class DataWriter:
 
                 line += f'{"":1s}'
                 if 'Arc_years' in data:
-                    line += f'{data.get("Arc_years",""):9s}'
+                    line += f'{data.get("Arc_years", ""):9s}'
 
                 elif 'Arc_length' in data:
                     arcLength = data.get("Arc_length", 0)

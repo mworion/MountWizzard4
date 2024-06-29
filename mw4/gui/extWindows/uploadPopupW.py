@@ -98,10 +98,10 @@ class UploadPopup(MWidget):
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
-    def setProgressBarColor(self, color:str) -> None:
+    def setProgressBarColor(self, colorstr) -> None:
         """
         """
-        css = 'QProgressBar::chunk {background-color: ' + color + ';}'
+        css = 'QProgressBar::chunk {background-color: ' + colorstr + ';}'
         self.ui.progressBar.setStyleSheet(css)
 
     def setProgressBarToValue(self, progressPercent: int) -> None:
@@ -142,13 +142,13 @@ class UploadPopup(MWidget):
             return False
         return True
 
-    def sendProgressValue(self, text:str) -> None:
+    def sendProgressValue(self, text: str) -> None:
         """:
         """
         progressValue = int(re.search(r'\d+', text).group())
         self.signalProgress.emit(progressValue)
 
-    def pollDispatcher(self, text:str) -> None:
+    def pollDispatcher(self, text: str) -> None:
         """
         """
         single = len(text) == 1

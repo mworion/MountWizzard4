@@ -70,7 +70,7 @@ class SettDevice(MWidget):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.devicePopup = None
-        
+
         self.drivers = {
             'dome': {
                 'uiDropDown': self.ui.domeDevice,

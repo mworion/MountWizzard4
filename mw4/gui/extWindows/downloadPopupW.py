@@ -53,7 +53,7 @@ class DownloadPopup(MWidget):
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
-        self.setWindowTitle(f'Downloading from Web')
+        self.setWindowTitle('Downloading from Web')
         self.threadPool = parentWidget.threadPool
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
@@ -69,7 +69,7 @@ class DownloadPopup(MWidget):
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
-    def setProgressBarColor(self, color:str) -> None:
+    def setProgressBarColor(self, color: str) -> None:
         """
         """
         css = 'QProgressBar::chunk {background-color: ' + color + ';}'
@@ -85,7 +85,7 @@ class DownloadPopup(MWidget):
         """
         self.ui.statusText.setText(statusText)
 
-    def getFileFromUrl(self, url:str, dest:str) -> bool:
+    def getFileFromUrl(self, url: str, dest: str) -> bool:
         """
         """
         r = requests.get(url, stream=True, timeout=3)

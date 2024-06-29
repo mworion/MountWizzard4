@@ -141,7 +141,6 @@ class SatTrack(MWidget, SatData):
 
     def calcPassEvents(self, obsSite):
         """
-        :return:
         """
         minAlt = self.app.mount.setting.horizonLimitLow
         if minAlt is None:
@@ -160,10 +159,6 @@ class SatTrack(MWidget, SatData):
 
     def collectOrbits(self, events, timeNow, times):
         """
-        :param events:
-        :param timeNow:
-        :param times:
-        :return:
         """
         counter = 0
         self.satOrbits = []
@@ -192,10 +187,6 @@ class SatTrack(MWidget, SatData):
 
     def extractOrbits(self, timeNow, times, events):
         """
-        :param timeNow:
-        :param times:
-        :param events:
-        :return:
         """
         counter = self.collectOrbits(events, timeNow, times)
 
@@ -209,16 +200,11 @@ class SatTrack(MWidget, SatData):
         if 'settle' not in self.satOrbits[-1]:
             del self.satOrbits[counter]
             return False
-
         return True
 
     @staticmethod
     def calcSatelliteMeridianTransit(satellite, location, tolerance):
         """
-        :param satellite:
-        :param location:
-        :param tolerance:
-        :return:
         """
         difference = satellite - location
 
@@ -233,11 +219,6 @@ class SatTrack(MWidget, SatData):
     @staticmethod
     def sortFlipEvents(satOrbit, t0, t1, t2):
         """
-        :param satOrbit:
-        :param t0:
-        :param t1:
-        :param t2:
-        :return:
         """
         settle = satOrbit['settle']
         rise = satOrbit['rise']
@@ -261,12 +242,8 @@ class SatTrack(MWidget, SatData):
             else:
                 satOrbit['flipEarly'] = t2[0]
 
-        return True
-
     def addMeridianTransit(self, location):
         """
-        :param location:
-        :return:
         """
         limit = self.app.mount.setting.meridianLimitTrack
         if limit is None:
@@ -285,13 +262,9 @@ class SatTrack(MWidget, SatData):
                                            satOrbit['settle'], f2)
 
             self.sortFlipEvents(satOrbit, t0, t1, t2)
-        return True
 
     def signalSatelliteData(self, alt=None, az=None):
         """
-        :param alt:
-        :param az:
-        :return:
         """
         if not self.satellite:
             return False
@@ -302,7 +275,6 @@ class SatTrack(MWidget, SatData):
 
     def clearTrackingParameters(self):
         """
-        :return:
         """
         self.ui.satTrajectoryStart.setText('-')
         self.ui.satTrajectoryEnd.setText('-')
@@ -312,11 +284,9 @@ class SatTrack(MWidget, SatData):
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setText('Start satellite tracking')
         self.changeStyleDynamic(self.ui.startSatelliteTracking, 'running', False)
-        return True
 
     def updatePasses(self):
         """
-        :return:
         """
         actMeridianLimit = self.app.mount.setting.meridianLimitTrack
         if actMeridianLimit is None:
@@ -329,7 +299,6 @@ class SatTrack(MWidget, SatData):
 
     def showSatPasses(self):
         """
-        :return: True for test purpose
         """
         title = 'Satellite passes ' + self.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
@@ -389,8 +358,6 @@ class SatTrack(MWidget, SatData):
 
     def extractSatelliteData(self, satName=''):
         """
-        :param satName: additional parameter for calling this method
-        :return: success
         """
         satTab = self.ui.listSats
         if satName not in self.satellites.objects:
@@ -420,7 +387,6 @@ class SatTrack(MWidget, SatData):
 
     def programDataToMount(self, satName=''):
         """
-        :return: success
         """
         if not satName:
             return False
@@ -454,8 +420,6 @@ class SatTrack(MWidget, SatData):
 
     def getSatelliteDataFromDatabase(self, tleParams=None):
         """
-        :param tleParams:
-        :return: True for test purpose
         """
         if tleParams is None:
             return False
@@ -466,7 +430,6 @@ class SatTrack(MWidget, SatData):
 
     def updateOrbit(self):
         """
-        :return: success
         """
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
@@ -481,9 +444,6 @@ class SatTrack(MWidget, SatData):
 
     def calcTrajectoryData(self, start, end):
         """
-        :param start:
-        :param end:
-        :return:
         """
         duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
@@ -508,12 +468,6 @@ class SatTrack(MWidget, SatData):
         determine, when a track is hidden behind horizon line. As a satellite
         track has to be in one piece, the resulting vectors might have a shorter
         length and a different start and end time.
-
-        :param start:
-        :param end:
-        :param alt:
-        :param az:
-        :return:
         """
         useHorizon = self.ui.avoidHorizon.isChecked()
         if not useHorizon:
@@ -542,7 +496,6 @@ class SatTrack(MWidget, SatData):
 
     def selectStartEnd(self):
         """
-        :return:
         """
         if not self.satOrbits:
             return 0, 0
@@ -571,7 +524,6 @@ class SatTrack(MWidget, SatData):
 
     def progTrajectoryToMount(self):
         """
-        :return:
         """
         useInternal = self.ui.useInternalSatCalc.isChecked()
         isMount = self.app.deviceStat['mount']
@@ -595,7 +547,6 @@ class SatTrack(MWidget, SatData):
 
     def startProg(self):
         """
-        :return:
         """
         self.clearTrackingParameters()
         isSim = self.ui.trackingSim.isChecked()
@@ -612,17 +563,13 @@ class SatTrack(MWidget, SatData):
 
     def trajectoryProgress(self, value):
         """
-        :param value:
-        :return:
         """
         self.ui.trajectoryProgress.setValue(int(value))
         if value == 100:
             self.changeStyleDynamic(self.ui.progTrajectory, 'running', False)
-        return True
 
     def updateSatelliteTrackGui(self, params=None):
         """
-        :return: success for test purpose
         """
         self.ui.trajectoryProgress.setValue(0)
         title = 'Satellite tracking ' + self.timeZoneString()
@@ -662,7 +609,6 @@ class SatTrack(MWidget, SatData):
 
     def startTrack(self):
         """
-        :return: success
         """
         if not self.app.deviceStat['mount']:
             self.msg.emit(2, 'TLE', 'Program', 'Mount is not online')
@@ -689,7 +635,6 @@ class SatTrack(MWidget, SatData):
 
     def stopTrack(self):
         """
-        :return: success
         """
         if not self.app.deviceStat['mount']:
             self.msg.emit(2, 'TLE', 'Command', 'Mount is not online')
@@ -707,8 +652,6 @@ class SatTrack(MWidget, SatData):
 
     def toggleTrackingOffset(self, obs):
         """
-        :param obs:
-        :return:
         """
         if not self.app.mount.firmware.checkNewer(21699):
             return False
@@ -721,7 +664,6 @@ class SatTrack(MWidget, SatData):
 
     def followMount(self, obs):
         """
-        :return:
         """
         TLESCK = {
             'V': 'is slewing to transit start',
@@ -749,7 +691,6 @@ class SatTrack(MWidget, SatData):
 
     def setTrackingOffsets(self):
         """
-        :return:
         """
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()

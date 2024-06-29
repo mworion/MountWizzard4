@@ -241,8 +241,7 @@ def test_sortFlipEvents_0(function):
     t0 = []
     t1 = [ts.tt_jd(2459215.5)]
     t2 = [ts.tt_jd(2459215.6)]
-    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
-    assert suc
+    function.sortFlipEvents(satOrbit, t0, t1, t2)
     assert 'flip' not in satOrbit
 
 
@@ -253,8 +252,7 @@ def test_sortFlipEvents_1(function):
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.5)]
     t2 = [ts.tt_jd(2459215.6)]
-    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
-    assert suc
+    function.sortFlipEvents(satOrbit, t0, t1, t2)
     assert 'flip' in satOrbit
 
 
@@ -265,8 +263,7 @@ def test_sortFlipEvents_2(function):
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.6)]
     t2 = [ts.tt_jd(2459215.5)]
-    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
-    assert suc
+    function.sortFlipEvents(satOrbit, t0, t1, t2)
 
 
 def test_sortFlipEvents_3(function):
@@ -276,8 +273,7 @@ def test_sortFlipEvents_3(function):
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.65)]
     t2 = []
-    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
-    assert suc
+    function.sortFlipEvents(satOrbit, t0, t1, t2)
     assert 'flipLate' in satOrbit
 
 
@@ -288,8 +284,7 @@ def test_sortFlipEvents_4(function):
     t0 = [ts.tt_jd(2459215.5)]
     t1 = [ts.tt_jd(2459215.55)]
     t2 = []
-    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
-    assert suc
+    function.sortFlipEvents(satOrbit, t0, t1, t2)
     assert 'flipEarly' in satOrbit
 
 
@@ -300,8 +295,7 @@ def test_sortFlipEvents_5(function):
     t0 = [ts.tt_jd(2459215.5)]
     t1 = []
     t2 = [ts.tt_jd(2459215.55)]
-    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
-    assert suc
+    function.sortFlipEvents(satOrbit, t0, t1, t2)
     assert 'flipEarly' in satOrbit
 
 
@@ -312,8 +306,7 @@ def test_sortFlipEvents_6(function):
     t0 = [ts.tt_jd(2459215.5)]
     t1 = []
     t2 = [ts.tt_jd(2459215.65)]
-    suc = function.sortFlipEvents(satOrbit, t0, t1, t2)
-    assert suc
+    function.sortFlipEvents(satOrbit, t0, t1, t2)
     assert 'flipLate' in satOrbit
 
 
@@ -329,8 +322,7 @@ def test_addMeridianTransit_1(function):
                            'settle': ts.tt_jd(2459215.7)},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
-    suc = function.addMeridianTransit(loc)
-    assert suc
+    function.addMeridianTransit(loc)
 
 
 def test_addMeridianTransit_2(function):
@@ -346,13 +338,11 @@ def test_addMeridianTransit_2(function):
                            'settle': ts.tt_jd(2459215.7)},
                           {'rise': ts.tt_jd(2459216.5),
                            'settle': ts.tt_jd(2459216.7)}]
-    suc = function.addMeridianTransit(loc)
-    assert suc
+    function.addMeridianTransit(loc)
 
 
 def test_clearTrackingParameters(function):
-    suc = function.clearTrackingParameters()
-    assert suc
+    function.clearTrackingParameters()
 
 
 def test_updatePasses_1(function):
@@ -911,8 +901,7 @@ def test_startProg_2(function):
 
 
 def test_trajectoryProgress_1(function):
-    suc = function.trajectoryProgress(100)
-    assert suc
+    function.trajectoryProgress(100)
 
 
 def test_updateSatelliteTrackGui_1(function):

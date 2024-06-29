@@ -340,9 +340,9 @@ def test_programModelToMount_3(function):
         with mock.patch.object(function.app.mount.model,
                                'programAlign',
                                return_value=True):
-            with mock.patch.object(ManageModel,
+            with mock.patch.object(gui.mainWaddon.tabManageModel,
                                    'refreshName'):
-                with mock.patch.object(ManageModel,
+                with mock.patch.object(gui.mainWaddon.tabManageModel,
                                        'refreshModel'):
                     suc = function.programModelToMount()
                     assert suc
@@ -478,7 +478,7 @@ def test_clearAlignAndBackup_2(function):
                                return_value=False):
             with mock.patch.object(function,
                                    'refreshModel'):
-                with mock.patch.object(gui.mainWmixin.tabModel,
+                with mock.patch.object(gui.mainWaddon.tabModel,
                                        'sleepAndEvents'):
                     suc = function.clearAlignAndBackup()
                     assert suc
@@ -496,7 +496,7 @@ def test_clearAlignAndBackup_3(function):
                 with mock.patch.object(function.app.mount.model,
                                        'storeName',
                                        return_value=False):
-                    with mock.patch.object(gui.mainWmixin.tabModel,
+                    with mock.patch.object(gui.mainWaddon.tabModel,
                                            'sleepAndEvents'):
                         suc = function.clearAlignAndBackup()
                         assert suc
@@ -514,7 +514,7 @@ def test_clearAlignAndBackup_4(function):
                                    return_value=True):
                 with mock.patch.object(function,
                                        'refreshModel'):
-                    with mock.patch.object(gui.mainWmixin.tabModel,
+                    with mock.patch.object(gui.mainWaddon.tabModel,
                                            'sleepAndEvents'):
                         suc = function.clearAlignAndBackup()
                         assert suc

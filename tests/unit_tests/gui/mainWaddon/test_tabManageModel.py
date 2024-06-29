@@ -291,7 +291,6 @@ def test_refreshName_1(function):
 
 def test_refreshName_2(function):
     function.refreshName()
-    function.refreshName()
 
 
 def test_loadName_1(function):

@@ -19,8 +19,6 @@
 import unittest.mock as mock
 import pytest
 import os
-import shutil
-import glob
 
 # external packages
 from skyfield.api import Angle
@@ -28,10 +26,10 @@ from PySide6.QtWidgets import QWidget
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from gui.utilities.toolsQtWidget import MWidget
 from gui.mainWaddon.runBasic import RunBasic
 import gui.mainWaddon.tabModel
 from gui.widgets.main_ui import Ui_MainWindow
-from gui.utilities.toolsQtWidget import MWidget
 from base.loggerMW import setupLogging
 setupLogging()
 
@@ -40,11 +38,12 @@ setupLogging()
 def function(qapp):
 
     mainW = QWidget()
+    mainW.changeStyleDynamic = MWidget.changeStyleDynamic
     mainW.app = App()
     mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-    window = RunBasic()
+    window = RunBasic(mainW)
     yield window
 
 
@@ -232,7 +231,7 @@ def test_runImage_2(function):
     def qWaitBreak(a):
         function.ui.pauseModel.setProperty('pause', False)
 
-    gui.mainWmixin.runBasic.sleepAndEvents = qWaitBreak
+    gui.mainWaddon.runBasic.sleepAndEvents = qWaitBreak
     function.ui.pauseModel.setProperty('pause', True)
     function
     mPoint = {'lenSequence': 3,
@@ -257,7 +256,7 @@ def test_runImage_3(function):
     def qWaitBreak(a):
         function.ui.pauseModel.setProperty('pause', False)
 
-    gui.mainWmixin.runBasic.sleepAndEvents = qWaitBreak
+    gui.mainWaddon.runBasic.sleepAndEvents = qWaitBreak
     function.ui.pauseModel.setProperty('pause', True)
     function
     mPoint = {'lenSequence': 3,
@@ -285,7 +284,7 @@ def test_runSlew_1(function):
 
 
 def test_runSlew_2(function):
-    function.deviceStat['dome'] = False
+    function.app.deviceStat['dome'] = False
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -306,7 +305,7 @@ def test_runSlew_2(function):
 
 
 def test_runSlew_3(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -329,7 +328,7 @@ def test_runSlew_3(function):
 
 
 def test_runSlew_4(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -352,9 +351,9 @@ def test_runSlew_4(function):
             assert suc
 
 
-@mock.patch('gui.mainWmixin.runBasic.isSimulationMount', True)
+@mock.patch('gui.mainWaddon.runBasic.isSimulationMount', True)
 def test_runSlew_5(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     mPoint = {'lenSequence': 3,
               'countSequence': 3,
               'imagePath': '',
@@ -388,7 +387,7 @@ def test_setupSignalsForRun_1(function):
 
 
 def test_setupSignalsForRun_2(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     function.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
 
     suc = function.setupSignalsForRun()
@@ -396,7 +395,7 @@ def test_setupSignalsForRun_2(function):
 
 
 def test_setupSignalsForRun_3(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     function.app.dome.data = {}
     function.ui.progressiveTiming.setChecked(True)
     suc = function.setupSignalsForRun()
@@ -404,14 +403,14 @@ def test_setupSignalsForRun_3(function):
 
 
 def test_setupSignalsForRun_4(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     function.ui.normalTiming.setChecked(True)
     suc = function.setupSignalsForRun()
     assert suc
 
 
 def test_setupSignalsForRun_5(function):
-    function.deviceStat['dome'] = True
+    function.app.deviceStat['dome'] = True
     function.ui.conservativeTiming.setChecked(True)
     suc = function.setupSignalsForRun()
     assert suc

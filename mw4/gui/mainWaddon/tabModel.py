@@ -26,8 +26,8 @@ from mountcontrol.convert import convertToHMS, convertToDMS
 
 # local import
 from base.transform import J2000ToJNow
-from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from gui.mainWaddon.runBasic import RunBasic
+from gui.utilities.toolsQtWidget import sleepAndEvents, MWidget
 from logic.modeldata.modelHandling import writeRetrofitData
 
 
@@ -51,8 +51,6 @@ class Model(MWidget, RunBasic):
 
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.pauseModel.clicked.connect(self.pauseBuild)
-        self.ui.cancelModel.clicked.connect(self.cancelRun)
-        self.ui.endModel.clicked.connect(self.processDataAndFinishRun)
         self.ui.dataModel.clicked.connect(self.loadProgramModel)
         self.ui.plateSolveSync.clicked.connect(self.plateSolveSync)
         self.app.operationRunning.connect(self.setModelOperationMode)

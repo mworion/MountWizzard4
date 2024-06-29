@@ -18,6 +18,7 @@
 import queue
 import shutil
 import os
+import logging
 
 # external packages
 from mountcontrol.convert import convertToHMS, convertToDMS
@@ -31,8 +32,15 @@ from base.packageConfig import isSimulationMount
 class RunBasic:
     """
     """
+    log = logging.getLogger(__name__)
 
-    def __init__(self):
+    def __init__(self, mainW):
+        self.mainW = mainW
+        self.app = mainW.app
+        self.ui = mainW.ui
+        self.app = mainW.app
+        self.msg = mainW.app.msg
+
         self.slewQueue = queue.Queue()
         self.imageQueue = queue.Queue()
         self.solveQueue = queue.Queue()
@@ -47,6 +55,9 @@ class RunBasic:
         self.retryCounter = 0
         self.runType = ''
         self.imageDir = ''
+
+        self.ui.cancelModel.clicked.connect(self.cancelRun)
+        self.ui.endModel.clicked.connect(self.processDataAndFinishRun)
 
     def runSolveDone(self, result):
         """
@@ -212,7 +223,7 @@ class RunBasic:
 
         while self.ui.pauseModel.property('pause') or waitTime > 0:
             color = '' if waitTime % 2 else 'yellow'
-            self.changeStyleDynamic(self.ui.pauseModel, 'color', color)
+            self.mainW.changeStyleDynamic(self.ui.pauseModel, 'color', color)
             sleepAndEvents(500)
             self.app.camera.signals.message.emit(f'wait {waitTime / 2:1.1f} s')
             waitTime -= 1
@@ -356,8 +367,8 @@ class RunBasic:
 
         :return: true for test purpose
         """
-        self.changeStyleDynamic(self.ui.runModel, 'running', False)
-        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        self.mainW.changeStyleDynamic(self.ui.runModel, 'running', False)
+        self.mainW.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.ui.runModel.setEnabled(True)
         self.ui.cancelModel.setEnabled(False)
         self.ui.endModel.setEnabled(False)

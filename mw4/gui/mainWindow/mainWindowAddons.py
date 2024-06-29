@@ -41,6 +41,7 @@ from gui.mainWaddon.tabSat_Search import SatSearch
 from gui.mainWaddon.tabSat_Track import SatTrack
 from gui.mainWaddon.tabSett_Device import SettDevice
 from gui.mainWaddon.tabSett_Dome import SettDome
+from gui.mainWaddon.tabSett_Update import SettUpdate
 from gui.mainWaddon.tabSett_Misc import SettMisc
 from gui.mainWaddon.tabSett_Mount import SettMount
 from gui.mainWaddon.tabSett_ParkPos import SettParkPos
@@ -83,6 +84,7 @@ class MainWindowAddons:
             'SettDevice': SettDevice(mainW),
             'SettDome': SettDome(mainW),
             'SettMisc': SettMisc(mainW),
+            'SettUpdate': SettUpdate(mainW),
             'SettMount': SettMount(mainW),
             'SettParkPos': SettParkPos(mainW),
             'SellRelay': SettRelay(mainW),

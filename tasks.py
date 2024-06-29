@@ -81,6 +81,11 @@ client = {
         'work': 'test',
         'scp': 'mw@astro-mac-ventura.fritz.box:/Users/mw/test',
     },
+    'macSonoma': {
+        'user': 'mw@astro-mac-sonoma.fritz.box',
+        'work': 'test',
+        'scp': 'mw@astro-mac-sonoma.fritz.box:/Users/mw/test',
+    },
 }
 
 
@@ -240,11 +245,13 @@ def test_windows(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support'):
-        runMW(c, f'scp -r ./3.0/startup.pyz {scp}')
-        runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-        runMW(c, f'ssh {user} "cd {work} && python startup.pyz --no-start"')
-        runMW(c, f'ssh {user} "cd {work} && python startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
+    cmd = 'curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip'
+    cmd += ' -L -o startup_package.zip'
+    runMW(c, f'ssh {user} "cd {work} && {cmd}"')
+    runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
+    runMW(c, f'ssh {user} "cd {work} && python startup.pyz --no-start"')
+    runMW(c, f'ssh {user} "cd {work} && python startup.pyz"')
 
 
 def test_ubuntu_main(c, user, work, scp):
@@ -259,11 +266,13 @@ def test_ubuntu_main(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support'):
-        runMW(c, f'scp -r ./3.0/startup.pyz {scp}')
-        runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
-        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
+    cmd = 'curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip'
+    cmd += ' -L -o startup_package.zip'
+    runMW(c, f'ssh {user} "cd {work} && {cmd}"')
+    runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
+    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
+    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
 
 
 def test_mac(c, user, work, scp):
@@ -278,11 +287,13 @@ def test_mac(c, user, work, scp):
         printMW('...copy *.tar.gz to test dir')
         runMW(c, f'scp -r mountwizzard4.tar.gz {scp}')
 
-    with c.cd('support'):
-        runMW(c, f'scp -r ./3.0/startup.pyz {scp}')
-        runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
-        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
-        runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
+    runMW(c, f'ssh {user} "cd {work} && echo > test.run"')
+    cmd = 'curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip'
+    cmd += ' -L -o startup_package.zip'
+    runMW(c, f'ssh {user} "cd {work} && {cmd}"')
+    runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
+    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
+    runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
 
 
 @task(pre=[])
@@ -387,12 +398,22 @@ def test_macMonterey(c):
 
 @task(pre=[])
 def test_macVentura(c):
-    printMW('test Monterey install')
+    printMW('test Ventura install')
     user = client['macVentura']['user']
     work = client['macVentura']['work']
     scp = client['macVentura']['scp']
     test_mac(c, user, work, scp)
     printMW('test Ventura install finished\n')
+
+
+@task(pre=[])
+def test_macSonoma(c):
+    printMW('test Sonoma install')
+    user = client['macSonoma']['user']
+    work = client['macSonoma']['work']
+    scp = client['macSonoma']['scp']
+    test_mac(c, user, work, scp)
+    printMW('test Sonoma install finished\n')
 
 
 @task(pre=[build_resource, build_widgets])

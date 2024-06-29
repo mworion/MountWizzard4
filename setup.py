@@ -36,6 +36,7 @@ releaseNotes = """
 - change: remove embedded documentation and replace with online link
 - refactoring: environment devices (now 3 generic ones)
 - refactoring: remove installer to separate repo (InstallerMW4)
+- refactoring: optimizing code for better performance
 - improve: reduced size of app
 - improve: faster startup time
 - improve: optimizing material look & feel
@@ -50,7 +51,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a10',
+    version='4.0.0a11',
     packages=[
         'mw4',
         'mw4.base',
@@ -114,7 +115,7 @@ setup(
     ]
     + (['pywin32==306'] if platform.system() == "Windows" else [])
     + (['PySide6==6.7.2'] if platform.machine() not in ['armv7l'] else []),
-    keywords=['6.7.2'],
+    keywords=['6.7.1'],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='Michael Wuertenberger',

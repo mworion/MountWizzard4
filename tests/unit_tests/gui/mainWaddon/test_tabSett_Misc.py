@@ -15,19 +15,12 @@
 #
 ###########################################################
 # standard libraries
-import sys
 import pytest
 from unittest import mock
-import logging
-import platform
-import os
-import webbrowser
 
 # external packages
 from PySide6.QtMultimedia import QSoundEffect
 from PySide6.QtWidgets import QWidget
-import requests
-import importlib_metadata
 import hid
 
 # local import
@@ -43,6 +36,7 @@ setupLogging()
 def function(qapp):
 
     mainW = QWidget()
+    mainW.gameControllerRunning = False
     mainW.app = App()
     mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
@@ -55,13 +49,15 @@ def test_initConfig_1(function):
     function.app.config['mainW'] = {}
     with mock.patch.object(function,
                            'populateGameControllerList'):
-        suc = function.initConfig()
-        assert suc
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_sendGameControllerSignals_1(function):
@@ -77,7 +73,7 @@ def test_readGameController_1(function):
         def read(a):
             return [0] * 12
 
-    function.gameControllerRunning = True
+    function.mainW.gameControllerRunning = True
     with mock.patch.object(Gamepad,
                            'read',
                            side_effect=Exception):
@@ -91,7 +87,7 @@ def test_readGameController_2(function):
         def read(a):
             return []
 
-    function.gameControllerRunning = False
+    function.mainW.gameControllerRunning = False
     val = function.readGameController(Gamepad())
     assert len(val) == 0
 
@@ -100,10 +96,10 @@ def test_readGameController_3(function):
     class Gamepad:
         @staticmethod
         def read(a):
-            function.gameControllerRunning = False
+            function.mainW.gameControllerRunning = False
             return [0] * 12
 
-    function.gameControllerRunning = True
+    function.mainW.gameControllerRunning = True
     val = function.readGameController(Gamepad())
     assert len(val) == 12
 
@@ -112,16 +108,16 @@ def test_readGameController_4(function):
     class Gamepad:
         @staticmethod
         def read(a):
-            function.gameControllerRunning = False
+            function.mainW.gameControllerRunning = False
             return []
 
-    function.gameControllerRunning = True
+    function.mainW.gameControllerRunning = True
     val = function.readGameController(Gamepad())
     assert len(val) == 0
 
 
 def test_workerGameController_1(function):
-    function.gameControllerRunning = False
+    function.mainW.gameControllerRunning = False
     suc = function.workerGameController()
     assert not suc
 
@@ -244,7 +240,7 @@ def test_workerGameController_2(function):
         def set_nonblocking(a):
             return
 
-    function.gameControllerRunning = False
+    function.mainW.gameControllerRunning = False
     function.ui.gameControllerList.clear()
     function.ui.gameControllerList.addItem('test')
     function.ui.gameControllerList.setCurrentIndex(0)
@@ -271,10 +267,10 @@ def test_workerGameController_3(function):
             return
 
     def gc(a):
-        function.gameControllerRunning = False
+        function.mainW.gameControllerRunning = False
         return []
 
-    function.gameControllerRunning = True
+    function.mainW.gameControllerRunning = True
     temp = function.readGameController
     function.readGameController = gc
     function.ui.gameControllerList.clear()
@@ -284,7 +280,7 @@ def test_workerGameController_3(function):
     with mock.patch.object(hid,
                            'device',
                            return_value=Gamepad()):
-        with mock.patch.object(gui.mainWmixin.tabSett_Misc,
+        with mock.patch.object(gui.mainWaddon.tabSett_Misc,
                                'sleepAndEvents'):
             suc = function.workerGameController()
             assert suc
@@ -306,10 +302,10 @@ def test_workerGameController_4(function):
             return
 
     def gc(a):
-        function.gameControllerRunning = False
+        function.mainW.gameControllerRunning = False
         return [1] * 12
 
-    function.gameControllerRunning = True
+    function.mainW.gameControllerRunning = True
     temp = function.readGameController
     function.readGameController = gc
     function.ui.gameControllerList.clear()
@@ -319,7 +315,7 @@ def test_workerGameController_4(function):
     with mock.patch.object(hid,
                            'device',
                            return_value=Gamepad()):
-        with mock.patch.object(gui.mainWmixin.tabSett_Misc,
+        with mock.patch.object(gui.mainWaddon.tabSett_Misc,
                                'sleepAndEvents'):
             with mock.patch.object(function,
                                    'sendGameControllerSignals'):
@@ -329,7 +325,7 @@ def test_workerGameController_4(function):
 
 
 def test_startGameController(function):
-    with mock.patch.object(function.threadPool,
+    with mock.patch.object(function.app.threadPool,
                            'start'):
         suc = function.startGameController()
         assert suc
@@ -347,21 +343,21 @@ def test_isValidGameControllers_2(function):
 
 def test_populateGameControllerList_1(function):
     function.ui.gameControllerGroup.setChecked(False)
-    function.gameControllerRunning = True
+    function.mainW.gameControllerRunning = True
     suc = function.populateGameControllerList()
     assert not suc
 
 
 def test_populateGameControllerList_2(function):
     function.ui.gameControllerGroup.setChecked(True)
-    function.gameControllerRunning = True
+    function.mainW.gameControllerRunning = True
     suc = function.populateGameControllerList()
     assert not suc
 
 
 def test_populateGameControllerList_3(function):
     function.ui.gameControllerGroup.setChecked(True)
-    function.gameControllerRunning = False
+    function.mainW.gameControllerRunning = False
     device = [{'product_string': 'test',
                'vendor_id': 1,
                'product_id': 1}]
@@ -377,7 +373,7 @@ def test_populateGameControllerList_3(function):
 
 def test_populateGameControllerList_4(function):
     function.ui.gameControllerGroup.setChecked(True)
-    function.gameControllerRunning = False
+    function.mainW.gameControllerRunning = False
     device = [{'product_string': 'test',
                'vendor_id': 1,
                'product_id': 1}]
@@ -391,354 +387,7 @@ def test_populateGameControllerList_4(function):
                                    'startGameController'):
                 suc = function.populateGameControllerList()
                 assert suc
-                assert function.gameControllerRunning
-
-
-def test_setWeatherOnline_1(function):
-    temp = function.app.onlineWeather
-    function.app.onlineWeather = None
-    suc = function.setWeatherOnline()
-    assert not suc
-    function.app.onlineWeather = temp
-
-
-def test_setWeatherOnline_2(function):
-    suc = function.setWeatherOnline()
-    assert suc
-
-
-def test_setSeeingOnline_1(function):
-    temp = function.app.seeingWeather
-    function.app.seeingWeather = None
-    suc = function.setSeeingOnline()
-    assert not suc
-    function.app.seeingWeather = temp
-
-
-def test_setSeeingOnline_2(function):
-    suc = function.setSeeingOnline()
-    assert suc
-
-
-def test_setupIERS_1(function):
-    function.ui.isOnline.setChecked(False)
-    suc = function.setupIERS()
-    assert suc
-
-
-def test_setupIERS_2(function):
-    function.ui.isOnline.setChecked(True)
-    suc = function.setupIERS()
-    assert suc
-
-
-def test_versionPackage_1(function):
-    class Test:
-        status_code = 300
-
-        @staticmethod
-        def json():
-            return {'releases': {}}
-
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test(),
-                           side_effect=Exception()):
-        val = function.versionPackage('astropy')
-        assert val[0] is None
-        assert val[1] is None
-
-
-def test_versionPackage_2(function):
-    class Test:
-        status_code = 200
-
-        @staticmethod
-        def json():
-            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
-                                 '1.0.0b1': [{'comment_text': 'test'}]}}
-
-    function.ui.versionBeta.setChecked(False)
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test()):
-        pack, comm, ver = function.versionPackage('astropy')
-        assert pack == '1.0.0'
-        assert comm == 'test'
-        assert ver == ['1.0.0', '1.0.0b1']
-
-
-def test_versionPackage_3(function):
-    class Test:
-        status_code = 200
-
-        @staticmethod
-        def json():
-            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
-                                 '1.0.0b1': [{'comment_text': 'test'}]}}
-
-    function.ui.versionBeta.setChecked(True)
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test()):
-        pack, comm, _ = function.versionPackage('astropy')
-        assert pack == '1.0.0b1'
-        assert comm == 'test'
-
-
-def test_versionPackage_4(function):
-    class Test:
-        status_code = 200
-
-        @staticmethod
-        def json():
-            return {'releases': {'1.0.0': [{'comment_text': 'test'}],
-                                 '1.0.1': [{'comment_text': 'test'}]}}
-
-    function.ui.versionBeta.setChecked(True)
-    with mock.patch.object(requests,
-                           'get',
-                           return_value=Test()):
-        val = function.versionPackage('astropy')
-        assert val[0] is None
-        assert val[1] is None
-
-
-def test_showUpdates_1(function):
-    function.ui.isOnline.setChecked(False)
-    function.ui.versionReleaseNotes.setChecked(False)
-    with mock.patch.object(importlib_metadata,
-                           'version',
-                           return_value='0.148.8'):
-        suc = function.showUpdates()
-        assert not suc
-
-
-def test_showUpdates_2(function):
-    function.ui.isOnline.setChecked(True)
-    function.ui.versionReleaseNotes.setChecked(False)
-    with mock.patch.object(importlib_metadata,
-                           'version',
-                           return_value='0.148.8'):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=(None, None, [])):
-            suc = function.showUpdates()
-            assert not suc
-
-
-def test_showUpdates_3(function):
-    function.ui.isOnline.setChecked(True)
-    function.ui.versionReleaseNotes.setChecked(False)
-    with mock.patch.object(importlib_metadata,
-                           'version',
-                           return_value='0.148.10'):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=('0.148.9', 'test', ['1.2.3'])):
-            suc = function.showUpdates()
-            assert suc
-
-
-def test_showUpdates_4(function):
-    function.ui.isOnline.setChecked(True)
-    function.ui.versionReleaseNotes.setChecked(False)
-    with mock.patch.object(importlib_metadata,
-                           'version',
-                           return_value='0.148.8'):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=('0.148.9', 'test', ['1.2.3'])):
-            suc = function.showUpdates()
-            assert suc
-
-
-def test_showUpdates_5(function):
-    function.ui.isOnline.setChecked(True)
-    function.ui.versionReleaseNotes.setChecked(True)
-    with mock.patch.object(importlib_metadata,
-                           'version',
-                           return_value='0.148.8'):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=('0.148.9', '', ['1.2.3'])):
-            suc = function.showUpdates()
-            assert suc
-
-
-def test_showUpdates_6(function):
-    function.ui.isOnline.setChecked(True)
-    function.ui.versionReleaseNotes.setChecked(True)
-    with mock.patch.object(importlib_metadata,
-                           'version',
-                           return_value='0.148.8'):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=('0.148.9', 'test', ['1.2.3'])):
-            suc = function.showUpdates()
-            assert suc
-
-
-def test_isVenv_1(function):
-    setattr(sys, 'real_prefix', '')
-    function.isVenv()
-
-
-def test_checkNewQt5LibNeeded_0(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        suc = function.checkNewQt5LibNeeded('1.2.3')
-        assert suc
-
-
-def test_checkNewQt5LibNeeded_1(function):
-    class Test:
-        @staticmethod
-        def json():
-            return {'info': {'keywords': '5.15.4'}}
-
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(requests,
-                               'get',
-                               return_value=Test(),
-                               side_effect=Exception):
-            suc = function.checkNewQt5LibNeeded('1.2.3')
-            assert suc is None
-
-
-def test_checkNewQt5LibNeeded_2(function):
-    class Test:
-        @staticmethod
-        def json():
-            return {'info': {'keywords': '5.15.4'}}
-
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(requests,
-                               'get',
-                               return_value=Test()):
-            with mock.patch.object(importlib_metadata,
-                                   'version',
-                                   return_value='5.15.4'):
-                suc = function.checkNewQt5LibNeeded('1.2.3')
-                assert suc
-
-
-def test_checkNewQt5LibNeeded_3(function):
-    class Test:
-        @staticmethod
-        def json():
-            return {'info': {'keywords': '5.15.4'}}
-
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(requests,
-                               'get',
-                               return_value=Test()):
-            with mock.patch.object(importlib_metadata,
-                                   'version',
-                                   return_value='5.14.4'):
-                suc = function.checkNewQt5LibNeeded('1.2.3')
-                assert not suc
-
-
-def test_startUpdater_1(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        with mock.patch.object(os,
-                               'execl'):
-            with mock.patch.object(function,
-                                   'checkNewQt5LibNeeded',
-                                   return_value=None):
-                suc = function.startUpdater('1.2.3')
-                assert not suc
-
-
-def test_startUpdater_2(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        with mock.patch.object(os,
-                               'execl'):
-            with mock.patch.object(function,
-                                   'checkNewQt5LibNeeded',
-                                   return_value=True):
-                suc = function.startUpdater('1.2.3')
-                assert suc
-
-
-def test_startUpdater_3(function):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        with mock.patch.object(os,
-                               'execl'):
-            with mock.patch.object(function,
-                                   'checkNewQt5LibNeeded',
-                                   return_value=False):
-                suc = function.startUpdater('1.2.3')
-                assert suc
-
-
-def test_installVersion_1(function):
-    with mock.patch.object(function,
-                           'isVenv',
-                           return_value=False):
-        suc = function.installVersion()
-        assert not suc
-
-
-def test_installVersion_2(function):
-    function.ui.versionAvailable.setText('2.1.1')
-    with mock.patch.object(function,
-                           'isVenv',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=(None, None, ['1.2.3'])):
-            suc = function.installVersion()
-            assert not suc
-
-
-def test_installVersion_3(function):
-    function.ui.versionAvailable.setText('1.2.3')
-    with mock.patch.object(function,
-                           'isVenv',
-                           return_value=True):
-        with mock.patch.object(function,
-                               'versionPackage',
-                               return_value=(None, None, ['1.2.3'])):
-            with mock.patch.object(function,
-                                   'startUpdater'):
-                suc = function.installVersion()
-                assert suc
-
-
-def test_setLoggingLevel1(function, qtbot):
-    function.ui.loglevelDebug.setChecked(True)
-    function.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 10
-
-
-def test_setLoggingLevel2(function, qtbot):
-    function.ui.loglevelStandard.setChecked(True)
-    function.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 20
-
-
-def test_setLoggingLevel3(function, qtbot):
-    function.ui.loglevelTrace.setChecked(True)
-    function.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 5
+                assert function.mainW.gameControllerRunning
 
 
 def test_playAudioDomeSlewFinished_1(function):
@@ -800,22 +449,6 @@ def test_playSound_3(function):
                            'play'):
         suc = function.playSound('MountSlew')
         assert not suc
-
-
-def test_openPDF_1(function):
-    with mock.patch.object(webbrowser,
-                           'open',
-                           return_value=True):
-        suc = function.openPDF()
-        assert suc
-
-
-def test_openPDF_2(function):
-    with mock.patch.object(webbrowser,
-                           'open',
-                           return_value=False):
-        suc = function.openPDF()
-        assert suc
 
 
 def test_setAddProfileGUI(function):

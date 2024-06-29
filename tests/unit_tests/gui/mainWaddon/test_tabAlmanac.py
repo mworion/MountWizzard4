@@ -45,15 +45,7 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function,
-                           'showMoonPhase'):
-        with mock.patch.object(function,
-                               'showTwilightDataPlot'):
-            with mock.patch.object(function,
-                                   'showTwilightDataList'):
-                with mock.patch.object(function,
-                                       'listTwilightData'):
-                    function.initConfig()
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -75,7 +67,13 @@ def test_setColors(function):
 def test_updateColorSet(function):
     with mock.patch.object(function,
                            'showTwilightDataPlot'):
-        function.updateColorSet()
+        with mock.patch.object(function,
+                               'showTwilightDataList'):
+            with mock.patch.object(function,
+                                   'showMoonPhase'):
+                with mock.patch.object(function,
+                                       'showMoonPhase'):
+                    function.updateColorSet()
 
 
 def test_plotTwilightData_1(function):
@@ -98,12 +96,11 @@ def test_plotTwilightData_2(function):
     function.plotTwilightData(result)
 
 
-def test_displayTwilightData_1(function):
+def test_listTwilightData_1(function):
     tsNow = function.app.mount.obsSite.ts.now()
     t = [tsNow, tsNow]
     e = [1, 1]
-    suc = function.listTwilightData(t, e)
-    assert suc
+    function.listTwilightData(t, e)
 
 
 def test_calcTwilightData_1(function):
@@ -191,7 +188,7 @@ def test_generateMoonMask_4(function):
     function.generateMoonMask(q, 315)
 
 
-def test_updateMoonPhase_1(function):
+def test_showMoonPhase_1(function):
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
@@ -199,11 +196,10 @@ def test_updateMoonPhase_1(function):
     with mock.patch.object(function,
                            'calcMoonPhase',
                            return_value=val):
-        suc = function.showMoonPhase()
-        assert suc
+        function.showMoonPhase()
 
 
-def test_updateMoonPhase_2(function):
+def test_showMoonPhase_2(function):
     ts = function.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])

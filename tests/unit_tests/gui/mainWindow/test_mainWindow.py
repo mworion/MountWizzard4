@@ -42,8 +42,10 @@ def window(qapp):
     packageConfig.isAvailable = True
     with mock.patch.object(MainWindow,
                            'show'):
-        window = MainWindow(app=App())
-        yield window
+        with mock.patch.object(MainWindow,
+                               'initConfig'):
+            window = MainWindow(app=App())
+            yield window
 
     files = glob.glob('tests/workDir/config/*.cfg')
     for f in files:

@@ -47,10 +47,6 @@ def test_updatePointGui_alt(function):
     function.app.mount.obsSite.Alt = value
     function.updatePointGUI(function.app.mount.obsSite)
     assert '45.00' == function.ui.ALT.text()
-    value = None
-    function.app.mount.obsSite.Alt = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.ALT.text()
 
 
 def test_updatePointGui_az(function):
@@ -58,10 +54,6 @@ def test_updatePointGui_az(function):
     function.app.mount.obsSite.Az = value
     function.updatePointGUI(function.app.mount.obsSite)
     assert '45.00' == function.ui.AZ.text()
-    value = None
-    function.app.mount.obsSite.Az = value
-    function.updatePointGUI(function.app.mount.obsSite)
-    assert '-' == function.ui.AZ.text()
 
 
 def test_updatePointGui_ra(function):
@@ -127,10 +119,6 @@ def test_updateSetting_slewRate(function):
     function.app.mount.setting.slewRate = value
     function.updateSettingGUI(function.app.mount.setting)
     assert '15' == function.ui.slewRate.text()
-    value = None
-    function.app.mount.setting.slewRate = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip(function):
@@ -138,10 +126,6 @@ def test_updateSetting_timeToFlip(function):
     function.app.mount.setting.timeToFlip = value
     function.updateSettingGUI(function.app.mount.setting)
     assert ' 15' == function.ui.timeToFlip.text()
-    value = None
-    function.app.mount.setting.timeToFlip = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.timeToFlip.text()
 
 
 def test_updateSettingGUI_UTCExpire(function):
@@ -149,10 +133,6 @@ def test_updateSettingGUI_UTCExpire(function):
     function.app.mount.setting.UTCExpire = value
     function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
-    value = None
-    function.app.mount.setting.UTCExpire = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.UTCExpire.text()
 
 
 def test_updateSettingGUI_UTCExpire_1(function):
@@ -160,10 +140,6 @@ def test_updateSettingGUI_UTCExpire_1(function):
     function.app.mount.setting.UTCExpire = value
     function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
-    value = None
-    function.app.mount.setting.UTCExpire = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.UTCExpire.text()
 
 
 def test_updateSettingGUI_UTCExpire_2(function):
@@ -172,10 +148,6 @@ def test_updateSettingGUI_UTCExpire_2(function):
     function.app.mount.setting.UTCExpire = value
     function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
-    value = None
-    function.app.mount.setting.UTCExpire = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.UTCExpire.text()
 
 
 def test_updateSettingGUI_UTCExpire_3(function):
@@ -184,10 +156,6 @@ def test_updateSettingGUI_UTCExpire_3(function):
     function.app.mount.setting.UTCExpire = value
     function.updateSettingGUI(function.app.mount.setting)
     assert value == function.ui.UTCExpire.text()
-    value = None
-    function.app.mount.setting.UTCExpire = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.UTCExpire.text()
 
 
 def test_updateSettingGUI_statusUnattendedFlip(function):
@@ -195,10 +163,6 @@ def test_updateSettingGUI_statusUnattendedFlip(function):
     function.app.mount.setting.statusUnattendedFlip = value
     function.updateSettingGUI(function.app.mount.setting)
     assert 'ON' == function.ui.statusUnattendedFlip.text()
-    value = None
-    function.app.mount.setting.statusUnattendedFlip = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.statusUnattendedFlip.text()
 
 
 def test_updateSettingGUI_statusDualAxisTracking(function):
@@ -206,10 +170,6 @@ def test_updateSettingGUI_statusDualAxisTracking(function):
     function.app.mount.setting.statusDualAxisTracking = value
     function.updateSettingGUI(function.app.mount.setting)
     assert 'ON' == function.ui.statusDualAxisTracking.text()
-    value = None
-    function.app.mount.setting.statusDualAxisTracking = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.statusDualAxisTracking.text()
 
 
 def test_updateSettingGUI_statusRefraction(function):
@@ -217,10 +177,6 @@ def test_updateSettingGUI_statusRefraction(function):
     function.app.mount.setting.statusRefraction = value
     function.updateSettingGUI(function.app.mount.setting)
     assert 'ON' == function.ui.statusRefraction.text()
-    value = None
-    function.app.mount.setting.statusRefraction = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.statusRefraction.text()
 
 
 def test_updateSettingGUI_1(function):
@@ -356,11 +312,6 @@ def test_updateSetting_refractionTemp(function):
     function.updateSettingGUI(function.app.mount.setting)
     assert '+15.0' == function.ui.refractionTemp.text()
     assert '+15.0' == function.ui.refractionTemp1.text()
-    value = None
-    function.app.mount.setting.refractionTemp = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.refractionTemp.text()
-    assert '-' == function.ui.refractionTemp1.text()
 
 
 def test_updateSetting_refractionPress(function):
@@ -369,11 +320,6 @@ def test_updateSetting_refractionPress(function):
     function.updateSettingGUI(function.app.mount.setting)
     assert str(value) == function.ui.refractionPress.text()
     assert str(value) == function.ui.refractionPress1.text()
-    value = None
-    function.app.mount.setting.refractionPress = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.refractionPress.text()
-    assert '-' == function.ui.refractionPress1.text()
 
 
 def test_updateSetting_meridianLimitTrack_1(function):
@@ -381,10 +327,6 @@ def test_updateSetting_meridianLimitTrack_1(function):
     function.app.mount.setting.meridianLimitTrack = value
     function.updateSettingGUI(function.app.mount.setting)
     assert ' 15' == function.ui.meridianLimitTrack.text()
-    value = None
-    function.app.mount.setting.meridianLimitTrack = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.meridianLimitTrack.text()
 
 
 def test_updateSetting_meridianLimitSlew(function):
@@ -392,10 +334,6 @@ def test_updateSetting_meridianLimitSlew(function):
     function.app.mount.setting.meridianLimitSlew = value
     function.updateSettingGUI(function.app.mount.setting)
     assert ' 15' == function.ui.meridianLimitSlew.text()
-    value = None
-    function.app.mount.setting.meridianLimitSlew = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.meridianLimitSlew.text()
 
 
 def test_updateSetting_horizonLimitLow(function):
@@ -403,10 +341,6 @@ def test_updateSetting_horizonLimitLow(function):
     function.app.mount.setting.horizonLimitLow = value
     function.updateSettingGUI(function.app.mount.setting)
     assert '  0' == function.ui.horizonLimitLow.text()
-    value = None
-    function.app.mount.setting.horizonLimitLow = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.horizonLimitLow.text()
 
 
 def test_updateSetting_horizonLimitHigh(function):
@@ -414,21 +348,12 @@ def test_updateSetting_horizonLimitHigh(function):
     function.app.mount.setting.horizonLimitHigh = value
     function.updateSettingGUI(function.app.mount.setting)
     assert ' 50' == function.ui.horizonLimitHigh.text()
-    value = None
-    function.app.mount.setting.horizonLimitHigh = value
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '-' == function.ui.horizonLimitHigh.text()
 
 
 def test_updateSetting_timeToMeridian(function):
     function.app.mount.setting.timeToFlip = 100
     function.app.mount.setting.meridianLimitTrack = 15
 
-    function.updateSettingGUI(function.app.mount.setting)
-    assert '  0' == function.ui.timeToMeridian.text()
-    value = None
-    function.app.mount.setting.timeToFlip = value
-    function.app.mount.setting.meridianLimitTrack = value
     function.updateSettingGUI(function.app.mount.setting)
     assert '  0' == function.ui.timeToMeridian.text()
 

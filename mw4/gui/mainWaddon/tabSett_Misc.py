@@ -25,14 +25,9 @@ from packaging.utils import Version
 from pkg_resources import working_set
 if pConf.isAvailable:
     from PySide6.QtMultimedia import QSoundEffect
-import requests
-import importlib_metadata
-from astropy.utils import iers, data
 import hid
-import webbrowser
 
 # local import
-from base.loggerMW import setCustomLoggingLevel
 from gui.utilities.toolsQtWidget import MWidget, sleepAndEvents
 from base.tpool import Worker
 

@@ -19,9 +19,9 @@ import pytest
 from unittest import mock
 
 # external packages
+from astroquery.simbad import Simbad
 from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
-from astroquery.simbad import Simbad
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

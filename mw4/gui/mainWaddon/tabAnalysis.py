@@ -46,11 +46,6 @@ class Analysis(MWidget, RunBasic):
 
     def initConfig(self):
         """
-        initConfig read the key out of the configuration dict and stores it to the gui
-        elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
-
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.flexureAlt.setValue(config.get('flexureAlt', 45))
@@ -59,15 +54,9 @@ class Analysis(MWidget, RunBasic):
         self.ui.flexureTime.setValue(config.get('flexureTime', 30))
         self.ui.hysteresisMinAlt.setValue(config.get('hysteresisMinAlt', 45))
         self.ui.hysteresisRuns.setValue(config.get('hysteresisRuns', 1))
-        return True
 
     def storeConfig(self):
         """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
-        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['flexureAlt'] = self.ui.flexureAlt.value()
@@ -76,17 +65,16 @@ class Analysis(MWidget, RunBasic):
         config['flexureTime'] = self.ui.flexureTime.value()
         config['hysteresisMinAlt'] = self.ui.hysteresisMinAlt.value()
         config['hysteresisRuns'] = self.ui.hysteresisRuns.value()
-        return True
 
     def setupIcons(self):
+        """
+        """
         self.wIcon(self.ui.runFlexure, 'start')
         self.wIcon(self.ui.runHysteresis, 'start')
         self.wIcon(self.ui.cancelAnalysis, 'cross-circle')
 
     def setAnalysisOperationMode(self, status):
         """
-        :param status:
-        :return:
         """
         if status == 4:
             self.ui.cancelAnalysis.setEnabled(True)
@@ -102,11 +90,9 @@ class Analysis(MWidget, RunBasic):
         else:
             self.ui.analysisGroup.setEnabled(False)
             self.ui.cancelAnalysis.setEnabled(False)
-        return True
 
     def checkAnalysisConditions(self):
         """
-        :return:
         """
         if self.ui.plateSolveDevice.currentText().startswith('No device'):
             self.msg.emit(2, 'Analysis', 'Run error',
@@ -118,12 +104,10 @@ class Analysis(MWidget, RunBasic):
             self.msg.emit(2, 'Analysis', 'Run error',
                           'No valid configuration for plate solver')
             return False
-
         return True
 
     def setupFlexurePoints(self):
         """
-        :return:
         """
         alt = self.ui.flexureAlt.value()
         az = self.ui.flexureAz.value()
@@ -138,7 +122,6 @@ class Analysis(MWidget, RunBasic):
 
     def restoreAnalysisDefaultContextAndGuiStatus(self):
         """
-        :return:
         """
         self.changeStyleDynamic(self.ui.runFlexure, 'running', False)
         self.changeStyleDynamic(self.ui.runHysteresis, 'running', False)
@@ -148,26 +131,19 @@ class Analysis(MWidget, RunBasic):
 
         self.app.playSound.emit('RunFinished')
         self.app.operationRunning.emit(0)
-        return True
 
     def cancelAnalysis(self):
         """
-        :return:
         """
         self.restoreAnalysisDefaultContextAndGuiStatus()
-        return True
 
     def processAnalysisData(self):
         """
-        :return:
         """
         self.restoreAnalysisDefaultContextAndGuiStatus()
-        return True
 
     def updateAnalysisProgress(self, mPoint):
         """
-        :param mPoint:
-        :return:
         """
         number = mPoint.get('lenSequence', 0)
         count = mPoint.get('countSequence', 0)
@@ -182,7 +158,6 @@ class Analysis(MWidget, RunBasic):
 
     def runFlexure(self):
         """
-        :return:
         """
         if not self.checkAnalysisConditions():
             self.app.operationRunning.emit(0)

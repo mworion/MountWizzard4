@@ -17,8 +17,8 @@
 # standard libraries
 
 # external packages
-from PySide6.QtCore import QMutex
 from astroquery.simbad import Simbad
+from PySide6.QtCore import QMutex
 
 # local import
 from base.tpool import Worker
@@ -37,6 +37,7 @@ class BuildPoints(MWidget):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+
         self.sortRunning = QMutex()
         self.lastGenerator = 'none'
         self.sortedGenerators = {

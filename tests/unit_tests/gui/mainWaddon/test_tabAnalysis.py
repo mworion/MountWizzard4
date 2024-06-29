@@ -44,33 +44,31 @@ def function(qapp):
 
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
-    suc = function.initConfig()
-    assert suc
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
-    suc = function.storeConfig()
-    assert suc
+    function.storeConfig()
+
+
+def test_setupIcons_1(function):
+    function.setupIcons()
 
 
 def test_setAnalysisOperationMode_1(function):
-    suc = function.setAnalysisOperationMode(0)
-    assert suc
+    function.setAnalysisOperationMode(0)
 
 
 def test_setAnalysisOperationMode_2(function):
-    suc = function.setAnalysisOperationMode(4)
-    assert suc
+    function.setAnalysisOperationMode(4)
 
 
 def test_setAnalysisOperationMode_3(function):
-    suc = function.setAnalysisOperationMode(5)
-    assert suc
+    function.setAnalysisOperationMode(5)
 
 
 def test_setAnalysisOperationMode_4(function):
-    suc = function.setAnalysisOperationMode(6)
-    assert suc
+    function.setAnalysisOperationMode(6)
 
 
 def test_checkAnalysisConditions_1(function):
@@ -104,20 +102,17 @@ def test_setupFlexurePoints(function):
 
 
 def test_restoreAnalysisDefaultContextAndGuiStatus(function):
-    suc = function.restoreAnalysisDefaultContextAndGuiStatus()
-    assert suc
+    function.restoreAnalysisDefaultContextAndGuiStatus()
 
 
 def test_cancelAnalysis(function):
-    suc = function.cancelAnalysis()
-    assert suc
+    function.cancelAnalysis()
 
 
 def test_processAnalysisData(function):
     with mock.patch.object(function,
                            'restoreAnalysisDefaultContextAndGuiStatus'):
-        suc = function.processAnalysisData()
-        assert suc
+        function.processAnalysisData()
 
 
 def test_updateAnalysisProgress_1(function):

@@ -15,7 +15,6 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 import astropy
 
 # external packages

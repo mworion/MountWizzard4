@@ -679,6 +679,9 @@ class DataPoint(object):
             self.clearBuildP()
 
         lat = self.app.mount.obsSite.location.latitude.degrees
+
+        print(lat)
+
         for dec, step, start, stop in self.genHaDecParams(selection, lat):
             for ha in range(start, stop, step):
                 alt, az = HaDecToAltAz(ha / 10, dec, lat)

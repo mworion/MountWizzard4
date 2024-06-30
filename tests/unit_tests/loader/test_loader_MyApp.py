@@ -29,11 +29,12 @@ from PySide6 import QtWidgets
 from loader import MyApp
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="module")
 def qapp():
     myapp = MyApp([])
     yield myapp
     myapp.shutdown()
+    del myapp
 
 
 def test_handleButtons_1(qapp):

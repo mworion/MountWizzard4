@@ -43,6 +43,8 @@ def function():
         if item.endswith('.hpts'):
             os.remove(os.path.join(config, item))
 
+    app = App()
+    app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     func = DataPoint(app=App())
     yield func
 
@@ -144,7 +146,6 @@ def test_genHaDecParams6(function):
 
 
 def test_horizonP1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     function.genGreaterCircle('max')
     function.horizonP = function.buildP
     assert len(function.horizonP) == 129
@@ -170,7 +171,6 @@ def test_horizonP3(function):
 
 
 def test_buildP1(function):
-    function.buildP = ()
     function.genGreaterCircle('max')
     assert len(function.buildP) == 129
     function.genGreaterCircle('med')
@@ -182,19 +182,16 @@ def test_buildP1(function):
 
 
 def test_buildP2(function):
-    function.buildP = ()
     function.buildP = '456'
     assert len(function.buildP) == 0
 
 
 def test_buildP3(function):
-    function.buildP = ()
     function.buildP = [(1, 1), (1, 1), 'test']
     assert len(function.buildP) == 0
 
 
 def test_genGreaterCircle1(function):
-    function.lat = 48
     selection = 'min'
     function.genGreaterCircle(selection)
     i = 0
@@ -208,7 +205,6 @@ def test_genGreaterCircle1(function):
 
 
 def test_genGreaterCircle2(function):
-    function.lat = 48
     selection = 'norm'
     function.genGreaterCircle(selection)
     i = 0
@@ -222,7 +218,6 @@ def test_genGreaterCircle2(function):
 
 
 def test_genGreaterCircle3(function):
-    function.lat = 48
     selection = 'med'
     function.genGreaterCircle(selection)
     i = 0
@@ -236,7 +231,6 @@ def test_genGreaterCircle3(function):
 
 
 def test_genGreaterCircle4(function):
-    function.lat = 48
     selection = 'max'
     function.genGreaterCircle(selection)
     i = 0
@@ -250,7 +244,6 @@ def test_genGreaterCircle4(function):
 
 
 def test_genGreaterCircle5(function):
-    function.lat = 48
     temp = function.app.mount.obsSite.location
     function.app.mount.obsSite.location = None
     selection = 'max'
@@ -296,7 +289,6 @@ def test_checkFormat_6(function):
 
 
 def test_clearBuildP(function):
-    function.buildP = ()
     function.genGreaterCircle('max')
     assert len(function.buildP) == 129
     function.clearBuildP()
@@ -304,7 +296,7 @@ def test_clearBuildP(function):
 
 
 def test_setStatusBuildP_1(function):
-    function.buildP = ()
+    function.buildP = []
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
@@ -313,7 +305,7 @@ def test_setStatusBuildP_1(function):
 
 
 def test_setStatusBuildP_2(function):
-    function.buildP = ()
+    function.buildP = []
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
@@ -322,7 +314,7 @@ def test_setStatusBuildP_2(function):
 
 
 def test_setStatusBuildP_3(function):
-    function.buildP = ()
+    function.buildP = []
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
@@ -332,7 +324,7 @@ def test_setStatusBuildP_3(function):
 
 
 def test_setStatusBuildP_4(function):
-    function.buildP = ()
+    function.buildP = []
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
     function.addBuildP((10, 10, True))
@@ -342,7 +334,7 @@ def test_setStatusBuildP_4(function):
 
 
 def test_addBuildP1(function):
-    function.buildP = ()
+    function.buildP = []
     suc = function.addBuildP((10, 10, True))
     assert suc
     assert 1 == len(function.buildP)
@@ -355,7 +347,7 @@ def test_addBuildP1(function):
 
 
 def test_addBuildP2(function):
-    function.buildP = ()
+    function.buildP = []
     suc = function.addBuildP(10)
     assert not suc
     assert 0 == len(function.buildP)
@@ -364,7 +356,7 @@ def test_addBuildP2(function):
 
 
 def test_addBuildP3(function):
-    function.buildP = ()
+    function.buildP = []
     suc = function.addBuildP((10, 10, 10, True))
     assert not suc
     assert 0 == len(function.buildP)

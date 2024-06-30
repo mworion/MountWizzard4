@@ -30,12 +30,6 @@ from base import loggerMW
 from base.loggerMW import LoggerWriter
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global app
-    yield
-
-
 def test_loggerWriter():
     a = LoggerWriter(logging.getLogger().debug, 'Test', sys.stdout)
     a.write('asdfahdf\najdfhasf')

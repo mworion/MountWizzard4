@@ -58,9 +58,9 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/zLoader ${{env.cov}}
-          pytest tests/unit_tests/zUpdate ${{env.cov}}
-          pytest tests/unit_tests/zMainApp ${{env.cov}}
+          pytest tests/unit_tests/loader ${{env.cov}}
+          pytest tests/unit_tests/update ${{env.cov}}
+          pytest tests/unit_tests/mainApp ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c1.dat

@@ -155,6 +155,9 @@ class Update:
 
 
 class UpdateGUI:
+    """
+    """
+
     log = logging.getLogger(__name__)
 
     def __init__(self, runnable=None, version=None, x=0, y=0, colorSet=0):

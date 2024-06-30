@@ -31,7 +31,7 @@ from resource import resources
 resources.qInitResources()
 
 
-@pytest.fixture(autouse=True, scope='class')
+@pytest.fixture(autouse=True, scope='module')
 def window(qapp):
     packageConfig.isAvailable = True
     with mock.patch.object(MainWindow,
@@ -41,6 +41,7 @@ def window(qapp):
             mainW = MainWindow(App())
             window = MainWindowAddons(mainW)
             yield window
+            del window
 
 
 def test_initConfig_1(window):

@@ -875,11 +875,10 @@ def test_setRefraction_4(function):
 
 def test_updatePointGui_ra_j2000(function):
     function.ui.coordsJ2000.setChecked(True)
-    value = Angle(hours=45)
-    function.app.mount.obsSite.raJNow = value
-    value = Angle(degrees=45)
-    function.app.mount.obsSite.decJNow = value
-    function.updatePointGUI(function.app.mount.obsSite)
+    obs = ObsSite()
+    obs.raJNow = Angle(hours=45)
+    obs.decJNow = Angle(degrees=45)
+    function.updatePointGUI(obs)
 
 
 def test_setSettleTimeMount_2(function):

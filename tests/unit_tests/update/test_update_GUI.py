@@ -31,7 +31,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='class')
 def app():
     with mock.patch.object(QWidget,
                            'show'):
@@ -39,8 +39,9 @@ def app():
                                'exit'):
             with mock.patch.object(QApplication,
                                    'exec'):
-                app = UpdateGUI(runnable='python', version='1.2.3')
-                yield app
+                update = UpdateGUI(runnable='python', version='1.2.3')
+                yield update
+                update.app.shutdown()
 
 
 def test_updateGUI_1(app):

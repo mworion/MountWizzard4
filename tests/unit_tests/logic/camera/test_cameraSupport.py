@@ -21,7 +21,7 @@ import unittest.mock as mock
 
 # external packages
 from astropy.io import fits
-from skyfield.api import Angle
+from skyfield.api import Angle, wgs84
 import numpy as np
 import shutil
 
@@ -32,6 +32,7 @@ from logic.camera.cameraAscom import CameraAscom
 from logic.camera.cameraAlpaca import CameraAlpaca
 from base.driverDataClass import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from mountcontrol.obsSite import ObsSite
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -85,10 +86,12 @@ def test_writeHeaderOptical_2(function):
 
 
 def test_writeHeaderCoordSite_1(function):
+    obs = ObsSite()
     header = fits.PrimaryHDU(data=np.array([])).header
-    obs = function.app.mount.obsSite
     obs.raJNow = Angle(hours=0)
     obs.decJNow = Angle(degrees=0)
+    obs.location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10,
+                                elevation_m=500)
     function.raJ2000 = Angle(hours=0)
     function.decJ2000 = Angle(degrees=0)
     suc = function.writeHeaderCoordSite(header, obs)

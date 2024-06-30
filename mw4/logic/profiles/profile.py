@@ -234,7 +234,8 @@ def loadProfile(configDir=None, name=None):
     configData['profileName'] = name
     profile = convertProfileData40to41(configData)
     profile = convertProfileData41to42(profile)
-    resetOrder = profile['mainW'].get('resetTabOrder', False)
+    mainW = profile.get('mainW', {})
+    resetOrder = mainW.get('resetTabOrder', False)
     if resetOrder:
         log.info('Resetting tab order upon start')
         profile = checkResetTabOrder(profile)

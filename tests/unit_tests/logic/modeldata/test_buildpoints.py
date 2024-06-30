@@ -24,14 +24,13 @@ import unittest.mock as mock
 
 # external packages
 import skyfield.api
-from skyfield.api import Angle
+from skyfield.api import wgs84
 import numpy as np
 
 # local import
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.buildpoints import HaDecToAltAz
-from base import transform
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -145,18 +144,19 @@ def test_genHaDecParams6(function):
 
 
 def test_horizonP1(function):
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     function.genGreaterCircle('max')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 110
+    assert len(function.horizonP) == 129
     function.genGreaterCircle('med')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 92
+    assert len(function.horizonP) == 104
     function.genGreaterCircle('norm')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 76
+    assert len(function.horizonP) == 90
     function.genGreaterCircle('min')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 51
+    assert len(function.horizonP) == 59
 
 
 def test_horizonP2(function):
@@ -172,13 +172,13 @@ def test_horizonP3(function):
 def test_buildP1(function):
     function.buildP = ()
     function.genGreaterCircle('max')
-    assert len(function.buildP) == 110
+    assert len(function.buildP) == 129
     function.genGreaterCircle('med')
-    assert len(function.buildP) == 92
+    assert len(function.buildP) == 104
     function.genGreaterCircle('norm')
-    assert len(function.buildP) == 76
+    assert len(function.buildP) == 90
     function.genGreaterCircle('min')
-    assert len(function.buildP) == 51
+    assert len(function.buildP) == 59
 
 
 def test_buildP2(function):
@@ -204,7 +204,7 @@ def test_genGreaterCircle1(function):
         assert alt >= 0
         assert az >= 0
         assert status
-    assert i == 50
+    assert i == 58
 
 
 def test_genGreaterCircle2(function):
@@ -218,7 +218,7 @@ def test_genGreaterCircle2(function):
         assert alt >= 0
         assert az >= 0
         assert status
-    assert i == 75
+    assert i == 89
 
 
 def test_genGreaterCircle3(function):
@@ -232,7 +232,7 @@ def test_genGreaterCircle3(function):
         assert alt >= 0
         assert az >= 0
         assert status
-    assert i == 91
+    assert i == 103
 
 
 def test_genGreaterCircle4(function):
@@ -246,7 +246,7 @@ def test_genGreaterCircle4(function):
         assert alt >= 0
         assert az >= 0
         assert status
-    assert i == 109
+    assert i == 128
 
 
 def test_genGreaterCircle5(function):
@@ -298,7 +298,7 @@ def test_checkFormat_6(function):
 def test_clearBuildP(function):
     function.buildP = ()
     function.genGreaterCircle('max')
-    assert len(function.buildP) == 110
+    assert len(function.buildP) == 129
     function.clearBuildP()
     assert len(function.buildP) == 0
 
@@ -435,49 +435,49 @@ def test_addBuildP11(function):
 def test_delBuildP1(function):
     function.buildP = []
     function.genGreaterCircle('max')
-    assert len(function.buildP) == 108
+    assert len(function.buildP) == 127
     suc = function.delBuildP(5)
     assert suc
-    assert len(function.buildP) == 107
+    assert len(function.buildP) == 126
     suc = function.delBuildP(0)
     assert suc
-    assert len(function.buildP) == 106
+    assert len(function.buildP) == 125
     suc = function.delBuildP(99)
     assert suc
-    assert len(function.buildP) == 105
+    assert len(function.buildP) == 124
 
 
 def test_delBuildP2(function):
     function.buildP = []
     function.genGreaterCircle('max')
-    assert len(function.buildP) == 108
+    assert len(function.buildP) == 127
     suc = function.delBuildP(-5)
     assert not suc
-    assert len(function.buildP) == 108
+    assert len(function.buildP) == 127
 
 
 def test_delBuildP3(function):
     function.buildP = []
     function.genGreaterCircle('max')
-    assert len(function.buildP) == 108
+    assert len(function.buildP) == 127
     suc = function.delBuildP(170)
     assert not suc
-    assert len(function.buildP) == 108
+    assert len(function.buildP) == 127
 
 
 def test_delBuildP4(function):
     function.buildP = []
     function.genGreaterCircle('max')
-    assert len(function.buildP) == 108
+    assert len(function.buildP) == 127
     suc = function.delBuildP('1')
     assert not suc
-    assert len(function.buildP) == 108
+    assert len(function.buildP) == 127
 
 
 def test_clearHorizonP(function):
     function.genGreaterCircle('max')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 108
+    assert len(function.horizonP) == 127
     function.clearHorizonP()
     assert len(function.horizonP) == 0
 
@@ -650,22 +650,22 @@ def test_addHorizonP8(function):
 def test_delHorizonP1(function):
     function.genGreaterCircle('max')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 108
+    assert len(function.horizonP) == 127
     suc = function.delHorizonP(5)
     assert suc
-    assert len(function.horizonP) == 107
+    assert len(function.horizonP) == 126
     suc = function.delHorizonP(1)
     assert suc
-    assert len(function.horizonP) == 106
+    assert len(function.horizonP) == 125
     suc = function.delHorizonP(10)
     assert suc
-    assert len(function.horizonP) == 105
+    assert len(function.horizonP) == 124
 
 
 def test_delHorizonP2(function):
     function.genGreaterCircle('max')
     function.horizonP = function.buildP
-    assert len(function.horizonP) == 108
+    assert len(function.horizonP) == 127
 
     suc = function.delHorizonP(-5)
     assert not suc

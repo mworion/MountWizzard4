@@ -16,8 +16,6 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import glob
-import os
 
 # external packages
 import pytest
@@ -31,20 +29,11 @@ from PySide6 import QtWidgets
 from loader import MyApp
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="class")
 def qapp():
-    a = MyApp([])
-    yield a
-    del a
-
-
-@pytest.fixture(autouse=True, scope="function")
-def setup_teardown(qapp):
-    files = glob.glob('tests/workDir/config/*.cfg')
-    for f in files:
-        os.remove(f)
-
-    yield qapp
+    myapp = MyApp([])
+    yield myapp
+    myapp.shutdown()
 
 
 def test_handleButtons_1(qapp):

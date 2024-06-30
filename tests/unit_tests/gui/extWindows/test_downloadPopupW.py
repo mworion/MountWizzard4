@@ -17,6 +17,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import astropy
 import os
 import shutil
 import builtins

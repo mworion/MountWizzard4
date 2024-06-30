@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 
 # external packages
 from skyfield.api import wgs84, Star, Angle

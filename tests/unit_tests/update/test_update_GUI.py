@@ -18,6 +18,7 @@
 import unittest.mock as mock
 import sys
 import pytest
+import astropy
 import platform
 
 # external packages
@@ -30,7 +31,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def app():
     with mock.patch.object(QWidget,
                            'show'):

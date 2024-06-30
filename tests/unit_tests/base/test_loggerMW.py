@@ -19,6 +19,7 @@ import sys
 import os
 
 import pytest
+import astropy
 import logging
 from unittest import mock
 

@@ -17,6 +17,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import astropy
 import glob
 import json
 import shutil

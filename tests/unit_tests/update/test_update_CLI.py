@@ -18,6 +18,7 @@
 import time
 import unittest.mock as mock
 import pytest
+import astropy
 
 # external packages
 

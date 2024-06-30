@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 import unittest.mock as mock
 import json
 import os

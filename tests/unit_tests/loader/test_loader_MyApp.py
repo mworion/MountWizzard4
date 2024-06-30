@@ -21,6 +21,7 @@ import os
 
 # external packages
 import pytest
+import astropy
 import PySide6
 from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent
@@ -30,9 +31,11 @@ from PySide6 import QtWidgets
 from loader import MyApp
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def qapp():
-    yield MyApp([])
+    a = MyApp([])
+    yield a
+    del a
 
 
 @pytest.fixture(autouse=True, scope="function")

@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 import unittest.mock as mock
 
 # external packages
@@ -332,9 +333,9 @@ def test_authPopup_1(function):
     function.user = 'test'
     function.password = 'test'
     with mock.patch.object(function,
-                           'stopVideo'):
+                           'checkAuth'):
         with mock.patch.object(function,
-                               'stopVideo'):
+                               'restartVideo'):
             with mock.patch.object(QInputDialog,
                                    'getText',
                                    return_value=('test', False)):
@@ -348,9 +349,9 @@ def test_authPopup_2(function):
     function.user = 'test'
     function.password = 'test'
     with mock.patch.object(function,
-                           'stopVideo'):
+                           'checkAuth'):
         with mock.patch.object(function,
-                               'stopVideo'):
+                               'restartVideo'):
             with mock.patch.object(QInputDialog,
                                    'getText',
                                    return_value=('test1', True)):

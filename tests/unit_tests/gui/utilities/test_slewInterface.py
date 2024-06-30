@@ -17,6 +17,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import astropy
 
 # external packages
 from skyfield.api import Angle
@@ -26,7 +27,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.slewInterface import SlewInterface
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     func = SlewInterface()
@@ -115,8 +116,11 @@ def test_slewTargetRaDec_0(function):
     temp = function.app.mount.obsSite.timeJD
     function.app.mount.obsSite.timeJD = None
 
-    suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
-    assert not suc
+    with mock.patch.object(function.app.mount.obsSite,
+                           'setTargetRaDec',
+                           return_value=False):
+        suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
+        assert not suc
     function.app.mount.obsSite.timeJD = temp
 
 

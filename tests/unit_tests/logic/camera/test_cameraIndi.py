@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 import unittest.mock as mock
 import zlib
 # external packages
@@ -248,12 +249,13 @@ def test_updateNumber_5(function):
 
 def test_updateHeaderInfo_1(function):
     header = {}
-    function.app.mount.obsSite.raJNow = None
+    timeJD = function.app.mount.obsSite.timeJD
     function.app.mount.obsSite.decJNow = None
     function.app.mount.obsSite.timeJD = None
     h = function.updateHeaderInfo(header)
     assert 'RA' not in h
     assert 'DEC' not in h
+    function.app.mount.obsSite.timeJD = timeJD
 
 
 def test_updateHeaderInfo_2(function):
@@ -261,12 +263,14 @@ def test_updateHeaderInfo_2(function):
               'DEC': 90}
     function.raJ2000 = Angle(hours=12)
     function.decJ2000 = Angle(degrees=90)
+    timeJD = function.app.mount.obsSite.timeJD
     function.app.mount.obsSite.raJNow = None
     function.app.mount.obsSite.decJNow = None
     function.app.mount.obsSite.timeJD = None
     h = function.updateHeaderInfo(header)
     assert 'RA' in h
     assert 'DEC' in h
+    function.app.mount.obsSite.timeJD = timeJD
 
 
 def test_updateHeaderInfo_3(function):

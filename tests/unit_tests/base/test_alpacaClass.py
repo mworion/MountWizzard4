@@ -20,6 +20,7 @@ from unittest import mock
 # external packages
 import PySide6
 import pytest
+import astropy
 from PySide6.QtCore import QThreadPool, QTimer
 import requests
 

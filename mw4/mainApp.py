@@ -320,8 +320,8 @@ class MountWizzard4(QObject):
             self.mount.cycleSetting()
             self.mount.getFW()
             self.mount.getLocation()
-            self.mainW.mainWindowAddons.addons['ManageModel'].refreshName()
-            self.mainW.mainWindowAddons.addons['ManageModel'].refreshModel()
+            self.refreshName.emit()
+            self.refreshModel.emit()
             self.mountUp = True
             self.mount.getTLE()
             return True

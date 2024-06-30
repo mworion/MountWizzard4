@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 from unittest import mock
 from PySide6.QtWidgets import QInputDialog, QWidget
 

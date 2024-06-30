@@ -18,6 +18,7 @@
 from unittest import mock
 import platform
 import pytest
+import astropy
 
 if not platform.system() == 'Windows':
     pytest.skip("skipping windows-only tests", allow_module_level=True)

@@ -17,6 +17,7 @@
 # standard libraries
 from unittest import mock
 import pytest
+import astropy
 import os
 import numpy as np
 import shutil

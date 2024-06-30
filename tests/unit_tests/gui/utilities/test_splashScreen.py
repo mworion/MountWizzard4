@@ -20,6 +20,7 @@
 from PySide6.QtWidgets import QWidget
 from PySide6.QtGui import QPainter, QPixmap
 import pytest
+import astropy
 import unittest.mock as mock
 
 # local import

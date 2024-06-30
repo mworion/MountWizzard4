@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 from unittest import mock
 
 # external packages
@@ -274,7 +275,7 @@ def test_genBuildDSO_2(function):
 def test_genBuildDSO_3(function):
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
-    function.app.mount.obsSite.timeSidereal = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
     with mock.patch.object(function.app.data,
@@ -287,7 +288,7 @@ def test_genBuildDSO_3(function):
 def test_genBuildDSO_4(function):
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
-    function.app.mount.obsSite.timeSidereal = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
     with mock.patch.object(function.app.data,

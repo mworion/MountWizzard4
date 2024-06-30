@@ -21,6 +21,7 @@ import time
 import os
 import glob
 import pytest
+import astropy
 
 # external packages
 import PySide6

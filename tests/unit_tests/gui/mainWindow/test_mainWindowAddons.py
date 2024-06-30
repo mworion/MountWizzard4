@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 import unittest.mock as mock
 
 # external packages
@@ -30,7 +31,7 @@ from resource import resources
 resources.qInitResources()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='class')
 def window(qapp):
     packageConfig.isAvailable = True
     with mock.patch.object(MainWindow,

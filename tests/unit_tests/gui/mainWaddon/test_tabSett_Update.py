@@ -17,6 +17,7 @@
 # standard libraries
 import sys
 import pytest
+import astropy
 from unittest import mock
 import logging
 import platform

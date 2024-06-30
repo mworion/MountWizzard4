@@ -27,6 +27,7 @@ import ctypes
 
 # external packages
 import pytest
+import astropy
 
 # local import
 import loader

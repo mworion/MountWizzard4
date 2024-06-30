@@ -18,6 +18,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import astropy
 import os
 
 # external packages

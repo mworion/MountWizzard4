@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 
 # external packages
 from PySide6.Qt3DCore import Qt3DCore

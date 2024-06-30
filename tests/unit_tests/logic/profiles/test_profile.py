@@ -18,6 +18,7 @@
 import os
 import json
 import pytest
+import astropy
 import glob
 import unittest.mock as mock
 

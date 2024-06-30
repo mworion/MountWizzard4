@@ -267,7 +267,7 @@ class SettDevice(MWidget):
             dropDown.addItem('device disabled')
 
         for driver in self.driversData:
-            frameworks = self.driversData[driver]['frameworks']
+            frameworks = self.driversData[driver].get('frameworks')
 
             if driver not in self.drivers:
                 self.log.critical(f'Missing driver: [{driver}]')

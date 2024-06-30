@@ -21,6 +21,7 @@ from unittest import mock
 import PySide6
 from PySide6.QtCore import QTimer
 import pytest
+import astropy
 import requests
 
 # local import

@@ -19,6 +19,7 @@ from unittest import mock
 
 # external packages
 import pytest
+import astropy
 import requests
 import PySide6
 from PySide6.QtCore import QTimer

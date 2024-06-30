@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import astropy
 from unittest import mock
 
 # external packages
@@ -30,7 +31,7 @@ from logic.satellites.satellite_calculations import checkTwilight, calcSatSunPha
 from logic.satellites.satellite_calculations import findRangeRate, calcAppMag
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def function():
     yield App()
 

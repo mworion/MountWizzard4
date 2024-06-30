@@ -17,7 +17,6 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
-import logging
 import shutil
 
 # external packages
@@ -60,7 +59,6 @@ def app(qapp):
                 with mock.patch.object(AstroObjects,
                                        'loadSourceUrl'):
                     app = MountWizzard4(mwGlob=mwGlob, application=qapp)
-                    app.log = logging.getLogger()
                     app.update1s = Test()
                     yield app
 
@@ -210,14 +208,10 @@ def test_loadMountData_1(app):
                                'getFW'):
             with mock.patch.object(app.mount,
                                    'getLocation'):
-                with mock.patch.object(app.mainW.mainWindowAddons.addons['ManageModel'],
-                                       'refreshName'):
-                    with mock.patch.object(app.mainW.mainWindowAddons.addons['ManageModel'],
-                                           'refreshModel'):
-                        with mock.patch.object(app.mount,
-                                               'getTLE'):
-                            suc = app.loadMountData(True)
-                            assert suc
+                with mock.patch.object(app.mount,
+                                       'getTLE'):
+                    suc = app.loadMountData(True)
+                    assert suc
 
 
 def test_loadMountData_2(app):
@@ -228,13 +222,10 @@ def test_loadMountData_2(app):
 
 def test_loadMountData_3(app):
     app.mountUp = True
-    with mock.patch.object(app.mainW.mainWindowAddons.addons['Almanac'],
-                           'calcTwilightData',
-                           return_value=([], [])):
-        with mock.patch.object(app.mount,
-                               'resetData'):
-            suc = app.loadMountData(False)
-            assert not suc
+    with mock.patch.object(app.mount,
+                           'resetData'):
+        suc = app.loadMountData(False)
+        assert not suc
 
 
 def test_loadMountData_4(app):

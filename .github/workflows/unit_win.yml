@@ -61,6 +61,7 @@ jobs:
           pytest tests/unit_tests/loader ${{env.cov}}
           pytest tests/unit_tests/update ${{env.cov}}
           pytest tests/unit_tests/mainApp ${{env.cov}}
+          pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
           
       - name: rename_coveragefile
         run: mv .coverage c1.dat
@@ -108,7 +109,6 @@ jobs:
   
       - name: running_unit_tests
         run: |
-          pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
           pytest tests/unit_tests/gui/extWindows ${{env.cov}}
           pytest tests/unit_tests/gui/utilities ${{env.cov}}
           pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}

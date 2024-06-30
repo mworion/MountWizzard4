@@ -36,9 +36,9 @@ def function(qapp):
     mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-
     window = SettDevice(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_setDefaultData(function):

@@ -44,6 +44,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = SettMisc(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_initConfig_1(function):

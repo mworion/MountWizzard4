@@ -39,6 +39,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = BuildPoints(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_initConfig_1(function):

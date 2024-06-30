@@ -46,6 +46,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = RunBasic(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_runSolveDone_0(function):

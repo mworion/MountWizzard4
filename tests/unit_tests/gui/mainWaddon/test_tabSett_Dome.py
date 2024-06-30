@@ -40,6 +40,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = SettDome(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_tab1(function):

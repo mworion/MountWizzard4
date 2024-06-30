@@ -37,9 +37,9 @@ def function(qapp):
     mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-
     window = ImageStats(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_updateImageStats_1(function):

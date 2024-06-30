@@ -46,9 +46,9 @@ def function(qapp):
     mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-
     window = Model(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_initConfig_1(function):

@@ -45,6 +45,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     window = EnvironSeeing(mainW)
     yield window
+    mainW.threadPool.waitForDone(5000)
 
 
 def test_addSkyfieldTimeObject(function):

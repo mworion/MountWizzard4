@@ -138,11 +138,11 @@ class MountMove(MWidget, SlewInterface):
         """
         for direction in self.setupMoveClassic:
             self.setupMoveClassic[direction]['button'].clicked.connect(
-                partial(self.moveClassicUI, direction))
+                partial(self.moveClassic, direction))
 
         for direction in self.setupMoveAltAz:
             self.setupMoveAltAz[direction]['button'].clicked.connect(
-                partial(self.moveAltAzUI, direction))
+                partial(self.moveAltAz, direction))
 
         for speed in self.slewSpeeds:
             self.slewSpeeds[speed]['button'].clicked.connect(
@@ -160,17 +160,25 @@ class MountMove(MWidget, SlewInterface):
                 self.setupMoveClassic[uiR]['button'], 'running', False)
         self.app.mount.obsSite.stopMoveAll()
 
+    def countDuration(self, duration):
+        """
+        """
+        for t in range(duration * 10, -1, -1):
+            self.ui.stopMoveAll.setText(f'{t/10:.1f}s')
+            sleepAndEvents(100)
+        self.ui.stopMoveAll.setText('STOP')
+
     def moveDuration(self):
         """
         """
         if self.ui.moveDuration.currentIndex() == 1:
-            sleepAndEvents(10000)
+            self.countDuration(10)
         elif self.ui.moveDuration.currentIndex() == 2:
-            sleepAndEvents(5000)
+            self.countDuration(5)
         elif self.ui.moveDuration.currentIndex() == 3:
-            sleepAndEvents(2000)
+            self.countDuration(2)
         elif self.ui.moveDuration.currentIndex() == 4:
-            sleepAndEvents(1000)
+            self.countDuration(1)
         else:
             return False
         self.stopMoveAll()
@@ -195,15 +203,6 @@ class MountMove(MWidget, SlewInterface):
             self.stopMoveAll()
         else:
             self.moveClassic(direction)
-
-    def moveClassicUI(self, direction):
-        """
-        """
-        if not self.app.deviceStat.get('mount'):
-            return False
-
-        self.moveClassic(direction)
-        return True
 
     def moveClassic(self, direction):
         """
@@ -248,25 +247,17 @@ class MountMove(MWidget, SlewInterface):
             self.changeStyleDynamic(self.setupMoveAltAz[key]['button'], 'running', False)
         return True
 
-    def moveAltAzUI(self, direction):
-        """
-        """
-        if not self.app.deviceStat.get('mount'):
-            return
-
-        self.moveAltAz(self.setupMoveAltAz[direction]['coord'])
-
     def moveAltAzGameController(self, value):
         """
         """
         if value == 0b00000000:
-            direction = [1, 0]
+            direction = 'N'
         elif value == 0b00000010:
-            direction = [0, 1]
+            direction = 'E'
         elif value == 0b00000100:
-            direction = [-1, 0]
+            direction = 'W'
         elif value == 0b00000110:
-            direction = [0, -1]
+            direction = 'S'
         else:
             return False
         self.moveAltAz(direction)

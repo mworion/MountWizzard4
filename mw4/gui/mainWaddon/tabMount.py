@@ -38,6 +38,13 @@ class Mount(MWidget):
         self.app.gameABXY.connect(self.stopGameController)
         self.app.gameABXY.connect(self.changeTrackingGameController)
         self.app.gameABXY.connect(self.flipMountGameController)
+        self.ui.flipMount.clicked.connect(self.flipMount)
+        self.ui.tracking.clicked.connect(self.changeTracking)
+        self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
+        self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
+        self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
+        self.ui.park.clicked.connect(self.changePark)
+        self.ui.stop.clicked.connect(self.stop)
 
     def initConfig(self):
         """

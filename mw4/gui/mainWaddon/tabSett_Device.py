@@ -514,7 +514,7 @@ class SettDevice(MWidget):
                 self.startDriver(driver=driver, autoStart=True)
         return True
 
-    def dispatchDriverDropdown(self, driver):
+    def dispatchDriverDropdown(self, driver, position):
         """
         dispatchDriverDropdown maps the gui event received from signals to the
         methods doing the real stuff. this splits function and gui reaction into
@@ -523,7 +523,7 @@ class SettDevice(MWidget):
         configured and started.
         """
         dropDownEntry = self.drivers[driver]['uiDropDown'].currentText()
-        isDisabled = dropDownEntry == 'device disabled'
+        isDisabled = position == 0
 
         if isDisabled:
             framework = ''

@@ -69,10 +69,16 @@ def test_stopMoveAll(function):
         function.stopMoveAll()
 
 
-def test_moveDuration_1(function):
-    function.ui.moveDuration.setCurrentIndex(1)
+def test_countDuration_1(function):
     with mock.patch.object(gui.mainWaddon.tabMountMove,
                            'sleepAndEvents'):
+        function.countDuration(10)
+
+
+def test_moveDuration_1(function):
+    function.ui.moveDuration.setCurrentIndex(1)
+    with mock.patch.object(function,
+                           'countDuration'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -81,8 +87,8 @@ def test_moveDuration_1(function):
 
 def test_moveDuration_2(function):
     function.ui.moveDuration.setCurrentIndex(2)
-    with mock.patch.object(gui.mainWaddon.tabMountMove,
-                           'sleepAndEvents'):
+    with mock.patch.object(function,
+                           'countDuration'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -91,8 +97,8 @@ def test_moveDuration_2(function):
 
 def test_moveDuration_3(function):
     function.ui.moveDuration.setCurrentIndex(3)
-    with mock.patch.object(gui.mainWaddon.tabMountMove,
-                           'sleepAndEvents'):
+    with mock.patch.object(function,
+                           'countDuration'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -101,8 +107,8 @@ def test_moveDuration_3(function):
 
 def test_moveDuration_4(function):
     function.ui.moveDuration.setCurrentIndex(4)
-    with mock.patch.object(gui.mainWaddon.tabMountMove,
-                           'sleepAndEvents'):
+    with mock.patch.object(function,
+                           'countDuration'):
         with mock.patch.object(function,
                                'stopMoveAll'):
             suc = function.moveDuration()
@@ -111,8 +117,8 @@ def test_moveDuration_4(function):
 
 def test_moveDuration_5(function):
     function.ui.moveDuration.setCurrentIndex(0)
-    with mock.patch.object(gui.mainWaddon.tabMountMove,
-                           'sleepAndEvents'):
+    with mock.patch.object(function,
+                           'countDuration'):
         suc = function.moveDuration()
         assert not suc
 
@@ -133,18 +139,6 @@ def test_moveClassicGameController_3(function):
     with mock.patch.object(function,
                            'moveClassic'):
         function.moveClassicGameController(255, 255)
-
-
-def test_moveClassicUI_1(function):
-    function.app.deviceStat['mount'] = False
-    suc = function.moveClassicUI('NE')
-    assert not suc
-
-
-def test_moveClassicUI_2(function):
-    function.app.deviceStat['mount'] = True
-    suc = function.moveClassicUI('NE')
-    assert suc
 
 
 def test_moveClassic_1(function):
@@ -172,20 +166,6 @@ def test_setSlewSpeed_1(function):
 def test_moveAltAzDefault(function):
     suc = function.moveAltAzDefault()
     assert suc
-
-
-def test_moveAltAzUI_1(function):
-    function.app.deviceStat['mount'] = False
-    with mock.patch.object(function,
-                           'moveAltAz'):
-        function.moveAltAzUI('NE')
-
-
-def test_moveAltAzUI_2(function):
-    function.app.deviceStat['mount'] = True
-    with mock.patch.object(function,
-                           'moveAltAz'):
-        function.moveAltAzUI('NE')
 
 
 def test_moveAltAzGameController_1(function):

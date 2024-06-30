@@ -43,6 +43,7 @@ def window(qapp):
             window.addons = {'ManageModel': window.addons['ManageModel'],
                              }
             yield window
+            del window.mainW
             del window
 
 

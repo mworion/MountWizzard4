@@ -567,7 +567,7 @@ def test_dispatchDriverDropdown_1(function):
                            'stopDriver'):
         with mock.patch.object(function,
                                'startDriver'):
-            function.dispatchDriverDropdown('telescope')
+            function.dispatchDriverDropdown('telescope', 1)
 
 
 def test_dispatchDriverDropdown_2(function):
@@ -581,7 +581,7 @@ def test_dispatchDriverDropdown_2(function):
                            'stopDriver'):
         with mock.patch.object(function,
                                'startDriver'):
-            function.dispatchDriverDropdown('dome')
+            function.dispatchDriverDropdown('dome', 0)
 
 
 def test_scanValid_1(function):

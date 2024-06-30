@@ -101,7 +101,6 @@ class MainWindow(MWidget):
         self.app.update1s.connect(self.smartTabGui)
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
-        self.initConfig()
 
     def initConfig(self) -> None:
         """

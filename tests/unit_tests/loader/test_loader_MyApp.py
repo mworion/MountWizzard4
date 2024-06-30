@@ -130,7 +130,7 @@ def test_notify_1(qapp):
 def test_notify_2(qapp):
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.Type.MouseButtonPress)
-    with mock.patch.object(PySide6.QtWidgets.QApplication,
+    with mock.patch.object(MyApp,
                            'notify',
                            return_value=True,
                            side_effect=Exception()):
@@ -146,7 +146,7 @@ def test_notify_3(qapp):
                         Qt.MouseButton.NoButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(PySide6.QtWidgets.QApplication,
+    with mock.patch.object(MyApp,
                            'notify',
                            return_value=True):
         suc = qapp.notify(obj=ui, event=event)
@@ -161,7 +161,7 @@ def test_notify_4(qapp):
                         Qt.MouseButton.LeftButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(PySide6.QtWidgets.QApplication,
+    with mock.patch.object(MyApp,
                            'notify',
                            return_value=True):
         with mock.patch.object(qapp,
@@ -179,7 +179,7 @@ def test_notify_5(qapp):
                         Qt.MouseButton.LeftButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(PySide6.QtWidgets.QApplication,
+    with mock.patch.object(MyApp,
                            'notify',
                            return_value=True):
         with mock.patch.object(qapp,

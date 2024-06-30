@@ -22,7 +22,7 @@ import astropy
 import platform
 
 # external packages
-from PySide6.QtWidgets import QApplication, QWidget
+from PySide6.QtWidgets import QWidget
 
 # local import
 from mw4.update import UpdateGUI, Update
@@ -31,17 +31,18 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='class')
+@pytest.fixture(autouse=True, scope='module')
 def app():
     with mock.patch.object(QWidget,
                            'show'):
         with mock.patch.object(sys,
                                'exit'):
-            with mock.patch.object(QApplication,
+            update = UpdateGUI(runnable='python', version='1.2.3')
+            with mock.patch.object(update.app,
                                    'exec'):
-                update = UpdateGUI(runnable='python', version='1.2.3')
                 yield update
                 update.app.shutdown()
+                del update.app
 
 
 def test_updateGUI_1(app):

@@ -40,21 +40,31 @@ def window(qapp):
                                'loadSourceUrl'):
             mainW = MainWindow(App())
             window = MainWindowAddons(mainW)
+            window.addons = {'ManageModel': window.addons['ManageModel'],
+                             }
             yield window
             del window
 
 
 def test_initConfig_1(window):
-    window.initConfig()
+    with mock.patch.object(window.addons['ManageModel'],
+                           'initConfig'):
+        window.initConfig()
 
 
 def test_storeConfig_1(window):
-    window.storeConfig()
+    with mock.patch.object(window.addons['ManageModel'],
+                           'storeConfig'):
+        window.storeConfig()
 
 
 def test_setupIcons_1(window):
-    window.setupIcons()
+    with mock.patch.object(window.addons['ManageModel'],
+                           'setupIcons'):
+        window.setupIcons()
 
 
 def test_updateColorSet_1(window):
-    window.updateColorSet()
+    with mock.patch.object(window.addons['ManageModel'],
+                           'updateColorSet'):
+        window.updateColorSet()

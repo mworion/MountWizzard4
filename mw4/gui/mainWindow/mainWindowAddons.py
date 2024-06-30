@@ -55,7 +55,6 @@ class MainWindowAddons:
     __all__ = ['MainWindowAddons']
 
     def __init__(self, mainW):
-        super().__init__()
         self.mainW = mainW
         self.app = mainW.app
 

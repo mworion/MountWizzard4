@@ -188,6 +188,7 @@ class MountWizzard4(QObject):
         self.timer0_1s.setSingleShot(False)
         self.timer0_1s.timeout.connect(self.sendCyclic)
         self.timer0_1s.start(100)
+        self.mainW.initConfig()
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 

@@ -81,20 +81,16 @@ def test_tab9(function):
 def test_initConfig_1(function):
     function.app.config['mainW'] = {}
     with mock.patch.object(function,
-                           'setupIconsDome'):
-        with mock.patch.object(function,
-                               'setUseGeometry'):
-            suc = function.initConfig()
-            assert suc
+                           'setUseGeometry'):
+        suc = function.initConfig()
+        assert suc
 
 
 def test_initConfig_2(function):
     with mock.patch.object(function,
-                           'setupIconsDome'):
-        with mock.patch.object(function,
-                               'setUseGeometry'):
-            suc = function.initConfig()
-            assert suc
+                           'setUseGeometry'):
+        suc = function.initConfig()
+        assert suc
 
 
 def test_storeConfig_1(function):
@@ -102,15 +98,15 @@ def test_storeConfig_1(function):
     assert suc
 
 
-def test_setupIconsDome_1(function):
+def test_setupIcons_1(function):
     function.ui.use10micronDef.setChecked(True)
-    suc = function.setupIconsDome()
+    suc = function.setupIcons()
     assert suc
 
 
-def test_setupIconsDome_2(function):
+def test_setupIcons_2(function):
     function.ui.use10micronDef.setChecked(False)
-    suc = function.setupIconsDome()
+    suc = function.setupIcons()
     assert suc
 
 

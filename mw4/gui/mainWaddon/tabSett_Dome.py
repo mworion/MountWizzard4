@@ -57,7 +57,7 @@ class SettDome(MWidget):
         self.ui.domeOpeningHysteresis.valueChanged.connect(self.tab8)
         self.ui.domeClearanceZenith.valueChanged.connect(self.tab9)
         self.ui.use10micronDef.clicked.connect(self.switchGeometryDefinition)
-        self.ui.use10micronDef.clicked.connect(self.setupIconsDome)
+        self.ui.use10micronDef.clicked.connect(self.setupIcons)
 
     def tab1(self):
         self.ui.tabDomeExplain.setCurrentIndex(0)
@@ -111,7 +111,6 @@ class SettDome(MWidget):
         self.ui.automaticDome.setChecked(config.get('automaticDome', False))
         self.ui.useDynamicFollowing.setChecked(config.get('useDynamicFollowing', False))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
-        self.setupIconsDome()
         self.setUseGeometry()
         return True
 
@@ -141,7 +140,7 @@ class SettDome(MWidget):
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
         return True
 
-    def setupIconsDome(self):
+    def setupIcons(self):
         """
         :return:
         """

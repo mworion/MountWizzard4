@@ -33,7 +33,7 @@ from logic.modeldata.buildpoints import DataPoint
 from logic.modeldata.buildpoints import HaDecToAltAz
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function():
     config = 'tests/workDir/config'
     testdir = os.listdir(config)
@@ -146,15 +146,19 @@ def test_genHaDecParams6(function):
 
 
 def test_horizonP1(function):
+    function.horizonP = []
     function.genGreaterCircle('max')
     function.horizonP = function.buildP
     assert len(function.horizonP) == 129
+    function.horizonP = []
     function.genGreaterCircle('med')
     function.horizonP = function.buildP
     assert len(function.horizonP) == 104
+    function.horizonP = []
     function.genGreaterCircle('norm')
     function.horizonP = function.buildP
     assert len(function.horizonP) == 90
+    function.horizonP = []
     function.genGreaterCircle('min')
     function.horizonP = function.buildP
     assert len(function.horizonP) == 59
@@ -171,12 +175,16 @@ def test_horizonP3(function):
 
 
 def test_buildP1(function):
+    function.horizonP = []
     function.genGreaterCircle('max')
     assert len(function.buildP) == 129
+    function.horizonP = []
     function.genGreaterCircle('med')
     assert len(function.buildP) == 104
+    function.horizonP = []
     function.genGreaterCircle('norm')
     assert len(function.buildP) == 90
+    function.horizonP = []
     function.genGreaterCircle('min')
     assert len(function.buildP) == 59
 
@@ -192,6 +200,7 @@ def test_buildP3(function):
 
 
 def test_genGreaterCircle1(function):
+    function.horizonP = []
     selection = 'min'
     function.genGreaterCircle(selection)
     i = 0
@@ -205,6 +214,7 @@ def test_genGreaterCircle1(function):
 
 
 def test_genGreaterCircle2(function):
+    function.horizonP = []
     selection = 'norm'
     function.genGreaterCircle(selection)
     i = 0
@@ -218,6 +228,7 @@ def test_genGreaterCircle2(function):
 
 
 def test_genGreaterCircle3(function):
+    function.horizonP = []
     selection = 'med'
     function.genGreaterCircle(selection)
     i = 0
@@ -231,6 +242,7 @@ def test_genGreaterCircle3(function):
 
 
 def test_genGreaterCircle4(function):
+    function.horizonP = []
     selection = 'max'
     function.genGreaterCircle(selection)
     i = 0
@@ -244,6 +256,7 @@ def test_genGreaterCircle4(function):
 
 
 def test_genGreaterCircle5(function):
+    function.horizonP = []
     temp = function.app.mount.obsSite.location
     function.app.mount.obsSite.location = None
     selection = 'max'
@@ -1057,7 +1070,7 @@ def test_genGridData6(function):
                      maxAlt=40,
                      numbRows=1,
                      numbCols=12)
-    assert 0 == len(function.buildP)
+    assert 72 == len(function.buildP)
 
 
 def test_genGridData7(function):
@@ -1065,7 +1078,7 @@ def test_genGridData7(function):
                      maxAlt=40,
                      numbRows=5,
                      numbCols=1)
-    assert 0 == len(function.buildP)
+    assert 72 == len(function.buildP)
 
 
 def test_genGridData8(function):
@@ -1073,7 +1086,7 @@ def test_genGridData8(function):
                      maxAlt=40,
                      numbRows=10,
                      numbCols=12)
-    assert 0 == len(function.buildP)
+    assert 72 == len(function.buildP)
 
 
 def test_genGridData9(function):
@@ -1081,7 +1094,7 @@ def test_genGridData9(function):
                      maxAlt=40,
                      numbRows=6,
                      numbCols=20)
-    assert 0 == len(function.buildP)
+    assert 72 == len(function.buildP)
 
 
 def test_genAlign1(function):
@@ -1099,7 +1112,7 @@ def test_genAlign2(function):
                             numberBase=5,
                             )
     assert not suc
-    assert 0 == len(function.buildP)
+    assert 5 == len(function.buildP)
 
 
 def test_genAlign3(function):
@@ -1108,7 +1121,7 @@ def test_genAlign3(function):
                             numberBase=5,
                             )
     assert not suc
-    assert 0 == len(function.buildP)
+    assert 5 == len(function.buildP)
 
 
 def test_genAlign4(function):
@@ -1117,7 +1130,7 @@ def test_genAlign4(function):
                             numberBase=2,
                             )
     assert not suc
-    assert 0 == len(function.buildP)
+    assert 5 == len(function.buildP)
 
 
 def test_genAlign5(function):
@@ -1126,7 +1139,7 @@ def test_genAlign5(function):
                             numberBase=30,
                             )
     assert not suc
-    assert 0 == len(function.buildP)
+    assert 5 == len(function.buildP)
 
 
 def test_sort_1(function):

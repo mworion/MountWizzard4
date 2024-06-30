@@ -20,7 +20,6 @@ import unittest.mock as mock
 # external packages
 import pytest
 import astropy
-import PySide6
 from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 from PySide6 import QtWidgets
@@ -130,7 +129,7 @@ def test_notify_1(qapp):
 def test_notify_2(qapp):
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.Type.MouseButtonPress)
-    with mock.patch.object(MyApp,
+    with mock.patch.object(QtWidgets.QApplication,
                            'notify',
                            return_value=True,
                            side_effect=Exception()):

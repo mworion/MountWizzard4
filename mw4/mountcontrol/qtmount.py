@@ -18,6 +18,7 @@
 import socket
 
 # external packages
+import astropy
 import PySide6.QtCore
 import PySide6.QtWidgets
 import wakeonlan

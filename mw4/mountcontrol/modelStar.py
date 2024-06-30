@@ -18,6 +18,7 @@
 import logging
 
 # external packages
+import astropy
 from skyfield.api import Star, Angle
 import numpy
 

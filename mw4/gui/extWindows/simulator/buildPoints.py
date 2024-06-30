@@ -258,7 +258,7 @@ class SimulatorBuildPoints:
 
         :return: success
         """
-        if not self.app.data.buildP:
+        if len(self.app.data.buildP) == 0:
             return False
 
         self.clear()

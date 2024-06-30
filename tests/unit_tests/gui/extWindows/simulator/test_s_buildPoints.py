@@ -32,6 +32,7 @@ from gui.extWindows.simulatorW import SimulatorWindow
 @pytest.fixture(autouse=True, scope='module')
 def function(qapp):
     func = SimulatorWindow(app=App())
+    func.app.data.buildP = []
     with mock.patch.object(func,
                            'show'):
         yield func.buildPoints
@@ -153,7 +154,7 @@ def test_loopCreate_1(function):
 
 
 def test_create_1(function):
-    function.app.data.buildP = None
+    function.app.data.buildP = []
     suc = function.create()
     assert not suc
 

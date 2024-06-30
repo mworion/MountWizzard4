@@ -307,7 +307,7 @@ class ManageModel(MWidget):
         """
         """
         dlg = QInputDialog()
-        modelName, ok = dlg.getText(self,
+        modelName, ok = dlg.getText(self.mainW,
                                     'Save model', 'New model name',
                                     QLineEdit.EchoMode.Normal, '')
         if modelName is None or not modelName:
@@ -337,8 +337,8 @@ class ManageModel(MWidget):
             return False
 
         modelName = self.ui.nameList.currentItem().text()
-        suc = self.messageDialog(
-            self, 'Delete model', f'Delete model [{modelName}] from database?')
+        suc = self.messageDialog(self.mainW, 'Delete model',
+                                 f'Delete model [{modelName}] from database?')
         if not suc:
             return False
 

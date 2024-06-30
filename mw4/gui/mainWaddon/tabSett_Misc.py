@@ -298,7 +298,7 @@ class SettMisc(MWidget):
         :return:
         """
         worker = Worker(self.workerGameController)
-        self.mainW.threadPool.start(worker)
+        self.app.threadPool.start(worker)
         return True
 
     @staticmethod

@@ -34,12 +34,11 @@ from gui.mainWaddon.tabBuildPoints import BuildPoints
 def function(qapp):
     mainW = QWidget()
     mainW.app = App()
-    mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = BuildPoints(mainW)
     yield window
-    mainW.threadPool.waitForDone(5000)
+    mainW.app.threadPool.waitForDone(5000)
 
 
 def test_initConfig_1(function):
@@ -539,7 +538,7 @@ def test_sortDomeAzWorker_2(function):
 
 
 def test_sortDomeAz_1(function):
-    with mock.patch.object(function.mainW.threadPool,
+    with mock.patch.object(function.app.threadPool,
                            'start'):
         suc = function.sortDomeAz([])
         assert suc
@@ -548,7 +547,7 @@ def test_sortDomeAz_1(function):
 
 def test_sortDomeAz_2(function):
     function.sortRunning.lock()
-    with mock.patch.object(function.mainW.threadPool,
+    with mock.patch.object(function.app.threadPool,
                            'start'):
         suc = function.sortDomeAz([])
         assert not suc

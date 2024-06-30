@@ -37,16 +37,17 @@ def function(qapp):
 
     mainW = QWidget()
     mainW.app = App()
-    mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = Almanac(mainW)
     yield window
-    mainW.threadPool.waitForDone(5000)
+    mainW.app.threadPool.waitForDone(5000)
 
 
 def test_initConfig_1(function):
-    function.initConfig()
+    with mock.patch.object(function,
+                           'showTwilightDataPlot'):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -140,7 +141,7 @@ def test_showTwilightDataPlot_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=0,
                                                        longitude_degrees=0,
                                                        elevation_m=0)
-    with mock.patch.object(function.mainW.threadPool,
+    with mock.patch.object(function.app.threadPool,
                            'start'):
         suc = function.showTwilightDataPlot()
         assert suc

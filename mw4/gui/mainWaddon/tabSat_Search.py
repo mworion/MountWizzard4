@@ -322,7 +322,7 @@ class SatSearch(MWidget, SatData):
         worker = Worker(self.workerCalcSatList)
         worker.signals.finished.connect(self.filterListSats)
         self.changeStyleDynamic(self.ui.satFilterGroup, 'running', True)
-        self.mainW.threadPool.start(worker)
+        self.app.threadPool.start(worker)
 
     def fillSatListName(self):
         """

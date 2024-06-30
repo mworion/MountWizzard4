@@ -209,7 +209,7 @@ class Almanac(MWidget):
         self.changeStyleDynamic(self.ui.almanacGroup, 'running', True)
         worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
         worker.signals.result.connect(self.plotTwilightData)
-        self.mainW.threadPool.start(worker)
+        self.app.threadPool.start(worker)
         return True
 
     def showTwilightDataList(self):

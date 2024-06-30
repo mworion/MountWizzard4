@@ -20,11 +20,11 @@ import astropy
 import unittest.mock as mock
 
 # external packages
+from PySide6.QtWidgets import QWidget
 
 # local import
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
-from gui.mainWindow.mainWindow import MainWindow
-from gui.mainWaddon.astroObjects import AstroObjects
+from gui.widgets.main_ui import Ui_MainWindow
 from base import packageConfig
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from resource import resources
@@ -34,17 +34,13 @@ resources.qInitResources()
 @pytest.fixture(autouse=True, scope='module')
 def window(qapp):
     packageConfig.isAvailable = True
-    with mock.patch.object(MainWindow,
-                           'show'):
-        with mock.patch.object(AstroObjects,
-                               'loadSourceUrl'):
-            mainW = MainWindow(App())
-            window = MainWindowAddons(mainW)
-            window.addons = {'ManageModel': window.addons['ManageModel'],
-                             }
-            yield window
-            del window.mainW
-            del window
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    window = MainWindowAddons(mainW)
+    yield window
+    mainW.app.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(window):

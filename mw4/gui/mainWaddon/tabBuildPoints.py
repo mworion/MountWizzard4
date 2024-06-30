@@ -598,7 +598,7 @@ class BuildPoints(MWidget):
             return False
         worker = Worker(self.sortDomeAzWorker, points, pierside)
         worker.signals.result.connect(self.doSortDomeAzData)
-        self.mainW.threadPool.start(worker)
+        self.app.threadPool.start(worker)
         return True
 
     def sortMountAz(self, points, eastwest=None, highlow=None, pierside=None):

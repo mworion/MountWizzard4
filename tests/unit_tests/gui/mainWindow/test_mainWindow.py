@@ -19,8 +19,6 @@ import unittest.mock as mock
 from unittest.mock import patch
 import pytest
 import astropy
-import glob
-import os
 import shutil
 
 # external packages
@@ -47,10 +45,6 @@ def window(qapp):
                                'initConfig'):
             window = MainWindow(app=App())
             yield window
-
-    files = glob.glob('tests/workDir/config/*.cfg')
-    for f in files:
-        os.remove(f)
 
 
 def test_initConfig_1(window):

@@ -16,6 +16,7 @@
 ###########################################################
 # standard libraries
 from queue import Queue
+import astropy
 
 # external packages
 from PySide6.QtCore import QObject, Signal, QThreadPool, QTimer

@@ -18,7 +18,6 @@
 import logging
 
 # external packages
-import astropy
 
 # local imports
 from mountcontrol.firmware import Firmware

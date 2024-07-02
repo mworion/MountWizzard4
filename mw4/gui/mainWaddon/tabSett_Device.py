@@ -207,11 +207,7 @@ class SettDevice(MWidget):
     def loadDriversDataFromConfig(self, config):
         """
         """
-        if 'driversData' in config:
-            config = config['driversData']
-        else:
-            config = {}
-
+        config = config.get('driversData', {})
         self.driversData.clear()
 
         # adding default for missing drivers
@@ -229,10 +225,8 @@ class SettDevice(MWidget):
     def initConfig(self):
         """
         """
-        config = self.app.config['mainW']
-        configD = self.app.config
-
-        self.loadDriversDataFromConfig(configD)
+        config = self.app.config
+        self.loadDriversDataFromConfig(config)
         self.ui.autoConnectASCOM.setChecked(config.get('autoConnectASCOM', False))
         self.setupDeviceGui()
         self.startDrivers()

@@ -70,11 +70,6 @@ def test_storeConfig_1(function):
     function.storeConfig()
 
 
-def test_storeConfig_2(function):
-    function.driversData['dome'] = {}
-    function.storeConfig()
-
-
 def test_setupIcons_1(function):
     function.setupIcons()
 

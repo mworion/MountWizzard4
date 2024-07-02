@@ -40,6 +40,7 @@ def function(qapp):
     window.app = App()
     window.ui = Ui_MainWindow()
     window.ui.setupUi(window)
+
     func = ExternalWindows(window)
     yield func
 
@@ -79,8 +80,15 @@ def test_deleteWindowResource_3(function):
 
 
 def test_buildWindow_1(function):
-    class Test(QObject):
-        destroyed = Signal()
+    class Destroyed:
+        def connect(self, a):
+            return
+
+    class Test:
+        def __init__(self, app):
+            self.app = app
+
+        destroyed = Destroyed()
 
         @staticmethod
         def initConfig():

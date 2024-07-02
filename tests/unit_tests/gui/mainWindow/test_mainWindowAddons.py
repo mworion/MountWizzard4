@@ -32,9 +32,10 @@ resources.qInitResources()
 
 
 @pytest.fixture(autouse=True, scope='module')
-def window(qapp):
+def window():
     packageConfig.isAvailable = True
     mainW = QWidget()
+
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

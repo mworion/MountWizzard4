@@ -35,7 +35,6 @@ from gui.extWindows.uploadPopupW import UploadPopup
 def function(qapp):
     widget = QWidget()
     widget.app = App()
-    widget.threadPool = QThreadPool()
     with mock.patch.object(UploadPopup,
                            'show'):
         with mock.patch.object(UploadPopup,

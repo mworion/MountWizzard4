@@ -31,12 +31,11 @@ def function(qapp):
 
     mainW = QWidget()
     mainW.app = App()
-    mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = Power(mainW)
     yield window
-    mainW.threadPool.waitForDone(5000)
+    mainW.app.threadPool.waitForDone(1000)
 
 
 def test_setGuiVersion_1(function, qtbot):

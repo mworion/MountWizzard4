@@ -187,9 +187,12 @@ class SettDevice(MWidget):
 
             if hasattr(self.drivers[driver]['class'], 'signals'):
                 signals = self.drivers[driver]['class'].signals
-                signals.serverDisconnected.connect(self.serverDisconnected)
-                signals.deviceConnected.connect(self.deviceConnected)
-                signals.deviceDisconnected.connect(self.deviceDisconnected)
+                signals.serverDisconnected.connect(
+                    partial(self.serverDisconnected, driver))
+                signals.deviceConnected.connect(
+                    partial(self.deviceConnected, driver))
+                signals.deviceDisconnected.connect(
+                    partial(self.deviceDisconnected, driver))
 
         self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
@@ -535,77 +538,34 @@ class SettDevice(MWidget):
         if framework:
             self.startDriver(driver=driver)
 
-    def scanValid(self, driver, deviceName=''):
+    def serverDisconnected(self, driver, deviceList):
         """
-        scanValid checks if the calling device fits to the summary of all
-        devices and gives back if it should be skipped
-        """
-        if not deviceName:
-            return False
-
-        if hasattr(self.drivers[driver]['class'], 'signals'):
-            if self.sender() != self.drivers[driver]['class'].signals:
-                return False
-        else:
-            driverClass = self.drivers[driver]['class']
-            if not driverClass.framework:
-                return False
-            if driverClass.run[driverClass.framework].deviceName != deviceName:
-                return False
-
-        return True
-
-    def serverDisconnected(self, deviceList):
-        """
-        :param deviceList:
-        :return: true for test purpose
         """
         if not deviceList:
             return False
 
-        deviceName = list(deviceList.keys())[0]
-
-        for driver in self.drivers:
-            if not self.scanValid(driver=driver, deviceName=deviceName):
-                continue
-
-            self.msg.emit(0, 'Driver', 'Server disconnected', f'{driver}')
+        self.msg.emit(0, 'Driver', 'Server disconnected', f'{driver}')
         return True
 
-    def deviceConnected(self, deviceName):
+    def deviceConnected(self, driver, deviceName):
         """
-        :param deviceName:
-        :return: true for test purpose
         """
         if not deviceName:
             return False
 
-        for driver in self.drivers:
-            if not self.scanValid(driver=driver, deviceName=deviceName):
-                continue
+        self.changeStyleDynamic(self.drivers[driver]['uiDropDown'], 'active', True)
+        self.app.deviceStat[driver] = True
+        self.msg.emit(0, 'Driver', 'Device connected', f'{driver}')
 
-            self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
-                                    'active', True)
-            self.app.deviceStat[driver] = True
-            self.msg.emit(0, 'Driver', 'Device connected', f'{driver}')
-
-            data = self.driversData[driver]
-            framework = data['framework']
-            if data['frameworks'][framework].get('loadConfig', False):
-                self.msg.emit(0, 'Driver', 'Config loaded', f'{driver}')
+        data = self.driversData[driver]
+        framework = data['framework']
+        if data['frameworks'][framework].get('loadConfig', False):
+            self.msg.emit(0, 'Driver', 'Config loaded', f'{driver}')
         return True
 
-    def deviceDisconnected(self, deviceName):
+    def deviceDisconnected(self, driver, deviceName):
         """
-        :param deviceName:
-        :return: true for test purpose
         """
-        for driver in self.drivers:
-            if not self.scanValid(driver=driver, deviceName=deviceName):
-                continue
-
-            self.changeStyleDynamic(self.drivers[driver]['uiDropDown'],
-                                    'active', False)
-            self.app.deviceStat[driver] = False
-            self.msg.emit(0, 'Driver', 'Device disconnected', f'{driver}')
-        return True
+        self.changeStyleDynamic(self.drivers[driver]['uiDropDown'], 'active', False)
+        self.app.deviceStat[driver] = False
+        self.msg.emit(0, 'Driver', 'Device disconnected', f'{driver}')

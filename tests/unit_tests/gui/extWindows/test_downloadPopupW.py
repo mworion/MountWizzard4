@@ -37,7 +37,6 @@ from gui.extWindows.downloadPopupW import DownloadPopup
 def function(qapp):
     widget = QWidget()
     widget.app = App()
-    widget.threadPool = QThreadPool()
     with mock.patch.object(DownloadPopup,
                            'show'):
         with mock.patch.object(DownloadPopup,

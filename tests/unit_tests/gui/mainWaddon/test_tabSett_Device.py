@@ -33,12 +33,11 @@ def function(qapp):
 
     mainW = QWidget()
     mainW.app = App()
-    mainW.threadPool = mainW.app.threadPool
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = SettDevice(mainW)
     yield window
-    mainW.threadPool.waitForDone(5000)
+    mainW.app.threadPool.waitForDone(1000)
 
 
 def test_setDefaultData(function):
@@ -584,56 +583,12 @@ def test_dispatchDriverDropdown_2(function):
             function.dispatchDriverDropdown('dome', 0)
 
 
-def test_scanValid_1(function):
-    suc = function.scanValid('telescope')
-    assert not suc
-
-
-def test_scanValid_2(function):
-    def sender():
-        return function.drivers['telescope']['class'].signals
-
-    function.sender = sender
-    suc = function.scanValid('telescope', 'test')
-    assert suc
-
-
-def test_scanValid_3(function):
-    def sender():
-        return function.drivers['telescope']['class'].signals
-
-    class Test:
-        framework = ''
-
-    function.sender = sender
-    function.drivers['test'] = {'class': Test()}
-    suc = function.scanValid('test', 'test')
-    assert not suc
-
-
-def test_scanValid_4(function):
-    def sender():
-        return function.drivers['telescope']['class'].signals
-
-    class Test1:
-        deviceName = 'asdfg'
-
-    class Test:
-        framework = 'test'
-        run = {'test': Test1()}
-
-    function.sender = sender
-    function.drivers['test'] = {'class': Test()}
-    suc = function.scanValid('test', 'test')
-    assert not suc
-
-
 def test_serverDisconnected_1(function):
     def Sender():
         return function.drivers['filter']['class'].signals
     function.sender = Sender
 
-    suc = function.serverDisconnected({})
+    suc = function.serverDisconnected('dome', {})
     assert not suc
 
 
@@ -643,13 +598,13 @@ def test_serverDisconnected_2(function):
     function.sender = Sender
     function.BACK_NORM = '#000000'
 
-    suc = function.serverDisconnected({'dome': 1})
+    suc = function.serverDisconnected('dome', {'dome': 1})
     assert suc
 
 
 def test_deviceConnected_1(function):
     function.BACK_GREEN = '#000000'
-    suc = function.deviceConnected('')
+    suc = function.deviceConnected('dome', '')
     assert not suc
 
 
@@ -664,13 +619,8 @@ def test_deviceConnected_2(function):
             }
         }
     }
-
-    def Sender():
-        return function.drivers['filter']['class'].signals
-    function.sender = Sender
-
     function.BACK_GREEN = '#000000'
-    suc = function.deviceConnected('dome')
+    suc = function.deviceConnected('filter', 'test')
     assert suc
 
 
@@ -685,25 +635,10 @@ def test_deviceConnected_3(function):
             }
         }
     }
-
-    def Sender():
-        return function.drivers['dome']['class'].signals
-    function.sender = Sender
-
     function.BACK_GREEN = '#000000'
-    suc = function.deviceConnected('dome')
+    suc = function.deviceConnected('dome', 'test')
     assert suc
 
 
 def test_deviceDisconnected_1(function):
-    suc = function.deviceDisconnected('')
-    assert suc
-
-
-def test_deviceDisconnected_2(function):
-    def Sender():
-        return function.drivers['filter']['class'].signals
-    function.sender = Sender
-
-    suc = function.deviceDisconnected('dome')
-    assert suc
+    function.deviceDisconnected('dome', 'test')

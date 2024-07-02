@@ -54,7 +54,7 @@ class DownloadPopup(MWidget):
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
         self.setWindowTitle('Downloading from Web')
-        self.threadPool = parentWidget.threadPool
+        self.threadPool = parentWidget.app.threadPool
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
         self.signalProgressBarColor.connect(self.setProgressBarColor)

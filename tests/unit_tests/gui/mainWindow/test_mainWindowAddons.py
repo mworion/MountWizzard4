@@ -16,26 +16,23 @@
 ###########################################################
 # standard libraries
 import pytest
-import astropy
 import unittest.mock as mock
 
 # external packages
 from PySide6.QtWidgets import QWidget
+import astropy
 
 # local import
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
 from gui.widgets.main_ui import Ui_MainWindow
-from base import packageConfig
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from resource import resources
 resources.qInitResources()
 
 
-@pytest.fixture(autouse=True, scope='module')
-def window():
-    packageConfig.isAvailable = True
+@pytest.fixture(autouse=False, scope='module')
+def window(qapp):
     mainW = QWidget()
-
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

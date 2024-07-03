@@ -17,7 +17,6 @@
 # standard libraries
 from unittest import mock
 import pytest
-import astropy
 import os
 import socket
 

@@ -26,8 +26,8 @@ from mountcontrol.model import AlignStar
 from mountcontrol import obsSite
 
 obsSite.location = wgs84.latlon(latitude_degrees=0,
-                         longitude_degrees=0,
-                         elevation_m=0)
+                                longitude_degrees=0,
+                                elevation_m=0)
 
 
 class TestConfigData(unittest.TestCase):

@@ -40,7 +40,7 @@ from base.loggerMW import setupLogging
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def function(qapp):
 
     func = ImageWindow(app=App())

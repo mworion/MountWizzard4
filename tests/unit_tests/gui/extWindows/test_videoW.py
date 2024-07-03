@@ -279,6 +279,8 @@ def test_workerVideoStream_4(function):
 
 
 def test_startVideoStream_1(function):
+    function.user = '1'
+    function.password = '1'
     function.ui.videoURL.setText('')
     with mock.patch.object(function.threadPool,
                            'start'):
@@ -287,6 +289,8 @@ def test_startVideoStream_1(function):
 
 
 def test_startVideoStream_2(function):
+    function.user = ''
+    function.password = ''
     function.ui.videoURL.setText('test')
     with mock.patch.object(function.threadPool,
                            'start'):

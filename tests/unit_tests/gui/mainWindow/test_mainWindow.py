@@ -18,7 +18,6 @@
 import unittest.mock as mock
 from unittest.mock import patch
 import pytest
-import astropy
 import shutil
 
 # external packages
@@ -45,6 +44,7 @@ def window(qapp):
                                'initConfig'):
             window = MainWindow(app=App())
             yield window
+            window.app.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(window):

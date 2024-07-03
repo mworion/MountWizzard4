@@ -17,6 +17,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import socket
 import astropy
 
 # external packages
@@ -46,8 +47,11 @@ def test_initConfig_1(function):
     function.app.config['mainW'] = {'automaticWOL': True}
     with mock.patch.object(function,
                            'mountBoot'):
-        suc = function.initConfig()
-        assert suc
+        function.initConfig()
+
+
+def test_storeConfig1(function):
+    function.storeConfig()
 
 
 def test_mountBoot_1(function):
@@ -82,10 +86,6 @@ def test_mountShutdown_2(function):
         assert suc
 
 
-def test_storeConfig_1(function):
-    function.storeConfig()
-
-
 def test_bootRackComp_1(function):
     with mock.patch.object(gui.mainWaddon.tabSett_Mount,
                            'checkFormatMAC',
@@ -114,6 +114,17 @@ def test_mountHost_1(function):
 
 
 def test_mountHost_2(function):
+    function.ui.port3490.setChecked(True)
+    function.ui.mountHost.setText('192.168.2.1')
+    with mock.patch.object(socket,
+                           'gethostbyname',
+                           return_value=True,
+                           side_effect=Exception):
+        suc = function.mountHost()
+        assert not suc
+
+
+def test_mountHost_3(function):
     function.ui.port3490.setChecked(True)
     function.ui.mountHost.setText('192.168.2.1')
     suc = function.mountHost()

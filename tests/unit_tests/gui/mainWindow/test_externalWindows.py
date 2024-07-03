@@ -43,9 +43,15 @@ def function(qapp):
 
     func = ExternalWindows(window)
     yield func
+    window.app.threadPool.waitForDone(1000)
 
 
 def test_storeConfig_1(function):
+    class Test:
+        def storeConfig(self):
+            return
+
+    function.uiWindows['showMessageW']['classObj'] = Test()
     function.storeConfig()
 
 

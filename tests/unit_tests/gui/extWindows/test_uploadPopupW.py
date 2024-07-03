@@ -37,11 +37,9 @@ def function(qapp):
     widget.app = App()
     with mock.patch.object(UploadPopup,
                            'show'):
-        with mock.patch.object(UploadPopup,
-                               'uploadFile'):
-            window = UploadPopup(parentWidget=widget, url='',
-                                 dataTypes='', dataFilePath='')
-            yield window
+        window = UploadPopup(parentWidget=widget, url='',
+                             dataTypes='', dataFilePath='')
+        yield window
 
 
 def set_setIcon(function):

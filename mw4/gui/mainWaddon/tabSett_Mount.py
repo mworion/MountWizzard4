@@ -55,7 +55,6 @@ class SettMount(MWidget):
 
     def initConfig(self):
         """
-        :return:
         """
         config = self.app.config['mainW']
         self.ui.mountHost.setText(config.get('mountHost', ''))
@@ -79,11 +78,9 @@ class SettMount(MWidget):
 
         if self.ui.automaticWOL.isChecked():
             self.mountBoot()
-        return True
 
     def storeConfig(self):
         """
-        :return:
         """
         config = self.app.config['mainW']
         config['mountHost'] = self.ui.mountHost.text()
@@ -100,11 +97,9 @@ class SettMount(MWidget):
         config['syncTimeCont'] = self.ui.syncTimeCont.isChecked()
         config['syncTimeNotTrack'] = self.ui.syncTimeNotTrack.isChecked()
         config['clockSync'] = self.ui.clockSync.isChecked()
-        return True
 
     def mountBoot(self):
         """
-        :return:
         """
         bAddress = self.ui.mountWolAddress.text().strip()
         bPort = self.ui.mountWolPort.text().strip()
@@ -119,7 +114,6 @@ class SettMount(MWidget):
 
     def mountShutdown(self):
         """
-        :return:
         """
         suc = self.app.mount.shutdown()
         if suc:
@@ -130,7 +124,6 @@ class SettMount(MWidget):
 
     def bootRackComp(self):
         """
-        :return:
         """
         MAC = self.ui.rackCompMAC.text()
         MAC = checkFormatMAC(MAC)
@@ -146,7 +139,6 @@ class SettMount(MWidget):
 
     def mountHost(self):
         """
-        :return: true for test purpose
         """
         if self.ui.port3492.isChecked():
             port = 3492

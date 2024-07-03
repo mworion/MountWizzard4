@@ -70,7 +70,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def initConfig(self):
         """
-        :return: True for test purpose
         """
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
@@ -89,13 +88,10 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.ui.tabWidget.setCurrentIndex(config.get('tabWidget', 0))
         isMovable = self.app.config['mainW'].get('tabsMovable', False)
         self.enableTabsMovable(isMovable)
-
         self.mwSuper('initConfig')
-        return True
 
     def storeConfig(self):
         """
-        :return: True for test purpose
         """
         config = self.app.config
         if 'hemisphereW' not in config:
@@ -119,7 +115,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         config['showIsoModel'] = self.ui.showIsoModel.isChecked()
         config['tabWidget'] = self.ui.tabWidget.currentIndex()
         self.mwSuper('storeConfig')
-        return True
 
     def enableTabsMovable(self, isMovable):
         """
@@ -183,9 +178,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def mouseMoved(self, plotItem, pos):
         """
-        :param plotItem:
-        :param pos:
-        :return:
         """
         mousePoint = plotItem.getViewBox().mapSceneToView(pos)
         vr = plotItem.getViewBox().viewRange()
@@ -199,42 +191,32 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
             self.ui.azimuth.setText('')
             self.ui.altitude.setText('')
             QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
-        return True
 
     def mouseMovedHemisphere(self, pos):
         """
-        :param pos:
-        :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         self.mouseMoved(plotItem, pos)
-        return True
 
     def colorChange(self):
         """
-        :return:
         """
         self.setStyleSheet(self.mw4Style)
         self.ui.hemisphere.colorChange()
         self.ui.horizon.colorChange()
         self.drawHemisphereTab()
         self.colorChangeHorizon()
-        return True
 
     def enableOperationModeChange(self, status):
         """
-        :param status:
-        :return:
         """
         isRunning = status != 0
         if isRunning:
             self.ui.normalModeHem.setChecked(True)
         self.ui.operationModeGroup.setEnabled(not isRunning)
-        return True
 
     def setOperationModeHem(self):
         """
-        :return: success
         """
         if self.ui.editModeHem.isChecked():
             self.drawModelPoints()
@@ -243,13 +225,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
             self.app.data.clearBuildP()
 
         self.drawHemisphereTab()
-        return True
 
     def calculateRelevance(self, alt=None, az=None):
         """
-        :param alt:
-        :param az:
-        :return:
         """
         isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
         altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
@@ -272,8 +250,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def updateOnChangedParams(self, sett):
         """
-        :param sett:
-        :return: status redraw
         """
         needRedraw = False
         if self.meridianSlew != sett.meridianLimitSlew:
@@ -295,8 +271,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
     @staticmethod
     def preparePlotItem(plotItem):
         """
-        :param plotItem:
-        :return:
         """
         plotItem.clear()
         plotItem.showAxes(True, showValues=True)
@@ -315,12 +289,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
-        return True
 
     def preparePolarItem(self, plotItem):
         """
-        :param plotItem:
-        :return:
         """
         plotItem.clear()
         showPolar = self.ui.showPolar.isChecked()
@@ -346,7 +317,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def prepareHemisphere(self):
         """
-        :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         self.preparePlotItem(plotItem)
@@ -357,11 +327,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.alignmentStars = None
         self.alignmentStarsText = None
         plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
-        return True
 
     def drawCelestialEquator(self):
         """
-        :return:
         """
         celestial = self.app.data.generateCelestialEquator()
         if not celestial:
@@ -382,18 +350,15 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def drawHorizonOnHem(self):
         """
-        :return:
         """
         p0 = self.ui.hemisphere.p[0]
         p1 = self.ui.hemisphere.p[1]
         self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p0)
         self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p1,
                                        polar=True)
-        return True
 
     def drawTerrainMask(self, plotItem):
         """
-        :return:
         """
         if self.imageTerrain is None:
             return False
@@ -417,7 +382,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def drawMeridianLimits(self):
         """
-        :return:
         """
         slew = self.app.mount.setting.meridianLimitSlew
         track = self.app.mount.setting.meridianLimitTrack
@@ -441,7 +405,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def drawHorizonLimits(self):
         """
-        :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         if self.app.mount.setting.horizonLimitHigh is not None:
@@ -469,7 +432,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def setupAlignmentStars(self):
         """
-        :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         hip = self.app.hipparcos
@@ -483,11 +445,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
             textItem = pg.TextItem(anchor=(0.5, 1.1))
             self.alignmentStarsText.append(textItem)
             plotItem.addItem(textItem)
-        return True
 
     def drawAlignmentStars(self):
         """
-        :return: true for test purpose
         """
         if not self.ui.showAlignStar.isChecked():
             return False
@@ -525,7 +485,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def drawModelPoints(self):
         """
-        :return:
         """
         points = self.app.data.buildP
         if not points:
@@ -560,7 +519,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def drawModelText(self):
         """
-        :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         points = self.app.data.buildP
@@ -612,7 +570,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def setupModel(self):
         """
-        :return:
         """
         for i, plotItem in enumerate(self.ui.hemisphere.p):
             if self.ui.showSlewPath.isChecked():
@@ -644,11 +601,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
         self.drawModelPoints()
         self.drawModelText()
-        return True
 
     def setupPointerHem(self):
         """
-        :return:
         """
         for plotItem in self.ui.hemisphere.p:
             symbol = self.makePointer()
@@ -659,11 +614,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
             pd.setZValue(60)
             pd.nameStr = 'pointer'
             plotItem.addItem(pd)
-        return True
 
     def drawPointerHem(self):
         """
-        :return:
         """
         items = []
         for plotItem in self.ui.hemisphere.p:
@@ -688,7 +641,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def setupDome(self):
         """
-        :return:
         """
         plotItem = self.ui.hemisphere.p[0]
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
@@ -696,12 +648,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.pointerDome.setBrush(pg.mkBrush(color=self.M_GREY + '80'))
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
-        return True
 
     def drawDome(self, azimuth=None):
         """
-        :param azimuth:
-        :return:
         """
         if not isinstance(azimuth, (int, float)):
             self.pointerDome.setVisible(False)
@@ -714,7 +663,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def getMountModelData(self):
         """
-        :return:
         """
         model = self.app.mount.model
         if len(model.starList) == 0:
@@ -726,7 +674,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def drawModelIsoCurve(self):
         """
-        :return:
         """
         az, alt, err = self.getMountModelData()
         if az is None or alt is None or err is None:
@@ -737,7 +684,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def drawHemisphereTab(self):
         """
-        :return: True for test purpose
         """
         hasModel = bool(self.app.mount.model.numberStars)
         self.ui.alignmentModeHem.setEnabled(hasModel)
@@ -765,12 +711,9 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
         self.ui.hemisphere.p[1].getViewBox().rightMouseRange()
         if self.ui.showHorizon.isChecked():
             self.drawHorizonOnHem()
-        return True
 
     def slewDirect(self, posView):
         """
-        :param posView:
-        :return:
         """
         azimuth = int(posView.x() + 0.5)
         altitude = int(posView.y() + 0.5)
@@ -790,8 +733,6 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def slewStar(self, posView):
         """
-        :param posView:
-        :return:
         """
         spot = self.alignmentStars.pointsAt(posView)
         if len(spot) == 0:
@@ -829,12 +770,8 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
 
     def mouseDoubleClick(self, ev, posView):
         """
-        :param ev:
-        :param posView:
-        :return:
         """
         if self.ui.alignmentModeHem.isChecked():
             self.slewStar(posView)
         elif self.ui.normalModeHem.isChecked():
             self.slewDirect(posView)
-        return True

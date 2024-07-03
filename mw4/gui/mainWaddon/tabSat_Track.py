@@ -415,6 +415,7 @@ class SatTrack(MWidget, SatData):
         else:
             self.extractSatelliteData(satName=satName)
             self.showSatPasses()
+
         if self.ui.autoSwitchTrack.isChecked():
             self.ui.satTabWidget.setCurrentIndex(1)
 

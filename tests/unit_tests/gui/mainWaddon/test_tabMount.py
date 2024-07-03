@@ -98,6 +98,12 @@ def test_changeTracking_ok5(function):
         function.changeTracking()
 
 
+def test_changeParkGameController_1(function):
+    with mock.patch.object(function,
+                           'changePark'):
+        function.changeParkGameController(1)
+
+
 def test_changePark_ok1(function):
     function.app.mount.obsSite.status = 5
     with mock.patch.object(function.app.mount.obsSite,

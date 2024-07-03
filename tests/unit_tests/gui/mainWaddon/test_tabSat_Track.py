@@ -630,6 +630,7 @@ def test_chooseSatellite_1(function):
 
 
 def test_chooseSatellite_2(function):
+    function.ui.autoSwitchTrack.setChecked(True)
     satTab = function.ui.listSats
     function.app.deviceStat['mount'] = False
     with mock.patch.object(satTab,

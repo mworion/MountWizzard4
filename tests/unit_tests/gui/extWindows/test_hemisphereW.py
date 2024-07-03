@@ -33,13 +33,15 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from gui.utilities.toolsQtWidget import MWidget
 from gui.utilities.slewInterface import SlewInterface
 from gui.extWindows.hemisphereW import HemisphereWindow
+from mountcontrol.setting import Setting
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def function(qapp):
 
     func = HemisphereWindow(app=App())
     yield func
+    func.app.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):
@@ -48,8 +50,7 @@ def test_initConfig_1(function):
                            return_value=False):
         with mock.patch.object(function,
                                'mwSuper'):
-            suc = function.initConfig()
-            assert suc
+            function.initConfig()
 
 
 def test_initConfig_2(function):
@@ -60,8 +61,7 @@ def test_initConfig_2(function):
                            return_value=False):
         with mock.patch.object(function,
                                'mwSuper'):
-            suc = function.initConfig()
-            assert suc
+            function.initConfig()
 
 
 def test_initConfig_3(function):
@@ -73,8 +73,7 @@ def test_initConfig_3(function):
                            return_value=False):
         with mock.patch.object(function,
                                'mwSuper'):
-            suc = function.initConfig()
-            assert suc
+            function.initConfig()
 
 
 def test_initConfig_4(function):
@@ -84,16 +83,14 @@ def test_initConfig_4(function):
     function.app.config['hemisphereW']['winPosY'] = 100
     with mock.patch.object(function,
                            'mwSuper'):
-        suc = function.initConfig()
-        assert suc
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
     function.app.config = {}
     with mock.patch.object(function,
                            'mwSuper'):
-        suc = function.storeConfig()
-        assert suc
+        function.storeConfig()
 
 
 def test_enableTabsMovable(function):
@@ -123,31 +120,26 @@ def test_showWindow_1(function):
 
 def test_mouseMoved_1(function):
     pd = pg.PlotItem(x=[0, 1], y=[0, 1])
-    suc = function.mouseMoved(pd, pos=QPointF(1, 1))
-    assert suc
+    function.mouseMoved(pd, pos=QPointF(1, 1))
 
 
 def test_mouseMoved_2(function):
     pd = pg.PlotItem()
-    suc = function.mouseMoved(pd, pos=QPointF(0.5, 0.5))
-    assert suc
+    function.mouseMoved(pd, pos=QPointF(0.5, 0.5))
 
 
 def test_mouseMovedHemisphere(function):
-    suc = function.mouseMovedHemisphere(pos=QPointF(1, 1))
-    assert suc
+    function.mouseMovedHemisphere(pos=QPointF(1, 1))
 
 
 def test_colorChange(function):
     with mock.patch.object(function,
                            'drawHemisphereTab'):
-        suc = function.colorChange()
-        assert suc
+        function.colorChange()
 
 
 def test_enableOperationModeChange_1(function):
-    suc = function.enableOperationModeChange(True)
-    assert suc
+    function.enableOperationModeChange(True)
 
 
 def test_setOperationModeHem_1(function):
@@ -156,8 +148,7 @@ def test_setOperationModeHem_1(function):
                            'drawModelPoints'):
         with mock.patch.object(function,
                                'drawHemisphereTab'):
-            suc = function.setOperationModeHem()
-            assert suc
+            function.setOperationModeHem()
 
 
 def test_setOperationModeHem_2(function):
@@ -166,8 +157,7 @@ def test_setOperationModeHem_2(function):
                            'drawModelPoints'):
         with mock.patch.object(function,
                                'drawHemisphereTab'):
-            suc = function.setOperationModeHem()
-            assert suc
+            function.setOperationModeHem()
 
 
 def test_calculateRelevance_1(function):
@@ -217,25 +207,44 @@ def test_selectFontParam_2(function):
     assert size == 13
 
 
-def test_updateOnChangedParams_1(function):
-    class Test:
-        meridianLimitSlew = 0
-        meridianLimitTrack = 0
-        horizonLimitHigh = 0
-        horizonLimitLow = 0
+def test_updateOnChangedParams_0(function):
+    sett = Setting()
+    sett.meridianLimitSlew = 0
+    sett.meridianLimitTrack = 0
+    sett.horizonLimitHigh = 0
+    sett.horizonLimitLow = 0
 
+    function.meridianSlew = 0
+    function.meridianTrack = 0
+    function.horizonLimitHigh = 0
+    function.horizonLimitLow = 0
+    suc = function.updateOnChangedParams(sett)
+    assert not suc
+
+
+def test_updateOnChangedParams_1(function):
+    sett = Setting()
+    sett.meridianLimitSlew = 0
+    sett.meridianLimitTrack = 0
+    sett.horizonLimitHigh = 0
+    sett.horizonLimitLow = 1
+
+    function.meridianSlew = 0
+    function.meridianTrack = 0
+    function.horizonLimitHigh = 0
+    function.horizonLimitLow = 0
     with mock.patch.object(function,
                            'drawHemisphereTab'):
-        suc = function.updateOnChangedParams(Test())
+        suc = function.updateOnChangedParams(sett)
         assert suc
 
 
 def test_updateOnChangedParams_2(function):
-    class Test:
-        meridianLimitSlew = 0
-        meridianLimitTrack = 0
-        horizonLimitHigh = 0
-        horizonLimitLow = 0
+    sett = Setting()
+    sett.meridianLimitSlew = 0
+    sett.meridianLimitTrack = 0
+    sett.horizonLimitHigh = 1
+    sett.horizonLimitLow = 0
 
     function.meridianSlew = 0
     function.meridianTrack = 0
@@ -244,14 +253,49 @@ def test_updateOnChangedParams_2(function):
 
     with mock.patch.object(function,
                            'drawHemisphereTab'):
-        suc = function.updateOnChangedParams(Test())
-        assert not suc
+        suc = function.updateOnChangedParams(sett)
+        assert suc
+
+
+def test_updateOnChangedParams_3(function):
+    sett = Setting()
+    sett.meridianLimitSlew = 0
+    sett.meridianLimitTrack = 1
+    sett.horizonLimitHigh = 0
+    sett.horizonLimitLow = 0
+
+    function.meridianSlew = 0
+    function.meridianTrack = 0
+    function.horizonLimitHigh = 0
+    function.horizonLimitLow = 0
+
+    with mock.patch.object(function,
+                           'drawHemisphereTab'):
+        suc = function.updateOnChangedParams(sett)
+        assert suc
+
+
+def test_updateOnChangedParams_4(function):
+    sett = Setting()
+    sett.meridianLimitSlew = 1
+    sett.meridianLimitTrack = 0
+    sett.horizonLimitHigh = 0
+    sett.horizonLimitLow = 0
+
+    function.meridianSlew = 0
+    function.meridianTrack = 0
+    function.horizonLimitHigh = 0
+    function.horizonLimitLow = 0
+
+    with mock.patch.object(function,
+                           'drawHemisphereTab'):
+        suc = function.updateOnChangedParams(sett)
+        assert suc
 
 
 def test_preparePlotItem(function):
     pd = pg.PlotItem()
-    suc = function.preparePlotItem(pd)
-    assert suc
+    function.preparePlotItem(pd)
 
 
 def test_preparePolarItem_1(function):
@@ -269,8 +313,7 @@ def test_preparePolarItem_2(function):
 
 
 def test_prepareHemisphere(function):
-    suc = function.prepareHemisphere()
-    assert suc
+    function.prepareHemisphere()
 
 
 def test_drawCelestialEquator_1(function):
@@ -290,8 +333,7 @@ def test_drawCelestialEquator_2(function):
 
 
 def test_drawHorizonOnHem(function):
-    suc = function.drawHorizonOnHem()
-    assert suc
+    function.drawHorizonOnHem()
 
 
 def test_drawTerrainMask_1(function):
@@ -338,8 +380,7 @@ def test_staticHorizonLimits_2(function):
 
 def test_setupAlignmentStars(function):
     function.app.data.hip = ['test']
-    suc = function.setupAlignmentStars()
-    assert suc
+    function.setupAlignmentStars()
 
 
 def test_drawAlignmentStars_1(function):
@@ -420,30 +461,27 @@ def test_updateDataModel(function):
 
 
 def test_setupModel_1(function):
-    function.ui.showSlewPath.setChecked(True)
-    function.ui.editModeHem.setChecked(True)
     with mock.patch.object(function,
                            'drawModelPoints'):
         with mock.patch.object(function,
                                'drawModelText'):
-            suc = function.setupModel()
-            assert suc
+            function.ui.editModeHem.setChecked(True)
+            function.ui.showSlewPath.setChecked(True)
+            function.setupModel()
 
 
 def test_setupModel_2(function):
-    function.ui.showSlewPath.setChecked(False)
-    function.ui.editModeHem.setChecked(False)
     with mock.patch.object(function,
                            'drawModelPoints'):
         with mock.patch.object(function,
                                'drawModelText'):
-            suc = function.setupModel()
-            assert suc
+            function.ui.editModeHem.setChecked(False)
+            function.ui.showSlewPath.setChecked(False)
+            function.setupModel()
 
 
 def test_setupPointerHem(function):
-    suc = function.setupPointerHem()
-    assert suc
+    function.setupPointerHem()
 
 
 def test_drawPointerHem_1(function):
@@ -463,8 +501,7 @@ def test_drawPointerHem_2(function):
 
 
 def test_setupDome(function):
-    suc = function.setupDome()
-    assert suc
+    function.setupDome()
 
 
 def test_drawDome_1(function):
@@ -539,8 +576,7 @@ def test_drawHemisphereTab_1(function):
                                            'drawModelIsoCurve'):
                         with mock.patch.object(function,
                                                'drawHorizonOnHem'):
-                            suc = function.drawHemisphereTab()
-                            assert suc
+                            function.drawHemisphereTab()
 
 
 def test_slewDirect_1(function):
@@ -659,8 +695,7 @@ def test_mouseDoubleClick_1(function):
     function.ui.normalModeHem.setChecked(False)
     with mock.patch.object(function,
                            'slewStar'):
-        suc = function.mouseDoubleClick(1, 2)
-        assert suc
+        function.mouseDoubleClick(1, 2)
 
 
 def test_mouseDoubleClick_2(function):
@@ -668,5 +703,4 @@ def test_mouseDoubleClick_2(function):
     function.ui.normalModeHem.setChecked(True)
     with mock.patch.object(function,
                            'slewDirect'):
-        suc = function.mouseDoubleClick(1, 2)
-        assert suc
+        function.mouseDoubleClick(1, 2)

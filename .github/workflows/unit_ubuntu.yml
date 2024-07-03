@@ -60,7 +60,7 @@ jobs:
       - name: running_unit_tests
         run: |
           xvfb-run pytest tests/unit_tests/base
-          xvfb-run pytest tests/unit_tests/logic
+          xvfb-run pytest tests/unit_tests/logic/*
           xvfb-run pytest tests/unit_tests/mountcontrol
           xvfb-run pytest tests/unit_tests/indibase
           xvfb-run pytest tests/unit_tests/gui/utilities

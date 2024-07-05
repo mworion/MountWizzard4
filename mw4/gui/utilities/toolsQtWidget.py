@@ -616,8 +616,6 @@ class MWidget(QWidget, Styles):
                         self.clicked.emit(widget)
                         return True
 
-                return False
-
         clickEventFilter = MouseClickEventFilter(widget)
         widget.installEventFilter(clickEventFilter)
         return clickEventFilter.clicked
@@ -812,24 +810,13 @@ class MWidget(QWidget, Styles):
     @staticmethod
     def getTabAndIndex(tab, config, name):
         """
-        :param tab:
-        :param config:
-        :param name:
-        :return:
         """
-        config[name] = {
-            'index': tab.currentIndex()
-        }
+        config[name] = {'index': tab.currentIndex()}
         for index in range(tab.count()):
             config[name][f'{index:02d}'] = tab.widget(index).objectName()
-        return True
 
     def setTabAndIndex(self, tab, config, name):
         """
-        :param tab:
-        :param config:
-        :param name:
-        :return:
         """
         config = config.get(name, {})
         if not isinstance(config, dict):
@@ -841,7 +828,6 @@ class MWidget(QWidget, Styles):
             tabIndex = self.getTabIndex(tab, nameTab)
             tab.tabBar().moveTab(tabIndex, index)
         tab.setCurrentIndex(config.get('index', 0))
-        return True
 
     @staticmethod
     def positionCursorInTable(table, searchName):

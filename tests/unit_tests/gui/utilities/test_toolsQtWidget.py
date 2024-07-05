@@ -24,6 +24,7 @@ import platform
 # external packages
 from PySide6.QtWidgets import QMessageBox, QFileDialog, QWidget, QTabWidget
 from PySide6.QtWidgets import QPushButton, QComboBox, QTableWidgetItem, QLineEdit
+from PySide6.QtWidgets import QTableWidget
 from PySide6.QtCore import Signal, QObject, Qt, QPoint
 from PySide6.QtGui import QIcon, QPixmap, QPainterPath
 from PySide6.QtTest import QTest
@@ -39,12 +40,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope='module')
-def module(qapp):
-    yield
-
-
-@pytest.fixture(autouse=True, scope='module')
-def function(module):
+def function(qapp):
 
     window = MWidget()
     window.app = App()
@@ -655,6 +651,12 @@ def test_clickable_4(function):
     QTest.mouseRelease(widget, Qt.MouseButton.LeftButton, pos=QPoint(0, 0))
 
 
+def test_clickable_5(function):
+    widget = QLineEdit()
+    function.clickable(widget=widget)
+    QTest.mouseMove(widget, pos=QPoint(0, 0))
+
+
 def test_guiSetText_1(function):
     suc = function.guiSetText(None, None)
     assert not suc
@@ -831,7 +833,7 @@ def test_convertTime_1(function):
 def test_convertTime_2(function):
     ts = load.timescale()
     t = ts.tt(2000, 1, 1, 12, 0)
-    function.ui.unitTimeUTC.setChecked(False)
+    function.ui.unitTimeLocal.setChecked(True)
     val = function.convertTime(t, '%H:%M')
     assert val
 
@@ -895,6 +897,20 @@ def test_positionWindow_2(function):
     assert suc
 
 
+def test_getTabAndIndex(function):
+    widget = QTabWidget()
+    w = QWidget()
+    w.setObjectName('test')
+    widget.addTab(w, 'test')
+    w = QWidget()
+    w.setObjectName('test1')
+    widget.addTab(w, 'test1')
+
+    config = {'test': 1}
+    function.getTabAndIndex(widget, config, 'test1')
+    print(config)
+
+
 def test_getTabIndex(function):
     widget = QTabWidget()
     w = QWidget()
@@ -910,8 +926,7 @@ def test_getTabIndex(function):
 def test_setTabAndIndex_1(function):
     widget = QTabWidget()
     config = {'test': 0}
-    suc = function.setTabAndIndex(widget, config, 'test')
-    assert suc
+    function.setTabAndIndex(widget, config, 'test')
 
 
 def test_setTabAndIndex_2(function):
@@ -919,5 +934,30 @@ def test_setTabAndIndex_2(function):
     widget.addTab(QWidget(), 'test')
     widget.addTab(QWidget(), 'tes1')
     config = {'test': {'00': 'test'}}
-    suc = function.setTabAndIndex(widget, config, 'test')
-    assert suc
+    function.setTabAndIndex(widget, config, 'test')
+
+
+def test_positionCursorInTable_1(function):
+    widget = QTableWidget()
+    widget.setColumnCount(2)
+    widget.setRowCount(2)
+    widget.setItem(0, 0, QTableWidgetItem('test'))
+    widget.setItem(1, 0, QTableWidgetItem('test1'))
+    widget.setItem(0, 1, QTableWidgetItem('test2'))
+    widget.setItem(1, 1, QTableWidgetItem('test3'))
+    function.positionCursorInTable(widget, 'test')
+    assert widget.currentRow() == 0
+    assert widget.currentColumn() == 0
+
+
+def test_positionCursorInTable_2(function):
+    widget = QTableWidget()
+    widget.setColumnCount(2)
+    widget.setRowCount(2)
+    widget.setItem(0, 0, QTableWidgetItem('test'))
+    widget.setItem(1, 0, QTableWidgetItem('test1'))
+    widget.setItem(0, 1, QTableWidgetItem('test2'))
+    widget.setItem(1, 1, QTableWidgetItem('test3'))
+    function.positionCursorInTable(widget, 'asdf')
+    assert widget.currentRow() == -1
+    assert widget.currentColumn() == -1

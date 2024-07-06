@@ -81,7 +81,6 @@ class MainWindow(MWidget):
 
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
-        self.app.mount.signals.settingDone.connect(self.updateMountWeatherStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.plateSolve.signals.message.connect(self.updatePlateSolveStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
@@ -231,17 +230,6 @@ class MainWindow(MWidget):
             self.ui.mountConnected.setText('Mount')
         elif not status and hasSim:
             self.ui.mountConnected.setText('Mount')
-
-    def updateMountWeatherStat(self, setting: Setting) -> None:
-        """
-        """
-        if setting.weatherTemperature is None and setting.weatherPressure is None:
-            self.app.deviceStat['directWeather'] = None
-        else:
-            if setting.weatherStatus is None:
-                self.app.deviceStat['directWeather'] = False
-            else:
-                self.app.deviceStat['directWeather'] = True
 
     def smartFunctionGui(self) -> None:
         """

@@ -139,36 +139,6 @@ def test_updateMountConnStat_3(window):
     assert not window.app.deviceStat['mount']
 
 
-def test_updateMountWeatherStat_1(window):
-    class S:
-        weatherPressure = None
-        weatherTemperature = None
-        weatherStatus = None
-
-    window.updateMountWeatherStat(S())
-    assert window.app.deviceStat['directWeather'] is None
-
-
-def test_updateMountWeatherStat_2(window):
-    class S:
-        weatherPressure = 1000
-        weatherTemperature = 10
-        weatherStatus = None
-
-    window.updateMountWeatherStat(S())
-    assert not window.app.deviceStat['directWeather']
-
-
-def test_updateMountWeatherStat_3(window):
-    class S:
-        weatherPressure = 1000
-        weatherTemperature = 10
-        weatherStatus = True
-
-    window.updateMountWeatherStat(S())
-    assert window.app.deviceStat['directWeather']
-
-
 def test_smartFunctionGui_0(window):
     window.app.deviceStat['mount'] = True
     window.app.deviceStat['camera'] = True

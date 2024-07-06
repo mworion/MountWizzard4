@@ -114,7 +114,6 @@ class EnvironWeather(MWidget):
         # cyclic functions
         self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateSourceGui)
-
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
 

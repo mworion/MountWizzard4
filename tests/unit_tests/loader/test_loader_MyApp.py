@@ -28,7 +28,7 @@ from PySide6 import QtWidgets
 from loader import MyApp
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function", autouse=True)
 def qapp():
     myapp = MyApp([])
     yield myapp
@@ -120,14 +120,14 @@ def test_handleButtons_10(qapp):
 
 
 def test_notify_1(qapp):
-    ui = QtWidgets.QLineEdit()
+    ui = QtWidgets.QPushButton()
     event = QEvent(QEvent.Type.ToolTipChange)
     suc = qapp.notify(obj=ui, event=event)
     assert not suc
 
 
 def test_notify_2(qapp):
-    ui = QtWidgets.QLineEdit()
+    ui = QtWidgets.QPushButton()
     event = QEvent(QEvent.Type.MouseButtonPress)
     with mock.patch.object(QtWidgets.QApplication,
                            'notify',
@@ -138,7 +138,7 @@ def test_notify_2(qapp):
 
 
 def test_notify_3(qapp):
-    ui = QtWidgets.QLineEdit()
+    ui = QtWidgets.QPushButton()
     event = QMouseEvent(QEvent.Type.MouseButtonRelease,
                         QPointF(100, 100),
                         Qt.MouseButton.NoButton,
@@ -153,7 +153,7 @@ def test_notify_3(qapp):
 
 
 def test_notify_4(qapp):
-    ui = QtWidgets.QLineEdit()
+    ui = QtWidgets.QPushButton()
     event = QMouseEvent(QEvent.Type.MouseButtonRelease,
                         QPointF(100, 100),
                         Qt.MouseButton.LeftButton,
@@ -171,7 +171,7 @@ def test_notify_4(qapp):
 
 
 def test_notify_5(qapp):
-    ui = QtWidgets.QLineEdit()
+    ui = QtWidgets.QPushButton()
     event = QMouseEvent(QEvent.Type.MouseButtonPress,
                         QPointF(100, 100),
                         Qt.MouseButton.LeftButton,

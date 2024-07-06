@@ -296,8 +296,8 @@ class MountWizzard4(QObject):
         """
         :return:    True for test purpose
         """
-        self.aboutToQuit()
         self.deviceStat['mount'] = False
+        self.aboutToQuit()
         self.messageQueue.put((1, 'System', 'Lifecycle',
                               'MountWizzard4 manual stopped'))
         self.application.quit()

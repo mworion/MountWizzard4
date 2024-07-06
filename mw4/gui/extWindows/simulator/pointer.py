@@ -46,6 +46,9 @@ class SimulatorPointer:
     def updatePositions(self):
         """
         """
+        if not self.app.deviceStat['mount']:
+            return
+
         _, _, intersect, _, _ = self.app.mount.calcTransformationMatricesActual()
 
         if intersect is None:

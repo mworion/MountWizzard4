@@ -115,6 +115,7 @@ class SettMount(MWidget):
     def mountShutdown(self):
         """
         """
+        self.app.deviceStat['mount'] = False
         suc = self.app.mount.shutdown()
         if suc:
             self.msg.emit(0, 'Mount', 'Command', 'Shutting mount down')

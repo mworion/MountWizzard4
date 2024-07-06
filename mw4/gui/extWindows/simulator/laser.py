@@ -48,6 +48,9 @@ class SimulatorLaser:
     def updatePositions(self):
         """
         """
+        if not self.app.deviceStat['mount']:
+            return
+
         _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
 
         if PB is None or PD is None:

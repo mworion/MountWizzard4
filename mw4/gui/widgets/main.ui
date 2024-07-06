@@ -3869,7 +3869,10 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="GroupParkingStop">
+    <widget class="QGroupBox" name="parkingGroup">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>510</x>
@@ -3945,6 +3948,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
     </widget>
     <widget class="QGroupBox" name="trackingGroup">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>510</x>
@@ -4112,6 +4118,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
     </widget>
     <widget class="QGroupBox" name="telescopePointingGroup">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -4234,7 +4243,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="RAfloat">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -4290,7 +4299,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="ALT">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -4337,7 +4346,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="DECfloat">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -4416,7 +4425,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="HAfloat">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -4518,7 +4527,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="RA">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -4562,7 +4571,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="HA">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -4606,7 +4615,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="AZ">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -4650,7 +4659,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
      </widget>
      <widget class="QLineEdit" name="DEC">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>

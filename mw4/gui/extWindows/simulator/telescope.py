@@ -43,6 +43,8 @@ class SimulatorTelescope:
 
         :return:
         """
+        if not self.app.deviceStat['mount']:
+            return
         north = self.app.mount.geometry.offNorth * 1000
         east = self.app.mount.geometry.offEast * 1000
         vertical = self.app.mount.geometry.offVert * 1000

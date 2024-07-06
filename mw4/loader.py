@@ -129,16 +129,12 @@ class MyApp(QApplication):
             self.log.critical('-' * 100)
             returnValue = False
 
-        print('1', event)
         if not isinstance(event, QMouseEvent):
             return returnValue
-        print('2', event)
         if not event.button():
             return returnValue
-        print('3', event)
         if event.type() == QEvent.Type.MouseButtonRelease:
             return returnValue
-        print('4', event)
         returnValue = self.handleButtons(obj, returnValue)
         return returnValue
 

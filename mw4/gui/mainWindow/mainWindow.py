@@ -284,6 +284,7 @@ class MainWindow(MWidget):
             self.ui.use10micronDef.setEnabled(True)
             self.ui.mountTabWidget.setEnabled(True)
             self.ui.trackingGroup.setEnabled(True)
+            self.ui.parkingGroup.setEnabled(True)
             self.ui.telescopePointingGroup.setEnabled(True)
         else:
             self.ui.dsoGroup.setEnabled(False)
@@ -299,6 +300,7 @@ class MainWindow(MWidget):
             self.ui.use10micronDef.setEnabled(False)
             self.ui.mountTabWidget.setEnabled(False)
             self.ui.trackingGroup.setEnabled(False)
+            self.ui.parkingGroup.setEnabled(False)
             self.ui.telescopePointingGroup.setEnabled(False)
 
         if isDomeReady and isMountReady:

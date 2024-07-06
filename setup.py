@@ -27,7 +27,8 @@ releaseNotes = """
 - add: support automation with 10micron webservices
 - add: support uploading mechanism for databases for macos and linux
 - add: show free disk space of work dir in the status bar
-- add: support for comet and asteroid data in extended downloads 
+- add: support for comet and asteroid data in extended downloads
+- add: age parameter for MPC SAT databases before auto download 
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major version PySide6

@@ -63,6 +63,7 @@ class SettUpdate(MWidget):
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelStandard.setChecked(config.get('loglevelStandard', False))
         self.ui.isOnline.setChecked(config.get('isOnline', False))
+        self.ui.ageDatabases.setValue(config.get('ageDatabases', 1))
         self.ui.versionReleaseNotes.setChecked(
             config.get('versionReleaseNotes', True))
 
@@ -80,6 +81,7 @@ class SettUpdate(MWidget):
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelStandard'] = self.ui.loglevelStandard.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
+        config['ageDatabases'] = self.ui.ageDatabases.value()
         config['versionReleaseNotes'] = self.ui.versionReleaseNotes.isChecked()
 
     def setWeatherOnline(self):

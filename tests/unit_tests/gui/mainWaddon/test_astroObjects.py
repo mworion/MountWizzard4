@@ -143,6 +143,20 @@ def test_loadSourceUrl_3(function):
     function.uiSourceList.clear()
     function.uiSourceList.addItem('100 brightest')
 
+    function.window.ui.isOnline.setChecked(False)
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        with mock.patch.object(function,
+                               'runDownloadPopup'):
+            function.loadSourceUrl()
+
+
+def test_loadSourceUrl_4(function):
+    function.uiSourceList.clear()
+    function.uiSourceList.addItem('100 brightest')
+
+    function.window.ui.isOnline.setChecked(True)
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):

@@ -29593,7 +29593,7 @@ Next point in time when satellite settles.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>51</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -29628,12 +29628,67 @@ Next point in time when satellite settles.</string>
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QLabel" name="label_182">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>45</y>
+          <width>281</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Age of MPC / Sat databases before reload</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="ageDatabases">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>45</y>
+          <width>51</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>999.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_33">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>45</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>days</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="UpdaterGroup">
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>90</y>
+         <y>110</y>
          <width>366</width>
          <height>146</height>
         </rect>

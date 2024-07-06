@@ -121,7 +121,7 @@ class AstroObjects(QObject):
         if localSourceAvailable:
             daysOld = self.loader.days_old(self.dest)
             self.setAge(daysOld)
-            if daysOld < 1:
+            if daysOld < self.window.ui.ageDatabases.value():
                 self.procSourceData(direct=True)
                 self.log.info(f'{self.objectText} data loaded from local source')
                 return
@@ -129,6 +129,8 @@ class AstroObjects(QObject):
         self.setAge(0)
         self.msg.emit(1, self.objectText, 'Download', f'{url}')
         self.log.info(f'{self.objectText} loaded {url}, {unzip}, {fileName}')
+        if not self.window.ui.isOnline.isChecked():
+            return
         self.runDownloadPopup(url, unzip)
 
     def finishProgObjects(self) -> None:

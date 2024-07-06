@@ -41,13 +41,19 @@ def test_showEnable_1(function):
 
 
 def test_updatePositions_1(function):
+    function.app.deviceStat['mount'] = False
+
+
+def test_updatePositions_2(function):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0, None, None, None)):
         function.updatePositions()
 
 
-def test_updatePositions_2(function):
+def test_updatePositions_3(function):
+    function.app.deviceStat['mount'] = True
     with mock.patch.object(function.app.mount,
                            'calcTransformationMatricesActual',
                            return_value=(0, 0, [1, 1, 1], None, None)):

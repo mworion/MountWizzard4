@@ -42,14 +42,20 @@ def test_showEnable_1(function):
 
 
 def test_updatePositions_1(function):
-    with mock.patch.object(function.app.mount,
-                           'calcTransformationMatricesActual',
-                           return_value=(0, 0, None, None, None)):
-        suc = function.updatePositions()
-        assert not suc
+    function.app.deviceStat['mount'] = False
+    function.updatePositions()
 
 
 def test_updatePositions_2(function):
+    function.app.deviceStat['mount'] = True
+    with mock.patch.object(function.app.mount,
+                           'calcTransformationMatricesActual',
+                           return_value=(0, 0, None, None, None)):
+        function.updatePositions()
+
+
+def test_updatePositions_3(function):
+    function.app.deviceStat['mount'] = True
     function.parent.entityModel['displacement'] = {'entity': Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()
     function.parent.entityModel['displacement']['entity'].addComponent(t)

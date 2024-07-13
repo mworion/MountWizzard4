@@ -18,7 +18,7 @@
 import time
 
 # external packages
-from PySide6.QtGui import QColor, QFont
+from PySide6.QtGui import QColor, QFont, QBrush
 from PySide6.QtWidgets import QTableWidgetItem
 from PySide6.QtCore import Qt
 
@@ -97,10 +97,10 @@ class MessageWindow(toolsQtWidget.MWidget):
         """
         :return:
         """
-        self.messColor = [QColor(self.M_BLUE),
-                          QColor(self.M_WHITE),
-                          QColor(self.M_YELLOW),
-                          QColor(self.M_RED),
+        self.messColor = [QBrush(QColor(self.M_BLUE)),
+                          QBrush(QColor(self.M_WHITE)),
+                          QBrush(QColor(self.M_YELLOW)),
+                          QBrush(QColor(self.M_RED)),
                           ]
         fontFam = self.window().font().family()
         self.messFont = [QFont(fontFam, weight=QFont.Weight.Normal),

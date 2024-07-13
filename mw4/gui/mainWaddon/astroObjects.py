@@ -126,11 +126,13 @@ class AstroObjects(QObject):
                 self.log.info(f'{self.objectText} data loaded from local source')
                 return
 
+        if not self.window.ui.isOnline.isChecked():
+            self.msg.emit(2, self.objectText, 'Download', 'Offline mode active')
+            return
+
         self.setAge(0)
         self.msg.emit(1, self.objectText, 'Download', f'{url}')
         self.log.info(f'{self.objectText} loaded {url}, {unzip}, {fileName}')
-        if not self.window.ui.isOnline.isChecked():
-            return
         self.runDownloadPopup(url, unzip)
 
     def finishProgObjects(self) -> None:

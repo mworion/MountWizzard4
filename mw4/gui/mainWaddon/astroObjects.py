@@ -131,7 +131,7 @@ class AstroObjects(QObject):
             return
 
         self.setAge(0)
-        self.msg.emit(1, self.objectText, 'Download', f'{url}')
+        self.msg.emit(1, self.objectText, 'Download', f'{entry}')
         self.log.info(f'{self.objectText} loaded {url}, {unzip}, {fileName}')
         self.runDownloadPopup(url, unzip)
 

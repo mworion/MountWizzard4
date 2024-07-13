@@ -269,10 +269,6 @@ class MainWindow(MWidget):
             self.ui.asteroidProgDatabaseGroup.setEnabled(True)
             self.ui.progEarthRotationData.setEnabled(True)
             self.ui.use10micronDef.setEnabled(True)
-            self.ui.mountTabWidget.setEnabled(True)
-            self.ui.trackingGroup.setEnabled(True)
-            self.ui.parkingGroup.setEnabled(True)
-            self.ui.telescopePointingGroup.setEnabled(True)
         else:
             self.ui.dsoGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
@@ -285,10 +281,6 @@ class MainWindow(MWidget):
             self.ui.asteroidProgDatabaseGroup.setEnabled(False)
             self.ui.progEarthRotationData.setEnabled(False)
             self.ui.use10micronDef.setEnabled(False)
-            self.ui.mountTabWidget.setEnabled(False)
-            self.ui.trackingGroup.setEnabled(False)
-            self.ui.parkingGroup.setEnabled(False)
-            self.ui.telescopePointingGroup.setEnabled(False)
 
         if isDomeReady and isMountReady:
             self.ui.useDomeAz.setEnabled(True)

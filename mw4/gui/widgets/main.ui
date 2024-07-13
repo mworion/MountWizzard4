@@ -107,7 +107,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -127,7 +127,7 @@
     </attribute>
     <widget class="QTabWidget" name="mountTabWidget">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -3871,7 +3871,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
     </widget>
     <widget class="QGroupBox" name="parkingGroup">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -3949,7 +3949,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
     </widget>
     <widget class="QGroupBox" name="trackingGroup">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -4119,7 +4119,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
     </widget>
     <widget class="QGroupBox" name="telescopePointingGroup">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>

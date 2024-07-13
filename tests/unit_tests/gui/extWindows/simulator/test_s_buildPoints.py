@@ -160,6 +160,13 @@ def test_create_1(function):
 
 
 def test_create_2(function):
+    function.app.data.buildP = [(0, 0, True), (10, 10, True)]
+    function.parent.entityModel.clear()
+    suc = function.create()
+    assert not suc
+
+
+def test_create_3(function):
     function.parent.entityModel['ref_fusion'] = {'entity': Qt3DCore.QEntity()}
     function.app.data.buildP = [(0, 0, True), (10, 10, True)]
     with mock.patch.object(function,

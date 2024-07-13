@@ -8297,16 +8297,16 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(0)
+        self.mainTabWidget.setCurrentIndex(1)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
-        self.imagingTabWidget.setCurrentIndex(2)
+        self.imagingTabWidget.setCurrentIndex(0)
         self.satTabWidget.setCurrentIndex(0)
         self.mpcTabWidget.setCurrentIndex(0)
-        self.toolsTabWidget.setCurrentIndex(4)
+        self.toolsTabWidget.setCurrentIndex(0)
         self.settingsTabWidget.setCurrentIndex(0)
-        self.tabDomeExplain.setCurrentIndex(2)
+        self.tabDomeExplain.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

@@ -261,10 +261,13 @@ class SimulatorBuildPoints:
         if len(self.app.data.buildP) == 0:
             return False
 
-        self.clear()
+        ref_fusion = self.parent.entityModel.get('ref_fusion')
+        if not ref_fusion:
+            return False
 
+        self.clear()
         buildPointEntity = Qt3DCore.QEntity()
-        parent = self.parent.entityModel['ref_fusion']['entity']
+        parent = ref_fusion.get('entity')
         buildPointEntity.setParent(parent)
 
         buildPointTransform = Qt3DCore.QTransform()

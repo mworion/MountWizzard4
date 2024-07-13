@@ -425,6 +425,8 @@ class Geometry(object):
         else:
             value = - ha + np.radians(18 / 24 * 360)
 
+        print(pierside, checkPier, round(np.degrees(dec), 1), round(np.degrees(ha), 1), round(np.degrees(value), 1))
+
         T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)
 

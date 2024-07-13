@@ -31,7 +31,6 @@ from gui.widgets.main_ui import Ui_MainWindow
 from gui.mainWindow.externalWindows import ExternalWindows
 from gui.mainWindow.mainWindowAddons import MainWindowAddons
 from logic.profiles.profile import loadProfile, saveProfile, blendProfile
-from mountcontrol.setting import Setting
 from mountcontrol.obsSite import ObsSite
 
 

@@ -421,7 +421,7 @@ class ManageModel(MWidget):
         """
         """
         suc = self.messageDialog(
-            self, 'Clear model', 'Clear actual alignment model')
+            self.mainW, 'Clear model', 'Clear actual alignment model')
         if not suc:
             return False
 
@@ -591,7 +591,7 @@ class ManageModel(MWidget):
         error = self.app.mount.model.starList[index].errorRMS
         text = f'Do you want to delete \npoint {index + 1:3.0f}'
         text += f'\nRMS of {error:5.1f} arcsec'
-        isYes = self.messageDialog(self, 'Deleting point', text)
+        isYes = self.messageDialog(self.mainW, 'Deleting point', text)
         if not isYes:
             return False
 

@@ -52,7 +52,7 @@ class Update:
         if line.startswith(' '):
             return ''
 
-        elif line.startswith('Requirement'):
+        if line.startswith('Requirement'):
             val = line.split(':')
             prefix = val[0]
             packageName = val[1].split('<')[0].split('>')[0].split('=')[0].split(' ')[1]
@@ -129,7 +129,7 @@ class Update:
             retCode = str(process.returncode)
             self.log.debug(f'pip install: [{retCode}] [{output}]')
 
-        success = (process.returncode == 0)
+        success = process.returncode == 0
         return success
 
     def restart(self, text):

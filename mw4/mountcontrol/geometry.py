@@ -425,10 +425,6 @@ class Geometry(object):
         else:
             value = - ha + np.radians(18 / 24 * 360)
 
-        print(pierside, checkPier, round(np.degrees(dec), 1), round(np.degrees(ha), 1), end=' ')
-        print(round(self.parent.obsSite._raJNow._degrees, 1), round(np.degrees(value), 1), end=' ')
-        print(round(self.parent.obsSite._angularPosRA.degrees, 1), round(self.parent.obsSite._angularPosDEC.degrees, 1))
-
         T5 = np.dot(T4, self.transformRotX(value))
         P6 = np.dot(T5, P0)
 

@@ -46,7 +46,6 @@ class SimulatorBuildPoints:
         self.parent.ui.showNumbers.checkStateChanged.connect(self.create)
         self.parent.ui.showSlewPath.checkStateChanged.connect(self.create)
         self.app.updatePointMarker.connect(self.create)
-        self.app.mount.signals.pointDone.connect(self.updatePositions)
         self.app.drawBuildPoints.connect(self.create)
 
     def showEnable(self):

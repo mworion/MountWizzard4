@@ -116,6 +116,10 @@ class SimulatorWindow(MWidget):
         :param closeEvent:
         :return:
         """
+        self.app.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.laser.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
+        self.app.mount.signals.pointDone.disconnect(self.telescope.updateRotation)
         self.entityModel.clear()
         self.storeConfig()
         super().closeEvent(closeEvent)
@@ -130,6 +134,10 @@ class SimulatorWindow(MWidget):
         self.ui.westView.clicked.connect(self.westView)
         self.app.colorChange.connect(self.colorChange)
         self.camera.positionChanged.connect(self.limitPositionZ)
+        self.app.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.laser.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.pointer.updatePositions)
+        self.app.mount.signals.pointDone.connect(self.telescope.updateRotation)
         self.show()
 
     def setupCamera(self, parentEntity):

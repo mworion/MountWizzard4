@@ -33,7 +33,6 @@ class SimulatorTelescope:
         self.parent = parent
         self.app = app
         self.app.updateDomeSettings.connect(self.updatePositions)
-        self.app.mount.signals.pointDone.connect(self.updateRotation)
 
     def updatePositions(self):
         """

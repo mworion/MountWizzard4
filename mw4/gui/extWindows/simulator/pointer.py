@@ -32,7 +32,6 @@ class SimulatorPointer:
         super().__init__()
         self.parent = parent
         self.app = app
-        self.app.mount.signals.pointDone.connect(self.updatePositions)
         self.parent.ui.showPointer.checkStateChanged.connect(self.showEnable)
 
     def showEnable(self):

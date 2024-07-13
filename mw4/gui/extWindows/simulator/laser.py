@@ -34,7 +34,6 @@ class SimulatorLaser:
         super().__init__()
         self.parent = parent
         self.app = app
-        self.app.mount.signals.pointDone.connect(self.updatePositions)
         self.parent.ui.showLaser.checkStateChanged.connect(self.showEnable)
 
     def showEnable(self):

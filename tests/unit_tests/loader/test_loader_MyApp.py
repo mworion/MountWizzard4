@@ -28,7 +28,7 @@ from PySide6 import QtWidgets
 from loader import MyApp
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def qapp():
     myapp = MyApp([])
     yield myapp
@@ -145,7 +145,7 @@ def test_notify_3(qapp):
                         Qt.MouseButton.NoButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(MyApp,
+    with mock.patch.object(QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         suc = qapp.notify(obj=ui, event=event)
@@ -160,7 +160,7 @@ def test_notify_4(qapp):
                         Qt.MouseButton.LeftButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(MyApp,
+    with mock.patch.object(QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         with mock.patch.object(qapp,
@@ -178,7 +178,7 @@ def test_notify_5(qapp):
                         Qt.MouseButton.LeftButton,
                         Qt.KeyboardModifier.NoModifier,
                         )
-    with mock.patch.object(MyApp,
+    with mock.patch.object(QtWidgets.QApplication,
                            'notify',
                            return_value=True):
         with mock.patch.object(qapp,

@@ -66,23 +66,7 @@ def test_updateWindowsStats_2(function):
 
 
 def test_deleteWindowResource_1(function):
-    suc = function.deleteWindowResource()
-    assert not suc
-
-
-def test_deleteWindowResource_2(function):
-    suc = function.deleteWindowResource(widget=function.mainW.ui.openImageW)
-    assert suc
-
-
-def test_deleteWindowResource_3(function):
-    class Test:
-        @staticmethod
-        def objectName():
-            return 'ImageDialog'
-
-    suc = function.deleteWindowResource(widget=Test())
-    assert suc
+    function.deleteWindowResource('showImageW')
 
 
 def test_buildWindow_1(function):

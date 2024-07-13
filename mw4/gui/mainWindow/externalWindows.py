@@ -148,26 +148,18 @@ class ExternalWindows(MWidget):
             else:
                 self.changeStyleDynamic(winObj['button'], 'running', False)
 
-    def deleteWindowResource(self, widget: QWidget = None) -> bool:
+    def deleteWindowResource(self, window:str) -> bool:
         """
-        :return: success
         """
-        if not widget:
-            return False
-
-        for window in self.uiWindows:
-            if self.uiWindows[window]['name'] != widget.objectName():
-                continue
-            del self.uiWindows[window]['classObj']
-            self.uiWindows[window]['classObj'] = None
-
-        return True
+        del self.uiWindows[window]['classObj']
+        self.uiWindows[window]['classObj'] = None
 
     def buildWindow(self, window: str) -> None:
         """
         """
         self.uiWindows[window]['classObj'] = self.uiWindows[window]['class'](self.app)
-        self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
+        self.uiWindows[window]['classObj'].destroyed.connect(
+            partial(self.deleteWindowResource, window))
         self.uiWindows[window]['classObj'].initConfig()
         self.uiWindows[window]['classObj'].showWindow()
 

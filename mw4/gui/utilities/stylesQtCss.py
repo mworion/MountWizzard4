@@ -782,8 +782,8 @@ class Styles:
         }
         QProgressBar::chunk {
             background-color: $M_BLUE$;
-            width: 3px;
-            margin: 0.5px;
+            width: 1px;
+            margin: 0px;
             border-width: 0px;
             border-color: $M_GREY$;
             border-radius: 0px;

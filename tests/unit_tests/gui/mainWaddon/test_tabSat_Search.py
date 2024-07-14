@@ -48,13 +48,9 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.initConfig()
-
-
-def test_initConfigDelayedSat_1(function):
     with mock.patch.object(function.ui.satSourceList,
                            'setCurrentIndex'):
-        function.initConfigDelayedSat()
+        function.initConfig()
 
 
 def test_storeConfig_1(function):

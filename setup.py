@@ -38,6 +38,7 @@ releaseNotes = """
 - refactoring: environment devices (now 3 generic ones)
 - refactoring: remove installer to separate repo (InstallerMW4)
 - refactoring: optimizing code for better performance
+- refactoring: satellite handling
 - improve: reduced size of app
 - improve: faster startup time
 - improve: optimizing material look & feel
@@ -52,7 +53,7 @@ with open('notes.txt', 'w') as f:
 
 setup(
     name='mountwizzard4',
-    version='4.0.0a12',
+    version='4.0.0a13',
     packages=[
         'mw4',
         'mw4.base',

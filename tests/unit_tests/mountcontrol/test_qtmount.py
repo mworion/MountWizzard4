@@ -552,13 +552,22 @@ def test_preCalcTrajectory_2(function):
         assert not suc
 
 
+def test_workerProgTrajectory_1(function):
+    alt = [10, 20, 30]
+    az = [10, 20, 30]
+    with mock.patch.object(function.satellite,
+                           'addTrajectoryPoint'):
+        suc = function.workerProgTrajectory(alt, az, True)
+        assert suc
+
+
 def test_workerProgTrajectory_2(function):
     alt = [10, 20, 30]
     az = [10, 20, 30]
     with mock.patch.object(function.satellite,
-                           'progTrajectory'):
-        suc = function.workerProgTrajectory(alt, az)
-        assert suc
+                           'addTrajectoryPoint'):
+        suc = function.workerProgTrajectory(alt, az, False)
+        assert not suc
 
 
 def test_errorProgTrajectory(function):
@@ -574,13 +583,4 @@ def test_progTrajectory_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.progTrajectory(12345678)
-        assert suc
-
-
-def test_progTrajectory_2(function):
-    function.mountUp = False
-    with mock.patch.object(QThreadPool,
-                           'start'):
-        suc = function.progTrajectory(12345678)
-        assert not suc
+        function.progTrajectory(12345678)

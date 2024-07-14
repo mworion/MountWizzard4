@@ -19148,7 +19148,7 @@ Next point in time when satellite settles.</string>
          <enum>QProgressBar::TopToBottom</enum>
         </property>
        </widget>
-       <widget class="QPushButton" name="progTrajectory">
+       <widget class="QPushButton" name="addTrajectoryPoint">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -32420,7 +32420,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>satBeforeFlip</tabstop>
   <tabstop>satAfterFlip</tabstop>
   <tabstop>avoidHorizon</tabstop>
-  <tabstop>progTrajectory</tabstop>
+  <tabstop>addTrajectoryPoint</tabstop>
   <tabstop>trackingReplay</tabstop>
   <tabstop>satTrajectoryStart</tabstop>
   <tabstop>satTrajectoryFlip</tabstop>

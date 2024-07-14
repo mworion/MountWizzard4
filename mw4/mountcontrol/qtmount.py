@@ -53,7 +53,7 @@ class MountSignals(PySide6.QtCore.QObject):
     calcTLEdone = PySide6.QtCore.Signal(object)
     statTLEdone = PySide6.QtCore.Signal(object)
     getTLEdone = PySide6.QtCore.Signal(object)
-    trajectoryProgress = PySide6.QtCore.Signal(object)
+    calcProgress = PySide6.QtCore.Signal(object)
     calcTrajectoryDone = PySide6.QtCore.Signal(object)
     mountUp = PySide6.QtCore.Signal(object)
     slewFinished = PySide6.QtCore.Signal()
@@ -648,17 +648,18 @@ class Mount(mountcontrol.mount.Mount):
         self.log.warning(f'Cycle error: {e}')
         return True
 
-    def clearProgTrajectory(self):
+    def clearProgTrajectory(self, replay=False):
         """
         :return: true for test purpose
         """
-        self.preCalcTrajectory(replay=sim)
+        self.preCalcTrajectory(replay=replay)
         return True
 
-    def workerProgTrajectory(self, alt=None, az=None):
+    def workerProgTrajectory(self, alt=None, az=None, replay=False):
         """
         :param alt:
         :param az:
+        :param replay:
         :return:
         """
         factor = int(len(alt) / 32)
@@ -669,25 +670,25 @@ class Mount(mountcontrol.mount.Mount):
         chunks = len(altP)
 
         for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
-            self.satellite.progTrajectory(alt=altitude, az=azimuth)
+            self.satellite.addTrajectoryPoint(alt=altitude, az=azimuth)
             self.signals.calcProgress.emit(min((i + 1) / chunks * 100, 100))
         self.signals.calcProgress.emit(100)
-        return True
+        return replay
 
-    def progTrajectory(self, start, alt=None, az=None):
+    def progTrajectory(self, start, alt=None, az=None, replay=False):
         """
         :param start:
         :param alt:
         :param az:
+        :param replay:
         :return:
         """
         if not self.mountUp:
-            return False
+            return
 
         self.satellite.startProgTrajectory(julD=start)
 
-        worker = Worker(self.workerProgTrajectory, alt=alt, az=az)
+        worker = Worker(self.workerProgTrajectory, alt=alt, az=az, replay=replay)
         worker.signals.result.connect(self.clearProgTrajectory)
         worker.signals.error.connect(self.errorProgTrajectory)
         self.threadPool.start(worker)
-        return True

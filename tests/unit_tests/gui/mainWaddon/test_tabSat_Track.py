@@ -304,17 +304,17 @@ def test_extractSatelliteData_5(function):
             assert suc
 
 
-def test_programDataToMount_1(function):
-    suc = function.programDataToMount()
+def test_programSatToMount_1(function):
+    suc = function.programSatToMount()
     assert not suc
 
 
-def test_programDataToMount_2(function):
-    suc = function.programDataToMount(satName='test')
+def test_programSatToMount_2(function):
+    suc = function.programSatToMount(satName='test')
     assert not suc
 
 
-def test_programDataToMount_3(function):
+def test_programSatToMount_3(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
@@ -324,11 +324,11 @@ def test_programDataToMount_3(function):
     with mock.patch.object(function.app.mount.satellite,
                            'setTLE',
                            return_value=False):
-        suc = function.programDataToMount(satName='TIANGONG 2')
+        suc = function.programSatToMount(satName='TIANGONG 2')
         assert not suc
 
 
-def test_programDataToMount_4(function):
+def test_programSatToMount_4(function):
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
@@ -340,7 +340,7 @@ def test_programDataToMount_4(function):
                            return_value=True):
         with mock.patch.object(function.app.mount,
                                'getTLE'):
-            suc = function.programDataToMount(satName='TIANGONG 2')
+            suc = function.programSatToMount(satName='TIANGONG 2')
             assert suc
 
 
@@ -616,7 +616,7 @@ def test_startProg_1(function):
                                    return_value=(0, 0)):
                 with mock.patch.object(function,
                                        'filterHorizon',
-                                       return_value=(0, 0, 0, 0)):
+                                       return_value=(0, 0, [1], [1])):
                     with mock.patch.object(function.app.mount,
                                            'progTrajectory'):
                         suc = function.startProg()
@@ -633,8 +633,24 @@ def test_startProg_2(function):
             assert not suc
 
 
-def test_trajectoryProgress_1(function):
-    function.trajectoryProgress(100)
+def test_startProg_3(function):
+    with mock.patch.object(function,
+                           'clearTrackingParameters'):
+        with mock.patch.object(function,
+                               'selectStartEnd',
+                               return_value=(1, 1)):
+            with mock.patch.object(function,
+                                   'calcTrajectoryData',
+                                   return_value=(0, 0)):
+                with mock.patch.object(function,
+                                       'filterHorizon',
+                                       return_value=(0, 0, [], [])):
+                    suc = function.startProg()
+                    assert not suc
+
+
+def test_calcProgress_1(function):
+    function.calcProgress(100)
 
 
 def test_updateSatelliteTrackGui_1(function):

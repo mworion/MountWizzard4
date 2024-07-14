@@ -891,7 +891,7 @@ class Mount(QObject):
         namesDone = Signal()
         slewFinished = Signal()
         calcTrajectoryDone = Signal(object)
-        trajectoryProgress = Signal(object)
+        calcProgress = Signal(object)
 
     class MountObsSite:
         Alt = Angle(degrees=0)
@@ -910,7 +910,6 @@ class Mount(QObject):
         AltTarget = Angle(degrees=0)
         pierside = 'E'
         timeSidereal = Angle(hours=12)
-        timeNow = Angle(hours=12)
         location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10,
                                 elevation_m=500)
         ts = load.timescale(builtin=True)

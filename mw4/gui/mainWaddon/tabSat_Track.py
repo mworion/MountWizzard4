@@ -65,10 +65,11 @@ class SatTrack(MWidget, SatData):
         msig.calcTLEdone.connect(self.updateSatelliteTrackGui)
         msig.calcTrajectoryDone.connect(self.updateSatelliteTrackGui)
         msig.getTLEdone.connect(self.getSatelliteDataFromDatabase)
-        msig.trajectoryProgress.connect(self.trajectoryProgress)
+        msig.calcProgress.connect(self.calcProgress)
         msig.pointDone.connect(self.followMount)
         msig.settingDone.connect(self.updatePasses)
         msig.pointDone.connect(self.toggleTrackingOffset)
+        msig.firmwareDone.connect(self.enableGuiFunctions)
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
@@ -80,17 +81,13 @@ class SatTrack(MWidget, SatData):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
-
         self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
         self.ui.unitTimeUTC.toggled.connect(self.updateSatelliteTrackGui)
-
-        self.app.update1s.connect(self.updateOrbit)
         self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
 
-        msig = self.app.mount.signals
-        msig.firmwareDone.connect(self.enableGuiFunctions)
+        self.app.update1s.connect(self.updateOrbit)
 
     def initConfig(self):
         """
@@ -171,6 +168,49 @@ class SatTrack(MWidget, SatData):
         if actMeridianLimit != self.lastMeridianLimit:
             self.showSatPasses()
             self.lastMeridianLimit = actMeridianLimit
+        return True
+
+    def calcTrajectoryData(self, start, end):
+        """
+        """
+        duration = min(end - start, 900 / 86400)
+        if duration < 1 / 86400:
+            return [], []
+
+        m = self.app.mount
+        temp = m.setting.refractionTemp
+        press = m.setting.refractionPress
+        timeSeries = start + np.arange(0, duration, 1 / 86400)
+        timeVec = m.obsSite.ts.tt_jd(timeSeries)
+
+        earth = self.app.ephemeris['earth']
+        ssb_sat = earth + self.satellite
+        ssb_loc = earth + m.obsSite.location
+        topocentric = ssb_loc.at(timeVec).observe(ssb_sat).apparent()
+        alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
+        return alt.degrees, az.degrees
+
+    def progTrajectoryToMount(self):
+        """
+        """
+        useInternal = self.ui.useInternalSatCalc.isChecked()
+        isMount = self.app.deviceStat['mount']
+        start, end = self.selectStartEnd()
+
+        if not start or not end:
+            return False
+
+        if isMount and useInternal:
+            alt, az = self.calcTrajectoryData(start, end)
+            start, end, alt, az = self.filterHorizon(start, end, alt, az)
+        else:
+            alt = []
+            az = []
+
+        if isMount and not useInternal:
+            self.app.mount.calcTLE(start)
+
+        self.signalSatelliteData(alt=alt, az=az)
         return True
 
     def showSatPasses(self):
@@ -258,7 +298,7 @@ class SatTrack(MWidget, SatData):
         self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
         return True
 
-    def programDataToMount(self, satName=''):
+    def programSatToMount(self, satName=''):
         """
         """
         if not satName:
@@ -284,7 +324,7 @@ class SatTrack(MWidget, SatData):
         """
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
         if self.app.deviceStat['mount']:
-            self.programDataToMount(satName=satName)
+            self.programSatToMount(satName=satName)
         else:
             self.extractSatelliteData(satName=satName)
             self.showSatPasses()
@@ -316,25 +356,33 @@ class SatTrack(MWidget, SatData):
         self.app.updateSatellite.emit(now, location)
         return True
 
-    def calcTrajectoryData(self, start, end):
+    def selectStartEnd(self):
         """
         """
-        duration = min(end - start, 900 / 86400)
-        if duration < 1 / 86400:
-            return [], []
+        if not self.satOrbits:
+            return 0, 0
+        if 'rise' not in self.satOrbits[0]:
+            return 0, 0
+        if 'settle' not in self.satOrbits[0]:
+            return 0, 0
 
-        m = self.app.mount
-        temp = m.setting.refractionTemp
-        press = m.setting.refractionPress
-        timeSeries = start + np.arange(0, duration, 1 / 86400)
-        timeVec = m.obsSite.ts.tt_jd(timeSeries)
+        isBefore = self.ui.satBeforeFlip.isChecked()
+        isAfter = self.ui.satAfterFlip.isChecked()
+        start = self.satOrbits[0]['rise'].tt
+        end = self.satOrbits[0]['settle'].tt
 
-        earth = self.app.ephemeris['earth']
-        ssb_sat = earth + self.satellite
-        ssb_loc = earth + m.obsSite.location
-        topocentric = ssb_loc.at(timeVec).observe(ssb_sat).apparent()
-        alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
-        return alt.degrees, az.degrees
+        if isBefore and isAfter:
+            pass
+        elif isBefore and not isAfter:
+            if 'flipLate' in self.satOrbits[0]:
+                end = self.satOrbits[0]['flipLate'].tt
+        elif not isBefore and isAfter:
+            if 'flipEarly' in self.satOrbits[0]:
+                start = self.satOrbits[0]['flipEarly'].tt
+        else:
+            return 0, 0
+
+        return start, end
 
     def filterHorizon(self, start, end, alt, az):
         """
@@ -368,74 +416,27 @@ class SatTrack(MWidget, SatData):
 
         return start, end, alt, az
 
-    def selectStartEnd(self):
-        """
-        """
-        if not self.satOrbits:
-            return 0, 0
-        if 'rise' not in self.satOrbits[0]:
-            return 0, 0
-        if 'settle' not in self.satOrbits[0]:
-            return 0, 0
-
-        isBefore = self.ui.satBeforeFlip.isChecked()
-        isAfter = self.ui.satAfterFlip.isChecked()
-        start = self.satOrbits[0]['rise'].tt
-        end = self.satOrbits[0]['settle'].tt
-
-        if isBefore and isAfter:
-            pass
-        elif isBefore and not isAfter:
-            if 'flipLate' in self.satOrbits[0]:
-                end = self.satOrbits[0]['flipLate'].tt
-        elif not isBefore and isAfter:
-            if 'flipEarly' in self.satOrbits[0]:
-                start = self.satOrbits[0]['flipEarly'].tt
-        else:
-            return 0, 0
-
-        return start, end
-
-    def progTrajectoryToMount(self):
-        """
-        """
-        useInternal = self.ui.useInternalSatCalc.isChecked()
-        isMount = self.app.deviceStat['mount']
-        start, end = self.selectStartEnd()
-
-        if not start or not end:
-            return False
-
-        if isMount and useInternal:
-            alt, az = self.calcTrajectoryData(start, end)
-            start, end, alt, az = self.filterHorizon(start, end, alt, az)
-        else:
-            alt = []
-            az = []
-
-        if isMount and not useInternal:
-            self.app.mount.calcTLE(start)
-
-        self.signalSatelliteData(alt=alt, az=az)
-        return True
-
     def startProg(self):
         """
         """
         self.clearTrackingParameters()
-        isSim = self.ui.trackingReplay.isChecked()
-        t = ('for simulation' if isSim else '')
+        isReplay = self.ui.trackingReplay.isChecked()
+        t = ('for simulation' if isReplay else '')
         self.msg.emit(0, 'TLE', 'Program', f'Satellite track data {t}')
         start, end = self.selectStartEnd()
         if not start or not end:
             return False
         alt, az = self.calcTrajectoryData(start, end)
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
+        if len(alt) == 0:
+            text = 'Program', 'No track data (white), please revise settings'
+            self.msg.emit(2, 'TLE', text)
+            return False
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
-        self.app.mount.progTrajectory(start, alt=alt, az=az)
+        self.app.mount.progTrajectory(start, alt=alt, az=az, replay=isReplay)
         return True
 
-    def trajectoryProgress(self, value):
+    def calcProgress(self, value):
         """
         """
         self.ui.calcProgress.setValue(int(value))

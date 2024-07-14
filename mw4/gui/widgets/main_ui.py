@@ -4722,7 +4722,7 @@ class Ui_MainWindow(object):
         self.calcProgress.setInvertedAppearance(False)
         self.calcProgress.setTextDirection(QProgressBar.TopToBottom)
         self.progTrajectory = QPushButton(self.satTrackGroup)
-        self.progTrajectory.setObjectName(u"progTrajectory")
+        self.progTrajectory.setObjectName(u"addTrajectoryPoint")
         self.progTrajectory.setEnabled(False)
         self.progTrajectory.setGeometry(QRect(10, 75, 61, 20))
         self.trackingReplay = QCheckBox(self.satTrackGroup)

@@ -636,7 +636,7 @@ class Satellite(object):
 
         return True
 
-    def progTrajectory(self, alt, az):
+    def addTrajectoryPoint(self, alt, az):
         """
         :param alt:
         :param az:

@@ -430,7 +430,7 @@ class SatTrack(MWidget, SatData):
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
         if len(alt) == 0:
             text = 'Program', 'No track data (white), please revise settings'
-            self.msg.emit(2, 'TLE', text)
+            self.msg.emit(2, 'TLE', 'Error', text)
             return False
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
         self.app.mount.progTrajectory(start, alt=alt, az=az, replay=isReplay)

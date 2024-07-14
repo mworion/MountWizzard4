@@ -770,6 +770,7 @@ class Styles:
             border-width: 1px;
             border-color: $M_GREY$;
             border-style: outset;
+            text-align: center;
         }
         QProgressBar:disabled {
             color: $M_GREY$;
@@ -781,8 +782,8 @@ class Styles:
         }
         QProgressBar::chunk {
             background-color: $M_BLUE$;
-            width: 1px;
-            margin: 0px;
+            width: 3px;
+            margin: 0.5px;
             border-width: 0px;
             border-color: $M_GREY$;
             border-radius: 0px;

@@ -667,7 +667,7 @@ class Satellite(object):
 
         return True
 
-    def calcTrajectory(self, replay=False):
+    def preCalcTrajectory(self, replay=False):
         """
         :param replay:    start now
         :return: success

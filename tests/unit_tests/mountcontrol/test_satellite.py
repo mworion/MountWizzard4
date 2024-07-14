@@ -1344,7 +1344,7 @@ class TestConfigData(unittest.TestCase):
             suc = sat.progTrajectory(alt=alt, az=az)
             assert suc
 
-    def test_calcTrajectory_1(self):
+    def test_preCalcTrajectory_1(self):
         class ObsSite:
             UTC2TT = 69
             ts = load.timescale()
@@ -1357,10 +1357,10 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.calcTrajectory()
+            suc = sat.preCalcTrajectory()
             assert not suc
 
-    def test_calcTrajectory_2(self):
+    def test_preCalcTrajectory_2(self):
         class ObsSite:
             UTC2TT = 69
             ts = load.timescale()
@@ -1373,10 +1373,10 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.calcTrajectory(replay=True)
+            suc = sat.preCalcTrajectory(replay=True)
             assert not suc
 
-    def test_calcTrajectory_3(self):
+    def test_preCalcTrajectory_3(self):
         class ObsSite:
             UTC2TT = 69
             ts = load.timescale()
@@ -1389,10 +1389,10 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.calcTrajectory()
+            suc = sat.preCalcTrajectory()
             assert not suc
 
-    def test_calcTrajectory_4(self):
+    def test_preCalcTrajectory_4(self):
         class ObsSite:
             UTC2TT = 69
             ts = load.timescale()
@@ -1405,10 +1405,10 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.calcTrajectory()
+            suc = sat.preCalcTrajectory()
             assert not suc
 
-    def test_calcTrajectory_5(self):
+    def test_preCalcTrajectory_5(self):
         class ObsSite:
             UTC2TT = 69
             ts = load.timescale()
@@ -1421,10 +1421,10 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.calcTrajectory()
+            suc = sat.preCalcTrajectory()
             assert not suc
 
-    def test_calcTrajectory_6(self):
+    def test_preCalcTrajectory_6(self):
         class ObsSite:
             UTC2TT = 69
             ts = load.timescale()
@@ -1437,10 +1437,10 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.calcTrajectory()
+            suc = sat.preCalcTrajectory()
             assert not suc
 
-    def test_calcTrajectory_7(self):
+    def test_preCalcTrajectory_7(self):
         class ObsSite:
             UTC2TT = 69
             ts = load.timescale()
@@ -1453,7 +1453,7 @@ class TestConfigData(unittest.TestCase):
         with mock.patch.object(Connection,
                                'communicate',
                                return_value=val):
-            suc = sat.calcTrajectory()
+            suc = sat.preCalcTrajectory()
             assert suc
 
     def test_getTrackingOffsets_1(self):

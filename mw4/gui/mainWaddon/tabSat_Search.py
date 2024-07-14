@@ -65,7 +65,6 @@ class SatSearch(MWidget, SatData):
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
-        self.app.start3s.connect(self.initConfigDelayedSat)
 
     def initConfig(self):
         """
@@ -80,11 +79,6 @@ class SatSearch(MWidget, SatData):
         self.ui.satIsUp.setChecked(config.get('satIsUp', False))
         self.ui.satUpTimeWindow.setValue(config.get('satUpTimeWindow', 2))
         self.ui.satAltitudeMin.setValue(config.get('satAltitudeMin', 30))
-
-    def initConfigDelayedSat(self):
-        """
-        """
-        config = self.app.config['mainW']
         self.ui.satSourceList.setCurrentIndex(config.get('satSource', 0))
 
     def storeConfig(self):

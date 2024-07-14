@@ -107,7 +107,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -17415,7 +17415,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -19117,7 +19117,7 @@ Next point in time when satellite settles.</string>
          <string>Horizon</string>
         </property>
        </widget>
-       <widget class="QProgressBar" name="trajectoryProgress">
+       <widget class="QProgressBar" name="calcProgress">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -19167,7 +19167,7 @@ Next point in time when satellite settles.</string>
          <string>Prog</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="trackingSim">
+       <widget class="QCheckBox" name="trackingReplay">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -19183,7 +19183,7 @@ Next point in time when satellite settles.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked satellite tracking is in simulation mode, means that tracking starts always now regardless which is the real tracking start time. Please uncheck it for real satellite tracking.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Simulate</string>
+         <string>Replay</string>
         </property>
        </widget>
       </widget>
@@ -32421,7 +32421,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>satAfterFlip</tabstop>
   <tabstop>avoidHorizon</tabstop>
   <tabstop>progTrajectory</tabstop>
-  <tabstop>trackingSim</tabstop>
+  <tabstop>trackingReplay</tabstop>
   <tabstop>satTrajectoryStart</tabstop>
   <tabstop>satTrajectoryFlip</tabstop>
   <tabstop>satTrajectoryEnd</tabstop>

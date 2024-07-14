@@ -613,21 +613,21 @@ class Mount(mountcontrol.mount.Mount):
         self.threadPool.start(worker)
         return True
 
-    def errorCalcTrajectory(self, e):
+    def errorPreCalcTrajectory(self, e):
         """
         :return: true for test purpose
         """
         self.log.warning(f'Cycle error: {e}')
         return True
 
-    def clearCalcTrajectory(self):
+    def clearPreCalcTrajectory(self):
         """
         :return: true for test purpose
         """
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
         return True
 
-    def calcTrajectory(self, replay=False):
+    def preCalcTrajectory(self, replay=False):
         """
         :return: success
         """
@@ -635,9 +635,9 @@ class Mount(mountcontrol.mount.Mount):
             self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
             return False
 
-        worker = Worker(self.satellite.calcTrajectory, replay=replay)
-        worker.signals.finished.connect(self.clearCalcTrajectory)
-        worker.signals.error.connect(self.errorCalcTrajectory)
+        worker = Worker(self.satellite.preCalcTrajectory, replay=replay)
+        worker.signals.finished.connect(self.clearPreCalcTrajectory)
+        worker.signals.error.connect(self.errorPreCalcTrajectory)
         self.threadPool.start(worker)
         return True
 
@@ -648,12 +648,11 @@ class Mount(mountcontrol.mount.Mount):
         self.log.warning(f'Cycle error: {e}')
         return True
 
-    def clearProgTrajectory(self, sim=False):
+    def clearProgTrajectory(self):
         """
-        :param sim:
         :return: true for test purpose
         """
-        self.calcTrajectory(replay=sim)
+        self.preCalcTrajectory(replay=sim)
         return True
 
     def workerProgTrajectory(self, alt=None, az=None):
@@ -671,8 +670,8 @@ class Mount(mountcontrol.mount.Mount):
 
         for i, (altitude, azimuth) in enumerate(zip(altP, azP)):
             self.satellite.progTrajectory(alt=altitude, az=azimuth)
-            self.signals.trajectoryProgress.emit(min((i + 1) / chunks * 100, 100))
-        self.signals.trajectoryProgress.emit(100)
+            self.signals.calcProgress.emit(min((i + 1) / chunks * 100, 100))
+        self.signals.calcProgress.emit(100)
         return True
 
     def progTrajectory(self, start, alt=None, az=None):

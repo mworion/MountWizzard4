@@ -527,28 +527,28 @@ def test_cycleClock_2(function):
         assert not suc
 
 
-def test_errorCalcTrajectory(function):
-    function.errorCalcTrajectory('test')
+def test_errorPreCalcTrajectory(function):
+    function.errorPreCalcTrajectory('test')
 
 
-def test_clearCalcTrajectory_1(function):
-    suc = function.clearCalcTrajectory()
+def test_clearPreCalcTrajectory_1(function):
+    suc = function.clearPreCalcTrajectory()
     assert suc
 
 
-def test_calcTrajectory_1(function):
+def test_preCalcTrajectory_1(function):
     function.mountUp = True
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.calcTrajectory()
+        suc = function.preCalcTrajectory()
         assert suc
 
 
-def test_calcTrajectory_2(function):
+def test_preCalcTrajectory_2(function):
     function.mountUp = False
     with mock.patch.object(QThreadPool,
                            'start'):
-        suc = function.calcTrajectory()
+        suc = function.preCalcTrajectory()
         assert not suc
 
 

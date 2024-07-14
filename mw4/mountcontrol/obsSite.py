@@ -730,7 +730,7 @@ class ObsSite(object):
 
         sgn, h, m, s, frac = sexagesimalizeToInt(az.degrees, 1)
         sign = '+' if sgn >= 0 else '-'
-        setAz = f':Sz{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#'
+        setAz = f':Sz{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#'
 
         getTargetStatus = ':U2#:GTsid#:Ga#:Gz#:Gr#:Gd#'
         commandString = setAlt + setAz + getTargetStatus

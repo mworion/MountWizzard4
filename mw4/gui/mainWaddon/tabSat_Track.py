@@ -19,11 +19,11 @@
 # external packages
 import numpy as np
 from sgp4.exporter import export_tle
-from skyfield import almanac
 
 # local import
 from gui.utilities.toolsQtWidget import MWidget
 from gui.mainWaddon.satData import SatData
+from logic.satellites.satellite_calculations import calcSatPasses
 
 
 class SatTrack(MWidget, SatData):
@@ -101,7 +101,7 @@ class SatTrack(MWidget, SatData):
         self.ui.satBeforeFlip.setChecked(config.get('satBeforeFlip', True))
         self.ui.satAfterFlip.setChecked(config.get('satAfterFlip', True))
         self.ui.avoidHorizon.setChecked(config.get('avoidHorizon', False))
-        self.ui.trackingSim.setChecked(config.get('trackingSim', False))
+        self.ui.trackingReplay.setChecked(config.get('trackingReplay', False))
         self.ui.unitTimeUTC.toggled.connect(self.showSatPasses)
 
     def storeConfig(self):
@@ -113,7 +113,7 @@ class SatTrack(MWidget, SatData):
         config['satBeforeFlip'] = self.ui.satBeforeFlip.isChecked()
         config['satAfterFlip'] = self.ui.satAfterFlip.isChecked()
         config['avoidHorizon'] = self.ui.avoidHorizon.isChecked()
-        config['trackingSim'] = self.ui.trackingSim.isChecked()
+        config['trackingReplay'] = self.ui.trackingReplay.isChecked()
 
     def setupIcons(self):
         """
@@ -134,134 +134,10 @@ class SatTrack(MWidget, SatData):
             return False
 
         progAvailable = availableInternal and useInternal
-        self.ui.trackingSim.setEnabled(progAvailable)
-        self.ui.trajectoryProgress.setEnabled(progAvailable)
+        self.ui.trackingReplay.setEnabled(progAvailable)
+        self.ui.calcProgress.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
         return True
-
-    def calcPassEvents(self, obsSite):
-        """
-        """
-        minAlt = self.app.mount.setting.horizonLimitLow
-        if minAlt is None:
-            minAlt = 5
-        if minAlt < 5:
-            minAlt = 5
-
-        loc = obsSite.location
-        orbitCycleTime = np.pi / self.satellite.model.no_kozai / 12 / 60
-
-        t0 = obsSite.ts.tt_jd(obsSite.timeJD.tt - orbitCycleTime)
-        t1 = obsSite.ts.tt_jd(obsSite.timeJD.tt + 5)
-        times, events = self.satellite.find_events(loc, t0, t1,
-                                                   altitude_degrees=minAlt)
-        return times, events
-
-    def collectOrbits(self, events, timeNow, times):
-        """
-        """
-        counter = 0
-        self.satOrbits = []
-        for ti, event in zip(times, events):
-            if event == 0:
-                self.satOrbits.append({'rise': ti})
-
-            elif event == 1:
-                if counter >= len(self.satOrbits):
-                    continue
-                self.satOrbits[counter]['culminate'] = ti
-
-            elif event == 2:
-                if counter >= len(self.satOrbits):
-                    continue
-                self.satOrbits[counter]['settle'] = ti
-
-                if ti.tt < timeNow.tt:
-                    del self.satOrbits[counter]
-                    continue
-                counter += 1
-
-            if counter > 2:
-                break
-        return counter
-
-    def extractOrbits(self, timeNow, times, events):
-        """
-        """
-        counter = self.collectOrbits(events, timeNow, times)
-
-        if not self.satOrbits and np.all(events == 1) and len(events) > 0:
-            self.satOrbits.append({'rise': times[0]})
-            self.satOrbits[0]['culminate'] = times[0] + 0.5
-            self.satOrbits[0]['settle'] = times[0] + 1.0
-        elif not self.satOrbits:
-            return False
-
-        if 'settle' not in self.satOrbits[-1]:
-            del self.satOrbits[counter]
-            return False
-        return True
-
-    @staticmethod
-    def calcSatelliteMeridianTransit(satellite, location, tolerance):
-        """
-        """
-        difference = satellite - location
-
-        def west_of_meridian_at(t):
-            alt, az, _ = difference.at(t).altaz()
-            delta = (az.degrees + tolerance + 360) % 360 - 180
-            return delta < 0
-
-        west_of_meridian_at.step_days = 0.4
-        return west_of_meridian_at
-
-    @staticmethod
-    def sortFlipEvents(satOrbit, t0, t1, t2):
-        """
-        """
-        settle = satOrbit['settle']
-        rise = satOrbit['rise']
-        if t0:
-            satOrbit['flip'] = t0[0]
-        if t1 and t2:
-            if t1[0].tt > t2[0].tt:
-                satOrbit['flipEarly'] = t2[0]
-                satOrbit['flipLate'] = t1[0]
-            else:
-                satOrbit['flipEarly'] = t1[0]
-                satOrbit['flipLate'] = t2[0]
-        if t1 and not t2:
-            if abs(rise.tt - t1[0].tt) > abs(settle.tt - t1[0].tt):
-                satOrbit['flipLate'] = t1[0]
-            else:
-                satOrbit['flipEarly'] = t1[0]
-        if not t1 and t2:
-            if abs(rise.tt - t2[0].tt) > abs(settle.tt - t2[0].tt):
-                satOrbit['flipLate'] = t2[0]
-            else:
-                satOrbit['flipEarly'] = t2[0]
-
-    def addMeridianTransit(self, location):
-        """
-        """
-        limit = self.app.mount.setting.meridianLimitTrack
-        if limit is None:
-            limit = 0
-        limit = limit * 0.95
-
-        f0 = self.calcSatelliteMeridianTransit(self.satellite, location, 0)
-        f1 = self.calcSatelliteMeridianTransit(self.satellite, location, limit)
-        f2 = self.calcSatelliteMeridianTransit(self.satellite, location, -limit)
-        for satOrbit in self.satOrbits:
-            t0, y0 = almanac.find_discrete(satOrbit['rise'],
-                                           satOrbit['settle'], f0)
-            t1, y1 = almanac.find_discrete(satOrbit['rise'],
-                                           satOrbit['settle'], f1)
-            t2, y2 = almanac.find_discrete(satOrbit['rise'],
-                                           satOrbit['settle'], f2)
-
-            self.sortFlipEvents(satOrbit, t0, t1, t2)
 
     def signalSatelliteData(self, alt=None, az=None):
         """
@@ -279,7 +155,7 @@ class SatTrack(MWidget, SatData):
         self.ui.satTrajectoryStart.setText('-')
         self.ui.satTrajectoryEnd.setText('-')
         self.ui.satTrajectoryFlip.setText('-')
-        self.ui.trajectoryProgress.setValue(0)
+        self.ui.calcProgress.setValue(0)
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setText('Start satellite tracking')
@@ -308,11 +184,8 @@ class SatTrack(MWidget, SatData):
 
         self.clearTrackingParameters()
         obsSite = self.app.mount.obsSite
-        times, events = self.calcPassEvents(obsSite)
-
-        timeNow = obsSite.timeJD
-        self.extractOrbits(timeNow, times, events)
-        self.addMeridianTransit(obsSite.location)
+        setting = self.app.mount.setting
+        self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
         for i in range(0, 3):
             self.passUI[i]['rise'].setText('-')
@@ -550,7 +423,7 @@ class SatTrack(MWidget, SatData):
         """
         """
         self.clearTrackingParameters()
-        isSim = self.ui.trackingSim.isChecked()
+        isSim = self.ui.trackingReplay.isChecked()
         t = ('for simulation' if isSim else '')
         self.msg.emit(0, 'TLE', 'Program', f'Satellite track data {t}')
         start, end = self.selectStartEnd()
@@ -559,20 +432,20 @@ class SatTrack(MWidget, SatData):
         alt, az = self.calcTrajectoryData(start, end)
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
         self.changeStyleDynamic(self.ui.progTrajectory, 'running', True)
-        self.app.mount.progTrajectory(start, alt=alt, az=az, sim=isSim)
+        self.app.mount.progTrajectory(start, alt=alt, az=az)
         return True
 
     def trajectoryProgress(self, value):
         """
         """
-        self.ui.trajectoryProgress.setValue(int(value))
+        self.ui.calcProgress.setValue(int(value))
         if value == 100:
             self.changeStyleDynamic(self.ui.progTrajectory, 'running', False)
 
     def updateSatelliteTrackGui(self, params=None):
         """
         """
-        self.ui.trajectoryProgress.setValue(0)
+        self.ui.calcProgress.setValue(0)
         title = 'Satellite tracking ' + self.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
 

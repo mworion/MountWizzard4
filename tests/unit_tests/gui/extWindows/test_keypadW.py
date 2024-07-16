@@ -230,15 +230,12 @@ def test_buttonPressed_2(function):
     def sender():
         return function.ui.b0
 
-    class WS:
-        def send(self, a, b):
-            return
-
     function.setupButtons()
     function.sender = sender
-    function.keypad.ws = WS()
-    suc = function.buttonPressed()
-    assert suc
+    with mock.patch.object(function.keypad,
+                           'send'):
+        suc = function.buttonPressed()
+        assert suc
 
 
 def test_buttonReleased_1(function):
@@ -254,16 +251,12 @@ def test_buttonReleased_1(function):
 def test_buttonReleased_2(function):
     def sender():
         return function.ui.b0
-
-    class WS:
-        def send(self, a, b):
-            return
-
     function.setupButtons()
     function.sender = sender
-    function.keypad.ws = WS()
-    suc = function.buttonReleased()
-    assert suc
+    with mock.patch.object(function.keypad,
+                           'send'):
+        suc = function.buttonReleased()
+        assert suc
 
 
 def test_writeTextRow_1(function):

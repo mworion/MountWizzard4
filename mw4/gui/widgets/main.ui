@@ -107,7 +107,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideLeft</enum>
@@ -17415,7 +17415,7 @@ When clicking the button, you could change the value.</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -19148,7 +19148,7 @@ Next point in time when satellite settles.</string>
          <enum>QProgressBar::TopToBottom</enum>
         </property>
        </widget>
-       <widget class="QPushButton" name="addTrajectoryPoint">
+       <widget class="QPushButton" name="progTrajectory">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -32420,7 +32420,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>satBeforeFlip</tabstop>
   <tabstop>satAfterFlip</tabstop>
   <tabstop>avoidHorizon</tabstop>
-  <tabstop>addTrajectoryPoint</tabstop>
+  <tabstop>progTrajectory</tabstop>
   <tabstop>trackingReplay</tabstop>
   <tabstop>satTrajectoryStart</tabstop>
   <tabstop>satTrajectoryFlip</tabstop>

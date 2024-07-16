@@ -101,7 +101,8 @@ class SlewInterface:
         suc = self.app.mount.obsSite.setTargetRaDec(ra=raJNow,
                                                     dec=decJNow)
         if not suc:
-            t = f'Cannot slew to RA:[{ra.hours:3.1f}], DEC:[{dec.degrees:3.1f}]'
+            t = f'Cannot slew to RA:[{raJNow.hours:3.1f}], '
+            t += f'DEC:[{decJNow.degrees:3.1f}]'
             self.msg.emit(2, 'Tools', 'Slewing error', t)
             return False
 

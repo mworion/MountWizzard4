@@ -271,7 +271,7 @@ def test_ubuntu_main(c, user, work, scp):
     cmd = 'curl https://github.com/mworion/InstallerMW4/releases/latest/download/startup_package.zip'
     cmd += ' -L -o startup_package.zip'
     runMW(c, f'ssh {user} "cd {work} && {cmd}"')
-    runMW(c, f'ssh {user} "cd {work} && tar -xf startup_package.zip"')
+    runMW(c, f'ssh {user} "cd {work} && unzip startup_package.zip"')
     runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz --no-start"')
     runMW(c, f'ssh {user} "cd {work} && python3 startup.pyz"')
 

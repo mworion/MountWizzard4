@@ -35,15 +35,15 @@ releaseNotes = """
 - change: moving libraries to latest versions
 - change: remove old windows automation
 - change: remove embedded documentation and replace with online link
-- refactoring: environment devices (now 3 generic ones)
-- refactoring: remove installer to separate repo (InstallerMW4)
-- refactoring: optimizing code for better performance
-- refactoring: satellite handling
+- refactor: environment devices (now 3 generic ones)
+- refactor: remove installer to separate repo (InstallerMW4)
+- refactor: optimizing code for better performance
+- refactor: satellite handling
 - improve: reduced size of app
 - improve: faster startup time
 - improve: optimizing material look & feel
-- improved: don't delete message list when color change
-- improved: rewrite of the online documentation
+- improve: don't delete message list when color change
+- improve: rewrite of the online documentation
 - remove: automation of 10micron installer
 - fix: typos
 """

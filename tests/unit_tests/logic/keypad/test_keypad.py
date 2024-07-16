@@ -199,80 +199,75 @@ def test_calcChecksum_2(function):
     assert val == 12
 
 
-def test_mousePressed_1(function):
+def test_send_1(function):
+    function.ws = None
+    function.send([1, 2, 3])
+
+
+def test_send_2(function):
     class WS:
-        def send(self, a, b):
+        @staticmethod
+        def send(a):
             return
 
-    function.ws = WS()
-    suc = function.mousePressed('key_0')
-    assert suc
+    function.ws = WS
+    function.send('test')
+
+
+def test_mousePressed_1(function):
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.mousePressed('key_0')
+        assert suc
 
 
 def test_mousePressed_2(function):
-    class WS:
-        def send(self, a, b):
-            return
-
-    function.ws = WS()
-    suc = function.mousePressed('test')
-    assert not suc
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.mousePressed('test')
+        assert not suc
 
 
 def test_mouseReleased_1(function):
-    class WS:
-        def send(self, a, b):
-            return
-    function.ws = WS()
-    suc = function.mouseReleased('key_0')
-    assert suc
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.mouseReleased('key_0')
+        assert suc
 
 
 def test_mouseReleased_2(function):
-    class WS:
-        def send(self, a, b):
-            return
-    function.ws = WS()
-    suc = function.mouseReleased('test')
-    assert not suc
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.mouseReleased('test')
+        assert not suc
 
 
 def test_keyDown_1(function):
-    class WS:
-        def send(self, a, b):
-            return
-
-    function.ws = WS()
-    suc = function.keyDown(48)
-    assert suc
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.keyDown(48)
+        assert suc
 
 
 def test_keyDown_2(function):
-    class WS:
-        def send(self, a, b):
-            return
-
-    function.ws = WS()
-    suc = function.keyDown(0)
-    assert not suc
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.keyDown(0)
+        assert not suc
 
 
 def test_keyUp_1(function):
-    class WS:
-        def send(self, a, b):
-            return
-    function.ws = WS()
-    suc = function.keyUp(48)
-    assert suc
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.keyUp(48)
+        assert suc
 
 
 def test_keyUp_2(function):
-    class WS:
-        def send(self, a, b):
-            return
-    function.ws = WS()
-    suc = function.keyUp(0)
-    assert not suc
+    with mock.patch.object(function,
+                           'send'):
+        suc = function.keyUp(0)
+        assert not suc
 
 
 def test_keyPressed_1(function):
@@ -286,15 +281,12 @@ def test_keyPressed_2(function):
 
 
 def test_keyPressed_3(function):
-    class WS:
-        def send(self, a, b):
-            return
-
-    function.ws = WS()
     with mock.patch.object(function,
-                           'calcChecksum'):
-        suc = function.keyPressed(54)
-        assert suc
+                           'send'):
+        with mock.patch.object(function,
+                               'calcChecksum'):
+            suc = function.keyPressed(54)
+            assert suc
 
 
 def test_on_data_1(function):

@@ -314,6 +314,13 @@ class KeyPad:
             checksum = checksum + 10
         return checksum
 
+    def send(self, message):
+        """
+        """
+        if self.ws is None:
+            return
+        self.ws.send(message)
+
     def mousePressed(self, key):
         """
         :param key:
@@ -326,7 +333,7 @@ class KeyPad:
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        self.send(message)
         return True
 
     def mouseReleased(self, key):
@@ -341,7 +348,7 @@ class KeyPad:
         message = [2, 5, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        self.send(message)
         return True
 
     def keyDown(self, key):
@@ -356,7 +363,7 @@ class KeyPad:
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        self.send(message)
         return True
 
     def keyUp(self, key):
@@ -371,7 +378,7 @@ class KeyPad:
         message = [2, 5, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        self.send(message)
         return True
 
     def keyPressed(self, key):
@@ -389,11 +396,11 @@ class KeyPad:
         message = [2, 6, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        self.send(message)
         message = [2, 5, key]
         message = message + [self.calcChecksum(message)]
         message = message + [3]
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        self.send(message)
         return True
 
     def on_data(self, ws, data, typeOpcode, cont):

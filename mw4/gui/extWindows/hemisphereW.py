@@ -229,7 +229,10 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
     def calculateRelevance(self, alt=None, az=None):
         """
         """
-        isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
+        if self.app.mount.obsSite.location is None:
+            isNorth = True
+        else:
+            isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
         altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
         if isNorth:
             azFak = 1 - np.minimum(diffModulusAbs(0, az - 180, 360), 75) / 75

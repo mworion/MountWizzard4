@@ -36,7 +36,7 @@ from gui.extWindows.hemisphereW import HemisphereWindow
 from mountcontrol.setting import Setting
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def function(qapp):
 
     func = HemisphereWindow(app=App())
@@ -158,6 +158,12 @@ def test_setOperationModeHem_2(function):
         with mock.patch.object(function,
                                'drawHemisphereTab'):
             function.setOperationModeHem()
+
+
+def test_calculateRelevance_0(function):
+    function.app.mount.obsSite.location = None
+    val = function.calculateRelevance(40, 180)
+    assert round(val, 3) == 0.845
 
 
 def test_calculateRelevance_1(function):

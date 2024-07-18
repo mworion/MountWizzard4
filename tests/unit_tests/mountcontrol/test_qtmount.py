@@ -584,3 +584,10 @@ def test_progTrajectory_1(function):
     with mock.patch.object(QThreadPool,
                            'start'):
         function.progTrajectory(12345678)
+
+
+def test_progTrajectory_2(function):
+    function.mountUp = False
+    with mock.patch.object(QThreadPool,
+                           'start'):
+        function.progTrajectory(12345678)

@@ -452,7 +452,7 @@ def test_drawModelText_2(function):
 def test_drawModelText_3(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol='o')
     function.app.data.buildP = [(1, 1, True), (2, 2, False)]
-    function.ui.editModeHem.setChecked(False)
+    function.ui.normalModeHem.setChecked(True)
     suc = function.drawModelText()
     assert suc
 
@@ -481,7 +481,7 @@ def test_setupModel_2(function):
                            'drawModelPoints'):
         with mock.patch.object(function,
                                'drawModelText'):
-            function.ui.editModeHem.setChecked(False)
+            function.ui.normalModeHem.setChecked(True)
             function.ui.showSlewPath.setChecked(False)
             function.setupModel()
 

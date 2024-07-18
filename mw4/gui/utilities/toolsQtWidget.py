@@ -115,20 +115,17 @@ class QCustomTableWidgetItem(QTableWidgetItem):
         super().__init__(value)
 
     def __lt__(self, other):
-        if (isinstance(other, QCustomTableWidgetItem)):
-            selfData = self.data(Qt.ItemDataRole.EditRole)
-            if selfData == '':
-                selfDataValue = 99
-            else:
-                selfDataValue = float(selfData)
-            otherData = other.data(Qt.ItemDataRole.EditRole)
-            if otherData == '':
-                otherDataValue = 99
-            else:
-                otherDataValue = float(otherData)
-            return selfDataValue < otherDataValue
+        selfData = self.data(Qt.ItemDataRole.EditRole)
+        if selfData == '':
+            selfDataValue = 99
         else:
-            return QTableWidgetItem.__lt__(self, other)
+            selfDataValue = float(selfData)
+        otherData = other.data(Qt.ItemDataRole.EditRole)
+        if otherData == '':
+            otherDataValue = 99
+        else:
+            otherDataValue = float(otherData)
+        return selfDataValue < otherDataValue
 
 
 class MWidget(QWidget, Styles):

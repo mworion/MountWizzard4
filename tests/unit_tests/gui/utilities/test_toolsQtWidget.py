@@ -103,12 +103,6 @@ def test_QCustomTableWidgetItem_3():
     assert i1 < i2
 
 
-def test_QCustomTableWidgetItem_4():
-    i1 = QCustomTableWidgetItem('-2.0')
-    i2 = QTableWidgetItem('5')
-    assert i1.data(0) < i2.data(0)
-
-
 def test_FileSortProxyModel_1():
     w = QWidget()
     dialog = QFileDialog()

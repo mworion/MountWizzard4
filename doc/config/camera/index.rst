@@ -57,21 +57,13 @@ But the provided basic API is sufficient to do the modeling job.
           transfer their images to MountWizzard4, you have to ensure that the
           FITS files are stored on your local disk and MountWizzard4 has access.
 
-Basically MountWizzard4 interface these apps in two different modes:
+Basically MountWizzard4 interface these apps and let them control the devices.
+Selection and connecting the devices have to be done manually in the regarding
+application. MountWizzard4 just recognizes of a device is connected or not and
+if connected uses it as is.
 
-- App controlled mode
-- MountWizzard4 controlled mode
-
-In App controlled mode, selection and connecting the devices have to be done
-manually in the regarding application. MountWizzard4 just recognizes of a device
-is connected or not and if connected uses it as is.
-
-In MountWizzard4 controlled mode you could do a selection from all device the
-application offers. Once selected, MountWizzard4 will enforce the application to
-switch to the desired camera and tries to connect automatically to it.
-
-App controlled mode in SGPro
-----------------------------
+SGPro controlled mode
+---------------------
 First in camera driver setup you choose to use the SGPro controlled mode:
 
 .. image:: image/driver_sgpro_controlled.png
@@ -96,19 +88,8 @@ the status in MountWizzard4 will change to connected as well.
     :align: center
     :scale: 71%
 
-MountWizzard4 controlled mode in SGPro
---------------------------------------
-If search for devices first in camera driver setup menu, you will get a list of
-available cameras you could choose from. Please select one and accept selection.
-In driver tab you will see the selected camera and MountWizzard4 tries to switch
-to this camera and connect automatically to it.
-
-.. image:: image/imaging_sgpro_connected.png
-    :align: center
-    :scale: 71%
-
-App controlled mode in N.I.N.A.
--------------------------------
+N.I.N.A. controlled mode
+------------------------
 First in camera driver setup you choose to use the N.I.N.A. controlled mode, you
 recognize the setting in device tab:
 
@@ -128,11 +109,14 @@ the status in MountWizzard4 will change to connected as well.
     :align: center
     :scale: 71%
 
-MountWizzard4 controlled mode in N.I.N.A.
------------------------------------------
-Similar to SGpro.
+Preparation for using NINA 3.x as remote camera
+-----------------------------------------------
+N.I.N.A. 3.x realizes this feature in a separate plugin. The plugin is called
+SGPro server emulator:
 
-.. image:: image/imaging_nina_connected.png
+.. image:: image/sgpro-control.png
     :align: center
     :scale: 71%
 
+Pleas install this plugin first and enable server mode. In N.I.N.A. you have to
+enable server mode directly in main program.

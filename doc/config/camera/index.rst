@@ -78,15 +78,11 @@ You recognize the setting in device tab:
 
 Once you connect a camera in SGPro
 
-.. image:: image/sgpro_connected.png
+.. image:: image/imaging_sgpro_controlled_connected.png
     :align: center
     :scale: 71%
 
 the status in MountWizzard4 will change to connected as well.
-
-.. image:: image/imaging_sgpro_controlled_connected.png
-    :align: center
-    :scale: 71%
 
 N.I.N.A. controlled mode
 ------------------------
@@ -99,15 +95,11 @@ recognize the setting in device tab:
 
 Once you connect a camera in N.I.N.A.
 
-.. image:: image/nina_connected.png
+.. image:: image/imaging_nina_controlled_connected.png
     :align: center
     :scale: 71%
 
 the status in MountWizzard4 will change to connected as well.
-
-.. image:: image/imaging_nina_controlled_connected.png
-    :align: center
-    :scale: 71%
 
 Preparation for using NINA 3.x as remote camera
 -----------------------------------------------
@@ -118,5 +110,12 @@ SGPro server emulator:
     :align: center
     :scale: 71%
 
-Pleas install this plugin first and enable server mode. In N.I.N.A. you have to
-enable server mode directly in main program.
+Pleas install this plugin first and enable server mode.
+
+Preparation for using NINA 2.x as remote camera
+-----------------------------------------------
+In N.I.N.A. 2.x you have to enable server mode directly in main program:
+
+.. image:: image/server_setting_nina.png
+    :align: center
+    :scale: 71%

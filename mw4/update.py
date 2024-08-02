@@ -179,7 +179,7 @@ class UpdateGUI:
         self.style.colorSet = colorSet
         self.app.setWindowIcon(QIcon(':/icon/mw4.ico'))
         self.mColor = [QColor(self.style.M_PRIM),
-                       QColor(self.style.M_WHITE),
+                       QColor(self.style.M_TER),
                        QColor(self.style.M_YELLOW),
                        QColor(self.style.M_RED),
                        ]

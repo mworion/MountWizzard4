@@ -305,7 +305,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         lon = subpoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
             pd = pg.PlotDataItem(x=lon[slc], y=lat[slc],
-                                 pen=pg.mkPen(width=1, color=self.M_WHITE1 + '80'))
+                                 pen=pg.mkPen(width=1, color=self.M_TER1 + '80'))
             pd.setZValue(-10)
             plotItem.addItem(pd)
         return True
@@ -424,7 +424,7 @@ class SatelliteWindow(toolsQtWidget.MWidget):
         for slc in self.unlinkWrap(azimuth):
             pd = pg.PlotDataItem(
                 x=azimuth[slc], y=altitude[slc],
-                pen=pg.mkPen(width=5, color=self.M_WHITE))
+                pen=pg.mkPen(width=5, color=self.M_TER))
             pd.setZValue(-5)
             plotItem.addItem(pd)
 

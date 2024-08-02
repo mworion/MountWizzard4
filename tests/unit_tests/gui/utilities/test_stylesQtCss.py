@@ -63,9 +63,9 @@ def test_property(function):
     a = function.M_PRIM2
     a = function.M_PRIM3
     a = function.M_PRIM4
-    a = function.M_WHITE
-    a = function.M_WHITE
-    a = function.M_WHITE1
+    a = function.M_TER
+    a = function.M_TER
+    a = function.M_TER1
     a = function.M_SEC
     a = function.M_SEC1
     a = function.M_BACK

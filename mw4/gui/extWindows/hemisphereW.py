@@ -346,8 +346,8 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
             if i == 1:
                 az, alt = self.ui.hemisphere.toPolar(az, alt)
             pd.setData(
-                x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_WHITE1, size=0.9),
-                brush=pg.mkBrush(color=self.M_WHITE), size=0.9)
+                x=az, y=alt, symbol='o', pen=pg.mkPen(color=self.M_TER1, size=0.9),
+                brush=pg.mkBrush(color=self.M_TER), size=0.9)
             plotItem.addItem(pd)
         return True
 
@@ -471,7 +471,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
                 fontColor, fontSize = self.selectFontParam(rel)
             else:
                 fontSize = 8
-                fontColor = self.M_WHITE1
+                fontColor = self.M_TER1
 
             item = self.alignmentStars.points()[i]
             item.setPen(pg.mkPen(color=color))
@@ -508,7 +508,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
             isEdit = self.ui.editModeHem.isChecked()
             for i in range(len(x)):
                 active = act[i]
-                col = [self.M_WHITE, self.M_GREEN, self.M_RED]
+                col = [self.M_TER, self.M_GREEN, self.M_RED]
                 colActive = col[active]
                 color = self.M_PINK if isEdit else colActive
                 sym = ['d', 'o', 'x']
@@ -545,7 +545,7 @@ class HemisphereWindow(MWidget, EditHorizon, SlewInterface):
             az = x[i]
             alt = y[i]
             active = act[i]
-            col = [self.M_WHITE, self.M_GREEN, self.M_RED]
+            col = [self.M_TER, self.M_GREEN, self.M_RED]
             colActive = col[active]
             color = self.M_PINK if isEdit else colActive
 

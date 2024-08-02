@@ -98,7 +98,7 @@ class MessageWindow(toolsQtWidget.MWidget):
         :return:
         """
         self.messColor = [QBrush(QColor(self.M_PRIM)),
-                          QBrush(QColor(self.M_WHITE)),
+                          QBrush(QColor(self.M_TER)),
                           QBrush(QColor(self.M_YELLOW)),
                           QBrush(QColor(self.M_RED)),
                           ]

@@ -84,7 +84,7 @@ class EnvironSeeing(MWidget):
                   'badlayer_gradient', 'jetstream']
         colorMain = self.cs['M_PRIM'][0]
         colorBlack = self.cs['M_BLACK'][0]
-        colorWhite = self.cs['M_WHITE'][0]
+        colorWhite = self.cs['M_TER'][0]
         seeTab = self.ui.meteoblueSeeing
         data = self.app.seeingWeather.data['hourly']
         self.addSkyfieldTimeObject(data)
